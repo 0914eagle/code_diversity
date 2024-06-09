@@ -1,16 +1,23 @@
 
-n = int(input())
+def f1(S):
+    # Initialize the minimum difference and the corresponding substring
+    min_diff = float('inf')
+    substring = ''
 
-for i in range(n):
-    k = int(input())
-    menu_items = []
-    for j in range(k):
-        menu_item = input()
-        menu_items.append(menu_item)
-    
-    if "pea soup" in menu_items and "pancakes" in menu_items:
-        print(menu_items[0])
-        break
-else:
-    print("Anywhere is fine I guess")
+    # Iterate over all possible substrings of length 3
+    for i in range(len(S) - 2):
+        # Extract the substring and convert it to an integer
+        substring = S[i:i+3]
+        x = int(substring)
+
+        # Calculate the absolute difference between x and 753
+        diff = abs(x - 753)
+
+        # Update the minimum difference and the corresponding substring
+        if diff < min_diff:
+            min_diff = diff
+            substring = substring
+
+    # Return the minimum difference and the corresponding substring
+    return min_diff, substring
 

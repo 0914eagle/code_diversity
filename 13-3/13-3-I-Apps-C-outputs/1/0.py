@@ -1,32 +1,65 @@
 
-def black_vienna(investigations):
-    num_investigations = int(investigations[0])
-    investigations = investigations[1:]
+def f1(n, m, edges):
+    # Initialize graph as a dictionary with node as key and its neighbors as value
+    graph = {i: set() for i in range(n)}
+    for i, j in edges:
+        graph[i].add(j)
+    
+    # Initialize S as the set of source nodes
+    S = set(i for i in range(n) if not graph[i])
+    
+    # Initialize L as an empty list
+    L = []
+    
+    # While S is not empty
+    while S:
+        # Choose an arbitrary node from S
+        alpha = S.pop()
+        
+        # Remove alpha and all its outgoing edges from the graph
+        for node in graph[alpha]:
+            graph[node].remove(alpha)
+            if not graph[node]:
+                S.add(node)
+        
+        # Insert alpha at the end of L
+        L.append(alpha)
+    
+    # Return the largest possible size of S at the beginning of Step 1
+    return len(S)
 
-    # Initialize a dictionary to store the number of times each suspect is mentioned in the investigations
-    suspect_counts = {}
-    for i in range(1, 27):
-        suspect_counts[chr(i + 64)] = 0
+def f2(n, m, edges):
+    # Initialize graph as a dictionary with node as key and its neighbors as value
+    graph = {i: set() for i in range(n)}
+    for i, j in edges:
+        graph[i].add(j)
+    
+    # Initialize S as the set of source nodes
+    S = set(i for i in range(n) if not graph[i])
+    
+    # Initialize L as an empty list
+    L = []
+    
+    # While S is not empty
+    while S:
+        # Choose an arbitrary node from S
+        alpha = S.pop()
+        
+        # Remove alpha and all its outgoing edges from the graph
+        for node in graph[alpha]:
+            graph[node].remove(alpha)
+            if not graph[node]:
+                S.add(node)
+        
+        # Insert alpha at the end of L
+        L.append(alpha)
+    
+    # Return the largest possible size of S at the beginning of Step 1
+    return len(S)
 
-    # Iterate through the investigations and update the suspect counts
-    for investigation in investigations:
-        suspects, player, reply = investigation.split()
-        suspect1, suspect2 = suspects
-        if player == "1":
-            suspect_counts[suspect1] += 1
-            suspect_counts[suspect2] += 1
-        else:
-            suspect_counts[suspect1] -= 1
-            suspect_counts[suspect2] -= 1
-
-    # Initialize a list to store the admissible solutions
-    solutions = []
-
-    # Iterate through the suspect counts and check if each suspect is in the Black Vienna circle
-    for suspect, count in suspect_counts.items():
-        if count == 0:
-            solutions.append(suspect)
-
-    # Return the number of admissible solutions
-    return len(solutions)
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    edges = [tuple(map(int, input().split())) for _ in range(m)]
+    print(f1(n, m, edges))
+    print(f2(n, m, edges))
 

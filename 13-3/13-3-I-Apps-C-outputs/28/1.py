@@ -1,24 +1,44 @@
 
-def get_maximum_score(notes, sp_phrases):
-    # Initialize the maximum score and the current score
-    max_score = 0
-    current_score = 0
+def count_sets(points):
+    # Initialize a set to store the unique sets
+    unique_sets = set()
     
-    # Iterate through the notes and SP phrases
-    for i in range(len(notes)):
-        # Check if the current note is within an SP phrase
-        for sp in sp_phrases:
-            if notes[i] in range(sp[0], sp[1]):
-                # If it is, charge up the SP meter
-                current_score += 2
+    # Iterate over each point
+    for point in points:
+        # Initialize a set to store the points in the current set
+        current_set = set()
         
-        # If the current note is not within an SP phrase, score it normally
-        else:
-            current_score += 1
+        # Iterate over each point in the input
+        for other_point in points:
+            # If the current point is not the same as the other point
+            if point != other_point:
+                # If the current point is in the same column as the other point
+                if point[0] == other_point[0]:
+                    # Add the other point to the current set
+                    current_set.add(other_point)
         
-        # Update the maximum score if the current score is higher
-        max_score = max(max_score, current_score)
+        # Add the current set to the unique sets
+        unique_sets.add(frozenset(current_set))
     
-    # Return the maximum score
-    return max_score
+    # Return the number of unique sets
+    return len(unique_sets)
+
+def main():
+    # Read the number of points
+    n = int(input())
+    
+    # Read the points
+    points = []
+    for i in range(n):
+        x, y = map(int, input().split())
+        points.append((x, y))
+    
+    # Call the count_sets function
+    result = count_sets(points)
+    
+    # Print the result
+    print(result)
+
+if __name__ == '__main__':
+    main()
 

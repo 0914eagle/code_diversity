@@ -1,22 +1,28 @@
 
-def get_initial_arrangement(n, x, a):
-    # Initialize an array to store the initial arrangement of balls
-    initial_arrangement = [0] * n
-
-    # Initialize a variable to keep track of the number of balls left
-    num_balls_left = sum(a)
-
-    # Loop through each box and its corresponding number of balls
+def f1(n, directions, jumps):
+    # Initialize a list to store the position of the grasshopper
+    position = [0]
+    # Iterate through the directions and jumps
     for i in range(n):
-        # If the current box is the last box that Vasya put a ball in,
-        # then the number of balls in the current box is the number of balls left
-        if i == x - 1:
-            initial_arrangement[i] = num_balls_left
-            break
-        # Otherwise, the number of balls in the current box is the sum of the number of balls in the current box and the next box
+        # If the direction is ">", move right
+        if directions[i] == ">":
+            position.append(position[i] + jumps[i])
+        # If the direction is "<", move left
         else:
-            initial_arrangement[i] = a[i] + a[(i + 1) % n]
-            num_balls_left -= a[i]
+            position.append(position[i] - jumps[i])
+    # Check if the grasshopper has visited the same position before
+    if len(set(position)) != len(position):
+        return "INFINITE"
+    else:
+        return "FINITE"
 
-    return initial_arrangement
+def f2(...):
+    # Implement function f2 here
+    pass
+
+if __name__ == '__main__':
+    n = int(input())
+    directions = input()
+    jumps = [int(x) for x in input().split()]
+    print(f1(n, directions, jumps))
 

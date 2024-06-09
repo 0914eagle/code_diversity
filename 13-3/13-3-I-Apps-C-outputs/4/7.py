@@ -1,33 +1,42 @@
 
-import sys
+def get_minimum_lounges(n_airports, n_routes, routes):
+    # Initialize a graph with the given number of airports
+    graph = [[] for _ in range(n_airports)]
 
-def solve(N, X, A):
-    # Initialize the count of integers not exceeding X
-    count = 0
-    
-    # Initialize the set of integers not exceeding X
-    integers = set()
-    
-    # Add the initial integers to the set
-    for i in range(N):
-        integers.add(A[i])
-    
-    # Iterate through the integers in the set
-    for i in integers:
-        # If the integer is less than or equal to X, increment the count
-        if i <= X:
-            count += 1
-        
-        # If the integer is not already in the set, add its double and XOR to the set
-        if i not in integers:
-            integers.add(i * 2)
-            integers.add(i ^ i)
-    
-    # Return the count modulo 998244353
-    return count % 998244353
+    # Add edges to the graph based on the given routes
+    for route in routes:
+        graph[route[0] - 1].append(route[1] - 1)
+        graph[route[1] - 1].append(route[0] - 1)
+
+    # Initialize a set to store the airports that have a lounge
+    lounges = set()
+
+    # Iterate through the graph and find the airports that have a lounge
+    for airport in range(n_airports):
+        if any(route[2] > 0 for route in routes if route[0] - 1 == airport or route[1] - 1 == airport):
+            lounges.add(airport)
+
+    # Initialize a set to store the airports that are connected to a lounge
+    connected_airports = set()
+
+    # Iterate through the graph and find the airports that are connected to a lounge
+    for airport in range(n_airports):
+        if any(route[2] > 0 for route in routes if route[0] - 1 == airport or route[1] - 1 == airport):
+            connected_airports.add(airport)
+            for neighbor in graph[airport]:
+                if neighbor not in connected_airports:
+                    connected_airports.add(neighbor)
+
+    # Return the number of lounges needed to connect all the airports
+    return len(connected_airports)
+
+def main():
+    n_airports, n_routes = map(int, input().split())
+    routes = []
+    for _ in range(n_routes):
+        routes.append(list(map(int, input().split())))
+    print(get_minimum_lounges(n_airports, n_routes, routes))
 
 if __name__ == '__main__':
-    N, X = map(int, input().split())
-    A = list(map(int, input().split()))
-    print(solve(N, X, A))
+    main()
 

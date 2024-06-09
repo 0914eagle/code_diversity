@@ -1,68 +1,24 @@
 
-def get_valid_colorings(n, a):
-    # Initialize a 2D array to store the colorings
-    colorings = [[0] * n for _ in range(n)]
+import sys
 
-    # Loop through each row
+def f1(n, m, p):
+    # Calculate the number of ways to place the minimum number of obstacles
+    # in the n x m grid to prevent Alice from placing her 2 x 2 block
+    count = 0
     for i in range(n):
-        # Loop through each column
-        for j in range(n):
-            # If the current cell is not colored, skip it
-            if colorings[i][j] == 0:
-                continue
+        for j in range(m):
+            if i + 1 < n and j + 1 < m:
+                count += 1
+    return count % p
 
-            # Get the color of the current cell
-            color = colorings[i][j]
+def f2(n, m, p):
+    # Calculate the number of ways to place the minimum number of obstacles
+    # in the n x m grid to prevent Alice from placing her 2 x 2 block
+    # and output the result modulo p
+    count = f1(n, m, p)
+    return count % p
 
-            # Loop through the neighbors of the current cell
-            for neighbor in get_neighbors(i, j, n):
-                # If the neighbor is not colored, skip it
-                if colorings[neighbor[0]][neighbor[1]] == 0:
-                    continue
-
-                # If the neighbor has a different color, return 0
-                if colorings[neighbor[0]][neighbor[1]] != color:
-                    return 0
-
-    # If all the conditions are met, return 1
-    return 1
-
-# Function to get the neighbors of a cell
-def get_neighbors(i, j, n):
-    neighbors = []
-
-    # Top row
-    if i > 0:
-        neighbors.append((i-1, j))
-
-    # Bottom row
-    if i < n-1:
-        neighbors.append((i+1, j))
-
-    # Left column
-    if j > 0:
-        neighbors.append((i, j-1))
-
-    # Right column
-    if j < n-1:
-        neighbors.append((i, j+1))
-
-    return neighbors
-
-# Main function
-def main():
-    # Read the input
-    n = int(input())
-    a = []
-    for _ in range(n):
-        a.append(list(map(int, input().split())))
-
-    # Get the valid colorings
-    valid_colorings = get_valid_colorings(n, a)
-
-    # Print the number of valid colorings
-    print(valid_colorings)
-
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    n, m, p = map(int, input().split())
+    print(f2(n, m, p))
 

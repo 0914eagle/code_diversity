@@ -1,35 +1,43 @@
 
-def crafting_system(materials, recipes):
-    # Initialize a dictionary to store the required materials
-    required_materials = {}
+def f1(cnt_1, cnt_2, x, y):
+    # Initialize a set to store the numbers that are not liked by either friend
+    not_liked = set()
 
-    # Loop through each recipe
-    for recipe in recipes:
-        # Extract the input and output materials and the quantity of output materials
-        input_material, output_material, quantity = recipe
+    # Iterate through the range of numbers from 1 to x
+    for i in range(1, x):
+        # If the number is not divisible by x, add it to the set of not liked numbers
+        if i % x != 0:
+            not_liked.add(i)
 
-        # Check if the output material is already in the required materials dictionary
-        if output_material not in required_materials:
-            # If not, add it to the dictionary with the required quantity
-            required_materials[output_material] = quantity
-        else:
-            # If it is already in the dictionary, update the quantity
-            required_materials[output_material] += quantity
+    # Iterate through the range of numbers from x to y
+    for i in range(x, y):
+        # If the number is not divisible by y, add it to the set of not liked numbers
+        if i % y != 0:
+            not_liked.add(i)
 
-        # Check if the input material is already in the required materials dictionary
-        if input_material not in required_materials:
-            # If not, add it to the dictionary with the required quantity
-            required_materials[input_material] = -quantity
-        else:
-            # If it is already in the dictionary, update the quantity
-            required_materials[input_material] -= quantity
+    # Initialize a set to store the numbers that are liked by both friends
+    liked = set()
 
-    # Loop through each material and its required quantity
-    for material, quantity in required_materials.items():
-        # If the quantity is positive, add it to the total required quantity
-        if quantity > 0:
-            materials[material] += quantity
+    # Iterate through the range of numbers from 1 to x
+    for i in range(1, x):
+        # If the number is divisible by x, add it to the set of liked numbers
+        if i % x == 0:
+            liked.add(i)
 
-    # Return the total required materials
-    return materials
+    # Iterate through the range of numbers from x to y
+    for i in range(x, y):
+        # If the number is divisible by y, add it to the set of liked numbers
+        if i % y == 0:
+            liked.add(i)
+
+    # Return the minimum number of presents that can be formed using the numbers in the set not_liked and the numbers in the set liked
+    return min(len(not_liked) + len(liked), cnt_1 + cnt_2)
+
+def f2(...):
+    # Implement function f2 here
+    pass
+
+if __name__ == '__main__':
+    cnt_1, cnt_2, x, y = map(int, input().split())
+    print(f1(cnt_1, cnt_2, x, y))
 

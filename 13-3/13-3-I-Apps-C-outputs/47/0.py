@@ -1,28 +1,31 @@
 
-def solve(n, levels):
-    # Initialize the minimum time to beat all levels as infinity
-    min_time = float('inf')
-    # Loop through each level
-    for level in levels:
-        # Get the shortcut item and completion time for the current level
-        shortcut_item, shortcut_time = level[0], level[1]
-        # Get the completion times for each item for the current level
-        item_times = level[2:]
-        # Initialize the minimum time to beat the current level as infinity
-        min_time_level = float('inf')
-        # Loop through each item for the current level
-        for item in range(n+1):
-            # If the item is the shortcut item, set the completion time to the shortcut time
-            if item == shortcut_item:
-                time = shortcut_time
-            # Otherwise, set the completion time to the completion time for the item
-            else:
-                time = item_times[item]
-            # If the completion time for the current item is less than the minimum time to beat the current level, update the minimum time
-            if time < min_time_level:
-                min_time_level = time
-        # Add the minimum time to beat the current level to the total minimum time
-        min_time += min_time_level
-    # Return the total minimum time to beat all levels
-    return min_time
+def f1(T, N, breaks):
+    # Sort the breaks in non-decreasing order
+    breaks.sort()
+
+    # Initialize the number of minutes spent on stage for each musician
+    minutes_on_stage = [0] * N
+
+    # Iterate through the breaks and assign minutes to each musician
+    for i in range(N):
+        # Calculate the number of minutes spent on stage for the current musician
+        minutes_on_stage[i] = breaks[i] - breaks[i - 1] if i > 0 else breaks[i]
+
+    return minutes_on_stage
+
+def f2(T, N, breaks):
+    # Initialize the number of minutes spent on stage for each musician
+    minutes_on_stage = [0] * N
+
+    # Iterate through the breaks and assign minutes to each musician
+    for i in range(N):
+        # Calculate the number of minutes spent on stage for the current musician
+        minutes_on_stage[i] = T - breaks[i] if i == N - 1 else breaks[i + 1] - breaks[i]
+
+    return minutes_on_stage
+
+if __name__ == '__main__':
+    T, N = map(int, input().split())
+    breaks = list(map(int, input().split()))
+    print(*f1(T, N, breaks), sep='\n')
 

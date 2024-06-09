@@ -1,32 +1,21 @@
 
-def solve(walk):
-    # Initialize a dictionary to store the values of the walks
-    values = {}
-    
-    # Initialize the root node with value 1
-    values[""] = 1
-    
-    # Iterate through the walk string
-    for move in walk:
-        # If the move is 'L', add the left child to the dictionary
-        if move == 'L':
-            for key in values.keys():
-                values[key + "L"] = values[key] * 2
-        # If the move is 'R', add the right child to the dictionary
-        elif move == 'R':
-            for key in values.keys():
-                values[key + "R"] = values[key] * 2 + 1
-        # If the move is 'P', stay in the same node
-        elif move == 'P':
-            for key in values.keys():
-                values[key + "P"] = values[key]
-        # If the move is '*', add all possible moves to the dictionary
-        elif move == '*':
-            for key in values.keys():
-                values[key + "L"] = values[key] * 2
-                values[key + "R"] = values[key] * 2 + 1
-                values[key + "P"] = values[key]
-    
-    # Return the sum of all values in the dictionary
-    return sum(values.values())
+def count_rectangles(a, s):
+    n = len(s)
+    b = [[0] * (n + 1) for _ in range(n + 1)]
+    for i in range(n):
+        for j in range(i, n):
+            b[i][j + 1] = b[i][j] + int(s[j])
+    rectangles = 0
+    for i in range(n):
+        for j in range(i, n):
+            for k in range(j, n):
+                for l in range(k, n):
+                    if b[i][k + 1] - b[i][j] == b[l + 1][k + 1] - b[l + 1][j]:
+                        rectangles += 1
+    return rectangles
+
+if __name__ == '__main__':
+    a = int(input())
+    s = input()
+    print(count_rectangles(a, s))
 

@@ -1,35 +1,31 @@
 
-def solve(n, m, a):
-    # Initialize a dictionary to store the number of ways to get each card
-    dp = {(1, 1): 1}
+def f1(w, l, a):
+    # Initialize variables
+    max_frogs = 0
+    current_frogs = 0
+    last_stone = 0
 
-    # Iterate over the given cards
-    for i in range(n):
-        # Get the current card
-        card = (1, a[i])
+    # Iterate through the stones
+    for i in range(len(a)):
+        # Calculate the number of frogs that can cross the current stone
+        current_frogs += a[i]
 
-        # Iterate over the previous cards
-        for j in range(i):
-            # Get the previous card
-            prev_card = (1, a[j])
+        # If the current stone is within the frog's jump length, add it to the count
+        if i - last_stone <= l:
+            max_frogs += current_frogs
 
-            # If the previous card is not already in the dictionary, skip it
-            if prev_card not in dp:
-                continue
+        # Update the last stone position
+        last_stone = i
 
-            # If the previous card is (1, 1), there is only one way to get it
-            if prev_card == (1, 1):
-                dp[card] = 1
-                continue
+    return max_frogs
 
-            # If the previous card is (x, y) and x is even, there are two ways to get the current card
-            if prev_card[0] % 2 == 0:
-                dp[card] = dp.get(card, 0) + 2
-                continue
+def f2(...):
+    # Implement function f2 here
+    pass
 
-            # If the previous card is (x, y) and x is odd, there is one way to get the current card
-            dp[card] = dp.get(card, 0) + 1
-
-    # Return the number of ways to get all the required cards
-    return sum(dp.values())
+if __name__ == '__main__':
+    w = int(input())
+    l = int(input())
+    a = list(map(int, input().split()))
+    print(f1(w, l, a))
 

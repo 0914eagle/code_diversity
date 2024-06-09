@@ -1,20 +1,31 @@
 
-def is_sortable(s, k):
-    # Initialize a list to store the sorted string
-    sorted_string = list(s)
-    # Loop through each letter in the string
-    for i in range(len(s)):
-        # Find the index of the letter that is closest to the current letter but greater than it
-        closest_greater_index = -1
-        for j in range(i+1, len(s)):
-            if abs(i-j) >= k and sorted_string[j] > sorted_string[i]:
-                closest_greater_index = j
-                break
-        # If there is no letter greater than the current letter, return "No"
-        if closest_greater_index == -1:
-            return "No"
-        # Swap the current letter with the closest greater letter
-        sorted_string[i], sorted_string[closest_greater_index] = sorted_string[closest_greater_index], sorted_string[i]
-    # If all letters are sorted, return "Yes"
-    return "Yes"
+def get_max_damage(n, a, b, health, damage):
+    # Initialize the maximum total damage as 0
+    max_damage = 0
+    
+    # Loop through each creature
+    for i in range(n):
+        # Use the first spell on the creature
+        health[i] *= 2
+        damage[i] += health[i]
+        max_damage += damage[i]
+        
+        # Use the second spell on the creature
+        if a > 0:
+            a -= 1
+            health[i] += damage[i]
+            damage[i] = 0
+            max_damage += health[i]
+    
+    # Return the maximum total damage
+    return max_damage
+
+def main():
+    n, a, b = map(int, input().split())
+    health = list(map(int, input().split()))
+    damage = list(map(int, input().split()))
+    print(get_max_damage(n, a, b, health, damage))
+
+if __name__ == '__main__':
+    main()
 

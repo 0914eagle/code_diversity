@@ -1,20 +1,38 @@
 
-n, m = map(int, input().split())
-
-# Initialize the number of moves to 0
-moves = 0
-
-# Loop through the possible number of moves
-for i in range(1, n + 1):
-    # Check if the current number of moves is a multiple of m
-    if i % m == 0:
-        # If it is, break the loop and print the number of moves
-        moves = i
-        break
-
-# If no multiple of m was found, print -1
-if moves == 0:
-    print(-1)
-else:
-    print(moves)
+def f1(s):
+    # Initialize variables
+    left, right, up, down = 0, 0, 0, 0
+    for c in s:
+        if c == 'L':
+            left += 1
+        elif c == 'R':
+            right += 1
+        elif c == 'U':
+            up += 1
+        else:
+            down += 1
+    
+    # Check if the string can be edited to end at the origin
+    if left != right or up != down:
+        return -1
+    
+    # Count the minimum number of edits required
+    edits = 0
+    for i in range(len(s)):
+        if s[i] == 'L':
+            if s[i-1] == 'R':
+                s = s[:i-1] + 'U' + s[i:]
+                edits += 1
+            else:
+                s = s[:i] + 'D' + s[i:]
+                edits += 1
+        elif s[i] == 'R':
+            if s[i-1] == 'L':
+                s = s[:i-1] + 'D' + s[i:]
+                edits += 1
+            else:
+                s = s[:i] + 'U' + s[i:]
+                edits += 1
+    
+    return edits
 

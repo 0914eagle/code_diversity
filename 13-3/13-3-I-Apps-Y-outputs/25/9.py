@@ -1,23 +1,13 @@
 
-def simplicity(string):
-    return len(set(string))
-
-def min_erase(string):
-    simplicity_before = simplicity(string)
-    if simplicity_before <= 2:
-        return 0
-    else:
-        for i in range(len(string)):
-            string_erased = string[:i] + string[i+1:]
-            simplicity_after = simplicity(string_erased)
-            if simplicity_after <= 2:
-                return len(string) - len(string_erased)
-        return len(string)
-
-print(min_erase("string"))
-print(min_erase("letter"))
-print(min_erase("aaaaaa"))
-print(min_erase("uncopyrightable"))
-print(min_erase("ambidextrously"))
-print(min_erase("assesses"))
+def f1(N, K):
+    # Initialize the probability of winning as 0
+    probability = 0
+    
+    # Iterate over all possible values that the die can show
+    for i in range(1, N+1):
+        # Calculate the probability of getting a score of K or above with the current die value
+        probability += (1/N) * (1/2)**(K-1)
+    
+    # Return the probability of winning
+    return probability
 

@@ -1,17 +1,19 @@
 
-import collections
+def get_good_pairs(teacher_interest, student_interest):
+    n = len(teacher_interest)
+    count = 0
+    for i in range(n):
+        for j in range(i+1, n):
+            if teacher_interest[i] + teacher_interest[j] > student_interest[i] + student_interest[j]:
+                count += 1
+    return count
 
-def get_missing_cards(deck):
-    suits = ["P", "K", "H", "T"]
-    numbers = [str(i).zfill(2) for i in range(1, 14)]
-    card_count = collections.Counter(deck)
-    missing_cards = []
-    for suit in suits:
-        for number in numbers:
-            card = suit + number
-            if card_count[card] == 0:
-                missing_cards.append(card)
-    if len(missing_cards) == 0:
-        return "GRESKA"
-    return " ".join(missing_cards)
+def main():
+    n = int(input())
+    teacher_interest = list(map(int, input().split()))
+    student_interest = list(map(int, input().split()))
+    print(get_good_pairs(teacher_interest, student_interest))
+
+if __name__ == '__main__':
+    main()
 

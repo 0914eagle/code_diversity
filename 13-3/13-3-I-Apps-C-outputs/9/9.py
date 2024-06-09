@@ -1,22 +1,36 @@
 
-import itertools
+def get_min_messages(spies, enemies, connections):
+    # Initialize a graph with the given connections
+    graph = {i: set() for i in range(spies)}
+    for connection in connections:
+        graph[connection[0]].add(connection[1])
+        graph[connection[1]].add(connection[0])
+    
+    # Initialize a set to keep track of the spies that have received the message
+    received = set()
+    
+    # Function to send the message to all spies in the graph
+    def send_message(spy):
+        nonlocal received
+        received.add(spy)
+        for neighbor in graph[spy]:
+            if neighbor not in received:
+                send_message(neighbor)
+    
+    # Send the message to all spies that are not enemies
+    for spy in range(spies):
+        if spy not in enemies:
+            send_message(spy)
+    
+    # Return the number of spies that received the message
+    return len(received)
 
-def count_sequences(N, C):
-    # Initialize a list to store the sequences
-    sequences = []
-    
-    # Iterate over all possible sequences of length N
-    for seq in itertools.permutations(range(1, N+1)):
-        # Calculate the confusion of the current sequence
-        confusion = 0
-        for i in range(N-1):
-            if seq[i] > seq[i+1]:
-                confusion += 1
-        
-        # If the confusion is equal to C, add the sequence to the list
-        if confusion == C:
-            sequences.append(seq)
-    
-    # Return the number of sequences modulo 1000000007
-    return len(sequences) % 1000000007
+def main():
+    spies, enemies, connections = map(int, input().split())
+    connections = [tuple(map(int, input().split())) for _ in range(connections)]
+    enemies = set(map(int, input().split()))
+    print(get_min_messages(spies, enemies, connections))
+
+if __name__ == '__main__':
+    main()
 

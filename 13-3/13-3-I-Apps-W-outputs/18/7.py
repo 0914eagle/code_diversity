@@ -1,12 +1,24 @@
 
-import sys
+def f1(n):
+    if n == 1:
+        return -1
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            return 2
+    return 1
 
-def g_n(A, B, n, x):
-    if n == 0:
-        return x
-    else:
-        return (A * g_n(A, B, n-1, x) + B) % 1000000007
+def f2(n):
+    if n == 1:
+        return -1
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            return 1
+    return -1
 
-A, B, n, x = map(int, input().split())
-print(g_n(A, B, n, x))
+if __name__ == '__main__':
+    q = int(input())
+    for _ in range(q):
+        n = int(input())
+        print(f1(n))
+        print(f2(n))
 

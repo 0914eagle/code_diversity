@@ -1,37 +1,29 @@
 
-import sys
+def solve(n, k):
+    if n % 2 == 0:
+        return solve_even(n, k)
+    else:
+        return solve_odd(n, k)
 
-def get_number_of_black_squares(grid):
-    number_of_black_squares = 0
-    for row in grid:
-        for square in row:
-            if square == '#':
-                number_of_black_squares += 1
-    return number_of_black_squares
+def solve_even(n, k):
+    a = []
+    while n > 0:
+        a.append(n % 2)
+        n //= 2
+    a.sort(reverse=True)
+    return a[:k]
 
-def get_choices(grid, k):
-    number_of_rows = len(grid)
-    number_of_columns = len(grid[0])
-    choices = 0
-    for row in range(number_of_rows):
-        for column in range(number_of_columns):
-            current_number_of_black_squares = get_number_of_black_squares(grid)
-            if current_number_of_black_squares == k:
-                choices += 1
-            grid[row][column] = 'R'
-            current_number_of_black_squares = get_number_of_black_squares(grid)
-            if current_number_of_black_squares == k:
-                choices += 1
-            grid[row][column] = '.'
-    return choices
-
-def main():
-    h, w, k = map(int, input().split())
-    grid = []
-    for _ in range(h):
-        grid.append(list(input()))
-    print(get_choices(grid, k))
+def solve_odd(n, k):
+    a = []
+    while n > 0:
+        a.append(n % 2 + 1)
+        n //= 2
+    a.sort(reverse=True)
+    return a[:k]
 
 if __name__ == '__main__':
-    main()
+    t = int(input())
+    for _ in range(t):
+        n, k = map(int, input().split())
+        print("YES" if solve(n, k) else "NO")
 

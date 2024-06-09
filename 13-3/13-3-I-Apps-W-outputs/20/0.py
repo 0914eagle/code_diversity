@@ -1,29 +1,8 @@
 
-def get_mex(subset):
-    mex = 0
-    for i in range(1, len(subset) + 1):
-        if i not in subset:
-            mex = i
-            break
-    return mex
-
-
-def get_max_mex(numbers):
-    subsets = []
-    for i in range(len(numbers)):
-        subset = numbers[:i] + numbers[i+1:]
-        subsets.append(subset)
-    return max(get_mex(subset) for subset in subsets)
-
-
-def solve(numbers):
-    return get_max_mex(numbers)
-
-
-if __name__ == "__main__":
-    num_test_cases = int(input())
-    for i in range(num_test_cases):
-        n = int(input())
-        numbers = list(map(int, input().split()))
-        print(solve(numbers))
+def find_beautiful_number(p, x):
+    for i in range(10**p):
+        num = str(i)
+        if len(num) == p and num[0] != '0' and int(num) * x == int(num[1:] + num[0]):
+            return num
+    return "Impossible"
 

@@ -1,33 +1,46 @@
 
-def solve(n, m, a):
-    # Initialize a dictionary to store the number of ways to get each card
-    dp = {(1, 1): 1}
+def f1(w, l, a):
+    # Initialize variables
+    max_frogs = 0
+    curr_frogs = 0
+    prev_frogs = 0
+    stones = []
 
-    # Iterate over the given cards
-    for i in range(n):
-        # Get the current card
-        card = (1, a[i])
+    # Iterate through the array of stones
+    for i in range(len(a)):
+        # If there are no stones at the current distance, skip to the next iteration
+        if a[i] == 0:
+            continue
 
-        # Iterate over the possible previous cards
-        for prev_card in dp:
-            # Get the number of ways to get the current card from the previous card
-            num_ways = dp[prev_card]
+        # If the current distance is less than or equal to the maximum jump length, add the current distance to the list of stones
+        if i <= l:
+            stones.append(i)
 
-            # If the previous card is gray, we can get a new card by painting a new (a + 1, b + 1) card
-            if prev_card[0] == 1:
-                new_card = (prev_card[1] + 1, prev_card[1] + 1)
-                dp[new_card] = dp.get(new_card, 0) + num_ways
+        # If the current distance is greater than the maximum jump length, remove the first stone from the list
+        if i > l:
+            stones.pop(0)
 
-            # If the previous card is white, we can get a new card by painting a new (a / 2, b / 2) card
-            if prev_card[0] == 2:
-                new_card = (prev_card[1] // 2, prev_card[1] // 2)
-                dp[new_card] = dp.get(new_card, 0) + num_ways
+        # Calculate the maximum number of frogs that can cross the river using the current list of stones
+        max_frogs = max(max_frogs, len(stones))
 
-            # If the previous card is gray-and-white, we can get a new card by painting a new (a, c) card
-            if prev_card[0] == 3:
-                new_card = (prev_card[1], prev_card[2])
-                dp[new_card] = dp.get(new_card, 0) + num_ways
+        # If the current number of frogs is greater than the previous number of frogs, update the previous number of frogs
+        if len(stones) > prev_frogs:
+            prev_frogs = len(stones)
 
-    # Return the number of ways to get the required cards
-    return sum(dp.values())
+        # If the current number of frogs is equal to the previous number of frogs, update the current number of frogs
+        if len(stones) == prev_frogs:
+            curr_frogs += 1
+
+    # Return the maximum number of frogs that can cross the river
+    return max_frogs
+
+def f2(...):
+    # Implement function f2 here
+    pass
+
+if __name__ == '__main__':
+    w = int(input())
+    l = int(input())
+    a = list(map(int, input().split()))
+    print(f1(w, l, a))
 

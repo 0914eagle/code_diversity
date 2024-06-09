@@ -1,26 +1,41 @@
 
-import math
+def count_ways(X, N, cars):
+    # Initialize a counter for the number of ways
+    ways = 0
+    
+    # Loop over each car
+    for car in cars:
+        # Get the number of free places in the current car
+        free_places = car.count("0")
+        
+        # Check if the current car has enough free places
+        if free_places >= X:
+            # Get the number of ways to sell X tickets in the current car
+            ways += combinations(free_places, X)
+    
+    # Return the number of ways
+    return ways
 
-def get_tape_length(n, papers):
-    # Calculate the total area of all papers
-    total_area = 0
-    for i in range(n-1, 0, -1):
-        total_area += papers[i-1] * (2**((i-1)/4)) * (2**((i-1)/4))
+def combinations(n, r):
+    # Calculate the binomial coefficient
+    coeff = 1
+    for i in range(n-r+1, n+1):
+        coeff *= i
+    
+    # Calculate the number of combinations
+    return coeff // factorial(r)
 
-    # Calculate the length of tape needed to join two papers together
-    tape_length = 2 * (2**((n-1)/4))
+def factorial(n):
+    # Calculate the factorial of n
+    result = 1
+    for i in range(1, n+1):
+        result *= i
+    
+    # Return the result
+    return result
 
-    # Calculate the total length of tape needed
-    total_tape_length = tape_length * math.ceil(total_area / (2**((n-1)/4)))
-
-    return total_tape_length
-
-n = int(input())
-papers = list(map(int, input().split()))
-
-if n < 2 or n > 30:
-    print("impossible")
-else:
-    total_tape_length = get_tape_length(n, papers)
-    print(f"{total_tape_length:.5f}")
+if __name__ == '__main__':
+    X, N = map(int, input().split())
+    cars = [input() for _ in range(N)]
+    print(count_ways(X, N, cars))
 

@@ -1,21 +1,39 @@
 
-def get_reconstructions(pre_output, in_output, post_output):
-    # Initialize a list to store the reconstructions
-    reconstructions = []
+import sys
+
+def count_ways(N, M, conditions):
+    # Initialize the number of ways to paint the squares
+    ways = 1
     
-    # Iterate over all possible combinations of Pre, In, and Post calls
-    for pre_calls in range(2):
-        for in_calls in range(2):
-            for post_calls in range(2):
-                # Check if the number of calls to each routine is correct
-                if pre_calls + in_calls + post_calls == 6:
-                    # Check if the calls to each routine are in the correct order
-                    if (pre_calls == 0 or pre_calls == 2) and (in_calls == 1 or in_calls == 3) and (post_calls == 4 or post_calls == 5):
-                        # Check if the outputs match the given outputs
-                        if (pre_output == "".join(reversed(pre_output)) and in_output == "".join(reversed(in_output)) and post_output == "".join(reversed(post_output))):
-                            # Add the reconstruction to the list
-                            reconstructions.append([pre_calls, in_calls, post_calls])
+    # Loop through each condition
+    for i in range(M):
+        # Get the left and right indices, and the number of different colors required
+        l, r, x = conditions[i]
+        
+        # Calculate the number of ways to paint the squares with the current condition
+        num_ways = 0
+        for j in range(l-1, r):
+            # If the current square is not painted, add the number of ways to paint it with the current condition
+            if j not in painted:
+                num_ways += x
+        
+        # Multiply the number of ways to paint the current condition by the total number of ways to paint the previous conditions
+        ways *= num_ways
     
-    # Return the list of reconstructions
-    return reconstructions
+    # Return the total number of ways to paint the squares
+    return ways % 1000000007
+
+def main():
+    # Read the input data
+    N, M = map(int, input().split())
+    conditions = []
+    for i in range(M):
+        l, r, x = map(int, input().split())
+        conditions.append((l, r, x))
+    
+    # Call the count_ways function and print the result
+    print(count_ways(N, M, conditions))
+
+if __name__ == '__main__':
+    main()
 

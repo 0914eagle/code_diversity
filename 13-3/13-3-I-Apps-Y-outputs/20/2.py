@@ -1,24 +1,20 @@
 
-import sys
+def can_sort_array(arr, positions):
+    n = len(arr)
+    for i in range(n-1):
+        for j in range(i+1, n):
+            if arr[i] > arr[j] and j not in positions:
+                return "NO"
+    return "YES"
 
-def solve():
-    N, M = map(int, input().split())
-    cities = []
-    for _ in range(M):
-        P, Y = map(int, input().split())
-        cities.append((P, Y))
+def main():
+    t = int(input())
+    for _ in range(t):
+        n, m = map(int, input().split())
+        arr = list(map(int, input().split()))
+        positions = set(map(int, input().split()))
+        print(can_sort_array(arr, positions))
 
-    cities.sort(key=lambda x: (x[0], x[1]))
-
-    id_numbers = []
-    for i in range(M):
-        P, Y = cities[i]
-        x = i + 1
-        id_number = str(P).zfill(6) + str(x).zfill(6)
-        id_numbers.append(id_number)
-
-    return "\n".join(id_numbers)
-
-if __name__ == "__main__":
-    print(solve())
+if __name__ == '__main__':
+    main()
 

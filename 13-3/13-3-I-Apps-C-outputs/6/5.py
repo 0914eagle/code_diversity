@@ -1,35 +1,29 @@
 
-def num_routes(N, M, roads):
-    # Initialize a graph with the given number of nodes
-    graph = [[] for _ in range(N + 1)]
+def find_disintegration_points(droplets, sensors):
+    disintegration_points = []
+    for droplet in droplets:
+        for sensor in sensors:
+            if droplet[0] >= sensor[0] and droplet[0] <= sensor[1] and droplet[1] == sensor[2]:
+                disintegration_points.append(sensor[2])
+                break
+        else:
+            disintegration_points.append(0)
+    return disintegration_points
 
-    # Add edges to the graph
-    for road in roads:
-        graph[road[0]].append(road[1])
-        graph[road[1]].append(road[0])
+def main():
+    num_droplets, num_sensors = map(int, input().split())
+    droplets = []
+    for _ in range(num_droplets):
+        x, y = map(int, input().split())
+        droplets.append((x, y))
+    sensors = []
+    for _ in range(num_sensors):
+        x1, x2, y = map(int, input().split())
+        sensors.append((x1, x2, y))
+    disintegration_points = find_disintegration_points(droplets, sensors)
+    for point in disintegration_points:
+        print(point)
 
-    # Find all possible routes using a depth-first search
-    routes = []
-    for i in range(1, N + 1):
-        for route in dfs(graph, i, []):
-            routes.append(route)
-
-    # Return the number of distinct routes
-    return len(set(routes))
-
-def dfs(graph, node, route):
-    # Add the current node to the route
-    route.append(node)
-
-    # If we have reached the end of the route, yield the route
-    if node == N:
-        yield route
-
-    # Recursively search for routes from the current node
-    for neighbor in graph[node]:
-        if neighbor not in route:
-            yield from dfs(graph, neighbor, route)
-
-    # Backtrack and remove the current node from the route
-    route.pop()
+if __name__ == '__main__':
+    main()
 

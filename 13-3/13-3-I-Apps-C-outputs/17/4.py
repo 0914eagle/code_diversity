@@ -1,35 +1,30 @@
 
-def valid_colorings(n, a):
-    # Initialize the number of valid colorings to 0
-    num_valid_colorings = 0
-    
-    # Loop through all possible colorings
-    for coloring in itertools.product(range(7), repeat=n):
-        # Check if the coloring is valid
-        if is_valid_coloring(n, a, coloring):
-            # Increment the number of valid colorings
-            num_valid_colorings += 1
-    
-    # Return the number of valid colorings
-    return num_valid_colorings
+def f1(n, m, p):
+    # Initialize a 2D array to store the number of obstacles in each subgrid
+    obstacles = [[0] * (m // 2) for _ in range(n // 2)]
 
-def is_valid_coloring(n, a, coloring):
-    # Initialize the number of colored edges to 0
-    num_colored_edges = 0
-    
-    # Loop through all hexagons
-    for i in range(1, n+1):
-        for j in range(1, n+1):
-            # Check if the current hexagon is colored
-            if coloring[i-1] != -1:
-                # Increment the number of colored edges
-                num_colored_edges += 1
-            
-            # Check if the current hexagon is adjacent to a colored hexagon
-            if a[i-1][j-1] != -1 and coloring[i-1] == coloring[a[i-1][j-1]-1]:
-                # Return False if the current hexagon is adjacent to a colored hexagon with the same color
-                return False
-    
-    # Return True if the number of colored edges is equal to the number of edges in the grid
-    return num_colored_edges == n * (n-1)
+    # Initialize a set to store the positions of the obstacles
+    positions = set()
+
+    # Loop through each subgrid and count the number of obstacles in it
+    for i in range(n // 2):
+        for j in range(m // 2):
+            # If the subgrid has no obstacles, add it to the set of positions
+            if obstacles[i][j] == 0:
+                positions.add((i, j))
+
+    # Initialize a variable to store the number of ways to place obstacles
+    ways = 0
+
+    # Loop through each position and count the number of ways to place obstacles in it
+    for i, j in positions:
+        # If the position is on the edge of the grid, only one way to place obstacles
+        if i == 0 or j == 0 or i == n // 2 - 1 or j == m // 2 - 1:
+            ways += 1
+        # If the position is not on the edge of the grid, count the number of ways to place obstacles
+        else:
+            ways += 4
+
+    # Return the number of ways to place obstacles modulo p
+    return ways % p
 

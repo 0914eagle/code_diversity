@@ -1,39 +1,32 @@
 
-def min_chars_needed(route):
-    # Initialize a dictionary to store the macro and its expansion
-    macros = {}
+def get_min_watering_operations(heights):
+    # Initialize variables
+    n = len(heights)
+    min_operations = 0
+    max_height = max(heights)
 
-    # Iterate through the route and check if there are any repetitions
-    for i in range(len(route) - 1):
-        # If the current character is 'M', it means we have found a macro
-        if route[i] == 'M':
-            # Extract the macro name and expansion from the route
-            macro_name = route[i + 1]
-            macro_expansion = route[i + 2:]
+    # Loop through each height and check if it can be reached
+    for i in range(n):
+        if heights[i] < max_height:
+            # Find the left and right indices that can reach the current height
+            left_idx = i
+            right_idx = i
+            while left_idx >= 0 and heights[left_idx] >= heights[i]:
+                left_idx -= 1
+            while right_idx < n and heights[right_idx] >= heights[i]:
+                right_idx += 1
 
-            # Add the macro to the dictionary with its expansion
-            macros[macro_name] = macro_expansion
+            # Update the minimum number of operations
+            min_operations += 1
 
-            # Break out of the loop once we have found a macro
-            break
+            # Update the heights of the flowers in the range [left_idx, right_idx]
+            for j in range(left_idx + 1, right_idx):
+                heights[j] = heights[i] + 1
 
-    # If no macro was found, return the length of the route
-    if not macros:
-        return len(route)
+    return min_operations
 
-    # Initialize a variable to store the minimum number of characters needed
-    min_chars = len(route)
-
-    # Iterate through the dictionary of macros and check if they can be used
-    for macro_name, macro_expansion in macros.items():
-        # Check if the macro expansion is a prefix of the route
-        if route.startswith(macro_expansion):
-            # If it is, calculate the number of characters needed to encode the route with the macro
-            chars_needed = len(route) - len(macro_expansion) + 1
-
-            # Update the minimum number of characters needed if necessary
-            min_chars = min(min_chars, chars_needed)
-
-    # Return the minimum number of characters needed to encode the route
-    return min_chars
+if __name__ == '__main__':
+    n = int(input())
+    heights = list(map(int, input().split()))
+    print(get_min_watering_operations(heights))
 

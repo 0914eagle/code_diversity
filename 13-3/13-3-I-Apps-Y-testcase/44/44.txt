@@ -1,12 +1,10 @@
 {
-    "inputs": [
-        "1 4 1 4\n1 6 1 6\n",
-        "1 8 1 8\n1 10 2 5\n",
-        "2 5 2 7\n1 5 2 5\n"
-    ],
-    "outputs": [
-        "Emma\n",
-        "Tie\n",
-        "Gunnar\n"
-    ]
+  "inputs": [
+    "3\n7 3\n4 4\n6 2\n",
+    "66\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n1 1\n"
+  ],
+  "outputs": [
+    "abcabca\nabcd\nababab\n",
+    "a\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\n"
+  ]
 }

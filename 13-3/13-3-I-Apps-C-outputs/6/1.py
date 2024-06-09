@@ -1,34 +1,69 @@
 
-import sys
-
-def get_distinct_routes(n, m, roads):
-    # Initialize a graph with the given number of nodes and edges
-    graph = [[] for _ in range(n + 1)]
-    for a, b in roads:
-        graph[a].append(b)
-        graph[b].append(a)
+def f1(D, S):
+    # Initialize an empty list to store the y-coordinates of the disintegrating droplets
+    disintegrating_droplets = []
     
-    # Use a depth-first search to find all distinct routes
-    visited = [False] * (n + 1)
-    routes = 0
-    for i in range(1, n + 1):
-        if not visited[i]:
-            routes += 1
-            dfs(i, visited, graph)
+    # Iterate through each droplet
+    for i in range(D):
+        # Initialize a variable to store the y-coordinate of the current droplet
+        current_droplet_y = None
+        
+        # Iterate through each sensor
+        for j in range(S):
+            # Check if the current droplet is within the range of the current sensor
+            if x1 <= x <= x2 and y1 <= y <= y2:
+                # If the current droplet is within the range of the current sensor, set the y-coordinate of the current droplet to the y-coordinate of the sensor
+                current_droplet_y = y
+                break
+        
+        # If the current droplet did not disintegrate, set its y-coordinate to 0
+        if current_droplet_y is None:
+            current_droplet_y = 0
+        
+        # Add the y-coordinate of the current droplet to the list of disintegrating droplets
+        disintegrating_droplets.append(current_droplet_y)
     
-    return routes
+    # Return the list of disintegrating droplets
+    return disintegrating_droplets
 
-def dfs(node, visited, graph):
-    visited[node] = True
-    for neighbor in graph[node]:
-        if not visited[neighbor]:
-            dfs(neighbor, visited, graph)
+def f2(D, S):
+    # Initialize an empty list to store the y-coordinates of the disintegrating droplets
+    disintegrating_droplets = []
+    
+    # Iterate through each droplet
+    for i in range(D):
+        # Initialize a variable to store the y-coordinate of the current droplet
+        current_droplet_y = None
+        
+        # Iterate through each sensor
+        for j in range(S):
+            # Check if the current droplet is within the range of the current sensor
+            if x1 <= x <= x2 and y1 <= y <= y2:
+                # If the current droplet is within the range of the current sensor, set the y-coordinate of the current droplet to the y-coordinate of the sensor
+                current_droplet_y = y
+                break
+        
+        # If the current droplet did not disintegrate, set its y-coordinate to 0
+        if current_droplet_y is None:
+            current_droplet_y = 0
+        
+        # Add the y-coordinate of the current droplet to the list of disintegrating droplets
+        disintegrating_droplets.append(current_droplet_y)
+    
+    # Return the list of disintegrating droplets
+    return disintegrating_droplets
 
-n, m = map(int, input().split())
-roads = []
-for _ in range(m):
-    a, b = map(int, input().split())
-    roads.append((a, b))
-
-print(get_distinct_routes(n, m, roads))
+if __name__ == '__main__':
+    D, S = map(int, input().split())
+    droplets = []
+    for i in range(D):
+        x, y = map(int, input().split())
+        droplets.append((x, y))
+    sensors = []
+    for i in range(S):
+        x1, x2, y = map(int, input().split())
+        sensors.append((x1, x2, y))
+    disintegrating_droplets = f1(D, S, droplets, sensors)
+    for y in disintegrating_droplets:
+        print(y)
 

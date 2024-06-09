@@ -1,32 +1,36 @@
 
-import sys
+def get_min_changes(s, t):
+    # Initialize variables
+    n = len(s)
+    m = len(t)
+    changes = 0
+    positions = []
 
-def get_input():
-    return list(map(int, sys.stdin.readline().strip().split()))
+    # Loop through each position in s
+    for i in range(n):
+        # If the symbol at the current position is not equal to the symbol at the corresponding position in t
+        if s[i] != t[i]:
+            # Increment the number of changes
+            changes += 1
+            # Add the current position to the list of positions
+            positions.append(i+1)
 
-def solve(H, W, M, targets):
-    # Initialize a 2D array to store the number of targets destroyed in each row and column
-    destroyed = [[0] * W for _ in range(H)]
+    # Return the minimum number of changes and the list of positions
+    return changes, positions
 
-    # Loop through the targets and update the number of targets destroyed in each row and column
-    for target in targets:
-        h, w = target
-        destroyed[h-1][w-1] += 1
-        destroyed[h-1][w-1] += 1
+def main():
+    # Read the input
+    n, m = map(int, input().split())
+    s = input()
+    t = input()
 
-    # Find the maximum number of targets destroyed by placing the bomb in a row or column with the most targets destroyed
-    max_destroyed = 0
-    for row in destroyed:
-        max_destroyed = max(max_destroyed, max(row))
+    # Call the function to get the minimum number of changes and the list of positions
+    changes, positions = get_min_changes(s, t)
 
-    return max_destroyed
+    # Print the output
+    print(changes)
+    print(*positions)
 
 if __name__ == '__main__':
-    H, W, M = get_input()
-    targets = []
-    for _ in range(M):
-        h, w = get_input()
-        targets.append((h, w))
-
-    print(solve(H, W, M, targets))
+    main()
 

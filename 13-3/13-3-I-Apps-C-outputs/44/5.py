@@ -1,25 +1,54 @@
 
-def convert_brackets(s):
-    # Initialize variables
-    start = 0
-    end = 0
-    new_string = ""
+def f1(n, s, predictions):
+    # Initialize an array to store the probability of each prediction
+    probabilities = [0] * s
 
-    # Iterate through the input string
-    for i, char in enumerate(s):
-        # If the character is an opening bracket, set the start index
-        if char == "(":
-            start = i
-        # If the character is a closing bracket, set the end index
-        elif char == ")":
-            end = i
-            # Check if the start and end indices are not the same
-            if start != end:
-                # Add the header to the new string
-                new_string += str(start) + "," + str(end) + ":"
-                # Set the start index to the end index
-                start = end
+    # Loop through each prediction and calculate its probability
+    for i in range(s):
+        prediction = predictions[i]
+        probability = 1
+        for j in range(len(prediction)):
+            if prediction[j] == "R":
+                probability *= 1/3
+            elif prediction[j] == "P":
+                probability *= 1/3
+            else:
+                probability *= 1/3
+        probabilities[i] = probability
 
-    # Return the new string
-    return new_string
+    # Sort the predictions by probability in descending order
+    sorted_predictions = sorted(range(s), key=lambda i: probabilities[i], reverse=True)
+
+    return [predictions[i] for i in sorted_predictions]
+
+def f2(n, s, predictions):
+    # Initialize an array to store the probability of each prediction
+    probabilities = [0] * s
+
+    # Loop through each prediction and calculate its probability
+    for i in range(s):
+        prediction = predictions[i]
+        probability = 1
+        for j in range(len(prediction)):
+            if prediction[j] == "R":
+                probability *= 1/3
+            elif prediction[j] == "P":
+                probability *= 1/3
+            else:
+                probability *= 1/3
+        probabilities[i] = probability
+
+    # Sort the predictions by probability in descending order
+    sorted_predictions = sorted(range(s), key=lambda i: probabilities[i], reverse=True)
+
+    return [predictions[i] for i in sorted_predictions]
+
+if __name__ == '__main__':
+    n = int(input())
+    s = int(input())
+    predictions = []
+    for i in range(s):
+        predictions.append(input())
+    print(f1(n, s, predictions))
+    print(f2(n, s, predictions))
 

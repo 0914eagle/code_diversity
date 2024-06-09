@@ -1,31 +1,30 @@
 
-def crafting_system(materials, recipes):
-    # Initialize a dictionary to store the required materials
-    required_materials = {}
+def get_min_number(cnt_1, cnt_2, x, y):
+    # Initialize a set to store the numbers that are not liked by either friend
+    not_liked = set()
+    
+    # Iterate through the numbers from 1 to x and find the numbers that are not liked by the first friend
+    for i in range(1, x):
+        if i % x == 0:
+            not_liked.add(i)
+    
+    # Iterate through the numbers from x to y and find the numbers that are not liked by the second friend
+    for i in range(x, y):
+        if i % y == 0:
+            not_liked.add(i)
+    
+    # Initialize a set to store the numbers that are liked by both friends
+    liked = set()
+    
+    # Iterate through the numbers from 1 to y and find the numbers that are liked by both friends
+    for i in range(1, y):
+        if i not in not_liked:
+            liked.add(i)
+    
+    # Return the minimum number of liked numbers that can be formed using the set of liked numbers
+    return min(liked)
 
-    # Loop through each recipe
-    for recipe in recipes:
-        # Extract the input and output materials and their quantities
-        input_material, input_quantity, output_material, output_quantity = recipe
-
-        # Check if the output material is in the required materials dictionary
-        if output_material in required_materials:
-            # If it is, add the input quantity to the existing value
-            required_materials[output_material] += input_quantity
-        else:
-            # If it's not, set the input quantity as the new value
-            required_materials[output_material] = input_quantity
-
-    # Loop through each material that Yraglac wants
-    for material, quantity in materials.items():
-        # Check if the material is in the required materials dictionary
-        if material in required_materials:
-            # If it is, add the quantity to the existing value
-            required_materials[material] += quantity
-        else:
-            # If it's not, set the quantity as the new value
-            required_materials[material] = quantity
-
-    # Return the required materials dictionary
-    return required_materials
+if __name__ == '__main__':
+    cnt_1, cnt_2, x, y = map(int, input().split())
+    print(get_min_number(cnt_1, cnt_2, x, y))
 

@@ -1,27 +1,59 @@
 
-def get_minimum_panels(defective_cells):
-    # Initialize a set to store the coordinates of the defective cells
-    defective_cells_set = set(defective_cells)
-    # Initialize a dictionary to store the number of panels required for each cell
-    panels_required = {}
-    # Iterate over the defective cells
-    for cell in defective_cells:
-        # Get the x, y, and z coordinates of the cell
-        x, y, z = cell
-        # Initialize the number of panels required for the cell to 0
-        panels_required[cell] = 0
-        # Check if the cell is on the edge of the grid
-        if x == 0 or x == 9 or y == 0 or y == 9 or z == 0 or z == 9:
-            # If the cell is on the edge of the grid, it requires 6 panels to be contained
-            panels_required[cell] += 6
-        else:
-            # If the cell is not on the edge of the grid, it requires 4 panels to be contained
-            panels_required[cell] += 4
-        # Check if the cell has any adjacent defective cells
-        for adjacent_cell in [(x-1, y, z), (x+1, y, z), (x, y-1, z), (x, y+1, z), (x, y, z-1), (x, y, z+1)]:
-            # If the cell has an adjacent defective cell, add 1 panel to the number of panels required for the cell
-            if adjacent_cell in defective_cells_set:
-                panels_required[cell] += 1
-    # Return the minimum number of panels required to contain all the defective cells
-    return min(panels_required.values())
+def is_good_graph(graph):
+    # Check if the graph is a good graph
+    # A good graph has no self-loops and no multi-edges
+    # Also, vertex 1 and vertex N are not connected
+    return not any(graph[i, i] for i in range(1, len(graph))) and not any(graph[i, j] and graph[j, i] for i in range(1, len(graph)) for j in range(i+1, len(graph))) and not graph[1, len(graph)] and not graph[len(graph), 1]
+
+def play_game(graph):
+    # Initialize the graph as a good graph
+    graph = graph.copy()
+    
+    # Taro goes first
+    while True:
+        # Taro chooses two vertices to connect with an edge
+        u, v = map(int, input().split())
+        
+        # Add the edge to the graph
+        graph[u, v] = graph[v, u] = 1
+        
+        # Check if the graph is still a good graph
+        if not is_good_graph(graph):
+            # If the graph is not a good graph, Taro loses
+            return "First"
+        
+        # Jiro's turn now
+        # Jiro chooses two vertices to connect with an edge
+        u, v = map(int, input().split())
+        
+        # Add the edge to the graph
+        graph[u, v] = graph[v, u] = 1
+        
+        # Check if the graph is still a good graph
+        if not is_good_graph(graph):
+            # If the graph is not a good graph, Jiro loses
+            return "Second"
+
+def main():
+    # Read the number of test cases
+    t = int(input())
+    
+    # Iterate through the test cases
+    for _ in range(t):
+        # Read the number of vertices and edges
+        n, m = map(int, input().split())
+        
+        # Initialize the graph as an adjacency matrix
+        graph = np.zeros((n+1, n+1), dtype=int)
+        
+        # Read the edges
+        for _ in range(m):
+            u, v = map(int, input().split())
+            graph[u, v] = graph[v, u] = 1
+        
+        # Play the game
+        print(play_game(graph))
+
+if __name__ == '__main__':
+    main()
 

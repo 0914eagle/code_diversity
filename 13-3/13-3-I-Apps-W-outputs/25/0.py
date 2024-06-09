@@ -1,21 +1,22 @@
 
-import sys
+def find_rearrangement(arr):
+    n = len(arr)
+    sum_arr = sum(arr)
+    if sum_arr == 0:
+        return "NO"
+    for i in range(n):
+        curr_sum = sum(arr[:i+1])
+        if curr_sum == 0:
+            return "NO"
+    return "YES"
 
-def count_substring(string, substring):
-    count = 0
-    for i in range(len(string)):
-        if string[i:i+len(substring)] == substring:
-            count += 1
-    return count
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        arr = list(map(int, input().split()))
+        print(find_rearrangement(arr))
 
-N = int(input())
-T = input()
-
-# Concatenate 10^10 copies of the string 110
-S = "110" * (10**10)
-
-# Count the number of times T occurs in S as a contiguous substring
-count = count_substring(S, T)
-
-print(count)
+if __name__ == '__main__':
+    main()
 

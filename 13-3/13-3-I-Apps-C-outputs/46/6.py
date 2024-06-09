@@ -1,26 +1,48 @@
 
-def get_badge_numbers(start, end, locks):
-    visited = set()
-    queue = [(start, 0)]
-    while queue:
-        room, badge = queue.pop(0)
-        if room == end:
-            return badge
-        for lock in locks:
-            if lock[0] == room and lock[1] not in visited:
-                queue.append((lock[1], badge | lock[2]))
-                visited.add(lock[1])
-    return 0
+def f1(n, positions):
+    # Initialize a dictionary to store the results
+    results = {}
+    
+    # Iterate over each position
+    for position in positions:
+        # Initialize a set to store the available options
+        options = set()
+        
+        # Iterate over each option
+        for option in position:
+            # Add the option to the set
+            options.add(option)
+        
+        # Add the results for this position to the dictionary
+        results[position] = options
+    
+    # Return the dictionary of results
+    return results
 
-def main():
-    n, l, b = map(int, input().split())
-    s, d = map(int, input().split())
-    locks = []
-    for i in range(l):
-        a, b, x, y = map(int, input().split())
-        locks.append((a, b, x, y))
-    print(get_badge_numbers(s, d, locks))
+def f2(n, positions, start_position):
+    # Initialize a dictionary to store the results
+    results = {}
+    
+    # Iterate over each position
+    for position in positions:
+        # Initialize a set to store the available options
+        options = set()
+        
+        # Iterate over each option
+        for option in position:
+            # Add the option to the set
+            options.add(option)
+        
+        # Add the results for this position to the dictionary
+        results[position] = options
+    
+    # Return the dictionary of results
+    return results
 
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    n = int(input())
+    positions = [input().split() for _ in range(n)]
+    start_position = input()
+    results = f1(n, positions)
+    print(f2(n, positions, start_position))
 

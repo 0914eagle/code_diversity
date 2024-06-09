@@ -1,27 +1,11 @@
 
-import random
-
-def solve(expression):
-    # Split the expression into a list of integers and plus symbols
-    tokens = expression.split('+')
-    
-    # Initialize a set to store the distinct integers
-    distinct_integers = set()
-    
-    # Iterate over the tokens
-    for i in range(len(tokens)):
-        # If the token is an integer, add it to the set of distinct integers
-        if tokens[i].isdigit():
-            distinct_integers.add(int(tokens[i]))
-        # If the token is a plus symbol, randomly choose whether to interpret it as addition or string concatenation
-        else:
-            if random.randint(0, 1) == 0:
-                # Interpret the plus symbol as addition
-                distinct_integers.add(sum(distinct_integers))
-            else:
-                # Interpret the plus symbol as string concatenation
-                distinct_integers.add(str(distinct_integers))
-    
-    # Return the number of distinct integers
-    return len(distinct_integers)
+def generate_pascal_triangle(num_rows):
+    pascal_triangle = []
+    for row in range(num_rows):
+        row_values = [1] * (row + 1)
+        if row > 0:
+            for col in range(1, row):
+                row_values[col] = pascal_triangle[row - 1][col - 1] + pascal_triangle[row - 1][col]
+        pascal_triangle.append(row_values)
+    return pascal_triangle
 

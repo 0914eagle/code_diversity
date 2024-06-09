@@ -1,29 +1,12 @@
 
-import random
-
-def evaluate_expression(expression):
-    tokens = expression.split("+")
-    integers = [int(token) for token in tokens if token.isdigit()]
-    plus_symbols = ["+" for token in tokens if token != ""]
-    total_combinations = 2 ** (len(plus_symbols) - 1)
-    distinct_integers = set()
-    for i in range(total_combinations):
-        combination = bin(i)[2:].zfill(len(plus_symbols))
-        evaluated_expression = ""
-        for j, token in enumerate(tokens):
-            if token.isdigit():
-                evaluated_expression += token
+def generate_pascals_triangle(num_rows):
+    triangle = []
+    for row in range(num_rows):
+        triangle.append([])
+        for col in range(row+1):
+            if col == 0 or col == row:
+                triangle[row].append(1)
             else:
-                if combination[j] == "0":
-                    evaluated_expression += "+"
-                else:
-                    evaluated_expression += " "
-        evaluated_expression = evaluated_expression.strip()
-        if evaluated_expression.isdigit():
-            distinct_integers.add(int(evaluated_expression))
-    return len(distinct_integers)
-
-if __name__ == "__main__":
-    expression = input()
-    print(evaluate_expression(expression))
+                triangle[row].append(triangle[row-1][col-1] + triangle[row-1][col])
+    return triangle
 

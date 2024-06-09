@@ -1,12 +1,10 @@
 {
     "inputs": [
-        "(())\n",
-        "()\n",
-        "((())(()))()\n"
+        "3 4\nPP\nRR\nPS\nSS\n",
+        "20 3\nPRSPS\nSSSSS\nPPSPP\n"
     ],
     "outputs": [
-        "4,8:8,8:\n",
-        "4,4:\n",
-        "5,29:11,17:17,17:23,29:29,29:35,35:\n"
+        "PS\nPP\nRR\nSS\n",
+        "PRSPS\nPPSPP\nSSSSS\n"
     ]
 }

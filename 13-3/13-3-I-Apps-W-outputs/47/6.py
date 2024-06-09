@@ -1,27 +1,31 @@
 
-import math
+def count_ways_to_sell_tickets(X, N, cars):
+    # Initialize a counter for the number of ways to sell X tickets
+    ways = 0
+    
+    # Iterate over each car
+    for car in cars:
+        # Initialize a counter for the number of free places in the current car
+        free_places = 0
+        
+        # Iterate over each place in the current car
+        for place in car:
+            # If the place is free, increment the counter for free places
+            if place == "0":
+                free_places += 1
+        
+        # If the number of free places is divisible by X, increment the counter for the number of ways to sell X tickets
+        if free_places % X == 0:
+            ways += 1
+    
+    # Return the number of ways to sell X tickets
+    return ways
 
-def get_tape_length(n, papers):
-    # Calculate the area of an A1 paper
-    a1_area = 1
-    for i in range(n, 0, -1):
-        a1_area *= 2 ** (1 / 4)
-    
-    # Calculate the total area of all papers
-    total_area = 0
-    for i in range(n, 0, -1):
-        total_area += papers[i - 2] * a1_area / (2 ** ((i - 1) / 4))
-    
-    # Calculate the total length of tape needed
-    tape_length = total_area ** 0.5
-    
-    # Check if the total length of tape is less than or equal to 10^9 meters
-    if tape_length <= 10 ** 9:
-        return tape_length
-    else:
-        return "impossible"
+def main():
+    X, N = map(int, input().split())
+    cars = [input() for _ in range(N)]
+    print(count_ways_to_sell_tickets(X, N, cars))
 
-n = int(input())
-papers = list(map(int, input().split()))
-print(get_tape_length(n, papers))
+if __name__ == '__main__':
+    main()
 

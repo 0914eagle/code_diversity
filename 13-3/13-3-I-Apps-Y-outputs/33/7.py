@@ -1,26 +1,22 @@
 
-def solve(n, divisors):
-    # Sort the divisors in ascending order
-    divisors.sort()
+def get_permutation(n):
+    permutation = list(range(1, n+1))
+    for i in range(n):
+        for j in range(i+1, n):
+            if abs(permutation[i] - permutation[j]) not in range(2, 5):
+                return -1
+    return permutation
 
-    # Initialize the minimum possible value of x as 1
-    x = 1
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        permutation = get_permutation(n)
+        if permutation == -1:
+            print(-1)
+        else:
+            print(*permutation)
 
-    # Iterate through the divisors and find the minimum possible value of x
-    for d in divisors:
-        if x % d != 0:
-            x *= d
-
-    # If the last divisor is not equal to x, then the input data is contradictory
-    if x != divisors[-1]:
-        return -1
-    else:
-        return x
-
-# Main function
-t = int(input())
-for _ in range(t):
-    n = int(input())
-    divisors = list(map(int, input().split()))
-    print(solve(n, divisors))
+if __name__ == '__main__':
+    main()
 

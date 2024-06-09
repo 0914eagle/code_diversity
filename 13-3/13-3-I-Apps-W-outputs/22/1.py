@@ -1,28 +1,20 @@
 
-def crafting_system(materials, recipes):
-    # Initialize a dictionary to store the required materials
-    required_materials = {}
+def get_min_number(cnt_1, cnt_2, x, y):
+    # Initialize a set to store the numbers that are not liked by both friends
+    liked_numbers = set(range(1, x * y + 1))
 
-    # Loop through each recipe
-    for recipe in recipes:
-        # Get the input and output materials
-        input_material, output_material, quantity = recipe
+    # Remove the numbers that are not liked by the first friend
+    for i in range(x, x * y + 1, x):
+        liked_numbers.remove(i)
 
-        # Check if the output material is in the required materials dictionary
-        if output_material not in required_materials:
-            # If not, set the required quantity to zero
-            required_materials[output_material] = 0
+    # Remove the numbers that are not liked by the second friend
+    for i in range(y, x * y + 1, y):
+        liked_numbers.remove(i)
 
-        # Increment the required quantity by the recipe quantity
-        required_materials[output_material] += quantity
+    # Return the minimum number of liked numbers that can be formed
+    return min(liked_numbers)
 
-    # Loop through each material in the required materials dictionary
-    for material, quantity in required_materials.items():
-        # Check if the material is in the materials list
-        if material in materials:
-            # If it is, subtract the required quantity from the available quantity
-            materials[material] -= quantity
-
-    # Return the updated materials list
-    return materials
+if __name__ == '__main__':
+    cnt_1, cnt_2, x, y = map(int, input().split())
+    print(get_min_number(cnt_1, cnt_2, x, y))
 

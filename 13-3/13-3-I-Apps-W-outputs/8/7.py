@@ -1,35 +1,17 @@
 
-n, m = map(int, input().split())
-field = [input() for _ in range(n)]
+def f1(n, bracket_sequences):
+    # Your code here
+    return max_pairs
 
-# Check if the field is rectangular
-if len(set(len(row) for row in field)) != 1:
-    print("NO")
-    exit()
+def f2(n, bracket_sequences):
+    # Your code here
+    return max_pairs
 
-# Check if the field has three colors
-colors = set()
-for row in field:
-    for col in row:
-        colors.add(col)
-if len(colors) != 3:
-    print("NO")
-    exit()
-
-# Check if the field has three equal width and height stripes
-if n % 3 != 0 or m % 3 != 0:
-    print("NO")
-    exit()
-
-# Check if each color is used exactly once in each stripe
-for i in range(0, n, 3):
-    for j in range(0, m, 3):
-        color = field[i][j]
-        for k in range(i, i+3):
-            for l in range(j, j+3):
-                if field[k][l] != color:
-                    print("NO")
-                    exit()
-
-print("YES")
+if __name__ == '__main__':
+    n = int(input())
+    bracket_sequences = []
+    for _ in range(n):
+        bracket_sequences.append(input())
+    max_pairs = f1(n, bracket_sequences)
+    print(max_pairs)
 

@@ -1,35 +1,34 @@
 
-def crafting_system(materials, recipes):
-    # Initialize a dictionary to store the required materials
-    required_materials = {}
+def get_min_number(cnt_1, cnt_2, x, y):
+    # Initialize a set to store the numbers that are not liked by either friend
+    not_liked = set()
+    
+    # Iterate through the range of numbers from 1 to the maximum number that can be presented
+    for i in range(1, cnt_1 + cnt_2 + 1):
+        # If the number is not divisible by x or y, it is a valid number
+        if i % x != 0 and i % y != 0:
+            not_liked.add(i)
+    
+    # Initialize a set to store the numbers that are presented to the first friend
+    first_friend = set()
+    # Iterate through the range of numbers from 1 to the number of numbers presented to the first friend
+    for i in range(1, cnt_1 + 1):
+        # If the number is in the set of not liked numbers, add it to the set of numbers presented to the first friend
+        if i in not_liked:
+            first_friend.add(i)
+    
+    # Initialize a set to store the numbers that are presented to the second friend
+    second_friend = set()
+    # Iterate through the range of numbers from 1 to the number of numbers presented to the second friend
+    for i in range(1, cnt_2 + 1):
+        # If the number is in the set of not liked numbers, add it to the set of numbers presented to the second friend
+        if i in not_liked:
+            second_friend.add(i)
+    
+    # Return the minimum number that can be formed using the numbers presented to the two friends
+    return min(first_friend | second_friend)
 
-    # Loop through each recipe
-    for recipe in recipes:
-        # Extract the input and output materials and the quantity of output materials
-        input_material, output_material, quantity = recipe
-
-        # Check if the output material is already in the required materials dictionary
-        if output_material not in required_materials:
-            # If not, add it to the dictionary with the required quantity
-            required_materials[output_material] = quantity
-        else:
-            # If it is already in the dictionary, update the required quantity
-            required_materials[output_material] += quantity
-
-        # Check if the input material is already in the required materials dictionary
-        if input_material not in required_materials:
-            # If not, add it to the dictionary with the required quantity
-            required_materials[input_material] = -quantity
-        else:
-            # If it is already in the dictionary, update the required quantity
-            required_materials[input_material] -= quantity
-
-    # Loop through each material in the required materials dictionary
-    for material, quantity in required_materials.items():
-        # If the quantity is positive, add it to the total required quantity
-        if quantity > 0:
-            materials[material] += quantity
-
-    # Return the total required materials
-    return materials
+if __name__ == '__main__':
+    cnt_1, cnt_2, x, y = map(int, input().split())
+    print(get_min_number(cnt_1, cnt_2, x, y))
 

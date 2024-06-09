@@ -1,18 +1,14 @@
 
-import math
+import re
 
-def get_min_rod_length(triangles):
-    # Calculate the minimum rod length by finding the maximum height of the triangles
-    max_height = 0
-    for triangle in triangles:
-        height = triangle[0] * math.sin(math.radians(60))
-        if height > max_height:
-            max_height = height
-    return max_height * 2
+def is_valid_roman_numeral(roman_numeral):
+    pattern = r"^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$"
+    return bool(re.match(pattern, roman_numeral))
 
-triangles = []
-for _ in range(int(input())):
-    triangles.append(list(map(int, input().split())))
+def main():
+    roman_numeral = input("Enter a Roman numeral: ")
+    print(is_valid_roman_numeral(roman_numeral))
 
-print(f"{get_min_rod_length(triangles):.4f}")
+if __name__ == '__main__':
+    main()
 

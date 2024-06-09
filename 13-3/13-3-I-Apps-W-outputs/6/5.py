@@ -1,7 +1,16 @@
 
-def solve(strings, operations):
-    for a, b in operations:
-        strings[a-1] += strings[b-1]
-        strings[b-1] = ""
-    return strings[-1]
+def is_divisible(numbers, m):
+    for i in range(len(numbers)):
+        for j in range(i, len(numbers)):
+            if sum(numbers[i:j+1]) % m == 0:
+                return "YES"
+    return "NO"
+
+def main():
+    n, m = map(int, input().split())
+    numbers = list(map(int, input().split()))
+    print(is_divisible(numbers, m))
+
+if __name__ == '__main__':
+    main()
 

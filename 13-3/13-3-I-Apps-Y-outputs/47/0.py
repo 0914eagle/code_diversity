@@ -1,16 +1,29 @@
 
-n, k = map(int, input().split())
-d, s = map(int, input().split())
+def get_min_sum(arr):
+    # Initialize variables
+    n = len(arr)
+    sum_of_non_deleted_elements = 0
+    last_deleted_element = 0
+    is_first_move = True
 
-# Calculate the average difficulty of the solved problems
-avg_diff_solved = s * k / n
+    # Iterate through the array
+    for i in range(n):
+        # Check if the current element is even or odd
+        if arr[i] % 2 == 0:
+            is_even = True
+        else:
+            is_even = False
 
-# Calculate the average difficulty of the unsolved problems
-avg_diff_unsolved = (d - avg_diff_solved) * (n - k) / k
+        # Check if the current element can be deleted
+        if is_first_move or (is_even and last_deleted_element % 2 == 0) or (not is_even and last_deleted_element % 2 == 1):
+            # Delete the current element
+            sum_of_non_deleted_elements += arr[i]
+            last_deleted_element = arr[i]
+            is_first_move = False
+        else:
+            # Break the loop and return the sum of non-deleted elements
+            break
 
-# Check if the average difficulty of the unsolved problems is possible
-if avg_diff_unsolved < 0 or avg_diff_unsolved > 100:
-    print("impossible")
-else:
-    print(f"{avg_diff_unsolved:.6f}")
+    # Return the minimum sum of non-deleted elements
+    return sum_of_non_deleted_elements
 

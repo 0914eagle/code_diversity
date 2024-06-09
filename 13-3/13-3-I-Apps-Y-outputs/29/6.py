@@ -1,30 +1,29 @@
 
-import sys
+def f1(n, k):
+    if n % 2 == 0:
+        return f2(n, k, 0)
+    else:
+        return f2(n, k, 1)
 
-def get_black_squares(grid):
-    black_squares = 0
-    for row in grid:
-        for square in row:
-            if square == '#':
-                black_squares += 1
-    return black_squares
+def f2(n, k, parity):
+    if k == 1:
+        return [n]
+    else:
+        for i in range(1, n + 1):
+            if i % 2 == parity:
+                result = f2(n - i, k - 1, parity)
+                if result != -1:
+                    return [i] + result
+        return -1
 
-def get_choices(grid, k):
-    num_rows, num_cols = len(grid), len(grid[0])
-    choices = 0
-    for rows in range(num_rows + 1):
-        for cols in range(num_cols + 1):
-            if get_black_squares(grid) - rows - cols == k:
-                choices += 1
-    return choices
-
-def main():
-    h, w, k = map(int, input().split())
-    grid = []
-    for _ in range(h):
-        grid.append(input())
-    print(get_choices(grid, k))
-
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    t = int(input())
+    for _ in range(t):
+        n, k = map(int, input().split())
+        result = f1(n, k)
+        if result == -1:
+            print("NO")
+        else:
+            print("YES")
+            print(" ".join(map(str, result)))
 

@@ -1,12 +1,43 @@
 
-def is_signature_forgable(grid):
-    n, m = len(grid), len(grid[0])
-    for i in range(n):
-        for j in range(m):
-            if grid[i][j] == '#':
-                for k in range(i, min(i+3, n)):
-                    for l in range(j, min(j+3, m)):
-                        if grid[k][l] == '#':
-                            return "YES"
-    return "NO"
+def get_country_winner(chef_votes):
+    country_votes = {}
+    for chef, country in chef_votes.items():
+        if country not in country_votes:
+            country_votes[country] = 1
+        else:
+            country_votes[country] += 1
+
+    country_winner = max(country_votes, key=country_votes.get)
+    return country_winner
+
+def get_chef_winner(chef_votes, country_winner):
+    chef_votes_sorted = sorted(chef_votes.items(), key=lambda x: x[0])
+    chef_winner = None
+    max_votes = 0
+    for chef, country in chef_votes_sorted:
+        if country == country_winner:
+            if chef_votes[chef] > max_votes:
+                max_votes = chef_votes[chef]
+                chef_winner = chef
+            elif chef_votes[chef] == max_votes:
+                if chef < chef_winner:
+                    chef_winner = chef
+
+    return chef_winner
+
+def main():
+    chef_votes = {}
+    with open("chef_votes.txt", "r") as f:
+        for line in f:
+            chef, country = line.strip().split()
+            chef_votes[chef] = country
+
+    country_winner = get_country_winner(chef_votes)
+    chef_winner = get_chef_winner(chef_votes, country_winner)
+
+    print(country_winner)
+    print(chef_winner)
+
+if __name__ == '__main__':
+    main()
 

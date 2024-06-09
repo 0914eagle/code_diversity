@@ -1,27 +1,13 @@
 
-import math
-
-def solve():
-    N = int(input())
-    A = list(map(int, input().split()))
-
-    # Sort the array A in non-decreasing order
-    A.sort()
-
-    # Initialize the array B with the values A[i]^2
-    B = [A[i]**2 for i in range(N)]
-
-    # Calculate the sum of the squares of the elements of B
-    sum_B = sum(B)
-
-    # Calculate the sum of the squares of the elements of A
-    sum_A = sum(A[i]**2 for i in range(N))
-
-    # Calculate the minimum possible value of B_1 + ... + B_N for B_1,...,B_N that satisfy the condition
-    min_sum = sum_B - sum_A + (N-1)*(A[0]**2)
-
-    # Return the result modulo (10^9 + 7)
-    return min_sum % (10**9 + 7)
-
-print(solve())
+def count_good_phone_numbers(n, k, a, b):
+    modulo = 10**9 + 7
+    count = 0
+    for i in range(10**k):
+        curr = str(i)
+        if len(curr) < k:
+            curr = '0' * (k - len(curr)) + curr
+        block = [int(curr[j * k:(j + 1) * k]) for j in range(n // k)]
+        if all(block[i] % a[i] == 0 for i in range(n // k)) and all(block[i] // a[i] != b[i] for i in range(n // k)):
+            count += 1
+    return count % modulo
 

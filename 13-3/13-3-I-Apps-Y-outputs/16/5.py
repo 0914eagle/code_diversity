@@ -1,14 +1,16 @@
 
-def max_rest(n, a):
-    max_rest = 0
-    current_rest = 0
-    for i in range(n):
-        if a[i] == 0:
-            current_rest += 1
-        else:
-            max_rest = max(max_rest, current_rest)
-            current_rest = 0
-    
-    max_rest = max(max_rest, current_rest)
-    return max_rest
+def is_before_april_30_2019(date_string):
+    date = datetime.strptime(date_string, "%Y/%m/%d")
+    april_30_2019 = datetime(2019, 4, 30)
+    return date <= april_30_2019
+
+def get_era(date_string):
+    if is_before_april_30_2019(date_string):
+        return "Heisei"
+    else:
+        return "TBD"
+
+if __name__ == '__main__':
+    date_string = input()
+    print(get_era(date_string))
 

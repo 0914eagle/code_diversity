@@ -1,24 +1,41 @@
 
-import sys
-
-n = int(input())
-values = list(map(int, input().split()))
-costs = list(map(int, input().split()))
-
-# Initialize the maximum possible value of X-Y
-max_value = 0
-
-# Iterate over all possible combinations of gems
-for i in range(2**n):
-    # Convert the binary representation of i to a list of booleans
-    choices = [bool(i & (1 << j)) for j in range(n)]
+def get_minimum_moves(arr, m):
+    # Calculate the current count of elements for each remainder
+    count = [0] * m
+    for i in range(len(arr)):
+        count[(arr[i] % m)] += 1
     
-    # Calculate the sum of values and costs for the current combination of gems
-    x = sum(values[j] for j in range(n) if choices[j])
-    y = sum(costs[j] for j in range(n) if choices[j])
+    # Calculate the minimum number of moves required to make the count equal for each remainder
+    min_moves = [0] * m
+    for i in range(m):
+        min_moves[i] = abs(count[i] - len(arr) // m)
     
-    # Update the maximum possible value of X-Y
-    max_value = max(max_value, x - y)
+    # Return the minimum number of moves required to make the count equal for each remainder
+    return sum(min_moves)
 
-print(max_value)
+def get_new_array(arr, m):
+    # Calculate the current count of elements for each remainder
+    count = [0] * m
+    for i in range(len(arr)):
+        count[(arr[i] % m)] += 1
+    
+    # Calculate the minimum number of moves required to make the count equal for each remainder
+    min_moves = [0] * m
+    for i in range(m):
+        min_moves[i] = abs(count[i] - len(arr) // m)
+    
+    # Create a new array with the minimum number of moves required to make the count equal for each remainder
+    new_arr = []
+    for i in range(m):
+        for j in range(min_moves[i]):
+            new_arr.append(arr[i] + (j + 1) * m)
+    
+    # Return the new array
+    return new_arr
+
+if __name__ == '__main__':
+    arr = [3, 2, 0, 6, 10, 12]
+    m = 3
+    print(get_minimum_moves(arr, m))
+    print(get_new_array(arr, m))
 

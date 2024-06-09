@@ -1,92 +1,31 @@
 
-def get_reconstructions(pre_output, in_output, post_output):
-    # Initialize a list to store the reconstructions
-    reconstructions = []
-    
-    # Iterate over all possible combinations of Pre, In, and Post calls
-    for pre_calls in range(2):
-        for in_calls in range(2):
-            for post_calls in range(2):
-                # Check if the number of calls to each routine is correct
-                if pre_calls + in_calls + post_calls == 6:
-                    # Create a list to store the calls for each routine
-                    calls = []
-                    
-                    # Add the Pre calls to the list
-                    for i in range(pre_calls):
-                        calls.append("Pre")
-                    
-                    # Add the In calls to the list
-                    for i in range(in_calls):
-                        calls.append("In")
-                    
-                    # Add the Post calls to the list
-                    for i in range(post_calls):
-                        calls.append("Post")
-                    
-                    # Sort the calls in lexicographic order
-                    calls.sort()
-                    
-                    # Create a list to store the first tree with the observed output
-                    first_tree = []
-                    
-                    # Iterate over all possible trees
-                    for tree in generate_trees(pre_output, in_output, post_output):
-                        # Check if the current tree has the observed output
-                        if tree_output(tree) == (pre_output, in_output, post_output):
-                            # Add the tree to the list
-                            first_tree.append(tree)
-                            
-                            # Break out of the loop
-                            break
-                    
-                    # Check if a tree with the observed output was found
-                    if first_tree:
-                        # Add the reconstruction to the list of reconstructions
-                        reconstructions.append((calls, first_tree[0]))
-    
-    # Return the list of reconstructions
-    return reconstructions
+import sys
 
-def generate_trees(pre_output, in_output, post_output):
-    # Yield the empty tree
-    yield []
+def count_ways(N, M, conditions):
+    # Initialize the number of ways to paint the squares
+    ways = 1
     
-    # Iterate over the characters in the preorder output
-    for char in pre_output:
-        # Iterate over the remaining characters in the preorder output
-        for remaining in generate_trees(pre_output[1:], in_output, post_output):
-            # Yield the tree with the current character as the root and the remaining characters as the children
-            yield [char] + remaining
-
-def tree_output(tree):
-    # Return the preorder, inorder, and postorder outputs of the tree
-    return (preorder(tree), inorder(tree), postorder(tree))
-
-def preorder(tree):
-    # Check if the tree is empty
-    if not tree:
-        # Return an empty string
-        return ""
+    # Iterate over each condition
+    for i in range(M):
+        # Get the left and right indices, and the number of different colors
+        l, r, x = conditions[i]
+        
+        # Calculate the number of ways to paint the squares with the current condition
+        num_ways = 0
+        for j in range(l, r+1):
+            num_ways += (N - j + 1) * (j - l + 1)
+        
+        # Update the number of ways to paint the squares
+        ways *= num_ways
     
-    # Return the current character followed by the preorder outputs of the children
-    return tree[0] + preorder(tree[1:])
+    # Return the result modulo 10^9+7
+    return ways % 1000000007
 
-def inorder(tree):
-    # Check if the tree is empty
-    if not tree:
-        # Return an empty string
-        return ""
-    
-    # Return the inorder outputs of the children followed by the current character
-    return inorder(tree[1:]) + tree[0]
-
-def postorder(tree):
-    # Check if the tree is empty
-    if not tree:
-        # Return an empty string
-        return ""
-    
-    # Return the postorder outputs of the children followed by the current character
-    return postorder(tree[1:]) + tree[0]
+if __name__ == '__main__':
+    N, M = map(int, input().split())
+    conditions = []
+    for i in range(M):
+        l, r, x = map(int, input().split())
+        conditions.append((l, r, x))
+    print(count_ways(N, M, conditions))
 

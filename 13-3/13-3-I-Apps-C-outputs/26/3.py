@@ -1,29 +1,47 @@
 
-def solve(n, l, r):
-    # Initialize an empty list to store the elements
-    lst = []
+def f1(L, n, points):
+    # Initialize a list to store the bends
+    bends = []
+    
+    # Iterate through the points and directions
+    for point, direction in points:
+        # If the direction is clockwise, add the point to the list of bends
+        if direction == "C":
+            bends.append(point)
+        # If the direction is counterclockwise, remove the point from the list of bends
+        else:
+            bends.remove(point)
+    
+    # Check if the list of bends is empty, if it is, return "SAFE"
+    if not bends:
+        return "SAFE"
+    
+    # If the list of bends is not empty, return "GHOST"
+    return "GHOST"
 
-    # Add the initial element to the list
-    lst.append(n)
+def f2(L, n, points):
+    # Initialize a set to store the bends
+    bends = set()
+    
+    # Iterate through the points and directions
+    for point, direction in points:
+        # If the direction is clockwise, add the point to the set of bends
+        if direction == "C":
+            bends.add(point)
+        # If the direction is counterclockwise, remove the point from the set of bends
+        else:
+            bends.remove(point)
+    
+    # Check if the set of bends is empty, if it is, return "SAFE"
+    if not bends:
+        return "SAFE"
+    
+    # If the set of bends is not empty, return "GHOST"
+    return "GHOST"
 
-    # Iterate until all elements in the list are either 0 or 1
-    while len(lst) > 0:
-        # Initialize a new list to store the elements that will be removed
-        remove_lst = []
-
-        # Iterate through the list and remove any element that is greater than 1
-        for i in range(len(lst)):
-            if lst[i] > 1:
-                remove_lst.append(lst[i])
-
-        # Remove the elements from the list
-        for i in remove_lst:
-            lst.remove(i)
-
-        # Insert the elements at the same position, divided by 2, and the remainder
-        for i in remove_lst:
-            lst.insert(i // 2, i % 2)
-
-    # Return the number of ones in the range l to r
-    return sum(lst[l-1:r])
+if __name__ == '__main__':
+    L, n = map(int, input().split())
+    points = [tuple(map(int, input().split())) for _ in range(n)]
+    print(f1(L, n, points))
+    print(f2(L, n, points))
 

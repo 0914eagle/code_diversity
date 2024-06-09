@@ -1,20 +1,45 @@
 
-def get_min_rank(scores):
-    # Find the maximum score among all players
-    max_score = max(scores)
+def f1(n, distances):
+    # Initialize the subsets A and B
+    A = set()
+    B = set()
+    
+    # Initialize the disparities of A and B
+    disparity_A = 0
+    disparity_B = 0
+    
+    # Loop through each shipment
+    for i in range(n):
+        # Find the closest shipment in the other subset
+        closest_subset = None
+        closest_distance = float('inf')
+        for subset in [A, B]:
+            for shipment in subset:
+                distance = distances[i][shipment]
+                if distance < closest_distance:
+                    closest_distance = distance
+                    closest_subset = subset
+        
+        # Add the current shipment to the closest subset
+        closest_subset.add(i)
+        
+        # Update the disparity of the closest subset
+        if closest_subset == A:
+            disparity_A += closest_distance
+        else:
+            disparity_B += closest_distance
+    
+    # Return the minimum possible sum of disparities
+    return min(disparity_A, disparity_B)
 
-    # Initialize the minimum rank for each player as the number of players
-    min_rank = len(scores)
+def f2(...):
+    # Implement f2 here
+    pass
 
-    # Iterate through all possible scores
-    for score in range(max_score + 1):
-        # Count the number of players with a score less than or equal to the current score
-        num_players = sum(1 for s in scores if s <= score)
-
-        # Update the minimum rank for each player if the current score is better than their current minimum rank
-        for i in range(len(scores)):
-            if num_players < min_rank[i]:
-                min_rank[i] = num_players
-
-    return min_rank
+if __name__ == '__main__':
+    n = int(input())
+    distances = []
+    for i in range(n - 1):
+        distances.append(list(map(int, input().split())))
+    print(f1(n, distances))
 

@@ -1,10 +1,10 @@
 {
     "inputs": [
-        "10 1 10 2 1\n",
-        "100 2 1 1 0\n"
+        "7\nals mollen mollen mollen mollen mollen mollen\n4\nals when correct\nmollen moles correct\nmollen destroy correct\nmollen mills incorrect\n",
+        "5\nde zuigers zijn buiten werking\n6\nzijn are correct\nbanaan banana correct\nde the correct\nzuigers suckers incorrect\nbuiten out correct\nwerking working incorrect\n"
     ],
     "outputs": [
-        "6\n",
-        "use the stairs\n"
+        "64 correct\n665 incorrect\n",
+        "the suckers are out working\nincorrect\n"
     ]
 }

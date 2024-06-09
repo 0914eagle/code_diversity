@@ -1,15 +1,18 @@
 
-import datetime
+def get_min_moves(a, b):
+    if a == b:
+        return 0
+    if a > b:
+        return get_min_moves(a-1, b) + 1
+    else:
+        return get_min_moves(a+1, b) + 1
 
-current_time = input()
-explosion_time = input()
+def main():
+    t = int(input())
+    for _ in range(t):
+        a, b = map(int, input().split())
+        print(get_min_moves(a, b))
 
-current_time = datetime.datetime.strptime(current_time, '%H:%M:%S')
-explosion_time = datetime.datetime.strptime(explosion_time, '%H:%M:%S')
-
-time_diff = explosion_time - current_time
-
-desired_time = current_time + datetime.timedelta(seconds=time_diff.total_seconds())
-
-print(desired_time.strftime('%H:%M:%S'))
+if __name__ == '__main__':
+    main()
 

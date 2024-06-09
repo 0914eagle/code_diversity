@@ -1,19 +1,19 @@
 
-import re
+def count_good_pairs(teacher_interest, student_interest):
+    n = len(teacher_interest)
+    count = 0
+    for i in range(n):
+        for j in range(i+1, n):
+            if teacher_interest[i] + teacher_interest[j] > student_interest[i] + student_interest[j]:
+                count += 1
+    return count
 
-def get_missing_cards(deck):
-    suits = ["P", "K", "H", "T"]
-    numbers = [str(i) for i in range(1, 14)]
-    card_count = {suit: 0 for suit in suits}
-    for card in deck:
-        match = re.match(r"([PKHT])0?(\d)", card)
-        if match:
-            suit, number = match.groups()
-            card_count[suit] += 1
-            if card_count[suit] > 1 and card_count[suit] > numbers.count(number):
-                return "GRESKA"
-    return " ".join(str(13 - card_count[suit]) for suit in suits)
+def main():
+    n = int(input())
+    teacher_interest = list(map(int, input().split()))
+    student_interest = list(map(int, input().split()))
+    print(count_good_pairs(teacher_interest, student_interest))
 
-deck = input()
-print(get_missing_cards(deck))
+if __name__ == '__main__':
+    main()
 

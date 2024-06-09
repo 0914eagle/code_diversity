@@ -1,26 +1,31 @@
 
-def solve(n, levels):
-    # Initialize the dp table with the completion time for level 1 using item 0
-    dp = [levels[0][0]]
-    
-    # Loop through the remaining levels
-    for i in range(1, n):
-        # Initialize the minimum completion time for the current level
-        min_time = float('inf')
-        
-        # Loop through the available items
-        for j in range(n+1):
-            # Check if the current item is the shortcut item for the current level
-            if j == levels[i][0]:
-                # If so, the minimum completion time is the completion time for the level using the shortcut
-                min_time = min(min_time, levels[i][1])
-            else:
-                # If not, the minimum completion time is the maximum of the completion time for the level using the current item and the previous level's completion time using the current item
-                min_time = max(min_time, levels[i][j+1] + dp[j])
-        
-        # Add the minimum completion time for the current level to the dp table
-        dp.append(min_time)
-    
-    # Return the total completion time for all levels
-    return sum(dp)
+def f1(T, N, breaks):
+    # Sort the breaks in non-decreasing order
+    breaks.sort()
+
+    # Initialize the number of minutes spent on stage for each musician
+    minutes_on_stage = [0] * N
+
+    # Iterate through the breaks and schedule them
+    for i in range(N):
+        # Calculate the number of minutes the musician will spend on stage before the break
+        minutes_on_stage[i] = breaks[i] - breaks[i - 1] if i > 0 else breaks[i]
+
+    return minutes_on_stage
+
+def f2(T, N, breaks):
+    # Initialize the number of minutes spent on stage for each musician
+    minutes_on_stage = [0] * N
+
+    # Iterate through the breaks and schedule them
+    for i in range(N):
+        # Calculate the number of minutes the musician will spend on stage before the break
+        minutes_on_stage[i] = T - breaks[i] if i == N - 1 else breaks[i + 1] - breaks[i]
+
+    return minutes_on_stage
+
+if __name__ == '__main__':
+    T, N = map(int, input().split())
+    breaks = list(map(int, input().split()))
+    print(*f1(T, N, breaks), sep='\n')
 

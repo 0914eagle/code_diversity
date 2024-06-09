@@ -1,4 +1,7 @@
 
-def get_minimum_inspectors(n, d):
-    return (n + d - 1) // d
+def f1(s):
+    if 'ss' in s:
+        return 'hiss'
+    else:
+        return 'no hiss'
 

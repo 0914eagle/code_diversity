@@ -1,24 +1,32 @@
 
-def get_mex(subset):
-    subset = list(subset)
-    subset.sort()
-    mex = 0
-    for i in range(len(subset)):
-        if subset[i] != mex:
-            return mex
-        mex += 1
-    return mex + 1
-
-def get_max_mex(numbers):
-    numbers = list(numbers)
-    numbers.sort()
-    max_mex = 0
-    for i in range(len(numbers)):
-        subset = numbers[:i] + numbers[i+1:]
-        mex = get_mex(subset)
-        max_mex = max(max_mex, mex)
-    return max_mex
-
-def solve(numbers):
-    return get_max_mex(numbers)
+def find_beautiful_number(p, x):
+    # Initialize a list to store the possible numbers
+    numbers = []
+    
+    # Loop through all possible numbers with p decimal digits
+    for i in range(10**p):
+        # Convert the number to a string
+        num_str = str(i)
+        
+        # Check if the number has no leading zeroes
+        if num_str.startswith("0"):
+            continue
+        
+        # Check if the number has the correct length
+        if len(num_str) != p:
+            continue
+        
+        # Check if the number grows correctly when the last digit is moved to the beginning
+        if int(num_str[-1]) * x != int(num_str[1:] + num_str[0]):
+            continue
+        
+        # Add the number to the list of possible numbers
+        numbers.append(num_str)
+    
+    # Check if any numbers were found
+    if not numbers:
+        return "Impossible"
+    
+    # Return the smallest number in the list of possible numbers
+    return min(numbers)
 

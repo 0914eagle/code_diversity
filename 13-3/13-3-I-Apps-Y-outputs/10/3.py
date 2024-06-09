@@ -1,32 +1,56 @@
 
-f, s, g, u, d = map(int, input().split())
+def f1(n, s, m, dictionary):
+    # Initialize variables
+    correct_translations = 0
+    incorrect_translations = 0
+    
+    # Iterate through each word in the sentence
+    for word in s.split():
+        # Check if the word is in the dictionary
+        if word in dictionary:
+            # If the word is in the dictionary, check if it is a correct translation
+            if dictionary[word] == "correct":
+                correct_translations += 1
+            else:
+                incorrect_translations += 1
+        else:
+            # If the word is not in the dictionary, it is an incorrect translation
+            incorrect_translations += 1
+    
+    # Return the number of correct and incorrect translations
+    return correct_translations, incorrect_translations
 
-# Initialize the minimum number of pushes to reach the goal
-min_pushes = 0
+def f2(n, s, m, dictionary):
+    # Initialize variables
+    correct_translations = 0
+    incorrect_translations = 0
+    
+    # Iterate through each word in the sentence
+    for word in s.split():
+        # Check if the word is in the dictionary
+        if word in dictionary:
+            # If the word is in the dictionary, check if it is a correct translation
+            if dictionary[word] == "correct":
+                correct_translations += 1
+            else:
+                incorrect_translations += 1
+        else:
+            # If the word is not in the dictionary, it is an incorrect translation
+            incorrect_translations += 1
+    
+    # Return the number of correct and incorrect translations
+    return correct_translations, incorrect_translations
 
-# Initialize the current floor
-current_floor = s
-
-# Loop until the goal floor is reached or the maximum number of floors is reached
-while current_floor != g and current_floor <= f:
-    # Check if the UP button can be pressed
-    if current_floor + u <= f:
-        # Press the UP button and update the current floor
-        current_floor += u
-        min_pushes += 1
-    # Check if the DOWN button can be pressed
-    elif current_floor - d >= 1:
-        # Press the DOWN button and update the current floor
-        current_floor -= d
-        min_pushes += 1
-    # If neither button can be pressed, break the loop
-    else:
-        break
-
-# If the goal floor is reached, print the minimum number of pushes
-if current_floor == g:
-    print(min_pushes)
-# If the maximum number of floors is reached and the goal floor is not reached, print "use the stairs"
-elif current_floor > f:
-    print("use the stairs")
+if __name__ == '__main__':
+    n = int(input())
+    s = input()
+    m = int(input())
+    dictionary = {}
+    for i in range(m):
+        word, translation, correct = input().split()
+        dictionary[word] = translation
+    
+    correct_translations, incorrect_translations = f1(n, s, m, dictionary)
+    print(correct_translations, "correct")
+    print(incorrect_translations, "incorrect")
 

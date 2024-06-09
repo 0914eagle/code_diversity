@@ -1,12 +1,48 @@
 
-def is_signature_forgable(grid):
-    n, m = len(grid), len(grid[0])
-    for i in range(n):
-        for j in range(m):
-            if grid[i][j] == '#':
-                for k in range(i, min(n, i + 3)):
-                    for l in range(j, min(m, j + 3)):
-                        if grid[k][l] == '#' and (k, l) != (i + 1, j + 1):
-                            return "YES"
-    return "NO"
+def get_country_winner(chef_votes):
+    country_votes = {}
+    for chef, country in chef_votes.items():
+        if country not in country_votes:
+            country_votes[country] = 1
+        else:
+            country_votes[country] += 1
+
+    country_winner = max(country_votes, key=country_votes.get)
+    return country_winner
+
+def get_chef_winner(chef_votes, country_winner):
+    chef_winner = ""
+    max_votes = 0
+    for chef, country in chef_votes.items():
+        if country == country_winner:
+            votes = chef_votes[chef]
+            if votes > max_votes:
+                max_votes = votes
+                chef_winner = chef
+            elif votes == max_votes and chef < chef_winner:
+                chef_winner = chef
+
+    return chef_winner
+
+def main():
+    chef_votes = {}
+    with open("chef_votes.txt", "r") as f:
+        for line in f:
+            line = line.strip().split()
+            chef = line[0]
+            country = line[1]
+            if chef not in chef_votes:
+                chef_votes[chef] = country
+            else:
+                print("Error: Duplicate chef found")
+                return
+
+    country_winner = get_country_winner(chef_votes)
+    chef_winner = get_chef_winner(chef_votes, country_winner)
+
+    print(country_winner)
+    print(chef_winner)
+
+if __name__ == '__main__':
+    main()
 

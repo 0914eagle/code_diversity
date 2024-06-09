@@ -1,16 +1,38 @@
 
-n, k = map(int, input().split())
-d, s = map(int, input().split())
+def get_min_sum(arr):
+    # Initialize variables
+    n = len(arr)
+    sum_of_non_deleted_elements = 0
+    parity = 0
+    deleted_elements = []
 
-# Calculate the average difficulty of the solved problems
-solved_avg = s * k / n
+    # Iterate through the array
+    for i in range(n):
+        # If it's the first move, choose any element and delete it
+        if i == 0:
+            deleted_elements.append(arr[i])
+            parity = 0
+        # If it's the second or any next move, choose any element with the only restriction: its parity should differ from the parity of the element deleted on the previous move
+        else:
+            # If the last deleted element was odd, choose any even element and delete it
+            if parity == 1:
+                for j in range(n):
+                    if arr[j] % 2 == 0 and j not in deleted_elements:
+                        deleted_elements.append(arr[j])
+                        parity = 0
+                        break
+            # If the last deleted element was even, choose any odd element and delete it
+            else:
+                for j in range(n):
+                    if arr[j] % 2 == 1 and j not in deleted_elements:
+                        deleted_elements.append(arr[j])
+                        parity = 1
+                        break
 
-# Calculate the average difficulty of the unsolved problems
-unsolved_avg = (d - solved_avg) * (n - k) / k
+    # Calculate the sum of non-deleted elements
+    for i in range(n):
+        if i not in deleted_elements:
+            sum_of_non_deleted_elements += arr[i]
 
-# Check if the average difficulty of the unsolved problems exists
-if unsolved_avg < 0 or unsolved_avg > 100:
-    print("impossible")
-else:
-    print(round(unsolved_avg, 6))
+    return sum_of_non_deleted_elements
 

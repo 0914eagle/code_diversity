@@ -1,1 +1,1 @@
-{"inputs": ["5 5 7\n", "7 7 5\n"], "outputs": ["YES\n", "NO\n"]}
+{"inputs": ["5 2 7\n", "1 999 1000\n"], "outputs": ["B\n", "A\n"]}

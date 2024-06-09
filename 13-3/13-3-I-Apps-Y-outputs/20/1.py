@@ -1,16 +1,20 @@
 
-import sys
+def can_sort_array(arr, positions):
+    n = len(arr)
+    for i in range(n-1):
+        for j in range(i+1, n):
+            if arr[i] > arr[j] and not (i in positions or j in positions):
+                return "NO"
+    return "YES"
 
-n, m = map(int, input().split())
-prefectures = {}
+def main():
+    t = int(input())
+    for _ in range(t):
+        n, m = map(int, input().split())
+        arr = list(map(int, input().split()))
+        positions = set(map(int, input().split()))
+        print(can_sort_array(arr, positions))
 
-for i in range(m):
-    prefecture, year = map(int, input().split())
-    if prefecture not in prefectures:
-        prefectures[prefecture] = []
-    prefectures[prefecture].append(year)
-
-for prefecture, years in prefectures.items():
-    for i, year in enumerate(sorted(years), start=1):
-        print(f"{prefecture:06d}{i:06d}")
+if __name__ == '__main__':
+    main()
 

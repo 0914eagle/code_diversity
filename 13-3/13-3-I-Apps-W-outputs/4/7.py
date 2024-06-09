@@ -1,27 +1,15 @@
 
-def give_candies(n, k, a):
-    # Initialize variables
-    days = 0
-    given_candies = 0
-
-    # Loop through the days
-    for i in range(n):
-        # Check if Arya has enough candies to give Bran
-        if given_candies + a[i] <= k:
-            # Give all the candies Arya has
-            given_candies += a[i]
-        else:
-            # Give Bran the maximum number of candies Arya can give (8)
-            given_candies += 8
-
-        # Check if Arya has given Bran all the candies he needs
-        if given_candies == k:
-            # Return the number of days it took to give Bran all the candies
-            return days
-
-        # Increment the number of days
-        days += 1
-
-    # If Arya couldn't give Bran all the candies, return -1
-    return -1
+def f1(board1, board2):
+    # Initialize a list to store the positions of the bishwocks
+    bishwocks = []
+    # Iterate through the rows of the board
+    for i in range(len(board1)):
+        # Iterate through the columns of the board
+        for j in range(len(board1[0])):
+            # Check if the current position is empty and not occupied by a pawn
+            if board1[i][j] == "0" and board2[i][j] == "0":
+                # Add the current position to the list of bishwocks
+                bishwocks.append((i, j))
+    # Return the length of the list of bishwocks, which is the maximum amount of bishwocks that can be placed on the board
+    return len(bishwocks)
 

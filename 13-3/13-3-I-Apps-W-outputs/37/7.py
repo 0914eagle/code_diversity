@@ -1,23 +1,37 @@
 
-def can_grasshopper_eat_insect(n, k, line):
-    # Initialize variables
-    start_index = line.index("G")
-    end_index = line.index("T")
-    jumps = 0
+def get_ranking(points1, points2):
+    # Calculate the total points for each contestant
+    total_points = points1 + points2
+    
+    # Sort the contestants in descending order based on their total points
+    ranking = sorted(range(len(total_points)), key=lambda k: total_points[k], reverse=True)
+    
+    return ranking
 
-    # Loop through the line and check if the grasshopper can jump to the end index
-    for i in range(start_index, end_index):
-        if line[i] == ".":
-            jumps += 1
-            if jumps == k:
-                return True
-        else:
-            jumps = 0
+def get_highest_lowest_place(ranking, n):
+    # Get the highest and lowest place for the nth contestant
+    highest_place = ranking.index(n) + 1
+    lowest_place = len(ranking) - ranking[::-1].index(n)
+    
+    return highest_place, lowest_place
 
-    # If the grasshopper reached the end index, return True
-    if jumps == k:
-        return True
+def main():
+    # Read the number of contestants and their points from stdin
+    num_contestants = int(input())
+    points1 = []
+    points2 = []
+    for _ in range(num_contestants):
+        points1.append(int(input()))
+        points2.append(int(input()))
+    
+    # Get the ranking of the contestants
+    ranking = get_ranking(points1, points2)
+    
+    # Print the highest and lowest place for each contestant
+    for i in range(num_contestants):
+        highest_place, lowest_place = get_highest_lowest_place(ranking, i)
+        print(highest_place, lowest_place)
 
-    # Otherwise, return False
-    return False
+if __name__ == '__main__':
+    main()
 

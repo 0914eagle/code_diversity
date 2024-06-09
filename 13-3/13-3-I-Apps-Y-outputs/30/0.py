@@ -1,20 +1,22 @@
 
-def get_min_chars(route):
+def get_min_watering_operations(heights):
     # Initialize variables
-    num_chars = len(route)
-    macro_chars = 0
-    macro_used = False
+    n = len(heights)
+    min_operations = 0
+    current_height = 0
 
-    # Iterate through the route and check for repetition
-    for i in range(len(route) - 1):
-        if route[i] == route[i + 1]:
-            # If a repetition is found, calculate the number of characters needed for the macro
-            macro_chars += 2 + len(route[i:i + 2])
-            macro_used = True
+    # Iterate through the heights and check if the current height is greater than or equal to the required height
+    for i in range(n):
+        if heights[i] >= current_height:
+            current_height = heights[i]
+        else:
+            min_operations += 1
+            current_height += 1
 
-    # If a macro was used, return the minimum number of characters needed with the macro
-    if macro_used:
-        return num_chars - macro_chars
-    else:
-        return num_chars
+    return min_operations
+
+if __name__ == '__main__':
+    n = int(input())
+    heights = list(map(int, input().split()))
+    print(get_min_watering_operations(heights))
 

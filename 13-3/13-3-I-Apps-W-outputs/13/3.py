@@ -1,24 +1,14 @@
 
-import math
-
-def solve(N, A):
-    # Calculate the greatest common divisor (gcd) of all A_i
-    gcd = math.gcd(A[0], math.gcd(A[1], A[2]))
-
-    # Divide all A_i by their gcd
-    A = [a // gcd for a in A]
-
-    # Calculate the sum of the reciprocals of all A_i
-    sum_reciprocals = sum([1 / a for a in A])
-
-    # Calculate the minimum possible value of B_1 + ... + B_N
-    min_value = sum_reciprocals * gcd
-
-    # Return the result modulo (10^9 + 7)
-    return min_value % (10**9 + 7)
-
-# Main
-N = int(input())
-A = list(map(int, input().split()))
-print(solve(N, A))
+def count_good_phone_numbers(n, k, a, b):
+    modulo = 10**9 + 7
+    count = 0
+    for i in range(10**k):
+        number = str(i).zfill(k)
+        block = [int(number[j*k:(j+1)*k]) for j in range(n//k)]
+        if block[0] != b[0]:
+            count += 1
+        for i in range(1, n//k):
+            if block[i] != b[i] and block[i-1] % a[i] == 0:
+                count += 1
+    return count % modulo
 

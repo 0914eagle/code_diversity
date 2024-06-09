@@ -1,25 +1,29 @@
 
-import sys
+def get_minimum_moves(a, m):
+    n = len(a)
+    c = [0] * m
+    for i in range(n):
+        c[a[i] % m] += 1
+    moves = 0
+    for i in range(m):
+        if c[i] != n // m:
+            moves += abs(c[i] - n // m)
+    return moves
 
-n = int(input())
-values = list(map(int, input().split()))
-costs = list(map(int, input().split()))
+def get_modified_array(a, m):
+    n = len(a)
+    c = [0] * m
+    for i in range(n):
+        c[a[i] % m] += 1
+    modified_array = []
+    for i in range(m):
+        for j in range(c[i], n // m + c[i]):
+            modified_array.append((j + 1) % m)
+    return modified_array
 
-# Initialize the maximum possible value of X-Y
-max_value = 0
-
-# Iterate over all possible combinations of gems
-for i in range(1 << n):
-    # Calculate the sum of values and costs for the current combination
-    current_values = 0
-    current_costs = 0
-    for j in range(n):
-        if i & (1 << j):
-            current_values += values[j]
-            current_costs += costs[j]
-    
-    # Update the maximum possible value of X-Y
-    max_value = max(max_value, current_values - current_costs)
-
-print(max_value)
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    a = list(map(int, input().split()))
+    print(get_minimum_moves(a, m))
+    print(*get_modified_array(a, m))
 

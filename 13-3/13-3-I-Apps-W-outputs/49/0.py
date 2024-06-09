@@ -1,47 +1,20 @@
 
-def solve(n, log):
-    # Initialize variables
-    heap = []
-    corrected_log = []
-    min_value = None
+def is_bracket_sequence(strings):
+    stack = []
+    for string in strings:
+        for char in string:
+            if char == "(":
+                stack.append(char)
+            elif char == ")":
+                if not stack or stack.pop() != "(":
+                    return False
+    return not stack
 
-    # Iterate through the log
-    for record in log:
-        # Get the operation and value
-        operation, value = record.split()
+def main():
+    num_strings = int(input())
+    strings = [input() for _ in range(num_strings)]
+    print("Yes") if is_bracket_sequence(strings) else print("No")
 
-        # Insert the value into the heap
-        if operation == "insert":
-            heap.append(int(value))
-
-        # Get the minimum value from the heap
-        elif operation == "getMin":
-            # If the heap is empty, add a record to insert the minimum value
-            if not heap:
-                corrected_log.append(f"insert {value}")
-                heap.append(int(value))
-            # If the heap is not empty, get the minimum value and compare it to the expected value
-            else:
-                min_value = min(heap)
-                if min_value != int(value):
-                    corrected_log.append(f"removeMin")
-                    heap.remove(min_value)
-                    corrected_log.append(f"insert {value}")
-                    heap.append(int(value))
-
-        # Remove the minimum value from the heap
-        elif operation == "removeMin":
-            # If the heap is empty, add a record to insert the minimum value
-            if not heap:
-                corrected_log.append(f"insert {value}")
-                heap.append(int(value))
-            # If the heap is not empty, remove the minimum value and compare it to the expected value
-            else:
-                min_value = min(heap)
-                if min_value != int(value):
-                    corrected_log.append(f"removeMin")
-                    heap.remove(min_value)
-
-    # Return the corrected log
-    return corrected_log
+if __name__ == '__main__':
+    main()
 

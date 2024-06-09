@@ -1,31 +1,29 @@
 
-import sys
+def find_disintegration_points(droplets, sensors):
+    disintegration_points = []
+    for droplet in droplets:
+        for sensor in sensors:
+            if sensor[0] <= droplet[0] <= sensor[1] and sensor[2] == droplet[1]:
+                disintegration_points.append(sensor[2])
+                break
+        else:
+            disintegration_points.append(0)
+    return disintegration_points
 
-def get_distinct_routes(n, m, roads):
-    # Initialize a graph with n nodes and m edges
-    graph = [[] for _ in range(n)]
-    for a, b in roads:
-        graph[a-1].append(b-1)
-    
-    # Perform DFS to count the number of distinct routes
-    visited = [False] * n
-    count = 0
-    def dfs(curr):
-        nonlocal count
-        visited[curr] = True
-        for neighbor in graph[curr]:
-            if not visited[neighbor]:
-                dfs(neighbor)
-        count += 1
-    
-    dfs(0)
-    return count
+def main():
+    num_droplets, num_sensors = map(int, input().split())
+    droplets = []
+    for _ in range(num_droplets):
+        x, y = map(int, input().split())
+        droplets.append((x, y))
+    sensors = []
+    for _ in range(num_sensors):
+        x1, x2, y = map(int, input().split())
+        sensors.append((x1, x2, y))
+    disintegration_points = find_disintegration_points(droplets, sensors)
+    for point in disintegration_points:
+        print(point)
 
-n, m = map(int, input().split())
-roads = []
-for _ in range(m):
-    a, b = map(int, input().split())
-    roads.append((a, b))
-
-print(get_distinct_routes(n, m, roads))
+if __name__ == '__main__':
+    main()
 

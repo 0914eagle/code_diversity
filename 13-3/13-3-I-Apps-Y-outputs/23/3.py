@@ -1,13 +1,21 @@
 
-def solve():
-    N = int(input())
-    cards = list(map(int, input().split()))
+def is_height_non_decreasing(heights):
+    for i in range(len(heights) - 1):
+        if heights[i] > heights[i + 1]:
+            return False
+    return True
 
-    # Alice's optimal strategy is to take the card with the highest value
-    # Bob's optimal strategy is to take the card with the lowest value
-    # The difference in their scores will be the difference between the sum of Alice's cards and the sum of Bob's cards
-    alice_score = sum(sorted(cards, reverse=True))
-    bob_score = sum(sorted(cards))
+def solve(heights):
+    for i in range(len(heights)):
+        if heights[i] > 1:
+            heights[i] -= 1
+            if is_height_non_decreasing(heights):
+                return "Yes"
+            heights[i] += 1
+    return "No"
 
-    return alice_score - bob_score
+if __name__ == '__main__':
+    num_squares = int(input())
+    heights = list(map(int, input().split()))
+    print(solve(heights))
 

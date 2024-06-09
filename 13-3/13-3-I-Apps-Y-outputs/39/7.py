@@ -1,4 +1,7 @@
 
-def get_min_inspectors(n, d):
-    return (n + d - 1) // d
+def hiss_check(word):
+    if 'ss' in word:
+        return 'hiss'
+    else:
+        return 'no hiss'
 

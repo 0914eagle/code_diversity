@@ -1,27 +1,39 @@
 
-def get_minimum_panels(defective_cells):
-    # Initialize a set to store the coordinates of the defective cells
-    defective_cells_set = set(defective_cells)
-    # Initialize a dictionary to store the number of panels required for each cell
-    panels_required = {}
-    # Iterate over the defective cells
-    for cell in defective_cells:
-        # Get the x, y, and z coordinates of the cell
-        x, y, z = cell
-        # Initialize the number of panels required for the current cell to 0
-        panels_required[cell] = 0
-        # Check if the cell is on the edge of the grid
-        if x == 0 or x == 9 or y == 0 or y == 9 or z == 0 or z == 9:
-            # If the cell is on the edge of the grid, it requires 3 panels to be contained
-            panels_required[cell] += 3
-        else:
-            # If the cell is not on the edge of the grid, it requires 2 panels to be contained
-            panels_required[cell] += 2
-        # Check if the cell has any defective neighbors
-        for neighbor in [(x-1, y, z), (x+1, y, z), (x, y-1, z), (x, y+1, z), (x, y, z-1), (x, y, z+1)]:
-            if neighbor in defective_cells_set:
-                # If the cell has a defective neighbor, it requires an additional panel to be contained
-                panels_required[cell] += 1
-    # Return the minimum number of panels required to contain all the defective cells
-    return min(panels_required.values())
+def is_good_graph(graph):
+    # Check if the graph is a good graph
+    # A good graph has no self-loops and no multi-edges
+    # Also, vertex 1 and vertex N are not connected
+    return not any(graph[i][i] for i in range(1, len(graph))) and not any(graph[i][j] and graph[j][i] for i in range(1, len(graph)) for j in range(i+1, len(graph))) and not graph[1][len(graph)]
+
+def play_game(graph):
+    # Play the game optimally
+    # Taro goes first, then Jiro goes
+    while is_good_graph(graph):
+        # Taro's turn
+        graph = add_edge(graph, 1, 2)
+        if not is_good_graph(graph):
+            return "First"
+        # Jiro's turn
+        graph = add_edge(graph, 2, 3)
+        if not is_good_graph(graph):
+            return "Second"
+    return "First" if graph[1][len(graph)] else "Second"
+
+def add_edge(graph, u, v):
+    # Add an edge between vertices u and v bidirectionally
+    graph[u][v] = graph[v][u] = 1
+    return graph
+
+def main():
+    num_cases = int(input())
+    for case in range(1, num_cases+1):
+        n, m = map(int, input().split())
+        graph = [[0] * (n+1) for _ in range(n+1)]
+        for _ in range(m):
+            a, b = map(int, input().split())
+            graph[a][b] = graph[b][a] = 1
+        print("Case {}: {}".format(case, play_game(graph)))
+
+if __name__ == '__main__':
+    main()
 

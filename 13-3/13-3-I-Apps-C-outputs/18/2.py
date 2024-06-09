@@ -1,33 +1,35 @@
 
-def get_safe_wet_plan(n, strategic_points, dry_plan):
-    # Initialize a set to store the pegs that are safe to remove
-    safe_to_remove = set()
+def f1(W, S, C, K):
+    # Initialize variables
+    wolf_count = W
+    sheep_count = S
+    cabbage_count = C
+    boat_capacity = K
+    loss_occured = False
 
-    # Iterate through the dry plan and mark the pegs that are safe to remove
-    for i in dry_plan:
-        if i not in strategic_points[i]:
-            safe_to_remove.add(i)
+    # Check if the number of wolves is greater than the number of sheep
+    if wolf_count > sheep_count:
+        loss_occured = True
 
-    # Initialize a set to store the pegs that are currently in use
-    in_use = set()
+    # Check if the number of sheep is greater than the number of cabbages
+    if sheep_count > cabbage_count:
+        loss_occured = True
 
-    # Iterate through the dry plan and add the pegs to the in_use set
-    for i in dry_plan:
-        in_use.add(i)
+    # Check if the sum of the number of wolves, sheep, and cabbages is greater than the boat capacity
+    if wolf_count + sheep_count + cabbage_count > boat_capacity:
+        loss_occured = True
 
-    # Initialize a list to store the wet plan
-    wet_plan = []
+    # Return the result
+    if loss_occured:
+        return "NO"
+    else:
+        return "YES"
 
-    # Iterate through the dry plan and add the pegs to the wet plan
-    for i in dry_plan:
-        if i in safe_to_remove and len(in_use) <= 10 * len(dry_plan):
-            wet_plan.append(i)
-            in_use.add(i)
+def f2(...):
+    # Implement f2 here
+    pass
 
-    # If the wet plan is empty, return -1
-    if not wet_plan:
-        return -1
-
-    # Return the wet plan
-    return wet_plan
+if __name__ == '__main__':
+    W, S, C, K = map(int, input().split())
+    print(f1(W, S, C, K))
 

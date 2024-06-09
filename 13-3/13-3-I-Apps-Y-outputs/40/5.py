@@ -1,10 +1,11 @@
 
-def get_max_value(sequence, index):
-    return max(sequence[:index] + sequence[index+1:])
+import datetime
+
+def get_day_of_week(day, month):
+    date = datetime.date(2009, month, day)
+    return date.strftime("%A")
 
 if __name__ == '__main__':
-    n = int(input())
-    sequence = list(map(int, input().split()))
-    for i in range(n):
-        print(get_max_value(sequence, i))
+    day, month = map(int, input().split())
+    print(get_day_of_week(day, month))
 

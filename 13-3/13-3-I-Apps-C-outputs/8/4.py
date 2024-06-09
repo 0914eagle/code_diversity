@@ -1,31 +1,68 @@
 
-def get_min_extensions(a, b, h, w, n, extensions):
-    # Initialize the minimum number of extensions needed to be 0
-    min_extensions = 0
+def f1(n, m, pairs):
+    # Initialize a graph with n vertices and m edges
+    graph = [[] for _ in range(n)]
+    for p, q, c in pairs:
+        graph[p - 1].append((q - 1, c))
+        graph[q - 1].append((p - 1, c))
+    
+    # Use a minimum spanning tree algorithm to find the optimal grouping
+    mst = []
+    visited = [False] * n
+    def dfs(i):
+        nonlocal mst
+        visited[i] = True
+        for j, c in graph[i]:
+            if not visited[j]:
+                dfs(j)
+                mst.append((i, j, c))
+    
+    dfs(0)
+    
+    # Calculate the total carbon dioxide emissions
+    total_emissions = 0
+    for i, j, c in mst:
+        total_emissions += c
+    
+    return total_emissions
 
-    # Check if the rectangle can be placed on the initial field
-    if a <= h and b <= w:
-        return min_extensions
+def f2(n, m, pairs):
+    # Initialize a graph with n vertices and m edges
+    graph = [[] for _ in range(n)]
+    for p, q, c in pairs:
+        graph[p - 1].append((q - 1, c))
+        graph[q - 1].append((p - 1, c))
+    
+    # Use a minimum spanning tree algorithm to find the optimal grouping
+    mst = []
+    visited = [False] * n
+    def dfs(i):
+        nonlocal mst
+        visited[i] = True
+        for j, c in graph[i]:
+            if not visited[j]:
+                dfs(j)
+                mst.append((i, j, c))
+    
+    dfs(0)
+    
+    # Check if the total number of groups is even
+    num_groups = len(mst) // 2
+    if num_groups % 2 != 0:
+        return "impossible"
+    
+    # Calculate the total carbon dioxide emissions
+    total_emissions = 0
+    for i, j, c in mst:
+        total_emissions += c
+    
+    return total_emissions
 
-    # Sort the extensions in descending order
-    extensions.sort(reverse=True)
-
-    # Loop through the extensions and check if they can be used to enlarge the field
-    for extension in extensions:
-        # Check if the extension can be used to enlarge the width of the field
-        if extension <= h:
-            h *= extension
-            min_extensions += 1
-
-        # Check if the extension can be used to enlarge the length of the field
-        if extension <= w:
-            w *= extension
-            min_extensions += 1
-
-        # Check if the rectangle can be placed on the field after using the extension
-        if a <= h and b <= w:
-            return min_extensions
-
-    # If the rectangle can't be placed on the field with all extensions, return -1
-    return -1
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    pairs = []
+    for _ in range(m):
+        p, q, c = map(int, input().split())
+        pairs.append((p, q, c))
+    print(f2(n, m, pairs))
 

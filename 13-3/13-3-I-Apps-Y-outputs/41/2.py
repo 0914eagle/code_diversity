@@ -1,15 +1,12 @@
 
-def is_possible(a, b, c, n):
-    if a + b + c != n:
-        return "NO"
-    if a == b == c:
-        return "YES"
-    if a == b or b == c or c == a:
-        return "NO"
-    return "YES"
+def get_hours_until_new_year(hour):
+    current_time = datetime.datetime.now()
+    new_year_time = datetime.datetime(current_time.year, 12, 30, hour, 0, 0)
+    if new_year_time < current_time:
+        new_year_time += datetime.timedelta(days=1)
+    return (new_year_time - current_time).seconds // 3600
 
-t = int(input())
-for i in range(t):
-    a, b, c, n = map(int, input().split())
-    print(is_possible(a, b, c, n))
+if __name__ == '__main__':
+    hour = int(input())
+    print(get_hours_until_new_year(hour))
 

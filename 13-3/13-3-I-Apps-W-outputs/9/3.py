@@ -1,29 +1,36 @@
 
-import sys
+def get_min_changes(s, t):
+    # Initialize variables
+    n = len(s)
+    m = len(t)
+    changes = 0
+    positions = []
 
-def get_input():
-    return list(map(int, sys.stdin.readline().strip().split()))
+    # Iterate through the string s
+    for i in range(n):
+        # If the symbol at position i in s is not equal to the symbol at position i in t
+        if s[i] != t[i]:
+            # Increment the number of changes
+            changes += 1
+            # Add the position i to the list of positions
+            positions.append(i+1)
 
-def solve(H, W, M, targets):
-    # Initialize a 2D array to store the number of targets destroyed for each cell
-    destroyed = [[0] * W for _ in range(H)]
+    # Return the number of changes and the list of positions
+    return changes, positions
 
-    # Loop through each target and mark the cells in the row and column as destroyed
-    for i in range(M):
-        h, w = targets[i]
-        destroyed[h-1][w-1] = 1
-        for j in range(H):
-            destroyed[j][w-1] = 1
-        for j in range(W):
-            destroyed[h-1][j] = 1
+def main():
+    # Read the input
+    n, m = map(int, input().split())
+    s = input()
+    t = input()
 
-    # Return the maximum number of targets destroyed
-    return max(map(max, destroyed))
+    # Call the function to get the minimum number of changes and the list of positions
+    changes, positions = get_min_changes(s, t)
 
-H, W, M = get_input()
-targets = []
-for i in range(M):
-    h, w = get_input()
-    targets.append((h, w))
-print(solve(H, W, M, targets))
+    # Print the output
+    print(changes)
+    print(*positions)
+
+if __name__ == '__main__':
+    main()
 

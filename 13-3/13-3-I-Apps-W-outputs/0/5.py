@@ -1,24 +1,13 @@
 
-def solve(n, l, r):
-    # Initialize a list to store the cycle
-    cycle = []
+def f1(N, a, x, f):
+    # Calculate the total number of satoshies Alice has
+    total_satoshis = sum(a)
     
-    # Start at vertex 1
-    curr_vertex = 1
+    # Calculate the number of transactions needed to split the satoshies
+    num_transactions = (total_satoshis - 1) // (x - f) + 1
     
-    # Iterate until we have visited all edges
-    while len(cycle) < n * (n - 1) + 1:
-        # If we have visited all vertices, start again from vertex 1
-        if curr_vertex == n + 1:
-            curr_vertex = 1
-        
-        # If we have not visited the current vertex before, add it to the cycle
-        if curr_vertex not in cycle:
-            cycle.append(curr_vertex)
-        
-        # Move to the next vertex
-        curr_vertex += 1
+    # Calculate the total fee needed to pay
+    total_fee = num_transactions * f
     
-    # Return the segment of the cycle specified by l and r
-    return cycle[l-1:r]
+    return total_fee
 

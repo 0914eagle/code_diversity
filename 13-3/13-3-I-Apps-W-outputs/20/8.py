@@ -1,36 +1,33 @@
 
-def get_mex(subset):
-    mex = 0
-    while mex in subset:
-        mex += 1
-    return mex
+def find_beautiful_number(p, x):
+    # Initialize a list to store the possible numbers
+    numbers = []
+    
+    # Iterate from 1 to 10^6
+    for i in range(1, 10**6):
+        # Convert the number to a string
+        num_str = str(i)
+        
+        # Check if the number has the required length
+        if len(num_str) == p:
+            # Check if the number has no leading zeroes
+            if num_str.lstrip("0") == num_str:
+                # Check if the number grows by x times when the last digit is moved to the beginning
+                if int(num_str[-1]) * x == int(num_str[1:] + num_str[0]):
+                    numbers.append(i)
+    
+    # Check if at least one number was found
+    if len(numbers) > 0:
+        # Return the minimum number
+        return min(numbers)
+    else:
+        # Return "Impossible" if no number was found
+        return "Impossible"
 
-def get_max_mex(numbers):
-    max_mex = 0
-    for i in range(len(numbers)):
-        for j in range(i+1, len(numbers)):
-            if numbers[i] == numbers[j]:
-                continue
-            else:
-                max_mex = max(max_mex, get_mex(numbers[i:j+1]))
-    return max_mex
+def main():
+    p, x = map(int, input().split())
+    print(find_beautiful_number(p, x))
 
-def get_subsets(numbers):
-    subsets = []
-    for i in range(len(numbers)):
-        for j in range(i+1, len(numbers)):
-            if numbers[i] == numbers[j]:
-                continue
-            else:
-                subsets.append(numbers[i:j+1])
-    return subsets
-
-def get_max_mex_subsets(numbers):
-    max_mex = 0
-    for subset in get_subsets(numbers):
-        max_mex = max(max_mex, get_max_mex(subset))
-    return max_mex
-
-def solve(numbers):
-    return get_max_mex_subsets(numbers)
+if __name__ == '__main__':
+    main()
 

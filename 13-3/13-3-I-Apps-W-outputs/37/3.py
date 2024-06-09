@@ -1,25 +1,44 @@
 
-def can_grasshopper_eat_insect(n, k, line):
-    # Initialize the grasshopper's position and the target insect's position
-    grasshopper_pos = line.index("G")
-    insect_pos = line.index("T")
+def get_ranking(contestants):
+    # Sort the contestants in descending order based on the sum of points from all three rounds
+    contestants.sort(key=lambda x: x[0] + x[1], reverse=True)
     
-    # Check if the grasshopper's position is within the range of the line
-    if grasshopper_pos < 0 or grasshopper_pos >= n:
-        return "NO"
+    # Initialize the ranking list with the first place
+    ranking = [1]
     
-    # Check if the target insect's position is within the range of the line
-    if insect_pos < 0 or insect_pos >= n:
-        return "NO"
+    # Iterate through the contestants and assign the appropriate place based on the sum of points
+    for i in range(1, len(contestants)):
+        if contestants[i][0] + contestants[i][1] == contestants[i-1][0] + contestants[i-1][1]:
+            ranking.append(ranking[i-1])
+        else:
+            ranking.append(ranking[i-1] + 1)
     
-    # Check if the grasshopper can reach the target insect by jumping k cells at a time
-    if abs(grasshopper_pos - insect_pos) % k == 0:
-        return "YES"
+    return ranking
+
+def get_highest_lowest_place(contestants, ranking):
+    highest_place = []
+    lowest_place = []
     
-    # Check if the grasshopper can reach the target insect by jumping over obstacles
-    if line[grasshopper_pos + k] != "#" and line[grasshopper_pos - k] != "#":
-        return "YES"
+    for i in range(len(contestants)):
+        highest_place.append(ranking[i])
+        lowest_place.append(ranking[i])
     
-    # Otherwise, the grasshopper cannot reach the target insect
-    return "NO"
+    return highest_place, lowest_place
+
+def main():
+    num_contestants = int(input())
+    contestants = []
+    
+    for i in range(num_contestants):
+        points1, points2 = map(int, input().split())
+        contestants.append((points1, points2))
+    
+    ranking = get_ranking(contestants)
+    highest_place, lowest_place = get_highest_lowest_place(contestants, ranking)
+    
+    for i in range(num_contestants):
+        print(highest_place[i], lowest_place[i])
+
+if __name__ == '__main__':
+    main()
 

@@ -1,15 +1,10 @@
 
-n = int(input())
-
-for i in range(n):
-    k = int(input())
-    menu = []
-    for j in range(k+1):
-        menu.append(input())
-    
-    if "pea soup" in menu and "pancakes" in menu:
-        print(menu[0])
-        break
-else:
-    print("Anywhere is fine I guess")
+def get_min_diff(s):
+    min_diff = float('inf')
+    for i in range(len(s) - 2):
+        x = int(s[i:i+3])
+        diff = abs(x - 753)
+        if diff < min_diff:
+            min_diff = diff
+    return min_diff
 

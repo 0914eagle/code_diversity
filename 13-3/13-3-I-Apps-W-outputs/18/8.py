@@ -1,22 +1,25 @@
 
-from math import gcd
+def get_composite_summands(n):
+    summands = []
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            summands.append(i)
+            if n // i != i:
+                summands.append(n // i)
+    return summands
 
-def modular_exponentiation(base, exponent, modulus):
-    result = 1
-    base = base % modulus
-    while exponent > 0:
-        if exponent % 2 == 1:
-            result = (result * base) % modulus
-        exponent = exponent // 2
-        base = (base * base) % modulus
-    return result
+def get_max_composite_summands(n):
+    summands = get_composite_summands(n)
+    if len(summands) == 0:
+        return -1
+    return len(summands)
 
-def solve(A, B, n, x):
-    result = x
-    for i in range(n):
-        result = (A * result + B) % 1000000007
-    return result
+def main():
+    q = int(input())
+    for i in range(q):
+        n = int(input())
+        print(get_max_composite_summands(n))
 
-A, B, n, x = map(int, input().split())
-print(solve(A, B, n, x))
+if __name__ == '__main__':
+    main()
 

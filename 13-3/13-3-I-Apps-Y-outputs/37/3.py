@@ -1,15 +1,20 @@
 
-def solve(a, k):
-    n = len(a)
-    x = 0
-    count = 0
-    while True:
-        for i in range(n):
-            if a[i] % k != 0:
-                a[i] += x
-                count += 1
-        x += 1
-        if all(a[i] % k == 0 for i in range(n)):
-            break
-    return count
+def get_min_perimeter(a, b):
+    # Initialize the minimum perimeter to infinity
+    min_perimeter = float('inf')
+    
+    # Iterate over all possible positions of the rectangles
+    for x in range(a + b):
+        for y in range(a + b - x):
+            # Check if the rectangle formed by the red tiles has the correct dimensions
+            if x == a and y == b:
+                # The perimeter of the rectangle is 2(a + b)
+                min_perimeter = min(min_perimeter, 2 * (a + b))
+            # Check if the rectangle formed by the blue tiles has the correct dimensions
+            elif x == b and y == a:
+                # The perimeter of the rectangle is 2(a + b)
+                min_perimeter = min(min_perimeter, 2 * (a + b))
+    
+    # Return the minimum perimeter
+    return min_perimeter
 

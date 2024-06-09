@@ -1,30 +1,56 @@
 
-def get_button_presses(f, s, g, u, d):
+def f1(n, s, m, dictionary):
     # Initialize variables
-    pushes = 0
-    current_floor = s
-
-    # Loop until we reach the goal floor or exceed the number of floors
-    while current_floor != g and current_floor <= f:
-        # Calculate the distance to the goal floor
-        distance = abs(g - current_floor)
-
-        # Check if we can reach the goal floor with the UP button
-        if distance <= u:
-            # Press the UP button and move up the distance
-            current_floor += distance
-            pushes += 1
-
-        # Check if we can reach the goal floor with the DOWN button
-        elif distance <= d:
-            # Press the DOWN button and move down the distance
-            current_floor -= distance
-            pushes += 1
-
-        # If we cannot reach the goal floor with either button, use the stairs
+    correct_translations = 0
+    incorrect_translations = 0
+    
+    # Iterate through each word in the sentence
+    for word in s.split():
+        # Check if the word is in the dictionary
+        if word in dictionary:
+            # If the word is in the dictionary, check if it is a correct translation
+            if dictionary[word] == "correct":
+                correct_translations += 1
+            else:
+                incorrect_translations += 1
         else:
-            return "use the stairs"
+            # If the word is not in the dictionary, it is an incorrect translation
+            incorrect_translations += 1
+    
+    # Return the number of correct and incorrect translations
+    return correct_translations, incorrect_translations
 
-    # Return the number of button presses
-    return pushes
+def f2(n, s, m, dictionary):
+    # Initialize variables
+    correct_translations = 0
+    incorrect_translations = 0
+    
+    # Iterate through each word in the sentence
+    for word in s.split():
+        # Check if the word is in the dictionary
+        if word in dictionary:
+            # If the word is in the dictionary, check if it is a correct translation
+            if dictionary[word] == "correct":
+                correct_translations += 1
+            else:
+                incorrect_translations += 1
+        else:
+            # If the word is not in the dictionary, it is an incorrect translation
+            incorrect_translations += 1
+    
+    # Return the number of correct and incorrect translations
+    return correct_translations, incorrect_translations
+
+if __name__ == '__main__':
+    n = int(input())
+    s = input()
+    m = int(input())
+    dictionary = {}
+    for i in range(m):
+        word, translation, correct = input().split()
+        dictionary[word] = translation
+    
+    correct_translations, incorrect_translations = f1(n, s, m, dictionary)
+    print(correct_translations, "correct")
+    print(incorrect_translations, "incorrect")
 

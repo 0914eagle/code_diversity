@@ -1,25 +1,33 @@
 
-import itertools
+def get_min_messages(spies, enemies, connections):
+    # Initialize a graph with the given connections
+    graph = {i: set() for i in range(spies)}
+    for connection in connections:
+        graph[connection[0]].add(connection[1])
+        graph[connection[1]].add(connection[0])
+    
+    # Initialize a set to keep track of visited spies
+    visited = set()
+    
+    # Initialize a queue to do a BFS traversal of the graph
+    queue = [0]
+    
+    # Do a BFS traversal of the graph starting from spy 0
+    while queue:
+        current = queue.pop(0)
+        if current not in visited:
+            visited.add(current)
+            queue += list(graph[current])
+    
+    # Return the number of spies in the visited set, which is the minimum number of messages needed to send the information to all spies in the network
+    return len(visited)
 
-def count_sequences(n, c):
-    # Initialize a list to store the sequences
-    sequences = []
-    
-    # Iterate over all possible sequences of length n
-    for seq in itertools.permutations(range(1, n + 1)):
-        # Initialize a variable to store the number of confused pairs
-        confused_pairs = 0
-        
-        # Iterate over all pairs of numbers in the sequence
-        for i in range(n - 1):
-            # If the number that comes earlier in the sequence is larger than the later number, increment the number of confused pairs
-            if seq[i] > seq[i + 1]:
-                confused_pairs += 1
-        
-        # If the number of confused pairs is equal to c, add the sequence to the list of sequences
-        if confused_pairs == c:
-            sequences.append(seq)
-    
-    # Return the number of sequences modulo 1000000007
-    return len(sequences) % 1000000007
+def main():
+    spies, enemies, connections = map(int, input().split())
+    connections = [tuple(map(int, input().split())) for _ in range(connections)]
+    enemies = set(map(int, input().split()))
+    print(get_min_messages(spies, enemies, connections))
+
+if __name__ == '__main__':
+    main()
 

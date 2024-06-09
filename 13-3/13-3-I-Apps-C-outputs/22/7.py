@@ -1,24 +1,34 @@
 
-import sys
+def can_obtain_array(a, q):
+    n = len(a)
+    segments = []
+    for i in range(q):
+        segments.append((i, i))
+    for i in range(n):
+        if a[i] != 0:
+            segments[a[i] - 1] = (i, i)
+    for i in range(n):
+        if segments[i][0] != segments[i][1]:
+            return "NO"
+    return "YES"
 
-def get_boss_and_subordinates(employees, query_id):
-    boss_id = 0
-    subordinates = 0
-    for employee in employees:
-        if employee[0] == query_id:
-            boss_id = employee[1]
-            subordinates = employee[2]
-            break
-    return boss_id, subordinates
+def restore_array(a, q):
+    n = len(a)
+    segments = []
+    for i in range(q):
+        segments.append((i, i))
+    for i in range(n):
+        if a[i] != 0:
+            segments[a[i] - 1] = (i, i)
+    result = [0] * n
+    for i in range(n):
+        result[segments[i][0]] = i + 1
+    return result
 
-employees = []
-m, q = map(int, input().split())
-for i in range(m):
-    employee_id, salary, height = map(int, input().split())
-    employees.append((employee_id, salary, height))
-
-for i in range(q):
-    query_id = int(input())
-    boss_id, subordinates = get_boss_and_subordinates(employees, query_id)
-    print(boss_id, subordinates)
+if __name__ == '__main__':
+    n, q = map(int, input().split())
+    a = list(map(int, input().split()))
+    print(can_obtain_array(a, q))
+    if can_obtain_array(a, q) == "YES":
+        print(*restore_array(a, q))
 

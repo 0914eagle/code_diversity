@@ -1,18 +1,48 @@
 
-import sys
+def get_min_instability(towers, k):
+    # Initialize the minimum instability and the number of operations
+    min_instability = float('inf')
+    num_operations = 0
+    
+    # Loop through all possible combinations of towers
+    for i in range(len(towers)):
+        for j in range(i+1, len(towers)):
+            # Check if the instability of the combination is less than the current minimum
+            instability = abs(towers[i] - towers[j])
+            if instability < min_instability:
+                # Update the minimum instability and the number of operations
+                min_instability = instability
+                num_operations = 1
+            # Check if the instability of the combination is equal to the current minimum
+            elif instability == min_instability:
+                # Increment the number of operations
+                num_operations += 1
+    
+    # Return the minimum instability and the number of operations
+    return min_instability, num_operations
 
-def k_tree_paths(n, k, d):
-    mod = 1000000007
-    dp = [[0] * (n + 1) for _ in range(k + 1)]
-    dp[0][0] = 1
-    for i in range(1, k + 1):
-        for j in range(1, n + 1):
-            if j >= d:
-                dp[i][j] = (dp[i - 1][j - d] + dp[i][j - 1]) % mod
-            else:
-                dp[i][j] = dp[i][j - 1]
-    return dp[k][n]
+def get_operations(towers, k):
+    # Initialize the list of operations
+    operations = []
+    
+    # Loop through all possible combinations of towers
+    for i in range(len(towers)):
+        for j in range(i+1, len(towers)):
+            # Check if the instability of the combination is less than the current minimum
+            instability = abs(towers[i] - towers[j])
+            if instability == min_instability:
+                # Add the operation to the list of operations
+                operations.append([i, j])
+    
+    # Return the list of operations
+    return operations
 
-n, k, d = map(int, sys.stdin.readline().split())
-print(k_tree_paths(n, k, d))
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    towers = list(map(int, input().split()))
+    min_instability, num_operations = get_min_instability(towers, k)
+    operations = get_operations(towers, k)
+    print(min_instability, num_operations)
+    for operation in operations:
+        print(*operation)
 

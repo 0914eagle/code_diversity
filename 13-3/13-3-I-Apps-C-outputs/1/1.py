@@ -1,18 +1,30 @@
 
-def black_vienna(investigations):
-    num_investigations = len(investigations)
-    num_suspects = 26
-    num_solutions = 0
+def kahn_algorithm(graph):
+    
+    sorted_nodes = []
+    while graph:
+        sources = [node for node in graph if not graph[node]]
+        if not sources:
+            break
+        source = sources[0]
+        graph.pop(source)
+        for neighbor in graph:
+            graph[neighbor].discard(source)
+        sorted_nodes.append(source)
+    return sorted_nodes
 
-    for i in range(num_investigations):
-        suspects = investigations[i][:2]
-        player = investigations[i][2]
-        reply = investigations[i][3]
+def largest_s_size(graph):
+    
+    sources = [node for node in graph if not graph[node]]
+    return len(sources)
 
-        if player == 1:
-            num_solutions += num_suspects - reply
-        else:
-            num_solutions += reply
-
-    return num_solutions
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    graph = {}
+    for _ in range(m):
+        x, y = map(int, input().split())
+        if x not in graph:
+            graph[x] = set()
+        graph[x].add(y)
+    print(largest_s_size(graph))
 

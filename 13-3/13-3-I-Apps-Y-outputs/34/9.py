@@ -1,9 +1,11 @@
 
-def is_haiku(phrases):
-    A, B, C = phrases
-    return A + B + C == 17 and B - A == 2 and C - B == 2
+def find_closer_store(x, a, b):
+    if abs(x - a) < abs(x - b):
+        return "A"
+    else:
+        return "B"
 
-if __name__ == "__main__":
-    A, B, C = map(int, input().split())
-    print("YES" if is_haiku((A, B, C)) else "NO")
+if __name__ == '__main__':
+    x, a, b = map(int, input().split())
+    print(find_closer_store(x, a, b))
 

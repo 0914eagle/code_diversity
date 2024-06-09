@@ -1,21 +1,36 @@
 
-def get_reconstructions(pre_output, in_output, post_output):
-    # Initialize a list to store the reconstructions
-    reconstructions = []
+import sys
+
+def count_ways(N, M, conditions):
+    # Initialize the number of ways to paint the squares
+    ways = 1
     
-    # Loop through all possible combinations of Pre, In, and Post calls
-    for pre_calls in range(2):
-        for in_calls in range(2):
-            for post_calls in range(2):
-                # Check if the number of calls to each routine is correct
-                if pre_calls + in_calls + post_calls == 6:
-                    # Check if the output of the three routines matches the given output
-                    if (pre_output == "".join(pre_calls * "H" + in_calls * "I" + post_calls * "J") and
-                        in_output == "".join(pre_calls * "F" + in_calls * "G" + post_calls * "K") and
-                        post_output == "".join(pre_calls * "B" + in_calls * "E" + post_calls * "A")):
-                        # Add the reconstruction to the list
-                        reconstructions.append([pre_calls, in_calls, post_calls])
+    # Loop through each condition
+    for i in range(M):
+        # Get the range of squares and the number of different colors
+        l, r, x = conditions[i]
+        # Calculate the number of ways to paint the squares in this range
+        ways *= (r - l + 1) * (x - 1)
+        # Reduce the number of ways modulo 10^9+7
+        ways %= 1000000007
     
-    # Return the list of reconstructions
-    return reconstructions
+    # Return the number of ways to paint the squares
+    return ways
+
+def main():
+    # Read the input data
+    N, M = map(int, input().split())
+    conditions = []
+    for i in range(M):
+        l, r, x = map(int, input().split())
+        conditions.append((l, r, x))
+    
+    # Calculate the number of ways to paint the squares
+    ways = count_ways(N, M, conditions)
+    
+    # Print the result
+    print(ways)
+
+if __name__ == '__main__':
+    main()
 

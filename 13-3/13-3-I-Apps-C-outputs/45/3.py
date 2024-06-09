@@ -1,26 +1,39 @@
 
-import sys
+def f1(n, p):
+    # Initialize a set to store the names of the coders
+    coders = set()
+    # Iterate through the input list
+    for i in range(n):
+        # Add the names of the coders to the set
+        coders.add(i + 1)
+        coders.add(input()[1])
+    # Initialize a counter to store the number of possible two-suspect sets
+    count = 0
+    # Iterate through the combinations of two coders
+    for coder1, coder2 in combinations(coders, 2):
+        # Initialize a set to store the names of the coders who agreed with the choice
+        agreed = set()
+        # Iterate through the input list
+        for i in range(n):
+            # If the current coder agreed with the choice, add their name to the set
+            if input()[0] == coder1 or input()[1] == coder1:
+                agreed.add(i + 1)
+            if input()[0] == coder2 or input()[1] == coder2:
+                agreed.add(i + 1)
+        # If the number of agreed coders is greater than or equal to p, increment the counter
+        if len(agreed) >= p:
+            count += 1
+    # Return the number of possible two-suspect sets
+    return count
 
-def solve(N, A, B):
-    # Initialize the number of ways as 1
-    ways = 1
-
-    # Loop through each difficulty level
-    for i in range(N):
-        # If there are tasks with difficulty exactly i
-        if A[i] > 0:
-            # Add the number of ways to choose a task with difficulty i
-            ways = (ways * A[i]) % 1000000007
-        # If there are tasks with difficulty either i or i+1
-        if B[i] > 0:
-            # Add the number of ways to choose a task with difficulty i or i+1
-            ways = (ways * (B[i] + 1)) % 1000000007
-
-    return ways
+def f2(...):
+    # Implement f2 here
+    pass
 
 if __name__ == '__main__':
-    N = int(input())
-    A = list(map(int, input().split()))
-    B = list(map(int, input().split()))
-    print(solve(N, A, B))
+    f1_output = f1(...)
+    f2_output = f2(...)
+    # Print the output
+    print(f1_output)
+    print(f2_output)
 

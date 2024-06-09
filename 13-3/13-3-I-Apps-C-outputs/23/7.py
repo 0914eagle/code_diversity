@@ -1,40 +1,38 @@
 
-def is_correct_sequence(sequence):
-    stack = []
-    for char in sequence:
-        if char == "(":
-            stack.append(char)
-        elif char == ")":
-            if not stack:
-                return False
-            stack.pop()
-    return not stack
+import math
 
-def get_min_time(sequence):
-    if is_correct_sequence(sequence):
-        return 0
+def f1(n, m, s, t):
+    # Initialize variables
+    stations = set([s, t])
+    neighbors = set()
+    for i in range(m):
+        neighbors.add(tuple(map(int, input().split())))
     
-    # Find the first incorrect character
-    for i in range(len(sequence)):
-        if sequence[i] != "(" and sequence[i] != ")":
-            break
+    # Find the shortest path between the initial stations
+    path = []
+    current = s
+    while current != t:
+        for neighbor in neighbors:
+            if current == neighbor[0] and neighbor[1] not in path:
+                path.append(neighbor[1])
+                current = neighbor[1]
+                break
     
-    # Find the first correct character after the incorrect character
-    for j in range(i+1, len(sequence)):
-        if sequence[j] == "(" or sequence[j] == ")":
-            break
+    # Calculate the expected time to meet
+    time = 0
+    for i in range(len(path)):
+        time += 1 / math.factorial(i + 1)
     
-    # Swap the characters at positions i and j
-    sequence = sequence[:i] + sequence[j] + sequence[i+1:j] + sequence[i] + sequence[j+1:]
-    
-    # Recursively call the function to get the minimum time for the new sequence
-    return 1 + get_min_time(sequence)
+    return time
 
-def main():
+def f2(...):
+    # Implement function 2 here
+    pass
+
+if __name__ == '__main__':
     n = int(input())
-    sequence = input()
-    print(get_min_time(sequence))
-
-if __name__ == "__main__":
-    main()
+    m = int(input())
+    s = int(input())
+    t = int(input())
+    print(f1(n, m, s, t))
 

@@ -1,8 +1,38 @@
 
-def count_shichi_go_san(n):
-    count = 0
-    for i in range(1, n+1):
-        if '7' in str(i) and '5' in str(i) and '3' in str(i):
-            count += 1
-    return count
+def find_spanning_tree(n, m, D, edges):
+    # Initialize a graph with n vertices and m edges
+    graph = [[] for _ in range(n)]
+    for edge in edges:
+        graph[edge[0] - 1].append(edge[1] - 1)
+        graph[edge[1] - 1].append(edge[0] - 1)
+
+    # Find a spanning tree with the first vertex having degree D
+    visited = [False] * n
+    queue = [0]
+    visited[0] = True
+    while queue:
+        vertex = queue.pop(0)
+        for neighbor in graph[vertex]:
+            if not visited[neighbor]:
+                visited[neighbor] = True
+                queue.append(neighbor)
+                if neighbor == 0:
+                    return True
+    return False
+
+def main():
+    n, m, D = map(int, input().split())
+    edges = []
+    for _ in range(m):
+        edges.append(list(map(int, input().split())))
+    if find_spanning_tree(n, m, D, edges):
+        print("YES")
+        for edge in edges:
+            if edge[0] == 0 or edge[1] == 0:
+                print(edge[0], edge[1])
+    else:
+        print("NO")
+
+if __name__ == '__main__':
+    main()
 

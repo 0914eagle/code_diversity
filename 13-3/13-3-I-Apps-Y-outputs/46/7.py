@@ -1,18 +1,33 @@
 
-import sys
+def get_note_duration(note):
+    if note.isdigit():
+        return int(note)
+    else:
+        return 1
 
-N = int(input())
-L = list(map(int, input().split()))
+def get_note_pitch(note):
+    if note.isdigit():
+        return "*" * get_note_duration(note)
+    else:
+        return "*"
 
-def is_triangle(a, b, c):
-    return a**2 + b**2 > c**2
+def get_staff_line(notes):
+    staff_line = ""
+    for note in notes:
+        staff_line += get_note_pitch(note)
+    return staff_line
 
-count = 0
-for i in range(N-2):
-    for j in range(i+1, N-1):
-        for k in range(j+1, N):
-            if L[i] != L[j] and L[j] != L[k] and L[k] != L[i] and is_triangle(L[i], L[j], L[k]):
-                count += 1
+def get_staff(notes):
+    staff = []
+    for note in notes:
+        staff.append(get_staff_line(note))
+    return staff
 
-print(count)
+def main():
+    notes = input("Enter the notes: ").split()
+    staff = get_staff(notes)
+    print(staff)
+
+if __name__ == '__main__':
+    main()
 

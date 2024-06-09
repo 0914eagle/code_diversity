@@ -1,53 +1,40 @@
 
-def is_star(grid, row, col, size):
-    # Check if the star is inside the grid
-    if row < 0 or col < 0 or row + size > len(grid) or col + size > len(grid[0]):
-        return False
-    
-    # Check if the star is completely inside the grid
-    if any(grid[row + i][col + j] != '*' for i in range(size) for j in range(size)):
-        return False
-    
-    # Check if the star is a valid star shape
-    for i in range(size):
-        for j in range(size):
-            if i == j == size // 2:
-                continue
-            if grid[row + i][col + j] != '.':
-                return False
-    return True
+def f1(N, A, x):
+    # Calculate the sum of the integers written on the cards
+    sum_x = sum(x)
 
-def draw_grid(grid):
-    # Initialize the number of stars needed
-    num_stars = 0
-    
-    # Iterate through the grid
-    for row in range(len(grid)):
-        for col in range(len(grid[0])):
-            # If the current cell is a star, check if it is a valid star shape
-            if grid[row][col] == '*':
-                for size in range(1, min(len(grid) - row, len(grid[0]) - col) + 1):
-                    if is_star(grid, row, col, size):
-                        num_stars += 1
-                        break
-    
-    # If no stars are found, return -1
-    if num_stars == 0:
-        return -1
-    
-    # Initialize the list of stars
-    stars = []
-    
-    # Iterate through the grid again and find the stars
-    for row in range(len(grid)):
-        for col in range(len(grid[0])):
-            # If the current cell is a star, check if it is a valid star shape
-            if grid[row][col] == '*':
-                for size in range(1, min(len(grid) - row, len(grid[0]) - col) + 1):
-                    if is_star(grid, row, col, size):
-                        stars.append((row, col, size))
-                        break
-    
-    # Return the number of stars and the list of stars
-    return num_stars, stars
+    # Calculate the average of the integers written on the cards
+    avg_x = sum_x / N
+
+    # Check if the average is equal to A
+    if avg_x == A:
+        return 1
+    else:
+        return 0
+
+def f2(N, A, x):
+    # Initialize a variable to store the number of ways to select cards
+    num_ways = 0
+
+    # Iterate over all possible combinations of cards
+    for i in range(1, 2**N):
+        # Convert the binary representation of i to a list of indices of selected cards
+        selected_cards = [j for j in range(N) if i & (1 << j)]
+
+        # Calculate the sum of the integers written on the selected cards
+        sum_selected = sum([x[j] for j in selected_cards])
+
+        # Calculate the average of the integers written on the selected cards
+        avg_selected = sum_selected / len(selected_cards)
+
+        # Check if the average is equal to A
+        if avg_selected == A:
+            num_ways += 1
+
+    return num_ways
+
+if __name__ == '__main__':
+    N, A = map(int, input().split())
+    x = list(map(int, input().split()))
+    print(f2(N, A, x))
 

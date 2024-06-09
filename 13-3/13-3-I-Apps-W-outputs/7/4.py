@@ -1,32 +1,41 @@
 
-def solve(n, k, videos):
-    # Initialize a queue to store the videos that are waiting to be recompressed
-    waiting_queue = []
-    
-    # Initialize a list to store the times when each video stops being recompressed
-    end_times = [0] * n
-    
-    # Initialize the current time as the time when all servers start working
-    current_time = 0
-    
-    # Iterate through the videos
-    for i, (s, m) in enumerate(videos):
-        # If there are available servers, start recompressing the video immediately
-        if len(waiting_queue) < k:
-            waiting_queue.append(i)
-            current_time += m * 60
-            end_times[i] = current_time
-        # Otherwise, add the video to the waiting queue
-        else:
-            waiting_queue.append(i)
-    
-    # While there are still videos in the waiting queue
-    while waiting_queue:
-        # Dequeue a video and start recompressing it
-        video_index = waiting_queue.pop(0)
-        s, m = videos[video_index]
-        current_time += m * 60
-        end_times[video_index] = current_time
-    
-    return end_times
+def get_max_height(notes):
+    # Sort the notes by day
+    notes.sort(key=lambda x: x[0])
+    # Initialize the maximum height and the current height
+    max_height = 0
+    current_height = 0
+    # Iterate through the notes
+    for note in notes:
+        # If the current height is less than the height in the note, set the current height to the height in the note
+        if current_height < note[1]:
+            current_height = note[1]
+        # If the current height is greater than the maximum height, set the maximum height to the current height
+        if current_height > max_height:
+            max_height = current_height
+    return max_height
+
+def is_consistent(notes):
+    # Sort the notes by day
+    notes.sort(key=lambda x: x[0])
+    # Iterate through the notes
+    for i in range(len(notes) - 1):
+        # If the difference between the heights on consecutive days is greater than 1, return False
+        if abs(notes[i][1] - notes[i+1][1]) > 1:
+            return False
+    return True
+
+def main():
+    n, m = map(int, input().split())
+    notes = []
+    for i in range(m):
+        d, h = map(int, input().split())
+        notes.append((d, h))
+    if is_consistent(notes):
+        print(get_max_height(notes))
+    else:
+        print("IMPOSSIBLE")
+
+if __name__ == '__main__':
+    main()
 

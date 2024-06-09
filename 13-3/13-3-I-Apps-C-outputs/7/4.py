@@ -1,72 +1,30 @@
 
-def get_reconstructions(pre_output, in_output, post_output):
-    # Initialize a list to store the reconstructions
-    reconstructions = []
+def count_ways(N, M, conditions):
+    # Initialize a 2D array to store the number of ways to paint each square
+    dp = [[0] * (N + 1) for _ in range(M + 1)]
     
-    # Iterate over all possible combinations of Pre, In, and Post calls
-    for pre_calls in range(2):
-        for in_calls in range(2):
-            for post_calls in range(2):
-                # Check if the number of calls is correct
-                if pre_calls + in_calls + post_calls != 6:
-                    continue
-                
-                # Check if the calls are in the correct order
-                if pre_calls > in_calls or in_calls > post_calls:
-                    continue
-                
-                # Check if the calls are valid
-                if pre_calls * "Pre" + in_calls * "In" + post_calls * "Post" not in pre_output + in_output + post_output:
-                    continue
-                
-                # Find the first tree with the observed output
-                tree = find_tree(pre_output, in_output, post_output, pre_calls, in_calls, post_calls)
-                
-                # Add the reconstruction to the list
-                reconstructions.append([pre_calls, in_calls, post_calls, tree])
+    # Initialize the first row and column of the array
+    for i in range(N + 1):
+        dp[0][i] = 1
+    for i in range(M + 1):
+        dp[i][0] = 1
     
-    # Sort the reconstructions lexicographically
-    reconstructions.sort(key=lambda x: (x[0], x[1], x[2]))
+    # Fill in the rest of the array using the recurrence relation
+    for i in range(1, M + 1):
+        for j in range(1, N + 1):
+            dp[i][j] = (dp[i - 1][j - 1] * (conditions[i - 1][2] - 1) + dp[i - 1][j] * (conditions[i - 1][2] - 1)) % 1000000007
     
-    # Return the list of reconstructions
-    return reconstructions
+    # Return the number of ways to paint the last square
+    return dp[M][N]
 
-def find_tree(pre_output, in_output, post_output, pre_calls, in_calls, post_calls):
-    # Initialize a list to store the possible trees
-    trees = []
-    
-    # Iterate over all possible trees
-    for tree in itertools.permutations("ABCDEFGHIJKLMNOPQRSTUVWXYZ"):
-        # Check if the tree has the observed output
-        if get_output(tree, pre_calls, in_calls, post_calls) == pre_output + in_output + post_output:
-            # Add the tree to the list
-            trees.append(tree)
-    
-    # Return the first tree with the observed output
-    return trees[0]
+def main():
+    N, M = map(int, input().split())
+    conditions = []
+    for _ in range(M):
+        l, r, x = map(int, input().split())
+        conditions.append([l, r, x])
+    print(count_ways(N, M, conditions))
 
-def get_output(tree, pre_calls, in_calls, post_calls):
-    # Initialize the output strings
-    pre_output = ""
-    in_output = ""
-    post_output = ""
-    
-    # Iterate over the tree
-    for i in range(len(tree)):
-        # Get the current node
-        node = tree[i]
-        
-        # Add the node to the output strings
-        pre_output += node
-        in_output += node
-        post_output += node
-        
-        # Add the recursive calls to the output strings
-        if i < len(tree) - 1:
-            pre_output += " " + tree[i + 1]
-            in_output += " " + tree[i + 1]
-            post_output += " " + tree[i + 1]
-    
-    # Return the output strings
-    return pre_output, in_output, post_output
+if __name__ == '__main__':
+    main()
 

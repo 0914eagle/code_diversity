@@ -1,53 +1,61 @@
 
-def solve(n, k, arrangement):
-    # Initialize a list to store the pairs of children who will turn left
-    pairs_left = []
-    
-    # Iterate through each move
-    for move in range(k):
-        # Initialize a list to store the pairs of children who will turn right
-        pairs_right = []
-        
-        # Iterate through each pair of children
-        for i in range(n-1):
-            # If the current child and the next child are looking at each other
-            if arrangement[i] == arrangement[i+1]:
-                # Add the pair to the list of pairs who will turn left
-                pairs_left.append((i, i+1))
-            # If the current child and the next child are not looking at each other
-            else:
-                # Add the pair to the list of pairs who will turn right
-                pairs_right.append((i, i+1))
-        
-        # If there are no pairs who will turn left, return -1
-        if not pairs_left:
-            return -1
-        
-        # Iterate through each pair who will turn left
-        for pair in pairs_left:
-            # If the current child is looking to the left
-            if arrangement[pair[0]] == "L":
-                # Turn the child to the right
-                arrangement[pair[0]] = "R"
-            # If the current child is looking to the right
-            else:
-                # Turn the child to the left
-                arrangement[pair[0]] = "L"
-        
-        # Iterate through each pair who will turn right
-        for pair in pairs_right:
-            # If the current child is looking to the left
-            if arrangement[pair[0]] == "L":
-                # Turn the child to the left
-                arrangement[pair[0]] = "L"
-            # If the current child is looking to the right
-            else:
-                # Turn the child to the right
-                arrangement[pair[0]] = "R"
-        
-        # Print the number of pairs who will turn left and their positions
-        print(len(pairs_left), *[pair[0] for pair in pairs_left])
-    
-    # Return the final arrangement
-    return "".join(arrangement)
+def f1(S, T, streets, properties):
+    # Initialize a dictionary to keep track of the designations for each region
+    designations = {}
+
+    # Loop through each street and assign a designation to each region
+    for i in range(S):
+        # Get the two points that define the street
+        point1 = streets[i][0]
+        point2 = streets[i][1]
+
+        # Get the x and y coordinates of the points
+        x1, y1 = point1
+        x2, y2 = point2
+
+        # Determine the region that the street passes through
+        region = (x1, y1, x2, y2)
+
+        # Assign a designation to the region
+        if region not in designations:
+            designations[region] = "residential"
+        else:
+            designations[region] = "commercial"
+
+    # Loop through each pair of properties and check if they are guaranteed to receive different designations
+    for i in range(T):
+        # Get the two points that define the property
+        point1 = properties[i][0]
+        point2 = properties[i][1]
+
+        # Get the x and y coordinates of the points
+        x1, y1 = point1
+        x2, y2 = point2
+
+        # Determine the regions that the property passes through
+        region1 = (x1, y1, x2, y2)
+        region2 = (x2, y2, x1, y1)
+
+        # Check if the regions have different designations
+        if region1 in designations and region2 in designations and designations[region1] != designations[region2]:
+            print("different")
+        else:
+            print("same")
+
+def f2(...):
+    # Implement function 2 here
+    pass
+
+if __name__ == '__main__':
+    S = int(input())
+    T = int(input())
+    streets = []
+    for i in range(S):
+        x1, y1, x2, y2 = map(int, input().split())
+        streets.append(((x1, y1), (x2, y2)))
+    properties = []
+    for i in range(T):
+        x1, y1, x2, y2 = map(int, input().split())
+        properties.append(((x1, y1), (x2, y2)))
+    f1(S, T, streets, properties)
 

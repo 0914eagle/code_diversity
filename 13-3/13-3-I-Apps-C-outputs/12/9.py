@@ -1,46 +1,37 @@
 
-import sys
+import math
 
-def paint_squares(N, M, conditions):
-    # Initialize the number of ways to paint the squares
-    num_ways = 1
+def get_hit_enemies(x, y, r, opponents):
+    hit_enemies = 0
+    for opponent in opponents:
+        if math.sqrt((x - opponent[0]) ** 2 + (y - opponent[1]) ** 2) <= r + opponent[2]:
+            hit_enemies += 1
+    return hit_enemies
 
-    # Loop through each condition
-    for i in range(M):
-        # Get the left and right indices, and the number of different colors required
-        l, r, x = conditions[i]
-
-        # Calculate the number of ways to paint the squares with the current condition
-        num_ways *= count_ways(N, l, r, x)
-
-        # Reduce the number of ways to paint the squares modulo 10^9+7
-        num_ways %= 1000000007
-
-    return num_ways
-
-def count_ways(N, l, r, x):
-    # Initialize the number of ways to paint the squares
-    num_ways = 1
-
-    # Loop through each square from left to right
-    for i in range(l, r+1):
-        # If the current square is not painted, add the number of ways to paint it
-        if i not in painted_squares:
-            num_ways *= x
-
-            # Reduce the number of ways to paint the squares modulo 10^9+7
-            num_ways %= 1000000007
-
-    return num_ways
+def solve(n, opponents):
+    max_hit_enemies = 0
+    for i in range(n):
+        for j in range(i+1, n):
+            x1, y1, r1 = opponents[i]
+            x2, y2, r2 = opponents[j]
+            dx, dy = x2 - x1, y2 - y1
+            d = math.sqrt(dx ** 2 + dy ** 2)
+            if d <= r1 + r2:
+                continue
+            a = (r1 ** 2 - r2 ** 2 + d ** 2) / (2 * d)
+            h = math.sqrt(r1 ** 2 - a ** 2)
+            x0 = x1 + a * dx / d
+            y0 = y1 + a * dy / d
+            angle = math.acos(a / d)
+            hit_enemies = get_hit_enemies(x0, y0, h, opponents)
+            max_hit_enemies = max(max_hit_enemies, hit_enemies)
+    return max_hit_enemies
 
 if __name__ == '__main__':
-    # Read the input from stdin
-    N, M = map(int, input().split())
-    conditions = []
-    for i in range(M):
-        l, r, x = map(int, input().split())
-        conditions.append((l, r, x))
-
-    # Call the paint_squares function and print the result
-    print(paint_squares(N, M, conditions))
+    n = int(input())
+    opponents = []
+    for i in range(n):
+        x, y, r = map(float, input().split())
+        opponents.append((x, y, r))
+    print(solve(n, opponents))
 

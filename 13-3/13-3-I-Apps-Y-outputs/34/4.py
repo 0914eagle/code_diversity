@@ -1,10 +1,11 @@
 
-import sys
+def find_closer_store(x, a, b):
+    if abs(x - a) < abs(x - b):
+        return "A"
+    else:
+        return "B"
 
-A, B, C = map(int, input().split())
-
-if A + B + C == 16 and A <= 10 and B <= 10 and C <= 10:
-    print("YES")
-else:
-    print("NO")
+if __name__ == '__main__':
+    x, a, b = map(int, input().split())
+    print(find_closer_store(x, a, b))
 

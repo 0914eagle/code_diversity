@@ -1,39 +1,38 @@
 
-def get_min_extensions(a, b, h, w, n, extensions):
-    # Sort the extensions in descending order
-    extensions.sort(reverse=True)
+def get_min_carbon_dioxide(n, m, pairs):
+    # Initialize a graph with n vertices
+    graph = [[] for _ in range(n)]
 
-    # Initialize the minimum number of extensions needed to be 0
-    min_extensions = 0
+    # Add edges to the graph based on the pairs of friends
+    for p, q, c in pairs:
+        graph[p - 1].append((q - 1, c))
+        graph[q - 1].append((p - 1, c))
 
-    # Loop through the extensions and check if they can be used to enlarge the field
-    for extension in extensions:
-        # Check if the extension can be used to enlarge the width of the field
-        if extension <= w:
-            # Enlarge the width of the field by the extension
-            w *= extension
+    # Use a minimum spanning tree algorithm to find the minimum cost of connecting all vertices
+    cost = 0
+    visited = set()
+    queue = [(0, 0)]
+    while queue:
+        vertex, cost_so_far = queue.pop(0)
+        if vertex in visited:
+            continue
+        visited.add(vertex)
+        cost += cost_so_far
+        for neighbor, cost in graph[vertex]:
+            if neighbor not in visited:
+                queue.append((neighbor, cost))
 
-            # Check if the rectangle can be placed on the field after enlarging the width
-            if w >= a:
-                # Increment the minimum number of extensions needed
-                min_extensions += 1
+    # Return the minimum cost
+    return cost
 
-                # Break out of the loop since the rectangle can be placed on the field
-                break
+def main():
+    n, m = map(int, input().split())
+    pairs = []
+    for _ in range(m):
+        p, q, c = map(int, input().split())
+        pairs.append((p, q, c))
+    print(get_min_carbon_dioxide(n, m, pairs))
 
-        # Check if the extension can be used to enlarge the length of the field
-        if extension <= h:
-            # Enlarge the length of the field by the extension
-            h *= extension
-
-            # Check if the rectangle can be placed on the field after enlarging the length
-            if h >= b:
-                # Increment the minimum number of extensions needed
-                min_extensions += 1
-
-                # Break out of the loop since the rectangle can be placed on the field
-                break
-
-    # Return the minimum number of extensions needed to reach Arkady's goal
-    return min_extensions
+if __name__ == '__main__':
+    main()
 

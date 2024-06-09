@@ -1,39 +1,32 @@
 
-def get_valid_colorings(n, a):
-    # Initialize a 2D array to store the colorings
-    colorings = [[[] for _ in range(n)] for _ in range(n)]
+import sys
 
-    # Loop through each row
+def f1(n, m, p):
+    # Calculate the number of ways to place the minimum number of obstacles
+    # in the n x m grid to prevent Alice from placing her 2 x 2 block
+    count = 0
     for i in range(n):
-        # Loop through each column
-        for j in range(n):
-            # If the current cell is not colored, skip it
-            if a[i][j] == -1:
-                continue
+        for j in range(m):
+            if i + 1 < n and j + 1 < m:
+                count += 1
+            elif i + 1 == n and j + 1 < m:
+                count += 1
+            elif i + 1 < n and j + 1 == m:
+                count += 1
+    return count % p
 
-            # If the current cell is colored, check if it forms a valid loop
-            if not is_valid_loop(colorings, i, j, a[i][j]):
-                return 0
+def f2(n, m, p):
+    # Calculate the number of ways to place the minimum number of obstacles
+    # in the n x m grid to prevent Alice from placing her 2 x 2 block
+    # using a recursive approach
+    if n == 1 and m == 1:
+        return 1
+    elif n == 1 or m == 1:
+        return 2
+    else:
+        return (f2(n-1, m, p) + f2(n, m-1, p)) % p
 
-    # If all cells are colored and form valid loops, return 1
-    return 1
-
-def is_valid_loop(colorings, i, j, color):
-    # If the current cell is not colored, return False
-    if color == -1:
-        return False
-
-    # If the current cell is colored, check if it forms a valid loop
-    if colorings[i][j] != [] and colorings[i][j][0] != color:
-        return False
-
-    # If the current cell is colored and forms a valid loop, return True
-    return True
-
-n = int(input())
-a = []
-for i in range(n):
-    a.append(list(map(int, input().split())))
-
-print(get_valid_colorings(n, a))
+if __name__ == '__main__':
+    n, m, p = map(int, sys.stdin.readline().split())
+    print(f1(n, m, p))
 

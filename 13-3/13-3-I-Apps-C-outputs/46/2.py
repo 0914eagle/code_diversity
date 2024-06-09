@@ -1,30 +1,48 @@
 
-def get_badge_numbers(rooms, locks, start_room, end_room):
-    # Initialize a set to store the badge numbers that can pass from the start room to the end room
-    badge_numbers = set()
+def f1(n, positions):
+    # Initialize a dictionary to store the results
+    results = {}
+    
+    # Iterate over each position
+    for position in positions:
+        # Initialize a set to store the reachable positions
+        reachable = set()
+        
+        # Iterate over each option
+        for option in position:
+            # Add the option to the reachable positions
+            reachable.add(option)
+        
+        # Add the reachable positions to the results dictionary
+        results[position] = reachable
+    
+    # Return the results dictionary
+    return results
 
-    # Iterate through the locks
-    for lock in locks:
-        # Extract the information from the lock
-        room_a, room_b, lower_bound, upper_bound = lock
+def f2(n, positions, start_position):
+    # Initialize a dictionary to store the results
+    results = {}
+    
+    # Iterate over each position
+    for position in positions:
+        # Initialize a set to store the reachable positions
+        reachable = set()
+        
+        # Iterate over each option
+        for option in position:
+            # Add the option to the reachable positions
+            reachable.add(option)
+        
+        # Add the reachable positions to the results dictionary
+        results[position] = reachable
+    
+    # Return the results dictionary
+    return results
 
-        # Check if the lock is between the start and end rooms
-        if room_a == start_room and room_b == end_room:
-            # Add the badge numbers within the range to the set
-            badge_numbers.update(range(lower_bound, upper_bound + 1))
-
-    # Return the number of badge numbers in the set
-    return len(badge_numbers)
-
-# Main function
-if __name__ == "__main__":
-    # Read the input
-    rooms, locks, start_room, end_room = map(int, input().split())
-    locks = [tuple(map(int, input().split())) for _ in range(locks)]
-
-    # Call the function to get the number of badge numbers that can pass from the start room to the end room
-    result = get_badge_numbers(rooms, locks, start_room, end_room)
-
-    # Print the result
-    print(result)
+if __name__ == '__main__':
+    n = int(input())
+    positions = [input().split() for _ in range(n)]
+    start_position = input()
+    results = f1(n, positions)
+    print(f2(n, positions, start_position))
 

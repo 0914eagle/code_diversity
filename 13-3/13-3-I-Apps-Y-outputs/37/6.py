@@ -1,15 +1,19 @@
 
-def solve(a, k):
-    n = len(a)
-    x = 0
-    count = 0
-    while True:
-        for i in range(n):
-            if a[i] % k != 0:
-                a[i] += x
-                count += 1
-        x += 1
-        if all(a[i] % k == 0 for i in range(n)):
-            break
-    return count
+def get_min_perimeter(a, b):
+    # Initialize the minimum perimeter to infinity
+    min_perimeter = float('inf')
+    
+    # Iterate over all possible combinations of red and blue tiles
+    for i in range(a):
+        for j in range(b):
+            # Calculate the perimeter of the current combination
+            perimeter = 2 * (i + j)
+            
+            # Check if the perimeter is less than the minimum perimeter
+            if perimeter < min_perimeter:
+                # Update the minimum perimeter
+                min_perimeter = perimeter
+    
+    # Return the minimum perimeter
+    return min_perimeter
 

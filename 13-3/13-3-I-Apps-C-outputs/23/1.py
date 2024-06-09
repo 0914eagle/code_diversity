@@ -1,32 +1,41 @@
 
-def is_correct_sequence(sequence):
-    stack = []
-    for char in sequence:
-        if char == "(":
-            stack.append(char)
-        elif char == ")":
-            if not stack:
-                return False
-            stack.pop()
-    return not stack
+import sys
+import math
 
-def get_min_time(sequence):
-    if is_correct_sequence(sequence):
-        return 0
-    
-    n = len(sequence)
-    dp = [0] * (n + 1)
-    dp[0] = 1
-    
-    for i in range(1, n + 1):
-        for j in range(i):
-            if sequence[j] == "(" and sequence[i - 1] == ")":
-                dp[i] = max(dp[i], dp[j] + dp[i - j - 1] + 1)
-            elif sequence[j] == ")" and sequence[i - 1] == "(":
-                dp[i] = max(dp[i], dp[j] + dp[i - j - 1] + 1)
-    
-    return dp[n]
+def get_neighbors(n, m, edges):
+    neighbors = [[] for _ in range(n)]
+    for u, v in edges:
+        neighbors[u].append(v)
+        neighbors[v].append(u)
+    return neighbors
 
-def solve(sequence):
-    return get_min_time(sequence)
+def bfs(n, m, edges, s, t):
+    queue = [(s, 0)]
+    visited = set()
+    while queue:
+        u, dist = queue.pop(0)
+        if u == t:
+            return dist
+        if u in visited:
+            continue
+        visited.add(u)
+        for v in neighbors[u]:
+            queue.append((v, dist+1))
+    return -1
+
+def solve(n, m, edges, s, t):
+    neighbors = get_neighbors(n, m, edges)
+    dist = bfs(n, m, edges, s, t)
+    if dist == -1:
+        return "never meet"
+    return dist
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    edges = []
+    for _ in range(m):
+        u, v = map(int, input().split())
+        edges.append((u, v))
+    s, t = map(int, input().split())
+    print(solve(n, m, edges, s, t))
 

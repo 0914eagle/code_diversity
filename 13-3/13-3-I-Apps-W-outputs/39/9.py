@@ -1,14 +1,20 @@
 
-def solve(N):
-    # Initialize the minimum number of banknotes to infinity
-    min_banknotes = float('inf')
-    # Loop through all possible values of banknotes
-    for banknote in range(1, 10**100+1):
-        # Calculate the number of banknotes needed
-        num_banknotes = N // banknote
-        # If the number of banknotes is less than the minimum, update the minimum
-        if num_banknotes < min_banknotes:
-            min_banknotes = num_banknotes
-    # Return the minimum number of banknotes
-    return min_banknotes
+def count_tilings(N, M):
+    # Initialize the dp table with the base case
+    dp = [[0] * (M+1) for _ in range(N+1)]
+    dp[0][0] = 1
+    
+    # Fill in the dp table
+    for i in range(1, N+1):
+        for j in range(1, M+1):
+            # Case 1: Place a round macaron
+            dp[i][j] += dp[i-1][j-1]
+            # Case 2: Place an oval macaron
+            dp[i][j] += dp[i-1][j-2]
+    
+    return dp[N][M] % 1000000007
+
+if __name__ == '__main__':
+    N, M = map(int, input().split())
+    print(count_tilings(N, M))
 

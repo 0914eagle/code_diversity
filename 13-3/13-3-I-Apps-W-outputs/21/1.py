@@ -1,26 +1,44 @@
 
-def get_max_square(planks):
-    # Sort the planks in descending order
-    planks.sort(reverse=True)
-    # Initialize the maximum side length of the square
-    max_side_length = 0
-    # Iterate over the planks
-    for i in range(len(planks)):
-        # Check if the current plank is larger than the maximum side length
-        if planks[i] > max_side_length:
-            # If so, set the maximum side length to the current plank
-            max_side_length = planks[i]
-        # Check if the current plank is equal to the maximum side length
-        elif planks[i] == max_side_length:
-            # If so, break the loop
-            break
-    return max_side_length
+def get_workpieces(liana, k):
+    workpieces = []
+    for i in range(0, len(liana), k):
+        workpieces.append(liana[i:i+k])
+    return workpieces
 
+def get_removed_flowers(liana, k, s, b):
+    removed_flowers = []
+    for i in range(len(liana)):
+        if liana[i] in b:
+            removed_flowers.append(i)
+            if len(removed_flowers) == s:
+                break
+    return removed_flowers
 
-if __name__ == "__main__":
-    num_test_cases = int(input())
-    for i in range(num_test_cases):
-        num_planks = int(input())
-        planks = list(map(int, input().split()))
-        print(get_max_square(planks))
+def get_workpieces_after_removal(liana, k, s, b, removed_flowers):
+    workpieces = []
+    for i in range(len(liana)):
+        if i not in removed_flowers:
+            workpieces.append(liana[i:i+k])
+    return workpieces
+
+def solve(liana, k, n, s, b):
+    workpieces = get_workpieces(liana, k)
+    if len(workpieces) < n:
+        return -1
+    removed_flowers = get_removed_flowers(liana, k, s, b)
+    workpieces_after_removal = get_workpieces_after_removal(liana, k, s, b, removed_flowers)
+    if len(workpieces_after_removal) == 0:
+        return -1
+    return removed_flowers
+
+if __name__ == '__main__':
+    m, k, n, s = map(int, input().split())
+    liana = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    result = solve(liana, k, n, s, b)
+    if result == -1:
+        print(-1)
+    else:
+        print(len(result))
+        print(*result)
 

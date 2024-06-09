@@ -1,24 +1,17 @@
 
-def get_min_square_size(houses, zoning_requests):
-    # Initialize a dictionary to store the x and y coordinates of each house
-    house_coords = {}
-    for i, house in enumerate(houses):
-        house_coords[i+1] = house
-
-    # Initialize a list to store the answers for each zoning request
-    answers = []
-
-    # Iterate over each zoning request
-    for a, b in zoning_requests:
-        # Get the x and y coordinates of the first and last house in the range
-        first_house = house_coords[a]
-        last_house = house_coords[b]
-
-        # Calculate the side length of the smallest square that contains all houses in the range
-        side_length = max(abs(first_house[0] - last_house[0]), abs(first_house[1] - last_house[1]))
-
-        # Add the side length to the list of answers
-        answers.append(side_length)
-
-    return answers
+def get_minimum_fuel(n, m, a, b):
+    # Initialize the fuel amount to 0
+    fuel = 0
+    # Loop through each planet
+    for i in range(n):
+        # Calculate the fuel needed for takeoff from the current planet
+        takeoff_fuel = m // a[i]
+        # Calculate the fuel needed for landing on the current planet
+        landing_fuel = m // b[i]
+        # Add the fuel needed for takeoff and landing to the total fuel amount
+        fuel += takeoff_fuel + landing_fuel
+        # Update the mass of the rocket with fuel
+        m -= takeoff_fuel * a[i] + landing_fuel * b[i]
+    # Return the minimum fuel amount needed
+    return fuel
 

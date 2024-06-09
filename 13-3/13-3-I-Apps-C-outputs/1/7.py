@@ -1,29 +1,65 @@
 
-def black_vienna(investigations):
-    num_investigations = len(investigations)
-    num_suspects = 26
-    num_solutions = 0
+def f1(n, m, edges):
+    # Initialize graph as a dictionary with node as key and its neighbors as value
+    graph = {i: set() for i in range(n)}
+    for edge in edges:
+        graph[edge[0]].add(edge[1])
+    
+    # Initialize S as the set of source nodes
+    S = set(i for i in range(n) if not graph[i])
+    
+    # Initialize L as an empty list
+    L = []
+    
+    # While S is not empty
+    while S:
+        # Choose an arbitrary node from S
+        alpha = S.pop()
+        
+        # Remove alpha and all its outgoing edges from the graph
+        for neighbor in graph[alpha]:
+            graph[neighbor].remove(alpha)
+            if not graph[neighbor]:
+                S.add(neighbor)
+        
+        # Insert alpha at the end of L
+        L.append(alpha)
+    
+    # Return the largest possible size of S at the beginning of Step 1
+    return len(S)
 
-    for i in range(num_investigations):
-        suspects = investigations[i][:2]
-        player = investigations[i][2]
-        reply = investigations[i][3]
+def f2(n, m, edges):
+    # Initialize graph as a dictionary with node as key and its neighbors as value
+    graph = {i: set() for i in range(n)}
+    for edge in edges:
+        graph[edge[0]].add(edge[1])
+    
+    # Initialize S as the set of source nodes
+    S = set(i for i in range(n) if not graph[i])
+    
+    # Initialize L as an empty list
+    L = []
+    
+    # While S is not empty
+    while S:
+        # Choose an arbitrary node from S
+        alpha = S.pop()
+        
+        # Remove alpha and all its outgoing edges from the graph
+        for neighbor in graph[alpha]:
+            graph[neighbor].remove(alpha)
+            if not graph[neighbor]:
+                S.add(neighbor)
+        
+        # Insert alpha at the end of L
+        L.append(alpha)
+    
+    # Return the largest possible size of S at the beginning of Step 1
+    return len(S)
 
-        # Initialize a dictionary to store the number of each suspect in each player's hand
-        suspect_counts = {}
-        for j in range(num_suspects):
-            suspect_counts[chr(j + 65)] = 0
-
-        # Update the dictionary with the number of each suspect in each player's hand
-        for j in range(num_suspects):
-            if suspects[0] == chr(j + 65):
-                suspect_counts[suspects[0]] += 1
-            if suspects[1] == chr(j + 65):
-                suspect_counts[suspects[1]] += 1
-
-        # Check if the reply is consistent with the number of each suspect in each player's hand
-        if suspect_counts[suspects[0]] + suspect_counts[suspects[1]] == reply:
-            num_solutions += 1
-
-    return num_solutions
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    edges = [tuple(map(int, input().split())) for _ in range(m)]
+    print(f1(n, m, edges))
+    print(f2(n, m, edges))
 

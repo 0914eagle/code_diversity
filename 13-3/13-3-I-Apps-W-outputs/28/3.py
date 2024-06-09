@@ -1,31 +1,39 @@
 
-def solve(n, m, a):
-    # Initialize a dictionary to store the number of ways to get each card
-    dp = {(1, 1): 1}
+def f1(w, l, a):
+    # Initialize variables
+    max_frogs = 0
+    curr_frogs = 0
+    curr_pos = 0
+    stones = []
     
-    # Iterate over the given cards
-    for i in range(n):
-        # Get the current card
-        card = (1, a[i])
-        
-        # Iterate over the possible next cards
-        for next_card in dp:
-            # Get the current card's values
-            x, y = card
-            nx, ny = next_card
-            
-            # If the current card's values are even, the gray horse can paint a new card
-            if x % 2 == 0 and y % 2 == 0:
-                dp[(nx, ny)] += dp[card]
-            
-            # If the current card's values are not equal, the gray-and-white horse can paint a new card
-            if x != y:
-                dp[(x, ny)] += dp[card]
-            
-            # The white horse can paint a new card if the current card's values are even
-            if x % 2 == 0 and y % 2 == 0:
-                dp[(nx // 2, ny // 2)] += dp[card]
+    # Add stones to the list
+    for i in range(w-1):
+        if a[i] > 0:
+            stones.append(i+1)
     
-    # Return the number of ways to get the required cards
-    return sum(dp.values())
+    # Sort the stones by their distance from the current position
+    stones.sort()
+    
+    # Iterate through the stones and calculate the maximum number of frogs that can cross the river
+    for stone in stones:
+        if stone - curr_pos <= l:
+            curr_frogs += 1
+            curr_pos = stone
+        else:
+            max_frogs = max(max_frogs, curr_frogs)
+            curr_frogs = 1
+            curr_pos = stone
+    
+    # Return the maximum number of frogs that can cross the river
+    return max(max_frogs, curr_frogs)
+
+def f2(...):
+    # Implement function f2 here
+    pass
+
+if __name__ == '__main__':
+    w = int(input())
+    l = int(input())
+    a = list(map(int, input().split()))
+    print(f1(w, l, a))
 

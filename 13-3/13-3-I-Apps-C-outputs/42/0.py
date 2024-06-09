@@ -1,27 +1,54 @@
 
-def solve(N):
-    # Initialize a list to store the numbers 1 to 2^N - 1
-    numbers = list(range(1, 2**N))
-    # Initialize an empty list to store the preorder traversal of the tree
-    preorder = []
-    # Recursively build the tree using the numbers list
-    build_tree(numbers, preorder, 0, N)
-    # Return the preorder traversal of the tree
-    return " ".join(map(str, preorder))
+def is_reachable(start_config, target_config):
+    # Initialize a queue to store the positions of the pegs to be checked
+    queue = []
+    
+    # Initialize a set to store the positions of the pegs that have already been checked
+    checked = set()
+    
+    # Add the starting configuration to the queue
+    queue.append(start_config)
+    
+    # Loop until the queue is empty
+    while queue:
+        # Get the current configuration from the queue
+        config = queue.pop(0)
+        
+        # If the current configuration is the target configuration, return True
+        if config == target_config:
+            return True
+        
+        # Get the positions of the pegs that are up in the current configuration
+        up_positions = [i for i, peg in enumerate(config) if peg == "O"]
+        
+        # Loop through each up peg and check if it can be "hammered"
+        for position in up_positions:
+            # Get the row and column of the peg
+            row, col = divmod(position, len(config))
+            
+            # Check if the peg is already checked
+            if (row, col) in checked:
+                continue
+            
+            # Add the peg to the checked set
+            checked.add((row, col))
+            
+            # Create a new configuration by "hammering" the peg
+            new_config = list(config)
+            new_config[position] = "X"
+            
+            # Add the new configuration to the queue
+            queue.append("".join(new_config))
+    
+    # If the queue is empty and the target configuration has not been reached, return False
+    return False
 
-def build_tree(numbers, preorder, level, N):
-    # If there are no more numbers to assign, return
-    if not numbers:
-        return
-    # If we have reached the last level, assign the first number and return
-    if level == N - 1:
-        preorder.append(numbers.pop(0))
-        return
-    # Otherwise, recursively build the left and right subtrees
-    build_tree(numbers, preorder, level + 1, N)
-    build_tree(numbers, preorder, level + 1, N)
-    # Assign the current number to the root node
-    preorder.append(numbers.pop(0))
+def main():
+    r, c = map(int, input().split())
+    start_config = input()
+    target_config = input()
+    print(is_reachable(start_config, target_config))
 
-print(solve(int(input())))
+if __name__ == '__main__':
+    main()
 

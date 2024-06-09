@@ -1,30 +1,17 @@
 
-def count_evolution_plans(n, m, gyms):
-    # Initialize a list to store the number of Pokemons of each type
-    num_pokemons = [0] * (m + 1)
-    
-    # Iterate over the gyms and count the number of Pokemons of each type
-    for gym in gyms:
-        for pokemon in gym:
-            num_pokemons[pokemon] += 1
-    
-    # Initialize a list to store the number of evolution plans for each type
-    num_plans = [0] * (m + 1)
-    
-    # Iterate over the types and count the number of evolution plans for each type
-    for i in range(1, m + 1):
-        # If the number of Pokemons of this type is 0, then there are no evolution plans for this type
-        if num_pokemons[i] == 0:
-            continue
-        
-        # If the number of Pokemons of this type is 1, then there is only one evolution plan for this type
-        if num_pokemons[i] == 1:
-            num_plans[i] = 1
-            continue
-        
-        # If the number of Pokemons of this type is greater than 1, then there are num_pokemons[i]! evolution plans for this type
-        num_plans[i] = math.factorial(num_pokemons[i])
-    
-    # Return the product of the number of evolution plans for each type
-    return math.prod(num_plans) % (10**9 + 7)
+def f1(y, l):
+    # Initialize the largest base b
+    b = 1
+    # Loop through all possible bases
+    for b in range(2, 11):
+        # Convert y to base b
+        y_b = int(y, b)
+        # Check if y_b contains only decimal digits
+        if all(0 <= i <= 9 for i in str(y_b)):
+            # Check if y_b is at least l
+            if y_b >= l:
+                # If both conditions are met, return b
+                return b
+    # If no base meets the conditions, return -1
+    return -1
 

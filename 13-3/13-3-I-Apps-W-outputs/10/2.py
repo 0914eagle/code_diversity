@@ -1,18 +1,37 @@
 
-import sys
+def get_min_instability(towers, k):
+    # Initialize the minimum instability and the number of operations
+    min_instability = float('inf')
+    num_operations = 0
+    
+    # Loop through all possible sequences of operations
+    for sequence in itertools.product(range(1, len(towers)), repeat=k):
+        # Clone the list of towers
+        tower_copy = towers[:]
+        
+        # Perform the operations in the sequence
+        for i, j in sequence:
+            tower_copy[j-1] += tower_copy[i-1]
+            tower_copy[i-1] = 0
+        
+        # Calculate the instability of the current sequence
+        instability = max(tower_copy) - min(tower_copy)
+        
+        # Update the minimum instability and the number of operations if necessary
+        if instability < min_instability:
+            min_instability = instability
+            num_operations = k
+    
+    return min_instability, num_operations, sequence
 
-def k_tree_paths(n, k, d):
-    mod = 1000000007
-    dp = [[0] * (n + 1) for _ in range(k + 1)]
-    dp[0][0] = 1
-    for i in range(1, k + 1):
-        for j in range(1, n + 1):
-            if j >= d:
-                dp[i][j] = (dp[i - 1][j - d] + dp[i][j - 1]) % mod
-            else:
-                dp[i][j] = dp[i][j - 1]
-    return dp[k][n]
+def main():
+    n, k = map(int, input().split())
+    towers = list(map(int, input().split()))
+    min_instability, num_operations, sequence = get_min_instability(towers, k)
+    print(min_instability, num_operations)
+    for i, j in sequence:
+        print(i, j)
 
-n, k, d = map(int, sys.stdin.readline().split())
-print(k_tree_paths(n, k, d))
+if __name__ == '__main__':
+    main()
 

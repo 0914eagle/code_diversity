@@ -1,25 +1,45 @@
 
-def solve(n, m, pegs, plan):
-    # Initialize a set to store the pegs that are safe to remove
-    safe_pegs = set()
+def is_possible(W, S, C, K):
+    # Initialize the number of each item on the bank as W, S, and C
+    bank = [W, S, C]
     
-    # Iterate through the plan
-    for i in range(len(plan)):
-        # If the current step is to remove a peg, check if it is safe to remove
-        if plan[i] < 0:
-            # If the peg is not in the safe pegs set, return -1
-            if -plan[i] not in safe_pegs:
-                return -1
-            # Otherwise, add the peg to the safe pegs set
-            safe_pegs.add(-plan[i])
-        # If the current step is to place a peg, check if it is safe to place
-        else:
-            # If the peg is already in the safe pegs set, return -1
-            if plan[i] in safe_pegs:
-                return -1
-            # Otherwise, add the peg to the safe pegs set
-            safe_pegs.add(plan[i])
+    # Initialize the number of each item in the boat as 0
+    boat = [0, 0, 0]
     
-    # If we reach this point, all pegs are safe to remove, so return the plan
-    return plan
+    # Loop until all items are transported
+    while sum(bank) > 0:
+        # Find the index of the item that is not 0 in the bank
+        index = bank.index(max(bank))
+        
+        # If the item is a wolf, it can be transported without any restrictions
+        if index == 0:
+            boat[index] += 1
+            bank[index] -= 1
+        
+        # If the item is a sheep, it can be transported if there are no wolves in the boat
+        elif index == 1 and boat[0] == 0:
+            boat[index] += 1
+            bank[index] -= 1
+        
+        # If the item is a cabbage, it can be transported if there are no wolves or sheep in the boat
+        elif index == 2 and boat[0] == 0 and boat[1] == 0:
+            boat[index] += 1
+            bank[index] -= 1
+        
+        # If the boat is full, transfer all items to the other bank
+        if sum(boat) == K:
+            bank[0] += boat[0]
+            bank[1] += boat[1]
+            bank[2] += boat[2]
+            boat = [0, 0, 0]
+    
+    # If all items are transported and no items are left on the bank, return YES
+    if sum(bank) == 0:
+        return "YES"
+    else:
+        return "NO"
+
+if __name__ == '__main__':
+    W, S, C, K = map(int, input().split())
+    print(is_possible(W, S, C, K))
 

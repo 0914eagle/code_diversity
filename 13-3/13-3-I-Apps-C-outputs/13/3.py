@@ -1,21 +1,42 @@
 
-def find_m(numbers):
-    # Initialize a set to store the remainders
-    remainders = set()
+def get_maximum_profit(n, m, a, b, u, v):
+    # Initialize a graph with n vertices and m edges
+    graph = [[] for _ in range(n)]
+    for i in range(m):
+        graph[u[i] - 1].append(v[i] - 1)
+        graph[v[i] - 1].append(u[i] - 1)
     
-    # Iterate through the numbers
-    for num in numbers:
-        # Calculate the remainder of the number when divided by each integer greater than 1
-        for i in range(2, num):
-            remainder = num % i
-            # If the remainder is not already in the set, add it
-            if remainder not in remainders:
-                remainders.add(remainder)
+    # Initialize a visited array and a score array
+    visited = [False] * n
+    score = [0] * n
     
-    # If the set is empty, return 1
-    if not remainders:
-        return [1]
+    # Function to calculate the score of a connected component
+    def dfs(i):
+        if visited[i]:
+            return
+        visited[i] = True
+        score[i] = b[i]
+        for j in graph[i]:
+            score[i] += dfs(j)
+        return score[i]
     
-    # Otherwise, return all integers in the set
-    return list(remainders)
+    # Calculate the score of each connected component
+    for i in range(n):
+        dfs(i)
+    
+    # Calculate the maximum possible profit
+    profit = 0
+    for i in range(n):
+        profit += a[i]
+        profit -= abs(score[i])
+    
+    return profit
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    u = list(map(int, input().split()))
+    v = list(map(int, input().split()))
+    print(get_maximum_profit(n, m, a, b, u, v))
 

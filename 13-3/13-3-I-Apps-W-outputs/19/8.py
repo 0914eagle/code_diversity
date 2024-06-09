@@ -1,39 +1,43 @@
 
-def solve(n, k, arr):
-    # Initialize a list to store the pairs of children who turn left
-    pairs = []
-    
-    # Loop through each pair of children
-    for i in range(n-1):
-        # If the children are looking at each other and it's the first move, add them to the list of pairs
-        if arr[i] != arr[i+1] and len(pairs) == 0:
-            pairs.append([i, i+1])
-    
-    # Loop through each move
-    for move in range(k-1):
-        # If there are no more pairs, return -1
-        if not pairs:
-            return -1
-        
-        # Initialize a list to store the pairs of children who turn left in this move
-        new_pairs = []
-        
-        # Loop through each pair of children
-        for pair in pairs:
-            # If the children are looking at each other, add them to the list of pairs who turn left
-            if arr[pair[0]] != arr[pair[1]]:
-                new_pairs.append(pair)
-        
-        # Add the pairs who turn left to the list of all pairs
-        pairs += new_pairs
-        
-        # Loop through each pair of children who turn left
-        for pair in new_pairs:
-            # If the children are looking at each other, turn them in the opposite direction
-            if arr[pair[0]] == arr[pair[1]]:
-                arr[pair[0]] = "L" if arr[pair[0]] == "R" else "R"
-                arr[pair[1]] = "L" if arr[pair[1]] == "R" else "R"
-    
-    # Return the list of pairs of children who turn left
-    return pairs
+def f1(S, T, streets, properties):
+    # Initialize a dictionary to store the designations for each region
+    designations = {}
+
+    # Loop through each street and determine the regions on either side of the street
+    for street in streets:
+        region1 = (street[0], street[1])
+        region2 = (street[2], street[3])
+
+        # If the region1 is not in the dictionary, add it with a random designation
+        if region1 not in designations:
+            designations[region1] = "residential" if random.random() < 0.5 else "commercial"
+
+        # If the region2 is not in the dictionary, add it with the opposite designation of region1
+        if region2 not in designations:
+            designations[region2] = "residential" if designations[region1] == "commercial" else "commercial"
+
+    # Loop through each property and determine if it is guaranteed to receive the same or different designation
+    for property in properties:
+        region = (property[0], property[1])
+        if region in designations:
+            yield "same"
+        else:
+            yield "different"
+
+def f2(...):
+    ...
+
+if __name__ == '__main__':
+    S = int(input())
+    T = int(input())
+    streets = []
+    for _ in range(S):
+        x1, y1, x2, y2 = map(int, input().split())
+        streets.append((x1, y1, x2, y2))
+    properties = []
+    for _ in range(T):
+        x3, y3, x4, y4 = map(int, input().split())
+        properties.append((x3, y3, x4, y4))
+    for result in f1(S, T, streets, properties):
+        print(result)
 

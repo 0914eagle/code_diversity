@@ -1,19 +1,17 @@
 
-def get_min_height(n, m):
-    # Initialize a list to store the heights of the towers
-    heights = []
+def get_arrow_points(px, py, vx, vy, a, b, c, d):
+    # Calculate the coordinates of the arrow points
+    x1 = px + vx
+    y1 = py + vy
+    x2 = px + vx - a
+    y2 = py + vy - b
+    x3 = px + vx - c
+    y3 = py + vy - d
+    x4 = px + vx - c + a
+    y4 = py + vy - d + b
+    x5 = px + vx - c + a - b
+    y5 = py + vy - d + b - a
 
-    # Add the heights of the towers made with two-block pieces
-    for i in range(1, n + 1):
-        heights.append(i * 2)
-
-    # Add the heights of the towers made with three-block pieces
-    for i in range(1, m + 1):
-        heights.append(i * 3)
-
-    # Sort the list of heights in descending order
-    heights.sort(reverse=True)
-
-    # Return the highest height
-    return heights[0]
+    # Return the coordinates of the arrow points in counter-clockwise order
+    return [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5)]
 

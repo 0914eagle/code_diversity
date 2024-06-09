@@ -1,14 +1,4 @@
 
-def get_max_score(numbers):
-    # Calculate the greatest common divisor of all numbers
-    gcd = numbers[0]
-    for i in range(1, len(numbers)):
-        gcd = gcd(numbers[i], gcd)
-    
-    # Calculate the least common multiple of all numbers
-    lcm = 1
-    for i in range(len(numbers)):
-        lcm = lcm * numbers[i] // gcd
-    
-    return lcm, len(numbers)
+def get_min_cookies(N, B):
+    return (N - 1) // B + 1
 

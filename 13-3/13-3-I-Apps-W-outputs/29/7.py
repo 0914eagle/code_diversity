@@ -1,24 +1,30 @@
 
-import sys
+def get_min_distance(n, x1, y1, x2, y2, flowers):
+    # Calculate the distance between the fountains and the flowers
+    dist_1 = [(abs(x1-x) + abs(y1-y)) for x, y in flowers]
+    dist_2 = [(abs(x2-x) + abs(y2-y)) for x, y in flowers]
+    
+    # Find the minimum distance between the fountains and the flowers
+    min_dist_1 = min(dist_1)
+    min_dist_2 = min(dist_2)
+    
+    # Calculate the minimum possible value of r1 and r2
+    r1 = int(min_dist_1 ** 0.5)
+    r2 = int(min_dist_2 ** 0.5)
+    
+    # Calculate the sum of the squares of r1 and r2
+    sum_squares = r1**2 + r2**2
+    
+    return sum_squares
 
-def get_possible_sums(n, k):
-    # Calculate the possible sums
-    possible_sums = [0] * (n + 1)
-    possible_sums[0] = 1
-    for i in range(1, n + 1):
-        for j in range(i):
-            possible_sums[i] += possible_sums[j]
-    possible_sums = possible_sums[k - 1:]
-
-    # Calculate the number of possible values of the sum, modulo (10^9+7)
-    num_possible_values = 0
-    for i in range(len(possible_sums)):
-        num_possible_values += possible_sums[i]
-        num_possible_values %= 1000000007
-
-    return num_possible_values
+def main():
+    n, x1, y1, x2, y2 = map(int, input().split())
+    flowers = []
+    for _ in range(n):
+        x, y = map(int, input().split())
+        flowers.append((x, y))
+    print(get_min_distance(n, x1, y1, x2, y2, flowers))
 
 if __name__ == '__main__':
-    n, k = map(int, input().split())
-    print(get_possible_sums(n, k))
+    main()
 

@@ -1,28 +1,38 @@
 
-def get_safe_wet_plan(n, strategic_points, dry_plan):
-    # Initialize a list to store the wet plan
-    wet_plan = []
-    
-    # Iterate through the dry plan
-    for step in dry_plan:
-        # If the step is to place a peg, check if it is safe to do so
-        if step[0] == 1:
-            # Get the point where the peg is being placed
-            point = step[1]
-            # Check if the point has any dependencies
-            if strategic_points[point]:
-                # If the point has dependencies, check if they are met
-                dependencies_met = all(strategic_points[point][i] in wet_plan for i in range(len(strategic_points[point])))
-                if dependencies_met:
-                    # If the dependencies are met, add the step to the wet plan
-                    wet_plan.append(step)
-            else:
-                # If the point has no dependencies, add the step to the wet plan
-                wet_plan.append(step)
-        # If the step is to remove a peg, add it to the wet plan
-        else:
-            wet_plan.append(step)
-    
-    # Return the wet plan
-    return wet_plan
+def f1(W, S, C, K):
+    # Initialize variables
+    wolf_count = W
+    sheep_count = S
+    cabbage_count = C
+    boat_capacity = K
+    loss_items = False
+
+    # Check if the number of items is less than or equal to the boat capacity
+    if wolf_count + sheep_count + cabbage_count <= boat_capacity:
+        return "YES"
+
+    # Check if the number of wolves is less than or equal to the boat capacity
+    if wolf_count <= boat_capacity:
+        wolf_count = 0
+        sheep_count += W
+        cabbage_count += W
+
+    # Check if the number of sheep is less than or equal to the boat capacity
+    if sheep_count <= boat_capacity:
+        sheep_count = 0
+        cabbage_count += S
+
+    # Check if the number of cabbages is less than or equal to the boat capacity
+    if cabbage_count <= boat_capacity:
+        cabbage_count = 0
+
+    # Check if any items have been lost
+    if wolf_count + sheep_count + cabbage_count > 0:
+        loss_items = True
+
+    # Return the result
+    if loss_items:
+        return "NO"
+    else:
+        return "YES"
 

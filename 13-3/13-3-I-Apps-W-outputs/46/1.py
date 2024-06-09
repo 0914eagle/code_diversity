@@ -1,24 +1,16 @@
 
-def solve(n, x, a):
-    # Calculate the denominator
-    denominator = 1
-    for i in a:
-        denominator *= x**i
-    
-    # Calculate the numerator
-    numerator = 0
-    for i in a:
-        numerator += x**(-i)
-    
-    # Calculate the greatest common divisor of numerator and denominator
-    gcd = gcd_euclid(numerator, denominator)
-    
-    # Return the result modulo 1000000007
-    return gcd % 1000000007
+def get_finalists(results, k):
+    # Sort the results in ascending order
+    sorted_results = sorted(results)
 
-def gcd_euclid(a, b):
-    if b == 0:
-        return a
-    else:
-        return gcd_euclid(b, a % b)
+    # Get the indices of the top k results
+    top_k_indices = sorted_results[:k]
+
+    # Get the indices of the bottom n - 2k results
+    bottom_n_indices = sorted_results[n - 2k:]
+
+    # Get the finalists by combining the top k and bottom n - 2k results
+    finalists = top_k_indices + bottom_n_indices
+
+    return finalists
 

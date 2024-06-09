@@ -1,19 +1,16 @@
 
-import sys
-
-def get_sum_count(n, k):
-    # Calculate the sum of the first n numbers
-    sum = (n * (n + 1)) // 2
-    # Calculate the sum of the last k numbers
-    last_sum = (k * (k + 1)) // 2
-    # Calculate the sum of the first n - k numbers
-    first_sum = (n - k) * (n - k + 1) // 2
-    # Calculate the sum of the middle k numbers
-    middle_sum = last_sum - first_sum
-    # Calculate the total number of possible values
-    count = (sum - middle_sum) % (10**9 + 7)
-    return count
-
-n, k = map(int, input().split())
-print(get_sum_count(n, k))
+def f1(n, x1, y1, x2, y2, *coords):
+    # Calculate the distances between the fountains and the flowers
+    dist_1 = [(x - x1) ** 2 + (y - y1) ** 2 for x, y in coords]
+    dist_2 = [(x - x2) ** 2 + (y - y2) ** 2 for x, y in coords]
+    
+    # Find the minimum value of r_1^2 + r_2^2 that covers all flowers
+    min_val = float('inf')
+    for r1 in range(1, int(max(dist_1)) + 1):
+        r2 = int(max(dist_2))
+        while r2 * r2 < min_val:
+            r2 += 1
+        min_val = min(min_val, r1 * r1 + r2 * r2)
+    
+    return min_val
 

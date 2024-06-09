@@ -1,30 +1,24 @@
 
-import sys
+def convert_to_staff_notation(notes):
+    staff = ["G:", "F:", "E:", "D:", "C:", "B:", "A:", "g:", "f:", "e:", "d:", "c:", "b:", "a:"]
+    note_values = ["*", "**", "***", "****", "*****"]
+    note_duration = 1
+    note_count = 0
+    staff_output = []
+    for note in notes:
+        if note.isupper():
+            note_duration = 1
+        elif note.isdigit():
+            note_duration = int(note)
+        else:
+            note_count += 1
+            staff_output.append(staff[note_count % 7] + " " * (note_count // 7) + note_values[note_duration - 1])
+    return "\n".join(staff_output)
 
-n = int(input())
-lengths = list(map(int, input().split()))
+def main():
+    notes = input("Enter the notes: ").split()
+    print(convert_to_staff_notation(notes))
 
-# Sort the lengths in non-decreasing order
-lengths.sort()
-
-# Initialize the number of triples to 0
-num_triples = 0
-
-# Iterate over all possible values of i
-for i in range(n - 2):
-    # Initialize j to i + 1
-    j = i + 1
-    # Initialize k to j + 1
-    k = j + 1
-    # While k is less than n
-    while k < n:
-        # If lengths[i], lengths[j], and lengths[k] form a triangle
-        if lengths[i] + lengths[j] > lengths[k] and lengths[j] + lengths[k] > lengths[i] and lengths[i] + lengths[k] > lengths[j]:
-            # Increment the number of triples
-            num_triples += 1
-        # Increment k
-        k += 1
-
-# Print the number of triples
-print(num_triples)
+if __name__ == '__main__':
+    main()
 

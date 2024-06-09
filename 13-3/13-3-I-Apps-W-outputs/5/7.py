@@ -1,36 +1,29 @@
 
-def is_harmonious(graph):
-    n = len(graph)
-    for i in range(1, n):
-        for j in range(i+1, n):
-            for k in range(j+1, n):
-                if (i, j) in graph and (j, k) in graph and (i, k) not in graph:
-                    return False
-    return True
+def find_optimal_time(t_s, t_f, t, n, visitors):
+    # Find the time when the receptionist is free
+    free_time = t_f - t
 
-def add_edges(graph, m):
-    n = len(graph)
-    for i in range(1, n):
-        for j in range(i+1, n):
-            for k in range(j+1, n):
-                if (i, j) in graph and (j, k) in graph and (i, k) not in graph:
-                    graph.add((i, k))
-                    m -= 1
-                    if m == 0:
-                        return graph
-    return graph
+    # Find the time when the last visitor arrives
+    last_visitor_time = visitors[-1]
+
+    # Find the time when Vasya should arrive to be served immediately
+    optimal_time = free_time
+
+    # Iterate through the visitors and find the earliest time when Vasya can arrive to be served
+    for visitor in visitors:
+        if visitor <= free_time:
+            optimal_time = visitor
+            break
+
+    return optimal_time
 
 def main():
-    n, m = map(int, input().split())
-    graph = set()
-    for _ in range(m):
-        u, v = map(int, input().split())
-        graph.add((u, v))
-    if is_harmonious(graph):
-        print(0)
-    else:
-        print(add_edges(graph, m))
+    t_s, t_f, t = map(int, input().split())
+    n = int(input())
+    visitors = list(map(int, input().split()))
 
-if __name__ == "__main__":
+    print(find_optimal_time(t_s, t_f, t, n, visitors))
+
+if __name__ == '__main__':
     main()
 

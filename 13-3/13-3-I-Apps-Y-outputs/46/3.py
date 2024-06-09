@@ -1,19 +1,33 @@
 
-def is_triangle(a, b, c):
-    return a**2 + b**2 > c**2
+def get_note_duration(note):
+    if note.isdigit():
+        return int(note)
+    else:
+        return 1
 
-def count_triangles(sticks):
-    n = len(sticks)
-    count = 0
-    for i in range(n-2):
-        for j in range(i+1, n-1):
-            for k in range(j+1, n):
-                if sticks[i] != sticks[j] and sticks[j] != sticks[k] and sticks[i] != sticks[k]:
-                    if is_triangle(sticks[i], sticks[j], sticks[k]):
-                        count += 1
-    return count
+def get_note_pitch(note):
+    if note.isdigit():
+        return "*" * get_note_duration(note)
+    else:
+        return "*"
 
-n = int(input())
-sticks = list(map(int, input().split()))
-print(count_triangles(sticks))
+def get_staff_line(notes):
+    staff_line = ""
+    for note in notes:
+        staff_line += get_note_pitch(note)
+    return staff_line
+
+def get_staff(notes):
+    staff = []
+    for note in notes:
+        staff.append(get_staff_line(note))
+    return staff
+
+def main():
+    notes = input("Enter the notes: ").split()
+    staff = get_staff(notes)
+    print(staff)
+
+if __name__ == '__main__':
+    main()
 

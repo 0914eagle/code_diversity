@@ -1,14 +1,36 @@
 
-def smallest_sum_of_digits(k):
-    # Initialize a variable to store the smallest sum
-    smallest_sum = float('inf')
-    # Iterate through all positive multiples of k
-    for i in range(1, 100001):
-        # Calculate the sum of the digits in the decimal notation of the multiple
-        sum_of_digits = sum([int(digit) for digit in str(i * k)])
-        # If the sum is smaller than the current smallest sum, update the smallest sum
-        if sum_of_digits < smallest_sum:
-            smallest_sum = sum_of_digits
-    # Return the smallest sum
-    return smallest_sum
+def get_good_matrix(a):
+    # Initialize variables
+    n, m = len(a), len(a[0])
+    count = 0
+    
+    # Loop through each sub-matrix
+    for i in range(n):
+        for j in range(m):
+            for k in range(i, n):
+                for l in range(j, m):
+                    # Check if sub-matrix is even length square
+                    if k-i+1 == l-j+1 and (k-i+1) % 2 == 0:
+                        # Count the number of ones in the sub-matrix
+                        ones = 0
+                        for r in range(i, k+1):
+                            for c in range(j, l+1):
+                                if a[r][c] == 1:
+                                    ones += 1
+                        # If the number of ones is odd, we cannot make the sub-matrix good
+                        if ones % 2 == 1:
+                            return -1
+    
+    # If we reach this point, we can make the matrix good by changing at most count cells
+    return count
+
+def main():
+    n, m = map(int, input().split())
+    a = []
+    for i in range(n):
+        a.append(list(map(int, input())))
+    print(get_good_matrix(a))
+
+if __name__ == '__main__':
+    main()
 

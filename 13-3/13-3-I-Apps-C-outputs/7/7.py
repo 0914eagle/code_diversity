@@ -1,30 +1,30 @@
 
-def get_reconstructions(pre_output, in_output, post_output):
-    # Initialize a list to store the reconstructions
-    reconstructions = []
+def count_ways(N, M, conditions):
+    # Initialize a 2D array to store the number of ways to paint each square
+    dp = [[0] * (N + 1) for _ in range(M + 1)]
     
-    # Loop through all possible combinations of Pre, In, and Post calls
-    for pre_calls in range(2):
-        for in_calls in range(2):
-            for post_calls in range(2):
-                # Check if the number of calls is correct
-                if pre_calls + in_calls + post_calls != 6:
-                    continue
-                
-                # Check if the calls are in the correct order
-                if pre_calls > in_calls or in_calls > post_calls:
-                    continue
-                
-                # Check if the output is correct
-                pre_print = "".join(pre_output[:pre_calls])
-                in_print = "".join(in_output[pre_calls:pre_calls+in_calls])
-                post_print = "".join(post_output[pre_calls+in_calls:])
-                if pre_print != in_print or pre_print != post_print:
-                    continue
-                
-                # Add the reconstruction to the list
-                reconstructions.append([pre_calls, in_calls, post_calls])
+    # Initialize the first row and column of the array
+    for i in range(N + 1):
+        dp[0][i] = 1
+    for i in range(M + 1):
+        dp[i][0] = 1
     
-    # Return the list of reconstructions
-    return reconstructions
+    # Fill in the rest of the array using the recurrence relation
+    for i in range(1, M + 1):
+        for j in range(1, N + 1):
+            dp[i][j] = (dp[i - 1][j - 1] * (conditions[i - 1][2] - 1) + dp[i - 1][j] * (conditions[i - 1][2] - 1)) % 1000000007
+    
+    # Return the number of ways to paint the last square
+    return dp[M][N]
+
+def main():
+    N, M = map(int, input().split())
+    conditions = []
+    for _ in range(M):
+        l, r, x = map(int, input().split())
+        conditions.append([l, r, x])
+    print(count_ways(N, M, conditions))
+
+if __name__ == '__main__':
+    main()
 

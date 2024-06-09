@@ -1,16 +1,16 @@
 
-def solve(strings, operations):
-    # Initialize an empty dictionary to store the concatenated strings
-    concatenated_strings = {}
+def check_subsequence(numbers, m):
+    for i in range(len(numbers)):
+        for j in range(i, len(numbers)):
+            if sum(numbers[i:j+1]) % m == 0:
+                return "YES"
+    return "NO"
 
-    # Iterate through the operations
-    for a, b in operations:
-        # Concatenate the strings and store the result in the dictionary
-        concatenated_strings[a] = concatenated_strings.get(a, "") + strings[b]
+def main():
+    n, m = map(int, input().split())
+    numbers = list(map(int, input().split()))
+    print(check_subsequence(numbers, m))
 
-        # Empty the string at index b
-        strings[b] = ""
-
-    # Return the last string that remains
-    return concatenated_strings[len(concatenated_strings)]
+if __name__ == '__main__':
+    main()
 

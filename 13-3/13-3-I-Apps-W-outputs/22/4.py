@@ -1,32 +1,22 @@
 
-def get_material_counts(material_counts, crafting_recipes):
-    # Initialize a dictionary to store the counts of each material
-    material_needed = {}
+def get_min_number(cnt_1, cnt_2, x, y):
+    # Initialize a set to store the numbers that are not liked by both friends
+    liked_numbers = set(range(1, 10**9 + 1))
 
-    # Loop through each material and its count
-    for material, count in material_counts.items():
-        # If the material is not already in the dictionary, add it with its count
-        if material not in material_needed:
-            material_needed[material] = count
-        # If the material is already in the dictionary, add its count to the existing count
-        else:
-            material_needed[material] += count
+    # Remove the numbers that are not liked by the first friend
+    for i in range(2, x):
+        if x % i == 0:
+            liked_numbers.remove(i)
 
-    # Loop through each crafting recipe
-    for recipe in crafting_recipes:
-        # Get the input and output materials and counts
-        input_material, input_count, output_material = recipe
-        output_count = material_needed[output_material]
+    # Remove the numbers that are not liked by the second friend
+    for i in range(x, y):
+        if i % x == 0:
+            liked_numbers.remove(i)
 
-        # If the output material is not already in the dictionary, add it with its count
-        if output_material not in material_needed:
-            material_needed[output_material] = output_count
-        # If the output material is already in the dictionary, add its count to the existing count
-        else:
-            material_needed[output_material] += output_count
+    # Return the minimum number of liked numbers that can be given to both friends
+    return min(len(liked_numbers), cnt_1 + cnt_2)
 
-        # Update the count of the input material
-        material_needed[input_material] -= input_count * output_count
-
-    return material_needed
+if __name__ == '__main__':
+    cnt_1, cnt_2, x, y = map(int, input().split())
+    print(get_min_number(cnt_1, cnt_2, x, y))
 

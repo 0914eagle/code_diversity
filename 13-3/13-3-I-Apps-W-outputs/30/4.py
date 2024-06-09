@@ -1,13 +1,13 @@
 
-def get_kth_smallest_divisor(n, k):
-    divisors = []
-    for i in range(1, int(n**0.5) + 1):
-        if n % i == 0:
-            divisors.append(i)
-            if n // i != i:
-                divisors.append(n // i)
-    divisors.sort()
-    if k > len(divisors):
-        return -1
-    return divisors[k - 1]
+def count_pairs(N):
+    count = 0
+    for u in range(N+1):
+        for v in range(N+1):
+            if u ^ v == u + v:
+                count += 1
+    return count % 1000000007
+
+if __name__ == '__main__':
+    N = int(input())
+    print(count_pairs(N))
 

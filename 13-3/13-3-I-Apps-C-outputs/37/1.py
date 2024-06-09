@@ -1,32 +1,39 @@
 
-import sys
+def f1(n, magnets):
+    # Initialize the cheapest price as the current price
+    cheapest_price = int(''.join(magnets))
+    
+    # Iterate through all possible permutations of the magnets
+    for perm in permutations(magnets):
+        # Convert the permutation to an integer
+        price = int(''.join(perm))
+        
+        # If the price is cheaper than the current cheapest price, update the cheapest price
+        if price < cheapest_price:
+            cheapest_price = price
+    
+    # Return the cheapest price
+    return cheapest_price
 
-def solve(N, M):
-    # Calculate the number of possible toppings combinations
-    num_combinations = 2**N
+def f2(n, magnets):
+    # Initialize the cheapest price as the current price
+    cheapest_price = int(''.join(magnets))
     
-    # Initialize a list to store the number of bowls of ramen for each combination
-    num_bowls = [0] * num_combinations
-    
-    # Iterate over each combination and calculate the number of bowls of ramen for that combination
-    for i in range(num_combinations):
-        # Convert the binary representation of the combination to a list of booleans
-        combination = [bool(i & (1 << j)) for j in range(N)]
+    # Iterate through all possible permutations of the magnets
+    for perm in permutations(magnets):
+        # Convert the permutation to an integer
+        price = int(''.join(perm))
         
-        # Count the number of true values in the list (i.e., the number of toppings chosen for this combination)
-        num_toppings = sum(combination)
-        
-        # If the number of toppings is at least 2, add 1 to the number of bowls of ramen for this combination
-        if num_toppings >= 2:
-            num_bowls[i] = 1
+        # If the price is cheaper than the current cheapest price, update the cheapest price
+        if price < cheapest_price:
+            cheapest_price = price
     
-    # Calculate the total number of bowls of ramen by summing the number of bowls for each combination
-    total_bowls = sum(num_bowls)
-    
-    # Return the total number of bowls of ramen modulo M
-    return total_bowls % M
+    # Return the cheapest price
+    return cheapest_price
 
 if __name__ == '__main__':
-    N, M = map(int, input().split())
-    print(solve(N, M))
+    n = int(input())
+    magnets = [input() for _ in range(n)]
+    print(f1(n, magnets))
+    print(f2(n, magnets))
 

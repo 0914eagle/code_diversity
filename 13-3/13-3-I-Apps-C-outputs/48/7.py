@@ -1,32 +1,52 @@
 
-def solve(origin, destination, connections):
-    # Initialize a dictionary to store the expected duration for each connection
-    expected_durations = {}
+import math
 
-    # Loop through each connection
-    for connection in connections:
-        # Get the origin, destination, departure time, standard journey time, probability of delay, and maximum delay for this connection
-        origin, destination, departure_time, standard_journey_time, probability_of_delay, maximum_delay = connection
+def f1(N, M, nodes, edges):
+    # Initialize variables
+    turning_required = 0
+    visited = [False] * N
+    visited[0] = True
+    queue = [0]
 
-        # Calculate the expected duration for this connection
-        expected_duration = standard_journey_time * (1 - probability_of_delay / 100) + maximum_delay
+    # Breadth-first search to find Eulerian circuit
+    while queue:
+        node = queue.pop(0)
+        for edge in edges:
+            if edge[0] == node and not visited[edge[1]]:
+                visited[edge[1]] = True
+                queue.append(edge[1])
+                turning_required += math.pi
 
-        # Add the expected duration to the dictionary with the connection as the key
-        expected_durations[connection] = expected_duration
+    return turning_required
 
-    # Initialize a variable to store the minimum expected duration
-    minimum_expected_duration = float("inf")
+def f2(N, M, nodes, edges):
+    # Initialize variables
+    turning_required = 0
+    visited = [False] * N
+    visited[0] = True
+    queue = [0]
 
-    # Loop through each connection
-    for connection in connections:
-        # Get the origin, destination, departure time, and standard journey time for this connection
-        origin, destination, departure_time, standard_journey_time = connection
+    # Breadth-first search to find Eulerian circuit
+    while queue:
+        node = queue.pop(0)
+        for edge in edges:
+            if edge[0] == node and not visited[edge[1]]:
+                visited[edge[1]] = True
+                queue.append(edge[1])
+                turning_required += math.pi
 
-        # If the destination is the same as the input destination, calculate the minimum expected duration
-        if destination == destination:
-            # Calculate the minimum expected duration by adding the expected duration for this connection to the expected duration for the previous connection
-            minimum_expected_duration = min(minimum_expected_duration, expected_durations[connection] + expected_durations[connection - 1])
+    return turning_required
 
-    # Return the minimum expected duration
-    return minimum_expected_duration
+if __name__ == '__main__':
+    N, M = map(int, input().split())
+    nodes = []
+    edges = []
+    for i in range(N):
+        x, y = map(int, input().split())
+        nodes.append((x, y))
+    for i in range(M):
+        x, y = map(int, input().split())
+        edges.append((x, y))
+    print(f1(N, M, nodes, edges))
+    print(f2(N, M, nodes, edges))
 

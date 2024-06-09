@@ -1,10 +1,10 @@
 {
-    "inputs": [
-        "10\nC D F D C D F F F C \n",
-        "6\nA B A F# G# C \n"
-    ],
-    "outputs": [
-        "A# C D# F\n",
-        "none\n"
-    ]
+  "inputs": [
+    "3\n5 2\nBGGGG\n5 3\nRBRGR\n5 5\nBBBRR\n",
+    "1\n18 2\nRBGGGRBBGRRBBGGGGB\n"
+  ],
+  "outputs": [
+    "1\n0\n3\n",
+    "0\n"
+  ]
 }

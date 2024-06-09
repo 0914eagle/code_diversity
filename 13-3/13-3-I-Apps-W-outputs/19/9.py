@@ -1,29 +1,64 @@
 
-def solve(n, k, arr):
-    # Initialize a list to store the pairs of children who turn left
-    pairs = []
-    
-    # Loop through each pair of children
-    for i in range(n-1):
-        # If the children are looking at each other and the current move is even
-        if arr[i] != arr[i+1] and k % 2 == 0:
-            # Add the pair to the list of pairs who turn left
-            pairs.append((i+1, i+2))
-    
-    # If there are no pairs who turn left, return -1
-    if not pairs:
-        return -1
-    
-    # Initialize a list to store the numbers of the children who turn left
-    children = []
-    
-    # Loop through each pair who turn left
-    for pair in pairs:
-        # Add the first child in the pair to the list of children who turn left
-        children.append(pair[0])
-        # Add the second child in the pair to the list of children who turn left
-        children.append(pair[1])
-    
-    # Return the list of children who turn left
-    return children
+def f1(S, T, streets, properties):
+    # Initialize a dictionary to store the designations for each region
+    designations = {}
+
+    # Iterate over the streets
+    for i in range(S):
+        # Get the two points that define the current street
+        point1 = streets[i][0]
+        point2 = streets[i][1]
+
+        # Determine the region that the current street divides the town into
+        region = (point1[0] + point2[0]) / 2, (point1[1] + point2[1]) / 2
+
+        # If the region has not been assigned a designation yet, assign it "residential"
+        if region not in designations:
+            designations[region] = "residential"
+
+    # Iterate over the properties
+    for i in range(T):
+        # Get the two points that define the current property
+        point1 = properties[i][0]
+        point2 = properties[i][1]
+
+        # Determine the region that the current property is located in
+        region = (point1[0] + point2[0]) / 2, (point1[1] + point2[1]) / 2
+
+        # If the region has not been assigned a designation yet, assign it "commercial"
+        if region not in designations:
+            designations[region] = "commercial"
+
+    # Iterate over the properties again
+    for i in range(T):
+        # Get the two points that define the current property
+        point1 = properties[i][0]
+        point2 = properties[i][1]
+
+        # Determine the region that the current property is located in
+        region = (point1[0] + point2[0]) / 2, (point1[1] + point2[1]) / 2
+
+        # If the region has been assigned a designation, check if it is the same as the designation of the other property
+        if region in designations:
+            if designations[region] == designations[(point1[0] + point2[0]) / 2, (point1[1] + point2[1]) / 2]:
+                return "same"
+
+    return "different"
+
+def f2(...):
+    # Implement function f2 here
+    pass
+
+if __name__ == '__main__':
+    S = int(input())
+    T = int(input())
+    streets = []
+    for i in range(S):
+        x1, y1, x2, y2 = map(int, input().split())
+        streets.append([(x1, y1), (x2, y2)])
+    properties = []
+    for i in range(T):
+        x3, y3, x4, y4 = map(int, input().split())
+        properties.append([(x3, y3), (x4, y4)])
+    print(f1(S, T, streets, properties))
 

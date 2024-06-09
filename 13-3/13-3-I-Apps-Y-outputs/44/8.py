@@ -1,21 +1,39 @@
 
-def solve(a1, b1, a2, b2):
-    # Calculate the number of possible outcomes for each player
-    num_outcomes_gunnar = (b1 - a1 + 1) * (b1 - a1 + 2) // 2
-    num_outcomes_emma = (b2 - a2 + 1) * (b2 - a2 + 2) // 2
+def get_maximal_string(n, k):
     
-    # Calculate the probability of Gunnar winning
-    prob_gunnar = num_outcomes_gunnar / (num_outcomes_gunnar + num_outcomes_emma)
-    
-    # Calculate the probability of Emma winning
-    prob_emma = 1 - prob_gunnar
-    
-    # Check if the probability of both players is the same
-    if prob_gunnar == prob_emma:
-        return "Tie"
-    # Return the name of the player with higher probability of winning
-    elif prob_gunnar > prob_emma:
-        return "Gunnar"
-    else:
-        return "Emma"
+    # Initialize an array to store the frequencies of each letter
+    freq = [0] * 26
+    # Initialize a string to store the result
+    result = ""
+    # Loop through each letter of the Latin alphabet
+    for i in range(0, 26):
+        # If the current letter has not been used yet, add it to the result string
+        if freq[i] == 0:
+            result += chr(i + ord('a'))
+            # Increment the frequency of the current letter
+            freq[i] += 1
+        # If the current letter has already been used, find the next available letter
+        else:
+            for j in range(i + 1, 26):
+                if freq[j] == 0:
+                    result += chr(j + ord('a'))
+                    freq[j] += 1
+                    break
+    # If the result string is not long enough, add more letters to make it length n
+    while len(result) < n:
+        for i in range(0, 26):
+            if freq[i] == 0:
+                result += chr(i + ord('a'))
+                freq[i] += 1
+                break
+    return result
+
+def f1(...):
+    ...
+
+def f2(...):
+    ...
+
+if __name__ == '__main__':
+    ...
 

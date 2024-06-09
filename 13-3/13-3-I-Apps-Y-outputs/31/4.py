@@ -1,26 +1,49 @@
 
-import math
+def get_optimized_path(path):
+    # Initialize variables
+    optimized_path = path
+    endpoint = path[-1]
+    min_substring_length = len(path)
+    substring_start = 0
+    substring_end = 0
 
-def get_min_distance(coordinates):
-    # Sort the coordinates in ascending order
-    sorted_coordinates = sorted(coordinates)
+    # Iterate over all possible substrings
+    for i in range(len(path)):
+        for j in range(i+1, len(path)+1):
+            # Check if the substring is non-empty
+            if j - i > 0:
+                # Check if the substring ends at the endpoint
+                if path[j-1] == endpoint:
+                    # Check if the substring length is less than the current minimum
+                    if j - i < min_substring_length:
+                        # Update the minimum substring length and endpoints
+                        min_substring_length = j - i
+                        substring_start = i
+                        substring_end = j - 1
 
-    # Initialize the minimum distance to be traveled
-    min_distance = 0
+    # Return the optimized path
+    return optimized_path[:substring_start] + optimized_path[substring_end:]
 
-    # Iterate through the sorted coordinates
-    for i in range(len(sorted_coordinates)):
-        # Calculate the distance traveled from the current coordinate to the next coordinate
-        distance = sorted_coordinates[i] - sorted_coordinates[i - 1]
+def main():
+    # Read the number of test cases
+    num_test_cases = int(input())
 
-        # Update the minimum distance if the current distance is less than the previous minimum distance
-        if distance < min_distance or min_distance == 0:
-            min_distance = distance
+    # Iterate over the test cases
+    for _ in range(num_test_cases):
+        # Read the path length and path
+        path_length = int(input())
+        path = input()
 
-    return min_distance
+        # Get the optimized path
+        optimized_path = get_optimized_path(path)
 
-n = int(input())
-coordinates = list(map(int, input().split()))
+        # Check if the optimized path is empty
+        if len(optimized_path) == 0:
+            print(-1)
+        else:
+            # Print the endpoints of the substring to remove
+            print(1, len(optimized_path))
 
-print(get_min_distance(coordinates))
+if __name__ == '__main__':
+    main()
 

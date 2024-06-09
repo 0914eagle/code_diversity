@@ -1,42 +1,32 @@
 
-def is_correct_sequence(sequence):
-    stack = []
-    for char in sequence:
-        if char == "(":
-            stack.append(char)
-        elif char == ")":
-            if not stack:
-                return False
-            stack.pop()
-    return not stack
+def f1(n, m, s, t):
+    # Initialize a graph with n nodes and m edges
+    graph = [[] for _ in range(n)]
+    for _ in range(m):
+        u, v = map(int, input().split())
+        graph[u].append(v)
+        graph[v].append(u)
+    
+    # Breadth-first search from s and t to find the shortest path between them
+    queue = [(s, [s])]
+    visited = set()
+    while queue:
+        node, path = queue.pop(0)
+        if node == t:
+            return len(path) - 1
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                queue.append((neighbor, path + [neighbor]))
+                visited.add(neighbor)
+    
+    return "never meet"
 
-def get_min_time(sequence):
-    if is_correct_sequence(sequence):
-        return 0
-    
-    # Find the first incorrect character
-    for i in range(len(sequence)):
-        if sequence[i] != "(" and sequence[i] != ")":
-            break
-    
-    # Find the first incorrect character from the end
-    for j in range(len(sequence) - 1, i - 1, -1):
-        if sequence[j] != "(" and sequence[j] != ")":
-            break
-    
-    # Reorder the substring
-    substring = sequence[i:j+1]
-    reordered_substring = "".join(reversed(substring))
-    sequence = sequence[:i] + reordered_substring + sequence[j+1:]
-    
-    # Recursively call the function to check if the sequence is correct
-    return 1 + get_min_time(sequence)
+def f2(...):
+    # Your code here
+    pass
 
-def main():
-    n = int(input())
-    sequence = input()
-    print(get_min_time(sequence))
-
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    s, t = map(int, input().split())
+    print(f1(n, m, s, t))
 

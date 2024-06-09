@@ -1,30 +1,20 @@
 
-def solve(N, M, prefectures):
-    # Sort the prefectures by their establishment year
-    sorted_prefectures = sorted(prefectures, key=lambda x: x[1])
+def can_sort_array(arr, positions):
+    n = len(arr)
+    for i in range(n-1):
+        for j in range(i+1, n):
+            if arr[i] > arr[j] and not (i in positions or j in positions):
+                return "NO"
+    return "YES"
 
-    # Create a dictionary to map each prefecture to its cities
-    prefecture_to_cities = {}
-    for prefecture in sorted_prefectures:
-        prefecture_id, establishment_year = prefecture
-        if prefecture_id not in prefecture_to_cities:
-            prefecture_to_cities[prefecture_id] = []
-        prefecture_to_cities[prefecture_id].append(establishment_year)
+def main():
+    t = int(input())
+    for _ in range(t):
+        n, m = map(int, input().split())
+        arr = list(map(int, input().split()))
+        positions = set(map(int, input().split()))
+        print(can_sort_array(arr, positions))
 
-    # Create a list to store the ID numbers for all the cities
-    city_ids = []
-
-    # Iterate over the prefectures and their cities
-    for prefecture_id, cities in prefecture_to_cities.items():
-        # Sort the cities by their establishment year
-        sorted_cities = sorted(cities)
-
-        # Iterate over the cities and assign an ID number to each one
-        for i, city in enumerate(sorted_cities):
-            # Format the ID number as a string with six digits for the prefecture ID and six digits for the city index
-            id_number = f"{prefecture_id:06d}{i:06d}"
-            city_ids.append(id_number)
-
-    # Return the list of ID numbers for all the cities
-    return city_ids
+if __name__ == '__main__':
+    main()
 

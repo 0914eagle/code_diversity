@@ -1,48 +1,49 @@
 
-def solve(n, k, arr):
-    # Initialize a list to store the pairs of children who turn left
-    pairs = []
+def f1(S, x1, y1, x2, y2):
+    # Find the line that passes through the two points
+    m = (y2-y1)/(x2-x1)
+    b = y1 - m*x1
     
-    # Loop through each pair of children
-    for i in range(n-1):
-        # If the children are looking at each other and it's not the last pair
-        if arr[i] != arr[i+1] and i < n-2:
-            # Add the pair to the list of pairs
-            pairs.append([i, i+1])
+    # Check if the line intersects with any of the other lines
+    for i in range(S):
+        x3, y3, x4, y4 = map(int, input().split())
+        if x3 == x4:
+            continue
+        m2 = (y4-y3)/(x4-x3)
+        b2 = y3 - m2*x3
+        if m == m2:
+            continue
+        x = (b2-b)/(m-m2)
+        if x >= 0 and x <= 10000:
+            return "different"
+    return "same"
+
+def f2(S, x1, y1, x2, y2):
+    # Find the line that passes through the two points
+    m = (y2-y1)/(x2-x1)
+    b = y1 - m*x1
     
-    # If there are no pairs, return -1
-    if not pairs:
-        return -1
-    
-    # Initialize a list to store the moves
-    moves = []
-    
-    # Loop through each move
-    for i in range(k):
-        # Initialize a list to store the children who turn left in this move
-        turn_left = []
-        
-        # Loop through each pair
-        for pair in pairs:
-            # If the children in the pair are looking at each other
-            if arr[pair[0]] == arr[pair[1]]:
-                # Add the children to the list of children who turn left
-                turn_left.extend(pair)
-        
-        # Add the list of children who turn left to the list of moves
-        moves.append(turn_left)
-        
-        # Loop through each child who turned left
-        for child in turn_left:
-            # If the child is looking at the left child
-            if arr[child] == "L":
-                # Change the child's direction to look to the right
-                arr[child] = "R"
-            # If the child is looking at the right child
-            else:
-                # Change the child's direction to look to the left
-                arr[child] = "L"
-    
-    # Return the list of moves
-    return moves
+    # Check if the line intersects with any of the other lines
+    for i in range(S):
+        x3, y3, x4, y4 = map(int, input().split())
+        if x3 == x4:
+            continue
+        m2 = (y4-y3)/(x4-x3)
+        b2 = y3 - m2*x3
+        if m == m2:
+            continue
+        x = (b2-b)/(m-m2)
+        if x >= 0 and x <= 10000:
+            return "different"
+    return "same"
+
+if __name__ == '__main__':
+    S = int(input())
+    for i in range(S):
+        x1, y1, x2, y2 = map(int, input().split())
+        print(f1(S, x1, y1, x2, y2))
+    T = int(input())
+    for i in range(T):
+        x3, y3, x4, y4 = map(int, input().split())
+        print(f2(S, x3, y3, x4, y4))
 

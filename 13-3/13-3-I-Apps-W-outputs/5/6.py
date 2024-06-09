@@ -1,31 +1,35 @@
 
-def is_harmonious(graph):
-    n = len(graph)
-    for i in range(n):
-        for j in range(i+1, n):
-            for k in range(j+1, n):
-                if graph[i][j] and graph[j][k] and not graph[i][k]:
-                    return False
-    return True
+def get_optimal_time(t_s, t_f, t, n, visitors):
+    # Find the earliest time that Vasya can arrive to be served
+    earliest_time = max(visitors)
 
-def add_edges(graph, m):
-    n = len(graph)
-    for i in range(n):
-        for j in range(i+1, n):
-            if not graph[i][j]:
-                graph[i][j] = graph[j][i] = True
-                m -= 1
-                if m == 0:
-                    return graph
-    return graph
+    # Find the latest time that Vasya can arrive to be served
+    latest_time = t_f - t
 
-def solve(n, m, edges):
-    graph = [[False for _ in range(n+1)] for _ in range(n+1)]
-    for edge in edges:
-        u, v = edge[0], edge[1]
-        graph[u][v] = graph[v][u] = True
-    if is_harmonious(graph):
-        return 0
-    else:
-        return m - add_edges(graph, m)
+    # Initialize the minimum time Vasya needs to wait in the queue
+    min_time = float('inf')
+
+    # Iterate through all possible times Vasya can arrive
+    for time in range(earliest_time, latest_time + 1):
+        # Calculate the time Vasya needs to wait in the queue
+        time_in_queue = 0
+        for visitor in visitors:
+            if visitor > time:
+                time_in_queue += t
+            else:
+                break
+
+        # Update the minimum time Vasya needs to wait in the queue
+        min_time = min(min_time, time_in_queue)
+
+    return earliest_time + min_time
+
+def main():
+    t_s, t_f, t = map(int, input().split())
+    n = int(input())
+    visitors = [int(x) for x in input().split()]
+    print(get_optimal_time(t_s, t_f, t, n, visitors))
+
+if __name__ == '__main__':
+    main()
 

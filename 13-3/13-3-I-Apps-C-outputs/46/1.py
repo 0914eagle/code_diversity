@@ -1,32 +1,48 @@
 
-def get_badge_numbers(N, L, B, S, D, locks):
-    # Initialize a set to store the badge numbers that can pass from S to D
-    badge_numbers = set()
+def f1(n, positions):
+    # Initialize a dictionary to store the results
+    results = {}
+    
+    # Iterate over each position
+    for position in positions:
+        # Initialize a set to store the reachable positions
+        reachable = set()
+        
+        # Iterate over each option
+        for option in position:
+            # Add the option to the reachable positions
+            reachable.add(option)
+        
+        # Add the reachable positions to the results dictionary
+        results[position] = reachable
+    
+    # Return the results dictionary
+    return results
 
-    # Loop through each lock
-    for lock in locks:
-        # Extract the lock's parameters
-        a, b, x, y = lock
+def f2(n, positions, start_position):
+    # Initialize a dictionary to store the results
+    results = {}
+    
+    # Iterate over each position
+    for position in positions:
+        # Initialize a set to store the reachable positions
+        reachable = set()
+        
+        # Iterate over each option
+        for option in position:
+            # Add the option to the reachable positions
+            reachable.add(option)
+        
+        # Add the reachable positions to the results dictionary
+        results[position] = reachable
+    
+    # Return the results dictionary
+    return results
 
-        # Check if the lock is between S and D
-        if a == S and b == D:
-            # Add the badge numbers that can pass through the lock to the set
-            badge_numbers |= set(range(x, y + 1))
-
-    # Return the number of badge numbers in the set
-    return len(badge_numbers)
-
-# Main function
-if __name__ == "__main__":
-    # Read the input
-    N, L, B, S, D = map(int, input().split())
-    locks = []
-    for _ in range(L):
-        locks.append(list(map(int, input().split())))
-
-    # Call the function to get the number of badge numbers that can pass from S to D
-    result = get_badge_numbers(N, L, B, S, D, locks)
-
-    # Print the result
-    print(result)
+if __name__ == '__main__':
+    n = int(input())
+    positions = [input().split() for _ in range(n)]
+    start_position = input()
+    results = f1(n, positions)
+    print(f2(n, positions, start_position))
 

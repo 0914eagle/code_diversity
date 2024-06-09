@@ -1,23 +1,11 @@
 
-import random
-
-def evaluate_expression(expression):
-    tokens = expression.split("+")
-    integers = [int(token) for token in tokens if token.isdigit()]
-    plus_symbols = [token for token in tokens if token != ""]
-
-    # Initialize a list to store the evaluated integers
-    evaluated_integers = []
-
-    # Loop through each plus symbol and randomly choose whether to evaluate it as addition or string concatenation
-    for i in range(len(plus_symbols)):
-        if random.randint(0, 1) == 0:
-            # Evaluate the plus symbol as addition
-            evaluated_integers.append(integers[i] + integers[i+1])
-        else:
-            # Evaluate the plus symbol as string concatenation
-            evaluated_integers.append(str(integers[i]) + str(integers[i+1]))
-
-    # Return the number of distinct integers in the evaluated list
-    return len(set(evaluated_integers))
+def generate_pascal_triangle(num_rows):
+    pascal_triangle = []
+    for row in range(num_rows):
+        row_values = [1] * (row + 1)
+        if row > 0:
+            for col in range(1, row):
+                row_values[col] = pascal_triangle[row - 1][col - 1] + pascal_triangle[row - 1][col]
+        pascal_triangle.append(row_values)
+    return pascal_triangle
 

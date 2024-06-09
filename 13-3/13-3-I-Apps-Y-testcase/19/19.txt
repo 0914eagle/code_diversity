@@ -1,1 +1,14 @@
-{"inputs": ["8\n", "7\n", "54\n", "1\n", "2\n", "3\n", "4\n", "100\n", "99\n", "97\n", "95\n", "27\n"], "outputs": ["5\n", "18\n", "114\n", "4\n", "4\n", "9\n", "4\n", "27\n", "27\n", "120\n", "107\n", "113\n"]}
+{
+    "inputs": [
+        "5\napple\near\nreal\nletters\nstyle\n",
+        "3\napple\nextra\napple\n",
+        "2\napple\nneat\n",
+        "5\napple\neast\nteam\nmeat\nteam\n"
+    ],
+    "outputs": [
+        "Fair Game\n",
+        "Player 1 lost\n",
+        "Player 2 lost\n",
+        "Player 1 lost\n"
+    ]
+}

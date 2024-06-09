@@ -1,34 +1,38 @@
 
-def get_max_square(planks):
-    # Sort the planks in descending order
-    planks.sort(reverse=True)
-    # Initialize the maximum side length of the square
-    max_side_length = 0
-    # Iterate over the planks
-    for i in range(len(planks)):
-        # Check if the current plank is larger than the maximum side length
-        if planks[i] > max_side_length:
-            # If so, set the maximum side length to the current plank
-            max_side_length = planks[i]
-        # Check if the current plank is equal to the maximum side length
-        elif planks[i] == max_side_length:
-            # If so, we have found a square
-            return max_side_length
-    # If we reach this point, no square has been found
-    return max_side_length
+def get_workpieces(flowers, k):
+    workpieces = []
+    for i in range(0, len(flowers), k):
+        workpieces.append(flowers[i:i+k])
+    return workpieces
 
+def get_removable_flowers(flowers, k, schematic):
+    removable_flowers = []
+    for i in range(len(flowers)):
+        if flowers[i] not in schematic:
+            removable_flowers.append(i)
+    return removable_flowers
 
-if __name__ == "__main__":
-    # Read the number of test cases
-    num_test_cases = int(input())
-    # Iterate over the test cases
-    for i in range(num_test_cases):
-        # Read the number of planks
-        num_planks = int(input())
-        # Read the lengths of the planks
-        planks = list(map(int, input().split()))
-        # Get the maximum side length of the square
-        max_side_length = get_max_square(planks)
-        # Print the maximum side length
-        print(max_side_length)
+def get_workpieces_with_schematic(flowers, k, schematic):
+    workpieces = get_workpieces(flowers, k)
+    workpieces_with_schematic = []
+    for workpiece in workpieces:
+        if set(workpiece).issubset(set(schematic)):
+            workpieces_with_schematic.append(workpiece)
+    return workpieces_with_schematic
+
+def solve(flowers, k, n, schematic):
+    workpieces = get_workpieces(flowers, k)
+    if len(workpieces) < n:
+        return -1
+    removable_flowers = get_removable_flowers(flowers, k, schematic)
+    workpieces_with_schematic = get_workpieces_with_schematic(flowers, k, schematic)
+    if not workpieces_with_schematic:
+        return -1
+    return len(removable_flowers)
+
+if __name__ == '__main__':
+    m, k, n, s = map(int, input().split())
+    flowers = list(map(int, input().split()))
+    schematic = list(map(int, input().split()))
+    print(solve(flowers, k, n, schematic))
 

@@ -1,8 +1,15 @@
 
-def solve(a, b, c, d):
-    count = 0
-    for i in range(a, b+1):
-        if i % c != 0 and i % d != 0:
-            count += 1
-    return count
+def get_symmetric_difference(m, n):
+    return list(sorted(set(m).symmetric_difference(set(n))))
+
+def main():
+    m_count = int(input())
+    m = set(map(int, input().split()))
+    n_count = int(input())
+    n = set(map(int, input().split()))
+    result = get_symmetric_difference(m, n)
+    print(*result, sep='\n')
+
+if __name__ == '__main__':
+    main()
 

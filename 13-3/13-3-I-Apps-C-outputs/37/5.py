@@ -1,17 +1,39 @@
 
-def solve(N, M):
-    # Initialize the number of sets to 0
-    num_sets = 0
+def f1(n, *magnets):
+    # Initialize the cheapest price as the current price
+    cheapest_price = int(''.join(magnets))
     
-    # Iterate over all possible combinations of toppings
-    for i in range(2**N):
-        # Convert the binary representation of i to a list of 0s and 1s
-        toppings = [int(x) for x in bin(i)[2:]]
+    # Iterate through all possible permutations of the magnets
+    for perm in permutations(magnets):
+        # Convert the permutation to an integer
+        price = int(''.join(perm))
         
-        # Check if the current combination of toppings satisfies the conditions
-        if len(set(toppings)) == N and all(toppings.count(1) >= 2):
-            num_sets += 1
+        # If the price is cheaper than the current cheapest price, update the cheapest price
+        if price < cheapest_price:
+            cheapest_price = price
     
-    # Return the number of sets modulo M
-    return num_sets % M
+    # Return the cheapest price
+    return cheapest_price
+
+def f2(n, *magnets):
+    # Initialize the cheapest price as the current price
+    cheapest_price = int(''.join(magnets))
+    
+    # Iterate through all possible permutations of the magnets
+    for perm in permutations(magnets):
+        # Convert the permutation to an integer
+        price = int(''.join(perm))
+        
+        # If the price is cheaper than the current cheapest price, update the cheapest price
+        if price < cheapest_price:
+            cheapest_price = price
+    
+    # Return the cheapest price
+    return cheapest_price
+
+if __name__ == '__main__':
+    n = int(input())
+    magnets = tuple(input().strip() for _ in range(n))
+    print(f1(n, *magnets))
+    print(f2(n, *magnets))
 

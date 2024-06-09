@@ -1,41 +1,41 @@
 
-def is_correct_sequence(sequence):
-    stack = []
-    for char in sequence:
-        if char == "(":
-            stack.append(char)
-        elif char == ")":
-            if not stack:
-                return False
-            stack.pop()
-    return not stack
+import sys
+import math
 
-def get_min_time(sequence):
-    if is_correct_sequence(sequence):
-        return 0
-    
-    # Find the first incorrect character
-    for i in range(len(sequence)):
-        if sequence[i] != "(" and sequence[i] != ")":
-            break
-    
-    # Find the first correct character
-    for j in range(i+1, len(sequence)):
-        if sequence[j] == "(" or sequence[j] == ")":
-            break
-    
-    # Swap the characters and get the time for the swap
-    time = 1
-    sequence = sequence[:i] + sequence[j] + sequence[i+1:j] + sequence[i] + sequence[j+1:]
-    
-    # Recursively call the function to get the minimum time for the rest of the sequence
-    return time + get_min_time(sequence)
+def get_neighbors(n, m, edges):
+    neighbors = [[] for _ in range(n)]
+    for u, v in edges:
+        neighbors[u].append(v)
+        neighbors[v].append(u)
+    return neighbors
 
-def main():
-    n = int(input())
-    sequence = input()
-    print(get_min_time(sequence))
+def bfs(n, m, edges, s, t):
+    queue = [(s, 0)]
+    visited = set()
+    while queue:
+        u, dist = queue.pop(0)
+        if u == t:
+            return dist
+        if u in visited:
+            continue
+        visited.add(u)
+        for v in neighbors[u]:
+            queue.append((v, dist+1))
+    return -1
 
-if __name__ == "__main__":
-    main()
+def solve(n, m, edges, s, t):
+    neighbors = get_neighbors(n, m, edges)
+    dist = bfs(n, m, edges, s, t)
+    if dist == -1:
+        return "never meet"
+    return dist
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    edges = []
+    for _ in range(m):
+        u, v = map(int, input().split())
+        edges.append((u, v))
+    s, t = map(int, input().split())
+    print(solve(n, m, edges, s, t))
 

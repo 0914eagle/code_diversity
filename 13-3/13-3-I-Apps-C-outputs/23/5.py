@@ -1,35 +1,43 @@
 
-def is_correct_sequence(sequence):
-    stack = []
-    for char in sequence:
-        if char == "(":
-            stack.append(char)
-        elif char == ")":
-            if not stack:
-                return False
-            stack.pop()
-    return not stack
+import math
 
-def get_min_time(sequence):
-    if is_correct_sequence(sequence):
-        return 0
+def f1(n, m, s, t):
+    # Initialize variables
+    stations = set([s, t])
+    neighbors = set()
+    for i in range(m):
+        neighbors.add(tuple(map(int, input().split())))
     
-    n = len(sequence)
-    dp = [0] * (n + 1)
-    dp[0] = 1
+    # Find the shortest path between the initial stations
+    path = []
+    current = s
+    while current != t:
+        for neighbor in neighbors:
+            if current in neighbor:
+                path.append(neighbor)
+                current = neighbor[0] if neighbor[0] != current else neighbor[1]
+                break
     
-    for i in range(1, n + 1):
-        for j in range(i):
-            if sequence[j] == "(" and sequence[i - 1] == ")":
-                dp[i] = max(dp[i], dp[j] + dp[i - j - 1] + 1)
-            elif sequence[j] == ")" and sequence[i - 1] == "(":
-                dp[i] = max(dp[i], dp[j] + dp[i - j - 1] + 1)
+    # Calculate the expected time to meet
+    time = 0
+    for i in range(len(path) - 1):
+        time += 1
+        stations.add(path[i + 1])
+        for neighbor in neighbors:
+            if path[i] in neighbor and path[i + 1] not in stations:
+                time += 1
+                break
     
-    return dp[n]
+    return time
 
-def solve(n, sequence):
-    if get_min_time(sequence) == 0:
-        return "0"
-    else:
-        return "-1"
+def f2(...):
+    # Implement f2 here
+    pass
+
+if __name__ == '__main__':
+    n = int(input())
+    m = int(input())
+    s = int(input())
+    t = int(input())
+    print(f1(n, m, s, t))
 

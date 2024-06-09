@@ -1,24 +1,13 @@
 
-import math
-
-def solve():
-    N = int(input())
-    A = list(map(int, input().split()))
-
-    # Sort the array A in non-decreasing order
-    A.sort()
-
-    # Initialize B as an array of ones
-    B = [1] * N
-
-    # Loop through the array A and update B
-    for i in range(N):
-        B[i] = math.ceil(B[i] * A[i])
-
-    # Calculate the sum of B modulo (10^9 + 7)
-    sum_B = sum(B) % (10**9 + 7)
-
-    return sum_B
-
-print(solve())
+def f1(n, k, a, b):
+    mod = 10**9 + 7
+    count = 0
+    for i in range(10**n):
+        num = str(i)
+        block = [int(num[j:j+k]) for j in range(0, n, k)]
+        if block[0] != b[0]:
+            count += 1
+        if all(block[i] % a[i] == 0 for i in range(1, len(block))):
+            count += 1
+    return count % mod
 

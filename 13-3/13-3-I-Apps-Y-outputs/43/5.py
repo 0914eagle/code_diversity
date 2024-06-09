@@ -1,30 +1,14 @@
 
-import math
+import re
 
-def get_min_rod_length(triangles):
-    # Calculate the maximum height of the triangles
-    max_height = max([triangle[2] for triangle in triangles])
+def is_roman_numeral(s):
+    pattern = r"^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$"
+    return bool(re.match(pattern, s))
 
-    # Calculate the minimum length of the rod required to support the triangles
-    min_rod_length = 0
-    for triangle in triangles:
-        # Calculate the distance from the corner of the triangle to the center of the rod
-        distance_from_corner = triangle[0] / 2 + triangle[1] / 2
+def main():
+    s = input()
+    print(is_roman_numeral(s))
 
-        # Calculate the angle between the string and the rod
-        angle = math.acos((triangle[0] ** 2 + triangle[1] ** 2 - triangle[2] ** 2) / (2 * triangle[0] * triangle[1]))
-
-        # Calculate the minimum length of the string required to support the triangle
-        min_string_length = distance_from_corner + max_height * math.sin(angle)
-
-        # Update the minimum rod length
-        min_rod_length = max(min_rod_length, min_string_length)
-
-    return min_rod_length
-
-triangles = []
-for _ in range(int(input())):
-    triangles.append(list(map(int, input().split())))
-
-print(get_min_rod_length(triangles))
+if __name__ == '__main__':
+    main()
 

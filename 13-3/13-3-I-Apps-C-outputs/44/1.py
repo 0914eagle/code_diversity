@@ -1,25 +1,15 @@
 
-def get_alternative_bracket_notation(s):
-    # Initialize variables
-    start = 0
-    end = 0
-    notation = ""
+def f1(n, s):
+    # your code here
+    return []
 
-    # Iterate through the string
-    for i, char in enumerate(s):
-        # If the character is an opening bracket, set the start index
-        if char == "(":
-            start = i
-        # If the character is a closing bracket, set the end index
-        elif char == ")":
-            end = i
-            # If the start and end indices are not the same, add the header to the notation
-            if start != end:
-                notation += f"{start},{end}:{start},{end}:"
-            # If the start and end indices are the same, add the header to the notation
-            else:
-                notation += f"{start},{end}:{start},{end}:"
+def f2(n, s):
+    # your code here
+    return []
 
-    # Return the notation
-    return notation
+if __name__ == '__main__':
+    n = int(input())
+    s = int(input())
+    print(f1(n, s))
+    print(f2(n, s))
 

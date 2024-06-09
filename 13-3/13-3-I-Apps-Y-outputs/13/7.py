@@ -1,10 +1,18 @@
 
-A, P = map(int, input().split())
+def count_types(cheeses):
+    types = set()
+    for cheese in cheeses:
+        types.add(cheese[1])
+    return len(types)
 
-# Calculate the maximum number of apple pies we can make
-max_pies = A // 3
-if P >= 2:
-    max_pies += A - 2
+def main():
+    num_cheeses = int(input())
+    cheeses = []
+    for i in range(num_cheeses):
+        cheese = input().split()
+        cheeses.append(cheese)
+    print(count_types(cheeses))
 
-print(max_pies)
+if __name__ == '__main__':
+    main()
 

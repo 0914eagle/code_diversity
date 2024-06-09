@@ -1,39 +1,20 @@
 
-def solve(n, log):
-    # Initialize variables
-    min_heap = []
-    corrected_log = []
-    min_value = 0
-    remove_count = 0
+def is_bracket_sequence(strings):
+    stack = []
+    for string in strings:
+        for char in string:
+            if char == "(":
+                stack.append(char)
+            elif char == ")":
+                if not stack or stack.pop() != "(":
+                    return False
+    return not stack
 
-    # Iterate through the log
-    for operation in log:
-        # Get the operation type and value
-        op_type, value = operation.split()
-        value = int(value)
+def main():
+    num_strings = int(input())
+    strings = [input() for _ in range(num_strings)]
+    print("Yes") if is_bracket_sequence(strings) else print("No")
 
-        # Insert operation
-        if op_type == "insert":
-            # Add the value to the min heap
-            min_heap.append(value)
-            # Sort the min heap in ascending order
-            min_heap.sort()
-        # Get minimum operation
-        elif op_type == "getMin":
-            # Get the minimum value from the min heap
-            min_value = min_heap[0]
-            # Check if the minimum value is equal to the expected value
-            if min_value != value:
-                # Add the number of times the minimum value should be removed from the heap
-                remove_count += 1
-        # Remove minimum operation
-        elif op_type == "removeMin":
-            # Remove the minimum value from the min heap
-            min_heap.pop(0)
-
-    # Add the corrected operations to the corrected log
-    for i in range(remove_count):
-        corrected_log.append("removeMin")
-
-    return corrected_log
+if __name__ == '__main__':
+    main()
 

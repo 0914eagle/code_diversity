@@ -1,25 +1,44 @@
 
-def get_min_rank(scores):
-    # Initialize the minimum rank for each player as 1
-    min_rank = [1] * len(scores)
-
-    # Sort the scores in descending order
-    sorted_scores = sorted(scores, reverse=True)
-
-    # Initialize a counter for the number of players with the same score as the current player
-    same_score_count = 1
-
-    # Iterate over the sorted scores
-    for i in range(1, len(sorted_scores)):
-        # If the current score is the same as the previous score, increment the counter
-        if sorted_scores[i] == sorted_scores[i-1]:
-            same_score_count += 1
-        # Otherwise, reset the counter
+def f1(n, distances):
+    # Initialize the subsets A and B
+    A = set()
+    B = set()
+    
+    # Initialize the disparity of both subsets to infinity
+    disparity_A = float('inf')
+    disparity_B = float('inf')
+    
+    # Iterate through each shipment
+    for i in range(n):
+        # Find the closest shipment in the other subset
+        closest_subset = A if i in B else B
+        closest_distance = float('inf')
+        for j in closest_subset:
+            distance = distances[i][j]
+            if distance < closest_distance:
+                closest_distance = distance
+        
+        # Add the shipment to the subset with the closest distance
+        if closest_distance == disparity_A:
+            A.add(i)
         else:
-            same_score_count = 1
+            B.add(i)
+        
+        # Update the disparity of both subsets
+        disparity_A = min(disparity_A, closest_distance)
+        disparity_B = min(disparity_B, closest_distance)
+    
+    # Return the minimum possible sum of disparities
+    return disparity_A + disparity_B
 
-        # Update the minimum rank for the current player
-        min_rank[sorted_scores[i-1]] = same_score_count
+def f2(...):
+    # Implement f2 here
+    pass
 
-    return min_rank
+if __name__ == '__main__':
+    n = int(input())
+    distances = []
+    for i in range(n):
+        distances.append([int(x) for x in input().split()])
+    print(f1(n, distances))
 

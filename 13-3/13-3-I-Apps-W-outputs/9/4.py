@@ -1,27 +1,37 @@
 
-import sys
+def get_min_changes(s, t):
+    # Initialize variables
+    n = len(s)
+    m = len(t)
+    changes = 0
+    positions = []
 
-def get_input():
-    return list(map(int, sys.stdin.readline().strip().split()))
+    # Loop through each position in s
+    for i in range(n):
+        # If the symbol at the current position is not equal to the symbol at the corresponding position in t
+        if s[i] != t[i]:
+            # Increment the number of changes
+            changes += 1
+            # Add the current position to the list of positions
+            positions.append(i+1)
 
-def solve(h, w, m, targets):
-    # Initialize a 2D array to store the number of targets destroyed for each position
-    destroyed = [[0] * w for _ in range(h)]
+    # Return the number of changes and the list of positions
+    return changes, positions
 
-    # Loop through each target and increment the number of targets destroyed for each position
-    for target in targets:
-        h_target, w_target = target
-        destroyed[h_target - 1][w_target - 1] += 1
-        destroyed[h_target - 1][:] = [max(destroyed[h_target - 1][i], destroyed[h_target - 1][i] + 1) for i in range(w)]
-        destroyed[:][w_target - 1] = [max(destroyed[i][w_target - 1], destroyed[i][w_target - 1] + 1) for i in range(h)]
+def main():
+    # Read the input
+    n, m = map(int, input().split())
+    s = input()
+    t = input()
 
-    # Return the maximum number of targets destroyed
-    return max(max(row) for row in destroyed)
+    # Call the function to get the minimum number of changes and the list of positions
+    changes, positions = get_min_changes(s, t)
 
-h, w, m = get_input()
-targets = []
-for _ in range(m):
-    h_target, w_target = get_input()
-    targets.append((h_target, w_target))
-print(solve(h, w, m, targets))
+    # Print the number of changes
+    print(changes)
+    # Print the list of positions
+    print(*positions)
+
+if __name__ == '__main__':
+    main()
 

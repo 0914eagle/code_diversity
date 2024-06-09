@@ -1,32 +1,88 @@
 
-def solve(origin, destination, connections):
-    # Initialize a dictionary to store the expected duration for each connection
-    expected_durations = {}
+import math
 
-    # Loop through each connection
-    for connection in connections:
-        # Get the origin, destination, departure time, standard journey time, probability of delay, and maximum delay for this connection
-        origin, destination, departure_time, standard_journey_time, probability_of_delay, maximum_delay = connection
+def f1(N, M, nodes, edges):
+    # Initialize variables
+    turning_required = 0
+    visited_nodes = set()
+    current_node = 0
+    previous_node = -1
 
-        # Calculate the expected duration for this connection
-        expected_duration = standard_journey_time * (1 - probability_of_delay / 100) + maximum_delay
+    # Loop through all edges
+    for i in range(M):
+        node1, node2 = edges[i]
+        if node1 not in visited_nodes:
+            # If node1 has not been visited, add its turning required
+            turning_required += nodes[node1][2]
+            visited_nodes.add(node1)
+            previous_node = node1
+        if node2 not in visited_nodes:
+            # If node2 has not been visited, add its turning required
+            turning_required += nodes[node2][2]
+            visited_nodes.add(node2)
+            previous_node = node2
 
-        # Add the expected duration to the dictionary with the connection as the key
-        expected_durations[connection] = expected_duration
+    # Add the turning required for the final edge
+    turning_required += nodes[current_node][2]
 
-    # Initialize a variable to store the minimum expected duration
-    minimum_expected_duration = float('inf')
+    return turning_required
 
-    # Loop through each connection
-    for connection in connections:
-        # Get the origin, destination, and departure time for this connection
-        origin, destination, departure_time = connection
+def f2(N, M, nodes, edges):
+    # Initialize variables
+    turning_required = 0
+    visited_nodes = set()
+    current_node = 0
+    previous_node = -1
 
-        # If the destination is the same as the destination for the judges, calculate the minimum expected duration for this connection
-        if destination == destination:
-            # Calculate the minimum expected duration for this connection
-            minimum_expected_duration = min(minimum_expected_duration, expected_durations[connection])
+    # Loop through all edges
+    for i in range(M):
+        node1, node2 = edges[i]
+        if node1 not in visited_nodes:
+            # If node1 has not been visited, add its turning required
+            turning_required += nodes[node1][2]
+            visited_nodes.add(node1)
+            previous_node = node1
+        if node2 not in visited_nodes:
+            # If node2 has not been visited, add its turning required
+            turning_required += nodes[node2][2]
+            visited_nodes.add(node2)
+            previous_node = node2
 
-    # Return the minimum expected duration
-    return minimum_expected_duration
+    # Add the turning required for the final edge
+    turning_required += nodes[current_node][2]
+
+    return turning_required
+
+if __name__ == '__main__':
+    N, M = map(int, input().split())
+    nodes = []
+    edges = []
+    for i in range(N):
+        x, y = map(int, input().split())
+        nodes.append([x, y, 0])
+    for i in range(M):
+        node1, node2 = map(int, input().split())
+        edges.append([node1, node2])
+
+    # Calculate the turning required for each node
+    for i in range(N):
+        node = nodes[i]
+        x, y, turning_required = node
+        for j in range(M):
+            edge = edges[j]
+            if edge[0] == i:
+                node2 = nodes[edge[1]]
+                x2, y2, turning_required2 = node2
+                turning_required += math.atan2(y2-y, x2-x)
+            elif edge[1] == i:
+                node2 = nodes[edge[0]]
+                x2, y2, turning_required2 = node2
+                turning_required += math.atan2(y2-y, x2-x)
+        nodes[i][2] = turning_required
+
+    # Calculate the least amount of turning required for an Eulerian circuit
+    turning_required = f1(N, M, nodes, edges)
+
+    # Print the result
+    print(turning_required)
 

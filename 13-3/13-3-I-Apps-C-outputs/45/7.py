@@ -1,16 +1,36 @@
 
-import sys
+def f1(n, p):
+    # Initialize a set to store the names of the coders
+    coders = set()
+    # Loop through each coder and add their names to the set
+    for i in range(n):
+        coders.add(i + 1)
+    # Initialize a set to store the names of the suspects
+    suspects = set()
+    # Loop through each coder and add their names to the set if they agreed with the head's choice
+    for i in range(n):
+        if p <= len(coders.intersection({i + 1, coders[i]})):
+            suspects.add(i + 1)
+    # Return the number of possible two-suspect sets
+    return len(suspects)
 
-def solve(N, A, B):
-    mod = 1000000007
-    dp = [0] * (N+1)
-    dp[0] = 1
-    for i in range(1, N+1):
-        dp[i] = (dp[i-1] * (A[i-1] + B[i-1])) % mod
-    return dp[N]
+def f2(n, p):
+    # Initialize a set to store the names of the coders
+    coders = set()
+    # Loop through each coder and add their names to the set
+    for i in range(n):
+        coders.add(i + 1)
+    # Initialize a set to store the names of the suspects
+    suspects = set()
+    # Loop through each coder and add their names to the set if they agreed with the head's choice
+    for i in range(n):
+        if p <= len(coders.intersection({i + 1, coders[i]})):
+            suspects.add(i + 1)
+    # Return the number of possible two-suspect sets
+    return len(suspects)
 
-N = int(input())
-A = list(map(int, input().split()))
-B = list(map(int, input().split()))
-print(solve(N, A, B))
+if __name__ == '__main__':
+    n, p = map(int, input().split())
+    print(f1(n, p))
+    print(f2(n, p))
 

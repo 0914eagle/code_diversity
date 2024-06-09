@@ -1,22 +1,81 @@
 
-def is_ladder(arr, l, r):
-    if l == r:
-        return True
-    if l + 1 == r and arr[l] == arr[r]:
-        return True
-    if arr[l] <= arr[l + 1] and arr[l + 1] <= arr[l + 2]:
-        return is_ladder(arr, l + 1, r)
-    if arr[l] >= arr[l + 1] and arr[l + 1] >= arr[l + 2]:
-        return is_ladder(arr, l + 1, r)
-    return False
+def f1(n, b):
+    # Function to check if the sequence is strictly increasing
+    def is_strictly_increasing(seq):
+        return all(seq[i] < seq[i+1] for i in range(len(seq)-1))
 
-n, m = map(int, input().split())
-arr = list(map(int, input().split()))
+    # Function to find all permutations of a list
+    def find_permutations(seq):
+        if len(seq) == 1:
+            return [seq]
+        permutations = []
+        for i in range(len(seq)):
+            remaining = seq[:i] + seq[i+1:]
+            for p in find_permutations(remaining):
+                permutations.append([seq[i]] + p)
+        return permutations
 
-for i in range(m):
-    l, r = map(int, input().split())
-    if is_ladder(arr, l - 1, r - 1):
-        print("Yes")
-    else:
-        print("No")
+    # Function to check if a permutation is valid
+    def is_valid_permutation(permutation):
+        # Check if the permutation is a permutation of the original sequence
+        if len(permutation) != len(set(permutation)):
+            return False
+        # Check if the permutation leads to a strictly increasing sequence
+        return is_strictly_increasing(permutation)
+
+    # Find all permutations of the input sequence
+    permutations = find_permutations(b)
+
+    # Check if any permutation is valid
+    for permutation in permutations:
+        if is_valid_permutation(permutation):
+            return permutation
+
+    # If no permutation is valid, return "No"
+    return "No"
+
+def f2(n, b):
+    # Function to find the next element in the sequence
+    def next_element(seq):
+        return seq[0] ^ seq[1]
+
+    # Function to check if the sequence is strictly increasing
+    def is_strictly_increasing(seq):
+        return all(seq[i] < seq[i+1] for i in range(len(seq)-1))
+
+    # Function to find all permutations of a list
+    def find_permutations(seq):
+        if len(seq) == 1:
+            return [seq]
+        permutations = []
+        for i in range(len(seq)):
+            remaining = seq[:i] + seq[i+1:]
+            for p in find_permutations(remaining):
+                permutations.append([seq[i]] + p)
+        return permutations
+
+    # Function to check if a permutation is valid
+    def is_valid_permutation(permutation):
+        # Check if the permutation is a permutation of the original sequence
+        if len(permutation) != len(set(permutation)):
+            return False
+        # Check if the permutation leads to a strictly increasing sequence
+        return is_strictly_increasing(permutation)
+
+    # Find all permutations of the input sequence
+    permutations = find_permutations(b)
+
+    # Check if any permutation is valid
+    for permutation in permutations:
+        if is_valid_permutation(permutation):
+            return permutation
+
+    # If no permutation is valid, return "No"
+    return "No"
+
+if __name__ == '__main__':
+    n = int(input())
+    b = list(map(int, input().split()))
+    print(f1(n, b))
+    print(f2(n, b))
 

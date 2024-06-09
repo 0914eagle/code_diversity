@@ -1,25 +1,24 @@
 
-def get_alternative_bracket_notation(s):
-    # Initialize variables
-    start = 0
-    end = 0
-    notation = ""
+def f1(n, s):
+    # Initialize an empty list to store the predictions
+    predictions = []
 
-    # Iterate through the string
-    for i, char in enumerate(s):
-        # If the character is an opening bracket, set the start index
-        if char == "(":
-            start = i
-        # If the character is a closing bracket, set the end index
-        elif char == ")":
-            end = i
-            # If the start and end indices are not the same, add the header to the notation
-            if start != end:
-                notation += f"{start},{end}:{end},{end}:"
-            # If the start and end indices are the same, add the header to the notation
-            else:
-                notation += f"{start},{end}:{end},{end}:"
+    # Iterate through the input sequences
+    for _ in range(s):
+        # Read a sequence of characters from the input
+        sequence = input()
 
-    # Return the notation
-    return notation
+        # Calculate the probability of the sequence occurring
+        probability = 1
+        for i in range(len(sequence)):
+            probability *= 1 / 3
+
+        # Add the sequence and its probability to the list
+        predictions.append((sequence, probability))
+
+    # Sort the list by probability in descending order
+    predictions.sort(key=lambda x: x[1], reverse=True)
+
+    # Return the sorted list of predictions
+    return predictions
 

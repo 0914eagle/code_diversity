@@ -1,9 +1,12 @@
 
-def solve(s, l, r):
-    n = len(s)
-    count = 0
-    for i in range(l-1, r):
-        if s[i] != s[i-1] and s[i] != s[i-2]:
-            count += 1
-    return count
+def count_triangles(sides):
+    # Calculate the perimeter of the hexagon
+    perimeter = sum(sides)
+    # Calculate the number of triangles
+    num_triangles = perimeter * 2 - 3
+    return num_triangles
+
+if __name__ == '__main__':
+    sides = list(map(int, input().split()))
+    print(count_triangles(sides))
 

@@ -1,30 +1,27 @@
 
-def get_min_chars(route):
+def get_min_watering_operations(heights):
     # Initialize variables
-    num_chars = len(route)
-    macro_chars = 0
-    macro_used = False
+    n = len(heights)
+    min_operations = 0
+    max_height = max(heights)
 
-    # Iterate through the route and check for repetition
-    for i in range(len(route) - 1):
-        if route[i] == route[i + 1]:
-            # If the current character is repeated, increment the macro character count
-            macro_chars += 1
-        else:
-            # If the current character is not repeated, check if a macro has been used
-            if macro_used:
-                # If a macro has been used, add the macro character count to the total character count
-                num_chars += macro_chars
-                # Reset the macro character count
-                macro_chars = 0
-                # Set the macro used flag to False
-                macro_used = False
-            # Add the current character to the total character count
-            num_chars += 1
+    # Loop through each height and check if it is equal to the maximum height
+    for i in range(n):
+        if heights[i] < max_height:
+            # If the height is not equal to the maximum height, increment the minimum number of operations
+            min_operations += 1
 
-    # If a macro has been used, add the macro character count to the total character count
-    if macro_used:
-        num_chars += macro_chars
+    # Return the minimum number of operations required
+    return min_operations
 
-    return num_chars
+def main():
+    # Read the number of flowers and their heights from stdin
+    n = int(input())
+    heights = list(map(int, input().split()))
+
+    # Call the get_min_watering_operations function and print the result
+    print(get_min_watering_operations(heights))
+
+if __name__ == '__main__':
+    main()
 

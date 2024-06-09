@@ -1,23 +1,62 @@
 
-def solve(A, K, Q):
-    # Sort the array in ascending order
-    A.sort()
-    
-    # Initialize the smallest and largest values removed
-    smallest, largest = float('inf'), -float('inf')
-    
-    # Loop through each operation
-    for i in range(Q):
-        # Find the smallest element in the current subsequence
-        smallest_element = A[i]
-        for j in range(1, K):
-            if A[i+j] < smallest_element:
-                smallest_element = A[i+j]
-                
-        # Update the smallest and largest values removed
-        smallest = min(smallest, smallest_element)
-        largest = max(largest, A[i+K-1])
-        
-    # Return the difference between the smallest and largest values removed
-    return largest - smallest
+def f1(n, m, Jiro_cards, Ciel_cards):
+    # Initialize variables
+    Jiro_alive = True
+    Jiro_damage = 0
+    Ciel_damage = 0
+    Ciel_cards_used = []
+
+    # Loop through each card in Ciel's hand
+    for card in Ciel_cards:
+        # If Jiro has no alive cards, attack with the current card
+        if Jiro_alive == False:
+            Jiro_damage += card
+            continue
+
+        # Find the strongest Jiro card that is still alive
+        strongest_Jiro_card = None
+        for jiro_card in Jiro_cards:
+            if jiro_card[1] > strongest_Jiro_card[1] and jiro_card[0] == "ATK":
+                strongest_Jiro_card = jiro_card
+
+        # If there is no strongest Jiro card, attack with the current card
+        if strongest_Jiro_card == None:
+            Jiro_damage += card
+            continue
+
+        # If the current card is stronger than the strongest Jiro card, attack with the current card
+        if card > strongest_Jiro_card[1]:
+            Jiro_damage += card - strongest_Jiro_card[1]
+            Ciel_damage += strongest_Jiro_card[1]
+            Jiro_cards.remove(strongest_Jiro_card)
+            Ciel_cards_used.append(card)
+            continue
+
+        # If the current card is weaker than the strongest Jiro card, attack with the strongest Jiro card
+        if card < strongest_Jiro_card[1]:
+            Jiro_damage += strongest_Jiro_card[1] - card
+            Ciel_damage += card
+            Jiro_cards.remove(strongest_Jiro_card)
+            Ciel_cards_used.append(card)
+            continue
+
+    # Return the maximum damage Jiro can get
+    return Jiro_damage
+
+def f2(...):
+    # Your code here
+    pass
+
+if __name__ == '__main__':
+    n = int(input())
+    m = int(input())
+    Jiro_cards = []
+    for _ in range(n):
+        position, strength = input().split()
+        Jiro_cards.append((position, int(strength)))
+    Ciel_cards = []
+    for _ in range(m):
+        strength = int(input())
+        Ciel_cards.append(strength)
+    print(f1(n, m, Jiro_cards, Ciel_cards))
 

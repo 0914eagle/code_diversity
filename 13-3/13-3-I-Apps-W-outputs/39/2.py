@@ -1,14 +1,23 @@
 
-def solve(N):
-    # Initialize the minimum number of banknotes to be infinity
-    min_banknotes = float('inf')
-    # Loop through all possible values of banknotes from 1 to 10^(100)
-    for banknote in range(1, 10**100+1):
-        # Calculate the number of banknotes needed to make the payment
-        num_banknotes = N // banknote
-        # If the number of banknotes is less than the minimum, update the minimum
-        if num_banknotes < min_banknotes:
-            min_banknotes = num_banknotes
-    # Return the minimum number of banknotes needed to make the payment
-    return min_banknotes
+def count_tilings(N, M):
+    # Initialize the dp table with 0s
+    dp = [[0] * (M + 1) for _ in range(N + 1)]
+    
+    # Base case: only one way to tile a table of size 1x1
+    dp[1][1] = 1
+    
+    # Populate the dp table
+    for i in range(2, N + 1):
+        for j in range(1, M + 1):
+            # Count the number of ways to tile a table of size ixj with round macarons
+            dp[i][j] += dp[i - 1][j - 1]
+            # Count the number of ways to tile a table of size ixj with oval macarons
+            dp[i][j] += dp[i - 1][j - 2]
+    
+    # Return the total number of tilings modulo 10^9
+    return dp[N][M] % 1000000000
+
+if __name__ == '__main__':
+    N, M = map(int, input().split())
+    print(count_tilings(N, M))
 

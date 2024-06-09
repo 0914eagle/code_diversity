@@ -1,27 +1,41 @@
 
-def solve():
-    N = int(input())
-    values = list(map(int, input().split()))
-    costs = list(map(int, input().split()))
+def get_minimum_moves(arr, m):
+    # Calculate the current count of elements with each remainder
+    count = [0] * m
+    for i in range(len(arr)):
+        count[(arr[i] % m)] += 1
+    
+    # Calculate the minimum number of moves required to make the count equal for each remainder
+    min_moves = [0] * m
+    for i in range(m):
+        min_moves[i] = abs(count[i] - len(arr) // m)
+    
+    # Return the minimum number of moves required to make the count equal for each remainder
+    return sum(min_moves)
 
-    # Initialize the maximum possible value of X-Y
-    max_value = 0
+def get_new_array(arr, m):
+    # Calculate the current count of elements with each remainder
+    count = [0] * m
+    for i in range(len(arr)):
+        count[(arr[i] % m)] += 1
+    
+    # Calculate the minimum number of moves required to make the count equal for each remainder
+    min_moves = [0] * m
+    for i in range(m):
+        min_moves[i] = abs(count[i] - len(arr) // m)
+    
+    # Create a new array with the minimum number of moves required to make the count equal for each remainder
+    new_arr = []
+    for i in range(m):
+        for j in range(min_moves[i]):
+            new_arr.append(arr[i] + (j + 1) * m)
+    
+    # Return the new array
+    return new_arr
 
-    # Iterate over all possible combinations of gems
-    for i in range(1 << N):
-        # Initialize the sum of values and costs for the current combination
-        current_value = 0
-        current_cost = 0
-
-        # Iterate over the gems in the current combination
-        for j in range(N):
-            # If the j-th gem is chosen, add its value and cost to the current sum
-            if i & (1 << j):
-                current_value += values[j]
-                current_cost += costs[j]
-
-        # Update the maximum possible value of X-Y if the current combination is better
-        max_value = max(max_value, current_value - current_cost)
-
-    return max_value
+if __name__ == '__main__':
+    arr = [3, 2, 0, 6, 10, 12]
+    m = 3
+    print(get_minimum_moves(arr, m))
+    print(get_new_array(arr, m))
 

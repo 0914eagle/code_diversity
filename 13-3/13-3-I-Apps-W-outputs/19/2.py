@@ -1,40 +1,61 @@
 
-def solve(n, k, configuration):
-    # Initialize a list to store the pairs of children who will turn left
-    pairs_to_turn_left = []
-    
-    # Iterate through each pair of children
-    for i in range(n-1):
-        # If the children are looking at each other and it is not the last pair
-        if configuration[i] != configuration[i+1] and i < n-2:
-            # Add the pair to the list of pairs to turn left
-            pairs_to_turn_left.append([i, i+1])
-    
-    # If there are no pairs to turn left, return -1
-    if not pairs_to_turn_left:
-        return -1
-    
-    # Initialize a list to store the moves
-    moves = []
-    
-    # Iterate through each move
-    for move in range(k):
-        # Initialize a list to store the children who will turn left during this move
-        children_to_turn_left = []
-        
-        # Iterate through each pair of children who will turn left
-        for pair in pairs_to_turn_left:
-            # If it is the last move and the pair is the last pair of children who will turn left
-            if move == k-1 and pair == pairs_to_turn_left[-1]:
-                # Add both children to the list of children who will turn left during this move
-                children_to_turn_left.extend(pair)
-            # Otherwise, add only one child to the list of children who will turn left during this move
-            else:
-                children_to_turn_left.append(pair[move % 2])
-        
-        # Add the list of children who will turn left during this move to the list of moves
-        moves.append(children_to_turn_left)
-    
-    # Return the list of moves
-    return moves
+def get_designations(streets, properties):
+    designations = []
+    for property in properties:
+        designation = "same"
+        for street in streets:
+            if street.intersects(property):
+                designation = "different"
+                break
+        designations.append(designation)
+    return designations
+
+def main():
+    streets_count = int(input())
+    streets = []
+    for _ in range(streets_count):
+        x1, y1, x2, y2 = map(int, input().split())
+        street = Line(x1, y1, x2, y2)
+        streets.append(street)
+
+    properties_count = int(input())
+    properties = []
+    for _ in range(properties_count):
+        x3, y3, x4, y4 = map(int, input().split())
+        property = Rectangle(x3, y3, x4, y4)
+        properties.append(property)
+
+    designations = get_designations(streets, properties)
+    for designation in designations:
+        print(designation)
+
+class Line:
+    def __init__(self, x1, y1, x2, y2):
+        self.x1 = x1
+        self.y1 = y1
+        self.x2 = x2
+        self.y2 = y2
+
+    def intersects(self, rectangle):
+        return self.intersects_x(rectangle) and self.intersects_y(rectangle)
+
+    def intersects_x(self, rectangle):
+        x_min = min(self.x1, self.x2)
+        x_max = max(self.x1, self.x2)
+        return x_min <= rectangle.x_max and rectangle.x_min <= x_max
+
+    def intersects_y(self, rectangle):
+        y_min = min(self.y1, self.y2)
+        y_max = max(self.y1, self.y2)
+        return y_min <= rectangle.y_max and rectangle.y_min <= y_max
+
+class Rectangle:
+    def __init__(self, x_min, y_min, x_max, y_max):
+        self.x_min = x_min
+        self.y_min = y_min
+        self.x_max = x_max
+        self.y_max = y_max
+
+if __name__ == '__main__':
+    main()
 

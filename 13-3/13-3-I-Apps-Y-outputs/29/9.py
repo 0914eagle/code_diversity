@@ -1,32 +1,30 @@
 
-import sys
+def get_parity(n):
+    return n % 2
 
-def get_black_squares(grid):
-    black_squares = 0
-    for row in grid:
-        for square in row:
-            if square == '#':
-                black_squares += 1
-    return black_squares
-
-def get_choices(grid, k):
-    num_rows = len(grid)
-    num_cols = len(grid[0])
-    choices = 0
-    for rows in range(num_rows+1):
-        for cols in range(num_cols+1):
-            black_squares = get_black_squares(grid)
-            if black_squares == k:
-                choices += 1
-    return choices
+def get_sum_of_k_numbers(n, k):
+    if k == 1:
+        return [n]
+    
+    parity = get_parity(n)
+    sum_of_k_numbers = []
+    for i in range(1, k+1):
+        if get_parity(i) == parity:
+            sum_of_k_numbers.append(i)
+    
+    return sum_of_k_numbers
 
 def main():
-    h, w, k = map(int, input().split())
-    grid = []
-    for _ in range(h):
-        grid.append(input())
-    print(get_choices(grid, k))
+    t = int(input())
+    for _ in range(t):
+        n, k = map(int, input().split())
+        sum_of_k_numbers = get_sum_of_k_numbers(n, k)
+        if sum_of_k_numbers:
+            print("YES")
+            print(" ".join(map(str, sum_of_k_numbers)))
+        else:
+            print("NO")
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
 

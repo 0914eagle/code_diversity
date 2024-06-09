@@ -1,17 +1,33 @@
 
-def solve(n, levels):
-    # Initialize the dp table with the completion time for each level when using item 0
-    dp = [levels[i][0] for i in range(n)]
+def f1(T, N, breaks):
+    # Sort the breaks in non-decreasing order
+    breaks.sort()
 
-    # Loop through each level
-    for i in range(n):
-        # Loop through each item
-        for j in range(1, n+1):
-            # If the shortcut item is not the current item
-            if levels[i][1] != j:
-                # Update the dp table with the minimum completion time for the current level and item
-                dp[i] = min(dp[i], dp[i-1] + levels[i][j])
+    # Initialize the number of minutes spent on stage for each musician
+    minutes_on_stage = [0] * N
 
-    # Return the minimum completion time for all levels
-    return dp[-1]
+    # Iterate through the breaks and assign minutes on stage
+    for i in range(N):
+        minutes_on_stage[i] = breaks[i]
+        if i < N - 1:
+            minutes_on_stage[i + 1] += breaks[i]
+
+    # Return the number of minutes spent on stage for each musician
+    return minutes_on_stage
+
+def f2(T, N, breaks):
+    # Initialize the number of minutes spent on stage for each musician
+    minutes_on_stage = [0] * N
+
+    # Iterate through the breaks and assign minutes on stage
+    for i in range(N):
+        minutes_on_stage[i] = T - breaks[i]
+
+    # Return the number of minutes spent on stage for each musician
+    return minutes_on_stage
+
+if __name__ == '__main__':
+    T, N = map(int, input().split())
+    breaks = list(map(int, input().split()))
+    print(*f1(T, N, breaks), sep='\n')
 

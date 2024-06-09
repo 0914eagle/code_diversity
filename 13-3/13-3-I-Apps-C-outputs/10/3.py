@@ -1,44 +1,49 @@
 
-def n_queens_problem(n, m, board):
-    # Initialize variables
-    max_queens = 0
-    num_ways = 0
+def f1(h, m, s, t_1, t_2):
+    # Convert the input times to integers
+    t_1 = int(h * 3600 + m * 60 + s)
+    t_2 = int(t_2 * 3600)
+    
+    # Check if the target time is reachable
+    if t_1 == t_2:
+        return "YES"
+    
+    # Check if the target time is on the same side of the clock face as the starting time
+    if t_1 > t_2:
+        if t_1 - t_2 > 1800:
+            return "NO"
+    else:
+        if t_2 - t_1 > 1800:
+            return "NO"
+    
+    # Check if the target time is on the opposite side of the clock face as the starting time
+    if abs(t_1 - t_2) > 1800:
+        return "NO"
+    
+    # Check if the target time is on the same hour as the starting time
+    if t_1 // 3600 == t_2 // 3600:
+        return "NO"
+    
+    # Check if the target time is on the same minute as the starting time
+    if t_1 % 3600 == t_2 % 3600:
+        return "NO"
+    
+    # Check if the target time is on the same second as the starting time
+    if t_1 % 60 == t_2 % 60:
+        return "NO"
+    
+    # If all checks pass, return "YES"
+    return "YES"
 
-    # Loop through each row of the board
-    for i in range(n):
-        # Loop through each column of the board
-        for j in range(m):
-            # Check if the current cell is broken
-            if board[i][j] == '#':
-                continue
+def f2(...):
+    # Implement function f2 here
+    pass
 
-            # Check if the current cell is safe for a queen
-            safe = True
-            for k in range(n):
-                # Check if the current cell is in the same row, column, or diagonal as any other queen
-                if board[i][k] == 'Q' or board[k][j] == 'Q' or (i - k) == abs(j - k) and board[i - k][j - k] == 'Q':
-                    safe = False
-                    break
-
-            # If the current cell is safe for a queen, place a queen and update the variables
-            if safe:
-                board[i][j] = 'Q'
-                max_queens += 1
-                num_ways += 1
-
-                # Recursively call the function to place the remaining queens
-                n_queens_problem(n, m, board)
-
-                # If the maximum number of queens has been reached, return the variables
-                if max_queens == n:
-                    return max_queens, num_ways
-
-                # If the current cell is not safe for a queen, remove the queen and update the variables
-                else:
-                    board[i][j] = '.'
-                    max_queens -= 1
-                    num_ways -= 1
-
-    # If the maximum number of queens has not been reached, return the variables
-    return max_queens, num_ways
+if __name__ == '__main__':
+    h = int(input())
+    m = int(input())
+    s = int(input())
+    t_1 = int(input())
+    t_2 = int(input())
+    print(f1(h, m, s, t_1, t_2))
 

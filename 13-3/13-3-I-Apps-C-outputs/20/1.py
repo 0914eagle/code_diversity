@@ -1,34 +1,32 @@
 
-def get_min_mex(subarrays):
-    mex = 0
-    for subarray in subarrays:
-        for i in range(subarray[0], subarray[1] + 1):
-            if i not in subarray:
-                mex = max(mex, i)
-    return mex
+def get_max_guests(apartment_layout):
+    # Initialize variables
+    max_guests = 0
+    table_size = 0
 
+    # Iterate through the apartment layout
+    for row in apartment_layout:
+        for col in row:
+            # If the current square is free, increment the table size
+            if col == ".":
+                table_size += 1
+            # If the current square is blocked, check if the table size is greater than the maximum number of guests
+            elif col == "X":
+                if table_size > max_guests:
+                    max_guests = table_size
+                # Reset the table size to 0
+                table_size = 0
 
-def get_optimal_array(n, m):
-    subarrays = []
-    for i in range(m):
-        l, r = map(int, input().split())
-        subarrays.append([l, r])
+    # Return the maximum number of guests that can be seated
+    return max_guests
 
-    a = [0] * n
-    for i in range(n):
-        a[i] = i + 1
+def main():
+    # Read the apartment layout from stdin
+    apartment_layout = [input() for _ in range(int(input()))]
 
-    min_mex = get_min_mex(subarrays)
-    for i in range(n):
-        if a[i] != min_mex:
-            a[i] = min_mex
-            break
+    # Call the get_max_guests function and print the result
+    print(get_max_guests(apartment_layout))
 
-    return a
-
-
-n, m = map(int, input().split())
-a = get_optimal_array(n, m)
-print(min_mex)
-print(*a)
+if __name__ == "__main__":
+    main()
 

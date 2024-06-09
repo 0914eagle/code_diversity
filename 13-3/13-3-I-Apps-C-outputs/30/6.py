@@ -1,56 +1,45 @@
 
-def kahn_algorithm(graph):
-    # Initialize the list of source nodes and the sorted list
-    sources = [node for node in graph if not graph[node]]
-    sorted_list = []
+def f1(n, s):
+    # find the convex hull of the Nazi troop positions
+    hull = []
+    hull.append((0, 0))
+    for i in range(n):
+        while len(hull) > 1 and not is_left(hull[-2], hull[-1], (x[i], y[i])):
+            hull.pop()
+        hull.append((x[i], y[i]))
+    hull.append((0, 0))
+    
+    # check which castles are in danger
+    in_danger = 0
+    for i in range(s):
+        if is_inside(hull, (x_castle[i], y_castle[i])):
+            in_danger += 1
+    
+    return in_danger
 
-    # While there are sources nodes, iterate through them
-    while sources:
-        # Get the current source node and remove it from the graph
-        current_source = sources.pop(0)
-        graph.pop(current_source)
+def is_left(p1, p2, p3):
+    return (p2[0] - p1[0]) * (p3[1] - p1[1]) - (p2[1] - p1[1]) * (p3[0] - p1[0]) > 0
 
-        # Add the current source node to the sorted list
-        sorted_list.append(current_source)
+def is_inside(hull, p):
+    n = len(hull)
+    inside = False
+    for i in range(n):
+        if is_left(hull[i], hull[(i + 1) % n], p):
+            inside = not inside
+    return inside
 
-        # Find all nodes that have an edge to the current source node and remove the edge
-        for node in graph:
-            if current_source in graph[node]:
-                graph[node].remove(current_source)
-
-                # If the node now has no incoming edges, add it to the sources list
-                if not graph[node]:
-                    sources.append(node)
-
-    # If the graph is empty, return the sorted list, otherwise return -1
-    return sorted_list if not graph else -1
-
-def largest_s(graph):
-    # Initialize the largest size of S to 0
-    largest_size = 0
-
-    # Iterate through all possible choices of alpha
-    for alpha in range(len(graph)):
-        # Clone the graph and apply Kahn's algorithm
-        graph_copy = graph.copy()
-        sorted_list = kahn_algorithm(graph_copy)
-
-        # If the graph is not empty, continue to the next iteration
-        if sorted_list == -1:
-            continue
-
-        # If the size of S is larger than the current largest size, update the largest size
-        if len(sorted_list) > largest_size:
-            largest_size = len(sorted_list)
-
-    # Return the largest size of S
-    return largest_size
-
-# Test the function with the sample input
-graph = {0: [1], 1: [2], 2: [3], 3: []}
-print(largest_s(graph))
-
-# Test the function with a larger input
-graph = {0: [1, 2], 1: [3], 2: [4], 3: [5], 4: [6], 5: [6], 6: []}
-print(largest_s(graph))
+if __name__ == '__main__':
+    n = int(input())
+    x = []
+    y = []
+    for i in range(n):
+        x.append(int(input()))
+        y.append(int(input()))
+    s = int(input())
+    x_castle = []
+    y_castle = []
+    for i in range(s):
+        x_castle.append(int(input()))
+        y_castle.append(int(input()))
+    print(f1(n, s))
 

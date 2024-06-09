@@ -1,38 +1,39 @@
 
-def solve(n, m, a):
-    # Initialize a dictionary to store the number of ways to get each card
-    dp = {(1, 1): 1}
+def f1(w, l, a):
+    # Initialize variables
+    max_frogs = 0
+    curr_frogs = 0
+    curr_dist = 0
+    stones = []
+    
+    # Iterate through the input array
+    for i in range(len(a)):
+        # If the current distance is not at the bank, add the current number of stones to the list of stones
+        if curr_dist != 0:
+            stones.extend([curr_dist] * a[i])
+        
+        # If the current distance is at the bank and there are stones, remove the first stone and add a frog
+        if curr_dist == 0 and stones:
+            stones.pop(0)
+            curr_frogs += 1
+        
+        # If the current distance is at the bank and there are no stones, remove a frog
+        elif curr_dist == 0 and not stones:
+            curr_frogs -= 1
+        
+        # Update the current distance and number of frogs
+        curr_dist += 1
+        max_frogs = max(max_frogs, curr_frogs)
+    
+    # Return the maximum number of frogs that can cross the river
+    return max_frogs
 
-    # Iterate through the given cards
-    for i in range(n):
-        # Get the current card
-        card = (1, a[i])
+def f2(...):
+    # Implement function f2 here
+    pass
 
-        # Iterate through the previous cards
-        for prev_card in dp:
-            # Get the previous card's values
-            prev_a, prev_b = prev_card
-
-            # If the previous card's values are even, multiply them by 2 to get the new card's values
-            if prev_a % 2 == 0 and prev_b % 2 == 0:
-                new_a = prev_a // 2
-                new_b = prev_b // 2
-                new_card = (new_a, new_b)
-
-                # If the new card is not already in the dictionary, add it and set the number of ways to get it to the number of ways to get the previous card
-                if new_card not in dp:
-                    dp[new_card] = dp[prev_card]
-
-            # If the previous card's values are not even, add 1 to the first value and 1 to the second value to get the new card's values
-            else:
-                new_a = prev_a + 1
-                new_b = prev_b + 1
-                new_card = (new_a, new_b)
-
-                # If the new card is not already in the dictionary, add it and set the number of ways to get it to the number of ways to get the previous card
-                if new_card not in dp:
-                    dp[new_card] = dp[prev_card]
-
-    # Return the number of ways to get the required cards
-    return dp[(1, m)]
+if __name__ == '__main__':
+    w, l = map(int, input().split())
+    a = list(map(int, input().split()))
+    print(f1(w, l, a))
 

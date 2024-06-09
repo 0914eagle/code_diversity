@@ -1,23 +1,27 @@
 
-def solve(n, m, p, board):
-    # Initialize a list to store the moves
-    moves = []
-    
-    # Loop through each row and column
-    for i in range(n):
-        for j in range(m):
-            # If the current square is not already filled with p, add 1 to it
-            if board[i][j] != p:
-                board[i][j] += 1
-                moves.append(board[i][j])
-            # If the current square is filled with p, wrap around to 1
-            else:
-                board[i][j] = 1
-                moves.append(board[i][j])
-    
-    # Check if all squares are filled with p
-    if all(all(row) for row in board):
-        return moves
-    else:
-        return -1
+import math
+
+def archimedes_spiral(b, t_x, t_y):
+    # Calculate the angle of the spiral at the target point
+    theta = math.atan2(t_y, t_x)
+
+    # Calculate the distance from the origin to the target point
+    r = math.sqrt(t_x**2 + t_y**2)
+
+    # Calculate the distance from the origin to the point where the avatar should leave the spiral
+    d = r - b * theta
+
+    # Calculate the coordinates of the point where the avatar should leave the spiral
+    x = d * math.cos(theta)
+    y = d * math.sin(theta)
+
+    return x, y
+
+def main():
+    b, t_x, t_y = map(float, input().split())
+    x, y = archimedes_spiral(b, t_x, t_y)
+    print(f"{x:.9f} {y:.9f}")
+
+if __name__ == "__main__":
+    main()
 

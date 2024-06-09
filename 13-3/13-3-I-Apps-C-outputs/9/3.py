@@ -1,31 +1,42 @@
 
-import itertools
-
-def count_confused_sequences(n, c):
-    # Initialize a list to store the confused sequences
-    confused_sequences = []
+def get_min_messages(spies, enemies, connections):
+    # Initialize a graph with the given connections
+    graph = {i: set() for i in range(spies)}
+    for connection in connections:
+        graph[connection[0]].add(connection[1])
+        graph[connection[1]].add(connection[0])
     
-    # Iterate over all possible sequences of length n
-    for sequence in itertools.permutations(range(1, n + 1)):
-        # Calculate the confusion of the current sequence
-        confusion = 0
-        for i in range(n - 1):
-            if sequence[i] > sequence[i + 1]:
-                confusion += 1
+    # Initialize a set to keep track of the enemies
+    enemy_set = set(enemies)
+    
+    # Initialize a queue to do a BFS traversal of the graph
+    queue = [0]
+    
+    # Initialize a dictionary to keep track of the number of messages needed to reach each spy
+    message_count = {0: 0}
+    
+    while queue:
+        # Dequeue a spy from the queue
+        current_spy = queue.pop(0)
         
-        # If the confusion is equal to c, add the sequence to the list of confused sequences
-        if confusion == c:
-            confused_sequences.append(sequence)
+        # If the current spy is an enemy, skip it
+        if current_spy in enemy_set:
+            continue
+        
+        # If the current spy has not been visited before, mark it as visited and add it to the queue
+        if current_spy not in message_count:
+            message_count[current_spy] = message_count[current_spy - 1] + 1
+            queue += list(graph[current_spy])
     
-    # Return the number of confused sequences
-    return len(confused_sequences)
+    # Return the minimum number of messages needed to reach all spies
+    return message_count[spies - 1]
 
-# Test the function with the sample input
-n = 10
-c = 1
-print(count_confused_sequences(n, c)) # Should print 9
+def main():
+    spies, enemies, connections = map(int, input().split())
+    connections = [tuple(map(int, input().split())) for _ in range(connections)]
+    enemies = set(map(int, input().split()))
+    print(get_min_messages(spies, enemies, connections))
 
-n = 4
-c = 3
-print(count_confused_sequences(n, c)) # Should print 6
+if __name__ == '__main__':
+    main()
 

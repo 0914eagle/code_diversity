@@ -1,24 +1,46 @@
 
-def is_sorted(s):
-    return s == ''.join(sorted(s))
+def get_min_islands(image):
+    # Initialize variables
+    rows, cols = len(image), len(image[0])
+    visited = [[False for _ in range(cols)] for _ in range(rows)]
+    islands = 0
 
-def get_coloring(s):
-    n = len(s)
-    coloring = [0] * n
-    for i in range(n):
-        if s[i] == 'a':
-            coloring[i] = 0
-        elif s[i] == 'b':
-            coloring[i] = 1
-        else:
-            return "NO"
-    return "YES\n" + ''.join(map(str, coloring))
+    # Loop through each cell in the image
+    for i in range(rows):
+        for j in range(cols):
+            # If the cell is not visited and is land, visit it and count the number of connected land cells
+            if not visited[i][j] and image[i][j] == "L":
+                count = 0
+                dfs(image, visited, i, j, count)
+                islands += 1
 
-n = int(input())
-s = input()
-if is_sorted(s):
-    print("YES")
-    print("0" * n)
-else:
-    print(get_coloring(s))
+    return islands
+
+def dfs(image, visited, i, j, count):
+    # Base case: if the cell is not land, return
+    if image[i][j] != "L":
+        return
+
+    # Mark the cell as visited
+    visited[i][j] = True
+    count += 1
+
+    # Recursive case: visit the four neighbors of the current cell
+    if i > 0 and not visited[i-1][j]:
+        dfs(image, visited, i-1, j, count)
+    if i < rows-1 and not visited[i+1][j]:
+        dfs(image, visited, i+1, j, count)
+    if j > 0 and not visited[i][j-1]:
+        dfs(image, visited, i, j-1, count)
+    if j < cols-1 and not visited[i][j+1]:
+        dfs(image, visited, i, j+1, count)
+
+if __name__ == '__main__':
+    image = [
+        ['L', 'L', 'L', 'L', 'L'],
+        ['L', 'L', 'L', 'L', 'L'],
+        ['L', 'L', 'L', 'L', 'L'],
+        ['L', 'L', 'L', 'L', 'L']
+    ]
+    print(get_min_islands(image))
 

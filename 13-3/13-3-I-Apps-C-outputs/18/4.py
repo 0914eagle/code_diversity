@@ -1,53 +1,25 @@
 
-def solve(n, pegs, dry_plan, wet_plan):
-    # Initialize a list to store the safe wet plan
-    safe_wet_plan = []
+def is_possible(W, S, C, K):
+    # Initialize the number of each item on the left bank as W, S, and C respectively
+    left_bank = [W, S, C]
     
-    # Iterate through the dry plan
-    for step in dry_plan:
-        # If the step is to place a peg, check if it is safe to place the peg
-        if step[0] == 1:
-            # If the peg can be placed safely, add it to the safe wet plan
-            if can_place_peg(step[1], safe_wet_plan, wet_plan):
-                safe_wet_plan.append(step)
-        # If the step is to remove a peg, check if it is safe to remove the peg
-        elif step[0] == -1:
-            # If the peg can be removed safely, remove it from the safe wet plan
-            if can_remove_peg(step[1], safe_wet_plan, wet_plan):
-                safe_wet_plan.remove(step)
+    # Initialize the number of each item in the boat as 0
+    boat = [0, 0, 0]
     
-    # If the safe wet plan is empty, return -1
-    if not safe_wet_plan:
-        return -1
+    # Loop through each item and check if it can be transferred to the boat
+    for i in range(3):
+        # If the item is not zero and the boat has space, transfer the item to the boat
+        if left_bank[i] > 0 and boat[i] < K:
+            boat[i] += left_bank[i]
+            left_bank[i] = 0
     
-    # Return the safe wet plan
-    return safe_wet_plan
+    # Check if all items have been transferred to the boat
+    if sum(boat) == W + S + C:
+        return "YES"
+    else:
+        return "NO"
 
-def can_place_peg(point, safe_wet_plan, wet_plan):
-    # If the point is already in the safe wet plan, return True
-    if point in safe_wet_plan:
-        return True
-    
-    # If the point is not in the safe wet plan, check if it can be placed safely
-    for step in wet_plan:
-        # If the step is to place a peg and the point is dependent on the peg, return False
-        if step[0] == 1 and point in step[1:]:
-            return False
-    
-    # If the point can be placed safely, return True
-    return True
-
-def can_remove_peg(point, safe_wet_plan, wet_plan):
-    # If the point is not in the safe wet plan, return False
-    if point not in safe_wet_plan:
-        return False
-    
-    # If the point is in the safe wet plan, check if it can be removed safely
-    for step in wet_plan:
-        # If the step is to remove a peg and the point is dependent on the peg, return False
-        if step[0] == -1 and point in step[1:]:
-            return False
-    
-    # If the point can be removed safely, return True
-    return True
+if __name__ == '__main__':
+    W, S, C, K = map(int, input().split())
+    print(is_possible(W, S, C, K))
 

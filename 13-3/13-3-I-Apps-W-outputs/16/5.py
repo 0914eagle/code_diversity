@@ -1,17 +1,18 @@
 
-def solve(s, k):
-    n = len(s)
-    if k > n:
-        return ""
-    
-    # Initialize the result with the first k characters of s
-    result = s[:k]
-    
-    # Iterate through the remaining characters of s
-    for i in range(k, n):
-        # If the current character is lexicographically smaller than the last character of the result, replace the last character of the result with the current character
-        if s[i] < result[-1]:
-            result = result[:-1] + s[i]
-    
-    return result
+def f(p, a):
+    # Initialize the coefficients of the polynomial
+    b = [0] * (p - 1)
+
+    # Iterate through each coefficient
+    for i in range(p - 1):
+        # Calculate the value of the polynomial at i
+        val = 0
+        for j in range(p - 1):
+            val += a[j] * b[p - 2 - j]
+        val = val % p
+
+        # Update the coefficient
+        b[i] = (val - a[i]) % p
+
+    return b
 

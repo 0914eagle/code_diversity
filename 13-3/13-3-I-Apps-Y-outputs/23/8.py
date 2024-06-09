@@ -1,29 +1,21 @@
 
-def solve(N, cards):
-    # Calculate the sum of the cards
-    sum_cards = sum(cards)
+def is_non_decreasing(heights):
+    for i in range(len(heights) - 1):
+        if heights[i] > heights[i + 1]:
+            return False
+    return True
 
-    # Calculate the minimum sum that Alice can get
-    min_sum = sum_cards // 2
+def solve(heights):
+    for i in range(len(heights)):
+        if heights[i] > 1:
+            heights[i] -= 1
+            if is_non_decreasing(heights):
+                return "Yes"
+            heights[i] += 1
+    return "No"
 
-    # Calculate the maximum sum that Alice can get
-    max_sum = sum_cards
-
-    # Initialize the optimal score for Alice and Bob
-    opt_score_alice, opt_score_bob = 0, 0
-
-    # Loop through all possible scores for Alice
-    for alice_score in range(min_sum, max_sum + 1):
-        # Calculate the score for Bob
-        bob_score = sum_cards - alice_score
-
-        # Check if the current score is optimal
-        if alice_score + bob_score == sum_cards:
-            # Update the optimal score for Alice and Bob
-            opt_score_alice = alice_score
-            opt_score_bob = bob_score
-            break
-
-    # Return the difference between the optimal score for Alice and Bob
-    return opt_score_alice - opt_score_bob
+if __name__ == '__main__':
+    n = int(input())
+    heights = list(map(int, input().split()))
+    print(solve(heights))
 

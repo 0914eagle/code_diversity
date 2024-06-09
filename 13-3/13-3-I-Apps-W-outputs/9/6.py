@@ -1,34 +1,41 @@
 
-import sys
+def find_substring(s, t):
+    n = len(s)
+    m = len(t)
+    if n > m:
+        return -1
+    
+    count = 0
+    for i in range(n):
+        if s[i] != t[i]:
+            count += 1
+    
+    return count
 
-def get_input():
-    return list(map(int, sys.stdin.readline().strip().split()))
+def find_substring_position(s, t):
+    n = len(s)
+    m = len(t)
+    if n > m:
+        return -1
+    
+    positions = []
+    for i in range(n):
+        if s[i] != t[i]:
+            positions.append(i+1)
+    
+    return positions
 
-def solve():
-    H, W, M = get_input()
-    targets = []
-    for i in range(M):
-        h, w = get_input()
-        targets.append((h, w))
+def main():
+    n, m = map(int, input().split())
+    s = input()
+    t = input()
     
-    # Initialize the maximum number of targets to destroy as 0
-    max_targets = 0
+    count = find_substring(s, t)
+    positions = find_substring_position(s, t)
     
-    # Iterate over all possible positions for the bomb
-    for h in range(1, H+1):
-        for w in range(1, W+1):
-            # Count the number of targets that can be destroyed at this position
-            targets_destroyed = 0
-            for target in targets:
-                if target[0] == h or target[1] == w:
-                    targets_destroyed += 1
-            
-            # Update the maximum number of targets to destroy if necessary
-            if targets_destroyed > max_targets:
-                max_targets = targets_destroyed
-    
-    return max_targets
+    print(count)
+    print(*positions)
 
 if __name__ == '__main__':
-    print(solve())
+    main()
 

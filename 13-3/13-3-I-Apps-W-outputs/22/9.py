@@ -1,35 +1,33 @@
 
-def crafting_system(materials, recipes):
-    # Initialize a dictionary to store the required materials
-    required_materials = {}
+def get_min_number(cnt_1, cnt_2, x, y):
+    # Initialize a set to store the numbers that are not liked by either friend
+    not_liked = set()
+    
+    # Iterate through the numbers from 2 to x and check if they are not divisible by x
+    for i in range(2, x):
+        if i % x != 0:
+            not_liked.add(i)
+    
+    # Iterate through the numbers from x to y and check if they are not divisible by y
+    for i in range(x, y):
+        if i % y != 0:
+            not_liked.add(i)
+    
+    # Initialize a set to store the numbers that are liked by both friends
+    liked = set()
+    
+    # Iterate through the numbers from 1 to cnt_1 + cnt_2 and check if they are not liked by either friend
+    for i in range(1, cnt_1 + cnt_2 + 1):
+        if i not in not_liked:
+            liked.add(i)
+    
+    # Return the minimum number of liked numbers that can be formed using the numbers from 1 to cnt_1 + cnt_2
+    return min(liked)
 
-    # Loop through each recipe
-    for recipe in recipes:
-        # Extract the input and output materials and the quantity of output materials
-        input_material, output_material, quantity = recipe
+def main():
+    cnt_1, cnt_2, x, y = map(int, input().split())
+    print(get_min_number(cnt_1, cnt_2, x, y))
 
-        # Check if the output material is in the required materials dictionary
-        if output_material in required_materials:
-            # If it is, add the quantity to the existing value
-            required_materials[output_material] += quantity
-        else:
-            # If it's not, set the quantity as the new value
-            required_materials[output_material] = quantity
-
-        # Check if the input material is in the required materials dictionary
-        if input_material in required_materials:
-            # If it is, subtract the quantity from the existing value
-            required_materials[input_material] -= quantity
-        else:
-            # If it's not, set the negative quantity as the new value
-            required_materials[input_material] = -quantity
-
-    # Loop through each material and its required quantity
-    for material, quantity in required_materials.items():
-        # If the quantity is positive, add it to the total required materials
-        if quantity > 0:
-            materials[material] += quantity
-
-    # Return the total required materials
-    return materials
+if __name__ == '__main__':
+    main()
 

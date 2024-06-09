@@ -1,27 +1,42 @@
 
-import sys
+def find_substring(s, t):
+    n = len(s)
+    m = len(t)
+    if n > m:
+        return -1
+    
+    count = 0
+    for i in range(n):
+        if s[i] != t[i]:
+            count += 1
+    
+    return count
 
-def get_input():
-    return list(map(int, sys.stdin.readline().strip().split()))
+def find_substring_position(s, t):
+    n = len(s)
+    m = len(t)
+    if n > m:
+        return []
+    
+    positions = []
+    for i in range(n):
+        if s[i] != t[i]:
+            positions.append(i+1)
+    
+    return positions
 
-def solve(h, w, m, targets):
-    # Initialize a 2D array to store the number of targets destroyed for each position
-    destroyed = [[0] * w for _ in range(h)]
+def main():
+    n, m = map(int, input().split())
+    s = input()
+    t = input()
+    
+    count = find_substring(s, t)
+    positions = find_substring_position(s, t)
+    
+    print(count)
+    for position in positions:
+        print(position, end=" ")
 
-    # Loop through each target and update the number of targets destroyed for each position
-    for target in targets:
-        h_target, w_target = target
-        destroyed[h_target - 1][w_target - 1] += 1
-        destroyed[h_target - 1][:] = [max(destroyed[h_target - 1][i], destroyed[h_target - 1][i] + 1) for i in range(w)]
-        destroyed[:][w_target - 1] = [max(destroyed[i][w_target - 1], destroyed[i][w_target - 1] + 1) for i in range(h)]
-
-    # Return the maximum number of targets destroyed
-    return max(max(row) for row in destroyed)
-
-h, w, m = get_input()
-targets = []
-for _ in range(m):
-    targets.append(get_input())
-
-print(solve(h, w, m, targets))
+if __name__ == '__main__':
+    main()
 

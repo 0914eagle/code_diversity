@@ -1,40 +1,22 @@
 
-import sys
+def f1(n, k):
+    if n < k:
+        return "NO"
+    if n % k == 0:
+        return "YES"
+    if n % 2 == 0:
+        return "NO"
+    for i in range(1, k+1):
+        if n % i == 0:
+            return "YES"
+    return "NO"
 
-def get_number_of_black_squares(grid):
-    num_black_squares = 0
-    for row in grid:
-        for square in row:
-            if square == '#':
-                num_black_squares += 1
-    return num_black_squares
-
-def get_choices(grid, num_black_squares):
-    choices = []
-    for row in range(len(grid)):
-        for col in range(len(grid[0])):
-            if grid[row][col] == '#':
-                choices.append((row, col))
-    return choices
-
-def count_valid_choices(grid, num_black_squares, choices):
-    valid_choices = 0
-    for choice in choices:
-        row, col = choice
-        if get_number_of_black_squares(grid) - num_black_squares == num_black_squares:
-            valid_choices += 1
-    return valid_choices
-
-def main():
-    h, w, k = map(int, input().split())
-    grid = []
-    for _ in range(h):
-        grid.append(list(input()))
-    num_black_squares = get_number_of_black_squares(grid)
-    choices = get_choices(grid, num_black_squares)
-    valid_choices = count_valid_choices(grid, num_black_squares, choices)
-    print(valid_choices)
+def f2(...):
+    ...
 
 if __name__ == '__main__':
-    main()
+    t = int(input())
+    for _ in range(t):
+        n, k = map(int, input().split())
+        print(f1(n, k))
 

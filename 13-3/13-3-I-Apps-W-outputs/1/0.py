@@ -1,20 +1,38 @@
 
-n, k = map(int, input().split())
-tabs = list(map(int, input().split()))
+def count_attacking_pairs(n, bishops):
+    # Initialize a set to store the positions of the bishops
+    positions = set()
+    # Initialize a counter for the number of attacking pairs
+    attacking_pairs = 0
+    
+    # Loop through each bishop
+    for i in range(n):
+        # Get the position of the current bishop
+        x, y = bishops[i]
+        # Check if the position is already in the set
+        if (x, y) in positions:
+            # If it is, it means that there is another bishop on the same diagonal, so we increment the counter
+            attacking_pairs += 1
+        else:
+            # If it's not, we add it to the set
+            positions.add((x, y))
+    
+    # Return the number of attacking pairs
+    return attacking_pairs
 
-# Initialize the variables to keep track of the number of test and social network tabs
-test_tabs = 0
-social_tabs = 0
+def main():
+    # Read the number of bishops
+    n = int(input())
+    # Read the positions of the bishops
+    bishops = []
+    for i in range(n):
+        x, y = map(int, input().split())
+        bishops.append((x, y))
+    # Call the function to count the attacking pairs
+    attacking_pairs = count_attacking_pairs(n, bishops)
+    # Print the result
+    print(attacking_pairs)
 
-# Iterate through the tabs and count the number of test and social network tabs
-for i in range(n):
-    if tabs[i] == 1:
-        test_tabs += 1
-    else:
-        social_tabs += 1
-
-# Find the maximum absolute difference between the number of test and social network tabs
-abs_diff = max(abs(test_tabs - social_tabs), abs(test_tabs - (n - social_tabs)))
-
-print(abs_diff)
+if __name__ == '__main__':
+    main()
 

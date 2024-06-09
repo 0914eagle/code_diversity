@@ -1,30 +1,19 @@
 
-import math
+def get_car_sizes(father_bear_size, mother_bear_size, son_bear_size, masha_size):
+    # Check if the given sizes satisfy the conditions
+    if father_bear_size > mother_bear_size > son_bear_size and masha_size > son_bear_size:
+        # Find the possible sizes of the cars
+        father_car_size = father_bear_size
+        mother_car_size = mother_bear_size
+        son_car_size = son_bear_size
+        return father_car_size, mother_car_size, son_car_size
+    else:
+        return -1
 
-def get_min_angle(vectors):
-    min_angle = math.pi
-    min_angle_indices = []
-    for i in range(len(vectors)):
-        for j in range(i+1, len(vectors)):
-            angle = get_angle(vectors[i], vectors[j])
-            if angle < min_angle:
-                min_angle = angle
-                min_angle_indices = [i, j]
-    return min_angle_indices
-
-def get_angle(v1, v2):
-    dot_product = v1[0]*v2[0] + v1[1]*v2[1]
-    v1_mag = math.sqrt(v1[0]**2 + v1[1]**2)
-    v2_mag = math.sqrt(v2[0]**2 + v2[1]**2)
-    angle = math.acos(dot_product/(v1_mag*v2_mag))
-    return angle
-
-n = int(input())
-vectors = []
-for i in range(n):
-    x, y = map(int, input().split())
-    vectors.append([x, y])
-
-indices = get_min_angle(vectors)
-print(indices[0]+1, indices[1]+1)
+if __name__ == '__main__':
+    father_bear_size = int(input())
+    mother_bear_size = int(input())
+    son_bear_size = int(input())
+    masha_size = int(input())
+    print(get_car_sizes(father_bear_size, mother_bear_size, son_bear_size, masha_size))
 

@@ -1,46 +1,37 @@
 
-def get_reconstructions(pre_output, in_output, post_output):
-    # Initialize a list to store the reconstructions
-    reconstructions = []
+import sys
+
+def count_ways(N, M, conditions):
+    # Initialize the number of ways to paint the squares
+    ways = 1
     
-    # Iterate over all possible combinations of Pre, In, and Post calls
-    for pre_calls in range(2):
-        for in_calls in range(2):
-            for post_calls in range(2):
-                # Check if the number of calls to each routine is correct
-                if pre_calls + in_calls + post_calls == 6:
-                    # Initialize a list to store the calls for each routine
-                    calls = []
-                    
-                    # Add the calls for the prePrint routine
-                    for i in range(pre_calls):
-                        calls.append("Pre")
-                    
-                    # Add the calls for the inPrint routine
-                    for i in range(in_calls):
-                        calls.append("In")
-                    
-                    # Add the calls for the postPrint routine
-                    for i in range(post_calls):
-                        calls.append("Post")
-                    
-                    # Check if the calls match the observed output
-                    if "".join(calls) == pre_output and "".join(calls) == in_output and "".join(calls) == post_output:
-                        # Initialize a list to store the trees
-                        trees = []
-                        
-                        # Add the preorder print of the tree
-                        trees.append(pre_output)
-                        
-                        # Add the inorder print of the tree
-                        trees.append(in_output)
-                        
-                        # Add the postorder print of the tree
-                        trees.append(post_output)
-                        
-                        # Add the reconstruction to the list of reconstructions
-                        reconstructions.append((calls, trees))
+    # Loop through each condition
+    for i in range(M):
+        # Get the left and right indices, and the number of different colors
+        l, r, x = conditions[i]
+        
+        # Calculate the number of ways to paint the squares with the current condition
+        num_ways = (r - l + 1) * (x - 1)
+        
+        # Update the number of ways to paint the squares
+        ways = (ways * num_ways) % 1000000007
     
-    # Return the list of reconstructions
-    return reconstructions
+    return ways
+
+def main():
+    # Read the input data
+    N, M = map(int, input().split())
+    conditions = []
+    for i in range(M):
+        l, r, x = map(int, input().split())
+        conditions.append((l, r, x))
+    
+    # Calculate the number of ways to paint the squares
+    ways = count_ways(N, M, conditions)
+    
+    # Print the result
+    print(ways)
+
+if __name__ == '__main__':
+    main()
 

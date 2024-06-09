@@ -1,25 +1,40 @@
 
-import sys
-
-n = int(input())
-values = list(map(int, input().split()))
-costs = list(map(int, input().split()))
-
-# Initialize the maximum possible value of X-Y
-max_value = 0
-
-# Iterate over all possible combinations of gems
-for i in range(1 << n):
-    # Calculate the sum of values and costs for the current combination
-    current_values = 0
-    current_costs = 0
-    for j in range(n):
-        if i & (1 << j):
-            current_values += values[j]
-            current_costs += costs[j]
+def get_minimum_moves(n, m, arr):
+    # Calculate the current count of elements with each remainder
+    count = [0] * m
+    for i in range(n):
+        count[(arr[i] % m)] += 1
     
-    # Update the maximum possible value of X-Y
-    max_value = max(max_value, current_values - current_costs)
+    # Calculate the minimum number of moves required to make the count equal for each remainder
+    min_moves = [0] * m
+    for i in range(m):
+        min_moves[i] = abs(count[i] - n//m)
+    
+    # Return the minimum number of moves required to make the count equal for each remainder
+    return sum(min_moves)
 
-print(max_value)
+def get_new_array(n, m, arr):
+    # Calculate the current count of elements with each remainder
+    count = [0] * m
+    for i in range(n):
+        count[(arr[i] % m)] += 1
+    
+    # Calculate the minimum number of moves required to make the count equal for each remainder
+    min_moves = [0] * m
+    for i in range(m):
+        min_moves[i] = abs(count[i] - n//m)
+    
+    # Create a new array with the minimum number of moves required to make the count equal for each remainder
+    new_arr = [0] * n
+    for i in range(n):
+        new_arr[i] = arr[i] + min_moves[(arr[i] % m)]
+    
+    # Return the new array
+    return new_arr
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    arr = list(map(int, input().split()))
+    print(get_minimum_moves(n, m, arr))
+    print(*get_new_array(n, m, arr))
 

@@ -1,22 +1,21 @@
 
-def climb_stairs(n, m):
-    # Initialize a list to store the number of moves for each step
-    moves = [0] * (n + 1)
-    # Initialize a list to store the number of moves for each step that is a multiple of m
-    multiples = [0] * (n + 1)
-    
-    # Base case: when we reach the top of the stairs
-    moves[n] = 1
-    multiples[n] = 1
-    
-    # Iterate through the stairs
-    for step in range(n - 1, 0, -1):
-        # There are two ways to climb each step: 1 step and 2 steps
-        moves[step] = moves[step + 1] + moves[step + 2]
-        # If the number of moves is a multiple of m, add it to the list of multiples
-        if moves[step] % m == 0:
-            multiples[step] = 1
-    
-    # Return the minimum number of moves that is a multiple of m
-    return min(moves[1::m])
+def get_min_edits(s):
+    # Initialize variables
+    n = len(s)
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
+    for i in range(1, n + 1):
+        dp[i][0] = i
+    for j in range(1, n + 1):
+        dp[0][j] = j
+
+    # Fill in the table
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            if s[i - 1] == "L" or s[i - 1] == "R":
+                dp[i][j] = min(dp[i - 1][j], dp[i][j - 1])
+            elif s[i - 1] == "U" or s[i - 1] == "D":
+                dp[i][j] = min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1])
+
+    # Return the result
+    return dp[n][n]
 

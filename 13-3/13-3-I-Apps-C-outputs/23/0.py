@@ -1,37 +1,51 @@
 
-def is_correct_sequence(sequence):
-    stack = []
-    for char in sequence:
-        if char == "(":
-            stack.append(char)
-        elif char == ")":
-            if not stack:
-                return False
-            stack.pop()
-    return not stack
-
-def get_min_time(sequence):
-    if is_correct_sequence(sequence):
-        return 0
+def f1(n, m, s, t):
+    # Initialize a graph with n nodes and m edges
+    graph = [[] for _ in range(n)]
+    for _ in range(m):
+        u, v = map(int, input().split())
+        graph[u].append(v)
+        graph[v].append(u)
     
-    n = len(sequence)
-    dp = [0] * (n + 1)
-    dp[0] = 1
+    # Breadth-first search from s and t to find the shortest path between them
+    queue = [(s, [s])]
+    visited = set([s])
+    while queue:
+        node, path = queue.pop(0)
+        if node == t:
+            return len(path)
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, path + [neighbor]))
     
-    for i in range(1, n + 1):
-        for j in range(i):
-            if sequence[j] == "(" and sequence[i - 1] == ")":
-                dp[i] = max(dp[i], dp[j] + dp[i - j - 1] + 1)
-            elif sequence[j] == ")" and sequence[i - 1] == "(":
-                dp[i] = max(dp[i], dp[j] + dp[i - j - 1] + 1)
+    return -1
+
+def f2(n, m, s, t):
+    # Initialize a graph with n nodes and m edges
+    graph = [[] for _ in range(n)]
+    for _ in range(m):
+        u, v = map(int, input().split())
+        graph[u].append(v)
+        graph[v].append(u)
     
-    return dp[n]
+    # Breadth-first search from s and t to find the shortest path between them
+    queue = [(s, [s])]
+    visited = set([s])
+    while queue:
+        node, path = queue.pop(0)
+        if node == t:
+            return len(path)
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, path + [neighbor]))
+    
+    return -1
 
-def main():
-    n = int(input())
-    sequence = input()
-    print(get_min_time(sequence))
-
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    s, t = map(int, input().split())
+    print(f1(n, m, s, t))
+    print(f2(n, m, s, t))
 

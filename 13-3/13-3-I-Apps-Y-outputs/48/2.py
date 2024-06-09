@@ -1,27 +1,36 @@
 
-def solve(n, b, a, s):
-    # Initialize the maximum number of segments as 0
-    max_segments = 0
-    # Initialize the current battery and accumulator charges as the given values
-    battery, accumulator = b, a
-    # Iterate through the segments
-    for i in range(n):
-        # If the segment is exposed to sunlight and the battery is not empty
-        if s[i] == 1 and battery > 0:
-            # Use the battery to pass the segment and decrease the battery charge by 1
-            battery -= 1
-            # Increase the accumulator charge by 1
-            accumulator += 1
-        # If the accumulator is not empty
-        elif accumulator > 0:
-            # Use the accumulator to pass the segment and decrease the accumulator charge by 1
-            accumulator -= 1
-        # If the segment is not exposed to sunlight and the battery is empty
-        elif s[i] == 0 and battery == 0:
-            # Break the loop as the robot cannot pass the segment
+def get_days_needed(n, m, a):
+    # Initialize variables
+    days = 0
+    pages_written = 0
+    cups_drunk = 0
+
+    # Sort the cups of coffee by caffeine dosage in descending order
+    sorted_cups = sorted(a, reverse=True)
+
+    # Loop through each cup of coffee and determine how many pages can be written
+    for cup in sorted_cups:
+        # Check if the current cup of coffee can be drunk
+        if cup <= pages_written:
+            # Drink the current cup of coffee and update the number of pages written
+            pages_written += cup
+            cups_drunk += 1
+        else:
+            # The current cup of coffee cannot be drunk, break the loop
             break
-        # Increase the maximum number of segments by 1
-        max_segments += 1
-    # Return the maximum number of segments
-    return max_segments
+
+    # Calculate the number of days needed to write the coursework
+    days = cups_drunk
+
+    # Check if the coursework can be completed in the given number of days
+    if pages_written < m:
+        # The coursework cannot be completed in the given number of days
+        days = -1
+
+    return days
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    a = list(map(int, input().split()))
+    print(get_days_needed(n, m, a))
 

@@ -1,28 +1,13 @@
 
-def find_lexicographically_smallest_cycle(n, l, r):
-    # Initialize a list to store the cycle
-    cycle = []
+def f1(N, a, x, f):
+    # Calculate the total number of satoshies Alice has
+    total_satoshis = sum(a)
     
-    # Start at vertex 1
-    current_vertex = 1
+    # Calculate the number of transactions needed to split the satoshies
+    num_transactions = (total_satoshis - 1) // (x - f) + 1
     
-    # Iterate until we have visited all edges
-    while len(cycle) < n * (n - 1) + 1:
-        # If we have visited all neighbors of the current vertex, move on to the next vertex
-        if current_vertex not in cycle:
-            # Add the current vertex to the cycle
-            cycle.append(current_vertex)
-            
-            # Move to the next vertex
-            current_vertex += 1
-            
-            # If we have reached the end of the cycle, move back to the beginning
-            if current_vertex > n:
-                current_vertex = 1
-        else:
-            # If we have already visited the current vertex, move on to the next vertex
-            current_vertex += 1
+    # Calculate the total fee needed to pay for the transactions
+    total_fee = num_transactions * f
     
-    # Return the segment of the cycle specified by l and r
-    return cycle[l:r+1]
+    return total_fee
 

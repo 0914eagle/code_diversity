@@ -1,19 +1,11 @@
 
-import random
-
-def evaluate_expression(expression):
-    tokens = expression.split("+")
-    integers = [int(token) for token in tokens if token.isdigit()]
-    plus_symbols = ["+" for token in tokens if token != ""]
-    total_combinations = 1
-    for i in range(len(plus_symbols)):
-        if random.randint(0, 1) == 0:
-            total_combinations *= len(integers)
-        else:
-            total_combinations *= len(plus_symbols)
-    return total_combinations
-
-if __name__ == "__main__":
-    expression = input()
-    print(evaluate_expression(expression))
+def generate_pascal_triangle(num_rows):
+    pascal_triangle = []
+    for row in range(num_rows):
+        row_values = [1] * (row + 1)
+        if row > 0:
+            for col in range(1, row):
+                row_values[col] = pascal_triangle[row - 1][col - 1] + pascal_triangle[row - 1][col]
+        pascal_triangle.append(row_values)
+    return pascal_triangle
 

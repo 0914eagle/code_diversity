@@ -1,15 +1,13 @@
 
-def is_possible(a, b, c, n):
-    if a + b + c != n:
-        return "NO"
-    if a == b == c:
-        return "YES"
-    if a == b or b == c or c == a:
-        return "NO"
-    return "YES"
+def f1(M):
+    hours_until_new_year = 24 - M
+    return hours_until_new_year
 
-t = int(input())
-for i in range(t):
-    a, b, c, n = map(int, input().split())
-    print(is_possible(a, b, c, n))
+def f2():
+    M = int(input())
+    hours_until_new_year = f1(M)
+    print(f"We have {hours_until_new_year} hours until New Year at {M}:00 on 30th, December.")
+
+if __name__ == '__main__':
+    f2()
 

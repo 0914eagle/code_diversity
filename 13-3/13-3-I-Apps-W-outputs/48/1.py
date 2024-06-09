@@ -1,25 +1,49 @@
 
-def is_ladder(arr):
-    # Check if the array is non-decreasing
-    for i in range(len(arr) - 1):
-        if arr[i] > arr[i+1]:
-            return False
+def get_permutation(b):
+    # Sort the input array
+    b.sort()
     
-    # Check if the array is non-increasing
-    for i in range(len(arr) - 1):
-        if arr[i] < arr[i+1]:
-            return False
+    # Create a dictionary to store the counts of each element
+    counts = {}
+    for i in range(len(b)):
+        if b[i] in counts:
+            counts[b[i]] += 1
+        else:
+            counts[b[i]] = 1
     
+    # Create a list to store the permutation
+    permutation = []
+    
+    # Iterate through the dictionary and add elements to the permutation
+    for key in sorted(counts):
+        for i in range(counts[key]):
+            permutation.append(key)
+    
+    return permutation
+
+def is_increasing(a):
+    for i in range(len(a) - 1):
+        if a[i] >= a[i + 1]:
+            return False
     return True
 
-n, m = map(int, input().split())
-arr = list(map(int, input().split()))
+def get_answer(b):
+    permutation = get_permutation(b)
+    a = [permutation[0]]
+    for i in range(1, len(permutation)):
+        a.append(a[i - 1] ^ permutation[i])
+    return a
 
-for i in range(m):
-    l, r = map(int, input().split())
-    subarr = arr[l-1:r]
-    if is_ladder(subarr):
+def main():
+    n = int(input())
+    b = list(map(int, input().split()))
+    a = get_answer(b)
+    if is_increasing(a):
         print("Yes")
+        print(" ".join(map(str, permutation)))
     else:
         print("No")
+
+if __name__ == '__main__':
+    main()
 

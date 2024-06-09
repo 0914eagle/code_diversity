@@ -1,4 +1,11 @@
 
-def is_haiku(a, b, c):
-    return a + b + c == 17 and a % 5 == 0 and b % 7 == 0 and c % 5 == 0
+def find_closer_store(x, a, b):
+    if abs(x - a) < abs(x - b):
+        return "A"
+    else:
+        return "B"
+
+if __name__ == '__main__':
+    x, a, b = map(int, input().split())
+    print(find_closer_store(x, a, b))
 

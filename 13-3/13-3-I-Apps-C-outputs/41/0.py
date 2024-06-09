@@ -1,20 +1,26 @@
 
-def is_possible(frequencies):
-    # Initialize a list to store the positions of the read/write heads
-    positions = [0] * len(frequencies)
-    # Initialize a list to store the intervals for each frequency
-    intervals = [[0, 0] for _ in range(len(frequencies))]
-    # Loop through each frequency and its corresponding intervals
-    for i, (t_i, n_i) in enumerate(frequencies):
-        for j in range(n_i):
-            t_ij, t_i_j_plus_1 = map(int, input().split())
-            intervals[i].append((t_ij, t_i_j_plus_1))
-    # Loop through each interval and check if the read/write head can reach it
-    for i, (t_i, n_i) in enumerate(frequencies):
-        for j in range(n_i):
-            t_ij, t_i_j_plus_1 = intervals[i][j]
-            if t_ij - positions[i] > t_i:
-                return "impossible"
-            positions[i] = t_i_j_plus_1
-    return "possible"
+def f1(N, K, B, M, arr):
+    # Calculate the hash of all non-empty subsequences
+    hashes = []
+    for i in range(1, N+1):
+        for j in range(0, N-i+1):
+            hashes.append(hash_subsequence(arr[j:j+i], B, M))
+    
+    # Sort the hashes lexicographically
+    hashes.sort()
+    
+    # Return the first K hashes
+    return hashes[:K]
+
+def hash_subsequence(subsequence, B, M):
+    # Calculate the hash of the subsequence
+    hash = 0
+    for i in range(len(subsequence)):
+        hash = (hash * B + subsequence[i]) % M
+    return hash
+
+if __name__ == '__main__':
+    N, K, B, M = map(int, input().split())
+    arr = list(map(int, input().split()))
+    print(*f1(N, K, B, M, arr))
 

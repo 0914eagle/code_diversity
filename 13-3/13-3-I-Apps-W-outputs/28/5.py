@@ -1,33 +1,36 @@
 
-def solve(n, m, a):
-    # Initialize a dictionary to store the number of ways to get each card
-    dp = {(1, 1): 1}
+def f1(w, l, a):
+    # Initialize variables
+    max_frogs = 0
+    current_frogs = 0
+    current_distance = 0
+    stones = []
 
-    # Iterate over the given cards
-    for i in range(n):
-        # Get the current card
-        card = (1, a[i])
+    # Iterate through the input array
+    for i in range(len(a)):
+        # If the current distance is within the jump length of the frog, add the current number of stones to the list of available stones
+        if current_distance + a[i] <= l:
+            stones.append(a[i])
+        # If the current distance is greater than the jump length of the frog, remove the first stone from the list of available stones
+        elif current_distance + a[i] > l:
+            stones.pop(0)
+        # If there are any stones available, add the current frog to the list of frogs that have crossed the river
+        if stones:
+            current_frogs += 1
+        # Update the maximum number of frogs if necessary
+        max_frogs = max(max_frogs, current_frogs)
+        # Update the current distance
+        current_distance += a[i]
 
-        # Iterate over the possible next cards
-        for next_card in dp:
-            # Get the current card and the next card
-            current_card, next_card = card, (next_card[0], next_card[1] + 1)
+    return max_frogs
 
-            # If the next card is within the given range
-            if next_card[1] <= m:
-                # Increment the number of ways to get the next card
-                dp[next_card] = dp.get(next_card, 0) + dp[current_card]
+def f2(...):
+    # Implement function f2 here
+    pass
 
-            # If the current card is even
-            if current_card[0] % 2 == 0:
-                # Get the half of the current card
-                half_card = (current_card[0] // 2, current_card[1] // 2)
-
-                # If the half card is within the given range
-                if half_card[1] <= m:
-                    # Increment the number of ways to get the half card
-                    dp[half_card] = dp.get(half_card, 0) + dp[current_card]
-
-    # Return the number of ways to get the required cards
-    return sum(dp.values())
+if __name__ == '__main__':
+    w = int(input())
+    l = int(input())
+    a = list(map(int, input().split()))
+    print(f1(w, l, a))
 

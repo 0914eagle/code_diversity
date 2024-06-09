@@ -1,16 +1,30 @@
 
-n, m = map(int, input().split())
-
-# Initialize the minimum number of moves to -1
-min_moves = -1
-
-# Iterate through all possible sequences of steps
-for i in range(1, n + 1):
-    # Check if the current sequence of steps is a multiple of m
-    if i % m == 0:
-        # If it is, update the minimum number of moves
-        min_moves = i
-        break
-
-print(min_moves)
+def f1(s):
+    # Initialize variables
+    left, right, up, down = 0, 0, 0, 0
+    for c in s:
+        if c == 'L':
+            left += 1
+        elif c == 'R':
+            right += 1
+        elif c == 'U':
+            up += 1
+        else:
+            down += 1
+    
+    # Check if the string can be edited to end at the origin
+    if left != right or up != down:
+        return -1
+    
+    # Count the minimum number of edits required
+    edits = 0
+    for i in range(len(s)):
+        if s[i] == 'L' and s[i-1] == 'R':
+            s = s[:i-1] + 'U' + s[i:]
+            edits += 1
+        elif s[i] == 'R' and s[i-1] == 'L':
+            s = s[:i-1] + 'D' + s[i:]
+            edits += 1
+    
+    return edits
 

@@ -1,19 +1,15 @@
 
-def solve(divisors):
-    # Sort the divisors in ascending order
-    divisors.sort()
+def get_permutation(n):
+    permutation = list(range(1, n+1))
+    for i in range(n):
+        for j in range(i+1, n):
+            if abs(permutation[i] - permutation[j]) not in range(2, 5):
+                return -1
+    return permutation
 
-    # Initialize the minimum possible value of x as 1
-    x = 1
-
-    # Iterate through the divisors
-    for d in divisors:
-        # If the current divisor is not a multiple of the previous divisor,
-        # it means that the previous divisor is not the last divisor of x,
-        # so we can update the minimum possible value of x
-        if d % x != 0:
-            x *= d
-
-    # Return the minimum possible value of x
-    return x
+if __name__ == '__main__':
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        print(*get_permutation(n))
 

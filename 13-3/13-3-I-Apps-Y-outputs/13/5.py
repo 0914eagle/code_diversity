@@ -1,17 +1,15 @@
 
-A, P = map(int, input().split())
+def get_number_of_hard_cheeses(cheese_list):
+    return len(set(cheese_list))
 
-max_pies = 0
+def main():
+    num_cheeses = int(input())
+    cheese_list = []
+    for i in range(num_cheeses):
+        cheese_name, cheese_type = input().split()
+        cheese_list.append(cheese_type)
+    print(get_number_of_hard_cheeses(cheese_list))
 
-# We can make at most A/2 apple pies by simmering two pieces of apple
-max_pies += A // 2
-
-# If A is odd, we can make one more apple pie by simmering the remaining piece
-if A % 2 == 1:
-    max_pies += 1
-
-# We can make at most P/3 apple pies by cutting the whole apple into three pieces and simmering two pieces
-max_pies += P // 3
-
-print(max_pies)
+if __name__ == '__main__':
+    main()
 

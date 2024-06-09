@@ -1,21 +1,31 @@
 
-def is_sortable(s, k):
-    # Initialize a list to store the frequencies of each letter in s
-    freq = [0] * 26
-    for c in s:
-        freq[ord(c) - ord('a')] += 1
+def get_max_damage(n, a, b, health, damage):
+    # Initialize the maximum total damage
+    max_damage = 0
     
-    # Sort the frequencies in descending order
-    freq.sort(reverse=True)
+    # Loop through each creature
+    for i in range(n):
+        # Use the first spell on the creature
+        health[i] *= 2
+        damage[i] += health[i]
+        max_damage += damage[i]
+        
+        # Use the second spell on the creature
+        if a > 0:
+            a -= 1
+            health[i] = damage[i]
+            damage[i] = 0
+            max_damage += health[i]
     
-    # Check if the largest frequency is greater than or equal to k
-    if freq[0] < k:
-        return "No"
-    
-    # Iterate through the frequencies and check if they are all greater than or equal to k
-    for i in range(1, len(freq)):
-        if freq[i] < k * (i + 1):
-            return "No"
-    
-    return "Yes"
+    # Return the maximum total damage
+    return max_damage
+
+def main():
+    n, a, b = map(int, input().split())
+    health = list(map(int, input().split()))
+    damage = list(map(int, input().split()))
+    print(get_max_damage(n, a, b, health, damage))
+
+if __name__ == '__main__':
+    main()
 

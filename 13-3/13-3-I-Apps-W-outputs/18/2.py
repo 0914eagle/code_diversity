@@ -1,42 +1,28 @@
 
-from sys import stdin, stdout
-from math import gcd
+def is_composite(n):
+    if n == 1:
+        return False
+    for i in range(2, int(n ** 0.5) + 1):
+        if n % i == 0:
+            return True
+    return False
 
-def extended_euclid(a, b):
-    if b == 0:
-        return 1, 0, a
-    else:
-        x, y, gcd = extended_euclid(b, a % b)
-        return y, x - (a // b) * y, gcd
-
-def modular_inverse(a, m):
-    x, y, gcd = extended_euclid(a, m)
-    if gcd != 1:
-        return None
-    else:
-        return x % m
-
-def modular_exponentiation(base, exponent, modulus):
-    if modulus == 1:
+def get_composite_summands(n):
+    if n == 1:
         return 0
-    result = 1
-    while exponent > 0:
-        if exponent % 2 == 1:
-            result = (result * base) % modulus
-        exponent = exponent // 2
-        base = (base * base) % modulus
-    return result
+    if is_composite(n):
+        return 1
+    for i in range(1, int(n ** 0.5) + 1):
+        if n % i == 0:
+            return 1 + get_composite_summands(i) + get_composite_summands(n // i)
+    return -1
 
-def solve(A, B, n, x):
-    modulus = 1000000007
-    gcd, x, y = extended_euclid(A, modulus)
-    if gcd != 1:
-        return -1
-    else:
-        return (modular_exponentiation(A, n, modulus) * x + modular_exponentiation(B, n, modulus) * y) % modulus
+def main():
+    q = int(input())
+    for _ in range(q):
+        n = int(input())
+        print(get_composite_summands(n))
 
-t = int(input())
-for _ in range(t):
-    A, B, n, x = map(int, input().split())
-    print(solve(A, B, n, x))
+if __name__ == '__main__':
+    main()
 

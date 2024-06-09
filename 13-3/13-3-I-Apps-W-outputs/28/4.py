@@ -1,33 +1,45 @@
 
-def solve(n, m, a):
-    # Initialize a dictionary to store the number of ways to get each card
-    dp = {(1, 1): 1}
+def f1(w, l, a):
+    # Initialize variables
+    max_frogs = 0
+    curr_frogs = 0
+    prev_frog = 0
+    next_frog = 0
+    
+    # Iterate through the array of stones
+    for i in range(len(a)):
+        # If there are no stones at the current distance, skip to the next iteration
+        if a[i] == 0:
+            continue
+        
+        # If the current distance is within the jump length of the frogs, add the number of frogs that can cross
+        if i <= l:
+            curr_frogs += a[i]
+        
+        # If the current distance is greater than the jump length of the frogs, add the number of frogs that can cross and subtract the number of frogs that will drown
+        else:
+            curr_frogs += a[i] - 1
+        
+        # Update the maximum number of frogs if necessary
+        if curr_frogs > max_frogs:
+            max_frogs = curr_frogs
+        
+        # Update the previous frog position
+        prev_frog = i
+    
+    # If the last frog can cross the river, add it to the total number of frogs
+    if w - prev_frog <= l:
+        max_frogs += 1
+    
+    return max_frogs
 
-    # Iterate over the given cards
-    for i in range(n):
-        # Get the current card
-        card = (1, a[i])
+def f2(...):
+    # Implement function f2 here
+    pass
 
-        # Iterate over the previous cards
-        for prev_card in dp:
-            # Get the number of ways to get the current card from the previous card
-            num_ways = dp[prev_card]
-
-            # If the previous card is gray, we can get a new card by painting a new (a + 1, b + 1) card
-            if prev_card[0] == 1:
-                new_card = (prev_card[1] + 1, prev_card[1] + 1)
-                dp[new_card] = dp.get(new_card, 0) + num_ways
-
-            # If the previous card is white, we can get a new card by painting a new (a / 2, b / 2) card
-            if prev_card[0] == 2:
-                new_card = (prev_card[1] // 2, prev_card[1] // 2)
-                dp[new_card] = dp.get(new_card, 0) + num_ways
-
-            # If the previous card is gray-and-white, we can get a new card by painting a new (a, c) card
-            if prev_card[0] == 3:
-                new_card = (prev_card[1], prev_card[2])
-                dp[new_card] = dp.get(new_card, 0) + num_ways
-
-    # Return the number of ways to get the required cards
-    return sum(dp.values())
+if __name__ == '__main__':
+    w = int(input())
+    l = int(input())
+    a = list(map(int, input().split()))
+    print(f1(w, l, a))
 

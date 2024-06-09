@@ -1,26 +1,16 @@
 
-import sys
+def lucas_number(n):
+    if n == 0:
+        return 2
+    elif n == 1:
+        return 1
+    else:
+        return lucas_number(n-1) + lucas_number(n-2)
 
-n, m = map(int, input().split())
-votes = list(map(int, input().split()))
+def main():
+    n = int(input())
+    print(lucas_number(n))
 
-# Sort the votes in descending order
-votes.sort(reverse=True)
-
-# Calculate the minimum number of votes required for an item to be selected
-min_votes = int(len(votes) / (4 * m))
-
-# Initialize a counter for the number of selected items
-selected_items = 0
-
-# Iterate through the votes and select the items that have at least the minimum number of votes
-for vote in votes:
-    if vote >= min_votes:
-        selected_items += 1
-        if selected_items == m:
-            print("Yes")
-            break
-else:
-    print("No")
-
+if __name__ == '__main__':
+    main()
 

@@ -1,18 +1,42 @@
 
-def get_min_rank(scores):
-    # Calculate the adjusted scores by replacing any score greater than l with l
-    adjusted_scores = [min(score, l) for score in scores]
+def f1(n, distances):
+    # Initialize the subsets A and B
+    A = set()
+    B = set()
+    
+    # Initialize the disparities of A and B
+    disparity_A = 0
+    disparity_B = 0
+    
+    # Loop through each shipment
+    for i in range(n):
+        # Find the closest shipment in the other subset
+        closest_subset = A if i in B else B
+        closest_distance = float('inf')
+        for j in closest_subset:
+            distance = distances[i][j]
+            if distance < closest_distance:
+                closest_distance = distance
+        
+        # Add the shipment to the subset with the closest distance
+        if closest_distance == disparity_A:
+            A.add(i)
+            disparity_A += closest_distance
+        else:
+            B.add(i)
+            disparity_B += closest_distance
+    
+    # Return the minimum possible sum of disparities
+    return disparity_A + disparity_B
 
-    # Sort the adjusted scores in descending order
-    adjusted_scores.sort(reverse=True)
+def f2(...):
+    # Implement f2 here
+    pass
 
-    # Initialize the rank counter
-    rank = 1
-
-    # Loop through the adjusted scores and increment the rank for each unique score
-    for i in range(len(adjusted_scores)):
-        if i == 0 or adjusted_scores[i] != adjusted_scores[i - 1]:
-            rank += 1
-
-    return rank
+if __name__ == '__main__':
+    n = int(input())
+    distances = []
+    for i in range(n - 1):
+        distances.append(list(map(int, input().split())))
+    print(f1(n, distances))
 

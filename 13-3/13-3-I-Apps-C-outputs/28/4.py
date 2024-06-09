@@ -1,26 +1,51 @@
 
-def solve(n, p, t, s, e):
-    # Initialize the maximum score and the current score
-    max_score = 0
-    curr_score = 0
+def count_sets(points):
+    # Initialize a set to store the unique sets
+    unique_sets = set()
     
-    # Iterate through the notes and SP phrases
+    # Iterate over each point
+    for point in points:
+        # Initialize a set to store the current set
+        current_set = set()
+        
+        # Iterate over each other point
+        for other_point in points:
+            # If the other point is not the same as the current point
+            if point != other_point:
+                # If the other point is in the current set
+                if other_point in current_set:
+                    # Add the current set to the unique sets
+                    unique_sets.add(current_set)
+                    break
+                # If the other point is not in the current set
+                else:
+                    # Add the other point to the current set
+                    current_set.add(other_point)
+        
+    # Return the number of unique sets
+    return len(unique_sets)
+
+def main():
+    # Read the number of points
+    n = int(input())
+    
+    # Initialize a list to store the points
+    points = []
+    
+    # Iterate over each point
     for i in range(n):
-        # Check if the current note is within an SP phrase
-        within_sp = False
-        for j in range(p):
-            if s[j] <= t[i] <= e[j]:
-                within_sp = True
-                break
+        # Read the x and y coordinates of the point
+        x, y = map(int, input().split())
         
-        # If the current note is within an SP phrase, activate Star Power
-        if within_sp:
-            curr_score += 2
-        else:
-            curr_score += 1
-        
-        # Update the maximum score
-        max_score = max(max_score, curr_score)
+        # Add the point to the list
+        points.append((x, y))
     
-    return max_score
+    # Call the count_sets function
+    result = count_sets(points)
+    
+    # Print the result
+    print(result)
+
+if __name__ == '__main__':
+    main()
 

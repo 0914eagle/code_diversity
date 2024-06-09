@@ -1,34 +1,90 @@
 
-def solve(n, l, r):
-    # Initialize an empty list to store the elements
-    lst = []
+def f1(L, n, points):
+    # Initialize a list to store the bending directions
+    directions = []
+    
+    # Iterate through the points and append the bending directions to the list
+    for point in points:
+        directions.append(point[1])
+    
+    # Initialize a set to store the positions of the wire that have been bended
+    bended_positions = set()
+    
+    # Iterate through the points and directions
+    for i in range(n):
+        # Get the current point and direction
+        point = points[i][0]
+        direction = directions[i]
+        
+        # Check if the current point has already been bended
+        if point in bended_positions:
+            return "GHOST"
+        
+        # Add the current point to the set of bended positions
+        bended_positions.add(point)
+        
+        # Check if the current point is the starting point
+        if point == 0:
+            # If the direction is clockwise, add the length of the wire to the set of bended positions
+            if direction == "C":
+                bended_positions.add(L)
+            # If the direction is counterclockwise, add 0 to the set of bended positions
+            else:
+                bended_positions.add(0)
+    
+    # If the set of bended positions is equal to the set of all positions on the wire, return "SAFE"
+    if bended_positions == set(range(L + 1)):
+        return "SAFE"
+    
+    # Otherwise, return "GHOST"
+    return "GHOST"
 
-    # Add the initial element to the list
-    lst.append(n)
+def f2(L, n, points):
+    # Initialize a list to store the bending directions
+    directions = []
+    
+    # Iterate through the points and append the bending directions to the list
+    for point in points:
+        directions.append(point[1])
+    
+    # Initialize a set to store the positions of the wire that have been bended
+    bended_positions = set()
+    
+    # Iterate through the points and directions
+    for i in range(n):
+        # Get the current point and direction
+        point = points[i][0]
+        direction = directions[i]
+        
+        # Check if the current point has already been bended
+        if point in bended_positions:
+            return "GHOST"
+        
+        # Add the current point to the set of bended positions
+        bended_positions.add(point)
+        
+        # Check if the current point is the starting point
+        if point == 0:
+            # If the direction is clockwise, add the length of the wire to the set of bended positions
+            if direction == "C":
+                bended_positions.add(L)
+            # If the direction is counterclockwise, add 0 to the set of bended positions
+            else:
+                bended_positions.add(0)
+    
+    # If the set of bended positions is equal to the set of all positions on the wire, return "SAFE"
+    if bended_positions == set(range(L + 1)):
+        return "SAFE"
+    
+    # Otherwise, return "GHOST"
+    return "GHOST"
 
-    # Iterate until all elements are either 0 or 1
-    while True:
-        # Initialize a flag to check if the list is modified
-        modified = False
-
-        # Iterate through the list and remove any element that is greater than 1
-        for i in range(len(lst)):
-            if lst[i] > 1:
-                # Calculate the floor of the element divided by 2 and the modulus of the element divided by 2
-                floor = lst[i] // 2
-                mod = lst[i] % 2
-
-                # Insert the floor and mod at the same position in the list
-                lst.insert(i, floor)
-                lst.insert(i + 1, mod)
-
-                # Set the modified flag to True
-                modified = True
-
-        # If the list is not modified, break the loop
-        if not modified:
-            break
-
-    # Return the sum of the elements in the range l to r
-    return sum(lst[l - 1:r])
+if __name__ == '__main__':
+    L, n = map(int, input().split())
+    points = []
+    for i in range(n):
+        point, direction = map(str, input().split())
+        points.append((int(point), direction))
+    print(f1(L, n, points))
+    print(f2(L, n, points))
 

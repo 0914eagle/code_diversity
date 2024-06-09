@@ -1,30 +1,45 @@
 
-def get_min_rank(scores):
-    # Initialize the minimum rank for each player as 1
-    min_rank = [1] * len(scores)
+def f1(n, distances):
+    # Initialize the subsets A and B
+    A = set()
+    B = set()
+    
+    # Initialize the disparity of subsets A and B
+    disparity_A = 0
+    disparity_B = 0
+    
+    # Loop through each shipment
+    for i in range(n):
+        # Find the closest shipment in the other subset
+        closest_subset = None
+        closest_distance = float('inf')
+        for subset in [A, B]:
+            for shipment in subset:
+                distance = distances[i][shipment]
+                if distance < closest_distance:
+                    closest_distance = distance
+                    closest_subset = subset
+        
+        # Add the current shipment to the closest subset
+        closest_subset.add(i)
+        
+        # Update the disparity of the closest subset
+        if closest_subset == A:
+            disparity_A += closest_distance
+        else:
+            disparity_B += closest_distance
+    
+    # Return the minimum possible sum of disparities
+    return min(disparity_A, disparity_B)
 
-    # Loop through each player's scores
-    for i in range(len(scores)):
-        # Get the current player's scores
-        player_scores = scores[i]
+def f2(...):
+    # Implement f2 here
+    pass
 
-        # Loop through each hole
-        for j in range(len(player_scores)):
-            # Get the current hole's score
-            hole_score = player_scores[j]
-
-            # Loop through each player again
-            for k in range(len(scores)):
-                # Skip the current player
-                if k == i:
-                    continue
-
-                # Get the current player's scores on the current hole
-                other_hole_score = scores[k][j]
-
-                # If the current player's score on the current hole is greater than the other player's score, update the minimum rank for the current player
-                if hole_score > other_hole_score:
-                    min_rank[i] += 1
-
-    return min_rank
+if __name__ == '__main__':
+    n = int(input())
+    distances = []
+    for i in range(n - 1):
+        distances.append(list(map(int, input().split())))
+    print(f1(n, distances))
 

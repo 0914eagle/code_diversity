@@ -1,19 +1,42 @@
 
-n, s = map(int, input().split())
-volumes = list(map(int, input().split()))
+def get_min_tickets(prices, x, a, y, b, k):
+    # Sort the prices in non-decreasing order
+    prices.sort()
+    # Initialize the total contribution and the number of tickets sold
+    total_contribution = 0
+    num_tickets = 0
+    # Loop through the prices and sell the tickets in the order they are sorted
+    for price in prices:
+        # Calculate the contribution from this ticket to the first program
+        contribution_1 = price * x / 100
+        # Calculate the contribution from this ticket to the second program
+        contribution_2 = price * y / 100
+        # Calculate the total contribution from this ticket
+        contribution = contribution_1 + contribution_2
+        # Add the contribution to the total contribution
+        total_contribution += contribution
+        # Increment the number of tickets sold
+        num_tickets += 1
+        # If the total contribution is greater than or equal to the required contribution, break the loop
+        if total_contribution >= k:
+            break
+    # Return the minimum number of tickets needed to reach the required contribution
+    return num_tickets
 
-# Sort the volumes in descending order
-volumes.sort(reverse=True)
+def main():
+    queries = int(input())
+    for i in range(queries):
+        # Read the input for the current query
+        n = int(input())
+        prices = list(map(int, input().split()))
+        x, a = map(int, input().split())
+        y, b = map(int, input().split())
+        k = int(input())
+        # Call the function to get the minimum number of tickets needed to reach the required contribution
+        result = get_min_tickets(prices, x, a, y, b, k)
+        # Print the result
+        print(result)
 
-# Initialize the sum of the volumes
-sum_volumes = 0
-
-# Iterate through the volumes and check if the sum is greater than or equal to s
-for i in range(n):
-    sum_volumes += volumes[i]
-    if sum_volumes >= s:
-        print(volumes[i])
-        break
-else:
-    print(-1)
+if __name__ == '__main__':
+    main()
 

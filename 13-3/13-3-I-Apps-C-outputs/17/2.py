@@ -1,41 +1,37 @@
 
-def count_valid_colorings(n, a):
-    # Initialize the number of valid colorings to 0
-    valid_colorings = 0
+def f1(n, m, p):
+    # Initialize the number of ways to place the minimum number of obstacles
+    num_ways = 0
     
-    # Loop through each row of the grid
-    for i in range(1, n+1):
-        # If the row is odd, there are n hexagons in the row
-        if i % 2 == 1:
-            num_hexagons = n
-        # If the row is even, there are n-1 hexagons in the row
-        else:
-            num_hexagons = n-1
-        
-        # Loop through each hexagon in the row
-        for j in range(1, num_hexagons+1):
-            # If the current hexagon is not colored, skip it
-            if a[i-1][j-1] == -1:
-                continue
-            
-            # If the current hexagon is colored, check if it forms a valid loop
-            valid_loop = True
-            
-            # Loop through the neighbors of the current hexagon
-            for k in range(1, num_hexagons+1):
-                # If the neighbor is not colored, skip it
-                if a[i-1][k-1] == -1:
-                    continue
-                
-                # If the neighbor is colored and is not the current hexagon, check if it forms a valid loop
-                if k != j and a[i-1][k-1] != a[i-1][j-1]:
-                    valid_loop = False
-                    break
-            
-            # If the current hexagon forms a valid loop, increment the number of valid colorings
-            if valid_loop:
-                valid_colorings += 1
+    # Loop through all possible positions for the top-left corner of the block
+    for i in range(n):
+        for j in range(m):
+            # Check if the current position is valid
+            if valid_position(i, j, n, m):
+                # Increment the number of ways to place the minimum number of obstacles
+                num_ways += 1
     
-    # Return the number of valid colorings
-    return valid_colorings
+    # Return the number of ways modulo p
+    return num_ways % p
+
+def valid_position(i, j, n, m):
+    # Check if the current position is within the bounds of the grid
+    if i < 0 or i >= n or j < 0 or j >= m:
+        return False
+    
+    # Check if the current position is axis-aligned with the block
+    if i % 2 == 0 and j % 2 == 0:
+        return False
+    
+    # Check if the current position is in a subgrid that contains at least one obstacle
+    for k in range(i, i + 2):
+        for l in range(j, j + 2):
+            if k < 0 or k >= n or l < 0 or l >= m:
+                return False
+    
+    return True
+
+if __name__ == '__main__':
+    n, m, p = map(int, input().split())
+    print(f1(n, m, p))
 

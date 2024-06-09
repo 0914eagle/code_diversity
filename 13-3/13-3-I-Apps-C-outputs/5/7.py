@@ -1,49 +1,25 @@
 
-def get_min_square_side(points):
-    # Sort the points by their x-coordinate
-    points.sort(key=lambda x: x[0])
+def get_min_fuel(n, m, a, b):
+    # Initialize the fuel amount to 0
+    fuel = 0
+    # Loop through each planet
+    for i in range(n):
+        # Calculate the fuel needed for takeoff from the current planet
+        takeoff_fuel = (m - a[i]) // b[i]
+        # Calculate the fuel needed for landing on the current planet
+        landing_fuel = (m - b[i]) // a[i]
+        # Add the fuel needed for takeoff and landing to the total fuel amount
+        fuel += takeoff_fuel + landing_fuel
+        # Update the mass of the rocket after takeoff and landing
+        m = m - a[i] - b[i] + takeoff_fuel * b[i] + landing_fuel * a[i]
+    return fuel
 
-    # Initialize the minimum side length to the x-coordinate of the last point
-    min_side = points[-1][0]
+def main():
+    n, m = map(int, input().split())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    print(get_min_fuel(n, m, a, b))
 
-    # Iterate through the points and calculate the minimum side length
-    for i in range(len(points) - 1):
-        # Calculate the distance between the current point and the next point
-        dist = points[i + 1][0] - points[i][0]
-
-        # If the distance is less than the current minimum side length, update the minimum side length
-        if dist < min_side:
-            min_side = dist
-
-    return min_side
-
-def solve(n, q, points, requests):
-    # Initialize an empty list to store the answers
-    answers = []
-
-    # Iterate through the requests
-    for a, b in requests:
-        # Extract the points for the current request
-        request_points = points[a - 1:b]
-
-        # Calculate the minimum side length of the smallest axis-aligned square that contains all of the points
-        min_side = get_min_square_side(request_points)
-
-        # Add the answer to the list of answers
-        answers.append(min_side)
-
-    return answers
-
-n, q = map(int, input().split())
-points = []
-for i in range(n):
-    x, y = map(int, input().split())
-    points.append((x, y))
-requests = []
-for i in range(q):
-    a, b = map(int, input().split())
-    requests.append((a, b))
-answers = solve(n, q, points, requests)
-for answer in answers:
-    print(answer)
+if __name__ == '__main__':
+    main()
 

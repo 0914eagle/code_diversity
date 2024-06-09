@@ -1,14 +1,21 @@
 
-import sys
+def is_non_decreasing(heights):
+    for i in range(len(heights) - 1):
+        if heights[i] > heights[i + 1]:
+            return False
+    return True
 
-n = int(input())
-cards = list(map(int, input().split()))
+def solve(heights):
+    for i in range(len(heights)):
+        if heights[i] > 1:
+            heights[i] -= 1
+            if is_non_decreasing(heights):
+                return "Yes"
+            heights[i] += 1
+    return "No"
 
-# Alice's optimal strategy is to take the card with the highest value
-alice_score = max(cards)
-
-# Bob's optimal strategy is to take the card with the second highest value
-bob_score = sorted(cards)[-2]
-
-print(alice_score - bob_score)
+if __name__ == '__main__':
+    n = int(input())
+    heights = list(map(int, input().split()))
+    print(solve(heights))
 

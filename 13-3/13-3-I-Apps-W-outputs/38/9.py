@@ -1,22 +1,31 @@
 
-def climb_stairs(n, m):
-    # Initialize a list to store the number of moves for each step
-    moves = [0] * (n + 1)
-    # Initialize a list to store the number of moves for each step that is a multiple of m
-    multiples = [0] * (n + 1)
+def f1(s):
+    # Initialize variables
+    left, right, up, down = 0, 0, 0, 0
+    for c in s:
+        if c == 'L':
+            left += 1
+        elif c == 'R':
+            right += 1
+        elif c == 'U':
+            up += 1
+        elif c == 'D':
+            down += 1
     
-    # Base case: when n is 0, there is 1 way to climb with 0 moves
-    moves[0] = 1
-    multiples[0] = 1
+    # Check if the string can be edited to end at the origin
+    if left == right and up == down:
+        return -1
     
-    # Iterate from 1 to n
-    for i in range(1, n + 1):
-        # There are two ways to climb i steps: 1 step + i - 1 steps or 2 steps + i - 2 steps
-        moves[i] = moves[i - 1] + moves[i - 2]
-        # If i is a multiple of m, add the number of ways to climb i steps to the list of multiples
-        if i % m == 0:
-            multiples[i] = moves[i]
+    # Calculate the minimum number of edits required
+    edits = 0
+    if left > right:
+        edits += left - right
+    elif right > left:
+        edits += right - left
+    if up > down:
+        edits += up - down
+    elif down > up:
+        edits += down - up
     
-    # Return the last element of the list of multiples, which is the minimal number of moves making him climb to the top of the stairs that satisfies his condition
-    return multiples[-1]
+    return edits
 

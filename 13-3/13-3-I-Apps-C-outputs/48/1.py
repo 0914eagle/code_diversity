@@ -1,31 +1,83 @@
 
-def solve(origin, destination, connections):
-    # Initialize a dictionary to store the expected duration for each connection
-    expected_durations = {}
+import math
 
-    # Loop through each connection
-    for connection in connections:
-        # Get the origin, destination, departure time, standard journey time, probability of delay, and maximum delay for this connection
-        origin, destination, departure_time, standard_journey_time, probability_of_delay, maximum_delay = connection
+def f1(N, M, nodes, edges):
+    # Initialize variables
+    turning_required = 0
+    visited_nodes = set()
+    current_node = 0
+    visited_edges = set()
 
-        # Calculate the expected duration for this connection
-        expected_duration = standard_journey_time * (1 - probability_of_delay / 100) + maximum_delay
+    # Loop through all nodes
+    for i in range(N):
+        # Get the edges connected to the current node
+        connected_edges = [edge for edge in edges if edge[0] == current_node or edge[1] == current_node]
 
-        # Add the expected duration to the dictionary with the connection as the key
-        expected_durations[connection] = expected_duration
+        # If the current node has not been visited before, add its turning required
+        if current_node not in visited_nodes:
+            turning_required += nodes[current_node][2]
+            visited_nodes.add(current_node)
 
-    # Initialize a variable to store the minimum expected duration
-    minimum_expected_duration = float('inf')
+        # If the current node has only one edge connected to it, move to that edge
+        if len(connected_edges) == 1:
+            current_node = connected_edges[0][0] if connected_edges[0][1] == current_node else connected_edges[0][1]
 
-    # Loop through each connection
-    for connection in connections:
-        # Get the origin, destination, and expected duration for this connection
-        origin, destination, expected_duration = connection
+        # If the current node has two edges connected to it, find the unvisited edge with the smallest turning required
+        elif len(connected_edges) == 2:
+            unvisited_edge = [edge for edge in connected_edges if edge not in visited_edges][0]
+            current_node = unvisited_edge[0] if unvisited_edge[1] == current_node else unvisited_edge[1]
+            visited_edges.add(unvisited_edge)
 
-        # If the destination is the same as the input destination, and the expected duration is less than the minimum expected duration, update the minimum expected duration
-        if destination == destination and expected_duration < minimum_expected_duration:
-            minimum_expected_duration = expected_duration
+    # Add the turning required for the final edge
+    turning_required += nodes[current_node][2]
 
-    # Return the minimum expected duration
-    return minimum_expected_duration
+    return turning_required
+
+def f2(N, M, nodes, edges):
+    # Initialize variables
+    turning_required = 0
+    visited_nodes = set()
+    current_node = 0
+    visited_edges = set()
+
+    # Loop through all nodes
+    for i in range(N):
+        # Get the edges connected to the current node
+        connected_edges = [edge for edge in edges if edge[0] == current_node or edge[1] == current_node]
+
+        # If the current node has not been visited before, add its turning required
+        if current_node not in visited_nodes:
+            turning_required += nodes[current_node][2]
+            visited_nodes.add(current_node)
+
+        # If the current node has only one edge connected to it, move to that edge
+        if len(connected_edges) == 1:
+            current_node = connected_edges[0][0] if connected_edges[0][1] == current_node else connected_edges[0][1]
+
+        # If the current node has two edges connected to it, find the unvisited edge with the smallest turning required
+        elif len(connected_edges) == 2:
+            unvisited_edge = [edge for edge in connected_edges if edge not in visited_edges][0]
+            current_node = unvisited_edge[0] if unvisited_edge[1] == current_node else unvisited_edge[1]
+            visited_edges.add(unvisited_edge)
+
+    # Add the turning required for the final edge
+    turning_required += nodes[current_node][2]
+
+    return turning_required
+
+if __name__ == '__main__':
+    N, M = map(int, input().split())
+    nodes = []
+    edges = []
+
+    for i in range(N):
+        x, y, turning_required = map(int, input().split())
+        nodes.append([x, y, turning_required])
+
+    for i in range(M):
+        x, y = map(int, input().split())
+        edges.append([x, y])
+
+    print(f1(N, M, nodes, edges))
+    print(f2(N, M, nodes, edges))
 

@@ -1,16 +1,31 @@
 
-def count_binary_relations(n):
-    # Calculate the number of binary relations
-    num_relations = (n * (n - 1)) // 2
-    
-    # Calculate the number of equivalence relations
-    num_equivalence_relations = 1
-    for i in range(2, n + 1):
-        num_equivalence_relations *= i
-    
-    # Calculate the number of non-equivalence relations
-    num_non_equivalence_relations = num_relations - num_equivalence_relations
-    
-    # Return the number of non-equivalence relations modulo 10^9 + 7
-    return num_non_equivalence_relations % 1000000007
+def f1(word):
+    # find the maximum subword of the form $ww^Rww^R$
+    subword = ""
+    for i in range(len(word)):
+        if word[i] == word[len(word)-i-1]:
+            subword = word[i:len(word)-i]
+    # calculate the power of the subword
+    power = len(subword)
+    # return the power
+    return power
+
+def f2(word):
+    # check if the word is a palindrome
+    if word == word[::-1]:
+        return 0
+    # find the maximum subword of the form $ww^Rww^R$
+    subword = ""
+    for i in range(len(word)):
+        if word[i] == word[len(word)-i-1]:
+            subword = word[i:len(word)-i]
+    # calculate the power of the subword
+    power = len(subword)
+    # return the power
+    return power
+
+if __name__ == '__main__':
+    word = input()
+    power = f1(word)
+    print(power)
 

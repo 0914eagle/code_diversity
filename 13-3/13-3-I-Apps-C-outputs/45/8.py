@@ -1,26 +1,32 @@
 
-import sys
+def f1(n, p, x, y):
+    # Calculate the number of ways to choose two suspects
+    # such that at least p coders agree with the choice
+    count = 0
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            if i != j and (i in x or i in y) and (j in x or j in y):
+                count += 1
+    return count
 
-def solve(N, A, B):
-    # Initialize the number of ways to choose tasks
-    ways = 1
-
-    # Loop through each difficulty level
-    for i in range(N):
-        # If there are tasks with difficulty exactly i
-        if A[i] > 0:
-            # Add the number of ways to choose a task with difficulty i
-            ways = (ways * A[i]) % 1000000007
-        # If there are tasks with difficulty either i or i+1
-        if B[i] > 0:
-            # Add the number of ways to choose a task with difficulty i or i+1
-            ways = (ways * (B[i] + 1)) % 1000000007
-
-    return ways
+def f2(n, p, x, y):
+    # Calculate the number of ways to choose two suspects
+    # such that at least p coders agree with the choice
+    count = 0
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            if i != j and (i in x or i in y) and (j in x or j in y):
+                count += 1
+    return count
 
 if __name__ == '__main__':
-    N = int(input())
-    A = list(map(int, input().split()))
-    B = list(map(int, input().split()))
-    print(solve(N, A, B))
+    n, p = map(int, input().split())
+    x = set()
+    y = set()
+    for i in range(n):
+        xi, yi = map(int, input().split())
+        x.add(xi)
+        y.add(yi)
+    print(f1(n, p, x, y))
+    print(f2(n, p, x, y))
 

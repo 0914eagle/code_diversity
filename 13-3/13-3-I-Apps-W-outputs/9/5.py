@@ -1,33 +1,37 @@
 
-import sys
+def get_min_changes(s, t):
+    # Initialize variables
+    n = len(s)
+    m = len(t)
+    changes = 0
+    positions = []
 
-def get_input():
-    return list(map(int, sys.stdin.readline().strip().split()))
+    # Iterate through the string s
+    for i in range(n):
+        # If the symbol at position i in s is not equal to the symbol at position i in t
+        if s[i] != t[i]:
+            # Increment the number of changes
+            changes += 1
+            # Add the position of the symbol to the list of positions
+            positions.append(i+1)
 
-def solve():
-    H, W, M = get_input()
-    targets = []
-    for i in range(M):
-        h, w = get_input()
-        targets.append((h, w))
-    
-    # Sort the targets by row and column
-    targets.sort(key=lambda x: (x[0], x[1]))
-    
-    # Initialize the maximum number of targets to destroy to 0
-    max_targets = 0
-    
-    # Iterate through the targets and check if they are in the same row or column as the previous target
-    for i in range(M):
-        if i == 0:
-            max_targets += 1
-        else:
-            current_target = targets[i]
-            previous_target = targets[i-1]
-            if current_target[0] == previous_target[0] or current_target[1] == previous_target[1]:
-                max_targets += 1
-    
-    return max_targets
+    # Return the number of changes and the list of positions
+    return changes, positions
 
-print(solve())
+def main():
+    # Read the input
+    n, m = map(int, input().split())
+    s = input()
+    t = input()
+
+    # Call the function to get the minimum number of changes and the list of positions
+    changes, positions = get_min_changes(s, t)
+
+    # Print the number of changes
+    print(changes)
+    # Print the list of positions
+    print(*positions)
+
+if __name__ == '__main__':
+    main()
 

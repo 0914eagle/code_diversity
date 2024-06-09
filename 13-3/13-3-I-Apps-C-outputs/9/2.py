@@ -1,22 +1,42 @@
 
-import itertools
-
-def count_sequences(n, c):
-    # Initialize a list to store the sequences
-    sequences = []
+def get_min_messages(spies, enemies, connections):
+    # Initialize a graph with the given connections
+    graph = {i: set() for i in range(spies)}
+    for connection in connections:
+        graph[connection[0]].add(connection[1])
+        graph[connection[1]].add(connection[0])
     
-    # Iterate over all possible sequences of length n
-    for seq in itertools.permutations(range(1, n+1)):
-        # Count the number of confused pairs in the sequence
-        confused_pairs = 0
-        for i in range(n-1):
-            if seq[i] > seq[i+1]:
-                confused_pairs += 1
+    # Initialize a set to keep track of the enemies
+    enemy_set = set(enemies)
+    
+    # Initialize a queue to do a BFS traversal of the graph
+    queue = [0]
+    
+    # Initialize a dictionary to keep track of the number of messages needed to reach each spy
+    message_count = {0: 0}
+    
+    while queue:
+        # Dequeue a spy from the queue
+        current_spy = queue.pop(0)
         
-        # If the number of confused pairs is equal to c, add the sequence to the list
-        if confused_pairs == c:
-            sequences.append(seq)
+        # If the current spy is an enemy, skip it
+        if current_spy in enemy_set:
+            continue
+        
+        # If the current spy has not been visited yet, mark it as visited and add it to the queue
+        if current_spy not in message_count:
+            message_count[current_spy] = message_count[current_spy - 1] + 1
+            queue += list(graph[current_spy])
     
-    # Return the number of sequences modulo 1000000007
-    return len(sequences) % 1000000007
+    # Return the minimum number of messages needed to reach all spies
+    return message_count[spies - 1]
+
+def main():
+    spies, enemies, connections = map(int, input().split())
+    connections = [tuple(map(int, input().split())) for _ in range(connections)]
+    enemies = set(map(int, input().split()))
+    print(get_min_messages(spies, enemies, connections))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,75 +1,25 @@
 
-def topologically_sorted_nodes(graph):
-    # Initialize a list to store the topologically sorted nodes
-    topologically_sorted_nodes = []
+def is_quadrilateral(p1, p2, p3, p4):
+    return (p1[0] * p2[1] + p2[0] * p3[1] + p3[0] * p4[1] + p4[0] * p1[1]) - (p1[1] * p2[0] + p2[1] * p3[0] + p3[1] * p4[0] + p4[1] * p1[0]) != 0
 
-    # While there are still nodes in the graph that do not have any incoming edges
-    while len([node for node in graph if not node["in_degree"]]) > 0:
-        # Find a node with no incoming edges
-        node = next((node for node in graph if not node["in_degree"]), None)
+def is_inside_or_on_border(p, q1, q2, q3, q4):
+    return is_quadrilateral(p, q1, q2, q3) and is_quadrilateral(p, q1, q2, q4) and is_quadrilateral(p, q1, q3, q4) and is_quadrilateral(p, q2, q3, q4)
 
-        # Add the node to the topologically sorted nodes list
-        topologically_sorted_nodes.append(node)
+def count_dangerous_castles(nazis, castles):
+    dangerous_castles = 0
+    for castle in castles:
+        for nazi in nazis:
+            if is_inside_or_on_border(nazi, castle, (castle[0] + 1, castle[1]), (castle[0], castle[1] + 1), (castle[0] + 1, castle[1] + 1)):
+                dangerous_castles += 1
+                break
+    return dangerous_castles
 
-        # Remove the node and all its outgoing edges from the graph
-        graph.remove(node)
-
-        # Update the in-degree of the nodes that have an edge to the removed node
-        for neighbor in node["neighbors"]:
-            neighbor["in_degree"] -= 1
-
-    # If the graph is not empty, then it has a cycle and topological sorting is impossible
-    if graph:
-        return []
-
-    # Return the topologically sorted nodes
-    return topologically_sorted_nodes
-
-def kahn_algorithm(graph):
-    # Initialize a list to store the topologically sorted nodes
-    topologically_sorted_nodes = []
-
-    # While there are still nodes in the graph
-    while graph:
-        # Find a node with no incoming edges
-        node = next((node for node in graph if not node["in_degree"]), None)
-
-        # If no such node exists, then the graph has a cycle and topological sorting is impossible
-        if not node:
-            return []
-
-        # Add the node to the topologically sorted nodes list
-        topologically_sorted_nodes.append(node)
-
-        # Remove the node and all its outgoing edges from the graph
-        graph.remove(node)
-
-        # Update the in-degree of the nodes that have an edge to the removed node
-        for neighbor in node["neighbors"]:
-            neighbor["in_degree"] -= 1
-
-    # Return the topologically sorted nodes
-    return topologically_sorted_nodes
-
-def main():
-    # Read the input graph
-    n, m = map(int, input().split())
-    graph = []
-    for _ in range(m):
-        x, y = map(int, input().split())
-        graph.append({"id": x, "neighbors": [y], "in_degree": 1})
-        graph.append({"id": y, "neighbors": [x], "in_degree": 0})
-
-    # Find the largest possible size of S at the beginning of any iteration of Step 1 in the execution of Kahn's Algorithm
-    largest_s = 0
-    for node in graph:
-        if not node["in_degree"]:
-            largest_s = max(largest_s, 1)
-            break
-
-    # Print the largest possible size of S
-    print(largest_s)
-
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    nazis = []
+    castles = []
+    for _ in range(int(input())):
+        nazis.append(tuple(map(int, input().split())))
+    for _ in range(int(input())):
+        castles.append(tuple(map(int, input().split())))
+    print(count_dangerous_castles(nazis, castles))
 

@@ -1,11 +1,11 @@
 
-def solve(sequence):
-    result = []
-    for i in range(len(sequence)):
-        max_value = -float('inf')
-        for j in range(len(sequence)):
-            if j != i and sequence[j] > max_value:
-                max_value = sequence[j]
-        result.append(max_value)
-    return result
+import datetime
+
+def get_day_of_week(day, month):
+    date = datetime.date(2009, month, day)
+    return date.strftime("%A")
+
+if __name__ == '__main__':
+    day, month = map(int, input().split())
+    print(get_day_of_week(day, month))
 

@@ -1,8 +1,16 @@
 
-def solve(a, b, c, d):
-    count = 0
-    for i in range(a, b+1):
-        if i % c != 0 and i % d != 0:
-            count += 1
-    return count
+def get_symmetric_difference(m, n):
+    return list(sorted(m.union(n) - m.intersection(n)))
+
+def main():
+    m_count = int(input())
+    m = set(map(int, input().split()))
+    n_count = int(input())
+    n = set(map(int, input().split()))
+    symmetric_difference = get_symmetric_difference(m, n)
+    for num in symmetric_difference:
+        print(num)
+
+if __name__ == '__main__':
+    main()
 

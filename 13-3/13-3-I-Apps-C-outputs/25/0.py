@@ -1,17 +1,32 @@
 
-import math
+def get_activated_pixels(pulses):
+    # Initialize a grid to store the activated pixels
+    grid = [[0] * 200001 for _ in range(200001)]
 
-def count_ways(n, m, p):
-    # Calculate the number of ways to place the minimum number of obstacles
-    num_obstacles = (n // 2) * (m // 2)
-    num_ways = math.factorial(num_obstacles)
+    # Iterate over the pulses and mark the activated pixels
+    for pulse in pulses:
+        direction, start, length, wire = pulse
+        if direction == "h":
+            for i in range(start, start + length):
+                grid[i][wire] = 1
+        else:
+            for i in range(start, start + length):
+                grid[wire][i] = 1
 
-    # Calculate the number of ways to place the obstacles in the grid
-    num_ways *= math.factorial(n * m - num_obstacles)
+    # Count the number of activated pixels
+    activated_pixels = 0
+    for row in grid:
+        for pixel in row:
+            if pixel == 1:
+                activated_pixels += 1
 
-    # Calculate the number of ways to place the obstacles in the grid with at least one obstacle in each 2x2 subgrid
-    num_ways //= math.factorial(n * m - (n // 2) * (m // 2))
+    return activated_pixels
 
-    # Return the result modulo p
-    return num_ways % p
+if __name__ == '__main__':
+    n = int(input())
+    pulses = []
+    for _ in range(n):
+        direction, start, length, wire = input().split()
+        pulses.append((direction, int(start), int(length), int(wire)))
+    print(get_activated_pixels(pulses))
 

@@ -1,25 +1,37 @@
 
-def solve(n, m, a):
-    # Initialize a dictionary to store the number of ways to get each card
-    dp = {(1, 1): 1}
+def f1(w, l, a):
+    # Initialize variables
+    max_frogs = 0
+    current_frogs = 0
+    current_distance = 0
+    stones = []
+    
+    # Iterate through the input array
+    for i in range(len(a)):
+        # If there are stones at the current distance, add them to the list of available stones
+        if a[i] > 0:
+            for j in range(a[i]):
+                stones.append(i)
+        
+        # If there are enough stones to cross the river, update the maximum number of frogs that can cross
+        if len(stones) >= current_frogs + 1:
+            max_frogs = max(max_frogs, current_frogs + 1)
+            current_frogs += 1
+            current_distance += l
+        
+        # If there are no more stones at the current distance, move to the next distance
+        else:
+            current_distance += l
+            current_frogs = 0
+    
+    return max_frogs
 
-    # Iterate over the given cards
-    for i in range(n):
-        # Get the current card
-        card = (1, a[i])
+def f2(...):
+    # Implement function f2 here
+    pass
 
-        # Iterate over the possible next cards
-        for next_card in dp:
-            # Get the current card's values
-            x, y = card
-            # Get the next card's values
-            x2, y2 = next_card
-
-            # If the next card's values are valid
-            if x2 <= x and y2 >= y:
-                # Update the number of ways to get the current card
-                dp[card] += dp[next_card]
-
-    # Return the number of ways to get the required cards
-    return dp[(1, m)]
+if __name__ == '__main__':
+    w, l = map(int, input().split())
+    a = list(map(int, input().split()))
+    print(f1(w, l, a))
 

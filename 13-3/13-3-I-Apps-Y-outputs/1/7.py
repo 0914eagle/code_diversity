@@ -1,18 +1,13 @@
 
-import sys
+def lucas_number(n):
+    if n == 0:
+        return 2
+    elif n == 1:
+        return 1
+    else:
+        return lucas_number(n-1) + lucas_number(n-2)
 
-n, m = map(int, input().split())
-votes = list(map(int, input().split()))
-
-# Calculate the total number of votes
-total_votes = sum(votes)
-
-# Sort the votes in descending order
-votes.sort(reverse=True)
-
-# Check if we can select M popular items
-if m <= n and votes[m-1] >= total_votes/4:
-    print("Yes")
-else:
-    print("No")
+if __name__ == '__main__':
+    n = int(input())
+    print(lucas_number(n))
 

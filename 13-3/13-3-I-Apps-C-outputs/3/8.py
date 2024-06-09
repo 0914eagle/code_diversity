@@ -1,27 +1,32 @@
 
-def speedrun(n, r, m, tricks):
-    # Initialize variables
-    expected_time = 0
-    current_time = 0
-    num_resets = 0
-
-    # Loop through each trick in the route
-    for trick in tricks:
-        t, p, d = trick
-        # If the trick occurs before the current time, reset the game
-        if t < current_time:
-            num_resets += 1
-            current_time = 0
-        # If the trick occurs after the current time, update the current time
-        elif t > current_time:
-            current_time = t
-        # If the trick occurs at the current time, calculate the expected time to recover
+def get_min_extensions(a, b, h, w, n, extensions):
+    # Initialize the minimum number of extensions needed to be 0
+    min_extensions = 0
+    # If the rectangle can be placed on the initial field, return 0
+    if a <= h and b <= w:
+        return 0
+    
+    # Iterate through the available extensions
+    for i in range(n):
+        # If the extension multiplies the width, multiply h by a_i
+        # If the extension multiplies the length, multiply w by a_i
+        if extensions[i] % 2 == 0:
+            h *= extensions[i]
         else:
-            expected_time += d * (1 - p)
-            current_time += d
+            w *= extensions[i]
+        
+        # If the rectangle can be placed on the field after applying the extension, increment the minimum number of extensions needed
+        if a <= h and b <= w:
+            min_extensions += 1
+    
+    # Return the minimum number of extensions needed
+    return min_extensions
 
-    # Calculate the expected time to set a new record
-    expected_time += (r - current_time) / (1 - (1 - p) ** num_resets)
+def main():
+    a, b, h, w, n = map(int, input().split())
+    extensions = list(map(int, input().split()))
+    print(get_min_extensions(a, b, h, w, n, extensions))
 
-    return expected_time
+if __name__ == '__main__':
+    main()
 

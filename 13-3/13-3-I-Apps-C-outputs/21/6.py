@@ -1,29 +1,33 @@
 
-def solve(n, m):
-    # Initialize a list to store the positions of the chessmen
-    positions = []
+def get_wcd(pairs):
+    # Initialize a set to store the common divisors
+    common_divisors = set()
     
-    # Loop through each row and column
-    for i in range(1, n + 1):
-        for j in range(1, m + 1):
-            # Check if the current position is valid
-            if valid_position(positions, i, j):
-                # Add the current position to the list of positions
-                positions.append((i, j))
+    # Iterate over the pairs
+    for a, b in pairs:
+        # Get the common divisors of a and b
+        divisors = set(range(2, min(a, b) + 1))
+        
+        # Intersect the common divisors with the previous set
+        common_divisors &= divisors
     
-    # Return the length of the list of positions, which is the maximum number of chessmen that can be placed
-    return len(positions)
+    # If the set is empty, return -1
+    if not common_divisors:
+        return -1
+    
+    # Return the largest element in the set
+    return max(common_divisors)
 
-# Check if a position is valid
-def valid_position(positions, i, j):
-    # Loop through each existing position
-    for position in positions:
-        # Calculate the Manhattan distance between the current position and the existing position
-        dist = abs(i - position[0]) + abs(j - position[1])
-        # If the distance is less than or equal to 3, the current position is not valid
-        if dist <= 3:
-            return False
+def main():
+    n = int(input())
+    pairs = []
     
-    # If all existing positions are more than 3 units away from the current position, the current position is valid
-    return True
+    for _ in range(n):
+        a, b = map(int, input().split())
+        pairs.append((a, b))
+    
+    print(get_wcd(pairs))
+
+if __name__ == '__main__':
+    main()
 

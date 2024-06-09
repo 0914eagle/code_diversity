@@ -1,31 +1,46 @@
 
-import sys
-
-def get_distinct_routes(n, m, roads):
-    # Initialize a graph with n nodes and m edges
-    graph = [[] for _ in range(n)]
-    for a, b in roads:
-        graph[a-1].append(b-1)
+def f1(D, S):
+    # Initialize an empty list to store the y-coordinates of the disintegrating droplets
+    disintegrating_droplets = []
     
-    # Use depth-first search to count the number of distinct routes
-    visited = [False] * n
-    count = 0
-    def dfs(curr):
-        nonlocal count
-        visited[curr] = True
-        for neighbor in graph[curr]:
-            if not visited[neighbor]:
-                dfs(neighbor)
-        count += 1
+    # Iterate through each droplet
+    for i in range(D):
+        # Initialize a variable to store the y-coordinate of the current droplet
+        current_droplet_y = None
+        
+        # Iterate through each sensor
+        for j in range(S):
+            # Check if the current droplet is within the range of the current sensor
+            if x1 <= x <= x2 and y1 <= y <= y2:
+                # If the current droplet is within the range of the current sensor, store its y-coordinate
+                current_droplet_y = y
+                break
+        
+        # If the current droplet did not disintegrate, store 0
+        if current_droplet_y is None:
+            disintegrating_droplets.append(0)
+        # Otherwise, store the y-coordinate of the disintegrating droplet
+        else:
+            disintegrating_droplets.append(current_droplet_y)
     
-    dfs(0)
-    return count
+    # Return the list of y-coordinates of the disintegrating droplets
+    return disintegrating_droplets
 
-n, m = map(int, input().split())
-roads = []
-for _ in range(m):
-    a, b = map(int, input().split())
-    roads.append((a, b))
+def f2(...):
+    # Implement function 2 here
+    pass
 
-print(get_distinct_routes(n, m, roads))
+if __name__ == '__main__':
+    D, S = map(int, input().split())
+    droplets = []
+    for i in range(D):
+        x, y = map(int, input().split())
+        droplets.append((x, y))
+    sensors = []
+    for i in range(S):
+        x1, x2, y = map(int, input().split())
+        sensors.append((x1, x2, y))
+    disintegrating_droplets = f1(D, S, droplets, sensors)
+    for y in disintegrating_droplets:
+        print(y)
 

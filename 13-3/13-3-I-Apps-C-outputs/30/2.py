@@ -1,29 +1,32 @@
 
-def topologically_sorted_nodes(n, m, edges):
-    # Initialize a graph with n nodes and m edges
-    graph = [[] for _ in range(n)]
-    for edge in edges:
-        graph[edge[0]].append(edge[1])
+def get_dangerous_castles(nazis, castles):
+    dangerous_castles = set()
+    for i in range(len(nazis)):
+        for j in range(i+1, len(nazis)):
+            for k in range(j+1, len(nazis)):
+                for l in range(k+1, len(nazis)):
+                    if is_quadrilateral(nazis[i], nazis[j], nazis[k], nazis[l]) and is_inside_or_on_border(nazis[i], nazis[j], nazis[k], nazis[l], castles):
+                        dangerous_castles.add(castles[i])
+    return len(dangerous_castles)
 
-    # Initialize a list to store the topologically sorted nodes
-    topologically_sorted = []
+def is_quadrilateral(p1, p2, p3, p4):
+    return not collinear(p1, p2, p3) and not collinear(p1, p2, p4) and not collinear(p2, p3, p4) and not collinear(p1, p3, p4)
 
-    # Iterate through the graph until there are no more nodes to visit
-    while graph:
-        # Find all source nodes (nodes with no incoming edges)
-        source_nodes = [node for node, edges in enumerate(graph) if not edges]
+def is_inside_or_on_border(p1, p2, p3, p4, castles):
+    return any(is_inside_or_on_border_helper(p1, p2, p3, p4, castle) for castle in castles)
 
-        # If there are no source nodes, the graph has at least one cycle
-        if not source_nodes:
-            return -1
+def is_inside_or_on_border_helper(p1, p2, p3, p4, castle):
+    return (p1[0] <= castle[0] <= p2[0] or p1[0] >= castle[0] >= p2[0]) and (p1[1] <= castle[1] <= p2[1] or p1[1] >= castle[1] >= p2[1])
 
-        # Remove the source nodes and their outgoing edges from the graph
-        for source_node in source_nodes:
-            topologically_sorted.append(source_node)
-            graph.pop(source_node)
-            for edge in graph:
-                if source_node in edge:
-                    edge.remove(source_node)
+def collinear(p1, p2, p3):
+    return p1[0]*(p2[1]-p3[1]) + p2[0]*(p3[1]-p1[1]) + p3[0]*(p1[1]-p2[1]) == 0
 
-    return len(topologically_sorted)
+if __name__ == '__main__':
+    nazis = []
+    castles = []
+    for _ in range(int(input())):
+        nazis.append(tuple(map(int, input().split())))
+    for _ in range(int(input())):
+        castles.append(tuple(map(int, input().split())))
+    print(get_dangerous_castles(nazis, castles))
 

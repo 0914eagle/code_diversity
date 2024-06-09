@@ -1,12 +1,29 @@
 
-def get_initial_arrangement(n, x, a):
-    arrangement = [0] * n
+def f1(n, directions, lengths):
+    # Initialize a list to store the position of the grasshopper
+    position = [0]
+    # Loop through the directions and lengths
     for i in range(n):
-        arrangement[i] += a[i]
-    for i in range(n):
-        if x == i:
-            break
-        x = (x + 1) % n
-        arrangement[x] -= 1
-    return arrangement
+        # If the direction is ">", move the grasshopper to the right by the length
+        if directions[i] == ">":
+            position.append(position[i] + lengths[i])
+        # If the direction is "<", move the grasshopper to the left by the length
+        else:
+            position.append(position[i] - lengths[i])
+    # If the grasshopper ever jumps out of the strip, return "INFINITE"
+    if max(position) > n or min(position) < 0:
+        return "INFINITE"
+    # Otherwise, return "FINITE"
+    else:
+        return "FINITE"
+
+def f2(...):
+    # Implement f2 here
+    pass
+
+if __name__ == '__main__':
+    n = int(input())
+    directions = input()
+    lengths = [int(x) for x in input().split()]
+    print(f1(n, directions, lengths))
 

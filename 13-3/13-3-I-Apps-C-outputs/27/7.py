@@ -1,34 +1,15 @@
 
-import sys
-
-def solve(N, K):
-    # Initialize the deque and the sequence
-    deque = []
-    sequence = []
-
-    # Insert the cards at the beginning or the end of the deque
-    for i in range(1, N+1):
-        if i % 2 == 1:
-            deque.append(i)
-        else:
-            deque.insert(0, i)
-
-    # Eat the cards and construct the sequence
-    for i in range(N):
-        card = deque.pop(0)
-        sequence.append(card)
-        if card == K:
-            break
-
-    # Count the number of sequences that satisfy the condition
-    count = 0
-    for perm in permutations(sequence):
-        if perm[K-1] == 1:
-            count += 1
-
-    return count % (10**9 + 7)
-
-if __name__ == '__main__':
-    N, K = map(int, input().split())
-    print(solve(N, K))
+def is_verse_pattern_matched(text, verse_pattern):
+    n = len(text)
+    if len(verse_pattern) != n:
+        return "NO"
+    for i in range(n):
+        line = text[i]
+        syllables = []
+        for word in line.split():
+            if any(c in "aeiouy" for c in word):
+                syllables += [word[j:j+1] for j in range(len(word))]
+        if len(syllables) != verse_pattern[i]:
+            return "NO"
+    return "YES"
 

@@ -1,29 +1,41 @@
 
-import math
+def get_car_sizes(father_size, mother_size, son_size, masha_size):
+    # Initialize variables
+    father_car_size = 0
+    mother_car_size = 0
+    son_car_size = 0
 
-def get_min_angle(vectors):
-    min_angle = math.pi
-    min_angle_indices = []
-    for i in range(len(vectors)):
-        for j in range(i+1, len(vectors)):
-            angle = get_angle(vectors[i], vectors[j])
-            if angle < min_angle:
-                min_angle = angle
-                min_angle_indices = [i, j]
-    return min_angle_indices
+    # Check if Masha can climb into the smallest car
+    if masha_size <= son_size:
+        # Masha can climb into the smallest car, so the smallest car size is 2 * son_size
+        son_car_size = 2 * son_size
 
-def get_angle(v1, v2):
-    dot_product = v1[0]*v2[0] + v1[1]*v2[1]
-    magnitude_product = math.sqrt(v1[0]**2 + v1[1]**2) * math.sqrt(v2[0]**2 + v2[1]**2)
-    angle = math.acos(dot_product / magnitude_product)
-    return angle
+        # Check if father can climb into the middle car
+        if father_size <= mother_size:
+            # Father can climb into the middle car, so the middle car size is 2 * mother_size
+            mother_car_size = 2 * mother_size
 
-n = int(input())
-vectors = []
-for i in range(n):
-    x, y = map(int, input().split())
-    vectors.append([x, y])
+            # Check if mother can climb into the largest car
+            if mother_size <= father_size:
+                # Mother can climb into the largest car, so the largest car size is 2 * father_size
+                father_car_size = 2 * father_size
+            else:
+                # Mother can't climb into the largest car, so there is no solution
+                return -1
+        else:
+            # Father can't climb into the middle car, so there is no solution
+            return -1
+    else:
+        # Masha can't climb into the smallest car, so there is no solution
+        return -1
 
-indices = get_min_angle(vectors)
-print(indices[0] + 1, indices[1] + 1)
+    # Return the car sizes
+    return father_car_size, mother_car_size, son_car_size
+
+if __name__ == '__main__':
+    father_size = 50
+    mother_size = 30
+    son_size = 10
+    masha_size = 10
+    print(get_car_sizes(father_size, mother_size, son_size, masha_size))
 

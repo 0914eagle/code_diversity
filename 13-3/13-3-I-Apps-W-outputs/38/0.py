@@ -1,22 +1,38 @@
 
-def get_min_moves(n, m):
-    # Initialize a list to store the number of moves for each step
-    moves = [0] * (n + 1)
-    # Initialize a list to store the number of moves for each step that is a multiple of m
-    multiples = [0] * (n + 1)
+def f1(s):
+    # Initialize variables
+    left, right, up, down = 0, 0, 0, 0
+    for c in s:
+        if c == 'L':
+            left += 1
+        elif c == 'R':
+            right += 1
+        elif c == 'U':
+            up += 1
+        else:
+            down += 1
     
-    # Base case: when n is 0, there is 1 way to climb 0 steps
-    moves[0] = 1
-    multiples[0] = 1
+    # Check if the string can be edited to end at the origin
+    if left != right or up != down:
+        return -1
     
-    # Iterate from 1 to n
-    for i in range(1, n + 1):
-        # There are two ways to climb i steps: 1 step + i - 1 steps or 2 steps + i - 2 steps
-        moves[i] = moves[i - 1] + moves[i - 2]
-        # If the number of moves is a multiple of m, add it to the list of multiples
-        if moves[i] % m == 0:
-            multiples[i] = moves[i]
+    # Count the minimum number of edits required
+    edits = 0
+    for i in range(len(s)):
+        if s[i] == 'L':
+            if s[i-1] == 'R':
+                s = s[:i-1] + 'U' + s[i+1:]
+                edits += 1
+            else:
+                s = s[:i] + 'D' + s[i+1:]
+                edits += 1
+        elif s[i] == 'R':
+            if s[i-1] == 'L':
+                s = s[:i-1] + 'D' + s[i+1:]
+                edits += 1
+            else:
+                s = s[:i] + 'U' + s[i+1:]
+                edits += 1
     
-    # Return the last element of the list of multiples, which is the minimal number of moves that is a multiple of m
-    return multiples[-1]
+    return edits
 

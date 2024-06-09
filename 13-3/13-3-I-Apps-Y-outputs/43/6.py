@@ -1,22 +1,14 @@
 
-import math
+import re
 
-def get_min_rod_length(triangles):
-    # Calculate the maximum height of the triangles
-    max_height = max([triangle[2] for triangle in triangles])
+def is_roman_numeral(s):
+    pattern = r"^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$"
+    return bool(re.match(pattern, s))
 
-    # Calculate the minimum length of the rod required to hang the triangles
-    min_rod_length = 0
-    for triangle in triangles:
-        rod_length = triangle[0] + triangle[1] + max_height
-        if rod_length > min_rod_length:
-            min_rod_length = rod_length
+def main():
+    s = input()
+    print(is_roman_numeral(s))
 
-    return min_rod_length
-
-triangles = []
-for _ in range(int(input())):
-    triangles.append(list(map(int, input().split())))
-
-print(get_min_rod_length(triangles))
+if __name__ == '__main__':
+    main()
 

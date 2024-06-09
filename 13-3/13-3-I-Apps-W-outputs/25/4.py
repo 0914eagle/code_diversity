@@ -1,15 +1,22 @@
 
-def count_substring(T, N):
-    # Initialize a variable to store the count
-    count = 0
-    
-    # Loop through the string S
-    for i in range(len(S) - N + 1):
-        # Check if the substring T occurs at the current position
-        if S[i:i+N] == T:
-            # Increment the count
-            count += 1
-    
-    # Return the count
-    return count
+def get_rearranged_array(arr):
+    n = len(arr)
+    sum_arr = sum(arr)
+    if sum_arr == 0:
+        return "NO"
+    for i in range(n):
+        curr_sum = sum(arr[:i+1])
+        if curr_sum == 0:
+            return "NO"
+    return "YES"
+
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        arr = list(map(int, input().split()))
+        print(get_rearranged_array(arr))
+
+if __name__ == '__main__':
+    main()
 

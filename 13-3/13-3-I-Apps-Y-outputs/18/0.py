@@ -1,17 +1,24 @@
 
-def get_major_scales(notes):
-    notes = notes.split()
-    scales = []
-    for note in notes:
-        for i in range(1, 13):
-            scale = [note]
-            for j in range(1, 8):
-                if (i + j) % 12 == 0:
-                    break
-                scale.append(notes[(i + j) % 12])
-            if set(scale) == set(notes):
-                scales.append(note)
-    if not scales:
-        return "none"
-    return " ".join(sorted(scales))
+def get_min_changes(s, k):
+    # Initialize variables
+    n = len(s)
+    count_r = s.count("R")
+    count_g = s.count("G")
+    count_b = s.count("B")
+    min_changes = n
+    
+    # Loop through all possible combinations of R, G, and B
+    for i in range(0, n + 1):
+        for j in range(0, n + 1 - i):
+            for k in range(0, n + 1 - i - j):
+                # Check if the current combination is valid
+                if i + j + k == n:
+                    # Calculate the number of changes needed
+                    changes = abs(i - count_r) + abs(j - count_g) + abs(k - count_b)
+                    # Update the minimum number of changes if needed
+                    if changes < min_changes:
+                        min_changes = changes
+    
+    # Return the minimum number of changes
+    return min_changes
 

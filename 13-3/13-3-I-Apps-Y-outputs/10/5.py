@@ -1,25 +1,38 @@
 
-def elevator_buttons(floors, start, goal, up, down):
+def f1(n, s, m, dictionary):
     # Initialize variables
-    current_floor = start
-    pushes = 0
-    up_button_available = True
-    down_button_available = True
-
-    # Loop until the goal floor is reached or the elevator cannot reach the goal floor
-    while current_floor != goal and (up_button_available or down_button_available):
-        # Check if the up button can be used
-        if up_button_available and current_floor + up <= floors:
-            current_floor += up
-            pushes += 1
-        # Check if the down button can be used
-        elif down_button_available and current_floor - down >= 1:
-            current_floor -= down
-            pushes += 1
-        # Check if the elevator cannot reach the goal floor
+    correct_translations = 0
+    incorrect_translations = 0
+    
+    # Iterate through each word in the sentence
+    for word in s.split():
+        # Check if the word is in the dictionary
+        if word in dictionary:
+            # If the word is in the dictionary, check if it is a correct translation
+            if dictionary[word] == "correct":
+                correct_translations += 1
+            else:
+                incorrect_translations += 1
         else:
-            return "use the stairs"
+            # If the word is not in the dictionary, it is an incorrect translation
+            incorrect_translations += 1
+    
+    # Return the number of correct and incorrect translations
+    return correct_translations, incorrect_translations
 
-    # Return the number of pushes required to reach the goal floor
-    return pushes
+def f2(...):
+    # Implement function 2 here
+    pass
+
+if __name__ == '__main__':
+    n = int(input())
+    s = input()
+    m = int(input())
+    dictionary = {}
+    for i in range(m):
+        d, e, c = input().split()
+        dictionary[d] = c
+    correct_translations, incorrect_translations = f1(n, s, m, dictionary)
+    print(correct_translations, "correct")
+    print(incorrect_translations, "incorrect")
 

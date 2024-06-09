@@ -1,39 +1,42 @@
 
-import sys
+def get_minimum_lounges(n_airports, n_routes, routes):
+    # Initialize a graph with the given number of airports
+    graph = [[] for _ in range(n_airports)]
 
-def solve(N, X, A):
-    # Initialize the count of different integers not exceeding X to 0
-    count = 0
-    
-    # Iterate through the given integers A_1, A_2, ..., A_N
-    for i in range(N):
-        # Convert the current integer A_i to binary
-        binary_i = bin(A[i])[2:]
-        
-        # Initialize a variable to store the current integer
-        current_integer = 0
-        
-        # Iterate through the binary representation of A_i
-        for j in range(len(binary_i)):
-            # If the current bit is 1, add the corresponding power of 2 to the current integer
-            if binary_i[j] == "1":
-                current_integer += 2**j
-            
-            # If the current integer is not greater than X, increment the count
-            if current_integer <= X:
-                count += 1
-    
-    # Return the count of different integers not exceeding X
-    return count
+    # Add edges to the graph based on the given routes
+    for route in routes:
+        graph[route[0] - 1].append(route[1] - 1)
+        graph[route[1] - 1].append(route[0] - 1)
 
-if __name__ == "__main__":
-    # Read the input from stdin
-    N, X = map(int, input().split())
-    A = list(map(int, input().split()))
-    
-    # Solve the problem
-    count = solve(N, X, A)
-    
-    # Print the count modulo 998244353
-    print(count % 998244353)
+    # Initialize a set to store the airports that have a lounge
+    lounges = set()
+
+    # Iterate through the graph and find the airports that have a lounge
+    for airport in range(n_airports):
+        if any(route[2] > 0 for route in routes if route[0] - 1 == airport or route[1] - 1 == airport):
+            lounges.add(airport)
+
+    # Initialize a set to store the airports that are connected to a lounge
+    connected_airports = set()
+
+    # Iterate through the graph and find the airports that are connected to a lounge
+    for airport in range(n_airports):
+        if any(route[2] > 0 for route in routes if route[0] - 1 == airport or route[1] - 1 == airport):
+            connected_airports.add(airport)
+            for neighbor in graph[airport]:
+                if neighbor not in lounges:
+                    connected_airports.add(neighbor)
+
+    # Return the number of lounges needed
+    return len(connected_airports)
+
+def main():
+    n_airports, n_routes = map(int, input().split())
+    routes = []
+    for _ in range(n_routes):
+        routes.append(list(map(int, input().split())))
+    print(get_minimum_lounges(n_airports, n_routes, routes))
+
+if __name__ == '__main__':
+    main()
 

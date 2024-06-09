@@ -1,17 +1,20 @@
 
-import sys
+def can_sort_array(arr, positions):
+    n = len(arr)
+    for i in range(n-1):
+        for j in range(i+1, n):
+            if arr[i] > arr[j] and j not in positions:
+                return "NO"
+    return "YES"
 
-n, m = map(int, input().split())
-prefectures = [[] for _ in range(n + 1)]
+def main():
+    t = int(input())
+    for _ in range(t):
+        n, m = map(int, input().split())
+        arr = list(map(int, input().split()))
+        positions = set(map(int, input().split()))
+        print(can_sort_array(arr, positions))
 
-for i in range(m):
-    p, y = map(int, input().split())
-    prefectures[p].append((y, i))
-
-for prefecture in prefectures:
-    prefecture.sort()
-
-for prefecture in prefectures:
-    for city in prefecture:
-        print(f"{str(prefecture[0][0]).zfill(6)}{str(city[1]).zfill(6)}")
+if __name__ == '__main__':
+    main()
 

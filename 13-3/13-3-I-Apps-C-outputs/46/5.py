@@ -1,18 +1,50 @@
 
-def get_badge_numbers(n, l, b, s, d, locks):
-    # Initialize a set to store the badge numbers that can pass from room s to room d
-    badge_numbers = set()
+def f1(n, positions):
+    # Initialize a dictionary to store the minimum number of rounds required to reach each position from each position
+    dp = {position: [0] * n for position in positions}
 
-    # Iterate through each lock
-    for lock in locks:
-        # Extract the information from the lock
-        a, b, x, y = lock
+    # Loop through each position
+    for current_position in range(n):
+        # Get the options available to Alice in the current position
+        options = positions[current_position]
 
-        # Check if the lock is between the starting and destination rooms
-        if a == s and b == d:
-            # Add the badge numbers that can pass through the lock to the set
-            badge_numbers |= set(range(x, y + 1))
+        # Loop through each option
+        for option in options:
+            # Get the next position that Bob can move to
+            next_position = option[0]
 
-    # Return the number of badge numbers that can pass from room s to room d
-    return len(badge_numbers)
+            # If the next position is not the current position, update the minimum number of rounds required to reach the next position from the current position
+            if next_position != current_position:
+                dp[current_position][next_position] = 1 + dp[next_position][current_position]
+
+    # Return the minimum number of rounds required to reach each position from each position
+    return dp
+
+def f2(n, positions):
+    # Initialize a dictionary to store the minimum number of rounds required to reach each position from each position
+    dp = {position: [0] * n for position in positions}
+
+    # Loop through each position
+    for current_position in range(n):
+        # Get the options available to Alice in the current position
+        options = positions[current_position]
+
+        # Loop through each option
+        for option in options:
+            # Get the next position that Bob can move to
+            next_position = option[0]
+
+            # If the next position is not the current position, update the minimum number of rounds required to reach the next position from the current position
+            if next_position != current_position:
+                dp[current_position][next_position] = 1 + dp[next_position][current_position]
+
+    # Return the minimum number of rounds required to reach each position from each position
+    return dp
+
+if __name__ == '__main__':
+    n = int(input())
+    positions = [input().split() for _ in range(n)]
+    dp = f1(n, positions)
+    for position in range(n):
+        print(*dp[position])
 

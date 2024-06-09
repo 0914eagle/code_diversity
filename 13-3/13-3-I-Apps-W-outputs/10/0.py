@@ -1,18 +1,17 @@
 
-import sys
+def get_min_instability(heights, k):
+    # Your code here
+    return s, m
 
-def k_tree_paths(n, k, d):
-    mod = 1000000007
-    dp = [[0] * (n + 1) for _ in range(k + 1)]
-    dp[0][0] = 1
-    for i in range(1, k + 1):
-        for j in range(1, n + 1):
-            if j >= d:
-                dp[i][j] = (dp[i - 1][j - d] + dp[i][j - 1]) % mod
-            else:
-                dp[i][j] = dp[i][j - 1]
-    return dp[k][n]
+def get_operations(heights, k):
+    # Your code here
+    return operations
 
-n, k, d = map(int, sys.stdin.readline().split())
-print(k_tree_paths(n, k, d))
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    heights = list(map(int, input().split()))
+    s, m = get_min_instability(heights, k)
+    print(s, m)
+    for i, j in get_operations(heights, k):
+        print(i, j)
 

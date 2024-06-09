@@ -1,36 +1,34 @@
 
-def get_boss_and_subordinates(employees, query):
-    # Find the employee with the given ID
-    employee = next((e for e in employees if e["id"] == query), None)
-    if employee is None:
-        return (0, 0)
+def can_obtain_array(a, q):
+    n = len(a)
+    segments = []
+    for i in range(q):
+        segments.append((i+1, i+1))
+    for i in range(n):
+        if a[i] != 0:
+            segments[a[i]-1] = (i+1, i+1)
+    for i in range(n):
+        if segments[i][0] != segments[i][1]:
+            return "NO"
+    return "YES"
 
-    # Find the employee's boss
-    boss = next((e for e in employees if e["height"] >= employee["height"] and e["salary"] > employee["salary"]), None)
-    if boss is None:
-        return (0, 0)
+def restore_array(a, q):
+    n = len(a)
+    segments = []
+    for i in range(q):
+        segments.append((i+1, i+1))
+    for i in range(n):
+        if a[i] != 0:
+            segments[a[i]-1] = (i+1, i+1)
+    result = [0] * n
+    for i in range(n):
+        result[segments[i][0]-1] = i+1
+    return result
 
-    # Find the employee's subordinates
-    subordinates = [e for e in employees if e["height"] >= employee["height"] and e["salary"] < employee["salary"] and e["boss"] == employee["id"]]
-
-    return (boss["id"], len(subordinates))
-
-employees = []
-while True:
-    try:
-        id, salary, height = input().split()
-        employees.append({"id": int(id), "salary": int(salary), "height": int(height)})
-    except EOFError:
-        break
-
-queries = []
-while True:
-    try:
-        queries.append(int(input()))
-    except EOFError:
-        break
-
-for query in queries:
-    boss, subordinates = get_boss_and_subordinates(employees, query)
-    print(boss, subordinates)
+if __name__ == '__main__':
+    n, q = map(int, input().split())
+    a = list(map(int, input().split()))
+    print(can_obtain_array(a, q))
+    if can_obtain_array(a, q) == "YES":
+        print(*restore_array(a, q))
 

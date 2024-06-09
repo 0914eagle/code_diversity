@@ -1,23 +1,40 @@
 
-def solve(grid):
-    n, m = len(grid), len(grid[0])
-    stars = []
-    for i in range(n):
-        for j in range(m):
-            if grid[i][j] == '*':
-                stars.append((i, j))
-    for star in stars:
-        i, j = star
-        for k in range(n):
-            for l in range(m):
-                if grid[k][l] == '*' and (k, l) != star:
-                    return -1
-        for k in range(4):
-            for l in range(1, m):
-                if grid[i + k][j + l] == '*':
-                    return -1
-            for l in range(1, n):
-                if grid[i + l][j + k] == '*':
-                    return -1
-    return stars
+def f1(N, A, x):
+    # Calculate the sum of the integers written on the cards
+    sum_x = sum(x)
+
+    # Calculate the average of the integers written on the cards
+    avg_x = sum_x / N
+
+    # Check if the average is equal to A
+    if avg_x == A:
+        return 1
+    else:
+        return 0
+
+def f2(N, A, x):
+    # Initialize a variable to store the number of ways to select cards
+    num_ways = 0
+
+    # Iterate over all possible combinations of cards
+    for i in range(1, 2**N):
+        # Convert the binary representation of i to a list of indices of selected cards
+        selected_cards = [j for j in range(N) if i & (1 << j)]
+
+        # Calculate the sum of the integers written on the selected cards
+        sum_selected = sum([x[j] for j in selected_cards])
+
+        # Calculate the average of the integers written on the selected cards
+        avg_selected = sum_selected / len(selected_cards)
+
+        # Check if the average is equal to A
+        if avg_selected == A:
+            num_ways += 1
+
+    return num_ways
+
+if __name__ == '__main__':
+    N, A = map(int, input().split())
+    x = list(map(int, input().split()))
+    print(f2(N, A, x))
 

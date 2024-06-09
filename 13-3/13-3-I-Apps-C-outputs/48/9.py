@@ -1,44 +1,77 @@
 
-def solve(origin, destination, connections):
-    # Initialize a dictionary to store the expected duration for each connection
-    expected_durations = {}
+import math
 
-    # Loop through each connection
-    for connection in connections:
-        # Get the origin, destination, departure time, standard journey time, probability of delay, and maximum delay for this connection
-        origin, destination, departure_time, standard_journey_time, probability_of_delay, maximum_delay = connection
+def f1(N, M, nodes, edges):
+    # Initialize variables
+    turning_required = 0
+    visited_nodes = set()
+    current_node = 0
+    previous_node = -1
 
-        # Calculate the expected duration for this connection
-        expected_duration = standard_journey_time * (1 - probability_of_delay / 100) + maximum_delay
+    # Loop through the edges
+    for i in range(M):
+        node1, node2 = edges[i]
+        if node1 not in visited_nodes:
+            visited_nodes.add(node1)
+            current_node = node1
+        else:
+            visited_nodes.add(node2)
+            current_node = node2
+            previous_node = node1
 
-        # Add the expected duration to the dictionary
-        expected_durations[(origin, destination)] = expected_duration
+        # Calculate the turning required for this edge
+        turning_required += calculate_turning(nodes[current_node], nodes[previous_node])
 
-    # Initialize a list to store the optimal itinerary
-    itinerary = []
+    # Calculate the turning required for the final edge
+    turning_required += calculate_turning(nodes[current_node], nodes[previous_node])
 
-    # Set the current origin to the origin of the first connection
-    current_origin = origin
+    return turning_required
 
-    # Loop until the destination is reached
-    while current_origin != destination:
-        # Find the connection with the minimum expected duration from the current origin
-        min_expected_duration = float('inf')
-        for connection in expected_durations:
-            if connection[0] == current_origin:
-                if expected_durations[connection] < min_expected_duration:
-                    min_expected_duration = expected_durations[connection]
-                    optimal_connection = connection
+def f2(N, M, nodes, edges):
+    # Initialize variables
+    turning_required = 0
+    visited_nodes = set()
+    current_node = 0
+    previous_node = -1
 
-        # Add the optimal connection to the itinerary
-        itinerary.append(optimal_connection)
+    # Loop through the edges
+    for i in range(M):
+        node1, node2 = edges[i]
+        if node1 not in visited_nodes:
+            visited_nodes.add(node1)
+            current_node = node1
+        else:
+            visited_nodes.add(node2)
+            current_node = node2
+            previous_node = node1
 
-        # Set the current origin to the destination of the optimal connection
-        current_origin = optimal_connection[1]
+        # Calculate the turning required for this edge
+        turning_required += calculate_turning(nodes[current_node], nodes[previous_node])
 
-    # Calculate the total expected duration of the itinerary
-    total_expected_duration = sum([expected_durations[connection] for connection in itinerary])
+    # Calculate the turning required for the final edge
+    turning_required += calculate_turning(nodes[current_node], nodes[previous_node])
 
-    # Return the total expected duration
-    return total_expected_duration
+    return turning_required
+
+def calculate_turning(node1, node2):
+    # Calculate the angle between the two nodes
+    angle = math.atan2(node2[1] - node1[1], node2[0] - node1[0])
+
+    # Calculate the turning required for this edge
+    turning_required = abs(angle)
+
+    return turning_required
+
+if __name__ == '__main__':
+    N, M = map(int, input().split())
+    nodes = []
+    edges = []
+    for i in range(N):
+        x, y = map(int, input().split())
+        nodes.append((x, y))
+    for i in range(M):
+        node1, node2 = map(int, input().split())
+        edges.append((node1, node2))
+    print(f1(N, M, nodes, edges))
+    print(f2(N, M, nodes, edges))
 

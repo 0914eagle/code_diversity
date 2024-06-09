@@ -1,20 +1,21 @@
 
-n, k = map(int, input().split())
-tabs = list(map(int, input().split()))
+def count_attacking_pairs(bishops):
+    n = len(bishops)
+    attacking_pairs = 0
+    for i in range(n):
+        for j in range(i+1, n):
+            if bishops[i][0] == bishops[j][0] or bishops[i][1] == bishops[j][1]:
+                attacking_pairs += 1
+    return attacking_pairs
 
-# Initialize the variables to keep track of the number of test and social network tabs
-test_tabs = 0
-social_tabs = 0
+def main():
+    n = int(input())
+    bishops = []
+    for i in range(n):
+        x, y = map(int, input().split())
+        bishops.append([x, y])
+    print(count_attacking_pairs(bishops))
 
-# Iterate through the tabs and count the number of test and social network tabs
-for i in range(n):
-    if tabs[i] == 1:
-        test_tabs += 1
-    else:
-        social_tabs += 1
-
-# Find the maximum absolute difference between the number of test and social network tabs
-abs_diff = max(abs(test_tabs - social_tabs), abs(test_tabs - (n - social_tabs)))
-
-print(abs_diff)
+if __name__ == '__main__':
+    main()
 

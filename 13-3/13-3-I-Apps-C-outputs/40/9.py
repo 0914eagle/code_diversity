@@ -1,23 +1,48 @@
 
-def get_min_rank(scores):
-    # Initialize the minimum rank for each player as 1
-    min_rank = [1] * len(scores)
-
-    # Sort the scores in descending order
-    sorted_scores = sorted(scores, reverse=True)
-
-    # Initialize a counter for the number of players with the same score as the current player
-    same_score_count = 1
-
-    # Iterate over the sorted scores
-    for i in range(1, len(sorted_scores)):
-        # If the current score is the same as the previous score, increment the counter
-        if sorted_scores[i] == sorted_scores[i-1]:
-            same_score_count += 1
-        # Otherwise, reset the counter and update the minimum rank for the current player
+def f1(n, distances):
+    # Initialize the subsets A and B
+    A = set()
+    B = set()
+    
+    # Initialize the disparity of subsets A and B
+    disparity_A = 0
+    disparity_B = 0
+    
+    # Loop through each shipment
+    for i in range(n):
+        # Find the closest shipment in the other subset
+        closest_shipment = find_closest_shipment(i, A if i in B else B, distances)
+        
+        # Add the current shipment to the subset with the closest shipment
+        if closest_shipment in A:
+            B.add(i)
+            disparity_B += distances[i][closest_shipment]
         else:
-            min_rank[i-1] += same_score_count
-            same_score_count = 1
+            A.add(i)
+            disparity_A += distances[i][closest_shipment]
+    
+    # Return the minimum possible sum of disparities
+    return disparity_A + disparity_B
 
-    return min_rank
+def find_closest_shipment(shipment, subset, distances):
+    # Find the closest shipment in the subset
+    closest_shipment = None
+    min_distance = float('inf')
+    for other_shipment in subset:
+        distance = distances[shipment][other_shipment]
+        if distance < min_distance:
+            min_distance = distance
+            closest_shipment = other_shipment
+    return closest_shipment
+
+def f2(...):
+    # Implement function f2 here
+    pass
+
+if __name__ == '__main__':
+    n = int(input())
+    distances = []
+    for i in range(n - 1):
+        distances.append(list(map(int, input().split())))
+    print(f1(n, distances))
 

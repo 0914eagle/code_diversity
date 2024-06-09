@@ -1,4 +1,7 @@
 
-def solve(N, D):
-    return (N + D - 1) // D
+def check_hiss(word):
+    if 'ss' in word:
+        return 'hiss'
+    else:
+        return 'no hiss'
 

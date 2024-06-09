@@ -1,10 +1,15 @@
 
-A, P = map(int, input().split())
+def get_number_of_hard_cheeses(cheese_list):
+    return len(set(cheese_list))
 
-max_pies = 0
-while A >= 2:
-    max_pies += A // 2
-    A = A % 2 + A // 2
+def main():
+    num_cheeses = int(input())
+    cheese_list = []
+    for i in range(num_cheeses):
+        cheese_name, cheese_type = input().split()
+        cheese_list.append(cheese_type)
+    print(get_number_of_hard_cheeses(cheese_list))
 
-print(max_pies + P)
+if __name__ == '__main__':
+    main()
 

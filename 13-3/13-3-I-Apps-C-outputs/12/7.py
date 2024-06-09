@@ -1,33 +1,47 @@
 
-import sys
+import math
 
-def paint_squares(N, M, conditions):
-    # Initialize the number of ways to paint the squares
-    num_ways = 1
+def get_hit_enemies(x, y, r, opponents):
+    hit_enemies = 0
+    for opponent in opponents:
+        dx, dy = x - opponent[0], y - opponent[1]
+        distance = math.sqrt(dx**2 + dy**2)
+        if distance <= r and distance > 0:
+            hit_enemies += 1
+    return hit_enemies
 
-    # Loop through each condition
-    for i in range(M):
-        # Get the range of squares and the number of different colors
-        l, r, x = conditions[i]
-        num_colors = x
+def f1(n, opponents):
+    max_hit_enemies = 0
+    for i in range(n):
+        for j in range(i+1, n):
+            x1, y1, r1 = opponents[i]
+            x2, y2, r2 = opponents[j]
+            dx, dy = x2 - x1, y2 - y1
+            distance = math.sqrt(dx**2 + dy**2)
+            if distance <= r1 + r2:
+                hit_enemies = get_hit_enemies(x1, y1, r1, opponents[i+1:]) + get_hit_enemies(x2, y2, r2, opponents[:i] + opponents[i+1:])
+                max_hit_enemies = max(max_hit_enemies, hit_enemies)
+    return max_hit_enemies
 
-        # Calculate the number of ways to paint the squares in the current range
-        num_ways_range = (N - r + 1) * (N - l + 1)
-
-        # Calculate the number of ways to paint the squares with the current number of colors
-        num_ways_colors = num_colors ** (r - l + 1)
-
-        # Update the number of ways to paint the squares
-        num_ways *= num_ways_range // num_ways_colors
-
-    # Return the number of ways to paint the squares modulo 10^9+7
-    return num_ways % 1000000007
+def f2(n, opponents):
+    max_hit_enemies = 0
+    for i in range(n):
+        for j in range(i+1, n):
+            x1, y1, r1 = opponents[i]
+            x2, y2, r2 = opponents[j]
+            dx, dy = x2 - x1, y2 - y1
+            distance = math.sqrt(dx**2 + dy**2)
+            if distance <= r1 + r2:
+                hit_enemies = get_hit_enemies(x1, y1, r1, opponents[i+1:]) + get_hit_enemies(x2, y2, r2, opponents[:i] + opponents[i+1:])
+                max_hit_enemies = max(max_hit_enemies, hit_enemies)
+    return max_hit_enemies
 
 if __name__ == '__main__':
-    N, M = map(int, input().split())
-    conditions = []
-    for i in range(M):
-        l, r, x = map(int, input().split())
-        conditions.append((l, r, x))
-    print(paint_squares(N, M, conditions))
+    n = int(input())
+    opponents = []
+    for i in range(n):
+        x, y, r = map(float, input().split())
+        opponents.append((x, y, r))
+    print(f1(n, opponents))
+    print(f2(n, opponents))
 

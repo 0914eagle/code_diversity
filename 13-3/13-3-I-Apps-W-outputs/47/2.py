@@ -1,30 +1,34 @@
 
-import math
+def count_ways_to_sell_tickets(X, N, cars):
+    # Initialize a counter for the number of ways to sell X tickets
+    ways = 0
+    
+    # Loop over each car
+    for car in cars:
+        # Get the number of free places in the current car
+        free_places = car.count("0")
+        
+        # Check if the current car has enough free places to sell X tickets
+        if free_places >= X:
+            # Get the number of ways to sell X tickets in the current car
+            ways += combinations(free_places, X)
+    
+    # Return the number of ways to sell X tickets in total
+    return ways
 
-def get_tape_length(n, papers):
-    # Calculate the area of an A1 paper
-    a1_area = 1
-    for i in range(n, 1, -1):
-        a1_area *= 2
-    
-    # Calculate the total area of all papers
-    total_area = 0
-    for i in range(n, 0, -1):
-        total_area += papers[i-1] * (2**((i-1)/4) * 2**((i-1)/2))
-    
-    # Check if Björn has enough paper to make an A1 paper
-    if total_area < a1_area:
-        return "impossible"
-    
-    # Calculate the total length of tape needed
-    total_length = 0
-    for i in range(n, 0, -1):
-        total_length += papers[i-1] * (2**((i-1)/4))
-    
-    return total_length
+def combinations(n, r):
+    # Calculate the number of ways to choose r items from n items
+    if r > n:
+        return 0
+    if r == 0:
+        return 1
+    if r == n:
+        return 1
+    else:
+        return combinations(n-1, r-1) + combinations(n-1, r)
 
-n = int(input())
-papers = list(map(int, input().split()))
-result = get_tape_length(n, papers)
-print(result)
+if __name__ == '__main__':
+    X, N = map(int, input().split())
+    cars = [input() for _ in range(N)]
+    print(count_ways_to_sell_tickets(X, N, cars))
 

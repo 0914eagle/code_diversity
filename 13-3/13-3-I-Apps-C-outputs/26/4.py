@@ -1,30 +1,33 @@
 
-def solve(n, l, r):
-    # Initialize an empty list to store the elements
-    lst = []
+def f1(L, n, points):
+    # Initialize a list to store the positions of the points
+    pos = [0] * (L + 1)
 
-    # Add the initial element to the list
-    lst.append(n)
+    # Iterate through the points and mark their positions in the list
+    for i in range(n):
+        point, direction = points[i]
+        if direction == "C":
+            pos[point] = 1
+        else:
+            pos[point] = -1
 
-    # Iterate until all elements are either 0 or 1
-    while len(lst) > 0:
-        # Initialize a new list to store the updated elements
-        new_lst = []
+    # Check if the wire touches itself at any point
+    for i in range(1, L):
+        if pos[i] == pos[i - 1]:
+            return "GHOST"
 
-        # Iterate through the list and perform the required operations
-        for i in lst:
-            if i > 1:
-                # Remove the element and insert it at the same position and its half
-                new_lst.append(i // 2)
-                new_lst.append(i % 2)
-                new_lst.append(i // 2)
-            else:
-                # If the element is 0 or 1, just append it to the new list
-                new_lst.append(i)
+    return "SAFE"
 
-        # Update the list with the updated elements
-        lst = new_lst
+def f2(...):
+    # Implement function f2 here
+    pass
 
-    # Return the total number of 1s in the range l to r
-    return sum(lst[l-1:r])
+if __name__ == '__main__':
+    L, n = map(int, input().split())
+    points = []
+    for i in range(n):
+        point, direction = map(int, input().split())
+        points.append((point, direction))
+
+    print(f1(L, n, points))
 

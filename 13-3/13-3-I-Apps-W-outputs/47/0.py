@@ -1,25 +1,35 @@
 
-import math
+def count_ways(X, N, cars):
+    # Initialize a counter for the number of ways to sell X tickets
+    ways = 0
+    
+    # Iterate over each car
+    for car in cars:
+        # Initialize a counter for the number of free places in the current car
+        free_places = 0
+        
+        # Iterate over each compartment in the current car
+        for compartment in range(9):
+            # Iterate over each place in the current compartment
+            for place in range(6):
+                # Check if the current place is free
+                if car[compartment * 6 + place] == '0':
+                    # Increment the counter for the number of free places in the current car
+                    free_places += 1
+                    
+        # Check if the current car has at least X free places
+        if free_places >= X:
+            # Increment the counter for the number of ways to sell X tickets
+            ways += 1
+    
+    # Return the number of ways to sell X tickets
+    return ways
 
-def get_tape_length(n, papers):
-    # Calculate the total area of all papers
-    total_area = 0
-    for i in range(n-1, 0, -1):
-        total_area += papers[i-1] * (2**((i-1)/4)) * (2**((i-1)/4))
+def main():
+    X, N = map(int, input().split())
+    cars = [input() for _ in range(N)]
+    print(count_ways(X, N, cars))
 
-    # Calculate the length of tape needed to join all papers
-    tape_length = 0
-    for i in range(n-1, 0, -1):
-        tape_length += papers[i-1] * (2**((i-1)/4))
-
-    # Check if the total area is greater than the area of an A1 paper
-    if total_area > (2**(1/4)) * (2**(1/4)):
-        return "impossible"
-    else:
-        return tape_length
-
-n = int(input())
-papers = list(map(int, input().split()))
-result = get_tape_length(n, papers)
-print(result)
+if __name__ == '__main__':
+    main()
 

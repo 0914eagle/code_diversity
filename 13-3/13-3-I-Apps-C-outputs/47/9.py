@@ -1,26 +1,32 @@
 
-def solve(n, levels):
-    # Initialize the dp table with the completion time for level 1 using item 0
-    dp = [levels[0][0]]
-    
-    # Loop through the remaining levels
-    for i in range(1, n):
-        # Initialize the minimum completion time for the current level
-        min_time = float('inf')
-        
-        # Loop through the available items
-        for j in range(n+1):
-            # Check if the current item is the shortcut item for the current level
-            if j == levels[i][0]:
-                # If it is, the minimum completion time is the shortcut completion time
-                min_time = min(min_time, levels[i][1])
-            else:
-                # If it's not, the minimum completion time is the completion time for the current level using the current item
-                min_time = min(min_time, dp[j-1] + levels[i][j+1])
-        
-        # Add the minimum completion time for the current level to the dp table
-        dp.append(min_time)
-    
-    # Return the minimum completion time for all levels
-    return dp[-1]
+def f1(T, N, breaks):
+    # Sort the breaks in non-decreasing order
+    breaks.sort()
+
+    # Initialize the number of minutes each musician will spend on stage
+    on_stage = [0] * N
+
+    # Iterate through the breaks and schedule them
+    for i in range(N):
+        # Calculate the number of minutes the musician will spend on stage before the break
+        on_stage[i] = breaks[i] - breaks[i - 1] if i > 0 else breaks[i]
+
+    return on_stage
+
+def f2(T, N, breaks):
+    # Initialize the number of minutes each musician will spend on stage
+    on_stage = [0] * N
+
+    # Iterate through the breaks and schedule them
+    for i in range(N):
+        # Calculate the number of minutes the musician will spend on stage before the break
+        on_stage[i] = breaks[i] - breaks[i - 1] if i > 0 else breaks[i]
+
+    return on_stage
+
+if __name__ == '__main__':
+    T, N = map(int, input().split())
+    breaks = list(map(int, input().split()))
+    on_stage = f1(T, N, breaks)
+    print(*on_stage)
 

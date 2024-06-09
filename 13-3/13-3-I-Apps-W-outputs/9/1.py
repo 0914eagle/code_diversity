@@ -1,41 +1,42 @@
 
-import sys
+def find_substring(s, t):
+    n = len(s)
+    m = len(t)
+    if n > m:
+        return -1
+    
+    count = 0
+    for i in range(n):
+        if s[i] != t[i]:
+            count += 1
+    
+    return count
 
-def get_input():
-    return list(map(int, sys.stdin.readline().strip().split()))
+def find_substring_position(s, t):
+    n = len(s)
+    m = len(t)
+    if n > m:
+        return []
+    
+    positions = []
+    for i in range(n):
+        if s[i] != t[i]:
+            positions.append(i+1)
+    
+    return positions
 
-def solve():
-    H, W, M = get_input()
-    targets = []
-    for i in range(M):
-        h, w = get_input()
-        targets.append((h, w))
+def main():
+    n, m = map(int, input().split())
+    s = input()
+    t = input()
     
-    # Sort the targets by row and column
-    targets.sort(key=lambda x: (x[0], x[1]))
+    count = find_substring(s, t)
+    positions = find_substring_position(s, t)
     
-    # Initialize the maximum number of targets to destroy
-    max_targets = 0
-    
-    # Iterate through the targets and check if we can destroy them
-    for i in range(M):
-        # Get the current target
-        h, w = targets[i]
-        
-        # Check if the target is in the same row or column as the previous target
-        if i > 0 and targets[i-1][0] == h and targets[i-1][1] == w:
-            # If the target is in the same row or column, we can't destroy it
-            continue
-        
-        # Check if the target is in the same row or column as the next target
-        if i < M-1 and targets[i+1][0] == h and targets[i+1][1] == w:
-            # If the target is in the same row or column, we can't destroy it
-            continue
-        
-        # If we reach here, we can destroy the target
-        max_targets += 1
-    
-    return max_targets
+    print(count)
+    for position in positions:
+        print(position, end=" ")
 
-print(solve())
+if __name__ == '__main__':
+    main()
 

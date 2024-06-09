@@ -1,37 +1,38 @@
 
-f, s, g, u, d = map(int, input().split())
+def f1(n, s, m, dictionary):
+    # Initialize variables
+    correct_translations = 0
+    incorrect_translations = 0
+    
+    # Iterate through each word in the sentence
+    for word in s.split():
+        # Check if the word is in the dictionary
+        if word in dictionary:
+            # If the word is in the dictionary, check if it is a correct translation
+            if dictionary[word] == "correct":
+                correct_translations += 1
+            else:
+                incorrect_translations += 1
+        else:
+            # If the word is not in the dictionary, it is an incorrect translation
+            incorrect_translations += 1
+    
+    # Return the number of correct and incorrect translations
+    return correct_translations, incorrect_translations
 
-# Initialize the number of pushes to 0
-pushes = 0
+def f2(...):
+    # Implement function 2 here
+    pass
 
-# If the start floor is greater than the goal floor, use the stairs
-if s > g:
-    print("use the stairs")
-    exit()
-
-# If the start floor is equal to the goal floor, no pushes are needed
-if s == g:
-    print(0)
-    exit()
-
-# If the start floor is less than the goal floor, calculate the number of pushes needed
-while s != g:
-    # If the start floor is less than the goal floor and the difference between the start floor and the goal floor is less than or equal to the up button, press the up button
-    if s < g and g - s <= u:
-        pushes += 1
-        s += u
-    # If the start floor is less than the goal floor and the difference between the start floor and the goal floor is greater than the up button, press the down button
-    elif s < g and g - s > u:
-        pushes += 1
-        s -= d
-    # If the start floor is greater than the goal floor and the difference between the start floor and the goal floor is less than or equal to the down button, press the down button
-    elif s > g and s - g <= d:
-        pushes += 1
-        s -= d
-    # If the start floor is greater than the goal floor and the difference between the start floor and the goal floor is greater than the down button, press the up button
-    elif s > g and s - g > d:
-        pushes += 1
-        s += u
-
-print(pushes)
+if __name__ == '__main__':
+    n = int(input())
+    s = input()
+    m = int(input())
+    dictionary = {}
+    for i in range(m):
+        d, e, c = input().split()
+        dictionary[d] = c
+    correct_translations, incorrect_translations = f1(n, s, m, dictionary)
+    print(correct_translations, "correct")
+    print(incorrect_translations, "incorrect")
 

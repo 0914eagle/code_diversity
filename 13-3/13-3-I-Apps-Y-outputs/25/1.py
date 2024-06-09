@@ -1,11 +1,13 @@
 
-def simplify_string(s):
-    return len(set(s))
-
-def min_erase_to_simplify(s):
-    simplicity = simplify_string(s)
-    if simplicity <= 2:
-        return 0
-    else:
-        return simplicity - 2
+def f1(N, K):
+    # Initialize the probability of winning as 0
+    probability = 0
+    
+    # Iterate over all possible values that the die can show
+    for i in range(1, N+1):
+        # Calculate the probability of getting a score of K or above with the current die value
+        probability += (1/N) * (1/2)**(K-1)
+    
+    # Return the probability of winning
+    return probability
 

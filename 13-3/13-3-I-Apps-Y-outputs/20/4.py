@@ -1,15 +1,20 @@
 
-import sys
+def can_sort_array(arr, positions):
+    n = len(arr)
+    for i in range(n-1):
+        for j in range(i+1, n):
+            if arr[i] > arr[j] and not (i in positions or j in positions):
+                return "NO"
+    return "YES"
 
-n, m = map(int, input().split())
-cities = []
+def main():
+    t = int(input())
+    for _ in range(t):
+        n, m = map(int, input().split())
+        arr = list(map(int, input().split()))
+        positions = set(map(int, input().split()))
+        print(can_sort_array(arr, positions))
 
-for i in range(m):
-    p, y = map(int, input().split())
-    cities.append((p, y))
-
-cities.sort(key=lambda x: (x[0], x[1]))
-
-for city in cities:
-    print("{:0>6}{:0>6}".format(city[0], city[1]))
+if __name__ == '__main__':
+    main()
 

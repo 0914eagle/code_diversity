@@ -1,31 +1,34 @@
 
-def is_harmonious(graph):
-    n = len(graph)
-    for i in range(n):
-        for j in range(i+1, n):
-            for k in range(j+1, n):
-                if graph[i][j] and graph[j][k] and not graph[i][k]:
-                    return False
-    return True
+def get_optimal_time(t_s, t_f, t, n, visitors):
+    # Find the earliest time that Vasya can arrive to be served
+    earliest_time = max(visitors)
 
-def add_edges(graph, m):
-    n = len(graph)
-    for i in range(n):
-        for j in range(i+1, n):
-            if not graph[i][j]:
-                graph[i][j] = graph[j][i] = True
-                m -= 1
-                if m == 0:
-                    return graph
-    return graph
+    # Find the latest time that Vasya can arrive to be served
+    latest_time = t_f - t
 
-def solve(n, m, edges):
-    graph = [[False for _ in range(n+1)] for _ in range(n+1)]
-    for edge in edges:
-        u, v = edge[0], edge[1]
-        graph[u][v] = graph[v][u] = True
-    if is_harmonious(graph):
-        return 0
-    else:
-        return add_edges(graph, m)
+    # Initialize the minimum time spent in the queue to be the maximum possible time
+    min_time_in_queue = float('inf')
+
+    # Iterate through all possible times that Vasya can arrive
+    for time in range(earliest_time, latest_time + 1):
+        # Calculate the time spent in the queue for this time
+        time_in_queue = 0
+        for visitor in visitors:
+            if visitor > time:
+                time_in_queue += t
+        # If the time spent in the queue is less than the minimum, update the minimum
+        if time_in_queue < min_time_in_queue:
+            min_time_in_queue = time_in_queue
+
+    # Return the time that Vasya should arrive to be served
+    return earliest_time + min_time_in_queue
+
+def main():
+    t_s, t_f, t = map(int, input().split())
+    n = int(input())
+    visitors = [int(x) for x in input().split()]
+    print(get_optimal_time(t_s, t_f, t, n, visitors))
+
+if __name__ == '__main__':
+    main()
 

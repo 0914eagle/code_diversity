@@ -1,11 +1,11 @@
 
-def solve(N, A):
-    result = []
-    for i in range(N):
-        max_value = -1
-        for j in range(N):
-            if j != i and A[j] > max_value:
-                max_value = A[j]
-        result.append(max_value)
-    return result
+import datetime
+
+def get_day_of_week(day, month):
+    date = datetime.date(2009, month, day)
+    return date.strftime("%A")
+
+if __name__ == '__main__':
+    day, month = map(int, input().split())
+    print(get_day_of_week(day, month))
 

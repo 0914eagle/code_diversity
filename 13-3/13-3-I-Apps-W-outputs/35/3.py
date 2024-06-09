@@ -1,20 +1,34 @@
 
-import sys
+def can_tile_board(n, board):
+    # Initialize a set to store the positions of the tiles
+    tiles = set()
+    # Iterate over the board
+    for i in range(n):
+        for j in range(n):
+            # If the current cell is free, add it to the set of tiles
+            if board[i][j] == ".":
+                tiles.add((i, j))
+    # Initialize a set to store the positions of the pieces
+    pieces = set()
+    # Iterate over the pieces
+    for i in range(n):
+        for j in range(n):
+            # If the current cell is part of a piece, add it to the set of pieces
+            if board[i][j] == "#":
+                pieces.add((i, j))
+    # Check if the set of tiles is a superset of the set of pieces
+    return tiles >= pieces
 
-n, m = map(int, input().split())
-a = list(map(int, input().split()))
-b = [list(map(int, input().split())) for _ in range(m)]
+def main():
+    n = int(input())
+    board = []
+    for i in range(n):
+        board.append(input())
+    if can_tile_board(n, board):
+        print("YES")
+    else:
+        print("NO")
 
-# Initialize the dp array with the initial values
-dp = [0] * (n + 1)
-for i in range(1, n + 1):
-    dp[i] = max(dp[i - 1], a[i - 1] + dp[i - 1])
-
-# Perform the operations
-for j in range(m):
-    for i in range(n, b[j][0] - 1, -1):
-        dp[i] = max(dp[i], dp[i - b[j][0]] + b[j][1])
-
-# Print the maximum sum
-print(dp[n])
+if __name__ == '__main__':
+    main()
 

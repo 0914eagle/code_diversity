@@ -1,35 +1,24 @@
 
-def primonimo(board):
-    # Initialize variables
-    n, m, p = board[0]
-    moves = []
-    visited = set()
-    queue = [(0, 0)]
+import math
 
-    # Loop through the queue
-    while queue:
-        # Get the current position
-        row, col = queue.pop(0)
+def archimedes_spiral(b, t_x, t_y):
+    # Calculate the angle of the spiral at the target point
+    theta = math.atan2(t_y, t_x)
 
-        # Check if the current position is already visited
-        if (row, col) in visited:
-            continue
+    # Calculate the radius of the spiral at the target point
+    r = b * theta
 
-        # Mark the current position as visited
-        visited.add((row, col))
+    # Calculate the x and y coordinates of the point on the spiral where the avatar should leave
+    x = r * math.cos(theta)
+    y = r * math.sin(theta)
 
-        # Add the current position to the moves list
-        moves.append(board[row][col])
+    return x, y
 
-        # Check if all squares show p
-        if len(moves) == p * m * n:
-            return moves
+def main():
+    b, t_x, t_y = map(float, input().split())
+    x, y = archimedes_spiral(b, t_x, t_y)
+    print(x, y)
 
-        # Add the neighbors to the queue
-        for r, c in [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]:
-            if 0 <= r < n and 0 <= c < m:
-                queue.append((r, c))
-
-    # If no winning sequence exists, return -1
-    return -1
+if __name__ == '__main__':
+    main()
 

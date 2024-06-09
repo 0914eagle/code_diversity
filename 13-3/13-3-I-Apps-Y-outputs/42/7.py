@@ -1,10 +1,19 @@
 
-x1, y1, x2, y2 = map(int, input().split())
+def convert_to_octal(binary_numeral):
+    # Pad the binary numeral with zeros on the left until the number of digits is divisible by 3
+    binary_numeral = binary_numeral.zfill(len(binary_numeral) + len(binary_numeral) % 3)
 
-x3 = y1 - y2
-y3 = x2 - x1
-x4 = x3 + x1
-y4 = y3 + y1
+    # Group adjacent binary digits into groups of 3 digits
+    groups = [binary_numeral[i:i+3] for i in range(0, len(binary_numeral), 3)]
 
-print(x3, y3, x4, y4)
+    # Replace each group of binary digits with the corresponding octal digit
+    octal_numeral = ""
+    for group in groups:
+        octal_numeral += str(int(group, 2))
+
+    return octal_numeral
+
+if __name__ == '__main__':
+    binary_numeral = input("Enter a binary numeral: ")
+    print(convert_to_octal(binary_numeral))
 

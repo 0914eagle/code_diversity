@@ -1,18 +1,48 @@
 
-def get_badge_numbers(n, l, b, s, d, locks):
-    # Initialize a set to store the badge numbers that can pass from room s to room d
-    badge_numbers = set()
+def f1(n, positions):
+    # Initialize a dictionary to store the results
+    results = {}
+    
+    # Iterate over each position
+    for position in positions:
+        # Initialize a set to store the available options
+        options = set()
+        
+        # Iterate over each option
+        for option in position:
+            # Add the option to the set of available options
+            options.add(option)
+        
+        # Add the set of available options to the dictionary
+        results[position] = options
+    
+    # Return the dictionary of results
+    return results
 
-    # Iterate through each lock
-    for lock in locks:
-        # Extract the information from the lock
-        a, b, x, y = lock
+def f2(n, positions, start_position):
+    # Initialize a dictionary to store the results
+    results = {}
+    
+    # Iterate over each position
+    for position in positions:
+        # Initialize a set to store the available options
+        options = set()
+        
+        # Iterate over each option
+        for option in position:
+            # Add the option to the set of available options
+            options.add(option)
+        
+        # Add the set of available options to the dictionary
+        results[position] = options
+    
+    # Return the dictionary of results
+    return results
 
-        # Check if the lock is between the starting and destination rooms
-        if a == s and b == d:
-            # Add the badge numbers to the set
-            badge_numbers |= set(range(x, y + 1))
-
-    # Return the number of badge numbers in the set
-    return len(badge_numbers)
+if __name__ == '__main__':
+    n = int(input())
+    positions = [input().split() for _ in range(n)]
+    start_position = input()
+    results = f1(n, positions)
+    print(f2(n, positions, start_position))
 

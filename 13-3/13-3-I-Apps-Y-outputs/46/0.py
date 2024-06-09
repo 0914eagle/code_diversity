@@ -1,21 +1,34 @@
 
-import sys
+def get_staff_lines(n):
+    staff_lines = []
+    for i in range(n):
+        staff_lines.append(" " * i + "*" * (n - i))
+    return staff_lines
 
-N = int(input().strip())
-L = list(map(int, input().strip().split()))
+def get_note_duration(note):
+    if note.isdigit():
+        return int(note)
+    else:
+        return 1
 
-def is_triangle(a, b, c):
-    return a**2 + b**2 > c**2
+def get_note_pitch(note):
+    if note.isdigit():
+        return " "
+    else:
+        return note
 
-def count_triangles(L):
-    count = 0
-    for i in range(N-2):
-        for j in range(i+1, N-1):
-            for k in range(j+1, N):
-                if L[i] != L[j] and L[j] != L[k] and L[i] != L[k]:
-                    if is_triangle(L[i], L[j], L[k]):
-                        count += 1
-    return count
+def get_staff_notation(notes):
+    staff_lines = get_staff_lines(len(notes))
+    for i, note in enumerate(notes):
+        duration = get_note_duration(note)
+        pitch = get_note_pitch(note)
+        staff_lines[i] += pitch * duration
+    return "\n".join(staff_lines)
 
-print(count_triangles(L))
+def main():
+    notes = input().split()
+    print(get_staff_notation(notes))
+
+if __name__ == '__main__':
+    main()
 

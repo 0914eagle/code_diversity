@@ -1,26 +1,56 @@
 
-f, s, g, u, d = map(int, input().split())
+def f1(n, s, m, dictionary):
+    # Initialize variables
+    correct_translations = 0
+    incorrect_translations = 0
+    
+    # Iterate through each word in the sentence
+    for word in s.split():
+        # Check if the word is in the dictionary
+        if word in dictionary:
+            # If the word is in the dictionary, check if it is a correct translation
+            if dictionary[word] == "correct":
+                correct_translations += 1
+            else:
+                incorrect_translations += 1
+        else:
+            # If the word is not in the dictionary, it is an incorrect translation
+            incorrect_translations += 1
+    
+    # Return the number of correct and incorrect translations
+    return correct_translations, incorrect_translations
 
-# Initialize the variables
-current_floor = s
-button_pushes = 0
+def f2(n, s, m, dictionary):
+    # Initialize variables
+    correct_translations = 0
+    incorrect_translations = 0
+    
+    # Iterate through each word in the sentence
+    for word in s.split():
+        # Check if the word is in the dictionary
+        if word in dictionary:
+            # If the word is in the dictionary, check if it is a correct translation
+            if dictionary[word] == "correct":
+                correct_translations += 1
+            else:
+                incorrect_translations += 1
+        else:
+            # If the word is not in the dictionary, it is an incorrect translation
+            incorrect_translations += 1
+    
+    # Return the number of correct and incorrect translations
+    return correct_translations, incorrect_translations
 
-# Loop until we reach the goal floor or exceed the number of floors
-while current_floor != g and current_floor <= f:
-    # Check if we can reach the goal floor with the UP button
-    if current_floor + u <= g:
-        current_floor += u
-        button_pushes += 1
-    # Check if we can reach the goal floor with the DOWN button
-    elif current_floor - d >= 1:
-        current_floor -= d
-        button_pushes += 1
-    # If we cannot reach the goal floor with either button, we must use the stairs
-    else:
-        print("use the stairs")
-        break
-
-# Print the number of button pushes
-else:
-    print(button_pushes)
+if __name__ == '__main__':
+    n = int(input())
+    s = input()
+    m = int(input())
+    dictionary = {}
+    for i in range(m):
+        word, translation, correct = input().split()
+        dictionary[word] = translation
+    
+    correct_translations, incorrect_translations = f1(n, s, m, dictionary)
+    print(correct_translations, "correct")
+    print(incorrect_translations, "incorrect")
 

@@ -1,16 +1,32 @@
 
-def solve(n, levels):
-    # Initialize the dp table with the completion time for each level when using item 0
-    dp = [levels[i][0] for i in range(n)]
+def f1(T, N, breaks):
+    # Sort the breaks in non-decreasing order
+    breaks.sort()
 
-    # Loop through each level
-    for i in range(n):
-        # Loop through each item
-        for j in range(1, n+1):
-            # If the completion time for the current level using item j is less than the current minimum time, update the minimum time
-            if levels[i][j] < dp[i]:
-                dp[i] = levels[i][j]
+    # Initialize the number of minutes each musician will spend on stage
+    minutes_on_stage = [0] * N
 
-    # Return the minimum time to beat all levels
-    return sum(dp)
+    # Iterate through the breaks and schedule them
+    for i in range(N):
+        # Calculate the number of minutes the musician will spend on stage before the break
+        minutes_on_stage[i] = breaks[i] - breaks[i - 1] if i > 0 else breaks[i]
+
+    return minutes_on_stage
+
+def f2(T, N, breaks):
+    # Initialize the number of minutes each musician will spend on stage
+    minutes_on_stage = [0] * N
+
+    # Iterate through the breaks and schedule them
+    for i in range(N):
+        # Calculate the number of minutes the musician will spend on stage before the break
+        minutes_on_stage[i] = breaks[i] - breaks[i - 1] if i > 0 else breaks[i]
+
+    return minutes_on_stage
+
+if __name__ == '__main__':
+    T, N = map(int, input().split())
+    breaks = list(map(int, input().split()))
+    print(*f1(T, N, breaks), sep='\n')
+    print(*f2(T, N, breaks), sep='\n')
 

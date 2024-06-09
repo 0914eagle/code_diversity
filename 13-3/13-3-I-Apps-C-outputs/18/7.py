@@ -1,36 +1,41 @@
 
-def solve(n, m, pegs, dry_plan, wet_plan):
-    # Initialize a list to store the safe wet plan
-    safe_wet_plan = []
-    
-    # Iterate through the dry plan
-    for i in range(len(dry_plan)):
-        # If the current step is a peg placement, check if it is safe to place the peg
-        if dry_plan[i] > 0:
-            # Get the current point and the number of pegs required to place a peg there
-            current_point = dry_plan[i]
-            required_pegs = pegs[current_point - 1]
-            
-            # Check if the current point has enough pegs to place a peg there
-            if len(safe_wet_plan) >= required_pegs:
-                # Add the current point to the safe wet plan
-                safe_wet_plan.append(current_point)
-        
-        # If the current step is a peg removal, check if it is safe to remove the peg
+def f1(W, S, C, K):
+    # Initialize variables
+    wolf_count = W
+    sheep_count = S
+    cabbage_count = C
+    boat_capacity = K
+    loss_occured = False
+
+    # While there are still items to transport
+    while wolf_count > 0 or sheep_count > 0 or cabbage_count > 0:
+        # If the boat is full, unload all items
+        if wolf_count + sheep_count + cabbage_count > boat_capacity:
+            wolf_count -= 1
+            sheep_count -= 1
+            cabbage_count -= 1
+        # If there are still items to transport, load them into the boat
         else:
-            # Get the current point and the number of pegs required to remove a peg there
-            current_point = -dry_plan[i]
-            required_pegs = pegs[current_point - 1]
-            
-            # Check if the current point has enough pegs to remove a peg there
-            if len(safe_wet_plan) >= required_pegs:
-                # Remove the current point from the safe wet plan
-                safe_wet_plan.pop()
-    
-    # If the safe wet plan is empty, return -1
-    if not safe_wet_plan:
-        return -1
-    
-    # Return the safe wet plan
-    return safe_wet_plan
+            wolf_count -= 1
+            sheep_count -= 1
+            cabbage_count -= 1
+
+        # If a loss has occurred, break the loop
+        if wolf_count < 0 or sheep_count < 0 or cabbage_count < 0:
+            loss_occured = True
+            break
+
+    # If a loss has occurred, return NO, otherwise return YES
+    if loss_occured:
+        return "NO"
+    else:
+        return "YES"
+
+def f2(...):
+    # Implement function f2 here
+    pass
+
+if __name__ == '__main__':
+    W, S, C, K = map(int, input().split())
+    print(f1(W, S, C, K))
 

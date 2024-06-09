@@ -1,30 +1,42 @@
 
-import sys
+def find_substring(s, t):
+    n = len(s)
+    m = len(t)
+    if n > m:
+        return -1
+    
+    count = 0
+    for i in range(n):
+        if s[i] != t[i]:
+            count += 1
+    
+    return count
 
-def get_input():
-    return list(map(int, sys.stdin.readline().strip().split()))
+def find_substring_positions(s, t):
+    n = len(s)
+    m = len(t)
+    if n > m:
+        return []
+    
+    positions = []
+    for i in range(n):
+        if s[i] != t[i]:
+            positions.append(i+1)
+    
+    return positions
 
-def solve(H, W, M, targets):
-    # Initialize a 2D array to store the number of targets in each row and column
-    rows = [0] * H
-    cols = [0] * W
-
-    # Loop through the targets and increment the number of targets in each row and column
-    for i in range(M):
-        row, col = targets[i]
-        rows[row-1] += 1
-        cols[col-1] += 1
-
-    # Find the maximum number of targets that can be destroyed by placing the bomb in a row or column with the most targets
-    max_targets = max(rows + cols)
-
-    return max_targets
+def main():
+    n, m = map(int, input().split())
+    s = input()
+    t = input()
+    
+    count = find_substring(s, t)
+    positions = find_substring_positions(s, t)
+    
+    print(count)
+    for position in positions:
+        print(position, end=" ")
 
 if __name__ == '__main__':
-    H, W, M = get_input()
-    targets = []
-    for i in range(M):
-        h, w = get_input()
-        targets.append((h, w))
-    print(solve(H, W, M, targets))
+    main()
 

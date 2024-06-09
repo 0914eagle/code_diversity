@@ -1,40 +1,40 @@
 
-def black_vienna(investigations):
-    num_investigations = len(investigations)
-    num_suspects = 26
-    num_solutions = 0
+def kahn_algorithm(graph):
+    
+    sorted_list = []
+    while graph:
+        sources = [node for node in graph if not graph[node]]
+        if not sources:
+            break
+        source = sources[0]
+        graph.pop(source)
+        for neighbor in graph[source]:
+            graph[neighbor].remove(source)
+            if not graph[neighbor]:
+                sources.append(neighbor)
+        sorted_list.append(source)
+    return sorted_list
 
-    for i in range(num_investigations):
-        suspects = investigations[i][:2]
-        player = investigations[i][2]
-        reply = investigations[i][3]
+def largest_s_size(graph):
+    
+    largest_s_size = 0
+    for node in graph:
+        incoming_edges = graph[node]
+        if not incoming_edges:
+            largest_s_size = max(largest_s_size, 1)
+        else:
+            largest_s_size = max(largest_s_size, len(incoming_edges) + 1)
+    return largest_s_size
 
-        # If the player has all the suspects, there is only one solution
-        if reply == num_suspects:
-            num_solutions += 1
-            continue
-
-        # If the player has no suspects, there is no solution
-        if reply == 0:
-            return 0
-
-        # If the player has some suspects, we need to count the number of solutions
-        num_solutions += count_solutions(suspects, player, reply, num_suspects)
-
-    return num_solutions
-
-def count_solutions(suspects, player, reply, num_suspects):
-    num_solutions = 0
-
-    # If the player has only one suspect, there is only one solution
-    if reply == 1:
-        return 1
-
-    # If the player has two suspects, we need to count the number of solutions
-    for i in range(num_suspects):
-        for j in range(i+1, num_suspects):
-            if i != player and j != player:
-                num_solutions += 1
-
-    return num_solutions
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    graph = {}
+    for _ in range(m):
+        x, y = map(int, input().split())
+        if x not in graph:
+            graph[x] = []
+        if y not in graph:
+            graph[y] = []
+        graph[x].append(y)
+    print(largest_s_size(graph))
 

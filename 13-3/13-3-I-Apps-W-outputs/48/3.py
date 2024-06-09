@@ -1,25 +1,33 @@
 
-def is_ladder(arr):
-    # Check if the array is non-decreasing
-    for i in range(len(arr) - 1):
-        if arr[i] > arr[i+1]:
-            return False
-    
-    # Check if the array is non-increasing
-    for i in range(len(arr) - 1):
-        if arr[i] < arr[i+1]:
-            return False
-    
-    return True
+def get_increasing_sequence(b):
+    n = len(b)
+    a = [0] * n
+    a[0] = b[0]
+    for i in range(1, n):
+        a[i] = a[i-1] ^ b[i]
+    return a
 
-n, m = map(int, input().split())
-arr = list(map(int, input().split()))
+def get_valid_permutation(b):
+    n = len(b)
+    a = get_increasing_sequence(b)
+    for i in range(n):
+        for j in range(i+1, n):
+            if a[i] > a[j]:
+                b[i], b[j] = b[j], b[i]
+                a = get_increasing_sequence(b)
+                if a == sorted(a):
+                    return b
+                else:
+                    b[i], b[j] = b[j], b[i]
+    return None
 
-for i in range(m):
-    l, r = map(int, input().split())
-    subarr = arr[l-1:r]
-    if is_ladder(subarr):
-        print("Yes")
-    else:
+if __name__ == '__main__':
+    n = int(input())
+    b = list(map(int, input().split()))
+    result = get_valid_permutation(b)
+    if result is None:
         print("No")
+    else:
+        print("Yes")
+        print(" ".join(map(str, result)))
 

@@ -1,36 +1,36 @@
 
-import sys
+def get_minimum_lounges(n_airports, n_routes, routes):
+    # Initialize a dictionary to store the number of lounges at each airport
+    airport_lounges = {i: 0 for i in range(1, n_airports + 1)}
+    
+    # Iterate over the routes and update the number of lounges at each airport
+    for route in routes:
+        airport1, airport2, lounges = route
+        airport_lounges[airport1] += lounges
+        airport_lounges[airport2] += lounges
+    
+    # Initialize a set to store the airports with at least one lounge
+    lounged_airports = set()
+    
+    # Iterate over the airports and check if they have at least one lounge
+    for airport, lounges in airport_lounges.items():
+        if lounges > 0:
+            lounged_airports.add(airport)
+    
+    # If all airports have at least one lounge, return the total number of lounges
+    if len(lounged_airports) == n_airports:
+        return sum(airport_lounges.values())
+    
+    # If not all airports have at least one lounge, return "impossible"
+    return "impossible"
 
-def solve(N, X, A):
-    # Initialize the count of different integers not exceeding X to 0
-    count = 0
-    
-    # Iterate through the given integers A_i
-    for i in range(N):
-        # Convert the integer A_i to binary
-        binary_str = bin(A[i])[2:]
-        
-        # Initialize a variable to store the current integer
-        current_int = 0
-        
-        # Iterate through the binary representation of A_i
-        for j in range(len(binary_str)):
-            # If the current bit is 1, add the corresponding power of 2 to the current integer
-            if binary_str[j] == "1":
-                current_int += 2**j
-            
-            # If the current integer is not greater than X, increment the count
-            if current_int <= X:
-                count += 1
-    
-    # Return the count of different integers not exceeding X
-    return count % 998244353
+def main():
+    n_airports, n_routes = map(int, input().split())
+    routes = []
+    for _ in range(n_routes):
+        routes.append(list(map(int, input().split())))
+    print(get_minimum_lounges(n_airports, n_routes, routes))
 
-if __name__ == "__main__":
-    # Read the input from stdin
-    N, X = map(int, input().split())
-    A = list(map(int, input().split()))
-    
-    # Solve the problem
-    print(solve(N, X, A))
+if __name__ == '__main__':
+    main()
 

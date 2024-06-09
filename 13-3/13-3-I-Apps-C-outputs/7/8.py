@@ -1,50 +1,24 @@
 
-def find_reconstructions(pre_output, in_output, post_output):
-    # Initialize a list to store the reconstructions
-    reconstructions = []
-    
-    # Iterate over all possible combinations of Pre, In, and Post calls
-    for pre_calls in range(2):
-        for in_calls in range(2):
-            for post_calls in range(2):
-                # Check if the number of calls to each routine is correct
-                if pre_calls + in_calls + post_calls != 6:
-                    continue
-                
-                # Check if the calls to each routine are in the correct order
-                if pre_calls > in_calls or in_calls > post_calls:
-                    continue
-                
-                # Check if the outputs match the given outputs
-                if not check_outputs(pre_output, in_output, post_output, pre_calls, in_calls, post_calls):
-                    continue
-                
-                # If all checks pass, add the reconstruction to the list
-                reconstructions.append([pre_calls, in_calls, post_calls])
-    
-    # Return the list of reconstructions
-    return reconstructions
+import sys
 
-def check_outputs(pre_output, in_output, post_output, pre_calls, in_calls, post_calls):
-    # Initialize variables to store the current output
-    current_pre_output = ""
-    current_in_output = ""
-    current_post_output = ""
+def count_ways(N, M, conditions):
+    # Initialize the number of ways to paint the squares
+    ways = 1
     
-    # Iterate over the calls to each routine
-    for i in range(6):
-        # Check if the current call is a Pre call
-        if i < pre_calls:
-            current_pre_output += pre_output[i]
-        
-        # Check if the current call is an In call
-        if i < in_calls:
-            current_in_output += in_output[i]
-        
-        # Check if the current call is a Post call
-        if i < post_calls:
-            current_post_output += post_output[i]
+    # Iterate over each condition
+    for l, r, x in conditions:
+        # Calculate the number of ways to paint the squares within the current condition
+        num_ways = (N - l + 1) * (N - r) // x
+        ways *= num_ways
     
-    # Check if the current output matches the given outputs
-    return current_pre_output == pre_output and current_in_output == in_output and current_post_output == post_output
+    # Return the number of ways to paint the squares modulo 10^9+7
+    return ways % 1000000007
+
+if __name__ == '__main__':
+    N, M = map(int, input().split())
+    conditions = []
+    for _ in range(M):
+        l, r, x = map(int, input().split())
+        conditions.append((l, r, x))
+    print(count_ways(N, M, conditions))
 

@@ -1,26 +1,32 @@
 
-def solve(n, levels):
-    # Initialize the dp table with the completion time for level 1 using item 0
-    dp = [levels[0][0]]
-    
-    # Loop through the remaining levels
-    for i in range(1, n):
-        # Initialize the minimum completion time for level i using item 0
-        min_time = levels[i][0]
-        
-        # Loop through the items available for level i
-        for j in range(1, n+1):
-            # If the shortcut item is available for level i
-            if levels[i][1] == j:
-                # Update the minimum completion time for level i using the shortcut
-                min_time = min(min_time, dp[i-1] + levels[i][2])
-            # Otherwise, update the minimum completion time for level i using the item
-            else:
-                min_time = min(min_time, dp[i-1] + levels[i][j])
-        
-        # Add the minimum completion time for level i to the dp table
-        dp.append(min_time)
-    
-    # Return the minimum completion time for all levels
-    return dp[-1]
+def f1(T, N, breaks):
+    # Sort the breaks in non-decreasing order
+    breaks.sort()
+
+    # Initialize the number of minutes spent on stage for each musician
+    minutes_on_stage = [0] * N
+
+    # Iterate through the breaks and schedule them
+    for i in range(N):
+        # Calculate the number of minutes spent on stage for the current musician
+        minutes_on_stage[i] = breaks[i] - breaks[i - 1] if i > 0 else breaks[i]
+
+    return minutes_on_stage
+
+def f2(T, N, breaks):
+    # Initialize the number of minutes spent on stage for each musician
+    minutes_on_stage = [0] * N
+
+    # Iterate through the breaks and schedule them
+    for i in range(N):
+        # Calculate the number of minutes spent on stage for the current musician
+        minutes_on_stage[i] = T - breaks[i] if i == N - 1 else breaks[i + 1] - breaks[i]
+
+    return minutes_on_stage
+
+if __name__ == '__main__':
+    T, N = map(int, input().split())
+    breaks = list(map(int, input().split()))
+    print(*f1(T, N, breaks), sep='\n')
+    print(*f2(T, N, breaks), sep='\n')
 

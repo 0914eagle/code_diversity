@@ -1,20 +1,21 @@
 
-def solve(walk):
-    # Initialize a dictionary to store the values of the walks
-    values = {}
-    
-    # Initialize the root node with value 1
-    values[1] = 1
-    
-    # Iterate through the walk string
-    for char in walk:
-        # If the current character is 'L', 'R' or 'P', update the value of the current node
-        if char in 'LRP':
-            values[values[1]] = 2 * values[1] if char == 'L' else 2 * values[1] + 1
-        # If the current character is '*', update the value of the current node and its children
-        elif char == '*':
-            values[values[1]] = values[2 * values[1]] + values[2 * values[1] + 1]
-    
-    # Return the value of the walk
-    return values[1]
+def count_rectangles(a, s):
+    n = len(s)
+    b = [[0] * (n + 1) for _ in range(n + 1)]
+    for i in range(n):
+        for j in range(i, n):
+            b[i][j + 1] = b[i][j] + int(s[j])
+    rectangles = 0
+    for i in range(n):
+        for j in range(i, n):
+            for k in range(j, n):
+                for l in range(k, n):
+                    if b[i][k + 1] - b[i][j] == b[l + 1][k + 1] - b[l + 1][j]:
+                        rectangles += 1
+    return rectangles
+
+if __name__ == '__main__':
+    a = int(input())
+    s = input()
+    print(count_rectangles(a, s))
 

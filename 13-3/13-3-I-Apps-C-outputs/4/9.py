@@ -1,36 +1,45 @@
 
-import sys
+def get_minimum_lounges(n_airports, n_routes, routes):
+    # Initialize a graph with the given number of airports
+    graph = [[] for _ in range(n_airports)]
 
-def solve(N, X, A):
-    # Initialize the count of integers not exceeding X to 0
-    count = 0
-    
-    # Iterate over the given integers
-    for i in range(N):
-        # Convert the integer to binary
-        binary = bin(A[i])[2:]
-        
-        # Initialize a variable to store the current integer
-        current = 0
-        
-        # Iterate over the binary representation of the integer
-        for j in range(len(binary)):
-            # If the current bit is 1, add the corresponding power of 2 to the current integer
-            if binary[j] == "1":
-                current += 2**j
-            
-            # If the current integer is not greater than X, increment the count
-            if current <= X:
-                count += 1
-    
-    # Return the count modulo 998244353
-    return count % 998244353
+    # Add edges to the graph based on the given routes
+    for route in routes:
+        graph[route[0] - 1].append(route[1] - 1)
+        graph[route[1] - 1].append(route[0] - 1)
 
-if __name__ == "__main__":
-    # Read the input from stdin
-    N, X = list(map(int, input().split()))
-    A = list(map(int, input().split()))
-    
-    # Solve the problem
-    print(solve(N, X, A))
+    # Initialize a set to store the airports that have a lounge
+    lounges = set()
+
+    # Initialize a variable to store the minimum number of lounges needed
+    min_lounges = 0
+
+    # Loop through each airport in the graph
+    for airport in range(n_airports):
+        # If the airport has not been visited yet, visit it and add it to the set of lounges
+        if airport not in lounges:
+            dfs(graph, airport, lounges)
+            min_lounges += 1
+
+    # Return the minimum number of lounges needed
+    return min_lounges
+
+def dfs(graph, airport, lounges):
+    # If the airport is already in the set of lounges, return
+    if airport in lounges:
+        return
+
+    # Add the airport to the set of lounges
+    lounges.add(airport)
+
+    # Recursively visit the neighbors of the airport
+    for neighbor in graph[airport]:
+        dfs(graph, neighbor, lounges)
+
+if __name__ == '__main__':
+    n_airports, n_routes = map(int, input().split())
+    routes = []
+    for _ in range(n_routes):
+        routes.append(list(map(int, input().split())))
+    print(get_minimum_lounges(n_airports, n_routes, routes))
 

@@ -1,39 +1,37 @@
 
-def get_maximum_minimum_mex(n, m, subarrays):
-    # Initialize the array a with all zeros
-    a = [0] * n
+def get_max_guests(apartment_layout):
+    # Initialize variables
+    max_guests = 0
+    table_size = 0
 
-    # Iterate over the subarrays chosen by Alyona
-    for l, r in subarrays:
-        # Get the mex of the current subarray
-        mex = get_mex(a[l:r+1])
+    # Iterate through the apartment layout
+    for row in apartment_layout:
+        for col in row:
+            # If the current square is free, increment the table size
+            if col == ".":
+                table_size += 1
+            # If the current square is blocked, check if the table size is greater than the maximum number of guests
+            elif col == "X":
+                if table_size > max_guests:
+                    max_guests = table_size
+                # Reset the table size
+                table_size = 0
 
-        # Update the array a with the mex value
-        for i in range(l, r+1):
-            a[i] = mex
+    # Return the maximum number of guests
+    return max_guests
 
-    # Return the maximum possible minimum mex and the array a
-    return max(a), a
+def main():
+    # Read the apartment layout from stdin
+    apartment_layout = []
+    for _ in range(int(input())):
+        apartment_layout.append(input())
 
-def get_mex(subarray):
-    # Get the unique elements in the subarray
-    unique_elements = set(subarray)
+    # Call the function to get the maximum number of guests
+    max_guests = get_max_guests(apartment_layout)
 
-    # Iterate over the unique elements and find the first missing element
-    for i in range(1, len(unique_elements)):
-        if i not in unique_elements:
-            return i
+    # Print the result
+    print(max_guests)
 
-    # If all elements are present, return the next possible element
-    return len(unique_elements) + 1
-
-n, m = map(int, input().split())
-subarrays = []
-for _ in range(m):
-    l, r = map(int, input().split())
-    subarrays.append((l, r))
-
-maximum_minimum_mex, array = get_maximum_minimum_mex(n, m, subarrays)
-print(maximum_minimum_mex)
-print(*array)
+if __name__ == '__main__':
+    main()
 

@@ -1,55 +1,43 @@
 
-def kahn_algorithm(graph):
+def f1(n, x_n, y_n, s, x_s, y_s):
+    # find the convex hull of the Nazi troops' positions
+    hull = []
+    hull.append((x_n[0], y_n[0]))
+    for i in range(1, n):
+        while len(hull) > 1 and not is_left(hull[-2], hull[-1], (x_n[i], y_n[i])):
+            hull.pop()
+        hull.append((x_n[i], y_n[i]))
     
-    # Initialize the list of source nodes (nodes with no incoming edges)
-    source_nodes = [node for node in graph if not graph[node]]
-    sorted_nodes = []
-    while source_nodes:
-        # Select an arbitrary source node and remove it from the graph
-        node = source_nodes.pop()
-        graph.pop(node)
-        # Remove the outgoing edges of the selected node and add the new source nodes to the list of source nodes
-        for neighbor in graph[node]:
-            graph[neighbor].remove(node)
-            if not graph[neighbor]:
-                source_nodes.append(neighbor)
-        # Add the selected node to the sorted list
-        sorted_nodes.append(node)
-    return sorted_nodes
-
-def largest_source_nodes(graph):
+    # check which castles are in danger
+    in_danger = 0
+    for i in range(s):
+        x, y = x_s[i], y_s[i]
+        j = 0
+        while j < len(hull) - 1 and not is_left(hull[j], hull[j+1], (x, y)):
+            j += 1
+        if j == len(hull) - 1:
+            continue
+        in_danger += 1
     
-    # Initialize the list of source nodes (nodes with no incoming edges)
-    source_nodes = [node for node in graph if not graph[node]]
-    largest_size = 0
-    while source_nodes:
-        # Select an arbitrary source node and remove it from the graph
-        node = source_nodes.pop()
-        graph.pop(node)
-        # Remove the outgoing edges of the selected node and add the new source nodes to the list of source nodes
-        for neighbor in graph[node]:
-            graph[neighbor].remove(node)
-            if not graph[neighbor]:
-                source_nodes.append(neighbor)
-        # Update the largest size of S
-        largest_size = max(largest_size, len(source_nodes))
-    return largest_size
+    return in_danger
 
-def main():
-    # Read the input data
-    n, m = map(int, input().split())
-    graph = {}
-    for _ in range(m):
+def is_left(p1, p2, p3):
+    return (p2[0] - p1[0]) * (p3[1] - p1[1]) - (p2[1] - p1[1]) * (p3[0] - p1[0]) > 0
+
+if __name__ == '__main__':
+    n = int(input())
+    x_n = []
+    y_n = []
+    for i in range(n):
         x, y = map(int, input().split())
-        if x not in graph:
-            graph[x] = []
-        if y not in graph:
-            graph[y] = []
-        graph[x].append(y)
-    # Find the largest possible size of S at the beginning of any iteration of Step 1 in the execution of Kahn's Algorithm
-    largest_size = largest_source_nodes(graph)
-    print(largest_size)
-
-if __name__ == "__main__":
-    main()
+        x_n.append(x)
+        y_n.append(y)
+    s = int(input())
+    x_s = []
+    y_s = []
+    for i in range(s):
+        x, y = map(int, input().split())
+        x_s.append(x)
+        y_s.append(y)
+    print(f1(n, x_n, y_n, s, x_s, y_s))
 

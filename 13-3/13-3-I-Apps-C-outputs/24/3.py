@@ -1,12 +1,55 @@
 
-import math
+def is_correct_sequence(sequence):
+    stack = []
+    for char in sequence:
+        if char == "(":
+            stack.append(char)
+        elif char == ")":
+            if not stack:
+                return False
+            stack.pop()
+    return not stack
 
-def count_special_numbers(n, k):
-    count = 0
-    for i in range(1, n+1):
-        binary = bin(i)[2:]
-        set_bits = binary.count('1')
-        if set_bits == k:
-            count += 1
-    return count % (10**9 + 7)
+def get_correct_sequence(sequence):
+    if is_correct_sequence(sequence):
+        return sequence
+    
+    stack = []
+    for i in range(len(sequence)):
+        char = sequence[i]
+        if char == "(":
+            stack.append(char)
+        elif char == ")":
+            if not stack:
+                return -1
+            stack.pop()
+    
+    if not stack:
+        return sequence
+    
+    while stack:
+        sequence = sequence[:i] + sequence[i:]
+        i = (i - 1) % len(sequence)
+    
+    return sequence
+
+def get_time_to_make_correct(sequence):
+    correct_sequence = get_correct_sequence(sequence)
+    if correct_sequence == -1:
+        return -1
+    
+    time = 0
+    for i in range(len(sequence)):
+        if sequence[i] != correct_sequence[i]:
+            time += 1
+    
+    return time
+
+def main():
+    n = int(input())
+    sequence = input()
+    print(get_time_to_make_correct(sequence))
+
+if __name__ == '__main__':
+    main()
 

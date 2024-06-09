@@ -1,27 +1,35 @@
 
-def give_candies(n, k, a):
-    # Initialize variables
-    days = 0
-    given_candies = 0
+def count_bishocks(board):
+    # Initialize a set to store the positions of the bishocks
+    bishocks = set()
+    # Iterate through the board
+    for i in range(len(board)):
+        for j in range(len(board[0])):
+            # Check if the current position is empty
+            if board[i][j] == "0":
+                # Check if the current position is adjacent to a pawn
+                if i > 0 and board[i-1][j] == "X":
+                    continue
+                if j > 0 and board[i][j-1] == "X":
+                    continue
+                if i < len(board)-1 and board[i+1][j] == "X":
+                    continue
+                if j < len(board[0])-1 and board[i][j+1] == "X":
+                    continue
+                # If the current position is empty and not adjacent to a pawn, add it to the set of bishocks
+                bishocks.add((i, j))
+    # Return the number of bishocks
+    return len(bishocks)
 
-    # Loop through the days
-    for i in range(n):
-        # Check if Arya has enough candies to give Bran
-        if given_candies + a[i] <= k:
-            # Give all the candies Arya has
-            given_candies += a[i]
-        else:
-            # Give Bran the maximum number of candies Arya can give (8)
-            given_candies += 8
+def main():
+    board = [
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
+    ]
+    print(count_bishocks(board))
 
-        # Check if Arya has given Bran all the candies needed
-        if given_candies == k:
-            # Return the number of days needed
-            return days
-
-        # Increment the number of days
-        days += 1
-
-    # If Arya can't give Bran all the candies, return -1
-    return -1
+if __name__ == '__main__':
+    main()
 

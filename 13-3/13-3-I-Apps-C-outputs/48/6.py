@@ -1,44 +1,53 @@
 
-def get_min_expected_duration(origin, destination, connections):
-    # Initialize a dictionary to store the expected duration for each connection
-    expected_durations = {}
+import math
 
-    # Loop through each connection
-    for connection in connections:
-        # Get the origin, destination, departure time, standard journey time, probability of delay, and maximum delay for this connection
-        origin, destination, departure_time, standard_journey_time, probability_of_delay, maximum_delay = connection
+def f1(N, M, nodes, edges):
+    # Initialize variables
+    turning_required = 0
+    visited_nodes = set()
+    current_node = 0
+    visited_edges = set()
 
-        # Calculate the expected duration for this connection
-        expected_duration = standard_journey_time * (1 - probability_of_delay / 100)
+    # Loop through all nodes
+    for i in range(N):
+        # Get the edges connected to the current node
+        connected_edges = [edge for edge in edges if edge[0] == current_node or edge[1] == current_node]
 
-        # Add the expected duration to the dictionary
-        expected_durations[(origin, destination)] = expected_duration
+        # If the current node has not been visited before, add the turning required for the current node
+        if current_node not in visited_nodes:
+            turning_required += math.pi * 2
 
-    # Initialize a list to store the optimal itinerary
-    itinerary = []
+        # Loop through the connected edges
+        for edge in connected_edges:
+            # If the edge has not been visited before, add the turning required for the edge
+            if edge not in visited_edges:
+                turning_required += math.pi
 
-    # Set the current origin to the origin of the first connection
-    current_origin = origin
+            # Add the edge to the visited edges set
+            visited_edges.add(edge)
 
-    # Loop until the destination is reached
-    while current_origin != destination:
-        # Get the connection with the minimum expected duration from the current origin
-        min_expected_duration = float('inf')
-        min_connection = None
-        for connection in expected_durations:
-            if connection[0] == current_origin and expected_durations[connection] < min_expected_duration:
-                min_expected_duration = expected_durations[connection]
-                min_connection = connection
+        # Add the current node to the visited nodes set
+        visited_nodes.add(current_node)
 
-        # Add the minimum connection to the itinerary
-        itinerary.append(min_connection)
+        # Set the current node to the next node
+        current_node = connected_edges[0][0] if current_node == connected_edges[0][1] else connected_edges[0][1]
 
-        # Update the current origin to the destination of the minimum connection
-        current_origin = min_connection[1]
+    # Return the total turning required
+    return turning_required
 
-    # Calculate the total expected duration of the itinerary
-    total_expected_duration = sum([expected_durations[connection] for connection in itinerary])
+def f2(...):
+    # Your code here
+    pass
 
-    # Return the total expected duration
-    return total_expected_duration
+if __name__ == '__main__':
+    N, M = map(int, input().split())
+    nodes = []
+    edges = []
+    for i in range(N):
+        x, y = map(int, input().split())
+        nodes.append((x, y))
+    for i in range(M):
+        x, y = map(int, input().split())
+        edges.append((x, y))
+    print(f1(N, M, nodes, edges))
 

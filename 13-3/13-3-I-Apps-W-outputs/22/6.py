@@ -1,35 +1,22 @@
 
-def crafting_system(materials, recipes):
-    # Initialize a dictionary to store the required materials
-    required_materials = {}
+def get_min_number(cnt_1, cnt_2, x, y):
+    # Initialize a set to store the numbers that are not liked by both friends
+    liked_numbers = set(range(1, 10**9 + 1))
 
-    # Loop through each recipe
-    for recipe in recipes:
-        # Extract the input and output materials and the quantity of output materials
-        input_material, output_material, quantity = recipe
+    # Remove the numbers that are not liked by the first friend
+    for i in range(2, x):
+        if x % i == 0:
+            liked_numbers.remove(i)
 
-        # Check if the output material is already in the required materials dictionary
-        if output_material not in required_materials:
-            # If not, add it to the dictionary with the required quantity
-            required_materials[output_material] = quantity
-        else:
-            # If it is already in the dictionary, update the required quantity
-            required_materials[output_material] += quantity
+    # Remove the numbers that are not liked by the second friend
+    for i in range(x, y):
+        if y % i == 0:
+            liked_numbers.remove(i)
 
-        # Check if the input material is already in the required materials dictionary
-        if input_material not in required_materials:
-            # If not, add it to the dictionary with the required quantity
-            required_materials[input_material] = -quantity
-        else:
-            # If it is already in the dictionary, update the required quantity
-            required_materials[input_material] -= quantity
+    # Return the minimum number of liked numbers that can be given to both friends
+    return min(len(liked_numbers), cnt_1 + cnt_2)
 
-    # Loop through each material and its required quantity
-    for material, quantity in required_materials.items():
-        # If the required quantity is positive, add it to the total required quantity
-        if quantity > 0:
-            materials[material] += quantity
-
-    # Return the total required materials
-    return materials
+if __name__ == '__main__':
+    cnt_1, cnt_2, x, y = map(int, input().split())
+    print(get_min_number(cnt_1, cnt_2, x, y))
 

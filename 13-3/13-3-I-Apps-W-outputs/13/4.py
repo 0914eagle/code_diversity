@@ -1,23 +1,47 @@
 
-import math
+def count_good_phone_numbers(n, k, a, b):
+    def is_good_block(block):
+        if block[0] != b:
+            return False
+        for i in range(1, k):
+            if block[i] != 0:
+                return False
+        return True
 
-def solve(N, A):
-    # Calculate the greatest common divisor (gcd) of all A_i
-    gcd = math.gcd(A[0], math.gcd(A[1], A[2]))
+    def get_blocks(phone_number):
+        blocks = []
+        for i in range(0, n, k):
+            blocks.append(phone_number[i:i+k])
+        return blocks
 
-    # Divide all A_i by their gcd
-    A = [a // gcd for a in A]
+    def get_integer_representation(blocks):
+        result = 0
+        for block in blocks:
+            result = result * 10**k - 1 + int(block)
+        return result
 
-    # Calculate the sum of the reciprocals of all A_i
-    sum_reciprocals = sum([1 / a for a in A])
+    def count_good_phone_numbers_helper(phone_number, a, b):
+        if len(phone_number) == 0:
+            return 1
+        count = 0
+        for i in range(0, 10):
+            if i != b[0]:
+                count += count_good_phone_numbers_helper(phone_number[1:], a[1:], b[1:])
+        return count
 
-    # Calculate the minimum possible value of B_1 + ... + B_N
-    min_value = int((sum_reciprocals * gcd) % (10**9 + 7))
+    blocks = get_blocks(phone_number)
+    integer_representation = get_integer_representation(blocks)
+    if integer_representation % a == 0:
+        return 1
+    else:
+        return 0
 
-    return min_value
+def count_good_phone_numbers(n, k, a, b):
+    return count_good_phone_numbers_helper(phone_number, a, b)
 
 if __name__ == '__main__':
-    N = int(input())
-    A = list(map(int, input().split()))
-    print(solve(N, A))
+    n, k = map(int, input().split())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    print(count_good_phone_numbers(n, k, a, b))
 

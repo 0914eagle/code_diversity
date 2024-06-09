@@ -1,18 +1,33 @@
 
-def solve(a1, b1, a2, b2):
-    # Calculate the number of possible outcomes for each player
-    num_outcomes_gunnar = (b1 - a1 + 1) * (b1 - a1 + 2) // 2
-    num_outcomes_emma = (b2 - a2 + 1) * (b2 - a2 + 2) // 2
+def f1(n, k):
+    # Initialize a dictionary to store the frequency of each letter
+    freq = {}
+    for i in range(1, k+1):
+        freq[chr(i+96)] = 0
     
-    # Calculate the probability of Gunnar winning
-    prob_gunnar = num_outcomes_gunnar / (num_outcomes_gunnar + num_outcomes_emma)
+    # Initialize a list to store the characters of the string
+    s = []
     
-    # Calculate the probability of Emma winning
-    prob_emma = 1 - prob_gunnar
+    # Loop through each character of the string
+    for i in range(n):
+        # Find the letter with the minimum frequency
+        min_freq = min(freq.values())
+        min_key = [k for k, v in freq.items() if v == min_freq][0]
+        
+        # Add the letter to the string
+        s.append(min_key)
+        
+        # Increment the frequency of the letter
+        freq[min_key] += 1
     
-    # Check if the probability of both players is the same
-    if prob_gunnar == prob_emma:
-        return "Tie"
-    else:
-        return "Gunnar" if prob_gunnar > prob_emma else "Emma"
+    return "".join(s)
+
+def f2(...):
+    ...
+
+if __name__ == '__main__':
+    t = int(input())
+    for i in range(t):
+        n, k = map(int, input().split())
+        print(f1(n, k))
 

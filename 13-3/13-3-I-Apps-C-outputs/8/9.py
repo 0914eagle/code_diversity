@@ -1,27 +1,70 @@
 
-def get_min_extensions(a, b, h, w, n, extensions):
-    # Initialize the minimum number of extensions needed to be 0
-    min_extensions = 0
+def f1(n, m, pairs):
+    # Initialize a graph with n vertices and m edges
+    graph = [[] for _ in range(n)]
+    for p, q, c in pairs:
+        graph[p - 1].append((q - 1, c))
+        graph[q - 1].append((p - 1, c))
+    
+    # Use a minimum spanning tree algorithm to find the optimal grouping
+    mst = []
+    visited = set()
+    def dfs(i):
+        if i in visited:
+            return
+        visited.add(i)
+        for j, c in graph[i]:
+            dfs(j)
+            mst.append((i, j, c))
+    
+    dfs(0)
+    
+    # Calculate the total carbon dioxide emissions
+    total_emissions = 0
+    for i, j, c in mst:
+        total_emissions += c
+    
+    return total_emissions
 
-    # If the rectangle can be placed on the initial field, return 0
-    if a <= h and b <= w:
-        return 0
+def f2(n, m, pairs):
+    # Initialize a graph with n vertices and m edges
+    graph = [[] for _ in range(n)]
+    for p, q, c in pairs:
+        graph[p - 1].append((q - 1, c))
+        graph[q - 1].append((p - 1, c))
+    
+    # Use a minimum spanning tree algorithm to find the optimal grouping
+    mst = []
+    visited = set()
+    def dfs(i):
+        if i in visited:
+            return
+        visited.add(i)
+        for j, c in graph[i]:
+            dfs(j)
+            mst.append((i, j, c))
+    
+    dfs(0)
+    
+    # Check if the total number of groups is even
+    num_groups = 0
+    for i, j, c in mst:
+        num_groups += 1
+    if num_groups % 2 != 0:
+        return "impossible"
+    
+    # Calculate the total carbon dioxide emissions
+    total_emissions = 0
+    for i, j, c in mst:
+        total_emissions += c
+    
+    return total_emissions
 
-    # Iterate through the available extensions
-    for i in range(n):
-        # If the extension multiplies the width, multiply h by a_i
-        # If the extension multiplies the length, multiply w by a_i
-        h, w = h * extensions[i], w * extensions[i]
-
-        # If the rectangle can be placed on the field after applying the extension, increment the minimum number of extensions needed
-        if a <= h and b <= w:
-            min_extensions += 1
-
-    # Return the minimum number of extensions needed
-    return min_extensions
-
-
-a, b, h, w, n = map(int, input().split())
-extensions = list(map(int, input().split()))
-print(get_min_extensions(a, b, h, w, n, extensions))
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    pairs = []
+    for _ in range(m):
+        p, q, c = map(int, input().split())
+        pairs.append((p, q, c))
+    print(f2(n, m, pairs))
 

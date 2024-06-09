@@ -1,28 +1,21 @@
 
-def can_grasshopper_eat_insect(n, k, line):
-    # Initialize the grasshopper's position and the target insect's position
-    grasshopper_pos = line.index("G")
-    insect_pos = line.index("T")
-    
-    # Check if the grasshopper's position is within the range of the line
-    if grasshopper_pos < 0 or grasshopper_pos >= n:
-        return "NO"
-    
-    # Check if the target insect's position is within the range of the line
-    if insect_pos < 0 or insect_pos >= n:
-        return "NO"
-    
-    # Check if the grasshopper can reach the target insect by jumping k cells at a time
-    if abs(grasshopper_pos - insect_pos) > k:
-        return "NO"
-    
-    # Check if the grasshopper can reach the target insect by jumping over obstacles
-    for i in range(n):
-        if line[i] == "#":
-            continue
-        if abs(grasshopper_pos - i) <= k and abs(insect_pos - i) <= k:
-            return "YES"
-    
-    # If the grasshopper can't reach the target insect, return "NO"
-    return "NO"
+def get_highest_lowest_place(points1, points2):
+    total_points = points1 + points2
+    if points1 > points2:
+        highest_place = 1
+        lowest_place = 3
+    else:
+        highest_place = 3
+        lowest_place = 1
+    return highest_place, lowest_place
+
+def main():
+    num_contestants = int(input())
+    for _ in range(num_contestants):
+        points1, points2 = map(int, input().split())
+        highest_place, lowest_place = get_highest_lowest_place(points1, points2)
+        print(highest_place, lowest_place)
+
+if __name__ == '__main__':
+    main()
 

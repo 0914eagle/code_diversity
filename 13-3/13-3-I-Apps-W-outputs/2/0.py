@@ -1,30 +1,28 @@
 
-import math
+def get_car_sizes(father_size, mother_size, son_size, masha_size):
+    # Initialize variables
+    father_car_size = 0
+    mother_car_size = 0
+    son_car_size = 0
 
-def get_min_angle(vectors):
-    min_angle = math.pi
-    min_angle_indices = []
-    for i in range(len(vectors)):
-        for j in range(i+1, len(vectors)):
-            angle = get_angle(vectors[i], vectors[j])
-            if angle < min_angle:
-                min_angle = angle
-                min_angle_indices = [i, j]
-    return min_angle_indices
+    # Check if the conditions for the cars' sizes are satisfied
+    if father_size > mother_size and mother_size > son_size and masha_size > son_size:
+        # Find the possible sizes of the cars
+        father_car_size = father_size
+        mother_car_size = mother_size - 1
+        son_car_size = son_size - 1
 
-def get_angle(v1, v2):
-    dot_product = v1[0]*v2[0] + v1[1]*v2[1]
-    magnitude1 = math.sqrt(v1[0]**2 + v1[1]**2)
-    magnitude2 = math.sqrt(v2[0]**2 + v2[1]**2)
-    angle = math.acos(dot_product/(magnitude1*magnitude2))
-    return angle
+        # Check if Masha can climb into the smallest car and likes it
+        if son_car_size >= masha_size and 2 * son_car_size >= masha_size:
+            return father_car_size, mother_car_size, son_car_size
 
-n = int(input())
-vectors = []
-for i in range(n):
-    x, y = map(int, input().split())
-    vectors.append([x, y])
+    # If no solution is found, return -1
+    return -1, -1, -1
 
-indices = get_min_angle(vectors)
-print(indices[0]+1, indices[1]+1)
+if __name__ == '__main__':
+    father_size = 50
+    mother_size = 30
+    son_size = 10
+    masha_size = 10
+    print(get_car_sizes(father_size, mother_size, son_size, masha_size))
 

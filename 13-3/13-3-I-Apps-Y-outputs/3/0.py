@@ -1,47 +1,81 @@
 
-import sys
-
-def reconstruct_map(table):
-    n = len(table)
-    map = [[0] * n for _ in range(n)]
+def f1(n, m, k, x_edges, y_edges, a_routes, b_routes):
+    # Initialize graph with edge weights
+    graph = {}
+    for i in range(m):
+        graph[x_edges[i]] = {y_edges[i]: w_edges[i]}
+    
+    # Initialize distance matrix with infinity
+    distance = [[float('inf') for _ in range(n)] for _ in range(n)]
     for i in range(n):
-        for j in range(i+1, n):
-            map[i][j] = table[i][j]
-            map[j][i] = table[i][j]
-    return map
-
-def find_shortest_path(map, start, end):
-    n = len(map)
-    visited = [False] * n
-    queue = [(start, 0)]
-    while queue:
-        node, distance = queue.pop(0)
-        if node == end:
-            return distance
+        distance[i][i] = 0
+    
+    # Floyd-Warshall algorithm to find shortest paths
+    for k in range(n):
         for i in range(n):
-            if map[node][i] != 0 and not visited[i]:
-                visited[i] = True
-                queue.append((i, distance + map[node][i]))
-    return -1
+            for j in range(n):
+                distance[i][j] = min(distance[i][j], distance[i][k] + distance[k][j])
+    
+    # Calculate total cost for each route
+    total_cost = 0
+    for i in range(k):
+        total_cost += distance[a_routes[i]][b_routes[i]]
+    
+    return total_cost
 
-def solve(table):
-    map = reconstruct_map(table)
-    n = len(map)
-    roads = []
+def f2(n, m, k, x_edges, y_edges, a_routes, b_routes):
+    # Initialize graph with edge weights
+    graph = {}
+    for i in range(m):
+        graph[x_edges[i]] = {y_edges[i]: w_edges[i]}
+    
+    # Initialize distance matrix with infinity
+    distance = [[float('inf') for _ in range(n)] for _ in range(n)]
     for i in range(n):
-        for j in range(i+1, n):
-            if map[i][j] != 0:
-                roads.append((i+1, j+1))
-    return roads
+        distance[i][i] = 0
+    
+    # Floyd-Warshall algorithm to find shortest paths
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                distance[i][j] = min(distance[i][j], distance[i][k] + distance[k][j])
+    
+    # Find the minimum cost edge
+    min_cost = float('inf')
+    min_edge = None
+    for i in range(m):
+        if distance[x_edges[i]][y_edges[i]] < min_cost:
+            min_cost = distance[x_edges[i]][y_edges[i]]
+            min_edge = (x_edges[i], y_edges[i])
+    
+    # Update graph with zero cost edge
+    graph[min_edge[0]][min_edge[1]] = 0
+    graph[min_edge[1]][min_edge[0]] = 0
+    
+    # Calculate total cost for each route
+    total_cost = 0
+    for i in range(k):
+        total_cost += distance[a_routes[i]][b_routes[i]]
+    
+    return total_cost
 
 if __name__ == '__main__':
-    input = sys.stdin.read()
-    data = list(map(int, input.split()))
-    n = data[0]
-    table = []
-    for i in range(1, n*n+1, n):
-        table.append(data[i:i+n])
-    roads = solve(table)
-    for road in roads:
-        print(*road)
+    n, m, k = map(int, input().split())
+    x_edges = []
+    y_edges = []
+    w_edges = []
+    for i in range(m):
+        x, y, w = map(int, input().split())
+        x_edges.append(x)
+        y_edges.append(y)
+        w_edges.append(w)
+    a_routes = []
+    b_routes = []
+    for i in range(k):
+        a, b = map(int, input().split())
+        a_routes.append(a)
+        b_routes.append(b)
+    
+    print(f1(n, m, k, x_edges, y_edges, a_routes, b_routes))
+    print(f2(n, m, k, x_edges, y_edges, a_routes, b_routes))
 

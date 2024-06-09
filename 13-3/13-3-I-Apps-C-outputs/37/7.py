@@ -1,27 +1,39 @@
 
-import sys
+def f1(n, magnets):
+    # Initialize the cheapest price as the current price
+    cheapest_price = int(''.join(magnets))
+    
+    # Iterate through all possible permutations of the magnets
+    for permutation in permutations(magnets):
+        # Convert the permutation to an integer
+        current_price = int(''.join(permutation))
+        
+        # If the current price is cheaper than the cheapest price, update the cheapest price
+        if current_price < cheapest_price:
+            cheapest_price = current_price
+    
+    # Return the cheapest price
+    return cheapest_price
 
-def solve(N, M):
-    # Calculate the number of possible toppings combinations
-    num_combinations = 2**N
+def f2(n, magnets):
+    # Initialize the cheapest price as the current price
+    cheapest_price = int(''.join(magnets))
     
-    # Calculate the number of sets of bowls of ramen that satisfy the conditions
-    num_sets = 0
-    for i in range(num_combinations):
-        # Convert the binary representation of i to a list of 0s and 1s
-        binary_rep = list(map(int, list(bin(i)[2:])))
+    # Iterate through all possible permutations of the magnets
+    for permutation in permutations(magnets):
+        # Convert the permutation to an integer
+        current_price = int(''.join(permutation))
         
-        # Count the number of 1s in the binary representation
-        num_ones = binary_rep.count(1)
-        
-        # If the number of 1s is greater than or equal to 2, increment the number of sets
-        if num_ones >= 2:
-            num_sets += 1
+        # If the current price is cheaper than the cheapest price, update the cheapest price
+        if current_price < cheapest_price:
+            cheapest_price = current_price
     
-    # Return the number of sets modulo M
-    return num_sets % M
+    # Return the cheapest price
+    return cheapest_price
 
 if __name__ == '__main__':
-    N, M = map(int, input().split())
-    print(solve(N, M))
+    n = int(input())
+    magnets = input().split()
+    print(f1(n, magnets))
+    print(f2(n, magnets))
 

@@ -1,65 +1,35 @@
 
-def is_star(grid, row, col, size):
-    # Check if the star is inside the grid
-    if row < 0 or row + size > len(grid) or col < 0 or col + size > len(grid[0]):
-        return False
-    
-    # Check if the star is completely inside the grid
-    for i in range(row, row + size):
-        for j in range(col, col + size):
-            if grid[i][j] != '*':
-                return False
-    
-    return True
-
-def draw_grid(grid):
-    # Initialize the number of stars needed
-    num_stars = 0
-    
-    # Iterate over the grid
-    for row in range(len(grid)):
-        for col in range(len(grid[0])):
-            # If the current cell is an asterisk, check if it forms a star
-            if grid[row][col] == '*':
-                # Check if the star is size 1
-                if is_star(grid, row, col, 1):
-                    num_stars += 1
-                    grid[row][col] = '.'
-                
-                # Check if the star is size 2
-                if is_star(grid, row, col, 2):
-                    num_stars += 1
-                    grid[row][col] = '.'
-                    grid[row][col+1] = '.'
-                
-                # Check if the star is size 3
-                if is_star(grid, row, col, 3):
-                    num_stars += 1
-                    grid[row][col] = '.'
-                    grid[row][col+1] = '.'
-                    grid[row][col+2] = '.'
-    
-    return num_stars
+def get_num_ways(N, A, x):
+    # Calculate the sum of the integers on the cards
+    sum_x = sum(x)
+    # Calculate the average of the integers on the cards
+    avg_x = sum_x / N
+    # Calculate the difference between the average and the target average
+    diff = abs(avg_x - A)
+    # Initialize the number of ways to select cards to 0
+    num_ways = 0
+    # Loop through each card and check if the average of the selected cards is equal to the target average
+    for i in range(N):
+        # Calculate the sum of the integers on the selected cards
+        sum_selected = sum(x[:i+1])
+        # Calculate the average of the integers on the selected cards
+        avg_selected = sum_selected / (i+1)
+        # Check if the average of the selected cards is equal to the target average
+        if abs(avg_selected - A) <= diff:
+            # Increment the number of ways to select cards
+            num_ways += 1
+    # Return the number of ways to select cards
+    return num_ways
 
 def main():
-    # Read the grid size and the grid
-    n, m = map(int, input().split())
-    grid = [input() for _ in range(n)]
-    
-    # Draw the grid and print the number of stars needed
-    num_stars = draw_grid(grid)
-    print(num_stars)
-    
-    # Print the coordinates and sizes of the stars
-    for row in range(len(grid)):
-        for col in range(len(grid[0])):
-            if grid[row][col] == '.':
-                print(row + 1, col + 1, 1)
-            elif grid[row][col] == '*' and grid[row][col+1] == '*' and grid[row][col+2] == '*':
-                print(row + 1, col + 1, 3)
-            elif grid[row][col] == '*' and grid[row][col+1] == '*':
-                print(row + 1, col + 1, 2)
+    # Read the input from stdin
+    N, A = map(int, input().split())
+    x = list(map(int, input().split()))
+    # Call the function to get the number of ways to select cards
+    num_ways = get_num_ways(N, A, x)
+    # Print the number of ways to select cards
+    print(num_ways)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
 

@@ -1,30 +1,55 @@
 
-def black_vienna(investigations):
-    num_investigations = len(investigations)
-    num_suspects = 26
-    num_circle = 3
-    num_solutions = 0
+def f1(n, m, edges):
+    # Initialize graph as a dictionary with each node as a key and its neighbors as values
+    graph = {i: set() for i in range(n)}
+    for i, j in edges:
+        graph[i].add(j)
+    
+    # Initialize the set of source nodes (nodes with no incoming edges)
+    sources = set(i for i in range(n) if not graph[i])
+    
+    # Initialize the list of sorted nodes
+    sorted_nodes = []
+    
+    # While there are still source nodes, remove them and their outgoing edges, and add them to the list of sorted nodes
+    while sources:
+        source = sources.pop()
+        sorted_nodes.append(source)
+        for neighbor in graph[source]:
+            graph[neighbor].remove(source)
+            if not graph[neighbor]:
+                sources.add(neighbor)
+    
+    # Return the largest possible size of S at the beginning of Step 1
+    return len(sources)
 
-    for i in range(num_investigations):
-        suspects = investigations[i][:2]
-        player = investigations[i][2]
-        reply = investigations[i][3]
+def f2(n, m, edges):
+    # Initialize graph as a dictionary with each node as a key and its neighbors as values
+    graph = {i: set() for i in range(n)}
+    for i, j in edges:
+        graph[i].add(j)
+    
+    # Initialize the set of source nodes (nodes with no incoming edges)
+    sources = set(i for i in range(n) if not graph[i])
+    
+    # Initialize the list of sorted nodes
+    sorted_nodes = []
+    
+    # While there are still source nodes, remove them and their outgoing edges, and add them to the list of sorted nodes
+    while sources:
+        source = sources.pop()
+        sorted_nodes.append(source)
+        for neighbor in graph[source]:
+            graph[neighbor].remove(source)
+            if not graph[neighbor]:
+                sources.add(neighbor)
+    
+    # Return the largest possible size of S at the beginning of Step 1
+    return len(sources)
 
-        # Check if the reply is valid
-        if reply < 0 or reply > 2:
-            return 0
-
-        # Check if the player has the suspects in their hand
-        if player == 1:
-            if suspects[0] not in player1_hand or suspects[1] not in player1_hand:
-                return 0
-        elif player == 2:
-            if suspects[0] not in player2_hand or suspects[1] not in player2_hand:
-                return 0
-
-        # Update the number of solutions
-        num_solutions += reply
-
-    # Return the number of solutions
-    return num_solutions
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    edges = [tuple(map(int, input().split())) for _ in range(m)]
+    print(f1(n, m, edges))
+    print(f2(n, m, edges))
 

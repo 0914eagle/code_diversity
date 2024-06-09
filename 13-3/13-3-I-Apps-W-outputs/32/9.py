@@ -1,8 +1,9 @@
 
-def solve(b, c):
-    n = len(b) + 1
-    a = [0] * n
-    for i in range(n):
-        a[i] = b[i] + c[i]
-    return a
+def get_years_till_larger(a, b):
+    years = 0
+    while a <= b:
+        a *= 3
+        b *= 2
+        years += 1
+    return years
 

@@ -1,37 +1,36 @@
 
-import itertools
-
-def count_confused_sequences(N, C):
-    # Initialize a list to store the number of confused pairs for each sequence
-    confused_pairs = [0] * (N + 1)
-    # Initialize a list to store the number of sequences with each number of confused pairs
-    sequences = [0] * (C + 1)
-    # Initialize a list to store the number of sequences with each number of confused pairs and each number of elements
-    sequences_with_N_elements = [[0] * (N + 1) for _ in range(C + 1)]
-
-    # Iterate over all possible sequences of length N
-    for numbers in itertools.permutations(range(1, N + 1)):
-        # Count the number of confused pairs in the current sequence
-        current_confused_pairs = 0
-        for i in range(N - 1):
-            if numbers[i] > numbers[i + 1]:
-                current_confused_pairs += 1
-        # Add the current sequence to the list of sequences with the current number of confused pairs
-        sequences_with_N_elements[current_confused_pairs][N] += 1
-        # Add the current sequence to the list of sequences with the current number of elements
-        sequences_with_N_elements[current_confused_pairs][numbers[0]] += 1
-        # Add the current sequence to the list of sequences with the current number of confused pairs
-        sequences[current_confused_pairs] += 1
-        # Add the current sequence to the list of sequences with the current number of confused pairs and the current number of elements
-        confused_pairs[current_confused_pairs] += 1
-
-    # Return the number of sequences with the given number of confused pairs
-    return sequences[C]
-
-def main():
-    N, C = map(int, input().split())
-    print(count_confused_sequences(N, C))
-
-if __name__ == "__main__":
-    main()
+def get_min_messages(spies, enemies, connections):
+    # Initialize a graph with the given connections
+    graph = {i: set() for i in range(spies)}
+    for connection in connections:
+        graph[connection[0]].add(connection[1])
+        graph[connection[1]].add(connection[0])
+    
+    # Initialize a set to keep track of the enemies
+    enemy_set = set(enemies)
+    
+    # Initialize a queue to keep track of the spies to visit
+    queue = [0]
+    
+    # Initialize a dictionary to keep track of the number of messages sent to each spy
+    message_count = {0: 0}
+    
+    while queue:
+        # Dequeue a spy from the queue
+        current_spy = queue.pop(0)
+        
+        # If the current spy is an enemy, skip them
+        if current_spy in enemy_set:
+            continue
+        
+        # If the current spy has not been visited before, visit them and add them to the queue
+        if current_spy not in message_count:
+            message_count[current_spy] = 0
+            queue += list(graph[current_spy])
+        
+        # Increment the message count for the current spy
+        message_count[current_spy] += 1
+    
+    # Return the minimum number of messages needed to send to all spies
+    return max(message_count.values())
 

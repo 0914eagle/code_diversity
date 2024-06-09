@@ -1,29 +1,59 @@
 
-def compare_cards(card1, card2):
-    card_values = {
-        1: 1,
-        2: 2,
-        3: 3,
-        4: 4,
-        5: 5,
-        6: 6,
-        7: 7,
-        8: 8,
-        9: 9,
-        10: 10,
-        11: 11,
-        12: 12,
-        13: 13
-    }
-    card1_value = card_values[card1]
-    card2_value = card_values[card2]
-    if card1_value > card2_value:
-        return "Alice"
-    elif card1_value < card2_value:
-        return "Bob"
-    else:
-        return "Draw"
+def f1(W, H, map):
+    # Initialize variables
+    gold_count = 0
+    traps_count = 0
+    walls_count = 0
+    player_position = (0, 0)
 
-card1, card2 = map(int, input().split())
-print(compare_cards(card1, card2))
+    # Parse the map
+    for i in range(H):
+        for j in range(W):
+            if map[i][j] == 'P':
+                player_position = (i, j)
+            elif map[i][j] == 'G':
+                gold_count += 1
+            elif map[i][j] == 'T':
+                traps_count += 1
+            elif map[i][j] == '#':
+                walls_count += 1
+
+    # Calculate the maximum gold count
+    max_gold_count = gold_count - traps_count
+
+    # Return the maximum gold count
+    return max_gold_count
+
+def f2(W, H, map):
+    # Initialize variables
+    gold_count = 0
+    traps_count = 0
+    walls_count = 0
+    player_position = (0, 0)
+
+    # Parse the map
+    for i in range(H):
+        for j in range(W):
+            if map[i][j] == 'P':
+                player_position = (i, j)
+            elif map[i][j] == 'G':
+                gold_count += 1
+            elif map[i][j] == 'T':
+                traps_count += 1
+            elif map[i][j] == '#':
+                walls_count += 1
+
+    # Calculate the maximum gold count
+    max_gold_count = gold_count - traps_count
+
+    # Return the maximum gold count
+    return max_gold_count
+
+if __name__ == '__main__':
+    W, H = map(int, input().split())
+    map = []
+    for i in range(H):
+        map.append(input())
+    print(f1(W, H, map))
+    print(f2(W, H, map))
 

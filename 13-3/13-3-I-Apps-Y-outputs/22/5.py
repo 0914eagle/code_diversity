@@ -1,40 +1,26 @@
 
-def solve(grid):
-    n, m = len(grid), len(grid[0])
-    stars = []
-    for i in range(n):
-        for j in range(m):
-            if grid[i][j] == '*':
-                stars.append((i, j))
-    for star in stars:
-        i, j = star
-        size = 1
-        while valid_star(stars, i, j, size):
-            size += 1
-        if size > n * m:
-            return -1
-        stars.append((i, j, size))
-    return stars
+def get_average_selection(N, A, x):
+    # Calculate the sum of the integers written on the cards
+    sum_x = sum(x)
+    # Calculate the number of ways to select cards such that the average is exactly A
+    num_ways = 0
+    for i in range(1, N+1):
+        # Calculate the average of the selected cards
+        avg = sum_x / i
+        # Check if the average is exactly A
+        if avg == A:
+            num_ways += 1
+    return num_ways
 
-def valid_star(stars, i, j, size):
-    for star in stars:
-        x, y, s = star
-        if x == i and y == j and s == size:
-            return False
-    for x in range(i - size + 1, i + size):
-        for y in range(j - size + 1, j + size):
-            if not (0 <= x < len(grid) and 0 <= y < len(grid[0]) and grid[x][y] == '*'):
-                return False
-    return True
+def main():
+    # Read the input from stdin
+    N, A = map(int, input().split())
+    x = list(map(int, input().split()))
+    # Calculate the number of ways to select cards such that the average is exactly A
+    num_ways = get_average_selection(N, A, x)
+    # Print the number of ways
+    print(num_ways)
 
-grid = [
-    list("....*..."),
-    list("...**..."),
-    list("..*****."),
-    list("...**..."),
-    list("....*..."),
-    list("........"),
-]
-result = solve(grid)
-print(result)
+if __name__ == '__main__':
+    main()
 

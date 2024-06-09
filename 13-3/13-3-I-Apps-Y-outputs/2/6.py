@@ -1,19 +1,11 @@
 
-def solve(crossword, frame):
-    # Initialize variables
-    m, n = len(crossword), len(crossword[0])
-    u, l, r, d = frame
-    result = []
+def f1(N, M):
+    return (N * (N - 1)) // 2 + M
 
-    # Add top frame
-    result.append('#' * (2 * l + n))
+def f2(N, M):
+    return N + M
 
-    # Add left and right frames
-    for i in range(m):
-        result.append('#' + '.' * l + crossword[i] + '.' * r + '#')
-
-    # Add bottom frame
-    result.append('#' * (2 * l + n))
-
-    return '\n'.join(result)
+if __name__ == '__main__':
+    N, M = map(int, input().split())
+    print(f1(N, M))
 

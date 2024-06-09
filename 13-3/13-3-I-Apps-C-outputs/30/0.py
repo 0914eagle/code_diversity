@@ -1,52 +1,30 @@
 
-def kahn_algorithm(graph):
-    # Initialize the list of source nodes and the sorted list
-    sources = [node for node in graph if not graph[node]]
-    sorted_list = []
+def is_quadrilateral(p1, p2, p3, p4):
+    return (p1[0] * p2[1] + p2[0] * p3[1] + p3[0] * p4[1] + p4[0] * p1[1]) - (p1[1] * p2[0] + p2[1] * p3[0] + p3[1] * p4[0] + p4[1] * p1[0]) != 0
 
-    # While there are sources to consider
-    while sources:
-        # Get the source node with the minimum index
-        source = min(sources, key=lambda x: x[0])
-        sources.remove(source)
+def is_inside_or_on_border(p, castle):
+    x, y = p
+    x1, y1 = castle
+    x2, y2 = castle[1:]
+    return (x1 <= x <= x2 and y1 <= y <= y2) or (x1 >= x >= x2 and y1 >= y >= y2) or (x1 <= x <= x2 and y1 >= y >= y2) or (x1 >= x >= x2 and y1 <= y <= y2)
 
-        # Remove the source node and its outgoing edges
-        graph.pop(source)
-        for node in list(graph):
-            if source in graph[node]:
-                graph[node].remove(source)
+def count_dangerous_castles(nazis, castles):
+    dangerous_castles = 0
+    for castle in castles:
+        for i in range(len(nazis)):
+            for j in range(i+1, len(nazis)):
+                for k in range(j+1, len(nazis)):
+                    if is_quadrilateral(nazis[i], nazis[j], nazis[k], castle) and is_inside_or_on_border(castle, castle):
+                        dangerous_castles += 1
+                        break
+    return dangerous_castles
 
-        # If the removal of edges creates new sources, add them to the list
-        sources.extend([node for node in graph if not graph[node]])
-
-        # Insert the source node at the end of the sorted list
-        sorted_list.append(source)
-
-    # Return the sorted list
-    return sorted_list
-
-def largest_s(graph):
-    # Initialize the largest size of S
-    largest_s = 0
-
-    # Iterate over all possible choices of alpha
-    for alpha in range(len(graph)):
-        # Clone the graph and remove the edges from alpha
-        graph_clone = graph.copy()
-        for node in graph_clone:
-            if alpha in graph_clone[node]:
-                graph_clone[node].remove(alpha)
-
-        # Run Kahn's algorithm on the cloned graph
-        sorted_list = kahn_algorithm(graph_clone)
-
-        # Update the largest size of S
-        largest_s = max(largest_s, len(sorted_list))
-
-    # Return the largest size of S
-    return largest_s
-
-# Test the function with an example graph
-graph = {0: [1], 1: [2], 2: [3], 3: []}
-print(largest_s(graph))
+if __name__ == '__main__':
+    nazis = []
+    castles = []
+    for _ in range(int(input())):
+        nazis.append(tuple(map(int, input().split())))
+    for _ in range(int(input())):
+        castles.append(tuple(map(int, input().split())))
+    print(count_dangerous_castles(nazis, castles))
 

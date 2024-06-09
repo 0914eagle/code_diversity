@@ -1,42 +1,33 @@
 
-def count_valid_colorings(n, a):
-    # Initialize the number of valid colorings to 0
-    num_valid_colorings = 0
-    
-    # Loop through each row of the grid
-    for i in range(1, n+1):
-        # If the row is odd, there are n hexagons in the row
-        if i % 2 == 1:
-            num_hexagons = n
-        # If the row is even, there are n-1 hexagons in the row
-        else:
-            num_hexagons = n-1
-        
-        # Loop through each hexagon in the row
-        for j in range(1, num_hexagons+1):
-            # If the hexagon is not colored, skip it
-            if a[i-1][j-1] == -1:
-                continue
-            
-            # If the hexagon is colored, check if it is part of a valid loop
-            valid_loop = False
-            
-            # Loop through each hexagon in the row
-            for k in range(1, num_hexagons+1):
-                # If the hexagon is not colored, skip it
-                if a[i-1][k-1] == -1:
-                    continue
-                
-                # If the hexagon is colored and is part of a valid loop, set valid_loop to True
-                if a[i-1][j-1] == a[i-1][k-1]:
-                    valid_loop = True
-                    break
-            
-            # If the hexagon is not part of a valid loop, set num_valid_colorings to 0 and break out of the loop
-            if not valid_loop:
-                num_valid_colorings = 0
-                break
-    
-    # Return the number of valid colorings
-    return num_valid_colorings
+import sys
+
+def f1(n, m, p):
+    # Calculate the number of ways to place the minimum number of obstacles
+    # in the n x m grid to prevent Alice from placing her 2 x 2 block
+    count = 0
+    for i in range(n):
+        for j in range(m):
+            if i + 1 < n and j + 1 < m:
+                count += 1
+            if i + 1 < n and j + 2 < m:
+                count += 1
+            if i + 2 < n and j + 1 < m:
+                count += 1
+            if i + 2 < n and j + 2 < m:
+                count += 1
+    return count % p
+
+def f2(n, m, p):
+    # Calculate the number of ways to place the minimum number of obstacles
+    # in the n x m grid to prevent Alice from placing her 2 x 2 block
+    # using a recursive approach
+    if n == 1 and m == 1:
+        return 1
+    if n == 1 or m == 1:
+        return 2
+    return (f2(n-1, m, p) + f2(n, m-1, p)) % p
+
+if __name__ == '__main__':
+    n, m, p = map(int, sys.stdin.readline().split())
+    print(f1(n, m, p))
 

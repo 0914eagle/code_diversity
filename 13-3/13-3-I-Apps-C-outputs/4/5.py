@@ -1,36 +1,37 @@
 
-import sys
+def get_minimum_lounges(n_airports, n_routes, routes):
+    # Initialize a graph with the given number of airports
+    graph = [[] for _ in range(n_airports)]
 
-def solve(N, X, A):
-    # Initialize the count of integers not exceeding X
-    count = 0
-    
-    # Iterate through the given integers
-    for i in range(N):
-        # Convert the integer to binary
-        binary = bin(A[i])[2:]
-        
-        # Initialize the current integer
-        curr = 0
-        
-        # Iterate through the binary representation of the integer
-        for j in range(len(binary)):
-            # If the current bit is 1, add the corresponding power of 2 to the current integer
-            if binary[j] == "1":
-                curr += 2**j
-            
-            # If the current integer is not greater than X, increment the count
-            if curr <= X:
-                count += 1
-    
-    # Return the count modulo 998244353
-    return count % 998244353
+    # Add edges to the graph based on the given routes
+    for route in routes:
+        graph[route[0] - 1].append(route[1] - 1)
+        graph[route[1] - 1].append(route[0] - 1)
 
-if __name__ == "__main__":
-    # Read the input from stdin
-    N, X = list(map(int, input().split()))
-    A = list(map(int, input().split()))
-    
-    # Solve the problem
-    print(solve(N, X, A))
+    # Initialize a set to store the airports that have a lounge
+    lounges = set()
+
+    # Iterate through the graph and find the airports that need a lounge
+    for airport in range(n_airports):
+        if len(graph[airport]) > 0:
+            # If the airport has outgoing edges, it needs a lounge
+            lounges.add(airport)
+        for neighbor in graph[airport]:
+            # If the airport has a neighbor that already has a lounge, it doesn't need a lounge
+            if neighbor in lounges:
+                lounges.remove(airport)
+                break
+
+    # Return the number of lounges needed
+    return len(lounges)
+
+def main():
+    n_airports, n_routes = map(int, input().split())
+    routes = []
+    for _ in range(n_routes):
+        routes.append(list(map(int, input().split())))
+    print(get_minimum_lounges(n_airports, n_routes, routes))
+
+if __name__ == '__main__':
+    main()
 

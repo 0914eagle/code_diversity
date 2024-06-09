@@ -1,30 +1,43 @@
 
-def solve(n, strategic_points, dry_plan, wet_plan):
-    # Initialize a set to store the pegs that are safe to remove
-    safe_to_remove = set()
+def is_possible(W, S, C, K):
+    # Initialize the number of each item on the bank as W, S, and C
+    bank = [W, S, C]
     
-    # Iterate through the dry plan
-    for i in dry_plan:
-        # If the current step is a removal, add the removed peg to the safe to remove set
-        if i < 0:
-            safe_to_remove.add(-i)
-        # If the current step is a placement, check if the peg can be removed
-        else:
-            # If the peg can be removed, add it to the safe to remove set
-            if -i in safe_to_remove:
-                safe_to_remove.add(i)
+    # Initialize the number of items in the boat as 0
+    boat = [0, 0, 0]
     
-    # Initialize a set to store the pegs that are safe to place
-    safe_to_place = set()
+    # Loop until all items are transported
+    while sum(bank) > 0:
+        # Find the index of the item that is not in the boat and has the most number of items
+        index = bank.index(max(bank))
+        
+        # If the item is a wolf and there are sheep in the boat, move the sheep to the bank
+        if index == 0 and boat[1] > 0:
+            bank[1] += boat[1]
+            boat[1] = 0
+        
+        # If the item is a sheep and there are cabbages in the boat, move the cabbages to the bank
+        elif index == 1 and boat[2] > 0:
+            bank[2] += boat[2]
+            boat[2] = 0
+        
+        # If the item is a cabbage and there are wolves in the boat, move the wolves to the bank
+        elif index == 2 and boat[0] > 0:
+            bank[0] += boat[0]
+            boat[0] = 0
+        
+        # Add the item to the boat if it is not full
+        if boat[index] < K:
+            boat[index] += 1
+            bank[index] -= 1
     
-    # Iterate through the wet plan
-    for i in wet_plan:
-        # If the current step is a placement, check if the peg can be placed
-        if i > 0:
-            # If the peg can be placed, add it to the safe to place set
-            if i not in safe_to_remove:
-                safe_to_place.add(i)
-    
-    # Return the number of steps in the safe wet plan
-    return len(safe_to_place)
+    # If all items are transported and there are no items left on the bank, return YES
+    if sum(bank) == 0:
+        return "YES"
+    else:
+        return "NO"
+
+if __name__ == '__main__':
+    W, S, C, K = map(int, input().split())
+    print(is_possible(W, S, C, K))
 

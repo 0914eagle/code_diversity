@@ -1,15 +1,21 @@
 
-import sys
+def is_equivalent(str1, str2):
+    if str1 == str2:
+        return "YES"
+    
+    n = len(str1) // 2
+    str1_1, str1_2 = str1[:n], str1[n:]
+    str2_1, str2_2 = str2[:n], str2[n:]
+    
+    if str1_1 == str2_2 and str1_2 == str2_1:
+        return "YES"
+    elif str1_1 == str2_1 and str1_2 == str2_2:
+        return "YES"
+    else:
+        return "NO"
 
-def get_max_bags(m, k):
-    # Calculate the maximum number of bags that can be determined with m weighings
-    max_bags = 1
-    while m > 0:
-        max_bags *= k
-        m -= 1
-    return max_bags % 998244353
-
-if __name__ == "__main__":
-    m, k = map(int, sys.stdin.read().split())
-    print(get_max_bags(m, k))
+if __name__ == '__main__':
+    str1 = input()
+    str2 = input()
+    print(is_equivalent(str1, str2))
 

@@ -1,19 +1,34 @@
 
-def count_binary_relations(n):
-    # Base case: if n is 1, there is only one relation, the empty relation
-    if n == 1:
-        return 1
-    
-    # Initialize a list to store the relations
-    relations = []
-    
-    # Iterate over all possible pairs of elements in the set
-    for i in range(n):
-        for j in range(i+1, n):
-            # If the pair is not in the relation, add it
-            if (i, j) not in relations:
-                relations.append((i, j))
-    
-    # Return the number of relations modulo 10^9 + 7
-    return len(relations) % (10**9 + 7)
+def f1(word):
+    # find the maximum subword of the form $ww^Rww^R$
+    subword = ""
+    for i in range(len(word)):
+        for j in range(i+1, len(word)):
+            if word[i:j] == word[j-1:i-1:-1]:
+                subword = word[i:j]
+                break
+        if subword:
+            break
+    # calculate the power of the word
+    power = len(subword) * 4
+    return power
+
+def f2(word):
+    # find the maximum subword of the form $ww^Rww^R$
+    subword = ""
+    for i in range(len(word)):
+        for j in range(i+1, len(word)):
+            if word[i:j] == word[j-1:i-1:-1]:
+                subword = word[i:j]
+                break
+        if subword:
+            break
+    # calculate the power of the word
+    power = len(subword) * 4
+    return power
+
+if __name__ == '__main__':
+    word = input()
+    power = f1(word)
+    print(power)
 

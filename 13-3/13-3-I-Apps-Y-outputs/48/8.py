@@ -1,24 +1,25 @@
 
-def solve(n, b, a, s):
-    # Initialize the maximum number of segments as 0
-    max_segments = 0
-    # Initialize the current battery and accumulator charges as the given values
-    battery, accumulator = b, a
-    # Iterate through the segments
-    for i in range(n):
-        # If the current segment is exposed to sunlight and the battery is not empty
-        if s[i] == 1 and battery > 0:
-            # Decrease the battery charge by 1
-            battery -= 1
-            # Increase the accumulator charge by 1
-            accumulator += 1
-        # If the accumulator is not empty
-        if accumulator > 0:
-            # Decrease the accumulator charge by 1
-            accumulator -= 1
-        # Increase the maximum number of segments if the robot can pass the current segment
-        if battery > 0 or accumulator > 0:
-            max_segments += 1
-    # Return the maximum number of segments
-    return max_segments
+def get_min_days(n, m, a):
+    # Initialize variables
+    days = 0
+    pages_written = 0
+    cups_drunk = [0] * n
+
+    # Loop through each day
+    while pages_written < m:
+        days += 1
+
+        # Loop through each cup of coffee
+        for i in range(n):
+            # If the cup of coffee has not been drunk yet and there are still pages to write
+            if cups_drunk[i] == 0 and pages_written < m:
+                # Drink the cup of coffee and write the maximum number of pages possible
+                cups_drunk[i] = 1
+                pages_written += max(0, a[i] - days + 1)
+
+    # If all pages have been written, return the number of days
+    if pages_written == m:
+        return days
+    else:
+        return -1
 

@@ -1,26 +1,41 @@
 
-def solve(n, m, a):
-    # Initialize a dictionary to store the number of ways to get each card
-    dp = {(1, 1): 1}
+def f1(w, l, a):
+    # Initialize variables
+    max_frogs = 0
+    curr_frogs = 0
+    curr_dist = 0
+    stones = []
     
-    # Iterate through the given cards
-    for i in range(n):
-        # Get the current card
-        card = (1, a[i])
+    # Iterate through the input array
+    for i in range(len(a)):
+        # If the current distance is not at the bank, add the current number of stones to the list of stones
+        if curr_dist != 0:
+            stones.extend([curr_dist] * a[i])
         
-        # Iterate through the previous cards
-        for j in range(i):
-            # Get the previous card
-            prev_card = (1, a[j])
-            
-            # Check if the previous card is valid
-            if prev_card in dp:
-                # Get the number of ways to get the previous card
-                num_ways = dp[prev_card]
-                
-                # Update the number of ways to get the current card
-                dp[card] = (dp[card] if card in dp else 0) + num_ways
+        # If the current distance is at the bank and there are still frogs in the river, remove a frog and add it to the list of crossed frogs
+        if curr_dist == 0 and curr_frogs > 0:
+            curr_frogs -= 1
+            max_frogs += 1
+        
+        # If the current distance is at the bank and there are no more frogs in the river, add a frog and move to the next distance
+        if curr_dist == 0 and curr_frogs == 0:
+            curr_frogs += 1
+            curr_dist += l
+        
+        # If the current distance is not at the bank and there are still frogs in the river, move to the next distance
+        if curr_dist != 0 and curr_frogs > 0:
+            curr_dist += l
     
-    # Return the number of ways to get the required cards
-    return dp[(1, m)]
+    # Return the maximum number of frogs that can cross the river
+    return max_frogs
+
+def f2(...):
+    # Implement function f2 here
+    pass
+
+if __name__ == '__main__':
+    w = int(input())
+    l = int(input())
+    a = list(map(int, input().split()))
+    print(f1(w, l, a))
 

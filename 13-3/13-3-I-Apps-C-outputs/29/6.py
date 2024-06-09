@@ -1,20 +1,22 @@
 
-def solve(n, m, p, board):
-    # Initialize a list to store the moves
-    moves = []
+import math
 
-    # Loop through each row
-    for i in range(n):
-        # Loop through each column
-        for j in range(m):
-            # If the current square is not already filled with the winning number, add it to the moves list
-            if board[i][j] != p:
-                moves.append(board[i][j])
+def archimedes_spiral(b, t_x, t_y):
+    # Find the angle at which the avatar should leave the spiral
+    theta = math.atan2(t_y, t_x)
 
-    # If all squares are filled with the winning number, return the moves list
-    if len(moves) == p * m * n:
-        return moves
+    # Find the point on the spiral where the avatar should leave it
+    r = b * theta
+    x = r * math.cos(theta)
+    y = r * math.sin(theta)
 
-    # If no winning sequence exists, return -1
-    return -1
+    return x, y
+
+def main():
+    b, t_x, t_y = map(float, input().split())
+    x, y = archimedes_spiral(b, t_x, t_y)
+    print(x, y)
+
+if __name__ == '__main__':
+    main()
 

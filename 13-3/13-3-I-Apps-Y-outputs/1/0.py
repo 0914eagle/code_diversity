@@ -1,19 +1,16 @@
 
-import sys
+def lucas_sequence(n):
+    if n == 0:
+        return 2
+    elif n == 1:
+        return 1
+    else:
+        return lucas_sequence(n-1) + lucas_sequence(n-2)
 
-n, m = map(int, input().split())
-votes = list(map(int, input().split()))
+def main():
+    n = int(input())
+    print(lucas_sequence(n))
 
-total_votes = sum(votes)
-min_votes = total_votes // 4 * m
-
-selected_items = []
-for vote in votes:
-    if vote >= min_votes:
-        selected_items.append(vote)
-
-if len(selected_items) == m:
-    print("Yes")
-else:
-    print("No")
+if __name__ == '__main__':
+    main()
 

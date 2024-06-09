@@ -1,29 +1,81 @@
 
-def get_ranks(scores):
-    # Initialize the ranks for each player to 1
-    ranks = [1] * len(scores)
+def f1(n, distances):
+    # Initialize the subsets A and B
+    A = set()
+    B = set()
+    
+    # Initialize the disparity of subsets A and B
+    disparity_A = 0
+    disparity_B = 0
+    
+    # Loop through each shipment
+    for i in range(n):
+        # Find the closest shipment in the other subset
+        closest_shipment = find_closest_shipment(i, A if i in B else B, distances)
+        
+        # Add the current shipment to the subset with the closest shipment
+        if i in A:
+            B.add(i)
+            disparity_B += distances[i][closest_shipment]
+        else:
+            A.add(i)
+            disparity_A += distances[i][closest_shipment]
+    
+    # Return the minimum possible sum of disparities
+    return disparity_A + disparity_B
 
-    # Loop through each player's scores
-    for i in range(len(scores)):
-        # Get the current player's scores
-        player_scores = scores[i]
+def find_closest_shipment(shipment, subset, distances):
+    # Find the closest shipment in the subset
+    closest_shipment = None
+    min_distance = float('inf')
+    for other_shipment in subset:
+        distance = distances[shipment][other_shipment]
+        if distance < min_distance:
+            min_distance = distance
+            closest_shipment = other_shipment
+    return closest_shipment
 
-        # Loop through each hole
-        for j in range(len(player_scores)):
-            # Get the current hole's score
-            hole_score = player_scores[j]
+def f2(n, distances):
+    # Initialize the subsets A and B
+    A = set()
+    B = set()
+    
+    # Initialize the disparity of subsets A and B
+    disparity_A = 0
+    disparity_B = 0
+    
+    # Loop through each shipment
+    for i in range(n):
+        # Find the closest shipment in the other subset
+        closest_shipment = find_closest_shipment(i, A if i in B else B, distances)
+        
+        # Add the current shipment to the subset with the closest shipment
+        if i in A:
+            B.add(i)
+            disparity_B += distances[i][closest_shipment]
+        else:
+            A.add(i)
+            disparity_A += distances[i][closest_shipment]
+    
+    # Return the minimum possible sum of disparities
+    return disparity_A + disparity_B
 
-            # Loop through each player again
-            for k in range(len(scores)):
-                # If we are not looking at the current player
-                if k != i:
-                    # Get the score for the current player on the current hole
-                    other_hole_score = scores[k][j]
+def find_closest_shipment(shipment, subset, distances):
+    # Find the closest shipment in the subset
+    closest_shipment = None
+    min_distance = float('inf')
+    for other_shipment in subset:
+        distance = distances[shipment][other_shipment]
+        if distance < min_distance:
+            min_distance = distance
+            closest_shipment = other_shipment
+    return closest_shipment
 
-                    # If the current player's score is greater than the other player's score on the current hole
-                    if hole_score > other_hole_score:
-                        # Increment the current player's rank
-                        ranks[i] += 1
-
-    return ranks
+if __name__ == '__main__':
+    n = int(input())
+    distances = []
+    for i in range(n - 1):
+        distances.append(list(map(int, input().split())))
+    print(f1(n, distances))
+    print(f2(n, distances))
 

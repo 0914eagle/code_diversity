@@ -1,34 +1,36 @@
 
-def can_grasshopper_eat_insect(n, k, line):
-    # Initialize the grasshopper's position and the insect's position
-    grasshopper_pos = line.index("G")
-    insect_pos = line.index("T")
+def f1(N, points):
+    # Calculate the total points for each contestant
+    total_points = [sum(point) for point in points]
     
-    # Check if the grasshopper's position is within the bounds of the line
-    if grasshopper_pos < 0 or grasshopper_pos >= n:
-        return "NO"
+    # Sort the contestants in descending order of total points
+    sorted_indices = sorted(range(len(total_points)), key=lambda i: total_points[i], reverse=True)
     
-    # Check if the insect's position is within the bounds of the line
-    if insect_pos < 0 or insect_pos >= n:
-        return "NO"
+    # Find the highest and lowest place for each contestant
+    highest_place = [i+1 for i in sorted_indices]
+    lowest_place = [len(total_points) - i for i in sorted_indices]
     
-    # Check if the grasshopper can reach the insect in one jump
-    if abs(grasshopper_pos - insect_pos) <= k:
-        return "YES"
+    return highest_place, lowest_place
+
+def f2(N, points):
+    # Calculate the total points for each contestant
+    total_points = [sum(point) for point in points]
     
-    # Check if the grasshopper can reach the insect by jumping over obstacles
-    for i in range(n):
-        # Check if the current cell is an obstacle
-        if line[i] == "#":
-            continue
-        
-        # Check if the grasshopper can jump to the current cell from the previous cell
-        if i - grasshopper_pos == k or grasshopper_pos - i == k:
-            # Update the grasshopper's position and check if it matches the insect's position
-            grasshopper_pos = i
-            if grasshopper_pos == insect_pos:
-                return "YES"
+    # Sort the contestants in descending order of total points
+    sorted_indices = sorted(range(len(total_points)), key=lambda i: total_points[i], reverse=True)
     
-    # If the grasshopper couldn't reach the insect, return "NO"
-    return "NO"
+    # Find the highest and lowest place for each contestant
+    highest_place = [i+1 for i in sorted_indices]
+    lowest_place = [len(total_points) - i for i in sorted_indices]
+    
+    return highest_place, lowest_place
+
+if __name__ == '__main__':
+    N = int(input())
+    points = []
+    for _ in range(N):
+        points.append(list(map(int, input().split())))
+    highest_place, lowest_place = f1(N, points)
+    for i in range(N):
+        print(highest_place[i], lowest_place[i])
 

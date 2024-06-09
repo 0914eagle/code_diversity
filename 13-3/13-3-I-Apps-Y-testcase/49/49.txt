@@ -1,1 +1,10 @@
-{"inputs": ["5\n3\n10000\n9000\n", "2\n3\n10000\n9000\n"], "outputs": ["48000\n", "20000\n"]}
+{
+    "inputs": [
+        "abbcccddddeeeee\n",
+        "thenumberofgoodstringsis\n"
+    ],
+    "outputs": [
+        "10\n",
+        "143\n"
+    ]
+}

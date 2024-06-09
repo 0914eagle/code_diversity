@@ -1,26 +1,50 @@
 
-import sys
+def f1(n, p):
+    # Initialize a set to store the names of the coders
+    coders = set()
+    # Loop through each coder and add their names to the set
+    for i in range(n):
+        coders.add(i + 1)
+    # Initialize a counter to store the number of possible two-suspect sets
+    count = 0
+    # Loop through each coder and consider them as the first suspect
+    for i in range(n):
+        # Initialize a set to store the names of the coders who agreed with the first suspect
+        agreed = set()
+        # Loop through each coder and check if they agreed with the first suspect
+        for j in range(n):
+            if i + 1 in (j + 1, j + 2):
+                agreed.add(j + 1)
+        # If the number of agreed coders is greater than or equal to p, increment the counter
+        if len(agreed) >= p:
+            count += 1
+    # Return the number of possible two-suspect sets
+    return count
 
-def solve(N, A, B):
-    # Initialize the number of ways as 1
-    ways = 1
-
-    # Loop through each difficulty level
-    for i in range(N):
-        # If there are tasks with difficulty exactly i
-        if A[i] > 0:
-            # Add the number of ways to choose a task with difficulty i
-            ways = (ways * A[i]) % 1000000007
-        # If there are tasks with difficulty either i or i+1
-        if B[i] > 0:
-            # Add the number of ways to choose a task with difficulty i or i+1
-            ways = (ways * (B[i] + 1)) % 1000000007
-
-    return ways
+def f2(n, p):
+    # Initialize a set to store the names of the coders
+    coders = set()
+    # Loop through each coder and add their names to the set
+    for i in range(n):
+        coders.add(i + 1)
+    # Initialize a counter to store the number of possible two-suspect sets
+    count = 0
+    # Loop through each coder and consider them as the first suspect
+    for i in range(n):
+        # Initialize a set to store the names of the coders who agreed with the first suspect
+        agreed = set()
+        # Loop through each coder and check if they agreed with the first suspect
+        for j in range(n):
+            if i + 1 in (j + 1, j + 2):
+                agreed.add(j + 1)
+        # If the number of agreed coders is greater than or equal to p, increment the counter
+        if len(agreed) >= p:
+            count += 1
+    # Return the number of possible two-suspect sets
+    return count
 
 if __name__ == '__main__':
-    N = int(input())
-    A = list(map(int, input().split()))
-    B = list(map(int, input().split()))
-    print(solve(N, A, B))
+    n, p = map(int, input().split())
+    print(f1(n, p))
+    print(f2(n, p))
 

@@ -1,19 +1,20 @@
 
-def solve(n, m, prefectures):
-    # Initialize a list to store the ID numbers for all the cities
-    id_numbers = []
-    
-    # Iterate over the prefectures and their cities
-    for prefecture, cities in enumerate(prefectures, start=1):
-        # Sort the cities by their establishment year
-        sorted_cities = sorted(cities, key=lambda x: x[1])
-        
-        # Iterate over the sorted cities and assign ID numbers to them
-        for i, (city, year) in enumerate(sorted_cities, start=1):
-            # Format the ID number as a string with six digits for the prefecture and six digits for the city index
-            id_number = f"{prefecture:06d}{i:06d}"
-            id_numbers.append(id_number)
-    
-    # Return the list of ID numbers for all the cities
-    return id_numbers
+def can_sort_array(arr, positions):
+    n = len(arr)
+    for i in range(n-1):
+        for j in range(i+1, n):
+            if arr[i] > arr[j] and not (i in positions or j in positions):
+                return "NO"
+    return "YES"
+
+def main():
+    t = int(input())
+    for _ in range(t):
+        n, m = map(int, input().split())
+        arr = list(map(int, input().split()))
+        positions = set(map(int, input().split()))
+        print(can_sort_array(arr, positions))
+
+if __name__ == '__main__':
+    main()
 

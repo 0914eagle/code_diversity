@@ -1,20 +1,27 @@
 
-import sys
+def f1(n, x1, y1, x2, y2, *coords):
+    # Calculate the distances between the fountains and the flowers
+    dist1 = [(x1-x)**2 + (y1-y)**2 for x, y in coords]
+    dist2 = [(x2-x)**2 + (y2-y)**2 for x, y in coords]
+    
+    # Find the minimum value of r1^2 + r2^2 that covers all flowers
+    r1 = int(max(dist1))
+    r2 = int(max(dist2))
+    return r1**2 + r2**2
 
-def get_sum_modulo(n, k):
-    # Calculate the sum of the first n numbers
-    sum = (n * (n + 1)) // 2
-    # Calculate the sum of the first k numbers
-    sum_k = (k * (k + 1)) // 2
-    # Calculate the sum of the first n-k numbers
-    sum_n_k = (n - k) * (n - k + 1) // 2
-    # Calculate the sum of the first n numbers minus the sum of the first k numbers
-    sum_diff = sum - sum_k
-    # Calculate the sum of the first n numbers minus the sum of the first n-k numbers
-    sum_diff_n_k = sum - sum_n_k
-    # Return the number of possible values of the sum, modulo (10^9+7)
-    return (sum_diff * sum_diff_n_k) % 1000000007
+def f2(n, x1, y1, x2, y2, *coords):
+    # Calculate the distances between the fountains and the flowers
+    dist1 = [(x1-x)**2 + (y1-y)**2 for x, y in coords]
+    dist2 = [(x2-x)**2 + (y2-y)**2 for x, y in coords]
+    
+    # Find the minimum value of r1^2 + r2^2 that covers all flowers
+    r1 = int(max(dist1))
+    r2 = int(max(dist2))
+    return r1**2 + r2**2
 
-n, k = map(int, input().split())
-print(get_sum_modulo(n, k))
+if __name__ == '__main__':
+    n, x1, y1, x2, y2 = map(int, input().split())
+    coords = [(int(x), int(y)) for x, y in zip(*[iter(input().split())] * 2)]
+    print(f1(n, x1, y1, x2, y2, *coords))
+    print(f2(n, x1, y1, x2, y2, *coords))
 

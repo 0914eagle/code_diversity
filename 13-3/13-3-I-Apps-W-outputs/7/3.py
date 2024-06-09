@@ -1,22 +1,28 @@
 
-n, k = map(int, input().split())
-videos = []
-for i in range(n):
-    s, m = map(int, input().split())
-    videos.append((s, m))
+def get_max_height(notes):
+    max_height = 0
+    for note in notes:
+        if note[1] > max_height:
+            max_height = note[1]
+    return max_height
 
-servers = [0] * k
-current_time = 0
-result = []
+def is_consistent(notes):
+    for i in range(len(notes) - 1):
+        if abs(notes[i][1] - notes[i+1][1]) > 1:
+            return False
+    return True
 
-for video in videos:
-    while servers.count(0) == 0:
-        current_time += 1
-        for i in range(k):
-            if servers[i] > 0:
-                servers[i] -= 1
-    servers[servers.index(0)] = video[1]
-    result.append(current_time + video[1])
+def main():
+    n, m = map(int, input().split())
+    notes = []
+    for i in range(m):
+        d, h = map(int, input().split())
+        notes.append((d, h))
+    if is_consistent(notes):
+        print(get_max_height(notes))
+    else:
+        print("IMPOSSIBLE")
 
-print(*result, sep='\n')
+if __name__ == '__main__':
+    main()
 
