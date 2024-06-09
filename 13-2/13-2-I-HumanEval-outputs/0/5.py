@@ -1,0 +1,13 @@
+
+def make_palindrome(string: str) -> str:
+    
+    # Find the longest postfix of the string that is a palindrome
+    postfix = string[::-1]
+    for i in range(len(string), 0, -1):
+        if string[-i:] == string[-i:][::-1]:
+            postfix = string[-i:]
+            break
+    # Append the reverse of the prefix to the end of the postfix
+    prefix = string[:len(string) - len(postfix)]
+    return postfix + prefix[::-1]
+
