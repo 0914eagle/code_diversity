@@ -1,29 +1,18 @@
 
-def get_compatible_pairs(n, l, r):
-    pairs = []
-    for i in range(n):
-        for j in range(i+1, n):
-            if is_compatible(l[i], r[j]) and not (i in [a for a, b in pairs] and j in [b for a, b in pairs]):
-                pairs.append((i, j))
-    return pairs
-
-def is_compatible(c1, c2):
-    if c1 == c2:
-        return True
-    elif c1 == "?" or c2 == "?":
-        return True
-    else:
-        return False
-
-def main():
-    n = int(input())
-    l = input()
-    r = input()
-    pairs = get_compatible_pairs(n, l, r)
-    print(len(pairs))
-    for pair in pairs:
-        print(pair[0], pair[1])
-
-if __name__ == "__main__":
-    main()
+def largest_perfect_power(x):
+    # Initialize a list to store the perfect powers
+    perfect_powers = []
+    
+    # Loop through all integers from 1 to x
+    for i in range(1, x + 1):
+        # Find the square root of i
+        root = int(i ** 0.5)
+        
+        # Check if the square root is an integer
+        if root ** 2 == i:
+            # If it is an integer, add it to the list of perfect powers
+            perfect_powers.append(i)
+    
+    # Return the largest perfect power in the list
+    return max(perfect_powers)
 

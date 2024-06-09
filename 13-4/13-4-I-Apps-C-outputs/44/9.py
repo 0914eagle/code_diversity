@@ -1,36 +1,31 @@
 
-def solve(n, pairs):
-    # Initialize the food types for each pair
-    food_types = [[0, 0] for _ in range(n)]
+def solve(n, buttons):
+    # Initialize a list to store the answers
+    answers = []
     
-    # Iterate over each pair
-    for i in range(n):
-        # Get the current pair
-        pair = pairs[i]
-        
-        # If the boy has already been assigned a food type, skip this pair
-        if food_types[i][0] != 0:
-            continue
-        
-        # If the girl has already been assigned a food type, skip this pair
-        if food_types[i][1] != 0:
-            continue
-        
-        # If the boy and girl have the same type of food, skip this pair
-        if pair[0] == pair[1]:
-            continue
-        
-        # If the boy and girl have different types of food, assign them to the pair
-        if pair[0] % 2 == 0 and pair[1] % 2 == 1:
-            food_types[i] = [1, 2]
-        else:
-            food_types[i] = [2, 1]
+    # Loop through each possible combination of buttons
+    for combination in itertools.permutations(range(1, n+1)):
+        # Check if the current combination is valid
+        if is_valid_combination(combination, buttons):
+            # If it is valid, add it to the list of answers
+            answers.append(combination)
     
-    # Check if all pairs have been assigned a food type
-    for pair in food_types:
-        if pair[0] == 0 or pair[1] == 0:
-            return [-1]
+    # Return the list of answers
+    return answers
+
+def is_valid_combination(combination, buttons):
+    # Initialize a set to store the buttons that have been used
+    used_buttons = set()
     
-    # Return the food types for each pair
-    return [food_types[i] for i in range(n)]
+    # Loop through each person in the combination
+    for person in combination:
+        # Check if the current person's button has already been used
+        if person in used_buttons:
+            # If it has, return False
+            return False
+        # Otherwise, add the current person's button to the set of used buttons
+        used_buttons.add(person)
+    
+    # If we reach this point, all buttons have been used at least once and no button has been used more than once, so the combination is valid
+    return True
 

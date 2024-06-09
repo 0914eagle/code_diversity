@@ -1,28 +1,53 @@
 
-def solve(n, pairs):
-    # Initialize a dictionary to store the food types for each pair
-    food_types = {}
+def get_max_times(n, buttons):
+    # Initialize a list to store the results
+    results = []
     
-    # Iterate over the pairs and assign food types based on the following rules:
-    # 1. Each pair has a different food type
-    # 2. No boy has the same food type as his girlfriend
-    for i, pair in enumerate(pairs):
-        boy, girl = pair
-        if i % 2 == 0:
-            food_types[pair] = 1, 2
-        else:
-            food_types[pair] = 2, 1
+    # Loop through each possible combination of buttons
+    for combination in itertools.permutations(range(1, n+1)):
+        # Check if the current combination is valid
+        if is_valid_combination(combination, buttons):
+            # If it is valid, add it to the results list
+            results.append(list(combination))
     
-    # Check if the food types satisfy the third rule:
-    # Among any three guests sitting on consecutive chairs, there is at least two of them who have different types of food
-    for i in range(n):
-        for j in range(i+1, n):
-            for k in range(j+1, n):
-                if food_types[(i, j)] != food_types[(j, k)] and food_types[(i, j)] != food_types[(k, i)]:
-                    break
-            else:
-                return -1
+    # Return the maximum number of times and the corresponding combinations
+    return len(results), results
+
+def is_valid_combination(combination, buttons):
+    # Check if the current combination is valid by checking if no person stands on the same button more than once
+    for i in range(len(combination)):
+        for j in range(i+1, len(combination)):
+            if combination[i] == combination[j]:
+                return False
     
-    # If we reach this point, it means that the food types satisfy the rules
-    return food_types
+    # Check if the current combination is valid by checking if no person stands on a button that is already occupied by another person
+    for i in range(len(combination)):
+        for j in range(i+1, len(combination)):
+            if buttons[combination[i]-1][combination[j]-1] == 'N':
+                return False
+    
+    # If the current combination is valid, return True
+    return True
+
+# Test the function with the sample input
+n = 3
+buttons = [
+    ['Y', 'Y', 'Y'],
+    ['N', 'Y', 'Y'],
+    ['Y', 'N', 'Y']
+]
+max_times, combinations = get_max_times(n, buttons)
+print(max_times)
+for combination in combinations:
+    print(*combination)
+
+# Test the function with a larger input
+n = 80
+buttons = []
+for i in range(n):
+    buttons.append(list(input()))
+max_times, combinations = get_max_times(n, buttons)
+print(max_times)
+for combination in combinations:
+    print(*combination)
 

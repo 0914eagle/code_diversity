@@ -1,11 +1,28 @@
 
-def solve(s):
-    # Find the index of the first occurrence of 'A'
-    start_index = s.find('A')
+import math
+
+def solve(n, p, s, v):
+    # Calculate the time it takes for the algorithm to run
+    time_algorithm = s * (math.log(n) ** (c * math.sqrt(2))) / (p * 1e9)
     
-    # Find the index of the last occurrence of 'Z'
-    end_index = s.rfind('Z')
+    # Calculate the time it takes for Miroslava to complete the tour
+    time_tour = s * (1 + 1 / c) / v
     
-    # Return the length of the substring
-    return end_index - start_index + 1
+    # Calculate the total time it takes for Miroslava to run the algorithm and complete the tour
+    time_total = time_algorithm + time_tour
+    
+    # Calculate the value of c that gives the optimal time
+    c = (time_total / time_algorithm) - 1
+    
+    return time_total, c
+
+n = 10
+p = 8.9
+s = 40075000
+v = 272.1
+
+time_total, c = solve(n, p, s, v)
+
+print(time_total)
+print(c)
 

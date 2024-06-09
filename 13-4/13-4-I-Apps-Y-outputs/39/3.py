@@ -1,16 +1,18 @@
 
-def solve(a):
-    n = len(a)
-    if n == 1:
-        return "YES"
-    if n == 2:
-        if a[0] == a[1]:
-            return "YES"
-        else:
-            return "NO"
-    for i in range(n-1):
-        for j in range(i+1, n):
-            if abs(a[i] - a[j]) <= 1:
-                return "YES"
-    return "NO"
+def solve(problems, drinks):
+    # Initialize a dictionary to store the time it takes to solve each problem
+    time_to_solve = {}
+
+    # Iterate over each problem and calculate the time it takes to solve it
+    for problem in problems:
+        time_to_solve[problem] = problems[problem]
+
+    # Iterate over each drink and calculate the time it takes to solve all problems if Joisino takes that drink
+    for drink in drinks:
+        for problem in problems:
+            if problem in drinks[drink]:
+                time_to_solve[problem] += drinks[drink][problem]
+
+    # Return the time it takes to solve all problems for each drink
+    return [time_to_solve[problem] for problem in problems]
 

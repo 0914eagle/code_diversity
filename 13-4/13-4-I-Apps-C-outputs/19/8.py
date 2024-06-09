@@ -1,22 +1,21 @@
 
-def solve(starting_sequence, resulting_sequence):
-    # Initialize a list to store the proclamations
-    proclamations = []
+def get_reconstructions(pre_output, in_output, post_output):
+    # Initialize a list to store the reconstructions
+    reconstructions = []
     
-    # Loop through the resulting sequence
-    for i in range(len(resulting_sequence)):
-        # Get the current frog ID and its position in the resulting sequence
-        current_frog_id = resulting_sequence[i]
-        current_frog_position = i
-        
-        # Find the position of the current frog ID in the starting sequence
-        starting_frog_position = starting_sequence.index(current_frog_id)
-        
-        # Calculate the number of leaps needed to move the current frog to its correct position
-        leaps_needed = abs(current_frog_position - starting_frog_position)
-        
-        # Add the leaps needed to the proclamations list
-        proclamations.extend([leaps_needed] * leaps_needed)
+    # Iterate over all possible combinations of Pre, In, and Post calls
+    for pre_calls in range(2):
+        for in_calls in range(2):
+            for post_calls in range(2):
+                # Check if the number of calls to each routine is correct
+                if pre_calls + in_calls + post_calls == 6:
+                    # Check if the output of the three routines matches the given output
+                    if (pre_output == "".join(sorted(pre_output)) and
+                        in_output == "".join(sorted(in_output)) and
+                        post_output == "".join(sorted(post_output))):
+                        # If the output matches, add the reconstruction to the list
+                        reconstructions.append([pre_calls, in_calls, post_calls])
     
-    return proclamations
+    # Return the list of reconstructions
+    return reconstructions
 

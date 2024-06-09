@@ -1,16 +1,12 @@
 
-def solve(a):
-    # Sort the array in ascending order
-    a.sort()
-    
-    # Initialize the minimum number of colors to 1
-    min_colors = 1
-    
-    # Iterate over the array
-    for i in range(1, len(a)):
-        # If the current element is not divisible by the previous element, increase the minimum number of colors
-        if a[i] % a[i-1] != 0:
-            min_colors += 1
-    
-    return min_colors
+import math
+
+def get_special_numbers(n, k):
+    count = 0
+    for i in range(1, n+1):
+        binary = bin(i)[2:]
+        set_bits = binary.count('1')
+        if set_bits == k:
+            count += 1
+    return count % (10**9 + 7)
 

@@ -1,18 +1,26 @@
 
-def solve(k2, k3, k5, k6):
-    # Initialize the maximum sum to 0
-    max_sum = 0
-    # Loop through all possible combinations of digits
-    for i in range(k2 + 1):
-        for j in range(k3 + 1):
-            for k in range(k5 + 1):
-                for l in range(k6 + 1):
-                    # Check if the current combination is valid
-                    if i + j + k + l <= k2 and j <= k3 and k <= k5 and l <= k6:
-                        # Calculate the sum of the current combination
-                        sum = i * 2 + j * 3 + k * 5 + l * 6
-                        # Update the maximum sum if necessary
-                        max_sum = max(max_sum, sum)
-    # Return the maximum sum
-    return max_sum
+def get_min_draws(N, squares):
+    # Initialize the minimum number of draws to infinity
+    min_draws = float('inf')
+    
+    # Loop through each possible starting square
+    for i in range(N):
+        # Initialize the current square and the number of draws
+        current_square = i
+        draws = 0
+        
+        # Loop through each possible color
+        for color in ['Blue', 'Orange', 'Pink', 'Green', 'Red', 'Yellow']:
+            # Check if the current square has the current color
+            if squares[current_square] == color:
+                # Move to the next square with the current color
+                current_square += 1
+                draws += 1
+                
+                # If we have reached the end square, update the minimum number of draws
+                if current_square == N:
+                    min_draws = min(min_draws, draws)
+                    break
+    
+    return min_draws
 

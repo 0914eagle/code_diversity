@@ -1,25 +1,33 @@
 
-def max_frogs_can_escape(n, d, frogs):
-    # Sort the frogs by their leap capacity in descending order
-    frogs.sort(key=lambda x: x[0], reverse=True)
-    
-    # Initialize the maximum number of frogs that can escape as 0
-    max_escaped = 0
-    
-    # Loop through the frogs and try to form piles
-    for i in range(n):
-        # Check if the current frog can escape the pit
-        if frogs[i][0] > d:
-            # If the current frog can escape, add it to the maximum number of escaped frogs
-            max_escaped += 1
-        else:
-            # If the current frog cannot escape, try to form a pile with the next frogs
-            for j in range(i+1, n):
-                # Check if the current frog and the next frog can form a pile
-                if frogs[i][1] + frogs[j][1] <= frogs[i][0]:
-                    # If they can form a pile, add the next frog to the current frog and break
-                    frogs[i][1] += frogs[j][1]
-                    break
-    
-    return max_escaped
+def get_min_time(n, traffic_lights):
+    # Initialize variables
+    min_time = 0
+    current_time = 0
+    speed = 1
+    distance = 0
+
+    # Iterate through each traffic light
+    for i in range(n - 1):
+        # Get the time, green duration, and red duration of the current light
+        t, g, r = traffic_lights[i]
+
+        # If the current time is before the start of the green duration, accelerate
+        if current_time < t:
+            distance += (t - current_time) * speed
+            current_time = t
+
+        # If the current time is during the green duration, maintain speed
+        elif current_time < t + g:
+            distance += speed
+            current_time += 1
+
+        # If the current time is during the red duration, stop
+        elif current_time < t + g + r:
+            current_time += 1
+
+        # Update the minimum time
+        min_time = max(min_time, distance / speed)
+
+    # Return the minimum time required to reach the end of the road
+    return min_time
 

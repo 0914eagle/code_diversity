@@ -1,24 +1,25 @@
 
-import itertools
+n, m, k = map(int, input().split())
+timetable = [list(map(int, input())) for _ in range(n)]
 
-def solve(n, k, digits):
-    # calculate the number of ways to place k pluses in the string
-    num_ways = itertools.combinations(range(1, n), k)
+# Initialize the minimum number of hours as infinity
+min_hours = float('inf')
+
+# Loop through all possible combinations of skipped lessons
+for i in range(1 << n):
+    # Convert the binary string to a list of booleans
+    skipped = [bool(i & (1 << j)) for j in range(n)]
     
-    # initialize the sum
-    sum = 0
+    # Calculate the number of hours spent in the university for this combination
+    hours = 0
+    for day in range(n):
+        if not skipped[day]:
+            for hour in range(m):
+                if timetable[day][hour]:
+                    hours += 1
     
-    # iterate over the ways to place k pluses
-    for way in num_ways:
-        # calculate the result of the arithmetic expression
-        result = 0
-        for i in range(n - 1):
-            if i + 1 in way:
-                result += int(digits[i])
-            else:
-                result *= int(digits[i])
-        sum += result
-    
-    # return the sum modulo 10^9 + 7
-    return sum % 1000000007
+    # Update the minimum number of hours if necessary
+    min_hours = min(min_hours, hours)
+
+print(min_hours)
 

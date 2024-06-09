@@ -1,16 +1,26 @@
 
-import math
+def get_box_heights(box_heights):
+    # Sort the box heights in non-decreasing order
+    sorted_box_heights = sorted(box_heights)
 
-def solve(numbers):
-    num1, num2 = numbers.split()
-    num1_real, num1_imag = num1.split('+')
-    num2_real, num2_imag = num2.split('+')
-    num1_real, num1_imag, num2_real, num2_imag = float(num1_real), float(num1_imag), float(num2_real), float(num2_imag)
-    addition = complex(num1_real + num2_real, num1_imag + num2_imag)
-    subtraction = complex(num1_real - num2_real, num1_imag - num2_imag)
-    multiplication = complex(num1_real * num2_real - num1_imag * num2_imag, num1_real * num2_imag + num1_imag * num2_real)
-    division = complex((num1_real * num2_real + num1_imag * num2_imag) / (num2_real ** 2 + num2_imag ** 2), (num1_imag * num2_real - num1_real * num2_imag) / (num2_real ** 2 + num2_imag ** 2))
-    modulus_num1 = math.sqrt(num1_real ** 2 + num1_imag ** 2)
-    modulus_num2 = math.sqrt(num2_real ** 2 + num2_imag ** 2)
-    return f"{addition.real:.2f}{'+' if addition.imag >= 0 else '-'}{abs(addition.imag):.2f}i\n{subtraction.real:.2f}{'+' if subtraction.imag >= 0 else '-'}{abs(subtraction.imag):.2f}i\n{multiplication.real:.2f}{'+' if multiplication.imag >= 0 else '-'}{abs(multiplication.imag):.2f}i\n{division.real:.2f}{'+' if division.imag >= 0 else '-'}{abs(division.imag):.2f}i\n{modulus_num1:.2f}\n{modulus_num2:.2f}"
+    # Find the two tower heights
+    tower_heights = [sorted_box_heights[-1], sorted_box_heights[-2]]
+
+    # Find the three boxes in the first tower
+    first_tower = [tower_heights[0]]
+    for box in sorted_box_heights:
+        if box < tower_heights[0]:
+            first_tower.append(box)
+        else:
+            break
+
+    # Find the three boxes in the second tower
+    second_tower = [tower_heights[1]]
+    for box in sorted_box_heights:
+        if box < tower_heights[1]:
+            second_tower.append(box)
+        else:
+            break
+
+    return first_tower, second_tower
 

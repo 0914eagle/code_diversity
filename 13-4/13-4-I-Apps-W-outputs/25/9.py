@@ -1,11 +1,10 @@
 
-def align_maps(map1, map2):
-    # Find the length of the common section
-    n = len(set(map1[0]) & set(map2[0]))
-    
-    # Find the row and column indices of the common section
-    row_indices = [i for i, row in enumerate(map1) if row[:n] == map2[0][:n]]
-    col_indices = [j for j, col in enumerate(zip(*map2)) if col[:n] == zip(*map1)[0][:n]]
-    
-    return row_indices[0], col_indices[0]
+def can_transform(s, t):
+    vowels = set("aeiou")
+    consonants = set("bcdfghjklmnpqrstvwxyz")
+    s_vowels = {c for c in s if c in vowels}
+    s_consonants = {c for c in s if c in consonants}
+    t_vowels = {c for c in t if c in vowels}
+    t_consonants = {c for c in t if c in consonants}
+    return s_vowels == t_vowels and s_consonants == t_consonants
 

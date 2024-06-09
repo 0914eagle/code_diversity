@@ -1,28 +1,41 @@
 
-def solve(N, A, B):
-    # Initialize a list to store the sequence
-    seq = [0] * N
-    # Set the first element of the sequence
-    seq[0] = 1
-    # Initialize variables to keep track of the length of the longest increasing and decreasing subsequence
-    max_inc_len = 1
-    max_dec_len = 1
-    # Iterate over the remaining elements of the sequence
-    for i in range(1, N):
-        # If the length of the longest increasing subsequence is A, we can set the ith element to be A+1
-        if max_inc_len == A:
-            seq[i] = A + 1
-        # If the length of the longest decreasing subsequence is B, we can set the ith element to be B+1
-        elif max_dec_len == B:
-            seq[i] = B + 1
-        # If neither condition is met, we can set the ith element to be 1
-        else:
-            seq[i] = 1
-        # Update the length of the longest increasing and decreasing subsequence
-        max_inc_len = max(max_inc_len, seq[i] - seq[i-1])
-        max_dec_len = max(max_dec_len, seq[i-1] - seq[i])
-    # If the length of the longest increasing subsequence is not A or the length of the longest decreasing subsequence is not B, there is no sequence that satisfies the conditions
-    if max_inc_len != A or max_dec_len != B:
-        return -1
-    return seq
+def solve(flights, additional_flights):
+    # Initialize a dictionary to store the cost of each flight
+    flight_costs = {}
+    for flight in flights:
+        cost = flight[2]
+        flight_costs[(flight[0], flight[1])] = cost
+        flight_costs[(flight[1], flight[0])] = cost
+
+    # Initialize a set to store the airports that have been visited
+    visited_airports = set()
+
+    # Initialize a list to store the flights that have been taken
+    taken_flights = []
+
+    # Loop through the additional flights and take the flights that are not in the list of flights to review
+    for flight in additional_flights:
+        if (flight[0], flight[1]) not in flight_costs and (flight[1], flight[0]) not in flight_costs:
+            taken_flights.append(flight)
+            visited_airports.add(flight[0])
+            visited_airports.add(flight[1])
+
+    # Loop through the flights to review and take the flights that are not in the list of additional flights
+    for flight in flights:
+        if (flight[0], flight[1]) not in flight_costs and (flight[1], flight[0]) not in flight_costs:
+            taken_flights.append(flight)
+            visited_airports.add(flight[0])
+            visited_airports.add(flight[1])
+
+    # Loop through the list of airports and take the flights that connect them to Stockholm
+    for airport in visited_airports:
+        if (airport, 1) not in flight_costs and (1, airport) not in flight_costs:
+            taken_flights.append((airport, 1, flight_costs[(airport, 1)]))
+
+    # Calculate the total cost of the flights
+    total_cost = 0
+    for flight in taken_flights:
+        total_cost += flight[2]
+
+    return total_cost
 

@@ -1,8 +1,9 @@
 
-def solve(n, x, ls):
-    count = 0
-    for i in range(n):
-        if ls[i] + i <= x:
-            count += 1
-    return count
+K = int(input())
+S = input()
+
+if len(S) <= K:
+    print(S)
+else:
+    print(S[:K] + "...")
 

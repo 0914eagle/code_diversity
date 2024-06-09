@@ -1,33 +1,18 @@
 
-def solve(spots):
-    # Sort the spots by their x-coordinate
-    sorted_spots = sorted(spots, key=lambda x: x[0])
+def carryless_multiplication(a, b):
+    result = 0
+    for i in range(len(str(a))):
+        for j in range(len(str(b))):
+            result += int(str(a)[-i-1]) * int(str(b)[-j-1])
+        result = result % 10
+    return result
 
-    # Initialize the minimum number of additional spots needed to be 0
-    min_additional_spots = 0
+def find_solution(N):
+    for a in range(1, 1000000000):
+        if carryless_multiplication(a, a) == N:
+            return a
+    return -1
 
-    # Iterate through the sorted spots
-    for i in range(len(sorted_spots)):
-        # Get the current spot and its x-coordinate
-        current_spot = sorted_spots[i]
-        current_x = current_spot[0]
-
-        # Check if the current spot is symmetric about the origin
-        if current_x == 0:
-            # If it is, continue to the next spot
-            continue
-
-        # Find the mirror spot on the other side of the origin
-        mirror_spot = (current_x * -1, current_spot[1])
-
-        # Check if the mirror spot already exists in the list of spots
-        if mirror_spot in sorted_spots:
-            # If it does, remove it from the list of spots
-            sorted_spots.remove(mirror_spot)
-        else:
-            # If it doesn't, increment the minimum number of additional spots needed
-            min_additional_spots += 1
-
-    # Return the minimum number of additional spots needed
-    return min_additional_spots
+N = int(input())
+print(find_solution(N))
 

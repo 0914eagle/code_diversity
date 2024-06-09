@@ -1,21 +1,43 @@
 
-def solve(movies, horror_list, similarities):
-    # Initialize a dictionary to store the horror index for each movie
-    horror_index = {}
+def is_symmetric(matrix):
+    return matrix == matrix.T
 
-    # Set the horror index for the movies on the horror list to 0
-    for movie in horror_list:
-        horror_index[movie] = 0
+def can_construct_square(n, m, tiles):
+    # Initialize a matrix to store the tiles
+    matrix = [[0] * m for _ in range(m)]
 
-    # Iterate over the similarities and update the horror index for each movie
-    for a, b in similarities:
-        if a in horror_index and b in horror_index:
-            horror_index[a] = max(horror_index[a], horror_index[b] + 1)
-            horror_index[b] = max(horror_index[b], horror_index[a] + 1)
+    # Iterate through each tile type
+    for tile in tiles:
+        # Check if the tile can be placed in the matrix
+        for i in range(m - 1):
+            for j in range(m - 1):
+                if matrix[i][j] == 0 and matrix[i + 1][j] == 0 and matrix[i][j + 1] == 0 and matrix[i + 1][j + 1] == 0:
+                    matrix[i][j] = tile[0]
+                    matrix[i + 1][j] = tile[1]
+                    matrix[i][j + 1] = tile[2]
+                    matrix[i + 1][j + 1] = tile[3]
+                    break
+            else:
+                continue
+        else:
+            return False
 
-    # Find the movie with the highest horror index
-    highest_horror_index = max(horror_index.values())
+    # Check if the matrix is symmetric
+    return is_symmetric(matrix)
 
-    # Return the movie with the highest horror index, or the movie with the lowest ID if there is a tie
-    return [movie for movie, index in horror_index.items() if index == highest_horror_index][0]
+def main():
+    t = int(input())
+    for _ in range(t):
+        n, m = map(int, input().split())
+        tiles = []
+        for _ in range(n):
+            tile = list(map(int, input().split()))
+            tiles.append(tile)
+        if can_construct_square(n, m, tiles):
+            print("YES")
+        else:
+            print("NO")
+
+if __name__ == "__main__":
+    main()
 

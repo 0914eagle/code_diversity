@@ -1,58 +1,22 @@
 
-def solve(n, m, edges):
-    # Initialize a dictionary to store the graph
-    graph = {}
-    for i in range(n):
-        graph[i] = []
+def solve(s, d):
+    # Initialize variables
+    correct_translations = 0
+    incorrect_translations = 0
     
-    # Add edges to the graph
-    for edge in edges:
-        u, v = edge[0], edge[1]
-        graph[u].append(v)
-        graph[v].append(u)
+    # Iterate through each word in the sentence
+    for word in s.split():
+        # Check if the word is in the dictionary
+        if word in d:
+            # If the word is in the dictionary, check if it is a correct translation
+            if d[word] == "correct":
+                correct_translations += 1
+            else:
+                incorrect_translations += 1
+        else:
+            # If the word is not in the dictionary, it is an incorrect translation
+            incorrect_translations += 1
     
-    # Initialize a set to store the connected components
-    connected_components = set()
-    
-    # Iterate through the graph and find the connected components
-    for node in graph:
-        if node not in connected_components:
-            # DFS to find all the connected components
-            dfs(graph, node, connected_components)
-    
-    # Initialize a set to store the cycles
-    cycles = set()
-    
-    # Iterate through the connected components and find the cycles
-    for component in connected_components:
-        if len(component) > 2:
-            # Check if the component is a cycle
-            if is_cycle(graph, component):
-                cycles.add(component)
-    
-    return len(cycles)
-
-def dfs(graph, node, connected_components):
-    # Mark the current node as visited
-    connected_components.add(node)
-    
-    # Recursively explore the graph
-    for neighbor in graph[node]:
-        if neighbor not in connected_components:
-            dfs(graph, neighbor, connected_components)
-
-def is_cycle(graph, component):
-    # Check if the component is a cycle
-    for node in component:
-        for neighbor in graph[node]:
-            if neighbor not in component:
-                return False
-    return True
-
-n, m = map(int, input().split())
-edges = []
-for i in range(m):
-    u, v = map(int, input().split())
-    edges.append([u, v])
-print(solve(n, m, edges))
+    # Return the number of correct and incorrect translations
+    return correct_translations, incorrect_translations
 

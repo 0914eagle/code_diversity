@@ -1,21 +1,15 @@
 
-def get_diverse_garland(n, s):
-    # Initialize the number of recolors to 0
-    recolors = 0
-    # Initialize the diverse garland as an empty string
-    diverse_garland = ""
-    # Iterate through the initial garland
-    for i in range(n):
-        # If the current lamp is red, green, or blue
-        if s[i] in ["R", "G", "B"]:
-            # Add the current lamp to the diverse garland
-            diverse_garland += s[i]
-        # If the current lamp is not red, green, or blue
-        else:
-            # Increment the number of recolors
-            recolors += 1
-            # Add a random color to the diverse garland (R, G, or B)
-            diverse_garland += "RG"[i % 2]
-    # Return the number of recolors and the diverse garland
-    return recolors, diverse_garland
+n = int(input())
+a = list(map(int, input().split()))
+
+# Create a dictionary to store the number of immediate subordinates for each member
+subordinates = {i: 0 for i in range(1, n + 1)}
+
+# Iterate through the input and update the dictionary
+for i in range(2, n + 1):
+    subordinates[a[i - 1]] += 1
+
+# Print the number of immediate subordinates for each member
+for i in range(1, n + 1):
+    print(subordinates[i])
 

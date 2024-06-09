@@ -1,31 +1,27 @@
 
-def solve(m, n, p, q):
-    # Initialize a list to store the digits of the number
-    digits = []
-    # Loop through the range of numbers from 1 to 9
-    for i in range(1, 10):
-        # Check if the current number is a valid starting digit
-        if i != 0:
-            # Add the current number to the list of digits
-            digits.append(i)
-            # Recursively call the function to find the remaining digits
-            recurse(m, n, p, q, digits)
-    # If no valid number was found, return "IMPOSSIBLE"
-    return "IMPOSSIBLE"
+def get_max_coins(price, coins):
+    # Initialize a dictionary to store the number of coins for each denomination
+    coins_dict = {1: 0, 5: 0, 10: 0, 25: 0}
 
-def recurse(m, n, p, q, digits):
-    # If we have found all the digits, multiply the number by q and return it
-    if len(digits) == m:
-        result = int("".join(map(str, digits))) * q
-        return str(result)
-    # Loop through the range of numbers from 0 to 9
-    for i in range(0, 10):
-        # Check if the current number is a valid digit
-        if i != 0:
-            # Add the current number to the list of digits
-            digits.append(i)
-            # Recursively call the function to find the remaining digits
-            recurse(m, n, p, q, digits)
-            # Remove the current number from the list of digits
-            digits.pop()
+    # Add the number of coins for each denomination to the dictionary
+    for coin in coins:
+        coins_dict[coin] += 1
+
+    # Initialize a variable to store the maximum number of coins that can be used
+    max_coins = 0
+
+    # Iterate through the dictionary and check if the number of coins for each denomination is greater than or equal to the price
+    for denomination in coins_dict:
+        if coins_dict[denomination] >= price:
+            max_coins += price
+            break
+        else:
+            max_coins += coins_dict[denomination]
+            price -= coins_dict[denomination]
+
+    # If the price is not zero, it is not possible to pay the exact amount without getting change back
+    if price != 0:
+        return "Impossible"
+
+    return max_coins
 

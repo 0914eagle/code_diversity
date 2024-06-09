@@ -1,25 +1,27 @@
 
-def get_max_profit(n, a, difficulties, costs):
-    # Sort the problems by difficulty in increasing order
-    sorted_problems = sorted(enumerate(difficulties), key=lambda x: x[1])
+def is_possible(points):
+    # Sort the points by their x-coordinates
+    sorted_points = sorted(points, key=lambda point: point[0])
 
-    # Initialize the maximum profit and the current profit
-    max_profit = 0
-    current_profit = 0
+    # Initialize the variables for the left and right endpoints of the lines
+    left_endpoint = sorted_points[0]
+    right_endpoint = sorted_points[-1]
 
-    # Iterate through the sorted problems
-    for i in range(n):
-        # Calculate the current profit for the current problem
-        current_profit += a - costs[i]
+    # Iterate through the points and check if they lie on the line
+    for i in range(1, len(sorted_points)):
+        current_point = sorted_points[i]
 
-        # If the current profit is greater than the maximum profit, update the maximum profit
-        if current_profit > max_profit:
-            max_profit = current_profit
+        # Check if the current point lies on the line between the left and right endpoints
+        if current_point[0] == left_endpoint[0] or current_point[0] == right_endpoint[0]:
+            continue
 
-        # If the current problem is not the last problem, calculate the gap between the current problem and the next problem
-        if i != n - 1:
-            gap = (difficulties[i + 1] - difficulties[i]) ** 2
-            current_profit -= gap
+        # Check if the current point lies between the left and right endpoints
+        if left_endpoint[0] < current_point[0] < right_endpoint[0]:
+            continue
 
-    return max_profit
+        # If the current point does not lie on the line or between the left and right endpoints, return False
+        return False
+
+    # If all points lie on the line or between the left and right endpoints, return True
+    return True
 

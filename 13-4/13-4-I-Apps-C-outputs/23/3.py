@@ -1,26 +1,36 @@
 
-def decrypt_message(encrypted_message, key):
-    # Step 1: Define the function f(x) = (33x + 1) mod 2^20
-    def f(x):
-        return (33 * x + 1) % (2**20)
-    
-    # Step 2: Create a X by X size grid, fill the upper left corner with f^1(0), the next cell to the right with f^2(0), f^3(0) etc.
-    grid = [[f(0) for _ in range(X)] for _ in range(X)]
-    
-    # Step 3: Sum all the values in every column, and take those values mod 2^20
-    column_sums = [sum(column) % (2**20) for column in zip(*grid)]
-    
-    # Step 4: Concatenate the base-10 representations of the column sums together, to get a very long base-10 number
-    long_number = int(''.join(str(sum) for sum in column_sums))
-    
-    # Step 5: Convert the result of step 4 from base 10 to base 27
-    one_time_pad = long_number.to_bytes((long_number.bit_length() + 7) // 8, 'big').decode()
-    
-    # Step 6: For each letter l of the intercepted message, shift the letter by the amount given by the corresponding digit of step 5, base 27
-    decrypted_message = ''
-    for i, letter in enumerate(encrypted_message):
-        shift = int(one_time_pad[i])
-        decrypted_message += chr((ord(letter) + shift) % 27)
-    
-    return decrypted_message
+def can_zax_and_xaz_coexist(m, n, resources):
+    # Initialize a set to store the resources available on each island
+    island_resources = set()
+    for island in resources:
+        island_resources.update(island)
+
+    # Check if the number of resources is even
+    if len(island_resources) % 2 != 0:
+        return "NO"
+
+    # Check if each island has at least one resource
+    for island in resources:
+        if not island:
+            return "NO"
+
+    # Check if each resource is present on at least two islands
+    for resource in island_resources:
+        count = 0
+        for island in resources:
+            if resource in island:
+                count += 1
+        if count < 2:
+            return "NO"
+
+    # Check if the Zax and Xaz can coexist
+    zax_resources = set()
+    xaz_resources = set()
+    for resource in island_resources:
+        zax_resources.add(resource)
+        xaz_resources.add(resource)
+    if zax_resources == xaz_resources:
+        return "YES"
+    else:
+        return "NO"
 

@@ -1,13 +1,21 @@
 
-def solve():
-    N = int(input())
-    A = list(map(int, input().split()))
-    count = 0
-    for i in range(N):
-        for j in range(N):
-            if i != j and A[j] % A[i] == 0:
-                break
+def solve(S):
+    # Initialize a list to store the number of children on each square
+    children = [0] * len(S)
+    
+    # Set the first and last children to 1
+    children[0] = 1
+    children[-1] = 1
+    
+    # Iterate through each character of S
+    for i in range(1, len(S) - 1):
+        # If the character is L, move the child left
+        if S[i] == "L":
+            children[i - 1] += children[i]
+        # If the character is R, move the child right
         else:
-            count += 1
-    return count
+            children[i + 1] += children[i]
+    
+    # Return the number of children on each square
+    return children
 

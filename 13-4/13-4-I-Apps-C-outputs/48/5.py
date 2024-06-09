@@ -1,33 +1,28 @@
 
-import math
+import sys
 
-def solve(n, m, neighbors, s, t):
-    # Initialize the probability of meeting at each station
-    probabilities = [0] * n
-    probabilities[s] = 1
-    probabilities[t] = 1
+def solve(N, X, A):
+    # Initialize the count of different integers not exceeding X to 0
+    count = 0
+    
+    # Iterate through the given integers A_1, A_2, ..., A_N
+    for i in range(N):
+        # Check if the current integer A_i is not greater than X
+        if A[i] <= X:
+            # Increment the count of different integers not exceeding X
+            count += 1
+    
+    # Return the count of different integers not exceeding X
+    return count
 
-    # Loop through each minute
-    for minute in range(1, n * n):
-        # Find the current stations of Alice and Bob
-        current_stations = [s, t]
-
-        # Check if they are at the same station
-        if current_stations[0] == current_stations[1]:
-            return minute
-
-        # Update the probabilities of meeting at each station
-        for i in range(n):
-            if i not in current_stations:
-                probabilities[i] = 0
-        for i in range(n):
-            if i in current_stations:
-                probabilities[i] = 1
-
-        # Move Alice and Bob to their neighbouring stations
-        s = neighbors[s][0]
-        t = neighbors[t][0]
-
-    # They will never meet
-    return "never meet"
+if __name__ == '__main__':
+    # Read the input data from stdin
+    N, X = map(int, input().split())
+    A = list(map(int, input().split()))
+    
+    # Solve the problem
+    count = solve(N, X, A)
+    
+    # Print the count modulo 998244353
+    print(count % 998244353)
 

@@ -1,22 +1,15 @@
 
-def solve(n, a):
-    # Calculate the number of distinct points where figures touch
-    points = 0
-    for i in range(n):
-        if a[i] == 1:  # Circle
-            points += 1
-        elif a[i] == 2:  # Isosceles triangle
-            points += 2
-        else:  # Square
-            points += 4
-    
-    # Check if the number of points is infinite
-    if n == 1:
-        return "Finite", points
-    else:
-        for i in range(n - 1):
-            if a[i] == a[i + 1]:  # Same type of figures touching
-                return "Infinite", 0
-        
-        return "Finite", points
+n = int(input())
+arr = list(map(int, input().split()))
+
+count = 0
+while arr:
+    count += 1
+    temp = []
+    for i in range(1, len(arr)):
+        if arr[i] == arr[i-1]:
+            temp.append(arr[i])
+    arr = [arr[0]] + temp
+
+print(count)
 

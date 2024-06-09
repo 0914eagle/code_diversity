@@ -1,17 +1,24 @@
 
-def solve(R, C, matrix):
-    # Initialize a set to store the unique columns
-    unique_cols = set()
-    # Iterate through the rows of the matrix
-    for i in range(R):
-        # Get the current row
-        row = matrix[i]
-        # Check if the current row is already in the set of unique columns
-        if row in unique_cols:
-            # If it is, return the current number of rows that can be deleted
-            return i
-        # Add the current row to the set of unique columns
-        unique_cols.add(row)
-    # If all rows are unique, return 0
-    return 0
+def solve(students, tutors):
+    # Calculate the distance between each student and tutor
+    distances = []
+    for student in students:
+        for tutor in tutors:
+            distances.append((student, tutor, abs(student[0] - tutor[0]) + abs(student[1] - tutor[1])))
+    
+    # Sort the distances in ascending order
+    distances.sort(key=lambda x: x[2])
+    
+    # Initialize the minimum distance traveled by the worst off student to infinity
+    min_distance = float('inf')
+    
+    # Iterate through the sorted distances and find the minimum distance traveled by the worst off student
+    for i in range(len(distances)):
+        student, tutor, distance = distances[i]
+        if distance > min_distance:
+            break
+        min_distance = min(min_distance, distance)
+    
+    # Return the minimum distance traveled by the worst off student plus one
+    return min_distance + 1
 

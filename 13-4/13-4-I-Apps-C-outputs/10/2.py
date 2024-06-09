@@ -1,20 +1,26 @@
 
-def solve(n, m, courses):
-    # Initialize a list to store the maximum number of calories Stan can eat in each hour
-    max_calories = [0] * n
+import sys
 
-    # Set the maximum number of calories for the first hour
-    max_calories[0] = m
+def count_distinct_strings(S):
+    # Initialize a set to store the distinct strings
+    distinct_strings = set()
+    
+    # Loop through each character in the string
+    for i in range(len(S)):
+        # If the current character is not equal to the next character
+        if S[i] != S[i+1]:
+            # Replace the current character with the character that is different from both the current and next characters
+            S = S[:i] + "C" + S[i+2:]
+            # Add the modified string to the set of distinct strings
+            distinct_strings.add(S)
+    
+    # Return the number of distinct strings
+    return len(distinct_strings)
 
-    # Loop through the remaining hours
-    for i in range(1, n):
-        # If the current hour has a non-zero number of calories, Stan can eat at the same rate as the previous hour
-        if courses[i] != 0:
-            max_calories[i] = max_calories[i-1]
-        # Otherwise, Stan can eat at the same rate as the previous two hours
-        else:
-            max_calories[i] = max(max_calories[i-1], max_calories[i-2])
-
-    # Return the sum of the maximum number of calories Stan can eat in each hour
-    return sum(max_calories)
+if __name__ == '__main__':
+    # Read the input string from stdin
+    S = sys.stdin.readline().strip()
+    
+    # Call the count_distinct_strings function and print the result
+    print(count_distinct_strings(S))
 

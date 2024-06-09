@@ -1,31 +1,32 @@
 
-def is_tourist_friendly(road_network):
-    # Check if the road network is tourist-friendly
-    # Return True if it is, False otherwise
-    pass
+n, k, m = map(int, input().split())
 
-def redirect_roads(road_network):
-    # Redirect some of the roads to make the road network tourist-friendly
-    # Return the redirected road network
-    pass
+board = [[0] * (n + 1) for _ in range(n + 1)]
 
-def main():
-    # Read the input
-    n, e = map(int, input().split())
-    road_network = []
-    for _ in range(e):
-        a, b = map(int, input().split())
-        road_network.append((a, b))
-    
-    # Check if the road network is tourist-friendly
-    if is_tourist_friendly(road_network):
-        print("YES")
-        # If it is, print the redirected road network
-        for road in redirect_roads(road_network):
-            print(*road)
+for _ in range(m):
+    x, y = map(int, input().split())
+    if board[x][y] == 0:
+        board[x][y] = 1
     else:
-        print("NO")
+        board[x][y] = 0
 
-if __name__ == "__main__":
-    main()
+def is_good():
+    for i in range(n + 1):
+        for j in range(n + 1):
+            if board[i][j] == 1 and (i != k or j != 1):
+                return False
+    return True
+
+def add_rows():
+    count = 0
+    for i in range(n + 1):
+        for j in range(n + 1):
+            if board[i][j] == 1 and i != k and j != 1:
+                board[i][j] = 0
+                board[i + count][j] = 1
+                count += 1
+    return count
+
+while not is_good():
+    print(add_rows())
 

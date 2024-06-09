@@ -1,10 +1,10 @@
 {
     "inputs": [
-        "5 2 8 4\n",
-        "2 1 11 4\n"
+        "13\n3 2 1 1\n",
+        "13\n2 2 1 1\n"
     ],
     "outputs": [
-        "20512\n",
-        "IMPOSSIBLE\n"
+        "5\n",
+        "Impossible\n"
     ]
 }

@@ -1,34 +1,34 @@
 
-def is_tourist_friendly(cities, roads):
-    # Check if the road network is tourist-friendly
-    for city in cities:
-        visited = set()
-        queue = [city]
-        while queue:
-            current = queue.pop(0)
-            if current not in visited:
-                visited.add(current)
-                for road in roads:
-                    if road[0] == current:
-                        queue.append(road[1])
-            if len(visited) == len(cities):
-                return True
-    return False
+n, k, m = map(int, input().split())
 
-def solve(cities, roads):
-    # Check if the road network is already tourist-friendly
-    if is_tourist_friendly(cities, roads):
-        return "YES"
-    
-    # If not, try to redirect some of the roads to make it tourist-friendly
-    for i in range(len(roads)):
-        road = roads[i]
-        if road[0] != road[1]:
-            roads[i] = (road[1], road[0])
-            if is_tourist_friendly(cities, roads):
-                return "YES"
-            roads[i] = road
-    
-    # If no redirection works, return "NO"
-    return "NO"
+board = [[0] * (n + 1) for _ in range(n + 1)]
+
+for _ in range(m):
+    x, y = map(int, input().split())
+    if board[x][y] == 0:
+        board[x][y] = 1
+    else:
+        board[x][y] = 0
+
+def is_good():
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            if board[i][j] == 1 and (i != k or j != 1):
+                return False
+    return True
+
+def add_rows():
+    count = 0
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            if board[i][j] == 1 and i != k and j != 1:
+                count += 1
+    return count
+
+while not is_good():
+    print(add_rows())
+    n += 1
+    board.append([0] * (n + 1))
+    for i in range(1, n + 1):
+        board[i][k] = 1
 

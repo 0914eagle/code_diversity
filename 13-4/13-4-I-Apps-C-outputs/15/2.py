@@ -1,30 +1,28 @@
 
-def solve(N, K, P, rooks, moves):
-    # Initialize a 2D array to represent the chessboard
-    board = [[0] * N for _ in range(N)]
+n = int(input())
+p = list(map(int, input().split()))
 
-    # Place the rooks on the board according to the input
-    for r, c, x in rooks:
-        board[r - 1][c - 1] = x
+def get_deviation(p):
+    deviation = 0
+    for i in range(n):
+        deviation += abs(p[i] - i)
+    return deviation
 
-    # Loop through each move and calculate the number of attacked fields
-    for move in moves:
-        # Get the starting and ending positions of the rook
-        start_r, start_c, end_r, end_c = move
+def get_cyclic_shift(p, k):
+    return [p[i] for i in range(k, n+k)] + [p[i] for i in range(k)]
 
-        # Move the rook on the board
-        board[end_r - 1][end_c - 1] = board[start_r - 1][start_c - 1]
-        board[start_r - 1][start_c - 1] = 0
+def get_min_deviation_cyclic_shift(p):
+    min_deviation = get_deviation(p)
+    min_deviation_cyclic_shift = p
+    for k in range(n):
+        cyclic_shift = get_cyclic_shift(p, k)
+        deviation = get_deviation(cyclic_shift)
+        if deviation < min_deviation:
+            min_deviation = deviation
+            min_deviation_cyclic_shift = cyclic_shift
+    return min_deviation, min_deviation_cyclic_shift
 
-        # Calculate the number of attacked fields
-        attacked_fields = 0
-        for i in range(N):
-            for j in range(N):
-                if board[i][j] != 0:
-                    attacked_fields += 1
-
-        # Print the number of attacked fields
-        print(attacked_fields)
-
-    return
+min_deviation, min_deviation_cyclic_shift = get_min_deviation_cyclic_shift(p)
+print(min_deviation)
+print(min_deviation_cyclic_shift.index(1) if 1 in min_deviation_cyclic_shift else -1)
 

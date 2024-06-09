@@ -1,48 +1,18 @@
 
-def solve(n, seq):
-    # Initialize variables
-    opening_brackets = 0
-    closing_brackets = 0
-    time = 0
+def get_badge_numbers(num_rooms, num_locks, num_badges, start_room, dest_room, locks):
+    # Initialize a set to store the badge numbers that can pass through the locks
+    badge_numbers = set()
 
-    # Iterate through the sequence
-    for i in range(n):
-        # If the current character is an opening bracket, increment the opening bracket count
-        if seq[i] == "(":
-            opening_brackets += 1
-        # If the current character is a closing bracket, increment the closing bracket count
-        elif seq[i] == ")":
-            closing_brackets += 1
+    # Iterate through the locks
+    for lock in locks:
+        # Extract the information from the lock
+        room_a, room_b, lower_bound, upper_bound = lock
 
-    # If the number of opening and closing brackets is not equal, return -1
-    if opening_brackets != closing_brackets:
-        return -1
+        # Check if the lock is between the start and destination rooms
+        if room_a == start_room and room_b == dest_room:
+            # Add the badge numbers that can pass through the lock to the set
+            badge_numbers |= set(range(lower_bound, upper_bound + 1))
 
-    # If the sequence is already correct, return 0
-    if opening_brackets == closing_brackets == 0:
-        return 0
-
-    # Iterate through the sequence again
-    for i in range(n):
-        # If the current character is an opening bracket, increment the opening bracket count
-        if seq[i] == "(":
-            opening_brackets += 1
-        # If the current character is a closing bracket, increment the closing bracket count
-        elif seq[i] == ")":
-            closing_brackets += 1
-
-        # If the number of opening and closing brackets is not equal, return -1
-        if opening_brackets != closing_brackets:
-            return -1
-
-        # If the sequence is already correct, return the current time
-        if opening_brackets == closing_brackets == 0:
-            return time
-
-        # If the current character is an opening bracket, increment the time by 1
-        if seq[i] == "(":
-            time += 1
-
-    # If the sequence is not correct and cannot be made correct, return -1
-    return -1
+    # Return the number of badge numbers that can pass through the locks
+    return len(badge_numbers)
 

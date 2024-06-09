@@ -1,29 +1,32 @@
 
-def get_max_profit(difficulties, costs, profit):
-    # Sort the problems by difficulty in ascending order
-    sorted_problems = sorted(enumerate(difficulties), key=lambda x: x[1])
+def is_possible(points):
+    # Sort the points by their x-coordinates
+    sorted_points = sorted(points, key=lambda point: point[0])
 
-    # Initialize the maximum profit and the current profit
-    max_profit = 0
-    current_profit = 0
+    # Initialize the variables for the left and right endpoints of the lines
+    left_x = sorted_points[0][0]
+    right_x = sorted_points[-1][0]
+    left_y = sorted_points[0][1]
+    right_y = sorted_points[-1][1]
 
-    # Iterate through the sorted problems
-    for i in range(len(sorted_problems)):
-        # Calculate the current profit by adding the profit of the current problem
-        current_profit += profit
+    # Iterate through the points and update the endpoints of the lines
+    for i in range(1, len(sorted_points)):
+        current_x = sorted_points[i][0]
+        current_y = sorted_points[i][1]
 
-        # If the current profit is greater than the maximum profit, update the maximum profit
-        if current_profit > max_profit:
-            max_profit = current_profit
+        # If the current point is to the right of the right endpoint, update the right endpoint
+        if current_x > right_x:
+            right_x = current_x
+            right_y = current_y
 
-        # Calculate the gap between the current problem and the next problem
-        if i != len(sorted_problems) - 1:
-            gap = (sorted_problems[i+1][1] - sorted_problems[i][1]) ** 2
-        else:
-            gap = 0
+        # If the current point is to the left of the left endpoint, update the left endpoint
+        if current_x < left_x:
+            left_x = current_x
+            left_y = current_y
 
-        # Subtract the cost of the current problem from the current profit
-        current_profit -= costs[sorted_problems[i][0]] + gap
-
-    return max_profit
+    # Check if the slope of the lines are equal
+    if (right_y - left_y) / (right_x - left_x) == (sorted_points[-1][1] - sorted_points[0][1]) / (sorted_points[-1][0] - sorted_points[0][0]):
+        return "YES"
+    else:
+        return "NO"
 

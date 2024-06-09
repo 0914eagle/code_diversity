@@ -1,25 +1,23 @@
 
-def solve(n, m, routes, prices):
-    # Initialize a dictionary to store the minimum cost to visit each city
-    min_cost = {i: float('inf') for i in range(1, n + 1)}
-    min_cost[1] = 0
+def get_minimum_traps(m, x):
+    # Calculate the greatest common divisor (gcd) of x and m
+    gcd = get_gcd(x, m)
     
-    # Loop through each city
-    for i in range(1, n + 1):
-        # Loop through each route from city i
-        for j in range(m):
-            # Get the cost of the route
-            cost = routes[j][2]
-            # Get the city at the end of the route
-            city = routes[j][1] if i == routes[j][0] else routes[j][0]
-            # If the cost is less than the current minimum cost, update the minimum cost
-            if min_cost[i] + cost < min_cost[city]:
-                min_cost[city] = min_cost[i] + cost
-    
-    # Loop through each city
-    for i in range(1, n + 1):
-        # Add the cost of attending the concert to the minimum cost
-        min_cost[i] += prices[i - 1]
-    
-    return [min_cost[i] for i in range(1, n + 1)]
+    # If gcd is 1, then x and m are relatively prime
+    if gcd == 1:
+        # In this case, the minimum number of traps is m
+        return m
+    else:
+        # If gcd is not 1, then x and m have a common factor greater than 1
+        # In this case, the minimum number of traps is m // gcd
+        return m // gcd
+
+def get_gcd(a, b):
+    while b != 0:
+        a, b = b, a % b
+    return a
+
+m = int(input())
+x = int(input())
+print(get_minimum_traps(m, x))
 

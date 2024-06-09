@@ -1,35 +1,56 @@
 
-def solve(n, memory):
-    # Initialize a dictionary to map each kid to its remembered kids
-    remembered = {i: set() for i in range(1, n + 1)}
-    for i, (a1, a2) in enumerate(memory, 1):
-        remembered[i].add(a1)
-        remembered[i].add(a2)
+import sys
+input = sys.stdin.read()
 
-    # Initialize a set to keep track of the kids that have been placed in the circle
-    placed = set()
+# Function to calculate the Manhattan distance between two points
+def manhattan_distance(p1, p2):
+    return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
 
-    # Start with the first kid and place it in the circle
-    current = 1
-    circle = [current]
-    placed.add(current)
+# Function to find the nearest safe house to a given spy
+def find_nearest_safe_house(spy, safe_houses):
+    min_distance = float('inf')
+    nearest_safe_house = None
+    for safe_house in safe_houses:
+        distance = manhattan_distance(spy, safe_house)
+        if distance < min_distance:
+            min_distance = distance
+            nearest_safe_house = safe_house
+    return nearest_safe_house
 
-    # While there are still kids to place in the circle
-    while len(placed) < n:
-        # Get the remembered kids for the current kid
-        remembered_kids = remembered[current] - placed
+# Function to find the maximum Manhattan distance of any spy to a nearest safe house
+def find_max_manhattan_distance(spies, safe_houses):
+    max_distance = 0
+    for spy in spies:
+        nearest_safe_house = find_nearest_safe_house(spy, safe_houses)
+        distance = manhattan_distance(spy, nearest_safe_house)
+        if distance > max_distance:
+            max_distance = distance
+    return max_distance
 
-        # If the current kid has no remembered kids, it means it is the last kid in the circle
-        if not remembered_kids:
-            break
+# Main function
+def main():
+    # Read the input
+    width, height = map(int, input().split())
+    grid = []
+    for _ in range(height):
+        grid.append(list(input().strip()))
 
-        # Get the next kid to place in the circle, which is the first remembered kid that has not been placed yet
-        next_kid = min(remembered_kids - placed)
-        circle.append(next_kid)
-        placed.add(next_kid)
+    # Find the spies and safe houses
+    spies = []
+    safe_houses = []
+    for i in range(height):
+        for j in range(width):
+            if grid[i][j] == 'S':
+                safe_houses.append((j, i))
+            elif grid[i][j] == 'S':
+                spies.append((j, i))
 
-        # Set the current kid to the next kid
-        current = next_kid
+    # Find the maximum Manhattan distance
+    max_distance = find_max_manhattan_distance(spies, safe_houses)
 
-    return circle
+    # Print the result
+    print(max_distance)
+
+if __name__ == '__main__':
+    main()
 

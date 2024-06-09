@@ -1,31 +1,49 @@
 
-def solve(n, m, routes, prices):
-    # Initialize a dictionary to store the minimum cost to reach each city
-    min_cost = {i: float('inf') for i in range(1, n + 1)}
-    min_cost[1] = 0
+def get_min_traps(m, x):
+    # Calculate the greatest common divisor (gcd) of x and m
+    gcd = get_gcd(x, m)
     
-    # Loop through each city
-    for i in range(1, n + 1):
-        # Loop through each route
-        for route in routes:
-            # Check if the route starts in city i
-            if route[0] == i:
-                # Calculate the minimum cost to reach the destination city
-                dest_cost = min_cost[i] + route[2]
-                # Check if the minimum cost to reach the destination city is less than the current minimum cost
-                if dest_cost < min_cost[route[1]]:
-                    # Update the minimum cost to reach the destination city
-                    min_cost[route[1]] = dest_cost
+    # If gcd is 1, then x and m are coprime, and we can use the Euclidean algorithm to find the multiplicative inverse of x modulo m
+    if gcd == 1:
+        # Find the multiplicative inverse of x modulo m using the Extended Euclidean algorithm
+        inv = get_multiplicative_inverse(x, m)
+        
+        # Calculate the minimum number of traps needed to catch the x-mouse
+        traps = (m - 1) // gcd
+        
+        # If the multiplicative inverse of x modulo m exists, then we can catch the x-mouse by placing traps in rooms x, 2x, 3x, ..., (m-1)x modulo m
+        if inv != -1:
+            return traps
     
-    # Loop through each city
-    for i in range(1, n + 1):
-        # Calculate the total cost to visit the city, including the concert ticket price
-        total_cost = min_cost[i] + prices[i - 1]
-        # Check if the total cost is less than the current minimum cost
-        if total_cost < min_cost[i]:
-            # Update the minimum cost to visit the city
-            min_cost[i] = total_cost
+    # If gcd is not 1, then x and m are not coprime, and we cannot use the Euclidean algorithm to find the multiplicative inverse of x modulo m
+    # In this case, we can catch the x-mouse by placing traps in rooms 0, 1, 2, ..., m-1
+    return m
+
+def get_gcd(a, b):
+    # Base case: if b is 0, the gcd is a
+    if b == 0:
+        return a
     
-    # Return the minimum cost to visit each city
-    return [min_cost[i] for i in range(1, n + 1)]
+    # Recursive case: calculate the gcd of b and the remainder of a divided by b
+    return get_gcd(b, a % b)
+
+def get_multiplicative_inverse(a, m):
+    # Calculate the extended Euclidean algorithm of a and m
+    g, x, y = egcd(a, m)
+    
+    # If the gcd is 1, then x is the multiplicative inverse of a modulo m
+    if g == 1:
+        return x % m
+    
+    # If the gcd is not 1, then there is no multiplicative inverse
+    return -1
+
+def egcd(a, b):
+    # Base case: if b is 0, the gcd is a, and the multiplicative inverse is 0
+    if b == 0:
+        return a, 0, 1
+    
+    # Recursive case: calculate the extended Euclidean algorithm of b and the remainder of a divided by b
+    g, y, x = egcd(b, a % b)
+    return g, x, y - (a // b) * x
 

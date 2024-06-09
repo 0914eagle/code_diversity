@@ -1,12 +1,14 @@
 
-def solve(expression):
-    A, B, C = map(int, expression.split('+')[0].split('|'))
-    D, E = map(int, expression.split('=')[1].split('|'))
-    if A + B == C and A + D == E:
-        return expression
-    if A + B == C and A + D != E:
-        return f"{A}|+|{B}=|{E}"
-    if A + B != C and A + D == E:
-        return f"{A}|+|{B}=|{C}"
-    return "Impossible"
+def solve(H, N, A, B):
+    # Initialize the minimum total Magic Points to infinity
+    min_points = float('inf')
+    # Loop through each spell
+    for i in range(N):
+        # Calculate the total Magic Points needed to cast the spell
+        total_points = A[i] * H // B[i]
+        # If the total Magic Points needed is less than the minimum, update the minimum
+        if total_points < min_points:
+            min_points = total_points
+    # Return the minimum total Magic Points needed to win
+    return min_points
 

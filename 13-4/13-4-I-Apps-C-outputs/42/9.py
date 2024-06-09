@@ -1,28 +1,26 @@
 
-def solve(h, m, s, t1, t2):
-    # Convert the time to a single integer
-    time1 = h * 3600 + m * 60 + s
-    time2 = t1 * 3600 + m * 60 + s
-    
-    # Check if the times are the same
-    if time1 == time2:
-        return "NO"
-    
-    # Check if Misha can move clockwise or counterclockwise
-    if time1 < time2:
-        direction = "clockwise"
-    else:
-        direction = "counterclockwise"
-    
-    # Check if Misha can move from time1 to time2 by the clock face
-    if direction == "clockwise":
-        if time1 % 15 == 0 and time2 % 15 == 0:
-            return "YES"
-        else:
-            return "NO"
-    else:
-        if time1 % 15 == 0 and time2 % 15 == 0:
-            return "NO"
-        else:
-            return "YES"
+def get_min_path_length(n, k):
+    # Initialize a dictionary to store the shortest path length from each fragment to the assembly node
+    paths = {}
+
+    # Loop through each fragment
+    for i in range(n):
+        # Initialize the shortest path length from this fragment to the assembly node as infinity
+        paths[i] = float('inf')
+
+        # Loop through each node in the system
+        for j in range(1, 5001):
+            # If the fragment is located at this node, set the shortest path length to 0
+            if j == k[i]:
+                paths[i] = 0
+                break
+
+            # If the fragment is not located at this node, check if the node is a factorial of another node
+            if j % k[i] == 0:
+                # If the fragment is located at a factorial of this node, set the shortest path length to 1
+                paths[i] = 1
+                break
+
+    # Return the sum of the shortest path lengths for all fragments
+    return sum(paths.values())
 

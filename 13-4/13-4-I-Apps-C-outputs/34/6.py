@@ -1,27 +1,36 @@
 
-def purify_cells(grid):
-    # Initialize the number of purification spells to be cast
-    num_spells = 0
-    
-    # Loop through each row of the grid
-    for i in range(len(grid)):
-        # Loop through each column of the grid
-        for j in range(len(grid[i])):
-            # If the current cell is evil and not a particularly more evil cell, purify it
-            if grid[i][j] == "E" and grid[i][j] != ".":
-                num_spells += 1
-                # Purify the current cell and all cells in the same row and column
-                for k in range(len(grid)):
-                    if grid[k][j] == "E" and grid[k][j] != ".":
-                        grid[k][j] = "."
-                for k in range(len(grid[i])):
-                    if grid[i][k] == "E" and grid[i][k] != ".":
-                        grid[i][k] = "."
-    
-    # If all cells have been purified, return the number of purification spells cast
-    if "E" not in "".join(grid):
-        return num_spells
-    # Otherwise, return -1
-    else:
-        return -1
+def solve(n, m, s, edges):
+    # Initialize the graph as an adjacency list
+    graph = [[] for _ in range(n + 1)]
+    for edge in edges:
+        u, v = edge[1], edge[2]
+        graph[u].append(v)
+        graph[v].append(u)
+
+    # Find all reachable vertices from vertex s
+    visited = [False] * (n + 1)
+    queue = [s]
+    while queue:
+        vertex = queue.pop(0)
+        if not visited[vertex]:
+            visited[vertex] = True
+            queue.extend(graph[vertex])
+
+    # Create two plans: one to maximize and one to minimize the number of reachable vertices
+    plan_max = []
+    plan_min = []
+    for edge in edges:
+        u, v = edge[1], edge[2]
+        if edge[0] == 1:  # directed edge
+            plan_max.append('+')
+            plan_min.append('+')
+        else:  # undirected edge
+            if visited[u] and visited[v]:  # both vertices are reachable
+                plan_max.append('+')
+                plan_min.append('-')
+            else:  # at least one vertex is not reachable
+                plan_max.append('-')
+                plan_min.append('+')
+
+    return len(plan_max), "".join(plan_max), len(plan_min), "".join(plan_min)
 

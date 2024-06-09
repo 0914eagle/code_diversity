@@ -1,13 +1,22 @@
 
-def solve(expression):
-    A, B, C = map(int, expression.split('+')[-1].split('=')[:-1])
-    if A + B == C:
-        return expression
-    else:
-        for i in range(1, min(A, B) + 1):
-            if A - i + B == C:
-                return f'{A-i}|+|{B}=|{C}'
-            elif A + B - i == C:
-                return f'{A}|+|{B-i}=|{C}'
-    return 'Impossible'
+import sys
+
+def solve():
+    H, N = map(int, input().split())
+    A = [0] * (N + 1)
+    B = [0] * (N + 1)
+    for i in range(1, N + 1):
+        A[i], B[i] = map(int, input().split())
+    
+    # DP approach
+    dp = [0] * (H + 1)
+    dp[0] = 0
+    for i in range(1, H + 1):
+        for j in range(1, N + 1):
+            if i - A[j] >= 0:
+                dp[i] = min(dp[i], dp[i - A[j]] + B[j])
+    
+    return dp[H]
+
+print(solve())
 

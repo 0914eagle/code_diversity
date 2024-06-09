@@ -1,5 +1,5 @@
 
-def next_sunday(day):
-    days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
-    return (days.index(day) - days.index("SUN") + 1) % 7
+def solve(h_list, k):
+    h_list.sort()
+    return h_list[-k] - h_list[k-1]
 

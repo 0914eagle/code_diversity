@@ -1,24 +1,12 @@
 
-def solve(a):
-    # Step 1: Find the minimal element in the sequence
-    min_element = min(a)
+import math
 
-    # Step 2: Create a dictionary to store the colors and their corresponding elements
-    colors = {}
-
-    # Step 3: Iterate through the sequence and assign elements to colors
-    for element in a:
-        if element % min_element == 0:
-            # If the element is divisible by the minimal element, assign it to the first color
-            if 1 not in colors:
-                colors[1] = [element]
-            else:
-                colors[1].append(element)
-        else:
-            # If the element is not divisible by the minimal element, assign it to a new color
-            current_color = max(colors.keys()) + 1
-            colors[current_color] = [element]
-
-    # Step 4: Return the number of colors used
-    return len(colors)
+def solve(n, k):
+    n = int(n, 2)
+    count = 0
+    for i in range(1, n+1):
+        num_set_bits = bin(i).count('1')
+        if num_set_bits >= k:
+            count += 1
+    return count % (10**9 + 7)
 

@@ -1,38 +1,24 @@
 
-def solve(m, n, p, q):
-    # Initialize a list to store the digits of the number
-    digits = []
-    # Loop through the range of numbers from 1 to 9
-    for i in range(1, 10):
-        # Check if the current number is a valid starting digit
-        if i != 0:
-            # Add the current number to the list of digits
-            digits.append(i)
-            # Recursively call the function to find the remaining digits
-            recurse(m, n, p, q, digits)
-    # If no valid number was found, return "IMPOSSIBLE"
-    return "IMPOSSIBLE"
+def get_max_coins(price, coins):
+    # Initialize a dictionary to store the number of coins for each denomination
+    denomination_coins = {1: 0, 5: 0, 10: 0, 25: 0}
 
-def recurse(m, n, p, q, digits):
-    # If we have found all the digits, multiply the number by q and return it
-    if len(digits) == m:
-        result = int("".join(map(str, digits))) * q
-        return str(result)
-    # Loop through the range of numbers from 0 to 9
-    for i in range(0, 10):
-        # Check if the current number is valid
-        if i != 0 and i not in digits:
-            # Add the current number to the list of digits
-            digits.append(i)
-            # Recursively call the function to find the remaining digits
-            recurse(m, n, p, q, digits)
-            # If a valid number was found, return it
-            if len(digits) == m:
-                result = int("".join(map(str, digits))) * q
-                return str(result)
-            # If no valid number was found, remove the last digit and try again
-            else:
-                digits.pop()
-    # If no valid number was found, return "IMPOSSIBLE"
-    return "IMPOSSIBLE"
+    # Add the number of coins for each denomination to the dictionary
+    for coin in coins:
+        denomination_coins[coin] += 1
+
+    # Initialize a variable to store the maximum number of coins that can be used
+    max_coins = 0
+
+    # Iterate through the dictionary and find the maximum number of coins that can be used
+    for denomination, num_coins in denomination_coins.items():
+        if denomination * num_coins <= price:
+            max_coins += num_coins
+            price -= denomination * num_coins
+
+    # If the price is not zero, it is not possible to pay the exact amount without getting change back
+    if price != 0:
+        return "Impossible"
+
+    return max_coins
 

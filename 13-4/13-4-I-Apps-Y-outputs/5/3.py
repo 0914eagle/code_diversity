@@ -1,16 +1,21 @@
 
-def pig_latin(text):
-    vowels = "aeiou"
-    pig_latin_text = ""
-    for word in text.split():
-        if word[0] in vowels:
-            pig_latin_text += word + "yay "
-        else:
-            vowel_index = 0
-            for i in range(1, len(word)):
-                if word[i] in vowels:
-                    vowel_index = i
-                    break
-            pig_latin_text += word[vowel_index:] + word[:vowel_index] + "ay "
-    return pig_latin_text.strip()
+def get_smallest_set_of_characters(characters):
+    # Initialize a set to store the characters that can converse with each other
+    converse_set = set()
+
+    # Iterate over each character and its languages
+    for character, languages in characters.items():
+        # Check if the character can converse with any other character in the set
+        can_converse = False
+        for other_character in converse_set:
+            if other_character in languages:
+                can_converse = True
+                break
+
+        # If the character cannot converse with any other character, add it to the set
+        if not can_converse:
+            converse_set.add(character)
+
+    # Return the size of the smallest set of characters that can converse with each other
+    return len(converse_set)
 

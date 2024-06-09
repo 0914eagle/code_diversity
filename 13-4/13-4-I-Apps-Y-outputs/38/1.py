@@ -1,19 +1,21 @@
 
-def solve(a, f):
-    # Convert the input string to a list of integers
-    a = [int(x) for x in a]
-    # Initialize the maximum number to be the original number
-    max_num = a[:]
-    # Iterate over the possible segments of the number
-    for i in range(len(a)):
-        for j in range(i+1, len(a)+1):
-            # Calculate the maximum number that can be obtained by replacing the segment with the corresponding function values
-            segment = a[i:j]
-            replaced_segment = [f[x] for x in segment]
-            max_segment = max(replaced_segment)
-            # Update the maximum number if necessary
-            if max_segment > max_num[i]:
-                max_num[i] = max_segment
-    # Return the maximum number
-    return "".join(str(x) for x in max_num)
+def solve(s):
+    # Initialize variables
+    max_length = 0
+    start_index = 0
+    end_index = 0
+
+    # Iterate through the string
+    for i in range(len(s)):
+        # Check if the substring starting at index i ends with Z
+        if s[i] == "Z":
+            # Check if the substring starting at index 0 and ending at index i-1 starts with A
+            if s[0] == "A":
+                # Update the maximum length and indices
+                max_length = i - start_index + 1
+                start_index = 0
+                end_index = i
+
+    # Return the maximum length
+    return max_length
 

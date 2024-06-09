@@ -1,20 +1,14 @@
 
-def can_koa_reach_island(n, k, l, depths):
-    # Initialize variables
-    x = 0
-    t = 0
-    p = [0, 1]
-    while x < n:
-        # Check if Koa can swim to the next meter
-        if x + 1 <= n and depths[x + 1] + p[t % 2] <= l:
-            x += 1
-        # Check if Koa can stay at the current meter
-        elif depths[x] + p[t % 2] <= l:
-            pass
-        # Koa cannot swim or stay, she will drown
-        else:
-            return "No"
-        t += 1
-    # Koa has reached the island
-    return "Yes"
+n, m = map(int, input().split())
+buttons = list(map(int, input().split()))
+
+lights = [0] * (n + 1)
+
+for i in range(m):
+    button = buttons[i]
+    for j in range(button, n + 1):
+        if lights[j] == 0:
+            lights[j] = button
+
+print(*lights[1:])
 

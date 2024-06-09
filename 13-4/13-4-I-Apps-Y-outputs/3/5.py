@@ -1,13 +1,15 @@
 
-def next_sunday(day):
-    days = {
-        "SUN": 0,
-        "MON": 1,
-        "TUE": 2,
-        "WED": 3,
-        "THU": 4,
-        "FRI": 5,
-        "SAT": 6,
-    }
-    return (7 - days[day]) % 7
+import sys
+
+n, k = map(int, input().split())
+heights = sorted(map(int, input().split()))
+
+min_diff = float('inf')
+for i in range(n - k + 1):
+    max_height = heights[i + k - 1]
+    min_height = heights[i]
+    diff = max_height - min_height
+    min_diff = min(min_diff, diff)
+
+print(min_diff)
 

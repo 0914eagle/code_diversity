@@ -1,22 +1,21 @@
 
-def solve(m, n, p, q):
-    if m < n or n < 1 or p < 1 or q < 1:
-        return "IMPOSSIBLE"
+def get_max_coins(price, coins):
+    # Initialize a dictionary to store the number of coins for each denomination
+    coin_dict = {1: 0, 5: 0, 10: 0, 25: 0}
+    for coin in coins:
+        coin_dict[coin] += 1
     
-    num = 1
-    for i in range(m):
-        num *= 10
-        num += i + 1
+    # Initialize a variable to store the maximum number of coins that can be used
+    max_coins = 0
     
-    for i in range(n):
-        num //= 10
+    # Iterate through the dictionary and calculate the maximum number of coins that can be used for each denomination
+    for coin, count in coin_dict.items():
+        max_coins += count // price * coin
     
-    num *= 10
-    num += p
-    num *= q
+    # If the maximum number of coins is less than the price, return "Impossible"
+    if max_coins < price:
+        return "Impossible"
     
-    if num % 10 != 0:
-        return "IMPOSSIBLE"
-    
-    return str(num // 10)
+    # Otherwise, return the maximum number of coins that can be used
+    return max_coins
 

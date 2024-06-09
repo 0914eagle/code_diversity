@@ -1,26 +1,33 @@
 
-def solve(sequence, k):
-    n = len(sequence)
-    if n == 1:
-        return 0
-    if k == 0:
-        return max(sequence) - min(sequence)
-    # Sort the sequence in non-decreasing order
-    sequence.sort()
-    # Initialize the minimum difference and the current difference
-    min_diff = float('inf')
-    curr_diff = sequence[n-1] - sequence[0]
-    # Loop through each element and check if increasing or decreasing it by 1 helps
+def solve(s):
+    n = len(s)
+    # Initialize the longest non-decreasing subsequence of s and t
+    longest_subsequence_s = [1] * n
+    longest_subsequence_t = [1] * n
+    
+    # Loop through the string and find the longest non-decreasing subsequence
+    for i in range(1, n):
+        for j in range(i):
+            if s[i] >= s[j] and longest_subsequence_s[i] < longest_subsequence_s[j] + 1:
+                longest_subsequence_s[i] = longest_subsequence_s[j] + 1
+    
+    # Find the maximum possible number of zeroes in t
+    max_zeroes = n - longest_subsequence_s[n-1]
+    
+    # Initialize t with the same number of zeroes as s
+    t = '0' * max_zeroes + '1' * (n - max_zeroes)
+    
+    # Loop through the string and find the longest non-decreasing subsequence of t
+    for i in range(1, n):
+        for j in range(i):
+            if t[i] >= t[j] and longest_subsequence_t[i] < longest_subsequence_t[j] + 1:
+                longest_subsequence_t[i] = longest_subsequence_t[j] + 1
+    
+    # Check if the conditions are met
     for i in range(n):
-        # Increase the element by 1
-        sequence[i] += 1
-        # Calculate the current difference
-        curr_diff = max(sequence) - min(sequence)
-        # If the current difference is less than the minimum difference, update the minimum difference
-        if curr_diff < min_diff:
-            min_diff = curr_diff
-        # Decrease the element by 1
-        sequence[i] -= 1
-    # Return the minimum difference
-    return min_diff
+        for j in range(i+1, n+1):
+            if longest_subsequence_s[i] != longest_subsequence_t[j-1]:
+                return -1
+    
+    return t
 

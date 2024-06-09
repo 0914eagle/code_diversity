@@ -1,10 +1,10 @@
 {
     "inputs": [
-        "6\n1 5 4 3 2 6\n1 2 5 4 3 6\n",
-        "5\n1 5 3 2 4\n1 5 4 2 3\n"
+        "HFBIGEDCJA\nBIGEDCJFAH\nBIGEDCJFAH\n",
+        "BNLFAGHPEDOCMJIK\nNLBGAPHCODEIJMKF\nNLFAGHPEDOCMJIKB\n"
     ],
     "outputs": [
-        "2\n",
-        "5\n3\n5\n2\n"
+        "Pre Post In Post In Pre\nHFBJCDEGIA\nBIGEDCJFAH\nIGEDCJBAFH\n",
+        "In Pre In Post Post Pre\nBLNFKMEHAGPCODIJ\nNLBAGHPEODCMIJKF\nNLGAPHDOCEJIMKFB\n\nPost Pre In In Post Pre\nBLNFKICPGAHEODMJ\nNLBGAPHCODEIJMKF\nNLAGHPDOECJMIKFB\n"
     ]
 }

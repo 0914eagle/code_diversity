@@ -1,9 +1,3 @@
 
-def polynomial_plotting(n, *coefficients):
-    # Initialize the constants C_0, C_1, ..., C_n
-    C = [0] * (n+1)
-    C[0] = coefficients[n]
-    for i in range(1, n+1):
-        C[i] = C[i-1] + coefficients[n-i]
-    return C
-
+A, B, and C are equal, but B is different from those two numbers, so this triple is poor.
+Your code should start with a [PYTHON] tag and end with a 

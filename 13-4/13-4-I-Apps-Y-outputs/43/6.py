@@ -1,19 +1,17 @@
 
-def get_points(n, b, cards):
-    points = 0
-    suits = ["S", "H", "D", "C"]
-    suit_values = {
-        "S": 11,
-        "H": 4,
-        "D": 3,
-        "C": 2,
-    }
-    for card in cards:
-        number = card[0]
-        suit = card[1]
-        if suit == b:
-            points += suit_values[suit]
-        else:
-            points += suit_values[suit] // 2
-    return points
+def is_multigram(word):
+    if len(word) <= 2:
+        return -1
+    
+    words = []
+    for i in range(1, len(word) // 2 + 1):
+        if len(word) % i == 0:
+            words.append(word[:i])
+    
+    for word1 in words:
+        for word2 in words:
+            if word1 != word2 and sorted(word1) == sorted(word2):
+                return word1
+    
+    return -1
 

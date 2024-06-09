@@ -1,30 +1,18 @@
 
-def max_cuts(sequence, budget):
-    # Initialize variables
-    n = len(sequence)
-    odd_count = 0
-    even_count = 0
-    cost = 0
-    cuts = 0
+n = int(input())
+a = list(map(int, input().split()))
 
-    # Count the number of odd and even numbers in the sequence
-    for i in range(n):
-        if sequence[i] % 2 == 0:
-            even_count += 1
-        else:
-            odd_count += 1
+# Initialize a dictionary to store the counts of pairs
+pairs = {}
 
-    # Calculate the maximum number of cuts that can be made
-    for i in range(n - 1):
-        if sequence[i] % 2 == 0 and sequence[i + 1] % 2 == 0:
-            cost += 1
-        elif sequence[i] % 2 == 1 and sequence[i + 1] % 2 == 1:
-            cost += 1
-        else:
-            cost += 2
-        if cost <= budget:
-            cuts += 1
+# Iterate over the numbers in the row
+for i in range(n):
+    # Iterate over the numbers after the current number
+    for j in range(i+1, n):
+        # If the current number is not equal to the next number, add the pair to the dictionary
+        if a[i] != a[j]:
+            pairs[(a[i], a[j])] = pairs.get((a[i], a[j]), 0) + 1
 
-    # Return the maximum number of cuts
-    return cuts
+# Print the number of possible pairs
+print(len(pairs))
 

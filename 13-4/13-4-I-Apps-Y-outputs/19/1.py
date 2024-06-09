@@ -1,21 +1,48 @@
 
-def solve(n, a):
-    # Initialize a dictionary to map each kid to their remembered kids
-    remembered_kids = {}
-    for i in range(n):
-        remembered_kids[i+1] = [a[i][0], a[i][1]]
+def get_max_distance(grid):
+    # Initialize the maximum distance to 0
+    max_distance = 0
     
-    # Initialize a list to store the final permutation
-    permutation = []
+    # Loop through each row of the grid
+    for i in range(len(grid)):
+        # Loop through each column of the grid
+        for j in range(len(grid[0])):
+            # If the current block is a spy
+            if grid[i][j] == "S":
+                # Find the nearest safe house
+                safe_house = find_nearest_safe_house(grid, i, j)
+                
+                # Calculate the Manhattan distance between the spy and the safe house
+                distance = abs(i - safe_house[0]) + abs(j - safe_house[1])
+                
+                # Update the maximum distance if necessary
+                if distance > max_distance:
+                    max_distance = distance
     
-    # Start from the first kid and follow the remembered kids to construct the permutation
-    current_kid = 1
-    while len(permutation) < n:
-        # If the current kid has not been visited yet, add them to the permutation
-        if current_kid not in permutation:
-            permutation.append(current_kid)
-        # Get the next kid from the remembered kids of the current kid
-        current_kid = remembered_kids[current_kid][0]
+    # Return the maximum distance
+    return max_distance
+
+def find_nearest_safe_house(grid, i, j):
+    # Initialize the nearest safe house as the current block
+    nearest_safe_house = (i, j)
     
-    return permutation
+    # Loop through each block in the grid
+    for row in range(len(grid)):
+        for col in range(len(grid[0])):
+            # If the current block is a safe house and it is closer to the spy than the current nearest safe house
+            if grid[row][col] == "H" and abs(row - i) + abs(col - j) < abs(nearest_safe_house[0] - i) + abs(nearest_safe_house[1] - j):
+                # Update the nearest safe house
+                nearest_safe_house = (row, col)
+    
+    # Return the nearest safe house
+    return nearest_safe_house
+
+grid = [
+    [".", ".", ".", "H"],
+    [".", "S", ".", "."],
+    [".", ".", ".", "H"],
+    [".", ".", ".", "."]
+]
+
+print(get_max_distance(grid))
 

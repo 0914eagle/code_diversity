@@ -1,12 +1,11 @@
 
-def find_beautiful_number(p, x):
-    if x == 1:
-        return "Impossible"
+def solve(r, b, k):
+    # Calculate the maximum number of consecutive planks with the same color
+    max_consecutive = k
     
-    for i in range(10**(p-1), 10**p):
-        if str(i) != str(i)[:1] + str(i)[1:] * (x-1):
-            continue
-        return str(i)
-    
-    return "Impossible"
+    # Check if r and b are both factors of max_consecutive
+    if r % max_consecutive == 0 and b % max_consecutive == 0:
+        return "OBEY"
+    else:
+        return "REBEL"
 

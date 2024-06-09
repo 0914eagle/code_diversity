@@ -1,50 +1,20 @@
 
-def get_min_hours(n, m, railways):
-    # Initialize a graph with the given railways
-    graph = {i: set() for i in range(1, n + 1)}
-    for u, v in railways:
-        graph[u].add(v)
-        graph[v].add(u)
+import itertools
 
-    # Find all possible routes for the train and the bus
-    train_routes = []
-    bus_routes = []
-    for i in range(1, n + 1):
-        for route in dfs(graph, i):
-            if len(route) == n:
-                train_routes.append(route)
-            if len(route) == n - 1:
-                bus_routes.append(route)
+def count_paintings(N, S1, S2):
+    # Initialize a dictionary to store the number of paintings for each domino
+    paintings = {}
+    for domino in itertools.product("RGB", repeat=N):
+        paintings[domino] = 0
 
-    # Find the minimum hours needed for the train and the bus to reach town n
-    min_hours_train = float("inf")
-    min_hours_bus = float("inf")
-    for route in train_routes:
-        hours = 0
-        for i in range(len(route) - 1):
-            u, v = route[i], route[i + 1]
-            hours += 1
-        min_hours_train = min(min_hours_train, hours)
-    for route in bus_routes:
-        hours = 0
-        for i in range(len(route) - 1):
-            u, v = route[i], route[i + 1]
-            hours += 1
-        min_hours_bus = min(min_hours_bus, hours)
+    # Iterate over the dominoes in S1 and S2 and increment the number of paintings for each domino
+    for i in range(N):
+        for j in range(N):
+            domino1 = S1[i]
+            domino2 = S2[j]
+            if domino1 != domino2:
+                paintings[(domino1, domino2)] += 1
 
-    # Return the maximum of the minimum hours needed for the train and the bus
-    return max(min_hours_train, min_hours_bus)
-
-
-def dfs(graph, start):
-    visited = set()
-    stack = [(start, [start])]
-    while stack:
-        node, path = stack.pop()
-        if node not in visited:
-            visited.add(node)
-            for neighbor in graph[node]:
-                if neighbor not in visited:
-                    stack.append((neighbor, path + [neighbor]))
-    return [path for node, path in visited.items() if node != start]
+    # Return the sum of the number of paintings for all dominoes, modulo 1000000007
+    return sum(paintings.values()) % 1000000007
 

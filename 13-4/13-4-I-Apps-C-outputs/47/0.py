@@ -1,58 +1,31 @@
 
-def solve_tomb_puzzle(n, m, floorplan):
-    # Initialize a list to store the gargoyle positions
-    gargoyle_positions = []
+import math
 
-    # Iterate through the floorplan and find the gargoyles
-    for i in range(n):
-        for j in range(m):
-            if floorplan[i][j] == "V" or floorplan[i][j] == "H":
-                gargoyle_positions.append((i, j))
+def get_maximum_expected_profit(x, p):
+    # Calculate the probability of losing and winning for each bet
+    prob_loss = 1 - p
+    prob_win = p
 
-    # If there are no gargoyles, return -1
-    if not gargoyle_positions:
-        return -1
+    # Calculate the expected value of each bet
+    expected_value_loss = -1
+    expected_value_win = 2
 
-    # Initialize a list to store the mirror positions
-    mirror_positions = []
+    # Calculate the maximum expected profit
+    max_expected_profit = math.inf
+    for i in range(100):
+        current_profit = i * expected_value_win * prob_win + (100 - i) * expected_value_loss * prob_loss
+        if current_profit < max_expected_profit:
+            max_expected_profit = current_profit
 
-    # Iterate through the floorplan and find the mirrors
-    for i in range(n):
-        for j in range(m):
-            if floorplan[i][j] == "/" or floorplan[i][j] == "\\":
-                mirror_positions.append((i, j))
+    # Calculate the refund amount
+    refund_amount = x / 100
 
-    # If there are no mirrors, return -1
-    if not mirror_positions:
-        return -1
+    # Calculate the maximum expected profit with refund
+    max_expected_profit_with_refund = max_expected_profit + refund_amount
 
-    # Initialize a list to store the obstacle positions
-    obstacle_positions = []
+    return max_expected_profit_with_refund
 
-    # Iterate through the floorplan and find the obstacles
-    for i in range(n):
-        for j in range(m):
-            if floorplan[i][j] == "#":
-                obstacle_positions.append((i, j))
-
-    # If there are no obstacles, return -1
-    if not obstacle_positions:
-        return -1
-
-    # Initialize a list to store the solution
-    solution = []
-
-    # Iterate through the gargoyles and mirrors and find the minimum number of gargoyles that need to be rotated
-    for gargoyle in gargoyle_positions:
-        for mirror in mirror_positions:
-            # Check if the gargoyle and mirror are in the same row or column
-            if gargoyle[0] == mirror[0] or gargoyle[1] == mirror[1]:
-                # Check if the gargoyle and mirror are not blocked by an obstacle
-                if not any(obstacle_position in [(gargoyle[0], mirror[1]), (mirror[0], gargoyle[1])] for obstacle_position in obstacle_positions):
-                    # Add the gargoyle to the solution
-                    solution.append(gargoyle)
-                    break
-
-    # Return the length of the solution
-    return len(solution)
+x = 20
+p = 49.9
+print(get_maximum_expected_profit(x, p))
 

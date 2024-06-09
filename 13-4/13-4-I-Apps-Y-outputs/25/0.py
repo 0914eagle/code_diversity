@@ -1,40 +1,43 @@
 
-def solve(n, edges):
-    # Initialize a dictionary to store the graph
-    graph = {}
-    for i in range(1, n+1):
-        graph[i] = []
+def is_star(grid, row, col, size):
+    # Check if the star is inside the grid
+    if row < 0 or row + size > len(grid) or col < 0 or col + size > len(grid[0]):
+        return False
+    
+    # Check if the star is completely inside the grid
+    for i in range(row, row + size):
+        for j in range(col, col + size):
+            if grid[i][j] != '*':
+                return False
+    
+    return True
 
-    # Add edges to the graph
-    for edge in edges:
-        graph[edge[0]].append(edge[1])
-        graph[edge[1]].append(edge[0])
+def draw_grid(grid):
+    # Initialize the number of stars needed
+    num_stars = 0
+    
+    # Iterate through the grid
+    for row in range(len(grid)):
+        for col in range(len(grid[0])):
+            # If the current cell is an asterisk, check if it forms a star
+            if grid[row][col] == '*':
+                # Check if the star is size 1
+                if is_star(grid, row, col, 1):
+                    num_stars += 1
+                    print(row, col, 1)
+                # Check if the star is size 2
+                elif is_star(grid, row, col, 2):
+                    num_stars += 1
+                    print(row, col, 2)
+                # Check if the star is size 3
+                elif is_star(grid, row, col, 3):
+                    num_stars += 1
+                    print(row, col, 3)
+    
+    return num_stars
 
-    # Initialize variables to store the maximum number of edges and the vertices
-    max_edges = 0
-    a, b, c = 0, 0, 0
-
-    # Iterate over all possible pairs of vertices
-    for i in range(1, n+1):
-        for j in range(i+1, n+1):
-            # Initialize a set to store the edges in the path between i and j
-            path = set()
-
-            # Add the edge between i and j to the path
-            path.add((i, j))
-
-            # Iterate over the neighbors of i and j
-            for neighbor in graph[i]:
-                if neighbor != j:
-                    path.update(graph[neighbor])
-            for neighbor in graph[j]:
-                if neighbor != i:
-                    path.update(graph[neighbor])
-
-            # If the number of edges in the path is greater than the maximum number of edges, update the variables
-            if len(path) > max_edges:
-                max_edges = len(path)
-                a, b, c = i, j, 0
-
-    return max_edges, a, b, c
+n, m = map(int, input().split())
+grid = [input() for _ in range(n)]
+num_stars = draw_grid(grid)
+print(num_stars)
 

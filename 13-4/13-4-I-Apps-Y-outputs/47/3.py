@@ -1,11 +1,17 @@
 
-def solve(gunnar_dice, emma_dice):
-    gunnar_sum = sum(range(gunnar_dice[0], gunnar_dice[1] + 1))
-    emma_sum = sum(range(emma_dice[0], emma_dice[1] + 1))
-    if gunnar_sum > emma_sum:
-        return "Gunnar"
-    elif gunnar_sum < emma_sum:
-        return "Emma"
-    else:
-        return "Tie"
+def get_min_rolls(ell, n):
+    # Initialize the minimum number of rolls to infinity
+    min_rolls = float('inf')
+    
+    # Loop through all possible values of k
+    for k in range(1, ell + 1):
+        # Calculate the length of each roll
+        roll_length = ell * (k - 1) + n
+        
+        # If the length of the roll is greater than or equal to the total length of the loo roll, we have found a solution
+        if roll_length >= ell:
+            min_rolls = min(min_rolls, k)
+    
+    # Return the smallest value of k that works
+    return min_rolls
 

@@ -1,11 +1,17 @@
 
-def solve(a1, b1, a2, b2):
-    sum1 = (b1 - a1 + 1) + (b1 - a1 + 2)
-    sum2 = (b2 - a2 + 1) + (b2 - a2 + 2)
-    if sum1 > sum2:
-        return "Gunnar"
-    elif sum1 < sum2:
-        return "Emma"
-    else:
-        return "Tie"
+def solve(ell, n):
+    # Initialize the number of layers as 1
+    k = 1
+    # Loop until the roll runs out even though Nick still needs more paper
+    while True:
+        # Calculate the length of the roll after using n centimeters
+        length = ell - n
+        # If the length is greater than or equal to n, break the loop
+        if length >= n:
+            break
+        # Increment the number of layers
+        k += 1
+        # Set the length to the original length
+        length = ell
+    return k
 

@@ -1,34 +1,29 @@
 
-def get_pizza_indices(n, m, friends, pizzas):
-    # Initialize variables
-    pleased_friends = 0
-    total_price = 0
-    pizza1 = 0
-    pizza2 = 0
+import sys
 
-    # Iterate over all possible pairs of pizzas
-    for i in range(m):
-        for j in range(i+1, m):
-            # Check if the current pair of pizzas pleases at least n friends
-            current_pleased_friends = 0
-            for friend in friends:
-                if is_pleased(friend, pizzas[i], pizzas[j]):
-                    current_pleased_friends += 1
-            if current_pleased_friends >= n:
-                # If the current pair of pizzas pleases more friends than the previous one, update the variables
-                if current_pleased_friends > pleased_friends:
-                    pleased_friends = current_pleased_friends
-                    total_price = pizzas[i]["price"] + pizzas[j]["price"]
-                    pizza1 = i
-                    pizza2 = j
+def get_gis_permutations(gis):
+    # Initialize the number of permutations to 1
+    num_permutations = 1
+    # Loop through the elements of the GIS
+    for i in range(len(gis)):
+        # Get the current element of the GIS
+        current_element = gis[i]
+        # Get the number of elements to the left of the current element that are smaller than it
+        num_smaller_elements = sum(1 for j in range(i) if gis[j] < current_element)
+        # Get the number of elements to the right of the current element that are larger than it
+        num_larger_elements = sum(1 for j in range(i+1, len(gis)) if gis[j] > current_element)
+        # Calculate the number of permutations for the current element
+        num_permutations *= (num_smaller_elements + 1) * (num_larger_elements + 1)
+        # Modulo the number of permutations by the prime number 10^9 + 7 to avoid overflow
+        num_permutations %= 1000000007
+    return num_permutations
 
-    # Return the indices of the two pizzas that please the maximum number of friends and have the minimum total price
-    return pizza1, pizza2
-
-def is_pleased(friend, pizza1, pizza2):
-    # Check if the current friend is pleased with at least one of the two pizzas
-    for ingredient in friend["favorite_ingredients"]:
-        if ingredient in pizza1["ingredients"] or ingredient in pizza2["ingredients"]:
-            return True
-    return False
+if __name__ == "__main__":
+    # Read the input from stdin
+    N, L = map(int, input().split())
+    gis = list(map(int, input().split()))
+    # Get the number of permutations with the given GIS
+    num_permutations = get_gis_permutations(gis)
+    # Print the number of permutations
+    print(num_permutations)
 

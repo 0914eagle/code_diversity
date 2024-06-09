@@ -1,14 +1,21 @@
 
-def get_points(num_hands, dominant_suit, cards):
-    points = 0
-    suit_values = {"S": 1, "H": 2, "D": 3, "C": 4}
-    dominant_suit_value = suit_values[dominant_suit]
-    for card in cards:
-        number = card[0]
-        suit = card[1]
-        if suit == dominant_suit:
-            points += 11
-        else:
-            points += suit_values[suit]
-    return points
+def is_multigram(word):
+    if len(word) <= 2:
+        return -1
+    
+    # Check if the word is a palindrome
+    if word == word[::-1]:
+        return -1
+    
+    # Check if the word can be divided into two halves with equal length
+    if len(word) % 2 == 1:
+        return -1
+    
+    # Check if the two halves are anagrams of each other
+    half1 = word[:len(word)//2]
+    half2 = word[len(word)//2:]
+    if sorted(half1) == sorted(half2):
+        return half1
+    
+    return -1
 

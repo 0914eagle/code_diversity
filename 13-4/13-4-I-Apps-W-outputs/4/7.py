@@ -1,9 +1,8 @@
 
-def count_cells(n, x):
-    count = 0
-    for i in range(1, n+1):
-        for j in range(1, n+1):
-            if i * j == x:
-                count += 1
-    return count
+def get_pyramids_count(n):
+    pyramids_count = 0
+    while n > 0:
+        pyramids_count += 1
+        n -= (2 * pyramids_count) + 1
+    return pyramids_count
 

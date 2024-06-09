@@ -1,9 +1,18 @@
 
-def solve(maps):
-    n, m = len(maps[0]), len(maps[1])
-    for i in range(n-m+1):
-        for j in range(m-m+1):
-            if all(maps[0][i:i+m] == maps[1][j:j+m] for maps in maps):
-                return i+1, j+1
-    return -1, -1
+vowels = ['a', 'e', 'i', 'o', 'u']
+consonants = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z']
+
+def can_transform(s, t):
+    if len(s) != len(t):
+        return "No"
+    
+    for i in range(len(s)):
+        if s[i] in vowels and t[i] in vowels:
+            continue
+        elif s[i] in consonants and t[i] in consonants:
+            continue
+        else:
+            return "No"
+    
+    return "Yes"
 

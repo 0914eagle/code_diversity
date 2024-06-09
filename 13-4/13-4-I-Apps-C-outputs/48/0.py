@@ -1,22 +1,24 @@
 
-def solve(n, m, neighbors, s, t):
-    # Initialize a graph with n nodes and m edges
-    graph = [[] for _ in range(n)]
-    for u, v in neighbors:
-        graph[u].append(v)
-        graph[v].append(u)
+import sys
+
+def solve(N, X, A):
+    # Initialize the count of integers not exceeding X
+    count = 0
     
-    # Breadth-first search to find the shortest path between s and t
-    queue = [(s, 0)]
-    visited = set()
-    while queue:
-        node, distance = queue.pop(0)
-        if node == t:
-            return distance
-        if node not in visited:
-            visited.add(node)
-            for neighbor in graph[node]:
-                queue.append((neighbor, distance + 1))
+    # Loop through each integer A_i
+    for i in range(N):
+        # If A_i is not greater than X, increment the count
+        if A[i] <= X:
+            count += 1
     
-    return "never meet"
+    # Return the count modulo 998244353
+    return count % 998244353
+
+if __name__ == '__main__':
+    # Read the input from stdin
+    N, X = map(int, input().split())
+    A = list(map(int, input().split()))
+    
+    # Solve the problem
+    print(solve(N, X, A))
 

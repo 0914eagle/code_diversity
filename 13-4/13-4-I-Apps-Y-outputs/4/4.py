@@ -1,13 +1,9 @@
 
-def solve():
-    N = int(input())
-    permutation = list(map(int, input().split()))
-    count = 0
-    for i in range(N):
-        for j in range(i):
-            if permutation[i] <= permutation[j]:
-                break
-        else:
-            count += 1
-    return count
+def round_dances(n):
+    # Calculate the number of ways to make two round dances with n people
+    # where each round dance has n/2 people
+    ways = 1
+    for i in range(1, n//2):
+        ways *= n - i
+    return ways
 

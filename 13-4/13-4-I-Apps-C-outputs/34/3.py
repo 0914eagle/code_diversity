@@ -1,27 +1,62 @@
 
-def purify_cells(grid):
-    # Initialize the number of purification spells to be cast
-    num_spells = 0
-    
-    # Loop through each row of the grid
-    for i in range(len(grid)):
-        # Loop through each column of the grid
-        for j in range(len(grid[i])):
-            # If the current cell is evil and not a particularly more evil cell, cast a purification spell on it
-            if grid[i][j] == "E" and grid[i][j] != ".":
-                num_spells += 1
-                # Cast the purification spell on the current cell
-                grid[i][j] = "."
-                # Loop through the rows and columns of the grid
-                for k in range(len(grid)):
-                    # If the current cell is in the same row or column as the current cell, and it is not a particularly more evil cell, purify it
-                    if grid[k][j] == "E" and grid[k][j] != ".":
-                        grid[k][j] = "."
-    
-    # If all cells have been purified, return the number of purification spells cast
-    if "E" not in "".join(grid):
-        return num_spells
-    # Otherwise, return -1
+import sys
+input = sys.stdin.read()
+n, m, s = map(int, input.split())
+edges = []
+for i in range(m):
+    t, u, v = map(int, input.split())
+    edges.append((t, u, v))
+
+# Plan 1: Maximize the number of reachable vertices
+reachable = [0] * (n + 1)
+for i in range(m):
+    t, u, v = edges[i]
+    if t == 1:
+        reachable[u] = 1
+        reachable[v] = 1
     else:
-        return -1
+        reachable[u] = 1
+        reachable[v] = 1
+        reachable[u] = max(reachable[u], reachable[v])
+        reachable[v] = max(reachable[u], reachable[v])
+
+max_reachable = max(reachable)
+plan1 = [max_reachable]
+for i in range(m):
+    t, u, v = edges[i]
+    if t == 1:
+        plan1.append('+')
+    else:
+        if reachable[u] == max_reachable:
+            plan1.append('+')
+        else:
+            plan1.append('-')
+
+# Plan 2: Minimize the number of reachable vertices
+reachable = [0] * (n + 1)
+for i in range(m):
+    t, u, v = edges[i]
+    if t == 1:
+        reachable[u] = 1
+        reachable[v] = 1
+    else:
+        reachable[u] = 1
+        reachable[v] = 1
+        reachable[u] = min(reachable[u], reachable[v])
+        reachable[v] = min(reachable[u], reachable[v])
+
+min_reachable = min(reachable)
+plan2 = [min_reachable]
+for i in range(m):
+    t, u, v = edges[i]
+    if t == 1:
+        plan2.append('+')
+    else:
+        if reachable[u] == min_reachable:
+            plan2.append('+')
+        else:
+            plan2.append('-')
+
+print(plan1)
+print(plan2)
 

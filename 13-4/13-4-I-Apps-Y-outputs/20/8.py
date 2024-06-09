@@ -1,20 +1,13 @@
 
-def is_sorted(arr):
-    # Sort the array in non-decreasing order
-    arr.sort()
-    
-    # Initialize a variable to keep track of the height of the tallest stack
-    tallest_stack = 0
-    
-    # Iterate through the array and check if the height of the stack is greater than the tallest stack
-    for i in range(len(arr)):
-        if arr[i] > tallest_stack:
-            tallest_stack = arr[i]
-    
-    # If the tallest stack is not the last element of the array, the algorithm will not sort the array correctly
-    if tallest_stack != arr[-1]:
-        return "NO"
-    
-    # If the algorithm will sort the array correctly, return "YES"
-    return "YES"
+def get_optimal_flavor(n, ls):
+    # Sort the list of flavors in ascending order
+    ls.sort()
+    # Initialize the sum of the flavors of the remaining apples to 0
+    sum_flavors = 0
+    # Iterate over the list of flavors except the last one
+    for i in range(n-1):
+        # Add the current flavor to the sum of the flavors of the remaining apples
+        sum_flavors += ls[i]
+    # Return the sum of the flavors of the remaining apples
+    return sum_flavors
 

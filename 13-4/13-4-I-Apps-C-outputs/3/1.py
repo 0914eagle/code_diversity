@@ -1,28 +1,27 @@
 
-def get_immediate_boss_and_subordinates(employees, query):
-    # Sort the employees by salary in descending order
-    employees.sort(key=lambda x: x[1], reverse=True)
-    
-    # Create a dictionary to map employee ID to index in the list of employees
-    employee_map = {employee[0]: i for i, employee in enumerate(employees)}
-    
-    # Initialize the list of subordinates for each employee
-    subordinates = [[] for _ in range(len(employees))]
-    
-    # Loop through the employees and find the immediate boss for each employee
-    for i, employee in enumerate(employees):
-        # Find the index of the employee's immediate boss
-        boss_index = i
-        while boss_index > 0 and employees[boss_index - 1][2] >= employee[2]:
-            boss_index -= 1
-        
-        # Add the employee to the list of subordinates for their immediate boss
-        subordinates[boss_index].append(employee[0])
-    
-    # Find the immediate boss and number of subordinates for the query employee
-    query_index = employee_map[query]
-    boss_id = employees[query_index - 1][0] if query_index > 0 else 0
-    num_subordinates = len(subordinates[query_index])
-    
-    return boss_id, num_subordinates
+def reconstruct_painting(N, K, M, commands):
+    # Initialize the canvas with a 2D array of zeros
+    canvas = [[0] * N for _ in range(N)]
+
+    # Iterate through the commands and apply them to the canvas
+    for command in commands:
+        if command.startswith("PAINT"):
+            # Extract the colour and coordinates of the rectangle from the command
+            colour, x1, y1, x2, y2 = map(int, command.split()[1:])
+
+            # Iterate over the cells in the rectangle and paint them with the chosen colour
+            for x in range(x1, x2 + 1):
+                for y in range(y1, y2 + 1):
+                    canvas[x][y] = colour
+
+        elif command.startswith("SAVE"):
+            # Save the current state of the canvas
+            saved_canvas = canvas.copy()
+
+        elif command.startswith("LOAD"):
+            # Load the saved state of the canvas
+            canvas = saved_canvas.copy()
+
+    # Return the final state of the canvas
+    return canvas
 

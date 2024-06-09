@@ -1,23 +1,34 @@
 
-def solve(starting_sequence, resulting_sequence):
-    # Initialize a list to store the proclamations
-    proclamations = []
+def get_reconstructions(pre_output, in_output, post_output):
+    # Initialize a list to store the reconstructions
+    reconstructions = []
     
-    # Loop through the resulting sequence
-    for i in range(len(resulting_sequence)):
-        # Get the current frog ID and its position in the resulting sequence
-        current_frog_id = resulting_sequence[i]
-        current_frog_position = i
-        
-        # Find the position of the current frog ID in the starting sequence
-        starting_frog_position = starting_sequence.index(current_frog_id)
-        
-        # Calculate the number of leaps needed to move the current frog to its correct position
-        leaps_needed = abs(current_frog_position - starting_frog_position)
-        
-        # Add the leaps needed to the proclamations list
-        proclamations.extend([leaps_needed] * leaps_needed)
+    # Iterate over all possible combinations of Pre, In, and Post calls
+    for pre_calls in range(2):
+        for in_calls in range(2):
+            for post_calls in range(2):
+                # Check if the number of calls to each routine is correct
+                if pre_calls + in_calls + post_calls != 6:
+                    continue
+                
+                # Check if the calls to each routine are in the correct order
+                if pre_calls > in_calls or in_calls > post_calls:
+                    continue
+                
+                # Check if the calls to each routine are unique
+                if pre_calls != in_calls and pre_calls != post_calls and in_calls != post_calls:
+                    continue
+                
+                # Check if the outputs match the given outputs
+                pre_print = "".join(pre_output[i] for i in range(pre_calls))
+                in_print = "".join(in_output[i] for i in range(in_calls))
+                post_print = "".join(post_output[i] for i in range(post_calls))
+                if pre_print != pre_output or in_print != in_output or post_print != post_output:
+                    continue
+                
+                # If all checks pass, add the reconstruction to the list
+                reconstructions.append([pre_calls, in_calls, post_calls])
     
-    # Return the proclamations list
-    return proclamations
+    # Return the list of reconstructions
+    return reconstructions
 

@@ -1,17 +1,28 @@
 
-def solve(a):
-    # Sort the array in ascending order
-    a.sort()
-    # Initialize a set to store the unique elements in the array
-    unique_elements = set()
-    # Iterate through the array
-    for element in a:
-        # If the element is not already in the set, add it to the set
-        if element not in unique_elements:
-            unique_elements.add(element)
-    # If there is only one element in the set, return "YES"
-    if len(unique_elements) == 1:
-        return "YES"
-    else:
-        return "NO"
+def solve(N, T, M, P, X):
+    # Initialize a list to store the time it takes to solve all problems
+    time_taken = []
+    
+    # Loop through each drink
+    for i in range(M):
+        # Initialize a list to store the time it takes to solve each problem
+        problem_time = []
+        
+        # Loop through each problem
+        for j in range(N):
+            # If the problem is not the one that is stimulated by the drink
+            if j != P[i]:
+                # Add the time it takes to solve the problem to the list
+                problem_time.append(T[j])
+            else:
+                # Add the stimulated time to the list
+                problem_time.append(X[i])
+                
+        # Calculate the total time it takes to solve all problems
+        total_time = sum(problem_time)
+        
+        # Add the total time to the list of times taken
+        time_taken.append(total_time)
+    
+    return time_taken
 

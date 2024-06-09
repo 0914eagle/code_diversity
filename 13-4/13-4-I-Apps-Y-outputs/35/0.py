@@ -1,22 +1,21 @@
 
-def solve_problem(n, k):
-    # Initialize a list to store the letters of the alphabet
-    alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-    
-    # Initialize an empty string to store the result
-    result = ""
-    
-    # Iterate through the alphabet and add each letter to the result string until the length of the result string is equal to n
-    for letter in alphabet:
-        if len(result) < n:
-            result += letter
-        else:
-            break
-    
-    # If the length of the result string is greater than n, remove the last letter
-    if len(result) > n:
-        result = result[:-1]
-    
-    # Return the result string
-    return result
+n, m = map(int, input().split())
+segments = []
+for i in range(n):
+    l, r = map(int, input().split())
+    segments.append([l, r])
+
+points = set()
+for segment in segments:
+    for i in range(segment[0], segment[1] + 1):
+        points.add(i)
+
+non_segment_points = []
+for i in range(1, m + 1):
+    if i not in points:
+        non_segment_points.append(i)
+
+print(len(non_segment_points))
+if len(non_segment_points) != 0:
+    print(*non_segment_points)
 

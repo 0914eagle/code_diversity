@@ -1,42 +1,26 @@
 
-def get_min_m(n, k):
-    m = 1
-    while True:
-        if is_possible(n, k, m):
-            return m
-        m += 1
-
-def is_possible(n, k, m):
-    sets = []
+def get_maximum_types(n, m, a, k):
+    # Sort the list of already owned toys in ascending order
+    a.sort()
+    # Initialize variables to keep track of the number of types and cost
+    num_types = 0
+    cost = 0
+    # Iterate through the list of already owned toys
     for i in range(n):
-        set_size = 0
-        while set_size < 4:
-            num = random.randint(1, m)
-            if all(num not in s for s in sets):
-                sets.append(num)
-                set_size += 1
-        if not all(gcd(s1, s2) == k for s1, s2 in combinations(sets, 2)):
-            return False
-    return True
+        # If the current toy is not already owned, add it to the list of types and increase the cost
+        if a[i] not in a[:i]:
+            num_types += 1
+            cost += a[i]
+        # If the cost exceeds the given limit, return the current number of types and list of types
+        if cost > m:
+            return num_types, a[:i]
+    # If all toys have been iterated through and the cost is still within limit, return the current number of types and list of types
+    return num_types, a
 
-def gcd(a, b):
-    while b != 0:
-        a, b = b, a % b
-    return a
 
-def main():
-    n, k = map(int, input().split())
-    m = get_min_m(n, k)
-    print(m)
-    for i in range(n):
-        set_size = 0
-        while set_size < 4:
-            num = random.randint(1, m)
-            if all(num not in s for s in sets):
-                sets.append(num)
-                set_size += 1
-        print(*sets)
-
-if __name__ == "__main__":
-    main()
+n, m = map(int, input().split())
+a = list(map(int, input().split()))
+k, b = get_maximum_types(n, m, a, k)
+print(k)
+print(*b)
 

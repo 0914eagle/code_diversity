@@ -1,41 +1,33 @@
 
-def solve(k, n):
-    # Initialize variables
-    alphabet = "abcdefghijklmnopqrstuvwxyz"
-    strings = []
-    count = 0
+def get_min_waiting_time(num_dogs, num_bowls, feeding_times):
+    # Initialize a list to store the feeding times for each dog
+    dog_feeding_times = []
+    for i in range(num_dogs):
+        dog_feeding_times.append([])
     
-    # Iterate through all possible strings
-    for i in range(len(alphabet) ** k):
-        # Convert the index to a binary string
-        binary = bin(i)[2:]
-        binary = binary.zfill(k)
-        
-        # Check if the string is double free
-        double_free = True
-        for j in range(k - 1):
-            if binary[j] == binary[j + 1]:
-                double_free = False
-                break
-        
-        # Check if the string is k-incremental
-        k_incremental = True
-        for j in range(k):
-            count = 0
-            for c in binary:
-                if c == str(j):
-                    count += 1
-            if count != j + 1:
-                k_incremental = False
-                break
-        
-        # If the string is double free and k-incremental, add it to the list
-        if double_free and k_incremental:
-            strings.append(binary)
+    # Initialize a list to store the feeding times for each bowl
+    bowl_feeding_times = [0] * num_bowls
     
-    # Return the nth string in the list
-    if n <= len(strings):
-        return "".join(strings[n - 1])
-    else:
-        return -1
+    # Loop through each dog and their feeding times
+    for i in range(num_dogs):
+        for j in range(num_bowls):
+            # If the current dog has not finished eating from the current bowl
+            if feeding_times[i][j] > 0:
+                # Add the current dog to the list of dogs feeding from the current bowl
+                dog_feeding_times[j].append(i)
+                # Subtract the current dog's feeding time from the total feeding time for the current bowl
+                bowl_feeding_times[j] -= feeding_times[i][j]
+    
+    # Initialize a variable to store the minimum waiting time
+    min_waiting_time = 0
+    
+    # Loop through each dog and their feeding times
+    for i in range(num_dogs):
+        # If the current dog has not finished eating from all bowls
+        if len(dog_feeding_times[i]) < num_bowls:
+            # Add the current dog's feeding time to the minimum waiting time
+            min_waiting_time += feeding_times[i][-1]
+    
+    # Return the minimum waiting time
+    return min_waiting_time
 

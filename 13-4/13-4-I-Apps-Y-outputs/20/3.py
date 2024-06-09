@@ -1,17 +1,34 @@
 
-def is_sorted(arr):
-    # Sort the array in descending order
-    arr.sort(reverse=True)
-    # Initialize a variable to keep track of the height of the tallest stack
-    tallest_stack = 0
-    # Loop through the array and check if the stacks are sorted correctly
-    for i in range(len(arr) - 1):
-        # If the current stack is taller than the previous stack, return "NO"
-        if arr[i] - arr[i + 1] > 1:
-            return "NO"
-        # If the current stack is taller than the tallest stack, update the tallest stack
-        if arr[i] > tallest_stack:
-            tallest_stack = arr[i]
-    # If all the stacks are sorted correctly, return "YES"
-    return "YES"
+import math
+
+def get_flavor(apples):
+    # Calculate the sum of the flavors of all apples
+    total_flavor = sum(apples)
+
+    # Sort the apples in ascending order of their flavors
+    apples.sort()
+
+    # Initialize the minimum difference between the flavors of the apple pie made of all apples and the apple pie made of the remaining N-1 apples
+    min_diff = math.inf
+
+    # Loop through each apple and calculate the difference between the flavors of the apple pie made of all apples and the apple pie made of the remaining N-1 apples
+    for i in range(len(apples)):
+        # Calculate the flavor of the apple pie made of the remaining N-1 apples
+        remaining_flavor = total_flavor - apples[i]
+
+        # Calculate the difference between the flavors of the apple pie made of all apples and the apple pie made of the remaining N-1 apples
+        diff = abs(remaining_flavor - total_flavor)
+
+        # Update the minimum difference if the current difference is smaller than the minimum difference
+        if diff < min_diff:
+            min_diff = diff
+
+    # Return the flavor of the apple pie made of the remaining N-1 apples
+    return remaining_flavor
+
+n, l = map(int, input().split())
+apples = list(map(int, input().split()))
+
+# Print the flavor of the apple pie made of the remaining N-1 apples
+print(get_flavor(apples))
 

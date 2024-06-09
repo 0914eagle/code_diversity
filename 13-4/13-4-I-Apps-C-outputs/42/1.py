@@ -1,37 +1,21 @@
 
-def solve(h, m, s, t_1, t_2):
-    # Convert the time to a single integer
-    time_1 = h * 3600 + m * 60 + s
-    time_2 = t_1 * 3600 + m * 60 + s
-    
-    # Check if the times are equal
-    if time_1 == time_2:
-        return "NO"
-    
-    # Check if the times are within the same hour
-    if time_1 // 3600 == time_2 // 3600:
-        return "YES"
-    
-    # Check if the times are within the same minute
-    if time_1 // 60 == time_2 // 60:
-        return "YES"
-    
-    # Check if the times are within the same second
-    if time_1 == time_2:
-        return "YES"
-    
-    # Check if the times are within the same hour and minute
-    if time_1 // 3600 == time_2 // 3600 and time_1 // 60 == time_2 // 60:
-        return "YES"
-    
-    # Check if the times are within the same hour and second
-    if time_1 // 3600 == time_2 // 3600 and time_1 == time_2:
-        return "YES"
-    
-    # Check if the times are within the same minute and second
-    if time_1 // 60 == time_2 // 60 and time_1 == time_2:
-        return "YES"
-    
-    # If none of the above conditions are met, return "NO"
-    return "NO"
+def get_min_path_length(n, k):
+    # Initialize a dictionary to store the shortest distance from each node to the assembly node
+    dist = {1: 0}
+
+    # Loop through each node
+    for i in range(2, n + 1):
+        # If the node is not in the dictionary, add it with a distance of infinity
+        if i not in dist:
+            dist[i] = float("inf")
+
+        # Loop through each fragment
+        for j in range(len(k)):
+            # If the fragment is located at the current node
+            if k[j] == i:
+                # Update the shortest distance from the current node to the assembly node
+                dist[i] = min(dist[i], dist[k[j]] + 1)
+
+    # Return the minimum path length
+    return sum(dist.values())
 

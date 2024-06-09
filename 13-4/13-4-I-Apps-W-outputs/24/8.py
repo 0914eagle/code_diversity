@@ -1,25 +1,38 @@
 
-def solve(n, m, edges):
-    # Initialize a dictionary to store the recognition of each warrior
-    recognitions = {i: 0 for i in range(1, n + 1)}
+import sys
 
-    # Iterate over the edges and update the recognition of each warrior
-    for edge in edges:
-        recognitions[edge[0]] += 1
-        recognitions[edge[1]] += 1
+def solve():
+    N, K = map(int, input().split())
+    A = list(map(int, input().split()))
 
-    # Find the three musketeers with the minimum recognition sum
-    min_sum = float('inf')
-    for i in range(1, n + 1):
-        for j in range(i + 1, n + 1):
-            for k in range(j + 1, n + 1):
-                if recognitions[i] + recognitions[j] + recognitions[k] < min_sum:
-                    min_sum = recognitions[i] + recognitions[j] + recognitions[k]
+    # Initialize the prefix sum array
+    prefix_sum = [0] * (N + 1)
+    for i in range(1, N + 1):
+        prefix_sum[i] = prefix_sum[i - 1] + A[i - 1]
 
-    # If a triple of musketeers is found, return the minimum recognition sum
-    # Otherwise, return -1
-    if min_sum < float('inf'):
-        return min_sum
-    else:
-        return -1
+    # Initialize the answer
+    count = 0
+
+    # Iterate through the prefix sum array
+    for i in range(N):
+        # Find the first index j such that prefix_sum[j] >= K
+        j = bisect_left(prefix_sum, K, i, N)
+
+        # If j is not N, then we have found a contiguous subsequence that satisfies the condition
+        if j != N:
+            count += 1
+
+    return count
+
+def bisect_left(arr, x, lo, hi):
+    while lo < hi:
+        mid = (lo + hi) // 2
+        if arr[mid] < x:
+            lo = mid + 1
+        else:
+            hi = mid
+    return lo
+
+if __name__ == '__main__':
+    print(solve())
 

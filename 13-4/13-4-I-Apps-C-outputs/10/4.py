@@ -1,20 +1,23 @@
 
-def solve(n, m, courses):
-    # Initialize a list to store the maximum number of calories Stan can eat in each hour
-    max_calories = [0] * n
+import sys
 
-    # Initialize the maximum number of calories Stan can eat in the first hour
-    max_calories[0] = m
+def solve(S):
+    # Initialize the number of distinct strings to 1
+    distinct_strings = 1
+    # Loop through each character in the string
+    for i in range(len(S) - 1):
+        # If the current character is different from the next character
+        if S[i] != S[i + 1]:
+            # Replace the current character with the character that is different from both the current and next characters
+            S = S[:i] + "ABC"[("ABC".index(S[i]) + 1) % 3] + S[i + 2:]
+            # Increment the number of distinct strings
+            distinct_strings += 1
+    # Return the number of distinct strings modulo (10^9+7)
+    return distinct_strings % (10**9 + 7)
 
-    # Loop through the courses
-    for i in range(1, n):
-        # If the current course has more calories than the previous hour, update the maximum number of calories Stan can eat in the current hour
-        if courses[i] > max_calories[i-1]:
-            max_calories[i] = courses[i]
-        # Otherwise, update the maximum number of calories Stan can eat in the current hour by dividing the previous hour's maximum number of calories by 2
-        else:
-            max_calories[i] = max_calories[i-1] // 2
-
-    # Return the sum of the maximum number of calories Stan can eat in each hour
-    return sum(max_calories)
+if __name__ == "__main__":
+    # Read the input string
+    S = sys.stdin.readline().strip()
+    # Print the result
+    print(solve(S))
 

@@ -1,56 +1,48 @@
 
-def get_maximum_edges(n, edges):
-    # Initialize a dictionary to store the graph
-    graph = {}
-    for i in range(1, n+1):
-        graph[i] = []
+def is_star(grid, row, col, size):
+    # Check if the star is inside the grid
+    if row < 0 or col < 0 or row + size > len(grid) or col + size > len(grid[0]):
+        return False
+    
+    # Check if the star is completely inside the grid
+    if any(grid[row + i][col + j] != '*' for i in range(size) for j in range(size)):
+        return False
+    
+    # Check if the star is not overlapping with any other star
+    for i in range(row, row + size):
+        for j in range(col, col + size):
+            if grid[i][j] == '*' and (i, j) != (row, col):
+                return False
+    
+    return True
 
-    # Add edges to the graph
-    for edge in edges:
-        graph[edge[0]].append(edge[1])
-        graph[edge[1]].append(edge[0])
+def draw_grid(grid):
+    # Initialize the number of stars needed to draw the grid
+    num_stars = 0
+    
+    # Iterate through the grid and check if each cell is a star
+    for row in range(len(grid)):
+        for col in range(len(grid[0])):
+            if grid[row][col] == '*':
+                # Check if the star is valid
+                if not is_star(grid, row, col, 1):
+                    return -1
+                num_stars += 1
+    
+    # If all cells are stars, return the number of stars needed
+    return num_stars
 
-    # Initialize variables to store the maximum number of edges and the vertices with the maximum number of edges
-    max_edges = 0
-    max_vertices = []
+grid = [
+    ['.', '.', '.', '.', '.', '.', '.', '.'],
+    ['.', '*', '*', '*', '*', '*', '.', '.'],
+    ['.', '*', '*', '*', '*', '*', '.', '.'],
+    ['.', '*', '*', '*', '*', '*', '.', '.'],
+    ['.', '*', '*', '*', '*', '*', '.', '.'],
+    ['.', '*', '*', '*', '*', '*', '.', '.'],
+    ['.', '.', '.', '.', '.', '.', '.', '.'],
+    ['.', '.', '.', '.', '.', '.', '.', '.']
+]
 
-    # Iterate over all possible pairs of vertices
-    for i in range(1, n+1):
-        for j in range(i+1, n+1):
-            # If the vertices are not already in the maximum set, calculate the number of edges between them
-            if i not in max_vertices and j not in max_vertices:
-                num_edges = count_edges(graph, i, j)
-                # If the number of edges is greater than the current maximum, update the maximum and the vertices with the maximum number of edges
-                if num_edges > max_edges:
-                    max_edges = num_edges
-                    max_vertices = [i, j]
-
-    return max_edges, max_vertices
-
-def count_edges(graph, i, j):
-    # Initialize a set to store the visited vertices
-    visited = set()
-    # Initialize a queue to store the vertices to be visited
-    queue = [i]
-    # Initialize a counter to store the number of edges
-    count = 0
-
-    while queue:
-        # Dequeue a vertex from the queue
-        vertex = queue.pop(0)
-        # If the vertex has not been visited before, mark it as visited and add its neighbors to the queue
-        if vertex not in visited:
-            visited.add(vertex)
-            queue += graph[vertex]
-            # If the vertex is the destination vertex, increment the counter
-            if vertex == j:
-                count += 1
-
-    return count
-
-n = 8
-edges = [(1, 2), (2, 3), (3, 4), (4, 5), (4, 6), (3, 7), (3, 8)]
-max_edges, max_vertices = get_maximum_edges(n, edges)
-print(max_edges)
-print(max_vertices)
+result = draw_grid(grid)
+print(result)
 

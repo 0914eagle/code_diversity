@@ -1,47 +1,50 @@
 
-def nimionese(sentence):
-    # Split the sentence into words
-    words = sentence.split()
-    
-    # Create a dictionary to map each word to its nimionese equivalent
-    word_map = {
-        "cat": "cata",
-        "dog": "dogah",
-        "hip": "gipoh",
-        "each": "dach",
-        "hip-po": "gip-go"
-    }
-    
-    # Iterate through each word in the sentence
-    for i in range(len(words)):
-        # Check if the word is in the dictionary
-        if words[i] in word_map:
-            # If it is, replace it with its nimionese equivalent
-            words[i] = word_map[words[i]]
-        else:
-            # If it's not, apply the rules to convert it to nimionese
-            words[i] = convert_word(words[i])
-    
-    # Join the words back into a sentence and return it
-    return " ".join(words)
+import math
 
-def convert_word(word):
-    # If the word starts with a hard consonant, replace it with the nearest hard consonant to 'a'
-    if word[0] in ["b", "c", "d", "g", "k", "n", "p", "t"]:
-        word = "a" + word[1:]
-    
-    # If the word contains a hard consonant in a subsequent syllable, replace it with the same consonant as the one at the start of the word
-    if "h" in word:
-        word = word.replace("h", word[0])
-    
-    # If the word ends in a hard consonant, add an 'ah', 'oh' or 'uh' at the end, rounding towards 'a' in the case of a tie
-    if word[-1] in ["b", "c", "d", "g", "k", "n", "p", "t"]:
-        if word[-1] == "b":
-            word += "ah"
-        elif word[-1] == "c":
-            word += "oh"
-        else:
-            word += "uh"
-    
-    return word
+def get_angle(x1, y1, x2, y2):
+    # Calculate the dot product of the two vectors
+    dot_product = x1 * x2 + y1 * y2
+
+    # Calculate the magnitude of the two vectors
+    magnitude_1 = math.sqrt(x1 ** 2 + y1 ** 2)
+    magnitude_2 = math.sqrt(x2 ** 2 + y2 ** 2)
+
+    # Calculate the cosine of the angle between the vectors
+    cosine_angle = dot_product / (magnitude_1 * magnitude_2)
+
+    # Calculate the angle in radians
+    angle = math.acos(cosine_angle)
+
+    # Convert the angle to degrees
+    angle = math.degrees(angle)
+
+    return angle
+
+def solve(points):
+    # Initialize the angle to 0
+    angle = 0
+
+    # Iterate through the points
+    for i in range(len(points)):
+        # Calculate the angle between the current point and the previous point
+        angle += get_angle(points[i][0], points[i][1], points[i-1][0], points[i-1][1])
+
+    # Return the total angle
+    return angle
+
+points = []
+
+# Read the number of points
+n = int(input())
+
+# Read the points
+for i in range(n):
+    x, y = map(float, input().split())
+    points.append([x, y])
+
+# Solve the problem
+angle = solve(points)
+
+# Print the result
+print(angle)
 

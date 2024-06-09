@@ -1,17 +1,15 @@
 
-def get_max_groups(n):
-    # Initialize variables
-    count = 0
-    groups = 0
+N = int(input())
+A = int(input())
 
-    # Loop through each possible group size
-    for i in range(3, n + 1):
-        # Calculate the number of groups for this group size
-        count += n // i
-        # If the number of groups is greater than the maximum, update the maximum
-        if count > groups:
-            groups = count
+# Calculate the total number of squares
+total_squares = N ** 2
 
-    # Return the maximum number of groups
-    return groups
+# Calculate the number of squares that will be painted white
+white_squares = A
+
+# Calculate the number of squares that will be painted black
+black_squares = total_squares - white_squares
+
+print(black_squares)
 

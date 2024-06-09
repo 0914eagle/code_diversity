@@ -1,15 +1,27 @@
 
-def solve(n, d, e):
-    # Initialize the minimum number of rubles to n
-    min_rubles = n
-    # Iterate over all possible combinations of dollar and euro bills
-    for dollar_bill in [1, 2, 5, 10, 20, 50, 100]:
-        for euro_bill in [5, 10, 20, 50, 100, 200]:
-            # Calculate the total number of rubles after exchanging dollar and euro bills
-            total_rubles = dollar_bill * d + euro_bill * e
-            # If the total number of rubles is less than the minimum, update the minimum
-            if total_rubles < min_rubles:
-                min_rubles = total_rubles
-    # Return the minimum number of rubles
-    return min_rubles
+def solve(n, d, a, m, s, d, t, p):
+    # Initialize a dictionary to store the minimum cost for each city
+    min_cost = {city: float('inf') for city in range(1, n + 1)}
+    min_cost[a[0]] = 0
+    
+    # Loop through each airfare
+    for i in range(m):
+        # Check if the airfare is a one-way ticket
+        if t[i] == 'O':
+            # If the airfare is a one-way ticket, check if the origin city is the same as the previous city
+            if s[i] == d[i - 1]:
+                # If the origin city is the same as the previous city, update the minimum cost for the destination city
+                min_cost[d[i]] = min(min_cost[d[i]], min_cost[s[i]] + p[i])
+        else:
+            # If the airfare is a round trip ticket, check if the origin city is the same as the previous city
+            if s[i] == d[i - 1]:
+                # If the origin city is the same as the previous city, update the minimum cost for the destination city
+                min_cost[d[i]] = min(min_cost[d[i]], min_cost[s[i]] + p[i])
+            # Check if the destination city is the same as the next city
+            if d[i] == s[i + 1]:
+                # If the destination city is the same as the next city, update the minimum cost for the origin city
+                min_cost[s[i]] = min(min_cost[s[i]], min_cost[d[i]] + p[i])
+    
+    # Return the minimum cost for the last city
+    return min_cost[a[-1]]
 

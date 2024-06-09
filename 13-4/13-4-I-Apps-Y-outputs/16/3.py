@@ -1,17 +1,38 @@
 
-def solve(N, M, coordinates):
-    # Sort the coordinates in ascending order
-    sorted_coordinates = sorted(coordinates)
+def get_note_duration(note):
+    if note.isdigit():
+        return int(note)
+    else:
+        return 1
 
-    # Initialize the minimum number of moves to 0
-    min_moves = 0
+def get_note_pitch(note):
+    if note.isdigit():
+        return " "
+    else:
+        return note
 
-    # Loop through each coordinate and check if it is visited
-    for i in range(M):
-        # If the coordinate is not visited, move the piece to that coordinate and increment the minimum number of moves
-        if sorted_coordinates[i] != i + 1:
-            min_moves += 1
+def get_staff_line(note):
+    pitch = get_note_pitch(note)
+    duration = get_note_duration(note)
+    return pitch * duration
 
-    # Return the minimum number of moves required to visit all coordinates
-    return min_moves
+def get_staff_lines(notes):
+    staff_lines = []
+    for note in notes:
+        staff_line = get_staff_line(note)
+        staff_lines.append(staff_line)
+    return staff_lines
+
+def get_staff(notes):
+    staff_lines = get_staff_lines(notes)
+    staff = "\n".join(staff_lines)
+    return staff
+
+def main():
+    notes = input("Enter the notes: ")
+    staff = get_staff(notes)
+    print(staff)
+
+if __name__ == "__main__":
+    main()
 

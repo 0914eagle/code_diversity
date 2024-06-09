@@ -1,50 +1,28 @@
 
-def solve(N, A, B):
-    # Initialize a list to store the sequence
-    seq = []
+def solve(flights, additional_flights):
+    # Initialize a dictionary to store the cost of each flight
+    flight_costs = {}
+    for flight in flights:
+        flight_costs[flight] = flights[flight]
+    for flight in additional_flights:
+        flight_costs[flight] = additional_flights[flight]
 
-    # If A is 1, we can just fill the sequence with increasing numbers
-    if A == 1:
-        for i in range(1, N+1):
-            seq.append(i)
-        return seq
+    # Initialize a set to store the cities that have been visited
+    visited_cities = set()
 
-    # If B is 1, we can just fill the sequence with decreasing numbers
-    if B == 1:
-        for i in range(N, 0, -1):
-            seq.append(i)
-        return seq
+    # Initialize a variable to store the total cost of the flights
+    total_cost = 0
 
-    # If A is 2, we can fill the sequence with increasing numbers and then reverse it
-    if A == 2:
-        for i in range(1, N+1):
-            seq.append(i)
-        seq.reverse()
-        return seq
+    # Loop through the flights and calculate the total cost
+    for flight in flights:
+        # If the flight is not in the visited_cities set, add it to the total cost and mark the city as visited
+        if flight[0] not in visited_cities:
+            total_cost += flight_costs[flight]
+            visited_cities.add(flight[0])
+        # If the flight is not in the visited_cities set, add it to the total cost and mark the city as visited
+        if flight[1] not in visited_cities:
+            total_cost += flight_costs[flight]
+            visited_cities.add(flight[1])
 
-    # If B is 2, we can fill the sequence with decreasing numbers and then reverse it
-    if B == 2:
-        for i in range(N, 0, -1):
-            seq.append(i)
-        seq.reverse()
-        return seq
-
-    # If A is greater than 2, we can fill the sequence with increasing numbers and then insert B-2 elements in the middle
-    if A > 2:
-        for i in range(1, N+1):
-            seq.append(i)
-        for i in range(B-2):
-            seq.insert(N//2, N//2+i)
-        return seq
-
-    # If B is greater than 2, we can fill the sequence with decreasing numbers and then insert A-2 elements in the middle
-    if B > 2:
-        for i in range(N, 0, -1):
-            seq.append(i)
-        for i in range(A-2):
-            seq.insert(N//2, N//2+i)
-        return seq
-
-    # If none of the above conditions are met, we return -1
-    return -1
+    return total_cost
 

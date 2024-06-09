@@ -1,28 +1,14 @@
 
-def solve(n, k, l, d):
-    # Initialize variables
-    x = 0
-    t = 0
-    p = [0, 1]
-    
-    # Loop through each second
-    for i in range(n):
-        # Calculate the current depth
-        depth = d[i] + p[t % 2]
-        
-        # Check if Koa can swim or not
-        if depth <= l:
-            x += 1
-        else:
-            x = x
-        
-        # Update the time and p
-        t += 1
-        p = [p[1], p[0]]
-    
-    # Check if Koa reached the island
-    if x == n:
-        return "Yes"
-    else:
-        return "No"
+n, m = map(int, input().split())
+buttons = list(map(int, input().split()))
+
+lights = [0] * (n + 1)
+
+for i in range(m):
+    button = buttons[i]
+    for j in range(button, n + 1):
+        if lights[j] == 0:
+            lights[j] = button
+
+print(*lights[1:])
 

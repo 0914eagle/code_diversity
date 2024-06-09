@@ -1,31 +1,23 @@
 
-def solve(n, memory):
-    # Initialize a dictionary to map each kid to its remembered kids
-    remembered = {i: set() for i in range(1, n + 1)}
-    for i, (a, b) in enumerate(memory, 1):
-        remembered[i].add(a)
-        remembered[i].add(b)
-    
-    # Initialize a set to store the kids that have been placed in the circle
-    placed = set()
-    
-    # Initialize the permutation of kids
-    permutation = [0] * (n + 1)
-    
-    # Start placing kids in the circle
-    current = 1
-    while len(placed) < n:
-        # If the current kid has not been placed yet, place it in the circle
-        if current not in placed:
-            # Add the current kid to the placed set
-            placed.add(current)
-            # Add the current kid to the permutation
-            permutation[current] = current
-            # Move on to the next kid
-            current = remembered[current].difference(placed).pop()
-        # If the current kid has already been placed, move on to the next kid
-        else:
-            current = remembered[current].difference(placed).pop()
-    
-    return permutation[1:]
+def get_max_distance(grid):
+    # Initialize variables
+    max_distance = 0
+    spy_location = None
+    safe_houses = []
+
+    # Find the location of the spy and the safe houses
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j] == "S":
+                spy_location = (i, j)
+            elif grid[i][j] == "H":
+                safe_houses.append((i, j))
+
+    # Calculate the distance from the spy to each safe house
+    for safe_house in safe_houses:
+        distance = abs(safe_house[0] - spy_location[0]) + abs(safe_house[1] - spy_location[1])
+        if distance > max_distance:
+            max_distance = distance
+
+    return max_distance
 

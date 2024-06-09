@@ -1,12 +1,11 @@
 
-def solve(names):
-    seen = set()
-    result = []
-    for name in names:
-        if name in seen:
-            result.append("YES")
+def get_min_steps(n, k):
+    steps = 0
+    while n > 0:
+        if n % k == 0:
+            n //= k
         else:
-            result.append("NO")
-            seen.add(name)
-    return result
+            n -= 1
+        steps += 1
+    return steps
 

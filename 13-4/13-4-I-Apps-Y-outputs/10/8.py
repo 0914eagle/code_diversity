@@ -1,18 +1,8 @@
 
-def solve(n, combinations):
-    # Initialize a dictionary to store the popularity of each combination
-    popularity = {}
-
-    # Iterate over the combinations and increment the popularity of each combination
-    for combination in combinations:
-        if combination in popularity:
-            popularity[combination] += 1
-        else:
-            popularity[combination] = 1
-
-    # Find the combination with the highest popularity
-    most_popular_combination = max(popularity, key=popularity.get)
-
-    # Return the number of frosh taking the most popular combination
-    return popularity[most_popular_combination]
+def solve(a, b, c, d):
+    count = 0
+    for i in range(a, b+1):
+        if i % c != 0 and i % d != 0:
+            count += 1
+    return count
 

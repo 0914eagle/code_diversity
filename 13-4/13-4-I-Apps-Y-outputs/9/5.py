@@ -1,25 +1,31 @@
 
-def get_maximum_disjoint_blocks(arr):
-    n = len(arr)
-    dp = [[0] * (n + 1) for _ in range(n + 1)]
-    for i in range(1, n + 1):
-        for j in range(1, n + 1):
-            if i == j:
-                dp[i][j] = 1
-            elif arr[i - 1] == arr[j - 1]:
-                dp[i][j] = dp[i - 1][j - 1] + 1
-            else:
-                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
-    blocks = []
-    i, j = n, 1
-    while i > 0 and j <= n:
-        if dp[i][j] == dp[i - 1][j]:
-            i -= 1
-        elif dp[i][j] == dp[i][j - 1]:
-            j += 1
-        else:
-            blocks.append((i, j))
-            i -= 1
-            j += 1
-    return blocks
+def solve(n, m, k, roads, routes):
+    # Initialize a graph with the given roads
+    graph = {i: set() for i in range(1, n + 1)}
+    for x, y, w in roads:
+        graph[x].add((y, w))
+        graph[y].add((x, w))
+
+    # Find the shortest path between each pair of districts using Dijkstra's algorithm
+    distances = {i: float("inf") for i in range(1, n + 1)}
+    previous = {i: None for i in range(1, n + 1)}
+    queue = [(0, 1)]
+    while queue:
+        dist, node = heapq.heappop(queue)
+        if dist > distances[node]:
+            continue
+        for neighbor, w in graph[node]:
+            v = dist + w
+            if v < distances[neighbor]:
+                distances[neighbor] = v
+                previous[neighbor] = node
+                heapq.heappush(queue, (v, neighbor))
+
+    # Find the minimum total courier routes cost
+    total_cost = 0
+    for a, b in routes:
+        total_cost += distances[a]
+
+    # Return the minimum total courier routes cost
+    return total_cost
 

@@ -1,24 +1,42 @@
 
-def solve(n, pairs):
-    # Initialize the food types for each pair
-    food_types = [[0, 0] for _ in range(n)]
+def get_maximum_number_of_times(n, buttons):
+    # Initialize a list to store the results
+    results = []
     
-    # Iterate over the pairs and assign food types
-    for i in range(n):
-        # If the boy and girl are sitting on consecutive chairs, they cannot have the same food type
-        if abs(pairs[i][0] - pairs[i][1]) == 1:
-            food_types[i][0] = 1
-            food_types[i][1] = 2
-        # If the boy and girl are not sitting on consecutive chairs, they can have the same food type
-        else:
-            food_types[i][0] = 1
-            food_types[i][1] = 1
+    # Loop through each possible combination of buttons
+    for combination in itertools.permutations(range(1, n+1)):
+        # Check if the current combination is valid
+        if is_valid_combination(combination, buttons):
+            # If the current combination is valid, add it to the results list
+            results.append(list(combination))
     
-    # Check if the food types satisfy the conditions
-    for i in range(n):
-        # If the boy and girl have the same food type, it's not possible to satisfy the conditions
-        if food_types[i][0] == food_types[i][1]:
-            return [-1]
+    # Return the maximum number of times and the corresponding results
+    return len(results), results
+
+def is_valid_combination(combination, buttons):
+    # Initialize a set to store the buttons that have been used
+    used_buttons = set()
     
-    return food_types
+    # Loop through each person in the combination
+    for person in combination:
+        # Check if the current person's button has already been used
+        if person in used_buttons:
+            # If the current person's button has already been used, return False
+            return False
+        # Add the current person's button to the used buttons set
+        used_buttons.add(person)
+    
+    # If all buttons have been used and no button has been used more than once, return True
+    return len(used_buttons) == len(buttons)
+
+# Test the function with the sample input
+n = 3
+buttons = [
+    [1, 1, 1],
+    [0, 1, 1],
+    [1, 0, 1]
+]
+maximum_number_of_times, results = get_maximum_number_of_times(n, buttons)
+print(maximum_number_of_times)
+print(results)
 

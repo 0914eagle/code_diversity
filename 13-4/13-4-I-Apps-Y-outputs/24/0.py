@@ -1,16 +1,22 @@
 
-def fibonacci(n):
-    if n <= 1:
-        return n
-    else:
-        return fibonacci(n-1) + fibonacci(n-2)
+def solve(A, B):
+    N = len(A)
+    M = len(B)
+    grid = [["."]*N for _ in range(M)]
 
-def cube(x):
-    return x**3
+    # Find the first occurrence of the shared letter in A and B
+    shared_letter = next((letter for letter in A if letter in B), None)
 
-def solve(n):
-    fib_list = []
-    for i in range(n):
-        fib_list.append(fibonacci(i))
-    return list(map(cube, fib_list))
+    # Fill in the grid with the words A and B
+    for i in range(N):
+        if A[i] == shared_letter:
+            for j in range(M):
+                if B[j] == shared_letter:
+                    grid[j][i] = A[i]
+                    break
+
+    for i in range(M):
+        for j in range(N):
+            print(grid[i][j], end="")
+        print()
 

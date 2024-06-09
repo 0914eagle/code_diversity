@@ -1,28 +1,27 @@
 
-def get_pizza_indices(n, m, friends, pizzas):
-    # Initialize variables
-    pleased_friends = 0
-    total_price = 0
-    chosen_pizzas = []
+import sys
 
-    # Iterate through each pizza
-    for i in range(m):
-        # Check if the pizza has at least one favorite ingredient of each friend
-        for friend in friends:
-            for ingredient in friend:
-                if ingredient in pizzas[i]:
-                    pleased_friends += 1
+def get_gis(g):
+    gis = []
+    for i in range(len(g)):
+        if i == 0:
+            gis.append(g[i])
+        else:
+            for j in range(i, len(g)):
+                if g[j] > g[i-1]:
+                    gis.append(g[j])
                     break
+    return gis
 
-        # If the pizza has at least one favorite ingredient of each friend, add it to the chosen pizzas
-        if pleased_friends == n:
-            chosen_pizzas.append(i)
-            total_price += pizzas[i][0]
-            break
+def count_permutations(n, g):
+    gis = get_gis(g)
+    count = 1
+    for i in range(len(gis)):
+        count *= n - i
+    return count % (10**9 + 7)
 
-        # Reset the pleased friends count
-        pleased_friends = 0
-
-    # Return the indices of the chosen pizzas and their total price
-    return chosen_pizzas, total_price
+if __name__ == '__main__':
+    n, l = map(int, input().split())
+    g = list(map(int, input().split()))
+    print(count_permutations(n, g))
 

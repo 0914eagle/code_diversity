@@ -1,47 +1,23 @@
 
-def solve(grid, commands):
-    # Initialize variables
-    start_row, start_col = None, None
-    goal_row, goal_col = None, None
-    obstacles = set()
-
-    # Parse the grid and find the start and goal positions
-    for row in range(len(grid)):
-        for col in range(len(grid[row])):
-            if grid[row][col] == "S":
-                start_row, start_col = row, col
-            elif grid[row][col] == "G":
-                goal_row, goal_col = row, col
-            elif grid[row][col] == "#":
-                obstacles.add((row, col))
-
-    # Initialize the current position and commands
-    current_row, current_col = start_row, start_col
-    current_commands = commands
-
-    # Loop through the commands and move the robot
-    while current_commands:
-        command = current_commands[0]
-        if command == "L":
-            current_col -= 1
-        elif command == "R":
-            current_col += 1
-        elif command == "U":
-            current_row -= 1
-        elif command == "D":
-            current_row += 1
-
-        # Check if the robot has reached the goal
-        if current_row == goal_row and current_col == goal_col:
-            return len(commands) - len(current_commands)
-
-        # Check if the robot has hit an obstacle
-        if (current_row, current_col) in obstacles:
-            return -1
-
-        # Update the current commands
-        current_commands = current_commands[1:]
-
-    # If the robot has not reached the goal, return -1
-    return -1
+def solve(starting_sequence, resulting_sequence):
+    # Initialize a list to store the proclamations
+    proclamations = []
+    
+    # Loop through the resulting sequence
+    for i in range(len(resulting_sequence)):
+        # Get the current frog ID and its position in the resulting sequence
+        current_frog_id = resulting_sequence[i]
+        current_frog_position = i
+        
+        # Find the position of the current frog ID in the starting sequence
+        starting_frog_position = starting_sequence.index(current_frog_id)
+        
+        # Calculate the number of leaps needed to move the current frog to its desired position
+        leaps_needed = abs(current_frog_position - starting_frog_position)
+        
+        # Add the leaps needed to the proclamations list
+        proclamations.extend([leaps_needed] * leaps_needed)
+    
+    # Return the proclamations list
+    return proclamations
 

@@ -1,12 +1,10 @@
 {
     "inputs": [
-        "4 9\n2 8\n1 1\n3 4\n5 100\n",
-        "5 7\n2 2\n3 8\n2 7\n2 4\n3 8\n",
-        "2 6\n300 1\n300 2\n"
+        "14\nlibattr\nvim-X11 vim-common gtk2 libattr\nvim-common\ngtk2 libtiff atk pango glib2\nlibtiff zlib libjpeg\natk\npango xorg-x11-libs freetype glib2\nglib2\nzlib\nlibjpeg\nxorg-x11-libs grep freetype\ngrep pcre\npcre\nfreetype\n3\nemacs xorg-x11 lisp\nxorg-x11\nlisp emacs\n0\n",
+        "4\natk pango\nglib2 pango\ngrep atk\npango\n0\n"
     ],
     "outputs": [
-        "1 8 9 9 100 101 108 109 109\n",
-        "0 7 8 11 15 16 19\n",
-        "0 0 0 0 0 0\n"
+        "atk\nfreetype\nglib2\nlibattr\nlibjpeg\npcre\ngrep\nvim-common\nxorg-x11-libs\npango\nzlib\nlibtiff\ngtk2\nvim-X11\n\ncannot be ordered\n",
+        "pango\natk\nglib2\ngrep\n"
     ]
 }

@@ -1,8 +1,11 @@
 
-def get_unique_names(names):
-    unique_names = []
-    for name in names:
-        if name not in unique_names:
-            unique_names.append(name)
-    return unique_names
+def solve(n, k):
+    count = 0
+    while n > 0:
+        if n % k == 0:
+            n //= k
+        else:
+            n -= 1
+        count += 1
+    return count
 

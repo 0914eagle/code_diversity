@@ -1,39 +1,24 @@
 
-def solve(n, a, b, k, hp):
-    # Calculate the maximum points that can be gained by fighting the monsters
-    max_points = 0
-    for i in range(n):
-        if hp[i] <= 0:
-            continue
-        points = (hp[i] - 1) // a + 1
-        max_points = max(max_points, points)
+N = int(input())
+verdicts = [input() for _ in range(N)]
 
-    # If the secret technique can be used, calculate the maximum points that can be gained by using it optimally
-    if k > 0:
-        # Initialize the maximum points that can be gained by using the secret technique
-        max_points_with_technique = 0
+ac_count = 0
+wa_count = 0
+tle_count = 0
+re_count = 0
 
-        # Iterate over the possible positions of the monsters that can be skipped
-        for i in range(n):
-            # If the monster at position i is dead, skip it
-            if hp[i] <= 0:
-                continue
+for verdict in verdicts:
+    if verdict == "AC":
+        ac_count += 1
+    elif verdict == "WA":
+        wa_count += 1
+    elif verdict == "TLE":
+        tle_count += 1
+    else:
+        re_count += 1
 
-            # Calculate the maximum points that can be gained by fighting the monsters from position i+1 to n-1
-            max_points_without_technique = 0
-            for j in range(i+1, n):
-                if hp[j] <= 0:
-                    continue
-                points = (hp[j] - 1) // b + 1
-                max_points_without_technique = max(max_points_without_technique, points)
-
-            # Calculate the maximum points that can be gained by using the secret technique on the monster at position i
-            points = (hp[i] - 1) // a + 1
-            max_points_with_technique = max(max_points_with_technique, points + max_points_without_technique)
-
-        # Return the maximum points that can be gained by using the secret technique optimally
-        return max_points_with_technique
-
-    # Return the maximum points that can be gained by fighting the monsters optimally
-    return max_points
+print("AC x", ac_count)
+print("WA x", wa_count)
+print("TLE x", tle_count)
+print("RE x", re_count)
 

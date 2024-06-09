@@ -1,27 +1,16 @@
 
-def solve(f, b):
-    # Initialize a dictionary to store the replacements
-    replacements = {}
+n = int(input())
 
-    # Loop through the replacements and add them to the dictionary
-    for i in range(len(f)):
-        replacements[f[i]] = b[i]
+# Initialize the table with ones
+table = [[1] * n for _ in range(n)]
 
-    # Initialize a set to store the unique elements of the original sequence
-    unique_elements = set()
+# Fill in the remaining elements using the formula
+for i in range(1, n):
+    for j in range(1, n):
+        table[i][j] = table[i - 1][j] + table[i][j - 1]
 
-    # Loop through the replacements and check if the original element is unique
-    for element in replacements.keys():
-        if element not in unique_elements:
-            unique_elements.add(element)
-        else:
-            return "Ambiguity"
+# Find the maximum value in the table
+max_value = max(max(row) for row in table)
 
-    # Check if there is exactly one unique element in the original sequence
-    if len(unique_elements) == 1:
-        # If there is exactly one unique element, return the corresponding replacement
-        return "Possible", list(replacements.values())
-    else:
-        # If there is no unique element, return "Impossible"
-        return "Impossible"
+print(max_value)
 

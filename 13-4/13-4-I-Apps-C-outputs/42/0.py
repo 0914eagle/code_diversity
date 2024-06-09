@@ -1,37 +1,51 @@
 
-def can_prepare_contest(h, m, s, t_1, t_2):
-    # Convert the time to total seconds
-    time_1 = h * 3600 + m * 60 + s
-    time_2 = t_1 * 3600 + m * 60 + s
-    
-    # Check if the times are equal
-    if time_1 == time_2:
-        return "NO"
-    
-    # Check if the times are within the same hour
-    if time_1 // 3600 == time_2 // 3600:
-        return "YES"
-    
-    # Check if the times are within the same minute
-    if time_1 // 60 == time_2 // 60:
-        return "YES"
-    
-    # Check if the times are within the same second
-    if time_1 == time_2:
-        return "YES"
-    
-    # Check if the times are within the same hour but on opposite sides of the clock
-    if (time_1 // 3600 == time_2 // 3600) and (time_1 % 3600 != time_2 % 3600):
-        return "YES"
-    
-    # Check if the times are within the same minute but on opposite sides of the clock
-    if (time_1 // 60 == time_2 // 60) and (time_1 % 60 != time_2 % 60):
-        return "YES"
-    
-    # Check if the times are within the same second but on opposite sides of the clock
-    if (time_1 == time_2) and (time_1 != time_2):
-        return "YES"
-    
-    # If none of the above conditions are met, the contest cannot be prepared on time
-    return "NO"
+def get_min_path_length(n, k):
+    # Initialize a dictionary to store the shortest path length from each fragment to the assembly node
+    shortest_path_length = {}
+
+    # Loop through each fragment
+    for i in range(n):
+        # Initialize the shortest path length for this fragment to infinity
+        shortest_path_length[i] = float('inf')
+
+        # Loop through each node in the system
+        for j in range(1, k[i]! + 1):
+            # If the current node is the fragment's location, set the shortest path length to 0
+            if j == k[i]!:
+                shortest_path_length[i] = 0
+                break
+
+            # If the current node is not the fragment's location, find the shortest path length from the current node to the fragment's location
+            else:
+                # Find the lowest prime divisor of the current node
+                prime_divisor = get_lowest_prime_divisor(j)
+
+                # If the current node is not a prime number, find the shortest path length from the current node to the fragment's location through the prime divisor
+                if prime_divisor != 1:
+                    shortest_path_length[i] = min(shortest_path_length[i], shortest_path_length.get(prime_divisor, float('inf')) + 1)
+
+        # If the shortest path length for this fragment is still infinity, set it to 0
+        if shortest_path_length[i] == float('inf'):
+            shortest_path_length[i] = 0
+
+    # Return the sum of the shortest path lengths for all fragments
+    return sum(shortest_path_length.values())
+
+def get_lowest_prime_divisor(n):
+    # Initialize the lowest prime divisor as 1
+    lowest_prime_divisor = 1
+
+    # Loop through each prime number less than or equal to the square root of the input number
+    for i in range(2, int(n**0.5) + 1):
+        # If the input number is divisible by the current prime number, set the lowest prime divisor as the current prime number
+        if n % i == 0:
+            lowest_prime_divisor = i
+            break
+
+    # Return the lowest prime divisor
+    return lowest_prime_divisor
+
+n = int(input())
+k = list(map(int, input().split()))
+print(get_min_path_length(n, k))
 

@@ -1,17 +1,23 @@
 
-def solve(K):
-    snuke_numbers = []
-    for i in range(1, 10**15):
-        if is_snuke_number(i):
-            snuke_numbers.append(i)
-            if len(snuke_numbers) == K:
-                break
-    return snuke_numbers
+import sys
 
-def is_snuke_number(n):
-    s = sum(int(digit) for digit in str(n))
-    for m in range(n+1, 10**15):
-        if s > sum(int(digit) for digit in str(m)):
-            return False
-    return True
+def get_inconvenience(bridges, collapsed_bridges):
+    inconvenience = 0
+    for bridge in bridges:
+        if bridge[0] in collapsed_bridges or bridge[1] in collapsed_bridges:
+            inconvenience += 1
+    return inconvenience
+
+n, m = map(int, input().split())
+bridges = []
+for _ in range(m):
+    a, b = map(int, input().split())
+    bridges.append((a, b))
+
+collapsed_bridges = set()
+inconvenience = 0
+for i in range(m):
+    collapsed_bridges.add(i+1)
+    inconvenience = get_inconvenience(bridges, collapsed_bridges)
+    print(inconvenience)
 

@@ -1,18 +1,17 @@
 
-def solve(n, a, f):
-    # Initialize the maximum number to be the original number
-    max_num = int(a)
-    # Loop through each possible segment length
-    for seg_len in range(1, n + 1):
-        # Loop through each possible starting index for the segment
-        for start_idx in range(n - seg_len + 1):
-            # Extract the segment from the original number
-            segment = int(a[start_idx:start_idx + seg_len])
-            # Apply the function to the segment
-            transformed_segment = int(str(segment).translate(str.maketrans("123456789", "".join(map(str, f)))))
-            # Check if the transformed segment is greater than the maximum number
-            if transformed_segment > max_num:
-                max_num = transformed_segment
-    # Return the maximum number
-    return max_num
+def solve(s):
+    # Initialize the maximum length of the substring as 0
+    max_len = 0
+    
+    # Loop through each substring of the given string
+    for i in range(len(s)):
+        for j in range(i, len(s)):
+            # Check if the substring starts with 'A' and ends with 'Z'
+            if s[i] == 'A' and s[j] == 'Z':
+                # If the length of the substring is greater than the maximum length, update the maximum length
+                if j - i + 1 > max_len:
+                    max_len = j - i + 1
+    
+    # Return the maximum length
+    return max_len
 

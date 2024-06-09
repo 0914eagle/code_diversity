@@ -1,11 +1,17 @@
 
-def solve(gunnar_dice, emma_dice):
-    gunnar_sum = sum(range(gunnar_dice[0], gunnar_dice[1] + 1))
-    emma_sum = sum(range(emma_dice[0], emma_dice[1] + 1))
-    if gunnar_sum > emma_sum:
-        return "Gunnar"
-    elif gunnar_sum < emma_sum:
-        return "Emma"
-    else:
-        return "Tie"
+def solve(ell, n):
+    # Initialize the number of rolls as 1
+    k = 1
+    # Loop until the crisis is guaranteed to never happen
+    while True:
+        # Calculate the length of the regular roll
+        regular_roll_length = ell - (k - 1) * ell
+        # Check if the crisis can happen with the current number of rolls
+        if regular_roll_length < n:
+            # Increase the number of rolls and try again
+            k += 1
+        else:
+            # The crisis will never happen with the current number of rolls, so break the loop
+            break
+    return k
 

@@ -1,18 +1,10 @@
 
-def chefs_jump(a):
-    if a == 0:
-        return "yes"
-    if a == 1:
-        return "yes"
-    if a == 2:
-        return "no"
-    if a == 3:
-        return "yes"
-    if a == 6:
-        return "yes"
-    if a == 7:
-        return "yes"
-    if a == 10:
-        return "no"
-    return "yes"
+def is_palindrome(s):
+    return s == s[::-1]
+
+def insert_letter(s):
+    for i in range(len(s)):
+        if is_palindrome(s[:i] + s[i+1:]):
+            return s[:i] + s[i] + s[i+1:]
+    return "NA"
 

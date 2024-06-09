@@ -1,8 +1,12 @@
 
-def get_days_with_free_food(events):
-    days = set()
-    for s, t in events:
-        for i in range(s, t+1):
-            days.add(i)
-    return len(days)
+def get_lexicographically_minimum_string(string, k):
+    n = len(string)
+    for i in range(n):
+        for j in range(i+1, min(i+k+1, n)):
+            if string[i] > string[j]:
+                string = string[:i] + string[j] + string[i+1:j] + string[i] + string[j+1:]
+                k -= 1
+                if k == 0:
+                    return string
+    return string
 

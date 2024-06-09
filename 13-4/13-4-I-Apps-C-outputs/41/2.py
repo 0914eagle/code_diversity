@@ -1,22 +1,21 @@
 
-def get_max_value(a, k):
-    n = len(a)
-    if k >= n:
-        return sum(a)
-    
-    # Sort the array to get the maximum sum
-    a.sort()
-    
-    # Initialize the maximum sum and the number of swaps used
-    max_sum = 0
-    swaps_used = 0
-    
-    # Loop through the array and find the maximum sum while using at most k swaps
-    for i in range(n):
-        if swaps_used >= k:
-            break
-        max_sum += a[i]
-        swaps_used += 1
-    
-    return max_sum
+def solve(n, k, cameras):
+    # Initialize a set to store the covered walls
+    covered_walls = set()
+    # Initialize a variable to store the minimum number of cameras needed
+    min_cameras = 0
+    # Iterate through the cameras
+    for camera in cameras:
+        # If the camera covers a range of walls
+        if camera[0] <= camera[1]:
+            # Add the walls in the range to the covered walls set
+            covered_walls |= set(range(camera[0], camera[1] + 1))
+        # If the camera covers a range of walls in both directions
+        else:
+            # Add the walls in the first range to the covered walls set
+            covered_walls |= set(range(camera[0], n + 1))
+            # Add the walls in the second range to the covered walls set
+            covered_walls |= set(range(1, camera[1] + 1))
+    # Return the length of the covered walls set
+    return len(covered_walls)
 

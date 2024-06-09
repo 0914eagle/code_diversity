@@ -1,27 +1,18 @@
 
-def solve(N, K, P, rooks, moves):
-    # Initialize a 2D array to store the attacked fields
-    attacked = [[0] * N for _ in range(N)]
+n = int(input())
+p = list(map(int, input().split()))
 
-    # Loop through each rook and its power
-    for r, c, x in rooks:
-        # Loop through each field in the row and column of the rook
-        for i in range(1, N+1):
-            # If the field is not the rook's own field, add the rook's power to the attacked field
-            if i != r and i != c:
-                attacked[r-1][i-1] += x
-                attacked[i-1][c-1] += x
+# Calculate the deviation of the permutation
+dev = sum(abs(p[i] - i) for i in range(n))
 
-    # Loop through each move
-    for r1, c1, r2, c2 in moves:
-        # Subtract the power of the rook that is moving from the attacked fields it sees
-        attacked[r1-1][c1-1] -= rooks[r1-1][c1-1]
-        attacked[r2-1][c2-1] -= rooks[r1-1][c1-1]
-        # Add the power of the rook that is moving to the attacked fields it sees
-        attacked[r2-1][c2-1] += rooks[r1-1][c1-1]
+# Find the cyclic shift with the minimum deviation
+min_dev = dev
+min_id = 0
+for i in range(n):
+    dev = sum(abs(p[(i+j)%n] - (j+1)) for j in range(n))
+    if dev < min_dev:
+        min_dev = dev
+        min_id = i
 
-        # Print the total number of attacked fields after the move
-        print(sum(sum(row) for row in attacked))
-
-    return attacked
+print(min_dev, min_id)
 

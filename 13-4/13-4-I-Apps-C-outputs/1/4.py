@@ -1,23 +1,31 @@
 
-def get_k_incremental_double_free_string(k, n):
+def get_min_waiting_time(num_dogs, num_bowls, feeding_times):
+    # Initialize a list to store the feeding times for each dog
+    dog_feeding_times = []
+    for i in range(num_dogs):
+        dog_feeding_times.append([0] * num_bowls)
     
-    import itertools
+    # Populate the feeding times for each dog
+    for i in range(num_dogs):
+        for j in range(num_bowls):
+            dog_feeding_times[i][j] = feeding_times[i][j]
     
-    # Generate all possible k-incremental strings
-    k_incremental_strings = []
-    for letters in itertools.product(range(97, 123), repeat=k):
-        letter_counts = [0] * 26
-        for letter in letters:
-            letter_counts[letter - 97] += 1
-        if all(letter_counts[i] == i for i in range(k)):
-            k_incremental_strings.append(''.join(chr(97 + letter) for letter in letters))
+    # Sort the feeding times for each dog in non-decreasing order
+    for i in range(num_dogs):
+        dog_feeding_times[i].sort()
     
-    # Filter out non-double-free strings
-    double_free_strings = []
-    for string in k_incremental_strings:
-        if all(string[i] != string[i + 1] for i in range(len(string) - 1)):
-            double_free_strings.append(string)
+    # Initialize a variable to store the minimum waiting time
+    min_waiting_time = 0
     
-    # Return the nth string in alphabetical order
-    return double_free_strings[n - 1] if n <= len(double_free_strings) else -1
+    # Iterate through the dogs and calculate the waiting time for each dog
+    for i in range(num_dogs):
+        # Calculate the waiting time for the current dog
+        waiting_time = 0
+        for j in range(num_bowls):
+            waiting_time += dog_feeding_times[i][j]
+        
+        # Update the minimum waiting time
+        min_waiting_time += waiting_time
+    
+    return min_waiting_time
 

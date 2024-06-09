@@ -1,22 +1,37 @@
 
-def solve(detectors, houses):
-    # Initialize a list to store the number of calls made by each detector
-    calls = [0] * len(detectors)
-    
-    # Iterate over each detector
-    for i, detector in enumerate(detectors):
-        # Get the position of the detector and the total number of calls detected
-        position, total_calls = detector
-        
-        # Iterate over the houses between the detector position and the next house
-        for j in range(position, houses):
-            # If the detector is on the eastward side of the house, add the total number of calls detected to the number of calls made by the detector
-            if j == position:
-                calls[i] += total_calls
-            # If the detector is on the westward side of the house, subtract the total number of calls detected from the number of calls made by the detector
-            elif j == position + 1:
-                calls[i] -= total_calls
-    
-    # Return the minimum number of calls made by any detector
-    return min(calls)
+def solve(n, g, d, e, links):
+    # Initialize variables
+    alien_systems = []
+    human_systems = []
+    gravity_values = []
+    capacitance = []
+    potential = []
+    inductance = []
+    uw_distance = 0
+
+    # Separate the systems into alien and human systems
+    for i in range(n):
+        if d[i] == "a":
+            alien_systems.append(i)
+        else:
+            human_systems.append(i)
+
+    # Calculate the gravity values for each system
+    for i in range(n):
+        gravity_values.append(g[i])
+
+    # Calculate the capacitance, potential, and inductance for each system
+    for i in range(n):
+        capacitance.append(gravity_values[i] + gravity_values[i-1])
+        potential.append(gravity_values[i] - gravity_values[i-1])
+        inductance.append(gravity_values[i] * gravity_values[i-1])
+
+    # Calculate the UW distance for each pair of systems
+    for i in range(n):
+        for j in range(n):
+            if i != j:
+                uw_distance += abs(potential[i] * (capacitance[i] * capacitance[j] - inductance[i]))
+
+    # Return the minimum UW distance
+    return uw_distance
 

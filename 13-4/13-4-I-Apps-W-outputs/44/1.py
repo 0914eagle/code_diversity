@@ -1,33 +1,26 @@
 
-def solve(a, k):
-    n = len(a)
-    if k == 0:
-        return 0
-    if n == 1:
-        return 0
-    if k == 1:
-        return abs(max(a) - min(a))
-    # find the index of the maximum and minimum elements
-    max_index = a.index(max(a))
-    min_index = a.index(min(a))
-    # if the maximum and minimum elements are not adjacent, we can swap them and get a better answer
-    if abs(max_index - min_index) > 1:
-        a[max_index], a[min_index] = a[min_index], a[max_index]
-        return solve(a, k-1)
-    # if the maximum and minimum elements are adjacent, we can increase or decrease the element in between them and get a better answer
-    if max_index > min_index:
-        for i in range(min_index+1, max_index):
-            a[i] += 1
-            ans = solve(a, k-1)
-            if ans < abs(max(a) - min(a)):
-                return ans
-            a[i] -= 1
-    if min_index > max_index:
-        for i in range(max_index+1, min_index):
-            a[i] -= 1
-            ans = solve(a, k-1)
-            if ans < abs(max(a) - min(a)):
-                return ans
-            a[i] += 1
-    return abs(max(a) - min(a))
+def solve(s):
+    n = len(s)
+    # Initialize the maximum length of the longest non-decreasing subsequence as 0
+    max_len = 0
+    # Initialize the starting index of the longest non-decreasing subsequence as 0
+    start_index = 0
+    # Initialize the number of zeroes in the string as 0
+    num_zeroes = 0
+    # Iterate over the characters of the string
+    for i in range(n):
+        # If the current character is a zero, increment the number of zeroes
+        if s[i] == "0":
+            num_zeroes += 1
+        # If the current character is a one, check if the length of the longest non-decreasing subsequence is greater than the maximum length
+        if s[i] == "1" and len(s[start_index:i+1]) > max_len:
+            # If the length of the longest non-decreasing subsequence is greater than the maximum length, update the maximum length and the starting index
+            max_len = len(s[start_index:i+1])
+            start_index = i - max_len + 1
+    # Create a new string with the maximum length of the longest non-decreasing subsequence
+    t = "0" * max_len
+    # Replace the first character of the string with a one if the number of zeroes is odd
+    if num_zeroes % 2 == 1:
+        t = "1" + t[1:]
+    return t
 

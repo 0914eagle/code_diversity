@@ -1,36 +1,48 @@
 
-def purify_cells(grid):
-    # Initialize the number of spells to cast and the list of cells to purify
-    num_spells = 0
-    cells_to_purify = []
-    
-    # Loop through each row and column of the grid
-    for i in range(len(grid)):
-        for j in range(len(grid[0])):
-            # If the current cell is evil and not a particularly more evil cell, add it to the list of cells to purify
-            if grid[i][j] == "E" and grid[i][j] != ".":
-                cells_to_purify.append((i, j))
-    
-    # While there are still cells to purify
-    while cells_to_purify:
-        # Pop the first cell from the list of cells to purify
-        cell = cells_to_purify.pop(0)
-        
-        # Cast the "Purification" spell on the current cell
-        grid[cell[0]][cell[1]] = "."
-        
-        # Add the cells in the same row and column as the current cell to the list of cells to purify
-        for i in range(len(grid)):
-            for j in range(len(grid[0])):
-                if grid[i][j] == "E" and grid[i][j] != ".":
-                    cells_to_purify.append((i, j))
-        
-        # Increment the number of spells to cast
-        num_spells += 1
-    
-    # If all cells have been purified, return the number of spells to cast
-    if "E" not in "".join(grid):
-        return num_spells
-    else:
-        return -1
+import sys
+input = sys.stdin.read()
+n, m, s = map(int, input.split())
+edges = []
+for i in range(m):
+    t, u, v = map(int, input.split())
+    edges.append((t, u, v))
+
+# Plan 1: Maximize the number of reachable vertices
+reachable = [False] * (n + 1)
+queue = [s]
+while queue:
+    vertex = queue.pop(0)
+    if not reachable[vertex]:
+        reachable[vertex] = True
+        queue.extend([u for t, u, v in edges if t == 1 and v == vertex])
+        queue.extend([u for t, u, v in edges if t == 2 and (u == vertex or v == vertex)])
+
+plan1 = "+-" * (n - 1)
+for t, u, v in edges:
+    if t == 2 and not reachable[u] and reachable[v]:
+        plan1 = plan1[:2 * (u - 1)] + "+" + plan1[2 * (u - 1) + 1:]
+    elif t == 2 and reachable[u] and not reachable[v]:
+        plan1 = plan1[:2 * (v - 1)] + "-" + plan1[2 * (v - 1) + 1:]
+
+# Plan 2: Minimize the number of reachable vertices
+reachable = [False] * (n + 1)
+queue = [s]
+while queue:
+    vertex = queue.pop(0)
+    if not reachable[vertex]:
+        reachable[vertex] = True
+        queue.extend([u for t, u, v in edges if t == 1 and v == vertex])
+        queue.extend([u for t, u, v in edges if t == 2 and (u == vertex or v == vertex)])
+
+plan2 = "+-" * (n - 1)
+for t, u, v in edges:
+    if t == 2 and reachable[u] and not reachable[v]:
+        plan2 = plan2[:2 * (v - 1)] + "+" + plan2[2 * (v - 1) + 1:]
+    elif t == 2 and not reachable[u] and reachable[v]:
+        plan2 = plan2[:2 * (u - 1)] + "-" + plan2[2 * (u - 1) + 1:]
+
+print(len(reachable) - 1)
+print(plan1)
+print(len(reachable) - 1)
+print(plan2)
 

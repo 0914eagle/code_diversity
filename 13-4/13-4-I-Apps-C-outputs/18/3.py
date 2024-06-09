@@ -1,24 +1,45 @@
 
-def find_matching_fragments(repository, snippet):
-    # Initialize a dictionary to store the fragments and their file names
-    fragments = {}
+import sys
+import math
 
-    # Iterate through the repository and add each fragment to the dictionary
-    for file_name, fragment in repository:
-        fragments[fragment] = file_name
+sys.setrecursionlimit(10**6)
 
-    # Initialize a variable to store the longest match
-    longest_match = 0
+def shortest_path(graph, start, end, visited):
+    if start == end:
+        return 0
+    
+    visited.add(start)
+    shortest_path = math.inf
+    
+    for neighbor in graph[start]:
+        if neighbor not in visited:
+            path = shortest_path(graph, neighbor, end, visited)
+            if path < shortest_path:
+                shortest_path = path
+    
+    return shortest_path + 1
 
-    # Iterate through the snippet and check for matches in the dictionary
-    for line in snippet:
-        for fragment in fragments:
-            # Check if the line is a match for the fragment
-            if line == fragment:
-                # If it is, update the longest match and add the file name to the list
-                longest_match = max(longest_match, len(fragment))
-                file_names.append(fragments[fragment])
+def find_danger_level(graph):
+    danger_level = []
+    
+    for i in range(1, len(graph) + 1):
+        visited = set()
+        danger_level.append(shortest_path(graph, i, len(graph), visited))
+    
+    return danger_level
 
-    # Return the longest match and the list of file names
-    return longest_match, file_names
+def main():
+    num_chambers, num_tunnels = map(int, input().split())
+    graph = [[] for _ in range(num_chambers + 1)]
+    
+    for _ in range(num_tunnels):
+        a, b, length = map(int, input().split())
+        graph[a].append(b)
+        graph[b].append(a)
+    
+    danger_level = find_danger_level(graph)
+    print(*[d % (10**9 + 7) for d in danger_level])
+
+if __name__ == "__main__":
+    main()
 

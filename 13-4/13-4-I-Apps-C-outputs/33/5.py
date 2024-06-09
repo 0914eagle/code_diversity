@@ -1,19 +1,23 @@
 
-def solve(n, a, b, k, s):
-    # Convert the sequence to a list of integers
-    s = [1 if x == "+" else -1 for x in s]
+def solve(n, m, a, b, x):
+    # Calculate the dot product of a and b and store it in a matrix c
+    c = [[a[i] * b[j] for j in range(m)] for i in range(n)]
     
-    # Initialize the result
-    result = 0
+    # Initialize the maximum area and the corresponding indices
+    max_area = 0
+    x1, x2, y1, y2 = 0, 0, 0, 0
     
-    # Iterate over the period of the sequence
-    for i in range(k):
-        # Calculate the current term
-        term = s[i] * a ** (n - i) * b ** i
-        
-        # Add the term to the result
-        result = (result + term) % (10**9 + 9)
+    # Iterate over all possible pairs of indices
+    for i in range(n):
+        for j in range(m):
+            # Calculate the area of the current subrectangle
+            area = (i - x1 + 1) * (j - y1 + 1)
+            
+            # If the area is greater than the maximum area, update the maximum area and the corresponding indices
+            if area > max_area and sum(sum(c[x1:i+1], [])) <= x:
+                max_area = area
+                x2, y2 = i, j
     
-    # Return the result
-    return result
+    # Return the maximum area
+    return max_area
 

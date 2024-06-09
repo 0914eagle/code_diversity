@@ -1,23 +1,31 @@
 
-def solve(n, a, b, k, s):
-    # Convert the sequence to a list of integers
-    s = [1 if x == '+' else -1 for x in s]
+def solve(n, m, a, b, x):
+    # Calculate the dot product of a and b and store it in a matrix c
+    c = [[a[i] * b[j] for j in range(m)] for i in range(n)]
     
-    # Initialize the sum to 0
-    sum = 0
+    # Initialize the maximum area and the corresponding subrectangle
+    max_area = 0
+    subrectangle = []
     
-    # Iterate over the sequence
-    for i in range(k):
-        # Calculate the current term
-        term = s[i] * a**(n-i) * b**i
-        
-        # Add the term to the sum
-        sum += term
-        
-        # If the sum exceeds 10^9 + 9, subtract 10^9 + 9 to keep it within the modulo
-        if sum > 10**9 + 9:
-            sum -= 10**9 + 9
+    # Iterate over all possible subrectangles
+    for i in range(n):
+        for j in range(m):
+            for k in range(i, n):
+                for l in range(j, m):
+                    # Calculate the area of the current subrectangle
+                    area = (k - i + 1) * (l - j + 1)
+                    
+                    # Calculate the sum of the elements in the current subrectangle
+                    sum_elements = sum(sum(c[i:k+1], []))
+                    
+                    # Check if the sum of the elements is less than or equal to x and if the area is greater than the current maximum area
+                    if sum_elements <= x and area > max_area:
+                        max_area = area
+                        subrectangle = [i, k, j, l]
     
-    # Return the sum modulo 10^9 + 9
-    return sum % (10**9 + 9)
+    # Return the maximum area if a subrectangle with the given constraints exists, otherwise return 0
+    if max_area == 0:
+        return 0
+    else:
+        return max_area
 

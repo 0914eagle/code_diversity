@@ -1,19 +1,44 @@
 
-def get_maximum_value_of_jewels(jewels, knapsack_sizes):
-    # Initialize a dictionary to store the maximum value of jewels for each knapsack size
-    max_values = {i: 0 for i in knapsack_sizes}
+import sys
 
-    # Iterate over the jewels
-    for jewel in jewels:
-        # Get the size and value of the jewel
-        size, value = jewel
+def get_dependencies(package, dependencies):
+    if package not in dependencies:
+        return []
+    return dependencies[package]
 
-        # Iterate over the knapsack sizes
-        for knapsack_size in knapsack_sizes:
-            # Check if the jewel fits in the current knapsack size
-            if size <= knapsack_size:
-                # Update the maximum value of jewels for the current knapsack size
-                max_values[knapsack_size] = max(max_values[knapsack_size], value + max_values[knapsack_size - size])
+def get_install_order(packages):
+    dependencies = {}
+    for package in packages:
+        dependencies[package] = get_dependencies(package, dependencies)
+    
+    install_order = []
+    while dependencies:
+        installed_packages = []
+        for package, deps in dependencies.items():
+            if not deps:
+                installed_packages.append(package)
+        if not installed_packages:
+            return "cannot be ordered"
+        install_order.extend(installed_packages)
+        for package in installed_packages:
+            del dependencies[package]
+            for dep in get_dependencies(package, dependencies):
+                dependencies[dep].remove(package)
+    
+    return " ".join(install_order)
 
-    return max_values
+if __name__ == "__main__":
+    num_cases = int(input())
+    for _ in range(num_cases):
+        num_packages = int(input())
+        packages = []
+        for _ in range(num_packages):
+            package, dependencies = input().split()
+            packages.append(package)
+            dependencies = dependencies.split()
+            for dep in dependencies:
+                if dep not in packages:
+                    packages.append(dep)
+        print(get_install_order(packages))
+        print()
 

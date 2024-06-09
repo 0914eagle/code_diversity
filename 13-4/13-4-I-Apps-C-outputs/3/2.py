@@ -1,35 +1,27 @@
 
-def get_boss_and_subordinates(employees, query):
-    # Initialize a dictionary to store the boss and subordinates for each employee
-    boss_and_subordinates = {}
+def reconstruct_painting(N, K, M, commands):
+    # Initialize the canvas with all cells set to white (color 1)
+    canvas = [[1] * N for _ in range(N)]
 
-    # Iterate over the employees and their salaries and heights
-    for employee, salary, height in employees:
-        # If the employee is the chairperson, set their boss to 0 and subordinates to 0
-        if employee == query:
-            boss_and_subordinates[employee] = (0, 0)
-            continue
+    # Iterate through the commands and apply them to the canvas
+    for command in commands:
+        if command.startswith("PAINT"):
+            # Extract the color and coordinates of the rectangle from the command
+            color, x1, y1, x2, y2 = map(int, command.split()[1:])
 
-        # Find the employee's boss by finding the employee with the least salary who is at least as tall as the current employee
-        boss = None
-        for boss_candidate, boss_candidate_salary, boss_candidate_height in employees:
-            if boss_candidate_salary <= salary and boss_candidate_height >= height:
-                boss = boss_candidate
-                break
+            # Iterate over the cells in the rectangle and paint them with the chosen color
+            for x in range(x1, x2 + 1):
+                for y in range(y1, y2 + 1):
+                    canvas[x][y] = color
 
-        # If the employee has no boss, set their subordinates to 0
-        if boss is None:
-            boss_and_subordinates[employee] = (0, 0)
-        else:
-            # Find the number of subordinates by counting the number of employees who are at least as tall as the current employee and have a salary less than their boss
-            subordinates = 0
-            for subordinate, subordinate_salary, subordinate_height in employees:
-                if subordinate_height >= height and subordinate_salary < boss_and_subordinates[boss][0]:
-                    subordinates += 1
+        elif command.startswith("SAVE"):
+            # Save the current state of the canvas
+            saved_canvas = canvas.copy()
 
-            # Set the boss and subordinates for the current employee
-            boss_and_subordinates[employee] = (boss, subordinates)
+        elif command.startswith("LOAD"):
+            # Load the saved state of the canvas
+            canvas = saved_canvas.copy()
 
-    # Return the boss and subordinates for the query employee
-    return boss_and_subordinates[query]
+    # Return the final state of the canvas
+    return canvas
 

@@ -1,31 +1,26 @@
 
-def get_pizzas(n, m, friends, pizzas):
-    # Initialize the maximum number of pleased friends to 0
-    max_pleased = 0
-    # Initialize the indices of the two pizzas to be returned
-    pizza1 = 0
-    pizza2 = 0
-    
-    # Iterate over each possible pair of pizzas
-    for i in range(m):
-        for j in range(i+1, m):
-            # Get the indices of the ingredients in the current pair of pizzas
-            ingredients1 = pizzas[i]["ingredients"]
-            ingredients2 = pizzas[j]["ingredients"]
-            # Initialize the number of pleased friends to 0
-            pleased = 0
-            # Iterate over each friend and check if their favorite ingredients are in the current pair of pizzas
-            for friend in friends:
-                if set(ingredients1).intersection(friend["favorite"]):
-                    pleased += 1
-                if set(ingredients2).intersection(friend["favorite"]):
-                    pleased += 1
-            # If the current pair of pizzas pleased more friends than the previous pair, update the maximum number of pleased friends and the indices of the two pizzas
-            if pleased > max_pleased:
-                max_pleased = pleased
-                pizza1 = i
-                pizza2 = j
-    
-    # Return the indices of the two pizzas that pleased the maximum number of friends
-    return [pizza1, pizza2]
+import sys
+
+def get_gis(g, n):
+    gis = []
+    for i in range(len(g)):
+        gis.append(g[i])
+        for j in range(i+1, len(g)):
+            if g[j] > g[i]:
+                gis.append(g[j])
+                break
+    gis.sort()
+    return gis
+
+def count_permutations(g, n):
+    gis = get_gis(g, n)
+    count = 1
+    for i in range(len(gis)):
+        count *= n - i
+    return count % (10**9 + 7)
+
+if __name__ == '__main__':
+    n, l = map(int, input().split())
+    g = list(map(int, input().split()))
+    print(count_permutations(g, n))
 

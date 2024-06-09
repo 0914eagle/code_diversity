@@ -1,28 +1,52 @@
 
-def solve(n, pairs):
-    # Initialize the food types for each pair
-    food_types = [[0, 0] for _ in range(n)]
+def get_max_standers(n, people):
+    # Initialize a list to store the answers
+    answers = []
     
-    # Loop through each pair and assign food types
+    # Loop through each possible combination of standers
+    for combination in itertools.permutations(range(1, n + 1)):
+        # Check if the current combination is valid
+        if is_valid_combination(combination, people):
+            # If it is valid, add it to the list of answers
+            answers.append(combination)
+    
+    # Return the list of answers
+    return answers
+
+def is_valid_combination(combination, people):
+    # Initialize a set to store the standers on each button
+    standers = set()
+    
+    # Loop through each person in the combination
+    for person in combination:
+        # Check if the person is standing on a button that is already occupied
+        if person in standers:
+            # If they are, return False
+            return False
+        # Add the person to the set of standers on the button
+        standers.add(person)
+    
+    # If we reach this point, all standers are unique, so return True
+    return True
+
+def main():
+    # Read the input from stdin
+    n = int(input())
+    people = []
     for i in range(n):
-        # If the boy and girl are sitting on consecutive chairs, they cannot have the same food type
-        if abs(pairs[i][0] - pairs[i][1]) == 1:
-            food_types[i][0] = 1
-            food_types[i][1] = 2
-        # If the boy and girl are not sitting on consecutive chairs, they can have the same food type
-        else:
-            food_types[i][0] = 1
-            food_types[i][1] = 1
+        line = input()
+        people.append(line)
     
-    # Check if the food types satisfy the conditions
-    for i in range(n):
-        # If the boy and girl have the same food type, there is no solution
-        if food_types[i][0] == food_types[i][1]:
-            return -1
-        # If any three guests sitting on consecutive chairs have two different food types, there is no solution
-        if abs(food_types[i][0] - food_types[i][1]) == 1 and abs(food_types[i+1][0] - food_types[i+1][1]) == 1 and abs(food_types[i+2][0] - food_types[i+2][1]) == 1:
-            return -1
+    # Call the function to get the maximum number of standers
+    answers = get_max_standers(n, people)
     
-    # If the food types satisfy the conditions, return the solution
-    return food_types
+    # Print the number of answers
+    print(len(answers))
+    
+    # Loop through each answer and print it
+    for answer in answers:
+        print(*answer)
+
+if __name__ == "__main__":
+    main()
 

@@ -1,16 +1,15 @@
 
-def solve(a, b):
-    if a == 0 and b == 0:
-        return "YES"
-    
-    while a > 0 and b > 0:
-        if a > b:
-            a = a - b
-        else:
-            b = b - a
-    
-    if a == 0 and b == 0:
-        return "YES"
+def is_palindrome(s):
+    return s == s[::-1]
+
+def get_good_string(s):
+    if is_palindrome(s):
+        return "-1"
     else:
-        return "NO"
+        return "".join(sorted(s))
+
+t = int(input())
+for i in range(t):
+    s = input()
+    print(get_good_string(s))
 

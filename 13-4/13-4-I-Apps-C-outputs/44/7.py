@@ -1,28 +1,33 @@
 
-def solve(n, pairs):
-    # Initialize the food types for each pair
-    food_types = [[0, 0] for _ in range(n)]
+def get_max_times(n, buttons):
+    # Initialize a list to store the results
+    results = []
     
-    # Loop through each pair and assign food types
-    for i in range(n):
-        # If the boy and girl are sitting on consecutive chairs, they cannot have the same food type
-        if abs(pairs[i][0] - pairs[i][1]) == 1:
-            food_types[i][0] = 1
-            food_types[i][1] = 2
-        # If the boy and girl are not sitting on consecutive chairs, they can have the same food type
-        else:
-            food_types[i][0] = 1
-            food_types[i][1] = 1
+    # Iterate over each possible combination of buttons
+    for combination in itertools.permutations(range(n)):
+        # Check if the current combination is valid
+        if is_valid_combination(combination, buttons):
+            # If it is valid, add it to the results list
+            results.append(list(combination))
     
-    # Check if the food types satisfy the conditions
-    for i in range(n):
-        # If the boy and girl have the same food type, there is no solution
-        if food_types[i][0] == food_types[i][1]:
-            return -1
-        # If any two guests sitting on consecutive chairs have the same food type, there is no solution
-        if abs(food_types[i][0] - food_types[i+1][0]) == 0 or abs(food_types[i][1] - food_types[i+1][1]) == 0:
-            return -1
-    
-    # If the food types satisfy the conditions, return the solution
-    return food_types
+    # Return the maximum number of times and the corresponding combinations
+    return len(results), results
+
+def is_valid_combination(combination, buttons):
+    # Check if the current combination is valid
+    for i in range(len(combination)):
+        for j in range(i+1, len(combination)):
+            if combination[i] == combination[j] and buttons[i][j] == 'N':
+                return False
+    return True
+
+n = int(input())
+buttons = []
+for i in range(n):
+    buttons.append(input())
+
+max_times, combinations = get_max_times(n, buttons)
+print(max_times)
+for combination in combinations:
+    print(*combination)
 

@@ -1,13 +1,16 @@
 
-def solve():
-    N = int(input())
-    A = list(map(int, input().split()))
-    count = 0
-    for i in range(N):
+def solve(S):
+    N = len(S)
+    counts = [0] * N
+    counts[0] = 1
+    counts[N-1] = 1
+    for i in range(10**100):
         for j in range(N):
-            if i != j and A[j] % A[i] == 0:
-                break
-        else:
-            count += 1
-    return count
+            if S[j] == "L":
+                counts[j-1] += counts[j]
+            else:
+                counts[j+1] += counts[j]
+        counts[0] = 0
+        counts[N-1] = 0
+    return " ".join(map(str, counts))
 

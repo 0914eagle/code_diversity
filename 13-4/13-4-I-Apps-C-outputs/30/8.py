@@ -1,35 +1,32 @@
 
-def is_correct_sequence(sequence):
-    stack = []
-    for char in sequence:
-        if char == "(":
-            stack.append(char)
-        elif char == ")":
-            if not stack:
-                return False
-            stack.pop()
-    return not stack
+def get_badge_numbers(N, L, B, S, D, locks):
+    # Initialize a set to store the badge numbers that can pass from S to D
+    badge_numbers = set()
 
-def make_sequence_correct(sequence):
-    if is_correct_sequence(sequence):
-        return 0
+    # Iterate through each lock
+    for lock in locks:
+        # Extract the information from the lock
+        a, b, x, y = lock
 
-    stack = []
-    for i in range(len(sequence)):
-        char = sequence[i]
-        if char == "(":
-            stack.append(char)
-        elif char == ")":
-            if not stack:
-                return -1
-            stack.pop()
-        else:
-            continue
+        # Check if the lock is between the starting and destination rooms
+        if a == S and b == D:
+            # Add the badge numbers to the set
+            badge_numbers |= set(range(x, y + 1))
 
-    while stack:
-        char = stack.pop()
-        sequence = sequence[:i] + char + sequence[i:]
-        i += 1
+    # Return the length of the set
+    return len(badge_numbers)
 
-    return len(sequence)
+# Main function
+if __name__ == "__main__":
+    # Read the input
+    N, L, B, S, D = map(int, input().split())
+    locks = []
+    for _ in range(L):
+        locks.append(list(map(int, input().split())))
+
+    # Call the function to get the number of badge numbers that can pass from S to D
+    result = get_badge_numbers(N, L, B, S, D, locks)
+
+    # Print the result
+    print(result)
 

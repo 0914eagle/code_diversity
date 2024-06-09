@@ -1,52 +1,42 @@
 
-def is_tourist_friendly(n, roads):
-    # Initialize a visited array and a parent array
-    visited = [False] * (n + 1)
-    parent = [0] * (n + 1)
-    
-    # Start from the first city and do a DFS traversal
-    city = 1
-    visited[city] = True
-    for road in roads:
-        if road[0] == city:
-            city = road[1]
-            break
-    
-    # DFS traversal
-    while city != 0:
-        for road in roads:
-            if road[0] == city and not visited[road[1]]:
-                visited[road[1]] = True
-                parent[road[1]] = city
-                city = road[1]
-                break
-        else:
-            city = parent[city]
-    
-    # Check if all cities are visited
-    for i in range(1, n + 1):
-        if not visited[i]:
-            return False
-    
+n, k, m = map(int, input().split())
+
+board = [[0] * (n + 1) for _ in range(n + 1)]
+
+for _ in range(m):
+    x, y = map(int, input().split())
+    if board[x][y] == 0:
+        board[x][y] = 1
+    else:
+        board[x][y] = 0
+
+def is_good(board):
+    for i in range(n):
+        for j in range(n):
+            if board[i][j] == 1 and (i != k or j != 1):
+                return False
     return True
 
-def solve(n, roads):
-    # Check if the given road network is tourist-friendly
-    if is_tourist_friendly(n, roads):
-        return "YES"
-    
-    # If not, try to redirect some of the roads to make it tourist-friendly
-    for i in range(len(roads)):
-        for j in range(i + 1, len(roads)):
-            if roads[i][0] == roads[j][1] and roads[i][1] == roads[j][0]:
-                # Redirect the road between the two cities
-                roads[i][0], roads[i][1] = roads[i][1], roads[i][0]
-                roads[j][0], roads[j][1] = roads[j][1], roads[j][0]
-                if is_tourist_friendly(n, roads):
-                    return "YES"
-                # Undo the changes if it doesn't work
-                roads[i][0], roads[i][1] = roads[i][1], roads[i][0]
-                roads[j][0], roads[j][1] = roads[j][1], roads[j][0]
-    
-    return "NO"
+def add_rows(board):
+    for i in range(n):
+        for j in range(n):
+            if board[i][j] == 1:
+                board[i + 1][j] = 1
+                board[i][j] = 0
+    return board
+
+def solve(board):
+    while not is_good(board):
+        board = add_rows(board)
+    return board
+
+board = solve(board)
+
+for i in range(n):
+    for j in range(n):
+        if board[i][j] == 1:
+            print(i - k + 1)
+            break
+    else:
+        print(0)
 

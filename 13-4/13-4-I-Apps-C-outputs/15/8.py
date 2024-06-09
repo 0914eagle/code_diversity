@@ -1,19 +1,27 @@
 
-def solve(N, K, P, rooks, moves):
-    # Initialize a 2D array to store the attacked fields
-    attacked = [[0] * N for _ in range(N)]
+n = int(input())
+p = list(map(int, input().split()))
 
-    # Loop through each move
-    for move in moves:
-        # Get the current and next positions of the rook
-        current_row, current_col, next_row, next_col = move
+def get_deviation(p):
+    deviation = 0
+    for i in range(n):
+        deviation += abs(p[i] - i)
+    return deviation
 
-        # Update the attacked fields for the current position
-        attacked[current_row][current_col] = 0
+def get_cyclic_shift(p, k):
+    return [p[i] for i in range(n) if i % n == k]
 
-        # Update the attacked fields for the next position
-        attacked[next_row][next_col] = 1
+def get_optimal_cyclic_shift(p):
+    min_deviation = float('inf')
+    optimal_shift = None
+    for k in range(n):
+        shift = get_cyclic_shift(p, k)
+        deviation = get_deviation(shift)
+        if deviation < min_deviation:
+            min_deviation = deviation
+            optimal_shift = shift
+    return optimal_shift
 
-    # Return the total number of attacked fields after P moves
-    return sum(sum(row) for row in attacked)
+optimal_shift = get_optimal_cyclic_shift(p)
+print(get_deviation(optimal_shift), get_cyclic_shift(p, optimal_shift.index(1)))
 

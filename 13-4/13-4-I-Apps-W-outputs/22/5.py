@@ -1,14 +1,18 @@
 
-def solve(expression):
-    A, B, C = map(int, expression.split("+")[0].split("=")[0])
-    D = int(expression.split("+")[0].split("=")[1])
-    E = int(expression.split("+")[1][1:])
-    if A + B == C and D + E == C:
-        return expression
-    if A + B == C and D + E != C:
-        return "Impossible"
-    if A + B != C and D + E == C:
-        return "Impossible"
-    if A + B != C and D + E != C:
-        return "Impossible"
+def solve(H, N, A, B):
+    # Initialize the minimum total Magic Points to be consumed
+    min_points = 0
+    # Loop through each spell
+    for i in range(N):
+        # Calculate the health after casting the spell
+        health = H - A[i]
+        # If the health is less than or equal to 0, break the loop
+        if health <= 0:
+            break
+        # Calculate the total Magic Points consumed so far
+        points = sum(B[:i+1])
+        # Update the minimum total Magic Points if necessary
+        min_points = min(min_points, points)
+    # Return the minimum total Magic Points
+    return min_points
 

@@ -1,21 +1,22 @@
 
-def get_maximum_profit(N, F, P):
-    # Initialize the maximum profit to 0
-    max_profit = 0
-    # Loop over each day and period
-    for day in range(1, 6):
-        for period in range(1, 3):
-            # Initialize the profit for this day and period to 0
-            profit = 0
-            # Loop over each shop
-            for shop in range(1, N+1):
-                # Check if the shop is open during this day and period
-                if F[shop][day][period] == 1:
-                    # Add the profit for this shop to the total profit
-                    profit += P[shop][period]
-            # If the total profit for this day and period is greater than the maximum profit, update the maximum profit
-            if profit > max_profit:
-                max_profit = profit
-    # Return the maximum profit
-    return max_profit
+def is_possible(area, fencing_length):
+    # Calculate the minimum area of the cage
+    min_area = fencing_length ** 2
+
+    # Check if the area is greater than or equal to the minimum area
+    if area >= min_area:
+        return True
+    else:
+        return False
+
+# Main function
+if __name__ == '__main__':
+    # Read the input
+    area, fencing_length = map(float, input().split())
+
+    # Check if it is possible to build the cage
+    if is_possible(area, fencing_length):
+        print("Diablo is happy!")
+    else:
+        print("Need more materials!")
 

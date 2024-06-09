@@ -1,24 +1,19 @@
 
-def solve(a, k):
-    n = len(a)
-    if n == 1:
-        return 0
-    if k == 0:
-        return abs(max(a) - min(a))
-    # find the index of the maximum and minimum elements
-    max_index = a.index(max(a))
-    min_index = a.index(min(a))
-    # if the maximum and minimum elements are not adjacent, we can swap them and get a better answer
-    if abs(max_index - min_index) > 1:
-        a[max_index], a[min_index] = a[min_index], a[max_index]
-        k -= 1
-    # if the maximum element is not at the end of the array, we can move it to the end and get a better answer
-    if max_index < n-1:
-        a[max_index], a[n-1] = a[n-1], a[max_index]
-        k -= 1
-    # if the minimum element is not at the start of the array, we can move it to the start and get a better answer
-    if min_index > 0:
-        a[min_index], a[0] = a[0], a[min_index]
-        k -= 1
-    return solve(a, k)
+def solve(s):
+    n = len(s)
+    # Initialize the longest non-decreasing subsequence array
+    lis = [1] * n
+    for i in range(1, n):
+        for j in range(i):
+            if s[i] >= s[j] and lis[i] < lis[j] + 1:
+                lis[i] = lis[j] + 1
+    # Find the maximum length of the longest non-decreasing subsequence
+    max_len = max(lis)
+    # Initialize the binary string with all zeros
+    t = "0" * n
+    # Fill in the ones in the binary string
+    for i in range(n):
+        if lis[i] == max_len:
+            t = t[:i] + "1" + t[i+1:]
+    return t
 

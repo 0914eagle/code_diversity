@@ -1,23 +1,36 @@
 
-def solve(n, m, edges, s, t):
-    # Initialize a graph with n nodes and m edges
-    graph = [[] for _ in range(n)]
-    for u, v in edges:
-        graph[u].append(v)
-        graph[v].append(u)
+import sys
+
+def solve(N, X, A):
+    # Initialize the count of integers not exceeding X
+    count = 0
     
-    # Find the shortest path between the initial stations of Alice and Bob
-    visited = set()
-    queue = [(s, 0)]
-    while queue:
-        node, distance = queue.pop(0)
-        if node == t:
-            return distance
-        if node in visited:
-            continue
-        visited.add(node)
-        for neighbor in graph[node]:
-            queue.append((neighbor, distance + 1))
+    # Iterate through the given integers
+    for i in range(N):
+        # Convert the integer to binary
+        binary = bin(A[i])[2:]
+        
+        # Initialize the current integer
+        current = 0
+        
+        # Iterate through the binary representation of the integer
+        for j in range(len(binary)):
+            # If the current bit is 1, add the corresponding power of 2 to the current integer
+            if binary[j] == "1":
+                current += 2**j
+            
+            # If the current integer is not greater than X, increment the count
+            if current <= X:
+                count += 1
     
-    return "never meet"
+    # Return the count modulo 998244353
+    return count % 998244353
+
+if __name__ == "__main__":
+    # Read the input from stdin
+    N, X = map(int, input().split())
+    A = list(map(int, input().split()))
+    
+    # Solve the problem
+    print(solve(N, X, A))
 

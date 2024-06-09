@@ -1,10 +1,12 @@
 {
     "inputs": [
-        "7 3 3 3\nA B C\nD E F\n3 A E G\n3 A C E\n3 B D F\n",
-        "7 3 3 4\nA B C\nD E F\n3 A E G\n3 A C E\n3 B D F\n2 G F\n"
+        "1 5\n",
+        "1 12\n",
+        "5 1\n"
     ],
     "outputs": [
-        "2\n",
-        "3\n"
+        "4\n\n",
+        "4\n\n",
+        "2\n\n"
     ]
 }

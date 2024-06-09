@@ -1,31 +1,43 @@
 
-def nimionese(sentence):
-    # Split the sentence into words
-    words = sentence.split()
-    
-    # Create a dictionary to map hard consonants to their nearest neighbors
-    hard_consonants = {"b": "a", "c": "b", "d": "c", "g": "d", "k": "e", "n": "f", "p": "g", "t": "h"}
-    
-    # Iterate through each word and convert it to nimionese
-    for i in range(len(words)):
-        word = words[i]
-        
-        # Replace the first letter of the word with its nearest neighbor if it is a hard consonant
-        if word[0] in hard_consonants:
-            words[i] = hard_consonants[word[0]] + word[1:]
-        
-        # Replace "each" with "dach"
-        if word == "each":
-            words[i] = "dach"
-        
-        # Replace hard consonants in subsequent syllables with the same consonant as the first letter
-        if len(word) > 1 and word[1] in hard_consonants:
-            words[i] = words[i][0] + hard_consonants[word[1]] + words[i][2:]
-        
-        # Add "ah", "oh", or "uh" to the end of the word if it ends in a hard consonant
-        if word[-1] in hard_consonants:
-            words[i] = words[i][:-1] + "ah"
-    
-    # Join the words back into a sentence and return it
-    return " ".join(words)
+import math
+
+def get_angle(x1, y1, x2, y2):
+    # Calculate the dot product of the two vectors
+    dot_product = x1 * x2 + y1 * y2
+
+    # Calculate the magnitude of the two vectors
+    mag1 = math.sqrt(x1 ** 2 + y1 ** 2)
+    mag2 = math.sqrt(x2 ** 2 + y2 ** 2)
+
+    # Calculate the angle between the two vectors
+    angle = math.acos(dot_product / (mag1 * mag2))
+
+    return angle
+
+def solve(points):
+    # Initialize the angle to 0
+    angle = 0
+
+    # Iterate through the points and calculate the angle between each pair of points
+    for i in range(len(points)):
+        for j in range(i + 1, len(points)):
+            x1, y1 = points[i]
+            x2, y2 = points[j]
+            angle += get_angle(x1, y1, x2, y2)
+
+    # Return the average angle
+    return angle / len(points)
+
+# Test the solve function
+points = [
+    (-2.14, 2.06),
+    (-1.14, 2.04),
+    (-2.16, 1.46),
+    (-2.14, 0.70),
+    (-1.42, 0.40),
+    (-0.94, -0.48),
+    (-1.42, -1.28),
+    (-2.16, -1.62)
+]
+print(solve(points))
 

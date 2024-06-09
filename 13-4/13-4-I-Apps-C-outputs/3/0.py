@@ -1,20 +1,27 @@
 
-def get_boss_and_subordinates(employees, query):
-    bosses = {}
-    subordinates = {}
+def reconstruct_painting(N, K, M, commands):
+    # Initialize the canvas with all cells set to white (color 1)
+    canvas = [[1] * N for _ in range(N)]
 
-    for employee in employees:
-        bosses[employee[0]] = employee[1]
-        subordinates[employee[1]] = subordinates.get(employee[1], []) + [employee[0]]
+    # Iterate through the commands and apply them to the canvas
+    for command in commands:
+        if command.startswith("PAINT"):
+            # Extract the color and coordinates of the rectangle from the command
+            color, x1, y1, x2, y2 = map(int, command.split()[1:])
 
-    boss = bosses[query]
-    subordinates = subordinates.get(query, [])
+            # Iterate over the cells in the rectangle and paint them with the chosen color
+            for x in range(x1, x2 + 1):
+                for y in range(y1, y2 + 1):
+                    canvas[x][y] = color
 
-    return boss, len(subordinates)
+        elif command.startswith("SAVE"):
+            # Save the current state of the canvas
+            saved_canvas = canvas.copy()
 
-employees = [(123456, 14323, 1700000), (123458, 41412, 1900000), (123457, 15221, 1800000)]
-query = 123456
+        elif command.startswith("LOAD"):
+            # Load the saved state of the canvas
+            canvas = saved_canvas.copy()
 
-boss, subordinates = get_boss_and_subordinates(employees, query)
-print(boss, subordinates)
+    # Return the final state of the canvas
+    return canvas
 

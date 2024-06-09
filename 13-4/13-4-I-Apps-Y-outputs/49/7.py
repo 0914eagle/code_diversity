@@ -1,10 +1,18 @@
 
-def find_cia_blimps(blimp_list):
-    cia_blimps = []
-    for i, blimp in enumerate(blimp_list):
-        if "CIA" in blimp or "FBI" in blimp:
-            cia_blimps.append(i)
-    if not cia_blimps:
-        return "HE GOT AWAY!"
-    return " ".join(str(cia_blimp) for cia_blimp in sorted(cia_blimps))
+def hex_compare(x, y):
+    x_value = hex_to_decimal(x)
+    y_value = hex_to_decimal(y)
+    if x_value < y_value:
+        return "<"
+    elif x_value > y_value:
+        return ">"
+    else:
+        return "="
+
+def hex_to_decimal(hex_string):
+    hex_dict = {"A": 10, "B": 11, "C": 12, "D": 13, "E": 14, "F": 15}
+    return hex_dict[hex_string]
+
+x, y = input().split()
+print(hex_compare(x, y))
 

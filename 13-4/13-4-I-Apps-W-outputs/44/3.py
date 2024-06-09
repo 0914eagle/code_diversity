@@ -1,27 +1,19 @@
 
-def solve(a, k):
-    n = len(a)
-    if k == 0:
-        return 0
-    if n == 1:
-        return 0
-    if k == 1:
-        return abs(max(a) - min(a))
-    # find the index of the maximum and minimum elements
-    max_index = a.index(max(a))
-    min_index = a.index(min(a))
-    # if the maximum and minimum elements are not at the edges,
-    # we can increase or decrease them by 1 and get a better answer
-    if max_index != 0 and max_index != n-1:
-        a[max_index] += 1
-        a[min_index] -= 1
-        return solve(a, k-1)
-    # if the maximum element is at the edge, we can only decrease the minimum element
-    elif max_index == 0:
-        a[min_index] -= 1
-        return solve(a, k-1)
-    # if the minimum element is at the edge, we can only increase the maximum element
-    else:
-        a[max_index] += 1
-        return solve(a, k-1)
+def solve(s):
+    n = len(s)
+    # Initialize the longest non-decreasing subsequence for each index
+    lis = [1] * n
+    for i in range(1, n):
+        for j in range(i):
+            if s[i] >= s[j] and lis[i] < lis[j] + 1:
+                lis[i] = lis[j] + 1
+    # Find the maximum length of a non-decreasing subsequence
+    max_len = max(lis)
+    # Find the indices with the maximum length
+    max_indices = [i for i in range(n) if lis[i] == max_len]
+    # Create a new string with the maximum length and the same number of zeroes as the input string
+    t = "0" * n
+    for i in max_indices:
+        t = t[:i] + "1" + t[i+1:]
+    return t
 

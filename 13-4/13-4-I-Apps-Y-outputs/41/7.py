@@ -1,36 +1,36 @@
 
-def solve(n, k, a):
-    # Initialize two empty lists to store the teams
-    team_1 = []
-    team_2 = []
+import sys
+
+def get_perket(ingredients):
+    # Sort the ingredients by sourness in descending order
+    ingredients.sort(key=lambda x: x[0], reverse=True)
     
-    # Sort the list of programming skills in descending order
-    a.sort(reverse=True)
+    # Initialize the best difference and the chosen ingredients
+    best_diff = sys.maxsize
+    chosen_ingredients = []
     
-    # Loop through the list of programming skills
-    for i in range(n):
-        # If the current student is not in any team, choose them
-        if i not in team_1 and i not in team_2:
-            # Add the current student to the first team
-            team_1.append(i)
-            # Add the k closest students to the left and right of the current student to the first team
-            for j in range(1, k+1):
-                if i-j >= 0 and i-j not in team_1:
-                    team_1.append(i-j)
-                if i+j < n and i+j not in team_1:
-                    team_1.append(i+j)
-        
-        # If the current student is not in any team, choose them
-        if i not in team_1 and i not in team_2:
-            # Add the current student to the second team
-            team_2.append(i)
-            # Add the k closest students to the left and right of the current student to the second team
-            for j in range(1, k+1):
-                if i-j >= 0 and i-j not in team_2:
-                    team_2.append(i-j)
-                if i+j < n and i+j not in team_2:
-                    team_2.append(i+j)
+    # Iterate over all possible combinations of ingredients
+    for i in range(len(ingredients)):
+        for j in range(i+1, len(ingredients)):
+            # Calculate the total sourness and bitterness of the current combination
+            total_sourness = ingredients[i][0] * ingredients[j][0]
+            total_bitterness = ingredients[i][1] + ingredients[j][1]
+            
+            # Calculate the difference between sourness and bitterness
+            diff = abs(total_sourness - total_bitterness)
+            
+            # If the current difference is smaller than the best difference, update the best difference and the chosen ingredients
+            if diff < best_diff:
+                best_diff = diff
+                chosen_ingredients = [ingredients[i], ingredients[j]]
     
-    # Return the teams as a string of 1s and 2s
-    return "".join([str(1 if i in team_1 else 2) for i in range(n)])
+    return chosen_ingredients
+
+if __name__ == '__main__':
+    ingredients = []
+    for _ in range(int(input())):
+        ingredients.append(list(map(int, input().split())))
+    
+    chosen_ingredients = get_perket(ingredients)
+    print(chosen_ingredients[0][0] * chosen_ingredients[1][0] - chosen_ingredients[0][1] - chosen_ingredients[1][1])
 

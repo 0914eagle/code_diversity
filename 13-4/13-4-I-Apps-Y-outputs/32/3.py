@@ -1,21 +1,18 @@
 
-import re
+def get_mex(arr):
+    arr = sorted(arr)
+    mex = 0
+    for i in range(len(arr)):
+        if arr[i] != mex:
+            return mex
+        mex += 1
+    return mex + 1
 
-def get_non_similar_keywords(keywords):
-    non_similar_keywords = []
-    for keyword in keywords:
-        if keyword not in non_similar_keywords:
-            non_similar_keywords.append(keyword)
-    return len(non_similar_keywords)
 
-def main():
-    n = int(input())
-    keywords = []
-    for _ in range(n):
-        keyword = input()
-        keywords.append(re.sub(r'-', ' ', keyword).lower())
-    print(get_non_similar_keywords(keywords))
-
-if __name__ == '__main__':
-    main()
+def solve(q, x, queries):
+    arr = []
+    for query in queries:
+        arr.append(query)
+        get_mex(arr)
+    return arr
 

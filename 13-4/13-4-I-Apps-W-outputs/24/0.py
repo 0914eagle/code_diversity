@@ -1,23 +1,20 @@
 
-def solve(n, m, pairs):
-    # Initialize a dictionary to store the recognition of each warrior
-    recognitions = {i: 0 for i in range(1, n + 1)}
+def solve(A, K):
+    # Calculate the prefix sum of the array
+    prefix_sum = [0]
+    for i in range(len(A)):
+        prefix_sum.append(prefix_sum[i] + A[i])
 
-    # Loop through each pair of warriors knowing each other
-    for a, b in pairs:
-        # Increment the recognition of both warriors by 1
-        recognitions[a] += 1
-        recognitions[b] += 1
+    # Initialize the number of contiguous subsequences to 0
+    count = 0
 
-    # Find the three warriors with the minimum recognition
-    min_recognition = min(recognitions.values())
-    musketeers = [k for k, v in recognitions.items() if v == min_recognition]
+    # Iterate through the prefix sum array
+    for i in range(len(prefix_sum)):
+        # Check if the prefix sum at index i is greater than or equal to K
+        if prefix_sum[i] >= K:
+            # Increment the number of contiguous subsequences
+            count += 1
 
-    # Check if there are three musketeers
-    if len(musketeers) == 3:
-        # Return the sum of their recognitions
-        return sum(recognitions[m] for m in musketeers)
-    else:
-        # Return -1 if there are not three musketeers
-        return -1
+    # Return the number of contiguous subsequences
+    return count
 

@@ -1,11 +1,10 @@
 
-def enlarge_article(R, C, Z_R, Z_C, article):
-    enlarged_article = []
-    for i in range(R):
-        enlarged_row = []
-        for j in range(C):
-            char = article[i][j]
-            enlarged_row += [char] * Z_C
-        enlarged_article += [enlarged_row]
-    return enlarged_article
+def count_triples(k, s):
+    count = 0
+    for x in range(k+1):
+        for y in range(k+1):
+            z = s - x - y
+            if x + y + z == s and 0 <= x <= k and 0 <= y <= k and 0 <= z <= k:
+                count += 1
+    return count
 

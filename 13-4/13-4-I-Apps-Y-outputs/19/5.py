@@ -1,36 +1,49 @@
 
-def solve(n, a):
-    # Initialize a dictionary to map each kid to its remembered kids
-    remembered = {i: set() for i in range(1, n + 1)}
-    for i in range(n):
-        remembered[i + 1].add(a[i][0])
-        remembered[i + 1].add(a[i][1])
+import sys
+input = sys.stdin.read()
 
-    # Initialize a set to store the kids that have been processed
-    processed = set()
+# Function to calculate the Manhattan distance between two points
+def manhattan_distance(p1, p2):
+    return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
 
-    # Initialize the permutation with the first kid
-    permutation = [1]
+# Function to find the nearest safe house to a given spy
+def find_nearest_safe_house(spy, safe_houses):
+    min_distance = float('inf')
+    nearest_safe_house = None
+    for safe_house in safe_houses:
+        distance = manhattan_distance(spy, safe_house)
+        if distance < min_distance:
+            min_distance = distance
+            nearest_safe_house = safe_house
+    return nearest_safe_house
 
-    # Loop until all kids have been processed
-    while len(processed) < n:
-        # Get the current kid and its remembered kids
-        current_kid = permutation[-1]
-        current_remembered = remembered[current_kid]
+# Function to find the maximum Manhattan distance between a spy and its nearest safe house
+def find_max_distance(spies, safe_houses):
+    max_distance = 0
+    for spy in spies:
+        nearest_safe_house = find_nearest_safe_house(spy, safe_houses)
+        distance = manhattan_distance(spy, nearest_safe_house)
+        if distance > max_distance:
+            max_distance = distance
+    return max_distance
 
-        # Find the next kid that is not in the permutation and is remembered by the current kid
-        for next_kid in current_remembered:
-            if next_kid not in processed:
-                break
-        else:
-            # If no such kid is found, find the first kid that is not in the permutation
-            for next_kid in range(1, n + 1):
-                if next_kid not in processed:
-                    break
+# Read the input
+N = int(input.split('\n')[0])
+grid = [list(row) for row in input.split('\n')[1:]]
 
-        # Add the next kid to the permutation and mark it as processed
-        permutation.append(next_kid)
-        processed.add(next_kid)
+# Find the spies and safe houses
+spies = []
+safe_houses = []
+for i in range(N):
+    for j in range(N):
+        if grid[i][j] == 'S':
+            spies.append((i, j))
+        elif grid[i][j] == 'H':
+            safe_houses.append((i, j))
 
-    return permutation
+# Find the maximum Manhattan distance
+max_distance = find_max_distance(spies, safe_houses)
+
+# Print the output
+print(max_distance)
 

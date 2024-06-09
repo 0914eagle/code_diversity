@@ -1,58 +1,42 @@
 
-def solve(N, A, B):
-    # Initialize a list to store the sequence
-    seq = []
+def solve(N, R, flights, F, additional_flights):
+    # Initialize a graph with the given number of nodes (airports)
+    graph = [[] for _ in range(N + 1)]
 
-    # If A is 1, we can just fill the sequence with increasing numbers
-    if A == 1:
-        for i in range(1, N+1):
-            seq.append(i)
-        return seq
+    # Add edges to the graph based on the given flights
+    for a, b, c in flights:
+        graph[a].append((b, c))
+        graph[b].append((a, c))
 
-    # If B is 1, we can just fill the sequence with decreasing numbers
-    if B == 1:
-        for i in range(N, 0, -1):
-            seq.append(i)
-        return seq
+    # Add edges to the graph based on the additional flights
+    for a, b, c in additional_flights:
+        graph[a].append((b, c))
+        graph[b].append((a, c))
 
-    # If A is 2, we can fill the sequence with increasing numbers and then reverse it
-    if A == 2:
-        for i in range(1, N+1):
-            seq.append(i)
-        seq.reverse()
-        return seq
+    # Use a priority queue to keep track of the next flight to visit
+    queue = [(0, 1, set())]
+    visited = set()
 
-    # If B is 2, we can fill the sequence with decreasing numbers and then reverse it
-    if B == 2:
-        for i in range(N, 0, -1):
-            seq.append(i)
-        seq.reverse()
-        return seq
+    # Loop until all reviews have been made
+    while len(visited) < R:
+        # Get the next flight to visit from the priority queue
+        cost, node, visited_nodes = heapq.heappop(queue)
 
-    # If A is greater than 2, we can fill the sequence with increasing numbers and then insert B-2 numbers in the middle
-    if A > 2:
-        # Fill the sequence with increasing numbers
-        for i in range(1, N+1):
-            seq.append(i)
+        # If the current node is a review, mark it as visited and continue
+        if node in visited_nodes:
+            continue
 
-        # Insert B-2 numbers in the middle
-        for i in range(B-2):
-            seq.insert(N//2, N//2+i)
+        # Add the current node to the visited set
+        visited.add(node)
 
-        return seq
+        # Add the cost of the current flight to the total cost
+        total_cost += cost
 
-    # If B is greater than 2, we can fill the sequence with decreasing numbers and then insert A-2 numbers in the middle
-    if B > 2:
-        # Fill the sequence with decreasing numbers
-        for i in range(N, 0, -1):
-            seq.append(i)
+        # Add the neighbors of the current node to the priority queue
+        for neighbor, weight in graph[node]:
+            if neighbor not in visited_nodes:
+                heapq.heappush(queue, (weight, neighbor, visited_nodes | {node}))
 
-        # Insert A-2 numbers in the middle
-        for i in range(A-2):
-            seq.insert(N//2, N//2+i)
-
-        return seq
-
-    # If none of the above conditions are met, return -1
-    return -1
+    # Return the total cost of the flights
+    return total_cost
 

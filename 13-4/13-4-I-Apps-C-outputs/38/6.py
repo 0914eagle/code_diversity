@@ -1,20 +1,29 @@
 
-def is_hill_number(n):
-    if n < 2:
-        return True
-    prev_digit = None
-    is_increasing = True
-    for digit in str(n):
-        if prev_digit is not None and prev_digit > digit:
-            is_increasing = False
-            break
-        prev_digit = digit
-    return is_increasing
+def solve(residents, parties, clubs):
+    # Initialize the dictionary to store the club representatives
+    club_representatives = {}
 
-def count_hill_numbers(n):
-    count = 0
-    for i in range(1, n+1):
-        if is_hill_number(i):
-            count += 1
-    return count
+    # Iterate through the residents and assign them to clubs
+    for resident in residents:
+        # Get the resident's party and the number of clubs they belong to
+        party = resident[1]
+        num_clubs = resident[2]
+
+        # Iterate through the clubs the resident belongs to
+        for i in range(num_clubs):
+            # Get the name of the club
+            club = resident[3 + i]
+
+            # Check if the club already has a representative
+            if club not in club_representatives:
+                # If not, assign the resident as the representative
+                club_representatives[club] = resident[0]
+            else:
+                # If the club already has a representative, check if the resident's party is different from the current representative's party
+                if club_representatives[club] != party:
+                    # If the parties are different, assign the resident as the representative
+                    club_representatives[club] = resident[0]
+
+    # Return the club representatives
+    return club_representatives
 

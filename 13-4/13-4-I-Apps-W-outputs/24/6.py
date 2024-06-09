@@ -1,25 +1,18 @@
 
-def solve(n, m, edges):
-    # Initialize a dictionary to store the recognition of each warrior
-    recognitions = {i: 0 for i in range(1, n + 1)}
+import sys
 
-    # Loop through each edge and update the recognition of the warriors
-    for edge in edges:
-        recognitions[edge[0]] += 1
-        recognitions[edge[1]] += 1
+def get_contiguous_subsequences(arr, k):
+    n = len(arr)
+    count = 0
+    for i in range(n):
+        curr_sum = 0
+        for j in range(i, n):
+            curr_sum += arr[j]
+            if curr_sum >= k:
+                count += 1
+    return count
 
-    # Find the three musketeers with the minimum recognition sum
-    min_sum = float('inf')
-    for i in range(1, n + 1):
-        for j in range(i + 1, n + 1):
-            for k in range(j + 1, n + 1):
-                if recognitions[i] + recognitions[j] + recognitions[k] < min_sum:
-                    min_sum = recognitions[i] + recognitions[j] + recognitions[k]
-
-    # If a triple of musketeers exists, return the minimum recognition sum
-    # Otherwise, return -1
-    if min_sum < float('inf'):
-        return min_sum
-    else:
-        return -1
+n, k = map(int, input().split())
+arr = list(map(int, input().split()))
+print(get_contiguous_subsequences(arr, k))
 

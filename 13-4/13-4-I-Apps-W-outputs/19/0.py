@@ -1,18 +1,39 @@
 
-def solve(n, d, a, m):
-    # Sort the hook prices in non-decreasing order
-    sorted_hooks = sorted(a)
-    # Initialize the total profit to 0
-    total_profit = 0
-    # Loop through each guest
-    for i in range(m):
-        # If there are no available hooks, pay the fine
-        if len(sorted_hooks) == 0:
-            total_profit -= d
-        # Otherwise, choose the cheapest available hook and remove it from the list
-        else:
-            total_profit += sorted_hooks[0]
-            sorted_hooks = sorted_hooks[1:]
-    # Return the total profit
-    return total_profit
+def solve(direction, message):
+    keyboard = {
+        'q': 'q',
+        'w': 'w',
+        'e': 'e',
+        'r': 'r',
+        't': 't',
+        'y': 'y',
+        'u': 'u',
+        'i': 'i',
+        'o': 'o',
+        'p': 'p',
+        'a': 'a',
+        's': 's',
+        'd': 'd',
+        'f': 'f',
+        'g': 'g',
+        'h': 'h',
+        'j': 'j',
+        'k': 'k',
+        'l': 'l',
+        'z': 'z',
+        'x': 'x',
+        'c': 'c',
+        'v': 'v',
+        'b': 'b',
+        'n': 'n',
+        'm': 'm',
+        ',': ',',
+        '.': '.',
+        '/': '/'
+    }
+    
+    if direction == 'L':
+        return ''.join([keyboard[message[i-1]] for i in range(1, len(message))])
+    else:
+        return ''.join([keyboard[message[i+1]] for i in range(len(message)-1)])
 

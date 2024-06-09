@@ -1,17 +1,19 @@
 
-def get_max_profit(n, a, d, c):
-    # Calculate the gap between each pair of problems
-    gaps = [0] + [max(d[i + 1] - d[i], 0) for i in range(n - 1)]
-    # Initialize the maximum profit and the current profit
-    max_profit, current_profit = 0, 0
-    # Iterate through the problems
-    for i in range(n):
-        # Add the current problem to the contest
-        current_profit += a
-        # Add the gap between the current problem and the next problem
-        current_profit += gaps[i]
-        # Update the maximum profit if necessary
-        max_profit = max(max_profit, current_profit - c[i])
-    # Return the maximum profit
-    return max_profit
+def is_possible(points):
+    # Sort the points by their x-coordinates
+    sorted_points = sorted(points, key=lambda point: point[0])
+
+    # Initialize the variables to keep track of the number of lines and their slopes
+    num_lines = 0
+    slopes = set()
+
+    # Iterate through the points and check if they belong to any of the existing lines
+    for point in sorted_points:
+        # If the point does not belong to any of the existing lines, create a new line and add its slope to the set of slopes
+        if not any(point[1] - line[1] == point[0] - line[0] for line in sorted_points):
+            num_lines += 1
+            slopes.add(point[1] - point[0])
+
+    # If the number of lines is equal to the number of points, return YES, otherwise return NO
+    return "YES" if num_lines == len(points) else "NO"
 

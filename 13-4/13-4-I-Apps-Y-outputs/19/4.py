@@ -1,33 +1,54 @@
 
-def solve(n, memory):
-    # Initialize a dictionary to map each kid to its remembered kids
-    remembered = {i: set() for i in range(1, n + 1)}
-    for i, (a1, a2) in enumerate(memory, 1):
-        remembered[i].add(a1)
-        remembered[i].add(a2)
+import sys
+input = sys.stdin.read()
 
-    # Initialize a set to store the kids that have been placed in the circle
-    placed = set()
+# Function to calculate the Manhattan distance between two points
+def manhattan_distance(p1, p2):
+    return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
 
-    # Start placing kids in the circle, starting with the kid that remembered the least number of kids
-    current = min(remembered, key=lambda i: len(remembered[i]))
-    placed.add(current)
-    circle = [current]
+# Function to find the nearest safe house to a given spy
+def find_nearest_safe_house(spy, safe_houses):
+    min_distance = float('inf')
+    nearest_safe_house = None
+    for safe_house in safe_houses:
+        distance = manhattan_distance(spy, safe_house)
+        if distance < min_distance:
+            min_distance = distance
+            nearest_safe_house = safe_house
+    return nearest_safe_house
 
-    # While there are still kids to place in the circle
-    while len(placed) < n:
-        # Get the next kid to place in the circle
-        next_kid = remembered[current].difference(placed).pop()
-        placed.add(next_kid)
-        circle.append(next_kid)
+# Function to find the maximum Manhattan distance that any spy has to travel to reach the nearest safe house
+def find_max_distance(spies, safe_houses):
+    max_distance = 0
+    for spy in spies:
+        nearest_safe_house = find_nearest_safe_house(spy, safe_houses)
+        distance = manhattan_distance(spy, nearest_safe_house)
+        if distance > max_distance:
+            max_distance = distance
+    return max_distance
 
-        # Update the remembered kids for the current kid
-        remembered[current].remove(next_kid)
-        if not remembered[current]:
-            del remembered[current]
+# Main function
+def main():
+    # Read the input
+    width, height = map(int, input().split())
+    grid = []
+    for _ in range(height):
+        grid.append(list(input().strip()))
+    
+    # Find the spies and safe houses
+    spies = []
+    safe_houses = []
+    for i in range(height):
+        for j in range(width):
+            if grid[i][j] == 'S':
+                safe_houses.append((j, i))
+            elif grid[i][j] == 'H':
+                spies.append((j, i))
+    
+    # Find the maximum Manhattan distance
+    max_distance = find_max_distance(spies, safe_houses)
+    print(max_distance)
 
-        # Set the current kid to the next kid
-        current = next_kid
-
-    return circle
+if __name__ == "__main__":
+    main()
 

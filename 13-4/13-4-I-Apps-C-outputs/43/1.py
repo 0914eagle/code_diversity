@@ -1,42 +1,56 @@
 
-def solve(A, B):
-    # Find the minimum cost to cut B out of A
-    cost = 0
-    
-    # Iterate through the edges of B
-    for i in range(len(B)):
-        # Find the edge of B and the corresponding edge of A
-        edge_B = B[i]
-        edge_A = find_corresponding_edge(A, edge_B)
-        
-        # Calculate the length of the cut
-        length = calculate_length(edge_A, edge_B)
-        
-        # Add the length to the total cost
-        cost += length
-    
-    return cost
+import itertools
 
-def find_corresponding_edge(A, edge):
-    # Find the edge in A that is closest to the given edge
-    min_distance = float('inf')
-    corresponding_edge = None
-    for edge_A in A:
-        distance = calculate_distance(edge_A, edge)
-        if distance < min_distance:
-            min_distance = distance
-            corresponding_edge = edge_A
-    
-    return corresponding_edge
+def solve(r, s, m, d, n, brands, dishes):
+    # Initialize a set to store the different dinner experiences
+    dinner_experiences = set()
 
-def calculate_length(edge_A, edge_B):
-    # Calculate the length of the cut
-    length = calculate_distance(edge_A, edge_B)
-    return length
+    # Iterate over each starter, main, and dessert dish
+    for dish in dishes:
+        # Get the ingredients of the current dish
+        ingredients = dish[1:]
 
-def calculate_distance(edge1, edge2):
-    # Calculate the distance between two edges
-    x1, y1 = edge1
-    x2, y2 = edge2
-    return ((x1-x2)**2 + (y1-y2)**2)**0.5
+        # Get the brands of the ingredients
+        brand_list = [brands[i-1] for i in ingredients]
+
+        # Get the number of different brands
+        num_brands = len(set(brand_list))
+
+        # If the number of brands is greater than 1, add the current dish to the dinner experiences
+        if num_brands > 1:
+            dinner_experiences.add(tuple(ingredients))
+
+    # If the number of dinner experiences is at most 10^18, return the number of dinner experiences
+    if len(dinner_experiences) <= 10**18:
+        return len(dinner_experiences)
+    else:
+        return "too many"
+
+# Test the function with the sample inputs
+r = 6
+s = 1
+m = 1
+d = 1
+n = 0
+brands = [2, 3, 1, 5, 3, 2]
+dishes = [(2, 1, 2), (3, 3, 4, 5), (1, 6)]
+print(solve(r, s, m, d, n, brands, dishes))
+
+r = 3
+s = 2
+m = 2
+d = 1
+n = 1
+brands = [3, 2, 2]
+dishes = [(1, 1), (1, 2), (1, 2), (1, 3), (1, 1), (2, 3)]
+print(solve(r, s, m, d, n, brands, dishes))
+
+r = 3
+s = 1
+m = 1
+d = 1
+n = 1
+brands = [5, 5, 5]
+dishes = [(3, 1, 2, 3), (3, 1, 2, 3), (3, 1, 2, 3), (2, 1), (1, 1)]
+print(solve(r, s, m, d, n, brands, dishes))
 

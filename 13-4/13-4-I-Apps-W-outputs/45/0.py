@@ -1,21 +1,15 @@
 
-def get_max_sweets(n, s, sugar_costs):
-    # Sort the sugar costs in non-decreasing order of cost
-    sugar_costs.sort(key=lambda x: x[0])
+def permutation_sum(n):
+    # Initialize a list to store the results
+    result = []
 
-    # Initialize the maximum number of sweets as 0
-    max_sweets = 0
+    # Iterate over all possible permutations of length n
+    for a in range(1, n + 1):
+        for b in range(1, n + 1):
+            # Check if the sum of a and b is a valid permutation
+            if (a + b) % n == 0:
+                result.append((a, b))
 
-    # Iterate through the sugar costs and calculate the maximum number of sweets that can be bought
-    for i in range(n):
-        cost = sugar_costs[i][0]
-        cents = sugar_costs[i][1]
-        if s >= cost:
-            max_sweets += cents
-            s -= cost
-        else:
-            break
-
-    # Return the maximum number of sweets that can be bought
-    return max_sweets
+    # Return the number of distinct pairs of permutations
+    return len(result)
 

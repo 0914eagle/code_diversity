@@ -1,22 +1,23 @@
 
-def solve(cities, towers):
-    # Sort the cities and towers by their x-coordinates
-    cities.sort()
-    towers.sort()
+x = int(input())
+
+# Convert the number to a string
+x_str = str(x)
+
+# Initialize the minimum number as the original number
+min_num = x
+
+# Iterate through each digit in the number
+for i in range(len(x_str)):
+    # Calculate the inverted digit
+    inverted_digit = 9 - int(x_str[i])
     
-    # Initialize the minimum distance as 0
-    min_dist = 0
+    # Calculate the new number by replacing the current digit with the inverted digit
+    new_num = int(x_str[:i] + str(inverted_digit) + x_str[i+1:])
     
-    # Iterate through the cities and find the first city that is not covered by any tower
-    for i in range(len(cities)):
-        if cities[i] - towers[0] > min_dist:
-            # If the city is not covered by any tower, find the next tower that covers it
-            for j in range(1, len(towers)):
-                if cities[i] - towers[j] <= min_dist:
-                    # Update the minimum distance to the current tower
-                    min_dist = cities[i] - towers[j]
-                    break
-    
-    # Return the minimum distance
-    return min_dist
+    # If the new number is smaller than the minimum number, update the minimum number
+    if new_num < min_num:
+        min_num = new_num
+
+print(min_num)
 

@@ -1,20 +1,11 @@
 
-def solve(N, A, B, C):
-    # Sort the parts by size in descending order
-    A.sort(reverse=True)
-    B.sort(reverse=True)
-    C.sort(reverse=True)
-
-    # Initialize the number of altars to 0
-    altars = 0
-
-    # Loop through each possible combination of parts
-    for i in range(N):
-        for j in range(i+1, N):
-            for k in range(j+1, N):
-                # Check if the parts satisfy the conditions for an altar
-                if A[i] < B[j] and B[j] < C[k]:
-                    altars += 1
-
-    return altars
+def solve(a):
+    n = len(a)
+    dp = [0] * (n + 1)
+    for i in range(1, n + 1):
+        dp[i] = dp[i - 1] + 1
+        for j in range(1, i):
+            if a[i - 1] - a[j - 1] == 1:
+                dp[i] = min(dp[i], dp[j - 1] + 1)
+    return dp[n]
 

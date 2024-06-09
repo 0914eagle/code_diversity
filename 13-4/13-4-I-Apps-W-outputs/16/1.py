@@ -1,10 +1,13 @@
 
-def longest_subsequence(b):
-    n = len(b)
-    dp = [1] * n
-    for i in range(1, n):
-        for j in range(i):
-            if b[i] - b[j] == b[j] - b[j-1]:
-                dp[i] = max(dp[i], dp[j] + 1)
-    return max(dp)
+def solve(N):
+    # Initialize the minimum number of pebbles to take
+    min_pebbles = 1
+    # Loop through each possible number of pebbles to take
+    for i in range(2, N + 1):
+        # Check if the current number of pebbles is a valid move for Mirko
+        if i % 2 == 1:
+            # If the current number of pebbles is odd, it is a valid move for Mirko
+            min_pebbles = i
+            break
+    return min_pebbles
 

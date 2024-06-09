@@ -1,35 +1,21 @@
 
-def solve(x1, y1, x2, y2, v_max, t, wind):
-    # Calculate the distance between the two points
-    distance = ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5
-    
-    # Initialize the time and speed variables
-    time = 0
-    speed = 0
-    
-    # Loop through the wind data
-    for i in range(t):
-        # Calculate the time it takes to reach the destination with the current wind
-        time_with_wind = distance / wind[i][0]
-        
-        # Calculate the time it takes to reach the destination with the maximum speed
-        time_with_max_speed = distance / v_max
-        
-        # Check if it's faster to use the maximum speed or the current wind
-        if time_with_max_speed < time_with_wind:
-            # Add the time it takes to reach the destination with the maximum speed to the total time
-            time += time_with_max_speed
-            # Set the speed to the maximum speed
-            speed = v_max
-        else:
-            # Add the time it takes to reach the destination with the current wind to the total time
-            time += time_with_wind
-            # Set the speed to the current wind speed
-            speed = wind[i][0]
-    
-    # Calculate the time it takes to reach the destination with the remaining wind
-    time += distance / wind[-1][0]
-    
-    # Return the total time
-    return time
+def get_min_diff(numbers):
+    # Sort the numbers in non-decreasing order
+    numbers.sort()
+    # Initialize the minimum difference and the final sum
+    min_diff = 0
+    final_sum = 0
+    # Loop through the numbers and perform the operations
+    for i in range(len(numbers)):
+        # Round the current number to the nearest integer that isn't more than the current number
+        rounded_num = int(numbers[i] + 0.5)
+        # Calculate the difference between the rounded number and the current number
+        diff = rounded_num - numbers[i]
+        # Update the minimum difference if necessary
+        if i > 0 and diff != 0:
+            min_diff = min(min_diff, diff)
+        # Update the final sum
+        final_sum += rounded_num
+    # Return the minimum difference
+    return min_diff
 

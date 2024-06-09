@@ -1,29 +1,33 @@
 
-def solve(n, m, roads, q, transportation_plan):
-    # Initialize a dictionary to store the distances between each pair of cities
-    distances = {}
-    for road in roads:
-        city1, city2, length = road
-        if city1 not in distances:
-            distances[city1] = {}
-        if city2 not in distances:
-            distances[city2] = {}
-        distances[city1][city2] = length
-        distances[city2][city1] = length
+import sys
 
-    # Fill in the remaining distances using the bitwise OR operation
-    for city1 in distances:
-        for city2 in distances[city1]:
-            for city3 in distances[city1]:
-                if city3 != city2:
-                    distances[city1][city3] = distances[city1][city2] | distances[city2][city3]
-                    distances[city3][city1] = distances[city1][city2] | distances[city2][city3]
+def solve(n, intervals):
+    # Sort the intervals by their left endpoint
+    intervals.sort(key=lambda x: x[0])
 
-    # Calculate the transportation cost for each day
-    transportation_cost = []
-    for day in range(q):
-        city1, city2 = transportation_plan[day]
-        transportation_cost.append(distances[city1][city2])
+    # Initialize the snow level at each point to 0
+    snow_level = [0] * (max(map(lambda x: x[1], intervals)) + 1)
 
-    return transportation_cost
+    # Loop through the intervals and increment the snow level at each point
+    for a, b in intervals:
+        for i in range(a, b + 1):
+            snow_level[i] += 1
+
+    # Initialize the number of ways to place the sensors to 0
+    num_ways = 0
+
+    # Loop through the points and check if they are valid for placing a sensor
+    for i in range(1, len(snow_level)):
+        if snow_level[i] > snow_level[i - 1] and snow_level[i] > snow_level[i + 1]:
+            num_ways += 1
+
+    return num_ways % 1000000009
+
+n = int(input())
+intervals = []
+for i in range(n):
+    a, b = map(int, input().split())
+    intervals.append((a, b))
+
+print(solve(n, intervals))
 

@@ -1,24 +1,20 @@
 
-def solve(x1, y1, x2, y2, v_max, t, wind):
-    # Calculate the distance between the two points
-    distance = ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5
-    
-    # Initialize the time and velocity variables
-    time = 0
-    velocity = 0
-    
-    # Loop through the wind data
-    for i in range(t):
-        # Calculate the new velocity based on the current velocity and the wind data
-        velocity += wind[i][0]
-        velocity = max(-v_max, min(v_max, velocity))
-        
-        # Calculate the time it takes to reach the destination at the current velocity
-        time += distance / velocity
-        
-        # Update the distance based on the current velocity and the time
-        distance -= velocity * time
-    
-    # Return the minimum time it takes to reach the destination
-    return time
+def get_min_diff(numbers):
+    # Sort the numbers in non-decreasing order
+    numbers.sort()
+    # Initialize the minimum difference and the current sum
+    min_diff = 0
+    current_sum = 0
+    # Iterate through the numbers
+    for i in range(len(numbers)):
+        # Calculate the current sum
+        current_sum += numbers[i]
+        # If it is not the last number, calculate the difference between the current sum and the sum of the remaining numbers
+        if i != len(numbers) - 1:
+            diff = abs(current_sum - sum(numbers[i+1:]))
+            # Update the minimum difference if necessary
+            if diff < min_diff or min_diff == 0:
+                min_diff = diff
+    # Return the minimum difference
+    return min_diff
 

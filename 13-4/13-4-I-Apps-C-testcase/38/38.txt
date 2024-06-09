@@ -1,16 +1,10 @@
 {
     "inputs": [
-        "10\n",
-        "55\n",
-        "101\n",
-        "1234321\n",
-        "1000\n"
+        "2\n4\nfred dinosaur 2 jets jetsons\njohn rhinocerous 2 jets rockets\nmary rhinocerous 2 jetsons rockets\nruth platypus 1 rockets\n4\nfred dinosaur 2 jets jetsons\njohn rhinocerous 2 jets rockets\nmary rhinocerous 2 jetsons rockets\nruth platypus 1 rockets\n",
+        "1\n1\nfred dinosaur 2 jets jetsons\n"
     ],
     "outputs": [
-        "10\n",
-        "55\n",
-        "-1\n",
-        "94708\n",
-        "715\n"
+        "fred jetsons\njohn jets\nruth rockets\n\nfred jetsons\njohn jets\nruth rockets\n",
+        "Impossible.\n"
     ]
 }

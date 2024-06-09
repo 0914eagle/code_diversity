@@ -1,26 +1,26 @@
 
-def solve(n, m, roads, q, queries):
-    # Initialize a dictionary to store the distances between each pair of cities
-    distances = {}
-    for a, b, w in roads:
-        if a not in distances:
-            distances[a] = {}
-        if b not in distances:
-            distances[b] = {}
-        distances[a][b] = w
-        distances[b][a] = w
+import sys
 
-    # Fill in the distances for each city pair using the bitwise OR operation
-    for a in distances:
-        for b in distances[a]:
-            for c in distances[a]:
-                if c != b:
-                    distances[a][b] |= distances[a][c]
+def get_snow_levels(n):
+    snow_levels = []
+    for i in range(n):
+        a, b = map(int, input().split())
+        snow_levels += list(range(a, b + 1))
+    return snow_levels
 
-    # Calculate the cost for each query
-    costs = []
-    for s, t in queries:
-        costs.append(distances[s][t])
+def count_ways(snow_levels):
+    n = len(snow_levels)
+    if n < 3:
+        return 0
+    snow_levels.sort()
+    count = 0
+    for i in range(n - 2):
+        if snow_levels[i] < snow_levels[i + 1] and snow_levels[i + 1] < snow_levels[i + 2]:
+            count += 1
+    return count
 
-    return costs
+n = int(input())
+snow_levels = get_snow_levels(n)
+result = count_ways(snow_levels)
+print(result % 1000000009)
 

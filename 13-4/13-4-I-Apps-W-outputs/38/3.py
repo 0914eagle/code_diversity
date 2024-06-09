@@ -1,19 +1,14 @@
 
-def get_maximum_happiness(n, m, a, b):
-    # Initialize the dp table
-    dp = [[0] * (n + 1) for _ in range(m + 1)]
+a = int(input())
+b = int(input())
 
-    # Initialize the first row and column
-    for i in range(m + 1):
-        dp[i][0] = 0
-    for j in range(n + 1):
-        dp[0][j] = 0
+while a != 0 and b != 0:
+    if a >= 2*b:
+        a = a - 2*b
+    elif b >= 2*a:
+        b = b - 2*a
+    else:
+        break
 
-    # Fill in the dp table
-    for i in range(1, m + 1):
-        for j in range(1, n + 1):
-            dp[i][j] = max(dp[i - 1][j], dp[i][j - 1] + a[i - 1] + (j - 1) * b[i - 1])
-
-    # Return the final answer
-    return dp[m][n]
+print(a, b)
 

@@ -1,37 +1,37 @@
 
-def purify_cells(grid):
-    # Initialize the number of spells to cast and the list of cells to purify
-    num_spells = 0
-    cells_to_purify = []
+import sys
+input = sys.stdin.read()
+n, m, s = map(int, input.split())
+edges = []
+for i in range(m):
+    t, u, v = map(int, input.split())
+    edges.append((t, u, v))
 
-    # Loop through each row and column
-    for row in range(len(grid)):
-        for col in range(len(grid[0])):
-            # If the current cell is evil and not a particularly more evil cell, add it to the list of cells to purify
-            if grid[row][col] == "E" and grid[row][col] != ".":
-                cells_to_purify.append((row, col))
+# Plan 1: Maximize number of reachable vertices
+reachable = [False] * (n + 1)
+queue = [s]
+while queue:
+    u = queue.pop(0)
+    if not reachable[u]:
+        reachable[u] = True
+        for t, v in edges:
+            if t == 2 and not reachable[v]:
+                queue.append(v)
 
-    # While there are still cells to purify
-    while cells_to_purify:
-        # Pop the first cell from the list of cells to purify
-        row, col = cells_to_purify.pop(0)
+# Plan 2: Minimize number of reachable vertices
+reachable = [False] * (n + 1)
+queue = [s]
+while queue:
+    u = queue.pop(0)
+    if not reachable[u]:
+        reachable[u] = True
+        for t, v in edges:
+            if t == 2 and not reachable[v]:
+                queue.append(v)
 
-        # Cast the "Purification" spell on the current cell
-        grid[row][col] = "."
-
-        # Add the cells in the same row and column as the current cell to the list of cells to purify
-        for i in range(len(grid)):
-            for j in range(len(grid[0])):
-                if grid[i][j] == "E" and grid[i][j] != ".":
-                    cells_to_purify.append((i, j))
-
-        # Increment the number of spells to cast
-        num_spells += 1
-
-    # If all cells have been purified, return the number of spells to cast
-    if "E" not in "".join(grid):
-        return num_spells
-
-    # Otherwise, return -1
-    return -1
+# Print output
+print(sum(reachable))
+print("".join(["+" if reachable[i] else "-" for i in range(1, n + 1)]))
+print(sum(reachable))
+print("".join(["+" if reachable[i] else "-" for i in range(1, n + 1)]))
 

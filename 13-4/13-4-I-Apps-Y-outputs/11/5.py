@@ -1,19 +1,24 @@
 
-def get_horror_index(movie_list, horror_list, similarities):
-    # Initialize the horror index for each movie
-    horror_index = {movie: 0 for movie in movie_list}
-
-    # Set the horror index for movies on the horror list to infinity
-    for movie in horror_list:
-        horror_index[movie] = float('inf')
-
-    # Iterate through the similarities and update the horror index
-    for a, b in similarities:
-        if horror_index[a] < horror_index[b]:
-            horror_index[a] = horror_index[b] + 1
-        elif horror_index[b] < horror_index[a]:
-            horror_index[b] = horror_index[a] + 1
-
-    # Return the movie with the highest horror index
-    return max(horror_index, key=horror_index.get)
+def can_construct_square(n, m, tiles):
+    # Check if the square is symmetric
+    for i in range(m):
+        for j in range(i+1, m):
+            if tiles[i][j] != tiles[j][i]:
+                return "NO"
+    
+    # Check if the square is filled with tiles
+    for i in range(m):
+        for j in range(m):
+            if tiles[i][j] == 0:
+                return "NO"
+    
+    # Check if the tiles are placed correctly
+    for i in range(m):
+        for j in range(m):
+            if i > 0 and tiles[i][j] == tiles[i-1][j]:
+                return "NO"
+            if j > 0 and tiles[i][j] == tiles[i][j-1]:
+                return "NO"
+    
+    return "YES"
 

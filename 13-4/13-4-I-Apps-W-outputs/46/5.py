@@ -1,11 +1,18 @@
 
-def num_states(n):
-    # Initialize the number of states to 1
-    states = 1
-    # Loop for each turn
-    for i in range(n):
-        # Double the number of states
-        states *= 2
-    # Return the number of states modulo 10^9 + 7
-    return states % 1000000007
+import sys
+
+def solve(s):
+    mod = 10**9+7
+    count = 0
+    for i in range(len(s)):
+        if s[i] == '?':
+            for j in range(10):
+                s_new = s[:i] + str(j) + s[i+1:]
+                if int(s_new) % 13 == 5:
+                    count += 1
+                    count %= mod
+    return count
+
+s = sys.stdin.readline().strip()
+print(solve(s))
 

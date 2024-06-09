@@ -1,32 +1,22 @@
 
-def solve(n, line, order):
-    # Convert the input to a list of integers
-    line = [int(i) for i in line.split()]
-    order = [int(i) for i in order.split()]
+n = int(input())
+guard_posts = []
+for i in range(4):
+    guard_post = list(map(int, input().split()))
+    guard_posts.append(guard_post)
 
-    # Check if the input is valid
-    if len(line) != n or len(order) != n:
-        return "Invalid input"
+# Find the guard post with the minimum total cost
+min_cost = float('inf')
+min_post = -1
+for i in range(4):
+    cost = guard_posts[i][0] + guard_posts[i][1]
+    if cost < min_cost:
+        min_cost = cost
+        min_post = i + 1
 
-    # Initialize a variable to keep track of the number of rotations
-    rotations = 0
-
-    # Loop through the line of breads
-    for i in range(n):
-        # Check if the current bread is in the correct position
-        if line[i] != order[i]:
-            # Find the index of the correct bread in the line
-            correct_index = order.index(line[i])
-
-            # Rotate the subsequence of breads to the right
-            line = line[:i] + line[i+1:correct_index+1] + [line[i]] + line[correct_index+1:i] + line[i+1:]
-
-            # Increment the number of rotations
-            rotations += 1
-
-    # Check if the line of breads is sorted in the correct order
-    if line == order:
-        return "Possible"
-    else:
-        return "Impossible"
+# Check if the total cost is less than or equal to n
+if min_cost <= n:
+    print(min_post, guard_posts[min_post][0], guard_posts[min_post][1])
+else:
+    print(-1)
 

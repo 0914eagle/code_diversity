@@ -1,20 +1,14 @@
 
-def solve(n, d, a, m):
-    # Sort the hook prices in ascending order
-    sorted_a = sorted(a)
-
-    # Initialize the total profit to 0
-    total_profit = 0
-
-    # Loop through each guest
-    for i in range(m):
-        # If the guest can hang their clothes on an available hook, add the price of the hook to the total profit
-        if sorted_a[i] <= d:
-            total_profit += sorted_a[i]
-        # Otherwise, pay the fine and do not add any profit
-        else:
-            total_profit -= d
-
-    # Return the total profit
-    return total_profit
+def solve(direction, typed_sequence):
+    keyboard = {
+        'q': 'q', 'w': 'w', 'e': 'e', 'r': 'r', 't': 't', 'y': 'y', 'u': 'u', 'i': 'i', 'o': 'o', 'p': 'p',
+        'a': 'a', 's': 's', 'd': 'd', 'f': 'f', 'g': 'g', 'h': 'h', 'j': 'j', 'k': 'k', 'l': 'l', ';': ';',
+        'z': 'z', 'x': 'x', 'c': 'c', 'v': 'v', 'b': 'b', 'n': 'n', 'm': 'm', ',': ',', '.': '.', '/': '/'
+    }
+    if direction == 'L':
+        return ''.join([keyboard[typed_sequence[i-1]] for i in range(1, len(typed_sequence)+1)])
+    elif direction == 'R':
+        return ''.join([keyboard[typed_sequence[i+1]] for i in range(len(typed_sequence)-1)])
+    else:
+        return 'Invalid input'
 

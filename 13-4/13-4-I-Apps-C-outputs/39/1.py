@@ -1,30 +1,33 @@
 
-def solve(n, d, frogs):
-    # Sort the frogs by their leap capacity in descending order
-    frogs.sort(key=lambda x: x[0], reverse=True)
-    
-    # Initialize the maximum number of frogs that can escape as 0
-    max_escaped = 0
-    
-    # Loop through each frog and check if it can escape the pit
-    for frog in frogs:
-        # Check if the frog's leap capacity is greater than the depth of the pit
-        if frog[0] > d:
-            # Increment the maximum number of frogs that can escape
-            max_escaped += 1
-        # Check if the frog can be carried by another frog
-        elif frog[1] < d:
-            # Loop through the remaining frogs and check if any of them can carry the frog
-            for other_frog in frogs:
-                # Check if the other frog's leap capacity is greater than the depth of the pit
-                if other_frog[0] > d:
-                    # Check if the other frog's weight plus the frog's weight is less than or equal to the depth of the pit
-                    if other_frog[1] + frog[1] <= d:
-                        # Increment the maximum number of frogs that can escape
-                        max_escaped += 1
-                        # Break out of the loop since we have found a frog that can carry the current frog
-                        break
-    
-    # Return the maximum number of frogs that can escape
-    return max_escaped
+def get_min_time(n, traffic_lights):
+    # Initialize variables
+    current_time = 0
+    total_time = 0
+    distance = 0
+
+    # Loop through each traffic light
+    for i in range(n - 1):
+        # Get the time, green duration, and red duration of the current light
+        time, green, red = traffic_lights[i]
+
+        # If the current time is before the start of the green duration, wait until the start of the green duration
+        if current_time < time:
+            current_time = time
+
+        # If the current time is during the green duration, accelerate at a constant rate of 1 m/s^2 and update the distance traveled
+        if time <= current_time < time + green:
+            distance += (current_time - time) * 1
+            current_time += 1
+
+        # If the current time is during the red duration, stop on the spot and update the total time
+        if time + green <= current_time < time + green + red:
+            total_time += current_time - time
+            current_time = time + green + red
+
+    # Calculate the final distance traveled and add it to the total time
+    distance += (current_time - time) * 1
+    total_time += current_time
+
+    # Return the minimum time required to reach the end of the road
+    return total_time
 

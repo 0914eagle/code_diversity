@@ -1,10 +1,16 @@
 
-def solve(b):
-    n = len(b)
-    dp = [1] * (n + 1)
-    for i in range(1, n):
-        for j in range(i):
-            if b[i] - b[j] == b[j] - b[j - 1]:
-                dp[i] = max(dp[i], dp[j] + 1)
-    return dp[n]
+def solve(N):
+    # Initialize the minimum number of pebbles that Mirko must take during his first turn
+    min_pebbles = 1
+    # Initialize the maximum number of pebbles that Slavko can take during his turn
+    max_pebbles = 1
+    # Iterate through the remaining pebbles in the heap
+    for i in range(2, N+1):
+        # If Mirko takes i pebbles, Slavko can take at most 2i-1 pebbles
+        if i <= max_pebbles:
+            # Update the minimum number of pebbles that Mirko must take during his first turn
+            min_pebbles = i
+            # Update the maximum number of pebbles that Slavko can take during his turn
+            max_pebbles = 2*i-1
+    return min_pebbles
 

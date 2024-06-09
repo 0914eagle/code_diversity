@@ -1,21 +1,23 @@
 
-def solve(n, m, edges):
-    # Initialize a dictionary to store the recognition of each warrior
-    recognitions = {i: 0 for i in range(1, n + 1)}
+def solve():
+    N, K = map(int, input().split())
+    A = list(map(int, input().split()))
 
-    # Iterate over the edges and update the recognition of each warrior
-    for edge in edges:
-        recognitions[edge[0]] += 1
-        recognitions[edge[1]] += 1
+    # Initialize the prefix sum array
+    prefix_sum = [0] * (N + 1)
+    for i in range(1, N + 1):
+        prefix_sum[i] = prefix_sum[i - 1] + A[i - 1]
 
-    # Find the three warriors with the minimum recognition
-    min_recognition = min(recognitions.values())
-    musketeers = [k for k, v in recognitions.items() if v == min_recognition]
+    # Initialize the count of contiguous subsequences
+    count = 0
 
-    # Check if there are three musketeers
-    if len(musketeers) < 3:
-        return -1
+    # Iterate through the prefix sum array
+    for i in range(N):
+        # Find the first prefix sum that is greater than or equal to K
+        if prefix_sum[i] >= K:
+            # Increment the count by 1
+            count += 1
 
-    # Return the sum of the recognitions of the three musketeers
-    return sum(recognitions[m] for m in musketeers)
+    # Return the count of contiguous subsequences
+    return count
 

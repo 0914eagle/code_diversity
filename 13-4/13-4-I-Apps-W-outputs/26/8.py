@@ -1,27 +1,27 @@
 
-def solve(desires):
-    # Initialize a dictionary to store the number of desires that can be satisfied at the same time
-    desires_dict = {}
-
-    # Loop through each desire and check if it can be satisfied
-    for desire in desires:
-        # Get the x and y coordinates of the desire
-        x, y = desire[0], desire[1]
-
-        # Check if the desire is already satisfied
-        if desire[2] == "B" and x % 3 == 1 and y % 3 == 1:
-            # If the desire is already satisfied, skip it
-            continue
-        elif desire[2] == "W" and x % 3 == 0 and y % 3 == 0:
-            # If the desire is already satisfied, skip it
-            continue
-
-        # If the desire is not already satisfied, add it to the dictionary
-        if desire not in desires_dict:
-            desires_dict[desire] = 1
-        else:
-            desires_dict[desire] += 1
-
-    # Return the maximum number of desires that can be satisfied at the same time
-    return max(desires_dict.values())
+def get_happy_seconds(n, x, y, c):
+    # Initialize a 2D array to represent the table
+    table = [[0] * n for _ in range(n)]
+    # Set the initial cell as switched on
+    table[x - 1][y - 1] = 1
+    # Initialize a variable to keep track of the number of switched on cells
+    switched_on = 1
+    # Initialize a variable to keep track of the number of seconds
+    seconds = 0
+    # Loop until the number of switched on cells is greater than or equal to c
+    while switched_on < c:
+        # Loop through each row of the table
+        for i in range(n):
+            # Loop through each column of the table
+            for j in range(n):
+                # If the current cell is switched off and has at least one switched on side-adjacent cell
+                if table[i][j] == 0 and sum(table[i - 1][j], table[i + 1][j], table[i][j - 1], table[i][j + 1]) >= 1:
+                    # Switch on the current cell
+                    table[i][j] = 1
+                    # Increment the number of switched on cells
+                    switched_on += 1
+        # Increment the number of seconds
+        seconds += 1
+    # Return the number of seconds
+    return seconds
 

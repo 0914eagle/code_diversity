@@ -1,6 +1,4 @@
 
-def solve(N, K):
-    while N != 0:
-        N = abs(N - K)
-    return N
+N, A, B = map(int, input().split())
+print(min(A*N, B))
 

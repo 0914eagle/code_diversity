@@ -1,30 +1,13 @@
 
-def solve(b):
-    n = len(b)
-    if n == 1:
-        return 0
-    if n == 2:
-        if b[0] == b[1]:
-            return 0
-        else:
-            return -1
-    diff = [b[i+1] - b[i] for i in range(n-1)]
-    if len(set(diff)) == 1:
-        return 0
-    min_changes = -1
-    for i in range(n):
-        for j in range(i+1, n):
-            if b[i] == b[j]:
-                continue
-            changes = 0
-            for k in range(n):
-                if k == i or k == j:
-                    continue
-                if b[k] < min(b[i], b[j]):
-                    changes += 1
-                elif b[k] > max(b[i], b[j]):
-                    changes += 1
-            if changes < min_changes or min_changes == -1:
-                min_changes = changes
-    return min_changes
+def is_bus_number(n):
+    for i in range(1, int(n**(1/3))):
+        if n == i**3 + (n-i**3)**3:
+            return True
+    return False
+
+def get_largest_bus_number(m):
+    for n in range(m, 0, -1):
+        if is_bus_number(n):
+            return n
+    return None
 

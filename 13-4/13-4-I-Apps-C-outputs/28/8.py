@@ -1,19 +1,24 @@
 
-def find_shortest_cycle(numbers):
-    # Initialize a set to store the visited nodes
-    visited = set()
-    # Initialize a list to store the cycle
-    cycle = []
-    # Iterate through the numbers
-    for num in numbers:
-        # If the number is not in the visited set, add it to the visited set and the cycle list
-        if num not in visited:
-            visited.add(num)
-            cycle.append(num)
-        # If the number is in the visited set, it means we have found a cycle
-        else:
-            # Return the length of the cycle
-            return len(cycle) - visited.index(num)
-    # If we reach the end of the numbers and there is no cycle, return -1
-    return -1
+def get_alternate_bracket_notation(s):
+    # Initialize variables
+    start, end = 0, 0
+    notation = ""
+
+    # Iterate through the string
+    for i, char in enumerate(s):
+        # If the character is an opening bracket, set the start index
+        if char == "(":
+            start = i
+        # If the character is a closing bracket, set the end index
+        elif char == ")":
+            end = i
+            # If the start and end indices are not the same, add the header to the notation
+            if start != end:
+                notation += f"{start},{end}:{end},{end}:"
+            # If the start and end indices are the same, add the header to the notation
+            else:
+                notation += f"{start},{end}:{end},{end}:"
+
+    # Return the notation
+    return notation
 

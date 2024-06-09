@@ -1,61 +1,28 @@
 
-def solve(k, n):
-    # Initialize a list to store the results
-    results = []
+def get_min_waiting_time(num_dogs, num_bowls, feeding_times):
+    # Initialize a list to store the feeding times for each dog
+    dog_feeding_times = []
+    for i in range(num_dogs):
+        dog_feeding_times.append([0] * num_bowls)
     
-    # Iterate through all possible strings
-    for i in range(26**k):
-        # Convert the current number to a string
-        s = str(i)
-        
-        # Pad the string with leading zeros
-        s = s.zfill(k)
-        
-        # Check if the string is double free
-        if is_double_free(s):
-            # Check if the string is k-incremental
-            if is_k_incremental(s, k):
-                # Add the string to the results list
-                results.append(s)
+    # Initialize a list to store the feeding times for each bowl
+    bowl_feeding_times = [0] * num_bowls
     
-    # Return the nth string in the results list
-    # If n is out of range, return -1
-    try:
-        return results[n-1]
-    except IndexError:
-        return -1
-
-# Check if a string is double free
-def is_double_free(s):
-    # Iterate through the string
-    for i in range(len(s)-1):
-        # Check if the current character is the same as the next character
-        if s[i] == s[i+1]:
-            # If it is, return False
-            return False
+    # Loop through each dog and its feeding times
+    for i in range(num_dogs):
+        for j in range(num_bowls):
+            # If the dog has not finished eating, add the feeding time to the bowl's total feeding time
+            if feeding_times[i][j] > 0:
+                bowl_feeding_times[j] += feeding_times[i][j]
+            # If the dog has finished eating, add the feeding time to the dog's total feeding time
+            else:
+                dog_feeding_times[i][j] += feeding_times[i][j]
     
-    # If we reach this point, the string is double free
-    return True
-
-# Check if a string is k-incremental
-def is_k_incremental(s, k):
-    # Initialize a dictionary to store the frequency of each character
-    freq = {}
+    # Find the maximum feeding time for any dog or bowl
+    max_dog_feeding_time = max(max(dog_feeding_times), max(bowl_feeding_times))
     
-    # Iterate through the string
-    for c in s:
-        # If the character is not already in the dictionary, add it with a frequency of 1
-        if c not in freq:
-            freq[c] = 1
-        # If the character is already in the dictionary, increment its frequency
-        else:
-            freq[c] += 1
+    # Calculate the total waiting time by subtracting the maximum feeding time from the sum of all feeding times
+    total_waiting_time = sum(dog_feeding_times) + sum(bowl_feeding_times) - max_dog_feeding_time * num_dogs
     
-    # Check if the frequency of each character is k-incremental
-    for c, f in freq.items():
-        if f != k:
-            return False
-    
-    # If we reach this point, the string is k-incremental
-    return True
+    return total_waiting_time
 

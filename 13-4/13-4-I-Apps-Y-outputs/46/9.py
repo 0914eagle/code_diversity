@@ -1,27 +1,16 @@
 
-import math
+def get_tower_heights(box_heights):
+    # Sort the box heights in non-decreasing order
+    sorted_box_heights = sorted(box_heights)
 
-def solve(a, b):
-    # Convert the inputs to complex numbers
-    c = complex(a[0], a[1])
-    d = complex(b[0], b[1])
-    
-    # Calculate the results
-    addition = c + d
-    subtraction = c - d
-    multiplication = c * d
-    division = c / d
-    modulus_c = math.fabs(c)
-    modulus_d = math.fabs(d)
-    
-    # Format the output
-    output = []
-    output.append("{:.2f}+{:.2f}i".format(addition.real, addition.imag))
-    output.append("{:.2f}-{:.2f}i".format(subtraction.real, subtraction.imag))
-    output.append("{:.2f}+{:.2f}i".format(multiplication.real, multiplication.imag))
-    output.append("{:.2f}+{:.2f}i".format(division.real, division.imag))
-    output.append("{:.2f}".format(modulus_c))
-    output.append("{:.2f}".format(modulus_d))
-    
-    return output
+    # Find the two tower heights
+    tower_heights = [sorted_box_heights[-1], sorted_box_heights[-2]]
+
+    # Find the three boxes in the first tower
+    first_tower = [box for box in sorted_box_heights if box != tower_heights[0] and box != tower_heights[1]]
+
+    # Find the three boxes in the second tower
+    second_tower = [box for box in sorted_box_heights if box != first_tower[0] and box != first_tower[1] and box != first_tower[2]]
+
+    return first_tower + second_tower
 

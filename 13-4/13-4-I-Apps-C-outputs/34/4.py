@@ -1,21 +1,37 @@
 
-def purify_cells(grid):
-    # Initialize the number of purification spells to be cast
-    num_spells = 0
-    
-    # Initialize a list to store the rows and columns that have been purified
-    purified_rows = []
-    purified_cols = []
-    
-    # Loop through each row and column in the grid
-    for row in range(len(grid)):
-        for col in range(len(grid[0])):
-            # If the current cell is evil and has not been purified, cast a purification spell
-            if grid[row][col] == "E" and (row not in purified_rows or col not in purified_cols):
-                num_spells += 1
-                purified_rows.append(row)
-                purified_cols.append(col)
-    
-    # Return the minimum number of purification spells needed to purify all cells
-    return num_spells
+import sys
+input = sys.stdin.read()
+n, m, s = map(int, input.split())
+edges = []
+for i in range(m):
+    t, u, v = map(int, input.split())
+    edges.append((t, u, v))
+
+# Plan 1: Maximize number of reachable vertices
+reachable = [False] * (n + 1)
+queue = [s]
+while queue:
+    u = queue.pop(0)
+    if not reachable[u]:
+        reachable[u] = True
+        for t, v in edges:
+            if t == 2 and not reachable[v]:
+                queue.append(v)
+
+# Plan 2: Minimize number of reachable vertices
+reachable = [False] * (n + 1)
+queue = [s]
+while queue:
+    u = queue.pop(0)
+    if not reachable[u]:
+        reachable[u] = True
+        for t, v in edges:
+            if t == 2 and not reachable[v]:
+                queue.append(v)
+
+# Print output
+print(sum(reachable))
+print("-" * (m - 1))
+print(sum(reachable))
+print("+" * (m - 1))
 

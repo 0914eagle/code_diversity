@@ -1,35 +1,36 @@
 
-def solve(n, pairs):
-    # Initialize the food types for each pair
-    food_types = [[0, 0] for _ in range(n)]
-    
-    # Loop through each pair and assign food types
+n = int(input())
+buttons = [[] for _ in range(n)]
+for i in range(n):
+    line = input()
+    for j, c in enumerate(line):
+        if c == "Y":
+            buttons[j].append(i)
+
+def get_valid_assignments(assignments):
     for i in range(n):
-        # If the boy is sitting on an even-numbered chair, give him Kooft
-        if pairs[i][0] % 2 == 0:
-            food_types[i][0] = 1
-        # If the boy is sitting on an odd-numbered chair, give him Zahre-mar
-        else:
-            food_types[i][0] = 2
-        
-        # If the girl is sitting on an even-numbered chair, give her Zahre-mar
-        if pairs[i][1] % 2 == 0:
-            food_types[i][1] = 2
-        # If the girl is sitting on an odd-numbered chair, give her Kooft
-        else:
-            food_types[i][1] = 1
-    
-    # Check if the conditions are met
+        for j in range(i+1, n):
+            if assignments[i] == assignments[j]:
+                return False
+    return True
+
+def get_max_assignments(assignments):
+    max_assignments = []
     for i in range(n):
-        # If the boy and girl have the same food type, return -1
-        if food_types[i][0] == food_types[i][1]:
-            return -1
-        # If any two guests sitting on consecutive chairs have the same food type, return -1
-        if i < n-1 and food_types[i][0] == food_types[i+1][0]:
-            return -1
-        if i < n-1 and food_types[i][1] == food_types[i+1][1]:
-            return -1
-    
-    # If all conditions are met, return the food types
-    return food_types
+        for j in range(n):
+            if get_valid_assignments(assignments + [j]):
+                max_assignments.append(assignments + [j])
+    return max_assignments
+
+def get_output(assignments):
+    output = ""
+    for i in range(n):
+        output += str(assignments[i] + 1) + " "
+    return output.strip()
+
+assignments = []
+max_assignments = get_max_assignments(assignments)
+print(len(max_assignments))
+for assignment in max_assignments:
+    print(get_output(assignment))
 

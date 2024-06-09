@@ -1,39 +1,22 @@
 
-import math
-class Complex:
-    def __init__(self, real, imag):
-        self.real = real
-        self.imag = imag
+def get_tower_heights(box_heights):
+    # Sort the box heights in decreasing order
+    sorted_box_heights = sorted(box_heights, reverse=True)
 
-    def __add__(self, other):
-        return Complex(self.real + other.real, self.imag + other.imag)
+    # The first tower height is the largest height in the input
+    tower_1_height = sorted_box_heights[0]
 
-    def __sub__(self, other):
-        return Complex(self.real - other.real, self.imag - other.imag)
+    # The second tower height is the second largest height in the input
+    tower_2_height = sorted_box_heights[1]
 
-    def __mul__(self, other):
-        real = self.real * other.real - self.imag * other.imag
-        imag = self.real * other.imag + self.imag * other.real
-        return Complex(real, imag)
+    # The tower heights are the first two elements of the sorted box heights
+    tower_heights = [tower_1_height, tower_2_height]
 
-    def __truediv__(self, other):
-        real = (self.real * other.real + self.imag * other.imag) / (other.real ** 2 + other.imag ** 2)
-        imag = (self.imag * other.real - self.real * other.imag) / (other.real ** 2 + other.imag ** 2)
-        return Complex(real, imag)
+    # The box heights are the remaining elements of the sorted box heights
+    box_heights = sorted_box_heights[2:]
 
-    def mod(self):
-        return math.sqrt(self.real ** 2 + self.imag ** 2)
+    # The boxes are ordered from largest to smallest
+    box_heights.sort(reverse=True)
 
-def solve(arr):
-    C = Complex(arr[0], arr[1])
-    D = Complex(arr[2], arr[3])
-    print(f"{C+D}")
-    print(f"{C-D}")
-    print(f"{C*D}")
-    print(f"{C/D}")
-    print(f"{C.mod()}")
-    print(f"{D.mod()}")
-
-arr = list(map(float, input().split()))
-solve(arr)
+    return tower_heights, box_heights
 

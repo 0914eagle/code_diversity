@@ -1,9 +1,12 @@
 
-def polynomial_plotting(n, a):
-    # Initialize the constants
-    C = [0] * (n+1)
-    C[0] = a[0]
-    for i in range(1, n+1):
-        C[i] = C[i-1] + a[i]
-    return C
+A, B, and C are the three given integers.
+
+if A == B and B != C:
+    print("Yes")
+elif A == C and B != A:
+    print("Yes")
+elif B == C and A != B:
+    print("Yes")
+else:
+    print("No")
 

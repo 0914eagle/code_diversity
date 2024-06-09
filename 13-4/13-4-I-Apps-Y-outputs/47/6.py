@@ -1,11 +1,11 @@
 
-def solve(gunnar_dice, emma_dice):
-    gunnar_sum = sum([(b-a+1) for a, b in gunnar_dice])
-    emma_sum = sum([(b-a+1) for a, b in emma_dice])
-    if gunnar_sum > emma_sum:
-        return "Gunnar"
-    elif gunnar_sum < emma_sum:
-        return "Emma"
-    else:
-        return "Tie"
+def solve(l, n):
+    # Initialize the number of layers as 1
+    k = 1
+    # Loop until the number of layers is greater than or equal to the given input
+    while k < l // n:
+        # Increment the number of layers by 1
+        k += 1
+    # Return the smallest number of layers that will prevent crises from happening
+    return k
 

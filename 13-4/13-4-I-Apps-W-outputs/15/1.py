@@ -1,18 +1,36 @@
 
-def get_max_profit(n, a, d, c):
-    # Calculate the maximum profit by taking a consecutive segment of tasks
-    max_profit = 0
+def is_possible(n, points):
+    # Sort the points by their x-coordinates
+    sorted_points = sorted(points, key=lambda point: point[0])
+
+    # Initialize the variables to keep track of the number of lines and the current line
+    num_lines = 0
+    current_line = []
+
+    # Iterate through the sorted points
     for i in range(n):
-        # Calculate the total earnings for the current segment
-        total_earnings = a * sum(c[i:])
-        # Calculate the total cost for the current segment
-        total_cost = sum(c[i:])
-        # Calculate the gap between the current segment and the next segment
-        gap = 0
-        if i < n - 1:
-            gap = (d[i + 1] - d[i]) ** 2
-        # Update the maximum profit if the current segment is more profitable
-        if total_earnings - total_cost - gap > max_profit:
-            max_profit = total_earnings - total_cost - gap
-    return max_profit
+        # If the current point is not on the current line, add it to the current line
+        if sorted_points[i] not in current_line:
+            current_line.append(sorted_points[i])
+        # If the current point is on the current line, check if the current line is valid
+        else:
+            # If the current line has only one point, it is not valid
+            if len(current_line) == 1:
+                return "NO"
+            # If the current line has more than one point, check if it is valid
+            else:
+                # Get the slope of the current line
+                slope = (current_line[1][1] - current_line[0][1]) / (current_line[1][0] - current_line[0][0])
+                # Check if the slope is equal to the slope of the previous line
+                if len(current_line) > 2 and slope == (current_line[2][1] - current_line[1][1]) / (current_line[2][0] - current_line[1][0]):
+                    return "NO"
+                # If the current line is valid, add it to the number of lines and start a new line
+                num_lines += 1
+                current_line = []
+
+    # If all the points are on at least one line, return YES
+    if num_lines == n:
+        return "YES"
+    else:
+        return "NO"
 

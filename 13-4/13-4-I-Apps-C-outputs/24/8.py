@@ -1,26 +1,15 @@
 
-def solve(n, k, a, b, t, u):
-    # Initialize the maximum tastiness and cost
-    max_tastiness, max_cost = 0, 0
+def solve(tickets):
+    # Initialize a dictionary to store the minimum toll for each exit
+    min_tolls = {}
+    for entrance, exit in tickets:
+        # If the exit is not in the dictionary, add it with the current toll
+        if exit not in min_tolls:
+            min_tolls[exit] = abs(entrance - exit)
+        # If the exit is already in the dictionary, compare the current toll with the minimum toll
+        else:
+            min_tolls[exit] = min(min_tolls[exit], abs(entrance - exit))
     
-    # Loop through all possible combinations of flavors
-    for flavors in combinations(range(k), n):
-        # Calculate the tastiness and cost of the current combination
-        tastiness, cost = 0, 0
-        for i in range(n):
-            tastiness += t[flavors[i]]
-            cost += a
-        for i in range(n-1):
-            tastiness += u[flavors[i]][flavors[i+1]]
-            cost += b
-        
-        # Update the maximum tastiness and cost if necessary
-        if tastiness > max_tastiness or (tastiness == max_tastiness and cost < max_cost):
-            max_tastiness, max_cost = tastiness, cost
-    
-    # Return the maximum possible tastiness per gold coin ratio
-    if max_cost == 0:
-        return 0
-    else:
-        return max_tastiness / max_cost
+    # Return the sum of all minimum tolls
+    return sum(min_tolls.values())
 

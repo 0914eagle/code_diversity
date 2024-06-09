@@ -1,27 +1,19 @@
 
-def solve(n, t, times):
-    # Sort the times in ascending order
-    times.sort(key=lambda x: x[0])
+def is_wool_sequence(sequence):
+    for i in range(len(sequence)):
+        for j in range(i+1, len(sequence)):
+            if sequence[i] ^ sequence[j] == 0:
+                return True
+    return False
 
-    # Initialize the current time to 0
-    current_time = 0
+def count_non_wool_sequences(n, m):
+    count = 0
+    for i in range(2**n):
+        sequence = [i >> j & 1 for j in range(n)]
+        if not is_wool_sequence(sequence):
+            count += 1
+    return count % 1000000009
 
-    # Iterate through each photograph and its available time period
-    for i in range(n):
-        # Calculate the earliest time that the photograph can be taken
-        earliest_time = times[i][0]
-
-        # Calculate the latest time that the photograph can be taken
-        latest_time = times[i][1]
-
-        # Check if the photograph can be taken within the available time period
-        if current_time + t <= latest_time:
-            # Update the current time to the latest time of the photograph
-            current_time = latest_time
-        else:
-            # Return "no" if the photograph cannot be taken within the available time period
-            return "no"
-
-    # Return "yes" if all photographs can be taken within the available time period
-    return "yes"
+n, m = map(int, input().split())
+print(count_non_wool_sequences(n, m))
 

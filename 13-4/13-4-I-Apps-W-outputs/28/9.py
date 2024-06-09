@@ -1,26 +1,15 @@
 
-def can_koa_get_to_island(n, k, l, depths):
-    # Initialize variables
-    x = 0
-    t = 0
-    p = [i for i in range(0, 2 * k, 1)]
+n, m = map(int, input().split())
+buttons = list(map(int, input().split()))
 
-    # Loop through each second
-    for i in range(n):
-        # Calculate the current depth at position x
-        current_depth = depths[x] + p[t % 2 * k]
+result = [-1] * (n + 1)
 
-        # Check if Koa can swim or not
-        if current_depth <= l:
-            x += 1
-        else:
-            return "No"
+for i in range(m):
+    button = buttons[i]
+    for j in range(button, n + 1):
+        if result[j] == -1:
+            result[j] = i + 1
+            break
 
-        t += 1
-
-    # Check if Koa reached the island
-    if x == n:
-        return "Yes"
-    else:
-        return "No"
+print(*result[1:])
 

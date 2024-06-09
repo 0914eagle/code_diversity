@@ -1,11 +1,22 @@
 
-def solve(s):
-    # Find the index of the first occurrence of 'A'
-    start_index = s.find('A')
+import math
+
+def get_time_and_c(n, p, s, v):
+    # Calculate the optimal parameter c for the Arora-Mitchell algorithm
+    c = (math.log(n) * math.sqrt(2)) / (v * 1000000000)
     
-    # Find the index of the last occurrence of 'Z'
-    end_index = s.rfind('Z')
+    # Calculate the time it takes to run the algorithm and distribute the keys
+    time = s / (v * (1 + 1/c))
     
-    # Return the length of the substring
-    return end_index - start_index + 1
+    return time, c
+
+n = int(input())
+p = float(input())
+s = float(input())
+v = float(input())
+
+time, c = get_time_and_c(n, p, s, v)
+
+print(time)
+print(c)
 

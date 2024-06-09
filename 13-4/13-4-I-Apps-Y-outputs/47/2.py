@@ -1,11 +1,15 @@
 
-def solve(a1, b1, a2, b2):
-    sum1 = (b1 - a1 + 1) + (b1 - a1 + 2)
-    sum2 = (b2 - a2 + 1) + (b2 - a2 + 2)
-    if sum1 > sum2:
-        return "Gunnar"
-    elif sum1 < sum2:
-        return "Emma"
-    else:
-        return "Tie"
+def get_k(l, n):
+    # Initialize k as 1
+    k = 1
+    # Loop until k is found
+    while True:
+        # Calculate the length of the rolls
+        roll_length = l * k
+        # Check if the roll length is greater than or equal to the number of centimeters needed
+        if roll_length >= n:
+            # If it is, return k
+            return k
+        # Increment k by 1
+        k += 1
 

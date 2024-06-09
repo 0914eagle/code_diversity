@@ -1,40 +1,29 @@
 
-def solve(n, edges):
-    # Initialize a dictionary to store the graph
-    graph = {}
-    for i in range(1, n+1):
-        graph[i] = []
-    
-    # Add edges to the graph
-    for edge in edges:
-        graph[edge[0]].append(edge[1])
-        graph[edge[1]].append(edge[0])
-    
-    # Initialize variables to store the maximum number of edges and the vertices with the maximum number of edges
-    max_edges = 0
-    max_vertices = []
-    
-    # Iterate over all possible pairs of vertices
-    for i in range(1, n+1):
-        for j in range(i+1, n+1):
-            # Initialize a set to store the edges in the path between i and j
-            path = set()
-            
-            # Add the edge between i and j to the path
-            path.add((i, j))
-            
-            # Iterate over the neighbors of i and j
-            for neighbor in graph[i]:
-                if neighbor != j:
-                    path.update(graph[neighbor])
-            for neighbor in graph[j]:
-                if neighbor != i:
-                    path.update(graph[neighbor])
-                
-            # If the number of edges in the path is greater than the maximum number of edges, update the maximum number of edges and the vertices with the maximum number of edges
-            if len(path) > max_edges:
-                max_edges = len(path)
-                max_vertices = [i, j]
-    
-    return max_edges, max_vertices
+def solve(grid):
+    n, m = len(grid), len(grid[0])
+    stars = []
+    for i in range(n):
+        for j in range(m):
+            if grid[i][j] == '*':
+                stars.append((i, j))
+    # print(stars)
+    for i in range(len(stars)):
+        for j in range(i+1, len(stars)):
+            x1, y1 = stars[i]
+            x2, y2 = stars[j]
+            if x1 == x2 and y1 == y2:
+                return "-1"
+            if x1 == x2 or y1 == y2:
+                continue
+            if x1 < x2 and y1 < y2:
+                if x2 - x1 == y2 - y1:
+                    stars[i] = (x1, y1, x2 - x1)
+                    stars[j] = (x2, y2, x2 - x1)
+                    break
+            if x1 > x2 and y1 > y2:
+                if x1 - x2 == y1 - y2:
+                    stars[i] = (x1, y1, x1 - x2)
+                    stars[j] = (x2, y2, x1 - x2)
+                    break
+    return str(len(stars)) + "\n" + "\n".join([f"{s[0]} {s[1]} {s[2]}" for s in stars])
 

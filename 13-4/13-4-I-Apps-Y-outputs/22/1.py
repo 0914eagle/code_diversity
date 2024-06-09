@@ -1,13 +1,14 @@
 
-def is_palindrome_subsequence(a):
-    # First, we check if the entire array is a palindrome
-    if a == a[::-1]:
-        return True
+import sys
 
-    # If not, we check if there is a subsequence of length 3 that is a palindrome
-    for i in range(len(a) - 2):
-        subsequence = a[i:i+3]
-        if subsequence == subsequence[::-1]:
-            return True
-    return False
+A, B, C, K = map(int, input().split())
+
+# Calculate the maximum sum by considering all possible combinations of cards
+max_sum = 0
+for i in range(K+1):
+    for j in range(K+1-i):
+        current_sum = i * 1 + j * 0 + (K-i-j) * -1
+        max_sum = max(max_sum, current_sum)
+
+print(max_sum)
 

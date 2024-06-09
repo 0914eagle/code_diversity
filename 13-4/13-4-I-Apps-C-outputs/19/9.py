@@ -1,24 +1,19 @@
 
-def solve(starting_sequence, resulting_sequence):
-    # Initialize a list to store the proclamations
-    proclamations = []
+def get_reconstructions(pre_output, in_output, post_output):
+    # Initialize an empty list to store the reconstructions
+    reconstructions = []
     
-    # Loop through the resulting sequence
-    for i in range(len(resulting_sequence)):
-        # Get the current frog ID and its position in the resulting sequence
-        current_frog_id = resulting_sequence[i]
-        current_frog_position = i
-        
-        # If the current frog ID is not in its correct position, we need to make a proclamation
-        if current_frog_id != current_frog_position + 1:
-            # Get the position of the frog that needs to be swapped with the current frog
-            swap_position = starting_sequence.index(current_frog_id)
-            
-            # Add the proclamation to the list
-            proclamations.append(swap_position)
-            
-            # Swap the positions of the current frog and the frog that needs to be swapped
-            starting_sequence[current_frog_position], starting_sequence[swap_position] = starting_sequence[swap_position], starting_sequence[current_frog_position]
+    # Loop through all possible combinations of Pre, In, and Post calls
+    for pre_calls in range(2):
+        for in_calls in range(2):
+            for post_calls in range(2):
+                # Check if the number of calls to each routine is correct
+                if pre_calls + in_calls + post_calls == 6:
+                    # Check if the output of the routines matches the given output
+                    if (pre_output == "".join(pre_calls * "H") + "".join(in_calls * "B") + "".join(post_calls * "I")) and (in_output == "".join(pre_calls * "F") + "".join(in_calls * "A") + "".join(post_calls * "G")) and (post_output == "".join(pre_calls * "J") + "".join(in_calls * "C") + "".join(post_calls * "E")):
+                        # Add the reconstruction to the list
+                        reconstructions.append([pre_calls, in_calls, post_calls])
     
-    return proclamations
+    # Return the list of reconstructions
+    return reconstructions
 

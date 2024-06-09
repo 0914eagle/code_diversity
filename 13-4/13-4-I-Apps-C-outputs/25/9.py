@@ -1,18 +1,13 @@
 
-def get_optimal_choice(n, probabilities):
-    # Sort the probabilities in descending order
-    probabilities.sort(reverse=True)
-    # Initialize the optimal choice with the first friend
-    optimal_choice = [0]
-    # Initialize the probability of getting exactly one problem as the first friend's probability
-    probability = probabilities[0]
-    # Iterate over the remaining friends
-    for i in range(1, n):
-        # If the current friend's probability is greater than the probability of getting exactly one problem,
-        # add the current friend to the optimal choice and update the probability
-        if probabilities[i] > probability:
-            optimal_choice.append(i)
-            probability += probabilities[i] - probability
-    # Return the probability of getting exactly one problem
-    return probability
+def solve(n, x):
+    # Calculate the maximum distance between any two computers
+    max_distance = max([abs(x[i] - x[j]) for i in range(n) for j in range(i+1, n)])
+    
+    # Calculate the sum of the maximum distances for all non-empty subsets
+    sum = 0
+    for i in range(1, n+1):
+        for subset in itertools.combinations(range(n), i):
+            sum += max_distance - max([abs(x[subset[j]] - x[subset[j-1]]) for j in range(1, len(subset))])
+    
+    return sum % 1000000007
 

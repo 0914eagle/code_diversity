@@ -1,19 +1,11 @@
 
-def fibonacci(n):
-    if n <= 1:
-        return n
-    else:
-        return fibonacci(n-1) + fibonacci(n-2)
-
-def cube(x):
-    return x**3
-
-def get_fibonacci_cubes(n):
-    fibonacci_numbers = []
-    for i in range(n):
-        fibonacci_numbers.append(fibonacci(i))
-    return list(map(cube, fibonacci_numbers))
-
-n = int(input())
-print(get_fibonacci_cubes(n))
+def solve(A, B):
+    N = len(A)
+    M = len(B)
+    result = ['.' * N for _ in range(M)]
+    for i in range(N):
+        if A[i] in B:
+            j = B.index(A[i])
+            result[j] = A[i] + result[j][1:]
+    return '\n'.join(result)
 

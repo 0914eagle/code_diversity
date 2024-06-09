@@ -1,23 +1,45 @@
 
-def solve(starting_sequence, resulting_sequence):
-    # Initialize a list to store the proclamations
-    proclamations = []
+def find_reconstructions(pre_output, in_output, post_output):
+    # Initialize a list to store the reconstructions
+    reconstructions = []
     
-    # Loop through the resulting sequence
-    for i in range(len(resulting_sequence)):
-        # Get the current frog ID and its position in the resulting sequence
-        current_frog = resulting_sequence[i]
-        current_position = i
-        
-        # Find the position of the current frog in the starting sequence
-        starting_position = starting_sequence.index(current_frog)
-        
-        # Calculate the number of leaps needed to move the current frog to its correct position
-        leaps_needed = abs(starting_position - current_position)
-        
-        # Add the leaps needed to the proclamations list
-        proclamations += [leaps_needed]
+    # Loop through all possible combinations of Pre, In, and Post calls
+    for pre_calls in range(2):
+        for in_calls in range(2):
+            for post_calls in range(2):
+                # Check if the number of calls is correct
+                if pre_calls + in_calls + post_calls != 6:
+                    continue
+                
+                # Check if the calls are in the correct order
+                if pre_calls > in_calls or in_calls > post_calls:
+                    continue
+                
+                # Check if the outputs match
+                if not check_outputs(pre_output, in_output, post_output, pre_calls, in_calls, post_calls):
+                    continue
+                
+                # If all checks pass, add the reconstruction to the list
+                reconstructions.append([pre_calls, in_calls, post_calls])
     
-    # Return the proclamations list
-    return proclamations
+    # Return the list of reconstructions
+    return reconstructions
+
+def check_outputs(pre_output, in_output, post_output, pre_calls, in_calls, post_calls):
+    # Initialize variables to store the current output
+    current_pre_output = ""
+    current_in_output = ""
+    current_post_output = ""
+    
+    # Loop through the calls and update the output
+    for i in range(6):
+        if i < pre_calls:
+            current_pre_output += pre_output[i]
+        if i < in_calls:
+            current_in_output += in_output[i]
+        if i < post_calls:
+            current_post_output += post_output[i]
+    
+    # Check if the outputs match
+    return current_pre_output == pre_output and current_in_output == in_output and current_post_output == post_output
 

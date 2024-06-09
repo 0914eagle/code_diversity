@@ -1,20 +1,21 @@
 
-def get_covered_length(buildings, D):
-    # Sort the buildings by their height in descending order
-    buildings.sort(key=lambda x: x[1], reverse=True)
+def solve(N, A, B):
+    # Initialize a list to store the permutation
+    permutation = list(range(1, N+1))
     
-    # Initialize the covered length to 0
-    covered_length = 0
+    # Iterate through the list and find the indices where A and B appear
+    indices_A = [i for i, x in enumerate(permutation) if x == A]
+    indices_B = [i for i, x in enumerate(permutation) if x == B]
     
-    # Iterate through the buildings and calculate the covered length
-    for building in buildings:
-        # If the building has a transmitter, add its height to the covered length
-        if building[0] == 1:
-            covered_length += building[1]
-        # If the building does not have a transmitter, add the height of the previous building to the covered length
-        else:
-            covered_length += buildings[buildings.index(building) - 1][1]
+    # If there are no indices where A and B appear, return -1
+    if not indices_A or not indices_B:
+        return -1
     
-    # Return the covered length
-    return covered_length
+    # Otherwise, swap the values at the indices to create the desired permutation
+    for i in indices_A:
+        permutation[i] = B
+    for i in indices_B:
+        permutation[i] = A
+    
+    return permutation
 

@@ -1,33 +1,25 @@
 
-def get_matching_fragments(repository, snippet):
-    # Initialize variables
-    matches = []
-    longest_match = 0
-    matching_files = []
+import sys
+input = sys.stdin.read()
 
-    # Iterate through the repository fragments
-    for file_name, fragment in repository.items():
-        # Initialize variables for this fragment
-        current_match = 0
-        current_files = []
+def solve(n, m, tunnels):
+    # Initialize the danger level of each chamber as 0
+    danger_level = [0] * (n + 1)
 
-        # Iterate through the lines of the fragment and the snippet
-        for i in range(len(fragment)):
-            # Check if the lines match
-            if fragment[i] == snippet[i]:
-                current_match += 1
-                current_files.append(file_name)
-            else:
-                # If the lines don't match, check if this is a longer match than the previous one
-                if current_match > longest_match:
-                    longest_match = current_match
-                    matching_files = current_files
-                break
+    # Loop through each tunnel
+    for a, b, length in tunnels:
+        # Update the danger level of chamber a
+        danger_level[a] += length
+        # Update the danger level of chamber b
+        danger_level[b] += length
 
-        # If the fragment is a match, add it to the list of matches
-        if current_match == len(fragment):
-            matches.append((current_match, current_files))
+    # Return the remainder of each danger level divided by 10^9 + 7
+    return [d % (10**9 + 7) for d in danger_level]
 
-    # Return the longest match and the list of matching files
-    return longest_match, matching_files
+n, m = map(int, input.split())
+tunnels = []
+for i in range(m):
+    a, b, length = map(int, input.split())
+    tunnels.append((a, b, length))
+print(*solve(n, m, tunnels))
 

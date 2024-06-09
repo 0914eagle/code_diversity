@@ -1,8 +1,9 @@
 
-def get_days_with_free_food(events):
-    days = set()
-    for s, t in events:
-        for i in range(s, t+1):
-            days.add(i)
-    return len(days)
+def get_min_string(s, k):
+    n = len(s)
+    for i in range(n):
+        for j in range(i+1, min(n, i+k+1)):
+            if s[i] > s[j]:
+                s = s[:i] + s[j] + s[i+1:j] + s[i] + s[j+1:]
+    return s
 

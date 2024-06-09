@@ -1,11 +1,19 @@
 
-import re
+def get_mex(arr):
+    arr = sorted(arr)
+    mex = 0
+    for i in range(len(arr)):
+        if arr[i] != mex:
+            return mex
+        mex += 1
+    return mex + 1
 
-def get_non_similar_keywords(keywords):
-    non_similar_keywords = set()
-    for keyword in keywords:
-        keyword = re.sub(r'-', ' ', keyword).lower()
-        if keyword not in non_similar_keywords:
-            non_similar_keywords.add(keyword)
-    return len(non_similar_keywords)
+
+def solve(queries, x):
+    arr = []
+    result = []
+    for query in queries:
+        arr.append(query)
+        result.append(get_mex(arr))
+    return result
 

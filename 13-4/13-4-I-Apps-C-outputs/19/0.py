@@ -1,23 +1,27 @@
 
-def solve(starting_sequence, resulting_sequence):
-    # Initialize a list to store the proclamations
-    proclamations = []
+def find_reconstructions(pre_output, in_output, post_output):
+    # Initialize a list to store the reconstructions
+    reconstructions = []
     
-    # Loop through the resulting sequence
-    for i in range(len(resulting_sequence)):
-        # Get the current frog ID and its position in the resulting sequence
-        current_frog = resulting_sequence[i]
-        current_position = i
-        
-        # Find the position of the current frog in the starting sequence
-        starting_position = starting_sequence.index(current_frog)
-        
-        # Calculate the number of leaps needed to move the current frog to its correct position
-        leaps_needed = abs(current_position - starting_position)
-        
-        # Add the leaps needed to the proclamations list
-        proclamations.extend([leaps_needed] * leaps_needed)
+    # Iterate over all possible combinations of Pre, In, and Post calls
+    for pre_calls in range(2):
+        for in_calls in range(2):
+            for post_calls in range(2):
+                # Check if the number of calls is correct
+                if pre_calls + in_calls + post_calls != 6:
+                    continue
+                
+                # Check if the calls are in the correct order
+                if pre_calls > in_calls or in_calls > post_calls:
+                    continue
+                
+                # Check if the outputs match
+                if pre_output != "".join(sorted(pre_output)) or in_output != "".join(sorted(in_output)) or post_output != "".join(sorted(post_output)):
+                    continue
+                
+                # If all checks pass, add the reconstruction to the list
+                reconstructions.append([pre_calls, in_calls, post_calls])
     
-    # Return the proclamations list
-    return proclamations
+    # Return the list of reconstructions
+    return reconstructions
 

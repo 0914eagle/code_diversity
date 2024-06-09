@@ -1,33 +1,18 @@
 
-def is_possible(n, t, photography_list):
-    # Sort the photography list by the earliest time
-    photography_list.sort(key=lambda x: x[0])
-
-    # Initialize the current time to 0
-    current_time = 0
-
-    # Iterate through the photography list
-    for i in range(n):
-        # Get the earliest and latest time for the current photograph
-        earliest_time = photography_list[i][0]
-        latest_time = photography_list[i][1]
-
-        # Check if the current time is before the earliest time
-        if current_time < earliest_time:
-            # If so, set the current time to the earliest time
-            current_time = earliest_time
-
-        # Check if the current time is after the latest time
-        if current_time > latest_time:
-            # If so, return "no" because it is not possible to take all the photographs in one day
-            return "no"
-
-        # Add the time required to take the photograph to the current time
-        current_time += t
-
-    # If the current time is less than or equal to the latest time, return "yes"
-    if current_time <= latest_time:
-        return "yes"
-    else:
-        return "no"
+def solve(n, m):
+    mod = 1000000009
+    # Initialize a list to store the results
+    results = [0] * (n + 1)
+    results[0] = 1
+    
+    # Iterate over the range of values for m
+    for i in range(1, m + 1):
+        # Iterate over the range of values for n
+        for j in range(1, n + 1):
+            # Calculate the number of sequences of length j and value i
+            results[j] += results[j - 1]
+            results[j] %= mod
+    
+    # Return the result
+    return results[n]
 

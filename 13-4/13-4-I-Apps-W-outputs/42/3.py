@@ -1,13 +1,11 @@
 
-def solve():
-    N = int(input())
-    A = list(map(int, input().split()))
-    count = 0
+def solve(S):
+    N = len(S)
+    squares = [0] * N
     for i in range(N):
-        for j in range(N):
-            if i != j and A[j] % A[i] == 0:
-                break
+        if S[i] == "L":
+            squares[i] += 1
         else:
-            count += 1
-    return count
+            squares[i-1] += 1
+    return " ".join(str(x) for x in squares)
 

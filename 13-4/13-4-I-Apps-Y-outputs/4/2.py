@@ -1,15 +1,16 @@
 
-def solve():
-    N = int(input())
-    permutation = list(map(int, input().split()))
+def round_dances(n):
+    # Initialize a list to store the results
+    results = []
 
-    count = 0
-    for i in range(1, N+1):
-        for j in range(1, i):
-            if permutation[i-1] <= permutation[j-1]:
-                break
-        else:
-            count += 1
+    # Iterate over each possible combination of round dances
+    for i in range(1, n + 1):
+        for j in range(i + 1, n + 1):
+            # Check if the combination is valid
+            if i + j == n:
+                # Add the combination to the results list
+                results.append([i, j])
 
-    return count
+    # Return the length of the results list
+    return len(results)
 

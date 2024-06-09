@@ -1,15 +1,27 @@
 
-def solve(N, D, buildings):
-    # Initialize the covered segment as the entire city
-    covered_segment = [0, D]
+def solve(N, A, B):
+    # Initialize a list to store the permutation
+    perm = list(range(1, N+1))
+    # Initialize a list to store the values of g(i) for each i
+    g = [0] * (N+1)
+    # Initialize a set to keep track of the values of g(i) that have been used
+    used = set()
     
-    # Iterate through the buildings and update the covered segment
-    for building in buildings:
-        # If the building has a transmitter, update the covered segment
-        if building[0] == 1:
-            covered_segment[0] = max(covered_segment[0], building[1])
-            covered_segment[1] = min(covered_segment[1], building[1] + building[2])
+    # Loop through each element of the permutation
+    for i in range(N):
+        # If the value of g(i) has not been used, use it
+        if g[i] not in used:
+            g[i] = A
+            used.add(A)
+        # Otherwise, use the other value
+        else:
+            g[i] = B
+            used.add(B)
     
-    # Return the length of the covered segment
-    return covered_segment[1] - covered_segment[0]
+    # Check if the permutation satisfies the condition
+    for i in range(N):
+        if g[i] != A and g[i] != B:
+            return -1
+    
+    return perm
 

@@ -1,15 +1,21 @@
 
-def solve(n, d, e):
-    # Initialize the minimum number of rubles to infinity
-    min_rubles = float('inf')
-    # Iterate over all possible combinations of dollar and euro bills
-    for dollar_bill in range(0, n // d + 1):
-        for euro_bill in range(0, n // e + 1):
-            # Calculate the total number of rubles after exchange
-            total_rubles = dollar_bill * d + euro_bill * e
-            # If the total number of rubles is less than the minimum, update the minimum
-            if total_rubles < min_rubles:
-                min_rubles = total_rubles
-    # Return the minimum number of rubles
-    return min_rubles
+def solve(n, d, a, m, fares):
+    # Initialize a dictionary to store the minimum cost for each city
+    min_cost = {city: float('inf') for city in range(1, n + 1)}
+    min_cost[a[0]] = 0
+
+    # Loop through each airfare
+    for s, d, t, p in fares:
+        # If the ticket is a round trip ticket and the cost is less than the current minimum cost, update the minimum cost
+        if t == 'R' and min_cost[s] + p < min_cost[d]:
+            min_cost[d] = min_cost[s] + p
+
+    # Loop through each city in the tour
+    for i in range(d - 1):
+        # If the cost of traveling from the current city to the next city is less than the current minimum cost, update the minimum cost
+        if min_cost[a[i]] + min_cost[a[i + 1]] < min_cost[a[i + 1]]:
+            min_cost[a[i + 1]] = min_cost[a[i]] + min_cost[a[i + 1]]
+
+    # Return the minimum cost for the last city
+    return min_cost[a[-1]]
 

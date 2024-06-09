@@ -1,21 +1,27 @@
 
-def solve(n, k, a):
-    # Initialize two empty lists to store the students in the first and second teams
-    team_1 = []
-    team_2 = []
+def perket(ingredients):
+    # Sort the ingredients by their sourness in descending order
+    ingredients.sort(key=lambda x: x[0], reverse=True)
     
-    # Sort the students in descending order of their programming skills
-    sorted_students = sorted(a, reverse=True)
+    # Initialize the minimum difference and the chosen ingredients
+    min_diff = 1000000000
+    chosen_ingredients = []
     
-    # Iterate through the students and alternate assigning them to teams
-    for i in range(n):
-        if i % 2 == 0:
-            # Add the current student to the first team
-            team_1.append(sorted_students[i])
-        else:
-            # Add the current student to the second team
-            team_2.append(sorted_students[i])
+    # Iterate over all possible combinations of ingredients
+    for i in range(len(ingredients)):
+        for j in range(i+1, len(ingredients)):
+            # Calculate the total sourness and bitterness of the current combination
+            total_sourness = ingredients[i][0] * ingredients[j][0]
+            total_bitterness = ingredients[i][1] + ingredients[j][1]
+            
+            # Calculate the absolute difference between sourness and bitterness
+            diff = abs(total_sourness - total_bitterness)
+            
+            # If the current difference is smaller than the minimum difference, update the minimum difference and the chosen ingredients
+            if diff < min_diff:
+                min_diff = diff
+                chosen_ingredients = [ingredients[i], ingredients[j]]
     
-    # Return the teams in the form of a string
-    return "".join([str(int(i in team_1)) for i in a])
+    # Return the minimum difference and the chosen ingredients
+    return (min_diff, chosen_ingredients)
 

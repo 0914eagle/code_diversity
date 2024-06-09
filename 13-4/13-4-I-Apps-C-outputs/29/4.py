@@ -1,44 +1,45 @@
 
-def get_min_hours(n, m, railways):
-    # Initialize a graph with the given railways
-    graph = {i: set() for i in range(1, n + 1)}
-    for u, v in railways:
-        graph[u].add(v)
-        graph[v].add(u)
+import itertools
 
-    # Find all possible routes for the train and the bus
-    train_routes = []
-    bus_routes = []
-    for i in range(1, n + 1):
-        for route in find_routes(graph, i, n):
-            if route not in train_routes and route not in bus_routes:
-                train_routes.append(route)
-                bus_routes.append(route)
+def count_paintings(N, S1, S2):
+    # Initialize a dictionary to store the number of paintings for each domino
+    paintings = {}
+    for domino in itertools.product("RGB", repeat=N):
+        paintings[domino] = 0
 
-    # Find the maximum arrival time for the bus and the train
-    max_bus_time = 0
-    max_train_time = 0
-    for route in bus_routes:
-        max_bus_time = max(max_bus_time, len(route) - 1)
-    for route in train_routes:
-        max_train_time = max(max_train_time, len(route) - 1)
+    # Initialize a dictionary to store the number of paintings for each pair of adjacent dominoes
+    adjacents = {}
+    for domino1, domino2 in itertools.combinations(range(N), 2):
+        adjacents[(domino1, domino2)] = 0
 
-    # Return the maximum of the two arrival times
-    return max(max_bus_time, max_train_time)
+    # Loop through all possible paintings of the dominoes
+    for dominoes in itertools.product("RGB", repeat=N):
+        # Check if the dominoes form a valid arrangement
+        if is_valid_arrangement(N, S1, S2, dominoes):
+            # Increment the number of paintings for each domino
+            for domino in dominoes:
+                paintings[domino] += 1
+            # Increment the number of paintings for each pair of adjacent dominoes
+            for domino1, domino2 in itertools.combinations(range(N), 2):
+                adjacents[(domino1, domino2)] += 1
 
-def find_routes(graph, start, end):
-    # Base case: if the start and end nodes are the same, return the route
-    if start == end:
-        return [[start]]
+    # Return the number of paintings modulo 1000000007
+    return sum(paintings.values()) % 1000000007
 
-    # Initialize a list to store the routes
-    routes = []
+def is_valid_arrangement(N, S1, S2, dominoes):
+    # Check if the dominoes form a valid arrangement
+    for i in range(N):
+        if S1[i] != dominoes[i] and S2[i] != dominoes[i]:
+            return False
+    # Check if the dominoes are adjacent by side
+    for i in range(N-1):
+        if dominoes[i] == dominoes[i+1] and dominoes[i] != "G":
+            return False
+    return True
 
-    # Recursive case: explore all neighbors of the current node
-    for neighbor in graph[start]:
-        # If the neighbor is not in the route, add it and explore its neighbors
-        if neighbor not in routes:
-            routes += [[neighbor] + route for route in find_routes(graph, neighbor, end)]
-
-    return routes
+if __name__ == "__main__":
+    N = int(input())
+    S1 = input()
+    S2 = input()
+    print(count_paintings(N, S1, S2))
 

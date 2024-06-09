@@ -1,16 +1,23 @@
 
-import math
+def reconstruct_towers(box_heights):
+    # Sort the box heights in descending order
+    sorted_box_heights = sorted(box_heights, reverse=True)
 
-def solve(numbers):
-    num1, num2 = numbers.split()
-    num1_real, num1_img = num1.split('+')
-    num2_real, num2_img = num2.split('+')
-    num1_real, num1_img, num2_real, num2_img = float(num1_real), float(num1_img), float(num2_real), float(num2_img)
-    add = complex(num1_real + num2_real, num1_img + num2_img)
-    sub = complex(num1_real - num2_real, num1_img - num2_img)
-    mul = complex(num1_real * num2_real - num1_img * num2_img, num1_real * num2_img + num1_img * num2_real)
-    div = complex(num1_real * num2_real + num1_img * num2_img, num1_img * num2_real - num1_real * num2_img) / (num2_real ** 2 + num2_img ** 2)
-    mod_num1 = math.sqrt(num1_real ** 2 + num1_img ** 2)
-    mod_num2 = math.sqrt(num2_real ** 2 + num2_img ** 2)
-    return f"{add.real:.2f}+{add.imag:.2f}i\n{sub.real:.2f}+{sub.imag:.2f}i\n{mul.real:.2f}+{mul.imag:.2f}i\n{div.real:.2f}+{div.imag:.2f}i\n{mod_num1:.2f}\n{mod_num2:.2f}"
+    # Find the two tower heights
+    tower_heights = sorted_box_heights[-2:]
+
+    # Find the indices of the tower heights in the sorted box heights list
+    tower_indices = [i for i, x in enumerate(sorted_box_heights) if x in tower_heights]
+
+    # Create a list to store the tower box heights
+    tower_box_heights = []
+
+    # Loop through the tower indices and add the corresponding box heights to the tower list
+    for i in range(len(tower_indices)):
+        tower_box_heights.append(sorted_box_heights[tower_indices[i]])
+        tower_box_heights.append(sorted_box_heights[tower_indices[i] + 1])
+        tower_box_heights.append(sorted_box_heights[tower_indices[i] + 2])
+
+    # Return the tower box heights in order of decreasing height
+    return tower_box_heights
 

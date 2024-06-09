@@ -1,56 +1,31 @@
 
-def get_maximum_edges(n, edges):
-    # Initialize a dictionary to store the graph
-    graph = {}
-    for i in range(1, n+1):
-        graph[i] = []
-
-    # Add edges to the graph
-    for edge in edges:
-        graph[edge[0]].append(edge[1])
-        graph[edge[1]].append(edge[0])
-
-    # Initialize variables to store the maximum number of edges and the vertices with the maximum number of edges
-    max_edges = 0
-    max_vertices = []
-
-    # Iterate over all possible pairs of vertices
-    for i in range(1, n+1):
-        for j in range(i+1, n+1):
-            # If the vertices are not already in the maximum set, calculate the number of edges between them
-            if i not in max_vertices and j not in max_vertices:
-                num_edges = count_edges(graph, i, j)
-                # If the number of edges is greater than the current maximum, update the maximum and the vertices with the maximum number of edges
-                if num_edges > max_edges:
-                    max_edges = num_edges
-                    max_vertices = [i, j]
-
-    return max_edges, max_vertices
-
-def count_edges(graph, i, j):
-    # Initialize a set to store the visited vertices
-    visited = set()
-    # Initialize a queue to store the vertices to visit
-    queue = [i]
-    # Initialize a counter to store the number of edges
-    count = 0
-
-    while queue:
-        # Dequeue a vertex from the queue
-        vertex = queue.pop(0)
-        # If the vertex has not been visited, mark it as visited and add its neighbors to the queue
-        if vertex not in visited:
-            visited.add(vertex)
-            queue += graph[vertex]
-            # If the vertex is the destination vertex, increment the counter
-            if vertex == j:
-                count += 1
-
-    return count
-
-n = 8
-edges = [(1, 2), (2, 3), (3, 4), (4, 5), (4, 6), (3, 7), (3, 8)]
-max_edges, max_vertices = get_maximum_edges(n, edges)
-print(max_edges)
-print(max_vertices)
+def solve(grid):
+    n, m = len(grid), len(grid[0])
+    stars = []
+    for i in range(n):
+        for j in range(m):
+            if grid[i][j] == '*':
+                stars.append((i, j))
+    # Check if the grid is valid
+    if len(stars) > n * m:
+        return "-1"
+    # Sort the stars by size in descending order
+    stars.sort(key=lambda x: x[2], reverse=True)
+    # Create a set to store the indices of the stars that have been used
+    used_stars = set()
+    # Loop through the stars and draw them on the grid
+    for i, j, size in stars:
+        if (i, j) in used_stars:
+            continue
+        # Draw the star on the grid
+        for x in range(i - size + 1, i + size):
+            for y in range(j - size + 1, j + size):
+                if 0 <= x < n and 0 <= y < m:
+                    grid[x][y] = '*'
+        used_stars.add((i, j))
+    # Check if the grid is completely filled with stars
+    if "." in "".join(["".join(row) for row in grid]):
+        return "-1"
+    # Return the number of stars used and their positions
+    return str(len(stars)) + "\n" + "\n".join([" ".join(map(str, star)) for star in stars])
 

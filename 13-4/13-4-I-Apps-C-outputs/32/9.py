@@ -1,19 +1,25 @@
 
-def max_value_jewels(jewels, knapsack_size):
-    # Initialize a dictionary to store the maximum value of jewels for each size of knapsack
-    max_values = {i: 0 for i in range(1, knapsack_size + 1)}
+def get_package_order(packages):
+    # Initialize an empty order list
+    order = []
 
-    # Iterate over the jewels
-    for jewel in jewels:
-        # Get the size and value of the jewel
-        size, value = jewel
+    # Loop through the packages
+    for package in packages:
+        # Check if the package is already in the order list
+        if package not in order:
+            # Check if the package has any dependencies
+            if package.dependencies:
+                # Check if all the dependencies are in the order list
+                if all(dep in order for dep in package.dependencies):
+                    # If all dependencies are in the order list, add the package to the end of the order list
+                    order.append(package)
+                else:
+                    # If not all dependencies are in the order list, cannot be ordered
+                    return "cannot be ordered"
+            else:
+                # If the package has no dependencies, add it to the beginning of the order list
+                order.insert(0, package)
 
-        # Iterate over the sizes of knapsacks
-        for i in range(1, knapsack_size + 1):
-            # Check if the jewel fits in the current knapsack
-            if size <= i:
-                # Update the maximum value of jewels for the current knapsack
-                max_values[i] = max(max_values[i], max_values[i - size] + value)
-
-    return max_values
+    # Return the order list
+    return order
 

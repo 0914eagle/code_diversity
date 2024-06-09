@@ -1,14 +1,14 @@
 
-def solve(a):
-    if a == 0:
-        return "yes"
-    if a == 1:
-        return "yes"
-    if a == 2:
-        return "no"
-    if a == 3:
-        return "yes"
-    if a % 3 == 0:
-        return "yes"
-    return "no"
+def is_palindrome(s):
+    return s == s[::-1]
+
+def get_palindrome(s):
+    if is_palindrome(s):
+        return s
+    
+    for i in range(len(s)):
+        if is_palindrome(s[:i] + s[i] + s[i:]) :
+            return s[:i] + s[i] + s[i:]
+    
+    return "NA"
 

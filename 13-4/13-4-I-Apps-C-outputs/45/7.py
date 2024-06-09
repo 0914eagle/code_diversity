@@ -1,14 +1,12 @@
 
-def solve(a):
-    # Step 1: Find the minimal element in the sequence
-    min_element = min(a)
+import math
 
-    # Step 2: Count the number of elements that are divisible by the minimal element
+def solve(n, k):
+    n = int(n, 2)
     count = 0
-    for element in a:
-        if element % min_element == 0:
+    for i in range(1, n+1):
+        num_set_bits = bin(i).count('1')
+        if num_set_bits >= k:
             count += 1
-
-    # Step 3: Return the number of colors needed
-    return count
+    return count % (10**9 + 7)
 

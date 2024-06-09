@@ -1,20 +1,46 @@
 
-def solve(starting_sequence, resulting_sequence):
-    # Initialize a list to store the proclamations
-    proclamations = []
+def get_reconstructions(pre_output, in_output, post_output):
+    # Initialize a list to store the reconstructions
+    reconstructions = []
     
-    # Loop through the resulting sequence and find the indices of the frogs that need to be swapped
-    for i in range(len(resulting_sequence)):
-        # If the frog at the current index in the resulting sequence is not in its correct position, find the index of the frog that needs to be swapped
-        if resulting_sequence[i] != i+1:
-            # Find the index of the frog that needs to be swapped
-            swap_index = resulting_sequence.index(i+1)
-            
-            # Add the number of leaps needed to the proclamations list
-            proclamations.append(swap_index - i)
-            
-            # Swap the frogs in the resulting sequence
-            resulting_sequence[i], resulting_sequence[swap_index] = resulting_sequence[swap_index], resulting_sequence[i]
+    # Iterate over all possible combinations of Pre, In, and Post calls
+    for pre_calls in range(2):
+        for in_calls in range(2):
+            for post_calls in range(2):
+                # Check if the number of calls is correct
+                if pre_calls + in_calls + post_calls == 6:
+                    # Initialize a list to store the calls
+                    calls = []
+                    
+                    # Add the Pre calls to the list
+                    for i in range(pre_calls):
+                        calls.append("Pre")
+                    
+                    # Add the In calls to the list
+                    for i in range(in_calls):
+                        calls.append("In")
+                    
+                    # Add the Post calls to the list
+                    for i in range(post_calls):
+                        calls.append("Post")
+                    
+                    # Check if the calls match the output
+                    if "".join(calls) == pre_output and "".join(calls) == in_output and "".join(calls) == post_output:
+                        # Initialize a list to store the tree
+                        tree = []
+                        
+                        # Add the preorder print of the tree to the list
+                        tree.append(pre_output)
+                        
+                        # Add the inorder print of the tree to the list
+                        tree.append(in_output)
+                        
+                        # Add the postorder print of the tree to the list
+                        tree.append(post_output)
+                        
+                        # Add the reconstruction to the list of reconstructions
+                        reconstructions.append((calls, tree))
     
-    return proclamations
+    # Return the list of reconstructions
+    return reconstructions
 

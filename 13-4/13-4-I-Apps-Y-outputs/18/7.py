@@ -1,33 +1,33 @@
 
-def nimionese(sentence):
-    # Split the sentence into a list of words
-    words = sentence.split()
+import math
+
+def get_angle(x1, y1, x2, y2):
+    # Calculate the difference in the x and y coordinates
+    diff_x = x2 - x1
+    diff_y = y2 - y1
     
-    # Create a dictionary to map each word to its nimionese translation
-    word_map = {
-        "cat": "cata",
-        "dog": "doga",
-        "hip": "gipoh",
-        "each": "dach",
-        "hip-po": "gip-go"
-    }
+    # Calculate the angle using the arctangent function
+    angle = math.atan2(diff_y, diff_x)
     
-    # Iterate through the words and translate each one to nimionese
-    nimionese_words = []
-    for word in words:
-        # Check if the word is already in the dictionary
-        if word in word_map:
-            nimionese_words.append(word_map[word])
-        else:
-            # If the word is not in the dictionary, translate it according to the rules
-            nimionese_word = ""
-            if word[0] in ["b", "c", "d", "g", "k", "n", "p", "t"]:
-                nimionese_word += "g"
-            nimionese_word += word[1:]
-            if nimionese_word[-1] in ["b", "c", "d", "g", "k", "n", "p", "t"]:
-                nimionese_word += "ah"
-            nimionese_words.append(nimionese_word)
-    
-    # Join the translated words together with spaces and return the result
-    return " ".join(nimionese_words)
+    # Return the angle in degrees
+    return math.degrees(angle)
+
+# Test the function with the sample inputs
+points = [[-2.14, 2.06], [-1.14, 2.04], [-2.16, 1.46], [-2.14, 0.70], [-1.42, 0.40], [-0.94, -0.48], [-1.42, -1.28], [-2.16, -1.62]]
+print(get_angle(points[0], points[1]))
+
+points = [[2.26, 1.44], [2.28, 0.64], [2.30, -0.30], [1.58, 0.66], [3.24, 0.66]]
+print(get_angle(points[0], points[1]))
+
+points = [[6.98, 2.06], [6.40, 1.12], [5.98, 0.24], [5.54, -0.60], [7.16, 0.30], [7.82, 1.24], [8.34, 0.24], [8.74, -0.76]]
+print(get_angle(points[0], points[1]))
+
+points = [[10.44, 2.06], [10.90, 0.80], [11.48, -0.48], [12.06, 0.76], [12.54, 2.06]]
+print(get_angle(points[0], points[1]))
+
+points = [[16.94, 2.42], [15.72, 2.38], [14.82, 1.58], [14.88, 0.50], [15.76, -0.16], [16.86, -0.20], [17.00, 0.88], [16.40, 0.92]]
+print(get_angle(points[0], points[1]))
+
+points = [[20.62, 3.00], [21.06, 2.28], [21.56, 1.36], [21.66, 0.56], [21.64, -0.52], [22.14, 2.32], [22.62, 3.04]]
+print(get_angle(points[0], points[1]))
 

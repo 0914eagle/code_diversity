@@ -1,14 +1,22 @@
 
-def get_min_rod_length(triangles):
-    
-    # Calculate the sum of the areas of all the triangles
-    total_area = sum([triangle[0] * triangle[1] for triangle in triangles])
+def is_eastern_gothic(sentence):
+    word_list = sentence.split()
+    eastern_gothic_words = 0
+    for word in word_list:
+        if 'ae' in word:
+            eastern_gothic_words += 1
+    if eastern_gothic_words / len(word_list) >= 0.4:
+        return True
+    else:
+        return False
 
-    # Calculate the maximum height of the triangles
-    max_height = max([triangle[2] for triangle in triangles])
+def main():
+    sentence = input()
+    if is_eastern_gothic(sentence):
+        print("dae ae ju traeligt va")
+    else:
+        print("haer talar vi rikssvenska")
 
-    # Calculate the minimum required length for the rod
-    min_rod_length = (total_area / max_height) + max_height
-
-    return min_rod_length
+if __name__ == "__main__":
+    main()
 

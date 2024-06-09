@@ -1,31 +1,26 @@
 
-def solve(K):
-    # Initialize a list to store the Snuke numbers
-    snuke_numbers = []
-    
-    # Iterate from 1 to 10^15
-    for i in range(1, 10**15):
-        # Check if the number is a Snuke number
-        if is_snuke_number(i):
-            # Add the number to the list
-            snuke_numbers.append(i)
-            
-            # If the list has reached the required size, return it
-            if len(snuke_numbers) == K:
-                return snuke_numbers
-    
-    # If the list is not large enough, return it
-    return snuke_numbers
+import sys
 
-# Check if a number is a Snuke number
-def is_snuke_number(n):
-    # Get the sum of the digits in the decimal notation of n
-    sum_of_digits = sum(int(digit) for digit in str(n))
+def get_inconvenience(bridges, collapsed_bridges):
+    inconvenience = 0
+    for bridge in bridges:
+        if bridge[0] in collapsed_bridges or bridge[1] in collapsed_bridges:
+            inconvenience += 1
+    return inconvenience
+
+def main():
+    n, m = map(int, input().split())
+    bridges = []
+    for _ in range(m):
+        a, b = map(int, input().split())
+        bridges.append((a, b))
     
-    # Check if the number is a Snuke number
-    for m in range(n+1, 10**15):
-        if m % sum_of_digits == 0:
-            return False
-    
-    return True
+    collapsed_bridges = set()
+    for i in range(m):
+        collapsed_bridges.add(i+1)
+        inconvenience = get_inconvenience(bridges, collapsed_bridges)
+        print(inconvenience)
+
+if __name__ == "__main__":
+    main()
 

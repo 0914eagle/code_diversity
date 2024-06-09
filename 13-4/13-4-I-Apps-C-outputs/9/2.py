@@ -1,37 +1,18 @@
 
-def solve(spots):
-    # Sort the spots by their x-coordinate
-    sorted_spots = sorted(spots, key=lambda x: x[0])
+def carryless_multiplication(a, b):
+    result = 0
+    for i in range(len(str(a))):
+        for j in range(len(str(b))):
+            result += int(str(a)[-i-1]) * int(str(b)[-j-1])
+        result %= 10
+    return result
 
-    # Initialize the minimum number of additional spots needed to be 0
-    min_additional_spots = 0
+def find_a(N):
+    for a in range(1, 1000000000):
+        if carryless_multiplication(a, a) == N:
+            return a
+    return -1
 
-    # Iterate through the sorted spots
-    for i in range(len(sorted_spots)):
-        # Get the current spot and its x-coordinate
-        current_spot = sorted_spots[i]
-        current_x = current_spot[0]
-
-        # Check if the current spot is symmetric about the origin
-        if current_x == 0:
-            # If it is, then no additional spots are needed
-            min_additional_spots = 0
-            break
-
-        # Check if the current spot is symmetric about a vertical line
-        if current_x % 2 == 0:
-            # If it is, then one additional spot is needed on the opposite side
-            min_additional_spots = 1
-
-        # Check if the current spot is symmetric about a horizontal line
-        if current_x % 3 == 0:
-            # If it is, then one additional spot is needed above or below the current spot
-            min_additional_spots = 1
-
-        # Check if the current spot is symmetric about a 45-degree line
-        if current_x % 5 == 0:
-            # If it is, then two additional spots are needed, one above and one below the current spot
-            min_additional_spots = 2
-
-    return min_additional_spots
+N = int(input())
+print(find_a(N))
 

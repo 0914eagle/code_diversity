@@ -1,4 +1,9 @@
 
-def enlarge_article(article, z_r, z_c):
-    return [[char * z_r for char in line] for line in article]
+def get_triplets_count(k, s):
+    count = 0
+    for i in range(k+1):
+        for j in range(i+1):
+            if i+j == s:
+                count += 1
+    return count
 

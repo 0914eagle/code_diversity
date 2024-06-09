@@ -1,13 +1,18 @@
 
-def num_states(N):
-    # Initialize the number of states to 1
-    num_states = 1
-    # Iterate over the number of moves
-    for i in range(N):
-        # Double the number of states
-        num_states *= 2
-        # Modulo 10^9 + 7 to avoid overflow
-        num_states %= 1000000007
-    # Return the number of states
-    return num_states
+import sys
+
+def solve(s):
+    mod = 10**9+7
+    count = 0
+    for i in range(len(s)):
+        if s[i] == '?':
+            for j in range(10):
+                s_new = s[:i] + str(j) + s[i+1:]
+                if int(s_new) % 13 == 5:
+                    count += 1
+                    count %= mod
+    return count
+
+s = input()
+print(solve(s))
 

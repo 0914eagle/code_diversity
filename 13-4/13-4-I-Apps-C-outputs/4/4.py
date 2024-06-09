@@ -1,23 +1,18 @@
 
-def can_take_all_photos(n, t, times):
-    # Sort the times in ascending order
-    sorted_times = sorted(times)
-
-    # Initialize the current time to 0
-    current_time = 0
-
-    # Loop through each time period
-    for i in range(n):
-        # Check if the current time is within the time period
-        if current_time < sorted_times[i][0]:
-            # Add the time it takes to take the photo to the current time
-            current_time += t
-
-        # Check if the current time is greater than the end time of the photo
-        if current_time > sorted_times[i][1]:
-            # Return no, it is not possible to take all photos
-            return "no"
-
-    # Return yes, it is possible to take all photos
-    return "yes"
+def solve(n, m):
+    mod = 1000000009
+    # Initialize a list to store the results
+    results = [0] * (n + 1)
+    results[0] = 1
+    
+    # Iterate over each possible length of the sequence
+    for i in range(1, n + 1):
+        # Iterate over each possible starting index for the sequence
+        for j in range(m):
+            # If the sequence is not a wool sequence, add it to the results
+            if j ^ (j + i - 1) != 0:
+                results[i] += results[i - 1]
+        results[i] %= mod
+    
+    return results[n]
 

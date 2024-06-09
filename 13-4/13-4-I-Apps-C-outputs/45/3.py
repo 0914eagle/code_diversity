@@ -1,14 +1,12 @@
 
-def solve(a):
-    # Step 1: Find the minimal element in the list
-    min_element = min(a)
-    
-    # Step 2: Count the number of elements that are divisible by the minimal element
+import math
+
+def number_of_special_numbers(n, k):
     count = 0
-    for element in a:
-        if element % min_element == 0:
+    for i in range(1, n+1):
+        binary = bin(i)[2:]
+        set_bits = binary.count('1')
+        if set_bits == k:
             count += 1
-    
-    # Step 3: Return the number of colors needed
-    return count
+    return count % (10**9 + 7)
 

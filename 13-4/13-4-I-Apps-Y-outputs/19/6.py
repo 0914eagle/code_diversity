@@ -1,31 +1,56 @@
 
-def solve(n, memory):
-    # Initialize a dictionary to map each kid to its remembered kids
-    remembered = {i: set() for i in range(1, n + 1)}
-    for i, (a, b) in enumerate(memory, 1):
-        remembered[i].add(a)
-        remembered[i].add(b)
-    
-    # Initialize a set to store the kids that have been placed in the circle
-    placed = set()
-    
-    # Initialize the permutation as an empty list
-    permutation = []
-    
-    # Start placing kids in the circle
-    while len(permutation) < n:
-        # Find the next kid to place in the circle
-        for i in range(1, n + 1):
-            if i not in placed and len(remembered[i]) == 2:
-                # Get the two kids that the current kid remembers
-                a, b = remembered[i]
-                
-                # Check if both kids have been placed in the circle
-                if a in placed and b in placed:
-                    # Place the current kid after the kid it remembers
-                    permutation.append(i)
-                    placed.add(i)
-                    break
-    
-    return permutation
+import sys
+input = sys.stdin.read()
+
+# Function to calculate the Manhattan distance between two points
+def manhattan_distance(p1, p2):
+    return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
+
+# Function to find the nearest safe house from a given point
+def find_nearest_safe_house(point, safe_houses):
+    nearest_safe_house = None
+    min_distance = float('inf')
+    for safe_house in safe_houses:
+        distance = manhattan_distance(point, safe_house)
+        if distance < min_distance:
+            min_distance = distance
+            nearest_safe_house = safe_house
+    return nearest_safe_house
+
+# Function to find the maximum Manhattan distance that any spy has to travel to reach the nearest safe house
+def find_max_distance(spies, safe_houses):
+    max_distance = 0
+    for spy in spies:
+        nearest_safe_house = find_nearest_safe_house(spy, safe_houses)
+        distance = manhattan_distance(spy, nearest_safe_house)
+        if distance > max_distance:
+            max_distance = distance
+    return max_distance
+
+# Main function
+def main():
+    # Read the input
+    width, height = [int(x) for x in input().split()]
+    grid = []
+    for _ in range(height):
+        grid.append(list(input().strip()))
+
+    # Find the spies and safe houses
+    spies = []
+    safe_houses = []
+    for i in range(height):
+        for j in range(width):
+            if grid[i][j] == 'S':
+                spies.append((j, i))
+            elif grid[i][j] == 'H':
+                safe_houses.append((j, i))
+
+    # Find the maximum Manhattan distance
+    max_distance = find_max_distance(spies, safe_houses)
+
+    # Print the result
+    print(max_distance)
+
+if __name__ == '__main__':
+    main()
 

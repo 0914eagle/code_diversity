@@ -1,26 +1,43 @@
 
-def get_maximum_number_of_eligible_pupils(pupils):
-    # Initialize a dictionary to store the preferred music style and favourite sport of each pupil
-    preferences = {}
-    for pupil in pupils:
-        preferences[pupil[0]] = (pupil[1], pupil[2], pupil[3])
+import math
 
-    # Initialize a list to store the eligible pupils
-    eligible_pupils = []
+def get_hexagon_circumference(vertices):
+    # Calculate the circumference of the hexagon
+    circumference = 0
+    for i in range(len(vertices)):
+        vertex1 = vertices[i]
+        vertex2 = vertices[(i + 1) % len(vertices)]
+        circumference += math.sqrt((vertex1[0] - vertex2[0]) ** 2 + (vertex1[1] - vertex2[1]) ** 2)
+    return circumference
 
-    # Iterate through the list of pupils and check if they satisfy at least one of the requirements
-    for pupil in pupils:
-        height = pupil[0]
-        sex = pupil[1]
-        music_style = pupil[2]
-        sport = pupil[3]
-        is_eligible = False
-        for other_pupil in pupils:
-            if height != other_pupil[0] and sex != other_pupil[1] and music_style != other_pupil[2] and sport != other_pupil[3]:
-                is_eligible = True
-                break
-        if is_eligible:
-            eligible_pupils.append(pupil)
+def get_max_hexagon_circumference(vertices):
+    # Find the vertex with the maximum circumference
+    max_circumference = 0
+    max_vertex = 0
+    for i in range(len(vertices)):
+        vertex = vertices[i]
+        circumference = get_hexagon_circumference([vertex] + vertices[(i + 1) % len(vertices):] + vertices[:i])
+        if circumference > max_circumference:
+            max_circumference = circumference
+            max_vertex = i
+    return max_circumference, max_vertex
 
-    return len(eligible_pupils)
+def solve(n, vertices):
+    # Find the vertex with the maximum circumference
+    max_circumference, max_vertex = get_max_hexagon_circumference(vertices)
+    
+    # Print the maximum circumference for each vertex
+    for i in range(n):
+        if i == max_vertex:
+            print(f"{max_circumference:.9f}")
+        else:
+            print(f"{get_hexagon_circumference([vertices[i]] + vertices[(i + 1) % n:] + vertices[:i]):.9f}")
+
+if __name__ == "__main__":
+    n = int(input())
+    vertices = []
+    for i in range(n):
+        x, y = map(int, input().split())
+        vertices.append((x, y))
+    solve(n, vertices)
 

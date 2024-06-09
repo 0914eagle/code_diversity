@@ -1,30 +1,30 @@
 
-def solve(N, H, L, horror_list, similarities):
-    # Initialize a dictionary to store the horror index for each movie
-    horror_index = {}
+def is_symmetric(matrix):
+    for i in range(len(matrix)):
+        for j in range(i+1, len(matrix[i])):
+            if matrix[i][j] != matrix[j][i]:
+                return False
+    return True
 
-    # Set the horror index for the movies on the horror list to 0
-    for movie in horror_list:
-        horror_index[movie] = 0
+def can_construct_square(n, m, tiles):
+    # Initialize a matrix of size m x m
+    matrix = [[0 for _ in range(m)] for _ in range(m)]
 
-    # Iterate over the similarities and update the horror index for each movie
-    for a, b in similarities:
-        if a in horror_index or b in horror_index:
-            if a not in horror_index:
-                horror_index[a] = horror_index[b] + 1
-            elif b not in horror_index:
-                horror_index[b] = horror_index[a] + 1
-            else:
-                horror_index[a] = max(horror_index[a], horror_index[b] + 1)
-                horror_index[b] = max(horror_index[a], horror_index[b] + 1)
+    # Fill the matrix with the tiles
+    for i in range(n):
+        for j in range(n):
+            matrix[i][j] = tiles[i][0]
+            matrix[i][m-j-1] = tiles[i][1]
+            matrix[m-i-1][j] = tiles[i][2]
+            matrix[m-i-1][m-j-1] = tiles[i][3]
 
-    # Find the movie with the highest horror index
-    highest_horror_index = 0
-    highest_horror_index_movie = 0
-    for movie, horror_index in horror_index.items():
-        if horror_index > highest_horror_index:
-            highest_horror_index = horror_index
-            highest_horror_index_movie = movie
+    # Check if the matrix is symmetric
+    return is_symmetric(matrix)
 
-    return highest_horror_index_movie
+tiles = []
+n, m = map(int, input().split())
+for i in range(n):
+    tiles.append(list(map(int, input().split())))
+
+print("YES") if can_construct_square(n, m, tiles) else print("NO")
 

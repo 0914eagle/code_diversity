@@ -1,11 +1,11 @@
 
-def get_max_distance(s):
-    n = len(s)
-    max_diff = 0
-    for i in range(n-1):
-        for j in range(i+1, n):
-            diff = abs(i-j)
-            if s[i] != s[j] and diff > max_diff:
-                max_diff = diff
-    return max_diff
+def get_min_time(a, b, w, x, c):
+    if c <= a:
+        return 0
+    if b >= x:
+        b -= x
+    else:
+        a -= 1
+        b = w - (x - b)
+    return 1 + get_min_time(a, b, w, x, c-1)
 

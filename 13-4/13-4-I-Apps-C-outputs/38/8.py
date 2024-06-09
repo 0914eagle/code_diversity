@@ -1,21 +1,8 @@
 
-def is_hill_number(n):
-    if n < 10:
-        return True
-    
-    prev_digit = None
-    is_increasing = True
-    for digit in str(n):
-        if prev_digit is not None and prev_digit > digit:
-            is_increasing = False
-            break
-        prev_digit = digit
-    return is_increasing
-
-def count_hill_numbers(n):
-    count = 0
-    for i in range(1, n+1):
-        if is_hill_number(i):
-            count += 1
-    return count
+def get_council_members(residents):
+    council_members = []
+    for resident in residents:
+        club = resident["clubs"][0]
+        council_members.append({"name": resident["name"], "club": club})
+    return council_members
 

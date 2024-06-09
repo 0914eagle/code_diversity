@@ -1,33 +1,34 @@
 
-def solve(n, pairs):
-    # Initialize the food types for each pair
-    food_types = [[0, 0] for _ in range(n)]
+def get_max_people_on_buttons(n, buttons):
+    # Initialize a list to store the people standing on each button
+    people_on_buttons = [[] for _ in range(n)]
     
-    # Loop through each pair and assign food types
-    for i in range(n):
-        # If the boy is sitting on an even-numbered chair, give him Kooft
-        if pairs[i][0] % 2 == 0:
-            food_types[i][0] = 1
-        # If the boy is sitting on an odd-numbered chair, give him Zahre-mar
-        else:
-            food_types[i][0] = 2
+    # Initialize a set to store the people who have not been placed on a button yet
+    unplaced_people = set(range(n))
+    
+    # Initialize a variable to store the maximum number of people on buttons
+    max_people_on_buttons = 0
+    
+    # Loop until all people have been placed on buttons
+    while unplaced_people:
+        # Get the next person to be placed on a button
+        person = unplaced_people.pop()
         
-        # If the girl is sitting on an even-numbered chair, give her Zahre-mar
-        if pairs[i][1] % 2 == 0:
-            food_types[i][1] = 2
-        # If the girl is sitting on an odd-numbered chair, give her Kooft
-        else:
-            food_types[i][1] = 1
+        # Loop through the buttons to find an available button
+        for button in range(n):
+            if button not in people_on_buttons[button]:
+                # Place the person on the button
+                people_on_buttons[button].append(person)
+                
+                # Remove the person from the set of unplaced people
+                unplaced_people.remove(person)
+                
+                # Increment the maximum number of people on buttons
+                max_people_on_buttons += 1
+                
+                # Break out of the loop once the person has been placed
+                break
     
-    # Check if the conditions are met
-    for i in range(n):
-        # If the boy and girl have the same food type, return -1
-        if food_types[i][0] == food_types[i][1]:
-            return -1
-        # If any two guests sitting on consecutive chairs have the same food type, return -1
-        if (food_types[i][0] == food_types[i-1][1] and food_types[i][1] == food_types[i-1][0]) or (food_types[i][0] == food_types[i+1][1] and food_types[i][1] == food_types[i+1][0]):
-            return -1
-    
-    # If all conditions are met, return the food types
-    return food_types
+    # Return the maximum number of people on buttons and the people standing on each button
+    return max_people_on_buttons, people_on_buttons
 

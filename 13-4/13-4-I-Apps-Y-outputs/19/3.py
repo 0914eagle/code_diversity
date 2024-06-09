@@ -1,39 +1,55 @@
 
-def solve(n, memory):
-    # Initialize a dictionary to map each kid to its remembered kids
-    remembered = {i: set() for i in range(1, n + 1)}
-    for i, (a1, a2) in enumerate(memory, 1):
-        remembered[i].add(a1)
-        remembered[i].add(a2)
+import sys
+input = sys.stdin.read()
 
-    # Initialize a set to store the kids that have been placed in the circle
-    placed = set()
+# Function to calculate the Manhattan distance between two points
+def manhattan_distance(p1, p2):
+    return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
 
-    # Initialize the permutation of kids
-    permutation = [0] * (n + 1)
+# Function to find the nearest safe house to a given point
+def find_nearest_safe_house(point, safe_houses):
+    nearest_safe_house = None
+    min_distance = float('inf')
+    for safe_house in safe_houses:
+        distance = manhattan_distance(point, safe_house)
+        if distance < min_distance:
+            min_distance = distance
+            nearest_safe_house = safe_house
+    return nearest_safe_house
 
-    # Start placing kids in the circle
-    current_kid = 1
-    while len(placed) < n:
-        # Get the remembered kids for the current kid
-        remembered_kids = remembered[current_kid]
+# Function to find the maximum Manhattan distance between a spy and the nearest safe house
+def find_max_distance(spy, safe_houses):
+    nearest_safe_house = find_nearest_safe_house(spy, safe_houses)
+    return manhattan_distance(spy, nearest_safe_house)
 
-        # Find the first remembered kid that has not been placed yet
-        for kid in remembered_kids:
-            if kid not in placed:
-                break
-        else:
-            # If all remembered kids have been placed, start over from the beginning
-            current_kid = 1
-            continue
+# Main function
+def main():
+    # Read the input
+    width, height = map(int, input().split())
+    grid = []
+    for _ in range(height):
+        grid.append(list(input().strip()))
+    
+    # Find the spies and safe houses
+    spies = []
+    safe_houses = []
+    for i in range(height):
+        for j in range(width):
+            if grid[i][j] == 'S':
+                spies.append((i, j))
+            elif grid[i][j] == 'H':
+                safe_houses.append((i, j))
+    
+    # Find the maximum Manhattan distance between a spy and the nearest safe house
+    max_distance = 0
+    for spy in spies:
+        distance = find_max_distance(spy, safe_houses)
+        if distance > max_distance:
+            max_distance = distance
+    
+    # Print the result
+    print(max_distance)
 
-        # Place the current kid next to the remembered kid
-        permutation[current_kid] = kid
-        placed.add(current_kid)
-        placed.add(kid)
-
-        # Move on to the next kid
-        current_kid = kid
-
-    return permutation
+if __name__ == '__main__':
+    main()
 

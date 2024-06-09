@@ -1,9 +1,15 @@
 
-def solve(maps):
-    n, m = len(maps[0]), len(maps)
-    for i in range(n - m + 1):
-        for j in range(m - m + 1):
-            if all(maps[0][i:i+m] == maps[1][j:j+m] for maps in maps):
-                return i + 1, j + 1
-    return -1, -1
+vowels = set('aeiou')
+
+def can_transform(s, t):
+    if len(s) != len(t):
+        return "No"
+    
+    for i in range(len(s)):
+        if s[i] in vowels and t[i] not in vowels:
+            return "No"
+        if s[i] not in vowels and t[i] in vowels:
+            return "No"
+    
+    return "Yes"
 

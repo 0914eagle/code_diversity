@@ -1,28 +1,59 @@
 
-def get_min_phone_calls(detectors):
-    # Sort the detectors by their position
-    sorted_detectors = sorted(detectors, key=lambda x: x[0])
+def solve(n, g, d, e, links):
+    # Initialize the minimum UW distance
+    min_distance = float('inf')
+    # Loop through each possible pair of systems
+    for i in range(n):
+        for j in range(i+1, n):
+            # If the systems are of different types, continue
+            if d[i] != d[j]:
+                continue
+            # Calculate the UW distance for this pair of systems
+            distance = calculate_distance(g[i], g[j], links)
+            # Update the minimum UW distance
+            min_distance = min(min_distance, distance)
+    # Return the minimum UW distance
+    return min_distance
 
-    # Initialize the minimum number of phone calls to 0
-    min_calls = 0
+def calculate_distance(g1, g2, links):
+    # Calculate the capacitance, potential, and inductance
+    capacitance = g2 + g1
+    potential = g2 - g1
+    inductance = g2 * g1
+    # Calculate the UW distance
+    distance = abs(potential * (capacitance * capacitance - inductance))
+    # Return the UW distance
+    return distance
 
-    # Iterate through the detectors
-    for i in range(len(sorted_detectors)):
-        # Get the current detector's position and total number of calls
-        pos, calls = sorted_detectors[i]
+def main():
+    # Read the input
+    n, g, d, e, links = read_input()
+    # Solve the problem
+    min_distance = solve(n, g, d, e, links)
+    # Print the output
+    print(min_distance)
 
-        # If this is the first detector, set the minimum number of calls to its total number of calls
-        if i == 0:
-            min_calls = calls
+def read_input():
+    # Read the number of star systems
+    n = int(input())
+    # Initialize the gravity values and types
+    g = [0] * n
+    d = [0] * n
+    # Loop through each star system
+    for i in range(n):
+        # Read the gravity value and type
+        g[i], d[i] = map(int, input().split())
+    # Read the number of direct links
+    e = int(input())
+    # Initialize the links
+    links = []
+    # Loop through each direct link
+    for i in range(e):
+        # Read the two systems that are directly linked
+        links.append(list(map(int, input().split())))
+    # Return the input
+    return n, g, d, e, links
 
-        # If this is not the first detector, compare its total number of calls to the minimum number of calls so far
-        else:
-            # Get the previous detector's position and total number of calls
-            prev_pos, prev_calls = sorted_detectors[i - 1]
-
-            # If the current detector is between the previous detector and the current detector, update the minimum number of calls
-            if prev_pos < pos <= prev_pos + prev_calls:
-                min_calls = min(min_calls, calls + prev_calls)
-
-    return min_calls
+if __name__ == '__main__':
+    main()
 

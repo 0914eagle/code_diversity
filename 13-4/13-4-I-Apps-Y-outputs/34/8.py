@@ -1,5 +1,26 @@
 
-def is_triangle(sticks):
-    sticks.sort()
-    return sticks[0] + sticks[1] > sticks[2]
+def get_signatures(K, desk_numbers):
+    # Initialize a list to store the signatures
+    signatures = []
+
+    # Loop through the desk numbers
+    for desk_number in desk_numbers:
+        # If the desk number is not in the signatures list, add it
+        if desk_number not in signatures:
+            signatures.append(desk_number)
+
+    # Sort the signatures list in ascending order
+    signatures.sort()
+
+    # Initialize a counter for the number of passes
+    passes = 0
+
+    # Loop through the signatures list
+    for i in range(len(signatures)):
+        # If the current desk number is not the next desk number in the list, increment the passes counter
+        if signatures[i] != i + 1:
+            passes += 1
+
+    # Return the number of passes
+    return passes
 

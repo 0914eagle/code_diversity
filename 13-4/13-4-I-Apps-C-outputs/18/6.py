@@ -1,29 +1,45 @@
 
-def find_matches(repository, code_snippet):
-    # Initialize a dictionary to store the matches
-    matches = {}
+import sys
+import math
 
-    # Iterate over the repository fragments
-    for fragment in repository:
-        # Initialize a counter for the number of consecutive matching lines
-        count = 0
+def get_danger_level(chambers, tunnels):
+    # Initialize the danger level of each chamber as 0
+    danger_level = [0] * len(chambers)
 
-        # Iterate over the lines of the fragment and the code snippet
-        for i in range(len(fragment)):
-            # Check if the line is not empty or contains only spaces
-            if fragment[i].strip() and code_snippet[i].strip():
-                # Check if the line is a match
-                if fragment[i].strip() == code_snippet[i].strip():
-                    # Increment the counter
-                    count += 1
-                # If the line is not a match, break the loop
-                else:
-                    break
+    # Loop through each tunnel
+    for tunnel in tunnels:
+        # Get the length of the tunnel
+        length = tunnel[2]
 
-        # If at least one line matched, add the fragment to the matches dictionary
-        if count > 0:
-            matches[count] = matches.get(count, []) + [fragment]
+        # Get the start and end chambers of the tunnel
+        start_chamber = tunnel[0]
+        end_chamber = tunnel[1]
 
-    # Return the matches dictionary
-    return matches
+        # Update the danger level of the start chamber
+        danger_level[start_chamber - 1] += length
+
+        # Update the danger level of the end chamber
+        danger_level[end_chamber - 1] += length
+
+    return danger_level
+
+def main():
+    # Read the number of chambers and tunnels
+    num_chambers, num_tunnels = map(int, input().split())
+
+    # Read the tunnels
+    tunnels = []
+    for _ in range(num_tunnels):
+        tunnel = list(map(int, input().split()))
+        tunnels.append(tunnel)
+
+    # Get the danger level of each chamber
+    danger_level = get_danger_level(range(1, num_chambers + 1), tunnels)
+
+    # Print the danger level of each chamber
+    for level in danger_level:
+        print(level % (10**9 + 7))
+
+if __name__ == "__main__":
+    main()
 

@@ -1,11 +1,18 @@
 
-def solve(s):
-    # Find the index of the first occurrence of 'A'
-    start_index = s.find('A')
+import math
+
+def get_time_and_c(n, p, s, v):
+    # Calculate the time it takes for the algorithm to run with the optimal parameter c
+    c = (math.log(n) / (s / v)) ** (1 / (2 * math.sqrt(2)))
+    time = n * (math.log(n) ** (c * math.sqrt(2))) / (p * 1000000000)
     
-    # Find the index of the last occurrence of 'Z'
-    end_index = s.rfind('Z')
+    # Calculate the time it takes for Miroslava to distribute the keys
+    distribute_time = s / v
     
-    # Return the length of the substring
-    return end_index - start_index + 1
+    # Return the total time and the value of c
+    return time + distribute_time, c
+
+n, p, s, v = map(float, input().split())
+time, c = get_time_and_c(n, p, s, v)
+print(f"{time:.6f} {c:.6f}")
 

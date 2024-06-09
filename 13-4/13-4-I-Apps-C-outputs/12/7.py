@@ -1,19 +1,16 @@
 
-def count_polygons(R, C):
-    # Initialize a list to store the number of polygons for each row
-    num_polygons = [0] * R
-    num_polygons[0] = 1
-    
-    # Iterate over the rows
-    for i in range(1, R):
-        # Initialize the number of polygons for the current row
-        num_polygons[i] = 1
-        
-        # Iterate over the previous rows
-        for j in range(i):
-            # Calculate the number of polygons that can be formed by combining the current row with the previous row
-            num_polygons[i] += num_polygons[j] * (C - j)
-    
-    # Return the total number of polygons
-    return sum(num_polygons)
+def max_points(a):
+    # Sort the list in ascending order
+    a.sort()
+    # Initialize variables to keep track of points and current element
+    points, current = 0, 1
+    # Iterate through the list
+    for i in range(len(a)):
+        # If the current element is equal to the previous element, skip it
+        if a[i] == current:
+            continue
+        # Otherwise, add the points for the current element and update the current element
+        points += a[i]
+        current = a[i]
+    return points
 

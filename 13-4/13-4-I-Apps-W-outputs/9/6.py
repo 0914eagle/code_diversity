@@ -1,16 +1,10 @@
 
-def solve(n):
-    if n == 1:
-        return 0
-    if n == 2:
-        return 1
-    if n == 3:
-        return 1
-    if n == 4:
-        return 4
-    if n == 5:
-        return 11
-    if n == 6:
-        return 26
-    return 70
+n, m = map(int, input().split())
+name = input()
+
+for i in range(m):
+    x, y = input().split()
+    name = name.replace(x, y).replace(y, x)
+
+print(name)
 

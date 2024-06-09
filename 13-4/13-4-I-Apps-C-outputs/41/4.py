@@ -1,20 +1,27 @@
 
-def max_sum_after_k_swap(arr, k):
-    n = len(arr)
-    # Sort the array to get the maximum sum
-    arr.sort()
-    # Initialize the maximum sum and the current sum
-    max_sum = 0
-    curr_sum = 0
-    # Loop through the array and calculate the current sum
-    for i in range(n):
-        curr_sum += arr[i]
-        # If the current sum is greater than the maximum sum, update the maximum sum
-        if curr_sum > max_sum:
-            max_sum = curr_sum
-        # If the current sum is less than 0, update the current sum to 0
-        if curr_sum < 0:
-            curr_sum = 0
-    # Return the maximum sum
-    return max_sum
+def solve(n, k, camera_ranges):
+    # Initialize a set to store the covered walls
+    covered_walls = set()
+    # Initialize a variable to store the number of cameras
+    num_cameras = 0
+    # Loop through each camera range
+    for a, b in camera_ranges:
+        # If the camera range is valid
+        if a <= b:
+            # Add the walls covered by the camera to the set
+            covered_walls |= set(range(a, b + 1))
+        # If the camera range is invalid
+        else:
+            # Add the walls covered by the camera to the set
+            covered_walls |= set(range(a, n + 1)) | set(range(1, b + 1))
+        # Increment the number of cameras
+        num_cameras += 1
+    # If all walls are covered
+    if len(covered_walls) == n:
+        # Return the number of cameras
+        return num_cameras
+    # If not all walls are covered
+    else:
+        # Return the string "impossible"
+        return "impossible"
 

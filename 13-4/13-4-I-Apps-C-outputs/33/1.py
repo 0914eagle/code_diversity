@@ -1,23 +1,28 @@
 
-def solve(n, a, b, k, s):
-    # Convert the sequence to a list of integers
-    s = [1 if x == "+" else -1 for x in s]
+def solve(n, m, a, b, x):
+    # Initialize a 2D array to store the product of a and b
+    c = [[0] * m for _ in range(n)]
+    for i in range(n):
+        for j in range(m):
+            c[i][j] = a[i] * b[j]
     
-    # Initialize the sum to 0
-    sum = 0
+    # Initialize a variable to store the maximum area
+    max_area = 0
     
-    # Iterate over the sequence
-    for i in range(k):
-        # Calculate the current term
-        term = s[i] * a ** (n - i) * b ** i
-        
-        # Add the term to the sum
-        sum += term
-        
-        # If the sum exceeds 10^9 + 9, subtract 10^9 + 9 to keep it within the desired range
-        if sum > 10**9 + 9:
-            sum -= 10**9 + 9
+    # Iterate over all possible starting points
+    for i in range(n):
+        for j in range(m):
+            # Initialize a variable to store the current area
+            current_area = 0
+            # Iterate over all possible sizes
+            for k in range(n-i+1):
+                for l in range(m-j+1):
+                    # Calculate the current sum
+                    current_sum = sum(sum(c[i+k-1][j+l-1:j+l]) for i in range(k))
+                    # If the current sum is less than or equal to x, update the maximum area
+                    if current_sum <= x:
+                        max_area = max(max_area, k*l)
     
-    # Return the sum modulo 10^9 + 9
-    return sum % (10**9 + 9)
+    # Return the maximum area
+    return max_area
 

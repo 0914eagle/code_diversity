@@ -1,17 +1,27 @@
 
-def solve(n, d, e):
-    # Initialize the minimum number of rubles to n
-    min_rubles = n
-    # Iterate over the possible number of dollar bills
-    for i in range(0, n//d+1):
-        # Calculate the number of rubles left after buying i dollar bills
-        rubles_left = n - i*d
-        # If the number of rubles left is divisible by e, we can buy some euro bills
-        if rubles_left % e == 0:
-            # Calculate the number of euro bills that can be bought
-            num_euro = rubles_left // e
-            # If the number of euro bills is less than the minimum, update the minimum
-            if num_euro < min_rubles:
-                min_rubles = num_euro
-    return min_rubles
+def solve(n, d, schedule, m, fares):
+    # Initialize a dictionary to store the minimum cost to reach each city
+    min_cost = {city: float('inf') for city in range(1, n + 1)}
+    min_cost[schedule[0]] = 0
+
+    # Loop through each city in the schedule
+    for i in range(d):
+        current_city = schedule[i]
+        next_city = schedule[i + 1]
+
+        # Loop through each airfare
+        for fare in fares:
+            s, d, t, p = fare
+
+            # Check if the airfare is valid for the current city
+            if s == current_city and d == next_city:
+                # If the airfare is a one-way ticket, add the cost to the minimum cost
+                if t == 'O':
+                    min_cost[next_city] = min(min_cost[next_city], min_cost[current_city] + p)
+                # If the airfare is a round-trip ticket, add the cost to the minimum cost if it's the first segment of the ticket
+                elif t == 'R' and min_cost[current_city] + p < min_cost[next_city]:
+                    min_cost[next_city] = min_cost[current_city] + p
+
+    # Return the minimum cost to reach the last city in the schedule
+    return min_cost[schedule[-1]]
 

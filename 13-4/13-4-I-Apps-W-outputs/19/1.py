@@ -1,25 +1,40 @@
 
-def solve(n, d, a, m):
-    # Calculate the total cost of using all the hooks
-    total_cost = sum(a)
-
-    # Calculate the maximum number of guests that can use the hooks without paying a fine
-    max_guests = total_cost // d
-
-    # If the number of guests is less than or equal to the maximum number of guests that can use the hooks without paying a fine, then the answer is the total cost
-    if m <= max_guests:
-        return total_cost
-
-    # Otherwise, calculate the number of guests that can use the hooks without paying a fine and the number of guests that will have to pay a fine
-    num_guests_no_fine = max_guests
-    num_guests_fine = m - num_guests_no_fine
-
-    # Calculate the total cost of using the hooks without paying a fine
-    total_cost_no_fine = num_guests_no_fine * total_cost // m
-
-    # Calculate the total cost of paying the fine
-    total_cost_fine = num_guests_fine * d
-
-    # Return the difference between the total cost of using the hooks without paying a fine and the total cost of paying the fine
-    return total_cost_no_fine - total_cost_fine
+def solve(direction, typed_sequence):
+    keyboard = {
+        'q': 'q',
+        'w': 'w',
+        'e': 'e',
+        'r': 'r',
+        't': 't',
+        'y': 'y',
+        'u': 'u',
+        'i': 'i',
+        'o': 'o',
+        'p': 'p',
+        'a': 'a',
+        's': 's',
+        'd': 'd',
+        'f': 'f',
+        'g': 'g',
+        'h': 'h',
+        'j': 'j',
+        'k': 'k',
+        'l': 'l',
+        ';': ';',
+        'z': 'z',
+        'x': 'x',
+        'c': 'c',
+        'v': 'v',
+        'b': 'b',
+        'n': 'n',
+        'm': 'm',
+        ',': ',',
+        '.': '.',
+        '/': '/'
+    }
+    
+    if direction == 'L':
+        return ''.join([keyboard.get(typed_sequence[i-1], '') for i in range(1, len(typed_sequence)+1)])
+    else:
+        return ''.join([keyboard.get(typed_sequence[i+1], '') for i in range(len(typed_sequence))])
 

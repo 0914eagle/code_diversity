@@ -1,42 +1,26 @@
 
-def get_max_score(a, b):
-    # Initialize the score and the deck
-    score = 0
-    deck = []
+def decipher_sentence(s, n, dictionary):
+    # Initialize a set to store the unique words
+    unique_words = set()
 
-    # Add "o" cards to the deck
-    for i in range(a):
-        deck.append("o")
+    # Iterate through the dictionary and add each word to the set
+    for word in dictionary:
+        unique_words.add(word)
 
-    # Add "x" cards to the deck
-    for i in range(b):
-        deck.append("x")
+    # Initialize a list to store the deciphered sentence
+    deciphered_sentence = []
 
-    # Iterate through the deck and calculate the score
-    for i in range(len(deck)):
-        # If the current card is "o", calculate the score increase
-        if deck[i] == "o":
-            # Calculate the length of the current block of "o"s
-            length = 1
-            for j in range(i+1, len(deck)):
-                if deck[j] == "o":
-                    length += 1
-                else:
-                    break
-            # Update the score
-            score += length ** 2
-        # If the current card is "x", calculate the score decrease
-        elif deck[i] == "x":
-            # Calculate the length of the current block of "x"s
-            length = 1
-            for j in range(i+1, len(deck)):
-                if deck[j] == "x":
-                    length += 1
-                else:
-                    break
-            # Update the score
-            score -= length ** 2
+    # Iterate through the input sentence and check if each word is in the dictionary
+    for word in s.split():
+        if word in unique_words:
+            deciphered_sentence.append(word)
+        else:
+            return "impossible"
 
-    # Return the maximum score and the deck
-    return score, "".join(deck)
+    # If all words are in the dictionary, return the deciphered sentence
+    if len(deciphered_sentence) == len(s.split()):
+        return " ".join(deciphered_sentence)
+
+    # If not all words are in the dictionary, return "ambiguous"
+    return "ambiguous"
 

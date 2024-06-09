@@ -1,35 +1,29 @@
 
-def solve(n, memory):
-    # Initialize a dictionary to map each kid to their remembered kids
-    remembered = {i: set() for i in range(1, n + 1)}
-    for i, (a1, a2) in enumerate(memory, 1):
-        remembered[i].add(a1)
-        remembered[i].add(a2)
+def find_max_distance(grid):
+    # Initialize variables
+    max_distance = 0
+    safe_houses = []
 
-    # Initialize a set to keep track of the kids that have been placed in the circle
-    placed = set()
+    # Find all safe houses in the grid
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j] == "H":
+                safe_houses.append((i, j))
 
-    # Start placing kids in the circle, starting with the kid that remembered the least number of other kids
-    while len(placed) < n:
-        # Find the kid that remembered the least number of other kids and has not been placed yet
-        current_kid = min(remembered, key=lambda x: len(remembered[x]) - len(placed))
-        while current_kid in placed:
-            current_kid = min(remembered, key=lambda x: len(remembered[x]) - len(placed))
+    # Find the nearest safe house for each spy
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j] == "S":
+                # Find the distance to the nearest safe house
+                min_distance = float("inf")
+                for safe_house in safe_houses:
+                    distance = abs(i - safe_house[0]) + abs(j - safe_house[1])
+                    if distance < min_distance:
+                        min_distance = distance
 
-        # Place the current kid in the circle
-        placed.add(current_kid)
+                # Update the maximum distance
+                if min_distance > max_distance:
+                    max_distance = min_distance
 
-        # Remove the current kid from the dictionary of remembered kids
-        del remembered[current_kid]
-
-        # Add the current kid to the set of placed kids
-        placed.add(current_kid)
-
-        # Update the dictionary of remembered kids by removing the current kid and adding their remembered kids
-        for kid in remembered:
-            if current_kid in remembered[kid]:
-                remembered[kid].remove(current_kid)
-
-    # Return the permutation of kids in the circle
-    return list(placed)
+    return max_distance
 

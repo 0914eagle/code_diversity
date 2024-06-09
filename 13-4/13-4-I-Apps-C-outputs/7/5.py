@@ -1,10 +1,21 @@
 
-def get_covered_length(buildings, D):
-    covered_length = 0
-    for building in buildings:
-        if building[0] == 1:  # there is a transmitter on top of the building
-            covered_length += building[2]  # add the height of the building to the covered length
-        else:  # there is no transmitter on top of the building
-            covered_length = max(covered_length, building[2])  # update the covered length with the maximum of the current covered length and the height of the building
-    return covered_length
+def solve(N, A, B):
+    # Initialize a list to store the permutation
+    permutation = list(range(1, N+1))
+    
+    # Iterate through the list and find the indices where A and B appear
+    indices_A = [i for i, x in enumerate(permutation) if x == A]
+    indices_B = [i for i, x in enumerate(permutation) if x == B]
+    
+    # If there are no indices where A and B appear, return -1
+    if not indices_A or not indices_B:
+        return -1
+    
+    # Swap the values at the indices where A and B appear to get the required permutation
+    for i in indices_A:
+        permutation[i] = B
+    for i in indices_B:
+        permutation[i] = A
+    
+    return permutation
 

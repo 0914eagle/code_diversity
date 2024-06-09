@@ -1,17 +1,16 @@
 
-def restore_sequence(f, b):
-    n = len(f)
-    m = len(b)
-    if n != m:
-        return "Impossible"
-    count = [0] * (n + 1)
-    for i in range(m):
-        count[b[i]] += 1
-    for i in range(n):
-        if count[i] != 1:
-            return "Ambiguity"
-    a = [""] * m
-    for i in range(m):
-        a[i] = str(f.index(b[i]) + 1)
-    return "Possible\n" + " ".join(a)
+n = int(input())
+
+# Initialize a 2D array with ones
+a = [[1] * n for _ in range(n)]
+
+# Fill in the remaining elements using the formula
+for i in range(1, n):
+    for j in range(1, n):
+        a[i][j] = a[i - 1][j] + a[i][j - 1]
+
+# Find the maximum element in the table
+max_value = max(max(row) for row in a)
+
+print(max_value)
 

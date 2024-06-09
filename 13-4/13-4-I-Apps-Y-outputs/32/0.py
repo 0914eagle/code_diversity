@@ -1,10 +1,17 @@
 
-def get_non_similar_keywords(keywords):
-    non_similar_keywords = set()
-    for i in range(len(keywords)):
-        for j in range(i+1, len(keywords)):
-            if keywords[i].lower().replace("-", " ") == keywords[j].lower().replace("-", " "):
-                continue
-            non_similar_keywords.add(keywords[i])
-    return len(non_similar_keywords)
+def get_mex(arr):
+    arr = set(arr)
+    for i in range(len(arr)):
+        if i not in arr:
+            return i
+    return len(arr) + 1
+
+
+def solve(q, x, queries):
+    arr = []
+    result = []
+    for query in queries:
+        arr.append(query)
+        result.append(get_mex(arr))
+    return result
 

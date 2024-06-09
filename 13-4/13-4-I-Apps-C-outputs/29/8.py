@@ -1,41 +1,29 @@
 
-def get_min_hours(n, m, railways):
-    # Initialize a graph with the given railways
-    graph = {i: set() for i in range(1, n + 1)}
-    for u, v in railways:
-        graph[u].add(v)
-        graph[v].add(u)
+import itertools
 
-    # Find all possible routes for the train and the bus
-    train_routes = []
-    bus_routes = []
-    for i in range(1, n + 1):
-        for route in find_routes(graph, i, n):
-            if route not in train_routes and route not in bus_routes:
-                train_routes.append(route)
-                bus_routes.append(route)
+def paint_dominoes(N, S1, S2):
+    # Initialize a dictionary to store the number of ways to paint each domino
+    num_ways = {}
 
-    # Find the maximum arrival time for the bus and the train
-    max_bus_arrival = 0
-    max_train_arrival = 0
-    for route in bus_routes:
-        max_bus_arrival = max(max_bus_arrival, len(route) - 1)
-    for route in train_routes:
-        max_train_arrival = max(max_train_arrival, len(route) - 1)
+    # Iterate over each domino in S1 and S2
+    for i in range(N):
+        for j in range(i+1, N):
+            # Get the colors of the two dominoes
+            color1 = S1[i]
+            color2 = S2[j]
 
-    # Return the maximum of the two arrival times
-    return max(max_bus_arrival, max_train_arrival)
+            # If the dominoes are not adjacent, they can be painted with any color
+            if i != j-1 and i != j+1:
+                num_ways[(color1, color2)] = 3
+            # If the dominoes are adjacent, they must be painted with different colors
+            else:
+                num_ways[(color1, color2)] = 2
 
-def find_routes(graph, start, end):
-    # Base case: if we reach the end node, return the route
-    if start == end:
-        return [[start]]
+    # Calculate the total number of ways to paint the dominoes
+    total_ways = 1
+    for key, value in num_ways.items():
+        total_ways *= value
 
-    # Initialize an empty route and explore all neighbors
-    routes = []
-    for neighbor in graph[start]:
-        for route in find_routes(graph, neighbor, end):
-            routes.append([start] + route)
-
-    return routes
+    # Return the total number of ways to paint the dominoes, modulo 1000000007
+    return total_ways % 1000000007
 

@@ -1,32 +1,32 @@
 
-def largest_swap_free_set(words):
-    # Initialize a set to store the swap-free set
-    swap_free_set = set()
-    # Iterate over the words
-    for word in words:
-        # Check if the word is already in the swap-free set
-        if word not in swap_free_set:
-            # If not, add it to the set and check if it can be transformed into any other word in the set by swapping a single pair of letters
-            swap_free_set.add(word)
-            for other_word in swap_free_set:
-                if can_swap_to_form_other_word(word, other_word):
-                    # If it can be transformed, remove the word from the set
-                    swap_free_set.remove(word)
-                    break
-    # Return the size of the swap-free set
-    return len(swap_free_set)
+def swap_elements(arr):
+    n = len(arr)
+    count = 0
+    for i in range(n):
+        for j in range(i+1, n):
+            if arr[i] > arr[j]:
+                arr[i], arr[j] = arr[j], arr[i]
+                count += 1
+    return count
 
-def can_swap_to_form_other_word(word, other_word):
-    # If the words have different lengths, they cannot be transformed into each other by swapping letters
-    if len(word) != len(other_word):
-        return False
-    # Iterate over the letters of the words
-    for i in range(len(word)):
-        # If the letters at the current position are different, check if swapping them would form the other word
-        if word[i] != other_word[i]:
-            # If swapping the letters forms the other word, return True
-            if word[:i] + other_word[i] + word[i + 1:] == other_word:
-                return True
-    # If no swapping of letters forms the other word, return False
-    return False
+def find_min_swaps(arr):
+    n = len(arr)
+    min_count = float('inf')
+    min_pairs = []
+    for i in range(n):
+        for j in range(i+1, n):
+            tmp = arr[:]
+            tmp[i], tmp[j] = tmp[j], tmp[i]
+            count = swap_elements(tmp)
+            if count < min_count:
+                min_count = count
+                min_pairs = [(i, j)]
+            elif count == min_count:
+                min_pairs.append((i, j))
+    return min_count, len(min_pairs)
+
+n = int(input())
+arr = list(map(int, input().split()))
+count, pairs = find_min_swaps(arr)
+print(count, pairs)
 

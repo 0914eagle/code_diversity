@@ -1,23 +1,32 @@
 
-def solve(n, seq):
-    # Initialize variables
-    opening_brackets = 0
-    closing_brackets = 0
-    time = 0
+def get_badge_numbers(N, L, B, S, D, locks):
+    # Initialize a set to store the badge numbers that can pass from S to D
+    badge_numbers = set()
 
-    # Iterate through the sequence
-    for i in range(n):
-        # If the current character is an opening bracket, increment the opening bracket count
-        if seq[i] == "(":
-            opening_brackets += 1
-        # If the current character is a closing bracket, increment the closing bracket count
-        elif seq[i] == ")":
-            closing_brackets += 1
-    
-    # If the number of opening and closing brackets is not equal, return -1
-    if opening_brackets != closing_brackets:
-        return -1
-    
-    # If the number of opening and closing brackets is equal, return the time spent
-    return time
+    # Iterate through each lock
+    for lock in locks:
+        # Extract the information from the lock
+        a, b, x, y = lock
+
+        # Check if the lock is between the starting and destination rooms
+        if a == S and b == D:
+            # Add the badge numbers that can pass through the lock to the set
+            badge_numbers |= set(range(x, y + 1))
+
+    # Return the number of badge numbers that can pass from S to D
+    return len(badge_numbers)
+
+# Main function
+if __name__ == "__main__":
+    # Read the input
+    N, L, B, S, D = map(int, input().split())
+    locks = []
+    for _ in range(L):
+        locks.append(list(map(int, input().split())))
+
+    # Call the function to get the number of badge numbers that can pass from S to D
+    result = get_badge_numbers(N, L, B, S, D, locks)
+
+    # Print the result
+    print(result)
 

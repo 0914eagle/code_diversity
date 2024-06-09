@@ -1,18 +1,34 @@
 
-def max_value_jewels(jewels, knapsack_sizes):
-    # Initialize a dictionary to store the maximum value of jewels for each knapsack size
-    max_values = {i: 0 for i in knapsack_sizes}
+def get_installation_order(packages):
+    # Initialize a dictionary to store the dependencies of each package
+    dependencies = {}
 
-    # Sort the jewels by their value in descending order
-    jewels.sort(key=lambda x: x[1], reverse=True)
+    # Iterate over the list of packages
+    for package in packages:
+        # Split the package into its name and dependencies
+        name, deps = package.split(" ")
 
-    # Iterate through the jewels and add them to the knapsack of the appropriate size
-    for jewel in jewels:
-        size, value = jewel
-        for i in range(len(knapsack_sizes)):
-            if size <= knapsack_sizes[i]:
-                max_values[knapsack_sizes[i]] += value
+        # Add the package to the dictionary with its dependencies
+        dependencies[name] = deps.split(", ")
+
+    # Initialize a list to store the ordered packages
+    ordered_packages = []
+
+    # Iterate until all packages are installed
+    while dependencies:
+        # Find a package that has no dependencies
+        for package, deps in dependencies.items():
+            # If the package has no dependencies, add it to the ordered packages list
+            if not deps:
+                ordered_packages.append(package)
                 break
 
-    return list(max_values.values())
+        # Remove the package and its dependencies from the dictionary
+        dependencies.pop(package)
+
+        # Update the dependencies of the remaining packages
+        for package, deps in dependencies.items():
+            dependencies[package] = [dep for dep in deps if dep not in ordered_packages]
+
+    return ordered_packages
 

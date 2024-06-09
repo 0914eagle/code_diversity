@@ -1,18 +1,15 @@
 
-def solve(a1, b1, a2, b2):
-    # Calculate the number of possible outcomes for each die
-    num_outcomes_die1 = b1 - a1 + 1
-    num_outcomes_die2 = b2 - a2 + 1
-    
-    # Calculate the number of possible outcomes for each player
-    num_outcomes_player1 = num_outcomes_die1 * num_outcomes_die2
-    num_outcomes_player2 = num_outcomes_die1 * num_outcomes_die2
-    
-    # Check if one player has a higher probability of winning
-    if num_outcomes_player1 > num_outcomes_player2:
-        return "Gunnar"
-    elif num_outcomes_player1 < num_outcomes_player2:
-        return "Emma"
-    else:
-        return "Tie"
+def solve(l, n):
+    # Initialize the number of rolls as 1
+    k = 1
+    # Loop until the number of rolls is greater than or equal to the input l
+    while l > 0:
+        # Calculate the remaining length of the roll
+        l = l - n
+        # If the remaining length is negative, increase the number of rolls
+        if l < 0:
+            k += 1
+            # Reset the remaining length to the input l
+            l = l + n
+    return k
 

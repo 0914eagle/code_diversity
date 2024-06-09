@@ -1,16 +1,18 @@
 
-def find_overlapping_section(map1, map2):
-    # Find the length of the shortest map
-    shortest_map_length = min(len(map1), len(map2))
-    
-    # Iterate through the shortest map and find the first row that is the same in both maps
-    for i in range(shortest_map_length):
-        if map1[i] == map2[i]:
-            # Find the column in the second map that matches the first row in the first map
-            for j in range(shortest_map_length):
-                if map1[i][j] == map2[0][j]:
-                    return i + 1, j + 1
-    
-    # If no matching row is found, return -1, -1
-    return -1, -1
+def can_transform(s, t):
+    vowels = set("aeiou")
+    consonants = set("abcdefghijklmnopqrstuvwxyz") - vowels
+    s_vowels = [c for c in s if c in vowels]
+    s_consonants = [c for c in s if c in consonants]
+    t_vowels = [c for c in t if c in vowels]
+    t_consonants = [c for c in t if c in consonants]
+    if len(s_vowels) != len(t_vowels) or len(s_consonants) != len(t_consonants):
+        return "No"
+    for i in range(len(s_vowels)):
+        if s_vowels[i] not in t_vowels:
+            return "No"
+    for i in range(len(s_consonants)):
+        if s_consonants[i] not in t_consonants:
+            return "No"
+    return "Yes"
 

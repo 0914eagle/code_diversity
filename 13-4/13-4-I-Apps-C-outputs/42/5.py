@@ -1,24 +1,27 @@
 
-def solve(h, m, s, t1, t2):
-    # Convert the time to a single number
-    time1 = h * 3600 + m * 60 + s
-    time2 = t1 * 3600 + m * 60 + s
+def get_min_path_length(n, k):
+    # Initialize a dictionary to store the shortest distance from each fragment to the assembly node
+    distances = {}
     
-    # Check if the times are the same
-    if time1 == time2:
-        return "NO"
+    # Initialize the assembly node with the smallest possible distance (0)
+    distances[1] = 0
     
-    # Check if Misha can move forward or backward
-    if time1 < time2:
-        direction = 1
-    else:
-        direction = -1
+    # Loop through each fragment
+    for i in range(n):
+        # Get the current fragment's location
+        current_location = k[i]
+        
+        # Loop through all possible locations that the fragment could be at
+        for location in range(1, current_location + 1):
+            # If the fragment is not already at the assembly node
+            if location != 1:
+                # Get the distance from the current location to the assembly node
+                distance = abs(location - 1)
+                
+                # If the distance is shorter than the current shortest distance, update the dictionary
+                if distance < distances.get(location, float('inf')):
+                    distances[location] = distance
     
-    # Check if Misha can move along the clock face
-    while time1 != time2:
-        time1 += direction * 60
-        if time1 == 0 or time1 == 24 * 3600:
-            return "NO"
-    
-    return "YES"
+    # Return the sum of the shortest distances from each fragment to the assembly node
+    return sum(distances.values())
 

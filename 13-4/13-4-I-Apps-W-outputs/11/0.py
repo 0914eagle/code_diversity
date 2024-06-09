@@ -1,10 +1,11 @@
 
-def is_telephone_number(s):
-    if len(s) != 11:
-        return "NO"
-    if s[0] != "8":
-        return "NO"
-    if any(s[i] != "8" for i in range(2, 10, 2)):
-        return "NO"
-    return "YES"
+def get_largest_xor_sum(n, k):
+    candies = list(range(1, n+1))
+    return max(xor_sum(candies[i:i+k]) for i in range(n-k+1))
+
+def xor_sum(nums):
+    result = 0
+    for num in nums:
+        result ^= num
+    return result
 

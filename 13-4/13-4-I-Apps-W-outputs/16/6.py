@@ -1,10 +1,26 @@
 
-def longest_subsequence(b):
-    n = len(b)
-    dp = [1] * n
-    for i in range(1, n):
-        for j in range(i):
-            if b[i] - b[j] == b[j] - b[j-1]:
-                dp[i] = max(dp[i], dp[j] + 1)
-    return max(dp)
+def get_min_pebbles(n):
+    # Initialize variables
+    mirror_game = True
+    pebbles_taken = 0
+    pebbles_remaining = n
+
+    # While there are still pebbles remaining in the heap
+    while pebbles_remaining > 0:
+        # If it is Mirko's turn
+        if mirror_game:
+            # He can take any number of pebbles between 1 and the number of pebbles remaining in the heap, inclusive
+            pebbles_taken = random.randint(1, pebbles_remaining)
+            pebbles_remaining -= pebbles_taken
+        # If it is Slavko's turn
+        else:
+            # He can take at most double the number of pebbles taken by Mirko during the previous turn
+            pebbles_taken = 2 * pebbles_taken
+            pebbles_remaining -= pebbles_taken
+
+        # Flip the mirror game
+        mirror_game = not mirror_game
+
+    # Return the minimum number of pebbles that Mirko must take during his first turn
+    return pebbles_taken
 

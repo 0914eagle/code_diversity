@@ -1,30 +1,28 @@
 
-def is_possible_to_choose_three_musketeers(n, m, pairs):
-    # Initialize a list to store the recognition of each warrior
-    recognitions = [0] * (n + 1)
+import sys
 
-    # Loop through each pair of warriors knowing each other
-    for i in range(m):
-        # Get the indices of the two warriors
-        a, b = pairs[i]
+N, K = map(int, input().split())
+A = list(map(int, input().split()))
 
-        # Increment the recognition of both warriors by 1
-        recognitions[a] += 1
-        recognitions[b] += 1
+def count_subsequences(A, K):
+    # Initialize the number of contiguous subsequences to 0
+    count = 0
+    
+    # Iterate over the elements of A
+    for i in range(len(A)):
+        # Initialize the sum of the current subsequence to 0
+        sum = 0
+        
+        # Iterate over the elements of A starting from the current element
+        for j in range(i, len(A)):
+            # Add the current element to the sum
+            sum += A[j]
+            
+            # If the sum is greater than or equal to K, increment the count
+            if sum >= K:
+                count += 1
+    
+    return count
 
-    # Find the indices of the three musketeers with the minimum recognition sum
-    min_sum = float("inf")
-    min_indices = []
-    for i in range(1, n + 1):
-        for j in range(i + 1, n + 1):
-            for k in range(j + 1, n + 1):
-                if recognitions[i] + recognitions[j] + recognitions[k] < min_sum:
-                    min_sum = recognitions[i] + recognitions[j] + recognitions[k]
-                    min_indices = [i, j, k]
-
-    # Check if it is possible to choose three musketeers with the minimum recognition sum
-    if min_sum == float("inf"):
-        return -1
-    else:
-        return min_sum
+print(count_subsequences(A, K))
 

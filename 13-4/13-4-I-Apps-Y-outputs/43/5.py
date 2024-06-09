@@ -1,12 +1,15 @@
 
-def get_points(n, b, cards):
-    points = 0
-    for i in range(n):
-        hand = cards[i*4:(i+1)*4]
-        for card in hand:
-            if card[1] == b:
-                points += 11
-            else:
-                points += 10
-    return points
+def is_multigram(word):
+    if len(word) <= 2:
+        return -1
+    
+    words = []
+    for i in range(1, len(word) // 2 + 1):
+        if word[:i] == word[len(word) - i:]:
+            words.append(word[:i])
+    
+    if len(words) == 0:
+        return -1
+    
+    return min(words, key=len)
 

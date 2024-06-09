@@ -1,49 +1,38 @@
 
-def solve_mancunia(n, e, edges):
-    # Check if the input data is valid
-    if n < 1 or n > 100000:
-        return "NO"
-    if e < 1 or e > 200000:
-        return "NO"
-    for edge in edges:
-        if len(edge) != 2:
-            return "NO"
-        a, b = edge
-        if a < 1 or a > n or b < 1 or b > n:
-            return "NO"
-    
-    # Create a graph to represent the road network
-    graph = [[] for _ in range(n + 1)]
-    for a, b in edges:
-        graph[a].append(b)
-    
-    # Check if the graph is connected
-    visited = [False] * (n + 1)
-    queue = [1]
-    while queue:
-        node = queue.pop(0)
-        if not visited[node]:
-            visited[node] = True
-            queue += graph[node]
-    
-    if not all(visited):
-        return "NO"
-    
-    # Check if the graph is a tree
-    if len(edges) != n - 1:
-        return "NO"
-    
-    # Check if the graph is a Hamiltonian cycle
-    for node in range(1, n + 1):
-        if not visited[node]:
-            return "NO"
-    
-    # If all conditions are met, return the Hamiltonian cycle
-    return "YES"
-    cycle = []
-    node = 1
-    while node != 1:
-        cycle.append(node)
-        node = graph[node][0]
-    return cycle
+n, k, m = map(int, input().split())
+
+board = [[0] * (n + 1) for _ in range(n + 1)]
+
+for _ in range(m):
+    x, y = map(int, input().split())
+    if board[x][y] == 0:
+        board[x][y] = 1
+    else:
+        board[x][y] = 0
+
+def is_good():
+    for i in range(n + 1):
+        for j in range(n + 1):
+            if board[i][j] == 1 and (i != k or j != 1):
+                return False
+    return True
+
+def add_rows():
+    count = 0
+    for i in range(n + 1):
+        for j in range(n + 1):
+            if board[i][j] == 1 and i != k and j != 1:
+                count += 1
+    return count
+
+while not is_good():
+    print(add_rows())
+    n += 1
+    board = [[0] * (n + 1) for _ in range(n + 1)]
+    for i in range(m):
+        x, y = map(int, input().split())
+        if board[x][y] == 0:
+            board[x][y] = 1
+        else:
+            board[x][y] = 0
 

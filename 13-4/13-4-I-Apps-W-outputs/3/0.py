@@ -1,32 +1,35 @@
 
-def solve(n, order, desired_order):
-    # Convert the input permutations to lists
-    order = list(map(int, order.split()))
-    desired_order = list(map(int, desired_order.split()))
+def get_guard_post(n, guard_posts):
+    # Initialize variables to keep track of the minimum cost and the guard post with the minimum cost
+    min_cost = float('inf')
+    min_cost_guard_post = None
     
-    # Check if the input permutations are valid
-    if len(order) != n or len(desired_order) != n:
-        return "Impossible"
+    # Iterate through the guard posts
+    for guard_post in guard_posts:
+        # Initialize variables to keep track of the total cost and the number of gifts bought
+        total_cost = 0
+        num_gifts = 0
+        
+        # Iterate through the guards in the current guard post
+        for guard in guard_post:
+            # Check if the current guard can be bribed with the remaining money
+            if total_cost + guard[0] <= n:
+                # Add the cost of the current guard to the total cost
+                total_cost += guard[0]
+                # Increment the number of gifts bought
+                num_gifts += 1
+        
+        # Check if the total cost is less than the minimum cost and the number of gifts bought is equal to the number of guards in the guard post
+        if total_cost < min_cost and num_gifts == len(guard_post):
+            # Update the minimum cost and the guard post with the minimum cost
+            min_cost = total_cost
+            min_cost_guard_post = guard_post
     
-    # Initialize a variable to keep track of the number of rotations
-    rotations = 0
-    
-    # Loop through the input permutations and check if they match the desired order
-    for i in range(n):
-        # If the current position of the bread is not the desired position, rotate the subsequence of breads
-        if order[i] != desired_order[i]:
-            # Find the index of the first bread in the subsequence that needs to be rotated
-            start_index = order.index(desired_order[i])
-            # Find the index of the last bread in the subsequence that needs to be rotated
-            end_index = start_index + 2
-            # Rotate the subsequence of breads
-            order = order[:start_index] + order[start_index+1:end_index+1] + order[start_index:start_index+1]
-            # Increment the number of rotations
-            rotations += 1
-    
-    # Check if the input permutations match the desired order after all rotations
-    if order == desired_order:
-        return "Possible"
+    # Check if a guard post with the minimum cost has been found
+    if min_cost_guard_post is not None:
+        # Return the guard post number and the cost of the gifts
+        return [guard_posts.index(min_cost_guard_post) + 1, min_cost_guard_post[0][0], min_cost_guard_post[1][0]]
     else:
-        return "Impossible"
+        # Return -1 if no guard post with the minimum cost has been found
+        return [-1, -1, -1]
 

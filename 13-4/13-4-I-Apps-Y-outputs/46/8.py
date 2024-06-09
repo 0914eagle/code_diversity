@@ -1,19 +1,16 @@
 
-import math
+def get_box_heights(box_heights):
+    # Sort the box heights in descending order
+    sorted_box_heights = sorted(box_heights, reverse=True)
 
-def solve(C, D):
-    C_real, C_imag = map(float, input().split())
-    D_real, D_imag = map(float, input().split())
-    
-    C = C_real + C_imag * 1j
-    D = D_real + D_imag * 1j
-    
-    print(f"{C+D:.2f}{C.imag>0 and '+' or '-'}{D.imag:.2f}i")
-    print(f"{C-D:.2f}{C.imag>0 and '+' or '-'}{D.imag:.2f}i")
-    print(f"{C*D:.2f}{C.imag>0 and '+' or '-'}{D.imag:.2f}i")
-    print(f"{C/D:.2f}{C.imag>0 and '+' or '-'}{D.imag:.2f}i")
-    print(f"{math.fmod(C, D):.2f}{C.imag>0 and '+' or '-'}{D.imag:.2f}i")
-    print(f"{math.fmod(D, C):.2f}{D.imag>0 and '+' or '-'}{C.imag:.2f}i")
+    # Get the tower heights
+    tower_heights = sorted_box_heights[-2:]
 
-solve(C, D)
+    # Get the box heights for the first tower
+    first_tower = sorted_box_heights[:3]
+
+    # Get the box heights for the second tower
+    second_tower = sorted_box_heights[3:]
+
+    return first_tower, second_tower
 

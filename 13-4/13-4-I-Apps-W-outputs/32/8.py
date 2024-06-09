@@ -1,53 +1,26 @@
 
-def get_pizzas(n_friends, n_pizzas, friends, pizzas):
-    # Initialize variables
-    pleased_friends = 0
-    total_price = 0
-    chosen_pizzas = []
+import sys
 
-    # Iterate through each pizza
-    for pizza in pizzas:
-        # Check if the pizza satisfies the requirements
-        if satisfies_requirements(pizza, friends):
-            # Increment the number of pleased friends
-            pleased_friends += 1
-            # Add the pizza to the list of chosen pizzas
-            chosen_pizzas.append(pizza)
-            # Add the price of the pizza to the total price
-            total_price += pizza[0]
+def get_gis(g):
+    gis = []
+    for i in range(len(g)):
+        if i == 0:
+            gis.append(g[i])
+        else:
+            for j in range(i, len(g)):
+                if g[j] > g[i-1]:
+                    gis.append(g[j])
+                    break
+    return gis
 
-            # If the number of pleased friends is equal to the number of friends, break the loop
-            if pleased_friends == n_friends:
-                break
+def count_permutations(n, g):
+    gis = get_gis(g)
+    count = 1
+    for i in range(len(gis)):
+        count *= n - i
+    return count % (10**9 + 7)
 
-    # Return the list of chosen pizzas and the total price
-    return chosen_pizzas, total_price
-
-def satisfies_requirements(pizza, friends):
-    # Initialize a flag to indicate if the pizza satisfies the requirements
-    satisfies = True
-
-    # Iterate through each friend
-    for friend in friends:
-        # Check if the friend's favorite ingredients are in the pizza
-        if not set(friend).issubset(set(pizza[1:])):
-            # If the friend's favorite ingredients are not in the pizza, set the flag to False
-            satisfies = False
-            break
-
-    # Return the flag
-    return satisfies
-
-# Test the function with example inputs
-n_friends = 3
-n_pizzas = 4
-friends = [[2, 6, 7], [4, 2, 3, 9, 5], [3, 2, 3, 9]]
-pizzas = [[100, 1, 7], [400, 3, 3, 2, 5], [100, 2, 9, 2], [500, 3, 2, 9, 5]]
-chosen_pizzas, total_price = get_pizzas(n_friends, n_pizzas, friends, pizzas)
-print(chosen_pizzas)
-print(total_price)
-
-# Example output:
-# [[100, 1, 7], [400, 3, 3, 2, 5]]
-# 500
+n, l = map(int, input().split())
+g = list(map(int, input().split()))
+print(count_permutations(n, g))
 

@@ -1,10 +1,20 @@
 
-def solve(N, A, B, C):
-    altars = set()
-    for i in range(N):
-        for j in range(i+1, N):
-            for k in range(j+1, N):
-                if A[i] < A[j] and A[j] < A[k] and B[i] < B[j] and B[j] < B[k] and C[i] < C[j] and C[j] < C[k]:
-                    altars.add((i, j, k))
-    return len(altars)
+def get_min_teams(a):
+    # Sort the array in ascending order
+    a.sort()
+    # Initialize the minimum number of teams as 1
+    min_teams = 1
+    # Loop through the array
+    for i in range(len(a)-1):
+        # Check if the difference between the current element and the next element is 1
+        if a[i+1] - a[i] == 1:
+            # Increment the minimum number of teams
+            min_teams += 1
+    return min_teams
+
+q = int(input())
+for i in range(q):
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(get_min_teams(a))
 

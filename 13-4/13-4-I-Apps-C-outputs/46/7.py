@@ -1,18 +1,22 @@
 
-def get_max_score(a, b):
-    score = 0
-    deck = []
-    while a > 0 or b > 0:
-        if a > 0:
-            deck.append("o")
-            a -= 1
-        if b > 0:
-            deck.append("x")
-            b -= 1
-    for i in range(len(deck) - 1):
-        if deck[i] == deck[i + 1] and deck[i] == "o":
-            score += (i + 1) ** 2
-        elif deck[i] == deck[i + 1] and deck[i] == "x":
-            score -= (i + 1) ** 2
-    return score, "".join(deck)
+def decipher_sentence(s, n, dictionary):
+    # Initialize a set to store the unique words
+    unique_words = set()
+
+    # Iterate through the dictionary
+    for word in dictionary:
+        # Check if the word is a substring of the sentence
+        if word in s:
+            # Add the word to the set of unique words
+            unique_words.add(word)
+
+    # Check if the set of unique words is equal to the number of words in the dictionary
+    if len(unique_words) == n:
+        # Sort the unique words in alphabetical order
+        unique_words = sorted(unique_words)
+        # Join the unique words together to form the deciphered sentence
+        deciphered_sentence = " ".join(unique_words)
+        return deciphered_sentence
+    else:
+        return "impossible"
 

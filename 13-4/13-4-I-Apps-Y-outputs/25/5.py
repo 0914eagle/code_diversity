@@ -1,42 +1,46 @@
 
-def get_maximum_edges(n, edges):
-    # Initialize a dictionary to store the graph
-    graph = {}
-    for i in range(1, n+1):
-        graph[i] = []
+def solve(grid):
+    n, m = len(grid), len(grid[0])
+    stars = []
+    for i in range(n):
+        for j in range(m):
+            if grid[i][j] == '*':
+                stars.append((i, j))
+    # Check if the grid is valid
+    if len(stars) > n * m:
+        return "-1"
+    # Sort the stars by size in descending order
+    stars.sort(key=lambda x: x[2], reverse=True)
+    # Create a set to keep track of the used stars
+    used_stars = set()
+    # Loop through the stars and draw them
+    for i, j, size in stars:
+        if (i, j) in used_stars:
+            continue
+        # Draw the star
+        draw_star(grid, i, j, size)
+        # Mark the star as used
+        used_stars.add((i, j))
+    return "".join(["".join(row) for row in grid])
 
-    # Add edges to the graph
-    for edge in edges:
-        graph[edge[0]].append(edge[1])
-        graph[edge[1]].append(edge[0])
-
-    # Initialize variables to store the maximum number of edges and the vertices with the maximum number of edges
-    max_edges = 0
-    max_vertices = []
-
-    # Iterate over all possible pairs of vertices
-    for i in range(1, n+1):
-        for j in range(i+1, n+1):
-            # If the vertices are not connected, skip this pair
-            if j not in graph[i]:
-                continue
-            # If the vertices are connected, find the number of edges in the path between them
-            edges_between = 0
-            queue = [i]
-            visited = set()
-            while queue:
-                vertex = queue.pop(0)
-                if vertex == j:
-                    break
-                for neighbor in graph[vertex]:
-                    if neighbor not in visited:
-                        queue.append(neighbor)
-                        visited.add(neighbor)
-                edges_between += 1
-            # If the number of edges is greater than the maximum number of edges, update the maximum number of edges and the vertices with the maximum number of edges
-            if edges_between > max_edges:
-                max_edges = edges_between
-                max_vertices = [i, j]
-
-    return max_edges, max_vertices
+def draw_star(grid, i, j, size):
+    n, m = len(grid), len(grid[0])
+    # Draw the rays of the star
+    for k in range(size):
+        # Draw the left ray
+        for l in range(k+1):
+            if 0 <= i-k-l < n and 0 <= j-k-l < m and grid[i-k-l][j-k-l] == '.':
+                grid[i-k-l][j-k-l] = '*'
+        # Draw the right ray
+        for l in range(k+1):
+            if 0 <= i-k-l < n and 0 <= j+k+l < m and grid[i-k-l][j+k+l] == '.':
+                grid[i-k-l][j+k+l] = '*'
+        # Draw the top ray
+        for l in range(k+1):
+            if 0 <= i-k-l < n and 0 <= j-k-l < m and grid[i-k-l][j-k-l] == '.':
+                grid[i-k-l][j-k-l] = '*'
+        # Draw the bottom ray
+        for l in range(k+1):
+            if 0 <= i+k+l < n and 0 <= j-k-l < m and grid[i+k+l][j-k-l] == '.':
+                grid[i+k+l][j-k-l] = '*'
 

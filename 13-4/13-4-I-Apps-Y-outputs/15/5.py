@@ -1,19 +1,20 @@
 
-def solve(b):
-    n = len(b)
-    if n == 1:
-        return 0
-    if n == 2:
-        if b[0] == b[1]:
-            return 0
-        else:
-            return -1
-    diff = [b[i+1] - b[i] for i in range(n-1)]
-    if len(set(diff)) != 1:
-        return -1
-    count = 0
-    for i in range(n):
-        if b[i] != b[0] + i * diff[0]:
-            count += 1
-    return count
+def is_cube(n):
+    x = n ** (1/3)
+    return x == int(x)
+
+def is_bus_number(n):
+    for i in range(1, int(n ** (1/3)) + 1):
+        if is_cube(n - i ** 3):
+            return True
+    return False
+
+def get_largest_bus_number(m):
+    for i in range(m, 0, -1):
+        if is_bus_number(i):
+            return i
+    return None
+
+m = int(input())
+print(get_largest_bus_number(m))
 

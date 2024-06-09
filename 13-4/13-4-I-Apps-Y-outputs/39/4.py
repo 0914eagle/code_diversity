@@ -1,17 +1,18 @@
 
-def solve(a):
-    # Sort the array in ascending order
-    a.sort()
-    # Initialize a set to store the unique elements in the array
-    unique_elements = set()
-    # Loop through the array
-    for element in a:
-        # If the element is not already in the set, add it to the set
-        if element not in unique_elements:
-            unique_elements.add(element)
-    # If there is only one element in the set, return "YES", otherwise return "NO"
-    if len(unique_elements) == 1:
-        return "YES"
-    else:
-        return "NO"
+N, *T = [int(x) for x in input().split()]
+M, *PX = [int(x) for x in input().split()]
+
+drinks = []
+for i in range(M):
+    P, X = PX[i*2], PX[i*2+1]
+    drinks.append((P, X))
+
+total_time = sum(T)
+for P, X in drinks:
+    new_time = total_time
+    for i in range(N):
+        if i+1 == P:
+            new_time -= T[i]
+            new_time += X
+    print(new_time)
 

@@ -1,44 +1,37 @@
 
-def solve(N, A, B):
-    # Initialize a list to store the sequence
-    seq = []
+def solve(connections, additional_flights):
+    # Initialize a dictionary to store the cost of each flight
+    costs = {}
+    for connection in connections:
+        # Add the cost of the flight to the dictionary
+        costs[connection] = connection[2]
 
-    # If A is 0, then the longest increasing subsequence is empty
-    if A == 0:
-        return -1
+    # Initialize a set to store the airports that have been visited
+    visited = set()
+    visited.add(1) # Add Stockholm as the starting airport
 
-    # If B is 0, then the longest decreasing subsequence is empty
-    if B == 0:
-        return -1
+    # Initialize a queue to store the flights to visit
+    queue = []
 
-    # If A is 1, then the longest increasing subsequence is a single element
-    if A == 1:
-        seq.append(1)
-        A -= 1
+    # Add the first flight to the queue
+    queue.append(connections[0])
 
-    # If B is 1, then the longest decreasing subsequence is a single element
-    if B == 1:
-        seq.append(N)
-        B -= 1
+    # Loop until all the flights have been visited
+    while queue:
+        # Get the next flight from the queue
+        flight = queue.pop(0)
 
-    # While there are still elements to add to the sequence
-    while A > 0 or B > 0:
-        # If the longest increasing subsequence is not empty
-        if A > 0:
-            # Add the next element to the sequence
-            seq.append(seq[-1] + 1)
-            A -= 1
+        # Check if the flight has already been visited
+        if flight not in visited:
+            # Add the cost of the flight to the total cost
+            total_cost += costs[flight]
 
-        # If the longest decreasing subsequence is not empty
-        if B > 0:
-            # Add the next element to the sequence
-            seq.append(seq[-1] - 1)
-            B -= 1
+            # Add the airport at the end of the flight to the visited set
+            visited.add(flight[1])
 
-    # If there are still elements to add to the sequence, then it is not possible to construct a sequence that satisfies the conditions
-    if A > 0 or B > 0:
-        return -1
+            # Add the flight to the queue
+            queue.append(flight)
 
-    # Return the constructed sequence
-    return seq
+    # Return the total cost of the flights
+    return total_cost
 

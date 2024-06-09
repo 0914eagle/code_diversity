@@ -1,28 +1,16 @@
 
-def is_beautiful_sequence(sequence):
-    return all(abs(sequence[i] - sequence[i+1]) == 1 for i in range(len(sequence)-1))
-
-def construct_beautiful_sequence(a, b, c, d):
-    sequence = []
-    for i in range(a):
-        sequence.append(0)
-    for i in range(b):
-        sequence.append(1)
-    for i in range(c):
-        sequence.append(2)
-    for i in range(d):
-        sequence.append(3)
-    return sequence
-
-def main():
-    a, b, c, d = map(int, input().split())
-    sequence = construct_beautiful_sequence(a, b, c, d)
-    if is_beautiful_sequence(sequence):
-        print("YES")
-        print(" ".join(str(x) for x in sequence))
-    else:
-        print("NO")
-
-if __name__ == "__main__":
-    main()
+def get_number_of_ways(r, w, d):
+    # Initialize the number of ways to be 0
+    number_of_ways = 0
+    
+    # Loop through all possible combinations of red and white wine piles
+    for red_piles in range(1, r + 1):
+        for white_piles in range(1, w + 1):
+            # Check if the current combination satisfies the conditions
+            if red_piles + white_piles <= r and red_piles <= d:
+                # Increment the number of ways
+                number_of_ways += 1
+    
+    # Return the number of ways modulo 10^9 + 7
+    return number_of_ways % (10**9 + 7)
 

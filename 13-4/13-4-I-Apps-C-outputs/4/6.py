@@ -1,24 +1,16 @@
 
-def is_possible(n, t, times):
-    # Sort the times in ascending order
-    times.sort(key=lambda x: x[0])
+def is_wool_sequence(sequence):
+    for i in range(len(sequence)):
+        for j in range(i+1, len(sequence)):
+            if sequence[i] ^ sequence[j] == 0:
+                return True
+    return False
 
-    # Initialize the current time to 0
-    current_time = 0
-
-    # Iterate through each photograph and check if it can be taken
-    for i in range(n):
-        # Check if the current time is greater than the earliest time for the photograph
-        if current_time < times[i][0]:
-            return "no"
-
-        # Check if the current time plus the time required for the photograph is less than the latest time for the photograph
-        if current_time + t > times[i][1]:
-            return "no"
-
-        # Update the current time to the latest time for the photograph
-        current_time = times[i][1]
-
-    # If all photographs can be taken, return "yes"
-    return "yes"
+def count_non_wool_sequences(n, m):
+    count = 0
+    for i in range(2**n):
+        sequence = [i >> j & 1 for j in range(n)]
+        if not is_wool_sequence(sequence):
+            count += 1
+    return count % 1000000009
 

@@ -1,25 +1,33 @@
 
-def get_maximum_disjoint_blocks(arr):
-    n = len(arr)
-    dp = [[0] * (n + 1) for _ in range(n + 1)]
-    for i in range(1, n + 1):
-        for j in range(1, n + 1):
-            if i == j:
-                dp[i][j] = 1
-            elif arr[i - 1] == arr[j - 1]:
-                dp[i][j] = dp[i - 1][j - 1] + 1
-            else:
-                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
-    blocks = []
-    i, j = n, n
-    while i > 0 and j > 0:
-        if dp[i][j] == dp[i - 1][j]:
-            i -= 1
-        elif dp[i][j] == dp[i][j - 1]:
-            j -= 1
-        else:
-            blocks.append((i, j))
-            i -= 1
-            j -= 1
-    return blocks[::-1]
+import sys
+input = sys.stdin.read().splitlines()
+
+n, m, k = map(int, input[0].split())
+roads = [tuple(map(int, input[i].split())) for i in range(1, m+1)]
+routes = [tuple(map(int, input[i].split())) for i in range(m+1, m+1+k)]
+
+# create a graph with the roads as edges
+graph = [[] for _ in range(n+1)]
+for x, y, w in roads:
+    graph[x].append((y, w))
+    graph[y].append((x, w))
+
+# find the shortest path between each pair of districts
+distances = [[float('inf') for _ in range(n+1)] for _ in range(n+1)]
+for i in range(n+1):
+    distances[i][i] = 0
+    for j, w in graph[i]:
+        distances[i][j] = w
+        distances[j][i] = w
+for k in range(n+1):
+    for i in range(n+1):
+        for j in range(n+1):
+            distances[i][j] = min(distances[i][j], distances[i][k] + distances[k][j])
+
+# find the minimum total cost of travel for each route
+total_cost = 0
+for a, b in routes:
+    total_cost += distances[a][b]
+
+print(total_cost)
 

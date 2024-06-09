@@ -1,30 +1,31 @@
 
-def max_frogs_can_escape(n, d, frogs):
-    # Sort the frogs in descending order of their leap capacity
-    frogs.sort(key=lambda x: x[0], reverse=True)
-    
-    # Initialize the maximum number of frogs that can escape as 0
-    max_escaping_frogs = 0
-    
-    # Loop through each frog and check if it can escape the pit
-    for frog in frogs:
-        # Check if the frog's leap capacity is greater than the depth of the pit
-        if frog[0] > d:
-            # Increment the maximum number of escaping frogs
-            max_escaping_frogs += 1
-        # Check if the frog can be carried by another frog
-        elif frog[1] < d:
-            # Loop through the remaining frogs and check if any of them can carry the frog
-            for i in range(n):
-                # Check if the current frog is not the same as the frog being checked
-                if i != frog[2]:
-                    # Check if the current frog's leap capacity is greater than the sum of the frog being checked's leap capacity and height
-                    if frogs[i][0] > frog[0] + frog[2]:
-                        # Increment the maximum number of escaping frogs
-                        max_escaping_frogs += 1
-                        # Break out of the loop
-                        break
-    
-    # Return the maximum number of escaping frogs
-    return max_escaping_frogs
+def get_min_time(n, traffic_lights):
+    # Initialize variables
+    min_time = 0
+    current_time = 0
+    previous_light = "green"
+
+    # Iterate through each traffic light
+    for i in range(n - 1):
+        light = traffic_lights[i]
+        green_duration = light[1]
+        red_duration = light[2]
+
+        # If the current light is green, drive at constant speed
+        if previous_light == "green":
+            min_time += green_duration
+            current_time += green_duration
+
+        # If the current light is red, stop at the red light
+        elif previous_light == "red":
+            min_time += red_duration
+            current_time = 0
+
+        # Update the previous light
+        previous_light = "green" if previous_light == "red" else "red"
+
+    # Add the time to drive from the last traffic light to the end of the road
+    min_time += n - current_time
+
+    return min_time
 

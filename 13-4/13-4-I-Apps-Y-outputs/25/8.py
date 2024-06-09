@@ -1,59 +1,51 @@
 
-def get_maximum_edges(n, edges):
-    # Initialize a dictionary to store the graph
-    graph = {}
-    for i in range(1, n+1):
-        graph[i] = []
+def is_star(grid, row, col, size):
+    # Check if the star is inside the grid
+    if row < 0 or col < 0 or row + size > len(grid) or col + size > len(grid[0]):
+        return False
     
-    # Add edges to the graph
-    for edge in edges:
-        graph[edge[0]].append(edge[1])
-        graph[edge[1]].append(edge[0])
+    # Check if the star is completely inside the grid
+    if any(grid[row + i][col + j] != '*' for i in range(size) for j in range(size)):
+        return False
     
-    # Initialize variables to store the maximum number of edges and the vertices with the maximum number of edges
-    max_edges = 0
-    vertices = []
+    # Check if the star intersects with any other star
+    for i in range(size):
+        for j in range(size):
+            if grid[row + i][col + j] == '*' and (i > 0 or j > 0):
+                return False
     
-    # Iterate over all possible pairs of vertices
-    for i in range(1, n+1):
-        for j in range(i+1, n+1):
-            # Check if there is a path between the two vertices
-            if graph[i] and graph[j]:
-                # Get the number of edges in the path
-                num_edges = len(get_path(graph, i, j))
-                # If the number of edges is greater than the maximum, update the maximum and the vertices with the maximum number of edges
-                if num_edges > max_edges:
-                    max_edges = num_edges
-                    vertices = [i, j]
-    
-    return [max_edges, vertices]
+    return True
 
-def get_path(graph, start, end):
-    # Initialize a queue to store the vertices to visit
-    queue = [start]
-    # Initialize a set to store the visited vertices
-    visited = set()
+def draw_grid(grid):
+    # Initialize the number of stars needed
+    num_stars = 0
     
-    # Loop until the queue is empty
-    while queue:
-        # Get the first vertex from the queue
-        vertex = queue.pop(0)
-        # If the vertex is the end vertex, return the path
-        if vertex == end:
-            path = []
-            while vertex != start:
-                path.append(vertex)
-                vertex = graph[vertex][0]
-            return path[::-1]
-        # If the vertex has not been visited, mark it as visited and add its neighbors to the queue
-        if vertex not in visited:
-            visited.add(vertex)
-            queue += graph[vertex]
+    # Iterate through the grid
+    for row in range(len(grid)):
+        for col in range(len(grid[0])):
+            # If the current cell is a star, check if it is possible to draw it
+            if grid[row][col] == '*':
+                # Check if the star is inside the grid
+                if row < 0 or col < 0 or row + 1 > len(grid) or col + 1 > len(grid[0]):
+                    return -1
+                
+                # Check if the star is completely inside the grid
+                if any(grid[row + i][col + j] != '*' for i in range(1) for j in range(1)):
+                    return -1
+                
+                # Check if the star intersects with any other star
+                for i in range(1):
+                    for j in range(1):
+                        if grid[row + i][col + j] == '*' and (i > 0 or j > 0):
+                            return -1
+                
+                # If the star is possible to draw, increment the number of stars needed
+                num_stars += 1
     
-    # If no path is found, return an empty list
-    return []
-
-n = 8
-edges = [[1, 2], [2, 3], [3, 4], [4, 5], [4, 6], [3, 7], [3, 8]]
-print(get_maximum_edges(n, edges))
+    # If the grid is possible to draw, return the number of stars needed
+    if num_stars <= len(grid) * len(grid[0]):
+        return num_stars
+    
+    # If the grid is not possible to draw, return -1
+    return -1
 

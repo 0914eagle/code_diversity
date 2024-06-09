@@ -1,23 +1,25 @@
 
-def solve(n, m, stations):
-    # Initialize the expected time to meet as infinity
-    expected_time = float('inf')
+import sys
+
+def solve(N, X, A):
+    # Initialize the count of different integers not exceeding X to 0
+    count = 0
     
-    # Loop through each possible station that Alice and Bob could meet at
-    for station in range(n):
-        # If the current station is a neighbor of both Alice and Bob's initial stations, calculate the expected time to meet
-        if (stations[0] in neighbors[station] and stations[1] in neighbors[station]):
-            # Calculate the number of minutes it takes to get to the current station from both Alice and Bob's initial stations
-            minutes_0 = abs(station - stations[0])
-            minutes_1 = abs(station - stations[1])
-            
-            # Calculate the expected time to meet at the current station
-            expected_time = min(expected_time, minutes_0 + minutes_1)
+    # Loop through each integer A_i
+    for i in range(N):
+        # Check if A_i is less than or equal to X
+        if A[i] <= X:
+            # Increment the count
+            count += 1
     
-    # If the expected time is infinity, return "never meet"
-    if expected_time == float('inf'):
-        return "never meet"
-    # Otherwise, return the expected time to meet
-    else:
-        return expected_time
+    # Return the count modulo 998244353
+    return count % 998244353
+
+if __name__ == '__main__':
+    # Read the input from stdin
+    N, X = map(int, input().split())
+    A = list(map(int, input().split()))
+    
+    # Call the solve function and print the result
+    print(solve(N, X, A))
 

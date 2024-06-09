@@ -1,61 +1,40 @@
 
-def nimionese(sentence):
-    # Split the sentence into a list of words
-    words = sentence.split()
+import math
+
+def get_angle(x1, y1, x2, y2):
+    # Calculate the dot product of the two vectors
+    dot_product = x1 * x2 + y1 * y2
     
-    # Create a dictionary to map hard consonants to their nearest equivalent
-    hard_consonants = {"b": "a", "c": "a", "d": "a", "g": "a", "k": "a", "n": "a", "p": "a", "t": "a"}
+    # Calculate the magnitude of the two vectors
+    mag1 = math.sqrt(x1 ** 2 + y1 ** 2)
+    mag2 = math.sqrt(x2 ** 2 + y2 ** 2)
     
-    # Iterate through the words and convert them to nimionese
-    for i in range(len(words)):
-        word = words[i]
-        
-        # Convert the first letter of the word to its nearest equivalent
-        if word[0] in hard_consonants:
-            word = hard_consonants[word[0]] + word[1:]
-        
-        # Replace "each" with "dach"
-        if word == "each":
-            word = "dach"
-        
-        # Replace hard consonants in subsequent syllables with the same consonant as the first letter
-        if len(word) > 1 and word[1] in hard_consonants:
-            word = word[0] + hard_consonants[word[1]] + word[2:]
-        
-        # Replace "hip-po" with "gip-go"
-        if word == "hip-po":
-            word = "gip-go"
-        
-        # Add an "ah", "oh", or "uh" to the end of the word, whichever is nearest to "a"
-        if word[-1] in ["b", "c", "d", "g", "k", "n", "p", "t"]:
-            if word[-1] == "b":
-                word += "ah"
-            elif word[-1] == "c":
-                word += "oh"
-            elif word[-1] == "d":
-                word += "uh"
-            elif word[-1] == "g":
-                word += "ah"
-            elif word[-1] == "k":
-                word += "ah"
-            elif word[-1] == "n":
-                word += "ah"
-            elif word[-1] == "p":
-                word += "ah"
-            elif word[-1] == "t":
-                word += "ah"
-        
-        # Replace "dog" with "dogah"
-        if word == "dog":
-            word = "dogah"
-        
-        # Replace "hip" with "gipoh"
-        if word == "hip":
-            word = "gipoh"
-        
-        # Update the word in the list
-        words[i] = word
+    # Calculate the cosine of the angle between the vectors
+    cosine_angle = dot_product / (mag1 * mag2)
     
-    # Join the words back into a sentence and return it
-    return " ".join(words)
+    # Calculate the angle in radians
+    angle = math.acos(cosine_angle)
+    
+    # Convert the angle to degrees
+    angle = math.degrees(angle)
+    
+    return angle
+
+n = int(input())
+points = []
+
+# Read the input points
+for i in range(n):
+    x, y = map(float, input().split())
+    points.append((x, y))
+
+# Calculate the angle between each pair of points
+angles = []
+for i in range(n):
+    for j in range(i+1, n):
+        angle = get_angle(points[i][0], points[i][1], points[j][0], points[j][1])
+        angles.append(angle)
+
+# Print the maximum angle
+print(max(angles))
 

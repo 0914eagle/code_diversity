@@ -1,24 +1,34 @@
 
-def solve(sequence, k):
-    n = len(sequence)
-    if n == 1:
-        return 0
-    if k == 0:
-        return abs(sequence[0] - sequence[-1])
-    # find the maximum and minimum elements in the sequence
-    max_element = max(sequence)
-    min_element = min(sequence)
-    # calculate the difference between the maximum and minimum elements
-    diff = max_element - min_element
-    # if we can perform the operation, try to increase or decrease the maximum element by one
-    if k >= 1:
-        new_sequence = sequence[:]
-        new_sequence[sequence.index(max_element)] += 1
-        diff = min(diff, solve(new_sequence, k-1))
-    # if we can perform the operation, try to decrease the minimum element by one
-    if k >= 1:
-        new_sequence = sequence[:]
-        new_sequence[sequence.index(min_element)] -= 1
-        diff = min(diff, solve(new_sequence, k-1))
-    return diff
+def solve(s):
+    n = len(s)
+    # Initialize the longest non-decreasing subsequence of s and t
+    longest_non_decreasing_subsequence_s = [1] * n
+    longest_non_decreasing_subsequence_t = [1] * n
+    
+    # Loop through the string and calculate the longest non-decreasing subsequence
+    for i in range(1, n):
+        for j in range(i):
+            if s[i] >= s[j] and longest_non_decreasing_subsequence_s[i] < longest_non_decreasing_subsequence_s[j] + 1:
+                longest_non_decreasing_subsequence_s[i] = longest_non_decreasing_subsequence_s[j] + 1
+    
+    # Loop through the string and calculate the longest non-decreasing subsequence
+    for i in range(1, n):
+        for j in range(i):
+            if s[i] >= s[j] and longest_non_decreasing_subsequence_t[i] < longest_non_decreasing_subsequence_t[j] + 1:
+                longest_non_decreasing_subsequence_t[i] = longest_non_decreasing_subsequence_t[j] + 1
+    
+    # Find the maximum length of the longest non-decreasing subsequence
+    max_length = max(longest_non_decreasing_subsequence_s)
+    
+    # Initialize the result string
+    result = ""
+    
+    # Loop through the string and find the indices with the maximum length of the longest non-decreasing subsequence
+    for i in range(n):
+        if longest_non_decreasing_subsequence_s[i] == max_length:
+            result += "1"
+        else:
+            result += "0"
+    
+    return result
 

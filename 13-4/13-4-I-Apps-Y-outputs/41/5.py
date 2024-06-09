@@ -1,30 +1,32 @@
 
-def solve(n, k, a):
-    # Initialize two empty lists to store the students in the first and second teams
-    team_1 = []
-    team_2 = []
+import sys
+
+def get_perket(ingredients):
+    # Sort the ingredients by their sourness in descending order
+    ingredients.sort(key=lambda x: x[0], reverse=True)
     
-    # Sort the students in descending order of their programming skills
-    sorted_students = sorted(range(n), key=lambda i: a[i], reverse=True)
+    # Initialize the minimum difference between sourness and bitterness
+    min_diff = 1000000000
     
-    # Iterate through the students in the sorted order
-    for i in sorted_students:
-        # If the student is not already in a team, choose them
-        if i not in team_1 and i not in team_2:
-            # Add the student to the first team
-            team_1.append(i)
-            # Get the indices of the k closest students to the left and right of the current student
-            left_indices = sorted_students[:i][-k:]
-            right_indices = sorted_students[i+1:][:k]
-            # Add the closest students to the first team
-            team_1.extend(left_indices)
-            team_1.extend(right_indices)
-            # Remove the chosen students from the row
-            sorted_students = [x for x in sorted_students if x not in left_indices and x not in right_indices and x != i]
+    # Iterate over all possible combinations of ingredients
+    for i in range(len(ingredients)):
+        for j in range(i+1, len(ingredients)):
+            # Calculate the total sourness and bitterness of the current combination
+            total_sourness = ingredients[i][0] * ingredients[j][0]
+            total_bitterness = ingredients[i][1] + ingredients[j][1]
+            
+            # Calculate the absolute difference between sourness and bitterness
+            diff = abs(total_sourness - total_bitterness)
+            
+            # Update the minimum difference if necessary
+            if diff < min_diff:
+                min_diff = diff
     
-    # Add the remaining students to the second team
-    team_2.extend(sorted_students)
-    
-    # Return the teams as a string of 1s and 2s
-    return "".join([str(1 if i in team_1 else 2) for i in range(n)])
+    return min_diff
+
+if __name__ == '__main__':
+    ingredients = []
+    for _ in range(int(input())):
+        ingredients.append(list(map(int, input().split())))
+    print(get_perket(ingredients))
 

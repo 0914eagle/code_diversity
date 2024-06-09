@@ -1,44 +1,33 @@
 
-def get_min_hours(n, m, railways):
-    # Initialize a graph with the given railways
-    graph = {i: set() for i in range(1, n + 1)}
-    for u, v in railways:
-        graph[u].add(v)
-        graph[v].add(u)
+import itertools
 
-    # Find all possible routes for the train and the bus
-    train_routes = []
-    bus_routes = []
-    for i in range(1, n + 1):
-        for route in find_routes(graph, i, n):
-            if len(route) % 2 == 0:
-                train_routes.append(route)
-            else:
-                bus_routes.append(route)
+def count_paintings(N, S1, S2):
+    # Initialize a dictionary to store the number of paintings for each domino
+    paintings = {}
+    for domino in itertools.product("RGB", repeat=N):
+        paintings[domino] = 0
 
-    # Find the maximum arrival time for the bus and the train
-    max_bus_arrival = 0
-    max_train_arrival = 0
-    for route in bus_routes:
-        max_bus_arrival = max(max_bus_arrival, len(route))
-    for route in train_routes:
-        max_train_arrival = max(max_train_arrival, len(route))
+    # Initialize a set to store the colors of the dominoes in the first row
+    colors = set()
 
-    # Return the maximum of the two arrival times
-    if max_bus_arrival == 0 or max_train_arrival == 0:
-        return -1
-    else:
-        return max(max_bus_arrival, max_train_arrival)
+    # Iterate over the dominoes in the first row
+    for i in range(N):
+        # Get the color of the current domino
+        color = S1[i]
+        # If the color is not already in the set, add it to the set and increment the number of paintings for the current domino
+        if color not in colors:
+            colors.add(color)
+            paintings[domino] += 1
 
-def find_routes(graph, start, end):
-    queue = [(start, [start])]
-    while queue:
-        node, path = queue.pop(0)
-        for neighbor in graph[node]:
-            if neighbor not in path:
-                new_path = path + [neighbor]
-                if neighbor == end:
-                    yield new_path
-                else:
-                    queue.append((neighbor, new_path))
+    # Iterate over the dominoes in the second row
+    for i in range(N):
+        # Get the color of the current domino
+        color = S2[i]
+        # If the color is not already in the set, add it to the set and increment the number of paintings for the current domino
+        if color not in colors:
+            colors.add(color)
+            paintings[domino] += 1
+
+    # Return the number of paintings modulo 1000000007
+    return sum(paintings.values()) % 1000000007
 

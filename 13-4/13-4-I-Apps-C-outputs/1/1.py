@@ -1,55 +1,25 @@
 
-def solve(k, n):
-    # Initialize a list to store the results
-    results = []
-    
-    # Iterate through all possible strings
-    for i in range(26**k):
-        # Convert the current index to a string
-        string = chr(i + 97)
-        
-        # Check if the string is double free
-        if is_double_free(string):
-            # Check if the string is k-incremental
-            if is_k_incremental(string, k):
-                # Add the string to the results list
-                results.append(string)
-    
-    # Return the nth string in the results list, or -1 if it doesn't exist
-    return results[n-1] if n <= len(results) else -1
+def get_min_waiting_time(N, M, food_preferences):
+    # Initialize a list to store the time each dog spends eating
+    dog_times = [0] * N
 
-# Check if a string is double free
-def is_double_free(string):
-    # Iterate through the string
-    for i in range(len(string) - 1):
-        # Check if the current character is the same as the next character
-        if string[i] == string[i+1]:
-            # If it is, return False
-            return False
-    
-    # If we reach this point, the string is double free
-    return True
+    # Loop through each dog
+    for i in range(N):
+        # Loop through each bowl
+        for j in range(M):
+            # Add the time for the current dog to eat from the current bowl to the total time
+            dog_times[i] += food_preferences[i][j]
 
-# Check if a string is k-incremental
-def is_k_incremental(string, k):
-    # Initialize a dictionary to store the frequency of each character
-    freq = {}
-    
-    # Iterate through the string
-    for c in string:
-        # If the character is not already in the dictionary, add it with a frequency of 1
-        if c not in freq:
-            freq[c] = 1
-        # If the character is already in the dictionary, increment its frequency
-        else:
-            freq[c] += 1
-    
-    # Check if the frequency of each character is k-incremental
-    for c, f in freq.items():
-        # If the frequency is not k-incremental, return False
-        if f != k:
-            return False
-    
-    # If we reach this point, the string is k-incremental
-    return True
+    # Sort the dogs by their total eating time in descending order
+    dog_times = sorted(dog_times, reverse=True)
+
+    # Initialize a variable to store the minimum waiting time
+    min_waiting_time = 0
+
+    # Loop through each dog
+    for i in range(N):
+        # Add the time for the current dog to eat from the current bowl to the minimum waiting time
+        min_waiting_time += dog_times[i]
+
+    return min_waiting_time
 

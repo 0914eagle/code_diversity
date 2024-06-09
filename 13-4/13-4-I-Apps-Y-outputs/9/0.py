@@ -1,19 +1,29 @@
 
-def solve(arr):
-    # Sort the array in non-decreasing order
-    arr.sort()
-    # Initialize the result array
-    result = []
-    # Loop through the array and find the blocks
-    for i in range(len(arr)):
-        # Check if the current element is already part of a block
-        if i > 0 and arr[i] == arr[i-1]:
-            continue
-        # Find the right boundary of the block
-        j = i
-        while j < len(arr)-1 and arr[j] == arr[j+1]:
-            j += 1
-        # Add the block to the result array
-        result.append((i, j))
-    return result
+def solve(n, m, k, roads, courier_routes):
+    # Initialize a graph with the given roads
+    graph = {i: set() for i in range(1, n + 1)}
+    for x, y, w in roads:
+        graph[x].add((y, w))
+        graph[y].add((x, w))
+
+    # Initialize the distance matrix with the given courier routes
+    distance = [[float("inf") for _ in range(n + 1)] for _ in range(n + 1)]
+    for i in range(1, n + 1):
+        distance[i][i] = 0
+    for a, b in courier_routes:
+        distance[a][b] = 1
+
+    # Floyd-Warshall algorithm to find the shortest path between all pairs of districts
+    for k in range(1, n + 1):
+        for i in range(1, n + 1):
+            for j in range(1, n + 1):
+                distance[i][j] = min(distance[i][j], distance[i][k] + distance[k][j])
+
+    # Find the minimum total courier routes cost by making at most one road cost zero
+    min_cost = float("inf")
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            if i != j and distance[i][j] != float("inf"):
+                min_cost = min(min_cost, distance[i][j])
+    return min_cost
 

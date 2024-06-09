@@ -1,13 +1,8 @@
 
-def solve(n, a):
-    # Calculate the number of distinct points where figures touch
-    points = 0
-    for i in range(n):
-        if a[i] == 1:  # Circle
-            points += 2
-        elif a[i] == 2:  # Isosceles triangle
-            points += 3
-        else:  # Square
-            points += 4
-    return "Finite" if points < 100 else "Infinite"
+def solve(arr):
+    count = 0
+    while arr:
+        count += 1
+        arr = [arr[0]] + [x for x in arr[1:] if x != arr[0]]
+    return count
 

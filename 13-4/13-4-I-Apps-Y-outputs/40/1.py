@@ -1,10 +1,10 @@
 
-def enlarge_article(article, z_r, z_c):
-    enlarged_article = []
-    for row in article:
-        enlarged_row = []
-        for char in row:
-            enlarged_row += [char] * z_c
-        enlarged_article += [enlarged_row] * z_r
-    return enlarged_article
+def solve(K, S):
+    count = 0
+    for x in range(K+1):
+        for y in range(K+1):
+            z = S - x - y
+            if x + y + z == S and 0 <= x <= K and 0 <= y <= K and 0 <= z <= K:
+                count += 1
+    return count
 

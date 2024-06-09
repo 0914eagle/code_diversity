@@ -1,26 +1,18 @@
 
-def decrypt_message(encrypted_message, key):
-    # Step 1: Define the function f(x) = (33x + 1) mod 2^20
-    def f(x):
-        return (33 * x + 1) % (2**20)
-    
-    # Step 2: Create a X by X size grid, fill the upper left corner with f^1(0), the next cell to the right with f^2(0), f^3(0) etc.
-    grid = [[f(0) for _ in range(X)] for _ in range(X)]
-    
-    # Step 3: Sum all the values in every column, and take those values mod 2^20
-    column_sums = [sum(row) % (2**20) for row in grid]
-    
-    # Step 4: Concatenate the base-10 representations of the column sums together, to get a very long base-10 number
-    long_number = int(''.join(str(x) for x in column_sums))
-    
-    # Step 5: Convert the result of step 4 from base 10 to base 27
-    base_27_key = long_number % (27**X)
-    
-    # Step 6: For each letter l of the intercepted message, shift the letter by the amount given by the corresponding digit of step 5, base 27
-    decrypted_message = ''
-    for i, letter in enumerate(encrypted_message):
-        shift = base_27_key // (27**i) % 27
-        decrypted_message += chr((ord(letter) - ord('A') + shift) % 27 + ord('A'))
-    
-    return decrypted_message
+def can_zax_and_xaz_coexist(m, n, resources):
+    # Initialize a set to store the resources found on each island
+    resources_on_island = set()
+    for island in resources:
+        resources_on_island.update(island)
+
+    # Check if there are exactly 2n resources on El-gă-rizm
+    if len(resources_on_island) != 2 * n:
+        return "NO"
+
+    # Check if each resource is present on exactly 2 islands
+    for resource in range(1, n + 1):
+        if resource not in resources_on_island:
+            return "NO"
+
+    return "YES"
 

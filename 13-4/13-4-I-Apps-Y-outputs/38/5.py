@@ -1,14 +1,17 @@
 
-def solve(a, f):
-    # Convert the input string to a list of integers
-    a = [int(x) for x in a]
-    # Initialize the maximum number to be the original number
-    max_num = a[:]
-    # Iterate over the digits of the number
-    for i in range(len(a)):
-        # If the current digit is not equal to the function value, update the maximum number
-        if a[i] != f[a[i] - 1]:
-            max_num[i] = f[a[i] - 1]
-    # Return the maximum number
-    return max_num
+def solve(s):
+    # Initialize the maximum length of the substring as 0
+    max_len = 0
+    
+    # Loop through each substring of the input string
+    for i in range(len(s)):
+        for j in range(i, len(s)):
+            # If the substring starts with 'A' and ends with 'Z', check if its length is greater than the current maximum length
+            if s[i] == 'A' and s[j] == 'Z':
+                curr_len = j - i + 1
+                if curr_len > max_len:
+                    max_len = curr_len
+    
+    # Return the maximum length
+    return max_len
 

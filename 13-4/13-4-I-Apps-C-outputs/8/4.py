@@ -1,92 +1,35 @@
 
-def solve(N, A, B):
-    # Initialize a list to store the sequence
-    seq = []
-
-    # If A is 0, then the sequence is empty
-    if A == 0:
-        return seq
-
-    # If B is 0, then the sequence is a single element
-    if B == 0:
-        return [N]
-
-    # If A is 1, then the sequence is a single increasing element
-    if A == 1:
-        return [N-B+1]
-
-    # If B is 1, then the sequence is a single decreasing element
-    if B == 1:
-        return [N-A+1]
-
-    # If A is 2, then the sequence is a pair of increasing elements
-    if A == 2:
-        return [N-B+1, N-B+2]
-
-    # If B is 2, then the sequence is a pair of decreasing elements
-    if B == 2:
-        return [N-A+1, N-A+2]
-
-    # If A is 3, then the sequence is a triplet of increasing elements
-    if A == 3:
-        return [N-B+1, N-B+2, N-B+3]
-
-    # If B is 3, then the sequence is a triplet of decreasing elements
-    if B == 3:
-        return [N-A+1, N-A+2, N-A+3]
-
-    # If A is greater than 3, then the sequence has at least one increasing element
-    if A > 3:
-        # Find the largest increasing element in the sequence
-        max_inc_element = N-B+1
-        for i in range(2, A):
-            if max_inc_element < N-B+i:
-                max_inc_element = N-B+i
-
-        # Add the largest increasing element to the sequence
-        seq.append(max_inc_element)
-
-        # Recursively find the remaining elements of the sequence
-        seq += solve(N-1, A-1, B)
-
-        # Return the sequence
-        return seq
-
-    # If B is greater than 3, then the sequence has at least one decreasing element
-    if B > 3:
-        # Find the smallest decreasing element in the sequence
-        min_dec_element = N-A+1
-        for i in range(2, B):
-            if min_dec_element > N-A+i:
-                min_dec_element = N-A+i
-
-        # Add the smallest decreasing element to the sequence
-        seq.append(min_dec_element)
-
-        # Recursively find the remaining elements of the sequence
-        seq += solve(N-1, A, B-1)
-
-        # Return the sequence
-        return seq
-
-# Test the function with example inputs
-N = 5
-A = 3
-B = 2
-print(solve(N, A, B)) # should print [2, 4, 1, 5, 3]
-
-N = 10
-A = 5
-B = 4
-print(solve(N, A, B)) # should print [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
-N = 10
-A = 10
-B = 10
-print(solve(N, A, B)) # should print [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
-N = 10
-A = 5
-B = 5
-print(solve(N, A, B)) # should print -1
+def solve(N, R, flights, F, additional_flights):
+    # Initialize a dictionary to store the cost of each flight
+    costs = {}
+    for flight in flights:
+        costs[flight[0]] = flight[2]
+    for flight in additional_flights:
+        costs[flight[0]] = flight[2]
+    
+    # Initialize a graph with the airports as nodes
+    graph = [[] for _ in range(N + 1)]
+    for flight in flights:
+        graph[flight[0]].append(flight[1])
+        graph[flight[1]].append(flight[0])
+    
+    # Use Breadth-First Search to find the shortest path between all pairs of airports
+    visited = [False] * (N + 1)
+    queue = [1]
+    visited[1] = True
+    while queue:
+        node = queue.pop(0)
+        for neighbor in graph[node]:
+            if not visited[neighbor]:
+                queue.append(neighbor)
+                visited[neighbor] = True
+    
+    # Calculate the total cost of the flights
+    total_cost = 0
+    for i in range(1, N + 1):
+        for j in range(i + 1, N + 1):
+            if costs[i] + costs[j] < total_cost:
+                total_cost = costs[i] + costs[j]
+    
+    return total_cost
 

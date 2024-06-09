@@ -1,39 +1,19 @@
 
-def find_matches(repository, snippet):
-    # Initialize variables
-    matches = []
-    longest_match = 0
-    matching_files = []
+def solve(N, M, tunnels):
+    # Initialize the danger level of each chamber as 0
+    danger_level = [0] * (N + 1)
 
-    # Loop through each file in the repository
-    for file_name, file_contents in repository.items():
-        # Loop through each line in the file
-        for i in range(len(file_contents)):
-            # Check if the current line matches the first line of the snippet
-            if file_contents[i] == snippet[0]:
-                # Initialize variables for the current match
-                current_match = 1
-                current_file = file_name
+    # Loop through each tunnel
+    for tunnel in tunnels:
+        # Get the length of the tunnel
+        length = tunnel[2]
 
-                # Loop through the remaining lines in the file and the snippet
-                for j in range(1, len(file_contents) - i):
-                    # Check if the current line in the file matches the current line in the snippet
-                    if file_contents[i + j] == snippet[j]:
-                        # Increment the current match
-                        current_match += 1
-                    else:
-                        # Break out of the loop if the lines don't match
-                        break
+        # Update the danger level of the starting chamber
+        danger_level[tunnel[0]] += length
 
-                # Check if the current match is the longest match so far
-                if current_match > longest_match:
-                    # Update the longest match and the matching files
-                    longest_match = current_match
-                    matching_files = [current_file]
-                elif current_match == longest_match:
-                    # Add the current file to the list of matching files
-                    matching_files.append(current_file)
+        # Update the danger level of the ending chamber
+        danger_level[tunnel[1]] += length
 
-    # Return the longest match and the list of matching files
-    return longest_match, matching_files
+    # Return the danger level of each chamber
+    return danger_level
 

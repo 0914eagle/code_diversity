@@ -1,16 +1,10 @@
 
-def solve(a):
-    n = len(a)
-    if n == 1:
-        return "YES"
-    if n == 2:
-        if a[0] == a[1]:
-            return "YES"
-        else:
-            return "NO"
-    for i in range(n-1):
-        for j in range(i+1, n):
-            if abs(a[i] - a[j]) <= 1:
-                return "YES"
-    return "NO"
+N, *T = [int(x) for x in input().split()]
+M, *PX = [int(x) for x in input().split()]
+
+def get_time(P, X):
+    return sum(T[i-1] if i != P else T[i-1] + X for i in range(1, N+1))
+
+for i in range(M):
+    print(get_time(PX[i*2-1], PX[i*2]))
 

@@ -1,15 +1,35 @@
 
-def solve(N, M, detectors):
-    # Initialize a list to store the minimum number of phone calls made at each position
-    min_calls = [0] * (M + 1)
-    # Loop through each detector
-    for detector in detectors:
-        # Get the position and total number of phone calls detected by the detector
-        position, total_calls = detector
-        # Loop through each position between the detector position and the end of the street
-        for i in range(position, M + 1):
-            # Add the total number of phone calls detected by the detector to the minimum number of phone calls made at that position
-            min_calls[i] += total_calls
-    # Return the maximum value in the min_calls list, which is the minimal number of phone calls made
-    return max(min_calls)
+def solve(n, g, d, e, links):
+    # Initialize variables
+    alien_systems = []
+    human_systems = []
+    gravity_values = []
+    capacitance = []
+    potential = []
+    inductance = []
+    uw_distance = 0
+
+    # Separate the alien and human systems
+    for i in range(n):
+        if d[i] == "a":
+            alien_systems.append(i)
+        else:
+            human_systems.append(i)
+
+    # Calculate the gravity values for each system
+    for i in range(n):
+        gravity_values.append(g[i])
+
+    # Calculate the capacitance, potential, and inductance for each system
+    for i in range(n):
+        capacitance.append(gravity_values[i] + gravity_values[i-1])
+        potential.append(gravity_values[i] - gravity_values[i-1])
+        inductance.append(gravity_values[i] * gravity_values[i-1])
+
+    # Calculate the UW distance for each system
+    for i in range(n):
+        uw_distance += abs(potential[i] * (capacitance[i] * capacitance[i] - inductance[i]))
+
+    # Return the minimum UW distance
+    return uw_distance
 

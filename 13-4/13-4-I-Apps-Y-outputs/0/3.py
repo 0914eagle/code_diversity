@@ -1,8 +1,15 @@
 
-def restore_vertices(x1, y1, x2, y2):
-    x3 = -y1
-    y3 = x1
-    x4 = -y2
-    y4 = x2
-    return x3, y3, x4, y4
+def convert_to_celsius(fahrenheit):
+    numerator, denominator = fahrenheit.split("/")
+    numerator = int(numerator)
+    denominator = int(denominator)
+    celsius = (numerator - 32) * 5 // 9
+    gcd = find_gcd(celsius, denominator)
+    return f"{celsius // gcd}/{denominator // gcd}"
+
+def find_gcd(a, b):
+    if b == 0:
+        return a
+    else:
+        return find_gcd(b, a % b)
 

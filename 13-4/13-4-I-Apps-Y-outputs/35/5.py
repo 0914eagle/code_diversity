@@ -1,23 +1,23 @@
 
-def solve(n, k):
-    # Initialize a dictionary to store the frequency of each letter
-    freq = {}
-    for i in range(1, k+1):
-        freq[i] = 0
-    
-    # Initialize a list to store the letters of the string
-    s = []
-    
-    # Iterate through the length of the string
-    for i in range(n):
-        # Find the letter with the minimum frequency
-        min_freq = min(freq.values())
-        # Find the key (letter) with the minimum frequency
-        min_key = [k for k, v in freq.items() if v == min_freq][0]
-        # Increment the frequency of the letter
-        freq[min_key] += 1
-        # Add the letter to the string
-        s.append(chr(min_key + 96))
-    
-    return "".join(s)
+n, m = map(int, input().split())
+segments = []
+
+for i in range(n):
+    l, r = map(int, input().split())
+    segments.append([l, r])
+
+points = set()
+
+for segment in segments:
+    for i in range(segment[0], segment[1] + 1):
+        points.add(i)
+
+non_segment_points = set(range(1, m + 1)) - points
+
+print(len(non_segment_points))
+
+if len(non_segment_points) == 0:
+    print(0)
+else:
+    print(*non_segment_points)
 

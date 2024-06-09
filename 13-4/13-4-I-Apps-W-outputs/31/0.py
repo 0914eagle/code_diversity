@@ -1,12 +1,11 @@
 
-def find_beautiful_number(p, x):
-    if x == 1:
-        return "Impossible"
+def solve(r, b, k):
+    # Calculate the maximum number of planks that can be painted with the given conditions
+    max_planks = (10**100 - 1) // (r * b)
     
-    for i in range(10**(p-1), 10**p):
-        if str(i) != str(i)[:1] + str(i)[1:] * (x-1):
-            continue
-        return str(i)
-    
-    return "Impossible"
+    # Check if the number of planks is divisible by k
+    if max_planks % k == 0:
+        return "REBEL"
+    else:
+        return "OBEY"
 

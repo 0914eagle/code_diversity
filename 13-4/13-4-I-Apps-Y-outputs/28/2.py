@@ -1,20 +1,20 @@
 
-def solve(N, A, B, C):
-    # Sort the parts by size in descending order
-    A.sort(reverse=True)
-    B.sort(reverse=True)
-    C.sort(reverse=True)
+def get_min_teams(a):
+    # Sort the array in ascending order
+    a.sort()
+    # Initialize the minimum number of teams as 1
+    min_teams = 1
+    # Loop through the array
+    for i in range(len(a)-1):
+        # Check if the difference between the current element and the next element is 1
+        if a[i+1] - a[i] == 1:
+            # Increment the minimum number of teams
+            min_teams += 1
+    return min_teams
 
-    # Initialize the number of altars to 0
-    altars = 0
-
-    # Loop through each possible combination of upper, middle, and lower parts
-    for i in range(N):
-        for j in range(i+1, N):
-            for k in range(j+1, N):
-                # Check if the parts satisfy the conditions for building an altar
-                if A[i] < B[j] and B[j] < C[k]:
-                    altars += 1
-
-    return altars
+q = int(input())
+for i in range(q):
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(get_min_teams(a))
 

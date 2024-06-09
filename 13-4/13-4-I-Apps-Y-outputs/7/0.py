@@ -1,52 +1,33 @@
 
-def count_cycles(n, m, edges):
-    # Initialize a dictionary to store the graph
-    graph = {}
-    for i in range(1, n+1):
-        graph[i] = []
-    
-    # Add edges to the graph
-    for edge in edges:
-        graph[edge[0]].append(edge[1])
-        graph[edge[1]].append(edge[0])
-    
-    # Initialize a set to store the visited nodes
-    visited = set()
-    
-    # Initialize a counter for the number of cycles
-    cycle_count = 0
-    
-    # Iterate through the graph
-    for node in graph:
-        if node not in visited:
-            # If the node is not visited, start a DFS from it
-            if dfs(graph, node, visited):
-                # If the DFS finds a cycle, increment the cycle count
-                cycle_count += 1
-    
-    return cycle_count
+def solve(s, d):
+    # Initialize variables
+    correct_translations = 0
+    incorrect_translations = 0
+    possible_translations = []
 
-def dfs(graph, node, visited):
-    # Mark the current node as visited
-    visited.add(node)
-    
-    # Iterate through the neighbors of the current node
-    for neighbor in graph[node]:
-        # If the neighbor is not visited, recurse on it
-        if neighbor not in visited:
-            if dfs(graph, neighbor, visited):
-                return True
-    
-    # If the current node is not the starting node, it is part of a cycle
-    if node != 1:
-        return True
-    else:
-        return False
+    # Split the Dutch sentence into words
+    words = s.split()
 
-n, m = map(int, input().split())
-edges = []
-for i in range(m):
-    edges.append(list(map(int, input().split())))
+    # Loop through each word in the Dutch sentence
+    for word in words:
+        # Check if the word is in the dictionary
+        if word in d:
+            # If the word is in the dictionary, check if it has a correct translation
+            if d[word] == "correct":
+                # If the word has a correct translation, add it to the list of possible translations
+                possible_translations.append(word)
+            else:
+                # If the word has an incorrect translation, add it to the list of possible translations
+                possible_translations.append(word)
+                incorrect_translations += 1
+        else:
+            # If the word is not in the dictionary, add it to the list of possible translations
+            possible_translations.append(word)
+            incorrect_translations += 1
 
-print(count_cycles(n, m, edges))
+    # Calculate the number of correct translations
+    correct_translations = len(possible_translations)
+
+    # Return the number of correct and incorrect translations
+    return correct_translations, incorrect_translations
 

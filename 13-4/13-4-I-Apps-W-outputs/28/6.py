@@ -1,24 +1,12 @@
 
-def solve(n, k, l, d):
-    # Initialize variables
-    x = 0
-    t = 0
-    p = [0] * (2 * k)
-    for i in range(1, k):
-        p[i] = 1
-    for i in range(k, 2 * k):
-        p[i] = -1
+n, m = map(int, input().split())
+buttons = list(map(int, input().split()))
 
-    # Loop through each second
-    while x < n:
-        # Check if Koa can swim to the next meter
-        if x + 1 <= n and d[x + 1] + p[t % (2 * k)] <= l:
-            x += 1
-        # If not, wait a second
-        else:
-            x = x
-        t += 1
+lights_off = [0] * n
+for button in buttons:
+    for i in range(button, n):
+        if lights_off[i] == 0:
+            lights_off[i] = button
 
-    # Return whether Koa made it to the island
-    return "Yes" if x == n else "No"
+print(*lights_off)
 

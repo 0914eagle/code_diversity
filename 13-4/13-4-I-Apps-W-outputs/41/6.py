@@ -1,16 +1,34 @@
 
-def solve(n, a):
-    # Initialize the winner as the first player
-    winner = "First"
+def solve(m, n, p):
+    # Initialize a dictionary to store the counts of each x value
+    x_counts = {}
 
-    # Loop through each pile and remove stones
-    for i in range(n):
-        # If the current pile is empty, switch the winner
-        if a[i] == 0:
-            winner = "Second"
-        # Remove the minimum number of stones from the current pile
-        a[i] -= 1
+    # Iterate through the p sequence
+    for i in range(len(p)):
+        # Get the current x value
+        x = p[i]
 
-    # Return the winner
-    return winner
+        # If the x value is not in the dictionary, add it with a count of 1
+        if x not in x_counts:
+            x_counts[x] = 1
+        # Otherwise, increment the count
+        else:
+            x_counts[x] += 1
+
+    # Initialize a variable to store the total number of sequences
+    total_sequences = 1
+
+    # Iterate through the x values and their counts
+    for x, count in x_counts.items():
+        # Calculate the number of sequences for this x value
+        num_sequences = count ** n
+
+        # Multiply the total number of sequences by the number of sequences for this x value
+        total_sequences *= num_sequences
+
+        # Modulo the total number of sequences by 10^9 + 7 to avoid overflow
+        total_sequences %= 1000000007
+
+    # Return the total number of sequences
+    return total_sequences
 

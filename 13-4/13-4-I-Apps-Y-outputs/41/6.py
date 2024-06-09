@@ -1,23 +1,13 @@
 
-def solve(n, k, a):
-    # Initialize two empty lists to store the teams
-    team_1 = []
-    team_2 = []
-    
-    # Sort the list of programming skills in descending order
-    a.sort(reverse=True)
-    
-    # Iterate through the list of programming skills
-    for i in range(n):
-        # If the current student has a skill that is not already in either team
-        if a[i] not in team_1 and a[i] not in team_2:
-            # Add the current student to the first team
-            team_1.append(a[i])
-        # If the current student has a skill that is already in the first team
-        elif a[i] in team_1:
-            # Add the current student to the second team
-            team_2.append(a[i])
-    
-    # Return the teams as a string of 1s and 2s
-    return "".join([str(i) for i in team_1]) + "".join([str(i) for i in team_2])
+def get_perfect_perket(ingredients):
+    # Sort the ingredients by their sourness in descending order
+    ingredients = sorted(ingredients, key=lambda x: x[0], reverse=True)
+    # Initialize the total sourness and bitterness to 0
+    total_sourness, total_bitterness = 0, 0
+    # Loop through the ingredients and calculate the total sourness and bitterness
+    for ingredient in ingredients:
+        total_sourness += ingredient[0]
+        total_bitterness += ingredient[1]
+    # Return the absolute difference between the total sourness and bitterness
+    return abs(total_sourness - total_bitterness)
 

@@ -1,45 +1,22 @@
 
-def find_cycles(n, m, edges):
-    # Initialize a dictionary to store the graph
-    graph = {}
-    for i in range(1, n+1):
-        graph[i] = []
-
-    # Add edges to the graph
-    for edge in edges:
-        u, v = edge[0], edge[1]
-        graph[u].append(v)
-        graph[v].append(u)
-
-    # Initialize a set to store the visited nodes
-    visited = set()
-
-    # Initialize a counter for the number of cycles
-    count = 0
-
-    # Iterate over the graph
-    for node in graph:
-        # If the node has not been visited, explore its component
-        if node not in visited:
-            # Initialize a stack to store the nodes to visit
-            stack = [node]
-
-            # Initialize a set to store the visited nodes
-            visited_component = set()
-
-            # Explore the component
-            while stack:
-                node = stack.pop()
-                if node not in visited_component:
-                    visited_component.add(node)
-                    stack.extend(graph[node])
-
-            # If the component is a cycle, increment the counter
-            if len(visited_component) > 2:
-                count += 1
-
-            # Add the visited nodes to the global visited set
-            visited.update(visited_component)
-
-    return count
+def solve(s, d):
+    # Initialize variables
+    correct_translations = 0
+    incorrect_translations = 0
+    
+    # Iterate through each word in the sentence
+    for word in s.split():
+        # Check if the word is in the dictionary
+        if word in d:
+            # If the word is in the dictionary, check if it is a correct translation
+            if d[word] == "correct":
+                correct_translations += 1
+            else:
+                incorrect_translations += 1
+        else:
+            # If the word is not in the dictionary, it is an incorrect translation
+            incorrect_translations += 1
+    
+    # Return the number of correct and incorrect translations
+    return correct_translations, incorrect_translations
 

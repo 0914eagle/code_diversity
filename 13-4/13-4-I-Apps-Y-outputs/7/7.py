@@ -1,30 +1,19 @@
 
-def num_cycles(n, m, edges):
-    # Initialize a dictionary to store the connected components
-    connected_components = {}
-
-    # Iterate over the edges
-    for edge in edges:
-        # Add the vertices to the dictionary if they are not already present
-        if edge[0] not in connected_components:
-            connected_components[edge[0]] = set()
-        if edge[1] not in connected_components:
-            connected_components[edge[1]] = set()
-
-        # Add the vertices to the same set if they are not already in the same set
-        if edge[0] in connected_components[edge[1]]:
-            continue
-        connected_components[edge[0]].add(edge[1])
-        connected_components[edge[1]].add(edge[0])
-
-    # Initialize a counter for the number of cycles
-    num_cycles = 0
-
-    # Iterate over the connected components
-    for component in connected_components.values():
-        # If the component is a cycle, increment the counter
-        if len(component) > 2 and all(edge[0] in component for edge in edges if edge[1] in component):
-            num_cycles += 1
-
-    return num_cycles
+def solve(s, d):
+    # Initialize variables
+    correct_translations = 0
+    incorrect_translations = 0
+    
+    # Iterate through each word in the Dutch sentence
+    for word in s:
+        # Check if the word is in the dictionary
+        if word in d:
+            # If the word is in the dictionary, check if it is a correct or incorrect translation
+            if d[word] == "correct":
+                correct_translations += 1
+            else:
+                incorrect_translations += 1
+    
+    # Return the number of correct and incorrect translations
+    return correct_translations, incorrect_translations
 

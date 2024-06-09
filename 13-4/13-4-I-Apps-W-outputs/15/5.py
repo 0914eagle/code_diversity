@@ -1,17 +1,19 @@
 
-def get_max_profit(n, a, d, c):
-    # Calculate the gap between each pair of problems
-    gaps = [0] + [max(d[i + 1] - d[i], 0) for i in range(n - 1)]
-    # Initialize the maximum profit and the current profit
-    max_profit, curr_profit = 0, 0
-    # Iterate through the problems and calculate the maximum profit
-    for i in range(n):
-        # Add the current problem to the contest
-        curr_profit += a
-        # Add the gap between the current problem and the next problem
-        curr_profit += gaps[i]
-        # Update the maximum profit if necessary
-        max_profit = max(max_profit, curr_profit - c[i])
-    # Return the maximum profit
-    return max_profit
+def is_possible(points):
+    # Sort the points by their x-coordinates
+    sorted_points = sorted(points, key=lambda point: point[0])
+
+    # Initialize the minimum number of lines needed to cover all points as infinity
+    min_lines = float('inf')
+
+    # Iterate over all possible line combinations
+    for i in range(len(sorted_points)):
+        for j in range(i+1, len(sorted_points)):
+            # Check if the current line combination covers all points
+            if set(sorted_points[i:j+1]) == set(points):
+                # If it does, update the minimum number of lines needed
+                min_lines = min(min_lines, j-i+1)
+
+    # Return YES if the minimum number of lines needed is 2, NO otherwise
+    return 'YES' if min_lines == 2 else 'NO'
 

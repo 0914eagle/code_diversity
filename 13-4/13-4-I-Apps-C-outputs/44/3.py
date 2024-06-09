@@ -1,20 +1,31 @@
 
-def solve(n, pairs):
-    # Initialize a dictionary to store the food types for each pair
-    food_types = {}
+def solve(n, buttons):
+    # Initialize a list to store the answers
+    answers = []
     
-    # Iterate over the pairs and assign food types
-    for pair in pairs:
-        # If the boy in the pair has not been assigned a food type, assign Kooft
-        if pair[0] not in food_types:
-            food_types[pair[0]] = 1
-        # If the girl in the pair has not been assigned a food type, assign Zahre-mar
-        if pair[1] not in food_types:
-            food_types[pair[1]] = 2
-        # If both the boy and girl in the pair have been assigned food types, check if they are the same
-        if pair[0] in food_types and pair[1] in food_types and food_types[pair[0]] == food_types[pair[1]]:
-            return -1
+    # Loop through each possible combination of buttons
+    for combination in itertools.permutations(range(n)):
+        # Check if the current combination is valid
+        if is_valid_combination(combination, buttons):
+            # If it is valid, add it to the list of answers
+            answers.append(combination)
     
-    # If all pairs have been assigned food types, return the dictionary of food types
-    return food_types
+    # Return the list of answers
+    return answers
+
+def is_valid_combination(combination, buttons):
+    # Initialize a set to store the buttons that have been used
+    used_buttons = set()
+    
+    # Loop through each person in the combination
+    for person in combination:
+        # Check if the current button has already been used
+        if person in used_buttons:
+            # If it has, return False
+            return False
+        # Add the current button to the set of used buttons
+        used_buttons.add(person)
+    
+    # If we reach this point, all buttons have been used and no button has been used more than once, so return True
+    return True
 

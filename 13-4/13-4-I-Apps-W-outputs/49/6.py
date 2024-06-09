@@ -1,5 +1,8 @@
 
-def solve_recurrence(recurrence, initial_values, queries):
-    # Implement your solution here
-    return []
+def solve(n, m, a):
+    result = 1
+    for i in range(n):
+        for j in range(i+1, n):
+            result = (result * abs(a[i] - a[j])) % m
+    return result
 

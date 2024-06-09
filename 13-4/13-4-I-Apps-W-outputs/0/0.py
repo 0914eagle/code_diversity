@@ -1,8 +1,28 @@
 
-def pythagorean_triple(n):
-    for m in range(1, n):
-        for k in range(1, m):
-            if m**2 + k**2 == n**2:
-                return m, k
-    return -1, -1
+def solve(s):
+    amber, buff, canary = 0, 0, 0
+    for i in range(len(s)):
+        if s[i] == "A":
+            amber += 1
+        elif s[i] == "B":
+            buff += 1
+        elif s[i] == "C":
+            canary += 1
+    
+    if amber == 0 or buff == 0 or canary == 0:
+        return "No"
+    
+    if amber == 1 and buff == 1 and canary == 1:
+        return "Yes"
+    
+    if amber == 2 and buff == 1 and canary == 1:
+        return "Yes"
+    
+    if amber == 1 and buff == 2 and canary == 1:
+        return "Yes"
+    
+    if amber == 1 and buff == 1 and canary == 2:
+        return "Yes"
+    
+    return "No"
 

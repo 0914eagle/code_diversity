@@ -1,24 +1,31 @@
 
-def solve(N, H, L, horror_list, similarities):
-    # Initialize a dictionary to store the horror index for each movie
-    horror_index = {}
+def can_construct_square(n, m, tiles):
+    # Check if the input is valid
+    if n < 1 or n > 100:
+        return "NO"
+    if m < 1 or m > 100:
+        return "NO"
+    if len(tiles) != 2 * n:
+        return "NO"
 
-    # Set the horror index for the movies on the horror list to 0
-    for movie in horror_list:
-        horror_index[movie] = 0
+    # Initialize a set to store the tiles that have already been used
+    used_tiles = set()
 
-    # Iterate over the similarities and update the horror index for each movie
-    for a, b in similarities:
-        if a in horror_index or b in horror_index:
-            continue
-        if a in horror_index:
-            horror_index[b] = max(horror_index[a] + 1, horror_index.get(b, 0))
-        elif b in horror_index:
-            horror_index[a] = max(horror_index[b] + 1, horror_index.get(a, 0))
-        else:
-            horror_index[a] = horror_index.get(a, 0) + 1
-            horror_index[b] = horror_index.get(b, 0) + 1
+    # Loop through each tile type
+    for i in range(n):
+        # Get the current tile type
+        tile = tiles[2 * i] + tiles[2 * i + 1]
 
-    # Return the movie with the highest horror index
-    return max(horror_index, key=horror_index.get)
+        # Check if the tile has already been used
+        if tile in used_tiles:
+            return "NO"
+
+        # Add the tile to the set of used tiles
+        used_tiles.add(tile)
+
+    # Check if the square can be constructed
+    if len(used_tiles) == n:
+        return "YES"
+    else:
+        return "NO"
 

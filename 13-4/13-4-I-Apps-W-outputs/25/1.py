@@ -1,13 +1,18 @@
 
-def solve(map1, map2):
-    # Find the length of the common section
-    n = len(set(map1).intersection(set(map2)))
-    
-    # Find the starting position of the common section in map1
-    i = map1.index(map1[0:n])
-    
-    # Find the starting position of the common section in map2
-    j = map2.index(map2[0:n])
-    
-    return i, j
+def can_transform(s, t):
+    vowels = set("aeiou")
+    consonants = set("abcdefghijklmnopqrstuvwxyz") - vowels
+    s_vowels = [c for c in s if c in vowels]
+    s_consonants = [c for c in s if c in consonants]
+    t_vowels = [c for c in t if c in vowels]
+    t_consonants = [c for c in t if c in consonants]
+    if len(s_vowels) != len(t_vowels) or len(s_consonants) != len(t_consonants):
+        return "No"
+    for i in range(len(s_vowels)):
+        if s_vowels[i] not in t_vowels:
+            return "No"
+    for i in range(len(s_consonants)):
+        if s_consonants[i] not in t_consonants:
+            return "No"
+    return "Yes"
 

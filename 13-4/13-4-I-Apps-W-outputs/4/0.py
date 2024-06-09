@@ -1,9 +1,8 @@
 
-def count_occurrences(n, x):
+def get_pyramid_count(n):
     count = 0
-    for i in range(1, n+1):
-        for j in range(1, n+1):
-            if i * j == x:
-                count += 1
+    while n >= 1:
+        count += 1
+        n -= 1
     return count
 

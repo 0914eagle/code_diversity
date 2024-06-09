@@ -1,28 +1,26 @@
 
-def solve(n, k, a):
-    # Initialize two empty lists to store the teams
-    team_1 = []
-    team_2 = []
+def get_perket_ingredients(ingredients):
+    # Sort the ingredients by their sourness in ascending order
+    ingredients = sorted(ingredients, key=lambda x: x[0])
     
-    # Sort the students by their programming skills in descending order
-    sorted_students = sorted(range(n), key=lambda i: a[i], reverse=True)
+    # Initialize the minimum difference and the chosen ingredients
+    min_diff = float('inf')
+    chosen_ingredients = []
     
-    # Iterate through the students and assign them to a team
-    for i in range(n):
-        # If the current student is not in any team, choose the student with the maximum programming skill
-        if i not in team_1 and i not in team_2:
-            # Add the current student to the first team
-            team_1.append(sorted_students[i])
-            # Add the k closest students to the left and right of the current student to the first team
-            for j in range(1, k+1):
-                if sorted_students[i-j] not in team_1:
-                    team_1.append(sorted_students[i-j])
-                if sorted_students[i+j] not in team_1:
-                    team_1.append(sorted_students[i+j])
-        # If the current student is already in the first team, add them to the second team
-        elif i in team_1:
-            team_2.append(i)
+    # Iterate through all possible combinations of ingredients
+    for i in range(len(ingredients)):
+        for j in range(i+1, len(ingredients)):
+            # Calculate the total sourness and bitterness of the current combination
+            total_sourness = ingredients[i][0] * ingredients[j][0]
+            total_bitterness = ingredients[i][1] + ingredients[j][1]
+            
+            # Calculate the absolute difference between sourness and bitterness
+            diff = abs(total_sourness - total_bitterness)
+            
+            # If the current difference is smaller than the minimum difference, update the minimum difference and the chosen ingredients
+            if diff < min_diff:
+                min_diff = diff
+                chosen_ingredients = [ingredients[i], ingredients[j]]
     
-    # Return the teams as a string of 1s and 2s
-    return "".join([str(1 if i in team_1 else 2) for i in range(n)])
+    return chosen_ingredients
 

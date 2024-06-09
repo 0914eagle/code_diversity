@@ -1,13 +1,23 @@
 
-def num_states(n):
-    # Initialize a list to store the number of states for each turn
-    states = [1, 1]
-    
-    # Iterate from the second turn to the last turn
-    for i in range(2, n+1):
-        # Calculate the number of states for the current turn
-        states.append(states[i-1] * 2)
-    
-    # Return the total number of states modulo 10^9 + 7
-    return states[-1] % 1000000007
+import sys
+
+def solve(s):
+    mod = 10**9+7
+    count = 0
+    for i in range(len(s)):
+        if s[i] == '?':
+            for j in range(10):
+                num = int(s[:i] + str(j) + s[i+1:])
+                if num % 13 == 5:
+                    count += 1
+                    count %= mod
+        else:
+            num = int(s)
+            if num % 13 == 5:
+                count += 1
+                count %= mod
+    return count
+
+s = input()
+print(solve(s))
 

@@ -1,13 +1,29 @@
 
-def cook_chicken(k, d, t):
-    total_time = 0
-    stove_on = False
-    while total_time < t:
-        if stove_on:
-            total_time += t
-        else:
-            total_time += 2 * t
-        stove_on = not stove_on
-        total_time += d
-    return total_time
+import re
+
+def get_similarly_spelled_words(text):
+    words = re.findall(r'\w+', text)
+    similar_words = {}
+    for word in words:
+        core = re.sub(r'[^a-zA-Z]', '', word.lower())
+        if core not in similar_words:
+            similar_words[core] = []
+        for similar_word in words:
+            if core != re.sub(r'[^a-zA-Z]', '', similar_word.lower()):
+                continue
+            if similar_word not in similar_words[core] and similar_word != word:
+                similar_words[core].append(similar_word)
+    return similar_words
+
+def main():
+    text = input()
+    similar_words = get_similarly_spelled_words(text)
+    if not similar_words:
+        print("***")
+    else:
+        for core, words in similar_words.items():
+            print(f"{core}: {' '.join(words)}")
+
+if __name__ == "__main__":
+    main()
 

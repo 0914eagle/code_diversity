@@ -1,30 +1,16 @@
 
-import math
+def reconstruct_towers(box_heights):
+    # Sort the box heights in descending order
+    sorted_box_heights = sorted(box_heights, reverse=True)
 
-def solve(numbers):
-    # Split the input into two complex numbers
-    num1, num2 = numbers.split(" ")
+    # Find the two tower heights
+    tower_heights = sorted_box_heights[-2:]
 
-    # Convert the input to complex numbers
-    num1 = complex(num1)
-    num2 = complex(num2)
+    # Find the three boxes in the first tower
+    first_tower = sorted_box_heights[:3]
 
-    # Perform the operations
-    addition = num1 + num2
-    subtraction = num1 - num2
-    multiplication = num1 * num2
-    division = num1 / num2
-    modulus_num1 = math.fabs(num1)
-    modulus_num2 = math.fabs(num2)
+    # Find the three boxes in the second tower
+    second_tower = sorted_box_heights[3:6]
 
-    # Format the output
-    output = ""
-    output += "{:.2f} {:+.2f}i\n".format(addition.real, addition.imag)
-    output += "{:.2f} {:+.2f}i\n".format(subtraction.real, subtraction.imag)
-    output += "{:.2f} {:+.2f}i\n".format(multiplication.real, multiplication.imag)
-    output += "{:.2f} {:+.2f}i\n".format(division.real, division.imag)
-    output += "{:.2f}\n".format(modulus_num1)
-    output += "{:.2f}\n".format(modulus_num2)
-
-    return output
+    return first_tower, second_tower
 

@@ -1,10 +1,21 @@
 
-def solve(N, A, B, C):
-    altars = set()
-    for i in range(N):
-        for j in range(i+1, N):
-            for k in range(j+1, N):
-                if A[i] < A[j] < A[k] and B[j] < B[k]:
-                    altars.add((i, j, k))
-    return len(altars)
+def solve(n, a):
+    # Sort the array of skills in ascending order
+    a.sort()
+    # Initialize the minimum number of teams as 0
+    min_teams = 0
+    # Iterate through the array of skills
+    for i in range(n-1):
+        # Check if the difference between the current skill and the next skill is 1
+        if a[i+1] - a[i] == 1:
+            # Increment the minimum number of teams
+            min_teams += 1
+    # Return the minimum number of teams
+    return min_teams
+
+q = int(input())
+for i in range(q):
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(solve(n, a))
 

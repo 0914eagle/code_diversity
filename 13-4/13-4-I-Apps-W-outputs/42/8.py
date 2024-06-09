@@ -1,13 +1,13 @@
 
-def solve():
-    N = int(input())
-    A = list(map(int, input().split()))
-    count = 0
-    for i in range(N):
-        for j in range(N):
-            if i != j and A[j] % A[i] == 0:
-                break
+def solve(S):
+    N = len(S)
+    counts = [0] * N
+    counts[0] = 1
+    counts[N-1] = 1
+    for i in range(1, N-1):
+        if S[i] == "L":
+            counts[i-1] += counts[i]
         else:
-            count += 1
-    return count
+            counts[i+1] += counts[i]
+    return " ".join(str(count) for count in counts)
 

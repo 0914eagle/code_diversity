@@ -1,9 +1,15 @@
 
-def count_occurrences(n, x):
-    count = 0
-    for i in range(1, n+1):
-        for j in range(1, n+1):
-            if i * j == x:
-                count += 1
-    return count
+def get_pyramids_constructed(n):
+    pyramids_constructed = 0
+    while n > 0:
+        if n == 1:
+            pyramids_constructed += 1
+            break
+        elif n % 2 == 1:
+            pyramids_constructed += 1
+            n = n // 2 + 1
+        else:
+            pyramids_constructed += 1
+            n = n // 2
+    return pyramids_constructed
 

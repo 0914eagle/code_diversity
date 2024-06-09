@@ -1,13 +1,20 @@
 
-def get_min_rod_length(triangle_list):
-    # Calculate the sum of the areas of all triangles
-    total_area = sum([triangle[0] * triangle[1] for triangle in triangle_list])
+import re
 
-    # Calculate the perimeter of the largest triangle
-    max_perimeter = max([triangle[0] + triangle[1] + triangle[2] for triangle in triangle_list])
+def is_eastern_gothic(sentence):
+    pattern = re.compile(r'ae')
+    matches = pattern.findall(sentence)
+    if len(matches) / len(sentence.split()) >= 0.4:
+        return True
+    return False
 
-    # Calculate the minimum rod length
-    min_rod_length = (total_area / max_perimeter) + 2
+def main():
+    sentence = input()
+    if is_eastern_gothic(sentence):
+        print("dae ae ju traeligt va")
+    else:
+        print("haer talar vi rikssvenska")
 
-    return min_rod_length
+if __name__ == "__main__":
+    main()
 

@@ -1,25 +1,33 @@
 
-def decrypt(N, X, encrypted_text):
-    # Step 1: Define the function f(x) = (33x + 1) mod 2^20
-    def f(x):
-        return (33*x + 1) % (2**20)
-    
-    # Step 2: Create a X by X size grid, fill the upper left corner with f^1(0), the next cell to the right with f^2(0), f^3(0) etc.
-    grid = [[f(0) for _ in range(X)] for _ in range(X)]
-    
-    # Step 3: Sum all the values in every column, and take those values mod 2^20
-    column_sums = [sum(column) % (2**20) for column in zip(*grid)]
-    
-    # Step 4: Concatenate the base-10 representations of the column sums together
-    concatenated_sums = ''.join(str(sum) for sum in column_sums)
-    
-    # Step 5: Convert the result of step 4 from base 10 to base 27
-    one_time_pad = int(concatenated_sums, 10) % (27**X)
-    
-    # Step 6: For each letter l of the intercepted message, shift the letter by the amount given by the corresponding digit of step 5, base 27
-    decrypted_text = ''
-    for i, letter in enumerate(encrypted_text):
-        decrypted_text += chr((ord(letter) + one_time_pad[i]) % 27)
-    
-    return decrypted_text
+def can_zax_and_xaz_coexist(m, n, resources):
+    # Initialize a set to store the islands that have been populated by the Zax
+    zax_islands = set()
+    # Initialize a set to store the islands that have been populated by the Xaz
+    xaz_islands = set()
+    # Initialize a set to store the natural resources that have been collected by the Zax
+    zax_resources = set()
+    # Initialize a set to store the natural resources that have been collected by the Xaz
+    xaz_resources = set()
+
+    for i in range(m):
+        # Get the natural resources present on the current island
+        island_resources = resources[i]
+        # If the current island has not been populated by either the Zax or the Xaz, populate it with the Zax
+        if i not in zax_islands and i not in xaz_islands:
+            zax_islands.add(i)
+        # If the current island has been populated by the Zax, add the natural resources to the set of resources collected by the Zax
+        elif i in zax_islands:
+            zax_resources.update(island_resources)
+        # If the current island has been populated by the Xaz, add the natural resources to the set of resources collected by the Xaz
+        elif i in xaz_islands:
+            xaz_resources.update(island_resources)
+
+    # If the Zax have collected all $n$ natural resources, return YES
+    if len(zax_resources) == n:
+        return "YES"
+    # If the Xaz have collected all $n$ natural resources, return YES
+    if len(xaz_resources) == n:
+        return "YES"
+    # Otherwise, return NO
+    return "NO"
 

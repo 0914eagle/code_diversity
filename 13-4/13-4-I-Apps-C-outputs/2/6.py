@@ -1,14 +1,34 @@
 
-def is_beautiful_sequence(numbers):
-    for i in range(len(numbers) - 1):
-        if abs(numbers[i] - numbers[i+1]) != 1:
-            return False
-    return True
+import sys
 
-def construct_beautiful_sequence(a, b, c, d):
-    numbers = [0] * a + [1] * b + [2] * c + [3] * d
-    if is_beautiful_sequence(numbers):
-        return "YES\n" + " ".join(str(x) for x in numbers)
-    else:
-        return "NO"
+def get_number_of_ways(r, w, d):
+    # Base case: if there are no red or white wines, there is only one way to arrange them
+    if r == 0 and w == 0:
+        return 1
+    
+    # Base case: if there is only one type of wine, there is only one way to arrange them
+    if r == 0 or w == 0:
+        return 1
+    
+    # Initialize the number of ways to arrange the wines
+    num_ways = 0
+    
+    # Iterate over the possible number of red wine piles
+    for red_piles in range(1, r + 1):
+        # Calculate the number of white wine piles
+        white_piles = r - red_piles
+        
+        # Check if the number of red wine piles is valid
+        if red_piles <= d:
+            # Calculate the number of ways to arrange the wines with the current number of red and white piles
+            num_ways += get_number_of_ways(red_piles, white_piles, d)
+    
+    return num_ways
+
+def main():
+    r, w, d = map(int, input().split())
+    print(get_number_of_ways(r, w, d) % (10**9 + 7))
+
+if __name__ == "__main__":
+    main()
 

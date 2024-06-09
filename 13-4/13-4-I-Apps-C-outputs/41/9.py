@@ -1,15 +1,21 @@
 
-def max_value_of_m(a, k):
-    n = len(a)
-    dp = [[0] * (n + 1) for _ in range(k + 1)]
-    for i in range(n):
-        dp[0][i] = a[i]
-    for i in range(1, k + 1):
-        for j in range(i):
-            for l in range(n):
-                r = l + i
-                if r > n:
-                    break
-                dp[i][l] = max(dp[i][l], dp[j][l] + dp[i - j - 1][r])
-    return max(dp[k])
+def solve(n, k, cameras):
+    # Initialize a set to store the covered walls
+    covered_walls = set()
+    # Initialize a variable to store the minimum number of cameras needed
+    min_cameras = 0
+    # Loop through each camera position
+    for camera in cameras:
+        # Check if the camera covers any new walls
+        new_walls = set(range(camera[0], camera[1] + 1)) - covered_walls
+        # If the camera covers new walls, add them to the covered walls set
+        if new_walls:
+            covered_walls |= new_walls
+            # Increment the minimum number of cameras needed
+            min_cameras += 1
+    # Check if all walls are covered
+    if len(covered_walls) == n:
+        return min_cameras
+    else:
+        return "impossible"
 

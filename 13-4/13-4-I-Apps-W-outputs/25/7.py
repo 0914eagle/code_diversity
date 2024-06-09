@@ -1,11 +1,10 @@
 
-def align_maps(map1, map2):
-    # Find the length of the common section
-    n = len(set(map1).intersection(set(map2)))
-    
-    # Find the starting indices of the common section in both maps
-    i = map1.index(map1[:n])
-    j = map2.index(map2[:n])
-    
-    return i, j
+def can_transform(s, t):
+    vowels = set("aeiou")
+    consonants = set("bcdfghjklmnpqrstvwxyz")
+    s_vowels = {c for c in s if c in vowels}
+    s_consonants = {c for c in s if c in consonants}
+    t_vowels = {c for c in t if c in vowels}
+    t_consonants = {c for c in t if c in consonants}
+    return s_vowels == t_vowels and s_consonants == t_consonants
 

@@ -1,38 +1,34 @@
 
-def get_maximum_number_of_eligible_pupils(pupils):
-    # Initialize a dictionary to store the number of eligible pupils for each music style
-    music_style_count = {}
-    # Initialize a dictionary to store the number of eligible pupils for each sport
-    sport_count = {}
+import math
 
-    for pupil in pupils:
-        # Get the height, sex, music style, and sport of the current pupil
-        height, sex, music_style, sport = pupil
+def get_max_circumference(vertices):
+    # Calculate the distance between each pair of vertices
+    distances = []
+    for i in range(len(vertices)):
+        for j in range(i+1, len(vertices)):
+            dx = vertices[i][0] - vertices[j][0]
+            dy = vertices[i][1] - vertices[j][1]
+            distances.append(math.sqrt(dx**2 + dy**2))
+    
+    # Sort the distances in descending order
+    distances.sort(reverse=True)
+    
+    # Calculate the maximum circumference of the hexagon
+    max_circumference = 0
+    for i in range(len(distances)):
+        for j in range(i+1, len(distances)):
+            for k in range(j+1, len(distances)):
+                circumference = distances[i] + distances[j] + distances[k]
+                if circumference > max_circumference:
+                    max_circumference = circumference
+    
+    return max_circumference
 
-        # Check if the current pupil is eligible based on the rules provided
-        eligible = True
-        if sex == "M" and height > 350:
-            eligible = False
-        if music_style in music_style_count and music_style_count[music_style] > 0:
-            eligible = False
-        if sport in sport_count and sport_count[sport] > 0:
-            eligible = False
+n = int(input())
+vertices = []
+for i in range(n):
+    x, y = map(int, input().split())
+    vertices.append((x, y))
 
-        # Update the dictionary counts for the current pupil's music style and sport
-        if eligible:
-            if music_style not in music_style_count:
-                music_style_count[music_style] = 0
-            music_style_count[music_style] += 1
-            if sport not in sport_count:
-                sport_count[sport] = 0
-            sport_count[sport] += 1
-
-    # Find the maximum number of eligible pupils by finding the maximum number of pupils for each music style and sport
-    maximum_number_of_eligible_pupils = 0
-    for music_style, count in music_style_count.items():
-        maximum_number_of_eligible_pupils = max(maximum_number_of_eligible_pupils, count)
-    for sport, count in sport_count.items():
-        maximum_number_of_eligible_pupils = max(maximum_number_of_eligible_pupils, count)
-
-    return maximum_number_of_eligible_pupils
+print(get_max_circumference(vertices))
 

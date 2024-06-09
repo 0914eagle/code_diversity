@@ -1,19 +1,24 @@
 
-def solve(matrix):
-    # Initialize a set to store the unique columns
-    unique_cols = set()
-    # Initialize a variable to store the maximum number of rows that can be deleted
-    max_rows = 0
-    # Iterate over the rows of the matrix
-    for i in range(len(matrix)):
-        # Check if the current row is already in the set of unique columns
-        if matrix[i] in unique_cols:
-            # If it is, break the loop and return the maximum number of rows that can be deleted
-            return max_rows
-        # Add the current row to the set of unique columns
-        unique_cols.add(matrix[i])
-        # Increment the maximum number of rows that can be deleted
-        max_rows += 1
-    # If all rows are unique, return the maximum number of rows that can be deleted
-    return max_rows
+def solve(students, tutors):
+    # Calculate the distance between each student and tutor
+    distances = []
+    for student in students:
+        for tutor in tutors:
+            distances.append((student, tutor, abs(student[0] - tutor[0]) + abs(student[1] - tutor[1])))
+    
+    # Sort the distances in ascending order
+    distances.sort(key=lambda x: x[2])
+    
+    # Initialize the minimum distance traveled by the worst-off student to infinity
+    min_distance = float('inf')
+    
+    # Iterate through the distances and find the minimum distance traveled by the worst-off student
+    for i in range(len(distances)):
+        student, tutor, distance = distances[i]
+        if distance > min_distance:
+            break
+        min_distance = min(min_distance, distance)
+    
+    # Return the minimum distance traveled by the worst-off student
+    return min_distance
 

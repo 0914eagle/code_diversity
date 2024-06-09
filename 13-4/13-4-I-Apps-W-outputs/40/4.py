@@ -1,18 +1,21 @@
 
-import math
-
-def solve(n, s, locations):
-    # Calculate the total population of the locations
-    total_population = sum(location[2] for location in locations)
-
-    # Check if the total population is greater than the required population for a megacity
-    if total_population < s:
-        return -1
-
-    # Calculate the minimum radius needed to include all locations within the circle
-    radius = 0
-    for location in locations:
-        radius = max(radius, math.sqrt(location[0]**2 + location[1]**2))
-
-    return radius
+def get_segments(n, k, absurdity):
+    # Sort the absurdity values in descending order
+    absurdity.sort(reverse=True)
+    
+    # Initialize the segments with the first k values
+    segments = absurdity[:k]
+    
+    # Add the remaining values to the segments
+    for i in range(k, n):
+        # Find the smallest segment that the current value can be added to
+        smallest_segment_index = 0
+        for j in range(1, k):
+            if absurdity[i] > segments[j]:
+                smallest_segment_index = j
+                break
+        segments[smallest_segment_index] += absurdity[i]
+    
+    # Return the segments with the minimum value of a
+    return segments
 

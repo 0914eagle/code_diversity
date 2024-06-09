@@ -1,34 +1,36 @@
 
-def solve(n, m, neighbors, s, t):
-    # Initialize a graph with n nodes and m edges
-    graph = [[] for _ in range(n)]
-    for u, v in neighbors:
-        graph[u].append(v)
-        graph[v].append(u)
+import sys
+
+def solve(N, X, A):
+    # Initialize the count of different integers not exceeding X
+    count = 0
     
-    # Breadth-first search from Alice's starting station
-    queue = [(s, 0)]
-    visited = set()
-    while queue:
-        station, time = queue.pop(0)
-        if station == t:
-            return time
-        for neighbor in graph[station]:
-            if neighbor not in visited:
-                queue.append((neighbor, time + 1))
-                visited.add(neighbor)
+    # Iterate over the given integers
+    for i in range(N):
+        # Convert the integer to binary
+        binary = bin(A[i])[2:]
+        
+        # Initialize the current integer
+        current = 0
+        
+        # Iterate over the binary representation of the integer
+        for j in range(len(binary)):
+            # If the current bit is 1, add the corresponding power of 2 to the current integer
+            if binary[j] == "1":
+                current += 2**j
+            
+            # If the current integer is not greater than X, increment the count
+            if current <= X:
+                count += 1
     
-    # Breadth-first search from Bob's starting station
-    queue = [(t, 0)]
-    visited = set()
-    while queue:
-        station, time = queue.pop(0)
-        if station == s:
-            return time
-        for neighbor in graph[station]:
-            if neighbor not in visited:
-                queue.append((neighbor, time + 1))
-                visited.add(neighbor)
+    # Return the count modulo 998244353
+    return count % 998244353
+
+if __name__ == "__main__":
+    # Read the input from stdin
+    N, X = map(int, input().split())
+    A = list(map(int, input().split()))
     
-    return "never meet"
+    # Solve the problem
+    print(solve(N, X, A))
 

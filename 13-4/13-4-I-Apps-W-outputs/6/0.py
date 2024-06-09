@@ -1,23 +1,26 @@
 
-def get_max_sum(k2, k3, k5, k6):
-    # Initialize the maximum sum and the current sum
-    max_sum = 0
-    current_sum = 0
+def get_min_draws(N, squares):
+    # Initialize the minimum number of draws to infinity
+    min_draws = float('inf')
     
-    # Loop through the digits and add them to the current sum
-    for i in range(k2):
-        current_sum += 2
-    for i in range(k3):
-        current_sum += 3
-    for i in range(k5):
-        current_sum += 5
-    for i in range(k6):
-        current_sum += 6
+    # Iterate over each possible starting square
+    for i in range(N):
+        # Initialize the current square and the number of draws
+        current_square = i
+        draws = 0
+        
+        # Iterate over each possible color
+        for color in ['Blue', 'Orange', 'Pink', 'Green', 'Red', 'Yellow']:
+            # If the current square has the current color, move to the next square
+            if squares[current_square] == color:
+                current_square += 1
+                draws += 1
+                break
+        
+        # If the current square is the last square, update the minimum number of draws
+        if current_square == N:
+            min_draws = min(min_draws, draws)
     
-    # Check if the current sum is greater than the maximum sum
-    if current_sum > max_sum:
-        max_sum = current_sum
-    
-    # Return the maximum sum
-    return max_sum
+    # Return the minimum number of draws
+    return min_draws
 

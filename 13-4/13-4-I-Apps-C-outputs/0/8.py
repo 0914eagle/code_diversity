@@ -1,31 +1,23 @@
 
-def solve(grid, commands):
-    # Initialize variables
-    start, goal = None, None
-    obstacles, empty = set(), set()
-    for i, row in enumerate(grid):
-        for j, cell in enumerate(row):
-            if cell == "S":
-                start = (i, j)
-            elif cell == "G":
-                goal = (i, j)
-            elif cell == "#":
-                obstacles.add((i, j))
-            else:
-                empty.add((i, j))
+def solve(starting_sequence, resulting_sequence):
+    # Initialize a list to store the proclamations
+    proclamations = []
     
-    # Breadth-first search to find the shortest path from the start to the goal
-    queue = [(start, [])]
-    visited = set()
-    while queue:
-        (i, j), path = queue.pop(0)
-        if (i, j) == goal:
-            return len(path)
-        for (ii, jj) in [(i-1, j), (i+1, j), (i, j-1), (i, j+1)]:
-            if (ii, jj) not in visited and (ii, jj) in empty:
-                queue.append(((ii, jj), path + [(ii, jj)]))
-                visited.add((ii, jj))
+    # Loop through the resulting sequence
+    for i in range(len(resulting_sequence)):
+        # Get the current frog ID and its position in the resulting sequence
+        current_frog_id = resulting_sequence[i]
+        current_frog_position = i
+        
+        # Find the position of the current frog ID in the starting sequence
+        starting_frog_position = starting_sequence.index(current_frog_id)
+        
+        # Calculate the number of leaps needed to move the current frog to its correct position
+        leaps_needed = abs(current_frog_position - starting_frog_position)
+        
+        # Add the leaps needed to the proclamations list
+        proclamations.extend([leaps_needed] * leaps_needed)
     
-    # If no path is found, return -1
-    return -1
+    # Return the proclamations list
+    return proclamations
 

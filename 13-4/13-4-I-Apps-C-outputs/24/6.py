@@ -1,32 +1,27 @@
 
-def get_max_tastiness(n, k, a, b, tastiness, complementary_pairs):
-    # Initialize the maximum tastiness and cost
-    max_tastiness = 0
-    max_cost = 0
-    
-    # Loop through each possible combination of scoops
-    for num_scoops in range(1, n + 1):
-        for scoop_order in itertools.permutations(range(k), num_scoops):
-            # Calculate the tastiness and cost of this combination
-            tastiness_sum = 0
-            cost_sum = 0
-            for i in range(num_scoops):
-                tastiness_sum += tastiness[scoop_order[i]]
-                cost_sum += a
-            for i in range(num_scoops - 1):
-                for j in range(i + 1, num_scoops):
-                    if (scoop_order[i], scoop_order[j]) in complementary_pairs:
-                        tastiness_sum += complementary_pairs[(scoop_order[i], scoop_order[j])]
-            cost_sum += b
-            
-            # Update the maximum tastiness and cost if necessary
-            if tastiness_sum > max_tastiness:
-                max_tastiness = tastiness_sum
-                max_cost = cost_sum
-    
-    # Return the maximum tastiness per gold coin ratio
-    if max_cost == 0:
-        return 0
-    else:
-        return max_tastiness / max_cost
+def solve(tickets):
+    # Initialize a dictionary to store the tolls for each exit
+    tolls = {}
+    # Initialize the total tolls to 0
+    total_tolls = 0
+    # Iterate over the tickets
+    for ticket in tickets:
+        # Get the entrance and exit numbers from the ticket
+        entrance, exit = ticket
+        # If the exit is not already in the dictionary, add it with a toll of 0
+        if exit not in tolls:
+            tolls[exit] = 0
+        # Calculate the toll for the exit
+        toll = abs(entrance - exit)
+        # Add the toll to the total tolls
+        total_tolls += toll
+        # If the entrance is not already in the dictionary, add it with a toll of 0
+        if entrance not in tolls:
+            tolls[entrance] = 0
+        # Add the toll to the total tolls
+        total_tolls += toll
+        # Update the toll for the exit
+        tolls[exit] += toll
+    # Return the least total amount of tolls
+    return total_tolls
 

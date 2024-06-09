@@ -1,42 +1,18 @@
 
-def solve(player, num_cuboids, *cuboids):
-    # Initialize the game state with the given cuboids
-    game_state = cuboids
-    
-    # Loop through each cuboid and find the player who can make the next move
-    while len(game_state) > 0:
-        # Find the player who can make the next move
-        if player == "RUBEN":
-            player = "ALBERT"
-        else:
-            player = "RUBEN"
-        
-        # Find the largest cuboid that can be cut
-        largest_cuboid = find_largest_cuboid(game_state)
-        
-        # Cut the largest cuboid and update the game state
-        game_state = cut_cuboid(game_state, largest_cuboid)
-    
-    # Return the name of the player who wins the game
-    return player
-
-def find_largest_cuboid(cuboids):
-    # Find the largest cuboid by comparing the volume of each cuboid
-    largest_cuboid = None
-    for cuboid in cuboids:
-        if largest_cuboid is None or cuboid[0] * cuboid[1] * cuboid[2] > largest_cuboid[0] * largest_cuboid[1] * largest_cuboid[2]:
-            largest_cuboid = cuboid
-    
-    return largest_cuboid
-
-def cut_cuboid(cuboids, cuboid):
-    # Cut the largest cuboid into smaller cuboids and return the updated game state
-    x, y, z = cuboid
-    new_cuboids = []
-    for i in range(1, x + 1):
-        for j in range(1, y + 1):
-            for k in range(1, z + 1):
-                new_cuboids.append((i, j, k))
-    
-    return [cuboid for cuboid in cuboids if cuboid not in new_cuboids]
+def solve(x):
+    # Initialize the minimum number of operations to infinity
+    min_operations = float('inf')
+    # Iterate over all possible values of the side facing upward
+    for i in range(1, 7):
+        # Calculate the sum of the two numbers on opposite sides
+        sum_opposite_sides = i + (7 - i)
+        # If the sum is greater than or equal to x, we can stop
+        if sum_opposite_sides >= x:
+            # Return the minimum number of operations needed to reach this sum
+            return min_operations
+        # Otherwise, calculate the minimum number of operations needed to reach this sum
+        min_operations = min(min_operations, abs(sum_opposite_sides - x))
+    # If we reach this point, it means that we could not reach x with any of the sides facing upward
+    # So, we return the minimum number of operations needed to reach the closest sum to x
+    return min_operations
 

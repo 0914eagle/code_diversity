@@ -1,19 +1,25 @@
 
-def get_min_m(n, k):
-    m = 1
-    while True:
-        sets = []
-        for i in range(n):
-            set_size = 0
-            while set_size < 4:
-                num = m
-                for j in range(i):
-                    if num % sets[j][set_size] != 0:
-                        break
-                else:
-                    sets.append([num])
-                    set_size += 1
-            m += 1
-        if all(gcd(s[i], s[j]) == k for i in range(4) for j in range(i+1, 4) for s in sets):
-            return m
+def solve(n, m, a):
+    # Sort the list of toys that Tanya already has
+    a.sort()
+    
+    # Initialize variables to keep track of the number of different types of toys and the total cost
+    k = 0
+    cost = 0
+    
+    # Iterate through the list of toys that Tanya already has
+    for i in range(n):
+        # If the current toy is not already in Tanya's collection, add it to the collection and increment the number of different types of toys
+        if a[i] not in a[:i]:
+            k += 1
+        
+        # Add the cost of the current toy to the total cost
+        cost += a[i]
+        
+        # If the total cost exceeds the maximum amount that Tanya's mom is willing to spend, break the loop
+        if cost > m:
+            break
+    
+    # Return the number of different types of toys and the list of toys to buy
+    return k, a[:i+1]
 

@@ -1,23 +1,43 @@
 
-def count_hidden_strings(s):
-    # Initialize a dictionary to store the count of each hidden string
-    hidden_strings = {}
+import sys
 
-    # Loop through each substring of the input string
-    for i in range(len(s)):
-        for j in range(i+1, len(s)+1):
-            # Check if the substring is a hidden string
-            if is_hidden_string(s[i:j]):
-                # If it is, increment the count in the dictionary
-                if s[i:j] in hidden_strings:
-                    hidden_strings[s[i:j]] += 1
-                else:
-                    hidden_strings[s[i:j]] = 1
+def shortest_subarray(arr, k):
+    # Initialize the variables
+    start = 0
+    end = 0
+    count = [0] * (k+1)
+    min_len = float('inf')
+    curr_len = 0
 
-    # Return the maximum count
-    return max(hidden_strings.values())
+    # Iterate through the array
+    for end in range(len(arr)):
+        count[arr[end]] += 1
+        curr_len = count[arr[end]]
+        while count[arr[start]] > 1:
+            count[arr[start]] -= 1
+            start += 1
+        min_len = min(min_len, curr_len)
 
-def is_hidden_string(s):
-    # Check if the substring is a hidden string by checking if it is a subsequence of the input string
-    return s in s
+    # Return the result
+    if min_len == float('inf'):
+        return -1
+    else:
+        return min_len
+
+# Main function
+if __name__ == '__main__':
+    # Read the input
+    n, k, m = map(int, input().split())
+    arr = list(map(int, input().split()))
+    queries = []
+    for i in range(m):
+        queries.append(list(map(int, input().split())))
+
+    # Process the queries
+    for query in queries:
+        if query[0] == 1:
+            arr[query[1]-1] = query[2]
+        else:
+            print(shortest_subarray(arr, k))
+
 

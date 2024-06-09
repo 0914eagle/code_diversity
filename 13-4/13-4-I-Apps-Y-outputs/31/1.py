@@ -1,9 +1,11 @@
 
-def is_valid_solution(queens):
-    # Check if there are any two queens in the same row, column or diagonal
-    for i in range(len(queens)):
-        for j in range(i+1, len(queens)):
-            if queens[i][0] == queens[j][0] or queens[i][1] == queens[j][1] or abs(queens[i][0] - queens[j][0]) == abs(queens[i][1] - queens[j][1]):
-                return "INCORRECT"
-    return "CORRECT"
+def solve(input_string):
+    output_string = ""
+    for i in range(len(input_string)):
+        if input_string[i] == "<":
+            if i > 0 and input_string[i-1] != "<":
+                output_string = output_string[:-1]
+        else:
+            output_string += input_string[i]
+    return output_string
 

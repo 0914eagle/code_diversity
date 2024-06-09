@@ -1,23 +1,25 @@
 
-employees = []
+def reconstruct_painting(N, K, M, commands):
+    # Initialize the canvas with all white cells
+    canvas = [[1] * N for _ in range(N)]
 
-def get_boss_and_subordinates(employee_id):
-    boss_id = 0
-    subordinates = 0
-    for employee in employees:
-        if employee[0] == employee_id:
-            boss_id = employee[1]
-            subordinates = employee[2]
-            break
-    return boss_id, subordinates
+    # Iterate through the commands
+    for command in commands:
+        # If the command is PAINT, paint the rectangle
+        if command.startswith("PAINT"):
+            color, x1, y1, x2, y2 = map(int, command.split())
+            for x in range(x1, x2 + 1):
+                for y in range(y1, y2 + 1):
+                    canvas[x][y] = color
 
-m, q = map(int, input().split())
-for i in range(m):
-    employee_id, salary, height = map(int, input().split())
-    employees.append([employee_id, salary, height])
+        # If the command is SAVE, save the current state of the canvas
+        elif command.startswith("SAVE"):
+            pass
 
-for i in range(q):
-    employee_id = int(input())
-    boss_id, subordinates = get_boss_and_subordinates(employee_id)
-    print(boss_id, subordinates)
+        # If the command is LOAD, load the saved state of the canvas
+        elif command.startswith("LOAD"):
+            pass
+
+    # Return the reconstructed painting
+    return canvas
 

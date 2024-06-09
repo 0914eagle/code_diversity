@@ -1,30 +1,32 @@
 
-def is_tourist_friendly(n, roads):
-    visited = [False] * n
-    tour = []
-    for city in range(n):
-        if not visited[city]:
-            stack = [city]
-            while stack:
-                current = stack.pop()
-                visited[current] = True
-                for neighbor in roads[current]:
-                    if not visited[neighbor]:
-                        stack.append(neighbor)
-            tour.append(current)
-    return tour == list(range(n))
+n, k, m = map(int, input().split())
 
-def solve(n, m, roads):
-    if len(roads) == 0:
-        return "YES"
-    for city in range(n):
-        for neighbor in roads[city]:
-            if city < neighbor:
-                roads[city].remove(neighbor)
-                roads[neighbor].remove(city)
-                if is_tourist_friendly(n, roads):
-                    return "YES"
-                roads[city].append(neighbor)
-                roads[neighbor].append(city)
-    return "NO"
+board = [[0] * (n + 1) for _ in range(n + 1)]
+
+for _ in range(m):
+    x, y = map(int, input().split())
+    if board[x][y] == 0:
+        board[x][y] = 1
+    else:
+        board[x][y] = 0
+
+def is_good():
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            if board[i][j] == 1 and (i != k or j != 1):
+                return False
+    return True
+
+def add_rows():
+    rows_to_add = 0
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            if board[i][j] == 1 and i != k and j != 1:
+                rows_to_add += 1
+    return rows_to_add
+
+if is_good():
+    print(0)
+else:
+    print(add_rows())
 

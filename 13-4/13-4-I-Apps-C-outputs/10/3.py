@@ -1,21 +1,14 @@
 
-def solve(n, m, courses):
-    # Initialize a list to store the maximum number of calories Stan can eat in each hour
-    max_calories = [0] * n
+import math
 
-    # Initialize the maximum number of calories Stan can eat in the first hour
-    max_calories[0] = m
-
-    # Loop through each hour
-    for i in range(1, n):
-        # If the current hour's course has more calories than the previous hour's course,
-        # then Stan can eat the same amount as the previous hour
-        if courses[i] > courses[i-1]:
-            max_calories[i] = max_calories[i-1]
-        # Otherwise, Stan can eat half the amount of the previous hour's course
-        else:
-            max_calories[i] = max_calories[i-1] // 2
-
-    # Return the sum of the maximum number of calories Stan can eat in each hour
-    return sum(max_calories)
+def solve(S):
+    mod = 1000000007
+    n = len(S)
+    dp = [0] * (n + 1)
+    dp[0] = 1
+    for i in range(1, n + 1):
+        dp[i] = (dp[i - 1] * 3) % mod
+        if i > 1 and S[i - 2] != S[i - 1]:
+            dp[i] = (dp[i] - 1 + mod) % mod
+    return dp[n]
 

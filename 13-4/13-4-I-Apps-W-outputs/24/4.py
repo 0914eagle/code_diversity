@@ -1,26 +1,18 @@
 
-def solve(n, m, pairs):
-    # Initialize a dictionary to store the recognition of each warrior
-    recognitions = {i: 0 for i in range(1, n + 1)}
+import sys
 
-    # Iterate over the pairs of warriors knowing each other
-    for a, b in pairs:
-        # If warrior a knows warrior b, then warrior b also knows warrior a
-        recognitions[a] += 1
-        recognitions[b] += 1
+def get_contiguous_subsequences(arr, k):
+    n = len(arr)
+    count = 0
+    for i in range(n):
+        curr_sum = 0
+        for j in range(i, n):
+            curr_sum += arr[j]
+            if curr_sum >= k:
+                count += 1
+    return count
 
-    # Find the three musketeers with the minimum recognition sum
-    min_sum = float('inf')
-    for i in range(1, n + 1):
-        for j in range(i + 1, n + 1):
-            for k in range(j + 1, n + 1):
-                if recognitions[i] + recognitions[j] + recognitions[k] < min_sum:
-                    min_sum = recognitions[i] + recognitions[j] + recognitions[k]
-
-    # If a triple of musketeers exists, return the minimum recognition sum
-    # Otherwise, return -1
-    if min_sum < float('inf'):
-        return min_sum
-    else:
-        return -1
+n, k = map(int, input().split())
+arr = list(map(int, input().split()))
+print(get_contiguous_subsequences(arr, k))
 

@@ -1,31 +1,28 @@
 
-def solve(N, K, P, rooks):
-    # Initialize a 2D array to store the attacked fields
-    attacked = [[0] * N for _ in range(N)]
+n = int(input())
+p = list(map(int, input().split()))
 
-    # Loop through each rook and its power
-    for r, c, x in rooks:
-        # Loop through each field in the row and column of the rook
-        for i in range(1, N+1):
-            # If the field is not the rook's own field, add the rook's power to the attacked field
-            if i != r and i != c:
-                attacked[r-1][i-1] += x
-                attacked[i-1][c-1] += x
+def get_deviation(p):
+    deviation = 0
+    for i in range(n):
+        deviation += abs(p[i] - i)
+    return deviation
 
-    # Loop through each move
-    for _ in range(P):
-        # Read the move
-        r1, c1, r2, c2 = input().split()
-        r1, c1, r2, c2 = int(r1), int(c1), int(r2), int(c2)
+def get_cyclic_shift(p, k):
+    return [p[i] for i in range(k, n+k)] + [p[i] for i in range(0, k)]
 
-        # Update the attacked fields
-        attacked[r1-1][c1-1] -= 1
-        attacked[r2-1][c2-1] += 1
+def get_min_deviation_cyclic_shift(p):
+    min_deviation = get_deviation(p)
+    min_deviation_cyclic_shift = p
+    for k in range(n):
+        cyclic_shift = get_cyclic_shift(p, k)
+        deviation = get_deviation(cyclic_shift)
+        if deviation < min_deviation:
+            min_deviation = deviation
+            min_deviation_cyclic_shift = cyclic_shift
+    return min_deviation, min_deviation_cyclic_shift
 
-    # Count the number of attacked fields
-    result = 0
-    for row in attacked:
-        result += sum(row)
-
-    return result
+min_deviation, min_deviation_cyclic_shift = get_min_deviation_cyclic_shift(p)
+print(min_deviation)
+print(min_deviation_cyclic_shift)
 

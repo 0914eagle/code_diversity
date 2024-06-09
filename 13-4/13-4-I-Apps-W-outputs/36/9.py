@@ -1,15 +1,15 @@
 
-def get_max_power_of_two(numbers):
-    max_power = 0
+def is_typo(s, t):
+    n = len(s)
+    if n != len(t):
+        return 0
+    
     count = 0
-    for num in numbers:
-        power = 0
-        while num % 2 == 0:
-            num //= 2
-            power += 1
-        if power > max_power:
-            max_power = power
-        if power > 0:
+    for i in range(n):
+        if s[i] != t[i]:
             count += 1
-    return max_power, count
+        if count > 1:
+            return 0
+    
+    return count == 1
 

@@ -1,10 +1,9 @@
 
-def enlarge_article(article, z_r, z_c):
-    enlarged_article = []
-    for row in article:
-        enlarged_row = []
-        for char in row:
-            enlarged_row += [char] * z_c
-        enlarged_article += [enlarged_row]
-    return enlarged_article
+def get_triplets_count(k, s):
+    count = 0
+    for i in range(k+1):
+        for j in range(i+1):
+            if i+j == s:
+                count += 1
+    return count
 

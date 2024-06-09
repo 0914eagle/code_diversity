@@ -1,19 +1,19 @@
 
-def is_palindrome(arr):
-    # Check if the array is a palindrome
-    for i in range(len(arr)):
-        if arr[i] != arr[len(arr) - i - 1]:
-            return False
-    return True
-
-def has_subsequence_of_length_at_least_3(arr):
-    # Check if the array has a subsequence of length at least 3
-    for i in range(len(arr) - 2):
-        subsequence = arr[i:i+3]
-        if is_palindrome(subsequence):
-            return True
-    return False
-
-def solve(arr):
-    return "YES" if has_subsequence_of_length_at_least_3(arr) else "NO"
+def solve(A, B, C, K):
+    # Initialize the maximum sum to 0
+    max_sum = 0
+    
+    # Loop through all possible combinations of cards
+    for i in range(0, K+1):
+        for j in range(0, min(K-i, B)):
+            for k in range(0, min(K-i-j, C)):
+                # Calculate the sum of the current combination
+                current_sum = i * 1 + j * 0 + k * -1
+                
+                # Update the maximum sum if necessary
+                if current_sum > max_sum:
+                    max_sum = current_sum
+    
+    # Return the maximum sum
+    return max_sum
 

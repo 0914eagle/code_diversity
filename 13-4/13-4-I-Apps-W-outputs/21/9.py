@@ -1,9 +1,15 @@
 
-def make_a_and_b_equal_to_zero(a, b):
-    while a > 0 and b > 0:
-        if a > b:
-            a -= b
-        else:
-            b -= a
-    return a == 0 and b == 0
+def is_palindrome(s):
+    return s == s[::-1]
+
+def get_good_string(s):
+    if is_palindrome(s):
+        return "-1"
+    else:
+        return "".join(sorted(s))
+
+t = int(input())
+for _ in range(t):
+    s = input()
+    print(get_good_string(s))
 

@@ -1,27 +1,22 @@
 
-def num_cycles(n, m, edges):
-    # Initialize a dictionary to store the connected components
-    connected_components = {}
-
-    # Iterate over the edges
-    for edge in edges:
-        # Add the vertices to the connected component if they are not already present
-        connected_components[edge[0]] = connected_components.get(edge[0], set()) | {edge[0]}
-        connected_components[edge[1]] = connected_components.get(edge[1], set()) | {edge[1]}
-
-        # If the vertices are already present in the connected component, merge the sets
-        if edge[0] in connected_components and edge[1] in connected_components:
-            connected_components[edge[0]] |= connected_components[edge[1]]
-            connected_components[edge[1]] = connected_components[edge[0]]
-
-    # Initialize a counter for the number of cycles
-    num_cycles = 0
-
-    # Iterate over the connected components
-    for component in connected_components.values():
-        # If the component is a cycle, increment the counter
-        if len(component) > 2 and all(edge[0] in component and edge[1] in component for edge in edges if edge[0] in component and edge[1] in component):
-            num_cycles += 1
-
-    return num_cycles
+def solve(s, d):
+    # Initialize variables
+    correct_translations = 0
+    incorrect_translations = 0
+    
+    # Iterate through each word in the sentence
+    for word in s.split():
+        # Check if the word is in the dictionary
+        if word in d:
+            # If the word is in the dictionary, check if it is a correct or incorrect translation
+            if d[word] == "correct":
+                correct_translations += 1
+            else:
+                incorrect_translations += 1
+        else:
+            # If the word is not in the dictionary, it is an incorrect translation
+            incorrect_translations += 1
+    
+    # Return the number of correct and incorrect translations
+    return correct_translations, incorrect_translations
 

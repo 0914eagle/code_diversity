@@ -1,20 +1,14 @@
 
-def runeology(matrix):
-    # Initialize a set to store the unique columns
-    unique_cols = set()
-    # Iterate through the matrix and add each column to the set
-    for col in matrix:
-        unique_cols.add(tuple(col))
-    # Initialize a variable to store the maximum number of rows that can be deleted
-    max_rows = 0
-    # Iterate through the matrix and check if deleting a row will break the no-equal-column rule
-    for row in matrix:
-        # If the current row is not in the set of unique columns, it can be deleted
-        if tuple(row) not in unique_cols:
-            # Add the current row to the set of unique columns
-            unique_cols.add(tuple(row))
-            # Increment the maximum number of rows that can be deleted
-            max_rows += 1
-    # Return the maximum number of rows that can be deleted
-    return max_rows
+def solve(students, tutors):
+    # Calculate the distance between each student and tutor
+    distances = []
+    for student in students:
+        for tutor in tutors:
+            distances.append(abs(student[0] - tutor[0]) + abs(student[1] - tutor[1]))
+    
+    # Sort the distances in ascending order
+    distances.sort()
+    
+    # Return the maximum distance
+    return distances[-1]
 

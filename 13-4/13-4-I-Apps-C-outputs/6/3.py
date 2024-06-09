@@ -1,26 +1,27 @@
 
-def solve(n, m, roads, q, queries):
-    # Initialize a dictionary to store the distances between each pair of cities
-    distances = {}
-    for a, b, w in roads:
-        if a not in distances:
-            distances[a] = {}
-        if b not in distances:
-            distances[b] = {}
-        distances[a][b] = w
-        distances[b][a] = w
+import sys
 
-    # Fill in the distances for each city pair using the bitwise OR operation
-    for city in distances:
-        for other_city in distances[city]:
-            if city != other_city:
-                distances[city][other_city] = distances[city][other_city] | distances[other_city][city]
+def get_snow_levels(n):
+    snow_levels = []
+    for i in range(n):
+        a, b = map(int, input().split())
+        snow_levels += list(range(a, b+1))
+    return snow_levels
 
-    # Calculate the cost of sending the crystal from s to t for each day
-    costs = []
-    for s, t in queries:
-        cost = distances[s][t]
-        costs.append(cost)
+def count_ways(snow_levels):
+    n = len(snow_levels)
+    if n < 3:
+        return 0
+    snow_levels.sort()
+    count = 0
+    for i in range(n-2):
+        for j in range(i+1, n-1):
+            for k in range(j+1, n):
+                if snow_levels[i] < snow_levels[j] and snow_levels[j] < snow_levels[k]:
+                    count += 1
+    return count % 1000000009
 
-    return costs
+n = int(input())
+snow_levels = get_snow_levels(n)
+print(count_ways(snow_levels))
 

@@ -1,22 +1,21 @@
 
-def get_max_value(arr, k):
-    n = len(arr)
-    dp = [[0] * (n + 1) for _ in range(n + 1)]
-    for i in range(n + 1):
-        dp[i][0] = 0
-    for i in range(n + 1):
-        dp[0][i] = 0
-    for i in range(1, n + 1):
-        for j in range(1, n + 1):
-            if i == j:
-                dp[i][j] = dp[i - 1][j - 1] + arr[i - 1]
-            else:
-                dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - 1] + arr[i - 1])
-    for _ in range(k):
-        for i in range(1, n + 1):
-            for j in range(1, n + 1):
-                if i == j:
-                    continue
-                dp[i][j] = max(dp[i][j], dp[i][j - 1] + dp[i - 1][j] - dp[i - 1][j - 1])
-    return dp[n][n]
+def solve(n, k, cameras):
+    # Initialize a set to store the covered walls
+    covered_walls = set()
+    # Initialize a variable to store the minimum number of cameras needed
+    min_cameras = 0
+    # Iterate through the cameras
+    for camera in cameras:
+        # Check if the camera covers any new walls
+        new_walls = set(range(camera[0], camera[1] + 1)) - covered_walls
+        # If the camera covers new walls, add them to the covered walls set
+        if new_walls:
+            covered_walls |= new_walls
+            # Increment the minimum number of cameras needed
+            min_cameras += 1
+    # Check if all walls are covered
+    if len(covered_walls) == n:
+        return min_cameras
+    else:
+        return "impossible"
 
