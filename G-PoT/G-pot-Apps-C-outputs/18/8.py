@@ -1,0 +1,35 @@
+
+# Read input
+r, c = map(int, input().split())
+start_bed, fridge = map(eval, input().split())
+school_map = [input() for _ in range(r)]
+p = int(input())
+patrol_paths = [list(map(eval, input().split())) for _ in range(p)]
+
+# Function to check if child can reach fridge without being seen
+def can_reach_fridge(turns):
+    for master_path in patrol_paths:
+        for i in range(turns):
+            for master_coord in master_path:
+                if abs(master_coord[0] - start_bed[0]) + abs(master_coord[1] - start_bed[1]) <= i:
+                    return False
+        for master_coord in master_path:
+            if abs(master_coord[0] - start_bed[0]) + abs(master_coord[1] - start_bed[1]) <= turns:
+                return False
+    return True
+
+# Binary search to find minimum turns
+low, high = 0, r+c
+while low < high:
+    mid = (low + high) // 2
+    if can_reach_fridge(mid):
+        high = mid
+    else:
+        low = mid + 1
+
+# Output result
+if low == r+c:
+    print("IMPOSSIBLE")
+else:
+    print(low)
+
