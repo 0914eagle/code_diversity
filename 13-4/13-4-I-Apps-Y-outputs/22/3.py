@@ -1,19 +1,23 @@
 
-def get_maximum_sum(A, B, C, K):
-    # Initialize the maximum sum to 0
-    max_sum = 0
+def f1(S):
+    # Initialize the integer in Takahashi's mind to 0
+    mind = 0
     
-    # Loop through all possible combinations of cards
-    for i in range(0, K + 1):
-        for j in range(0, min(K - i, B)):
-            for k in range(0, min(K - i - j, C)):
-                # Calculate the sum of the current combination
-                current_sum = i * 1 + j * 0 + k * -1
-                
-                # Update the maximum sum if necessary
-                if current_sum > max_sum:
-                    max_sum = current_sum
+    # Iterate through the string S and update the integer in Takahashi's mind accordingly
+    for symbol in S:
+        if symbol == "+":
+            mind += 1
+        else:
+            mind -= 1
     
-    # Return the maximum sum
-    return max_sum
+    # Return the final integer in Takahashi's mind
+    return mind
+
+def f2(...):
+    # Implement function f2 here
+    pass
+
+if __name__ == '__main__':
+    S = input()
+    print(f1(S))
 

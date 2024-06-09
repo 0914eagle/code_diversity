@@ -1,18 +1,23 @@
 
-vowels = ['a', 'e', 'i', 'o', 'u']
-consonants = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z']
+def get_gcd(a, b):
+    while b != 0:
+        a, b = b, a % b
+    return a
 
-def can_transform(s, t):
-    if len(s) != len(t):
-        return "No"
-    
-    for i in range(len(s)):
-        if s[i] in vowels and t[i] in vowels:
-            continue
-        elif s[i] in consonants and t[i] in consonants:
-            continue
-        else:
-            return "No"
-    
-    return "Yes"
+def get_max_gcd(a):
+    max_gcd = 0
+    for b in range(1, a):
+        gcd = get_gcd(a ^ b, a & b)
+        if gcd > max_gcd:
+            max_gcd = gcd
+    return max_gcd
+
+def main():
+    q = int(input())
+    for _ in range(q):
+        a = int(input())
+        print(get_max_gcd(a))
+
+if __name__ == '__main__':
+    main()
 

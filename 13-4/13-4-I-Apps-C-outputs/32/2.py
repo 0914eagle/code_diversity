@@ -1,44 +1,48 @@
 
-import sys
-
-def get_dependencies(package, dependencies):
-    if package not in dependencies:
+def get_correct_time(original_time, current_time):
+    # Split the times into hours and minutes
+    original_hours, original_minutes = original_time.split(":")
+    current_hours, current_minutes = current_time.split(":")
+    
+    # Convert the times to integers
+    original_hours = int(original_hours)
+    original_minutes = int(original_minutes)
+    current_hours = int(current_hours)
+    current_minutes = int(current_minutes)
+    
+    # Calculate the difference between the original and current time
+    hours_difference = current_hours - original_hours
+    minutes_difference = current_minutes - original_minutes
+    
+    # Check if the difference is valid
+    if hours_difference < 0 or hours_difference > 23 or minutes_difference < 0 or minutes_difference > 59:
         return []
-    return dependencies[package]
-
-def get_install_order(packages):
-    dependencies = {}
-    for package in packages:
-        dependencies[package] = get_dependencies(package, dependencies)
     
-    install_order = []
-    while dependencies:
-        installed_packages = []
-        for package, deps in dependencies.items():
-            if not deps:
-                installed_packages.append(package)
-        if not installed_packages:
-            return "cannot be ordered"
-        install_order.extend(installed_packages)
-        for package in installed_packages:
-            del dependencies[package]
-            for dep in get_dependencies(package, dependencies):
-                dependencies[dep].remove(package)
+    # Create a list to store the correct times
+    correct_times = []
     
-    return " ".join(install_order)
+    # Iterate through the possible hours and minutes
+    for hour in range(0, 24):
+        for minute in range(0, 60):
+            # Check if the time is valid
+            if hour == original_hours and minute == original_minutes:
+                continue
+            
+            # Check if the time is within the difference
+            if hour == original_hours + hours_difference and minute == original_minutes + minutes_difference:
+                # Add the time to the list
+                correct_times.append(f"{hour:02d}:{minute:02d}")
+    
+    return correct_times
 
-if __name__ == "__main__":
-    num_cases = int(input())
-    for _ in range(num_cases):
-        num_packages = int(input())
-        packages = []
-        for _ in range(num_packages):
-            package, dependencies = input().split()
-            packages.append(package)
-            dependencies = dependencies.split()
-            for dep in dependencies:
-                if dep not in packages:
-                    packages.append(dep)
-        print(get_install_order(packages))
-        print()
+def main():
+    original_time = input("Enter the original time: ")
+    current_time = input("Enter the current time: ")
+    correct_times = get_correct_time(original_time, current_time)
+    print(f"There are {len(correct_times)} different times seen on the clock when setting it correctly:")
+    for time in correct_times:
+        print(time)
+
+if __name__ == '__main__':
+    main()
 

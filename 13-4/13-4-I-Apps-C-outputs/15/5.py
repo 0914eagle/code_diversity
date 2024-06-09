@@ -1,18 +1,27 @@
 
-n = int(input())
-p = list(map(int, input().split()))
+def get_shortest_test_scheme(k, durations):
+    # Sort the durations in non-decreasing order
+    durations.sort()
+    
+    # Initialize the number of days needed for the test scheme
+    num_days = 0
+    
+    # Loop through each allergen and add its duration to the number of days needed for the test scheme
+    for duration in durations:
+        num_days += duration
+    
+    return num_days
 
-# Calculate the deviation of the permutation
-dev = sum(abs(p[i] - i) for i in range(n))
+def main():
+    # Read the number of allergens and their durations from stdin
+    k = int(input())
+    durations = []
+    for _ in range(k):
+        durations.append(int(input()))
+    
+    # Call the get_shortest_test_scheme function and print the result
+    print(get_shortest_test_scheme(k, durations))
 
-# Find the minimum deviation of a cyclic shift
-min_dev = dev
-min_id = 0
-for i in range(n):
-    dev = sum(abs(p[(i+j)%n] - (j+1)) for j in range(n))
-    if dev < min_dev:
-        min_dev = dev
-        min_id = i
-
-print(min_dev, min_id)
+if __name__ == '__main__':
+    main()
 

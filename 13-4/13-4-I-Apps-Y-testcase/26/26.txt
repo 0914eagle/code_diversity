@@ -1,1 +1,12 @@
-{"inputs": ["atcoderregularcontest\n", "abcdefghijklmnopqrstuvwxyz\n", "fajsonlslfepbjtsaayxbymeskptcumtwrmkkinjxnnucagfrg\n"], "outputs": ["b\n", "None\n", "d\n"]}
+{
+    "inputs": [
+        "6\n",
+        "7\n",
+        "5\n"
+    ],
+    "outputs": [
+        "8 2\n",
+        "8 3\n",
+        "8 3\n"
+    ]
+}

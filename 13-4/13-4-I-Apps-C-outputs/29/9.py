@@ -1,33 +1,57 @@
 
-import itertools
+def get_palindromes(s):
+    # Initialize an empty list to store the palindromes
+    palindromes = []
+    
+    # Loop through each character in the string
+    for i in range(len(s)):
+        # Check if the character is already in the palindromes list
+        if s[i] not in palindromes:
+            # If not, check if the character is a palindrome
+            if is_palindrome(s[i:]):
+                # If it is, add it to the palindromes list
+                palindromes.append(s[i])
+    
+    return palindromes
 
-def count_paintings(N, S1, S2):
-    # Initialize a dictionary to store the number of paintings for each domino
-    paintings = {}
-    for domino in itertools.product("RGB", repeat=N):
-        paintings[domino] = 0
+def is_palindrome(s):
+    # Check if the string is a palindrome
+    return s == s[::-1]
 
-    # Initialize a set to store the colors of the dominoes in the first row
-    colors = set()
+def get_min_palindromes(s):
+    # Get all possible palindromes in the string
+    palindromes = get_palindromes(s)
+    
+    # Initialize a variable to store the minimum number of palindromes
+    min_palindromes = len(s)
+    
+    # Loop through each possible combination of palindromes
+    for i in range(1, len(palindromes) + 1):
+        # Check if the combination of palindromes is a valid solution
+        if is_valid_solution(palindromes, i):
+            # If it is, update the minimum number of palindromes
+            min_palindromes = min(min_palindromes, i)
+    
+    return min_palindromes
 
-    # Iterate over the dominoes in the first row
-    for i in range(N):
-        # Get the color of the current domino
-        color = S1[i]
-        # If the color is not already in the set, add it to the set and increment the number of paintings for the current domino
-        if color not in colors:
-            colors.add(color)
-            paintings[domino] += 1
+def is_valid_solution(palindromes, k):
+    # Check if the combination of palindromes is a valid solution
+    return len(set(len(p) for p in palindromes[:k])) == 1
 
-    # Iterate over the dominoes in the second row
-    for i in range(N):
-        # Get the color of the current domino
-        color = S2[i]
-        # If the color is not already in the set, add it to the set and increment the number of paintings for the current domino
-        if color not in colors:
-            colors.add(color)
-            paintings[domino] += 1
+def main():
+    # Read the input string
+    s = input()
+    
+    # Get the minimum number of palindromes
+    min_palindromes = get_min_palindromes(s)
+    
+    # Print the minimum number of palindromes
+    print(min_palindromes)
+    
+    # Print the palindromes
+    for i in range(min_palindromes):
+        print(palindromes[i], end=" ")
 
-    # Return the number of paintings modulo 1000000007
-    return sum(paintings.values()) % 1000000007
+if __name__ == '__main__':
+    main()
 

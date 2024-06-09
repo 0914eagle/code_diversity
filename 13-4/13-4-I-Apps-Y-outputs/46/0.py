@@ -1,22 +1,37 @@
 
-def get_tower_heights(box_heights):
-    # Sort the box heights in decreasing order
-    sorted_box_heights = sorted(box_heights, reverse=True)
+def f1(s, n):
+    # Convert the input string to a list of characters
+    char_list = list(s)
+    
+    # Loop through each character in the list
+    for i in range(len(char_list)):
+        # Calculate the new position of the character based on the shift value
+        new_pos = (ord(char_list[i]) - ord('A') + n) % 26
+        
+        # Update the character at the new position
+        char_list[i] = chr(ord('A') + new_pos)
+    
+    # Return the updated string
+    return "".join(char_list)
 
-    # The first tower height is the largest height in the input
-    tower_1_height = sorted_box_heights[0]
+def f2(s, n):
+    # Split the input string into a list of characters
+    char_list = list(s)
+    
+    # Loop through each character in the list
+    for i in range(len(char_list)):
+        # Calculate the new position of the character based on the shift value
+        new_pos = (ord(char_list[i]) - ord('A') + n) % 26
+        
+        # Update the character at the new position
+        char_list[i] = chr(ord('A') + new_pos)
+    
+    # Return the updated string
+    return "".join(char_list)
 
-    # The second tower height is the second largest height in the input
-    tower_2_height = sorted_box_heights[1]
-
-    # The tower heights are the first two elements of the sorted box heights
-    tower_heights = [tower_1_height, tower_2_height]
-
-    # The box heights are the remaining elements of the sorted box heights
-    box_heights = sorted_box_heights[2:]
-
-    # The boxes are ordered from largest to smallest
-    box_heights.sort(reverse=True)
-
-    return tower_heights, box_heights
+if __name__ == '__main__':
+    n = int(input())
+    s = input()
+    print(f1(s, n))
+    print(f2(s, n))
 

@@ -1,18 +1,19 @@
 
-def convert_to_celsius(fahrenheit):
-    numerator, denominator = fahrenheit.split("/")
-    numerator = int(numerator)
-    denominator = int(denominator)
-    celsius = (numerator - 32) * 5 // 9
-    gcd = find_gcd(celsius, denominator)
-    return f"{celsius // gcd}/{denominator // gcd}"
+def is_postal_code(A, B, S):
+    if len(S) != A + B + 1:
+        return "No"
+    if S[A] != "-":
+        return "No"
+    for i in range(A + 1, len(S)):
+        if not S[i].isdigit():
+            return "No"
+    return "Yes"
 
-def find_gcd(a, b):
-    if b == 0:
-        return a
-    else:
-        return find_gcd(b, a % b)
+def main():
+    A, B = map(int, input().split())
+    S = input()
+    print(is_postal_code(A, B, S))
 
-fahrenheit = input()
-print(convert_to_celsius(fahrenheit))
+if __name__ == '__main__':
+    main()
 

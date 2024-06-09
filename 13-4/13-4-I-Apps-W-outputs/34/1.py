@@ -1,24 +1,32 @@
 
-def solve(students, tutors):
-    # Calculate the distance between each student and tutor
-    distances = []
-    for student in students:
-        for tutor in tutors:
-            distances.append((student, tutor, abs(student[0] - tutor[0]) + abs(student[1] - tutor[1])))
+def f1(jacketCost, sockCost, money):
+    # Calculate the number of socks that Chef can buy
+    num_socks = money // sockCost
     
-    # Sort the distances in ascending order
-    distances.sort(key=lambda x: x[2])
+    # Calculate the number of days until Chef has only 1 clean sock
+    days = num_socks // 2
     
-    # Initialize the minimum distance traveled by the worst-off student to infinity
-    min_distance = float('inf')
+    # If the number of days is odd, Chef will have only 1 clean sock on the last day
+    if days % 2 == 1:
+        return "Unlucky Chef"
+    else:
+        return "Lucky Chef"
+
+def f2(jacketCost, sockCost, money):
+    # Calculate the number of socks that Chef can buy
+    num_socks = money // sockCost
     
-    # Iterate through the distances and find the minimum distance traveled by the worst-off student
-    for i in range(len(distances)):
-        student, tutor, distance = distances[i]
-        if distance > min_distance:
-            break
-        min_distance = min(min_distance, distance)
+    # Calculate the number of days until Chef has only 1 clean sock
+    days = num_socks // 2
     
-    # Return the minimum distance traveled by the worst-off student
-    return min_distance
+    # If the number of days is odd, Chef will have only 1 clean sock on the last day
+    if days % 2 == 1:
+        return "Unlucky Chef"
+    else:
+        return "Lucky Chef"
+
+if __name__ == '__main__':
+    jacketCost, sockCost, money = map(int, input().split())
+    print(f1(jacketCost, sockCost, money))
+    print(f2(jacketCost, sockCost, money))
 

@@ -1,26 +1,34 @@
 
-def find_min_pebbles(n):
-    # Initialize variables
-    mirror_pebbles = n
-    current_player = "Mirko"
-    other_player = "Slavko"
-    turn = 1
+def get_finalists(results, k):
+    # Sort the results in ascending order
+    results.sort()
+    
+    # Get the indices of the top k results
+    top_k_indices = results[:k]
+    
+    # Get the indices of the bottom n - 2k results
+    bottom_n_indices = results[n - 2k:]
+    
+    # Get the finalists by combining the top k and bottom n - 2k results
+    finalists = top_k_indices + bottom_n_indices
+    
+    return finalists
 
-    # While there are still pebbles in the heap
-    while mirror_pebbles > 0:
-        # Determine the current player and the number of pebbles they can take
-        if current_player == "Mirko":
-            num_pebbles = min(mirror_pebbles, n)
-        else:
-            num_pebbles = min(mirror_pebbles, 2 * (n - turn + 1))
+def get_finalists_string(results, k):
+    finalists = get_finalists(results, k)
+    finalists_string = "".join([str(int(i in finalists)) for i in range(n)])
+    return finalists_string
 
-        # Update the number of pebbles in the heap and the turn number
-        mirror_pebbles -= num_pebbles
-        turn += 1
+def main():
+    n = int(input())
+    results = []
+    for i in range(n):
+        results.append(int(input()))
+    
+    k = int(input())
+    finalists_string = get_finalists_string(results, k)
+    print(finalists_string)
 
-        # Switch players
-        current_player, other_player = other_player, current_player
-
-    # Return the minimum number of pebbles that Mirko must take during his first turn
-    return n
+if __name__ == '__main__':
+    main()
 

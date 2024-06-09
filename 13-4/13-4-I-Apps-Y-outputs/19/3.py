@@ -1,54 +1,24 @@
 
-import sys
-input = sys.stdin.read()
+def get_center_coordinates(points):
+    x_coords = [point[0] for point in points]
+    y_coords = [point[1] for point in points]
+    x_mean = sum(x_coords) / len(x_coords)
+    y_mean = sum(y_coords) / len(y_coords)
+    return (x_mean, y_mean)
 
-# Function to calculate the Manhattan distance between two points
-def manhattan_distance(p1, p2):
-    return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
+def get_height(points, center):
+    heights = [point[2] for point in points]
+    max_height = max(heights)
+    return max_height
 
-# Function to find the nearest safe house to a given point
-def find_nearest_safe_house(point, safe_houses):
-    nearest_safe_house = None
-    min_distance = float('inf')
-    for safe_house in safe_houses:
-        distance = manhattan_distance(point, safe_house)
-        if distance < min_distance:
-            min_distance = distance
-            nearest_safe_house = safe_house
-    return nearest_safe_house
-
-# Function to find the maximum Manhattan distance between a spy and the nearest safe house
-def find_max_distance(spy, safe_houses):
-    nearest_safe_house = find_nearest_safe_house(spy, safe_houses)
-    return manhattan_distance(spy, nearest_safe_house)
-
-# Main function
 def main():
-    # Read the input
-    width, height = map(int, input().split())
-    grid = []
-    for _ in range(height):
-        grid.append(list(input().strip()))
-    
-    # Find the spies and safe houses
-    spies = []
-    safe_houses = []
-    for i in range(height):
-        for j in range(width):
-            if grid[i][j] == 'S':
-                spies.append((i, j))
-            elif grid[i][j] == 'H':
-                safe_houses.append((i, j))
-    
-    # Find the maximum Manhattan distance between a spy and the nearest safe house
-    max_distance = 0
-    for spy in spies:
-        distance = find_max_distance(spy, safe_houses)
-        if distance > max_distance:
-            max_distance = distance
-    
-    # Print the result
-    print(max_distance)
+    points = []
+    for _ in range(int(input())):
+        x, y, h = map(int, input().split())
+        points.append((x, y, h))
+    center = get_center_coordinates(points)
+    height = get_height(points, center)
+    print(*center, height)
 
 if __name__ == '__main__':
     main()

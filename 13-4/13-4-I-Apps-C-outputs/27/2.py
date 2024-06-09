@@ -1,34 +1,72 @@
 
-import re
+import heapq
 
-def get_similarly_spelled_words(text):
-    words = re.findall(r"\w+", text)
-    similarly_spelled_words = {}
-    for word in words:
-        core = re.sub(r"[^a-zA-Z]", "", word.lower())
-        if core not in similarly_spelled_words:
-            similarly_spelled_words[core] = []
-        for similar_word in words:
-            if core != re.sub(r"[^a-zA-Z]", "", similar_word.lower()):
-                continue
-            if similar_word not in similarly_spelled_words[core]:
-                similarly_spelled_words[core].append(similar_word)
-    return similarly_spelled_words
+def f1(customers):
+    # Find the maximum distance between any two customers
+    max_distance = 0
+    for i in range(len(customers)):
+        for j in range(i+1, len(customers)):
+            distance = abs(customers[i][0] - customers[j][0]) + abs(customers[i][1] - customers[j][1])
+            max_distance = max(max_distance, distance)
+    
+    # Divide the customers into two sets such that the maximum distance between any two customers in the same set is minimized
+    set1 = []
+    set2 = []
+    for i in range(len(customers)):
+        if i % 2 == 0:
+            set1.append(customers[i])
+        else:
+            set2.append(customers[i])
+    
+    # Calculate the longest delivery time for each set
+    longest_delivery_time1 = 0
+    longest_delivery_time2 = 0
+    for i in range(len(set1)):
+        for j in range(i+1, len(set1)):
+            distance = abs(set1[i][0] - set1[j][0]) + abs(set1[i][1] - set1[j][1])
+            longest_delivery_time1 = max(longest_delivery_time1, distance)
+    for i in range(len(set2)):
+        for j in range(i+1, len(set2)):
+            distance = abs(set2[i][0] - set2[j][0]) + abs(set2[i][1] - set2[j][1])
+            longest_delivery_time2 = max(longest_delivery_time2, distance)
+    
+    return max(longest_delivery_time1, longest_delivery_time2)
 
-def main():
-    text = ""
-    while True:
-        line = input()
-        if line == "***":
-            break
-        text += line + " "
-    similarly_spelled_words = get_similarly_spelled_words(text)
-    if not similarly_spelled_words:
-        print("***")
-    else:
-        for core, words in sorted(similarly_spelled_words.items()):
-            print(f"{core}: { ' '.join(sorted(set(words))) }")
+def f2(customers):
+    # Find the maximum distance between any two customers
+    max_distance = 0
+    for i in range(len(customers)):
+        for j in range(i+1, len(customers)):
+            distance = abs(customers[i][0] - customers[j][0]) + abs(customers[i][1] - customers[j][1])
+            max_distance = max(max_distance, distance)
+    
+    # Divide the customers into two sets such that the maximum distance between any two customers in the same set is minimized
+    set1 = []
+    set2 = []
+    for i in range(len(customers)):
+        if i % 2 == 0:
+            set1.append(customers[i])
+        else:
+            set2.append(customers[i])
+    
+    # Calculate the longest delivery time for each set
+    longest_delivery_time1 = 0
+    longest_delivery_time2 = 0
+    for i in range(len(set1)):
+        for j in range(i+1, len(set1)):
+            distance = abs(set1[i][0] - set1[j][0]) + abs(set1[i][1] - set1[j][1])
+            longest_delivery_time1 = max(longest_delivery_time1, distance)
+    for i in range(len(set2)):
+        for j in range(i+1, len(set2)):
+            distance = abs(set2[i][0] - set2[j][0]) + abs(set2[i][1] - set2[j][1])
+            longest_delivery_time2 = max(longest_delivery_time2, distance)
+    
+    return max(longest_delivery_time1, longest_delivery_time2)
 
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    customers = []
+    for _ in range(int(input())):
+        customers.append(list(map(int, input().split())))
+    print(f1(customers))
+    print(f2(customers))
 

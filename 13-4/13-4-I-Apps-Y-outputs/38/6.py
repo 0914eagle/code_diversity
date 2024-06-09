@@ -1,17 +1,23 @@
 
-def solve(s):
-    # Initialize the maximum length of the substring as 0
-    max_len = 0
-    
-    # Loop through each substring of the given string
-    for i in range(len(s)):
-        for j in range(i, len(s)):
-            # Check if the substring starts with 'A' and ends with 'Z'
-            if s[i] == 'A' and s[j] == 'Z':
-                # If the length of the substring is greater than the maximum length, update the maximum length
-                if j - i + 1 > max_len:
-                    max_len = j - i + 1
-    
-    # Return the maximum length
-    return max_len
+def f1(N, X, x_list):
+    # find the minimum distance between X and any city
+    min_dist = min(abs(X - x) for x in x_list)
+    # find the maximum value of D that enables you to visit all the cities
+    max_D = (N - 1) * min_dist + 1
+    return max_D
+
+def f2(N, X, x_list):
+    # sort the list of cities in ascending order
+    sorted_x_list = sorted(x_list)
+    # find the minimum distance between any two cities
+    min_dist = min(abs(sorted_x_list[i] - sorted_x_list[i+1]) for i in range(N-1))
+    # find the maximum value of D that enables you to visit all the cities
+    max_D = (N - 1) * min_dist + 1
+    return max_D
+
+if __name__ == '__main__':
+    N, X = map(int, input().split())
+    x_list = list(map(int, input().split()))
+    print(f1(N, X, x_list))
+    print(f2(N, X, x_list))
 

@@ -1,44 +1,29 @@
 
-def solve(arr, queries):
-    # Initialize a dictionary to store the frequency of each number
-    freq = {}
-    for num in arr:
-        if num in freq:
-            freq[num] += 1
-        else:
-            freq[num] = 1
+def longest_repeated_substring(input_string):
+    # Initialize variables
+    start_index = 0
+    end_index = 0
+    longest_substring = ""
 
-    # Iterate over the queries
-    for query in queries:
-        # If the query is of the first type, update the frequency of the number
-        if query[0] == 1:
-            freq[query[2]] += 1
-        # If the query is of the second type, find the length of the shortest contiguous subarray
+    # Iterate through the input string
+    for i in range(len(input_string)):
+        # Check if the substring starting at position i is a repeated substring
+        if input_string[i] in input_string[start_index:i]:
+            # If it is, update the end index and longest substring
+            end_index = i
+            longest_substring = input_string[start_index:end_index+1]
+        # If it's not, update the start index
         else:
-            # Initialize the minimum length and the current length to 0
-            min_len = 0
-            curr_len = 0
-            # Iterate over the numbers from 1 to K
-            for num in range(1, K + 1):
-                # If the number is in the frequency dictionary and its frequency is greater than 0, increment the current length
-                if num in freq and freq[num] > 0:
-                    curr_len += 1
-                # If the number is not in the frequency dictionary or its frequency is 0, reset the current length to 0
-                else:
-                    curr_len = 0
-                # If the current length is greater than the minimum length, update the minimum length
-                if curr_len > min_len:
-                    min_len = curr_len
-            # If the minimum length is 0, the required subarray doesn't exist, so output -1
-            if min_len == 0:
-                print(-1)
-            # Otherwise, output the minimum length
-            else:
-                print(min_len)
+            start_index = i + 1
+    
+    # Return the longest repeated substring
+    return longest_substring
 
-arr = list(map(int, input().split()))
-queries = []
-for _ in range(int(input())):
-    queries.append(list(map(int, input().split())))
-solve(arr, queries)
+def main():
+    input_string = input()
+    longest_substring = longest_repeated_substring(input_string)
+    print(longest_substring)
+
+if __name__ == '__main__':
+    main()
 

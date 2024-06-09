@@ -1,21 +1,39 @@
 
-def get_min_diff(numbers):
-    # Sort the numbers in non-decreasing order
-    numbers.sort()
-    # Initialize the minimum difference and the final sum
-    min_diff = 0
-    final_sum = 0
-    # Loop through the numbers and perform the operations
-    for i in range(len(numbers)):
-        # Round the current number to the nearest integer that isn't more than the current number
-        rounded_num = int(numbers[i] + 0.5)
-        # Calculate the difference between the rounded number and the current number
-        diff = rounded_num - numbers[i]
-        # Update the minimum difference if necessary
-        if i > 0 and diff != 0:
-            min_diff = min(min_diff, diff)
-        # Update the final sum
-        final_sum += rounded_num
-    # Return the minimum difference
-    return min_diff
+def f1(N, M, Q):
+    # Initialize the classes and teachers
+    classes = [i for i in range(1, N+1)]
+    teachers = [i for i in range(1, N+1)]
+    
+    # Initialize the weekly assignments
+    weekly_assignments = [[0] * N for _ in range(M)]
+    
+    # Loop through the queries
+    for _ in range(Q):
+        # Read the query
+        query = input().split()
+        
+        # Check the type of query
+        if query[0] == "0":
+            # Add a reassignment plan
+            K = int(query[1])
+            x = int(query[2])
+            plan = query[3:]
+            
+            # Rotate the teachers
+            for i in range(K):
+                teacher = plan[i]
+                class_num = weekly_assignments[x-1][teacher-1]
+                weekly_assignments[x][teacher-1] = class_num
+                weekly_assignments[x][plan[i+1]-1] = teacher
+        else:
+            # Ask a question
+            d = int(query[1])
+            x = int(query[2])
+            print(weekly_assignments[x-1][d-1])
+            
+def f2(...):
+    ...
+    
+if __name__ == '__main__':
+    f1(3, 4, 5)
 

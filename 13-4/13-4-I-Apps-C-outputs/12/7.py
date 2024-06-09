@@ -1,16 +1,22 @@
 
-def max_points(a):
-    # Sort the list in ascending order
-    a.sort()
-    # Initialize variables to keep track of points and current element
-    points, current = 0, 1
-    # Iterate through the list
-    for i in range(len(a)):
-        # If the current element is equal to the previous element, skip it
-        if a[i] == current:
-            continue
-        # Otherwise, add the points for the current element and update the current element
-        points += a[i]
-        current = a[i]
-    return points
+def get_digit_sum(n):
+    return sum(int(d) for d in str(n))
+
+def count_integers_with_digit_sum(A, B, S):
+    count = 0
+    for i in range(A, B+1):
+        if get_digit_sum(i) == S:
+            count += 1
+    return count
+
+def find_smallest_integer_with_digit_sum(A, B, S):
+    for i in range(A, B+1):
+        if get_digit_sum(i) == S:
+            return i
+    return -1
+
+if __name__ == '__main__':
+    A, B, S = map(int, input().split())
+    print(count_integers_with_digit_sum(A, B, S))
+    print(find_smallest_integer_with_digit_sum(A, B, S))
 

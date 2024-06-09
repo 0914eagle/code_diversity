@@ -1,15 +1,25 @@
 
-def get_min_string(string, k):
-    n = len(string)
-    for i in range(n-1):
-        if string[i] > string[i+1] and k > 0:
-            string = string[:i] + string[i+1] + string[i] + string[i+2:]
-            k -= 1
-    return string
+def f1(n, a):
+    # Calculate the number of different monotonic renumerations of a
+    count = 0
+    for i in range(n):
+        count += f2(n, a, i)
+    return count % 998244353
 
-q = int(input())
-for i in range(q):
-    n, k = map(int, input().split())
-    string = input()
-    print(get_min_string(string, k))
+def f2(n, a, i):
+    # Calculate the number of different monotonic renumerations of a starting from index i
+    if i == n - 1:
+        return 1
+    count = 0
+    for j in range(i + 1, n):
+        if a[i] == a[j]:
+            count += f2(n, a, j)
+        elif a[i] < a[j]:
+            count += f2(n, a, j)
+    return count
+
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(f1(n, a))
 

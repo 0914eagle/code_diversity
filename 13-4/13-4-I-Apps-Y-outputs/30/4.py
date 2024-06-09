@@ -1,71 +1,57 @@
 
-def solve_2048(grid, move):
-    # Convert the grid to a list of lists
-    grid = [list(map(int, row)) for row in grid.split()]
-    # Get the number of rows and columns
-    n = len(grid)
-    # Define the directions
-    directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
-    # Define the move functions
-    move_functions = {0: move_left, 1: move_up, 2: move_right, 3: move_down}
-    # Make the move
-    move_functions[move](grid)
-    # Return the new grid
-    return "\n".join(" ".join(map(str, row)) for row in grid)
+def get_input_molecule():
+    input_molecule = input()
+    return input_molecule
 
-def move_left(grid):
-    # Loop through the rows
-    for i in range(len(grid)):
-        # Loop through the columns
-        for j in range(len(grid[0])):
-            # Check if the current cell is not empty
-            if grid[i][j] != 0:
-                # Loop through the previous cells
-                for k in range(j):
-                    # Check if the previous cell is empty
-                    if grid[i][k] == 0:
-                        # Move the current cell to the previous cell
-                        grid[i][k] = grid[i][j]
-                        grid[i][j] = 0
-                        break
-                # Loop through the next cells
-                for k in range(j+1, len(grid[0])):
-                    # Check if the next cell is empty
-                    if grid[i][k] == 0:
-                        # Move the current cell to the next cell
-                        grid[i][k] = grid[i][j]
-                        grid[i][j] = 0
-                        break
+def get_output_molecule():
+    output_molecule = input()
+    return output_molecule
 
-def move_up(grid):
-    # Transpose the grid
-    grid = list(map(list, zip(*grid)))
-    # Move left
-    move_left(grid)
-    # Transpose the grid back
-    grid = list(map(list, zip(*grid)))
+def get_number_of_input_molecules():
+    number_of_input_molecules = int(input())
+    return number_of_input_molecules
 
-def move_right(grid):
-    # Reverse the grid
-    grid = [row[::-1] for row in grid]
-    # Move left
-    move_left(grid)
-    # Reverse the grid back
-    grid = [row[::-1] for row in grid]
+def get_input_molecule_atoms(input_molecule):
+    atoms = {}
+    for atom in input_molecule:
+        if atom.isupper():
+            if atom not in atoms:
+                atoms[atom] = 1
+            else:
+                atoms[atom] += 1
+    return atoms
 
-def move_down(grid):
-    # Transpose the grid
-    grid = list(map(list, zip(*grid)))
-    # Move up
-    move_up(grid)
-    # Transpose the grid back
-    grid = list(map(list, zip(*grid)))
+def get_output_molecule_atoms(output_molecule):
+    atoms = {}
+    for atom in output_molecule:
+        if atom.isupper():
+            if atom not in atoms:
+                atoms[atom] = 1
+            else:
+                atoms[atom] += 1
+    return atoms
 
-def main():
-    grid = "2 0 0 2\n4 16 8 2\n2 64 32 4\n1024 1024 64 0"
-    move = 0
-    print(solve_2048(grid, move))
+def can_construct_output_molecule(input_molecule_atoms, output_molecule_atoms):
+    for atom, count in output_molecule_atoms.items():
+        if atom not in input_molecule_atoms or input_molecule_atoms[atom] < count:
+            return False
+    return True
 
-if __name__ == "__main__":
-    main()
+def get_maximum_number_of_output_molecules(input_molecule, output_molecule):
+    input_molecule_atoms = get_input_molecule_atoms(input_molecule)
+    output_molecule_atoms = get_output_molecule_atoms(output_molecule)
+    number_of_input_molecules = get_number_of_input_molecules()
+    maximum_number_of_output_molecules = 0
+    for i in range(number_of_input_molecules):
+        if can_construct_output_molecule(input_molecule_atoms, output_molecule_atoms):
+            maximum_number_of_output_molecules += 1
+            input_molecule_atoms = get_input_molecule_atoms(input_molecule)
+            output_molecule_atoms = get_output_molecule_atoms(output_molecule)
+    return maximum_number_of_output_molecules
+
+if __name__ == '__main__':
+    input_molecule = get_input_molecule()
+    output_molecule = get_output_molecule()
+    maximum_number_of_output_molecules = get_maximum_number_of_output_molecules(input_molecule, output_molecule)
+    print(maximum_number_of_output_molecules)
 

@@ -1,17 +1,24 @@
 
-import math
+def encrypt(message, key):
+    encrypted_message = ""
+    for i in range(len(message)):
+        if i % 2 == 0:
+            encrypted_message += chr((ord(message[i]) + ord(key[i]) - 2 * ord('A')) % 26 + ord('A'))
+        else:
+            encrypted_message += chr((ord(message[i]) - ord(key[i]) + 26) % 26 + ord('A'))
+    return encrypted_message
 
-def solve(N, towns):
-    paths = []
-    for i in range(N):
-        for j in range(i+1, N):
-            paths.append(math.sqrt((towns[i][0]-towns[j][0])**2 + (towns[i][1]-towns[j][1])**2))
-    return sum(paths) / len(paths)
+def decrypt(encrypted_message, key):
+    decrypted_message = ""
+    for i in range(len(encrypted_message)):
+        if i % 2 == 0:
+            decrypted_message += chr((ord(encrypted_message[i]) - ord(key[i]) + 26) % 26 + ord('A'))
+        else:
+            decrypted_message += chr((ord(encrypted_message[i]) + ord(key[i]) - 2 * ord('A')) % 26 + ord('A'))
+    return decrypted_message
 
-if __name__ == "__main__":
-    N = int(input())
-    towns = []
-    for i in range(N):
-        towns.append(list(map(int, input().split())))
-    print(solve(N, towns))
+if __name__ == '__main__':
+    message = input("Enter the encrypted message: ")
+    key = input("Enter the key: ")
+    print(decrypt(message, key))
 

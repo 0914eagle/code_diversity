@@ -1,16 +1,19 @@
 
-def get_tower_heights(box_heights):
-    # Sort the box heights in non-decreasing order
-    sorted_box_heights = sorted(box_heights)
+def get_input():
+    n = int(input())
+    s = input()
+    return n, s
 
-    # Find the two tower heights
-    tower_heights = [sorted_box_heights[-1], sorted_box_heights[-2]]
+def shift_char(c, n):
+    return chr((ord(c) - ord('A') + n) % 26 + ord('A'))
 
-    # Find the three boxes in the first tower
-    first_tower = [box for box in sorted_box_heights if box != tower_heights[0] and box != tower_heights[1]]
+def shift_string(s, n):
+    return ''.join(shift_char(c, n) for c in s)
 
-    # Find the three boxes in the second tower
-    second_tower = [box for box in sorted_box_heights if box != first_tower[0] and box != first_tower[1] and box != first_tower[2]]
+def main():
+    n, s = get_input()
+    print(shift_string(s, n))
 
-    return first_tower + second_tower
+if __name__ == '__main__':
+    main()
 

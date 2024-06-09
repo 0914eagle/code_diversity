@@ -1,29 +1,30 @@
 
-def solve(N, A, B):
-    # Initialize a list to store the permutation
-    perm = list(range(1, N+1))
-    # Initialize a list to store the values of g(i) for each i
-    g = [0] * (N+1)
-    # Initialize a set to keep track of the values of g(i) that have been used
-    used = set()
-    # Loop through each i from 1 to N
-    for i in range(1, N+1):
-        # If the value of g(i) has not been used before, use it
-        if g[i] not in used:
-            # If the value of g(i) is A or B, use it
-            if g[i] in [A, B]:
-                used.add(g[i])
-            # Otherwise, find the next unused value of g(i)
-            else:
-                for j in range(i+1, N+1):
-                    if g[j] not in used:
-                        g[i] = g[j]
-                        used.add(g[i])
-                        break
-    # If all the values of g(i) have been used, return the permutation
-    if len(used) == N:
-        return perm
-    # Otherwise, return -1
-    else:
-        return -1
+def get_leader(n, m, messages):
+    # Initialize a set to store the present participants
+    present = set()
+    
+    # Iterate through the messages
+    for message in messages:
+        # If the message is a log on, add the participant to the set
+        if message.startswith("+"):
+            present.add(int(message[1:]))
+        # If the message is a log off, remove the participant from the set
+        elif message.startswith("-"):
+            present.remove(int(message[1:]))
+    
+    # Return the number of leaders (i.e., the size of the set)
+    return len(present)
+
+def main():
+    # Read the number of team participants and messages
+    n, m = map(int, input().split())
+    
+    # Read the messages
+    messages = [input() for _ in range(m)]
+    
+    # Call the get_leader function and print the result
+    print(get_leader(n, m, messages))
+
+if __name__ == '__main__':
+    main()
 

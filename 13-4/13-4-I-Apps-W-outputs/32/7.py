@@ -1,26 +1,25 @@
 
-import sys
+def read_data():
+    n, k = map(int, input().split())
+    f = list(map(int, input().split()))
+    w = list(map(int, input().split()))
+    return n, k, f, w
 
-def get_gis(g, n):
-    gis = []
-    for i in range(len(g)):
-        gis.append(g[i])
-        for j in range(i+1, len(g)):
-            if g[j] > g[i]:
-                gis.append(g[j])
-                break
-    gis.sort()
-    return gis
+def find_s_m(f, w, k):
+    s = [0] * len(f)
+    m = [0] * len(f)
+    for i in range(len(f)):
+        if f[i] != -1:
+            s[i] = w[i] + s[f[i]]
+            m[i] = min(m[f[i]], w[i])
+    return s, m
 
-def count_permutations(g, n):
-    gis = get_gis(g, n)
-    count = 1
-    for i in range(len(gis)):
-        count *= n - i
-    return count % (10**9 + 7)
+def main():
+    n, k, f, w = read_data()
+    s, m = find_s_m(f, w, k)
+    for i in range(len(f)):
+        print(s[i], m[i])
 
 if __name__ == '__main__':
-    n, l = map(int, input().split())
-    g = list(map(int, input().split()))
-    print(count_permutations(g, n))
+    main()
 

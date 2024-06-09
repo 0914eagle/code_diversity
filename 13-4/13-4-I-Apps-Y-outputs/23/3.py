@@ -1,15 +1,23 @@
 
-N = int(input())
-A = int(input())
+def get_input():
+    return int(input())
 
-# Calculate the total number of squares
-total_squares = N ** 2
+def calculate_total_cost(n):
+    return 800 * n
 
-# Calculate the number of squares that will be painted white
-white_squares = A
+def calculate_discount(n):
+    return 200 if n % 15 == 0 else 0
 
-# Calculate the number of squares that will be painted black
-black_squares = total_squares - white_squares
+def calculate_amount_paid(n):
+    return calculate_total_cost(n) - calculate_discount(n)
 
-print(black_squares)
+def calculate_amount_received(n):
+    return calculate_discount(n)
+
+def main():
+    n = get_input()
+    print(calculate_amount_paid(n) - calculate_amount_received(n))
+
+if __name__ == '__main__':
+    main()
 

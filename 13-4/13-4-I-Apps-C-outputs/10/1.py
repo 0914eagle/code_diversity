@@ -1,18 +1,28 @@
 
-import sys
+def get_energy_contribution(lamp_positions, lamp_energies):
+    energy_contribution = 0
+    for lamp_position, lamp_energy in zip(lamp_positions, lamp_energies):
+        energy_contribution += lamp_energy
+    return energy_contribution
 
-def count_distinct_strings(s):
-    n = len(s)
-    if n == 1:
-        return 1
+def get_shortest_line_length(lamp_positions, lamp_energies):
+    positive_energy_contribution = get_energy_contribution(lamp_positions, lamp_energies)
+    negative_energy_contribution = get_energy_contribution(lamp_positions, [-energy for energy in lamp_energies])
+    if positive_energy_contribution == negative_energy_contribution:
+        return "IMPOSSIBLE"
     else:
-        count = 0
-        for i in range(n-1):
-            if s[i] != s[i+1]:
-                count += count_distinct_strings(s[:i] + s[i+2:])
-        return count
+        return abs(positive_energy_contribution - negative_energy_contribution)
 
-n = int(input())
-s = input()
-print(count_distinct_strings(s) % (10**9 + 7))
+def main():
+    num_lamps = int(input())
+    lamp_positions = []
+    lamp_energies = []
+    for _ in range(num_lamps):
+        x, y, energy = map(int, input().split())
+        lamp_positions.append((x, y))
+        lamp_energies.append(energy)
+    print(get_shortest_line_length(lamp_positions, lamp_energies))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,27 +1,60 @@
 
-def insertion_sort(arr):
-    for i in range(1, len(arr)):
-        key = arr[i]
-        j = i - 1
-        while j >= 0 and key < arr[j]:
-            arr[j + 1] = arr[j]
-            j -= 1
-        arr[j + 1] = key
-    return arr
-
-def find_min_swap(arr):
-    n = len(arr)
-    count = 0
-    pairs = []
+def f1(r, n):
+    # Initialize a list to store the reclaimed cells
+    reclaimed_cells = []
+    
+    # Loop through the reclaimed cells
     for i in range(n):
-        for j in range(i+1, n):
-            if arr[i] > arr[j]:
-                count += 1
-                pairs.append((i, j))
-    return count, pairs
+        # Read the next cell from the input
+        r_i, c_i = map(int, input().split())
+        
+        # Add the cell to the list of reclaimed cells
+        reclaimed_cells.append((r_i, c_i))
+    
+    # Initialize a set to store the cells that are still available
+    available_cells = set(range(1, r + 1))
+    
+    # Loop through the reclaimed cells
+    for r_i, c_i in reclaimed_cells:
+        # Remove the cell from the set of available cells
+        available_cells.remove(r_i)
+        available_cells.remove(c_i)
+    
+    # Check if there are any cells left that can be reclaimed
+    if len(available_cells) > 0:
+        return "WIN"
+    else:
+        return "LOSE"
 
-arr = [4, 0, 3, 1, 2]
-insertion_sort(arr)
-count, pairs = find_min_swap(arr)
-print(count, pairs)
+def f2(r, n):
+    # Initialize a list to store the reclaimed cells
+    reclaimed_cells = []
+    
+    # Loop through the reclaimed cells
+    for i in range(n):
+        # Read the next cell from the input
+        r_i, c_i = map(int, input().split())
+        
+        # Add the cell to the list of reclaimed cells
+        reclaimed_cells.append((r_i, c_i))
+    
+    # Initialize a set to store the cells that are still available
+    available_cells = set(range(1, r + 1))
+    
+    # Loop through the reclaimed cells
+    for r_i, c_i in reclaimed_cells:
+        # Remove the cell from the set of available cells
+        available_cells.remove(r_i)
+        available_cells.remove(c_i)
+    
+    # Check if there are any cells left that can be reclaimed
+    if len(available_cells) > 0:
+        return "WIN"
+    else:
+        return "LOSE"
+
+if __name__ == '__main__':
+    r, n = map(int, input().split())
+    print(f1(r, n))
+    print(f2(r, n))
 

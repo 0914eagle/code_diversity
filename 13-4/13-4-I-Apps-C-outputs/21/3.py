@@ -1,12 +1,18 @@
 
-def solve(numbers):
-    n = int(input())
-    numbers = list(map(float, input().split()))
-    diff = 0
-    for i in range(n):
-        for j in range(i+1, n):
-            a_i = round(numbers[i])
-            a_j = round(numbers[j])
-            diff += abs(a_i + a_j - numbers[i] - numbers[j])
-    return diff
+def f1(N, M, Q):
+    # Your code here
+    return
+
+def f2(d, x):
+    # Your code here
+    return
+
+if __name__ == '__main__':
+    N, M, Q = map(int, input().split())
+    for _ in range(Q):
+        query = input().split()
+        if query[0] == '0':
+            f1(int(query[1]), int(query[2]), query[3:])
+        else:
+            print(f2(int(query[1]), int(query[2])))
 

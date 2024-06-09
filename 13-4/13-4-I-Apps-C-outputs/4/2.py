@@ -1,30 +1,36 @@
 
-def solve(n, m):
-    mod = 1000000009
-    # Initialize a list to store the results
-    results = [0] * (n + 1)
-    results[0] = 1
+def get_max_or_value(numbers, k, x):
+    # Sort the numbers in descending order
+    numbers.sort(reverse=True)
     
-    # Iterate over all possible values of l
-    for l in range(1, n + 1):
-        # Iterate over all possible values of r
-        for r in range(l, n + 1):
-            # Calculate the xor of the elements in the range l to r
-            xor = 0
-            for i in range(l, r + 1):
-                xor ^= i
-            
-            # If the xor is 0, then the sequence is a wool sequence
-            if xor == 0:
-                # Update the results for l and r
-                results[l] += 1
-                results[r + 1] -= 1
+    # Initialize the maximum OR value
+    max_or_value = 0
     
-    # Calculate the total number of sequences
-    total = 0
-    for i in range(n + 1):
-        total += results[i]
+    # Loop through the numbers and perform the operations
+    for i in range(len(numbers)):
+        # Check if we have reached the maximum number of operations
+        if k == 0:
+            break
+        
+        # Multiply the current number by x and add it to the maximum OR value
+        max_or_value |= numbers[i] * x
+        
+        # Decrement the number of operations
+        k -= 1
     
-    # Return the total number of sequences modulo 1000000009
-    return total % mod
+    return max_or_value
+
+def main():
+    # Read the input
+    n, k, x = map(int, input().split())
+    numbers = list(map(int, input().split()))
+    
+    # Get the maximum OR value
+    max_or_value = get_max_or_value(numbers, k, x)
+    
+    # Print the result
+    print(max_or_value)
+
+if __name__ == '__main__':
+    main()
 

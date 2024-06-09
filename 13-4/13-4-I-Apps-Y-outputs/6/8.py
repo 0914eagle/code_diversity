@@ -1,26 +1,23 @@
 
-import math
+def get_bottles(shipment_volume, large_bottle_volume, small_bottle_volume):
+    # Calculate the number of large bottles needed
+    large_bottles_needed = shipment_volume // large_bottle_volume
+    
+    # Calculate the number of small bottles needed
+    small_bottles_needed = (shipment_volume - (large_bottles_needed * large_bottle_volume)) // small_bottle_volume
+    
+    # Check if the number of small bottles is enough to fill the remaining space
+    if small_bottles_needed * small_bottle_volume + (large_bottles_needed * large_bottle_volume) == shipment_volume:
+        return large_bottles_needed, small_bottles_needed
+    
+    # If the number of small bottles is not enough, return "Impossible"
+    else:
+        return "Impossible"
 
-def solve(n, p, s, v):
-    # Calculate the time it takes for the algorithm to run
-    t_algorithm = s * (math.log2(n) ** (c * math.sqrt(2))) / (p * 1e9)
-    
-    # Calculate the time it takes for Miroslava to complete the tour
-    t_tour = s * (1 + 1/c) / v
-    
-    # Calculate the total time it takes for Miroslava to run the algorithm and distribute the keys
-    t_total = t_algorithm + t_tour
-    
-    # Calculate the value of c that gives the optimal time
-    c = (t_total * p * 1e9) / (s * math.log2(n) ** (c * math.sqrt(2)))
-    
-    return t_total, c
+def main():
+    shipment_volume, large_bottle_volume, small_bottle_volume = map(int, input().split())
+    print(get_bottles(shipment_volume, large_bottle_volume, small_bottle_volume))
 
-n = 10
-p = 8.9
-s = 40075000
-v = 272.1
-
-t_total, c = solve(n, p, s, v)
-print(t_total, c)
+if __name__ == '__main__':
+    main()
 

@@ -1,16 +1,30 @@
 
-def reconstruct_towers(box_heights):
-    # Sort the box heights in descending order
-    sorted_box_heights = sorted(box_heights, reverse=True)
+def get_shifted_string(s, n):
+    # Convert the input string to a list of characters
+    char_list = list(s)
+    
+    # Loop through each character in the list
+    for i in range(len(char_list)):
+        # Calculate the new position of the character
+        new_pos = (ord(char_list[i]) - ord('A') + n) % 26
+        
+        # Update the character at the new position
+        char_list[i] = chr(ord('A') + new_pos)
+    
+    # Return the updated string
+    return "".join(char_list)
 
-    # Find the two tower heights
-    tower_heights = sorted_box_heights[-2:]
+def main():
+    # Read the input from stdin
+    n = int(input())
+    s = input()
+    
+    # Call the function to get the shifted string
+    shifted_string = get_shifted_string(s, n)
+    
+    # Print the shifted string to stdout
+    print(shifted_string)
 
-    # Find the three boxes in the first tower
-    first_tower = sorted_box_heights[:3]
-
-    # Find the three boxes in the second tower
-    second_tower = sorted_box_heights[3:6]
-
-    return first_tower, second_tower
+if __name__ == '__main__':
+    main()
 

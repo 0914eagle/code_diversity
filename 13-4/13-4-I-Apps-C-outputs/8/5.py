@@ -1,34 +1,53 @@
 
-def solve(flights, additional_flights):
-    # Initialize a dictionary to store the cost of each flight
-    flight_costs = {}
-    for flight in flights:
-        flight_costs[flight[0]] = flight[2]
+def f1(n, A, B, intersections):
+    # Initialize a dictionary to store the distances from each intersection to the leaning tower
+    distances = {}
+    for i in range(n):
+        distances[i] = 0
     
-    # Initialize a dictionary to store the cost of each additional flight
-    additional_flight_costs = {}
-    for flight in additional_flights:
-        additional_flight_costs[flight[0]] = flight[2]
+    # Initialize a queue to store the intersections to be processed
+    queue = []
     
-    # Initialize a set to store the airports that have been visited
-    visited_airports = set()
+    # Enqueue the starting points
+    queue.append(A)
+    queue.append(B)
     
-    # Initialize a variable to store the total cost of the flights
-    total_cost = 0
+    # Loop until the queue is empty
+    while queue:
+        # Dequeue an intersection
+        intersection = queue.pop(0)
+        
+        # If the intersection is the leaning tower, return the distance
+        if intersections[intersection][2] == 1:
+            return distances[intersection]
+        
+        # If the intersection has not been processed before, process it
+        if distances[intersection] == 0:
+            # Get the left and right neighbors
+            left = intersections[intersection][0]
+            right = intersections[intersection][1]
+            
+            # Enqueue the left and right neighbors
+            queue.append(left)
+            queue.append(right)
+            
+            # Update the distance for the left and right neighbors
+            distances[left] = distances[intersection] + 1
+            distances[right] = distances[intersection] + 1
     
-    # Loop through the flights to review
-    for flight in flights:
-        # If the airport has not been visited, visit it and add the cost of the flight to the total cost
-        if flight[0] not in visited_airports:
-            visited_airports.add(flight[0])
-            total_cost += flight_costs[flight[0]]
-        # If the airport has been visited, check if the additional flight cost is lower than the current cost
-        else:
-            if additional_flight_costs[flight[0]] < flight_costs[flight[0]]:
-                total_cost += additional_flight_costs[flight[0]]
-            else:
-                total_cost += flight_costs[flight[0]]
-    
-    # Return the total cost of the flights
-    return total_cost
+    # If the queue is empty and the leaning tower has not been found, return indistinguishable
+    return "indistinguishable"
+
+def f2(...):
+    # Implement function f2 here
+    pass
+
+if __name__ == '__main__':
+    n = int(input())
+    A = int(input())
+    B = int(input())
+    intersections = []
+    for i in range(n):
+        intersections.append(list(map(int, input().split())))
+    print(f1(n, A, B, intersections))
 

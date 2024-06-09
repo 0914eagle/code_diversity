@@ -1,45 +1,88 @@
 
 import sys
-import math
+input = sys.stdin.read()
 
-sys.setrecursionlimit(10**6)
+def f1(N, points):
+    # convert the input to a list of tuples
+    points = [tuple(map(int, point.split())) for point in points]
+    
+    # create a graph with the given points as vertices
+    graph = {point: set() for point in points}
+    
+    # add edges to the graph with the Manhattan distance as weight
+    for i in range(len(points)):
+        for j in range(i+1, len(points)):
+            point1, point2 = points[i], points[j]
+            graph[point1].add((point2, abs(point1[0] - point2[0]) + abs(point1[1] - point2[1])))
+            graph[point2].add((point1, abs(point1[0] - point2[0]) + abs(point1[1] - point2[1])))
+    
+    # find the minimum spanning tree using Kruskal's algorithm
+    mst = []
+    visited = set()
+    while graph and len(mst) < len(points) - 1:
+        # find the edge with the minimum weight
+        current_edge = min(graph, key=lambda edge: graph[edge[0]][edge[1]])
+        point1, point2 = current_edge
+        if point1 in visited or point2 in visited:
+            continue
+        
+        # add the edge to the MST
+        mst.append(current_edge)
+        visited.add(point1)
+        visited.add(point2)
+        
+        # remove the edge from the graph
+        graph[point1].remove(current_edge)
+        graph[point2].remove(current_edge)
+        if not graph[point1]:
+            del graph[point1]
+        if not graph[point2]:
+            del graph[point2]
+    
+    # return the total weight of the MST
+    return sum(weight for point1, weight in mst)
 
-def shortest_path(graph, start, end, visited):
-    if start == end:
-        return 0
+def f2(N, points):
+    # convert the input to a list of tuples
+    points = [tuple(map(int, point.split())) for point in points]
     
-    visited.add(start)
-    shortest_path = math.inf
+    # create a graph with the given points as vertices
+    graph = {point: set() for point in points}
     
-    for neighbor in graph[start]:
-        if neighbor not in visited:
-            path = shortest_path(graph, neighbor, end, visited)
-            if path < shortest_path:
-                shortest_path = path
+    # add edges to the graph with the Manhattan distance as weight
+    for i in range(len(points)):
+        for j in range(i+1, len(points)):
+            point1, point2 = points[i], points[j]
+            graph[point1].add((point2, abs(point1[0] - point2[0]) + abs(point1[1] - point2[1])))
+            graph[point2].add((point1, abs(point1[0] - point2[0]) + abs(point1[1] - point2[1])))
     
-    return shortest_path + 1
+    # find the minimum spanning tree using Prim's algorithm
+    mst = []
+    visited = set()
+    while graph and len(mst) < len(points) - 1:
+        # find the vertex with the minimum distance to the MST
+        current_vertex = min(graph, key=lambda vertex: min(graph[vertex], default=float('inf'))[1])
+        if current_vertex in visited:
+            continue
+        
+        # add the vertex to the MST
+        mst.append(current_vertex)
+        visited.add(current_vertex)
+        
+        # remove the vertex from the graph
+        for neighbor, weight in list(graph[current_vertex]):
+            if neighbor in visited:
+                continue
+            graph[neighbor].remove((current_vertex, weight))
+            if not graph[neighbor]:
+                del graph[neighbor]
+    
+    # return the total weight of the MST
+    return sum(weight for point1, weight in mst)
 
-def find_danger_level(graph):
-    danger_level = []
-    
-    for i in range(1, len(graph) + 1):
-        visited = set()
-        danger_level.append(shortest_path(graph, i, len(graph), visited))
-    
-    return danger_level
-
-def main():
-    num_chambers, num_tunnels = map(int, input().split())
-    graph = [[] for _ in range(num_chambers + 1)]
-    
-    for _ in range(num_tunnels):
-        a, b, length = map(int, input().split())
-        graph[a].append(b)
-        graph[b].append(a)
-    
-    danger_level = find_danger_level(graph)
-    print(*[d % (10**9 + 7) for d in danger_level])
-
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    N = int(input())
+    points = [input().strip() for _ in range(N)]
+    print(f1(N, points))
+    print(f2(N, points))
 

@@ -1,15 +1,18 @@
 
-def get_k(l, n):
-    # Initialize k as 1
-    k = 1
-    # Loop until k is found
-    while True:
-        # Calculate the length of the rolls
-        roll_length = l * k
-        # Check if the roll length is greater than or equal to the number of centimeters needed
-        if roll_length >= n:
-            # If it is, return k
-            return k
-        # Increment k by 1
-        k += 1
+def f1(n, s):
+    # Calculate the number of regular bracket sequences of length 2n
+    # containing the given bracket sequence s as a substring
+    # and return the result modulo 10^9+7
+    pass
+
+def f2(n, s):
+    # Calculate the number of regular bracket sequences of length 2n-1
+    # containing the given bracket sequence s as a substring
+    # and return the result modulo 10^9+7
+    pass
+
+if __name__ == '__main__':
+    n = int(input())
+    s = input()
+    print(f1(n, s))
 

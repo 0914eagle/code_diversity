@@ -1,15 +1,15 @@
 
-import sys
+def get_input():
+    return list(map(int, input().split()))
 
-n, k = map(int, input().split())
-heights = sorted([int(input()) for _ in range(n)])
+def solve(a, b, c, d):
+    max_value = 0
+    for x in range(a, b+1):
+        for y in range(c, d+1):
+            max_value = max(max_value, x*y)
+    return max_value
 
-min_diff = float('inf')
-for i in range(n - k + 1):
-    max_height = heights[i + k - 1]
-    min_height = heights[i]
-    diff = max_height - min_height
-    min_diff = min(min_diff, diff)
-
-print(min_diff)
+if __name__ == '__main__':
+    a, b, c, d = get_input()
+    print(solve(a, b, c, d))
 

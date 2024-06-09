@@ -1,16 +1,18 @@
 
-def round_dances(n):
-    # Initialize a list to store the results
-    results = []
+def get_bonded_base(base):
+    if base == 'A':
+        return 'T'
+    elif base == 'C':
+        return 'G'
+    elif base == 'G':
+        return 'C'
+    else:
+        return 'A'
 
-    # Iterate over each possible combination of round dances
-    for i in range(1, n + 1):
-        for j in range(i + 1, n + 1):
-            # Check if the combination is valid
-            if i + j == n:
-                # Add the combination to the results list
-                results.append([i, j])
+def main():
+    base = input()
+    print(get_bonded_base(base))
 
-    # Return the length of the results list
-    return len(results)
+if __name__ == '__main__':
+    main()
 

@@ -1,27 +1,41 @@
 
-def get_happy_seconds(n, x, y, c):
-    # Initialize a 2D array to represent the table
-    table = [[0] * n for _ in range(n)]
-    # Set the initial cell as switched on
-    table[x - 1][y - 1] = 1
-    # Initialize a variable to keep track of the number of switched on cells
-    switched_on = 1
-    # Initialize a variable to keep track of the number of seconds
-    seconds = 0
-    # Loop until the number of switched on cells is greater than or equal to c
-    while switched_on < c:
-        # Loop through each row of the table
-        for i in range(n):
-            # Loop through each column of the table
-            for j in range(n):
-                # If the current cell is switched off and has at least one switched on side-adjacent cell
-                if table[i][j] == 0 and sum(table[i - 1][j], table[i + 1][j], table[i][j - 1], table[i][j + 1]) >= 1:
-                    # Switch on the current cell
-                    table[i][j] = 1
-                    # Increment the number of switched on cells
-                    switched_on += 1
-        # Increment the number of seconds
-        seconds += 1
-    # Return the number of seconds
-    return seconds
+def get_d(e, e_success, e_failure):
+    # Initialize variables
+    s = 0
+    d = 0
+    weight = 0
+    success = True
+
+    # While the energy reserve is positive and the weight is less than the maximum conceivable lift
+    while e > 0 and weight < 225:
+        # Increment the weight by 1
+        weight += 1
+
+        # If the weight is greater than or equal to the strength
+        if weight >= s:
+            # Successful lift
+            success = True
+            # Decrement the energy reserve by the amount of energy expended in a successful lift
+            e -= e_success
+        else:
+            # Failed lift
+            success = False
+            # Decrement the energy reserve by the amount of energy expended in a failed lift
+            e -= e_failure
+
+        # If the lift was successful and the energy reserve is now zero
+        if success and e == 0:
+            # Break out of the loop
+            break
+
+    # Return the minimum weight such that the score is at least s - d
+    return weight - d
+
+def main():
+    e, e_success, e_failure = map(int, input().split())
+    d = get_d(e, e_success, e_failure)
+    print(d)
+
+if __name__ == '__main__':
+    main()
 

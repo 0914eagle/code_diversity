@@ -1,8 +1,22 @@
 
-def max_points(a):
-    n = len(a)
-    dp = [0] * (n + 1)
-    for i in range(n - 1, -1, -1):
-        dp[i] = max(dp[i + 1], dp[i + 2] + a[i])
-    return dp[0]
+def get_sum_of_digits(n):
+    return sum(int(d) for d in str(n))
+
+def count_integers_with_sum_s(a, b, s):
+    count = 0
+    for i in range(a, b+1):
+        if get_sum_of_digits(i) == s:
+            count += 1
+    return count
+
+def find_smallest_integer_with_sum_s(a, b, s):
+    for i in range(a, b+1):
+        if get_sum_of_digits(i) == s:
+            return i
+    return -1
+
+if __name__ == '__main__':
+    a, b, s = map(int, input().split())
+    print(count_integers_with_sum_s(a, b, s))
+    print(find_smallest_integer_with_sum_s(a, b, s))
 

@@ -1,34 +1,28 @@
 
-def get_max_people_on_buttons(n, buttons):
-    # Initialize a list to store the people standing on each button
-    people_on_buttons = [[] for _ in range(n)]
+def find_rectangle(n, m, x, y, a, b):
+    # Initialize the rectangle coordinates
+    x1, y1, x2, y2 = 0, 0, n, m
     
-    # Initialize a set to store the people who have not been placed on a button yet
-    unplaced_people = set(range(n))
+    # Loop through all possible rectangle sizes
+    for i in range(n):
+        for j in range(m):
+            # Check if the current rectangle size is valid
+            if x1 + i <= x and y1 + j <= y and x2 - i >= x and y2 - j >= y:
+                # Check if the current rectangle has the correct length-width ratio
+                if (x2 - x1) / (y2 - y1) == a / b:
+                    return x1 + i, y1 + j, x2 - i, y2 - j
     
-    # Initialize a variable to store the maximum number of people on buttons
-    max_people_on_buttons = 0
-    
-    # Loop until all people have been placed on buttons
-    while unplaced_people:
-        # Get the next person to be placed on a button
-        person = unplaced_people.pop()
-        
-        # Loop through the buttons to find an available button
-        for button in range(n):
-            if button not in people_on_buttons[button]:
-                # Place the person on the button
-                people_on_buttons[button].append(person)
-                
-                # Remove the person from the set of unplaced people
-                unplaced_people.remove(person)
-                
-                # Increment the maximum number of people on buttons
-                max_people_on_buttons += 1
-                
-                # Break out of the loop once the person has been placed
-                break
-    
-    # Return the maximum number of people on buttons and the people standing on each button
-    return max_people_on_buttons, people_on_buttons
+    # If no rectangle is found, return None
+    return None
+
+def main():
+    n, m, x, y, a, b = map(int, input().split())
+    rectangle = find_rectangle(n, m, x, y, a, b)
+    if rectangle is None:
+        print("No rectangle found")
+    else:
+        print(*rectangle)
+
+if __name__ == '__main__':
+    main()
 

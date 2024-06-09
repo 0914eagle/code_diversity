@@ -1,25 +1,53 @@
 
-def solve(x):
-    # Initialize the minimum number of operations to perform
-    min_operations = 0
-    # Initialize the current score to 0
-    current_score = 0
-    # Initialize the die sides as a list of tuples (value, facing up)
-    die_sides = [(1, True), (2, False), (3, False), (4, False), (5, False), (6, False)]
+def f1(n, edges):
+    # Calculate the number of independent sets in the graph
+    num_independent_sets = 0
+    
+    # Iterate over all possible subsets of vertices
+    for subset in range(1, 2**n):
+        # Check if the current subset is an independent set
+        if is_independent_set(subset, n, edges):
+            num_independent_sets += 1
+    
+    return num_independent_sets
 
-    # Loop until the current score is greater than or equal to x
-    while current_score < x:
-        # Find the side that is facing up
-        facing_up_side = next(side for side in die_sides if side[1] is True)
-        # Get the value of the facing up side
-        facing_up_value = facing_up_side[0]
-        # Add the value to the current score
-        current_score += facing_up_value
-        # Update the die sides by rotating it 90 degrees clockwise
-        die_sides = [(die_sides[i][0], not die_sides[i][1]) for i in range(len(die_sides))]
-        # Increment the minimum number of operations
-        min_operations += 1
+def f2(n, edges):
+    # Calculate the sum of the number of independent sets in all edge-induced subgraphs
+    sum_independent_sets = 0
+    
+    # Iterate over all possible subsets of edges
+    for subset in range(1, 2**(n-1)):
+        # Check if the current subset is a non-empty edge-induced subgraph
+        if is_edge_induced_subgraph(subset, n, edges):
+            # Calculate the number of independent sets in the current subgraph
+            num_independent_sets = f1(n, edges & subset)
+            sum_independent_sets += num_independent_sets
+    
+    return sum_independent_sets
 
-    # Return the minimum number of operations required to score at least x points
-    return min_operations
+def is_independent_set(subset, n, edges):
+    # Check if the current subset is an independent set
+    for i in range(n):
+        for j in range(i+1, n):
+            if (subset >> i) & 1 and (subset >> j) & 1 and (i, j) in edges:
+                return False
+    return True
+
+def is_edge_induced_subgraph(subset, n, edges):
+    # Check if the current subset is a non-empty edge-induced subgraph
+    for i in range(n):
+        for j in range(i+1, n):
+            if (subset >> i) & 1 and (subset >> j) & 1 and (i, j) not in edges:
+                return False
+    return True
+
+if __name__ == '__main__':
+    n = int(input())
+    edges = set()
+    
+    for i in range(n-1):
+        u, v = map(int, input().split())
+        edges.add((u, v))
+    
+    print(f2(n, edges) % 998244353)
 

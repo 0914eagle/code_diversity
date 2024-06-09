@@ -1,27 +1,64 @@
 
-def reconstruct_painting(N, K, commands):
-    # Initialize the painting with a white canvas
-    painting = [[1] * N for _ in range(N)]
+def is_graph_valid(n, m, edges):
+    # Initialize a dictionary to store the neighbors of each vertex
+    neighbors = {i: set() for i in range(1, n + 1)}
 
-    # Iterate through the commands and apply them to the painting
-    for command in commands:
-        if command.startswith("PAINT"):
-            # Extract the colour and coordinates of the rectangle from the command
-            colour, x1, y1, x2, y2 = map(int, command.split()[1:])
+    # Add edges to the graph
+    for u, v in edges:
+        neighbors[u].add(v)
+        neighbors[v].add(u)
 
-            # Iterate over the cells in the rectangle and paint them with the chosen colour
-            for x in range(x1, x2 + 1):
-                for y in range(y1, y2 + 1):
-                    painting[x][y] = colour
+    # Check that the graph is connected
+    visited = set()
+    queue = [1]
+    while queue:
+        vertex = queue.pop(0)
+        if vertex not in visited:
+            visited.add(vertex)
+            queue.extend(neighbors[vertex])
 
-        elif command.startswith("SAVE"):
-            # Save the current painting to a list of lists
-            saved_paintings.append(painting)
+    return len(visited) == n
 
-        elif command.startswith("LOAD"):
-            # Load the saved painting with the given ordinal number
-            painting = saved_paintings[int(command.split()[1]) - 1]
+def find_string(n, m, edges):
+    # Initialize a set to store the possible letters for each vertex
+    letters = {i: set("abc") for i in range(1, n + 1)}
 
-    # Return the reconstructed painting
-    return painting
+    # Add edges to the graph
+    for u, v in edges:
+        letters[u] &= letters[v]
+        letters[v] &= letters[u]
+
+    # Check that the graph is connected
+    visited = set()
+    queue = [1]
+    while queue:
+        vertex = queue.pop(0)
+        if vertex not in visited:
+            visited.add(vertex)
+            queue.extend(neighbors[vertex])
+
+    # If the graph is connected, find a string that corresponds to the graph
+    if len(visited) == n:
+        string = [""] * (n + 1)
+        for i in range(1, n + 1):
+            string[i] = list(letters[i])[0]
+        return "".join(string)
+    else:
+        return None
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    edges = []
+    for _ in range(m):
+        u, v = map(int, input().split())
+        edges.append((u, v))
+    if is_graph_valid(n, m, edges):
+        string = find_string(n, m, edges)
+        if string:
+            print("Yes")
+            print(string)
+        else:
+            print("No")
+    else:
+        print("No")
 

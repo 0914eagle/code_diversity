@@ -1,13 +1,25 @@
 
-def get_max_points(a):
-    n = len(a)
-    points = 0
-    for i in range(n):
-        if a[i] != 1:
-            points += a[i]
-            for j in range(i+1, n):
-                if a[j] == a[i]-1 or a[j] == a[i]+1:
-                    points += a[j]
-                    a[j] = 0
-    return points
+def get_digits(n):
+    return [int(d) for d in str(n)]
+
+def get_digit_sum(n):
+    return sum(get_digits(n))
+
+def count_integers(a, b, s):
+    count = 0
+    for i in range(a, b+1):
+        if get_digit_sum(i) == s:
+            count += 1
+    return count
+
+def get_smallest_integer(a, b, s):
+    for i in range(a, b+1):
+        if get_digit_sum(i) == s:
+            return i
+    return -1
+
+if __name__ == '__main__':
+    a, b, s = map(int, input().split())
+    print(count_integers(a, b, s))
+    print(get_smallest_integer(a, b, s))
 

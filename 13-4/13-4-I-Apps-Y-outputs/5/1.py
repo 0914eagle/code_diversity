@@ -1,59 +1,41 @@
 
-def get_smallest_set_of_characters(characters):
-    # Initialize a set to store the characters that can converse with each other
-    converse_set = set()
+def get_handshakes(seating_order):
+    # Initialize variables
+    handshakes = 0
+    rows, cols = len(seating_order), len(seating_order[0])
 
-    # Iterate over each character in the input
-    for character in characters:
-        # Check if the character is already in the converse set
-        if character in converse_set:
-            continue
+    # Iterate through the seating order
+    for i in range(rows):
+        for j in range(cols):
+            # Check if the current element is a person
+            if seating_order[i][j] == "o":
+                # Check if the current element has any neighbors
+                if i > 0 and j > 0 and seating_order[i-1][j-1] == "o":
+                    handshakes += 1
+                if i > 0 and seating_order[i-1][j] == "o":
+                    handshakes += 1
+                if i > 0 and j < cols-1 and seating_order[i-1][j+1] == "o":
+                    handshakes += 1
+                if j > 0 and seating_order[i][j-1] == "o":
+                    handshakes += 1
+                if j < cols-1 and seating_order[i][j+1] == "o":
+                    handshakes += 1
+                if i < rows-1 and j > 0 and seating_order[i+1][j-1] == "o":
+                    handshakes += 1
+                if i < rows-1 and seating_order[i+1][j] == "o":
+                    handshakes += 1
+                if i < rows-1 and j < cols-1 and seating_order[i+1][j+1] == "o":
+                    handshakes += 1
 
-        # Iterate over each other character in the input
-        for other_character in characters:
-            # Check if the other character is already in the converse set
-            if other_character in converse_set:
-                continue
+    return handshakes
 
-            # Check if the character and other character can converse with each other
-            if can_converse(character, other_character):
-                # Add the character and other character to the converse set
-                converse_set.add(character)
-                converse_set.add(other_character)
-                break
+def main():
+    rows, cols = map(int, input().split())
+    seating_order = []
+    for _ in range(rows):
+        seating_order.append(input())
+    print(get_handshakes(seating_order))
 
-    # Return the size of the converse set
-    return len(converse_set)
-
-def can_converse(character1, character2):
-    # Check if the characters speak the same language
-    if character1["language"] == character2["language"]:
-        return True
-
-    # Check if one of the characters understands the other character's language
-    if character1["language"] in character2["understands"] or character2["language"] in character1["understands"]:
-        return True
-
-    # Check if there is a sequence of characters who can translate for the characters
-    for character in characters:
-        # Check if the character understands both languages
-        if character["language"] in [character1["language"], character2["language"]] and character not in [character1, character2]:
-            # Check if the other characters understand the language spoken by the character
-            if character1["language"] in character["understands"] and character2["language"] in character["understands"]:
-                return True
-
-    # If none of the above conditions are met, the characters cannot converse
-    return False
-
-# Test the function with the sample input
-characters = [
-    {"name": "Jabba-the-Hutt", "language": "Huttese", "understands": ["Huttese", "Basic"]},
-    {"name": "Bib-Fortuna", "language": "Huttese", "understands": ["Huttese", "Basic"]},
-    {"name": "Boba-Fett", "language": "Basic", "understands": ["Huttese", "Basic"]},
-    {"name": "Chewbacca", "language": "Shyriiwook", "understands": ["Shyriiwook", "Basic"]},
-    {"name": "Luke", "language": "Basic", "understands": ["Jawaese", "Binary"]},
-    {"name": "Grakchawwaa", "language": "Shyriiwook", "understands": ["Shyriiwook", "Basic", "Jawaese"]},
-    {"name": "R2D2", "language": "Binary", "understands": ["Basic"]}
-]
-print(get_smallest_set_of_characters(characters))
+if __name__ == '__main__':
+    main()
 

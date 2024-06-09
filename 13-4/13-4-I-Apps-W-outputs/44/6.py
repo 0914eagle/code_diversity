@@ -1,28 +1,22 @@
 
-def solve(s):
-    n = len(s)
-    # Initialize the longest non-decreasing subsequence for each prefix of the string
-    longest_non_decreasing_subsequence = [1] * (n + 1)
-    # Initialize the previous index for each prefix of the string
-    previous_index = [0] * (n + 1)
-    
-    # Loop through each prefix of the string
-    for i in range(1, n + 1):
-        # Loop through each prefix of length i
-        for j in range(1, i + 1):
-            # If the current character is 0 and the previous character is 1, update the longest non-decreasing subsequence and the previous index
-            if s[i - j] == "0" and s[i - j - 1] == "1":
-                longest_non_decreasing_subsequence[i] = max(longest_non_decreasing_subsequence[i], longest_non_decreasing_subsequence[i - j] + 1)
-                previous_index[i] = j
-    
-    # Initialize the binary string t with all 0s
-    t = "0" * n
-    
-    # Loop through each suffix of the string
-    for i in range(n - 1, -1, -1):
-        # If the current character is 1 and the previous character is 0, update the binary string t
-        if s[i] == "1" and s[i - 1] == "0":
-            t = t[:i] + "1" + t[i + 1:]
-    
-    return t
+def knight_moves(x, y):
+    # Initialize a dictionary to store the number of ways to reach each square
+    ways = {(0, 0): 1}
+
+    # Loop through all possible positions of the knight
+    for i in range(x + 1):
+        for j in range(y + 1):
+            # If the current position is not the origin and has not been visited yet, mark it as visited and update the number of ways to reach it
+            if (i, j) != (0, 0) and (i, j) not in ways:
+                ways[(i, j)] = ways[(i - 1, j + 2)] + ways[(i - 2, j + 1)]
+
+    # Return the number of ways to reach the target position, modulo 10^9 + 7
+    return ways[(x, y)] % 1000000007
+
+def main():
+    x, y = map(int, input().split())
+    print(knight_moves(x, y))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,16 +1,34 @@
 
-def get_toys(n, m, a):
-    # Sort the list of toys in ascending order
-    a.sort()
-    # Initialize variables to keep track of the number of toys and cost
-    k = 0
-    cost = 0
-    # Iterate through the list of toys
-    for i in range(n):
-        # If the current toy is not already owned and the cost is less than or equal to the budget, add it to the list of toys to buy
-        if a[i] not in a[:i] and cost + a[i] <= m:
-            k += 1
-            cost += a[i]
-    # Return the number of toys to buy and the list of toys to buy
-    return k, cost
+def f1(n, m):
+    # Calculate the number of subsequences for each sequence of length n
+    # and return the sum modulo 10^9 + 7
+    return sum(f2(n, m)) % (10**9 + 7)
+
+def f2(n, m):
+    # Initialize a list to store the number of subsequences for each sequence of length n
+    num_subsequences = [0] * (n + 1)
+    num_subsequences[0] = 1
+
+    # Iterate over the elements of the sequence
+    for i in range(1, n + 1):
+        # Initialize a set to store the unique elements in the subsequence
+        unique_elements = set()
+
+        # Iterate over the previous subsequence
+        for j in range(i):
+            # If the current element is not in the unique elements set, add it to the set and increment the number of subsequences
+            if num_subsequences[j] > 0 and num_subsequences[j] not in unique_elements:
+                unique_elements.add(num_subsequences[j])
+                num_subsequences[i] += 1
+
+        # If the current element is not in the unique elements set, add it to the set and increment the number of subsequences
+        if i not in unique_elements:
+            unique_elements.add(i)
+            num_subsequences[i] += 1
+
+    return num_subsequences
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    print(f1(n, m))
 

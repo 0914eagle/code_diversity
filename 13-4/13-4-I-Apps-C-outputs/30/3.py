@@ -1,26 +1,28 @@
 
-def get_badge_numbers(start, end, locks):
-    visited = set()
-    queue = [(start, 0)]
-    while queue:
-        room, badge = queue.pop(0)
-        if room == end:
-            return badge
-        for lock in locks[room]:
-            if lock[0] <= badge <= lock[1] and lock[2] not in visited:
-                visited.add(lock[2])
-                queue.append((lock[2], badge))
-    return 0
+def get_median(arr):
+    
+    arr.sort()
+    if len(arr) % 2 == 0:
+        return (arr[len(arr) // 2 - 1] + arr[len(arr) // 2]) / 2
+    else:
+        return arr[len(arr) // 2]
 
-def main():
-    num_rooms, num_locks, num_badges = map(int, input().split())
-    start, end = map(int, input().split())
-    locks = [[] for _ in range(num_rooms + 1)]
-    for _ in range(num_locks):
-        a, b, x, y = map(int, input().split())
-        locks[a].append((x, y, b))
-    print(get_badge_numbers(start, end, locks))
+def is_scary(arr):
+    
+    return arr[0] == get_median(arr)
 
-if __name__ == "__main__":
-    main()
+def count_scary_subarrays(arr):
+    
+    n = len(arr)
+    count = 0
+    for i in range(n):
+        for j in range(i, n):
+            if is_scary(arr[i:j+1]):
+                count += 1
+    return count
+
+if __name__ == '__main__':
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(count_scary_subarrays(arr))
 

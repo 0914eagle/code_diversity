@@ -1,42 +1,37 @@
 
-import math
-
-def get_max_circumference(vertices):
-    # Calculate the distance between each pair of vertices
-    distances = []
-    for i in range(len(vertices)):
-        for j in range(i+1, len(vertices)):
-            dx = vertices[i][0] - vertices[j][0]
-            dy = vertices[i][1] - vertices[j][1]
-            distances.append(math.sqrt(dx**2 + dy**2))
-    
-    # Sort the distances in descending order
-    distances.sort(reverse=True)
-    
-    # Calculate the maximum circumference
-    circumference = 0
-    for i in range(6):
-        circumference += distances[i]
-    
-    return circumference
+def get_min_cuts(poles, fence_length):
+    # Sort the poles in non-decreasing order
+    poles.sort()
+    # Initialize the minimum number of cuts to 0
+    min_cuts = 0
+    # Loop through the poles and find the longest one that is less than or equal to the fence length
+    for pole in poles:
+        if pole <= fence_length:
+            # Add the length of the pole to the minimum number of cuts
+            min_cuts += pole
+            # Subtract the length of the pole from the fence length
+            fence_length -= pole
+        else:
+            # If the pole is greater than the fence length, we need to make a cut
+            min_cuts += 1
+            # Subtract the fence length from the pole length
+            pole -= fence_length
+            # Add the fence length to the minimum number of cuts
+            min_cuts += fence_length
+            # Break out of the loop because we have found the longest pole that is less than or equal to the fence length
+            break
+    # Return the minimum number of cuts
+    return min_cuts
 
 def main():
-    n = int(input())
-    vertices = []
-    for i in range(n):
-        x, y = map(int, input().split())
-        vertices.append((x, y))
-    
-    max_circumference = 0
-    for i in range(n):
-        vertex = vertices[i]
-        vertices_copy = vertices[:i] + vertices[i+1:]
-        circumference = get_max_circumference(vertices_copy + [vertex])
-        if circumference > max_circumference:
-            max_circumference = circumference
-    
-    print(max_circumference)
+    # Read the input data
+    K, N = map(int, input().split())
+    poles = list(map(int, input().split()))
+    # Call the function to get the minimum number of cuts
+    min_cuts = get_min_cuts(poles, N)
+    # Print the minimum number of cuts
+    print(min_cuts)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
 

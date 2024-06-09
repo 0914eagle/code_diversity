@@ -1,36 +1,36 @@
 
-def solve(r, s, m, d, n, b, ingredients, dishes, incompatible):
-    # Initialize a set to store the different dinner experiences
-    dinner_experiences = set()
+def get_resistors_needed(a, b):
+    # Initialize the number of resistors needed to 0
+    resistors_needed = 0
+    
+    # While the resistance is not equal to the target resistance
+    while a / b != 1:
+        # If the resistance is less than 1
+        if a / b < 1:
+            # Increase the number of resistors needed
+            resistors_needed += 1
+            # Double the resistance
+            a *= 2
+        # If the resistance is greater than 1
+        else:
+            # Decrease the number of resistors needed
+            resistors_needed -= 1
+            # Half the resistance
+            b *= 2
+    
+    # Return the number of resistors needed
+    return resistors_needed
 
-    # Iterate over each starter dish
-    for starter in dishes[:s]:
-        # Iterate over each main dish
-        for main in dishes[s:s+m]:
-            # Iterate over each dessert
-            for dessert in dishes[s+m:]:
-                # Check if the dishes are incompatible
-                if (starter, main, dessert) in incompatible:
-                    continue
+def main():
+    # Read the input
+    a, b = map(int, input().split())
+    
+    # Call the function to get the number of resistors needed
+    resistors_needed = get_resistors_needed(a, b)
+    
+    # Print the output
+    print(resistors_needed)
 
-                # Initialize a set to store the ingredients used in the current dish
-                current_ingredients = set()
-
-                # Add the ingredients from the current dish to the set
-                current_ingredients.update(ingredients[starter])
-                current_ingredients.update(ingredients[main])
-                current_ingredients.update(ingredients[dessert])
-
-                # Check if the current dish contains at least one common ingredient with the previous dishes
-                if len(current_ingredients.intersection(dinner_experiences)) > 0:
-                    continue
-
-                # Add the current dish to the set of dinner experiences
-                dinner_experiences.add((starter, main, dessert))
-
-    # Check if the number of dinner experiences is at most 10^18
-    if len(dinner_experiences) <= 10**18:
-        return len(dinner_experiences)
-    else:
-        return "too many"
+if __name__ == '__main__':
+    main()
 

@@ -1,26 +1,22 @@
 
-import sys
+import math
 
-def get_snow_levels(n):
-    snow_levels = []
+def get_expected_distance(n, points):
+    total_distance = 0
     for i in range(n):
-        a, b = map(int, input().split())
-        snow_levels += list(range(a, b + 1))
-    return snow_levels
+        x1, y1 = points[i]
+        x2, y2 = points[(i+1)%n]
+        total_distance += math.sqrt((x2-x1)**2 + (y2-y1)**2)
+    return total_distance / n
 
-def count_ways(snow_levels):
-    n = len(snow_levels)
-    if n < 3:
-        return 0
-    snow_levels.sort()
-    count = 0
-    for i in range(n - 2):
-        if snow_levels[i] < snow_levels[i + 1] and snow_levels[i + 1] < snow_levels[i + 2]:
-            count += 1
-    return count
+def main():
+    n = int(input())
+    points = []
+    for i in range(n):
+        x, y = map(int, input().split())
+        points.append((x, y))
+    print(get_expected_distance(n, points))
 
-n = int(input())
-snow_levels = get_snow_levels(n)
-result = count_ways(snow_levels)
-print(result % 1000000009)
+if __name__ == '__main__':
+    main()
 

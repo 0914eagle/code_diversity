@@ -1,43 +1,27 @@
 
-def is_star(grid, row, col, size):
-    # Check if the star is inside the grid
-    if row < 0 or row + size > len(grid) or col < 0 or col + size > len(grid[0]):
-        return False
-    
-    # Check if the star is completely inside the grid
-    for i in range(row, row + size):
-        for j in range(col, col + size):
-            if grid[i][j] != '*':
-                return False
-    
-    return True
+def get_dog_behavior(a, b, c, d):
+    aggressive_periods = [(a, False), (b, True), (c, False), (d, True)]
+    aggressive_periods.sort()
+    return aggressive_periods
 
-def draw_grid(grid):
-    # Initialize the number of stars needed
-    num_stars = 0
-    
-    # Iterate through the grid
-    for row in range(len(grid)):
-        for col in range(len(grid[0])):
-            # If the current cell is an asterisk, check if it forms a star
-            if grid[row][col] == '*':
-                # Check if the star is size 1
-                if is_star(grid, row, col, 1):
-                    num_stars += 1
-                    print(row, col, 1)
-                # Check if the star is size 2
-                elif is_star(grid, row, col, 2):
-                    num_stars += 1
-                    print(row, col, 2)
-                # Check if the star is size 3
-                elif is_star(grid, row, col, 3):
-                    num_stars += 1
-                    print(row, col, 3)
-    
-    return num_stars
+def get_dog_attack(aggressive_periods, arrival_time):
+    if arrival_time < aggressive_periods[0][0]:
+        return "none"
+    if arrival_time == aggressive_periods[0][0]:
+        return "one" if aggressive_periods[0][1] else "none"
+    if arrival_time == aggressive_periods[1][0]:
+        return "both"
+    if arrival_time > aggressive_periods[1][0]:
+        return "one"
 
-n, m = map(int, input().split())
-grid = [input() for _ in range(n)]
-num_stars = draw_grid(grid)
-print(num_stars)
+def main():
+    a, b, c, d = map(int, input().split())
+    p, m, g = map(int, input().split())
+    aggressive_periods = get_dog_behavior(a, b, c, d)
+    print(get_dog_attack(aggressive_periods, p))
+    print(get_dog_attack(aggressive_periods, m))
+    print(get_dog_attack(aggressive_periods, g))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,20 +1,28 @@
 
-def carryless_multiplication(a, b):
-    result = 0
-    for i in range(len(b)):
-        result += a * int(b[i])
-    return result
+def get_polynomial(p, k):
+    if p >= k:
+        return -1
+    
+    d = 1
+    while p % k != 0:
+        p *= k
+        d += 1
+    
+    a = [0] * d
+    a[d-1] = 1
+    return d, a
 
-def find_square_root(n):
-    for i in range(1, n+1):
-        if i * i == n:
-            return i
-    return -1
+def main():
+    p, k = map(int, input().split())
+    d, a = get_polynomial(p, k)
+    if d == -1:
+        print(-1)
+    else:
+        print(d)
+        for i in range(d):
+            print(a[i], end=" ")
+        print()
 
-n = int(input())
-result = find_square_root(n)
-if result == -1:
-    print(-1)
-else:
-    print(result)
+if __name__ == '__main__':
+    main()
 

@@ -1,37 +1,71 @@
 
-import sys
+def f1(n, r, w, h):
+    # Initialize variables
+    gems = []
+    max_gems = 0
+    current_gems = 0
+    current_x = 0
+    current_y = 0
+    velocity_x = 0
+    velocity_y = v
 
-def get_number_of_ways(r, w, d):
-    # Base case: if there are no red or white wines, there is only one way to arrange them
-    if r == 0 and w == 0:
-        return 1
-    
-    # Base case: if there is only one type of wine, there is only one way to arrange them
-    if r == 0 or w == 0:
-        return 1
-    
-    # Initialize the number of ways to arrange the wines
-    number_of_ways = 0
-    
-    # Iterate over the possible number of red wine piles
-    for i in range(1, r + 1):
-        # Get the number of ways to arrange the remaining wines
-        remaining_ways = get_number_of_ways(r - i, w, d)
-        
-        # If the number of ways is 0, continue to the next iteration
-        if remaining_ways == 0:
+    # Read input gems
+    for i in range(n):
+        x, y = map(int, input().split())
+        gems.append((x, y))
+
+    # Sort gems by y-coordinate in descending order
+    gems.sort(key=lambda x: x[1], reverse=True)
+
+    # Iterate through gems and update current position and velocity
+    for gem in gems:
+        x, y = gem
+        if current_y >= y:
             continue
-        
-        # If the number of red wine piles is less than or equal to the maximum number of red wine piles allowed, add the number of ways to the total
-        if i <= d:
-            number_of_ways += remaining_ways
-    
-    return number_of_ways
+        else:
+            current_x = x
+            current_y = y
+            velocity_x = (x - current_x) / r
+            velocity_y = v
+            current_gems += 1
+            max_gems = max(max_gems, current_gems)
 
-def main():
-    r, w, d = map(int, input().split())
-    print(get_number_of_ways(r, w, d) % (10**9 + 7))
+    return max_gems
 
-if __name__ == "__main__":
-    main()
+def f2(n, r, w, h):
+    # Initialize variables
+    gems = []
+    max_gems = 0
+    current_gems = 0
+    current_x = 0
+    current_y = 0
+    velocity_x = 0
+    velocity_y = v
+
+    # Read input gems
+    for i in range(n):
+        x, y = map(int, input().split())
+        gems.append((x, y))
+
+    # Sort gems by y-coordinate in descending order
+    gems.sort(key=lambda x: x[1], reverse=True)
+
+    # Iterate through gems and update current position and velocity
+    for gem in gems:
+        x, y = gem
+        if current_y >= y:
+            continue
+        else:
+            current_x = x
+            current_y = y
+            velocity_x = (x - current_x) / r
+            velocity_y = v
+            current_gems += 1
+            max_gems = max(max_gems, current_gems)
+
+    return max_gems
+
+if __name__ == '__main__':
+    n, r, w, h = map(int, input().split())
+    print(f1(n, r, w, h))
 

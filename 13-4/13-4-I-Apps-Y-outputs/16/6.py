@@ -1,45 +1,39 @@
 
-def get_note_duration(note):
-    if note.isdigit():
-        return int(note)
+def get_button_presses(floors, start, goal, up, down):
+    # Initialize variables
+    current_floor = start
+    button_presses = 0
+    up_button_count = 0
+    down_button_count = 0
+
+    # Loop until the current floor is the goal floor or we reach the top or bottom of the building
+    while current_floor != goal and (current_floor != 1 or current_floor != floors):
+        # If the current floor is higher than the goal floor, press the down button
+        if current_floor > goal:
+            current_floor -= down
+            down_button_count += 1
+        # If the current floor is lower than the goal floor, press the up button
+        else:
+            current_floor += up
+            up_button_count += 1
+        # Increment the button press count
+        button_presses += 1
+
+    # If we reach the top or bottom of the building, return "use the stairs"
+    if current_floor == 1 or current_floor == floors:
+        return "use the stairs"
+    # Otherwise, return the number of button presses
     else:
-        return 1
+        return button_presses
 
-def get_note_pitch(note):
-    if note.isdigit():
-        return note
-    else:
-        return note.upper()
+def main():
+    floors = int(input("Enter the number of floors: "))
+    start = int(input("Enter the starting floor: "))
+    goal = int(input("Enter the goal floor: "))
+    up = int(input("Enter the number of floors the up button takes you: "))
+    down = int(input("Enter the number of floors the down button takes you: "))
+    print(get_button_presses(floors, start, goal, up, down))
 
-def get_staff_line(note, staff_line):
-    if note == "C":
-        return staff_line[0]
-    elif note == "D":
-        return staff_line[1]
-    elif note == "E":
-        return staff_line[2]
-    elif note == "F":
-        return staff_line[3]
-    elif note == "G":
-        return staff_line[4]
-    elif note == "A":
-        return staff_line[5]
-    elif note == "B":
-        return staff_line[6]
-    else:
-        return staff_line[7]
-
-def print_staff(notes):
-    staff_line = ["G:", "F:", "E:", "D:", "C:", "B:", "A:", "g:", "f:", "e:", "d:", "c:", "b:", "a:"]
-    for note in notes:
-        note_duration = get_note_duration(note)
-        note_pitch = get_note_pitch(note)
-        staff_line_index = get_staff_line(note_pitch, staff_line)
-        print(staff_line_index, end="")
-        for i in range(note_duration):
-            print("*", end="")
-        print()
-
-notes = input().split()
-print_staff(notes)
+if __name__ == '__main__':
+    main()
 

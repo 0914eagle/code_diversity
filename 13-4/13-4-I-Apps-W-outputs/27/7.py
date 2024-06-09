@@ -1,18 +1,19 @@
 
-def solve(n, m, a):
-    # Sort the list of toys that Tanya already has
-    a.sort()
+def f1(n, m):
+    # Calculate the number of subsequences for each sequence
+    # and return the sum modulo 10^9 + 7
+    return sum(f2(n, m, i) for i in range(1, m + 1)) % 1000000007
+
+def f2(n, m, x):
+    # Base case: if n is 1, return 1 if x is in the sequence, 0 otherwise
+    if n == 1:
+        return 1 if x in range(1, m + 1) else 0
     
-    # Initialize variables to keep track of the number of distinct toys and the total cost
-    k = 0
-    cost = 0
-    
-    # Iterate through the list of toys and add them to the collection if they are not already present and the total cost does not exceed m
-    for i in range(n):
-        if a[i] not in a[:i] and cost + a[i] <= m:
-            k += 1
-            cost += a[i]
-    
-    # Return the number of distinct toys and the list of toys to be purchased
-    return [k, a[:k]]
+    # Recursive case: calculate the number of subsequences for the first n - 1 elements
+    # and return the sum modulo 10^9 + 7
+    return sum(f2(n - 1, m, i) for i in range(1, x)) % 1000000007 + sum(f2(n - 1, m, i) for i in range(x + 1, m + 1)) % 1000000007
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    print(f1(n, m))
 

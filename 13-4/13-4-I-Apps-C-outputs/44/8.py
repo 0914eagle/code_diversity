@@ -1,36 +1,25 @@
 
-n = int(input())
-buttons = [[] for _ in range(n)]
-for i in range(n):
-    line = input()
-    for j, c in enumerate(line):
-        if c == "Y":
-            buttons[j].append(i)
+def find_sub_rectangle(n, m, x, y, a, b):
+    x1 = 0
+    y1 = 0
+    x2 = n
+    y2 = m
+    
+    while x1 <= x and y1 <= y:
+        if (x2 - x1) * b == (y2 - y1) * a:
+            return x1, y1, x2, y2
+        elif (x2 - x1) * b < (y2 - y1) * a:
+            y1 += 1
+        else:
+            x1 += 1
+    
+    return -1, -1, -1, -1
 
-def get_valid_assignments(assignments):
-    for i in range(n):
-        for j in range(i+1, n):
-            if assignments[i] == assignments[j]:
-                return False
-    return True
+def main():
+    n, m, x, y, a, b = map(int, input().split())
+    x1, y1, x2, y2 = find_sub_rectangle(n, m, x, y, a, b)
+    print(x1, y1, x2, y2)
 
-def get_max_assignments(assignments):
-    max_assignments = []
-    for i in range(n):
-        for j in range(n):
-            if get_valid_assignments(assignments + [j]):
-                max_assignments.append(assignments + [j])
-    return max_assignments
-
-def get_output(assignments):
-    output = ""
-    for i in range(n):
-        output += str(assignments[i] + 1) + " "
-    return output.strip()
-
-assignments = []
-max_assignments = get_max_assignments(assignments)
-print(len(max_assignments))
-for assignment in max_assignments:
-    print(get_output(assignment))
+if __name__ == '__main__':
+    main()
 

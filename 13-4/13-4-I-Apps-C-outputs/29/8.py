@@ -1,29 +1,70 @@
 
-import itertools
+def get_palindromes(s):
+    # Initialize an empty list to store the palindromes
+    palindromes = []
+    
+    # Loop through each character in the string
+    for i in range(len(s)):
+        # Check if the character is already in the palindromes list
+        if s[i] not in palindromes:
+            # If not, check if the character is a palindrome
+            if is_palindrome(s[i:]):
+                # If it is, add it to the palindromes list
+                palindromes.append(s[i])
+    
+    return palindromes
 
-def paint_dominoes(N, S1, S2):
-    # Initialize a dictionary to store the number of ways to paint each domino
-    num_ways = {}
+def is_palindrome(s):
+    # Check if the string is a palindrome
+    return s == s[::-1]
 
-    # Iterate over each domino in S1 and S2
-    for i in range(N):
-        for j in range(i+1, N):
-            # Get the colors of the two dominoes
-            color1 = S1[i]
-            color2 = S2[j]
+def get_min_palindromes(s):
+    # Get all possible palindromes in the string
+    palindromes = get_palindromes(s)
+    
+    # Initialize a variable to store the minimum number of palindromes
+    min_palindromes = len(palindromes)
+    
+    # Loop through each possible combination of palindromes
+    for i in range(1, len(palindromes)):
+        # Check if the combination of palindromes is a valid solution
+        if is_valid_solution(palindromes, i):
+            # If it is, update the minimum number of palindromes
+            min_palindromes = min(min_palindromes, i)
+    
+    return min_palindromes
 
-            # If the dominoes are not adjacent, they can be painted with any color
-            if i != j-1 and i != j+1:
-                num_ways[(color1, color2)] = 3
-            # If the dominoes are adjacent, they must be painted with different colors
-            else:
-                num_ways[(color1, color2)] = 2
+def is_valid_solution(palindromes, num_palindromes):
+    # Initialize a variable to store the length of the palindromes
+    length = len(palindromes[0])
+    
+    # Loop through each palindrome
+    for i in range(num_palindromes):
+        # Check if the length of the palindrome is the same as the length of the other palindromes
+        if len(palindromes[i]) != length:
+            # If it's not, return False
+            return False
+    
+    # If all palindromes have the same length, return True
+    return True
 
-    # Calculate the total number of ways to paint the dominoes
-    total_ways = 1
-    for key, value in num_ways.items():
-        total_ways *= value
+def main():
+    # Read the input string
+    s = input()
+    
+    # Get the minimum number of palindromes
+    min_palindromes = get_min_palindromes(s)
+    
+    # Print the minimum number of palindromes
+    print(min_palindromes)
+    
+    # Get the palindromes
+    palindromes = get_palindromes(s)
+    
+    # Print the palindromes
+    for i in range(min_palindromes):
+        print(palindromes[i], end=" ")
 
-    # Return the total number of ways to paint the dominoes, modulo 1000000007
-    return total_ways % 1000000007
+if __name__ == '__main__':
+    main()
 

@@ -1,42 +1,36 @@
 
-def get_least_total_tolls(trucks):
-    # Initialize a dictionary to store the tolls for each truck
-    tolls = {}
-    # Iterate over the trucks
-    for truck in trucks:
-        # Get the entrance and exit numbers for the current truck
-        entrance, exit = truck
-        # If the entrance and exit numbers are not the same
-        if entrance != exit:
-            # Calculate the toll for the current truck
-            toll = abs(entrance - exit)
-            # Add the toll to the dictionary
-            tolls[truck] = toll
-    # Initialize a set to store the exchanged tickets
-    exchanged_tickets = set()
-    # Initialize a variable to store the total tolls
-    total_tolls = 0
-    # Iterate until all tickets are exchanged
-    while len(tolls) > 0:
-        # Find the two tickets with the minimum tolls that have not been exchanged yet
-        min_toll = min(tolls, key=tolls.get)
-        # Get the entrance and exit numbers for the first truck
-        entrance1, exit1 = min_toll
-        # Remove the first truck from the dictionary
-        del tolls[min_toll]
-        # Find the second truck with the minimum tolls that has not been exchanged yet
-        min_toll = min(tolls, key=tolls.get)
-        # Get the entrance and exit numbers for the second truck
-        entrance2, exit2 = min_toll
-        # Remove the second truck from the dictionary
-        del tolls[min_toll]
-        # Calculate the total tolls for the two trucks
-        total_tolls += tolls[min_toll]
-        # Add the exchanged tickets to the set
-        exchanged_tickets.add(min_toll)
-        # Add the exchanged tickets to the set
-        exchanged_tickets.add((entrance1, exit2))
-        exchanged_tickets.add((entrance2, exit1))
-    # Return the total tolls
-    return total_tolls
+def f1(m, h1, a1, x1, y1, h2, a2, x2, y2):
+    # Initialize the minimum time to reach a1 and a2
+    min_time = 0
+    # Initialize the current heights of Xaniar and Abol
+    current_h1 = h1
+    current_h2 = h2
+    # Loop until the heights of Xaniar and Abol are equal to a1 and a2 respectively
+    while current_h1 != a1 or current_h2 != a2:
+        # Calculate the new heights of Xaniar and Abol after one second
+        new_h1 = (x1 * current_h1 + y1) % m
+        new_h2 = (x2 * current_h2 + y2) % m
+        # Update the current heights of Xaniar and Abol
+        current_h1 = new_h1
+        current_h2 = new_h2
+        # Increment the minimum time
+        min_time += 1
+    # Return the minimum time
+    return min_time
+
+def f2(...):
+    # Implement f2 here
+    pass
+
+if __name__ == '__main__':
+    m = int(input())
+    h1 = int(input())
+    a1 = int(input())
+    x1 = int(input())
+    y1 = int(input())
+    h2 = int(input())
+    a2 = int(input())
+    x2 = int(input())
+    y2 = int(input())
+    print(f1(m, h1, a1, x1, y1, h2, a2, x2, y2))
 

@@ -1,22 +1,65 @@
 
-import itertools
+def f1(n):
+    # function to generate all possible equations
+    def generate_equations(n):
+        equations = []
+        for i in range(1, n+1):
+            for j in range(1, n+1):
+                for op in ['+', '-', '*']:
+                    equations.append((i, op, j))
+        return equations
+    
+    # function to check if the result of an equation is unique
+    def is_unique(equations, result):
+        for equation in equations:
+            if eval(equation) == result:
+                return False
+        return True
+    
+    # generate all possible equations
+    equations = generate_equations(n)
+    
+    # shuffle the equations to randomize the order
+    import random
+    random.shuffle(equations)
+    
+    # iterate through the equations and check if the result is unique
+    for equation in equations:
+        result = eval(equation)
+        if is_unique(equations, result):
+            return equation
+    
+    # if no unique result is found, return "impossible"
+    return "impossible"
 
-def get_nth_string(k, n):
-    # Initialize a list to store the generated strings
-    strings = []
+def f2(n, a, b):
+    # function to check if a pair of numbers is valid
+    def is_valid(a, b):
+        return a >= -10**6 and a <= 10**6 and b >= -10**6 and b <= 10**6
     
-    # Iterate over all possible strings of length k
-    for perm in itertools.permutations('abcdefghijklmnopqrstuvwxyz', k):
-        # Check if the string is double free
-        if all(perm[i] != perm[i+1] for i in range(len(perm)-1)):
-            # Check if the string is k-incremental
-            counts = [0] * 26
-            for c in perm:
-                counts[ord(c) - ord('a')] += 1
-            if all(counts[i] == i for i in range(1, k+1)):
-                # If both conditions are met, add the string to the list
-                strings.append(''.join(perm))
+    # check if the pair of numbers is valid
+    if not is_valid(a, b):
+        return "impossible"
     
-    # Return the nth string in the list, or -1 if it doesn't exist
-    return strings[n-1] if n <= len(strings) else -1
+    # generate all possible equations for the pair of numbers
+    equations = [(a, op, b) for op in ['+', '-', '*']]
+    
+    # shuffle the equations to randomize the order
+    import random
+    random.shuffle(equations)
+    
+    # iterate through the equations and check if the result is unique
+    for equation in equations:
+        result = eval(equation)
+        if is_unique(equations, result):
+            return equation
+    
+    # if no unique result is found, return "impossible"
+    return "impossible"
+
+if __name__ == '__main__':
+    n = int(input())
+    for _ in range(n):
+        a, b = map(int, input().split())
+        print(f2(n, a, b))
 

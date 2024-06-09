@@ -1,20 +1,16 @@
 
-def is_cube(n):
-    x = n ** (1/3)
-    return x == int(x)
+def get_common_divisors(a):
+    common_divisors = set(a)
+    for i in range(len(a)):
+        for j in range(i+1, len(a)):
+            common_divisors.intersection_update(range(min(a[i], a[j]), max(a[i], a[j])+1, abs(a[i]-a[j])))
+    return len(common_divisors)
 
-def is_bus_number(n):
-    for i in range(1, int(n ** (1/3)) + 1):
-        if is_cube(n - i ** 3):
-            return True
-    return False
+def main():
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(get_common_divisors(a))
 
-def get_largest_bus_number(m):
-    for i in range(m, 0, -1):
-        if is_bus_number(i):
-            return i
-    return None
-
-m = int(input())
-print(get_largest_bus_number(m))
+if __name__ == '__main__':
+    main()
 

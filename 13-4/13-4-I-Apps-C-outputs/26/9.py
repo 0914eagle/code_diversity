@@ -1,46 +1,46 @@
 
-def get_min_changes(grid, commands):
-    # Initialize variables
-    start_row, start_col = None, None
-    goal_row, goal_col = None, None
-    obstacles = set()
+def get_energy_required(cliff, start_point):
+    # Initialize the energy required to be 0
+    energy_required = 0
+    
+    # Loop through the cliff
+    for row in cliff:
+        for cell in row:
+            # If the cell is not empty, add the energy required to the total energy required
+            if cell != "E":
+                energy_required += int(cell)
+    
+    # Return the total energy required
+    return energy_required
 
-    # Parse the grid and find the start, goal, and obstacles
-    for row, line in enumerate(grid):
-        for col, char in enumerate(line):
-            if char == "S":
-                start_row, start_col = row, col
-            elif char == "G":
-                goal_row, goal_col = row, col
-            elif char == "#":
-                obstacles.add((row, col))
+def get_min_energy_required(cliff, start_points):
+    # Initialize the minimum energy required to be infinity
+    min_energy_required = float("inf")
+    
+    # Loop through the start points
+    for start_point in start_points:
+        # Get the energy required to reach the start point
+        energy_required = get_energy_required(cliff, start_point)
+        
+        # If the energy required is less than the minimum energy required, update the minimum energy required
+        if energy_required < min_energy_required:
+            min_energy_required = energy_required
+    
+    # Return the minimum energy required
+    return min_energy_required
 
-    # Initialize the current position and the set of visited cells
-    current_row, current_col = start_row, start_col
-    visited = set()
+def main():
+    # Read the input
+    R, C = map(int, input().split())
+    cliff = [input().split() for _ in range(R)]
+    start_points = input().split()
+    
+    # Get the minimum energy required to complete the climb
+    min_energy_required = get_min_energy_required(cliff, start_points)
+    
+    # Print the minimum energy required
+    print(min_energy_required)
 
-    # Iterate through the commands and update the current position
-    for command in commands:
-        if command == "L":
-            current_col -= 1
-        elif command == "R":
-            current_col += 1
-        elif command == "U":
-            current_row -= 1
-        elif command == "D":
-            current_row += 1
-
-        # If the current position is an obstacle or outside the grid, break the loop
-        if (current_row, current_col) in obstacles or current_row < 0 or current_col < 0 or current_row >= len(grid) or current_col >= len(grid[0]):
-            break
-
-        # Add the current position to the set of visited cells
-        visited.add((current_row, current_col))
-
-        # If the current position is the goal, return the number of visited cells
-        if current_row == goal_row and current_col == goal_col:
-            return len(visited)
-
-    # If the robot reached the end of the commands without reaching the goal, return -1
-    return -1
+if __name__ == '__main__':
+    main()
 

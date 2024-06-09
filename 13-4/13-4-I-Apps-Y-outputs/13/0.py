@@ -1,15 +1,26 @@
 
-def get_lexicographically_min_string(string, k):
-    n = len(string)
-    for i in range(n-1):
-        if string[i] > string[i+1] and k > 0:
-            string = string[:i] + string[i+1] + string[i] + string[i+2:]
-            k -= 1
-    return string
+import sys
 
-q = int(input())
-for i in range(q):
-    n, k = map(int, input().split())
-    string = input()
-    print(get_lexicographically_min_string(string, k))
+def f1(n, a):
+    # Calculate the number of different monotonic renumerations of a
+    count = 0
+    for i in range(n):
+        for j in range(i+1, n):
+            if a[i] == a[j]:
+                count += 1
+    return count % 998244353
+
+def f2(n, a):
+    # Calculate the number of different monotonic renumerations of a
+    count = 0
+    for i in range(n):
+        for j in range(i+1, n):
+            if a[i] == a[j]:
+                count += 1
+    return count % 998244353
+
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(f1(n, a))
 

@@ -1,33 +1,20 @@
 
-import sys
-input = sys.stdin.read().splitlines()
+def get_input():
+    return int(input())
 
-n, m, k = map(int, input[0].split())
-roads = [tuple(map(int, input[i].split())) for i in range(1, m+1)]
-routes = [tuple(map(int, input[i].split())) for i in range(m+1, m+1+k)]
+def solve(n):
+    count = 0
+    for a in range(1, n+1):
+        for b in range(1, n+1):
+            c = n - a*b
+            if a*b + c == n and a > 0 and b > 0 and c > 0:
+                count += 1
+    return count
 
-# create a graph with the roads as edges
-graph = [[] for _ in range(n+1)]
-for x, y, w in roads:
-    graph[x].append((y, w))
-    graph[y].append((x, w))
+def main():
+    n = get_input()
+    print(solve(n))
 
-# find the shortest path between each pair of districts
-distances = [[float('inf') for _ in range(n+1)] for _ in range(n+1)]
-for i in range(n+1):
-    distances[i][i] = 0
-    for j, w in graph[i]:
-        distances[i][j] = w
-        distances[j][i] = w
-for k in range(n+1):
-    for i in range(n+1):
-        for j in range(n+1):
-            distances[i][j] = min(distances[i][j], distances[i][k] + distances[k][j])
-
-# find the minimum total cost of travel for each route
-total_cost = 0
-for a, b in routes:
-    total_cost += distances[a][b]
-
-print(total_cost)
+if __name__ == '__main__':
+    main()
 

@@ -1,27 +1,50 @@
 
-def get_min_path_length(n, k):
-    # Initialize a dictionary to store the shortest distance from each fragment to the assembly node
-    distances = {}
+def f1(N, K, a, b):
+    # Sort the measurements in descending order
+    a = sorted(a, reverse=True)
+    b = sorted(b, reverse=True)
     
-    # Initialize the assembly node with the smallest possible distance (0)
-    distances[1] = 0
+    # Initialize the ranking and the number of distinct ranks
+    ranking = [0] * N
+    distinct_ranks = 1
     
-    # Loop through each fragment
-    for i in range(n):
-        # Get the current fragment's location
-        current_location = k[i]
-        
-        # Loop through all possible locations that the fragment could be at
-        for location in range(1, current_location + 1):
-            # If the fragment is not already at the assembly node
-            if location != 1:
-                # Get the distance from the current location to the assembly node
-                distance = abs(location - 1)
-                
-                # If the distance is shorter than the current shortest distance, update the dictionary
-                if distance < distances.get(location, float('inf')):
-                    distances[location] = distance
+    # Loop through each assistant and assign a ranking
+    for i in range(N):
+        # If the current assistant has a better quality than the previous one, assign a new ranking
+        if a[i] + K < a[i-1] or b[i] + K < b[i-1]:
+            ranking[i] = distinct_ranks
+            distinct_ranks += 1
+        # Otherwise, assign the same ranking as the previous assistant
+        else:
+            ranking[i] = ranking[i-1]
     
-    # Return the sum of the shortest distances from each fragment to the assembly node
-    return sum(distances.values())
+    return distinct_ranks
+
+def f2(N, K, a, b):
+    # Sort the measurements in descending order
+    a = sorted(a, reverse=True)
+    b = sorted(b, reverse=True)
+    
+    # Initialize the ranking and the number of distinct ranks
+    ranking = [0] * N
+    distinct_ranks = 1
+    
+    # Loop through each assistant and assign a ranking
+    for i in range(N):
+        # If the current assistant has a better quality than the previous one, assign a new ranking
+        if a[i] + K < a[i-1] or b[i] + K < b[i-1]:
+            ranking[i] = distinct_ranks
+            distinct_ranks += 1
+        # Otherwise, assign the same ranking as the previous assistant
+        else:
+            ranking[i] = ranking[i-1]
+    
+    return ranking
+
+if __name__ == '__main__':
+    N, K = map(int, input().split())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    print(f1(N, K, a, b))
+    print(f2(N, K, a, b))
 

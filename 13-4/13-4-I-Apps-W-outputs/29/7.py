@@ -1,34 +1,31 @@
 
-import sys
+def get_longest_segment(arr):
+    # find the longest segment of consecutive equal integers
+    longest = 1
+    current = 1
+    for i in range(1, len(arr)):
+        if arr[i] == arr[i-1]:
+            current += 1
+        else:
+            longest = max(longest, current)
+            current = 1
+    return longest
 
-def get_inconvenience(n, m, bridges):
-    # Initialize a dictionary to store the pairs of islands that are no longer connected
-    inconvenience = {}
-    
-    # Iterate through the bridges and mark the pairs of islands that are no longer connected
-    for i in range(m):
-        a, b = bridges[i]
-        if a not in inconvenience:
-            inconvenience[a] = []
-        if b not in inconvenience:
-            inconvenience[b] = []
-        inconvenience[a].append(b)
-        inconvenience[b].append(a)
-    
-    # Count the number of pairs of islands that are no longer connected
-    count = 0
-    for i in range(1, n + 1):
-        for j in range(i + 1, n + 1):
-            if i not in inconvenience or j not in inconvenience[i]:
-                count += 1
-    
-    return count
+def remove_segment(arr, segment):
+    # remove the longest segment from the array
+    return arr[segment:]
 
-n, m = map(int, input().split())
-bridges = []
-for i in range(m):
-    a, b = map(int, input().split())
-    bridges.append((a, b))
+def count_operations(arr):
+    # count the number of operations needed to remove all elements from the array
+    operations = 0
+    while len(arr) > 0:
+        segment = get_longest_segment(arr)
+        arr = remove_segment(arr, segment)
+        operations += 1
+    return operations
 
-print(*[get_inconvenience(n, m, bridges[:i + 1]) for i in range(m)], sep='\n')
+if __name__ == '__main__':
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(count_operations(arr))
 

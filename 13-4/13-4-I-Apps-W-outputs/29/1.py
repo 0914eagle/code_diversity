@@ -1,41 +1,30 @@
 
-import sys
+def get_longest_segment(arr):
+    # Find the longest segment of consecutive equal integers
+    current_segment = []
+    longest_segment = []
+    for i in range(len(arr)):
+        if arr[i] not in current_segment:
+            current_segment.append(arr[i])
+        else:
+            if len(current_segment) > len(longest_segment):
+                longest_segment = current_segment
+            current_segment = [arr[i]]
+    if len(current_segment) > len(longest_segment):
+        longest_segment = current_segment
+    return longest_segment
 
-def get_inconvenience(N, M, bridges):
-    # Initialize a graph with N nodes and 0 edges
-    graph = [[] for _ in range(N)]
-
-    # Add edges to the graph
-    for bridge in bridges:
-        graph[bridge[0] - 1].append(bridge[1] - 1)
-        graph[bridge[1] - 1].append(bridge[0] - 1)
-
-    # Initialize the inconvenience to 0
-    inconvenience = 0
-
-    # Iterate through the bridges and collapse them one by one
-    for i in range(M):
-        # Collapse the current bridge
-        bridge = bridges[i]
-        graph[bridge[0] - 1].remove(bridge[1] - 1)
-        graph[bridge[1] - 1].remove(bridge[0] - 1)
-
-        # Increment the inconvenience by the number of pairs of islands that are no longer connected
-        for node in graph[bridge[0] - 1]:
-            if node not in graph[bridge[1] - 1]:
-                inconvenience += 1
-
-        for node in graph[bridge[1] - 1]:
-            if node not in graph[bridge[0] - 1]:
-                inconvenience += 1
-
-    return inconvenience
+def get_number_of_operations(arr):
+    # Count the number of operations needed to remove all elements from the array
+    number_of_operations = 0
+    while len(arr) > 0:
+        longest_segment = get_longest_segment(arr)
+        arr = [x for x in arr if x not in longest_segment]
+        number_of_operations += 1
+    return number_of_operations
 
 if __name__ == '__main__':
-    N, M = map(int, input().split())
-    bridges = []
-    for _ in range(M):
-        A, B = map(int, input().split())
-        bridges.append((A, B))
-    print(*get_inconvenience(N, M, bridges))
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(get_number_of_operations(arr))
 

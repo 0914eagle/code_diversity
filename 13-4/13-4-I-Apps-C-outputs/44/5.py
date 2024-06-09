@@ -1,53 +1,33 @@
 
-def get_max_times(n, buttons):
-    # Initialize a list to store the results
-    results = []
+def find_sub_rectangle(n, m, x, y, a, b):
+    # Initialize the sub-rectangle with the given point (x, y)
+    x1, y1, x2, y2 = x, y, x, y
     
-    # Loop through each possible combination of buttons
-    for combination in itertools.permutations(range(1, n+1)):
-        # Check if the current combination is valid
-        if is_valid_combination(combination, buttons):
-            # If it is valid, add it to the results list
-            results.append(list(combination))
+    # Iterate through the grid points in the x-direction
+    for i in range(x+1, n+1):
+        # If the current point is within the sub-rectangle, update the sub-rectangle
+        if i <= x2 and (i-x1)*b == (y2-y1)*a:
+            x2 = i
+        # If the current point is outside the sub-rectangle, break the loop
+        else:
+            break
     
-    # Return the maximum number of times and the corresponding combinations
-    return len(results), results
+    # Iterate through the grid points in the y-direction
+    for j in range(y+1, m+1):
+        # If the current point is within the sub-rectangle, update the sub-rectangle
+        if j <= y2 and (j-y1)*a == (x2-x1)*b:
+            y2 = j
+        # If the current point is outside the sub-rectangle, break the loop
+        else:
+            break
+    
+    return x1, y1, x2, y2
 
-def is_valid_combination(combination, buttons):
-    # Check if the current combination is valid by checking if no person stands on the same button more than once
-    for i in range(len(combination)):
-        for j in range(i+1, len(combination)):
-            if combination[i] == combination[j]:
-                return False
-    
-    # Check if the current combination is valid by checking if no person stands on a button that is already occupied by another person
-    for i in range(len(combination)):
-        for j in range(i+1, len(combination)):
-            if buttons[combination[i]-1][combination[j]-1] == 'N':
-                return False
-    
-    # If the current combination is valid, return True
-    return True
+def main():
+    n, m, x, y, a, b = map(int, input().split())
+    x1, y1, x2, y2 = find_sub_rectangle(n, m, x, y, a, b)
+    print(x1, y1, x2, y2)
 
-# Test the function with the sample input
-n = 3
-buttons = [
-    ['Y', 'Y', 'Y'],
-    ['N', 'Y', 'Y'],
-    ['Y', 'N', 'Y']
-]
-max_times, combinations = get_max_times(n, buttons)
-print(max_times)
-for combination in combinations:
-    print(*combination)
-
-# Test the function with a larger input
-n = 80
-buttons = []
-for i in range(n):
-    buttons.append(list(input()))
-max_times, combinations = get_max_times(n, buttons)
-print(max_times)
-for combination in combinations:
-    print(*combination)
+if __name__ == '__main__':
+    main()
 

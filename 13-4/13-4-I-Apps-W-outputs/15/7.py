@@ -1,18 +1,26 @@
 
-def is_possible(points):
-    x_coords = [point[0] for point in points]
-    y_coords = [point[1] for point in points]
-    x_min = min(x_coords)
-    x_max = max(x_coords)
-    y_min = min(y_coords)
-    y_max = max(y_coords)
-    for x in range(x_min, x_max + 1):
-        for y in range(y_min, y_max + 1):
-            count = 0
-            for point in points:
-                if point[0] == x or point[1] == y:
-                    count += 1
-            if count == len(points):
-                return "YES"
-    return "NO"
+def f1(s1, s2, t):
+    n = len(s1)
+    for i in range(n):
+        if s1[i] != s2[i]:
+            t -= 1
+            if t == 0:
+                return s1[:i] + "a" + s1[i+1:]
+    return "-1"
+
+def f2(s1, s2, t):
+    n = len(s1)
+    for i in range(n):
+        if s1[i] != s2[i]:
+            t -= 1
+            if t == 0:
+                return s2[:i] + "a" + s2[i+1:]
+    return "-1"
+
+if __name__ == '__main__':
+    n, t = map(int, input().split())
+    s1 = input()
+    s2 = input()
+    print(f1(s1, s2, t))
+    print(f2(s1, s2, t))
 

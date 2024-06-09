@@ -1,20 +1,22 @@
 
-import sys
+def get_energy_contribution(x, y, energy):
+    return energy
 
-def solve(N, S):
-    mod = 1000000007
-    count = 0
-    for i in range(N):
-        if S[i] == "A":
-            count += (N-i) * (N-i-1) // 2
-        elif S[i] == "B":
-            count += (N-i) * (N-i-1) // 2
-        else:
-            count += (N-i) * (N-i-1) // 2
-    return count % mod
+def get_line_length(lamp_positions, lamp_energies):
+    # Your code here
+    return 0.0
+
+def main():
+    num_lamp_positions = int(input())
+    lamp_positions = []
+    lamp_energies = []
+    for i in range(num_lamp_positions):
+        x, y, energy = map(int, input().split())
+        lamp_positions.append((x, y))
+        lamp_energies.append(get_energy_contribution(x, y, energy))
+    line_length = get_line_length(lamp_positions, lamp_energies)
+    print(line_length)
 
 if __name__ == '__main__':
-    N = int(input())
-    S = input()
-    print(solve(N, S))
+    main()
 

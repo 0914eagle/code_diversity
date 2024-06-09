@@ -1,24 +1,24 @@
 
-N = int(input())
+def get_input():
+    return list(map(int, input().split()))
 
-ac = 0
-wa = 0
-tle = 0
-re = 0
+def get_smallest_k(numbers, k):
+    return sorted(numbers)[:k]
 
-for i in range(N):
-    verdict = input()
-    if verdict == "AC":
-        ac += 1
-    elif verdict == "WA":
-        wa += 1
-    elif verdict == "TLE":
-        tle += 1
-    else:
-        re += 1
+def get_largest_k(numbers, k):
+    return sorted(numbers, reverse=True)[:k]
 
-print("AC x", ac)
-print("WA x", wa)
-print("TLE x", tle)
-print("RE x", re)
+def get_satisfying_integers(a, b, k):
+    integers = list(range(a, b+1))
+    smallest_k = get_smallest_k(integers, k)
+    largest_k = get_largest_k(integers, k)
+    return sorted(set(smallest_k + largest_k))
+
+def main():
+    a, b, k = get_input()
+    integers = get_satisfying_integers(a, b, k)
+    print(*integers)
+
+if __name__ == '__main__':
+    main()
 

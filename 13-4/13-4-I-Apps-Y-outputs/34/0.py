@@ -1,26 +1,27 @@
 
-def get_signatures(K, desk_numbers):
-    # Initialize a list to store the signatures
-    signatures = []
+def get_min_moves(n):
+    # Initialize a 2D array to store the number of moves required to get all figures into one cell
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
+    
+    # Initialize the first row and column with 1, as it takes 1 move to get a figure into the first cell
+    for i in range(n + 1):
+        dp[0][i] = 1
+        dp[i][0] = 1
+    
+    # Fill in the rest of the 2D array using the recurrence relation
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            dp[i][j] = min(dp[i - 1][j], dp[i][j - 1]) + 1
+    
+    # Return the answer for the last cell
+    return dp[n][n]
 
-    # Iterate through the desk numbers
-    for desk_number in desk_numbers:
-        # If the desk number is not in the signatures list, add it
-        if desk_number not in signatures:
-            signatures.append(desk_number)
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        print(get_min_moves(n))
 
-    # Sort the signatures list in ascending order
-    signatures.sort()
-
-    # Initialize a counter for the number of passes
-    passes = 0
-
-    # Iterate through the signatures list
-    for i in range(len(signatures)):
-        # If the current signature is not in the correct position, increment the passes counter
-        if signatures[i] != i + 1:
-            passes += 1
-
-    # Return the number of passes
-    return passes
+if __name__ == '__main__':
+    main()
 

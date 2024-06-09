@@ -1,25 +1,25 @@
 
-def solve(n, m, a):
-    # Sort the list of toys that Tanya already has
-    a.sort()
-    
-    # Initialize variables to keep track of the number of different types of toys and the total cost
-    k = 0
-    cost = 0
-    
-    # Iterate through the list of toys that Tanya already has
+def f1(n, m):
+    # Calculate the number of subsequences for each sequence of length n
+    # and return the sum modulo 10^9 + 7
+    return sum(f2(n, m)) % 1000000007
+
+def f2(n, m):
+    # Initialize a list to store the number of subsequences for each sequence
+    num_subseq = [0] * (n + 1)
+    num_subseq[0] = 1
+
+    # Iterate over the elements of the sequence
     for i in range(n):
-        # If the current toy is not already in Tanya's collection, add it to the collection and increment the number of different types of toys
-        if a[i] not in a[:i]:
-            k += 1
-        
-        # Add the cost of the current toy to the total cost
-        cost += a[i]
-        
-        # If the total cost exceeds the maximum amount that Tanya's mom is willing to spend, break the loop
-        if cost > m:
-            break
-    
-    # Return the number of different types of toys and the list of toys to buy
-    return k, a[:i+1]
+        # Calculate the number of subsequences for the current element
+        # by adding the number of subsequences of the previous element
+        # and the number of subsequences of the previous element with the current element
+        num_subseq[i + 1] = (num_subseq[i] * m) % 1000000007
+        num_subseq[i + 1] = (num_subseq[i + 1] + num_subseq[i]) % 1000000007
+
+    return num_subseq
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    print(f1(n, m))
 

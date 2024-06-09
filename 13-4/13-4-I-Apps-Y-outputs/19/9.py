@@ -1,75 +1,25 @@
 
-import sys
-input = sys.stdin.read()
+def get_center_coordinates(points):
+    x_coords = [point[0] for point in points]
+    y_coords = [point[1] for point in points]
+    x_center = sum(x_coords) / len(x_coords)
+    y_center = sum(y_coords) / len(y_coords)
+    return (x_center, y_center)
 
-# Function to calculate Manhattan distance between two points
-def manhattan_distance(p1, p2):
-    return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
+def get_height(points, center):
+    heights = [point[2] for point in points]
+    max_height = max(heights)
+    return max_height
 
-# Function to find the nearest safe house from a given position
-def find_nearest_safe_house(grid, position):
-    # Initialize the minimum distance and the nearest safe house
-    min_distance = float('inf')
-    nearest_safe_house = None
-    
-    # Iterate over the grid to find the nearest safe house
-    for i in range(len(grid)):
-        for j in range(len(grid[0])):
-            if grid[i][j] == 'H':
-                # Calculate the distance between the current position and the safe house
-                distance = manhattan_distance((i, j), position)
-                
-                # If the distance is less than the minimum distance, update the minimum distance and the nearest safe house
-                if distance < min_distance:
-                    min_distance = distance
-                    nearest_safe_house = (i, j)
-    
-    return nearest_safe_house
+def main():
+    points = []
+    for _ in range(int(input())):
+        x, y, h = map(int, input().split())
+        points.append((x, y, h))
+    center = get_center_coordinates(points)
+    height = get_height(points, center)
+    print(center[0], center[1], height)
 
-# Function to find the maximum Manhattan distance that any spy has to travel to reach the nearest safe house
-def find_max_manhattan_distance(grid):
-    # Initialize the maximum distance
-    max_distance = 0
-    
-    # Iterate over the grid to find the maximum Manhattan distance
-    for i in range(len(grid)):
-        for j in range(len(grid[0])):
-            # If the current position is a spy, find the nearest safe house and calculate the Manhattan distance
-            if grid[i][j] == 'S':
-                nearest_safe_house = find_nearest_safe_house(grid, (i, j))
-                distance = manhattan_distance((i, j), nearest_safe_house)
-                
-                # If the distance is greater than the maximum distance, update the maximum distance
-                if distance > max_distance:
-                    max_distance = distance
-    
-    return max_distance
-
-# Test the functions
-grid = [
-    ['.', '.', '.', '.', '.'],
-    ['.', 'H', '.', '.', '.'],
-    ['.', '.', '.', '.', '.'],
-    ['.', '.', '.', '.', '.'],
-    ['.', '.', '.', 'S', '.'],
-]
-print(find_max_manhattan_distance(grid)) # Output: 5
-
-grid = [
-    ['.', '.', '.', '.', '.'],
-    ['.', '.', '.', '.', '.'],
-    ['.', '.', '.', '.', '.'],
-    ['.', '.', '.', '.', '.'],
-    ['.', '.', '.', 'S', '.'],
-]
-print(find_max_manhattan_distance(grid)) # Output: 4
-
-grid = [
-    ['.', '.', '.', '.', '.'],
-    ['.', '.', '.', '.', '.'],
-    ['.', '.', '.', '.', '.'],
-    ['.', '.', '.', '.', '.'],
-    ['.', '.', '.', '.', '.'],
-]
-print(find_max_manhattan_distance(grid)) # Output: 0
+if __name__ == '__main__':
+    main()
 

@@ -1,29 +1,24 @@
 
-import re
+import sys
+import math
 
-def get_similarly_spelled_words(text):
-    words = re.findall(r'\w+', text)
-    similar_words = {}
-    for word in words:
-        core = re.sub(r'[^a-zA-Z]', '', word.lower())
-        if core not in similar_words:
-            similar_words[core] = []
-        for similar_word in words:
-            if core != re.sub(r'[^a-zA-Z]', '', similar_word.lower()):
-                continue
-            if core not in similar_words[core] and similar_word != word:
-                similar_words[core].append(similar_word)
-    return similar_words
+def get_input():
+    N = int(input())
+    customers = []
+    for i in range(N):
+        x, y = map(int, input().split())
+        customers.append((x, y))
+    return N, customers
 
-def main():
-    text = input()
-    similar_words = get_similarly_spelled_words(text)
-    if not similar_words:
-        print("***")
-    else:
-        for core, words in similar_words.items():
-            print(f"{core}: {' '.join(words)}")
+def f1(N, customers):
+    # Your code here
+    pass
 
-if __name__ == "__main__":
-    main()
+def f2(N, customers):
+    # Your code here
+    pass
+
+if __name__ == '__main__':
+    N, customers = get_input()
+    print(max(f1(N, customers), f2(N, customers)))
 

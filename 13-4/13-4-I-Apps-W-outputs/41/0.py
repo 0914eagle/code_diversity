@@ -1,34 +1,24 @@
 
-def solve(m, n, p):
-    # Initialize a dictionary to store the counts of each x value
-    x_counts = {}
+def get_bus_route(t, n, s, d):
+    # Find the first bus route that arrives at or after time t
+    for i in range(n):
+        if s[i] <= t:
+            return i
+    
+    # If no bus route arrives at or after time t, return -1
+    return -1
 
-    # Iterate through the p sequence
-    for i in range(len(p)):
-        # Get the current x value
-        x = p[i]
+def main():
+    t = int(input())
+    n = int(input())
+    s = []
+    d = []
+    for i in range(n):
+        si, di = map(int, input().split())
+        s.append(si)
+        d.append(di)
+    print(get_bus_route(t, n, s, d))
 
-        # If the x value is not in the dictionary, add it with a count of 1
-        if x not in x_counts:
-            x_counts[x] = 1
-        # Otherwise, increment the count
-        else:
-            x_counts[x] += 1
-
-    # Initialize a variable to store the total number of sequences
-    total_sequences = 1
-
-    # Iterate through the x values and their counts
-    for x, count in x_counts.items():
-        # Calculate the number of sequences for this x value
-        num_sequences = count ** n
-
-        # Multiply the total number of sequences by the number of sequences for this x value
-        total_sequences *= num_sequences
-
-        # Take the modulo to avoid overflow
-        total_sequences %= 1000000007
-
-    # Return the total number of sequences
-    return total_sequences
+if __name__ == '__main__':
+    main()
 

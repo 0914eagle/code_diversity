@@ -1,21 +1,56 @@
 
-def is_possible(area, perimeter):
-    area_sum = 0
-    for i in range(perimeter):
-        for j in range(i, perimeter):
-            if area_sum + i * j <= area:
-                area_sum += i * j
-            else:
-                return False
-    return area_sum == area
+def f1(intervals):
+    # Sort the intervals by their start time
+    intervals.sort(key=lambda x: x[0])
 
-def main():
-    area, perimeter = map(float, input().split())
-    if is_possible(area, perimeter):
-        print("Diablo is happy!")
+    # Initialize the current time to 0
+    current_time = 0
+
+    # Iterate through the intervals
+    for interval in intervals:
+        # If the interval starts after the current time, add the difference to the current time
+        if interval[0] > current_time:
+            current_time += interval[0] - current_time
+
+        # If the interval ends after the current time, set the current time to the end of the interval
+        if interval[1] > current_time:
+            current_time = interval[1]
+
+    # If the current time is greater than or equal to 1000, return "edward is right"
+    if current_time >= 1000:
+        return "edward is right"
     else:
-        print("Need more materials!")
+        return "gunilla has a point"
 
-if __name__ == "__main__":
-    main()
+def f2(intervals):
+    # Sort the intervals by their start time
+    intervals.sort(key=lambda x: x[0])
+
+    # Initialize the current time to 0
+    current_time = 0
+
+    # Iterate through the intervals
+    for interval in intervals:
+        # If the interval starts after the current time, add the difference to the current time
+        if interval[0] > current_time:
+            current_time += interval[0] - current_time
+
+        # If the interval ends after the current time, set the current time to the end of the interval
+        if interval[1] > current_time:
+            current_time = interval[1]
+
+    # If the current time is greater than or equal to 1000, return "gunilla has a point"
+    if current_time >= 1000:
+        return "gunilla has a point"
+    else:
+        return "edward is right"
+
+if __name__ == '__main__':
+    n = int(input())
+    intervals = []
+    for _ in range(n):
+        a, b = map(int, input().split())
+        intervals.append([a, b])
+    print(f1(intervals))
+    print(f2(intervals))
 

@@ -1,46 +1,41 @@
 
-def get_reconstructions(pre_output, in_output, post_output):
-    # Initialize a list to store the reconstructions
-    reconstructions = []
+import math
+
+def get_polygon_area(vertices):
+    area = 0
+    for i in range(len(vertices)):
+        x1, y1 = vertices[i]
+        x2, y2 = vertices[(i+1) % len(vertices)]
+        area += x1 * y2 - x2 * y1
+    return abs(area) / 2
+
+def get_symmetric_polygon_area(vertices, x_a, y_a, x_b, y_b):
+    # Find the midpoint of the line segment representing the canal
+    x_m = (x_a + x_b) / 2
+    y_m = (y_a + y_b) / 2
     
-    # Iterate over all possible combinations of Pre, In, and Post calls
-    for pre_calls in range(2):
-        for in_calls in range(2):
-            for post_calls in range(2):
-                # Check if the number of calls is correct
-                if pre_calls + in_calls + post_calls == 6:
-                    # Initialize a list to store the calls
-                    calls = []
-                    
-                    # Add the Pre calls to the list
-                    for i in range(pre_calls):
-                        calls.append("Pre")
-                    
-                    # Add the In calls to the list
-                    for i in range(in_calls):
-                        calls.append("In")
-                    
-                    # Add the Post calls to the list
-                    for i in range(post_calls):
-                        calls.append("Post")
-                    
-                    # Check if the calls match the output
-                    if "".join(calls) == pre_output and "".join(calls) == in_output and "".join(calls) == post_output:
-                        # Initialize a list to store the tree
-                        tree = []
-                        
-                        # Add the preorder print of the tree to the list
-                        tree.append(pre_output)
-                        
-                        # Add the inorder print of the tree to the list
-                        tree.append(in_output)
-                        
-                        # Add the postorder print of the tree to the list
-                        tree.append(post_output)
-                        
-                        # Add the reconstruction to the list of reconstructions
-                        reconstructions.append((calls, tree))
+    # Find the reflection of the polygon about the midpoint
+    reflected_vertices = []
+    for vertex in vertices:
+        x, y = vertex
+        reflected_vertices.append((x_m * 2 - x, y_m * 2 - y))
     
-    # Return the list of reconstructions
-    return reconstructions
+    # Find the area of the original polygon and its reflection about the midpoint
+    original_area = get_polygon_area(vertices)
+    reflected_area = get_polygon_area(reflected_vertices)
+    
+    # Return the difference between the two areas
+    return original_area - reflected_area
+
+def main():
+    N = int(input())
+    vertices = []
+    for i in range(N):
+        x, y = map(int, input().split())
+        vertices.append((x, y))
+    x_a, y_a, x_b, y_b = map(int, input().split())
+    print(get_symmetric_polygon_area(vertices, x_a, y_a, x_b, y_b))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,33 +1,54 @@
 
-import sys
+def f1(n, r, w, h):
+    # Initialize variables
+    gems = []
+    max_gems = 0
 
-def solve(R, W, d):
-    # Initialize the number of ways to arrange the wine boxes
-    ways = 1
+    # Read input
+    for i in range(n):
+        x, y = map(int, input().split())
+        gems.append((x, y))
 
-    # Loop through each type of wine (red or white)
-    for i in range(2):
-        # Initialize the number of boxes of the current type of wine
-        num_boxes = R if i == 0 else W
+    # Sort gems by y-coordinate in descending order
+    gems.sort(key=lambda x: x[1], reverse=True)
 
-        # Loop through each box of the current type of wine
-        for j in range(num_boxes):
-            # If the current box is not the first box of its type,
-            # then it can be placed in any position
-            if j > 0:
-                ways *= 2
+    # Iterate through gems and calculate maximum number of gems that can be collected
+    for i in range(n):
+        gem = gems[i]
+        x, y = gem[0], gem[1]
+        if y <= h:
+            max_gems += 1
+        else:
+            break
 
-            # If the current box is the first box of its type,
-            # then it can be placed in either the first or second position
-            else:
-                ways *= 2
-                if i == 0 and num_boxes - j > d:
-                    ways -= 1
+    return max_gems
 
-    # Return the remainder of the number of ways divided by 10^9 + 7
-    return ways % (10**9 + 7)
+def f2(n, r, w, h):
+    # Initialize variables
+    gems = []
+    max_gems = 0
+
+    # Read input
+    for i in range(n):
+        x, y = map(int, input().split())
+        gems.append((x, y))
+
+    # Sort gems by y-coordinate in descending order
+    gems.sort(key=lambda x: x[1], reverse=True)
+
+    # Iterate through gems and calculate maximum number of gems that can be collected
+    for i in range(n):
+        gem = gems[i]
+        x, y = gem[0], gem[1]
+        if y <= h:
+            max_gems += 1
+        else:
+            break
+
+    return max_gems
 
 if __name__ == '__main__':
-    R, W, d = map(int, sys.stdin.readline().split())
-    print(solve(R, W, d))
+    n, r, w, h = map(int, input().split())
+    print(f1(n, r, w, h))
+    print(f2(n, r, w, h))
 

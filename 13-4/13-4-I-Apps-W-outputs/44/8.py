@@ -1,35 +1,41 @@
 
-def solve(s):
-    n = len(s)
-    # Initialize the longest non-decreasing subsequence of s and t to be of length 1
-    longest_subsequence_s = [1] * n
-    longest_subsequence_t = [1] * n
-    # Initialize the number of zeroes in t to be 0
-    num_zeroes = 0
-    # Loop through the string s
-    for i in range(1, n):
-        # If the current character of s is 0
-        if s[i] == "0":
-            # Increment the number of zeroes in t
-            num_zeroes += 1
-        # If the current character of s is 1
-        if s[i] == "1":
-            # Set the current character of t to be 1
-            t = "1"
-            # Loop through the previous characters of s and t
-            for j in range(i):
-                # If the current character of s is 0 and the current character of t is 1
-                if s[j] == "0" and t[j] == "1":
-                    # Set the current character of t to be 0
-                    t = "0"
-                    # Break out of the loop
-                    break
-            # Add the current character of t to the end of the string t
-            t += s[i]
-        # Set the longest non-decreasing subsequence of t to be the maximum of the longest non-decreasing subsequence of t and the length of the current subsequence of t
-        longest_subsequence_t[i] = max(longest_subsequence_t[i-1], num_zeroes)
-        # Set the longest non-decreasing subsequence of s to be the maximum of the longest non-decreasing subsequence of s and the length of the current subsequence of s
-        longest_subsequence_s[i] = max(longest_subsequence_s[i-1], longest_subsequence_s[i-1] + (1 if s[i] == "1" else 0))
-    # Return the string t
-    return t
+def f1(x, y):
+    # Base case: if the knight is already at the destination, return 1
+    if x == 0 and y == 0:
+        return 1
+    
+    # Initialize the number of ways to 0
+    ways = 0
+    
+    # Iterate over all possible moves of the knight
+    for i in range(max(0, x-2), min(x+2, 10**6)+1):
+        for j in range(max(0, y-2), min(y+2, 10**6)+1):
+            # If the move is valid, add the number of ways to reach (i, j) from (x, y)
+            if i != x and j != y:
+                ways += f1(i, j)
+    
+    # Return the total number of ways modulo 10^9 + 7
+    return ways % 1000000007
+
+def f2(x, y):
+    # Base case: if the knight is already at the destination, return 1
+    if x == 0 and y == 0:
+        return 1
+    
+    # Initialize the number of ways to 0
+    ways = 0
+    
+    # Iterate over all possible moves of the knight
+    for i in range(max(0, x-1), min(x+2, 10**6)+1):
+        for j in range(max(0, y-1), min(y+2, 10**6)+1):
+            # If the move is valid, add the number of ways to reach (i, j) from (x, y)
+            if i != x and j != y:
+                ways += f2(i, j)
+    
+    # Return the total number of ways modulo 10^9 + 7
+    return ways % 1000000007
+
+if __name__ == '__main__':
+    x, y = map(int, input().split())
+    print(f1(x, y))
 

@@ -1,34 +1,25 @@
 
-import sys
+def get_longest_segment(arr):
+    longest = 0
+    current = 0
+    for i in range(len(arr)):
+        if arr[i] == arr[i-1] + 1:
+            current += 1
+        else:
+            current = 0
+        longest = max(longest, current)
+    return longest
 
-def get_inconvenience(n, m, bridges):
-    # Initialize a dictionary to store the pairs of islands that are no longer connected
-    inconvenience = {}
-
-    # Iterate through the bridges and mark the pairs of islands that are no longer connected
-    for i in range(m):
-        a, b = bridges[i]
-        if a not in inconvenience:
-            inconvenience[a] = set()
-        if b not in inconvenience:
-            inconvenience[b] = set()
-        inconvenience[a].add(b)
-        inconvenience[b].add(a)
-
-    # Count the number of pairs of islands that are no longer connected
+def solve(arr):
     count = 0
-    for i in range(1, n + 1):
-        for j in range(i + 1, n + 1):
-            if i not in inconvenience or j not in inconvenience[i]:
-                count += 1
-
+    while len(arr) > 0:
+        count += 1
+        longest = get_longest_segment(arr)
+        arr = arr[longest:]
     return count
 
-n, m = map(int, input().split())
-bridges = []
-for i in range(m):
-    a, b = map(int, input().split())
-    bridges.append((a, b))
-
-print(*[get_inconvenience(n, m, bridges[:i + 1]) for i in range(m)], sep='\n')
+if __name__ == '__main__':
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(solve(arr))
 

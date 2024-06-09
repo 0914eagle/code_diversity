@@ -1,18 +1,27 @@
 
-def hex_compare(x, y):
-    x_val = hex_to_dec(x)
-    y_val = hex_to_dec(y)
-    if x_val < y_val:
-        return "<"
-    elif x_val > y_val:
-        return ">"
-    else:
-        return "="
+def get_road_counts(n, m, roads):
+    # Initialize a dictionary to store the number of roads connected to each city
+    road_counts = {}
+    for i in range(1, n + 1):
+        road_counts[i] = 0
 
-def hex_to_dec(hex_str):
-    hex_dict = {"A": 10, "B": 11, "C": 12, "D": 13, "E": 14, "F": 15}
-    return hex_dict[hex_str]
+    # Iterate through the roads and increment the count for each city
+    for road in roads:
+        city1, city2 = road
+        road_counts[city1] += 1
+        road_counts[city2] += 1
 
-x, y = input().split()
-print(hex_compare(x, y))
+    return road_counts
+
+def main():
+    n, m = map(int, input().split())
+    roads = []
+    for _ in range(m):
+        roads.append(tuple(map(int, input().split())))
+    road_counts = get_road_counts(n, m, roads)
+    for city, count in road_counts.items():
+        print(count)
+
+if __name__ == '__main__':
+    main()
 

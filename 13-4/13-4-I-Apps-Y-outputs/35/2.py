@@ -1,20 +1,21 @@
 
-n, m = map(int, input().split())
+def get_colors(n):
+    return input().split()
 
-segments = []
-for i in range(n):
-    l, r = map(int, input().split())
-    segments.append([l, r])
+def get_number_of_colors(colors):
+    colors_set = set(colors)
+    if len(colors_set) == 3:
+        return "Three"
+    elif len(colors_set) == 4:
+        return "Four"
+    else:
+        return "Error"
 
-points = set()
-for i in range(1, m+1):
-    points.add(i)
+def main():
+    n = int(input())
+    colors = get_colors(n)
+    print(get_number_of_colors(colors))
 
-for segment in segments:
-    for i in range(segment[0], segment[1]+1):
-        points.remove(i)
-
-print(len(points))
-if points:
-    print(*points)
+if __name__ == '__main__':
+    main()
 

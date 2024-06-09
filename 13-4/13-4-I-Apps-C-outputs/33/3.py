@@ -1,31 +1,25 @@
 
-def solve(a, b, x):
-    # Calculate the dot product of a and b to get the matrix c
-    c = [[a[i] * b[j] for j in range(len(b))] for i in range(len(a))]
-    
-    # Initialize the maximum area and the corresponding subrectangle
-    max_area = 0
-    subrectangle = []
-    
-    # Iterate over each possible subrectangle
-    for i in range(len(a)):
-        for j in range(len(b)):
-            for k in range(i, len(a)):
-                for l in range(j, len(b)):
-                    # Calculate the area of the current subrectangle
-                    area = (k - i + 1) * (l - j + 1)
-                    
-                    # Calculate the sum of the elements in the current subrectangle
-                    sum_elements = sum(sum(c[i:k+1], []))
-                    
-                    # Check if the sum of the elements is less than or equal to x and if the area is greater than the current maximum area
-                    if sum_elements <= x and area > max_area:
-                        max_area = area
-                        subrectangle = [i+1, k+1, j+1, l+1]
-    
-    # Return the maximum area if a subrectangle with the given constraints exists, otherwise return 0
-    if max_area == 0:
-        return 0
-    else:
-        return max_area
+def f1(N, M, ps):
+    # Calculate the probability of Anthony winning the game
+    p_win = 0
+    for i in range(N+M-1):
+        p_win += ps[i] * (1 - ps[i]) ** (N+M-2-i)
+    return p_win
+
+def f2(N, M, ps):
+    # Calculate the probability of Anthony winning the game using dynamic programming
+    p = [0] * (N+M)
+    p[0] = 1
+    p[1] = 1 - ps[0]
+    for i in range(2, N+M):
+        p[i] = p[i-1] * (1 - ps[i-1]) + p[i-2] * ps[i-1]
+    return p[N+M-1]
+
+if __name__ == '__main__':
+    N, M = map(int, input().split())
+    ps = []
+    for i in range(N+M-1):
+        ps.append(float(input()))
+    print(f1(N, M, ps))
+    print(f2(N, M, ps))
 

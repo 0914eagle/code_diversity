@@ -1,15 +1,24 @@
 
-def get_max_sum(A, B, C, K):
-    # Initialize a list to store the values of the cards
-    cards = [1] * A + [0] * B + [-1] * C
-    # Sort the list in descending order
-    cards.sort(reverse=True)
-    # Initialize a variable to store the sum
-    sum = 0
-    # Iterate through the first K elements of the list
-    for i in range(K):
-        # Add the current element to the sum
-        sum += cards[i]
-    # Return the sum
-    return sum
+def f1(S):
+    # Initialize the integer in Takahashi's mind to 0
+    result = 0
+    
+    # Iterate through the string S and update the result accordingly
+    for symbol in S:
+        if symbol == "+":
+            result += 1
+        else:
+            result -= 1
+    
+    # Return the result
+    return result
+
+def f2(...):
+    # Your code here
+    pass
+
+if __name__ == '__main__':
+    S = input()
+    result = f1(S)
+    print(result)
 

@@ -1,40 +1,37 @@
 
-import itertools
+def get_resistors(a, b):
+    # Initialize the number of resistors to 0
+    num_resistors = 0
+    # While the resistance is not equal to the target resistance
+    while a / b != 1:
+        # If the resistance is even
+        if a % 2 == 0 and b % 2 == 0:
+            # Double the number of resistors and double the resistance
+            num_resistors += 1
+            a *= 2
+            b *= 2
+        # If the resistance is odd and the denominator is odd
+        elif a % 2 == 1 and b % 2 == 1:
+            # Increase the number of resistors and swap the numerator and denominator
+            num_resistors += 1
+            a, b = b, a
+        # If the resistance is odd and the denominator is even
+        elif a % 2 == 1 and b % 2 == 0:
+            # Increase the number of resistors and add 1 to the numerator
+            num_resistors += 1
+            a += 1
+    
+    # Return the number of resistors
+    return num_resistors
 
-def solve(r, s, m, d, n, brands, dishes):
-    # Initialize a set to store the different dinner experiences
-    dinner_experiences = set()
-
-    # Iterate over each dish and its ingredients
-    for dish in dishes:
-        # Get the ingredients for the current dish
-        ingredients = dish[1:]
-
-        # Iterate over each ingredient and its brands
-        for ingredient, brand in enumerate(ingredients):
-            # If the ingredient is not already in the dinner experience, add it
-            if ingredient not in dinner_experiences:
-                dinner_experiences.add(ingredient)
-
-            # If the ingredient is already in the dinner experience, add the brand
-            else:
-                dinner_experiences.add((ingredient, brand))
-
-    # Return the number of different dinner experiences
-    return len(dinner_experiences)
-
-# Main function
-if __name__ == "__main__":
+def main():
     # Read the input
-    r, s, m, d, n = map(int, input().split())
-    brands = list(map(int, input().split()))
-    dishes = []
-    for _ in range(s+m+d):
-        dishes.append(list(map(int, input().split())))
+    a, b = map(int, input().split())
+    # Call the function to get the number of resistors
+    num_resistors = get_resistors(a, b)
+    # Print the output
+    print(num_resistors)
 
-    # Solve the problem
-    result = solve(r, s, m, d, n, brands, dishes)
-
-    # Print the result
-    print(result)
+if __name__ == '__main__':
+    main()
 

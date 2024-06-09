@@ -1,30 +1,30 @@
 
-def is_good_string(string, substrings):
-    for substring in substrings:
-        if string.count(substring) < substrings[substring]:
-            return False
-    return True
+def get_absurdity_value(n, k, x):
+    # Calculate the total absurdity value for each segment
+    total_absurdity = [0] * (n - k + 1)
+    for i in range(n):
+        total_absurdity[i] += x[i]
+        if i + k < n:
+            total_absurdity[i + 1] -= x[i]
+    
+    # Find the maximum total absurdity value
+    max_absurdity = max(total_absurdity)
+    
+    # Find the indices of the segments with the maximum total absurdity value
+    indices = [i for i, v in enumerate(total_absurdity) if v == max_absurdity]
+    
+    return indices
 
-def get_good_string(substrings):
-    min_len = float('inf')
-    good_string = ""
-    for string in substrings:
-        if len(string) < min_len and is_good_string(string, substrings):
-            min_len = len(string)
-            good_string = string
-    if good_string == "":
-        return "NO"
-    return good_string
+def get_segments(n, k, x):
+    # Get the indices of the segments with the maximum total absurdity value
+    indices = get_absurdity_value(n, k, x)
+    
+    # Return the segments with the maximum total absurdity value
+    return indices[0], indices[0] + k - 1
 
-n = int(input())
-substrings = {}
-for i in range(n):
-    string = input()
-    for j in range(len(string)):
-        substring = string[j:]
-        if substring not in substrings:
-            substrings[substring] = 0
-        substrings[substring] += 1
-
-print(get_good_string(substrings))
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    x = list(map(int, input().split()))
+    a, b = get_segments(n, k, x)
+    print(a, b)
 

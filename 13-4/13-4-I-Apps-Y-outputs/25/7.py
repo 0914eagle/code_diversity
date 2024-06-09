@@ -1,59 +1,25 @@
 
-def is_star(grid, row, col, size):
-    # Check if the star is inside the grid
-    if row < 0 or row + size > len(grid) or col < 0 or col + size > len(grid[0]):
-        return False
-    
-    # Check if the star is completely inside the grid
-    for i in range(row, row + size):
-        for j in range(col, col + size):
-            if grid[i][j] != '*':
-                return False
-    
-    return True
+def get_dog_behavior(a, b, c, d):
+    aggressive_period = a + c
+    calm_period = b + d
+    return aggressive_period, calm_period
 
-def draw_grid(grid):
-    # Initialize the number of stars needed
-    num_stars = 0
-    
-    # Iterate through the grid
-    for row in range(len(grid)):
-        for col in range(len(grid[0])):
-            # If the current cell is a star, check if it is a valid star
-            if grid[row][col] == '*':
-                # Check if the star is valid
-                if is_star(grid, row, col, 1):
-                    num_stars += 1
-                elif is_star(grid, row, col, 2):
-                    num_stars += 2
-                elif is_star(grid, row, col, 3):
-                    num_stars += 3
-                else:
-                    return "-1"
-    
-    # If the number of stars is greater than the number of cells, it is impossible to draw the grid
-    if num_stars > len(grid) * len(grid[0]):
-        return "-1"
-    
-    # If the number of stars is valid, return the coordinates of the stars
-    stars = []
-    for row in range(len(grid)):
-        for col in range(len(grid[0])):
-            if grid[row][col] == '*':
-                stars.append([row, col, 1])
-    
-    return str(num_stars) + "\n" + "\n".join([str(star[0]) + " " + str(star[1]) + " " + str(star[2]) for star in stars])
+def get_dog_attack(aggressive_period, calm_period, arrival_time):
+    if arrival_time <= aggressive_period:
+        return "both"
+    elif arrival_time <= calm_period:
+        return "one"
+    else:
+        return "none"
 
-grid = [
-    ['.', '.', '.', '.', '.', '.', '.', '.'],
-    ['.', '*', '*', '*', '*', '*', '.', '.'],
-    ['.', '*', '*', '*', '*', '*', '.', '.'],
-    ['.', '*', '*', '*', '*', '*', '.', '.'],
-    ['.', '*', '*', '*', '*', '*', '.', '.'],
-    ['.', '*', '*', '*', '*', '*', '.', '.'],
-    ['.', '.', '.', '.', '.', '.', '.', '.'],
-    ['.', '.', '.', '.', '.', '.', '.', '.']
-]
+def main():
+    a, b, c, d = map(int, input().split())
+    p, m, g = map(int, input().split())
+    aggressive_period, calm_period = get_dog_behavior(a, b, c, d)
+    print(get_dog_attack(aggressive_period, calm_period, p))
+    print(get_dog_attack(aggressive_period, calm_period, m))
+    print(get_dog_attack(aggressive_period, calm_period, g))
 
-print(draw_grid(grid))
+if __name__ == '__main__':
+    main()
 

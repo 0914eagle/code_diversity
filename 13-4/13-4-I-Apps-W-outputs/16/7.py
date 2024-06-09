@@ -1,31 +1,30 @@
 
-def get_min_pebbles(n):
-    # Initialize variables
-    mirror_move = False
-    current_player = "Mirko"
-    pebbles_taken = 0
-    other_player_pebbles = 0
+def get_finalists(results, k):
+    # Sort the results in ascending order
+    sorted_results = sorted(results)
 
-    # Iterate through the game
-    while n > 0:
-        # Determine the current player and their allowed number of pebbles
-        if current_player == "Mirko":
-            allowed_pebbles = n
-        else:
-            allowed_pebbles = min(n, 2 * other_player_pebbles)
+    # Get the indices of the top k results
+    top_k_indices = sorted_results[:k]
 
-        # Update the number of pebbles taken and the number of pebbles the other player has
-        pebbles_taken += allowed_pebbles
-        other_player_pebbles = n - allowed_pebbles
+    # Get the indices of the bottom n - 2k results
+    bottom_n_indices = sorted_results[n - 2k:]
 
-        # Update the current player and mirror move
-        current_player = "Slavko" if current_player == "Mirko" else "Mirko"
-        mirror_move = not mirror_move
+    # Get the finalists by combining the top k and bottom n - 2k results
+    finalists = top_k_indices + bottom_n_indices
 
-        # If the current player has taken all the pebbles, return the minimum number of pebbles needed for Mirko to win
-        if pebbles_taken == n:
-            return pebbles_taken - other_player_pebbles
+    return finalists
 
-    # If the game has not ended, return the minimum number of pebbles needed for Mirko to win
-    return pebbles_taken
+def main():
+    n = int(input())
+    results = []
+    for i in range(n):
+        results.append(int(input()))
+
+    k = int(input())
+    finalists = get_finalists(results, k)
+
+    print(" ".join(str(finalist) for finalist in finalists))
+
+if __name__ == '__main__':
+    main()
 

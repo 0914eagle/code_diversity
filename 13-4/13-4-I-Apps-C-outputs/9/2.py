@@ -1,18 +1,38 @@
 
-def carryless_multiplication(a, b):
-    result = 0
-    for i in range(len(str(a))):
-        for j in range(len(str(b))):
-            result += int(str(a)[-i-1]) * int(str(b)[-j-1])
-        result %= 10
-    return result
+def f1(p, k):
+    if p < 0 or k < 2:
+        return -1
+    
+    coeffs = []
+    while p > 0:
+        coeffs.append(p % k)
+        p //= k
+    
+    if coeffs[-1] == 0:
+        return -1
+    
+    return coeffs
 
-def find_a(N):
-    for a in range(1, 1000000000):
-        if carryless_multiplication(a, a) == N:
-            return a
-    return -1
+def f2(p, k):
+    if p < 0 or k < 2:
+        return -1
+    
+    coeffs = []
+    while p > 0:
+        coeffs.append(p % k)
+        p //= k
+    
+    if coeffs[-1] == 0:
+        return -1
+    
+    return coeffs
 
-N = int(input())
-print(find_a(N))
+if __name__ == '__main__':
+    p, k = map(int, input().split())
+    coeffs = f1(p, k)
+    if coeffs == -1:
+        print(-1)
+    else:
+        print(len(coeffs))
+        print(*coeffs)
 

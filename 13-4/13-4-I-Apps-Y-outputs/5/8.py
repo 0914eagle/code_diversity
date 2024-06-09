@@ -1,33 +1,41 @@
 
-def get_smallest_set_of_characters(characters):
-    # Initialize a set to store the characters that need to leave
-    characters_to_leave = set()
+def get_handshakes(seating_order):
+    # Initialize variables
+    handshakes = 0
+    rows, cols = len(seating_order), len(seating_order[0])
 
-    # Iterate over each character in the input
-    for character in characters:
-        # Check if the character is able to converse with anyone else in the input
-        can_converse = False
-        for other_character in characters:
-            if character != other_character and can_converse_with(character, other_character):
-                can_converse = True
-                break
+    # Loop through each row and column
+    for i in range(rows):
+        for j in range(cols):
+            # Check if the current element is a person
+            if seating_order[i][j] == "o":
+                # Check if the current element has any neighbors
+                if i > 0 and j > 0 and seating_order[i-1][j-1] == "o":
+                    handshakes += 1
+                if i > 0 and seating_order[i-1][j] == "o":
+                    handshakes += 1
+                if i > 0 and j < cols-1 and seating_order[i-1][j+1] == "o":
+                    handshakes += 1
+                if j > 0 and seating_order[i][j-1] == "o":
+                    handshakes += 1
+                if j < cols-1 and seating_order[i][j+1] == "o":
+                    handshakes += 1
+                if i < rows-1 and j > 0 and seating_order[i+1][j-1] == "o":
+                    handshakes += 1
+                if i < rows-1 and seating_order[i+1][j] == "o":
+                    handshakes += 1
+                if i < rows-1 and j < cols-1 and seating_order[i+1][j+1] == "o":
+                    handshakes += 1
 
-        # If the character cannot converse with anyone else, add it to the set of characters to leave
-        if not can_converse:
-            characters_to_leave.add(character)
+    return handshakes
 
-    # Return the size of the smallest set of characters that need to leave
-    return len(characters_to_leave)
+def main():
+    rows, cols = map(int, input().split())
+    seating_order = []
+    for i in range(rows):
+        seating_order.append(input())
+    print(get_handshakes(seating_order))
 
-# Check if two characters can converse with each other
-def can_converse_with(character1, character2):
-    # Get the languages spoken by both characters
-    languages1 = set(character1[1:])
-    languages2 = set(character2[1:])
-
-    # Check if there is at least one language that both characters speak
-    if len(languages1.intersection(languages2)) > 0:
-        return True
-    else:
-        return False
+if __name__ == '__main__':
+    main()
 

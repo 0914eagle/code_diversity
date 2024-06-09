@@ -1,36 +1,21 @@
 
-import sys
+def get_longest_segment(arr):
+    longest = 1
+    current = 1
+    for i in range(1, len(arr)):
+        if arr[i] == arr[i-1]:
+            current += 1
+        else:
+            longest = max(longest, current)
+            current = 1
+    return max(longest, current)
 
-def get_inconvenience(N, M, bridges):
-    # Initialize a graph with N nodes and 0 edges
-    graph = [[] for _ in range(N)]
-
-    # Add edges to the graph
-    for bridge in bridges:
-        graph[bridge[0] - 1].append(bridge[1] - 1)
-        graph[bridge[1] - 1].append(bridge[0] - 1)
-
-    # Initialize the inconvenience to 0
-    inconvenience = 0
-
-    # Iterate through the bridges and collapse them one by one
-    for i in range(M):
-        # Get the nodes connected by the current bridge
-        node1, node2 = bridges[i][0] - 1, bridges[i][1] - 1
-
-        # Remove the edge between the nodes
-        graph[node1].remove(node2)
-        graph[node2].remove(node1)
-
-        # Increment the inconvenience by the number of pairs of nodes that are now disconnected
-        inconvenience += len(graph[node1]) * len(graph[node2])
-
-    return inconvenience
+def get_number_of_operations(arr):
+    longest = get_longest_segment(arr)
+    return len(arr) // longest
 
 if __name__ == '__main__':
-    N, M = map(int, input().split())
-    bridges = []
-    for _ in range(M):
-        bridges.append(list(map(int, input().split())))
-    print(*get_inconvenience(N, M, bridges), sep='\n')
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(get_number_of_operations(arr))
 

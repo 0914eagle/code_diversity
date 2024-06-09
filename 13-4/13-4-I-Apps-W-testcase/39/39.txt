@@ -1,26 +1,10 @@
 {
-  "inputs": [
-    "ApPLe\n",
-    "konjac\n",
-    "a\n",
-    "A\n",
-    "z\n",
-    "ABACABA\n",
-    "P\n",
-    "Xyzzy\n",
-    "Zzz\n",
-    "Zp\n"
-  ],
-  "outputs": [
-    "ApPLe\n",
-    "Konjac\n",
-    "A\n",
-    "A\n",
-    "Z\n",
-    "ABACABA\n",
-    "P\n",
-    "Xyzzy\n",
-    "Zzz\n",
-    "Zp\n"
-  ]
+    "inputs": [
+        "22 2 2\n11\n9\n",
+        "47 5 0\n"
+    ],
+    "outputs": [
+        "3\n",
+        "8\n"
+    ]
 }

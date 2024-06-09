@@ -1,68 +1,35 @@
 
-class Teacher:
-    def __init__(self, id):
-        self.id = id
-        self.class_id = id
-
-    def __str__(self):
-        return str(self.id)
-
-    def __repr__(self):
-        return str(self.id)
-
-
-class Classroom:
-    def __init__(self, id):
-        self.id = id
-        self.teacher = Teacher(id)
-
-    def __str__(self):
-        return str(self.id)
-
-    def __repr__(self):
-        return str(self.id)
-
-
-class School:
-    def __init__(self, num_classes, num_weeks, num_teachers):
-        self.num_classes = num_classes
-        self.num_weeks = num_weeks
-        self.num_teachers = num_teachers
-        self.classes = [Classroom(i) for i in range(1, num_classes + 1)]
-        self.teachers = [Teacher(i) for i in range(1, num_teachers + 1)]
-        self.weeks = []
-        for i in range(num_weeks):
-            self.weeks.append([])
-
-    def add_plan(self, week, teachers):
-        for teacher in teachers:
-            teacher.class_id = (teacher.class_id + 1) % self.num_classes
-
-    def get_teacher_class(self, teacher_id, week):
-        return self.classes[self.teachers[teacher_id].class_id].id
-
-    def get_class_teacher(self, class_id, week):
-        return self.teachers[self.classes[class_id].teacher.id].id
-
-    def get_class_teacher_on_tuesday(self, class_id, week):
-        return self.teachers[(self.classes[class_id].teacher.id + 1) % self.num_teachers].id
-
+def get_final_height(heights, k):
+    # Initialize the final heights array
+    final_heights = [0] * len(heights)
+    
+    # Loop through each house and calculate the final height
+    for i in range(len(heights)):
+        # Calculate the average height of the neighboring houses
+        avg_height = (heights[i-1] + heights[i+1]) / 2
+        
+        # Check if the current house is taller than the average plus k
+        if heights[i] >= avg_height + k:
+            # If it is, set the final height to the current height
+            final_heights[i] = heights[i]
+        else:
+            # If it's not, set the final height to the average plus k
+            final_heights[i] = avg_height + k
+    
+    # Return the final heights array
+    return final_heights
 
 def main():
-    num_classes, num_weeks, num_teachers = map(int, input().split())
-    school = School(num_classes, num_weeks, num_teachers)
+    # Read the input
+    N, k = map(int, input().split())
+    heights = list(map(int, input().split()))
+    
+    # Calculate the final heights
+    final_heights = get_final_height(heights, k)
+    
+    # Print the final height of the tallest house
+    print(max(final_heights))
 
-    for _ in range(int(input())):
-        query = input().split()
-        if query[0] == "0":
-            school.add_plan(int(query[2]), query[3:])
-        else:
-            teacher_id = int(query[1])
-            week = int(query[2])
-            class_id = school.get_teacher_class(teacher_id, week)
-            print(class_id)
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
 

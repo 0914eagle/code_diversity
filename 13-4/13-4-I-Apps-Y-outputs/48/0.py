@@ -1,28 +1,37 @@
 
-import itertools
+def get_permutations(n):
+    permutations = []
+    for i in range(1, n+1):
+        permutations.append(i)
+    return permutations
 
-def get_combinations(switches, bulbs):
-    num_combinations = 0
-    for combination in itertools.product([0, 1], repeat=len(switches)):
-        is_lighted = True
-        for i in range(len(bulbs)):
-            num_switches_on = 0
-            for j in range(len(bulbs[i])):
-                if combination[bulbs[i][j]-1] == 1:
-                    num_switches_on += 1
-            if num_switches_on % 2 != bulbs[i][-1]:
-                is_lighted = False
-                break
-        if is_lighted:
-            num_combinations += 1
-    return num_combinations
+def get_lexicographically_smallest_permutation(permutations):
+    permutations.sort()
+    return permutations
 
-switches, bulbs = [], []
-N, M = map(int, input().split())
-for i in range(M):
-    num_switches, p = map(int, input().split())
-    switches_list = [int(x) for x in input().split()]
-    bulbs.append([num_switches, p] + switches_list)
+def get_lexicographically_largest_permutation(permutations):
+    permutations.sort(reverse=True)
+    return permutations
 
-print(get_combinations(switches, bulbs))
+def get_absolute_difference(a, b):
+    return abs(a - b)
+
+def main():
+    n = int(input())
+    p = list(map(int, input().split()))
+    q = list(map(int, input().split()))
+    permutations = get_permutations(n)
+    p_lexicographically_smallest = get_lexicographically_smallest_permutation(p)
+    q_lexicographically_smallest = get_lexicographically_smallest_permutation(q)
+    p_lexicographically_largest = get_lexicographically_largest_permutation(p)
+    q_lexicographically_largest = get_lexicographically_largest_permutation(q)
+    a = permutations.index(p_lexicographically_smallest) + 1
+    b = permutations.index(q_lexicographically_smallest) + 1
+    c = permutations.index(p_lexicographically_largest) + 1
+    d = permutations.index(q_lexicographically_largest) + 1
+    print(get_absolute_difference(a, b))
+    print(get_absolute_difference(c, d))
+
+if __name__ == '__main__':
+    main()
 

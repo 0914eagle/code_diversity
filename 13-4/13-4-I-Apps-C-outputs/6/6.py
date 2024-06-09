@@ -1,35 +1,36 @@
 
-import sys
+import math
 
-def count_ways(ranges):
-    # Sort the ranges by their left endpoint
-    ranges.sort(key=lambda x: x[0])
+def get_expected_distance(n, points):
+    # Calculate the area of the CBD polygon
+    area = get_area(n, points)
+    
+    # Calculate the expected distance traveled by a taxi
+    expected_distance = 0
+    for i in range(n):
+        for j in range(i+1, n):
+            expected_distance += get_distance(points[i], points[j])
+    expected_distance /= n * (n-1)
+    
+    # Convert the expected distance to the expected distance traveled by a taxi within the CBD
+    expected_distance *= area / get_area(n, points)
+    
+    return expected_distance
 
-    # Initialize the snow level at each point to 0
-    snow_level = [0] * (max(map(lambda x: x[1], ranges)) + 1)
+def get_area(n, points):
+    area = 0
+    for i in range(n):
+        area += points[i][0] * points[i+1][1] - points[i+1][0] * points[i][1]
+    return abs(area) / 2
 
-    # Loop through each range and increment the snow level at each point in the range
-    for a, b in ranges:
-        for i in range(a, b + 1):
-            snow_level[i] += 1
+def get_distance(point1, point2):
+    return math.sqrt((point1[0]-point2[0])**2 + (point1[1]-point2[1])**2)
 
-    # Initialize the number of ways to place the sensors to 0
-    ways = 0
-
-    # Loop through each point and check if it is a valid sensor placement
-    for i in range(len(snow_level)):
-        if snow_level[i] > 0 and snow_level[i] < snow_level[i + 1] and snow_level[i] < snow_level[i - 1]:
-            ways += 1
-
-    return ways % 1000000009
-
-n = int(input())
-ranges = []
-
-# Loop through each line of input and add the range to the list of ranges
-for i in range(n):
-    a, b = map(int, input().split())
-    ranges.append((a, b))
-
-print(count_ways(ranges))
+if __name__ == '__main__':
+    n = int(input())
+    points = []
+    for i in range(n):
+        x, y = map(int, input().split())
+        points.append((x, y))
+    print(get_expected_distance(n, points))
 

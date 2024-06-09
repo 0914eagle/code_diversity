@@ -1,38 +1,39 @@
 
-def get_smallest_set_of_characters(characters):
-    # Initialize a set to store the characters that can converse with each other
-    converse_set = set()
+def get_handshakes(seating_order):
+    # Initialize variables
+    handshakes = 0
+    rows, cols = len(seating_order), len(seating_order[0])
 
-    # Iterate over the characters
-    for character in characters:
-        # Check if the character can converse with anyone in the converse set
-        can_converse = False
-        for other_character in converse_set:
-            if can_converse_with(character, other_character):
-                can_converse = True
-                break
+    # Loop through each row and column
+    for i in range(rows):
+        for j in range(cols):
+            # Check if the current element is a person
+            if seating_order[i][j] == "o":
+                # Check if the current element has any neighbors
+                if i > 0 and j > 0 and seating_order[i-1][j-1] == "o":
+                    handshakes += 1
+                if i > 0 and seating_order[i-1][j] == "o":
+                    handshakes += 1
+                if i > 0 and j < cols-1 and seating_order[i-1][j+1] == "o":
+                    handshakes += 1
+                if j > 0 and seating_order[i][j-1] == "o":
+                    handshakes += 1
+                if j < cols-1 and seating_order[i][j+1] == "o":
+                    handshakes += 1
+                if i < rows-1 and j > 0 and seating_order[i+1][j-1] == "o":
+                    handshakes += 1
+                if i < rows-1 and seating_order[i+1][j] == "o":
+                    handshakes += 1
+                if i < rows-1 and j < cols-1 and seating_order[i+1][j+1] == "o":
+                    handshakes += 1
 
-        # If the character can converse with anyone in the converse set, add it to the set
-        if can_converse:
-            converse_set.add(character)
+    return handshakes
 
-    # Return the size of the smallest set of characters that can converse with each other
-    return len(converse_set)
+def main():
+    rows, cols = map(int, input().split())
+    seating_order = [input() for _ in range(rows)]
+    print(get_handshakes(seating_order))
 
-def can_converse_with(character1, character2):
-    # Check if the characters speak the same language
-    if character1["language"] == character2["language"]:
-        return True
-
-    # Check if either character understands the other character's language
-    if character1["language"] in character2["understands"] or character2["language"] in character1["understands"]:
-        return True
-
-    # Check if either character understands any of the other character's understood languages
-    for language in character1["understands"]:
-        if language in character2["understands"]:
-            return True
-
-    # If none of the above conditions are met, the characters cannot converse
-    return False
+if __name__ == '__main__':
+    main()
 

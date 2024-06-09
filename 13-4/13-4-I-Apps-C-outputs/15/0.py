@@ -1,18 +1,24 @@
 
-n = int(input())
-p = list(map(int, input().split()))
+def f1(k):
+    # find the maximum live duration of all allergens
+    max_duration = max(map(int, input().split()))
 
-# Calculate the deviation of the permutation
-dev = sum(abs(p[i] - i) for i in range(n))
+    # calculate the number of days needed for the shortest conclusive non-adaptive test scheme
+    num_days = max_duration * k
 
-# Find the cyclic shift with the minimum deviation
-min_dev = dev
-min_id = 0
-for i in range(n):
-    dev = sum(abs(p[j] - (j + i) % n) for j in range(n))
-    if dev < min_dev:
-        min_dev = dev
-        min_id = i
+    return num_days
 
-print(min_dev, min_id)
+def f2(k):
+    # find the maximum live duration of all allergens
+    max_duration = max(map(int, input().split()))
+
+    # calculate the number of days needed for the shortest conclusive non-adaptive test scheme
+    num_days = max_duration * k
+
+    return num_days
+
+if __name__ == '__main__':
+    k = int(input())
+    print(f1(k))
+    print(f2(k))
 

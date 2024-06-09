@@ -1,27 +1,31 @@
 
-def solve():
-    N, K = map(int, input().split())
-    A = list(map(int, input().split()))
+def get_possible_values(dice_values, sum_of_values):
+    possible_values = []
+    for i in range(1, dice_values+1):
+        if i > sum_of_values:
+            break
+        possible_values.append(i)
+    return possible_values
 
-    # Initialize the prefix sum array
-    prefix_sum = [0] * (N + 1)
-    for i in range(1, N + 1):
-        prefix_sum[i] = prefix_sum[i - 1] + A[i - 1]
+def get_impossible_values(dice_values, sum_of_values):
+    impossible_values = []
+    for i in range(1, dice_values+1):
+        if i > sum_of_values:
+            break
+        impossible_values.append(sum_of_values-i+1)
+    return impossible_values
 
-    # Initialize the answer
-    count = 0
+def main():
+    n, sum_of_values = map(int, input().split())
+    dice_values = [int(input()) for i in range(n)]
+    possible_values = []
+    for i in range(n):
+        possible_values.append(get_possible_values(dice_values[i], sum_of_values))
+    impossible_values = []
+    for i in range(n):
+        impossible_values.append(get_impossible_values(dice_values[i], sum_of_values))
+    print(*[len(set(possible_values[i]) - set(impossible_values[i])) for i in range(n)])
 
-    # Iterate through the prefix sum array
-    for i in range(N + 1):
-        # Find the first index where the prefix sum is greater than or equal to K
-        if prefix_sum[i] >= K:
-            # Find the last index where the prefix sum is greater than or equal to K
-            j = i - 1
-            while j >= 0 and prefix_sum[j] >= K:
-                j -= 1
-
-            # Add the number of elements in the contiguous subsequence
-            count += i - j
-
-    return count
+if __name__ == '__main__':
+    main()
 

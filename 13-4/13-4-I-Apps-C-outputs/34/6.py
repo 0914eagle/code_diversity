@@ -1,36 +1,19 @@
 
-def solve(n, m, s, edges):
-    # Initialize the graph as an adjacency list
-    graph = [[] for _ in range(n + 1)]
-    for edge in edges:
-        u, v = edge[1], edge[2]
-        graph[u].append(v)
-        graph[v].append(u)
+def get_power_of_two(n):
+    power = 1
+    while power <= n:
+        power *= 2
+    return power
 
-    # Find all reachable vertices from vertex s
-    visited = [False] * (n + 1)
-    queue = [s]
-    while queue:
-        vertex = queue.pop(0)
-        if not visited[vertex]:
-            visited[vertex] = True
-            queue.extend(graph[vertex])
+def count_numbers_with_power_of_two(n, e):
+    power_of_two = get_power_of_two(e)
+    count = 0
+    for i in range(n+1):
+        if str(i).find(str(power_of_two)) != -1:
+            count += 1
+    return count
 
-    # Create two plans: one to maximize and one to minimize the number of reachable vertices
-    plan_max = []
-    plan_min = []
-    for edge in edges:
-        u, v = edge[1], edge[2]
-        if edge[0] == 1:  # directed edge
-            plan_max.append('+')
-            plan_min.append('+')
-        else:  # undirected edge
-            if visited[u] and visited[v]:  # both vertices are reachable
-                plan_max.append('+')
-                plan_min.append('-')
-            else:  # at least one vertex is not reachable
-                plan_max.append('-')
-                plan_min.append('+')
-
-    return len(plan_max), "".join(plan_max), len(plan_min), "".join(plan_min)
+if __name__ == '__main__':
+    n, e = map(int, input().split())
+    print(count_numbers_with_power_of_two(n, e))
 

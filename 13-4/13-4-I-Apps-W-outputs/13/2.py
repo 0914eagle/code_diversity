@@ -1,16 +1,36 @@
 
-n = int(input())
+import sys
+import math
 
-# Initialize the table with ones
-table = [[1] * n for _ in range(n)]
+def f1(N, K):
+    # f1 should return the priority value for a patient with severity S and waiting time W
+    return S + K * W
 
-# Fill in the remaining values using the given formula
-for i in range(1, n):
-    for j in range(1, n):
-        table[i][j] = table[i - 1][j] + table[i][j - 1]
+def f2(T, M, S):
+    # f2 should return the name of the patient who will be treated next
+    return M
 
-# Find the maximum value in the table
-max_value = max(max(row) for row in table)
+def f3(T, M):
+    # f3 should return the name of the patient who will be treated next
+    return M
 
-print(max_value)
+if __name__ == '__main__':
+    N, K = map(int, input().split())
+    patients = []
+    for i in range(N):
+        Q, T, M, S = map(int, input().split())
+        if Q == 1:
+            patients.append((T, M, S))
+        elif Q == 2:
+            if not patients:
+                print("doctor takes a break")
+            else:
+                patient = max(patients, key=lambda x: f1(x[2], K))
+                print(patient[1])
+                patients.remove(patient)
+        elif Q == 3:
+            if M in [p[1] for p in patients]:
+                patients.remove((T, M, S))
+            else:
+                print("false alarm")
 

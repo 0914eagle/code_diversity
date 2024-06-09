@@ -1,33 +1,40 @@
 
-import sys
+def f1(n, r, w, h):
+    # Initialize variables
+    gems = []
+    max_gems = 0
+    x_pos = 0
+    y_pos = 0
+    v_vel = 1
+    h_vel = 0
 
-def get_num_ways(r, w, d):
-    # Base case: if there are no red or white wines, there is only one way to arrange them
-    if r == 0 and w == 0:
-        return 1
-    
-    # Base case: if there is only one type of wine, there is only one way to arrange them
-    if r == 0 or w == 0:
-        return 1
-    
-    # Initialize the number of ways to arrange the wines
-    num_ways = 0
-    
-    # Iterate over the possible number of red wine piles
-    for red_piles in range(1, r + 1):
-        # Calculate the number of white wine piles
-        white_piles = r - red_piles
-        
-        # Check if the number of red wine piles is valid
-        if red_piles > d:
-            continue
-        
-        # Calculate the number of ways to arrange the wines with the current number of red and white piles
-        num_ways += get_num_ways(red_piles, white_piles, d)
-    
-    return num_ways % (10**9 + 7)
+    # Read input gems
+    for i in range(n):
+        x, y = map(int, input().split())
+        gems.append((x, y))
 
-if __name__ == "__main__":
-    r, w, d = map(int, sys.stdin.readline().split())
-    print(get_num_ways(r, w, d))
+    # Sort gems by y-coordinate in descending order
+    gems.sort(key=lambda x: x[1], reverse=True)
+
+    # Iterate through gems and move towards them
+    for gem in gems:
+        # Calculate distance to gem
+        dist = abs(gem[0] - x_pos)
+
+        # Check if gem is reachable
+        if dist <= v_vel * (h_vel / r):
+            # Move towards gem
+            h_vel = gem[0] - x_pos
+            x_pos = gem[0]
+            y_pos = gem[1]
+            max_gems += 1
+
+    return max_gems
+
+def f2(...):
+    ...
+
+if __name__ == '__main__':
+    n, r, w, h = map(int, input().split())
+    print(f1(n, r, w, h))
 

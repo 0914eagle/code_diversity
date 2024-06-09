@@ -1,13 +1,14 @@
 
-import sys
+def get_input():
+    return list(map(int, input().split()))
 
-n, k = map(int, input().split())
-heights = sorted([int(input()) for _ in range(n)])
+def get_max_product(a, b, c, d):
+    return max(a*c, a*d, b*c, b*d)
 
-min_diff = float('inf')
-for i in range(n - k + 1):
-    diff = heights[i + k - 1] - heights[i]
-    min_diff = min(min_diff, diff)
+def main():
+    a, b, c, d = get_input()
+    print(get_max_product(a, b, c, d))
 
-print(min_diff)
+if __name__ == '__main__':
+    main()
 

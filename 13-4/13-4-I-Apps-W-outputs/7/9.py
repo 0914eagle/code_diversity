@@ -1,23 +1,36 @@
 
-def get_min_traps(m, x):
-    # Calculate the greatest common divisor (gcd) of x and m
-    gcd = get_gcd(x, m)
+def f1(n, m, similar_pairs):
+    # Initialize the number of ways to split problems as 0
+    num_ways = 0
     
-    # If gcd is 1, then x and m are relatively prime
-    if gcd == 1:
-        # In this case, the minimum number of traps is m
-        return m
-    else:
-        # If gcd is not 1, then x and m have a common factor
-        # We can divide m by this factor to get a smaller number of traps
-        return m // gcd
+    # Loop through each pair of similar problems
+    for u, v in similar_pairs:
+        # If problem u is used in division 1 and problem v is used in division 2, increment the number of ways
+        if u in division_1 and v in division_2:
+            num_ways += 1
+    
+    # Return the number of ways to split problems
+    return num_ways
 
-def get_gcd(a, b):
-    while b != 0:
-        a, b = b, a % b
-    return a
+def f2(n, m, similar_pairs):
+    # Initialize the number of ways to split problems as 0
+    num_ways = 0
+    
+    # Loop through each pair of similar problems
+    for u, v in similar_pairs:
+        # If problem u is used in division 1 and problem v is used in division 2, increment the number of ways
+        if u in division_1 and v in division_2:
+            num_ways += 1
+    
+    # Return the number of ways to split problems
+    return num_ways
 
-m = int(input())
-x = int(input())
-print(get_min_traps(m, x))
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    similar_pairs = []
+    for _ in range(m):
+        u, v = map(int, input().split())
+        similar_pairs.append((u, v))
+    print(f1(n, m, similar_pairs))
+    print(f2(n, m, similar_pairs))
 

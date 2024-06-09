@@ -1,32 +1,46 @@
 
-def solve(N, squares):
-    # Initialize a dictionary to store the minimum number of draws required to reach each square
-    min_draws = {1: 0}
-    for i in range(2, N+1):
-        # Initialize the minimum number of draws required to reach the current square to infinity
-        min_draws[i] = float('inf')
-    
-    # Loop through each square and calculate the minimum number of draws required to reach it
-    for i in range(1, N+1):
-        # If the current square is not the start square, we can only move to the next square that has the same color
-        if squares[i-1] != 'Start':
-            # Get the color of the current square
-            color = squares[i-1]
-            # Loop through the previous squares and find the first square that has the same color as the current square
-            for j in range(i-2, -1, -1):
-                if squares[j] == color:
-                    # Add 1 to the minimum number of draws required to reach the previous square
-                    min_draws[i] = min(min_draws[i], min_draws[j+1] + 1)
-                    break
-        # If the current square is the start square, we can move to any square with the same color
+def get_min_time(t_s, t_f, t, n, visitors):
+    # Find the earliest time that Vasya can arrive to be served
+    min_time = t_s
+    for visitor in visitors:
+        if visitor >= min_time:
+            min_time = visitor
+    return min_time
+
+def get_max_time(t_s, t_f, t, n, visitors):
+    # Find the latest time that Vasya can arrive to be served
+    max_time = t_f - 1
+    for visitor in visitors:
+        if visitor <= max_time:
+            max_time = visitor
+    return max_time
+
+def get_optimal_time(t_s, t_f, t, n, visitors):
+    # Binary search to find the optimal time for Vasya to arrive
+    min_time = t_s
+    max_time = t_f - 1
+    while min_time <= max_time:
+        mid_time = (min_time + max_time) // 2
+        if is_optimal_time(t_s, t_f, t, n, visitors, mid_time):
+            max_time = mid_time - 1
         else:
-            # Loop through the previous squares and find the first square that has the same color as the current square
-            for j in range(i-2, -1, -1):
-                if squares[j] in ['Blue', 'Orange', 'Pink', 'Green', 'Red', 'Yellow']:
-                    # Add 1 to the minimum number of draws required to reach the previous square
-                    min_draws[i] = min(min_draws[i], min_draws[j+1] + 1)
-                    break
-    
-    # Return the minimum number of draws required to reach the last square
-    return min_draws[N]
+            min_time = mid_time + 1
+    return min_time
+
+def is_optimal_time(t_s, t_f, t, n, visitors, time):
+    # Check if the given time is optimal for Vasya to arrive
+    queue_time = 0
+    for visitor in visitors:
+        if visitor <= time:
+            queue_time += t
+    return queue_time == (time - t_s)
+
+def main():
+    t_s, t_f, t = map(int, input().split())
+    n = int(input())
+    visitors = sorted([int(x) for x in input().split()])
+    print(get_optimal_time(t_s, t_f, t, n, visitors))
+
+if __name__ == '__main__':
+    main()
 

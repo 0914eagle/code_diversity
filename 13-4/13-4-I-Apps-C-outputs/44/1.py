@@ -1,52 +1,26 @@
 
-def get_max_standers(n, people):
-    # Initialize a list to store the answers
-    answers = []
+def find_sub_rectangle(n, m, x, y, a, b):
+    # Initialize the sub-rectangle with the given point (x, y)
+    x1, y1, x2, y2 = x, y, x, y
     
-    # Loop through each possible combination of standers
-    for combination in itertools.permutations(range(1, n + 1)):
-        # Check if the current combination is valid
-        if is_valid_combination(combination, people):
-            # If it is valid, add it to the list of answers
-            answers.append(combination)
+    # Iterate through the grid and expand the sub-rectangle in all four directions
+    for i in range(x1, n+1):
+        for j in range(y1, m+1):
+            if i == x1 and j == y1:
+                continue
+            if (i-x1)/(j-y1) == a/b:
+                x1 = min(x1, i)
+                y1 = min(y1, j)
+                x2 = max(x2, i)
+                y2 = max(y2, j)
     
-    # Return the list of answers
-    return answers
-
-def is_valid_combination(combination, people):
-    # Initialize a set to store the standers on each button
-    standers = set()
-    
-    # Loop through each person in the combination
-    for person in combination:
-        # Check if the person is standing on a button that is already occupied
-        if person in standers:
-            # If they are, return False
-            return False
-        # Add the person to the set of standers on the button
-        standers.add(person)
-    
-    # If we reach this point, all standers are unique, so return True
-    return True
+    return x1, y1, x2, y2
 
 def main():
-    # Read the input from stdin
-    n = int(input())
-    people = []
-    for i in range(n):
-        line = input()
-        people.append(line)
-    
-    # Call the function to get the maximum number of standers
-    answers = get_max_standers(n, people)
-    
-    # Print the number of answers
-    print(len(answers))
-    
-    # Loop through each answer and print it
-    for answer in answers:
-        print(*answer)
+    n, m, x, y, a, b = map(int, input().split())
+    x1, y1, x2, y2 = find_sub_rectangle(n, m, x, y, a, b)
+    print(x1, y1, x2, y2)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
 

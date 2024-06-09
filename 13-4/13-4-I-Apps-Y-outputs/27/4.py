@@ -1,20 +1,23 @@
 
-N = int(input())
-verdicts = [input() for _ in range(N)]
+def get_input():
+    return list(map(int, input().split()))
 
-counts = [0, 0, 0, 0]
-for verdict in verdicts:
-    if verdict == "AC":
-        counts[0] += 1
-    elif verdict == "WA":
-        counts[1] += 1
-    elif verdict == "TLE":
-        counts[2] += 1
-    else:
-        counts[3] += 1
+def get_smallest_k(arr, k):
+    return sorted(arr)[:k]
 
-print("AC x", counts[0])
-print("WA x", counts[1])
-print("TLE x", counts[2])
-print("RE x", counts[3])
+def get_largest_k(arr, k):
+    return sorted(arr, reverse=True)[:k]
+
+def get_result(arr, k):
+    smallest_k = get_smallest_k(arr, k)
+    largest_k = get_largest_k(arr, k)
+    return sorted(set(smallest_k + largest_k))
+
+def main():
+    A, B, K = get_input()
+    result = get_result(range(A, B+1), K)
+    print(*result, sep='\n')
+
+if __name__ == '__main__':
+    main()
 

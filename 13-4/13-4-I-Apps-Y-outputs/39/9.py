@@ -1,16 +1,29 @@
 
-def solve(problems, drinks):
-    # Initialize a dictionary to store the time it takes to solve each problem
-    problem_time = {}
-    for problem in problems:
-        problem_time[problem] = problems[problem]
+def get_sequences():
+    k = int(input())
+    sequences = []
+    for i in range(k):
+        n = int(input())
+        sequence = list(map(int, input().split()))
+        sequences.append(sequence)
+    return sequences
 
-    # Iterate through each drink and calculate the time it takes to solve all problems
-    for drink in drinks:
-        for problem in problems:
-            if problem in drinks[drink]:
-                problem_time[problem] += drinks[drink][problem]
+def find_matching_sequences(sequences):
+    for i in range(len(sequences)):
+        for j in range(i+1, len(sequences)):
+            if sequences[i] == sequences[j]:
+                return i+1, j+1
+    return -1, -1
 
-    # Return the time it takes to solve all problems for each drink
-    return [problem_time[problem] for problem in problems]
+def main():
+    sequences = get_sequences()
+    i, j = find_matching_sequences(sequences)
+    if i == -1 and j == -1:
+        print("NO")
+    else:
+        print("YES")
+        print(i, j)
+
+if __name__ == '__main__':
+    main()
 

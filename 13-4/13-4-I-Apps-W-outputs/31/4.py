@@ -1,30 +1,28 @@
 
-def solve(r, b, k):
-    # Initialize a list to store the painted planks
-    painted_planks = []
+def get_day_of_week(day, month):
+    days_in_month = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    if month == "FEB" and day == 29:
+        return "FRI"
+    for i in range(1, month):
+        day += days_in_month[i]
+    return "FRI" if day % 7 == 0 else "NOT FRI"
 
-    # Loop through each plank and paint it according to the conditions
-    for i in range(10**100):
-        # If the index is divisible by r, paint it red
-        if i % r == 0:
-            painted_planks.append("R")
-        # If the index is divisible by b, paint it blue
-        elif i % b == 0:
-            painted_planks.append("B")
-        # If the index is divisible by both r and b, choose the color to paint it
-        elif i % r == 0 and i % b == 0:
-            painted_planks.append("R")
-        # Otherwise, don't paint the plank
-        else:
-            continue
+def get_year(day, month, year):
+    if month == "FEB" and day == 29 and year % 4 == 0:
+        return "TGIF"
+    return "NOT FRI"
 
-    # Check if there are any consecutive planks with the same color
-    for i in range(len(painted_planks) - 1):
-        if painted_planks[i] == painted_planks[i + 1]:
-            # If there are k consecutive planks with the same color, return "REBEL"
-            if i + k < len(painted_planks):
-                return "REBEL"
+def main():
+    day, month = map(int, input().split())
+    day_of_week = get_day_of_week(day, month)
+    year = get_year(day, month, int(input()))
+    if day_of_week == "FRI":
+        print("TGIF")
+    elif year == "TGIF":
+        print("TGIF")
+    else:
+        print(":(")
 
-    # If there are no consecutive planks with the same color, return "OBEY"
-    return "OBEY"
+if __name__ == '__main__':
+    main()
 

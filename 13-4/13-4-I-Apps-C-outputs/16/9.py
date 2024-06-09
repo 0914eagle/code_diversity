@@ -1,17 +1,68 @@
 
-def longest_interesting_subsequence(A, S):
-    # Initialize variables
-    N = len(A)
-    longest = [0] * N
+def get_matrix_size(input_string):
+    return int(input_string)
 
-    # Loop through each element in the array
-    for i in range(N):
-        # Loop through each possible length of the subsequence
-        for k in range(1, N-i+1):
-            # Check if the sum of the first k elements is less than or equal to S
-            if sum(A[i:i+k]) <= S:
-                # Update the longest subsequence length
-                longest[i] = max(longest[i], k)
+def get_matrix_entries(input_string):
+    matrix_size = get_matrix_size(input_string)
+    matrix_entries = []
+    for i in range(matrix_size):
+        matrix_entries.append(list(map(int, input_string.split())))
+    return matrix_entries
 
-    return longest
+def get_matrix_values(matrix_entries):
+    matrix_size = len(matrix_entries)
+    matrix_values = {}
+    for i in range(matrix_size):
+        for j in range(matrix_size):
+            if i == 0 or j == 0:
+                matrix_values[(i, j)] = matrix_entries[i][j]
+            else:
+                matrix_values[(i, j)] = mex(matrix_values[(i-1, j)], matrix_values[(i, j-1)])
+    return matrix_values
+
+def mex(x, y):
+    if x == 0 and y == 0:
+        return 2
+    elif x == 0 and y == 1:
+        return 0
+    elif x == 0 and y == 2:
+        return 1
+    elif x == 1 and y == 0:
+        return 1
+    elif x == 1 and y == 1:
+        return 2
+    elif x == 1 and y == 2:
+        return 0
+    elif x == 2 and y == 0:
+        return 0
+    elif x == 2 and y == 1:
+        return 1
+    elif x == 2 and y == 2:
+        return 2
+
+def get_matrix_counts(matrix_values):
+    matrix_size = len(matrix_values)
+    count_0 = 0
+    count_1 = 0
+    count_2 = 0
+    for i in range(matrix_size):
+        for j in range(matrix_size):
+            value = matrix_values[(i, j)]
+            if value == 0:
+                count_0 += 1
+            elif value == 1:
+                count_1 += 1
+            elif value == 2:
+                count_2 += 1
+    return count_0, count_1, count_2
+
+def main():
+    input_string = input()
+    matrix_entries = get_matrix_entries(input_string)
+    matrix_values = get_matrix_values(matrix_entries)
+    count_0, count_1, count_2 = get_matrix_counts(matrix_values)
+    print(count_0, count_1, count_2)
+
+if __name__ == '__main__':
+    main()
 

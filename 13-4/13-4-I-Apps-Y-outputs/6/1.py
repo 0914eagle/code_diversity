@@ -1,16 +1,25 @@
 
-import math
+def get_bottles(shipment_volume, bottle1_volume, bottle2_volume):
+    # Initialize variables
+    num_bottles1 = 0
+    num_bottles2 = 0
+    remaining_volume = shipment_volume
 
-def solve(n, p, s, v):
-    # Calculate the time it takes to run the algorithm with the optimal parameter c
-    c = (math.log(n) * math.sqrt(2)) / (v * 10^9)
-    t_algorithm = n * (math.log(n) ** (c * math.sqrt(2))) / p * 10^9
-    
-    # Calculate the time it takes to distribute the keys
-    t_distribute = s / v
-    
-    # Calculate the total time
-    t = t_algorithm + t_distribute
-    
-    return t, c
+    # Calculate the number of bottles of size bottle1_volume that can be filled
+    num_bottles1 = remaining_volume // bottle1_volume
+    remaining_volume = remaining_volume % bottle1_volume
+
+    # Calculate the number of bottles of size bottle2_volume that can be filled
+    num_bottles2 = remaining_volume // bottle2_volume
+
+    # Return the number of bottles of each size
+    return num_bottles1, num_bottles2
+
+def main():
+    shipment_volume, bottle1_volume, bottle2_volume = map(int, input().split())
+    num_bottles1, num_bottles2 = get_bottles(shipment_volume, bottle1_volume, bottle2_volume)
+    print(num_bottles1, num_bottles2)
+
+if __name__ == '__main__':
+    main()
 

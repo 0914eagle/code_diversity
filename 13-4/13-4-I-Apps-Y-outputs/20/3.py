@@ -1,34 +1,16 @@
 
-import math
+import xml.etree.ElementTree as ET
 
-def get_flavor(apples):
-    # Calculate the sum of the flavors of all apples
-    total_flavor = sum(apples)
+def get_max_depth(xml_string):
+    root = ET.fromstring(xml_string)
+    return get_depth(root)
 
-    # Sort the apples in ascending order of their flavors
-    apples.sort()
+def get_depth(element):
+    if element.findall("./*"):
+        return 1 + max(get_depth(child) for child in element)
+    return 1
 
-    # Initialize the minimum difference between the flavors of the apple pie made of all apples and the apple pie made of the remaining N-1 apples
-    min_diff = math.inf
-
-    # Loop through each apple and calculate the difference between the flavors of the apple pie made of all apples and the apple pie made of the remaining N-1 apples
-    for i in range(len(apples)):
-        # Calculate the flavor of the apple pie made of the remaining N-1 apples
-        remaining_flavor = total_flavor - apples[i]
-
-        # Calculate the difference between the flavors of the apple pie made of all apples and the apple pie made of the remaining N-1 apples
-        diff = abs(remaining_flavor - total_flavor)
-
-        # Update the minimum difference if the current difference is smaller than the minimum difference
-        if diff < min_diff:
-            min_diff = diff
-
-    # Return the flavor of the apple pie made of the remaining N-1 apples
-    return remaining_flavor
-
-n, l = map(int, input().split())
-apples = list(map(int, input().split()))
-
-# Print the flavor of the apple pie made of the remaining N-1 apples
-print(get_flavor(apples))
+if __name__ == '__main__':
+    xml_string = sys.stdin.read()
+    print(get_max_depth(xml_string))
 

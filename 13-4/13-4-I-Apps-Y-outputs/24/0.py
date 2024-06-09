@@ -1,22 +1,26 @@
 
-def solve(A, B):
-    N = len(A)
-    M = len(B)
-    grid = [["."]*N for _ in range(M)]
+def fizzbuzz(n):
+    a = []
+    for i in range(1, n+1):
+        if i % 3 == 0 and i % 5 == 0:
+            a.append("FizzBuzz")
+        elif i % 3 == 0:
+            a.append("Fizz")
+        elif i % 5 == 0:
+            a.append("Buzz")
+        else:
+            a.append(i)
+    return a
 
-    # Find the first occurrence of the shared letter in A and B
-    shared_letter = next((letter for letter in A if letter in B), None)
+def sum_fizzbuzz(n):
+    a = fizzbuzz(n)
+    sum = 0
+    for i in a:
+        if type(i) == int:
+            sum += i
+    return sum
 
-    # Fill in the grid with the words A and B
-    for i in range(N):
-        if A[i] == shared_letter:
-            for j in range(M):
-                if B[j] == shared_letter:
-                    grid[j][i] = A[i]
-                    break
-
-    for i in range(M):
-        for j in range(N):
-            print(grid[i][j], end="")
-        print()
+if __name__ == '__main__':
+    n = int(input())
+    print(sum_fizzbuzz(n))
 

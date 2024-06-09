@@ -1,21 +1,28 @@
 
-def solve(n, a):
-    # Sort the array of skills in ascending order
-    a.sort()
-    # Initialize the minimum number of teams as 0
-    min_teams = 0
-    # Iterate through the array of skills
-    for i in range(n-1):
-        # Check if the difference between the current skill and the next skill is 1
-        if a[i+1] - a[i] == 1:
-            # Increment the minimum number of teams
-            min_teams += 1
-    # Return the minimum number of teams
-    return min_teams
+def get_two_grams(s):
+    two_grams = []
+    for i in range(len(s) - 1):
+        two_grams.append(s[i:i+2])
+    return two_grams
 
-q = int(input())
-for i in range(q):
+def get_most_frequent_two_gram(s):
+    two_grams = get_two_grams(s)
+    frequency = {}
+    for two_gram in two_grams:
+        if two_gram in frequency:
+            frequency[two_gram] += 1
+        else:
+            frequency[two_gram] = 1
+    max_frequency = max(frequency.values())
+    for two_gram, count in frequency.items():
+        if count == max_frequency:
+            return two_gram
+
+def main():
     n = int(input())
-    a = list(map(int, input().split()))
-    print(solve(n, a))
+    s = input()
+    print(get_most_frequent_two_gram(s))
+
+if __name__ == '__main__':
+    main()
 

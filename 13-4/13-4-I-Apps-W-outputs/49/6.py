@@ -1,8 +1,14 @@
 
-def solve(n, m, a):
-    result = 1
-    for i in range(n):
-        for j in range(i+1, n):
-            result = (result * abs(a[i] - a[j])) % m
-    return result
+def get_sequence_element(n):
+    i = 1
+    while i < n:
+        i += i
+    return i
+
+def main():
+    n = int(input())
+    print(get_sequence_element(n))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,9 +1,30 @@
 
-def solve(s):
-    # Find the index of the first occurrence of 'A'
-    start_index = s.find('A')
-    # Find the index of the last occurrence of 'Z'
-    end_index = s.rfind('Z')
-    # Return the length of the substring
-    return end_index - start_index + 1
+def get_max_d(x, cities):
+    # Sort the cities in ascending order
+    sorted_cities = sorted(cities)
+
+    # Initialize the maximum value of D
+    max_d = 0
+
+    # Iterate through the cities and calculate the minimum distance between two consecutive cities
+    for i in range(len(sorted_cities) - 1):
+        d = sorted_cities[i + 1] - sorted_cities[i]
+        max_d = max(max_d, d)
+
+    return max_d
+
+def solve(x, cities):
+    # Get the maximum value of D that enables you to visit all the cities
+    max_d = get_max_d(x, cities)
+
+    # Print the maximum value of D
+    print(max_d)
+
+if __name__ == '__main__':
+    # Read the input
+    n, x = map(int, input().split())
+    cities = list(map(int, input().split()))
+
+    # Solve the problem
+    solve(x, cities)
 

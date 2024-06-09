@@ -1,45 +1,28 @@
 
-import itertools
+def is_palindrome(s):
+    return s == s[::-1]
 
-def count_paintings(N, S1, S2):
-    # Initialize a dictionary to store the number of paintings for each domino
-    paintings = {}
-    for domino in itertools.product("RGB", repeat=N):
-        paintings[domino] = 0
+def cut_into_palindromes(s):
+    n = len(s)
+    dp = [[False] * (n+1) for _ in range(n+1)]
+    palindromes = []
+    for i in range(n+1):
+        for j in range(i+1):
+            if i == j:
+                dp[i][j] = True
+            elif i == j+1:
+                dp[i][j] = is_palindrome(s[j:i])
+            else:
+                dp[i][j] = dp[i-1][j] or dp[i-1][j+1] and s[j] == s[i-1]
+            if dp[i][j] and i-j == j-i:
+                palindromes.append(s[j:i])
+    return len(palindromes), " ".join(palindromes)
 
-    # Initialize a dictionary to store the number of paintings for each pair of adjacent dominoes
-    adjacents = {}
-    for domino1, domino2 in itertools.combinations(range(N), 2):
-        adjacents[(domino1, domino2)] = 0
+def main():
+    n = int(input())
+    s = input()
+    print(cut_into_palindromes(s))
 
-    # Loop through all possible paintings of the dominoes
-    for dominoes in itertools.product("RGB", repeat=N):
-        # Check if the dominoes form a valid arrangement
-        if is_valid_arrangement(N, S1, S2, dominoes):
-            # Increment the number of paintings for each domino
-            for domino in dominoes:
-                paintings[domino] += 1
-            # Increment the number of paintings for each pair of adjacent dominoes
-            for domino1, domino2 in itertools.combinations(range(N), 2):
-                adjacents[(domino1, domino2)] += 1
-
-    # Return the number of paintings modulo 1000000007
-    return sum(paintings.values()) % 1000000007
-
-def is_valid_arrangement(N, S1, S2, dominoes):
-    # Check if the dominoes form a valid arrangement
-    for i in range(N):
-        if S1[i] != dominoes[i] and S2[i] != dominoes[i]:
-            return False
-    # Check if the dominoes are adjacent by side
-    for i in range(N-1):
-        if dominoes[i] == dominoes[i+1] and dominoes[i] != "G":
-            return False
-    return True
-
-if __name__ == "__main__":
-    N = int(input())
-    S1 = input()
-    S2 = input()
-    print(count_paintings(N, S1, S2))
+if __name__ == '__main__':
+    main()
 

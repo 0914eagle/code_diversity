@@ -1,36 +1,20 @@
 
-x, y = input().split()
+def get_connected_roads(n_cities, roads):
+    connected_roads = [0] * n_cities
+    for road in roads:
+        connected_roads[road[0] - 1] += 1
+        connected_roads[road[1] - 1] += 1
+    return connected_roads
 
-if x == 'A':
-    x_value = 10
-elif x == 'B':
-    x_value = 11
-elif x == 'C':
-    x_value = 12
-elif x == 'D':
-    x_value = 13
-elif x == 'E':
-    x_value = 14
-else:
-    x_value = 15
+def main():
+    n_cities, n_roads = map(int, input().split())
+    roads = []
+    for _ in range(n_roads):
+        roads.append(list(map(int, input().split())))
+    connected_roads = get_connected_roads(n_cities, roads)
+    for road in connected_roads:
+        print(road)
 
-if y == 'A':
-    y_value = 10
-elif y == 'B':
-    y_value = 11
-elif y == 'C':
-    y_value = 12
-elif y == 'D':
-    y_value = 13
-elif y == 'E':
-    y_value = 14
-else:
-    y_value = 15
-
-if x_value < y_value:
-    print('<')
-elif x_value > y_value:
-    print('>')
-else:
-    print('=')
+if __name__ == '__main__':
+    main()
 

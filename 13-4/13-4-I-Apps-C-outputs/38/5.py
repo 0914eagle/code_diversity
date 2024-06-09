@@ -1,62 +1,40 @@
 
-def solve(n, residents):
-    # Initialize variables
-    council_members = []
-    club_representatives = {}
-    impossible = False
+def f1(n, pebbles):
+    # f1(n, pebbles) should return the most distant pebble that can be reached by a sequence of jumps
+    # according to the given rules and starting from the first pebble
+    
+    # Initialize the most distant pebble as the first pebble
+    most_distant_pebble = 0
+    
+    # Iterate through the pebbles starting from the second pebble
+    for i in range(1, n):
+        # If the sum of the number of spots on the current pebble and the previous pebble is equal to the distance between them,
+        # update the most distant pebble
+        if pebbles[i] + pebbles[i-1] == i - most_distant_pebble:
+            most_distant_pebble = i
+    
+    # Return the most distant pebble
+    return most_distant_pebble
 
-    # Iterate through each resident
-    for resident in residents:
-        # Get the resident's information
-        name, party, num_clubs, *clubs = resident.split()
+def f2(n, pebbles):
+    # f2(n, pebbles) should return the number of pairs of pebbles where Yoshi can perform a jump from one pebble to another one
+    # during his sequence of jumps
+    
+    # Initialize a counter for the number of pairs
+    num_pairs = 0
+    
+    # Iterate through the pebbles
+    for i in range(n-1):
+        # If the sum of the number of spots on the current pebble and the next pebble is equal to the distance between them,
+        # increment the counter
+        if pebbles[i] + pebbles[i+1] == 1:
+            num_pairs += 1
+    
+    # Return the number of pairs
+    return num_pairs
 
-        # Check if the resident is already a council member
-        if name in council_members:
-            continue
-
-        # Check if the resident is already a club representative
-        if name in club_representatives:
-            continue
-
-        # Check if the resident belongs to any clubs
-        if num_clubs == 0:
-            continue
-
-        # Check if the resident belongs to more than one club
-        if num_clubs > 1:
-            # Check if the resident is already a club representative
-            if name in club_representatives:
-                # The resident is already a club representative, so they cannot be a council member
-                impossible = True
-                break
-            else:
-                # The resident is not a club representative, so they can be a council member
-                council_members.append(name)
-                continue
-
-        # The resident belongs to only one club
-        club = clubs[0]
-
-        # Check if the club already has a representative
-        if club in club_representatives:
-            # The club already has a representative, so the resident cannot be a council member
-            impossible = True
-            break
-        else:
-            # The club does not have a representative, so the resident can be a council member and a club representative
-            council_members.append(name)
-            club_representatives[club] = name
-
-    # Check if the council can be formed
-    if impossible:
-        return "Impossible"
-
-    # Form the council
-    council = []
-    for member in council_members:
-        club = club_representatives[member]
-        council.append((member, club))
-
-    # Return the council
-    return council
+if __name__ == '__main__':
+    n = int(input())
+    pebbles = list(map(int, input().split()))
+    print(f1(n, pebbles))
 

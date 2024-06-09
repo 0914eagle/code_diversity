@@ -1,28 +1,45 @@
 
-def solve(n, m, a, b, x):
-    # Initialize a 2D array to store the product of a and b
-    c = [[0] * m for _ in range(n)]
-    for i in range(n):
-        for j in range(m):
-            c[i][j] = a[i] * b[j]
-    
-    # Initialize a variable to store the maximum area
-    max_area = 0
-    
-    # Iterate over all possible starting points
-    for i in range(n):
-        for j in range(m):
-            # Initialize a variable to store the current area
-            current_area = 0
-            # Iterate over all possible sizes
-            for k in range(n-i+1):
-                for l in range(m-j+1):
-                    # Calculate the current sum
-                    current_sum = sum(sum(c[i+k-1][j+l-1:j+l]) for i in range(k))
-                    # If the current sum is less than or equal to x, update the maximum area
-                    if current_sum <= x:
-                        max_area = max(max_area, k*l)
-    
-    # Return the maximum area
-    return max_area
+def f1(N, M, ps):
+    # Initialize the probability of Anthony winning
+    prob = 1
+
+    # Loop through each round
+    for i in range(N + M - 1):
+        # Calculate the probability of Anthony winning this round
+        prob_win = ps[i]
+
+        # Calculate the probability of Anthony losing this round
+        prob_lose = 1 - prob_win
+
+        # Update the probability of Anthony winning
+        prob = prob_win * prob + prob_lose * (1 - prob)
+
+    # Return the probability of Anthony winning the game
+    return prob
+
+def f2(N, M, ps):
+    # Initialize the probability of Anthony winning
+    prob = 1
+
+    # Loop through each round
+    for i in range(N + M - 1):
+        # Calculate the probability of Anthony winning this round
+        prob_win = ps[i]
+
+        # Calculate the probability of Anthony losing this round
+        prob_lose = 1 - prob_win
+
+        # Update the probability of Anthony winning
+        prob = prob_win * prob + prob_lose * (1 - prob)
+
+    # Return the probability of Anthony winning the game
+    return prob
+
+if __name__ == '__main__':
+    N, M = map(int, input().split())
+    ps = []
+    for i in range(N + M - 1):
+        ps.append(float(input()))
+    print(f1(N, M, ps))
+    print(f2(N, M, ps))
 

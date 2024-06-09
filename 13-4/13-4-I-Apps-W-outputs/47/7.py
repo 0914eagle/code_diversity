@@ -1,24 +1,43 @@
 
-def solve(n, m, k, timetable):
-    # Initialize a variable to store the minimum number of hours spent in the university
-    min_hours = 0
-    # Iterate over each day in the week
-    for i in range(n):
-        # Initialize a variable to store the number of lessons skipped in the current day
-        skipped_lessons = 0
-        # Iterate over each hour in the day
-        for j in range(m):
-            # Check if there is a lesson at the current hour
-            if timetable[i][j] == "1":
-                # If the current hour has a lesson and Ivan has not skipped enough lessons, skip the lesson
-                if skipped_lessons < k:
-                    skipped_lessons += 1
-                # Otherwise, attend the lesson and increment the minimum number of hours spent in the university
-                else:
-                    min_hours += 1
-        # If Ivan skipped all lessons in the current day, he doesn't go to the university that day
-        if skipped_lessons == m:
-            min_hours += 0
-    # Return the minimum number of hours spent in the university
-    return min_hours
+def is_correct_bracket_sequence(bracket_sequence):
+    stack = []
+    for char in bracket_sequence:
+        if char == "(":
+            stack.append(char)
+        else:
+            if not stack or stack[-1] != "(":
+                return False
+            stack.pop()
+    return not stack
+
+
+def get_correct_bracket_sequences(bracket_sequences):
+    correct_bracket_sequences = []
+    for bracket_sequence in bracket_sequences:
+        if is_correct_bracket_sequence(bracket_sequence):
+            correct_bracket_sequences.append(bracket_sequence)
+    return correct_bracket_sequences
+
+
+def get_pairs(correct_bracket_sequences):
+    pairs = []
+    for i in range(len(correct_bracket_sequences)):
+        for j in range(i+1, len(correct_bracket_sequences)):
+            pair = (correct_bracket_sequences[i], correct_bracket_sequences[j])
+            pairs.append(pair)
+    return pairs
+
+
+def get_max_pairs(bracket_sequences):
+    correct_bracket_sequences = get_correct_bracket_sequences(bracket_sequences)
+    pairs = get_pairs(correct_bracket_sequences)
+    return len(pairs)
+
+
+if __name__ == '__main__':
+    n = int(input())
+    bracket_sequences = []
+    for _ in range(n):
+        bracket_sequences.append(input())
+    print(get_max_pairs(bracket_sequences))
 

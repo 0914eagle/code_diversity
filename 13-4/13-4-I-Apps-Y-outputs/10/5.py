@@ -1,8 +1,20 @@
 
-def solve(a, b, c, d):
-    count = 0
-    for i in range(a, b+1):
-        if i % c != 0 and i % d != 0:
-            count += 1
-    return count
+def get_available_megabytes(x, n, spent_megabytes):
+    available_megabytes = x
+    for i in range(n):
+        available_megabytes += spent_megabytes[i]
+        available_megabytes -= spent_megabytes[i]
+    return available_megabytes
+
+def main():
+    x = int(input())
+    n = int(input())
+    spent_megabytes = []
+    for i in range(n):
+        spent_megabytes.append(int(input()))
+    available_megabytes = get_available_megabytes(x, n, spent_megabytes)
+    print(available_megabytes)
+
+if __name__ == '__main__':
+    main()
 

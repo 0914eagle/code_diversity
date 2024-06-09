@@ -1,10 +1,17 @@
 
-N = int(input())
-A = int(input())
+def get_total_cost(n):
+    return 800 * n
 
-total_squares = N * N
-white_squares = A
-black_squares = total_squares - white_squares
+def get_discount(n):
+    return 200 * (n // 15)
 
-print(black_squares)
+def get_amount_paid(n):
+    return get_total_cost(n) - get_discount(n)
+
+def get_amount_received(n):
+    return get_discount(n)
+
+if __name__ == '__main__':
+    n = int(input())
+    print(get_amount_paid(n))
 

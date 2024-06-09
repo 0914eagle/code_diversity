@@ -1,18 +1,22 @@
 
-def get_badge_numbers(num_rooms, num_locks, num_badges, start_room, dest_room, locks):
-    # Initialize a set to store the badge numbers that can pass through the locks
-    badge_numbers = set()
+def get_median(arr):
+    arr.sort()
+    if len(arr) % 2 == 0:
+        return (arr[len(arr) // 2 - 1] + arr[len(arr) // 2]) / 2
+    else:
+        return arr[len(arr) // 2]
 
-    # Iterate through the locks
-    for lock in locks:
-        # Extract the information from the lock
-        room_a, room_b, lower_bound, upper_bound = lock
+def count_scary_subarrays(arr):
+    n = len(arr)
+    count = 0
+    for i in range(n):
+        for j in range(i, n):
+            if arr[i] == get_median(arr[i:j+1]):
+                count += 1
+    return count
 
-        # Check if the lock is between the start and destination rooms
-        if room_a == start_room and room_b == dest_room:
-            # Add the badge numbers that can pass through the lock to the set
-            badge_numbers |= set(range(lower_bound, upper_bound + 1))
-
-    # Return the number of badge numbers that can pass through the locks
-    return len(badge_numbers)
+if __name__ == '__main__':
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(count_scary_subarrays(arr))
 

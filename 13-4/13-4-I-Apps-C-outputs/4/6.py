@@ -1,16 +1,32 @@
 
-def is_wool_sequence(sequence):
-    for i in range(len(sequence)):
-        for j in range(i+1, len(sequence)):
-            if sequence[i] ^ sequence[j] == 0:
-                return True
-    return False
+def get_max_or(numbers, k, x):
+    # Sort the numbers in descending order
+    numbers.sort(reverse=True)
+    
+    # Initialize the maximum OR value
+    max_or = 0
+    
+    # Loop through the numbers and perform the operations
+    for i in range(k):
+        # Multiply the current number by x
+        numbers[i] *= x
+        
+        # Update the maximum OR value
+        max_or = max(max_or, numbers[i] | numbers[i+1])
+    
+    return max_or
 
-def count_non_wool_sequences(n, m):
-    count = 0
-    for i in range(2**n):
-        sequence = [i >> j & 1 for j in range(n)]
-        if not is_wool_sequence(sequence):
-            count += 1
-    return count % 1000000009
+def main():
+    # Read the input
+    n, k, x = map(int, input().split())
+    numbers = list(map(int, input().split()))
+    
+    # Get the maximum OR value
+    max_or = get_max_or(numbers, k, x)
+    
+    # Print the result
+    print(max_or)
+
+if __name__ == '__main__':
+    main()
 

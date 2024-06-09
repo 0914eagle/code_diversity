@@ -1,21 +1,20 @@
 
-def solve(N, A, B):
-    # Initialize a list to store the permutation
-    perm = list(range(1, N+1))
-    
-    # Iterate through the list and find the indices where A and B appear
-    indices_A = [i for i, x in enumerate(perm) if x == A]
-    indices_B = [i for i, x in enumerate(perm) if x == B]
-    
-    # If there are no indices where A and B appear, return -1
-    if not indices_A or not indices_B:
-        return -1
-    
-    # Swap the values at the indices where A and B appear to get the desired permutation
-    for i in indices_A:
-        perm[i] = B
-    for i in indices_B:
-        perm[i] = A
-    
-    return perm
+def get_leaders(n, messages):
+    leaders = set()
+    for message in messages:
+        if message[0] == "+":
+            leaders.add(int(message[1:]))
+        else:
+            leaders.remove(int(message[1:]))
+    return leaders
+
+def main():
+    n, m = map(int, input().split())
+    messages = [input() for _ in range(m)]
+    leaders = get_leaders(n, messages)
+    print(len(leaders))
+    print(*sorted(leaders), sep=" ")
+
+if __name__ == '__main__':
+    main()
 

@@ -1,27 +1,46 @@
 
-def reconstruct_painting(N, K, M, commands):
-    # Initialize the painting with a white canvas
-    painting = [[1] * N for _ in range(N)]
+def is_graph_valid(n, m, edges):
+    # Initialize a graph with n vertices and no edges
+    graph = [[] for _ in range(n)]
 
-    # Iterate through the commands and apply them to the painting
-    for command in commands:
-        if command.startswith("PAINT"):
-            # Extract the color and coordinates of the rectangle from the command
-            color, x1, y1, x2, y2 = map(int, command.split()[1:])
+    # Add edges to the graph
+    for u, v in edges:
+        graph[u - 1].append(v - 1)
+        graph[v - 1].append(u - 1)
 
-            # Iterate over the cells in the rectangle and paint them with the chosen color
-            for x in range(x1, x2 + 1):
-                for y in range(y1, y2 + 1):
-                    painting[x][y] = color
+    # Check if the graph is valid
+    for i in range(n):
+        for j in range(i + 1, n):
+            if graph[i][j] == 1 and graph[j][i] == 1:
+                return False
 
-        elif command.startswith("SAVE"):
-            # Save the current painting state
-            saved_paintings.append(painting)
+    return True
 
-        elif command.startswith("LOAD"):
-            # Load the saved painting state
-            painting = saved_paintings[int(command.split()[1]) - 1]
+def find_string(n, m, edges):
+    # Initialize a set of possible strings
+    strings = set()
 
-    # Return the painting
-    return painting
+    # Iterate over all possible strings
+    for i in range(n):
+        for j in range(i + 1, n):
+            for k in range(j + 1, n):
+                strings.add(chr(i + 97) + chr(j + 97) + chr(k + 97))
+
+    # Check if any of the strings correspond to the given graph
+    for string in strings:
+        graph = []
+        for i in range(n - 1):
+            graph.append([string[i], string[i + 1]])
+        if is_graph_valid(n, m, graph):
+            return string
+
+    return "No"
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    edges = []
+    for _ in range(m):
+        u, v = map(int, input().split())
+        edges.append((u, v))
+    print(find_string(n, m, edges))
 

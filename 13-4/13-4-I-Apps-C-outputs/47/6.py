@@ -1,20 +1,36 @@
 
-import math
+def is_handsome(n):
+    n_str = str(n)
+    for i in range(len(n_str) - 1):
+        if n_str[i] == n_str[i + 1]:
+            return False
+    return True
 
-def get_maximum_expected_profit(x, p):
-    # Calculate the probability of losing and winning for each bet
-    prob_lose = 1 - p
-    prob_win = p
+def get_closest_handsome_numbers(n):
+    n_str = str(n)
+    for i in range(len(n_str)):
+        if n_str[i] % 2 == 0:
+            n_str = n_str[:i] + '1' + n_str[i + 1:]
+            break
+    else:
+        n_str = n_str[:-1] + '1'
+    handsome_num1 = int(n_str)
 
-    # Calculate the expected value of each bet
-    expected_value_lose = -1
-    expected_value_win = 2
+    for i in range(len(n_str)):
+        if n_str[i] % 2 == 1:
+            n_str = n_str[:i] + '0' + n_str[i + 1:]
+            break
+    else:
+        n_str = n_str[:-1] + '0'
+    handsome_num2 = int(n_str)
 
-    # Calculate the expected value of the casino refund
-    expected_casino_refund = x / 100
+    return handsome_num1, handsome_num2
 
-    # Calculate the maximum expected profit
-    maximum_expected_profit = math.fabs(expected_value_win * prob_win - expected_value_lose * prob_lose + expected_casino_refund)
+def main():
+    n = int(input())
+    handsome_num1, handsome_num2 = get_closest_handsome_numbers(n)
+    print(handsome_num1, handsome_num2)
 
-    return maximum_expected_profit
+if __name__ == '__main__':
+    main()
 

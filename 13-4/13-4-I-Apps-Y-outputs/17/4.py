@@ -1,20 +1,27 @@
 
-import math
+def encrypt(message, key):
+    encrypted_message = ""
+    for i in range(len(message)):
+        if i % 2 == 0:
+            encrypted_message += chr((ord(message[i]) + ord(key[i]) - 2 * ord('A')) % 26 + ord('A'))
+        else:
+            encrypted_message += chr((ord(message[i]) - ord(key[i]) - 2 * ord('A')) % 26 + ord('A'))
+    return encrypted_message
 
-def get_average_path_length(towns):
-    num_towns = len(towns)
-    total_length = 0
-    for i in range(num_towns):
-        for j in range(i+1, num_towns):
-            x1, y1 = towns[i]
-            x2, y2 = towns[j]
-            total_length += math.sqrt((x1-x2)**2 + (y1-y2)**2)
-    return total_length / math.factorial(num_towns)
+def decrypt(encrypted_message, key):
+    message = ""
+    for i in range(len(encrypted_message)):
+        if i % 2 == 0:
+            message += chr((ord(encrypted_message[i]) - ord(key[i]) + 2 * ord('A')) % 26 + ord('A'))
+        else:
+            message += chr((ord(encrypted_message[i]) + ord(key[i]) - 2 * ord('A')) % 26 + ord('A'))
+    return message
 
-towns = []
-for i in range(int(input())):
-    x, y = map(int, input().split())
-    towns.append((x, y))
-
-print(get_average_path_length(towns))
+if __name__ == '__main__':
+    message = input("Enter message: ")
+    key = input("Enter key: ")
+    encrypted_message = encrypt(message, key)
+    print(f"Encrypted message: {encrypted_message}")
+    decrypted_message = decrypt(encrypted_message, key)
+    print(f"Decrypted message: {decrypted_message}")
 

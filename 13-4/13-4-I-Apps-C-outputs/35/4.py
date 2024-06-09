@@ -1,53 +1,35 @@
 
-import sys
+def longest_repeated_substring(input_string):
+    # Initialize variables
+    start_index = 0
+    end_index = 0
+    longest_substring = ""
+    current_substring = ""
 
-def shortest_subarray(arr, k):
-    # Initialize the window start and end indices
-    start, end = 0, 0
-    # Initialize the count of unique elements in the window
-    count = 0
-    # Initialize the minimum length of the subarray
-    min_len = float('inf')
-    # Loop through the array
-    while end < len(arr):
-        # Add the current element to the window
-        if arr[end] in range(1, k+1):
-            count += 1
-        # Remove the first element from the window if it is not in the range
-        if arr[start] not in range(1, k+1):
-            count -= 1
-        # If the window has all unique elements, check if the length is less than the minimum length
-        if count == k:
-            min_len = min(min_len, end - start + 1)
-        # Move the window forward
-        end += 1
-        # Move the window backward if the window has more unique elements than required
-        while count > k:
-            if arr[start] in range(1, k+1):
-                count -= 1
-            start += 1
-    # Return the minimum length
-    if min_len == float('inf'):
-        return -1
-    else:
-        return min_len
+    # Iterate through the input string
+    for i in range(len(input_string)):
+        # Check if the current character is already in the current substring
+        if input_string[i] in current_substring:
+            # If it is, update the start index of the current substring
+            start_index = current_substring.index(input_string[i]) + 1
+            # Update the current substring to include the current character
+            current_substring = current_substring[start_index:] + input_string[i]
+        else:
+            # If it's not, add the current character to the current substring
+            current_substring += input_string[i]
 
-def change_value(arr, p, v):
-    # Change the value of the p-th element to v
-    arr[p-1] = v
-    return arr
+        # Check if the current substring is longer than the longest substring
+        if len(current_substring) > len(longest_substring):
+            # If it is, update the longest substring
+            longest_substring = current_substring
 
-# Read the input
-N, K, M = map(int, input().split())
-arr = list(map(int, input().split()))
-for i in range(M):
-    # Read the query
-    query = input().split()
-    # If the query is to change a value, change the value and update the array
-    if query[0] == '1':
-        arr = change_value(arr, int(query[1]), int(query[2]))
-    # If the query is to find the shortest subarray, find the shortest subarray and print the result
-    elif query[0] == '2':
-        print(shortest_subarray(arr, K))
+    return longest_substring
 
+def main():
+    input_string = input("Enter a string of lowercase letters: ")
+    longest_substring = longest_repeated_substring(input_string)
+    print(f"The longest repeated substring is: {longest_substring}")
+
+if __name__ == '__main__':
+    main()
 

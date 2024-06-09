@@ -1,57 +1,40 @@
 
-def get_segments(n, k, absurdity):
-    # Sort the absurdity list in descending order
-    absurdity.sort(reverse=True)
+def get_cyclic_permutations(n):
+    # Initialize a list to store the cyclic permutations
+    cyclic_permutations = []
     
-    # Initialize the segments with the first k elements
-    segments = absurdity[:k]
+    # Iterate over all possible permutations
+    for permutation in itertools.permutations(range(1, n + 1)):
+        # Convert the permutation to a list
+        permutation_list = list(permutation)
+        
+        # Check if the permutation is cyclic
+        if is_cyclic(permutation_list):
+            # Add the cyclic permutation to the list
+            cyclic_permutations.append(permutation_list)
     
-    # Loop through the remaining elements
-    for i in range(k, n):
-        # If the current element is greater than the smallest element in the segment, replace it
-        if absurdity[i] > segments[0]:
-            segments[0] = absurdity[i]
-            segments.sort(reverse=True)
-    
-    # Return the segments
-    return segments
+    # Return the number of cyclic permutations modulo 10^9 + 7
+    return len(cyclic_permutations) % (10**9 + 7)
 
-def get_optimal_segments(n, k, absurdity):
-    # Get the optimal segments
-    segments = get_segments(n, k, absurdity)
+def is_cyclic(permutation):
+    # Initialize a set to store the nodes in the cycle
+    cycle_set = set()
     
-    # Initialize the optimal segments with the first segment
-    optimal_segments = [segments[0]]
+    # Initialize a variable to store the current node
+    current_node = permutation[0]
     
-    # Loop through the remaining segments
-    for i in range(1, len(segments)):
-        # If the current segment is different from the previous segment, add it to the list of optimal segments
-        if segments[i] != segments[i-1]:
-            optimal_segments.append(segments[i])
+    # Iterate until the cycle is complete
+    while current_node not in cycle_set:
+        # Add the current node to the cycle set
+        cycle_set.add(current_node)
+        
+        # Get the next node in the cycle
+        current_node = permutation[current_node - 1]
     
-    # Return the optimal segments
-    return optimal_segments
+    # Return True if the cycle is complete, False otherwise
+    return len(cycle_set) == len(permutation)
 
-def get_a_and_b(n, k, absurdity):
-    # Get the optimal segments
-    segments = get_optimal_segments(n, k, absurdity)
-    
-    # Initialize a and b with the first segment
-    a = segments[0]
-    b = segments[1]
-    
-    # Loop through the remaining segments
-    for i in range(2, len(segments)):
-        # If the current segment is different from the previous segment, update a and b
-        if segments[i] != segments[i-1]:
-            a = segments[i]
-            b = segments[i+1]
-    
-    # Return a and b
-    return a, b
-
-n, k = map(int, input().split())
-absurdity = list(map(int, input().split()))
-a, b = get_a_and_b(n, k, absurdity)
-print(a, b)
+if __name__ == '__main__':
+    n = int(input())
+    print(get_cyclic_permutations(n))
 

@@ -1,16 +1,40 @@
 
-def get_number_of_ways(r, w, d):
-    # Initialize the number of ways to be 0
-    number_of_ways = 0
-    
-    # Loop through all possible combinations of red and white wine piles
-    for red_piles in range(1, r + 1):
-        for white_piles in range(1, w + 1):
-            # Check if the current combination satisfies the conditions
-            if red_piles + white_piles <= r and red_piles <= d:
-                # Increment the number of ways
-                number_of_ways += 1
-    
-    # Return the number of ways modulo 10^9 + 7
-    return number_of_ways % (10**9 + 7)
+def get_max_gems(n, r, w, h, gems):
+    # Initialize variables
+    max_gems = 0
+    current_gems = 0
+    current_x = 0
+    current_y = 0
+    velocity_x = 0
+    velocity_y = 0
+
+    # Sort the gems by their y-coordinate in descending order
+    gems.sort(key=lambda x: x[1], reverse=True)
+
+    # Loop through the gems and calculate the maximum number of gems that can be collected
+    for gem in gems:
+        x, y = gem
+        distance = abs(current_x - x)
+        time = distance / velocity_x
+        if time <= 0:
+            continue
+        current_gems += 1
+        max_gems = max(max_gems, current_gems)
+        current_x = x
+        current_y = y
+        velocity_x = min(max(velocity_x + r, -velocity_x / r), velocity_x - velocity_x / r)
+        velocity_y = min(max(velocity_y + r, -velocity_y / r), velocity_y - velocity_y / r)
+
+    return max_gems
+
+def main():
+    n, r, w, h = map(int, input().split())
+    gems = []
+    for _ in range(n):
+        x, y = map(int, input().split())
+        gems.append((x, y))
+    print(get_max_gems(n, r, w, h, gems))
+
+if __name__ == '__main__':
+    main()
 

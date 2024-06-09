@@ -1,36 +1,58 @@
 
 import sys
 
-def solve(N, X, A):
-    # Initialize the count of integers not exceeding X to 0
-    count = 0
-    
-    # Iterate over the given integers A_i
-    for i in range(N):
-        # Convert the integer A_i to binary
-        binary_i = bin(A[i])[2:]
-        
-        # Initialize a variable to store the current integer
-        current_int = 0
-        
-        # Iterate over the binary representation of A_i
-        for j in range(len(binary_i)):
-            # If the current bit is 1, add the corresponding power of 2 to the current integer
-            if binary_i[j] == '1':
-                current_int += 2**j
-            
-            # If the current integer is not greater than X, increment the count
-            if current_int <= X:
-                count += 1
-    
-    # Return the count of integers not exceeding X
-    return count
+def f1(n, edges):
+    # Calculate the number of pairs that contain each vertex
+    pairs = [0] * (n + 1)
+    for edge in edges:
+        pairs[edge[0]] += 1
+        pairs[edge[1]] += 1
+
+    # Calculate the number of pairs that are connected by an edge
+    connected_pairs = 0
+    for i in range(1, n + 1):
+        if pairs[i] == 2:
+            connected_pairs += 1
+
+    # Calculate the number of ways to divide the vertices into pairs
+    ways = 1
+    for i in range(1, n + 1):
+        if pairs[i] == 1:
+            ways *= connected_pairs
+        else:
+            ways *= connected_pairs - 1
+
+    return ways % (10**9 + 7)
+
+def f2(n, edges):
+    # Calculate the number of pairs that contain each vertex
+    pairs = [0] * (n + 1)
+    for edge in edges:
+        pairs[edge[0]] += 1
+        pairs[edge[1]] += 1
+
+    # Calculate the number of pairs that are connected by an edge
+    connected_pairs = 0
+    for i in range(1, n + 1):
+        if pairs[i] == 2:
+            connected_pairs += 1
+
+    # Calculate the number of ways to divide the vertices into pairs
+    ways = 1
+    for i in range(1, n + 1):
+        if pairs[i] == 1:
+            ways *= connected_pairs
+        else:
+            ways *= connected_pairs - 1
+
+    return ways % (10**9 + 7)
 
 if __name__ == '__main__':
-    # Read the input from stdin
-    N, X = map(int, input().split())
-    A = list(map(int, input().split()))
-    
-    # Call the solve function and print the result
-    print(solve(N, X, A))
+    n = int(input())
+    edges = []
+    for i in range(n - 1):
+        x, y = map(int, input().split())
+        edges.append((x, y))
+    print(f1(n, edges))
+    print(f2(n, edges))
 

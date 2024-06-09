@@ -1,19 +1,22 @@
 
-def is_possible(points):
-    # Sort the points by their x-coordinates
-    sorted_points = sorted(points, key=lambda point: point[0])
+def get_different_string(s1, s2, t):
+    for i in range(len(s1)):
+        if s1[i] != s2[i]:
+            break
+    else:
+        return -1
+    s3 = list(s1)
+    s3[i] = 'a' if s1[i] == 'b' else 'b'
+    if f(s1, s3) == t and f(s2, s3) == t:
+        return ''.join(s3)
+    return -1
 
-    # Initialize the variables to keep track of the number of lines and their slopes
-    num_lines = 0
-    slopes = set()
+def f(s1, s2):
+    return sum(c1 != c2 for c1, c2 in zip(s1, s2))
 
-    # Iterate through the points and check if they belong to any of the existing lines
-    for point in sorted_points:
-        # If the point does not belong to any of the existing lines, create a new line and add its slope to the set of slopes
-        if not any(point[1] - line[1] == point[0] - line[0] for line in sorted_points):
-            num_lines += 1
-            slopes.add(point[1] - point[0])
-
-    # If the number of lines is equal to the number of points, return YES, otherwise return NO
-    return "YES" if num_lines == len(points) else "NO"
+if __name__ == '__main__':
+    n, t = map(int, input().split())
+    s1 = input()
+    s2 = input()
+    print(get_different_string(s1, s2, t))
 

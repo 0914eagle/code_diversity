@@ -1,10 +1,18 @@
 
-for _ in range(int(input())):
-    l, r = map(int, input().split())
-    for x in range(l, r+1):
-        if x > 1 and r % x == 0:
-            print(x, r)
-            break
+def get_happy_ticket(ticket):
+    n = len(ticket) // 2
+    first_half = ticket[:n]
+    second_half = ticket[n:]
+    return "".join(first_half) == "".join(second_half)
+
+def get_winner(ticket):
+    if get_happy_ticket(ticket):
+        return "Bicarp"
     else:
-        print(-1)
+        return "Monocarp"
+
+if __name__ == '__main__':
+    n = int(input())
+    ticket = input()
+    print(get_winner(ticket))
 

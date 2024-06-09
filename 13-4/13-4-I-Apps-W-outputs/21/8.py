@@ -1,15 +1,45 @@
 
-def is_palindrome(s):
-    return s == s[::-1]
+def get_magical_permutation(n, s):
+    # Initialize a list to store the magical permutation
+    permutation = []
+    
+    # Iterate from 0 to 2^n - 1
+    for i in range(2**n):
+        # Check if the current number is a magical number
+        if is_magical_number(i, n, s):
+            # If it is, add it to the permutation
+            permutation.append(i)
+    
+    # Return the permutation
+    return permutation
 
-def get_good_string(s):
-    if is_palindrome(s):
-        return "-1"
-    else:
-        return "".join(sorted(s))
+def is_magical_number(num, n, s):
+    # Check if the number is a power of 2
+    if num == 0 or num & (num - 1) != 0:
+        return False
+    
+    # Iterate from 0 to n - 1
+    for i in range(n):
+        # Check if the bitwise xor of the current number and the previous number is in the set S
+        if num ^ (num >> 1) != s[i]:
+            return False
+    
+    # If all conditions are met, return True
+    return True
 
-t = int(input())
-for i in range(t):
-    s = input()
-    print(get_good_string(s))
+def main():
+    # Read the input
+    n = int(input())
+    s = list(map(int, input().split()))
+    
+    # Get the magical permutation
+    permutation = get_magical_permutation(n, s)
+    
+    # Print the result
+    print(len(permutation) - 1)
+    for i in permutation:
+        print(i, end=" ")
+
+if __name__ == '__main__':
+    main()
 

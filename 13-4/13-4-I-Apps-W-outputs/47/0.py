@@ -1,31 +1,43 @@
 
-def solve(n, m, k, timetable):
-    # Initialize variables
-    hours_spent = 0
-    skipped_lessons = 0
+def is_correct_bracket_sequence(s):
+    stack = []
+    for c in s:
+        if c == "(":
+            stack.append(c)
+        elif c == ")":
+            if not stack:
+                return False
+            stack.pop()
+    return not stack
 
-    # Iterate over each day
-    for day in timetable:
-        # Check if there are any lessons on this day
-        if day.count("1") > 0:
-            # Find the first and last lesson on this day
-            first_lesson = day.index("1")
-            last_lesson = day.rindex("1")
 
-            # Calculate the number of hours spent on this day
-            hours_spent += last_lesson - first_lesson + 1
+def find_correct_bracket_sequences(bracket_sequences):
+    correct_bracket_sequences = []
+    for s in bracket_sequences:
+        if is_correct_bracket_sequence(s):
+            correct_bracket_sequences.append(s)
+    return correct_bracket_sequences
 
-            # Check if the number of skipped lessons is less than or equal to k
-            if skipped_lessons <= k:
-                # Skip the first lesson on this day
-                skipped_lessons += 1
-            else:
-                # Attend all lessons on this day
-                hours_spent += m - 1
-        else:
-            # There are no lessons on this day, so spend 0 hours
-            hours_spent += 0
 
-    # Return the minimum number of hours spent in the university
-    return hours_spent
+def construct_pairs(correct_bracket_sequences):
+    pairs = []
+    for s in correct_bracket_sequences:
+        for t in correct_bracket_sequences:
+            if s != t and s + t in correct_bracket_sequences:
+                pairs.append((s, t))
+    return pairs
+
+
+def main():
+    n = int(input())
+    bracket_sequences = []
+    for _ in range(n):
+        bracket_sequences.append(input())
+    correct_bracket_sequences = find_correct_bracket_sequences(bracket_sequences)
+    pairs = construct_pairs(correct_bracket_sequences)
+    print(len(pairs))
+
+
+if __name__ == '__main__':
+    main()
 

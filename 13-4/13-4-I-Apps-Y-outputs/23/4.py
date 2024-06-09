@@ -1,11 +1,18 @@
 
-import math
+def get_total_cost(n):
+    return 800 * n
 
-n, a = map(int, input().split())
+def get_discount(n):
+    return 200 if n % 15 == 0 else 0
 
-total_squares = n ** 2
-white_squares = a
-black_squares = total_squares - white_squares
+def get_amount_paid(n):
+    return get_total_cost(n) - get_discount(n)
 
-print(black_squares)
+def get_amount_received(n):
+    return get_discount(n)
+
+if __name__ == '__main__':
+    n = int(input())
+    print(get_amount_paid(n))
+    print(get_amount_received(n))
 

@@ -1,19 +1,28 @@
 
-def get_signatures(k, desk_numbers):
-    # Initialize a list to store the desk numbers in ascending order
-    desk_numbers_sorted = sorted(desk_numbers)
+def get_min_moves(n):
+    # Initialize a 2D array to store the number of moves required to get all figures to a cell
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
     
-    # Initialize a variable to store the number of passes needed
-    num_passes = 0
+    # Initialize a 2D array to store the number of figures in each cell
+    board = [[0] * (n + 1) for _ in range(n + 1)]
     
-    # Loop through the desk numbers in ascending order
-    for i in range(len(desk_numbers_sorted)):
-        # If the current desk number is not equal to the current index + 1,
-        # it means that the signatures above the current clerk's name have not been filled in yet
-        if desk_numbers_sorted[i] != i + 1:
-            # Increment the number of passes needed
-            num_passes += 1
+    # Initialize the number of figures in the first cell to 1
+    board[1][1] = 1
     
-    # Return the number of passes needed
-    return num_passes
+    # Loop through each cell and calculate the minimum number of moves required to get all figures to that cell
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            dp[i][j] = min(dp[i - 1][j - 1], dp[i - 1][j], dp[i - 1][j + 1], dp[i][j - 1], dp[i][j + 1], dp[i + 1][j - 1], dp[i + 1][j], dp[i + 1][j + 1]) + 1
+    
+    # Return the minimum number of moves required to get all figures to the last cell
+    return dp[n][n]
+
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        print(get_min_moves(n))
+
+if __name__ == '__main__':
+    main()
 

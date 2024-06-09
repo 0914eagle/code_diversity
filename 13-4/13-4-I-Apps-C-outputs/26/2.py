@@ -1,47 +1,49 @@
 
-def get_minimum_changes(grid, commands):
-    # Initialize variables
-    start_row, start_col = None, None
-    goal_row, goal_col = None, None
-    obstacles = set()
-    for row, line in enumerate(grid):
-        for col, char in enumerate(line):
-            if char == "S":
-                start_row, start_col = row, col
-            elif char == "G":
-                goal_row, goal_col = row, col
-            elif char == "#":
-                obstacles.add((row, col))
+def get_min_energy(cliff):
+    # Initialize the minimum energy required to complete the climb
+    min_energy = 0
+    
+    # Loop through each row of the cliff
+    for row in cliff:
+        # Loop through each column of the current row
+        for col in row:
+            # If the current cell is not a start point, add its energy to the minimum energy required
+            if col != "S":
+                min_energy += int(col)
+    
+    return min_energy
 
-    # Check if the start and goal positions are valid
-    if start_row is None or start_col is None or goal_row is None or goal_col is None:
-        raise ValueError("Invalid grid")
+def solve(cliff):
+    # Get the minimum energy required to complete the climb
+    min_energy = get_min_energy(cliff)
+    
+    # Initialize the optimal route with the starting position
+    optimal_route = ["S"]
+    
+    # Loop through each row of the cliff
+    for row in cliff:
+        # Loop through each column of the current row
+        for col in row:
+            # If the current cell is not a start point, add it to the optimal route
+            if col != "S":
+                optimal_route.append(col)
+    
+    # Return the minimum energy required to complete the climb and the optimal route
+    return min_energy, optimal_route
 
-    # Initialize the current position and the number of changes
-    current_row, current_col = start_row, start_col
-    num_changes = 0
-
-    # Iterate through the commands
-    for command in commands:
-        # Check if the command is valid
-        if command not in ["L", "R", "U", "D"]:
-            raise ValueError("Invalid command")
-
-        # Update the current position based on the command
-        if command == "L":
-            current_col -= 1
-        elif command == "R":
-            current_col += 1
-        elif command == "U":
-            current_row -= 1
-        elif command == "D":
-            current_row += 1
-
-        # Check if the current position is valid
-        if (current_row, current_col) in obstacles:
-            num_changes += 1
-        elif current_row == goal_row and current_col == goal_col:
-            break
-
-    return num_changes
+if __name__ == '__main__':
+    # Read the input from stdin
+    R, C = map(int, input().split())
+    cliff = []
+    for _ in range(R):
+        cliff.append(list(map(int, input().split())))
+    
+    # Solve the problem
+    min_energy, optimal_route = solve(cliff)
+    
+    # Print the minimum energy required to complete the climb
+    print(min_energy)
+    
+    # Print the optimal route
+    print(" ".join(optimal_route))
 

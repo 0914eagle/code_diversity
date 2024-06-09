@@ -1,36 +1,27 @@
 
-def solve(n, residents):
-    # Initialize the council members and clubs dictionaries
-    council_members = {}
-    clubs = {}
-    
-    # Iterate over the residents and their clubs
-    for resident, party, num_clubs, *club_names in residents:
-        # If the resident is not already a council member, add them to the council
-        if resident not in council_members:
-            council_members[resident] = party
-        
-        # Add the resident to the club(s) they belong to
-        for club_name in club_names:
-            if club_name not in clubs:
-                clubs[club_name] = {resident: party}
-            else:
-                clubs[club_name][resident] = party
-    
-    # Iterate over the clubs and assign a council member to each club
-    for club_name, residents in clubs.items():
-        # If the club has more than one resident, choose the resident with the same party as the council member
-        if len(residents) > 1:
-            for resident, party in residents.items():
-                if party == council_members[resident]:
-                    clubs[club_name] = {resident: party}
-                    break
-        
-        # If the club has only one resident, assign that resident as the council member
-        elif len(residents) == 1:
-            for resident, party in residents.items():
-                clubs[club_name] = {resident: party}
-    
-    # Return the council members and clubs
-    return council_members, clubs
+def get_distant_pebble(pebbles):
+    # Initialize the distant pebble as the first pebble
+    distant_pebble = 0
+    # Initialize the current pebble as the first pebble
+    current_pebble = 0
+    # Iterate through the list of pebbles
+    for i in range(1, len(pebbles)):
+        # If the sum of the number of spots on the current pebble and the previous pebble is equal to the distance between them, then we can jump from the current pebble to the previous pebble
+        if pebbles[current_pebble] + pebbles[current_pebble - 1] == i:
+            # Update the distant pebble as the current pebble
+            distant_pebble = current_pebble
+        # Increment the current pebble
+        current_pebble += 1
+    # Return the distance of the distant pebble
+    return distant_pebble
+
+def main():
+    # Read the number of pebbles and the list of pebbles from stdin
+    n = int(input())
+    pebbles = list(map(int, input().split()))
+    # Call the get_distant_pebble function and print the result
+    print(get_distant_pebble(pebbles))
+
+if __name__ == '__main__':
+    main()
 

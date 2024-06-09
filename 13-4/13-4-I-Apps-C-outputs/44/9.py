@@ -1,31 +1,28 @@
 
-def solve(n, buttons):
-    # Initialize a list to store the answers
-    answers = []
+def find_rectangle(n, m, x, y, a, b):
+    x1 = 0
+    y1 = 0
+    x2 = n
+    y2 = m
     
-    # Loop through each possible combination of buttons
-    for combination in itertools.permutations(range(1, n+1)):
-        # Check if the current combination is valid
-        if is_valid_combination(combination, buttons):
-            # If it is valid, add it to the list of answers
-            answers.append(combination)
+    while x1 <= x and y1 <= y:
+        if x2 - x1 == a and y2 - y1 == b:
+            return [x1, y1, x2, y2]
+        if x2 - x1 > a:
+            x2 -= 1
+        if y2 - y1 > b:
+            y2 -= 1
+        if x2 - x1 < a:
+            x1 += 1
+        if y2 - y1 < b:
+            y1 += 1
     
-    # Return the list of answers
-    return answers
+    return []
 
-def is_valid_combination(combination, buttons):
-    # Initialize a set to store the buttons that have been used
-    used_buttons = set()
-    
-    # Loop through each person in the combination
-    for person in combination:
-        # Check if the current person's button has already been used
-        if person in used_buttons:
-            # If it has, return False
-            return False
-        # Otherwise, add the current person's button to the set of used buttons
-        used_buttons.add(person)
-    
-    # If we reach this point, all buttons have been used at least once and no button has been used more than once, so the combination is valid
-    return True
+def main():
+    n, m, x, y, a, b = map(int, input().split())
+    print(find_rectangle(n, m, x, y, a, b))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,10 +1,41 @@
 
-N, *T = [int(x) for x in input().split()]
-M, *PX = [int(x) for x in input().split()]
+def read_input():
+    k = int(input())
+    sequences = []
+    for i in range(k):
+        n = int(input())
+        sequence = list(map(int, input().split()))
+        sequences.append(sequence)
+    return k, sequences
 
-def get_time(P, X):
-    return sum(T[i-1] if i != P else T[i-1] + X for i in range(1, N+1))
+def solve(k, sequences):
+    for i in range(k):
+        for j in range(i+1, k):
+            if sequences[i][0] + sequences[j][0] == 0:
+                return i+1, 1, j+1, 1
+            for x in range(1, len(sequences[i])):
+                if sequences[i][x] + sequences[j][0] == 0:
+                    return i+1, x+1, j+1, 1
+                for y in range(1, len(sequences[j])):
+                    if sequences[i][0] + sequences[j][y] == 0:
+                        return i+1, 1, j+1, y+1
+                    if sequences[i][x] + sequences[j][y] == 0:
+                        return i+1, x+1, j+1, y+1
+    return -1, -1, -1, -1
 
-for i in range(M):
-    print(get_time(PX[i*2-1], PX[i*2]))
+def print_output(i, x, j, y):
+    if i == -1:
+        print("NO")
+    else:
+        print("YES")
+        print(i, x)
+        print(j, y)
+
+def main():
+    k, sequences = read_input()
+    i, x, j, y = solve(k, sequences)
+    print_output(i, x, j, y)
+
+if __name__ == '__main__':
+    main()
 

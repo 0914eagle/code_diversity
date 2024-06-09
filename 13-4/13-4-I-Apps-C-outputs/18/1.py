@@ -1,38 +1,54 @@
 
 import sys
 
-def get_danger_level(chambers, tunnels):
-    # Initialize the danger level of each chamber to 0
-    danger_level = [0] * len(chambers)
+def f1(points):
+    # Calculate the Manhattan distance between all pairs of points
+    distances = []
+    for i in range(len(points)):
+        for j in range(i+1, len(points)):
+            distances.append((points[i], points[j], abs(points[i][0] - points[j][0]) + abs(points[i][1] - points[j][1])))
+    
+    # Sort the distances in ascending order
+    distances.sort(key=lambda x: x[2])
+    
+    # Initialize the minimum spanning tree with the first point
+    mst = [distances[0][0]]
+    
+    # Iterate through the remaining distances and add the point with the minimum distance to the MST
+    for distance in distances[1:]:
+        if distance[0] in mst or distance[1] in mst:
+            continue
+        mst.append(distance[0] if distance[0] not in mst else distance[1])
+    
+    # Return the weight of the minimum spanning tree
+    return sum(distance[2] for distance in distances if distance[0] in mst and distance[1] in mst)
 
-    # Iterate over the tunnels
-    for tunnel in tunnels:
-        # Get the indices of the chambers connected by the tunnel
-        chamber1, chamber2 = tunnel[0] - 1, tunnel[1] - 1
-
-        # Update the danger level of each chamber based on the length of the tunnel
-        danger_level[chamber1] += tunnel[2]
-        danger_level[chamber2] += tunnel[2]
-
-    # Return the danger level of each chamber
-    return danger_level
-
-def main():
-    # Read the number of chambers and tunnels
-    num_chambers, num_tunnels = map(int, input().split())
-
-    # Read the tunnels
-    tunnels = []
-    for _ in range(num_tunnels):
-        tunnel = list(map(int, input().split()))
-        tunnels.append(tunnel)
-
-    # Get the danger level of each chamber
-    danger_level = get_danger_level(range(1, num_chambers + 1), tunnels)
-
-    # Print the danger level of each chamber
-    print(*(danger_level % (10**9 + 7)), sep=' ')
+def f2(points):
+    # Calculate the Manhattan distance between all pairs of points
+    distances = []
+    for i in range(len(points)):
+        for j in range(i+1, len(points)):
+            distances.append((points[i], points[j], abs(points[i][0] - points[j][0]) + abs(points[i][1] - points[j][1])))
+    
+    # Sort the distances in ascending order
+    distances.sort(key=lambda x: x[2])
+    
+    # Initialize the minimum spanning tree with the first point
+    mst = [distances[0][0]]
+    
+    # Iterate through the remaining distances and add the point with the minimum distance to the MST
+    for distance in distances[1:]:
+        if distance[0] in mst or distance[1] in mst:
+            continue
+        mst.append(distance[0] if distance[0] not in mst else distance[1])
+    
+    # Return the weight of the minimum spanning tree
+    return sum(distance[2] for distance in distances if distance[0] in mst and distance[1] in mst)
 
 if __name__ == '__main__':
-    main()
+    points = []
+    for _ in range(int(input())):
+        points.append(tuple(map(int, input().split())))
+    print(f1(points))
+    print(f2(points))
 

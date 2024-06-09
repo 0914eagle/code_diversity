@@ -1,36 +1,90 @@
 
-def swap_elements(arr, i, j):
-    arr[i], arr[j] = arr[j], arr[i]
-
-def count_swaps(arr):
-    n = len(arr)
-    count = 0
+def f1(r, n):
+    # Initialize a list to store the reclaimed cells
+    reclaimed_cells = []
+    
+    # Iterate through the reclaimed cells
     for i in range(n):
-        for j in range(i+1, n):
-            if arr[i] > arr[j]:
-                count += 1
-                swap_elements(arr, i, j)
-    return count
+        # Read the next cell from the input
+        r_i, c_i = map(int, input().split())
+        
+        # Add the cell to the list of reclaimed cells
+        reclaimed_cells.append((r_i, c_i))
+    
+    # Initialize a set to store the cells that are not allowed to be reclaimed
+    not_allowed_cells = set()
+    
+    # Iterate through the reclaimed cells
+    for r_i, c_i in reclaimed_cells:
+        # Add the cells that are not allowed to be reclaimed to the set
+        not_allowed_cells.add((r_i - 1, 3 - c_i))
+        not_allowed_cells.add((r_i, 3 - c_i))
+        not_allowed_cells.add((r_i + 1, 3 - c_i))
+    
+    # Initialize a list to store the cells that are available for reclaiming
+    available_cells = []
+    
+    # Iterate through the rows
+    for r_i in range(1, r + 1):
+        # Iterate through the columns
+        for c_i in range(1, 3):
+            # Check if the cell is not allowed to be reclaimed
+            if (r_i, c_i) not in not_allowed_cells:
+                # Add the cell to the list of available cells
+                available_cells.append((r_i, c_i))
+    
+    # Check if there are any available cells
+    if len(available_cells) == 0:
+        # Return "LOSE" if there are no available cells
+        return "LOSE"
+    else:
+        # Return "WIN" if there are available cells
+        return "WIN"
 
-def get_min_swaps(arr):
-    n = len(arr)
-    min_swaps = count_swaps(arr)
-    min_pairs = []
+def f2(r, n):
+    # Initialize a list to store the reclaimed cells
+    reclaimed_cells = []
+    
+    # Iterate through the reclaimed cells
     for i in range(n):
-        for j in range(i+1, n):
-            if arr[i] > arr[j]:
-                swap_elements(arr, i, j)
-                swaps = count_swaps(arr)
-                if swaps < min_swaps:
-                    min_swaps = swaps
-                    min_pairs = [(i, j)]
-                elif swaps == min_swaps:
-                    min_pairs.append((i, j))
-                swap_elements(arr, i, j)
-    return min_swaps, len(min_pairs)
+        # Read the next cell from the input
+        r_i, c_i = map(int, input().split())
+        
+        # Add the cell to the list of reclaimed cells
+        reclaimed_cells.append((r_i, c_i))
+    
+    # Initialize a set to store the cells that are not allowed to be reclaimed
+    not_allowed_cells = set()
+    
+    # Iterate through the reclaimed cells
+    for r_i, c_i in reclaimed_cells:
+        # Add the cells that are not allowed to be reclaimed to the set
+        not_allowed_cells.add((r_i - 1, 3 - c_i))
+        not_allowed_cells.add((r_i, 3 - c_i))
+        not_allowed_cells.add((r_i + 1, 3 - c_i))
+    
+    # Initialize a list to store the cells that are available for reclaiming
+    available_cells = []
+    
+    # Iterate through the rows
+    for r_i in range(1, r + 1):
+        # Iterate through the columns
+        for c_i in range(1, 3):
+            # Check if the cell is not allowed to be reclaimed
+            if (r_i, c_i) not in not_allowed_cells:
+                # Add the cell to the list of available cells
+                available_cells.append((r_i, c_i))
+    
+    # Check if there are any available cells
+    if len(available_cells) == 0:
+        # Return "LOSE" if there are no available cells
+        return "LOSE"
+    else:
+        # Return "WIN" if there are available cells
+        return "WIN"
 
-n = int(input())
-arr = list(map(int, input().split()))
-min_swaps, min_pairs = get_min_swaps(arr)
-print(min_swaps, min_pairs)
+if __name__ == '__main__':
+    r, n = map(int, input().split())
+    print(f1(r, n))
+    print(f2(r, n))
 

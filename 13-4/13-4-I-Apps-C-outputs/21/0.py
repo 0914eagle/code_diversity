@@ -1,20 +1,19 @@
 
-def get_min_diff(numbers):
-    # Sort the numbers in non-decreasing order
-    numbers.sort()
-    # Initialize the minimum difference and the current sum
-    min_diff = 0
-    current_sum = 0
-    # Iterate through the numbers
-    for i in range(len(numbers)):
-        # Calculate the current sum
-        current_sum += numbers[i]
-        # If it is not the last number, calculate the difference between the current sum and the sum of the remaining numbers
-        if i != len(numbers) - 1:
-            diff = abs(current_sum - sum(numbers[i+1:]))
-            # Update the minimum difference if necessary
-            if diff < min_diff or min_diff == 0:
-                min_diff = diff
-    # Return the minimum difference
-    return min_diff
+def f1(N, M, Q):
+    # Your code here
+    return
+
+def f2(d, x):
+    # Your code here
+    return
+
+if __name__ == '__main__':
+    N, M, Q = map(int, input().split())
+    for _ in range(Q):
+        query = input().split()
+        if query[0] == '0':
+            f1(N, M, Q, query)
+        else:
+            d, x = map(int, query[1:])
+            print(f2(d, x))
 

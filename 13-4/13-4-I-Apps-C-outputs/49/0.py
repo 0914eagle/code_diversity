@@ -1,34 +1,30 @@
 
-import math
+def get_min_cuts(poles, n):
+    # Sort the poles in non-decreasing order
+    poles.sort()
+    # Initialize the minimum number of cuts to 0
+    min_cuts = 0
+    # Loop through the poles and calculate the minimum number of cuts needed
+    for i in range(len(poles)):
+        # Calculate the length of the current pole
+        length = poles[i]
+        # Calculate the number of cuts needed for the current pole
+        cuts = (n - 1) // length
+        # Add the number of cuts to the minimum number of cuts
+        min_cuts += cuts
+        # Subtract the length of the current pole from the total length of the fence
+        n -= length
+    # Return the minimum number of cuts
+    return min_cuts
 
-def get_max_circumference(vertices):
-    # Calculate the distance between each pair of vertices
-    distances = []
-    for i in range(len(vertices)):
-        for j in range(i+1, len(vertices)):
-            dx = vertices[i][0] - vertices[j][0]
-            dy = vertices[i][1] - vertices[j][1]
-            distances.append(math.sqrt(dx**2 + dy**2))
-    
-    # Sort the distances in descending order
-    distances.sort(reverse=True)
-    
-    # Calculate the maximum circumference of the hexagon
-    max_circumference = 0
-    for i in range(len(distances)):
-        for j in range(i+1, len(distances)):
-            for k in range(j+1, len(distances)):
-                circumference = distances[i] + distances[j] + distances[k]
-                if circumference > max_circumference:
-                    max_circumference = circumference
-    
-    return max_circumference
+def main():
+    # Read the number of poles and the length of the fence from stdin
+    k, n = map(int, input().split())
+    # Read the lengths of the poles from stdin
+    poles = list(map(int, input().split()))
+    # Call the get_min_cuts function and print the result
+    print(get_min_cuts(poles, n))
 
-n = int(input())
-vertices = []
-for i in range(n):
-    x, y = map(int, input().split())
-    vertices.append((x, y))
-
-print(get_max_circumference(vertices))
+if __name__ == '__main__':
+    main()
 

@@ -1,16 +1,23 @@
 
-n = int(input())
-a = []
-for i in range(n):
-    a.append(float(input()))
+def check_pairs(pairs):
+    n = len(pairs)
+    for i in range(n):
+        for j in range(i+1, n):
+            if pairs[i][0] == pairs[j][0] or pairs[i][1] == pairs[j][1]:
+                return True
+    return False
 
-b = []
-for i in range(n):
-    if a[i] >= 0:
-        b.append(int(a[i] + 0.5))
+def solve(n, m, pairs):
+    if check_pairs(pairs):
+        return "YES"
     else:
-        b.append(int(a[i] - 0.5))
+        return "NO"
 
-for i in range(n):
-    print(b[i])
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    pairs = []
+    for i in range(m):
+        a, b = map(int, input().split())
+        pairs.append([a, b])
+    print(solve(n, m, pairs))
 

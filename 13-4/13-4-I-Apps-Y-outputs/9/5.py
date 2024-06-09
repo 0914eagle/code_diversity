@@ -1,31 +1,20 @@
 
-def solve(n, m, k, roads, routes):
-    # Initialize a graph with the given roads
-    graph = {i: set() for i in range(1, n + 1)}
-    for x, y, w in roads:
-        graph[x].add((y, w))
-        graph[y].add((x, w))
+def get_input():
+    return int(input())
 
-    # Find the shortest path between each pair of districts using Dijkstra's algorithm
-    distances = {i: float("inf") for i in range(1, n + 1)}
-    previous = {i: None for i in range(1, n + 1)}
-    queue = [(0, 1)]
-    while queue:
-        dist, node = heapq.heappop(queue)
-        if dist > distances[node]:
-            continue
-        for neighbor, w in graph[node]:
-            v = dist + w
-            if v < distances[neighbor]:
-                distances[neighbor] = v
-                previous[neighbor] = node
-                heapq.heappush(queue, (v, neighbor))
+def solve(N):
+    count = 0
+    for a in range(1, N+1):
+        for b in range(1, N+1):
+            c = N - a*b
+            if a*b + c == N and a > 0 and b > 0 and c > 0:
+                count += 1
+    return count
 
-    # Find the minimum total courier routes cost
-    total_cost = 0
-    for a, b in routes:
-        total_cost += distances[a]
+def main():
+    N = get_input()
+    print(solve(N))
 
-    # Return the minimum total courier routes cost
-    return total_cost
+if __name__ == '__main__':
+    main()
 

@@ -1,23 +1,31 @@
 
-import sys
+def get_longest_segment(arr):
+    if len(arr) == 0:
+        return []
+    
+    longest = [arr[0]]
+    for i in range(1, len(arr)):
+        if arr[i] == arr[i-1]:
+            longest.append(arr[i])
+        else:
+            if len(longest) > len(arr[:i]):
+                return longest
+            longest = [arr[i]]
+    
+    if len(longest) > len(arr[:len(arr)]):
+        return longest
+    else:
+        return arr
 
-def get_inconvenience(bridges, collapsed_bridges):
-    inconvenience = 0
-    for bridge in bridges:
-        if bridge[0] in collapsed_bridges or bridge[1] in collapsed_bridges:
-            inconvenience += 1
-    return inconvenience
+def solve(arr):
+    count = 0
+    while len(arr) > 0:
+        count += 1
+        arr = get_longest_segment(arr)
+    return count
 
-n, m = map(int, input().split())
-bridges = []
-for _ in range(m):
-    a, b = map(int, input().split())
-    bridges.append((a, b))
-
-collapsed_bridges = set()
-inconvenience = 0
-for i in range(m):
-    collapsed_bridges.add(i+1)
-    inconvenience = get_inconvenience(bridges, collapsed_bridges)
-    print(inconvenience)
+if __name__ == '__main__':
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(solve(arr))
 

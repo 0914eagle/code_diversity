@@ -1,18 +1,31 @@
 
-def carryless_multiplication(a, b):
-    result = 0
-    for i in range(len(str(a))):
-        for j in range(len(str(b))):
-            result += int(str(a)[-i-1]) * int(str(b)[-j-1])
-        result = result % 10
-    return result
+def f1(p, k):
+    if p >= k:
+        return -1
+    
+    d = 1
+    a = [p]
+    while a[-1] % k != 0:
+        a.append(a[-1] * 10 % k)
+        d += 1
+    
+    return d, a
 
-def find_solution(N):
-    for a in range(1, 1000000000):
-        if carryless_multiplication(a, a) == N:
-            return a
-    return -1
+def f2(p, k):
+    if p >= k:
+        return -1
+    
+    d = 1
+    a = [p]
+    while a[-1] % k != 0:
+        a.append(a[-1] * 10 % k)
+        d += 1
+    
+    return d, a
 
-N = int(input())
-print(find_solution(N))
+if __name__ == '__main__':
+    p, k = map(int, input().split())
+    d, a = f1(p, k)
+    print(d)
+    print(*a)
 

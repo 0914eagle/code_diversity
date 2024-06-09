@@ -1,19 +1,22 @@
 
-def solve(s):
-    n = len(s)
-    # Initialize the longest non-decreasing subsequence for each index
-    lis = [1] * n
-    for i in range(1, n):
-        for j in range(i):
-            if s[i] >= s[j] and lis[i] < lis[j] + 1:
-                lis[i] = lis[j] + 1
-    # Find the maximum length of a non-decreasing subsequence
-    max_len = max(lis)
-    # Find the indices with the maximum length
-    max_indices = [i for i in range(n) if lis[i] == max_len]
-    # Create a new string with the maximum length and the same number of zeroes as the input string
-    t = "0" * n
-    for i in max_indices:
-        t = t[:i] + "1" + t[i+1:]
-    return t
+def knight_moves(x, y):
+    # Initialize a dictionary to store the number of ways to reach each square
+    ways = {(0, 0): 1}
+    
+    # Loop through all possible moves for the knight
+    for i in range(x):
+        for j in range(y):
+            # If the current square is not already in the dictionary, add it and its possible moves
+            if (i, j) not in ways:
+                ways[(i, j)] = ways.get((i-1, j+2), 0) + ways.get((i+1, j+2), 0) + ways.get((i-2, j+1), 0) + ways.get((i+2, j+1), 0)
+    
+    # Return the number of ways to reach the target square, modulo 10^9 + 7
+    return ways[(x, y)] % 1000000007
+
+def main():
+    x, y = map(int, input().split())
+    print(knight_moves(x, y))
+
+if __name__ == '__main__':
+    main()
 

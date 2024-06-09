@@ -1,10 +1,27 @@
 
-def can_transform(s, t):
-    vowels = set("aeiou")
-    consonants = set("abcdefghijklmnopqrstuvwxyz") - vowels
-    s_vowels = {i for i, c in enumerate(s) if c in vowels}
-    s_consonants = {i for i, c in enumerate(s) if c in consonants}
-    t_vowels = {i for i, c in enumerate(t) if c in vowels}
-    t_consonants = {i for i, c in enumerate(t) if c in consonants}
-    return s_vowels == t_vowels and s_consonants == t_consonants
+def gcd(a, b):
+    if b == 0:
+        return a
+    else:
+        return gcd(b, a % b)
+
+def bitwise_xor(a, b):
+    return a ^ b
+
+def bitwise_and(a, b):
+    return a & b
+
+def f(a):
+    max_gcd = 0
+    for b in range(1, a):
+        gcd_ab = gcd(bitwise_xor(a, b), bitwise_and(a, b))
+        if gcd_ab > max_gcd:
+            max_gcd = gcd_ab
+    return max_gcd
+
+if __name__ == '__main__':
+    q = int(input())
+    for _ in range(q):
+        a = int(input())
+        print(f(a))
 

@@ -1,37 +1,76 @@
 
-def is_possible(points):
-    # Sort the points by their x-coordinates
-    sorted_points = sorted(points, key=lambda point: point[0])
+def f1(s1, s2, t):
+    # find the position of the first difference between s1 and s2
+    for i in range(len(s1)):
+        if s1[i] != s2[i]:
+            break
+    
+    # if there is no difference, return -1
+    if i == len(s1):
+        return -1
+    
+    # find the position of the second difference between s1 and s2
+    for j in range(i+1, len(s1)):
+        if s1[j] != s2[j]:
+            break
+    
+    # if there is no second difference, return -1
+    if j == len(s1):
+        return -1
+    
+    # find the position of the third difference between s1 and s2
+    for k in range(j+1, len(s1)):
+        if s1[k] != s2[k]:
+            break
+    
+    # if there is no third difference, return -1
+    if k == len(s1):
+        return -1
+    
+    # if we reach this point, we have found three different positions
+    # return the string s1 with the characters at positions i, j, and k changed
+    return s1[:i] + s2[i] + s1[j+1:k] + s2[j] + s1[k+1:]
 
-    # Initialize the variables for the left and right endpoints of the lines
-    left_x = sorted_points[0][0]
-    right_x = sorted_points[-1][0]
-    left_y = sorted_points[0][1]
-    right_y = sorted_points[-1][1]
+def f2(s1, s2, t):
+    # find the position of the first difference between s1 and s2
+    for i in range(len(s1)):
+        if s1[i] != s2[i]:
+            break
+    
+    # if there is no difference, return -1
+    if i == len(s1):
+        return -1
+    
+    # find the position of the second difference between s1 and s2
+    for j in range(i+1, len(s1)):
+        if s1[j] != s2[j]:
+            break
+    
+    # if there is no second difference, return -1
+    if j == len(s1):
+        return -1
+    
+    # find the position of the third difference between s1 and s2
+    for k in range(j+1, len(s1)):
+        if s1[k] != s2[k]:
+            break
+    
+    # if there is no third difference, return -1
+    if k == len(s1):
+        return -1
+    
+    # if we reach this point, we have found three different positions
+    # return the string s2 with the characters at positions i, j, and k changed
+    return s2[:i] + s1[i] + s2[j+1:k] + s1[j] + s2[k+1:]
 
-    # Iterate through the points and update the left and right endpoints of the lines
-    for i in range(1, len(sorted_points)):
-        current_x = sorted_points[i][0]
-        current_y = sorted_points[i][1]
-
-        # If the current point is to the right of the right endpoint, update the right endpoint
-        if current_x > right_x:
-            right_x = current_x
-            right_y = current_y
-
-        # If the current point is to the left of the left endpoint, update the left endpoint
-        if current_x < left_x:
-            left_x = current_x
-            left_y = current_y
-
-    # Check if the left and right endpoints are on the same line
-    if left_x == right_x:
-        return "YES"
-
-    # Check if the left and right endpoints are on opposite sides of the line passing through the origin
-    if left_x * right_x < 0:
-        return "YES"
-
-    # Otherwise, it is not possible to draw two lines that pass through all the points
-    return "NO"
+if __name__ == '__main__':
+    n, t = map(int, input().split())
+    s1 = input()
+    s2 = input()
+    
+    result = f1(s1, s2, t)
+    if result == -1:
+        result = f2(s1, s2, t)
+    
+    print(result)
 

@@ -1,20 +1,57 @@
 
-import itertools
+def get_palindromes(s):
+    # Initialize a list to store the palindromes
+    palindromes = []
+    
+    # Loop through each character in the string
+    for i in range(len(s)):
+        # Check if the character is already in the palindromes list
+        if s[i] not in palindromes:
+            # If not, check if the character is a palindrome
+            if is_palindrome(s[i:]):
+                # If it is, add it to the palindromes list
+                palindromes.append(s[i])
+    
+    return palindromes
 
-def count_paintings(N, S1, S2):
-    # Initialize a dictionary to store the number of paintings for each domino
-    paintings = {}
-    for domino in itertools.product("RGB", repeat=N):
-        paintings[domino] = 0
+def is_palindrome(s):
+    # Check if the string is a palindrome
+    return s == s[::-1]
 
-    # Iterate over the dominoes in S1 and S2 and increment the number of paintings for each domino
-    for i in range(N):
-        for j in range(N):
-            domino1 = S1[i]
-            domino2 = S2[j]
-            if domino1 != domino2:
-                paintings[(domino1, domino2)] += 1
+def get_min_palindromes(s):
+    # Get all possible palindromes from the string
+    palindromes = get_palindromes(s)
+    
+    # Initialize a variable to store the minimum number of palindromes
+    min_palindromes = len(palindromes)
+    
+    # Loop through each possible combination of palindromes
+    for i in range(1, len(palindromes)):
+        # Check if the combination of palindromes is a valid solution
+        if is_valid_solution(palindromes, i):
+            # If it is, update the minimum number of palindromes
+            min_palindromes = min(min_palindromes, i)
+    
+    return min_palindromes
 
-    # Return the sum of the number of paintings for all dominoes, modulo 1000000007
-    return sum(paintings.values()) % 1000000007
+def is_valid_solution(palindromes, n):
+    # Check if the combination of palindromes is a valid solution
+    return all(is_palindrome(s) for s in combinations(palindromes, n))
+
+def main():
+    # Read the input string
+    s = input()
+    
+    # Get the minimum number of palindromes
+    min_palindromes = get_min_palindromes(s)
+    
+    # Print the minimum number of palindromes
+    print(min_palindromes)
+    
+    # Print the palindromes
+    for i in range(min_palindromes):
+        print(palindromes[i], end=" ")
+
+if __name__ == '__main__':
+    main()
 

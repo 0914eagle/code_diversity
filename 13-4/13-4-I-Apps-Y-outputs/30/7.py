@@ -1,47 +1,72 @@
 
-def solve_2048(grid, move):
-    # Convert the grid to a 2D list for easier manipulation
-    grid = [[int(x) for x in grid[i * 4:(i + 1) * 4]] for i in range(4)]
-    
-    # Define the possible moves and their corresponding directions
-    moves = {0: "left", 1: "up", 2: "right", 3: "down"}
-    directions = {
-        "left": (0, 1),
-        "up": (1, 0),
-        "right": (0, -1),
-        "down": (-1, 0)
-    }
-    
-    # Get the current move direction
-    direction = directions[moves[move]]
-    
-    # Initialize the new grid with the same values as the original grid
-    new_grid = [[x for x in row] for row in grid]
-    
-    # Iterate through the grid and move the tiles
-    for i in range(4):
-        for j in range(4):
-            # Get the current tile and its position
-            tile = grid[i][j]
-            pos = (i, j)
-            
-            # If the tile is not zero, move it in the current direction
-            if tile != 0:
-                # Get the new position of the tile
-                new_pos = (pos[0] + direction[0], pos[1] + direction[1])
-                
-                # If the new position is valid, move the tile to that position
-                if 0 <= new_pos[0] < 4 and 0 <= new_pos[1] < 4:
-                    new_grid[new_pos[0]][new_pos[1]] = tile
-                    new_grid[pos[0]][pos[1]] = 0
-    
-    # Merge the tiles that have collided
-    for i in range(4):
-        for j in range(3):
-            if new_grid[i][j] != 0 and new_grid[i][j + 1] != 0 and new_grid[i][j] == new_grid[i][j + 1]:
-                new_grid[i][j] *= 2
-                new_grid[i][j + 1] = 0
-    
-    # Return the new grid as a string
-    return "\n".join([" ".join(map(str, row)) for row in new_grid])
+def f1(input_molecule, input_count, output_molecule):
+    # Convert the input molecule string to a dictionary of atom counts
+    atom_counts = {}
+    for atom in input_molecule:
+        if atom.isupper():
+            if atom not in atom_counts:
+                atom_counts[atom] = 1
+            else:
+                atom_counts[atom] += 1
+        else:
+            atom_counts[atom.upper()] = int(atom)
+
+    # Convert the output molecule string to a dictionary of atom counts
+    output_atom_counts = {}
+    for atom in output_molecule:
+        if atom.isupper():
+            if atom not in output_atom_counts:
+                output_atom_counts[atom] = 1
+            else:
+                output_atom_counts[atom] += 1
+        else:
+            output_atom_counts[atom.upper()] = int(atom)
+
+    # Check if the input molecule can be converted to the output molecule
+    can_convert = True
+    for atom, count in output_atom_counts.items():
+        if atom not in atom_counts or atom_counts[atom] < count:
+            can_convert = False
+            break
+
+    # If the input molecule can be converted to the output molecule, return the maximum number of output molecules that can be produced
+    if can_convert:
+        return input_count * output_count // gcd(input_count, output_count)
+    else:
+        return 0
+
+def f2(input_molecule, input_count, output_molecule):
+    # Convert the input molecule string to a list of atom counts
+    atom_counts = []
+    for atom in input_molecule:
+        if atom.isupper():
+            atom_counts.append(1)
+        else:
+            atom_counts.append(int(atom))
+
+    # Convert the output molecule string to a list of atom counts
+    output_atom_counts = []
+    for atom in output_molecule:
+        if atom.isupper():
+            output_atom_counts.append(1)
+        else:
+            output_atom_counts.append(int(atom))
+
+    # Check if the input molecule can be converted to the output molecule
+    can_convert = True
+    for count in output_atom_counts:
+        if count not in atom_counts:
+            can_convert = False
+            break
+
+    # If the input molecule can be converted to the output molecule, return the maximum number of output molecules that can be produced
+    if can_convert:
+        return input_count * output_count // gcd(input_count, output_count)
+    else:
+        return 0
+
+if __name__ == '__main__':
+    input_molecule, input_count, output_molecule = input().split()
+    print(f1(input_molecule, int(input_count), output_molecule))
+    print(f2(input_molecule, int(input_count), output_molecule))
 

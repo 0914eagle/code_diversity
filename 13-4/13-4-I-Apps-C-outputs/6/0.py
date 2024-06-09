@@ -1,45 +1,25 @@
 
-import sys
+import math
 
-def count_ways(snow_log):
-    # Sort the snow log by the starting point of each range
-    snow_log.sort(key=lambda x: x[0])
-    
-    # Initialize the number of ways to place the sensors as 0
-    num_ways = 0
-    
-    # Iterate through the snow log
-    for i in range(len(snow_log)):
-        # Get the current range
-        current_range = snow_log[i]
-        
-        # Check if the current range starts at 0
-        if current_range[0] == 0:
-            # If it does, increment the number of ways
-            num_ways += 1
-        
-        # Check if the current range overlaps with the previous range
-        if i > 0 and current_range[0] <= snow_log[i-1][1]:
-            # If it does, increment the number of ways
-            num_ways += 1
-    
-    # Return the number of ways
-    return num_ways
+def get_distance(x1, y1, x2, y2):
+    return math.fabs(x1 - x2) + math.fabs(y1 - y2)
+
+def get_expected_distance(points):
+    total_distance = 0
+    for i in range(len(points)):
+        x1, y1 = points[i]
+        x2, y2 = points[(i + 1) % len(points)]
+        total_distance += get_distance(x1, y1, x2, y2)
+    return total_distance / len(points)
 
 def main():
-    # Read the number of entries in the snow log
     n = int(input())
-    
-    # Read the snow log
-    snow_log = []
+    points = []
     for i in range(n):
-        a, b = map(int, input().split())
-        snow_log.append([a, b])
-    
-    # Call the count_ways function and print the result
-    result = count_ways(snow_log)
-    print(result)
+        x, y = map(int, input().split())
+        points.append((x, y))
+    print(get_expected_distance(points))
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
 

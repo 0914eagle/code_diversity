@@ -1,24 +1,37 @@
 
-def solve(n, m):
-    # Calculate the number of possible sequences
-    num_sequences = 2**n
+def get_max_or(numbers, k, x):
+    # Sort the numbers in descending order
+    numbers.sort(reverse=True)
     
-    # Initialize a set to store the indices of wool sequences
-    wool_sequences = set()
+    # Initialize the maximum OR value
+    max_or = 0
     
-    # Iterate over all possible lengths of wool sequences
-    for l in range(1, n+1):
-        # Iterate over all possible starting indices
-        for i in range(n-l+1):
-            # Calculate the xor of the sequence
-            xor = 0
-            for j in range(l):
-                xor ^= i+j
-            
-            # If the xor is 0, add the sequence to the set of wool sequences
-            if xor == 0:
-                wool_sequences.add(i)
+    # Loop through the numbers
+    for i in range(len(numbers)):
+        # Calculate the OR value for the current number
+        current_or = 0
+        for j in range(i, len(numbers)):
+            current_or |= numbers[j]
+        
+        # If the current OR value is greater than the maximum OR value, update it
+        if current_or > max_or:
+            max_or = current_or
+        
+        # If we have used all our operations, break the loop
+        if k == 0:
+            break
+        
+        # Multiply the current number by x and add it to the list
+        numbers[i] *= x
+        k -= 1
     
-    # Return the number of sequences that are not wool sequences
-    return num_sequences - len(wool_sequences) % 1000000009
+    return max_or
+
+def main():
+    n, k, x = map(int, input().split())
+    numbers = list(map(int, input().split()))
+    print(get_max_or(numbers, k, x))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,24 +1,17 @@
 
-def get_mex(arr):
-    arr = sorted(arr)
-    mex = 0
-    for i in range(len(arr)):
-        if arr[i] != mex:
-            return mex
-        mex += 1
-    return mex + 1
+def get_min_value(N, K):
+    # Initialize the minimum value as 1
+    min_value = 1
+    # Loop through the number of operations
+    for _ in range(N):
+        # Double the minimum value
+        min_value *= 2
+        # Add K to the minimum value
+        min_value += K
+    # Return the minimum value
+    return min_value
 
-def solve(q, x, queries):
-    arr = []
-    for query in queries:
-        arr.append(query)
-        get_mex(arr)
-        for i in range(len(arr)):
-            if arr[i] < 0:
-                arr[i] = 0
-        print(get_mex(arr))
-
-q, x = map(int, input().split())
-queries = [int(input()) for _ in range(q)]
-solve(q, x, queries)
+if __name__ == '__main__':
+    N, K = map(int, input().split())
+    print(get_min_value(N, K))
 

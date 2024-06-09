@@ -1,32 +1,62 @@
 
-def solve(N, R, flights, F, additional_flights):
-    # Initialize a dictionary to store the cost of each flight
-    costs = {}
-    for flight in flights:
-        costs[flight[0]] = flight[2]
-    for flight in additional_flights:
-        costs[flight[0]] = flight[2]
-    
-    # Initialize a list to store the flights to review
-    reviews = []
-    for i in range(R):
-        reviews.append(flights[i])
-    
-    # Add additional flights to the list of flights to review
-    for i in range(F):
-        reviews.append(additional_flights[i])
-    
-    # Sort the list of flights to review by cost
-    reviews.sort(key=lambda x: x[2])
-    
-    # Initialize a variable to store the total cost of flight tickets
-    total_cost = 0
-    
-    # Loop through the list of flights to review
-    for i in range(len(reviews)):
-        # If the current flight is not from Stockholm, add its cost to the total cost
-        if reviews[i][0] != 1:
-            total_cost += costs[reviews[i][0]]
-    
-    return total_cost
+def f1(n, A, B):
+    # Initialize a graph with n nodes and no edges
+    graph = [[] for _ in range(n)]
+
+    # Add edges to the graph based on the input
+    for i in range(n):
+        l, r, t = map(int, input().split())
+        if l != -1:
+            graph[i].append(l)
+        if r != -1:
+            graph[i].append(r)
+
+    # Find the shortest path from A to B
+    visited = [False] * n
+    queue = [(A, 0)]
+    while queue:
+        node, distance = queue.pop(0)
+        if node == B:
+            return distance
+        if visited[node]:
+            continue
+        visited[node] = True
+        for neighbor in graph[node]:
+            queue.append((neighbor, distance + 1))
+
+    # If there is no path from A to B, return -1
+    return -1
+
+def f2(n, A, B):
+    # Initialize a graph with n nodes and no edges
+    graph = [[] for _ in range(n)]
+
+    # Add edges to the graph based on the input
+    for i in range(n):
+        l, r, t = map(int, input().split())
+        if l != -1:
+            graph[i].append(l)
+        if r != -1:
+            graph[i].append(r)
+
+    # Find the shortest path from A to B
+    visited = [False] * n
+    queue = [(A, 0)]
+    while queue:
+        node, distance = queue.pop(0)
+        if node == B:
+            return distance
+        if visited[node]:
+            continue
+        visited[node] = True
+        for neighbor in graph[node]:
+            queue.append((neighbor, distance + 1))
+
+    # If there is no path from A to B, return -1
+    return -1
+
+if __name__ == '__main__':
+    n, A, B = map(int, input().split())
+    print(f1(n, A, B))
+    print(f2(n, A, B))
 

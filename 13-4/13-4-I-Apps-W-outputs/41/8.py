@@ -1,32 +1,24 @@
 
-def solve(m, n, p):
-    # Initialize a dictionary to store the count of each x_i
-    x_count = {}
-    # Initialize the count of distinct x_i sequences
-    distinct_x_count = 0
+def get_bus_route(n, t, s, d):
+    # Find the first bus route that arrives at or after the given time
+    for i in range(n):
+        if s[i] <= t:
+            return i
+    
+    # If no bus route arrives at or after the given time, return -1
+    return -1
 
-    # Iterate through the p sequence
-    for i in range(len(p)):
-        # Get the current x_i value
-        x_i = p[i]
+def main():
+    n, t = map(int, input().split())
+    s = []
+    d = []
+    for i in range(n):
+        s_i, d_i = map(int, input().split())
+        s.append(s_i)
+        d.append(d_i)
+    route = get_bus_route(n, t, s, d)
+    print(route)
 
-        # If x_i is not in the dictionary, add it to the dictionary and increment the count
-        if x_i not in x_count:
-            x_count[x_i] = 1
-            distinct_x_count += 1
-        # If x_i is already in the dictionary, increment its count
-        else:
-            x_count[x_i] += 1
-
-    # Calculate the total number of possible x_i values
-    total_x_values = 2**m
-
-    # Calculate the number of possible x_i sequences
-    possible_x_sequences = total_x_values**n
-
-    # Calculate the number of distinct x_i sequences
-    distinct_x_sequences = distinct_x_count**n
-
-    # Return the number of possible x_i sequences modulo 10^9+7
-    return possible_x_sequences - distinct_x_sequences
+if __name__ == '__main__':
+    main()
 

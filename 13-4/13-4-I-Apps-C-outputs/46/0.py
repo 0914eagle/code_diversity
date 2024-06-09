@@ -1,41 +1,30 @@
 
-import re
-
-def decipher_sentence(s, n, dictionary):
-    # Initialize a list to store the deciphered words
-    deciphered_words = []
+def get_min_days(n, p, q, a, b):
+    # Initialize variables
+    days = 0
+    exp = 0
+    money = 0
     
-    # Split the sentence into individual words
-    words = s.split()
+    # Loop through each project
+    for i in range(n):
+        # Calculate the number of days needed for this project
+        days_needed = (p - exp) / a[i]
+        days_needed = ceil(days_needed)
+        
+        # Calculate the number of days needed for this project with the current money
+        days_needed_money = (q - money) / b[i]
+        days_needed_money = ceil(days_needed_money)
+        
+        # Choose the minimum number of days needed
+        days_needed = min(days_needed, days_needed_money)
+        
+        # Update the experience and money
+        exp += a[i] * days_needed
+        money += b[i] * days_needed
+        
+        # Increment the number of days
+        days += days_needed
     
-    # Loop through each word in the sentence
-    for word in words:
-        # Check if the word is in the dictionary
-        if word in dictionary:
-            # If the word is in the dictionary, add it to the list of deciphered words
-            deciphered_words.append(word)
-        else:
-            # If the word is not in the dictionary, try to decipher it by rearranging the letters
-            deciphered_word = ""
-            for i in range(len(word)):
-                # Skip the first and last letters of the word
-                if i == 0 or i == len(word) - 1:
-                    deciphered_word += word[i]
-                else:
-                    # Rearrange the letters of the word
-                    deciphered_word += word[len(word) - 1 - i]
-            # Check if the deciphered word is in the dictionary
-            if deciphered_word in dictionary:
-                # If the deciphered word is in the dictionary, add it to the list of deciphered words
-                deciphered_words.append(deciphered_word)
-            else:
-                # If the deciphered word is not in the dictionary, the sentence is impossible to decipher
-                return "impossible"
-    
-    # If all words in the sentence are deciphered, return the deciphered sentence
-    if len(deciphered_words) == len(words):
-        return " ".join(deciphered_words)
-    # If not all words in the sentence are deciphered, the sentence is ambiguous
-    else:
-        return "ambiguous"
+    # Return the minimum number of days needed
+    return days
 

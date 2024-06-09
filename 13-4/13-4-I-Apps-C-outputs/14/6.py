@@ -1,69 +1,37 @@
 
-import sys
+def get_election_results(n_candidates, n_seats, n_voters, n_votes, votes):
+    # Initialize a dictionary to store the number of votes for each candidate
+    votes_count = {}
+    for i in range(n_candidates):
+        votes_count[i + 1] = 0
+    
+    # Count the number of votes for each candidate
+    for vote in votes:
+        votes_count[vote] += 1
+    
+    # Sort the candidates by the number of votes in descending order
+    sorted_candidates = sorted(votes_count.items(), key=lambda x: x[1], reverse=True)
+    
+    # Initialize a list to store the outcome of the election for each candidate
+    election_outcome = []
+    
+    # Iterate through the candidates and determine their election outcome
+    for candidate in sorted_candidates:
+        if candidate[1] >= n_votes:
+            election_outcome.append(1)
+        elif candidate[1] < n_votes and candidate[0] <= n_seats:
+            election_outcome.append(2)
+        else:
+            election_outcome.append(3)
+    
+    return election_outcome
 
-def get_input():
-    n, e = map(int, input().split())
-    roads = []
-    for i in range(e):
-        a, b = map(int, input().split())
-        roads.append((a, b))
-    return n, e, roads
+def main():
+    n_candidates, n_seats, n_voters, n_votes = map(int, input().split())
+    votes = list(map(int, input().split()))
+    election_outcome = get_election_results(n_candidates, n_seats, n_voters, n_votes, votes)
+    print(*election_outcome)
 
-def is_connected(roads, city, chain):
-    for road in roads:
-        if road[0] == city and road[1] != chain:
-            return True
-    return False
-
-def solve(n, e, roads):
-    # Initialize the solution matrix
-    solution = [[0 for _ in range(n)] for _ in range(n)]
-
-    # Iterate through each road
-    for i in range(e):
-        # Get the two cities connected by this road
-        city1, city2 = roads[i]
-
-        # If both cities have a restaurant from the first chain, skip this road
-        if solution[city1][1] == 1 and solution[city2][1] == 1:
-            continue
-
-        # If both cities have a restaurant from the second chain, skip this road
-        if solution[city1][2] == 1 and solution[city2][2] == 1:
-            continue
-
-        # If one of the cities has a restaurant from the first chain and the other has a restaurant from the second chain, skip this road
-        if (solution[city1][1] == 1 and solution[city2][2] == 1) or (solution[city1][2] == 1 and solution[city2][1] == 1):
-            continue
-
-        # If neither city has a restaurant from either chain, assign the road to the first chain
-        if solution[city1][1] == 0 and solution[city1][2] == 0 and solution[city2][1] == 0 and solution[city2][2] == 0:
-            solution[city1][1] = 1
-            solution[city2][1] = 1
-            continue
-
-        # If one city has a restaurant from the first chain and the other city is not connected to any other chain, assign the road to the first chain
-        if solution[city1][1] == 1 and solution[city2][1] == 0 and not is_connected(roads, city2, 1):
-            solution[city2][1] = 1
-            continue
-
-        # If one city has a restaurant from the second chain and the other city is not connected to any other chain, assign the road to the second chain
-        if solution[city1][2] == 1 and solution[city2][2] == 0 and not is_connected(roads, city2, 2):
-            solution[city2][2] = 1
-            continue
-
-        # If both cities are not connected to any other chain, assign the road to the first chain
-        if not is_connected(roads, city1, 1) and not is_connected(roads, city1, 2) and not is_connected(roads, city2, 1) and not is_connected(roads, city2, 2):
-            solution[city1][1] = 1
-            solution[city2][1] = 1
-            continue
-
-        # If none of the above conditions are met, the solution is not unique
-        return "0"
-
-    # If all roads have been assigned, return the solution
-    return [str(solution[i][1]) for i in range(n)]
-
-n, e, roads = get_input()
-print("\n".join(solve(n, e, roads)))
+if __name__ == '__main__':
+    main()
 

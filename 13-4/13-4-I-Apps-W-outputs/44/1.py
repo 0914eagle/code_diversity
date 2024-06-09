@@ -1,26 +1,30 @@
 
-def solve(s):
-    n = len(s)
-    # Initialize the maximum length of the longest non-decreasing subsequence as 0
-    max_len = 0
-    # Initialize the starting index of the longest non-decreasing subsequence as 0
-    start_index = 0
-    # Initialize the number of zeroes in the string as 0
-    num_zeroes = 0
-    # Iterate over the characters of the string
-    for i in range(n):
-        # If the current character is a zero, increment the number of zeroes
-        if s[i] == "0":
-            num_zeroes += 1
-        # If the current character is a one, check if the length of the longest non-decreasing subsequence is greater than the maximum length
-        if s[i] == "1" and len(s[start_index:i+1]) > max_len:
-            # If the length of the longest non-decreasing subsequence is greater than the maximum length, update the maximum length and the starting index
-            max_len = len(s[start_index:i+1])
-            start_index = i - max_len + 1
-    # Create a new string with the maximum length of the longest non-decreasing subsequence
-    t = "0" * max_len
-    # Replace the first character of the string with a one if the number of zeroes is odd
-    if num_zeroes % 2 == 1:
-        t = "1" + t[1:]
-    return t
+def knight_moves(x, y):
+    # Initialize a dictionary to store the number of ways to reach each square
+    ways = {(0, 0): 1}
+    
+    # Loop through all possible moves of the knight
+    for i in range(x + 1):
+        for j in range(y + 1):
+            # If the current square is not the starting square and has not been visited before, continue
+            if (i, j) != (0, 0) and (i, j) not in ways:
+                continue
+            
+            # If the current square is the starting square, add the number of ways to reach it from the starting square
+            if (i, j) == (0, 0):
+                ways[(i, j)] = 1
+            
+            # If the current square is not the starting square, add the number of ways to reach it from the previous square
+            else:
+                ways[(i, j)] = ways[(i - 1, j + 2)] + ways[(i - 2, j + 1)]
+    
+    # Return the number of ways to reach the target square
+    return ways[(x, y)] % (10**9 + 7)
+
+def main():
+    x, y = map(int, input().split())
+    print(knight_moves(x, y))
+
+if __name__ == '__main__':
+    main()
 

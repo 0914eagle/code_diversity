@@ -1,31 +1,49 @@
 
-def get_min_time(n, traffic_lights):
-    # Initialize variables
-    min_time = 0
-    current_time = 0
-    distance = 0
+def get_event_durations(observations):
+    # Initialize a dictionary to store the event durations
+    event_durations = {}
+    
+    # Iterate over the observations
+    for observation in observations:
+        # Extract the start and end dates and the number of events observed
+        start_date, end_date, *event_counts = observation
+        
+        # Convert the dates to integers
+        start_date = int(start_date)
+        end_date = int(end_date)
+        
+        # Iterate over the event counts
+        for event_index, event_count in enumerate(event_counts):
+            # Check if the event has already been observed
+            if event_index in event_durations:
+                # If the event has been observed before, add the current duration to the total duration
+                event_durations[event_index] += end_date - start_date
+            else:
+                # If the event has not been observed before, set the total duration to the current duration
+                event_durations[event_index] = end_date - start_date
+    
+    # Return the event durations
+    return event_durations
 
-    # Loop through each traffic light
-    for i in range(n - 1):
-        # Get the time, green duration, and red duration of the current light
-        t, g, r = traffic_lights[i]
+def main():
+    # Read the number of telescopes and event types
+    n_telescopes, n_event_types = map(int, input().split())
+    
+    # Read the observations
+    observations = []
+    for _ in range(n_telescopes):
+        observations.append(list(map(int, input().split())))
+    
+    # Get the event durations
+    event_durations = get_event_durations(observations)
+    
+    # Check if there is a solution
+    if any(event_duration == 0 for event_duration in event_durations.values()):
+        print(-1)
+    else:
+        # Print the event durations
+        print(*event_durations.values(), sep='\n')
 
-        # If the current time is before the time the light switches to green, wait until then
-        if current_time < t:
-            current_time = t
-
-        # Accelerate for the green duration
-        current_time += g
-        distance += g
-
-        # If the current time is before the time the light switches to red, wait until then
-        if current_time < t + r:
-            current_time = t + r
-
-        # Deaccelerate for the red duration
-        current_time += r
-        distance += r
-
-    # Return the minimum time required to reach the end of the road
-    return distance / 1
+if __name__ == '__main__':
+    main()
 

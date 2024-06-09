@@ -1,34 +1,36 @@
 
-def solve(gig_offers, venues, roads, time_limit):
-    # Initialize a graph to represent the venues and roads
-    graph = {}
-    for i in range(1, venues + 1):
-        graph[i] = []
-    for road in roads:
-        graph[road[0]].append((road[1], road[2]))
-        graph[road[1]].append((road[0], road[2]))
+import sys
+
+def count_ways(N, M, conditions):
+    # Initialize the number of ways to paint the squares
+    ways = 1
     
-    # Initialize a dictionary to store the gig offers
-    gigs = {}
-    for offer in gig_offers:
-        gigs[offer[0]] = (offer[1], offer[2], offer[3])
-    
-    # Initialize a variable to store the maximum amount of money that can be made
-    max_money = 0
-    
-    # Iterate through all possible combinations of gigs
-    for i in range(1 << len(gigs)):
-        # Initialize a variable to store the current amount of money
-        current_money = 0
+    # Iterate over each condition
+    for i in range(M):
+        # Get the range of squares and the number of different colors
+        l, r, x = conditions[i]
+        N_colors = r - l + 1
         
-        # Iterate through the gigs and calculate the total amount of money that can be made
-        for j in range(len(gigs)):
-            if i & (1 << j):
-                current_money += gigs[j + 1][2]
+        # Calculate the number of ways to paint the squares with x different colors
+        ways *= comb(N_colors, x)
         
-        # If the current amount of money is greater than the maximum amount of money, update the maximum amount of money
-        if current_money > max_money:
-            max_money = current_money
+        # Calculate the number of ways to paint the squares with more than x different colors
+        ways *= comb(N - N_colors + 1, M - i - 1)
     
-    return max_money
+    return ways % 1000000007
+
+def comb(n, k):
+    if k > n or k < 0:
+        return 0
+    if k == 0 or n == k:
+        return 1
+    return comb(n - 1, k - 1) + comb(n - 1, k)
+
+if __name__ == '__main__':
+    N, M = map(int, input().split())
+    conditions = []
+    for _ in range(M):
+        l, r, x = map(int, input().split())
+        conditions.append((l, r, x))
+    print(count_ways(N, M, conditions))
 

@@ -1,65 +1,58 @@
 
-def get_min_changes(grid, commands):
-    # Initialize variables
-    start_row, start_col = None, None
-    goal_row, goal_col = None, None
-    obstacles = set()
+def get_min_energy(cliff, start_points):
+    # Initialize a dictionary to store the minimum energy needed to reach each cell
+    min_energy = {}
+    for row in range(len(cliff)):
+        for col in range(len(cliff[0])):
+            min_energy[(row, col)] = float('inf')
 
-    # Parse the grid and find the start, goal, and obstacles
-    for row in range(len(grid)):
-        for col in range(len(grid[row])):
-            if grid[row][col] == "S":
-                start_row, start_col = row, col
-            elif grid[row][col] == "G":
-                goal_row, goal_col = row, col
-            elif grid[row][col] == "#":
-                obstacles.add((row, col))
+    # Set the starting points with 0 energy
+    for start_point in start_points:
+        min_energy[start_point] = 0
 
-    # Initialize the minimum number of changes to infinity
-    min_changes = float("inf")
+    # Loop through each cell in the cliff
+    for row in range(len(cliff)):
+        for col in range(len(cliff[0])):
+            # If the current cell is not a starting point, skip it
+            if (row, col) not in min_energy:
+                continue
 
-    # Iterate over all possible commands
-    for command in commands:
-        # Initialize the current position and command index
-        current_row, current_col = start_row, start_col
-        command_index = 0
+            # Get the energy needed to reach the current cell
+            energy = cliff[row][col]
 
-        # Iterate over the command string
-        while command_index < len(commands):
-            # Get the current command
-            current_command = commands[command_index]
+            # If the energy is negative, it means the cell is a starting point, so skip it
+            if energy < 0:
+                continue
 
-            # Check if the current command is valid
-            if current_command in ["L", "R", "U", "D"]:
-                # Move the current position based on the command
-                if current_command == "L":
-                    current_col -= 1
-                elif current_command == "R":
-                    current_col += 1
-                elif current_command == "U":
-                    current_row -= 1
-                elif current_command == "D":
-                    current_row += 1
+            # Get the neighbors of the current cell
+            neighbors = [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]
 
-                # Check if the new position is valid
-                if (current_row, current_col) not in obstacles and 0 <= current_row < len(grid) and 0 <= current_col < len(grid[0]):
-                    # If the new position is the goal, break the loop
-                    if current_row == goal_row and current_col == goal_col:
-                        break
-                else:
-                    # If the new position is not valid, break the loop
-                    break
-            else:
-                # If the current command is not valid, break the loop
-                break
+            # Loop through each neighbor and update the minimum energy needed to reach it
+            for neighbor in neighbors:
+                # If the neighbor is out of bounds or has already been visited, skip it
+                if neighbor[0] < 0 or neighbor[1] < 0 or neighbor[0] >= len(cliff) or neighbor[1] >= len(cliff[0]) or neighbor in min_energy:
+                    continue
 
-            # Increment the command index
-            command_index += 1
+                # Update the minimum energy needed to reach the neighbor
+                min_energy[neighbor] = min(min_energy[neighbor], min_energy[(row, col)] + energy)
 
-        # If the current position is the goal, update the minimum number of changes
-        if current_row == goal_row and current_col == goal_col:
-            min_changes = min(min_changes, command_index)
+    # Return the minimum energy needed to reach the bottom-right cell
+    return min_energy[(len(cliff)-1, len(cliff[0])-1)]
 
-    # Return the minimum number of changes
-    return min_changes
+def main():
+    # Read the input
+    R, C = map(int, input().split())
+    cliff = []
+    for _ in range(R):
+        cliff.append(list(map(int, input().split())))
+    start_points = list(input())
+
+    # Solve the problem
+    min_energy = get_min_energy(cliff, start_points)
+
+    # Print the output
+    print(min_energy)
+
+if __name__ == '__main__':
+    main()
 

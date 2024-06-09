@@ -1,26 +1,50 @@
 
-def get_min_path_length(n, k):
-    # Initialize a dictionary to store the shortest distance from each fragment to the assembly node
-    distances = {}
+def f1(N, K, a, b):
+    # Sort the measurements in descending order
+    a = sorted(a, reverse=True)
+    b = sorted(b, reverse=True)
     
-    # Loop through each fragment
-    for i in range(n):
-        # Initialize the shortest distance from this fragment to the assembly node as infinity
-        distances[i] = float('inf')
+    # Initialize the ranking dictionary
+    ranking = {}
     
-    # Loop through each fragment
-    for i in range(n):
-        # Loop through each node in the graph
-        for j in range(1, k[i]! + 1):
-            # If the current node is the node where the current fragment is located
-            if j == k[i]!:
-                # The shortest distance from this fragment to the assembly node is 0
-                distances[i] = 0
-            # If the current node is not the node where the current fragment is located
-            else:
-                # The shortest distance from this fragment to the assembly node is the minimum of the current distance and the distance from the current fragment to the node where the current fragment is located plus the distance from the node where the current fragment is located to the assembly node
-                distances[i] = min(distances[i], distances.get(j, float('inf')) + 1)
+    # Loop through each assistant and assign a ranking
+    for i in range(N):
+        # Check if the current assistant is the best in terms of jokes or compliments
+        if a[i] + K >= a[0] or b[i] + K >= b[0]:
+            # Assign the current assistant the highest ranking
+            ranking[i] = 1
+        else:
+            # Assign the current assistant the lowest ranking
+            ranking[i] = N
     
-    # Return the sum of the shortest distances from each fragment to the assembly node
-    return sum(distances.values())
+    # Return the number of distinct ranks
+    return len(set(ranking.values()))
+
+def f2(N, K, a, b):
+    # Sort the measurements in descending order
+    a = sorted(a, reverse=True)
+    b = sorted(b, reverse=True)
+    
+    # Initialize the ranking dictionary
+    ranking = {}
+    
+    # Loop through each assistant and assign a ranking
+    for i in range(N):
+        # Check if the current assistant is the best in terms of jokes or compliments
+        if a[i] + K >= a[0] or b[i] + K >= b[0]:
+            # Assign the current assistant the highest ranking
+            ranking[i] = 1
+        else:
+            # Assign the current assistant the lowest ranking
+            ranking[i] = N
+    
+    # Return the number of distinct ranks
+    return len(set(ranking.values()))
+
+if __name__ == '__main__':
+    N, K = map(int, input().split())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    print(f1(N, K, a, b))
+    print(f2(N, K, a, b))
 

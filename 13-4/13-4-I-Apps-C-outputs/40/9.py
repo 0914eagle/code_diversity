@@ -1,27 +1,33 @@
 
-N, M, Q = map(int, input().split())
+def get_final_height(heights, k):
+    # Initialize the final heights array
+    final_heights = [0] * len(heights)
+    
+    # Loop through each house and calculate the final height
+    for i in range(len(heights)):
+        # Calculate the average height of the neighboring houses
+        avg_height = (heights[i-1] + heights[i+1]) / 2
+        
+        # Calculate the final height
+        final_height = max(avg_height + k, heights[i])
+        
+        # Update the final heights array
+        final_heights[i] = final_height
+    
+    # Return the final height of the tallest house
+    return max(final_heights)
 
-# Initialize the class and teacher assignments
-classes = list(range(1, N+1))
-teachers = list(range(1, N+1))
+def main():
+    # Read the input
+    N, k = map(int, input().split())
+    heights = list(map(int, input().split()))
+    
+    # Calculate the final heights
+    final_height = get_final_height(heights, k)
+    
+    # Print the final height
+    print(final_height)
 
-# Initialize the reassignment plans
-plans = []
-
-for _ in range(Q):
-    query = list(map(int, input().split()))
-    if query[0] == 0:
-        # Add a reassignment plan
-        plans.append((query[1], query[2], query[3:]))
-    else:
-        # Find the class taught by teacher d on Tuesday of the x-th week
-        d, x = query[1], query[2]
-        for week, plan in enumerate(plans):
-            if week + 1 == x:
-                # Find the index of teacher d in the plan
-                index = plan[1].index(d)
-                # Find the class taught by teacher d in the plan
-                class_taught = plan[2][index]
-                break
-        print(class_taught)
+if __name__ == '__main__':
+    main()
 

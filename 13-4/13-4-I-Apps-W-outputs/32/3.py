@@ -1,26 +1,39 @@
 
-import sys
+def get_graph(n, f, w):
+    graph = {}
+    for i in range(n):
+        graph[i] = []
+    for i in range(n):
+        graph[i].append((f[i], w[i]))
+    return graph
 
-def get_gis(g, n):
-    gis = []
-    for i in range(len(g)):
-        gis.append(g[i])
-        for j in range(i+1, len(g)):
-            if g[i] < g[j]:
-                gis.append(g[j])
-                break
-    gis.sort()
-    return gis
+def get_path(graph, start, k):
+    if k == 0:
+        return 0, 0
+    if start not in graph:
+        return 0, 0
+    if len(graph[start]) == 0:
+        return 0, 0
+    next_node, weight = graph[start][0]
+    s, m = get_path(graph, next_node, k-1)
+    return s + weight, min(m, weight)
 
-def count_permutations(g, n):
-    gis = get_gis(g, n)
-    count = 1
-    for i in range(len(gis)):
-        count *= n - i
-    return count % (10**9 + 7)
+def get_s_m(graph, k):
+    s_m = []
+    for i in range(len(graph)):
+        s, m = get_path(graph, i, k)
+        s_m.append((s, m))
+    return s_m
+
+def main():
+    n, k = map(int, input().split())
+    f = list(map(int, input().split()))
+    w = list(map(int, input().split()))
+    graph = get_graph(n, f, w)
+    s_m = get_s_m(graph, k)
+    for s, m in s_m:
+        print(s, m)
 
 if __name__ == '__main__':
-    n, l = map(int, input().split())
-    g = list(map(int, input().split()))
-    print(count_permutations(g, n))
+    main()
 

@@ -1,30 +1,44 @@
 
-def solve(N, R, flights, F, additional_flights):
-    # Initialize a graph with N nodes
-    graph = [[] for _ in range(N + 1)]
+def get_shortest_path(graph, start, end):
+    visited = set()
+    queue = [(start, 0)]
 
-    # Add edges to the graph
-    for a, b, c in flights:
-        graph[a].append((b, c))
-        graph[b].append((a, c))
-
-    # Add additional flights to the graph
-    for a, b, c in additional_flights:
-        graph[a].append((b, c))
-        graph[b].append((a, c))
-
-    # Find the shortest path using Dijkstra's algorithm
-    visited = [False] * (N + 1)
-    queue = [(0, 1, [])]
     while queue:
-        dist, node, path = heapq.heappop(queue)
-        if visited[node]:
-            continue
-        visited[node] = True
-        if node == N:
-            return dist
-        for neighbor, weight in graph[node]:
-            if not visited[neighbor]:
-                heapq.heappush(queue, (dist + weight, neighbor, path + [neighbor]))
+        (vertex, distance) = queue.pop(0)
+
+        if vertex not in visited:
+            visited.add(vertex)
+
+            if vertex == end:
+                return distance
+
+            for neighbor in graph[vertex]:
+                if neighbor not in visited:
+                    queue.append((neighbor, distance + 1))
+
     return -1
+
+def f1(n, A, B):
+    graph = {}
+
+    for i in range(n):
+        graph[i] = []
+
+    for i in range(n):
+        l, r, t = map(int, input().split())
+
+        if l != -1:
+            graph[i].append(l)
+
+        if r != -1:
+            graph[i].append(r)
+
+    return get_shortest_path(graph, A, B)
+
+def f2(...):
+    ...
+
+if __name__ == '__main__':
+    n, A, B = map(int, input().split())
+    print(f1(n, A, B))
 

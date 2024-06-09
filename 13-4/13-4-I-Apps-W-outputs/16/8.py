@@ -1,16 +1,30 @@
 
-def solve(N):
-    # Initialize the minimum number of pebbles that Mirko must take during his first turn
-    min_pebbles = 1
-    # Initialize the maximum number of pebbles that Slavko can take during his turn
-    max_pebbles = 1
-    # Iterate through the remaining pebbles in the heap
-    for i in range(2, N+1):
-        # If Mirko takes i pebbles, Slavko can take at most 2i-1 pebbles
-        if i <= max_pebbles:
-            # Update the minimum number of pebbles that Mirko must take during his first turn
-            min_pebbles = i
-            # Update the maximum number of pebbles that Slavko can take during his turn
-            max_pebbles = 2*i-1
-    return min_pebbles
+def get_finalists(results, k):
+    # Sort the results in ascending order
+    sorted_results = sorted(results)
+
+    # Get the indices of the top k results
+    top_k_indices = sorted_results[:k]
+
+    # Get the indices of the bottom n - 2k results
+    bottom_n_2k_indices = sorted_results[n - 2k:]
+
+    # Get the finalists by combining the top k and bottom n - 2k results
+    finalists = top_k_indices + bottom_n_2k_indices
+
+    return finalists
+
+def main():
+    n = int(input())
+    results = []
+    for i in range(n):
+        results.append(int(input()))
+
+    k = int(input())
+    finalists = get_finalists(results, k)
+
+    print("1" if i in finalists else "0" for i in range(n))
+
+if __name__ == '__main__':
+    main()
 

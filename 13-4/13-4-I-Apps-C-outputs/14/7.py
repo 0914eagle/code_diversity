@@ -1,30 +1,34 @@
 
-def solve(N, E, roads):
-    # Initialize the solution matrix
-    solution = [[0] * E for _ in range(N)]
-
-    # Loop through each road
-    for i in range(E):
-        # Get the cities connected by the road
-        city1, city2 = roads[i]
-
-        # If the cities have not been assigned yet, assign them to the first chain
-        if solution[city1][0] == 0:
-            solution[city1][0] = 1
-        if solution[city2][0] == 0:
-            solution[city2][0] = 2
-
-        # If the cities have already been assigned, check if the current road is valid
+def get_results(votes, k):
+    # Calculate the number of votes for each candidate
+    votes_count = {}
+    for vote in votes:
+        if vote not in votes_count:
+            votes_count[vote] = 1
         else:
-            # If the cities are not connected, return "0"
-            if solution[city1][0] == solution[city2][0]:
-                return "0"
+            votes_count[vote] += 1
 
-            # If the cities are connected, assign the current road to the opposite chain
-            else:
-                solution[city1][i] = 3 - solution[city1][0]
-                solution[city2][i] = 3 - solution[city2][0]
+    # Sort the candidates by votes and time of last vote
+    sorted_candidates = sorted(votes_count.items(), key=lambda x: (-x[1], x[0]))
 
-    # If all roads have been processed, return the solution
-    return solution
+    # Determine the outcome for each candidate
+    outcome = []
+    for candidate, votes in sorted_candidates:
+        if votes >= k:
+            outcome.append(1)
+        elif votes < k and votes > 0:
+            outcome.append(2)
+        else:
+            outcome.append(3)
+
+    return outcome
+
+def main():
+    n, k, m, a = map(int, input().split())
+    votes = list(map(int, input().split()))
+    outcome = get_results(votes, k)
+    print(*outcome)
+
+if __name__ == '__main__':
+    main()
 

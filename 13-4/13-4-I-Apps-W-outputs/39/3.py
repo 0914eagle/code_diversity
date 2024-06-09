@@ -1,7 +1,11 @@
 
-word = input()
+def f1(l, d, n):
+    return l - n * d - 6 * 2
 
-result = word[0].upper() + word[1:]
+def f2(l, d, n):
+    return l - n * d - 6 * 2
 
-print(result)
+if __name__ == '__main__':
+    l, d, n = map(int, input().split())
+    print(f1(l, d, n))
 

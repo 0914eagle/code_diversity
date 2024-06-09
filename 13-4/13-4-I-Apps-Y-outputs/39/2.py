@@ -1,33 +1,34 @@
 
-def solve(problems, drinks):
-    # Initialize a dictionary to store the time it takes to solve each problem
-    times = {}
+def get_input():
+    k = int(input())
+    sequences = []
+    for i in range(k):
+        n = int(input())
+        sequence = list(map(int, input().split()))
+        sequences.append(sequence)
+    return k, sequences
 
-    # Loop through each problem and calculate the time it takes to solve it
-    for i, t in enumerate(problems, 1):
-        times[i] = t
+def solve(k, sequences):
+    for i in range(k):
+        for j in range(i+1, k):
+            if sequences[i][0] + sequences[j][0] == 0:
+                return i+1, j+1, 1, 1
+            for x in range(1, len(sequences[i])):
+                for y in range(1, len(sequences[j])):
+                    if sequences[i][x] + sequences[j][y] == 0:
+                        return i+1, j+1, x+1, y+1
+    return -1, -1, -1, -1
 
-    # Loop through each drink and calculate the time it takes to solve all problems
-    for i, (p, x) in enumerate(drinks, 1):
-        # Calculate the time it takes to solve each problem with the given drink
-        for j in range(1, len(problems) + 1):
-            if j == p:
-                times[j] += x
+def main():
+    k, sequences = get_input()
+    i, j, x, y = solve(k, sequences)
+    if i == -1:
+        print("NO")
+    else:
+        print("YES")
+        print(i, x)
+        print(j, y)
 
-        # Calculate the total time it takes to solve all problems with the given drink
-        total_time = sum(times.values())
-
-        # Print the result
-        print(f"If Joisino takes drink {i}, it will take her {total_time} seconds to solve all problems.")
-
-# Main function
-if __name__ == "__main__":
-    # Read the input
-    N = int(input())
-    problems = list(map(int, input().split()))
-    M = int(input())
-    drinks = [tuple(map(int, input().split())) for _ in range(M)]
-
-    # Solve the problem
-    solve(problems, drinks)
+if __name__ == '__main__':
+    main()
 

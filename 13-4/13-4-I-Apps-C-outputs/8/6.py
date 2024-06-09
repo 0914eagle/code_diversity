@@ -1,42 +1,56 @@
 
-def solve(N, R, flights, F, additional_flights):
-    # Initialize a graph with the given number of nodes (airports)
-    graph = [[] for _ in range(N + 1)]
+def f1(n, A, B):
+    # Initialize a graph with n vertices and no edges
+    graph = [[] for _ in range(n)]
 
-    # Add edges to the graph based on the given flights
-    for a, b, c in flights:
-        graph[a].append((b, c))
-        graph[b].append((a, c))
+    # Add edges to the graph based on the input
+    for i in range(n):
+        graph[i].append((A, 1))
+        graph[i].append((B, 1))
 
-    # Add edges to the graph based on the additional flights
-    for a, b, c in additional_flights:
-        graph[a].append((b, c))
-        graph[b].append((a, c))
-
-    # Use a priority queue to keep track of the next flight to visit
-    queue = [(0, 1, set())]
+    # Find the shortest path between A and B using BFS
+    queue = [(A, 0)]
     visited = set()
+    while queue:
+        current, distance = queue.pop(0)
+        if current == B:
+            return distance
+        if current not in visited:
+            visited.add(current)
+            for neighbor, weight in graph[current]:
+                if neighbor not in visited:
+                    queue.append((neighbor, distance + weight))
 
-    # Loop until all reviews have been made
-    while len(visited) < R:
-        # Get the next flight to visit from the priority queue
-        cost, node, visited_nodes = heapq.heappop(queue)
+    # If no path is found, return -1
+    return -1
 
-        # If the current node is a review, mark it as visited and continue
-        if node in visited_nodes:
-            continue
+def f2(n, A, B):
+    # Initialize a graph with n vertices and no edges
+    graph = [[] for _ in range(n)]
 
-        # Add the current node to the visited set
-        visited.add(node)
+    # Add edges to the graph based on the input
+    for i in range(n):
+        graph[i].append((A, 1))
+        graph[i].append((B, 1))
 
-        # Add the cost of the current flight to the total cost
-        total_cost += cost
+    # Find the shortest path between A and B using Dijkstra's algorithm
+    queue = [(0, A)]
+    visited = set()
+    while queue:
+        distance, current = heapq.heappop(queue)
+        if current == B:
+            return distance
+        if current not in visited:
+            visited.add(current)
+            for neighbor, weight in graph[current]:
+                if neighbor not in visited:
+                    heapq.heappush(queue, (distance + weight, neighbor))
 
-        # Add the neighbors of the current node to the priority queue
-        for neighbor, weight in graph[node]:
-            if neighbor not in visited_nodes:
-                heapq.heappush(queue, (weight, neighbor, visited_nodes | {node}))
+    # If no path is found, return -1
+    return -1
 
-    # Return the total cost of the flights
-    return total_cost
+if __name__ == '__main__':
+    n, A, B = map(int, input().split())
+    print(f1(n, A, B))
+    print(f2(n, A, B))
 

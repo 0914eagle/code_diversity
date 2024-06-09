@@ -1,9 +1,19 @@
 
-def get_optimal_flavor(N, L):
-    # Calculate the sum of the flavors of all apples
-    total_flavor = sum(range(L, L + N))
-    # Calculate the sum of the flavors of the remaining apples after eating one apple
-    remaining_flavor = sum(range(L + 1, L + N))
-    # Return the difference between the two sums
-    return abs(total_flavor - remaining_flavor)
+import xml.etree.ElementTree as ET
+
+def get_max_depth(xml_string):
+    root = ET.fromstring(xml_string)
+    return get_depth(root)
+
+def get_depth(element):
+    if element.findall('./*'):
+        return 1 + max(get_depth(child) for child in element)
+    return 1
+
+def main():
+    xml_string = sys.stdin.read()
+    print(get_max_depth(xml_string))
+
+if __name__ == '__main__':
+    main()
 

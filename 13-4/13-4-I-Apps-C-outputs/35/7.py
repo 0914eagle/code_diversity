@@ -1,50 +1,38 @@
 
-import sys
+def longest_repeated_substring(input_string):
+    # Initialize variables
+    longest_substring = ""
+    current_substring = ""
+    substring_count = 0
+    substring_start = 0
+    substring_end = 0
 
-def shortest_subarray(arr, k):
-    # Initialize the shortest subarray length to the size of the array
-    shortest_len = len(arr)
-    # Initialize the current subarray length to 0
-    curr_len = 0
-    # Initialize the current subarray start index to 0
-    start_idx = 0
-    # Initialize a set to keep track of the numbers in the subarray
-    nums = set()
-
-    # Iterate through the array
-    for i in range(len(arr)):
-        # If the current number is in the subarray, increment the current subarray length
-        if arr[i] in nums:
-            curr_len += 1
-        # If the current number is not in the subarray, reset the current subarray length and start index
+    # Iterate through the input string
+    for i in range(len(input_string)):
+        # Check if the current character is already in the current substring
+        if input_string[i] in current_substring:
+            # If it is, update the substring count and end index
+            substring_count += 1
+            substring_end = i
         else:
-            curr_len = 1
-            start_idx = i
-        # Add the current number to the set
-        nums.add(arr[i])
-        # If the current subarray length is equal to the required length, update the shortest subarray length and break
-        if curr_len == k:
-            shortest_len = min(shortest_len, i - start_idx + 1)
-            break
+            # If it's not, update the current substring and reset the count and end index
+            current_substring += input_string[i]
+            substring_count = 1
+            substring_end = i
 
-    # If the shortest subarray length is equal to the size of the array, it means that no subarray of the required length exists
-    if shortest_len == len(arr):
-        return -1
-    else:
-        return shortest_len
+        # Check if the current substring is longer than the longest substring
+        if len(current_substring) > len(longest_substring):
+            longest_substring = current_substring
+            substring_start = substring_end - len(current_substring) + 1
 
-def change_value(arr, p, v):
-    arr[p-1] = v
+    # Return the longest substring
+    return longest_substring[substring_start:substring_end+1]
+
+def main():
+    input_string = input("Enter a string of lowercase letters: ")
+    longest_substring = longest_repeated_substring(input_string)
+    print(f"The longest repeated substring is: {longest_substring}")
 
 if __name__ == '__main__':
-    n, k, m = map(int, input().split())
-    arr = list(map(int, input().split()))
-
-    for i in range(m):
-        query = input().split()
-        if query[0] == '1':
-            change_value(arr, int(query[1]), int(query[2]))
-        elif query[0] == '2':
-            print(shortest_subarray(arr, k))
-
+    main()
 

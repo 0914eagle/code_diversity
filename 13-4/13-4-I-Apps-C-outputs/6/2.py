@@ -1,36 +1,24 @@
 
-def get_number_of_ways(snow_log):
-    # Initialize variables
-    num_ways = 0
-    max_snow_level = 0
-    min_snow_level = 0
-    previous_snow_level = 0
+import math
 
-    # Iterate through the snow log
-    for snow_range in snow_log:
-        # Get the snow level for the current range
-        current_snow_level = snow_range[1] - snow_range[0] + 1
+def get_distance(x1, y1, x2, y2):
+    return math.fabs(x1 - x2) + math.fabs(y1 - y2)
 
-        # Check if the current snow level is higher than the previous snow level
-        if current_snow_level > previous_snow_level:
-            # Increment the number of ways
-            num_ways += 1
+def get_expected_distance(n, points):
+    total_distance = 0
+    for i in range(n):
+        for j in range(i+1, n):
+            total_distance += get_distance(points[i][0], points[i][1], points[j][0], points[j][1])
+    return total_distance / (n * (n - 1))
 
-            # Update the maximum snow level
-            max_snow_level = max(max_snow_level, current_snow_level)
+def main():
+    n = int(input())
+    points = []
+    for i in range(n):
+        x, y = map(int, input().split())
+        points.append((x, y))
+    print(get_expected_distance(n, points))
 
-        # Check if the current snow level is lower than the previous snow level
-        elif current_snow_level < previous_snow_level:
-            # Update the minimum snow level
-            min_snow_level = min(min_snow_level, current_snow_level)
-
-        # Update the previous snow level
-        previous_snow_level = current_snow_level
-
-    # Check if the minimum snow level is greater than the maximum snow level
-    if min_snow_level > max_snow_level:
-        return "shovel time!"
-
-    # Return the number of ways
-    return num_ways % 1000000009
+if __name__ == '__main__':
+    main()
 

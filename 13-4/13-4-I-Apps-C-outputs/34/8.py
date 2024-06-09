@@ -1,46 +1,19 @@
 
-import sys
-input = sys.stdin.read()
-n, m, s = map(int, input.split())
-edges = []
-for i in range(m):
-    t, u, v = map(int, input.split())
-    edges.append((t, u, v))
+def get_power_of_two(n):
+    power = 1
+    while power <= n:
+        power *= 2
+    return power
 
-# Find all undirected edges
-undirected_edges = []
-for i in range(m):
-    t, u, v = edges[i]
-    if t == 2:
-        undirected_edges.append((u, v))
+def count_numbers_with_power_of_two(n, e):
+    power_of_two = get_power_of_two(e)
+    count = 0
+    for i in range(n+1):
+        if str(i).find(str(power_of_two)) != -1:
+            count += 1
+    return count
 
-# Plan 1: Maximize number of reachable vertices
-reachable_vertices = 0
-plan1 = []
-for i in range(m):
-    t, u, v = edges[i]
-    if t == 1:
-        plan1.append(1)
-        reachable_vertices += 1
-    elif t == 2 and (u, v) in undirected_edges:
-        plan1.append(1)
-        reachable_vertices += 1
-        undirected_edges.remove((u, v))
-
-# Plan 2: Minimize number of reachable vertices
-reachable_vertices = 0
-plan2 = []
-for i in range(m):
-    t, u, v = edges[i]
-    if t == 1:
-        plan2.append(1)
-        reachable_vertices += 1
-    elif t == 2 and (u, v) in undirected_edges:
-        plan2.append(-1)
-        undirected_edges.remove((u, v))
-
-print(reachable_vertices)
-print("".join(map(str, plan1)))
-print(reachable_vertices)
-print("".join(map(str, plan2)))
+if __name__ == '__main__':
+    n, e = map(int, input().split())
+    print(count_numbers_with_power_of_two(n, e))
 

@@ -1,18 +1,17 @@
 
-def solve(H, N, A, B):
-    # Initialize the minimum total Magic Points to be consumed
-    min_points = 0
-    # Loop through each spell
-    for i in range(N):
-        # Calculate the health after casting the spell
-        health = H - A[i]
-        # If the health is less than or equal to 0, break the loop
-        if health <= 0:
-            break
-        # Calculate the total Magic Points consumed so far
-        points = sum(B[:i+1])
-        # Update the minimum total Magic Points if necessary
-        min_points = min(min_points, points)
-    # Return the minimum total Magic Points
-    return min_points
+def get_initial_order(current_order):
+    n = len(current_order)
+    initial_order = [0] * n
+    for i in range(n):
+        initial_order[current_order[i]-1] = i+1
+    return initial_order
+
+def main():
+    n = int(input())
+    current_order = list(map(int, input().split()))
+    initial_order = get_initial_order(current_order)
+    print(*initial_order)
+
+if __name__ == '__main__':
+    main()
 

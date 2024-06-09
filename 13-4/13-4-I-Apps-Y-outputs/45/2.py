@@ -1,19 +1,18 @@
 
-def get_earliest_time(x):
-    # Initialize the time variable
-    time = 1
+def can_multiply(a, b):
+    return 1 <= a <= 9 and 1 <= b <= 9
 
-    # Loop until the kangaroo reaches the nest
-    while x > 0:
-        # If the kangaroo can jump to the left, do so
-        if x - time >= 0:
-            x -= time
-        # Otherwise, jump to the right
-        else:
-            x += time
-        # Increment the time
-        time += 1
+def multiply(a, b):
+    if can_multiply(a, b):
+        return a * b
+    else:
+        return -1
 
-    # Return the earliest time
-    return time
+def main():
+    a, b = map(int, input().split())
+    result = multiply(a, b)
+    print(result)
+
+if __name__ == '__main__':
+    main()
 

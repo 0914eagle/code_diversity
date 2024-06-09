@@ -1,35 +1,20 @@
 
-import sys
-input = sys.stdin.read().splitlines()
+def get_input():
+    return int(input())
 
-n, m, k = map(int, input[0].split())
-roads = [tuple(map(int, input[i].split())) for i in range(1, m+1)]
-routes = [tuple(map(int, input[i].split())) for i in range(m+1, m+1+k)]
+def solve(N):
+    count = 0
+    for a in range(1, N+1):
+        for b in range(1, N+1):
+            c = N - a*b
+            if a*b + c == N and a > 0 and b > 0 and c > 0:
+                count += 1
+    return count
 
-# create a dictionary to store the cost of travel between each pair of districts
-d = {}
-for road in roads:
-    x, y, w = road
-    if x not in d:
-        d[x] = {}
-    if y not in d:
-        d[y] = {}
-    d[x][y] = w
-    d[y][x] = w
+def main():
+    N = get_input()
+    print(solve(N))
 
-# find the minimum cost of travel between each pair of districts
-for i in range(1, n+1):
-    for j in range(1, n+1):
-        if i == j:
-            d[i][j] = 0
-        elif d[i][j] > d[i][k] + d[k][j]:
-            d[i][j] = d[i][k] + d[k][j]
-
-# find the minimum total cost of travel for each route
-total_cost = 0
-for route in routes:
-    x, y = route
-    total_cost += d[x][y]
-
-print(total_cost)
+if __name__ == '__main__':
+    main()
 

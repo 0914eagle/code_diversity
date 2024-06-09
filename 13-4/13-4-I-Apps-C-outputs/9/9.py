@@ -1,16 +1,30 @@
 
-def carryless_multiplication(a, b):
-    result = 0
-    for i in range(len(b)):
-        result += a * int(b[i])
-    return result
+def f1(p, k):
+    if p >= k:
+        return -1
+    
+    d = 1
+    a = [p]
+    while a[-1] % k != 0:
+        a.append(a[-1] % k)
+        d += 1
+    
+    return d, a
 
-def find_smallest_positive_integer(n):
-    for i in range(1, n+1):
-        if carryless_multiplication(i, i) == n:
-            return i
-    return -1
+def f2(p, k):
+    if p >= k:
+        return -1
+    
+    d = 1
+    a = [p]
+    while a[-1] % k != 0:
+        a.append(a[-1] % k)
+        d += 1
+    
+    return d, a
 
-n = int(input())
-print(find_smallest_positive_integer(n))
+if __name__ == '__main__':
+    p, k = map(int, input().split())
+    print(*f1(p, k))
+    print(*f2(p, k))
 

@@ -1,19 +1,23 @@
 
-A, B, and C are equal if A == B and B == C, so we can check if A == B and B == C using the and operator. If either of these conditions is not met, we can return "No".
-
-If A == B and B == C, we can check if B is different from A using the != operator. If B is not different from A, we can return "No".
-
-If B is different from A and A == B and B == C, we can return "Yes".
-
-Here's the code:
-```
-A, B, C = map(int, input().split())
-if A == B and B == C:
-    if B != A:
-        print("Yes")
+def calculate_result(a, operation, b):
+    if operation == '+':
+        return a + b
+    elif operation == '*':
+        return a * b
     else:
-        print("No")
-else:
-    print("No")
-```
+        raise ValueError("Invalid operation")
+
+def get_input():
+    a = int(input("Enter the first operand: "))
+    operation = input("Enter the operation (+ or *): ")
+    b = int(input("Enter the second operand: "))
+    return a, operation, b
+
+def main():
+    a, operation, b = get_input()
+    result = calculate_result(a, operation, b)
+    print(f"The result is: {result}")
+
+if __name__ == '__main__':
+    main()
 

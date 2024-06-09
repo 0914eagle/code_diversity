@@ -1,18 +1,28 @@
 
-def solve(N, A, B):
-    # Initialize a list to store the permutation
-    permutation = list(range(1, N+1))
+def get_leader(n, m, logs):
+    # Initialize a set to store the present participants
+    present = set()
     
-    # Iterate through the list and find the indices where A and B appear
-    indices_A = [i for i, x in enumerate(permutation) if x == A]
-    indices_B = [i for i, x in enumerate(permutation) if x == B]
+    # Iterate through the logs
+    for log in logs:
+        # If the log is a log on, add the participant to the set
+        if log[0] == "+":
+            present.add(int(log[1:]))
+        # If the log is a log off, remove the participant from the set
+        else:
+            present.remove(int(log[1:]))
     
-    # If there are no indices where A and B appear, return -1
-    if not indices_A or not indices_B:
-        return -1
+    # Return the number of participants in the set
+    return len(present)
+
+def main():
+    # Read the input
+    n, m = map(int, input().split())
+    logs = [input() for _ in range(m)]
     
-    # Swap the values at the indices where A and B appear to get the desired permutation
-    permutation[indices_A[0]], permutation[indices_B[0]] = permutation[indices_B[0]], permutation[indices_A[0]]
-    
-    return permutation
+    # Call the get_leader function and print the result
+    print(get_leader(n, m, logs))
+
+if __name__ == '__main__':
+    main()
 

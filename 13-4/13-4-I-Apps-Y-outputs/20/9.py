@@ -1,28 +1,20 @@
 
-def get_flavor(apples, L):
-    # Calculate the total flavor of all apples
-    total_flavor = sum(apples)
+import xml.etree.ElementTree as ET
 
-    # Sort the apples in ascending order
-    apples.sort()
+def get_max_depth(xml_string):
+    root = ET.fromstring(xml_string)
+    return get_depth(root)
 
-    # Initialize the minimum difference and the chosen apple to eat
-    min_diff = float('inf')
-    chosen_apple = 0
+def get_depth(element):
+    if element:
+        return 1 + max(get_depth(child) for child in element)
+    else:
+        return 0
 
-    # Iterate through each apple and calculate the difference in flavor
-    for i in range(len(apples)):
-        # Calculate the flavor of the remaining apples
-        remaining_flavor = total_flavor - apples[i]
-
-        # Calculate the difference in flavor
-        diff = abs(remaining_flavor - total_flavor)
-
-        # If the difference is smaller than the current minimum, update the minimum and the chosen apple
-        if diff < min_diff:
-            min_diff = diff
-            chosen_apple = i
-
-    # Return the flavor of the remaining apples
-    return remaining_flavor
+if __name__ == '__main__':
+    num_lines = int(input())
+    xml_string = ''
+    for _ in range(num_lines):
+        xml_string += input()
+    print(get_max_depth(xml_string))
 

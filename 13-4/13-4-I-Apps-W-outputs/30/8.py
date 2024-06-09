@@ -1,27 +1,37 @@
 
-n, k, m = map(int, input().split())
+def get_not_connected_houses(n, m, connections):
+    # Initialize a set to store the connected houses
+    connected_houses = set()
 
-board = [[0] * (n + 1) for _ in range(n + 1)]
+    # Loop through the connections and add the connected houses to the set
+    for connection in connections:
+        connected_houses.add(connection[0])
+        connected_houses.add(connection[1])
 
-for _ in range(m):
-    x, y = map(int, input().split())
-    if board[x][y] == 0:
-        board[x][y] = 1
+    # Find the houses that are not connected to the internet
+    not_connected_houses = set(range(1, n + 1)) - connected_houses
+
+    # Return the list of not connected houses
+    return list(not_connected_houses)
+
+def main():
+    # Read the input
+    n, m = map(int, input().split())
+    connections = []
+    for _ in range(m):
+        connections.append(tuple(map(int, input().split())))
+
+    # Call the function to get the not connected houses
+    not_connected_houses = get_not_connected_houses(n, m, connections)
+
+    # Check if all the houses are connected
+    if len(not_connected_houses) == 0:
+        print("Connected")
     else:
-        board[x][y] = 0
+        # Print the not connected houses
+        for house in not_connected_houses:
+            print(house)
 
-for i in range(n):
-    for j in range(n):
-        if board[i][j] == 1:
-            board[i][j + 1] = 1
-            board[i - 1][j + 1] = 1
-            board[i + 1][j + 1] = 1
-
-count = 0
-for i in range(n):
-    for j in range(n):
-        if board[i][j] == 1:
-            count += 1
-
-print(count)
+if __name__ == '__main__':
+    main()
 

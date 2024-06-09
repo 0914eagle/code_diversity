@@ -1,18 +1,26 @@
 
-import math
-
-def get_time_and_c(n, p, s, v):
-    # Calculate the time it takes for the algorithm to run with the optimal parameter c
-    c = (math.log(n) / (s / v)) ** (1 / (2 * math.sqrt(2)))
-    time = n * (math.log(n) ** (c * math.sqrt(2))) / (p * 1000000000)
+def get_bottles(shipment_volume, large_bottle_volume, small_bottle_volume):
+    # Calculate the number of large bottles needed
+    num_large_bottles = shipment_volume // large_bottle_volume
     
-    # Calculate the time it takes for Miroslava to distribute the keys
-    distribute_time = s / v
+    # Calculate the number of small bottles needed
+    num_small_bottles = (shipment_volume - (num_large_bottles * large_bottle_volume)) // small_bottle_volume
     
-    # Return the total time and the value of c
-    return time + distribute_time, c
+    # Check if the number of small bottles is greater than the number of large bottles
+    if num_small_bottles > num_large_bottles:
+        return "Impossible"
+    
+    # Return the number of large and small bottles needed
+    return num_large_bottles, num_small_bottles
 
-n, p, s, v = map(float, input().split())
-time, c = get_time_and_c(n, p, s, v)
-print(f"{time:.6f} {c:.6f}")
+def main():
+    shipment_volume, large_bottle_volume, small_bottle_volume = map(int, input().split())
+    result = get_bottles(shipment_volume, large_bottle_volume, small_bottle_volume)
+    if result == "Impossible":
+        print("Impossible")
+    else:
+        print(result[0], result[1])
+
+if __name__ == '__main__':
+    main()
 

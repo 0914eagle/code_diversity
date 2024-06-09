@@ -1,29 +1,36 @@
 
-def solve_problem(N, E, roads):
-    # Initialize the solution matrix
-    solution = [[0] * E for _ in range(N)]
+def get_election_outcome(n_candidates, n_seats, n_voters, n_votes, votes):
+    # Initialize a dictionary to store the number of votes for each candidate
+    votes_count = {}
+    for i in range(n_candidates):
+        votes_count[i + 1] = 0
+    
+    # Count the number of votes for each candidate
+    for vote in votes:
+        votes_count[vote] += 1
+    
+    # Sort the candidates by the number of votes in descending order
+    sorted_candidates = sorted(votes_count.items(), key=lambda x: x[1], reverse=True)
+    
+    # Initialize the election outcome array
+    election_outcome = [0] * n_candidates
+    
+    # Determine the candidates with a chance to be elected
+    for i in range(n_seats):
+        election_outcome[sorted_candidates[i][0] - 1] = 1
+    
+    # Determine the candidates with no chances to be elected
+    for i in range(n_seats, n_candidates):
+        election_outcome[sorted_candidates[i][0] - 1] = 3
+    
+    return election_outcome
 
-    # Loop through each road
-    for i in range(E):
-        # Get the cities connected by the road
-        city1, city2 = roads[i]
+def main():
+    n_candidates, n_seats, n_voters, n_votes = map(int, input().split())
+    votes = list(map(int, input().split()))
+    election_outcome = get_election_outcome(n_candidates, n_seats, n_voters, n_votes, votes)
+    print(*election_outcome)
 
-        # If the cities are not already assigned, assign them to the first chain
-        if solution[city1][i] == 0:
-            solution[city1][i] = 1
-        if solution[city2][i] == 0:
-            solution[city2][i] = 2
-
-        # If the cities are already assigned, check if the assignment is valid
-        else:
-            # If the cities are assigned to the same chain, the solution is not valid
-            if solution[city1][i] == solution[city2][i]:
-                return "0"
-
-            # If the cities are assigned to different chains, the solution is valid
-            else:
-                solution[city1][i] = solution[city2][i]
-
-    # If the solution is valid, return it
-    return solution
+if __name__ == '__main__':
+    main()
 

@@ -1,25 +1,22 @@
 
-def get_largest_xor_sum(n, k):
-    # Initialize an empty list to store the candies
-    candies = []
-    
-    # Iterate from 1 to n, where n is the number of candies
-    for i in range(1, n + 1):
-        # If the number of candies taken so far is less than k, add the current candy to the list
-        if len(candies) < k:
-            candies.append(i)
-        # Otherwise, check if the current candy has a higher tastiness than the current xor-sum
+def get_maximum_divisor(n):
+    divisor = 1
+    while divisor * divisor <= n:
+        if n % divisor == 0:
+            n = n // divisor
         else:
-            xor_sum = 0
-            for candy in candies:
-                xor_sum ^= candy
-            if xor_sum < i:
-                candies.pop(0)
-                candies.append(i)
-    
-    # Return the final xor-sum
-    xor_sum = 0
-    for candy in candies:
-        xor_sum ^= candy
-    return xor_sum
+            divisor += 1
+    return n
+
+def get_minimum_tax(n):
+    divisor = get_maximum_divisor(n)
+    return divisor
+
+def get_optimal_split(n):
+    divisor = get_maximum_divisor(n)
+    return [divisor] * (n // divisor)
+
+if __name__ == '__main__':
+    n = int(input())
+    print(get_minimum_tax(n))
 

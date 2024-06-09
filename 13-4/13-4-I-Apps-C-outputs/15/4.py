@@ -1,28 +1,31 @@
 
-n = int(input())
-p = list(map(int, input().split()))
+def get_shortest_test_scheme(k, durations):
+    # Sort the durations in non-decreasing order
+    durations.sort()
+    
+    # Initialize the number of days needed for the test scheme
+    num_days = 0
+    
+    # Iterate through the durations and add the number of days needed for each allergen
+    for duration in durations:
+        num_days += duration
+    
+    # Return the total number of days needed for the test scheme
+    return num_days
 
-def get_deviation(p):
-    deviation = 0
-    for i in range(n):
-        deviation += abs(p[i] - i)
-    return deviation
+def main():
+    # Read the number of allergens and their live durations from stdin
+    k = int(input())
+    durations = []
+    for i in range(k):
+        durations.append(int(input()))
+    
+    # Call the function to get the shortest test scheme
+    num_days = get_shortest_test_scheme(k, durations)
+    
+    # Print the number of days needed for the test scheme
+    print(num_days)
 
-def get_cyclic_shift(p, k):
-    return [p[i] for i in range(k, n+k)] + [p[i] for i in range(0, k)]
-
-def get_min_deviation_cyclic_shift(p):
-    min_deviation = get_deviation(p)
-    min_deviation_cyclic_shift = p
-    for k in range(n):
-        cyclic_shift = get_cyclic_shift(p, k)
-        deviation = get_deviation(cyclic_shift)
-        if deviation < min_deviation:
-            min_deviation = deviation
-            min_deviation_cyclic_shift = cyclic_shift
-    return min_deviation, min_deviation_cyclic_shift
-
-min_deviation, min_deviation_cyclic_shift = get_min_deviation_cyclic_shift(p)
-print(min_deviation)
-print(min_deviation_cyclic_shift)
+if __name__ == '__main__':
+    main()
 

@@ -1,25 +1,33 @@
 
-N, M, Q = map(int, input().split())
+def f1(N, k, heights):
+    # Calculate the average height of the neighbors
+    avg_height = sum(heights) / len(heights)
+    
+    # Calculate the new height for each house
+    new_heights = []
+    for i in range(N):
+        if heights[i] >= avg_height + k:
+            new_heights.append(heights[i])
+        else:
+            new_heights.append((heights[i-1] + heights[i+1]) / 2 + k)
+    
+    # Return the new heights
+    return new_heights
 
-# Initialize the class and teacher assignments
-classes = list(range(1, N+1))
-teachers = list(range(1, N+1))
+def f2(N, k, heights):
+    # Calculate the final heights after infinitely many days
+    final_heights = heights
+    while True:
+        new_heights = f1(N, k, final_heights)
+        if new_heights == final_heights:
+            break
+        final_heights = new_heights
+    
+    # Return the final height of the tallest house
+    return max(final_heights)
 
-# Initialize the reassignment plans
-plans = []
-
-for _ in range(Q):
-    query = list(map(int, input().split()))
-    if query[0] == 0:
-        # Add a reassignment plan
-        plans.append((query[1], query[2], query[3:]))
-    else:
-        # Find the class taught by teacher d on Tuesday of the x-th week
-        d, x = query[1], query[2]
-        for plan in plans:
-            if plan[1] == x:
-                # Apply the reassignment plan
-                teachers = plan[2]
-                break
-        print(classes[teachers.index(d)])
+if __name__ == '__main__':
+    N, k = map(int, input().split())
+    heights = list(map(float, input().split()))
+    print(f2(N, k, heights))
 

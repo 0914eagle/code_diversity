@@ -1,34 +1,48 @@
 
-def solve(r, b, k):
-    # Calculate the maximum number of planks that can be painted
-    max_planks = 10**100
-    
-    # Initialize a list to store the painted planks
-    painted_planks = []
-    
-    # Iterate through the planks and paint them according to the given conditions
-    for i in range(max_planks):
-        # If the index of the plank is divisible by r, paint it red
-        if i % r == 0:
-            painted_planks.append("R")
-        # If the index of the plank is divisible by b, paint it blue
-        elif i % b == 0:
-            painted_planks.append("B")
-        # If the index of the plank is divisible by both r and b, paint it according to the given conditions
-        elif i % r == 0 and i % b == 0:
-            if len(painted_planks) == 0 or painted_planks[-1] != "R":
-                painted_planks.append("R")
-            else:
-                painted_planks.append("B")
-        # If the index of the plank is not divisible by r, b, or both, do not paint it
-        else:
-            continue
-    
-    # Check if there are k consecutive planks with the same color in the painted planks list
-    for i in range(len(painted_planks) - k + 1):
-        if len(set(painted_planks[i:i+k])) == 1:
-            return "REBEL"
-    
-    # If there are no consecutive planks with the same color, return "OBEY"
-    return "OBEY"
+def get_day_of_week(date):
+    day, month = date.split()
+    day = int(day)
+    if month == "JAN":
+        return "MON"
+    elif month == "FEB":
+        return "TUE"
+    elif month == "MAR":
+        return "WED"
+    elif month == "APR":
+        return "THU"
+    elif month == "MAY":
+        return "FRI"
+    elif month == "JUN":
+        return "SAT"
+    elif month == "JUL":
+        return "SUN"
+    elif month == "AUG":
+        return "MON"
+    elif month == "SEP":
+        return "TUE"
+    elif month == "OCT":
+        return "WED"
+    elif month == "NOV":
+        return "THU"
+    else:
+        return "FRI"
+
+def is_friday(date, day_of_week):
+    day, month = date.split()
+    day = int(day)
+    if month == "FEB" and day == 29:
+        return "not sure"
+    elif day_of_week == "FRI":
+        return "TGIF"
+    else:
+        return ":"
+
+def main():
+    date = input()
+    day_of_week = get_day_of_week(date)
+    result = is_friday(date, day_of_week)
+    print(result)
+
+if __name__ == '__main__':
+    main()
 

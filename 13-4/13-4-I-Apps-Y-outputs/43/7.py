@@ -1,30 +1,39 @@
 
-def is_multigram(word):
-    if len(word) <= 2:
-        return -1
+def get_min_distance(n, k, x_coords):
+    # Initialize the minimum distance to a large value
+    min_distance = float('inf')
     
-    for i in range(1, len(word) // 2 + 1):
-        if word[:i] == word[len(word) - i:] and is_anagram(word[:i], word[len(word) - i:]):
-            return word[:i]
+    # Loop through each possible combination of robot types
+    for i in range(2**n):
+        # Convert the binary representation of i to a list of robot types
+        robot_types = [int(j) for j in bin(i)[2:]]
+        
+        # Initialize the total distance covered to 0
+        total_distance = 0
+        
+        # Loop through each robot and calculate the distance covered
+        for j in range(n):
+            # Calculate the distance from the robot to the ball
+            distance = abs(x_coords[j] - robot_types[j] * k)
+            
+            # Add the distance to the total distance covered
+            total_distance += distance
+        
+        # If the total distance covered is less than the minimum distance, update the minimum distance
+        if total_distance < min_distance:
+            min_distance = total_distance
     
-    return -1
+    # Return the minimum distance
+    return min_distance
 
-def is_anagram(word1, word2):
-    if len(word1) != len(word2):
-        return False
+def main():
+    # Read the input data from stdin
+    n, k = map(int, input().split())
+    x_coords = list(map(int, input().split()))
     
-    count = [0] * 26
-    
-    for c in word1:
-        count[ord(c) - ord('a')] += 1
-    
-    for c in word2:
-        count[ord(c) - ord('a')] -= 1
-        if count[ord(c) - ord('a')] < 0:
-            return False
-    
-    return True
+    # Call the get_min_distance function and print the result
+    print(get_min_distance(n, k, x_coords))
 
-word = input()
-print(is_multigram(word))
+if __name__ == '__main__':
+    main()
 

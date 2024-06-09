@@ -1,22 +1,23 @@
 
-import math
-
-def get_time_and_c(n, p, s, v):
-    # Calculate the optimal parameter c for the Arora-Mitchell algorithm
-    c = (math.log(n) * math.sqrt(2)) / (v * 1000000000)
+def get_bottles(shipment_volume, large_bottle_volume, small_bottle_volume):
+    # Calculate the number of large bottles needed
+    large_bottles_needed = shipment_volume // large_bottle_volume
     
-    # Calculate the time it takes to run the algorithm and distribute the keys
-    time = s / (v * (1 + 1/c))
+    # Calculate the number of small bottles needed
+    small_bottles_needed = (shipment_volume - (large_bottles_needed * large_bottle_volume)) // small_bottle_volume
     
-    return time, c
+    # Check if the number of small bottles is enough to fill the remaining space
+    if small_bottles_needed * small_bottle_volume + (large_bottles_needed * large_bottle_volume) == shipment_volume:
+        return large_bottles_needed, small_bottles_needed
+    
+    # If the number of small bottles is not enough, return "Impossible"
+    else:
+        return "Impossible"
 
-n = int(input())
-p = float(input())
-s = float(input())
-v = float(input())
+def main():
+    shipment_volume, large_bottle_volume, small_bottle_volume = map(int, input().split())
+    print(get_bottles(shipment_volume, large_bottle_volume, small_bottle_volume))
 
-time, c = get_time_and_c(n, p, s, v)
-
-print(time)
-print(c)
+if __name__ == '__main__':
+    main()
 

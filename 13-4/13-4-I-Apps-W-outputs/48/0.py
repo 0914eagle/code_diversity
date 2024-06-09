@@ -1,12 +1,18 @@
 
-def solve(arr):
-    count = 0
-    while arr:
-        count += 1
-        temp = []
-        for i in range(len(arr)):
-            if arr[i] != arr[i-1] or i == 0:
-                temp.append(arr[i])
-        arr = temp
-    return count
+def f1(player, n, cuboids):
+    # Your code here
+    return player
+
+def f2(player, n, cuboids):
+    # Your code here
+    return player
+
+if __name__ == '__main__':
+    player = input()
+    n = int(input())
+    cuboids = []
+    for i in range(n):
+        x, y, z = map(int, input().split())
+        cuboids.append((x, y, z))
+    print(f1(player, n, cuboids))
 

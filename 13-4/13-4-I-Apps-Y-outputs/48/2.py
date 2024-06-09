@@ -1,32 +1,26 @@
 
-import itertools
+def get_permutations(n):
+    permutations = []
+    for i in range(1, n+1):
+        permutations.append(i)
+    return permutations
 
-def get_combinations(switches, bulbs):
-    num_combinations = 0
-    for combination in itertools.product([0, 1], repeat=len(switches)):
-        is_lighted = True
-        for i, state in enumerate(combination):
-            if state == 1:
-                for j in range(bulbs[i][0]):
-                    if combination[bulbs[i][j+1]-1] == 0:
-                        is_lighted = False
-                        break
-        if is_lighted:
-            num_combinations += 1
-    return num_combinations
+def get_lexicographically_smallest_permutations(permutations):
+    lexicographically_smallest_permutations = []
+    for permutation in permutations:
+        lexicographically_smallest_permutations.append(permutation)
+    return lexicographically_smallest_permutations
+
+def get_a_minus_b(permutations, a, b):
+    a_index = permutations.index(a)
+    b_index = permutations.index(b)
+    return abs(a_index - b_index)
 
 if __name__ == '__main__':
-    switches, bulbs, p = [], [], []
-    for line in iter(input, ''):
-        if line.startswith('N'):
-            N = int(line.split()[1])
-        elif line.startswith('M'):
-            M = int(line.split()[1])
-        elif line.startswith('k'):
-            switches.append(list(map(int, line.split()[1:])))
-        elif line.startswith('s'):
-            bulbs.append(list(map(int, line.split()[1:])))
-        elif line.startswith('p'):
-            p.append(int(line.split()[1]))
-    print(get_combinations(switches, bulbs))
+    n = int(input())
+    permutations = get_permutations(n)
+    lexicographically_smallest_permutations = get_lexicographically_smallest_permutations(permutations)
+    a = lexicographically_smallest_permutations[1]
+    b = lexicographically_smallest_permutations[2]
+    print(get_a_minus_b(permutations, a, b))
 

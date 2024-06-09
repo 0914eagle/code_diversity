@@ -1,58 +1,38 @@
 
-def solve(input_data):
+def get_distant_pebble(pebble_sequence):
     # Initialize variables
-    num_test_cases = int(input_data[0])
-    output = []
+    distant_pebble = 0
+    current_pebble = 0
+    visited_pebbles = set()
 
-    # Iterate over each test case
-    for i in range(1, num_test_cases + 1):
-        # Get the number of residents and their information
-        num_residents = int(input_data[i])
-        residents = input_data[i + 1 : i + 1 + num_residents]
+    # Iterate through the pebble sequence
+    for pebble in pebble_sequence:
+        # If the current pebble has not been visited before, check if it is the most distant pebble so far
+        if current_pebble not in visited_pebbles:
+            # If the current pebble is the most distant pebble so far, update the distant pebble
+            if current_pebble > distant_pebble:
+                distant_pebble = current_pebble
 
-        # Initialize a dictionary to store the club memberships
-        club_members = {}
+            # Add the current pebble to the set of visited pebbles
+            visited_pebbles.add(current_pebble)
 
-        # Iterate over each resident and their information
-        for resident in residents:
-            # Split the resident information
-            resident_info = resident.split()
-            resident_name = resident_info[0]
-            resident_party = resident_info[1]
-            num_clubs = int(resident_info[2])
-            clubs = resident_info[3:]
+        # Increment the current pebble
+        current_pebble += 1
 
-            # Add the resident to the club memberships
-            for club in clubs:
-                if club not in club_members:
-                    club_members[club] = []
-                club_members[club].append(resident_name)
+    # Return the most distant pebble
+    return distant_pebble
 
-        # Initialize a list to store the council members
-        council_members = []
+def main():
+    # Read the input
+    n = int(input())
+    pebble_sequence = list(map(int, input().split()))
 
-        # Iterate over each club and its members
-        for club, members in club_members.items():
-            # If the club has more than one member, select one member to represent the club
-            if len(members) > 1:
-                # Select a member at random
-                member = members[0]
+    # Find the most distant pebble
+    distant_pebble = get_distant_pebble(pebble_sequence)
 
-                # Add the member to the council members list
-                council_members.append((member, club))
+    # Print the result
+    print(distant_pebble)
 
-                # Remove the member from the club members list
-                club_members[club].remove(member)
-
-        # If the council members list is not empty, print the council members
-        if council_members:
-            output.append(" ".join([member[0] for member in council_members]))
-        else:
-            output.append("Impossible")
-
-        # Add a blank line between test cases
-        output.append("")
-
-    # Return the output
-    return "\n".join(output)
+if __name__ == '__main__':
+    main()
 

@@ -1,26 +1,35 @@
 
-def solve(residents, parties, clubs):
-    # Initialize the dictionary to store the club representatives
-    club_representatives = {}
+def f1(n, spots):
+    # Initialize a dictionary to store the pairs of pebbles that can be jumped between
+    pairs = {}
+    # Iterate over the list of spots and populate the dictionary
+    for i in range(n):
+        for j in range(i+1, n):
+            if spots[i] + spots[j] == j - i:
+                pairs[i] = j
+    # Initialize a list to store the distances of the pebbles that can be reached
+    distances = []
+    # Iterate over the dictionary and calculate the distances of the pebbles that can be reached
+    for i in range(n):
+        if i in pairs:
+            distances.append(pairs[i] - i)
+    # Return the maximum distance
+    return max(distances)
 
-    # Loop through each resident
-    for resident in residents:
-        # Get the resident's party and clubs
-        party = resident[1]
-        clubs = resident[2:]
+def f2(n, spots):
+    # Initialize a list to store the distances of the pebbles that can be reached
+    distances = []
+    # Iterate over the list of spots and calculate the distances of the pebbles that can be reached
+    for i in range(n):
+        for j in range(i+1, n):
+            if spots[i] + spots[j] == j - i:
+                distances.append(j - i)
+    # Return the maximum distance
+    return max(distances)
 
-        # Loop through each club
-        for club in clubs:
-            # If the club does not have a representative yet, assign the resident as the representative
-            if club not in club_representatives:
-                club_representatives[club] = resident
-            # If the club already has a representative, check if the resident's party is different from the representative's party
-            else:
-                representative = club_representatives[club]
-                if representative[1] != party:
-                    # If the parties are different, assign the resident as the representative
-                    club_representatives[club] = resident
-
-    # Return the club representatives
-    return club_representatives
+if __name__ == '__main__':
+    n = int(input())
+    spots = list(map(int, input().split()))
+    print(f1(n, spots))
+    print(f2(n, spots))
 

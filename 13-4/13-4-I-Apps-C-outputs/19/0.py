@@ -1,27 +1,40 @@
 
-def find_reconstructions(pre_output, in_output, post_output):
-    # Initialize a list to store the reconstructions
-    reconstructions = []
-    
-    # Iterate over all possible combinations of Pre, In, and Post calls
-    for pre_calls in range(2):
-        for in_calls in range(2):
-            for post_calls in range(2):
-                # Check if the number of calls is correct
-                if pre_calls + in_calls + post_calls != 6:
-                    continue
-                
-                # Check if the calls are in the correct order
-                if pre_calls > in_calls or in_calls > post_calls:
-                    continue
-                
-                # Check if the outputs match
-                if pre_output != "".join(sorted(pre_output)) or in_output != "".join(sorted(in_output)) or post_output != "".join(sorted(post_output)):
-                    continue
-                
-                # If all checks pass, add the reconstruction to the list
-                reconstructions.append([pre_calls, in_calls, post_calls])
-    
-    # Return the list of reconstructions
-    return reconstructions
+import math
+
+def get_polygon_area(vertices):
+    area = 0
+    for i in range(len(vertices)):
+        x1, y1 = vertices[i]
+        x2, y2 = vertices[(i+1) % len(vertices)]
+        area += x1 * y2 - x2 * y1
+    return abs(area) / 2
+
+def get_symmetric_area(vertices, x_a, y_a, x_b, y_b):
+    area = 0
+    for i in range(len(vertices)):
+        x, y = vertices[i]
+        if x >= x_a and x <= x_b and y >= y_a and y <= y_b:
+            area += x * y_b - x_b * y
+    return abs(area) / 2
+
+def get_largest_corn_area(vertices, x_a, y_a, x_b, y_b):
+    area = 0
+    for i in range(len(vertices)):
+        x1, y1 = vertices[i]
+        x2, y2 = vertices[(i+1) % len(vertices)]
+        if x1 >= x_a and x1 <= x_b and y1 >= y_a and y1 <= y_b:
+            area = max(area, get_symmetric_area(vertices, x1, y1, x2, y2))
+    return area
+
+def main():
+    N = int(input())
+    vertices = []
+    for i in range(N):
+        x, y = map(int, input().split())
+        vertices.append((x, y))
+    x_a, y_a, x_b, y_b = map(int, input().split())
+    print(get_largest_corn_area(vertices, x_a, y_a, x_b, y_b))
+
+if __name__ == '__main__':
+    main()
 

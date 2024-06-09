@@ -1,20 +1,28 @@
 
-def solve(A, K):
-    # Calculate the prefix sum of the array
-    prefix_sum = [0]
-    for i in range(len(A)):
-        prefix_sum.append(prefix_sum[i] + A[i])
+def get_possible_values(dice_sides, sum_of_values):
+    possible_values = []
+    for i in range(1, dice_sides+1):
+        if i > sum_of_values:
+            break
+        possible_values.append(i)
+    return possible_values
 
-    # Initialize the number of contiguous subsequences to 0
-    count = 0
+def get_impossible_values(dice_sides, sum_of_values):
+    impossible_values = []
+    for i in range(1, dice_sides+1):
+        if i <= sum_of_values:
+            continue
+        impossible_values.append(i)
+    return impossible_values
 
-    # Iterate through the prefix sum array
-    for i in range(len(prefix_sum)):
-        # Check if the prefix sum at index i is greater than or equal to K
-        if prefix_sum[i] >= K:
-            # Increment the number of contiguous subsequences
-            count += 1
+def main():
+    n, sum_of_values = map(int, input().split())
+    dice_sides = [int(input()) for _ in range(n)]
+    possible_values = [get_possible_values(dice_sides[i], sum_of_values) for i in range(n)]
+    impossible_values = [get_impossible_values(dice_sides[i], sum_of_values) for i in range(n)]
+    print(*[len(possible_values[i]) for i in range(n)], sep=' ')
+    print(*[len(impossible_values[i]) for i in range(n)], sep=' ')
 
-    # Return the number of contiguous subsequences
-    return count
+if __name__ == '__main__':
+    main()
 

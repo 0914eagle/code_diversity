@@ -1,48 +1,91 @@
 
-import itertools
-
-def get_nth_string(k, n):
-    # Initialize a list to store the generated strings
-    strings = []
+def f1(n):
+    # function to generate a list of unique pairs of numbers
+    def generate_pairs(n):
+        pairs = []
+        for i in range(1, n+1):
+            for j in range(1, n+1):
+                if i != j:
+                    pairs.append((i, j))
+        return pairs
     
-    # Iterate over all possible combinations of lowercase letters
-    for letters in itertools.combinations_with_replacement("abcdefghijklmnopqrstuvwxyz", k):
-        # Check if the current combination is double free and k-incremental
-        if is_double_free(letters) and is_k_incremental(letters, k):
-            # Add the current string to the list of generated strings
-            strings.append("".join(letters))
-            
-            # If the list of generated strings has reached the desired length, return the nth string
-            if len(strings) == n:
-                return strings[n-1]
+    # function to generate a list of unique equations
+    def generate_equations(pairs):
+        equations = []
+        for pair in pairs:
+            a, b = pair
+            equations.append(str(a) + " + " + str(b) + " = " + str(a+b))
+            equations.append(str(a) + " - " + str(b) + " = " + str(a-b))
+            equations.append(str(a) + " * " + str(b) + " = " + str(a*b))
+        return equations
     
-    # If no string was found, return -1
-    return -1
-
-# Check if a string is double free
-def is_double_free(string):
-    # Check if any two adjacent characters in the string are the same
-    for i in range(len(string)-1):
-        if string[i] == string[i+1]:
-            return False
-    return True
-
-# Check if a string is k-incremental
-def is_k_incremental(string, k):
-    # Initialize a dictionary to store the frequency of each character in the string
-    freq = {}
-    for char in string:
-        if char not in freq:
-            freq[char] = 1
-        else:
-            freq[char] += 1
+    # function to check if the list of equations is unique
+    def is_unique(equations):
+        unique_equations = []
+        for equation in equations:
+            if equation not in unique_equations:
+                unique_equations.append(equation)
+        return len(unique_equations) == len(equations)
     
-    # Check if the frequency of each character is k-incremental
-    for char, count in freq.items():
-        if count != k:
-            return False
-    return True
+    # generate a list of unique pairs of numbers
+    pairs = generate_pairs(n)
+    
+    # generate a list of unique equations
+    equations = generate_equations(pairs)
+    
+    # check if the list of equations is unique
+    if is_unique(equations):
+        return equations
+    else:
+        return ["impossible"]
 
-print(get_nth_string(2, 650))
-print(get_nth_string(2, 651))
+def f2(n):
+    # function to generate a list of unique pairs of numbers
+    def generate_pairs(n):
+        pairs = []
+        for i in range(1, n+1):
+            for j in range(1, n+1):
+                if i != j:
+                    pairs.append((i, j))
+        return pairs
+    
+    # function to generate a list of unique equations
+    def generate_equations(pairs):
+        equations = []
+        for pair in pairs:
+            a, b = pair
+            equations.append(str(a) + " + " + str(b) + " = " + str(a+b))
+            equations.append(str(a) + " - " + str(b) + " = " + str(a-b))
+            equations.append(str(a) + " * " + str(b) + " = " + str(a*b))
+        return equations
+    
+    # function to check if the list of equations is unique
+    def is_unique(equations):
+        unique_equations = []
+        for equation in equations:
+            if equation not in unique_equations:
+                unique_equations.append(equation)
+        return len(unique_equations) == len(equations)
+    
+    # generate a list of unique pairs of numbers
+    pairs = generate_pairs(n)
+    
+    # generate a list of unique equations
+    equations = generate_equations(pairs)
+    
+    # check if the list of equations is unique
+    if is_unique(equations):
+        return equations
+    else:
+        return ["impossible"]
+
+if __name__ == '__main__':
+    n = int(input())
+    pairs = []
+    for i in range(n):
+        a, b = map(int, input().split())
+        pairs.append((a, b))
+    equations = f1(n)
+    for equation in equations:
+        print(equation)
 

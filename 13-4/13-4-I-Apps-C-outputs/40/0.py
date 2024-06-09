@@ -1,24 +1,25 @@
 
-N, M, Q = map(int, input().split())
+def get_average_height(heights):
+    return sum(heights) / len(heights)
 
-# Initialize the class and teacher assignments
-classes = [i for i in range(1, N+1)]
-teachers = [i for i in range(1, N+1)]
+def get_final_height(heights, k):
+    average_height = get_average_height(heights)
+    final_heights = []
+    for i in range(len(heights)):
+        if heights[i] >= average_height + k:
+            final_heights.append(heights[i])
+        else:
+            final_heights.append(average_height + k)
+    return final_heights
 
-# Initialize the weekly rotation plans
-rotation_plans = []
+def main():
+    N, k = map(int, input().split())
+    heights = []
+    for i in range(N):
+        heights.append(float(input()))
+    final_heights = get_final_height(heights, k)
+    print(max(final_heights))
 
-for _ in range(Q):
-    query = list(map(int, input().split()))
-    if query[0] == 0:
-        # Add a rotation plan
-        rotation_plans.append((query[1], query[2], query[3:]))
-    else:
-        # Find the class that teacher d teaches on Tuesday of the x-th week
-        d, x = query[1], query[2]
-        class_assignment = teachers[d-1]
-        for rotation in rotation_plans:
-            if rotation[0] <= x <= rotation[1]:
-                class_assignment = (class_assignment - 1) % N + 1
-        print(class_assignment)
+if __name__ == '__main__':
+    main()
 

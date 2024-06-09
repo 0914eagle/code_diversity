@@ -1,20 +1,16 @@
 
-n = int(input())
-guardposts = []
-for i in range(4):
-    guardposts.append(list(map(int, input().split())))
+def f1(n):
+    # Your code here
+    return n
 
-# Find the guardpost with the minimum total cost
-min_cost = float('inf')
-min_post = -1
-for i in range(4):
-    cost = sum([max(n//2, guardposts[i][0]), max(n//2, guardposts[i][2])])
-    if cost < min_cost:
-        min_cost = cost
-        min_post = i+1
+def f2(n):
+    # Your code here
+    return n
 
-if min_post == -1:
-    print(-1)
-else:
-    print(min_post, n//2, n//2)
+if __name__ == '__main__':
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        print(f1(n))
+        print(f2(n))
 

@@ -1,39 +1,19 @@
 
-import sys
-input = sys.stdin.read()
-n, m, s = map(int, input.split())
-edges = []
-for i in range(m):
-    t, u, v = map(int, input.split())
-    edges.append((t, u, v))
+def get_power_of_two(n, e):
+    power_of_two = 1
+    for i in range(e):
+        power_of_two *= 2
+    return power_of_two
 
-# Plan 1: Maximize number of reachable vertices
-reachable_vertices = 1
-undirected_edges = []
-for t, u, v in edges:
-    if t == 1:
-        reachable_vertices += 1
-    elif t == 2:
-        undirected_edges.append((u, v))
+def count_numbers_with_power_of_two(n, e):
+    power_of_two = get_power_of_two(n, e)
+    count = 0
+    for i in range(n):
+        if str(i).find(str(power_of_two)) != -1:
+            count += 1
+    return count
 
-# Orient undirected edges in one direction
-for u, v in undirected_edges:
-    reachable_vertices += 1
-    print("+", end="")
-
-# Plan 2: Minimize number of reachable vertices
-reachable_vertices = 1
-undirected_edges = []
-for t, u, v in edges:
-    if t == 1:
-        reachable_vertices += 1
-    elif t == 2:
-        undirected_edges.append((u, v))
-
-# Orient undirected edges in the opposite direction
-for u, v in undirected_edges:
-    reachable_vertices += 1
-    print("-", end="")
-
-print(reachable_vertices)
+if __name__ == '__main__':
+    n, e = map(int, input().split())
+    print(count_numbers_with_power_of_two(n, e))
 

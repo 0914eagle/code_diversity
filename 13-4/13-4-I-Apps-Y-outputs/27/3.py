@@ -1,14 +1,20 @@
 
-N = int(input())
-S = input().split()
+def get_input():
+    return list(map(int, input().split()))
 
-C_0 = S.count("AC")
-C_1 = S.count("WA")
-C_2 = S.count("TLE")
-C_3 = S.count("RE")
+def get_k_smallest(arr, k):
+    return sorted(arr)[:k]
 
-print("AC x", C_0)
-print("WA x", C_1)
-print("TLE x", C_2)
-print("RE x", C_3)
+def get_k_largest(arr, k):
+    return sorted(arr, reverse=True)[:k]
+
+def solve(A, B, K):
+    arr = list(range(A, B+1))
+    k_smallest = get_k_smallest(arr, K)
+    k_largest = get_k_largest(arr, K)
+    return list(set(k_smallest + k_largest))
+
+if __name__ == '__main__':
+    A, B, K = get_input()
+    print(*solve(A, B, K))
 

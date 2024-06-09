@@ -1,41 +1,23 @@
 
-import math
-
-def get_hexagon_circumference(vertices):
-    # Calculate the distance between each pair of vertices
-    distances = []
-    for i in range(len(vertices)):
-        for j in range(i+1, len(vertices)):
-            dx = vertices[i][0] - vertices[j][0]
-            dy = vertices[i][1] - vertices[j][1]
-            distances.append(math.hypot(dx, dy))
-    
-    # Sort the distances in descending order
-    distances.sort(reverse=True)
-    
-    # Calculate the circumference of the hexagon
-    circumference = 0
-    for i in range(6):
-        circumference += distances[i]
-    
-    return circumference
+def get_min_cuts(poles, fence_length):
+    # Sort the poles in descending order
+    poles.sort(reverse=True)
+    # Initialize variables to keep track of the cuts and the fence length
+    cuts = 0
+    fence_len = 0
+    # Loop through the poles and add them to the fence until the fence is long enough
+    for pole in poles:
+        fence_len += pole
+        cuts += 1
+        if fence_len >= fence_length:
+            break
+    return cuts
 
 def main():
-    n = int(input())
-    vertices = []
-    for i in range(n):
-        x, y = map(int, input().split())
-        vertices.append((x, y))
-    
-    # Calculate the maximum circumference for each vertex
-    maxima = []
-    for i in range(n):
-        vertex = vertices[i]
-        remaining_vertices = vertices[:i] + vertices[i+1:]
-        maxima.append(get_hexagon_circumference(vertex + remaining_vertices))
-    
-    print("\n".join(map(str, maxima)))
+    K, N = map(int, input().split())
+    poles = list(map(int, input().split()))
+    print(get_min_cuts(poles, N))
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
 

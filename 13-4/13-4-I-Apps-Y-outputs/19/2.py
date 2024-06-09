@@ -1,29 +1,25 @@
 
-def find_max_distance(grid):
-    # Initialize variables
-    max_distance = 0
-    safe_houses = []
+def get_center_coordinates(points):
+    x_coords = [point[0] for point in points]
+    y_coords = [point[1] for point in points]
+    x_mean = sum(x_coords) / len(x_coords)
+    y_mean = sum(y_coords) / len(y_coords)
+    return (x_mean, y_mean)
 
-    # Find all safe houses in the grid
-    for i in range(len(grid)):
-        for j in range(len(grid[0])):
-            if grid[i][j] == "H":
-                safe_houses.append((i, j))
+def get_height(points, center):
+    heights = [point[2] for point in points]
+    return max(heights) + abs(center[0]) + abs(center[1])
 
-    # Find the nearest safe house for each spy
-    for i in range(len(grid)):
-        for j in range(len(grid[0])):
-            if grid[i][j] == "S":
-                # Find the distance to the nearest safe house
-                min_distance = float("inf")
-                for safe_house in safe_houses:
-                    distance = abs(i - safe_house[0]) + abs(j - safe_house[1])
-                    if distance < min_distance:
-                        min_distance = distance
+def main():
+    num_points = int(input())
+    points = []
+    for _ in range(num_points):
+        x, y, h = map(int, input().split())
+        points.append((x, y, h))
+    center = get_center_coordinates(points)
+    height = get_height(points, center)
+    print(center[0], center[1], height)
 
-                # Update the maximum distance
-                if min_distance > max_distance:
-                    max_distance = min_distance
-
-    return max_distance
+if __name__ == '__main__':
+    main()
 

@@ -1,35 +1,59 @@
 
-def solve(N, R, flights, F, additional_flights):
-    # Initialize a dictionary to store the cost of each flight
-    costs = {}
-    for flight in flights:
-        costs[flight[0]] = flight[2]
-    for flight in additional_flights:
-        costs[flight[0]] = flight[2]
-    
-    # Initialize a graph with the airports as nodes
-    graph = [[] for _ in range(N + 1)]
-    for flight in flights:
-        graph[flight[0]].append(flight[1])
-        graph[flight[1]].append(flight[0])
-    
-    # Use Breadth-First Search to find the shortest path between all pairs of airports
-    visited = [False] * (N + 1)
-    queue = [1]
-    visited[1] = True
+def f1(n, A, B):
+    # Initialize a graph with n vertices and no edges
+    graph = [[] for _ in range(n)]
+
+    # Add edges to the graph based on the input
+    for i in range(n):
+        l, r, t = map(int, input().split())
+        if l != -1:
+            graph[i].append(l)
+        if r != -1:
+            graph[i].append(r)
+
+    # Breadth-first search from both starting points to find the shortest path to the tower
+    queue = [(A, 0)]
+    visited = set()
     while queue:
-        node = queue.pop(0)
-        for neighbor in graph[node]:
-            if not visited[neighbor]:
-                queue.append(neighbor)
-                visited[neighbor] = True
-    
-    # Calculate the total cost of the flights
-    total_cost = 0
-    for i in range(1, N + 1):
-        for j in range(i + 1, N + 1):
-            if costs[i] + costs[j] < total_cost:
-                total_cost = costs[i] + costs[j]
-    
-    return total_cost
+        node, dist = queue.pop(0)
+        if node not in visited:
+            visited.add(node)
+            if t[node] == 1:
+                return dist
+            for neighbor in graph[node]:
+                queue.append((neighbor, dist + 1))
+
+    return -1
+
+def f2(n, A, B):
+    # Initialize a graph with n vertices and no edges
+    graph = [[] for _ in range(n)]
+
+    # Add edges to the graph based on the input
+    for i in range(n):
+        l, r, t = map(int, input().split())
+        if l != -1:
+            graph[i].append(l)
+        if r != -1:
+            graph[i].append(r)
+
+    # Breadth-first search from both starting points to find the shortest path to the tower
+    queue = [(A, 0)]
+    visited = set()
+    while queue:
+        node, dist = queue.pop(0)
+        if node not in visited:
+            visited.add(node)
+            if t[node] == 1:
+                return dist
+            for neighbor in graph[node]:
+                queue.append((neighbor, dist + 1))
+
+    return -1
+
+if __name__ == '__main__':
+    n, A, B = map(int, input().split())
+    t = [int(input()) for _ in range(n)]
+    print(f1(n, A, B))
+    print(f2(n, A, B))
 

@@ -1,11 +1,20 @@
 
-n = int(input())
-a = list(map(int, input().split()))
+def is_beautiful(w):
+    count = [0] * 26
+    for c in w:
+        count[ord(c) - ord('a')] += 1
+    for i in count:
+        if i % 2 == 1:
+            return False
+    return True
 
-result = [0] * (n + 1)
-for i in range(2, n + 1):
-    result[a[i]] += 1
+def main():
+    w = input()
+    if is_beautiful(w):
+        print("Yes")
+    else:
+        print("No")
 
-for i in range(1, n + 1):
-    print(result[i])
+if __name__ == '__main__':
+    main()
 

@@ -1,54 +1,27 @@
 
-import sys
+def longest_repeated_substring(input_string):
+    # Initialize variables
+    start_index = 0
+    end_index = 0
+    longest_substring = ""
 
-def shortest_subarray(arr, k):
-    # Initialize the shortest subarray length to the size of the array
-    shortest_len = len(arr)
-    # Initialize a set to keep track of the numbers in the array
-    nums = set(arr)
-    # Iterate through the array
-    for i in range(len(arr)):
-        # If the current number is not in the set, skip it
-        if arr[i] not in nums:
-            continue
-        # If the current number is in the set, calculate the length of the subarray starting from this index
-        subarray_len = 1
-        # Iterate through the rest of the array
-        for j in range(i+1, len(arr)):
-            # If the current number is not in the set, break the inner loop
-            if arr[j] not in nums:
-                break
-            # If the current number is in the set, increment the subarray length
-            subarray_len += 1
-        # If the subarray length is shorter than the current shortest length, update the shortest length
-        if subarray_len < shortest_len:
-            shortest_len = subarray_len
-    # Return the shortest length
-    return shortest_len
+    # Iterate through the input string
+    for i in range(len(input_string)):
+        # Check if the substring starting from the current index is already present in the input string
+        if input_string[i:].startswith(input_string[:i]):
+            # If it is, update the start and end indices and the longest substring
+            start_index = i
+            end_index = start_index + len(input_string[:i]) - 1
+            longest_substring = input_string[start_index:end_index+1]
 
-def change_value(arr, p, v):
-    # Change the value of the p-th number to v
-    arr[p-1] = v
-    return arr
+    # Return the longest substring
+    return longest_substring
 
 def main():
-    # Read the input
-    n, k, m = map(int, input().split())
-    arr = list(map(int, input().split()))
-    # Iterate through the queries
-    for i in range(m):
-        # Read the query
-        query = input().split()
-        # If the query is of the first type, change the value of the p-th number to v
-        if query[0] == "1":
-            arr = change_value(arr, int(query[1]), int(query[2]))
-        # If the query is of the second type, find the shortest subarray containing all numbers from 1 to k
-        elif query[0] == "2":
-            print(shortest_subarray(arr, k))
-        # If the query is of a different type, print an error message
-        else:
-            print("Invalid query")
+    input_string = input()
+    longest_substring = longest_repeated_substring(input_string)
+    print(longest_substring)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
 

@@ -1,23 +1,51 @@
 
-def get_signatures(num_signatures, desk_numbers):
-    # Sort the desk numbers in ascending order
-    desk_numbers.sort()
+def get_min_moves(n):
+    # Initialize a 2D array to store the number of moves required to move all figures to a cell
+    dp = [[0] * n for _ in range(n)]
+    
+    # Initialize a 2D array to store the number of figures in each cell
+    figures = [[1] * n for _ in range(n)]
+    
+    # Initialize the minimum number of moves required to move all figures to a cell
+    min_moves = 0
+    
+    # Loop through each cell in the board
+    for i in range(n):
+        for j in range(n):
+            # If the current cell contains no figures, skip it
+            if figures[i][j] == 0:
+                continue
+                
+            # Loop through the neighboring cells of the current cell
+            for di in range(-1, 2):
+                for dj in range(-1, 2):
+                    # If the neighboring cell is out of the board, skip it
+                    if i + di < 0 or i + di >= n or j + dj < 0 or j + dj >= n:
+                        continue
+                    
+                    # If the neighboring cell contains no figures, skip it
+                    if figures[i + di][j + dj] == 0:
+                        continue
+                    
+                    # If the neighboring cell contains figures, update the number of moves required to move all figures to that cell
+                    dp[i][j] += 1
+                    figures[i + di][j + dj] += figures[i][j]
+                    figures[i][j] = 0
+    
+    # Loop through each cell in the board and find the minimum number of moves required to move all figures to a cell
+    for i in range(n):
+        for j in range(n):
+            if figures[i][j] != 0:
+                min_moves += figures[i][j] * dp[i][j]
+    
+    return min_moves
 
-    # Initialize the current desk number to 1
-    current_desk = 1
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        print(get_min_moves(n))
 
-    # Initialize the number of passes to 0
-    num_passes = 0
-
-    # Loop through each desk number
-    for desk in desk_numbers:
-        # If the current desk number is less than the desk number, increment the number of passes
-        if current_desk < desk:
-            num_passes += 1
-
-        # Increment the current desk number
-        current_desk += 1
-
-    # Return the number of passes
-    return num_passes
+if __name__ == '__main__':
+    main()
 

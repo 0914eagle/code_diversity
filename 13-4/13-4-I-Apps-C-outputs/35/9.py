@@ -1,54 +1,34 @@
 
-import sys
+def longest_repeated_substring(input_string):
+    # Initialize variables
+    start_index = 0
+    end_index = 0
+    max_length = 0
+    repeated_substring = ""
 
-def shortest_subarray(arr, k):
-    # Initialize the shortest subarray length to the size of the array
-    shortest_len = len(arr)
-    # Initialize the current subarray length to 0
-    current_len = 0
-    # Initialize the set of numbers in the subarray
-    nums = set()
-    
-    for num in arr:
-        # If the number is not in the subarray, add it and increment the current subarray length
-        if num not in nums:
-            nums.add(num)
-            current_len += 1
-        # If the number is in the subarray, remove it and decrement the current subarray length
+    # Iterate through the input string
+    for i in range(len(input_string)):
+        # Check if the substring starting at position i is repeated
+        if input_string[i] in input_string[start_index:i]:
+            # If it is repeated, find the length of the repeated substring
+            repeated_substring_length = len(input_string[start_index:i])
+
+            # If the length is greater than the current maximum length, update the maximum length and the repeated substring
+            if repeated_substring_length > max_length:
+                max_length = repeated_substring_length
+                repeated_substring = input_string[start_index:i]
+
+        # If the substring starting at position i is not repeated, update the start index
         else:
-            nums.remove(num)
-            current_len -= 1
-        
-        # If the current subarray length is equal to the required length, update the shortest subarray length
-        if current_len == k:
-            shortest_len = min(shortest_len, current_len)
-        
-        # If the current subarray length is greater than the required length, break the loop
-        if current_len > k:
-            break
-    
-    # Return the shortest subarray length
-    return shortest_len
+            start_index = i + 1
+
+    # Return the longest repeated substring
+    return repeated_substring
 
 def main():
-    # Read the input data from stdin
-    n, k, m = map(int, input().split())
-    arr = list(map(int, input().split()))
-    
-    # Loop through the queries
-    for i in range(m):
-        # Read the query type and parameters
-        query = input().split()
-        qtype = int(query[0])
-        if qtype == 1:
-            # Change the value of the p-th number to v
-            p, v = map(int, query[1:])
-            arr[p-1] = v
-        elif qtype == 2:
-            # Find the length of the shortest subarray containing all numbers from 1 to k
-            print(shortest_subarray(arr, k))
-        else:
-            print("Invalid query type")
+    input_string = input()
+    repeated_substring = longest_repeated_substring(input_string)
+    print(repeated_substring)
 
 if __name__ == "__main__":
     main()

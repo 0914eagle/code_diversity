@@ -2,24 +2,39 @@
 import sys
 input = sys.stdin.read()
 
-def solve(n, m, tunnels):
-    # Initialize the danger level of each chamber as 0
-    danger_level = [0] * (n + 1)
+def get_points(input):
+    N = int(input.split('\n')[0])
+    points = []
+    for i in range(1, N+1):
+        x, y = map(int, input.split('\n')[i].split())
+        points.append((x, y))
+    return points
 
-    # Loop through each tunnel
-    for a, b, length in tunnels:
-        # Update the danger level of chamber a
-        danger_level[a] += length
-        # Update the danger level of chamber b
-        danger_level[b] += length
+def manhattan_distance(p1, p2):
+    return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
 
-    # Return the remainder of each danger level divided by 10^9 + 7
-    return [d % (10**9 + 7) for d in danger_level]
+def minimum_spanning_tree(points):
+    tree = []
+    visited = set()
+    while points:
+        min_dist = float('inf')
+        min_point = None
+        for point in points:
+            if point not in visited:
+                dist = manhattan_distance(point, min_point) if min_point else 0
+                if dist < min_dist:
+                    min_dist = dist
+                    min_point = point
+        tree.append((min_point, min_dist))
+        visited.add(min_point)
+        points.remove(min_point)
+    return tree
 
-n, m = map(int, input.split())
-tunnels = []
-for i in range(m):
-    a, b, length = map(int, input.split())
-    tunnels.append((a, b, length))
-print(*solve(n, m, tunnels))
+def main():
+    points = get_points(input)
+    tree = minimum_spanning_tree(points)
+    print(sum(dist for _, dist in tree))
+
+if __name__ == '__main__':
+    main()
 

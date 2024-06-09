@@ -1,28 +1,19 @@
 
-def solve(s):
-    amber, buff, canary = 0, 0, 0
-    for i in range(len(s)):
-        if s[i] == "A":
-            amber += 1
-        elif s[i] == "B":
-            buff += 1
-        elif s[i] == "C":
-            canary += 1
-    
-    if amber == 0 or buff == 0 or canary == 0:
-        return "No"
-    
-    if amber == 1 and buff == 1 and canary == 1:
-        return "Yes"
-    
-    if amber == 2 and buff == 1 and canary == 1:
-        return "Yes"
-    
-    if amber == 1 and buff == 2 and canary == 1:
-        return "Yes"
-    
-    if amber == 1 and buff == 1 and canary == 2:
-        return "Yes"
-    
-    return "No"
+def get_good_pairs(n, a):
+    count = 0
+    for i in range(n-1):
+        for j in range(i+1, n):
+            if a[i] & a[j] == a[i] and a[i] ^ a[j] == a[j]:
+                count += 1
+    return count
+
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        a = list(map(int, input().split()))
+        print(get_good_pairs(n, a))
+
+if __name__ == '__main__':
+    main()
 

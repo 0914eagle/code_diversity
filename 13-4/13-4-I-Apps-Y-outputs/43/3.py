@@ -1,15 +1,20 @@
 
-def is_multigram(word):
-    if len(word) <= 2:
-        return -1
+def get_min_distance(N, K, x_coordinates):
+    # Calculate the total distance covered by each robot
+    total_distance_A = 0
+    total_distance_B = 0
+    for i in range(N):
+        total_distance_A += abs(x_coordinates[i] - 0) + abs(x_coordinates[i] - K)
+        total_distance_B += abs(x_coordinates[i] - K) + abs(x_coordinates[i] - 0)
     
-    words = []
-    for i in range(1, len(word) // 2 + 1):
-        if word[:i] == word[len(word) - i:] and word[:i] not in words:
-            words.append(word[:i])
-    
-    if len(words) == 0:
-        return -1
-    else:
-        return min(words, key=len)
+    # Return the minimum total distance
+    return min(total_distance_A, total_distance_B)
+
+def main():
+    N, K = map(int, input().split())
+    x_coordinates = list(map(int, input().split()))
+    print(get_min_distance(N, K, x_coordinates))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,32 +1,37 @@
 
-n, k, m = map(int, input().split())
+def get_unconnected_houses(n, m, connections):
+    # Initialize a set to store the connected houses
+    connected_houses = set()
 
-board = [[0] * (n + 1) for _ in range(n + 1)]
+    # Loop through the connections and add the connected houses to the set
+    for a, b in connections:
+        connected_houses.add(a)
+        connected_houses.add(b)
 
-for _ in range(m):
-    x, y = map(int, input().split())
-    if board[x][y] == 0:
-        board[x][y] = 1
+    # Find the unconnected houses by subtracting the connected houses from the total number of houses
+    unconnected_houses = set(range(1, n + 1)) - connected_houses
+
+    # Return the unconnected houses as a list
+    return list(unconnected_houses)
+
+def main():
+    # Read the input
+    n, m = map(int, input().split())
+    connections = []
+    for _ in range(m):
+        a, b = map(int, input().split())
+        connections.append((a, b))
+
+    # Call the function to get the unconnected houses
+    unconnected_houses = get_unconnected_houses(n, m, connections)
+
+    # Print the output
+    if not unconnected_houses:
+        print("Connected")
     else:
-        board[x][y] = 0
+        for house in sorted(unconnected_houses):
+            print(house)
 
-def is_good():
-    for i in range(1, n + 1):
-        for j in range(1, n + 1):
-            if board[i][j] == 1 and (i != k or j != 1):
-                return False
-    return True
-
-def add_rows():
-    rows_to_add = 0
-    for i in range(1, n + 1):
-        for j in range(1, n + 1):
-            if board[i][j] == 1 and i != k and j != 1:
-                rows_to_add += 1
-    return rows_to_add
-
-if is_good():
-    print(0)
-else:
-    print(add_rows())
+if __name__ == '__main__':
+    main()
 

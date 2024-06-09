@@ -1,34 +1,39 @@
 
-def solve(m, n, p):
-    # Initialize a dictionary to store the counts of each x value
-    x_counts = {}
+def get_bus_route(n, t, bus_routes):
+    # Initialize a list to store the bus routes that arrive at time t
+    bus_routes_at_t = []
+    
+    # Iterate over the bus routes
+    for i in range(n):
+        # Get the time when the first bus of this route arrives and the interval between two buses of this route
+        s_i, d_i = bus_routes[i]
+        
+        # Check if the first bus of this route arrives at time t
+        if s_i == t:
+            # If it does, add the route to the list of bus routes that arrive at time t
+            bus_routes_at_t.append(i)
+    
+    # If there is only one bus route that arrives at time t, return it
+    if len(bus_routes_at_t) == 1:
+        return bus_routes_at_t[0]
+    
+    # If there are multiple bus routes that arrive at time t, return any of them randomly
+    return bus_routes_at_t[0]
 
-    # Iterate through the p sequence
-    for i in range(len(p)):
-        # Get the current x value
-        x = p[i]
+def main():
+    # Read the input
+    n, t = map(int, input().split())
+    bus_routes = []
+    for i in range(n):
+        s_i, d_i = map(int, input().split())
+        bus_routes.append((s_i, d_i))
+    
+    # Call the function to get the bus route that Serval will use
+    bus_route = get_bus_route(n, t, bus_routes)
+    
+    # Print the bus route
+    print(bus_route)
 
-        # If the x value is not in the dictionary, add it with a count of 1
-        if x not in x_counts:
-            x_counts[x] = 1
-        # Otherwise, increment the count
-        else:
-            x_counts[x] += 1
-
-    # Initialize a variable to store the total number of sequences
-    total_sequences = 1
-
-    # Iterate through the x values and their counts
-    for x, count in x_counts.items():
-        # Calculate the number of sequences for this x value
-        num_sequences = count ** n
-
-        # Multiply the total number of sequences by the number of sequences for this x value
-        total_sequences *= num_sequences
-
-        # Modulo the total number of sequences by 10^9 + 7 to avoid overflow
-        total_sequences %= 1000000007
-
-    # Return the total number of sequences
-    return total_sequences
+if __name__ == '__main__':
+    main()
 

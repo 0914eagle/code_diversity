@@ -1,20 +1,56 @@
 
-def get_segments(n, k, absurdity):
-    # Sort the absurdity list in descending order
-    absurdity.sort(reverse=True)
+def f1(n):
+    # calculate the number of permutations of length n
+    permutations = 1
+    for i in range(n):
+        permutations *= n - i
     
-    # Initialize the segments with the first k laws
-    segments = absurdity[:k]
+    # calculate the number of cyclic permutations of length n
+    cyclic_permutations = 0
+    for i in range(n):
+        # find the largest j such that j < i and p_j > p_i
+        j = n - 1
+        while j >= i and permutations[j] <= permutations[i]:
+            j -= 1
+        
+        # find the smallest j such that i < j <= n and p_j > p_i
+        k = n
+        while k > i and permutations[k] <= permutations[i]:
+            k -= 1
+        
+        # if j and k exist, add the number of cyclic permutations for this prefix
+        if j >= 0 and k <= n:
+            cyclic_permutations += (j + 1) * (k - j)
     
-    # Iterate through the remaining laws
-    for i in range(k, n):
-        # If the current law is more absurd than the minimum absurdity in either segment, add it to the segment with the minimum absurdity
-        if absurdity[i] > min(segments):
-            if absurdity[i] > segments[0]:
-                segments[0] = absurdity[i]
-            else:
-                segments[1] = absurdity[i]
+    return cyclic_permutations % 1000000007
+
+def f2(n):
+    # calculate the number of permutations of length n
+    permutations = 1
+    for i in range(n):
+        permutations *= n - i
     
-    # Return the segments with the minimum total absurdity
-    return segments
+    # calculate the number of cyclic permutations of length n
+    cyclic_permutations = 0
+    for i in range(n):
+        # find the largest j such that j < i and p_j > p_i
+        j = n - 1
+        while j >= i and permutations[j] <= permutations[i]:
+            j -= 1
+        
+        # find the smallest j such that i < j <= n and p_j > p_i
+        k = n
+        while k > i and permutations[k] <= permutations[i]:
+            k -= 1
+        
+        # if j and k exist, add the number of cyclic permutations for this prefix
+        if j >= 0 and k <= n:
+            cyclic_permutations += (j + 1) * (k - j)
+    
+    return cyclic_permutations % 1000000007
+
+if __name__ == '__main__':
+    n = int(input())
+    print(f1(n))
+    print(f2(n))
 

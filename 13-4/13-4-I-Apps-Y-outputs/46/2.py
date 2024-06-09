@@ -1,16 +1,18 @@
 
-def reconstruct_art_exhibit(box_heights):
-    # Sort the box heights in descending order
-    sorted_box_heights = sorted(box_heights, reverse=True)
+def get_shifted_string(s, n):
+    
+    shifted_string = ""
+    for char in s:
+        shifted_char = chr((ord(char) - ord("A") + n) % 26 + ord("A"))
+        shifted_string += shifted_char
+    return shifted_string
 
-    # Find the two tower heights
-    tower_heights = sorted_box_heights[-2:]
+def main():
+    n = int(input())
+    s = input()
+    shifted_string = get_shifted_string(s, n)
+    print(shifted_string)
 
-    # Find the three boxes in the first tower
-    first_tower = sorted_box_heights[:3]
-
-    # Find the three boxes in the second tower
-    second_tower = sorted_box_heights[3:6]
-
-    return first_tower, second_tower
+if __name__ == '__main__':
+    main()
 

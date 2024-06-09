@@ -1,25 +1,40 @@
 
-def solve(students, tutors):
-    # Calculate the distance between each student and tutor
-    distances = []
-    for student in students:
-        for tutor in tutors:
-            distance = abs(student[0] - tutor[0]) + abs(student[1] - tutor[1])
-            distances.append((student, tutor, distance))
+def f1(jacket_cost, sock_cost, money):
+    # Calculate the number of socks Chef can buy
+    num_socks = money // sock_cost
     
-    # Sort the distances in ascending order
-    distances.sort(key=lambda x: x[2])
+    # Calculate the number of pairs of socks Chef can buy
+    num_pairs = num_socks // 2
     
-    # Initialize the minimum distance traveled by the worst off student as infinity
-    min_distance = float('inf')
+    # Calculate the number of days Chef can use socks
+    num_days = num_pairs + 1
     
-    # Iterate through the sorted distances and find the minimum distance traveled by the worst off student
-    for i in range(len(distances)):
-        student, tutor, distance = distances[i]
-        if distance > min_distance:
-            break
-        min_distance = distance
+    # Check if there is a day when Chef will have only 1 clean sock
+    if num_days % 2 == 1:
+        return "Unlucky Chef"
+    else:
+        return "Lucky Chef"
+
+def f2(jacket_cost, sock_cost, money):
+    # Calculate the number of socks Chef can buy
+    num_socks = money // sock_cost
     
-    # Return the minimum distance traveled by the worst off student as the solution
-    return min_distance
+    # Calculate the number of pairs of socks Chef can buy
+    num_pairs = num_socks // 2
+    
+    # Calculate the number of days Chef can use socks
+    num_days = num_pairs + 1
+    
+    # Check if there is a day when Chef will have only 1 clean sock
+    if num_days % 2 == 1:
+        return "Unlucky Chef"
+    else:
+        return "Lucky Chef"
+
+if __name__ == '__main__':
+    jacket_cost = int(input())
+    sock_cost = int(input())
+    money = int(input())
+    print(f1(jacket_cost, sock_cost, money))
+    print(f2(jacket_cost, sock_cost, money))
 

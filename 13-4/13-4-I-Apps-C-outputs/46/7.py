@@ -1,22 +1,31 @@
 
-def decipher_sentence(s, n, dictionary):
-    # Initialize a set to store the unique words
-    unique_words = set()
+def f1(n, p, q, a, b):
+    # Calculate the total experience and money gained from working on all projects
+    total_experience = sum(a)
+    total_money = sum(b)
+    
+    # Initialize the minimum number of days needed to achieve the dream
+    min_days = 0
+    
+    # Loop through each project and calculate the number of days needed to achieve the dream
+    for i in range(n):
+        # Calculate the number of days needed to gain the required experience and money from this project
+        days_needed = (p - total_experience) / a[i]
+        days_needed += (q - total_money) / b[i]
+        
+        # Update the minimum number of days needed to achieve the dream
+        min_days = max(min_days, days_needed)
+    
+    return min_days
 
-    # Iterate through the dictionary
-    for word in dictionary:
-        # Check if the word is a substring of the sentence
-        if word in s:
-            # Add the word to the set of unique words
-            unique_words.add(word)
+def f2(...):
+    # Your code here
 
-    # Check if the set of unique words is equal to the number of words in the dictionary
-    if len(unique_words) == n:
-        # Sort the unique words in alphabetical order
-        unique_words = sorted(unique_words)
-        # Join the unique words together to form the deciphered sentence
-        deciphered_sentence = " ".join(unique_words)
-        return deciphered_sentence
-    else:
-        return "impossible"
+if __name__ == '__main__':
+    n = int(input())
+    p = int(input())
+    q = int(input())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    print(f1(n, p, q, a, b))
 

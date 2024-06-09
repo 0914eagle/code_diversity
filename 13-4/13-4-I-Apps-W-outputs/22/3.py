@@ -1,23 +1,17 @@
 
-def solve():
-    H, N = map(int, input().split())
-    spells = []
-    for i in range(N):
-        A, B = map(int, input().split())
-        spells.append((A, B))
+def get_initial_order(current_order):
+    n = len(current_order)
+    initial_order = [0] * n
+    for i in range(n):
+        initial_order[current_order[i] - 1] = i + 1
+    return initial_order
 
-    # Sort the spells in descending order of their cost
-    spells.sort(key=lambda x: x[1], reverse=True)
+def main():
+    n = int(input())
+    current_order = list(map(int, input().split()))
+    initial_order = get_initial_order(current_order)
+    print(*initial_order)
 
-    # Initialize the minimum total Magic Points to 0
-    min_points = 0
-
-    # Loop through the spells and cast them until the monster's health becomes 0 or below
-    for A, B in spells:
-        min_points += B
-        H -= A
-        if H <= 0:
-            break
-
-    return min_points
+if __name__ == '__main__':
+    main()
 

@@ -1,16 +1,28 @@
 
-def get_bus_number(m):
-    for i in range(m, 0, -1):
-        if is_bus_number(i):
-            return i
-    return None
+def get_common_divisors(arr):
+    # Find the greatest common divisor (GCD) of all elements in the array
+    gcd = arr[0]
+    for i in range(1, len(arr)):
+        gcd = get_gcd(gcd, arr[i])
+    
+    # Return the number of positive integers that divide the GCD
+    count = 0
+    for i in range(1, gcd + 1):
+        if gcd % i == 0:
+            count += 1
+    return count
 
-def is_bus_number(n):
-    for i in range(1, int(n**(1/3)) + 1):
-        if n == i**3 + (n-i**3)**3:
-            return True
-    return False
+def get_gcd(a, b):
+    if b == 0:
+        return a
+    else:
+        return get_gcd(b, a % b)
 
-m = int(input())
-print(get_bus_number(m))
+def main():
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(get_common_divisors(arr))
+
+if __name__ == '__main__':
+    main()
 

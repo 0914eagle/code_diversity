@@ -1,19 +1,22 @@
 
-def solve(s):
-    n = len(s)
-    # Initialize the longest non-decreasing subsequence array
-    lis = [1] * n
-    for i in range(1, n):
-        for j in range(i):
-            if s[i] >= s[j] and lis[i] < lis[j] + 1:
-                lis[i] = lis[j] + 1
-    # Find the maximum length of the longest non-decreasing subsequence
-    max_lis = max(lis)
-    # Initialize the binary string with all zeros
-    t = "0" * n
-    # Fill in the ones in the binary string
-    for i in range(n):
-        if lis[i] == max_lis:
-            t = t[:i] + "1" + t[i+1:]
-    return t
+def knight_moves(x, y):
+    # Initialize a dictionary to store the number of ways to reach each square
+    ways = {(0, 0): 1}
+    
+    # Loop through all possible positions of the knight
+    for i in range(x+1):
+        for j in range(y+1):
+            # If the current position is not the origin and has not been visited before, mark it as visited and add its neighbors to the queue
+            if (i, j) != (0, 0) and (i, j) not in ways:
+                ways[(i, j)] = ways[(i-1, j+2)] + ways[(i-2, j+1)]
+    
+    # Return the number of ways to reach the target position, modulo 10^9 + 7
+    return ways[(x, y)] % 1000000007
+
+def main():
+    x, y = map(int, input().split())
+    print(knight_moves(x, y))
+
+if __name__ == '__main__':
+    main()
 

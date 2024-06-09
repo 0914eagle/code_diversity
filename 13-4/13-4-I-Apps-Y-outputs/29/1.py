@@ -1,12 +1,23 @@
 
-A, B, and C are the three given integers.
+def get_input():
+    a = int(input())
+    op = input()
+    b = int(input())
+    return a, op, b
 
-if A == B and B != C:
-    print("Yes")
-elif A == C and B != A:
-    print("Yes")
-elif B == C and A != B:
-    print("Yes")
-else:
-    print("No")
+def calculate(a, op, b):
+    if op == '+':
+        return a + b
+    elif op == '*':
+        return a * b
+    else:
+        raise ValueError("Invalid operation")
+
+def main():
+    a, op, b = get_input()
+    result = calculate(a, op, b)
+    print(result)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,28 +1,20 @@
 
-import math
-
-def solve(n, p, s, v):
-    # Calculate the time it takes for the algorithm to run
-    time_algorithm = s * (math.log(n) ** (c * math.sqrt(2))) / (p * 1e9)
+def get_bottles(shipment_volume, large_bottle_volume, small_bottle_volume):
+    if large_bottle_volume < small_bottle_volume:
+        return "Impossible"
     
-    # Calculate the time it takes for Miroslava to complete the tour
-    time_tour = s * (1 + 1 / c) / v
+    large_bottles = shipment_volume // large_bottle_volume
+    small_bottles = (shipment_volume - large_bottles * large_bottle_volume) // small_bottle_volume
     
-    # Calculate the total time it takes for Miroslava to run the algorithm and complete the tour
-    time_total = time_algorithm + time_tour
+    if large_bottles + small_bottles < shipment_volume:
+        large_bottles += 1
     
-    # Calculate the value of c that gives the optimal time
-    c = (time_total / time_algorithm) - 1
-    
-    return time_total, c
+    return large_bottles, small_bottles
 
-n = 10
-p = 8.9
-s = 40075000
-v = 272.1
+def main():
+    shipment_volume, large_bottle_volume, small_bottle_volume = map(int, input().split())
+    print(*get_bottles(shipment_volume, large_bottle_volume, small_bottle_volume))
 
-time_total, c = solve(n, p, s, v)
-
-print(time_total)
-print(c)
+if __name__ == '__main__':
+    main()
 

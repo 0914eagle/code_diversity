@@ -1,18 +1,34 @@
 
-def solve(problems, drinks):
-    # Initialize a dictionary to store the time it takes to solve each problem
-    time_to_solve = {}
+def get_sequences():
+    k = int(input())
+    sequences = []
+    for i in range(k):
+        n = int(input())
+        sequence = list(map(int, input().split()))
+        sequences.append(sequence)
+    return sequences
 
-    # Iterate over each problem and calculate the time it takes to solve it
-    for problem in problems:
-        time_to_solve[problem] = problems[problem]
+def find_solution(sequences):
+    for i in range(len(sequences)):
+        for j in range(i+1, len(sequences)):
+            if sequences[i] == sequences[j]:
+                continue
+            for x in range(len(sequences[i])):
+                for y in range(len(sequences[j])):
+                    if sequences[i][x] + sequences[j][y] == 0:
+                        return i+1, x+1, j+1, y+1
+    return -1, -1, -1, -1
 
-    # Iterate over each drink and calculate the time it takes to solve all problems if Joisino takes that drink
-    for drink in drinks:
-        for problem in problems:
-            if problem in drinks[drink]:
-                time_to_solve[problem] += drinks[drink][problem]
+def print_solution(solution):
+    if solution[0] == -1:
+        print("NO")
+    else:
+        print("YES")
+        print(solution[0], solution[1])
+        print(solution[2], solution[3])
 
-    # Return the time it takes to solve all problems for each drink
-    return [time_to_solve[problem] for problem in problems]
+if __name__ == '__main__':
+    sequences = get_sequences()
+    solution = find_solution(sequences)
+    print_solution(solution)
 

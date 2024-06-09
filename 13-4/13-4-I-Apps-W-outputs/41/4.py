@@ -1,21 +1,19 @@
 
-def solve(m, n, p):
-    # Initialize a dictionary to store the counts of each x sequence
-    counts = {}
+def find_bus_route(t, bus_routes):
+    # Find the first bus route that has a bus arriving at or after the given time t
+    for i, route in enumerate(bus_routes):
+        if route[0] <= t:
+            return i + 1
+    return -1
 
-    # Iterate over each p value
-    for i in range(len(p)):
-        # Get the current p value and the corresponding x value
-        current_p = p[i]
-        current_x = i + 1
+def main():
+    n, t = map(int, input().split())
+    bus_routes = []
+    for i in range(n):
+        s, d = map(int, input().split())
+        bus_routes.append((s, d))
+    print(find_bus_route(t, bus_routes))
 
-        # If the current x value is not already in the dictionary, add it with a count of 1
-        if current_x not in counts:
-            counts[current_x] = 1
-        # Otherwise, increment the count of the current x value
-        else:
-            counts[current_x] += 1
-
-    # Return the number of unique x sequences that could have generated the p sequence
-    return len(counts)
+if __name__ == '__main__':
+    main()
 

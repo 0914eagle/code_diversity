@@ -1,27 +1,40 @@
 
-def reconstruct_painting(N, K, M, commands):
-    # Initialize the canvas with all cells set to white (1)
-    canvas = [[1] * N for _ in range(N)]
+def is_valid_string(s):
+    if len(s) != n:
+        return False
+    for i in range(n):
+        if s[i] not in ["a", "b", "c"]:
+            return False
+    for i in range(n - 1):
+        if s[i] == s[i + 1]:
+            return False
+    for i in range(n - 2):
+        if s[i] == "c" and s[i + 1] == "a":
+            return False
+    return True
 
-    # Iterate through the commands and apply them to the canvas
-    for command in commands:
-        if command.startswith("PAINT"):
-            # Extract the color and coordinates of the rectangle from the command
-            color, x1, y1, x2, y2 = map(int, command.split()[1:])
+def find_string():
+    for s in itertools.permutations("abc", n):
+        if is_valid_string(s):
+            return "".join(s)
+    return None
 
-            # Iterate over the cells in the rectangle and paint them with the chosen color
-            for x in range(x1, x2 + 1):
-                for y in range(y1, y2 + 1):
-                    canvas[x][y] = color
+def main():
+    n, m = map(int, input().split())
+    edges = []
+    for i in range(m):
+        u, v = map(int, input().split())
+        edges.append((u, v))
+    if not is_valid_graph(edges):
+        print("No")
+    else:
+        s = find_string()
+        if s:
+            print("Yes")
+            print(s)
+        else:
+            print("No")
 
-        elif command.startswith("SAVE"):
-            # Save the current state of the canvas
-            saved_canvas = canvas.copy()
-
-        elif command.startswith("LOAD"):
-            # Load the saved state of the canvas
-            canvas = saved_canvas.copy()
-
-    # Return the final state of the canvas
-    return canvas
+if __name__ == '__main__':
+    main()
 

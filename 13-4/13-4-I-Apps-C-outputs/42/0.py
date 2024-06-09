@@ -1,51 +1,34 @@
 
-def get_min_path_length(n, k):
-    # Initialize a dictionary to store the shortest path length from each fragment to the assembly node
-    shortest_path_length = {}
+def get_max_distinct_ranks(N, K, a, b):
+    # Initialize a dictionary to store the ranks
+    ranks = {}
+    
+    # Loop through each assistant and their measurements
+    for i in range(N):
+        # Check if the assistant is already in the ranks dictionary
+        if i not in ranks:
+            # If not, add it to the ranks dictionary with a rank of 1
+            ranks[i] = 1
+        else:
+            # If the assistant is already in the ranks dictionary, check if it can be ranked higher
+            can_be_ranked_higher = False
+            for j in range(N):
+                if i != j and (a[i] + K < a[j] or b[i] + K < b[j]):
+                    can_be_ranked_higher = True
+                    break
+            if can_be_ranked_higher:
+                # If the assistant can be ranked higher, increment its rank
+                ranks[i] += 1
+    
+    # Return the maximum number of distinct ranks
+    return max(ranks.values())
 
-    # Loop through each fragment
-    for i in range(n):
-        # Initialize the shortest path length for this fragment to infinity
-        shortest_path_length[i] = float('inf')
+def main():
+    N, K = map(int, input().split())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    print(get_max_distinct_ranks(N, K, a, b))
 
-        # Loop through each node in the system
-        for j in range(1, k[i]! + 1):
-            # If the current node is the fragment's location, set the shortest path length to 0
-            if j == k[i]!:
-                shortest_path_length[i] = 0
-                break
-
-            # If the current node is not the fragment's location, find the shortest path length from the current node to the fragment's location
-            else:
-                # Find the lowest prime divisor of the current node
-                prime_divisor = get_lowest_prime_divisor(j)
-
-                # If the current node is not a prime number, find the shortest path length from the current node to the fragment's location through the prime divisor
-                if prime_divisor != 1:
-                    shortest_path_length[i] = min(shortest_path_length[i], shortest_path_length.get(prime_divisor, float('inf')) + 1)
-
-        # If the shortest path length for this fragment is still infinity, set it to 0
-        if shortest_path_length[i] == float('inf'):
-            shortest_path_length[i] = 0
-
-    # Return the sum of the shortest path lengths for all fragments
-    return sum(shortest_path_length.values())
-
-def get_lowest_prime_divisor(n):
-    # Initialize the lowest prime divisor as 1
-    lowest_prime_divisor = 1
-
-    # Loop through each prime number less than or equal to the square root of the input number
-    for i in range(2, int(n**0.5) + 1):
-        # If the input number is divisible by the current prime number, set the lowest prime divisor as the current prime number
-        if n % i == 0:
-            lowest_prime_divisor = i
-            break
-
-    # Return the lowest prime divisor
-    return lowest_prime_divisor
-
-n = int(input())
-k = list(map(int, input().split()))
-print(get_min_path_length(n, k))
+if __name__ == '__main__':
+    main()
 

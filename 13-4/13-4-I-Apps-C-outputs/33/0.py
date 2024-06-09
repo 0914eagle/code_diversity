@@ -1,23 +1,54 @@
 
-def solve(a, b, x):
-    # Calculate the dot product of a and b to get the matrix c
-    c = [[a[i] * b[j] for j in range(len(b))] for i in range(len(a))]
-    
-    # Initialize the maximum area and the corresponding indices
-    max_area = 0
-    x1, x2, y1, y2 = 0, 0, 0, 0
-    
-    # Iterate through all possible pairs of indices
-    for i in range(len(a)):
-        for j in range(len(b)):
-            # Calculate the area of the current subrectangle
-            area = (i - x1 + 1) * (j - y1 + 1)
-            
-            # If the area is greater than the maximum area, update the maximum area and the corresponding indices
-            if area > max_area and sum(sum(c[x1:i+1], [])) <= x:
-                max_area = area
-                x2, y2 = i, j
-    
-    # Return the maximum area
-    return max_area
+def f1(N, M, ps):
+    # Initialize the probability of Anthony winning
+    prob_win = 1
+
+    # Loop through each round
+    for i in range(N + M - 1):
+        # Calculate the probability of Anthony winning this round
+        prob_win_round = ps[i]
+
+        # Calculate the probability of Anthony losing this round
+        prob_lose_round = 1 - ps[i]
+
+        # Calculate the probability of Anthony winning the next round
+        prob_win_next = prob_win_round * prob_win + prob_lose_round * (1 - prob_win)
+
+        # Update the probability of Anthony winning
+        prob_win = prob_win_next
+
+    # Return the probability of Anthony winning the game
+    return prob_win
+
+def f2(N, M, ps):
+    # Initialize the probability of Anthony winning
+    prob_win = 1
+
+    # Loop through each round
+    for i in range(N + M - 1):
+        # Calculate the probability of Anthony winning this round
+        prob_win_round = ps[i]
+
+        # Calculate the probability of Anthony losing this round
+        prob_lose_round = 1 - ps[i]
+
+        # Calculate the probability of Anthony winning the next round
+        prob_win_next = prob_win_round * prob_win + prob_lose_round * (1 - prob_win)
+
+        # Update the probability of Anthony winning
+        prob_win = prob_win_next
+
+        # Calculate the probability of Anthony winning the game
+        prob_game_win = prob_win
+
+    # Return the probability of Anthony winning the game
+    return prob_game_win
+
+if __name__ == '__main__':
+    N, M = map(int, input().split())
+    ps = []
+    for i in range(N + M - 1):
+        ps.append(float(input()))
+    print(f1(N, M, ps))
+    print(f2(N, M, ps))
 

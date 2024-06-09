@@ -1,33 +1,42 @@
 
-def get_min_waiting_time(num_dogs, num_bowls, feeding_times):
-    # Initialize a list to store the feeding times for each dog
-    dog_feeding_times = []
-    for i in range(num_dogs):
-        dog_feeding_times.append([])
-    
-    # Initialize a list to store the feeding times for each bowl
-    bowl_feeding_times = [0] * num_bowls
-    
-    # Loop through each dog and their feeding times
-    for i in range(num_dogs):
-        for j in range(num_bowls):
-            # If the current dog has not finished eating from the current bowl
-            if feeding_times[i][j] > 0:
-                # Add the current dog to the list of dogs feeding from the current bowl
-                dog_feeding_times[j].append(i)
-                # Subtract the current dog's feeding time from the total feeding time for the current bowl
-                bowl_feeding_times[j] -= feeding_times[i][j]
-    
-    # Initialize a variable to store the minimum waiting time
-    min_waiting_time = 0
-    
-    # Loop through each dog and their feeding times
-    for i in range(num_dogs):
-        # If the current dog has not finished eating from all bowls
-        if len(dog_feeding_times[i]) < num_bowls:
-            # Add the current dog's feeding time to the minimum waiting time
-            min_waiting_time += feeding_times[i][-1]
-    
-    # Return the minimum waiting time
-    return min_waiting_time
+import itertools
+
+def f1(N, M, roads):
+    # Initialize a graph with N nodes and 0 edges
+    graph = [[] for _ in range(N)]
+
+    # Add edges to the graph
+    for road in roads:
+        graph[road[0] - 1].append(road[1] - 1)
+
+    # Find all possible paths in the graph
+    paths = []
+    for path in itertools.product(*graph):
+        if path[0] == 0 and path[-1] == 1:
+            paths.append(path)
+
+    # Return the number of distinct paths
+    return len(set(map(tuple, paths)))
+
+def f2(N, M, roads):
+    # Initialize a graph with N nodes and 0 edges
+    graph = [[] for _ in range(N)]
+
+    # Add edges to the graph
+    for road in roads:
+        graph[road[0] - 1].append(road[1] - 1)
+
+    # Find all possible cycles in the graph
+    cycles = []
+    for cycle in itertools.product(*graph):
+        if cycle[0] == 0 and cycle[-1] == 1 and len(set(cycle)) == N:
+            cycles.append(cycle)
+
+    # Return the number of distinct cycles
+    return len(set(map(tuple, cycles)))
+
+if __name__ == '__main__':
+    N, M = map(int, input().split())
+    roads = [tuple(map(int, input().split())) for _ in range(M)]
+    print(f2(N, M, roads))
 

@@ -1,9 +1,25 @@
 
-def get_triplets_count(k, s):
-    count = 0
-    for i in range(k+1):
-        for j in range(i+1):
-            if i+j == s:
-                count += 1
-    return count
+def get_max_battles(n, a, e):
+    # Sort the list of ships sent by Finni in descending order
+    e.sort(reverse=True)
+    # Initialize the number of battles won by Atli to 0
+    battles_won = 0
+    # Iterate through the list of ships sent by Finni
+    for i in range(n):
+        # If Atli has more ships than Finni, win the battle and gain control of the solar system
+        if a >= e[i]:
+            battles_won += 1
+            a -= e[i]
+        # Otherwise, Atli loses the battle and Finni gains control of the solar system
+        else:
+            break
+    return battles_won
+
+def main():
+    n, a = map(int, input().split())
+    e = list(map(int, input().split()))
+    print(get_max_battles(n, a, e))
+
+if __name__ == '__main__':
+    main()
 

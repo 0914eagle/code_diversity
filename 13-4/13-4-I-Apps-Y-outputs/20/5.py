@@ -1,22 +1,17 @@
 
-def get_flavor(apples, apple_to_eat):
-    flavor = 0
-    for i in range(len(apples)):
-        if i != apple_to_eat:
-            flavor += apples[i]
-    return flavor
+import xml.etree.ElementTree as ET
 
-n, l = map(int, input().split())
-apples = list(map(int, input().split()))
+def get_max_level(xml_string):
+    root = ET.fromstring(xml_string)
+    return get_level(root)
 
-min_diff = 101
-optimal_apple = 0
-for i in range(n):
-    flavor = get_flavor(apples, i)
-    diff = abs(flavor - (sum(apples) - apples[i]))
-    if diff < min_diff:
-        min_diff = diff
-        optimal_apple = i
+def get_level(element):
+    level = 0
+    for child in element:
+        level = max(level, get_level(child) + 1)
+    return level
 
-print(get_flavor(apples, optimal_apple))
+if __name__ == '__main__':
+    xml_string = input()
+    print(get_max_level(xml_string))
 

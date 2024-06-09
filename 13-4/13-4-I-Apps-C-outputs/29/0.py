@@ -1,22 +1,51 @@
 
-import itertools
+def get_palindromes(s):
+    # Initialize an empty list to store the palindromes
+    palindromes = []
+    
+    # Loop through each character in the string
+    for i in range(len(s)):
+        # Check if the character is a palindrome
+        if s[i] == s[len(s) - i - 1]:
+            # If it is a palindrome, add it to the list of palindromes
+            palindromes.append(s[i])
+    
+    # Return the list of palindromes
+    return palindromes
 
-def count_paintings(N, S1, S2):
-    # Initialize a dictionary to store the number of paintings for each domino
-    paintings = {}
-    for domino in itertools.product("RGB", repeat=N):
-        paintings[domino] = 0
+def get_min_palindromes(s):
+    # Get all the palindromes in the string
+    palindromes = get_palindromes(s)
+    
+    # Initialize a variable to store the minimum number of palindromes
+    min_palindromes = len(palindromes)
+    
+    # Loop through each palindrome and check if it is a prefix of the string
+    for palindrome in palindromes:
+        # Check if the palindrome is a prefix of the string
+        if s.startswith(palindrome):
+            # If it is a prefix, remove the prefix from the string and recurse
+            min_palindromes = min(min_palindromes, get_min_palindromes(s[len(palindrome):]))
+    
+    # Return the minimum number of palindromes
+    return min_palindromes
 
-    # Iterate over the dominoes in S1 and S2 and increment the number of paintings for each domino
-    for i in range(N):
-        for j in range(i+1, N):
-            if S1[i] != S1[j] and S2[i] != S2[j]:
-                paintings[(S1[i], S2[i])] += 1
-                paintings[(S1[j], S2[j])] += 1
-            elif S1[i] != S1[j] or S2[i] != S2[j]:
-                paintings[(S1[i], S2[i])] += 1
-                paintings[(S1[j], S2[j])] += 1
+def main():
+    # Read the input string
+    s = input()
+    
+    # Get the minimum number of palindromes
+    min_palindromes = get_min_palindromes(s)
+    
+    # Print the minimum number of palindromes
+    print(min_palindromes)
+    
+    # Get the palindromes
+    palindromes = get_palindromes(s)
+    
+    # Print the palindromes
+    print(" ".join(palindromes))
 
-    # Return the sum of the number of paintings for each domino, modulo 1000000007
-    return sum(paintings.values()) % 1000000007
+if __name__ == '__main__':
+    main()
 

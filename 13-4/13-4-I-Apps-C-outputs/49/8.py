@@ -1,40 +1,30 @@
 
-import math
-
-def get_hexagon_circumference(vertices):
-    # Calculate the distance between each pair of vertices
-    distances = []
-    for i in range(len(vertices)):
-        for j in range(i+1, len(vertices)):
-            dx = vertices[i][0] - vertices[j][0]
-            dy = vertices[i][1] - vertices[j][1]
-            distances.append(math.sqrt(dx**2 + dy**2))
-    
-    # Sort the distances in descending order
-    distances.sort(reverse=True)
-    
-    # Calculate the circumference of the hexagon
-    circumference = 0
-    for i in range(6):
-        circumference += distances[i]
-    
-    return circumference
+def get_min_cuts(poles, fence_length):
+    # Sort the poles in descending order
+    poles.sort(reverse=True)
+    # Initialize variables to keep track of the cuts and the fence length
+    cuts = 0
+    fence_len = 0
+    # Loop through the poles and check if they are long enough to be used as fence posts
+    for pole in poles:
+        if fence_len + pole <= fence_length:
+            # If the pole is long enough, add it to the fence length and increment the cuts
+            fence_len += pole
+            cuts += 1
+        else:
+            # If the pole is not long enough, break the loop because the remaining poles will not be long enough
+            break
+    # Return the minimum number of cuts needed to build the fence
+    return cuts
 
 def main():
-    n = int(input())
-    vertices = []
-    for i in range(n):
-        x, y = map(int, input().split())
-        vertices.append((x, y))
-    
-    circumferences = []
-    for i in range(n):
-        vertex = vertices[i]
-        vertices_copy = vertices[:i] + vertices[i+1:]
-        circumferences.append(get_hexagon_circumference(vertices_copy + [vertex]))
-    
-    for circumference in circumferences:
-        print(circumference)
+    # Read the input data
+    K, N = map(int, input().split())
+    poles = list(map(int, input().split()))
+    # Call the function to get the minimum number of cuts
+    cuts = get_min_cuts(poles, N)
+    # Print the output
+    print(cuts)
 
 if __name__ == '__main__':
     main()

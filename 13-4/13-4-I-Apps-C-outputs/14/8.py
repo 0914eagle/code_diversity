@@ -1,24 +1,37 @@
 
-def solve(N, E, roads):
-    # Initialize the solution matrix
-    solution = [[0] * E for _ in range(N)]
-
-    # Loop through each road
-    for i in range(E):
-        # Get the cities connected by the road
-        city1, city2 = roads[i]
-
-        # If the cities have not been assigned yet, assign them to the first chain
-        if solution[city1][0] == 0:
-            solution[city1][0] = 1
-        if solution[city2][0] == 0:
-            solution[city2][0] = 2
-
-        # If the cities have already been assigned, check if the current road is consistent with the assignment
+def get_election_outcome(n_candidates, n_seats, n_citizens, n_voted, votes):
+    # Initialize the election outcome for each candidate
+    election_outcome = [0] * n_candidates
+    
+    # Iterate through the votes given by the citizens who have voted
+    for i in range(n_voted):
+        # Get the candidate for which the current citizen has voted
+        candidate = votes[i]
+        
+        # Check if the candidate has already been elected
+        if election_outcome[candidate - 1] == 1:
+            continue
+        
+        # Check if the candidate has a chance to be elected
+        if n_voted + 1 >= n_seats:
+            election_outcome[candidate - 1] = 2
         else:
-            if solution[city1][0] == solution[city2][0]:
-                return "0"
+            election_outcome[candidate - 1] = 1
+    
+    # Return the election outcome for each candidate
+    return election_outcome
 
-    # If we reach this point, the solution is valid
-    return ["1" if solution[i][0] == 1 else "2" for i in range(N)]
+def main():
+    # Read the input data
+    n_candidates, n_seats, n_citizens, n_voted = map(int, input().split())
+    votes = list(map(int, input().split()))
+    
+    # Get the election outcome for each candidate
+    election_outcome = get_election_outcome(n_candidates, n_seats, n_citizens, n_voted, votes)
+    
+    # Print the election outcome
+    print(*election_outcome)
+
+if __name__ == '__main__':
+    main()
 

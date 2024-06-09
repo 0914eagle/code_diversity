@@ -1,20 +1,31 @@
 
-import math
+def is_handsome(n):
+    n_str = str(n)
+    for i in range(len(n_str) - 1):
+        if n_str[i] == n_str[i + 1]:
+            return False
+    return True
 
-def get_max_expected_profit(x, p):
-    # Calculate the probability of losing and winning
-    losing_prob = 1 - p
-    winning_prob = p
+def get_closest_handsome_numbers(n):
+    n_str = str(n)
+    for i in range(len(n_str) - 1):
+        if n_str[i] == n_str[i + 1]:
+            break
+    else:
+        return [n]
 
-    # Calculate the expected value of each bet
-    expected_value = winning_prob * 2 - losing_prob
+    left = int(n_str[:i] + n_str[i + 1])
+    right = int(n_str[:i + 1] + n_str[i + 2])
+    if abs(left - n) < abs(right - n):
+        return [left, right]
+    else:
+        return [right, left]
 
-    # Calculate the maximum expected profit
-    max_expected_profit = x / 100 * expected_value
+def main():
+    n = int(input())
+    handsome_numbers = get_closest_handsome_numbers(n)
+    print(*handsome_numbers)
 
-    return max_expected_profit
-
-x = 20
-p = 49.9
-print(get_max_expected_profit(x, p))
+if __name__ == '__main__':
+    main()
 

@@ -1,22 +1,32 @@
 
-def solve(gigs, venues, roads, time):
-    # Initialize a dictionary to store the maximum amount of cryptocents that can be earned at each venue
-    max_cryptocents = {venue: 0 for venue in range(1, venues + 1)}
+import sys
 
-    # Loop through each gig and calculate the maximum amount of cryptocents that can be earned by playing it
-    for gig in gigs:
-        venue, start_time, end_time, cryptocents = gig
-        max_cryptocents[venue] = max(max_cryptocents[venue], cryptocents)
+def get_input():
+    N, M = map(int, input().split())
+    conditions = []
+    for _ in range(M):
+        l, r, x = map(int, input().split())
+        conditions.append((l, r, x))
+    return N, M, conditions
 
-    # Initialize a list to store the maximum amount of cryptocents that can be earned by traveling between venues
-    travel_cryptocents = [0] * (venues + 1)
+def count_ways(N, M, conditions):
+    # Initialize the number of ways to paint each square
+    ways = [1] * (N + 1)
 
-    # Loop through each road and calculate the maximum amount of cryptocents that can be earned by traveling between two venues
-    for road in roads:
-        venue1, venue2, time = road
-        travel_cryptocents[venue1] = max(travel_cryptocents[venue1], max_cryptocents[venue2] - max_cryptocents[venue1])
-        travel_cryptocents[venue2] = max(travel_cryptocents[venue2], max_cryptocents[venue1] - max_cryptocents[venue2])
+    # Loop through each condition
+    for l, r, x in conditions:
+        # Loop through each square in the range [l, r]
+        for i in range(l, r + 1):
+            # Update the number of ways to paint the square
+            ways[i] = (ways[i - 1] + ways[i + 1]) % 1000000007
 
-    # Return the maximum amount of cryptocents that can be earned by playing gigs and traveling between venues
-    return max(max_cryptocents[1], travel_cryptocents[1])
+    # Return the number of ways to paint the last square
+    return ways[-1]
+
+def main():
+    N, M, conditions = get_input()
+    print(count_ways(N, M, conditions))
+
+if __name__ == '__main__':
+    main()
 

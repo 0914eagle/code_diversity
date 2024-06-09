@@ -1,48 +1,19 @@
 
-import sys
-input = sys.stdin.read()
-n, m, s = map(int, input.split())
-edges = []
-for i in range(m):
-    t, u, v = map(int, input.split())
-    edges.append((t, u, v))
+def get_power_of_two(n):
+    power = 1
+    while power <= n:
+        power *= 2
+    return power
 
-# Plan 1: Maximize the number of reachable vertices
-reachable = [False] * (n + 1)
-queue = [s]
-while queue:
-    vertex = queue.pop(0)
-    if not reachable[vertex]:
-        reachable[vertex] = True
-        queue.extend([u for t, u, v in edges if t == 1 and v == vertex])
-        queue.extend([u for t, u, v in edges if t == 2 and (u == vertex or v == vertex)])
+def count_powers_of_two(n, e):
+    power = get_power_of_two(e)
+    count = 0
+    for i in range(n+1):
+        if str(i).find(str(power)) != -1:
+            count += 1
+    return count
 
-plan1 = "+-" * (n - 1)
-for t, u, v in edges:
-    if t == 2 and not reachable[u] and reachable[v]:
-        plan1 = plan1[:2 * (u - 1)] + "+" + plan1[2 * (u - 1) + 1:]
-    elif t == 2 and reachable[u] and not reachable[v]:
-        plan1 = plan1[:2 * (v - 1)] + "-" + plan1[2 * (v - 1) + 1:]
-
-# Plan 2: Minimize the number of reachable vertices
-reachable = [False] * (n + 1)
-queue = [s]
-while queue:
-    vertex = queue.pop(0)
-    if not reachable[vertex]:
-        reachable[vertex] = True
-        queue.extend([u for t, u, v in edges if t == 1 and v == vertex])
-        queue.extend([u for t, u, v in edges if t == 2 and (u == vertex or v == vertex)])
-
-plan2 = "+-" * (n - 1)
-for t, u, v in edges:
-    if t == 2 and reachable[u] and not reachable[v]:
-        plan2 = plan2[:2 * (v - 1)] + "+" + plan2[2 * (v - 1) + 1:]
-    elif t == 2 and not reachable[u] and reachable[v]:
-        plan2 = plan2[:2 * (u - 1)] + "-" + plan2[2 * (u - 1) + 1:]
-
-print(len(reachable) - 1)
-print(plan1)
-print(len(reachable) - 1)
-print(plan2)
+if __name__ == '__main__':
+    n, e = map(int, input().split())
+    print(count_powers_of_two(n, e))
 

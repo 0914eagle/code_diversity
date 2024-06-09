@@ -1,30 +1,40 @@
 
-import sys
+def get_graph(n, f, w):
+    graph = {}
+    for i in range(n):
+        graph[i] = []
+        for j in range(n):
+            if f[i] == j:
+                graph[i].append((j, w[i]))
+    return graph
 
-def get_gis_permutations(g, n):
-    # Initialize the permutation with the first element of g
-    permutation = [g[0]]
-    
-    # Iterate over the remaining elements of g
-    for i in range(1, len(g)):
-        # Find the leftmost element in the permutation that is greater than the current element of g
-        index = next((j for j in range(i, n) if permutation[j] > g[i]), None)
-        
-        # If such an element exists, insert it into the permutation
-        if index is not None:
-            permutation.insert(index, g[i])
-        # Otherwise, the permutation is not possible, so return 0
-        else:
-            return 0
-    
-    # The permutation is possible, so return the number of ways to permute the elements
-    return math.factorial(n) // math.factorial(n - len(g))
+def bfs(graph, start, k):
+    queue = [(start, 0)]
+    visited = set()
+    while queue:
+        vertex, distance = queue.pop(0)
+        if vertex not in visited:
+            visited.add(vertex)
+            if distance == k:
+                return vertex
+            for neighbor, weight in graph[vertex]:
+                queue.append((neighbor, distance + weight))
+    return -1
 
-def main():
-    n, l = map(int, input().split())
-    g = list(map(int, input().split()))
-    print(get_gis_permutations(g, n))
+def solve(n, k, f, w):
+    graph = get_graph(n, f, w)
+    result = []
+    for i in range(n):
+        vertex = bfs(graph, i, k)
+        if vertex != -1:
+            result.append((i, vertex))
+    return result
 
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    f = list(map(int, input().split()))
+    w = list(map(int, input().split()))
+    result = solve(n, k, f, w)
+    for i, j in result:
+        print(i, j)
 

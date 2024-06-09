@@ -1,26 +1,28 @@
 
-import itertools
+def get_permutations(n):
+    permutations = []
+    for i in range(1, n+1):
+        permutations.append(i)
+    return permutations
 
-def get_combinations(switches, bulbs):
-    num_combinations = 0
-    for combination in itertools.product([0, 1], repeat=len(switches)):
-        is_lighted = True
-        for i in range(len(bulbs)):
-            num_switches_on = 0
-            for j in range(len(bulbs[i])):
-                if combination[bulbs[i][j] - 1] == 1:
-                    num_switches_on += 1
-            if num_switches_on % 2 != bulbs[i][-1]:
-                is_lighted = False
-                break
-        if is_lighted:
-            num_combinations += 1
-    return num_combinations
+def get_lexicographically_smallest_permutations(permutations):
+    lexicographically_smallest_permutations = []
+    for permutation in permutations:
+        lexicographically_smallest_permutations.append(permutation)
+    return lexicographically_smallest_permutations
+
+def get_absolute_difference(a, b):
+    return abs(a - b)
+
+def main():
+    n = int(input())
+    permutations = get_permutations(n)
+    lexicographically_smallest_permutations = get_lexicographically_smallest_permutations(permutations)
+    a = lexicographically_smallest_permutations.index(input()) + 1
+    b = lexicographically_smallest_permutations.index(input()) + 1
+    absolute_difference = get_absolute_difference(a, b)
+    print(absolute_difference)
 
 if __name__ == '__main__':
-    switches, bulbs = [], []
-    for _ in range(int(input())):
-        switches.append(list(map(int, input().split())))
-        bulbs.append(list(map(int, input().split())))
-    print(get_combinations(switches, bulbs))
+    main()
 

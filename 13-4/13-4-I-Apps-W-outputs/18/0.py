@@ -1,30 +1,34 @@
 
-def solve(a, b, w, x, c):
-    # Initialize variables
-    arthur_time = 0
-    alexander_time = 0
-    arthur_ahead = False
+def get_players(n):
+    return [i for i in range(1, n+1)]
 
-    # Loop until Alexander gets ahead of Arthur
-    while not arthur_ahead:
-        # Arthur's operation
-        if b >= x:
-            b -= x
-        else:
-            a -= 1
-            b = w - (x - b)
+def get_playing_fields(m, n):
+    fields = []
+    for i in range(m):
+        a = i % n + 1
+        b = (i + 1) % n + 1
+        fields.append((a, b))
+    return fields
 
-        # Alexander's operation
-        c -= 1
+def get_next_players(players, n):
+    next_players = []
+    for i in range(n):
+        next_players.append((players[i] + 1) % n + 1)
+    return next_players
 
-        # Check if Alexander is ahead of Arthur
-        if c <= a:
-            arthur_ahead = True
+def get_assignment(m, n):
+    players = get_players(n)
+    fields = get_playing_fields(m, n)
+    for i in range(n):
+        fields[i] = (players[i], players[(i+1) % n])
+    return fields
 
-        # Increment time
-        arthur_time += 1
-        alexander_time += 1
+def main():
+    n, m = map(int, input().split())
+    fields = get_assignment(m, n)
+    for field in fields:
+        print(*field)
 
-    # Return the minimum time Alexander needs to get ahead of Arthur
-    return alexander_time
+if __name__ == '__main__':
+    main()
 

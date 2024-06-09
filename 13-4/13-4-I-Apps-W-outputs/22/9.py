@@ -1,28 +1,28 @@
 
-import sys
+def f1(n, arr):
+    # f1 function to reverse the array
+    return arr[::-1]
 
-def solve():
-    H, N = map(int, input().split())
-    spells = []
-    for i in range(N):
-        A, B = map(int, input().split())
-        spells.append((A, B))
+def f2(n, arr):
+    # f2 function to find the original order of the array
+    
+    # initialize an empty array to store the original order
+    original_order = []
+    
+    # loop through the array
+    for i in range(n):
+        
+        # find the index of the current element in the original array
+        index = arr.index(i + 1)
+        
+        # add the element to the original order array
+        original_order.append(arr[index])
+    
+    # return the original order array
+    return original_order
 
-    # Sort the spells in descending order of their cost
-    spells.sort(key=lambda x: x[1], reverse=True)
-
-    # Initialize the total cost to 0
-    total_cost = 0
-
-    # Loop through the spells and cast them until the monster's health becomes 0 or below
-    for A, B in spells:
-        total_cost += B
-        H -= A
-        if H <= 0:
-            break
-
-    return total_cost
-
-if __name__ == "__main__":
-    print(solve())
+if __name__ == '__main__':
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(*f2(n, f1(n, arr)))
 

@@ -1,21 +1,38 @@
 
-def get_smallest_set_of_characters(characters):
-    # Initialize a set to store the characters that can converse with each other
-    can_converse = set()
+def get_handshakes(seating_order):
+    # Initialize variables
+    handshakes = 0
+    rows, cols = len(seating_order), len(seating_order[0])
 
-    # Iterate over each character and their languages
-    for character, languages in characters.items():
-        # Check if the character can converse with any other character in the set
-        can_converse_with_anyone = False
-        for other_character in can_converse:
-            if other_character in languages:
-                can_converse_with_anyone = True
-                break
+    # Loop through each row and column
+    for i in range(rows):
+        for j in range(cols):
+            # Check if the current element is a person
+            if seating_order[i][j] == "o":
+                # Check if there are any neighbors in the current row
+                if j > 0 and seating_order[i][j-1] == "o":
+                    handshakes += 1
+                if j < cols-1 and seating_order[i][j+1] == "o":
+                    handshakes += 1
+                # Check if there are any neighbors in the current column
+                if i > 0 and seating_order[i-1][j] == "o":
+                    handshakes += 1
+                if i < rows-1 and seating_order[i+1][j] == "o":
+                    handshakes += 1
 
-        # If the character cannot converse with anyone, add them to the set
-        if not can_converse_with_anyone:
-            can_converse.add(character)
+    return handshakes
 
-    # Return the size of the smallest set of characters that can converse with each other
-    return len(can_converse)
+def main():
+    # Read input
+    rows, cols = map(int, input().split())
+    seating_order = [input() for _ in range(rows)]
+
+    # Calculate handshakes
+    handshakes = get_handshakes(seating_order)
+
+    # Print output
+    print(handshakes)
+
+if __name__ == '__main__':
+    main()
 

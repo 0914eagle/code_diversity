@@ -1,15 +1,17 @@
 
-def solve(A, B, C, K):
-    # Initialize a list to store the values of the cards
-    cards = [1] * A + [0] * B + [-1] * C
-    # Sort the list in descending order
-    cards.sort(reverse=True)
-    # Initialize a variable to store the sum
-    sum = 0
-    # Iterate through the first K elements of the list
-    for i in range(K):
-        # Add the current element to the sum
-        sum += cards[i]
-    # Return the sum
-    return sum
+def get_integer_in_takahashi_mind(symbols):
+    integer = 0
+    for symbol in symbols:
+        if symbol == "+":
+            integer += 1
+        else:
+            integer -= 1
+    return integer
+
+def main():
+    symbols = input()
+    print(get_integer_in_takahashi_mind(symbols))
+
+if __name__ == '__main__':
+    main()
 

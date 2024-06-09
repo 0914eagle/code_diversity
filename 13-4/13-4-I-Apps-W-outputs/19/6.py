@@ -1,107 +1,44 @@
 
-def get_original_message(shift_direction, typed_message):
-    keyboard = {
-        'q': 'q',
-        'w': 'w',
-        'e': 'e',
-        'r': 'r',
-        't': 't',
-        'y': 'y',
-        'u': 'u',
-        'i': 'i',
-        'o': 'o',
-        'p': 'p',
-        'a': 'a',
-        's': 's',
-        'd': 'd',
-        'f': 'f',
-        'g': 'g',
-        'h': 'h',
-        'j': 'j',
-        'k': 'k',
-        'l': 'l',
-        'z': 'z',
-        'x': 'x',
-        'c': 'c',
-        'v': 'v',
-        'b': 'b',
-        'n': 'n',
-        'm': 'm',
-        ',': ',',
-        '.': '.',
-        '/': '/'
-    }
+def get_maze_size(maze_string):
+    return tuple(map(int, maze_string.split()))
 
-    if shift_direction == 'L':
-        shifted_keyboard = {
-            'q': 'p',
-            'w': 'o',
-            'e': 'i',
-            'r': 'u',
-            't': 'y',
-            'y': 't',
-            'u': 'r',
-            'i': 'e',
-            'o': 'w',
-            'p': 'q',
-            'a': 'm',
-            's': 'l',
-            'd': 'k',
-            'f': 'j',
-            'g': 'h',
-            'h': 'g',
-            'j': 'f',
-            'k': 'd',
-            'l': 's',
-            'z': 'x',
-            'x': 'z',
-            'c': 'v',
-            'v': 'b',
-            'b': 'n',
-            'n': 'm',
-            'm': 'b',
-            ',': ';',
-            ';': ',',
-            '.': '/',
-            '/': '.'
-        }
-    else:
-        shifted_keyboard = {
-            'q': 'a',
-            'w': 's',
-            'e': 'd',
-            'r': 'f',
-            't': 'g',
-            'y': 'h',
-            'u': 'j',
-            'i': 'k',
-            'o': 'l',
-            'p': ';',
-            'a': 'q',
-            's': 'w',
-            'd': 'e',
-            'f': 'r',
-            'g': 't',
-            'h': 'y',
-            'j': 'u',
-            'k': 'i',
-            'l': 'o',
-            'z': 'p',
-            'x': 'a',
-            'c': 'z',
-            'v': 'x',
-            'b': 'c',
-            'n': 'v',
-            'm': 'b',
-            ',': 'n',
-            ';': 'm',
-            '.': ',',
-            '/': '.'
-        }
+def get_maze_matrix(maze_string):
+    maze_size = get_maze_size(maze_string)
+    maze_matrix = []
+    for i in range(maze_size[0]):
+        maze_matrix.append(list(maze_string[i * maze_size[1] + 1:(i + 1) * maze_size[1] + 1]))
+    return maze_matrix
 
-    original_message = ''
-    for char in typed_message:
-        original_message += shifted_keyboard[char]
+def get_starting_and_goal_squares(maze_matrix):
+    for i in range(len(maze_matrix)):
+        for j in range(len(maze_matrix[i])):
+            if maze_matrix[i][j] == 'S':
+                starting_square = (i, j)
+            if maze_matrix[i][j] == 'G':
+                goal_square = (i, j)
+    return starting_square, goal_square
 
-    return original_message
+def get_moves_to_goal(maze_matrix, starting_square, goal_square):
+    moves = 0
+    queue = [(starting_square, 0)]
+    visited = set()
+    while queue:
+        current_square, moves = queue.pop(0)
+        if current_square == goal_square:
+            return moves
+        for i in range(len(maze_matrix)):
+            for j in range(len(maze_matrix[i])):
+                if maze_matrix[i][j] == '.' and (i, j) not in visited:
+                    queue.append(((i, j), moves + 1))
+                    visited.add((i, j))
+    return -1
+
+def get_maximum_possible_moves(maze_string):
+    maze_matrix = get_maze_matrix(maze_string)
+    starting_square, goal_square = get_starting_and_goal_squares(maze_matrix)
+    return get_moves_to_goal(maze_matrix, starting_square, goal_square)
+
+if __name__ == '__main__':
+    maze_string = input()
+    print(get_maximum_possible_moves(maze_string))
 

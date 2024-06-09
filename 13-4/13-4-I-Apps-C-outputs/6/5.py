@@ -1,26 +1,38 @@
 
-import sys
+import math
 
-def get_snow_levels(n):
-    snow_levels = []
+def get_expected_distance(n, points):
+    # Calculate the area of the CBD polygon
+    area = get_area(n, points)
+    
+    # Calculate the expected distance traveled by a taxi
+    expected_distance = 0
     for i in range(n):
-        a, b = map(int, input().split())
-        snow_levels += list(range(a, b + 1))
-    return snow_levels
+        x1, y1 = points[i]
+        x2, y2 = points[(i+1)%n]
+        expected_distance += get_distance(x1, y1, x2, y2) * area / (2*math.pi)
+    
+    return expected_distance
 
-def count_ways(snow_levels):
-    n = len(snow_levels)
-    if n < 3:
-        return 0
-    snow_levels.sort()
-    count = 0
-    for i in range(n - 2):
-        if snow_levels[i] < snow_levels[i + 1] and snow_levels[i + 1] < snow_levels[i + 2]:
-            count += 1
-    return count
+def get_area(n, points):
+    area = 0
+    for i in range(n):
+        x1, y1 = points[i]
+        x2, y2 = points[(i+1)%n]
+        area += x1*y2 - x2*y1
+    return abs(area)/2
 
-n = int(input())
-snow_levels = get_snow_levels(n)
-result = count_ways(snow_levels)
-print(result % 1000000009)
+def get_distance(x1, y1, x2, y2):
+    return math.sqrt((x1-x2)**2 + (y1-y2)**2)
+
+def main():
+    n = int(input())
+    points = []
+    for i in range(n):
+        x, y = map(int, input().split())
+        points.append((x, y))
+    print(get_expected_distance(n, points))
+
+if __name__ == '__main__':
+    main()
 

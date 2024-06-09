@@ -1,27 +1,52 @@
 
-def reconstruct_painting(N, K, M, commands):
-    # Initialize the canvas with all cells set to white (color 1)
-    canvas = [[1] * N for _ in range(N)]
+def check_graph(n, m, edges):
+    # Initialize a dictionary to store the neighbors of each vertex
+    neighbors = {i: set() for i in range(1, n + 1)}
 
-    # Iterate through the commands and apply them to the canvas
-    for command in commands:
-        if command.startswith("PAINT"):
-            # Extract the color and coordinates of the rectangle from the command
-            color, x1, y1, x2, y2 = map(int, command.split()[1:])
+    # Add edges to the dictionary
+    for u, v in edges:
+        neighbors[u].add(v)
+        neighbors[v].add(u)
 
-            # Iterate over the cells in the rectangle and paint them with the chosen color
-            for x in range(x1, x2 + 1):
-                for y in range(y1, y2 + 1):
-                    canvas[x][y] = color
+    # Check if the graph is connected
+    visited = set()
+    queue = [1]
+    while queue:
+        vertex = queue.pop(0)
+        if vertex not in visited:
+            visited.add(vertex)
+            queue.extend(neighbors[vertex] - visited)
 
-        elif command.startswith("SAVE"):
-            # Save the current state of the canvas
-            saved_canvas = canvas.copy()
+    if len(visited) == n:
+        return True
+    else:
+        return False
 
-        elif command.startswith("LOAD"):
-            # Load the saved state of the canvas
-            canvas = saved_canvas.copy()
+def find_string(n, m, edges):
+    # Initialize a set to store the possible strings
+    strings = set()
 
-    # Return the final state of the canvas
-    return canvas
+    # Iterate over the edges and add the corresponding letters to the set of possible strings
+    for u, v in edges:
+        if u == v - 1:
+            strings.add("a" + "b" * (v - 1))
+        elif u == v + 1:
+            strings.add("b" + "a" * (v - 1))
+        else:
+            strings.add("a" * (v - 1) + "c" + "b" * (n - v))
+
+    # Check if the graph is connected with the possible strings
+    for string in strings:
+        if check_graph(n, m, [(i, i + 1) for i in range(n - 1)]):
+            return string
+
+    return "No"
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    edges = []
+    for _ in range(m):
+        u, v = map(int, input().split())
+        edges.append((u, v))
+    print(find_string(n, m, edges))
 

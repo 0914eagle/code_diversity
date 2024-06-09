@@ -1,16 +1,14 @@
 
-def get_min_waiting_time(N, M, food_times):
-    # Initialize a list to store the feeding times for each dog
-    feeding_times = [0] * N
+def f1(N, M):
+    # f1 should return the number of distinct routes that can be set
+    return N * (N - 1)
 
-    # Loop through each dog
-    for i in range(N):
-        # Loop through each feeding bowl
-        for j in range(M):
-            # If the dog has not finished eating, update its feeding time
-            if feeding_times[i] < food_times[i][j]:
-                feeding_times[i] = food_times[i][j]
+def f2(N, M):
+    # f2 should return the number of distinct routes that can be set
+    return N * (N - 1) * (N - 2)
 
-    # Return the sum of the feeding times minus the maximum feeding time
-    return sum(feeding_times) - max(feeding_times)
+if __name__ == '__main__':
+    N, M = map(int, input().split())
+    print(f1(N, M))
+    print(f2(N, M))
 

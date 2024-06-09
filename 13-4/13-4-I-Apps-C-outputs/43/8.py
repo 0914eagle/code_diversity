@@ -1,29 +1,35 @@
 
-import itertools
+def get_resistors(a, b):
+    # Initialize the number of resistors needed
+    num_resistors = 0
+    
+    # While the resistance is not equal to the target resistance
+    while a / b != 1:
+        # If the resistance is even
+        if a % 2 == 0 and b % 2 == 0:
+            # Double the number of resistors and double the resistance
+            num_resistors += 1
+            a //= 2
+            b //= 2
+        # If the resistance is odd
+        else:
+            # Increment the number of resistors and increment the resistance
+            num_resistors += 1
+            a += 1
+    
+    # Return the number of resistors needed
+    return num_resistors
 
-def solve(r, s, m, d, n, b, incompatible_dishes):
-    # Initialize a set to store the different dinner experiences
-    dinner_experiences = set()
+def main():
+    # Read the input
+    a, b = map(int, input().split())
+    
+    # Call the function to get the number of resistors needed
+    num_resistors = get_resistors(a, b)
+    
+    # Print the answer
+    print(num_resistors)
 
-    # Iterate over all possible combinations of dishes and brands
-    for dishes in itertools.product(range(1, s+m+d+1), repeat=3):
-        # Check if the current combination of dishes is incompatible
-        if any(dishes[i] in incompatible_dishes[j] for i in range(3) for j in range(n)):
-            continue
-
-        # Get the ingredients for each dish
-        ingredients = [set() for _ in range(3)]
-        for i in range(3):
-            for j in range(b[dishes[i]]):
-                ingredients[i].add(j+1)
-
-        # Check if all ingredients are unique
-        if len(ingredients[0]) == len(ingredients[1]) == len(ingredients[2]):
-            continue
-
-        # Add the current combination of dishes and brands to the set of dinner experiences
-        dinner_experiences.add(frozenset(dishes))
-
-    # Return the number of different dinner experiences
-    return len(dinner_experiences)
+if __name__ == '__main__':
+    main()
 

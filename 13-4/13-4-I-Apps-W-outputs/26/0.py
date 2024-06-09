@@ -1,18 +1,43 @@
 
-def get_happy_seconds(n, x, y, c):
-    # Initialize a 2D array to store the state of the table
-    table = [[0] * n for _ in range(n)]
-    table[x - 1][y - 1] = 1
-    seconds = 0
-    while True:
-        # Iterate over the table and check if the condition is met
-        if sum(map(sum, table)) >= c:
-            break
-        # Switch on the cells that are off but have side-adjacent cells that are on
-        for i in range(n):
-            for j in range(n):
-                if table[i][j] == 0 and sum(table[i - 1][j], table[i + 1][j], table[i][j - 1], table[i][j + 1]) >= 3:
-                    table[i][j] = 1
-        seconds += 1
-    return seconds
+def get_score(s, e, e_success, e_failure):
+    # Initialize variables
+    weight = 25
+    score = 0
+    
+    # While there is still energy left and the weight is less than the maximum conceivable lift
+    while e > 0 and weight < 225:
+        # If the weight is greater than or equal to the strength
+        if weight >= s:
+            # Successful lift, decrease energy by e_success
+            e -= e_success
+            # Increase score by weight
+            score += weight
+        # If the weight is less than the strength
+        else:
+            # Failed lift, decrease energy by e_failure
+            e -= e_failure
+        # Increase weight by 25 kg
+        weight += 25
+    
+    # Return the score
+    return score
+
+def get_d(e, e_success, e_failure):
+    # Initialize variables
+    d = 0
+    s = 0
+    
+    # While the score is less than the strength
+    while get_score(s, e, e_success, e_failure) < s:
+        # Increase the strength by 1 kg
+        s += 1
+        # Increase the minimum weight by 1 kg
+        d += 1
+    
+    # Return the minimum weight
+    return d
+
+if __name__ == '__main__':
+    e, e_success, e_failure = map(int, input().split())
+    print(get_d(e, e_success, e_failure))
 

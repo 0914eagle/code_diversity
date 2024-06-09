@@ -1,15 +1,22 @@
 
-n = int(input())
-a = list(map(int, input().split()))
+def is_beautiful(w):
+    alphabet = "abcdefghijklmnopqrstuvwxyz"
+    count = [0] * 26
+    for c in w:
+        if c in alphabet:
+            count[ord(c) - ord("a")] += 1
+    for c in count:
+        if c % 2 != 0:
+            return False
+    return True
 
-# Initialize a dictionary to store the number of immediate subordinates for each member
-subordinates = {i: 0 for i in range(1, n + 1)}
+def main():
+    w = input()
+    if is_beautiful(w):
+        print("Yes")
+    else:
+        print("No")
 
-# Iterate over the input array and increment the number of immediate subordinates for each member
-for i in range(2, n + 1):
-    subordinates[a[i - 1]] += 1
-
-# Print the number of immediate subordinates for each member
-for i in range(1, n + 1):
-    print(subordinates[i])
+if __name__ == '__main__':
+    main()
 

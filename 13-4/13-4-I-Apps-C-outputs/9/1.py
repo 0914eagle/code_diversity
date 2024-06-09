@@ -1,17 +1,26 @@
 
-def carryless_multiplication(a, b):
-    result = 0
-    for i in range(len(a)):
-        for j in range(len(b)):
-            result += a[i] * b[j]
-    return result
+def get_polynomial(p, k):
+    if p >= k:
+        return -1
+    
+    d = 1
+    a = [p]
+    while a[-1] % k != 0:
+        a.append(a[-1] // k)
+        d += 1
+    
+    return d, a[:-1]
 
-def find_smallest_positive_integer(n):
-    for i in range(1, n+1):
-        if carryless_multiplication(i, i) == n:
-            return i
-    return -1
+def main():
+    p, k = map(int, input().split())
+    result = get_polynomial(p, k)
+    if result == -1:
+        print(-1)
+    else:
+        d, a = result
+        print(d)
+        print(*a)
 
-n = int(input())
-print(find_smallest_positive_integer(n))
+if __name__ == '__main__':
+    main()
 

@@ -1,31 +1,23 @@
 
-import math
+def get_min_cuts(poles, n):
+    # Sort the poles in non-decreasing order
+    poles.sort()
+    # Initialize the minimum number of cuts as 0
+    min_cuts = 0
+    # Loop through the poles and check if they are long enough to be used as fence posts
+    for i in range(len(poles)):
+        if poles[i] >= n:
+            # If a pole is long enough, remove it from the list and increment the minimum number of cuts
+            poles.pop(i)
+            min_cuts += 1
+    # Return the minimum number of cuts needed to build the fence
+    return min_cuts
 
-def get_max_circumference(vertices):
-    # Calculate the distance between each pair of vertices
-    distances = []
-    for i in range(len(vertices)):
-        for j in range(i+1, len(vertices)):
-            dx = vertices[i][0] - vertices[j][0]
-            dy = vertices[i][1] - vertices[j][1]
-            distances.append(math.sqrt(dx**2 + dy**2))
-    
-    # Sort the distances in descending order
-    distances.sort(reverse=True)
-    
-    # Calculate the maximum circumference by summing the distances of the 6 longest edges
-    max_circumference = 0
-    for i in range(6):
-        max_circumference += distances[i]
-    
-    return max_circumference
+def main():
+    k, n = map(int, input().split())
+    poles = list(map(int, input().split()))
+    print(get_min_cuts(poles, n))
 
-n = int(input())
-vertices = []
-for i in range(n):
-    x, y = map(int, input().split())
-    vertices.append((x, y))
-
-for i in range(n):
-    print(get_max_circumference(vertices[i:i+1] + vertices[:i] + vertices[i+1:]))
+if __name__ == '__main__':
+    main()
 

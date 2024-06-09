@@ -1,31 +1,30 @@
 
-import math
+def is_handsome(n):
+    n_str = str(n)
+    for i in range(len(n_str) - 1):
+        if n_str[i] == n_str[i + 1]:
+            return False
+    return True
 
-def get_maximum_expected_profit(x, p):
-    # Calculate the probability of winning and losing for each bet
-    win_prob = p / 100
-    lose_prob = 1 - win_prob
-    
-    # Calculate the expected value of each bet
-    win_expectation = 2
-    lose_expectation = -1
-    
-    # Calculate the maximum expected profit
-    max_expected_profit = 0
-    for i in range(1, 11):
-        expected_profit = i * win_expectation * win_prob + (10 - i) * lose_expectation * lose_prob
-        if expected_profit > max_expected_profit:
-            max_expected_profit = expected_profit
-    
-    # Calculate the refund amount
-    refund_amount = x / 100
-    
-    # Calculate the maximum expected profit with refund
-    max_expected_profit_with_refund = max_expected_profit + refund_amount
-    
-    return max_expected_profit_with_refund
+def get_closest_handsome_numbers(n):
+    n_str = str(n)
+    for i in range(len(n_str)):
+        if n_str[i] == '0' or n_str[i] == '9':
+            continue
+        n1 = int(n_str[:i] + str(int(n_str[i]) - 1) + n_str[i + 1:])
+        n2 = int(n_str[:i] + str(int(n_str[i]) + 1) + n_str[i + 1:])
+        if is_handsome(n1) and is_handsome(n2):
+            return n1, n2
+    return None, None
 
-x = 20
-p = 49.9
-print(get_maximum_expected_profit(x, p))
+def main():
+    n = int(input())
+    n1, n2 = get_closest_handsome_numbers(n)
+    if n1 is None and n2 is None:
+        print(-1)
+    else:
+        print(n1, n2)
+
+if __name__ == '__main__':
+    main()
 

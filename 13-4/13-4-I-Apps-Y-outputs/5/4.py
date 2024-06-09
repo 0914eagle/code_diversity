@@ -1,65 +1,44 @@
 
-def get_smallest_set_of_characters(characters):
-    # Initialize a set to store the characters that can converse with each other
-    converse_set = set()
+def get_handshakes(seating_order):
+    # Initialize variables
+    handshakes = 0
+    rows, cols = len(seating_order), len(seating_order[0])
 
-    # Iterate over each character in the input
-    for character in characters:
-        # Check if the character is already in the converse set
-        if character in converse_set:
-            continue
+    # Loop through each row and column
+    for i in range(rows):
+        for j in range(cols):
+            # Check if the current element is a person
+            if seating_order[i][j] == "o":
+                # Check if there are any empty seats in the current row
+                if "." in seating_order[i]:
+                    # Count the number of handshakes in the current row
+                    handshakes += seating_order[i].count("o") - 1
+                # Check if there are any empty seats in the current column
+                if "." in [row[j] for row in seating_order]:
+                    # Count the number of handshakes in the current column
+                    handshakes += sum(1 for row in seating_order if row[j] == "o") - 1
+                # Check if there are any empty seats in the current diagonal
+                if i + j < rows and "." in [seating_order[k][k] for k in range(i, rows)]:
+                    # Count the number of handshakes in the current diagonal
+                    handshakes += sum(1 for k in range(i, rows) if seating_order[k][k] == "o") - 1
+                # Check if there are any empty seats in the current anti-diagonal
+                if i - j >= 0 and "." in [seating_order[k][rows - k - 1] for k in range(i + 1)]:
+                    # Count the number of handshakes in the current anti-diagonal
+                    handshakes += sum(1 for k in range(i + 1) if seating_order[k][rows - k - 1] == "o") - 1
 
-        # Iterate over each other character in the input
-        for other_character in characters:
-            # Check if the other character is already in the converse set
-            if other_character in converse_set:
-                continue
-
-            # Check if the character and other character can converse with each other
-            if can_converse(character, other_character):
-                # Add the character and other character to the converse set
-                converse_set.add(character)
-                converse_set.add(other_character)
-                break
-
-    # Return the size of the converse set
-    return len(converse_set)
-
-def can_converse(character1, character2):
-    # Check if the characters speak the same language
-    if character1["language"] == character2["language"]:
-        return True
-
-    # Check if one of the characters understands the other character's language
-    if character1["language"] in character2["understands"] or character2["language"] in character1["understands"]:
-        return True
-
-    # Check if there is a sequence of intermediate languages that can be used for translation
-    for language in character1["understands"]:
-        if language in character2["understands"]:
-            return True
-
-    # If none of the above conditions are met, the characters cannot converse
-    return False
+    return handshakes
 
 def main():
-    # Read the input from stdin
-    num_characters = int(input())
-    characters = []
-    for _ in range(num_characters):
-        character = input().split()
-        characters.append({
-            "name": character[0],
-            "language": character[1],
-            "understands": character[2:]
-        })
+    # Read the input
+    rows, cols = map(int, input().split())
+    seating_order = [input() for _ in range(rows)]
 
-    # Call the function to get the smallest set of characters that can converse with each other
-    smallest_set_size = get_smallest_set_of_characters(characters)
+    # Calculate the handshakes
+    handshakes = get_handshakes(seating_order)
 
-    # Print the size of the smallest set
-    print(smallest_set_size)
+    # Print the result
+    print(handshakes)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
 

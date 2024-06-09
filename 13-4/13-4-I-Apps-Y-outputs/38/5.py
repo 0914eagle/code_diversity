@@ -1,17 +1,44 @@
 
-def solve(s):
-    # Initialize the maximum length of the substring as 0
-    max_len = 0
+def f1(N, X, x_list):
+    # Sort the list of city coordinates in ascending order
+    x_list.sort()
     
-    # Loop through each substring of the input string
-    for i in range(len(s)):
-        for j in range(i, len(s)):
-            # If the substring starts with 'A' and ends with 'Z', check if its length is greater than the current maximum length
-            if s[i] == 'A' and s[j] == 'Z':
-                curr_len = j - i + 1
-                if curr_len > max_len:
-                    max_len = curr_len
+    # Initialize the maximum value of D
+    D = 0
     
-    # Return the maximum length
-    return max_len
+    # Iterate through the list of city coordinates
+    for i in range(N):
+        # Calculate the distance between the current city and the previous city
+        distance = abs(x_list[i] - x_list[i-1])
+        
+        # Update the maximum value of D if the current distance is greater than the previous maximum
+        if distance > D:
+            D = distance
+    
+    return D
+
+def f2(N, X, x_list):
+    # Sort the list of city coordinates in ascending order
+    x_list.sort()
+    
+    # Initialize the maximum value of D
+    D = 0
+    
+    # Iterate through the list of city coordinates
+    for i in range(N):
+        # Calculate the distance between the current city and the previous city
+        distance = abs(x_list[i] - x_list[i-1])
+        
+        # Update the maximum value of D if the current distance is greater than the previous maximum
+        if distance > D:
+            D = distance
+    
+    return D
+
+if __name__ == '__main__':
+    N, X = map(int, input().split())
+    x_list = list(map(int, input().split()))
+    
+    print(f1(N, X, x_list))
+    print(f2(N, X, x_list))
 

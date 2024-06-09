@@ -1,25 +1,46 @@
 
-def solve(N, E, roads):
-    # Initialize the solution matrix
-    solution = [[0] * E for _ in range(N)]
+def get_results(votes, k):
+    # Calculate the number of votes for each candidate
+    votes_count = {}
+    for vote in votes:
+        if vote not in votes_count:
+            votes_count[vote] = 1
+        else:
+            votes_count[vote] += 1
 
-    # Loop through each road
-    for i in range(E):
-        # Get the cities connected by the road
-        city1, city2 = roads[i]
+    # Sort the candidates by votes and time of last vote
+    sorted_candidates = sorted(votes_count.items(), key=lambda x: (-x[1], x[0]))
 
-        # If the road is not yet assigned to a chain
-        if solution[city1][i] == 0 and solution[city2][i] == 0:
-            # Assign the road to the first chain
-            solution[city1][i] = 1
-            solution[city2][i] = 1
+    # Determine the outcome for each candidate
+    outcome = []
+    for candidate, votes in sorted_candidates:
+        if votes >= k:
+            outcome.append(1)
+        elif votes < k and votes > 0:
+            outcome.append(2)
+        else:
+            outcome.append(3)
 
-    # Check if the solution is valid
-    for i in range(N):
-        # If a city has no roads assigned to it, return "0"
-        if sum(solution[i]) == 0:
-            return "0"
+    return outcome
 
-    # If the solution is valid, return the assignment of roads to chains
-    return ["1" if solution[i][j] == 1 else "2" for i in range(N) for j in range(E)]
+def get_winner(votes, k):
+    # Get the results of the election
+    outcome = get_results(votes, k)
+
+    # Find the candidate with the most votes
+    winner = 0
+    for i in range(len(outcome)):
+        if outcome[i] == 1:
+            winner = i + 1
+            break
+
+    return winner
+
+def main():
+    n, k, m, a = map(int, input().split())
+    votes = list(map(int, input().split()))
+    print(*get_results(votes, k))
+
+if __name__ == '__main__':
+    main()
 

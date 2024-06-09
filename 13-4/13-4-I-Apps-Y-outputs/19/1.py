@@ -1,48 +1,23 @@
 
-def get_max_distance(grid):
-    # Initialize the maximum distance to 0
-    max_distance = 0
-    
-    # Loop through each row of the grid
-    for i in range(len(grid)):
-        # Loop through each column of the grid
-        for j in range(len(grid[0])):
-            # If the current block is a spy
-            if grid[i][j] == "S":
-                # Find the nearest safe house
-                safe_house = find_nearest_safe_house(grid, i, j)
-                
-                # Calculate the Manhattan distance between the spy and the safe house
-                distance = abs(i - safe_house[0]) + abs(j - safe_house[1])
-                
-                # Update the maximum distance if necessary
-                if distance > max_distance:
-                    max_distance = distance
-    
-    # Return the maximum distance
-    return max_distance
+def get_center_coordinates(coordinates):
+    x_coords = [x for x, _, _ in coordinates]
+    y_coords = [y for _, y, _ in coordinates]
+    x_center = sum(x_coords) / len(x_coords)
+    y_center = sum(y_coords) / len(y_coords)
+    return x_center, y_center
 
-def find_nearest_safe_house(grid, i, j):
-    # Initialize the nearest safe house as the current block
-    nearest_safe_house = (i, j)
-    
-    # Loop through each block in the grid
-    for row in range(len(grid)):
-        for col in range(len(grid[0])):
-            # If the current block is a safe house and it is closer to the spy than the current nearest safe house
-            if grid[row][col] == "H" and abs(row - i) + abs(col - j) < abs(nearest_safe_house[0] - i) + abs(nearest_safe_house[1] - j):
-                # Update the nearest safe house
-                nearest_safe_house = (row, col)
-    
-    # Return the nearest safe house
-    return nearest_safe_house
+def get_height(coordinates):
+    heights = [h for _, _, h in coordinates]
+    return max(heights)
 
-grid = [
-    [".", ".", ".", "H"],
-    [".", "S", ".", "."],
-    [".", ".", ".", "H"],
-    [".", ".", ".", "."]
-]
+def main():
+    coordinates = []
+    for _ in range(int(input())):
+        coordinates.append(tuple(map(int, input().split())))
+    x_center, y_center = get_center_coordinates(coordinates)
+    height = get_height(coordinates)
+    print(f"{x_center} {y_center} {height}")
 
-print(get_max_distance(grid))
+if __name__ == '__main__':
+    main()
 

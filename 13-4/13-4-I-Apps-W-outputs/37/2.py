@@ -1,23 +1,40 @@
 
-def solve(x):
-    # Initialize the minimum number of operations to be infinity
-    min_operations = float('inf')
-    # Iterate over all possible values of the die
-    for i in range(1, 7):
-        # Initialize the current sum to be the value of the current die
-        current_sum = i
-        # Initialize the number of operations to be 0
-        operations = 0
-        # While the current sum is less than the target sum
-        while current_sum < x:
-            # Calculate the next sum by adding the value of the die that is facing upward
-            current_sum += i
-            # Increment the number of operations
-            operations += 1
-        # If the current sum is greater than or equal to the target sum and the number of operations is less than the minimum number of operations
-        if current_sum >= x and operations < min_operations:
-            # Update the minimum number of operations
-            min_operations = operations
-    # Return the minimum number of operations
-    return min_operations
+def f1(n):
+    # Calculate the number of independent sets in the graph
+    num_independent_sets = (1 << n) - 1
+    return num_independent_sets
+
+def f2(n, edges):
+    # Initialize the answer and the number of vertices in the graph
+    answer = 0
+    num_vertices = n
+    
+    # Iterate over all edges in the graph
+    for edge in edges:
+        # Find the vertices connected by the edge
+        u, v = edge[0], edge[1]
+        
+        # If the edge is not a tree edge, update the answer and the number of vertices in the graph
+        if u != v:
+            answer += num_vertices - 2
+            num_vertices -= 1
+    
+    return answer
+
+if __name__ == '__main__':
+    n = int(input())
+    edges = []
+    
+    # Read the input edges
+    for i in range(n - 1):
+        u, v = map(int, input().split())
+        edges.append((u, v))
+    
+    # Calculate the sum of the number of independent sets in all edge-induced subgraphs
+    answer = f1(n)
+    for edge in edges:
+        answer += f2(n, [edge])
+    
+    # Output the answer modulo 998,244,353
+    print(answer % 998244353)
 

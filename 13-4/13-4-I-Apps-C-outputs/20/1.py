@@ -1,24 +1,38 @@
 
-def get_maximum_coins(price, coins):
-    # Initialize a dictionary to store the number of coins for each denomination
-    denomination_coins = {1: 0, 5: 0, 10: 0, 25: 0}
+def f1(n, k, p):
+    # Calculate the number of permutations of length n with runs of length at most k
+    num_permutations = 1
+    for i in range(1, n+1):
+        num_permutations *= i
+    num_permutations //= k+1
     
-    # Add the number of coins for each denomination to the dictionary
-    for coin in coins:
-        denomination_coins[coin] += 1
+    # Calculate the number of permutations with runs of length k+1 or more
+    num_runs = 0
+    for i in range(1, n-k):
+        num_runs += (n-i) * (n-i-1) // 2
+    num_permutations -= num_runs
     
-    # Initialize a variable to store the maximum number of coins that can be used
-    max_coins = 0
+    # Return the result modulo p
+    return num_permutations % p
+
+def f2(n, k, p):
+    # Calculate the number of permutations of length n with runs of length at most k
+    num_permutations = 1
+    for i in range(1, n+1):
+        num_permutations *= i
+    num_permutations //= k+1
     
-    # Iterate through the dictionary and find the maximum number of coins that can be used
-    for denomination, num_coins in denomination_coins.items():
-        if denomination * num_coins <= price:
-            max_coins += num_coins
-            price -= denomination * num_coins
+    # Calculate the number of permutations with runs of length k+1 or more
+    num_runs = 0
+    for i in range(1, n-k):
+        num_runs += (n-i) * (n-i-1) // 2
+    num_permutations -= num_runs
     
-    # If the price is not zero, it is not possible to pay the exact amount without getting change back
-    if price != 0:
-        return "Impossible"
-    
-    return max_coins
+    # Return the result modulo p
+    return num_permutations % p
+
+if __name__ == '__main__':
+    n, k, p = map(int, input().split())
+    print(f1(n, k, p))
+    print(f2(n, k, p))
 

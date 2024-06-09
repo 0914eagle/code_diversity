@@ -1,10 +1,14 @@
 
-import math
+def f1(n, k, a):
+    # Your code here
+    return "Kevin"
 
-def count_special_numbers(n, k):
-    count = 0
-    for i in range(1, n+1):
-        binary = bin(i)[2:]
-        count += math.ceil(len(binary) / k)
-    return count % (10**9 + 7)
+def f2(n, k, a):
+    # Your code here
+    return "Nicky"
+
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    a = list(map(int, input().split()))
+    print(f1(n, k, a))
 

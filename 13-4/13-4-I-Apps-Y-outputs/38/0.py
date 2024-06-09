@@ -1,17 +1,22 @@
 
-def solve(s):
-    # Initialize the maximum length of the substring as 0
-    max_len = 0
-    
-    # Loop through each substring of the input string
-    for i in range(len(s)):
-        for j in range(i, len(s)):
-            # If the substring starts with A and ends with Z, check if its length is greater than the current maximum length
-            if s[i] == "A" and s[j] == "Z":
-                curr_len = j - i + 1
-                if curr_len > max_len:
-                    max_len = curr_len
-    
-    # Return the maximum length
-    return max_len
+def get_input():
+    N, X = map(int, input().split())
+    x_coordinates = list(map(int, input().split()))
+    return N, X, x_coordinates
+
+def get_max_d(N, X, x_coordinates):
+    x_coordinates.sort()
+    d = 1
+    while d <= X:
+        if all(x_coordinates[i] - x_coordinates[0] % d == 0 for i in range(1, N)):
+            return d
+        d += 1
+    return -1
+
+def main():
+    N, X, x_coordinates = get_input()
+    print(get_max_d(N, X, x_coordinates))
+
+if __name__ == '__main__':
+    main()
 

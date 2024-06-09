@@ -1,36 +1,55 @@
 
-import sys
+def f1(n, edges):
+    # Calculate the number of possible pairs
+    num_pairs = n / 2
+    
+    # Initialize a dictionary to store the number of edges for each pair
+    pairs = {i: 0 for i in range(1, num_pairs + 1)}
+    
+    # Iterate over the edges and increment the number of edges for each pair
+    for edge in edges:
+        pairs[edge[0]] += 1
+        pairs[edge[1]] += 1
+    
+    # Initialize a set to store the pairs that have at least one edge
+    valid_pairs = set()
+    
+    # Iterate over the pairs and check if they have at least one edge
+    for pair, num_edges in pairs.items():
+        if num_edges > 0:
+            valid_pairs.add(pair)
+    
+    # Return the number of valid pairs modulo 10^9 + 7
+    return len(valid_pairs) % (10**9 + 7)
 
-def solve(N, X, A):
-    # Initialize the count of different integers not exceeding X
-    count = 0
+def f2(n, edges):
+    # Calculate the number of possible pairs
+    num_pairs = n / 2
     
-    # Iterate over the given integers
-    for i in range(N):
-        # Convert the integer to binary
-        binary = bin(A[i])[2:]
-        
-        # Initialize the current integer
-        current = 0
-        
-        # Iterate over the binary representation of the integer
-        for j in range(len(binary)):
-            # If the current bit is 1, add the corresponding power of 2 to the current integer
-            if binary[j] == "1":
-                current += 2**j
-            
-            # If the current integer is not greater than X, increment the count
-            if current <= X:
-                count += 1
+    # Initialize a dictionary to store the number of edges for each pair
+    pairs = {i: 0 for i in range(1, num_pairs + 1)}
     
-    # Return the count modulo 998244353
-    return count % 998244353
+    # Iterate over the edges and increment the number of edges for each pair
+    for edge in edges:
+        pairs[edge[0]] += 1
+        pairs[edge[1]] += 1
+    
+    # Initialize a set to store the pairs that have at least one edge
+    valid_pairs = set()
+    
+    # Iterate over the pairs and check if they have at least one edge
+    for pair, num_edges in pairs.items():
+        if num_edges > 0:
+            valid_pairs.add(pair)
+    
+    # Return the number of valid pairs modulo 10^9 + 7
+    return len(valid_pairs) % (10**9 + 7)
 
-if __name__ == "__main__":
-    # Read the input from stdin
-    N, X = map(int, input().split())
-    A = list(map(int, input().split()))
-    
-    # Solve the problem
-    print(solve(N, X, A))
+if __name__ == '__main__':
+    n = int(input())
+    edges = []
+    for _ in range(n - 1):
+        edges.append(list(map(int, input().split())))
+    print(f1(n, edges))
+    print(f2(n, edges))
 

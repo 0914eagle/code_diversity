@@ -1,23 +1,44 @@
 
-def solve(price, coins):
-    # Initialize a dictionary to store the number of coins for each value
-    coins_dict = {1: coins[0], 5: coins[1], 10: coins[2], 25: coins[3]}
-    # Initialize a variable to store the maximum number of coins that can be used
-    max_coins = 0
-    # Loop through the dictionary and check if the current value is less than or equal to the price
-    for value in coins_dict.keys():
-        if value <= price:
-            # If the current value is less than or equal to the price, calculate the number of coins that can be used for this value
-            num_coins = price // value
-            # Update the maximum number of coins if the current number of coins is greater than the previous maximum
-            if num_coins > max_coins:
-                max_coins = num_coins
-            # Update the price by subtracting the current value multiplied by the number of coins that can be used
-            price -= value * num_coins
+def f1(n, k, p):
+    # Calculate the number of permutations of length n
+    num_permutations = 1
+    for i in range(n):
+        num_permutations = (num_permutations * (n - i)) % p
     
-    # If the price is not zero, it is not possible to pay the exact amount without getting change back
-    if price != 0:
-        return "Impossible"
-    else:
-        return max_coins
+    # Calculate the number of permutations with runs of length k or less
+    num_runs = 0
+    for i in range(n - k + 1):
+        num_runs += 1
+    
+    # Calculate the number of permutations with runs of length k or less and no runs of length k + 1 or more
+    num_permutations_with_runs = 0
+    for i in range(n - k + 1):
+        num_permutations_with_runs += num_permutations // (k + 1)
+    
+    # Calculate the number of permutations with runs of length k or less and no runs of length k + 1 or more, modulo p
+    return (num_permutations_with_runs * num_runs) % p
+
+def f2(n, k, p):
+    # Calculate the number of permutations of length n
+    num_permutations = 1
+    for i in range(n):
+        num_permutations = (num_permutations * (n - i)) % p
+    
+    # Calculate the number of permutations with runs of length k or less
+    num_runs = 0
+    for i in range(n - k + 1):
+        num_runs += 1
+    
+    # Calculate the number of permutations with runs of length k or less and no runs of length k + 1 or more
+    num_permutations_with_runs = 0
+    for i in range(n - k + 1):
+        num_permutations_with_runs += num_permutations // (k + 1)
+    
+    # Calculate the number of permutations with runs of length k or less and no runs of length k + 1 or more, modulo p
+    return (num_permutations_with_runs * num_runs) % p
+
+if __name__ == '__main__':
+    n, k, p = map(int, input().split())
+    print(f1(n, k, p))
+    print(f2(n, k, p))
 

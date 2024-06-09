@@ -1,21 +1,18 @@
 
-def solve(s):
-    # Initialize variables
-    max_length = 0
-    start_index = 0
-    end_index = 0
+def f1(N, X, x):
+    # find the minimum distance between X and any city
+    min_dist = min(abs(X - xi) for xi in x)
+    # find the maximum value of D that can cover the minimum distance
+    return min_dist
 
-    # Iterate through the string
-    for i in range(len(s)):
-        # Check if the substring starting at index i ends with Z
-        if s[i] == "Z":
-            # Check if the substring starting at index 0 and ending at index i-1 starts with A
-            if s[0] == "A":
-                # Update the maximum length and indices
-                max_length = i - start_index + 1
-                start_index = 0
-                end_index = i
+def f2(N, X, x):
+    # find the maximum value of D that can cover all the cities
+    max_dist = max(abs(X - xi) for xi in x)
+    # return the maximum value of D
+    return max_dist
 
-    # Return the maximum length
-    return max_length
+if __name__ == '__main__':
+    N, X = map(int, input().split())
+    x = list(map(int, input().split()))
+    print(f2(N, X, x))
 

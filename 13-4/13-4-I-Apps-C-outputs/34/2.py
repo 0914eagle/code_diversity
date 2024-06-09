@@ -1,37 +1,22 @@
 
-import sys
-input = sys.stdin.read()
-n, m, s = map(int, input.split())
-edges = []
-for i in range(m):
-    t, u, v = map(int, input.split())
-    edges.append((t, u, v))
+def get_power_of_two(n):
+    power = 1
+    while power <= n:
+        power *= 2
+    return power
 
-# Plan 1: Maximize number of reachable vertices
-reachable = [False] * (n + 1)
-queue = [s]
-while queue:
-    u = queue.pop(0)
-    if not reachable[u]:
-        reachable[u] = True
-        for t, v in edges:
-            if t == 2 and not reachable[v]:
-                queue.append(v)
+def get_numbers_with_power_of_two(n, e):
+    power_of_two = get_power_of_two(e)
+    count = 0
+    for i in range(n):
+        if str(i).find(str(power_of_two)) != -1:
+            count += 1
+    return count
 
-# Plan 2: Minimize number of reachable vertices
-reachable = [False] * (n + 1)
-queue = [s]
-while queue:
-    u = queue.pop(0)
-    if not reachable[u]:
-        reachable[u] = True
-        for t, v in edges:
-            if t == 2 and not reachable[v]:
-                queue.append(v)
+def main():
+    n, e = map(int, input().split())
+    print(get_numbers_with_power_of_two(n, e))
 
-# Print output
-print(sum(reachable))
-print("".join(["+" if reachable[i] else "-" for i in range(1, n + 1)]))
-print(sum(reachable))
-print("".join(["+" if reachable[i] else "-" for i in range(1, n + 1)]))
+if __name__ == '__main__':
+    main()
 

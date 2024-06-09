@@ -1,36 +1,27 @@
 
-def solve(gigs, venues, roads, start_time, end_time):
-    # Initialize a graph to store the connections between venues
-    graph = {}
-    for i in range(venues):
-        graph[i] = []
+import sys
+
+def get_input():
+    N, M = map(int, input().split())
+    conditions = []
+    for _ in range(M):
+        l, r, x = map(int, input().split())
+        conditions.append((l, r, x))
+    return N, M, conditions
+
+def count_ways(N, M, conditions):
+    # Initialize the dp table with all 1s
+    dp = [1] * (N + 1)
     
-    # Add the roads to the graph
-    for road in roads:
-        graph[road[0]].append((road[1], road[2]))
-        graph[road[1]].append((road[0], road[2]))
+    # Loop through the conditions and update the dp table
+    for l, r, x in conditions:
+        for i in range(l, r + 1):
+            dp[i] = (dp[i] * x) % 1000000007
     
-    # Initialize a dictionary to store the gigs and their details
-    gigs_dict = {}
-    for gig in gigs:
-        gigs_dict[gig[0]] = (gig[1], gig[2], gig[3])
-    
-    # Initialize a variable to store the maximum amount of cryptocents that can be earned
-    max_cryptocents = 0
-    
-    # Iterate through all possible combinations of gigs
-    for i in range(1 << len(gigs)):
-        # Initialize a variable to store the current amount of cryptocents
-        current_cryptocents = 0
-        
-        # Iterate through the gigs and calculate the amount of cryptocents that can be earned
-        for j in range(len(gigs)):
-            if i & (1 << j):
-                current_cryptocents += gigs_dict[j + 1][2]
-        
-        # If the current amount of cryptocents is greater than the maximum amount, update the maximum amount
-        if current_cryptocents > max_cryptocents:
-            max_cryptocents = current_cryptocents
-    
-    return max_cryptocents
+    # Return the result
+    return sum(dp) % 1000000007
+
+if __name__ == '__main__':
+    N, M, conditions = get_input()
+    print(count_ways(N, M, conditions))
 

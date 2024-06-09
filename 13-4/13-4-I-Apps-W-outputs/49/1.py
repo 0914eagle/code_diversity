@@ -1,8 +1,11 @@
 
-def solve(n, m, a):
-    result = 1
-    for i in range(n):
-        for j in range(i+1, n):
-            result = (result * abs(a[i] - a[j])) % m
-    return result
+def f1(n):
+    return (n * (n + 1)) // 2
+
+def f2(n):
+    return f1(n) + 1
+
+if __name__ == '__main__':
+    n = int(input())
+    print(f2(n))
 

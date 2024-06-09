@@ -1,19 +1,42 @@
 
-def solve(N, M, tunnels):
-    # Initialize the danger level of each chamber as 0
-    danger_level = [0] * (N + 1)
+import sys
+input = sys.stdin.read()
 
-    # Loop through each tunnel
-    for tunnel in tunnels:
-        # Get the length of the tunnel
-        length = tunnel[2]
+def f1(points):
+    # Calculate the Manhattan distance between each pair of points
+    distances = []
+    for i in range(len(points)):
+        for j in range(i+1, len(points)):
+            distances.append((points[i][0]-points[j][0])+(points[i][1]-points[j][1]))
+    
+    # Sort the distances in ascending order
+    distances.sort()
+    
+    # Return the sum of the first (N-1) distances, which is the weight of the minimum spanning tree
+    return sum(distances[:len(points)-1])
 
-        # Update the danger level of the starting chamber
-        danger_level[tunnel[0]] += length
+def f2(points):
+    # Use Kruskal's algorithm to find the minimum spanning tree
+    mst = []
+    visited = set()
+    for i in range(len(points)):
+        if i not in visited:
+            visited.add(i)
+            for j in range(i+1, len(points)):
+                if j not in visited:
+                    if (points[i][0]-points[j][0])+(points[i][1]-points[j][1]) == distances[0]:
+                        mst.append((i, j))
+                        visited.add(j)
+                        break
+    
+    # Return the sum of the weights of the edges in the minimum spanning tree
+    return sum(distances[i] for i in range(len(mst)))
 
-        # Update the danger level of the ending chamber
-        danger_level[tunnel[1]] += length
-
-    # Return the danger level of each chamber
-    return danger_level
+if __name__ == '__main__':
+    points = []
+    for line in input.splitlines():
+        x, y = map(int, line.split())
+        points.append((x, y))
+    print(f1(points))
+    print(f2(points))
 

@@ -1,19 +1,35 @@
 
-def solve(n, m):
-    def is_wool_sequence(sequence):
-        for i in range(len(sequence)):
-            for j in range(i+1, len(sequence)):
-                if sequence[i] ^ sequence[j] == 0:
-                    return True
-        return False
+def get_max_or(numbers, k, x):
+    # Initialize the maximum OR value
+    max_or = 0
+    
+    # Loop through each number
+    for i in range(len(numbers)):
+        # Get the current number
+        num = numbers[i]
+        
+        # Loop through each operation
+        for j in range(k):
+            # Multiply the number by x
+            num *= x
+            
+            # Update the maximum OR value
+            max_or = max(max_or, num)
+    
+    # Return the maximum OR value
+    return max_or
 
-    def count_non_wool_sequences(n, m):
-        count = 0
-        for i in range(1 << n):
-            sequence = [j for j in range(m) if i & (1 << j)]
-            if not is_wool_sequence(sequence):
-                count += 1
-        return count
+def main():
+    # Read the input
+    n, k, x = map(int, input().split())
+    numbers = list(map(int, input().split()))
+    
+    # Get the maximum OR value
+    max_or = get_max_or(numbers, k, x)
+    
+    # Print the result
+    print(max_or)
 
-    return count_non_wool_sequences(n, m) % 1000000009
+if __name__ == '__main__':
+    main()
 

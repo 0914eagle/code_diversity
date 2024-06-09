@@ -1,24 +1,61 @@
 
-def count_permutations(n):
-    def generate_permutations(n):
-        if n == 1:
-            yield [1]
-        else:
-            for i in range(1, n + 1):
-                for perm in generate_permutations(n - 1):
-                    yield [i] + perm
+def f1(s):
+    # Initialize the output string
+    output = ""
     
-    def is_sum_of_two_permutations(p1, p2):
-        for i in range(n):
-            if (p1[i] + p2[i] - 2) % n == 0:
-                return True
-        return False
+    # Iterate through the input string
+    for char in s:
+        # If the character is a letter or a digit, add it to the output
+        if char.isalpha() or char.isdigit():
+            output += char
+        # If the character is a space, add a space to the output
+        elif char == " ":
+            output += " "
+        # If the character is a '<', do nothing
+        elif char == "<":
+            pass
+        # If the character is a '[', move the cursor to the beginning of the line
+        elif char == "[":
+            output = ""
+        # If the character is a ']', move the cursor to the end of the line
+        elif char == "]":
+            output += " "
     
-    count = 0
-    for p1 in generate_permutations(n):
-        for p2 in generate_permutations(n):
-            if is_sum_of_two_permutations(p1, p2):
-                count += 1
+    # Return the final output string
+    return output
+
+def f2(s):
+    # Initialize the output string
+    output = ""
     
-    return count % 1000000007
+    # Iterate through the input string
+    for char in s:
+        # If the character is a letter or a digit, add it to the output
+        if char.isalpha() or char.isdigit():
+            output += char
+        # If the character is a space, add a space to the output
+        elif char == " ":
+            output += " "
+        # If the character is a '<', do nothing
+        elif char == "<":
+            pass
+        # If the character is a '[', move the cursor to the beginning of the line
+        elif char == "[":
+            output = ""
+        # If the character is a ']', move the cursor to the end of the line
+        elif char == "]":
+            output += " "
+    
+    # Return the final output string
+    return output
+
+if __name__ == '__main__':
+    # Read the input string
+    s = input()
+    
+    # Call the appropriate function based on the length of the input string
+    if len(s) <= 1000:
+        print(f1(s))
+    else:
+        print(f2(s))
 

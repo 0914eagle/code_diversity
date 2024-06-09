@@ -1,38 +1,35 @@
 
-n, k, m = map(int, input().split())
+def get_not_connected_houses(n, m, connections):
+    # Initialize a set to store the houses that are not connected to the internet
+    not_connected_houses = set()
+    
+    # Iterate through the list of connections
+    for connection in connections:
+        # If the house is not already connected to the internet, add it to the set
+        if connection not in not_connected_houses:
+            not_connected_houses.add(connection)
+    
+    # Return the set of houses that are not connected to the internet
+    return not_connected_houses
 
-board = [[0] * (n + 1) for _ in range(n + 1)]
-
-for _ in range(m):
-    x, y = map(int, input().split())
-    if board[x][y] == 0:
-        board[x][y] = 1
+def main():
+    # Read the number of houses and network cables from stdin
+    n, m = map(int, input().split())
+    
+    # Read the list of connections from stdin
+    connections = [tuple(map(int, input().split())) for _ in range(m)]
+    
+    # Call the function to get the houses that are not connected to the internet
+    not_connected_houses = get_not_connected_houses(n, m, connections)
+    
+    # Check if all the houses are connected to the internet
+    if len(not_connected_houses) == 0:
+        print("Connected")
     else:
-        board[x][y] = 0
+        # Sort the set of houses and print them in increasing order
+        for house in sorted(not_connected_houses):
+            print(house)
 
-def is_good(board):
-    for i in range(n):
-        for j in range(n):
-            if board[i][j] == 1 and (i != k or j != n):
-                return False
-    return True
-
-def add_rows(board):
-    for i in range(n):
-        for j in range(n):
-            if board[i][j] == 1:
-                board[i][j] = 0
-                board[i + 1][j] = 1
-                return board
-    return board
-
-def get_min_rows(board):
-    rows = 0
-    while not is_good(board):
-        board = add_rows(board)
-        rows += 1
-    return rows
-
-for i in range(m):
-    print(get_min_rows(board))
+if __name__ == '__main__':
+    main()
 

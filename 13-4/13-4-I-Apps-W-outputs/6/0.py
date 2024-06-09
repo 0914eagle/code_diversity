@@ -1,26 +1,20 @@
 
-def get_min_draws(N, squares):
-    # Initialize the minimum number of draws to infinity
-    min_draws = float('inf')
+def find_optimal_time(t_s, t_f, t, n, visitors):
+    # Find the time when the receptionist is free
+    free_time = (t_f - 1) - (n - 1) * t
     
-    # Iterate over each possible starting square
-    for i in range(N):
-        # Initialize the current square and the number of draws
-        current_square = i
-        draws = 0
-        
-        # Iterate over each possible color
-        for color in ['Blue', 'Orange', 'Pink', 'Green', 'Red', 'Yellow']:
-            # If the current square has the current color, move to the next square
-            if squares[current_square] == color:
-                current_square += 1
-                draws += 1
-                break
-        
-        # If the current square is the last square, update the minimum number of draws
-        if current_square == N:
-            min_draws = min(min_draws, draws)
+    # Find the time when Vasya should arrive
+    arrival_time = free_time - t
     
-    # Return the minimum number of draws
-    return min_draws
+    return arrival_time
+
+def main():
+    t_s, t_f, t = map(int, input().split())
+    n = int(input())
+    visitors = list(map(int, input().split()))
+    
+    print(find_optimal_time(t_s, t_f, t, n, visitors))
+
+if __name__ == '__main__':
+    main()
 

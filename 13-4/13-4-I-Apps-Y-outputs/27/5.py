@@ -1,21 +1,19 @@
 
-N = int(input())
+def get_input():
+    return list(map(int, input().split()))
 
-counts = [0, 0, 0, 0]
+def get_sorted_integers(A, B, K):
+    sorted_integers = []
+    for i in range(A, B+1):
+        if i in range(A, A+K) or i in range(B-K+1, B+1):
+            sorted_integers.append(i)
+    return sorted_integers
 
-for i in range(N):
-    verdict = input()
-    if verdict == "AC":
-        counts[0] += 1
-    elif verdict == "WA":
-        counts[1] += 1
-    elif verdict == "TLE":
-        counts[2] += 1
-    else:
-        counts[3] += 1
+def main():
+    A, B, K = get_input()
+    sorted_integers = get_sorted_integers(A, B, K)
+    print(*sorted_integers, sep='\n')
 
-print("AC x", counts[0])
-print("WA x", counts[1])
-print("TLE x", counts[2])
-print("RE x", counts[3])
+if __name__ == '__main__':
+    main()
 

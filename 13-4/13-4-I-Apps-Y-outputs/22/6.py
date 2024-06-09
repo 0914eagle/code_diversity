@@ -1,19 +1,17 @@
 
-def solve(A, B, C, K):
-    # Initialize the maximum sum to 0
-    max_sum = 0
-    
-    # Loop through all possible combinations of cards
-    for i in range(0, K+1):
-        for j in range(0, min(K-i, B)):
-            for k in range(0, min(K-i-j, C)):
-                # Calculate the sum of the current combination
-                current_sum = i * 1 + j * 0 + k * -1
-                
-                # Update the maximum sum if necessary
-                if current_sum > max_sum:
-                    max_sum = current_sum
-    
-    # Return the maximum sum
-    return max_sum
+def get_integer_in_takahashi_mind(symbols):
+    integer = 0
+    for symbol in symbols:
+        if symbol == "+":
+            integer += 1
+        else:
+            integer -= 1
+    return integer
+
+def main():
+    symbols = input()
+    print(get_integer_in_takahashi_mind(symbols))
+
+if __name__ == '__main__':
+    main()
 

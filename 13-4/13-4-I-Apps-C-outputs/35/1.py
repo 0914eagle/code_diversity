@@ -1,43 +1,29 @@
 
-import sys
+def longest_repeated_substring(input_string):
+    # Initialize variables
+    start_index = 0
+    end_index = 0
+    longest_substring = ""
 
-def shortest_subarray(arr, k):
-    # Initialize the variables
-    start = 0
-    end = 0
-    count = [0] * (k+1)
-    min_len = float('inf')
-    curr_len = 0
-
-    # Iterate through the array
-    for end in range(len(arr)):
-        count[arr[end]] += 1
-        curr_len = count[arr[end]]
-        while count[arr[start]] > 1:
-            count[arr[start]] -= 1
-            start += 1
-        min_len = min(min_len, curr_len)
-
-    # Return the result
-    if min_len == float('inf'):
-        return -1
-    else:
-        return min_len
-
-# Main function
-if __name__ == '__main__':
-    # Read the input
-    n, k, m = map(int, input().split())
-    arr = list(map(int, input().split()))
-    queries = []
-    for i in range(m):
-        queries.append(list(map(int, input().split())))
-
-    # Process the queries
-    for query in queries:
-        if query[0] == 1:
-            arr[query[1]-1] = query[2]
+    # Iterate through the input string
+    for i in range(len(input_string)):
+        # Check if the substring starting at position i is a repeated substring
+        if input_string[i] in input_string[start_index:i]:
+            # If it is, update the end index and longest substring
+            end_index = i
+            longest_substring = input_string[start_index:end_index+1]
+        # If it's not, update the start index
         else:
-            print(shortest_subarray(arr, k))
+            start_index = i + 1
+    
+    # Return the longest repeated substring
+    return longest_substring
 
+def main():
+    input_string = input("Enter a string of lowercase letters: ")
+    longest_substring = longest_repeated_substring(input_string)
+    print(f"The longest repeated substring is: {longest_substring}")
+
+if __name__ == "__main__":
+    main()
 

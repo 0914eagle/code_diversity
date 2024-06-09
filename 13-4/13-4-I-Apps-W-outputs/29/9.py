@@ -1,32 +1,35 @@
 
-import sys
+def get_longest_segment(arr):
+    # Find the longest segment of consecutive equal integers
+    current_seg = []
+    longest_seg = []
+    for i in range(len(arr)):
+        if arr[i] not in current_seg:
+            current_seg.append(arr[i])
+        if len(current_seg) > len(longest_seg):
+            longest_seg = current_seg
+        if i == len(arr) - 1 and len(current_seg) > len(longest_seg):
+            longest_seg = current_seg
+    return longest_seg
 
-def get_inconvenience(bridges, m):
-    # Initialize a dictionary to store the inconvenience for each bridge
-    inconvenience = {i: 0 for i in range(1, m + 1)}
+def remove_segment(arr, segment):
+    # Remove the segment from the array
+    return [x for x in arr if x not in segment]
 
-    # Iterate through the bridges and calculate the inconvenience after each bridge collapses
-    for i in range(1, m):
-        # Get the indices of the islands connected by the current bridge
-        island1, island2 = bridges[i]
+def count_operations(arr):
+    # Count the number of operations needed to remove all elements from the array
+    count = 0
+    while len(arr) > 0:
+        segment = get_longest_segment(arr)
+        arr = remove_segment(arr, segment)
+        count += 1
+    return count
 
-        # Iterate through the remaining bridges and check if they connect the same two islands
-        for j in range(i + 1, m):
-            # If the current bridge connects the same two islands as the next bridge, increase the inconvenience
-            if bridges[j][0] == island1 and bridges[j][1] == island2:
-                inconvenience[i + 1] += 1
-            elif bridges[j][0] == island2 and bridges[j][1] == island1:
-                inconvenience[i + 1] += 1
+def main():
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(count_operations(arr))
 
-    return inconvenience
-
-n, m = map(int, input().split())
-bridges = []
-for _ in range(m):
-    a, b = map(int, input().split())
-    bridges.append((a, b))
-
-inconvenience = get_inconvenience(bridges, m)
-for i in range(1, m + 1):
-    print(inconvenience[i])
+if __name__ == '__main__':
+    main()
 

@@ -1,27 +1,35 @@
 
-import sys
-
-def solve(N, S):
-    # Initialize the count of distinct strings to 0
-    count = 0
-
-    # Loop through each possible length of the string
-    for length in range(1, N+1):
-        # Loop through each possible starting index for the string
-        for start in range(N-length+1):
-            # Extract the substring of length `length` starting at index `start`
-            substring = S[start:start+length]
-
-            # Check if the substring is valid (i.e., it does not contain any consecutive characters that are the same)
-            if all(substring[i] != substring[i+1] for i in range(length-1)):
-                # Increment the count of distinct strings
-                count += 1
-
-    # Return the count of distinct strings modulo (10^9+7)
-    return count % (10**9+7)
-
-if __name__ == "__main__":
+def get_input():
     N = int(input())
-    S = input()
-    print(solve(N, S))
+    lamps = []
+    for i in range(N):
+        x, y, e = map(int, input().split())
+        lamps.append((x, y, e))
+    return N, lamps
+
+def find_balancing_line(N, lamps):
+    # Initialize the balancing line as a set of two points
+    balancing_line = set()
+    
+    # Loop through each lamp and check if it is on the balancing line
+    for lamp in lamps:
+        x, y, e = lamp
+        
+        # If the lamp is on the balancing line, add it to the set
+        if x == y or x == N-y or x+y == N:
+            balancing_line.add(lamp)
+    
+    # If the set of lamps on the balancing line is not empty, return the length of the balancing line
+    if balancing_line:
+        return len(balancing_line)
+    
+    # If the set of lamps on the balancing line is empty, return "IMPOSSIBLE"
+    return "IMPOSSIBLE"
+
+def main():
+    N, lamps = get_input()
+    print(find_balancing_line(N, lamps))
+
+if __name__ == '__main__':
+    main()
 

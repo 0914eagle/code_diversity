@@ -1,41 +1,37 @@
 
-def solve(n, e, roads):
-    # Initialize a dictionary to store the chains that have been assigned to each city
-    chains = {i: set() for i in range(1, n + 1)}
+def get_election_results(n_candidates, n_seats, n_voters, voter_data):
+    # Initialize a dictionary to store the number of votes for each candidate
+    votes = {}
+    for i in range(1, n_candidates + 1):
+        votes[i] = 0
     
-    # Initialize a list to store the roads that have been assigned
-    assigned_roads = []
+    # Count the number of votes for each candidate
+    for voter in voter_data:
+        votes[voter] += 1
     
-    # Loop through each road
-    for road in roads:
-        # If the road has not been assigned yet
-        if road not in assigned_roads:
-            # Get the cities connected by the road
-            city1, city2 = road
-            
-            # If both cities have at least one chain that has not been assigned yet
-            if len(chains[city1]) < 2 and len(chains[city2]) < 2:
-                # Assign the first chain to the road
-                chains[city1].add(1)
-                chains[city2].add(1)
-                assigned_roads.append(road)
-            # If one city has at least one chain that has not been assigned yet and the other city has no chains that have not been assigned yet
-            elif len(chains[city1]) < 2 and len(chains[city2]) == 0:
-                # Assign the first chain to the road
-                chains[city1].add(1)
-                chains[city2].add(1)
-                assigned_roads.append(road)
-            # If the first city has no chains that have not been assigned yet and the second city has at least one chain that has not been assigned yet
-            elif len(chains[city1]) == 0 and len(chains[city2]) < 2:
-                # Assign the first chain to the road
-                chains[city1].add(1)
-                chains[city2].add(1)
-                assigned_roads.append(road)
-            # If both cities have no chains that have not been assigned yet
-            else:
-                # Return "0" to indicate that there is no way to fairly assign the roads
-                return "0"
+    # Sort the candidates by number of votes in descending order
+    sorted_votes = sorted(votes.items(), key=lambda x: x[1], reverse=True)
     
-    # If all roads have been assigned, return the chains that have been assigned to each road
-    return [str(chains[city1].pop()) for road in roads for city1, city2 in [road]]
+    # Initialize a list to store the outcome for each candidate
+    outcome = []
+    
+    # Iterate through the sorted candidates and determine their outcome
+    for candidate, votes in sorted_votes:
+        if votes >= n_seats:
+            outcome.append(1)
+        elif votes == 0:
+            outcome.append(3)
+        else:
+            outcome.append(2)
+    
+    return outcome
+
+def main():
+    n_candidates, n_seats, n_voters, a = map(int, input().split())
+    voter_data = list(map(int, input().split()))
+    outcome = get_election_results(n_candidates, n_seats, n_voters, voter_data)
+    print(*outcome)
+
+if __name__ == '__main__':
+    main()
 

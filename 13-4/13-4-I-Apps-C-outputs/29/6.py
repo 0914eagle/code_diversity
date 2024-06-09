@@ -1,27 +1,51 @@
 
-import itertools
+def get_palindromes(s):
+    # Initialize a list to store the palindromes
+    palindromes = []
+    
+    # Loop through each character in the string
+    for i in range(len(s)):
+        # Check if the character is already in the palindromes list
+        if s[i] not in palindromes:
+            # If not, check if the character is a palindrome
+            if is_palindrome(s[i:]):
+                # If it is, add it to the palindromes list
+                palindromes.append(s[i])
+    
+    return palindromes
 
-def count_paintings(N, S1, S2):
-    # Initialize a dictionary to store the number of paintings for each domino
-    paintings = {}
-    for domino in itertools.product("RGB", repeat=N):
-        paintings[domino] = 0
+def is_palindrome(s):
+    # Check if the string is a palindrome
+    return s == s[::-1]
 
-    # Initialize a set to store the colors of the dominoes in the first row
-    first_row = set()
-    for i in range(N):
-        first_row.add(S1[i])
-        first_row.add(S2[i])
+def get_min_palindromes(s):
+    # Get all the palindromes in the string
+    palindromes = get_palindromes(s)
+    
+    # Initialize a variable to store the minimum number of palindromes
+    min_palindromes = len(palindromes)
+    
+    # Loop through each palindrome
+    for palindrome in palindromes:
+        # Check if the palindrome is a substring of the string
+        if s.find(palindrome) != -1:
+            # If it is, remove it from the string
+            s = s.replace(palindrome, "")
+            # Decrement the minimum number of palindromes
+            min_palindromes -= 1
+    
+    return min_palindromes
 
-    # Iterate over the dominoes in the first row and calculate the number of paintings for each domino
-    for domino in first_row:
-        paintings[domino] += 1
+def main():
+    # Read the input string
+    s = input()
+    
+    # Get the minimum number of palindromes
+    min_palindromes = get_min_palindromes(s)
+    
+    # Print the result
+    print(min_palindromes)
 
-    # Iterate over the remaining dominoes and calculate the number of paintings for each domino
-    for i in range(1, N):
-        for domino in itertools.product("RGB", repeat=N-i):
-            paintings[domino] += sum(1 for color in domino if color != first_row[i-1])
-
-    # Return the total number of paintings modulo 1000000007
-    return sum(paintings.values()) % 1000000007
+if __name__ == '__main__':
+    main()
 

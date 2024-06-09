@@ -1,19 +1,56 @@
 
-def get_reconstructions(pre_output, in_output, post_output):
-    # Initialize an empty list to store the reconstructions
-    reconstructions = []
+import math
+
+def get_polygon_area(vertices):
+    area = 0
+    for i in range(len(vertices)):
+        x1, y1 = vertices[i]
+        x2, y2 = vertices[(i+1) % len(vertices)]
+        area += x1 * y2 - x2 * y1
+    return abs(area) / 2
+
+def get_symmetric_polygon_area(vertices, x_a, y_a, x_b, y_b):
+    # Find the center of the polygon
+    x_center = (x_a + x_b) / 2
+    y_center = (y_a + y_b) / 2
     
-    # Loop through all possible combinations of Pre, In, and Post calls
-    for pre_calls in range(2):
-        for in_calls in range(2):
-            for post_calls in range(2):
-                # Check if the number of calls to each routine is correct
-                if pre_calls + in_calls + post_calls == 6:
-                    # Check if the output of the routines matches the given output
-                    if (pre_output == "".join(pre_calls * "H") + "".join(in_calls * "B") + "".join(post_calls * "I")) and (in_output == "".join(pre_calls * "F") + "".join(in_calls * "A") + "".join(post_calls * "G")) and (post_output == "".join(pre_calls * "J") + "".join(in_calls * "C") + "".join(post_calls * "E")):
-                        # Add the reconstruction to the list
-                        reconstructions.append([pre_calls, in_calls, post_calls])
+    # Translate the polygon to the origin
+    translated_vertices = [(x - x_center, y - y_center) for x, y in vertices]
     
-    # Return the list of reconstructions
-    return reconstructions
+    # Rotate the polygon by 180 degrees
+    rotated_vertices = [(x, -y) for x, y in translated_vertices]
+    
+    # Find the area of the rotated polygon
+    area = get_polygon_area(rotated_vertices)
+    
+    # Return the area of the symmetric polygon
+    return area
+
+def get_max_corn_area(vertices, x_a, y_a, x_b, y_b):
+    # Find the area of the symmetric polygon
+    symmetric_area = get_symmetric_polygon_area(vertices, x_a, y_a, x_b, y_b)
+    
+    # Find the area of the original polygon
+    original_area = get_polygon_area(vertices)
+    
+    # Return the maximum area
+    return max(symmetric_area, original_area)
+
+def main():
+    # Read the input
+    N = int(input())
+    vertices = []
+    for i in range(N):
+        x, y = map(int, input().split())
+        vertices.append((x, y))
+    x_a, y_a, x_b, y_b = map(int, input().split())
+    
+    # Find the maximum area
+    max_area = get_max_corn_area(vertices, x_a, y_a, x_b, y_b)
+    
+    # Print the result
+    print(max_area)
+
+if __name__ == '__main__':
+    main()
 

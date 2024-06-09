@@ -1,38 +1,30 @@
 
-n, k, m = map(int, input().split())
+def is_connected(house_num, connected_houses):
+    for house in connected_houses:
+        if house_num in house:
+            return True
+    return False
 
-board = [[0] * (n + 1) for _ in range(n + 1)]
+def get_not_connected_houses(connected_houses):
+    not_connected_houses = []
+    for house_num in range(1, len(connected_houses) + 1):
+        if not is_connected(house_num, connected_houses):
+            not_connected_houses.append(house_num)
+    return not_connected_houses
 
-for _ in range(m):
-    x, y = map(int, input().split())
-    if board[x][y] == 0:
-        board[x][y] = 1
+def main():
+    num_houses, num_cables = map(int, input().split())
+    connected_houses = []
+    for _ in range(num_cables):
+        house1, house2 = map(int, input().split())
+        connected_houses.append((house1, house2))
+    not_connected_houses = get_not_connected_houses(connected_houses)
+    if not not_connected_houses:
+        print("Connected")
     else:
-        board[x][y] = 0
+        for house_num in not_connected_houses:
+            print(house_num)
 
-def is_good():
-    for i in range(n + 1):
-        for j in range(n + 1):
-            if board[i][j] == 1 and (i != k or j != 1):
-                return False
-    return True
-
-def add_rows():
-    count = 0
-    for i in range(n + 1):
-        for j in range(n + 1):
-            if board[i][j] == 1 and i != k and j != 1:
-                count += 1
-    return count
-
-while not is_good():
-    print(add_rows())
-    n += 1
-    board = [[0] * (n + 1) for _ in range(n + 1)]
-    for i in range(m):
-        x, y = map(int, input().split())
-        if board[x][y] == 0:
-            board[x][y] = 1
-        else:
-            board[x][y] = 0
+if __name__ == '__main__':
+    main()
 

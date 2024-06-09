@@ -1,23 +1,34 @@
 
-def get_happy_seconds(n, x, y, c):
-    # Initialize a 2D array to store the state of the table
-    table = [[0] * n for _ in range(n)]
-    # Set the initial cell as switched on
-    table[x - 1][y - 1] = 1
-    # Initialize a variable to store the number of seconds
-    seconds = 0
-    # Loop until the condition is met
-    while sum(map(sum, table)) < c:
-        # Loop through each row of the table
-        for i in range(n):
-            # Loop through each column of the table
-            for j in range(n):
-                # Check if the current cell is switched off and has at least one switched on side-adjacent cell
-                if table[i][j] == 0 and sum(table[i - 1][j], table[i + 1][j], table[i][j - 1], table[i][j + 1]) >= 1:
-                    # Switch on the current cell
-                    table[i][j] = 1
-        # Increment the number of seconds
-        seconds += 1
-    # Return the number of seconds
-    return seconds
+def get_d(e, e_success, e_failure):
+    # Initialize variables
+    d = 0
+    s = 0
+    w = 0
+
+    # Loop until energy reserve is depleted
+    while e > 0:
+        # Increment weight by 1 kg
+        w += 1
+
+        # If weight is greater than or equal to strength, lift succeeds and energy goes down by e_success
+        if w >= s:
+            e -= e_success
+        # If weight is less than strength, lift fails and energy goes down by e_failure
+        else:
+            e -= e_failure
+
+        # If energy reserve is depleted, break the loop
+        if e <= 0:
+            break
+
+    # Return the minimum weight such that the score is at least s-d
+    return w - s
+
+def main():
+    e, e_success, e_failure = map(int, input().split())
+    d = get_d(e, e_success, e_failure)
+    print(d)
+
+if __name__ == '__main__':
+    main()
 

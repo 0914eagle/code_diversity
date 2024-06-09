@@ -1,32 +1,53 @@
 
-n, k, m = map(int, input().split())
+def get_connected_houses(n, m, connections):
+    # Initialize a set to store the connected houses
+    connected_houses = set()
 
-board = [[0] * (n + 1) for _ in range(n + 1)]
+    # Loop through the connections and add the connected houses to the set
+    for a, b in connections:
+        connected_houses.add(a)
+        connected_houses.add(b)
 
-for _ in range(m):
-    x, y = map(int, input().split())
-    if board[x][y] == 0:
-        board[x][y] = 1
+    # Return the set of connected houses
+    return connected_houses
+
+def get_disconnected_houses(n, m, connections):
+    # Get the set of connected houses
+    connected_houses = get_connected_houses(n, m, connections)
+
+    # Initialize a list to store the disconnected houses
+    disconnected_houses = []
+
+    # Loop through the houses and check if they are connected or not
+    for i in range(1, n + 1):
+        if i not in connected_houses:
+            disconnected_houses.append(i)
+
+    # Return the list of disconnected houses
+    return disconnected_houses
+
+def main():
+    # Read the input
+    n, m = map(int, input().split())
+    connections = []
+    for _ in range(m):
+        a, b = map(int, input().split())
+        connections.append((a, b))
+
+    # Get the set of connected houses
+    connected_houses = get_connected_houses(n, m, connections)
+
+    # Check if all the houses are connected
+    if len(connected_houses) == n:
+        print("Connected")
     else:
-        board[x][y] = 0
+        # Get the list of disconnected houses
+        disconnected_houses = get_disconnected_houses(n, m, connections)
 
-def is_good():
-    for i in range(1, n + 1):
-        for j in range(1, n + 1):
-            if board[i][j] == 1 and (i != k or j != 1):
-                return False
-    return True
+        # Print the list of disconnected houses
+        for house in disconnected_houses:
+            print(house)
 
-def add_rows():
-    count = 0
-    for i in range(1, n + 1):
-        for j in range(1, n + 1):
-            if board[i][j] == 1 and i != k and j != 1:
-                count += 1
-    return count
-
-if is_good():
-    print(0)
-else:
-    print(add_rows())
+if __name__ == '__main__':
+    main()
 

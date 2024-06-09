@@ -1,42 +1,31 @@
 
-import math
-
-def get_hexagon_circumference(vertices):
-    # Calculate the distance between each pair of vertices
-    distances = []
-    for i in range(len(vertices)):
-        for j in range(i+1, len(vertices)):
-            dx = vertices[i][0] - vertices[j][0]
-            dy = vertices[i][1] - vertices[j][1]
-            distances.append(math.hypot(dx, dy))
-    
-    # Sort the distances in descending order
-    distances.sort(reverse=True)
-    
-    # Calculate the circumference of the hexagon
-    circumference = 0
-    for i in range(6):
-        circumference += distances[i]
-    
-    return circumference
+def get_min_cuts(poles, n):
+    # Sort the poles in non-decreasing order
+    poles.sort()
+    # Initialize the number of cuts as 0
+    cuts = 0
+    # Loop through each pole and check if it is greater than or equal to the length of the fence
+    for pole in poles:
+        if pole >= n:
+            # If the pole is greater than or equal to the length of the fence, we can use it as a fence post
+            # and increment the number of cuts by 1
+            cuts += 1
+            # Decrement the length of the fence by the length of the pole
+            n -= pole
+        else:
+            # If the pole is less than the length of the fence, we cannot use it as a fence post
+            # and break the loop
+            break
+    # Return the number of cuts needed to build the fence
+    return cuts
 
 def main():
-    n = int(input())
-    vertices = []
-    for i in range(n):
-        x, y = map(int, input().split())
-        vertices.append((x, y))
-    
-    # Find the maximum circumference for each vertex
-    max_circumferences = []
-    for i in range(n):
-        vertex = vertices[i]
-        vertices_copy = vertices[:i] + vertices[i+1:]
-        max_circumferences.append(get_hexagon_circumference(vertices_copy + [vertex]))
-    
-    for circumference in max_circumferences:
-        print(circumference)
+    # Read the input data
+    k, n = map(int, input().split())
+    poles = list(map(int, input().split()))
+    # Call the get_min_cuts function and print the result
+    print(get_min_cuts(poles, n))
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
 

@@ -1,23 +1,28 @@
 
-x = int(input())
+def get_input():
+    n = int(input())
+    return n
 
-# Convert the number to a string
-x_str = str(x)
+def get_permuted_array(n):
+    a = list(range(1, n+1))
+    a += a
+    return a
 
-# Initialize the minimum number as the original number
-min_num = x
+def get_distance(a, i):
+    x_i = a.index(i)
+    y_i = a.index(i, x_i+1)
+    return y_i - x_i
 
-# Iterate through each digit in the number
-for i in range(len(x_str)):
-    # Calculate the inverted digit
-    inverted_digit = 9 - int(x_str[i])
-    
-    # Calculate the new number by replacing the current digit with the inverted digit
-    new_num = int(x_str[:i] + str(inverted_digit) + x_str[i+1:])
-    
-    # If the new number is smaller than the minimum number, update the minimum number
-    if new_num < min_num:
-        min_num = new_num
+def get_sum(a):
+    n = len(a) // 2
+    return sum(n - i * abs(get_distance(a, i) + i - n) for i in range(1, n+1))
 
-print(min_num)
+def solve(n):
+    a = get_permuted_array(n)
+    return a
+
+if __name__ == '__main__':
+    n = get_input()
+    a = solve(n)
+    print(*a)
 

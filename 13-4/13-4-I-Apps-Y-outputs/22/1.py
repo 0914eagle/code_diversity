@@ -1,14 +1,17 @@
 
-import sys
+def get_integer_in_takahashi_mind(symbols):
+    integer = 0
+    for symbol in symbols:
+        if symbol == "+":
+            integer += 1
+        else:
+            integer -= 1
+    return integer
 
-A, B, C, K = map(int, input().split())
+def main():
+    symbols = input()
+    print(get_integer_in_takahashi_mind(symbols))
 
-# Calculate the maximum sum by considering all possible combinations of cards
-max_sum = 0
-for i in range(K+1):
-    for j in range(K+1-i):
-        current_sum = i * 1 + j * 0 + (K-i-j) * -1
-        max_sum = max(max_sum, current_sum)
-
-print(max_sum)
+if __name__ == '__main__':
+    main()
 

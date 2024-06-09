@@ -1,25 +1,55 @@
 
-def get_segments(n, k, absurdity):
-    # Sort the absurdity values in descending order
-    absurdity.sort(reverse=True)
+def f1(n):
+    # Calculate the number of cyclic permutations of length n
+    num_cyclic_permutations = 0
     
-    # Initialize the segments with the first k values
-    segment_1 = absurdity[:k]
-    segment_2 = absurdity[k:]
+    # Iterate over all possible permutations of length n
+    for p in itertools.permutations(range(1, n+1)):
+        # Build the graph using the permutation p
+        graph = f2(p)
+        
+        # Check if the graph has a simple cycle
+        if has_simple_cycle(graph):
+            num_cyclic_permutations += 1
     
-    # Initialize the total absurdity of the signed laws
-    total_absurdity = sum(segment_1) + sum(segment_2)
+    return num_cyclic_permutations % 1000000007
+
+def f2(p):
+    # Build the graph using the permutation p
+    graph = {}
+    for i in range(len(p)):
+        # Find the largest j such that j < i and p[j] > p[i]
+        j = max([j for j in range(i) if p[j] > p[i]])
+        if j != -1:
+            graph[i] = j
     
-    # Iterate through the remaining values
-    for i in range(k, n):
-        # Check if the current value is greater than the total absurdity
-        if absurdity[i] > total_absurdity:
-            # Add the current value to the first segment
-            segment_1.append(absurdity[i])
-            # Remove the first value from the second segment
-            segment_2.pop(0)
-            # Update the total absurdity
-            total_absurdity += absurdity[i] - segment_2[0]
+    # Find the smallest j such that i < j <= n and p[j] > p[i]
+    j = min([j for j in range(i+1, len(p)) if p[j] > p[i]])
+    if j != len(p):
+        graph[i] = j
     
-    return segment_1, segment_2
+    return graph
+
+def has_simple_cycle(graph):
+    # Check if the graph has a simple cycle
+    visited = set()
+    for node in graph:
+        if node not in visited:
+            if has_cycle(graph, node, visited):
+                return True
+    return False
+
+def has_cycle(graph, node, visited):
+    # Check if the graph has a simple cycle starting from node
+    if node in visited:
+        return True
+    visited.add(node)
+    for neighbor in graph[node]:
+        if has_cycle(graph, neighbor, visited):
+            return True
+    return False
+
+if __name__ == '__main__':
+    n = int(input())
+    print(f1(n))
 

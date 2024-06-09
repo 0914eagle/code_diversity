@@ -1,10 +1,12 @@
 {
     "inputs": [
-        "14\nlibattr\nvim-X11 vim-common gtk2 libattr\nvim-common\ngtk2 libtiff atk pango glib2\nlibtiff zlib libjpeg\natk\npango xorg-x11-libs freetype glib2\nglib2\nzlib\nlibjpeg\nxorg-x11-libs grep freetype\ngrep pcre\npcre\nfreetype\n3\nemacs xorg-x11 lisp\nxorg-x11\nlisp emacs\n0\n",
-        "4\natk pango\nglib2 pango\ngrep atk\npango\n0\n"
+        "00:00\n01:01\n",
+        "00:08\n00:00\n",
+        "09:09\n20:10\n"
     ],
     "outputs": [
-        "atk\nfreetype\nglib2\nlibattr\nlibjpeg\npcre\ngrep\nvim-common\nxorg-x11-libs\npango\nzlib\nlibtiff\ngtk2\nvim-X11\n\ncannot be ordered\n",
-        "pango\natk\nglib2\ngrep\n"
+        "3\n00:00\n01:00\n01:01\n",
+        "3\n00:08\n00:09\n00:00\n",
+        "6\n09:09\n09:00\n09:10\n00:10\n10:10\n20:10\n"
     ]
 }

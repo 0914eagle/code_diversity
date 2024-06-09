@@ -1,27 +1,50 @@
 
-def find_min_swaps(permutation):
-    n = len(permutation)
-    # Initialize a dictionary to store the number of swaps for each pair of indices
-    swaps = {}
-    # Loop through each pair of indices
+def f1(r, n):
+    # Initialize a list to store the reclaimed cells
+    reclaimed_cells = []
+    
+    # Iterate through the input cells
     for i in range(n):
-        for j in range(i+1, n):
-            # If the elements are not in order, add the pair to the dictionary with the number of swaps as the value
-            if permutation[i] > permutation[j]:
-                swaps[(i, j)] = 1
-            # If the elements are in order, add the pair to the dictionary with 0 as the value
-            else:
-                swaps[(i, j)] = 0
+        # Read the current cell
+        r_i, c_i = map(int, input().split())
+        
+        # Check if the current cell has already been reclaimed
+        if (r_i, c_i) in reclaimed_cells:
+            continue
+        
+        # Reclaim the current cell
+        reclaimed_cells.append((r_i, c_i))
     
-    # Find the minimum number of swaps and the corresponding pairs
-    min_swaps = float('inf')
-    min_pairs = []
-    for pair, swaps in swaps.items():
-        if swaps < min_swaps:
-            min_swaps = swaps
-            min_pairs = [pair]
-        elif swaps == min_swaps:
-            min_pairs.append(pair)
+    # Check if the last cell can be reclaimed
+    if len(reclaimed_cells) == r:
+        return "WIN"
+    else:
+        return "LOSE"
+
+def f2(r, n):
+    # Initialize a list to store the reclaimed cells
+    reclaimed_cells = []
     
-    return min_swaps, len(min_pairs)
+    # Iterate through the input cells
+    for i in range(n):
+        # Read the current cell
+        r_i, c_i = map(int, input().split())
+        
+        # Check if the current cell has already been reclaimed
+        if (r_i, c_i) in reclaimed_cells:
+            continue
+        
+        # Reclaim the current cell
+        reclaimed_cells.append((r_i, c_i))
+    
+    # Check if the last cell can be reclaimed
+    if len(reclaimed_cells) == r:
+        return "WIN"
+    else:
+        return "LOSE"
+
+if __name__ == '__main__':
+    r, n = map(int, input().split())
+    print(f1(r, n))
+    print(f2(r, n))
 

@@ -1,18 +1,43 @@
 
-def can_zax_and_xaz_coexist(m, n, resources):
-    # Initialize a set to store the resources found on each island
-    resources_on_island = set()
-    for island in resources:
-        resources_on_island.update(island)
+def is_possible(n, parent, x):
+    # Initialize the color and weight of the root vertex as white and 0
+    color = ["white"] * (n + 1)
+    weight = [0] * (n + 1)
+    
+    # Set the color and weight of the root vertex
+    color[1] = "white"
+    weight[1] = 0
+    
+    # Iterate through the vertices in the tree
+    for i in range(2, n + 1):
+        # Get the parent of the current vertex
+        p = parent[i]
+        
+        # If the parent has the same color as the current vertex, set the current vertex's color to black
+        if color[p] == color[i]:
+            color[i] = "black"
+        
+        # Set the current vertex's weight to the difference between its parent's weight and its own weight
+        weight[i] = weight[p] - x[i]
+    
+    # Check if the total weight of the vertices with the same color as the root vertex is equal to X_1
+    if weight[1] != x[1]:
+        return "IMPOSSIBLE"
+    
+    # Check if the total weight of the vertices with the same color as the root vertex is equal to X_i for all i
+    for i in range(2, n + 1):
+        if weight[i] != x[i]:
+            return "IMPOSSIBLE"
+    
+    # If all conditions are satisfied, return POSSIBLE
+    return "POSSIBLE"
 
-    # Check if there are exactly 2n resources on El-gă-rizm
-    if len(resources_on_island) != 2 * n:
-        return "NO"
+def main():
+    n = int(input())
+    parent = [int(i) for i in input().split()]
+    x = [int(i) for i in input().split()]
+    print(is_possible(n, parent, x))
 
-    # Check if each resource is present on exactly 2 islands
-    for resource in range(1, n + 1):
-        if resource not in resources_on_island:
-            return "NO"
-
-    return "YES"
+if __name__ == '__main__':
+    main()
 

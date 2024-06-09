@@ -1,23 +1,17 @@
 
-import sys
+def get_cost(k, i):
+    return i * k
 
-def solve(s):
-    mod = 10**9+7
-    count = 0
-    for i in range(len(s)):
-        if s[i] == '?':
-            for j in range(10):
-                num = int(s[:i] + str(j) + s[i+1:])
-                if num % 13 == 5:
-                    count += 1
-                    count %= mod
-        elif s[i].isdigit():
-            num = int(s[:i] + s[i] + s[i+1:])
-            if num % 13 == 5:
-                count += 1
-                count %= mod
-    return count
+def get_difference(n, w, k):
+    total_cost = 0
+    for i in range(1, w + 1):
+        total_cost += get_cost(k, i)
+    return total_cost - n
 
-s = input()
-print(solve(s))
+def main():
+    k, n, w = map(int, input().split())
+    print(get_difference(n, w, k))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,18 +1,40 @@
 
-n = int(input())
-sizes = list(map(int, input().split()))
+def get_painting_time(m, n, t):
+    # Initialize a list to store the painting times
+    painting_times = []
+    
+    # Loop through each picture
+    for i in range(m):
+        # Initialize a variable to store the current painting time
+        current_time = 0
+        
+        # Loop through each painter
+        for j in range(n):
+            # Add the time the current painter needs to work on the current picture to the current painting time
+            current_time += t[i][j]
+        
+        # Add the current painting time to the list of painting times
+        painting_times.append(current_time)
+    
+    # Return the list of painting times
+    return painting_times
 
-tower = []
-for i in range(n):
-    if sizes[i] not in tower:
-        tower.append(sizes[i])
-    else:
-        index = tower.index(sizes[i])
-        tower.insert(index, sizes[i])
+def main():
+    # Read the number of pictures and painters
+    m, n = map(int, input().split())
+    
+    # Read the time each painter needs to work on each picture
+    t = []
+    for i in range(m):
+        t.append(list(map(int, input().split())))
+    
+    # Calculate the painting times
+    painting_times = get_painting_time(m, n, t)
+    
+    # Print the painting times
+    for i in range(m):
+        print(painting_times[i])
 
-for i in range(n):
-    if tower[i] == sizes[i]:
-        print(tower[i])
-    else:
-        print()
+if __name__ == '__main__':
+    main()
 

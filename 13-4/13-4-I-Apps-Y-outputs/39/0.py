@@ -1,35 +1,30 @@
 
-import sys
+def read_input():
+    k = int(input())
+    sequences = []
+    for i in range(k):
+        n = int(input())
+        sequence = list(map(int, input().split()))
+        sequences.append(sequence)
+    return k, sequences
 
-def solve(problems, drinks):
-    # Initialize the time it takes to solve all problems to 0
-    total_time = 0
+def find_solution(sequences):
+    for i in range(len(sequences)):
+        for j in range(i+1, len(sequences)):
+            if sequences[i][0] + sequences[j][0] == sequences[i][-1] + sequences[j][-1]:
+                return i+1, 1, j+1, 1
+    return -1, -1, -1, -1
 
-    # Loop through each problem
-    for problem in problems:
-        # Check if the problem is affected by the drink
-        if problem in drinks:
-            # If the problem is affected, add the stimulated time to the total time
-            total_time += drinks[problem]
-        else:
-            # If the problem is not affected, add the original time to the total time
-            total_time += problem
+def print_output(solution):
+    if solution[0] == -1:
+        print("NO")
+    else:
+        print("YES")
+        print(solution[0], solution[1])
+        print(solution[2], solution[3])
 
-    # Return the total time it takes to solve all problems
-    return total_time
-
-# Read the number of problems and the problems from stdin
-num_problems = int(input())
-problems = list(map(int, input().split()))
-
-# Read the number of drinks and the drinks from stdin
-num_drinks = int(input())
-drinks = {}
-for i in range(num_drinks):
-    problem, stimulated_time = map(int, input().split())
-    drinks[problem] = stimulated_time
-
-# Loop through each drink and calculate the total time it takes to solve all problems if Joisino takes that drink
-for drink in drinks:
-    print(solve(problems, {drink: drinks[drink]}))
+if __name__ == '__main__':
+    k, sequences = read_input()
+    solution = find_solution(sequences)
+    print_output(solution)
 

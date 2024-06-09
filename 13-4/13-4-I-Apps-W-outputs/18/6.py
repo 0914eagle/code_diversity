@@ -1,30 +1,27 @@
 
-def solve(a, b, w, x, c):
-    # Initialize variables
-    arthur_time = 0
-    aleksander_time = 0
-    arthur_ahead = False
-    
-    # Loop until Alexander gets ahead of Arthur
-    while not arthur_ahead:
-        # Arthur's operation
-        if b >= x:
-            b -= x
-        else:
-            a -= 1
-            b = w - (x - b)
-        
-        # Aleksander's operation
-        c -= 1
-        
-        # Check if Alexander is ahead of Arthur
-        if c <= a:
-            arthur_ahead = True
-        
-        # Increment times
-        arthur_time += 1
-        aleksander_time += 1
-    
-    # Return the minimum time needed for Alexander to get ahead of Arthur
-    return aleksander_time
+def f1(N, M):
+    # Initialize the playing fields with random integers between 1 and N
+    fields = [(i % N) + 1 for i in range(M)]
+    # Initialize the integers of the players with random integers between 1 and N
+    integers = [(i % N) + 1 for i in range(N)]
+    # Assign each playing field a unique integer
+    for i in range(M):
+        fields[i] = integers[i]
+    return fields
+
+def f2(N, M):
+    # Initialize the playing fields with random integers between 1 and N
+    fields = [(i % N) + 1 for i in range(M)]
+    # Initialize the integers of the players with random integers between 1 and N
+    integers = [(i % N) + 1 for i in range(N)]
+    # Assign each playing field a unique integer
+    for i in range(M):
+        fields[i] = integers[i]
+    return fields
+
+if __name__ == '__main__':
+    N, M = map(int, input().split())
+    fields = f1(N, M)
+    for field in fields:
+        print(*field)
 

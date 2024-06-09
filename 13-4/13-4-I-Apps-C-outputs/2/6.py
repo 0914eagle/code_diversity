@@ -1,34 +1,28 @@
 
-import sys
-
-def get_number_of_ways(r, w, d):
-    # Base case: if there are no red or white wines, there is only one way to arrange them
-    if r == 0 and w == 0:
-        return 1
+def f1(n, r, w, h):
+    # Initialize the maximum number of gems that can be collected
+    max_gems = 0
     
-    # Base case: if there is only one type of wine, there is only one way to arrange them
-    if r == 0 or w == 0:
-        return 1
-    
-    # Initialize the number of ways to arrange the wines
-    num_ways = 0
-    
-    # Iterate over the possible number of red wine piles
-    for red_piles in range(1, r + 1):
-        # Calculate the number of white wine piles
-        white_piles = r - red_piles
+    # Iterate through the gems
+    for i in range(n):
+        # Read the next gem's coordinates
+        x, y = map(int, input().split())
         
-        # Check if the number of red wine piles is valid
-        if red_piles <= d:
-            # Calculate the number of ways to arrange the wines with the current number of red and white piles
-            num_ways += get_number_of_ways(red_piles, white_piles, d)
+        # Calculate the distance from the current position to the gem
+        distance = abs(x - w) + abs(y - h)
+        
+        # Calculate the time it takes to reach the gem
+        time = distance / r
+        
+        # Update the maximum number of gems that can be collected
+        max_gems = max(max_gems, i + 1)
     
-    return num_ways
+    return max_gems
 
-def main():
-    r, w, d = map(int, input().split())
-    print(get_number_of_ways(r, w, d) % (10**9 + 7))
+def f2(...):
+    ...
 
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    n, r, w, h = map(int, input().split())
+    print(f1(n, r, w, h))
 

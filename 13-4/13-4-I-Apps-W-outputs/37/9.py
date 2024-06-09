@@ -1,28 +1,38 @@
 
-def solve(x):
-    # Initialize the minimum number of operations to be infinite
-    min_operations = float('inf')
-    # Iterate over all possible values of the side facing upward
-    for i in range(1, 7):
-        # Initialize the current score to be 0
-        current_score = 0
-        # Initialize the current operation to be 0
-        current_operation = 0
-        # Iterate until the current score is greater than or equal to x
-        while current_score < x:
-            # Add the value of the current side to the current score
-            current_score += i
-            # Increment the current operation by 1
-            current_operation += 1
-            # If the current operation is odd, rotate the die 90 degrees to the left
-            if current_operation % 2 == 1:
-                i = (i - 1) % 6 + 1
-            # If the current operation is even, rotate the die 90 degrees to the right
-            else:
-                i = (i + 1) % 6 + 1
-        # If the current score is greater than or equal to x and the current operation is less than the minimum number of operations, update the minimum number of operations
-        if current_score >= x and current_operation < min_operations:
-            min_operations = current_operation
-    # Return the minimum number of operations
-    return min_operations
+def get_independent_sets(graph):
+    independent_sets = []
+    for i in range(1, len(graph) + 1):
+        for subset in itertools.combinations(graph, i):
+            if is_independent_set(subset, graph):
+                independent_sets.append(subset)
+    return independent_sets
+
+def is_independent_set(subset, graph):
+    for i in range(len(subset)):
+        for j in range(i + 1, len(subset)):
+            if (subset[i], subset[j]) in graph:
+                return False
+    return True
+
+def get_edge_induced_subgraphs(graph):
+    edge_induced_subgraphs = []
+    for i in range(len(graph)):
+        for j in range(i + 1, len(graph)):
+            if (graph[i], graph[j]) in graph:
+                edge_induced_subgraphs.append((graph[i], graph[j]))
+    return edge_induced_subgraphs
+
+def get_sum_of_independent_sets(graph):
+    sum_of_independent_sets = 0
+    for edge_induced_subgraph in get_edge_induced_subgraphs(graph):
+        sum_of_independent_sets += len(get_independent_sets(edge_induced_subgraph))
+    return sum_of_independent_sets % 998244353
+
+if __name__ == '__main__':
+    n = int(input())
+    graph = []
+    for i in range(n - 1):
+        u, v = map(int, input().split())
+        graph.append((u, v))
+    print(get_sum_of_independent_sets(graph))
 

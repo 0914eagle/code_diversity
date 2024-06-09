@@ -1,16 +1,52 @@
 
-def get_number_of_ways(R, W, d):
-    # Initialize the number of ways to be 0
-    number_of_ways = 0
-    
-    # Loop through all possible combinations of red and white wine piles
-    for i in range(1, R + 1):
-        for j in range(1, W + 1):
-            # Check if the current combination satisfies the conditions
-            if i + j <= R and i <= d:
-                # Increment the number of ways
-                number_of_ways += 1
-    
-    # Return the number of ways modulo 10^9 + 7
-    return number_of_ways % (10**9 + 7)
+def f1(n, r, w, h):
+    # Initialize variables
+    gems = []
+    max_gems = 0
+
+    # Read the input
+    for i in range(n):
+        x, y = map(int, input().split())
+        gems.append((x, y))
+
+    # Sort the gems by their y-coordinate in descending order
+    gems.sort(key=lambda x: x[1], reverse=True)
+
+    # Loop through the gems and check if they are within reach
+    for gem in gems:
+        x, y = gem
+        if y <= h:
+            max_gems += 1
+        else:
+            break
+
+    return max_gems
+
+def f2(n, r, w, h):
+    # Initialize variables
+    gems = []
+    max_gems = 0
+
+    # Read the input
+    for i in range(n):
+        x, y = map(int, input().split())
+        gems.append((x, y))
+
+    # Sort the gems by their x-coordinate in ascending order
+    gems.sort(key=lambda x: x[0])
+
+    # Loop through the gems and check if they are within reach
+    for gem in gems:
+        x, y = gem
+        if x >= 0 and x <= w:
+            max_gems += 1
+        else:
+            break
+
+    return max_gems
+
+if __name__ == '__main__':
+    n, r, w, h = map(int, input().split())
+    print(f1(n, r, w, h))
+    print(f2(n, r, w, h))
 

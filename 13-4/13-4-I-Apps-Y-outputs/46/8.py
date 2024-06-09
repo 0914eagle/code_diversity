@@ -1,16 +1,23 @@
 
-def get_box_heights(box_heights):
-    # Sort the box heights in descending order
-    sorted_box_heights = sorted(box_heights, reverse=True)
+def get_input():
+    N = int(input())
+    S = input()
+    return N, S
 
-    # Get the tower heights
-    tower_heights = sorted_box_heights[-2:]
+def shift_char(char, N):
+    if char.isalpha():
+        new_char = chr((ord(char) - ord('A') + N) % 26 + ord('A'))
+    else:
+        new_char = char
+    return new_char
 
-    # Get the box heights for the first tower
-    first_tower = sorted_box_heights[:3]
+def shift_string(S, N):
+    return ''.join([shift_char(char, N) for char in S])
 
-    # Get the box heights for the second tower
-    second_tower = sorted_box_heights[3:]
+def main():
+    N, S = get_input()
+    print(shift_string(S, N))
 
-    return first_tower, second_tower
+if __name__ == '__main__':
+    main()
 

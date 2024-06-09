@@ -1,14 +1,16 @@
 
-def get_signatures(K, desk_numbers):
-    # Initialize a list to store the signatures
-    signatures = []
+def f1(n):
+    # Your code here
+    return 0
 
-    # Iterate through the desk numbers
-    for desk_number in desk_numbers:
-        # If the desk number is not in the list of signatures, add it
-        if desk_number not in signatures:
-            signatures.append(desk_number)
+def f2(n):
+    # Your code here
+    return 0
 
-    # Return the number of signatures collected
-    return len(signatures)
+if __name__ == '__main__':
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        print(f1(n))
+        print(f2(n))
 

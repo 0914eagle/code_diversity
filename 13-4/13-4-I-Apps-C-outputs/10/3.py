@@ -1,14 +1,34 @@
 
 import math
 
-def solve(S):
-    mod = 1000000007
-    n = len(S)
-    dp = [0] * (n + 1)
-    dp[0] = 1
-    for i in range(1, n + 1):
-        dp[i] = (dp[i - 1] * 3) % mod
-        if i > 1 and S[i - 2] != S[i - 1]:
-            dp[i] = (dp[i] - 1 + mod) % mod
-    return dp[n]
+def get_energy_contribution(x, y, e):
+    return e
+
+def get_line_length(x1, y1, x2, y2):
+    return math.sqrt((x2-x1)**2 + (y2-y1)**2)
+
+def get_shortest_line_length(lamp_coordinates, lamp_energies):
+    shortest_line_length = float('inf')
+    for i in range(len(lamp_coordinates)):
+        for j in range(i+1, len(lamp_coordinates)):
+            x1, y1 = lamp_coordinates[i]
+            x2, y2 = lamp_coordinates[j]
+            line_length = get_line_length(x1, y1, x2, y2)
+            if line_length < shortest_line_length:
+                shortest_line_length = line_length
+    return shortest_line_length
+
+def main():
+    num_lamps = int(input())
+    lamp_coordinates = []
+    lamp_energies = []
+    for i in range(num_lamps):
+        x, y, e = map(int, input().split())
+        lamp_coordinates.append((x, y))
+        lamp_energies.append(get_energy_contribution(x, y, e))
+    shortest_line_length = get_shortest_line_length(lamp_coordinates, lamp_energies)
+    print(shortest_line_length)
+
+if __name__ == '__main__':
+    main()
 

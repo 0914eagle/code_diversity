@@ -1,26 +1,38 @@
 
-import sys
+import math
 
-def count_distinct_strings(S):
-    # Initialize a set to store the distinct strings
-    distinct_strings = set()
-    
-    # Loop through each character in the string
-    for i in range(len(S)):
-        # If the current character is not equal to the next character
-        if S[i] != S[i+1]:
-            # Replace the current character with the character that is different from both the current and next characters
-            S = S[:i] + "C" + S[i+2:]
-            # Add the modified string to the set of distinct strings
-            distinct_strings.add(S)
-    
-    # Return the number of distinct strings
-    return len(distinct_strings)
+def get_energy_contribution(x, y, e):
+    return e
+
+def get_energy_balance(lamp_positions, lamp_energies):
+    total_energy = 0
+    for i in range(len(lamp_positions)):
+        total_energy += get_energy_contribution(lamp_positions[i][0], lamp_positions[i][1], lamp_energies[i])
+    return total_energy
+
+def get_shortest_balance_line(lamp_positions, lamp_energies):
+    min_distance = math.inf
+    for i in range(len(lamp_positions)):
+        for j in range(i+1, len(lamp_positions)):
+            distance = math.sqrt((lamp_positions[i][0] - lamp_positions[j][0])**2 + (lamp_positions[i][1] - lamp_positions[j][1])**2)
+            if distance < min_distance:
+                min_distance = distance
+    return min_distance
+
+def get_balance_line_length(lamp_positions, lamp_energies):
+    balance_line_length = get_shortest_balance_line(lamp_positions, lamp_energies)
+    return balance_line_length
+
+def main():
+    lamp_positions = []
+    lamp_energies = []
+    for i in range(int(input())):
+        x, y, e = map(int, input().split())
+        lamp_positions.append((x, y))
+        lamp_energies.append(e)
+    balance_line_length = get_balance_line_length(lamp_positions, lamp_energies)
+    print(balance_line_length)
 
 if __name__ == '__main__':
-    # Read the input string from stdin
-    S = sys.stdin.readline().strip()
-    
-    # Call the count_distinct_strings function and print the result
-    print(count_distinct_strings(S))
+    main()
 

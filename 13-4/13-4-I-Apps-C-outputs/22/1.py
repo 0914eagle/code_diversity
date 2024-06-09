@@ -1,25 +1,36 @@
 
-import math
-
-def solve(N, L, R):
-    expected_payment = 0
+def get_map_pieces(N):
+    map_pieces = []
     for i in range(N):
-        for j in range(i+1, N):
-            if L[i] < L[j]:
-                expected_payment += R[j] - R[i]
-            elif L[i] > L[j]:
-                expected_payment += R[i] - R[j]
-            else:
-                expected_payment += max(R[i], R[j]) - min(R[i], R[j])
-    return expected_payment / (N * N)
+        W, H = map(int, input().split())
+        map_pieces.append([input() for _ in range(H)])
+    return map_pieces
 
-N = int(input())
-L = []
-R = []
-for i in range(N):
-    L_i, R_i = map(float, input().split())
-    L.append(L_i)
-    R.append(R_i)
+def reconstruct_map(map_pieces):
+    W, H = 0, 0
+    for piece in map_pieces:
+        W = max(W, len(piece[0]))
+        H = max(H, len(piece))
+    
+    map_grid = [['0'] * W for _ in range(H)]
+    for i, piece in enumerate(map_pieces):
+        for y, row in enumerate(piece):
+            for x, val in enumerate(row):
+                map_grid[y + H - len(piece)][x + W - len(row)] = str(i + 1)
+    
+    return map_grid
 
-print(solve(N, L, R))
+def main():
+    N = int(input())
+    map_pieces = get_map_pieces(N)
+    map_grid = reconstruct_map(map_pieces)
+    print(W, H)
+    for row in map_grid:
+        print("".join(row))
+    print("-" * W)
+    for i in range(N):
+        print("".join([str(i + 1) for _ in range(W)]))
+
+if __name__ == '__main__':
+    main()
 

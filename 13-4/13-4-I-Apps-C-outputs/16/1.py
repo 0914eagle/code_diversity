@@ -1,12 +1,52 @@
 
-def longest_interesting_subsequence(N, S, A):
-    # Initialize the length of the longest interesting subsequence as 0
-    longest = 0
-    # Iterate over the elements of the array
-    for i in range(N):
-        # If the sum of the first K elements is less than or equal to S, update the length of the longest interesting subsequence
-        if sum(A[:i+1]) <= S:
-            longest = max(longest, i+1)
-    # Return the length of the longest interesting subsequence
-    return longest
+def f1(matrix):
+    # Initialize the counts for 0, 1, and 2
+    count_0 = 0
+    count_1 = 0
+    count_2 = 0
+    
+    # Loop through the matrix and update the counts
+    for row in matrix:
+        for entry in row:
+            if entry == 0:
+                count_0 += 1
+            elif entry == 1:
+                count_1 += 1
+            else:
+                count_2 += 1
+    
+    # Return the counts
+    return count_0, count_1, count_2
+
+def f2(matrix):
+    # Initialize the counts for 0, 1, and 2
+    count_0 = 0
+    count_1 = 0
+    count_2 = 0
+    
+    # Loop through the matrix and update the counts
+    for i in range(1, len(matrix)):
+        for j in range(1, len(matrix[0])):
+            if matrix[i][j] == 0:
+                count_0 += 1
+            elif matrix[i][j] == 1:
+                count_1 += 1
+            else:
+                count_2 += 1
+    
+    # Return the counts
+    return count_0, count_1, count_2
+
+if __name__ == '__main__':
+    # Read the input
+    N = int(input())
+    matrix = []
+    for _ in range(N):
+        matrix.append(list(map(int, input().split())))
+    
+    # Call the functions
+    count_0, count_1, count_2 = f1(matrix)
+    print(count_0, count_1, count_2)
+    count_0, count_1, count_2 = f2(matrix)
+    print(count_0, count_1, count_2)
 

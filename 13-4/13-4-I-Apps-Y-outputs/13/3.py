@@ -1,15 +1,25 @@
 
-def get_lexicographically_min_string(string, k):
-    n = len(string)
-    for i in range(n-1):
-        if string[i] > string[i+1] and k > 0:
-            string = string[:i] + string[i+1] + string[i] + string[i+2:]
-            k -= 1
-    return string
+def get_monotonic_renumerations(a):
+    n = len(a)
+    b = [0] * n
+    b[0] = 0
+    for i in range(1, n):
+        if a[i] == a[i-1]:
+            b[i] = b[i-1]
+        else:
+            b[i] = b[i-1] + 1
+    return b
 
-q = int(input())
-for i in range(q):
-    n, k = map(int, input().split())
-    string = input()
-    print(get_lexicographically_min_string(string, k))
+def count_monotonic_renumerations(a):
+    n = len(a)
+    count = 1
+    for i in range(1, n):
+        if a[i] != a[i-1]:
+            count *= 2
+    return count % 998244353
+
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(count_monotonic_renumerations(a))
 

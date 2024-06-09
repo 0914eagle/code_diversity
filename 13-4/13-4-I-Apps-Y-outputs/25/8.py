@@ -1,51 +1,43 @@
 
-def is_star(grid, row, col, size):
-    # Check if the star is inside the grid
-    if row < 0 or col < 0 or row + size > len(grid) or col + size > len(grid[0]):
-        return False
+def get_dog_attack_time(aggressive_time, calm_time):
+    # Calculate the total time the dog is aggressive and calm
+    total_aggressive_time = aggressive_time + calm_time
+    total_time = aggressive_time + calm_time
     
-    # Check if the star is completely inside the grid
-    if any(grid[row + i][col + j] != '*' for i in range(size) for j in range(size)):
-        return False
+    # Calculate the time the dog is aggressive and calm in a day
+    aggressive_time_per_day = total_aggressive_time * 2
+    calm_time_per_day = total_time - aggressive_time_per_day
     
-    # Check if the star intersects with any other star
-    for i in range(size):
-        for j in range(size):
-            if grid[row + i][col + j] == '*' and (i > 0 or j > 0):
-                return False
+    # Calculate the time the dog is aggressive and calm in a minute
+    aggressive_time_per_minute = aggressive_time_per_day / total_time
+    calm_time_per_minute = calm_time_per_day / total_time
     
-    return True
+    return aggressive_time_per_minute, calm_time_per_minute
 
-def draw_grid(grid):
-    # Initialize the number of stars needed
-    num_stars = 0
+def get_dog_attack(aggressive_time_per_minute, calm_time_per_minute, arrival_time):
+    # Calculate the time the dog is aggressive and calm at the arrival time
+    aggressive_time = aggressive_time_per_minute * arrival_time
+    calm_time = calm_time_per_minute * arrival_time
     
-    # Iterate through the grid
-    for row in range(len(grid)):
-        for col in range(len(grid[0])):
-            # If the current cell is a star, check if it is possible to draw it
-            if grid[row][col] == '*':
-                # Check if the star is inside the grid
-                if row < 0 or col < 0 or row + 1 > len(grid) or col + 1 > len(grid[0]):
-                    return -1
-                
-                # Check if the star is completely inside the grid
-                if any(grid[row + i][col + j] != '*' for i in range(1) for j in range(1)):
-                    return -1
-                
-                # Check if the star intersects with any other star
-                for i in range(1):
-                    for j in range(1):
-                        if grid[row + i][col + j] == '*' and (i > 0 or j > 0):
-                            return -1
-                
-                # If the star is possible to draw, increment the number of stars needed
-                num_stars += 1
+    # Check if the dog is aggressive or calm at the arrival time
+    if aggressive_time >= calm_time:
+        return "one"
+    else:
+        return "none"
+
+def main():
+    # Read the input
+    aggressive_time, calm_time, arrival_time = map(int, input().split())
     
-    # If the grid is possible to draw, return the number of stars needed
-    if num_stars <= len(grid) * len(grid[0]):
-        return num_stars
+    # Calculate the time the dog is aggressive and calm
+    aggressive_time_per_minute, calm_time_per_minute = get_dog_attack_time(aggressive_time, calm_time)
     
-    # If the grid is not possible to draw, return -1
-    return -1
+    # Calculate the dog attack at the arrival time
+    dog_attack = get_dog_attack(aggressive_time_per_minute, calm_time_per_minute, arrival_time)
+    
+    # Print the output
+    print(dog_attack)
+
+if __name__ == '__main__':
+    main()
 

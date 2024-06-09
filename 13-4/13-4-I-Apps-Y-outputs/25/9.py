@@ -1,54 +1,44 @@
 
-def is_star(grid, row, col, size):
-    # Check if the star is inside the grid
-    if row < 0 or col < 0 or row + size > len(grid) or col + size > len(grid[0]):
-        return False
+def get_dog_behavior(a, b, c, d):
+    # Define a function to get the dog's behavior at a given time
+    def get_dog_behavior_at_time(time):
+        # Calculate the number of aggressive minutes that have passed since the last calm minute
+        num_aggressive_minutes = (time // b) % 2
+        # If the number of aggressive minutes is 0, the dog is calm
+        if num_aggressive_minutes == 0:
+            return "calm"
+        # If the number of aggressive minutes is 1, the dog is aggressive
+        else:
+            return "aggressive"
     
-    # Check if the star is completely inside the grid
-    if any(grid[row + i][col + j] != '*' for i in range(size) for j in range(size)):
-        return False
-    
-    # Check if the star is not intersecting with any other star
-    for i in range(row, row + size):
-        for j in range(col, col + size):
-            if grid[i][j] == '*' and (i, j) != (row, col):
-                return False
-    
-    return True
+    # Return a tuple with the behavior of both dogs at the given time
+    return (get_dog_behavior_at_time(a), get_dog_behavior_at_time(c))
 
-def draw_grid(grid):
-    # Initialize the number of stars needed
-    num_stars = 0
+def get_attacking_dogs(postman_time, milkman_time, garbage_man_time):
+    # Get the behavior of the dogs at the given times
+    postman_behavior = get_dog_behavior(postman_time, milkman_time, garbage_man_time)[0]
+    milkman_behavior = get_dog_behavior(postman_time, milkman_time, garbage_man_time)[1]
     
-    # Iterate through the grid
-    for row in range(len(grid)):
-        for col in range(len(grid[0])):
-            # If the current cell is a star, check if it is possible to draw it
-            if grid[row][col] == '*':
-                # Iterate through the possible sizes of the star
-                for size in range(1, min(len(grid) - row, len(grid[0]) - col) + 1):
-                    # If the star is possible to draw, break the loop and move on to the next cell
-                    if is_star(grid, row, col, size):
-                        break
-                else:
-                    # If the star is not possible to draw, return -1
-                    return -1
-                num_stars += 1
+    # Determine how many dogs attack each hero
+    if postman_behavior == "aggressive" and milkman_behavior == "aggressive":
+        return "both"
+    elif postman_behavior == "aggressive" or milkman_behavior == "aggressive":
+        return "one"
+    else:
+        return "none"
+
+if __name__ == '__main__':
+    # Read input
+    a, b, c, d = map(int, input().split())
+    p, m, g = map(int, input().split())
     
-    # If all the stars are possible to draw, return the number of stars needed
-    return num_stars
-
-grid = [
-    ['.', '.', '.', '.', '.', '.', '.', '.'],
-    ['.', '*', '*', '*', '*', '*', '.', '.'],
-    ['.', '*', '*', '*', '*', '*', '.', '.'],
-    ['.', '*', '*', '*', '*', '*', '.', '.'],
-    ['.', '*', '*', '*', '*', '*', '.', '.'],
-    ['.', '*', '*', '*', '*', '*', '.', '.'],
-    ['.', '.', '.', '.', '.', '.', '.', '.'],
-    ['.', '.', '.', '.', '.', '.', '.', '.']
-]
-
-result = draw_grid(grid)
-print(result)
+    # Call the function to get the attacking dogs
+    postman_attacking_dogs = get_attacking_dogs(p, m, g)
+    milkman_attacking_dogs = get_attacking_dogs(m, p, g)
+    garbage_man_attacking_dogs = get_attacking_dogs(g, p, m)
+    
+    # Print output
+    print(postman_attacking_dogs)
+    print(milkman_attacking_dogs)
+    print(garbage_man_attacking_dogs)
 

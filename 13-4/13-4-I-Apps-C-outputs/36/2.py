@@ -1,31 +1,50 @@
 
-def get_number_of_ways(trenches):
-    # Initialize a set to store the positions of the guards
-    guard_positions = set()
-    # Iterate over the trenches
-    for trench in trenches:
-        # Get the start and end positions of the trench
-        start_position = (trench[0], trench[1])
-        end_position = (trench[2], trench[3])
-        # If the start and end positions are the same, skip this trench
-        if start_position == end_position:
-            continue
-        # If the trench is horizontal or vertical
-        if start_position[0] == end_position[0] or start_position[1] == end_position[1]:
-            # Add the start and end positions to the set of guard positions
-            guard_positions.add(start_position)
-            guard_positions.add(end_position)
-        # If the trench is diagonal
+def read_input():
+    N = int(input())
+    V = list(map(int, input().split()))
+    direct_supervisors = []
+    for _ in range(N-1):
+        direct_supervisors.append(list(map(int, input().split())))
+    return N, V, direct_supervisors
+
+def get_supervisors(direct_supervisors, person):
+    supervisors = []
+    for supervisor, employee in direct_supervisors:
+        if employee == person:
+            supervisors.append(supervisor)
+    return supervisors
+
+def get_jokes(V, direct_supervisors, person):
+    jokes = set()
+    for supervisor in get_supervisors(direct_supervisors, person):
+        jokes |= get_jokes(V, direct_supervisors, supervisor)
+    jokes.add(V[person-1])
+    return jokes
+
+def get_consecutive_jokes(jokes):
+    consecutive_jokes = []
+    for i in range(len(jokes)):
+        if i == 0:
+            consecutive_jokes.append(jokes[i])
+        elif jokes[i] - jokes[i-1] == 1:
+            consecutive_jokes.append(jokes[i])
         else:
-            # Get the slope and y-intercept of the line
-            slope = (end_position[1] - start_position[1]) / (end_position[0] - start_position[0])
-            y_intercept = start_position[1] - slope * start_position[0]
-            # Iterate over the positions between the start and end positions, inclusive
-            for x in range(min(start_position[0], end_position[0]), max(start_position[0], end_position[0]) + 1):
-                y = slope * x + y_intercept
-                guard_position = (x, int(y))
-                # Add the position to the set of guard positions
-                guard_positions.add(guard_position)
-    # Return the number of ways the guards can be placed
-    return len(guard_positions)
+            consecutive_jokes = []
+    return consecutive_jokes
+
+def get_unique_jokes(jokes):
+    unique_jokes = set()
+    for joke in jokes:
+        unique_jokes.add(joke)
+    return unique_jokes
+
+def get_number_of_unique_jokes(N, V, direct_supervisors):
+    jokes = get_jokes(V, direct_supervisors, 1)
+    consecutive_jokes = get_consecutive_jokes(jokes)
+    unique_jokes = get_unique_jokes(consecutive_jokes)
+    return len(unique_jokes)
+
+if __name__ == '__main__':
+    N, V, direct_supervisors = read_input()
+    print(get_number_of_unique_jokes(N, V, direct_supervisors))
 

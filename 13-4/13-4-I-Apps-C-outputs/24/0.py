@@ -1,24 +1,33 @@
 
-def solve(N, trucks):
-    # Initialize a dictionary to store the tolls for each truck
-    tolls = {}
-    # Iterate over the trucks
-    for truck in trucks:
-        # Get the entrance and exit numbers for the current truck
-        entrance, exit = truck
-        # If the truck has not been processed before
-        if entrance not in tolls:
-            # Add the toll for the current truck to the dictionary
-            tolls[entrance] = abs(entrance - exit)
-        # If the truck has been processed before
-        else:
-            # Get the current toll for the truck
-            current_toll = tolls[entrance]
-            # Get the new toll for the truck
-            new_toll = abs(entrance - exit)
-            # Update the toll for the truck if the new toll is lower
-            if new_toll < current_toll:
-                tolls[entrance] = new_toll
-    # Return the sum of the tolls for all trucks
-    return sum(tolls.values())
+def f1(m, h1, a1, x1, y1, h2, a2, x2, y2):
+    # Initialize variables
+    t = 0
+    hx = h1
+    ha = h2
+    while hx != a1 or ha != a2:
+        # Update heights
+        hx = (x1 * hx + y1) % m
+        ha = (x2 * ha + y2) % m
+        t += 1
+    return t
+
+def f2(m, h1, a1, x1, y1, h2, a2, x2, y2):
+    # Initialize variables
+    t = 0
+    hx = h1
+    ha = h2
+    while hx != a1 or ha != a2:
+        # Update heights
+        hx = (x1 * hx + y1) % m
+        ha = (x2 * ha + y2) % m
+        t += 1
+    return t
+
+if __name__ == '__main__':
+    m = int(input())
+    h1, a1 = map(int, input().split())
+    x1, y1 = map(int, input().split())
+    h2, a2 = map(int, input().split())
+    x2, y2 = map(int, input().split())
+    print(f1(m, h1, a1, x1, y1, h2, a2, x2, y2))
 

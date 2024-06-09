@@ -1,18 +1,24 @@
 
-n = int(input())
-p = list(map(int, input().split()))
+def get_shortest_test_scheme(k, durations):
+    # Sort the durations in non-decreasing order
+    durations.sort()
+    
+    # Initialize the number of days as the sum of the durations
+    num_days = sum(durations)
+    
+    # Iterate through the durations and find the minimum number of days needed for a conclusive test scheme
+    for i in range(k):
+        num_days = min(num_days, durations[i] + i)
+    
+    return num_days
 
-# Calculate the deviation of the permutation
-dev = sum(abs(p[i] - i) for i in range(n))
+def main():
+    k = int(input())
+    durations = []
+    for i in range(k):
+        durations.append(int(input()))
+    print(get_shortest_test_scheme(k, durations))
 
-# Find the cyclic shift with the minimum deviation
-min_dev = dev
-min_id = 0
-for i in range(n):
-    dev = sum(abs(p[(i+j)%n] - (j+1)) for j in range(n))
-    if dev < min_dev:
-        min_dev = dev
-        min_id = i
-
-print(min_dev, min_id)
+if __name__ == '__main__':
+    main()
 

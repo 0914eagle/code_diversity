@@ -1,9 +1,14 @@
 
-def get_min_string(s, k):
-    n = len(s)
-    for i in range(n):
-        for j in range(i+1, min(n, i+k+1)):
-            if s[i] > s[j]:
-                s = s[:i] + s[j] + s[i+1:j] + s[i] + s[j+1:]
-    return s
+def f1(n, a):
+    # Calculate the number of different monotonic renumerations of a
+    return 0
+
+def f2(n, a):
+    # Calculate the number of different monotonic renumerations of a, taking modulo 998244353
+    return 0
+
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(f2(n, a))
 

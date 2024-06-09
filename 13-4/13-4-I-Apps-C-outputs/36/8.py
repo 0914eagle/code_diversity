@@ -1,27 +1,53 @@
 
-def get_number_of_ways(trenches):
-    # Initialize a set to store the positions of the guards
-    guard_positions = set()
+def get_input():
+    N = int(input())
+    V = list(map(int, input().split()))
+    A = list(map(int, input().split()))
+    B = list(map(int, input().split()))
+    return N, V, A, B
 
-    # Iterate over the trenches
-    for trench in trenches:
-        # Get the coordinates of the trench
-        x1, y1, x2, y2 = trench
+def get_supervisors(A, B):
+    supervisors = set()
+    for a, b in zip(A, B):
+        supervisors.add(a)
+        supervisors.add(b)
+    return supervisors
 
-        # Get the position of the guard at the first end of the trench
-        guard_position = (x1, y1)
+def get_jokes(V, supervisors):
+    jokes = set()
+    for v in V:
+        if v in supervisors:
+            jokes.add(v)
+    return jokes
 
-        # If the guard position is not already in the set, add it
-        if guard_position not in guard_positions:
-            guard_positions.add(guard_position)
+def get_consecutive_jokes(jokes):
+    consecutive_jokes = []
+    for i in range(len(jokes)):
+        if i == 0:
+            consecutive_jokes.append(jokes[i])
+        else:
+            if jokes[i] - jokes[i-1] == 1:
+                consecutive_jokes.append(jokes[i])
+            else:
+                consecutive_jokes = []
+        if i == len(jokes) - 1 and len(consecutive_jokes) > 0:
+            consecutive_jokes.append(jokes[i])
+    return consecutive_jokes
 
-        # Get the position of the guard at the second end of the trench
-        guard_position = (x2, y2)
+def get_unique_jokes(jokes):
+    unique_jokes = set()
+    for joke in jokes:
+        unique_jokes.add(joke)
+    return len(unique_jokes)
 
-        # If the guard position is not already in the set, add it
-        if guard_position not in guard_positions:
-            guard_positions.add(guard_position)
+def main():
+    N, V, A, B = get_input()
+    supervisors = get_supervisors(A, B)
+    jokes = get_jokes(V, supervisors)
+    consecutive_jokes = get_consecutive_jokes(jokes)
+    unique_jokes = get_unique_jokes(consecutive_jokes)
+    print(unique_jokes)
 
-    # Return the number of ways the guards can be placed
-    return len(guard_positions)
+if __name__ == '__main__':
+    main()
 

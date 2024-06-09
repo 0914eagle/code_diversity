@@ -1,21 +1,33 @@
 
-def convert_notation(notation):
-    # Initialize the staff
-    staff = ["G:", "F:", "E:", "D:", "C:", "B:", "A:", "g:", "f:", "e:", "d:", "c:", "b:", "a:"]
+def get_shortest_sequence(floors, start, goal, up, down):
+    # Initialize the shortest sequence as 0
+    shortest_sequence = 0
+    
+    # Loop through each floor from start to goal
+    for floor in range(start, goal + 1):
+        # If the floor is within the range of the elevator's up button
+        if floor <= up:
+            # Increment the shortest sequence by 1
+            shortest_sequence += 1
+        # If the floor is within the range of the elevator's down button
+        elif floor >= down:
+            # Increment the shortest sequence by 1
+            shortest_sequence += 1
+        # If the floor is not within the range of either button
+        else:
+            # Break the loop and return "use the stairs"
+            return "use the stairs"
+    
+    # Return the shortest sequence
+    return shortest_sequence
 
-    # Iterate through the notation and add asterisks to the staff
-    for note in notation:
-        # Get the pitch and duration of the note
-        pitch = note[0]
-        duration = note[1] if len(note) > 1 else 1
+def main():
+    # Read the input from stdin
+    floors, start, goal, up, down = map(int, input().split())
+    
+    # Call the get_shortest_sequence function and print the result
+    print(get_shortest_sequence(floors, start, goal, up, down))
 
-        # Find the line and column of the note on the staff
-        line = "GFEFEGDCB"[ord(pitch) - ord("C")]
-        column = 2 * (duration - 1)
-
-        # Add the asterisk to the staff
-        staff[line] = staff[line][:column] + "*" + staff[line][column + 1:]
-
-    # Return the staff as a string
-    return "\n".join(staff)
+if __name__ == '__main__':
+    main()
 

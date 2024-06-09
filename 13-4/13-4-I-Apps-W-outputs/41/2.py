@@ -1,29 +1,23 @@
 
-def get_count(m, n, p_seq):
-    # Initialize a dictionary to store the number of sequences for each x value
-    count_dict = {}
+def get_bus_route(n, t, s, d):
+    # Find the first bus route that arrives before or at time t
+    for i in range(n):
+        if s[i] <= t:
+            return i
     
-    # Iterate over the p sequence
-    for i, p in enumerate(p_seq):
-        # Get the x value for the current p value
-        x = i // n
-        
-        # If the x value is not in the dictionary, add it with a count of 1
-        if x not in count_dict:
-            count_dict[x] = 1
-        # Otherwise, increment the count for the x value
-        else:
-            count_dict[x] += 1
-    
-    # Initialize a variable to store the total number of sequences
-    total_count = 0
-    
-    # Iterate over the dictionary
-    for x, count in count_dict.items():
-        # If the count is greater than 1, add it to the total count
-        if count > 1:
-            total_count += count
-    
-    # Return the total count modulo 10^9 + 7
-    return total_count % (10**9 + 7)
+    # If no bus route arrives before or at time t, return the first bus route
+    return 0
+
+def main():
+    n, t = map(int, input().split())
+    s = []
+    d = []
+    for i in range(n):
+        s_i, d_i = map(int, input().split())
+        s.append(s_i)
+        d.append(d_i)
+    print(get_bus_route(n, t, s, d))
+
+if __name__ == '__main__':
+    main()
 

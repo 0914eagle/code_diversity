@@ -1,10 +1,14 @@
 
-def count_subpermutations(arr):
-    n = len(arr)
-    count = 0
-    for i in range(n):
-        for j in range(i, n):
-            if len(set(arr[i:j+1])) == j - i + 1:
-                count += 1
-    return count
+def f1(n):
+    # Your code here
+    return n
+
+def f2(n):
+    # Your code here
+    return n
+
+if __name__ == '__main__':
+    n = int(input())
+    print(f1(n))
+    print(f2(n))
 

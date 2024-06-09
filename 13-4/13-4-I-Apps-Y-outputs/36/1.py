@@ -1,8 +1,17 @@
 
-A, B = map(int, input().split())
+def read_input():
+    return map(int, input().split())
 
-if A + B >= 3:
-    print("Possible")
-else:
-    print("Impossible")
+def solve(x, a):
+    if x < a:
+        return 0
+    else:
+        return 10
+
+def main():
+    x, a = read_input()
+    print(solve(x, a))
+
+if __name__ == '__main__':
+    main()
 

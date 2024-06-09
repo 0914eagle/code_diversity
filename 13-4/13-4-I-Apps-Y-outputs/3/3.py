@@ -1,12 +1,14 @@
 
-def solve():
-    N, K = map(int, input().split())
-    heights = sorted([int(input()) for _ in range(N)])
-    min_diff = float('inf')
-    for i in range(N-K+1):
-        max_height = heights[i+K-1]
-        min_height = heights[i]
-        diff = max_height - min_height
-        min_diff = min(min_diff, diff)
-    return min_diff
+def get_input():
+    return list(map(int, input().split()))
+
+def get_max_product(a, b, c, d):
+    return max(a*c, a*d, b*c, b*d)
+
+def main():
+    a, b, c, d = get_input()
+    print(get_max_product(a, b, c, d))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,45 +1,41 @@
 
-def find_reconstructions(pre_output, in_output, post_output):
-    # Initialize a list to store the reconstructions
-    reconstructions = []
-    
-    # Loop through all possible combinations of Pre, In, and Post calls
-    for pre_calls in range(2):
-        for in_calls in range(2):
-            for post_calls in range(2):
-                # Check if the number of calls is correct
-                if pre_calls + in_calls + post_calls != 6:
-                    continue
-                
-                # Check if the calls are in the correct order
-                if pre_calls > in_calls or in_calls > post_calls:
-                    continue
-                
-                # Check if the outputs match
-                if not check_outputs(pre_output, in_output, post_output, pre_calls, in_calls, post_calls):
-                    continue
-                
-                # If all checks pass, add the reconstruction to the list
-                reconstructions.append([pre_calls, in_calls, post_calls])
-    
-    # Return the list of reconstructions
-    return reconstructions
+import math
 
-def check_outputs(pre_output, in_output, post_output, pre_calls, in_calls, post_calls):
-    # Initialize variables to store the current output
-    current_pre_output = ""
-    current_in_output = ""
-    current_post_output = ""
+def get_area(x1, y1, x2, y2, x3, y3):
     
-    # Loop through the calls and update the output
-    for i in range(6):
-        if i < pre_calls:
-            current_pre_output += pre_output[i]
-        if i < in_calls:
-            current_in_output += in_output[i]
-        if i < post_calls:
-            current_post_output += post_output[i]
+    return math.fabs((x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2.0)
+
+def get_symmetric_points(x, y, x_a, y_a, x_b, y_b):
     
-    # Check if the outputs match
-    return current_pre_output == pre_output and current_in_output == in_output and current_post_output == post_output
+    m = (y_a - y_b) / (x_a - x_b)
+    c = y_a - m * x_a
+    x_sym = (x * m - y + c) / (m * m + 1)
+    y_sym = m * x_sym + c
+    return x_sym, y_sym
+
+def get_largest_corn_area(vertices, x_a, y_a, x_b, y_b):
+    
+    # Get the symmetric points of the vertices about the line passing through (x_a, y_a) and (x_b, y_b)
+    sym_vertices = [(get_symmetric_points(x, y, x_a, y_a, x_b, y_b)) for x, y in vertices]
+    
+    # Calculate the area of the triangle formed by the symmetric points
+    areas = [get_area(x1, y1, x2, y2, x3, y3) for ((x1, y1), (x2, y2), (x3, y3)) in zip(sym_vertices, sym_vertices[1:], sym_vertices[2:])]
+    
+    # Return the largest area
+    return max(areas)
+
+def main():
+    # Read the input
+    n = int(input())
+    vertices = [(int(x), int(y)) for x, y in [input().split() for _ in range(n)]]
+    x_a, y_a, x_b, y_b = [int(x) for x in input().split()]
+    
+    # Calculate the largest possible area of land to grow corn fields for Alob
+    area = get_largest_corn_area(vertices, x_a, y_a, x_b, y_b)
+    
+    # Print the output
+    print(area)
+
+if __name__ == '__main__':
+    main()
 

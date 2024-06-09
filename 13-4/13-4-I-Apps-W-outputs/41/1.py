@@ -1,22 +1,24 @@
 
-def solve(m, n, p):
-    # Initialize a dictionary to store the number of sequences for each p value
-    num_sequences = {}
+def get_bus_route(n, t, s, d):
+    # Find the first bus route that arrives at or after the given time
+    for i in range(n):
+        if s[i] <= t:
+            return i
+    
+    # If no bus route arrives at or after the given time, return -1
+    return -1
 
-    # Iterate over the p values
-    for i in range(len(p)):
-        # Get the current p value and the corresponding x value
-        current_p = p[i]
-        current_x = i + 1
+def main():
+    n, t = map(int, input().split())
+    s = []
+    d = []
+    for i in range(n):
+        si, di = map(int, input().split())
+        s.append(si)
+        d.append(di)
+    route = get_bus_route(n, t, s, d)
+    print(route)
 
-        # If the current p value has not been seen before, initialize its count to 1
-        if current_p not in num_sequences:
-            num_sequences[current_p] = 1
-
-        # If the current p value has been seen before, increment its count
-        else:
-            num_sequences[current_p] += 1
-
-    # Return the total number of sequences modulo 10^9 + 7
-    return sum(num_sequences.values()) % (10**9 + 7)
+if __name__ == '__main__':
+    main()
 

@@ -1,47 +1,28 @@
 
-import sys
+def longest_repeated_substring(input_string):
+    # Initialize variables
+    start_index = 0
+    end_index = 0
+    longest_substring = ""
 
-def shortest_subarray_length(arr, k):
-    # Initialize the hash map to keep track of the frequencies of each number
-    freq = {}
-    for num in arr:
-        if num in freq:
-            freq[num] += 1
+    # Iterate through the input string
+    for i in range(len(input_string)):
+        # Check if the substring starting from the current index is repeated
+        if input_string[i] in input_string[start_index:i]:
+            # If it is repeated, update the end index and longest substring
+            end_index = i
+            longest_substring = input_string[start_index:end_index+1]
+        # If the substring is not repeated, update the start index
         else:
-            freq[num] = 1
-    
-    # Initialize the minimum length of the subarray
-    min_len = len(arr) + 1
-    
-    # Iterate through the hash map and check if all numbers from 1 to k are present
-    for i in range(1, k+1):
-        if i not in freq:
-            return -1
-    
-    # If all numbers are present, iterate through the array and check for the minimum length of the subarray
-    for i in range(len(arr)):
-        for j in range(i, len(arr)):
-            if len(freq) == k:
-                min_len = min(min_len, j - i + 1)
-                break
-            freq[arr[j]] -= 1
-            if freq[arr[j]] == 0:
-                del freq[arr[j]]
-    
-    return min_len
+            start_index = i + 1
 
-def change_value(arr, p, v):
-    arr[p-1] = v
+    return longest_substring
+
+def main():
+    input_string = input()
+    longest_substring = longest_repeated_substring(input_string)
+    print(longest_substring)
 
 if __name__ == '__main__':
-    n, k, m = map(int, input().split())
-    arr = list(map(int, input().split()))
-    
-    for i in range(m):
-        query = input().split()
-        if query[0] == '1':
-            change_value(arr, int(query[1]), int(query[2]))
-        else:
-            print(shortest_subarray_length(arr, k))
-
+    main()
 

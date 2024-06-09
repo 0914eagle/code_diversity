@@ -1,24 +1,18 @@
 
-N = int(input())
-verdicts = [input() for _ in range(N)]
+def get_input():
+    return list(map(int, input().split()))
 
-ac_count = 0
-wa_count = 0
-tle_count = 0
-re_count = 0
+def get_k_smallest(arr, k):
+    return sorted(arr)[:k]
 
-for verdict in verdicts:
-    if verdict == "AC":
-        ac_count += 1
-    elif verdict == "WA":
-        wa_count += 1
-    elif verdict == "TLE":
-        tle_count += 1
-    else:
-        re_count += 1
+def get_k_largest(arr, k):
+    return sorted(arr, reverse=True)[:k]
 
-print(f"AC x {ac_count}")
-print(f"WA x {wa_count}")
-print(f"TLE x {tle_count}")
-print(f"RE x {re_count}")
+def solve(a, b, k):
+    arr = list(range(a, b+1))
+    return list(set(get_k_smallest(arr, k) + get_k_largest(arr, k)))
+
+if __name__ == '__main__':
+    a, b, k = get_input()
+    print(*solve(a, b, k))
 

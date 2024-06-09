@@ -1,27 +1,23 @@
 
-def solve(s):
-    # Initialize variables
-    start_index = 0
-    end_index = 0
-    max_length = 0
+def f1(N, X, x_list):
+    # find the minimum distance between X and any city
+    min_dist = min([abs(X - x) for x in x_list])
+    # find the maximum value of D that enables you to visit all the cities
+    max_D = (N - 1) * min_dist
+    return max_D
 
-    # Iterate through the string
-    for i in range(len(s)):
-        # Check if the current character is 'A'
-        if s[i] == 'A':
-            # If so, set the start index to the current index
-            start_index = i
+def f2(N, X, x_list):
+    # sort the list of city coordinates in ascending order
+    sorted_x_list = sorted(x_list)
+    # find the minimum distance between any two cities
+    min_dist = min([abs(x2 - x1) for x1, x2 in zip(sorted_x_list, sorted_x_list[1:])])
+    # find the maximum value of D that enables you to visit all the cities
+    max_D = (N - 1) * min_dist
+    return max_D
 
-        # Check if the current character is 'Z'
-        if s[i] == 'Z':
-            # If so, set the end index to the current index
-            end_index = i
-
-            # Check if the length of the substring is greater than the maximum length
-            if end_index - start_index + 1 > max_length:
-                # If so, update the maximum length
-                max_length = end_index - start_index + 1
-
-    # Return the maximum length
-    return max_length
+if __name__ == '__main__':
+    N, X = map(int, input().split())
+    x_list = list(map(int, input().split()))
+    print(f1(N, X, x_list))
+    print(f2(N, X, x_list))
 

@@ -1,29 +1,49 @@
 
-def solve(residents, parties, clubs):
-    # Initialize the dictionary to store the club representatives
-    club_representatives = {}
+def f1(n, spots):
+    # Initialize a list to store the distances between pebbles
+    distances = [0] * (n + 1)
+    # Initialize a list to store the number of spots on each pebble
+    num_spots = [0] * (n + 1)
+    
+    # Populate the list of distances and number of spots on each pebble
+    for i in range(1, n + 1):
+        distances[i] = i
+        num_spots[i] = spots[i - 1]
+    
+    # Loop through each pebble and check if it can be reached from the previous pebble
+    for i in range(2, n + 1):
+        for j in range(1, i):
+            # If the sum of the number of spots on the current pebble and the previous pebble is equal to the distance between them, update the distance of the current pebble
+            if num_spots[i] + num_spots[j] == distances[i] - distances[j]:
+                distances[i] = min(distances[i], distances[j] + 1)
+    
+    # Return the maximum distance
+    return max(distances)
 
-    # Iterate through the residents and assign them to clubs
-    for resident in residents:
-        # Get the resident's party and the number of clubs they belong to
-        party = resident[1]
-        num_clubs = resident[2]
+def f2(n, spots):
+    # Initialize a list to store the distances between pebbles
+    distances = [0] * (n + 1)
+    # Initialize a list to store the number of spots on each pebble
+    num_spots = [0] * (n + 1)
+    
+    # Populate the list of distances and number of spots on each pebble
+    for i in range(1, n + 1):
+        distances[i] = i
+        num_spots[i] = spots[i - 1]
+    
+    # Loop through each pebble and check if it can be reached from the previous pebble
+    for i in range(2, n + 1):
+        for j in range(1, i):
+            # If the sum of the number of spots on the current pebble and the previous pebble is equal to the distance between them, update the distance of the current pebble
+            if num_spots[i] + num_spots[j] == distances[i] - distances[j]:
+                distances[i] = min(distances[i], distances[j] + 1)
+    
+    # Return the maximum distance
+    return max(distances)
 
-        # Iterate through the clubs the resident belongs to
-        for i in range(num_clubs):
-            # Get the name of the club
-            club = resident[3 + i]
-
-            # Check if the club already has a representative
-            if club not in club_representatives:
-                # If not, assign the resident as the representative
-                club_representatives[club] = resident[0]
-            else:
-                # If the club already has a representative, check if the resident's party is different from the current representative's party
-                if club_representatives[club] != party:
-                    # If the parties are different, assign the resident as the representative
-                    club_representatives[club] = resident[0]
-
-    # Return the club representatives
-    return club_representatives
+if __name__ == '__main__':
+    n = int(input())
+    spots = list(map(int, input().split()))
+    print(f1(n, spots))
+    print(f2(n, spots))
 

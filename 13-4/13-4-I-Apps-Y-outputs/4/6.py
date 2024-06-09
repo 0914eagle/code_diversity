@@ -1,9 +1,18 @@
 
-def round_dances(n):
-    # Calculate the number of ways to make two round dances with n people
-    # where each round dance has n/2 people
-    ways = 1
-    for i in range(1, n//2):
-        ways *= n - i
-    return ways
+def get_bonded_base(base):
+    if base == 'A':
+        return 'T'
+    elif base == 'C':
+        return 'G'
+    elif base == 'G':
+        return 'C'
+    else:
+        return 'A'
+
+def main():
+    base = input()
+    print(get_bonded_base(base))
+
+if __name__ == '__main__':
+    main()
 

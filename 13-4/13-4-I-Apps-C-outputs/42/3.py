@@ -1,42 +1,37 @@
 
-def get_min_path_length(n, k_list):
-    # Initialize a dictionary to store the distance from each node to the assembly node
-    dist = {1: 0}
+def f1(N, K, a, b):
+    # Sort the measurements in descending order
+    a = sorted(a, reverse=True)
+    b = sorted(b, reverse=True)
 
-    # Loop through each fragment
-    for i in range(n):
-        # Get the current node and the distance from the current node to the assembly node
-        curr_node = k_list[i]
-        curr_dist = dist[curr_node]
+    # Initialize the ranking with the highest quality
+    ranking = [1] * N
 
-        # Loop through all the prime factors of the current node
-        for prime in get_prime_factors(curr_node):
-            # If the prime factor is not in the dictionary, add it with the current distance
-            if prime not in dist:
-                dist[prime] = curr_dist + 1
-            # If the prime factor is already in the dictionary, compare the current distance with the stored distance
-            # and update the dictionary if the current distance is smaller
-            else:
-                if curr_dist + 1 < dist[prime]:
-                    dist[prime] = curr_dist + 1
+    # Loop through each assistant and compare their measurements
+    for i in range(N):
+        for j in range(i+1, N):
+            if a[i] + K < a[j] or b[i] + K < b[j]:
+                ranking[j] = ranking[i]
 
-    # Return the minimum distance from all the fragments to the assembly node
-    return min(dist.values())
+    # Return the number of distinct ranks
+    return len(set(ranking))
 
-def get_prime_factors(n):
-    factors = []
-    i = 2
-    while i * i <= n:
-        if n % i:
-            i += 1
-        else:
-            n //= i
-            factors.append(i)
-    if n > 1:
-        factors.append(n)
-    return factors
+def f2(N, K, a, b):
+    # Initialize the ranking with the highest quality
+    ranking = [1] * N
 
-n = int(input())
-k_list = list(map(int, input().split()))
-print(get_min_path_length(n, k_list))
+    # Loop through each assistant and compare their measurements
+    for i in range(N):
+        for j in range(i+1, N):
+            if a[i] + K < a[j] or b[i] + K < b[j]:
+                ranking[j] = ranking[i]
+
+    # Return the number of distinct ranks
+    return len(set(ranking))
+
+if __name__ == '__main__':
+    N, K = map(int, input().split())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    print(f1(N, K, a, b))
 

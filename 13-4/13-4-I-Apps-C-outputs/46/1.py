@@ -1,22 +1,36 @@
 
-def decipher_sentence(s, n, dictionary):
-    # Initialize a list to store the possible words
-    possible_words = []
+def get_min_days(n, p, q, a, b):
+    # Initialize variables
+    days = 0
+    exp = 0
+    money = 0
+    
+    # Loop through each project
+    for i in range(n):
+        # Calculate the number of days needed for this project
+        days_needed = (p - exp) / a[i]
+        days_needed = max(days_needed, (q - money) / b[i])
+        
+        # Update the number of days and experience and money
+        days += days_needed
+        exp += a[i] * days_needed
+        money += b[i] * days_needed
+    
+    # Return the minimum number of days needed
+    return days
 
-    # Iterate over each word in the dictionary
-    for word in dictionary:
-        # Check if the word is a valid subsequence of the sentence
-        if all(c in word for c in s):
-            # If the word is a valid subsequence, add it to the list of possible words
-            possible_words.append(word)
+def main():
+    # Read input
+    n, p, q = map(int, input().split())
+    a = [int(x) for x in input().split()]
+    b = [int(x) for x in input().split()]
+    
+    # Calculate the minimum number of days
+    days = get_min_days(n, p, q, a, b)
+    
+    # Print output
+    print(days)
 
-    # If there is only one possible word, return it
-    if len(possible_words) == 1:
-        return possible_words[0]
-    # If there are no possible words, return "impossible"
-    elif not possible_words:
-        return "impossible"
-    # If there are multiple possible words, return "ambiguous"
-    else:
-        return "ambiguous"
+if __name__ == '__main__':
+    main()
 

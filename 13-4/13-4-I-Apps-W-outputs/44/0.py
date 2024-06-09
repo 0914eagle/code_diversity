@@ -1,27 +1,33 @@
 
-def solve(s):
-    n = len(s)
-    # Initialize the dp table with the length of the longest non-decreasing subsequence of the first character
-    dp = [1] * n
-    # Initialize the previous index table with -1
-    prev = [-1] * n
-    # Loop through the string
-    for i in range(1, n):
-        # If the current character is 1, set the length of the longest non-decreasing subsequence to 1
-        if s[i] == "1":
-            dp[i] = 1
-        # Otherwise, find the maximum length of the longest non-decreasing subsequence by comparing the length of the longest non-decreasing subsequence of the previous character with the length of the longest non-decreasing subsequence of the current character
-        else:
-            dp[i] = max(dp[i-1], 1)
-            prev[i] = i-1
-    # Find the maximum length of the longest non-decreasing subsequence
-    max_len = max(dp)
-    # Initialize the result string with the first character
-    result = s[0]
-    # Loop through the string
-    for i in range(1, n):
-        # If the length of the longest non-decreasing subsequence is equal to the maximum length, add the current character to the result string
-        if dp[i] == max_len:
-            result += s[i]
-    return result
+def knight_moves(x, y):
+    # Initialize a dictionary to store the number of ways to reach each square
+    ways = {(0, 0): 1}
+    
+    # Loop through all possible positions of the knight
+    for i in range(x + 1):
+        for j in range(y + 1):
+            # If the current position is not the starting position and has not been visited before, continue
+            if (i, j) != (0, 0) and (i, j) not in ways:
+                continue
+            
+            # If the current position is the target position, return the number of ways to reach it
+            if (i, j) == (x, y):
+                return ways[(x, y)]
+            
+            # If the current position is not the target position, update the dictionary with the number of ways to reach it from each of its adjacent positions
+            for move in [(i + 1, j + 2), (i + 2, j + 1)]:
+                if move in ways:
+                    ways[move] = (ways[move] + ways[(i, j)]) % 1000000007
+                else:
+                    ways[move] = ways[(i, j)]
+    
+    # If the target position is not reachable, return 0
+    return 0
+
+def main():
+    x, y = map(int, input().split())
+    print(knight_moves(x, y))
+
+if __name__ == '__main__':
+    main()
 

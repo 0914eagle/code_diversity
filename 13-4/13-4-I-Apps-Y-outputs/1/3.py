@@ -1,15 +1,11 @@
 
-def find_largest_perfect_power(x):
-    # Initialize a list to store the perfect powers
-    perfect_powers = []
+def get_performance(current_rating, desired_rating):
+    return (desired_rating + current_rating) / 2
 
-    # Iterate from 1 to the square root of x
-    for i in range(1, int(x ** 0.5) + 1):
-        # Check if i is a perfect power
-        if x % i == 0:
-            # If it is, add it to the list of perfect powers
-            perfect_powers.append(i)
+def main():
+    current_rating, desired_rating = map(int, input().split())
+    print(get_performance(current_rating, desired_rating))
 
-    # Return the largest perfect power
-    return max(perfect_powers)
+if __name__ == '__main__':
+    main()
 

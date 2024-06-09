@@ -1,28 +1,10 @@
 
-import sys
-
-def get_perket(ingredients):
-    # Sort the ingredients by their sourness in descending order
-    ingredients.sort(key=lambda x: x[0], reverse=True)
+def get_kth_substring(s, k):
+    substrings = []
+    for i in range(len(s)):
+        for j in range(i+1, len(s)+1):
+            substrings.append(s[i:j])
     
-    # Initialize the total sourness and bitterness to 0
-    total_sourness = 0
-    total_bitterness = 0
-    
-    # Loop through the ingredients and calculate the total sourness and bitterness
-    for ingredient in ingredients:
-        total_sourness += ingredient[0]
-        total_bitterness += ingredient[1]
-    
-    # Calculate the difference between the total sourness and bitterness
-    difference = abs(total_sourness - total_bitterness)
-    
-    # Return the smallest possible difference
-    return difference
-
-if __name__ == '__main__':
-    ingredients = []
-    for _ in range(int(input())):
-        ingredients.append(list(map(int, input().split())))
-    print(get_perket(ingredients))
+    substrings.sort()
+    return substrings[k-1]
 

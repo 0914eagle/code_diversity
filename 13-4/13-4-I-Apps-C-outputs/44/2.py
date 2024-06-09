@@ -1,66 +1,58 @@
 
-n = int(input())
-people = []
-buttons = []
+def find_sub_rectangle(n, m, x, y, a, b):
+    # Initialize the sub-rectangle with the given point (x, y)
+    x1, y1, x2, y2 = x, y, x, y
+    
+    # Iterate through the grid and find the maximum sub-rectangle with the given length-width ratio
+    for i in range(x, n):
+        for j in range(y, m):
+            if i - x + 1 > a and j - y + 1 > b:
+                x2, y2 = i, j
+            if i - x + 1 == a and j - y + 1 == b:
+                x2, y2 = i, j
+                break
+        if x2 == n:
+            break
+    
+    return x1, y1, x2, y2
 
-for i in range(n):
-    line = input()
-    people.append([int(j) for j in line])
-    buttons.append([int(j) for j in line])
+def find_closest_sub_rectangle(n, m, x, y, a, b):
+    # Initialize the sub-rectangle with the given point (x, y)
+    x1, y1, x2, y2 = x, y, x, y
+    
+    # Iterate through the grid and find the sub-rectangle that is closest to (x, y)
+    for i in range(x, n):
+        for j in range(y, m):
+            if (i - x) ** 2 + (j - y) ** 2 < (x2 - x1) ** 2 + (y2 - y1) ** 2:
+                x1, y1, x2, y2 = i, j, i, j
+            if (i - x) ** 2 + (j - y) ** 2 == (x2 - x1) ** 2 + (y2 - y1) ** 2:
+                x1, y1, x2, y2 = i, j, i, j
+                break
+        if x2 == n:
+            break
+    
+    return x1, y1, x2, y2
 
-def count_people_on_button(button):
-    count = 0
-    for person in people:
-        if person[button-1] == 1:
-            count += 1
-    return count
+def find_lexicographically_min_sub_rectangle(n, m, x, y, a, b):
+    # Initialize the sub-rectangle with the given point (x, y)
+    x1, y1, x2, y2 = x, y, x, y
+    
+    # Iterate through the grid and find the sub-rectangle that is lexicographically minimum
+    for i in range(x, n):
+        for j in range(y, m):
+            if (i, j, x2, y2) < (x1, y1, x2, y2):
+                x1, y1, x2, y2 = i, j, x2, y2
+            if (i, j, x2, y2) == (x1, y1, x2, y2):
+                x1, y1, x2, y2 = i, j, x2, y2
+                break
+        if x2 == n:
+            break
+    
+    return x1, y1, x2, y2
 
-def count_buttons_for_person(person):
-    count = 0
-    for button in buttons:
-        if button[person-1] == 1:
-            count += 1
-    return count
-
-def is_valid_configuration(configuration):
-    for i in range(n):
-        person = configuration[i]
-        button = i+1
-        if count_people_on_button(button) > 1 or count_buttons_for_person(person) > 1:
-            return False
-    return True
-
-def get_valid_configurations():
-    valid_configurations = []
-    for i in range(n):
-        for j in range(n):
-            configuration = [0] * n
-            configuration[i] = j+1
-            if is_valid_configuration(configuration):
-                valid_configurations.append(configuration)
-    return valid_configurations
-
-def get_max_configurations():
-    valid_configurations = get_valid_configurations()
-    max_configurations = 0
-    for configuration in valid_configurations:
-        count = 0
-        for i in range(n):
-            person = configuration[i]
-            button = i+1
-            if count_people_on_button(button) == 1 and count_buttons_for_person(person) == 1:
-                count += 1
-        if count > max_configurations:
-            max_configurations = count
-    return max_configurations
-
-def get_configuration_string(configuration):
-    return " ".join([str(i+1) for i in configuration])
-
-def get_configuration_strings(valid_configurations):
-    return [get_configuration_string(configuration) for configuration in valid_configurations]
-
-max_configurations = get_max_configurations()
-print(max_configurations)
-print("\n".join(get_configuration_strings(get_valid_configurations())))
+if __name__ == '__main__':
+    n, m, x, y, a, b = map(int, input().split())
+    print(*find_sub_rectangle(n, m, x, y, a, b))
+    print(*find_closest_sub_rectangle(n, m, x, y, a, b))
+    print(*find_lexicographically_min_sub_rectangle(n, m, x, y, a, b))
 

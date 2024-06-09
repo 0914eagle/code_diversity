@@ -1,14 +1,31 @@
 
-n, m = map(int, input().split())
-buttons = list(map(int, input().split()))
+def get_min_quick_changes(routines):
+    # Initialize a dictionary to keep track of the dancers and their quick change status
+    dancers = {}
+    for routine in routines:
+        for dancer in routine:
+            if dancer not in dancers:
+                dancers[dancer] = "normal"
+            elif dancers[dancer] == "quick":
+                dancers[dancer] = "normal"
+    
+    # Count the number of quick changes needed
+    quick_changes = 0
+    for dancer, status in dancers.items():
+        if status == "quick":
+            quick_changes += 1
+    
+    return quick_changes
 
-lights = [0] * (n + 1)
+def main():
+    num_routines = int(input())
+    routines = []
+    for _ in range(num_routines):
+        routine = input()
+        routines.append(routine)
+    
+    print(get_min_quick_changes(routines))
 
-for i in range(m):
-    button = buttons[i]
-    for j in range(button, n + 1):
-        if lights[j] == 0:
-            lights[j] = button
-
-print(*lights[1:])
+if __name__ == '__main__':
+    main()
 

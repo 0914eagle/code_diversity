@@ -1,27 +1,30 @@
 
-def solve(N, A, B):
-    # Initialize a list to store the permutation
-    perm = list(range(1, N+1))
-    # Initialize a list to store the values of g(i) for each i
-    g = [0] * (N+1)
-    # Initialize a set to keep track of the values of g(i) that have been used
-    used = set()
+def get_leader(n, m, messages):
+    # Initialize a set to store the present participants
+    present = set()
     
-    # Loop through each element of the permutation
-    for i in range(N):
-        # If the value of g(i) has not been used, use it
-        if g[i] not in used:
-            g[i] = A
-            used.add(A)
-        # Otherwise, use the other value
-        else:
-            g[i] = B
-            used.add(B)
+    # Iterate through the messages
+    for message in messages:
+        # If the message is a log on message, add the participant to the set
+        if message[0] == "+":
+            present.add(int(message[1:]))
+        # If the message is a log off message, remove the participant from the set
+        elif message[0] == "-":
+            present.remove(int(message[1:]))
     
-    # Check if the permutation satisfies the condition
-    for i in range(N):
-        if g[i] != A and g[i] != B:
-            return -1
+    # Return the number of participants in the set
+    return len(present)
+
+def main():
+    # Read the number of participants and messages
+    n, m = map(int, input().split())
     
-    return perm
+    # Read the messages
+    messages = [input() for _ in range(m)]
+    
+    # Call the get_leader function and print the result
+    print(get_leader(n, m, messages))
+
+if __name__ == '__main__':
+    main()
 

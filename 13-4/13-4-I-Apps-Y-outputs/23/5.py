@@ -1,10 +1,14 @@
 
-N = int(input())
-A = int(input())
+def get_amount_paid(n):
+    return 800 * n
 
-total_squares = N ** 2
-white_squares = A
-black_squares = total_squares - white_squares
+def get_amount_paid_back(n):
+    return 200 * (n // 15)
 
-print(black_squares)
+def get_amount_owed(n):
+    return get_amount_paid(n) - get_amount_paid_back(n)
+
+if __name__ == '__main__':
+    n = int(input())
+    print(get_amount_owed(n))
 

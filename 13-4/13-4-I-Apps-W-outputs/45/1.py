@@ -1,15 +1,39 @@
 
-def get_permutation_sum(n):
-    # Initialize a list to store the results
-    result = []
+def solve(string):
+    # Initialize an empty string to store the final output
+    output = ""
+    
+    # Iterate through the input string
+    for char in string:
+        # If the current character is a letter or digit, add it to the output
+        if char.isalpha() or char.isdigit():
+            output += char
+        # If the current character is a space, add a space to the output
+        elif char == " ":
+            output += " "
+        # If the current character is a '<', do nothing
+        elif char == "<":
+            pass
+        # If the current character is a '[', move the cursor to the start of the line
+        elif char == "[":
+            output = ""
+        # If the current character is a ']', move the cursor to the end of the line
+        elif char == "]":
+            output += " "
+    
+    # Return the final output
+    return output
 
-    # Iterate over all possible permutations of length n
-    for i in range(1, n + 1):
-        for j in range(1, n + 1):
-            # Check if the sum of the permutations is a valid permutation
-            if (i + j) % n == 0:
-                result.append((i, j))
+def main():
+    # Read the input string
+    string = input()
+    
+    # Solve the problem
+    output = solve(string)
+    
+    # Print the output
+    print(output)
 
-    # Return the number of distinct pairs of permutations
-    return len(result)
+if __name__ == '__main__':
+    main()
 

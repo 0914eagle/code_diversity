@@ -1,11 +1,17 @@
 
-def solve(N, L):
-    # Calculate the sum of the flavors of all apples
-    total_flavor = sum(range(L, L+N))
+import xml.etree.ElementTree as ET
 
-    # Calculate the sum of the flavors of the remaining apples after eating one
-    remaining_flavor = sum(range(L+1, L+N))
+def get_max_level(xml_string):
+    root = ET.fromstring(xml_string)
+    return get_level(root)
 
-    # Return the difference between the total flavor and the remaining flavor
-    return total_flavor - remaining_flavor
+def get_level(element):
+    level = 0
+    for child in element:
+        level = max(level, get_level(child) + 1)
+    return level
+
+if __name__ == '__main__':
+    xml_string = sys.stdin.read()
+    print(get_max_level(xml_string))
 

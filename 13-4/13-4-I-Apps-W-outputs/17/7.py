@@ -1,8 +1,20 @@
 
-x = int(input())
-result = ""
-while x > 0:
-    result = str(9 - x % 10) + result
-    x //= 10
-print(int(result))
+def get_input():
+    n = int(input())
+    return n
+
+def solve(n):
+    a = list(range(1, n+1))
+    a += a
+    import random
+    random.shuffle(a)
+    return a
+
+def get_output(a):
+    return ' '.join(map(str, a))
+
+if __name__ == '__main__':
+    n = get_input()
+    a = solve(n)
+    print(get_output(a))
 

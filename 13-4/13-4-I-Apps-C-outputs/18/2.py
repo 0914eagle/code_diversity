@@ -1,19 +1,41 @@
 
-def solve(N, M, tunnels):
-    # Initialize the danger level of each chamber as 0
-    danger_level = [0] * (N + 1)
+import sys
+input = sys.stdin.read()
 
-    # Loop through each tunnel
-    for tunnel in tunnels:
-        # Get the length of the tunnel
-        length = tunnel[2]
+def get_points(input):
+    N = int(input.split('\n')[0])
+    points = []
+    for i in range(1, N+1):
+        x, y = map(int, input.split('\n')[i].split())
+        points.append((x, y))
+    return points
 
-        # Update the danger level of the starting chamber
-        danger_level[tunnel[0]] += length
+def manhattan_distance(p1, p2):
+    return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
 
-        # Update the danger level of the ending chamber
-        danger_level[tunnel[1]] += length
+def prims_algorithm(points):
+    tree = []
+    visited = set()
+    current = points[0]
+    visited.add(current)
+    while len(visited) < len(points):
+        min_distance = float('inf')
+        for point in points:
+            if point in visited:
+                continue
+            distance = manhattan_distance(current, point)
+            if distance < min_distance:
+                min_distance = distance
+                current = point
+        tree.append((current, manhattan_distance(current, points[0])))
+        visited.add(current)
+    return tree
 
-    # Return the danger level of each chamber
-    return danger_level
+def minimum_spanning_tree(points):
+    tree = prims_algorithm(points)
+    return sum(distance for _, distance in tree)
+
+if __name__ == '__main__':
+    points = get_points(input)
+    print(minimum_spanning_tree(points))
 

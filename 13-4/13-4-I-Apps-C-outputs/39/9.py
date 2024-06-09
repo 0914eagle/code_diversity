@@ -1,31 +1,45 @@
 
-def get_min_time(n, traffic_lights):
-    # Initialize variables
-    min_time = 0
-    current_time = 0
-    previous_light = "green"
+def get_event_durations(observations):
+    # Initialize a dictionary to store the event durations
+    event_durations = {}
+    
+    # Iterate over the observations
+    for observation in observations:
+        # Extract the start and end dates and the number of events observed
+        start_date, end_date, *event_counts = observation
+        
+        # Convert the dates to integers
+        start_date = int(start_date)
+        end_date = int(end_date)
+        
+        # Iterate over the event counts
+        for event_index, event_count in enumerate(event_counts):
+            # Check if the event has already been observed before
+            if event_index in event_durations:
+                # If the event has been observed before, add the current duration to the total duration
+                event_durations[event_index] += end_date - start_date
+            else:
+                # If the event has not been observed before, set the total duration to the current duration
+                event_durations[event_index] = end_date - start_date
+    
+    # Return the event durations
+    return event_durations
 
-    # Iterate through each traffic light
-    for i in range(n - 1):
-        light = traffic_lights[i]
-        green_duration = light[1]
-        red_duration = light[2]
+def main():
+    # Read the number of telescopes and event types
+    num_telescopes, num_event_types = map(int, input().split())
+    
+    # Read the observations
+    observations = []
+    for _ in range(num_telescopes):
+        observations.append(list(map(int, input().split())))
+    
+    # Calculate the event durations
+    event_durations = get_event_durations(observations)
+    
+    # Print the event durations
+    print(*event_durations.values(), sep='\n')
 
-        # If the current light is green, drive at constant speed
-        if previous_light == "green":
-            min_time += green_duration
-            current_time += green_duration
-
-        # If the current light is red, stop at the red light
-        elif previous_light == "red":
-            min_time += red_duration
-            current_time = 0
-
-        # Update the previous light
-        previous_light = "green" if previous_light == "red" else "red"
-
-    # Add the time to drive from the last traffic light to the end of the road
-    min_time += n - current_time
-
-    return min_time
+if __name__ == '__main__':
+    main()
 

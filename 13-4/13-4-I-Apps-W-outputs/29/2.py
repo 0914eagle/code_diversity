@@ -1,18 +1,31 @@
 
-import sys
+def get_longest_segment(arr):
+    if len(arr) == 0:
+        return []
+    
+    longest = [arr[0]]
+    for i in range(1, len(arr)):
+        if arr[i] == arr[i-1]:
+            longest.append(arr[i])
+        else:
+            if len(longest) > len(arr[:i]):
+                return longest
+            longest = [arr[i]]
+    
+    if len(longest) > len(arr[:len(arr)]):
+        return longest
+    else:
+        return arr
 
-def get_inconvenience(bridges, i):
-    inconvenience = 0
-    for bridge in bridges[:i]:
-        inconvenience += len(set([bridge[0], bridge[1]]))
-    return inconvenience
+def get_number_of_operations(arr):
+    operations = 0
+    while len(arr) > 0:
+        operations += 1
+        arr = get_longest_segment(arr)
+    return operations
 
-n, m = map(int, input().split())
-bridges = []
-for _ in range(m):
-    a, b = map(int, input().split())
-    bridges.append((a, b))
-
-for i in range(1, m+1):
-    print(get_inconvenience(bridges, i))
+if __name__ == '__main__':
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(get_number_of_operations(arr))
 

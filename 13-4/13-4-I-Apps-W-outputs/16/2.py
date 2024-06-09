@@ -1,29 +1,33 @@
 
-def get_min_pebbles(n):
-    # Initialize variables
-    mirror_pebbles = n
-    current_player = "Mirko"
-    other_player = "Slavko"
-    turn = 1
-    min_pebbles = 1
+def get_finalists(results, k):
+    # Sort the results in ascending order
+    sorted_results = sorted(results)
 
-    # Play the game
-    while mirror_pebbles > 0:
-        # Determine the number of pebbles the current player can take
-        if current_player == "Mirko":
-            max_pebbles = min(n, 2 * turn)
-        else:
-            max_pebbles = min(mirror_pebbles, 2 * turn)
+    # Get the indices of the top k results
+    top_k_indices = sorted_results[-k:]
 
-        # Update the number of pebbles in the heap
-        mirror_pebbles -= max_pebbles
+    # Get the indices of the bottom n - 2k results
+    bottom_n_indices = sorted_results[:n - 2k]
 
-        # Switch players
-        current_player, other_player = other_player, current_player
-        turn += 1
+    # Get the finalists by combining the top k and bottom n - 2k results
+    finalists = top_k_indices + bottom_n_indices
 
-        # Update the minimum number of pebbles
-        min_pebbles = max(min_pebbles, max_pebbles)
+    return finalists
 
-    return min_pebbles
+def get_finalists_string(results, k):
+    finalists = get_finalists(results, k)
+    finalists_string = "".join("1" if i in finalists else "0" for i in range(n))
+    return finalists_string
+
+def main():
+    n = int(input())
+    results = []
+    for i in range(n):
+        results.append(int(input()))
+    k = int(input())
+    finalists_string = get_finalists_string(results, k)
+    print(finalists_string)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,34 +1,24 @@
 
-def solve(s):
-    n = len(s)
-    # Initialize the longest non-decreasing subsequence of s and t
-    longest_non_decreasing_subsequence_s = [1] * n
-    longest_non_decreasing_subsequence_t = [1] * n
+def knight_moves(x, y):
+    # Initialize a dictionary to store the number of ways to reach each square
+    ways = {(0, 0): 1}
     
-    # Loop through the string and calculate the longest non-decreasing subsequence
-    for i in range(1, n):
-        for j in range(i):
-            if s[i] >= s[j] and longest_non_decreasing_subsequence_s[i] < longest_non_decreasing_subsequence_s[j] + 1:
-                longest_non_decreasing_subsequence_s[i] = longest_non_decreasing_subsequence_s[j] + 1
+    # Loop through all possible positions of the knight
+    for i in range(x + 1):
+        for j in range(y + 1):
+            # If the current position is not the starting position, check if it can be reached from the previous position
+            if (i, j) != (0, 0):
+                # If the current position is reachable from the previous position, add the number of ways to reach the previous position to the current position
+                if (i - 2, j + 1) in ways or (i - 1, j + 2) in ways:
+                    ways[(i, j)] = (ways.get((i - 2, j + 1), 0) + ways.get((i - 1, j + 2), 0)) % (10**9 + 7)
     
-    # Loop through the string and calculate the longest non-decreasing subsequence
-    for i in range(1, n):
-        for j in range(i):
-            if s[i] >= s[j] and longest_non_decreasing_subsequence_t[i] < longest_non_decreasing_subsequence_t[j] + 1:
-                longest_non_decreasing_subsequence_t[i] = longest_non_decreasing_subsequence_t[j] + 1
-    
-    # Find the maximum length of the longest non-decreasing subsequence
-    max_length = max(longest_non_decreasing_subsequence_s)
-    
-    # Initialize the result string
-    result = ""
-    
-    # Loop through the string and find the indices with the maximum length of the longest non-decreasing subsequence
-    for i in range(n):
-        if longest_non_decreasing_subsequence_s[i] == max_length:
-            result += "1"
-        else:
-            result += "0"
-    
-    return result
+    # Return the number of ways to reach the target position
+    return ways.get((x, y), 0)
+
+def main():
+    x, y = map(int, input().split())
+    print(knight_moves(x, y))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,25 +1,26 @@
 
-def get_package_order(packages):
-    # Initialize an empty order list
-    order = []
+def get_correct_times(original_time, current_time):
+    original_hour, original_minute = map(int, original_time.split(':'))
+    current_hour, current_minute = map(int, current_time.split(':'))
+    
+    correct_times = []
+    for hour in range(0, 24):
+        for minute in range(0, 60):
+            if hour == original_hour and minute == original_minute:
+                continue
+            if hour == current_hour and minute == current_minute:
+                continue
+            correct_times.append(f"{hour:02d}:{minute:02d}")
+    
+    return len(correct_times), *correct_times
 
-    # Loop through the packages
-    for package in packages:
-        # Check if the package is already in the order list
-        if package not in order:
-            # Check if the package has any dependencies
-            if package.dependencies:
-                # Check if all the dependencies are in the order list
-                if all(dep in order for dep in package.dependencies):
-                    # If all dependencies are in the order list, add the package to the end of the order list
-                    order.append(package)
-                else:
-                    # If not all dependencies are in the order list, cannot be ordered
-                    return "cannot be ordered"
-            else:
-                # If the package has no dependencies, add it to the beginning of the order list
-                order.insert(0, package)
+def main():
+    original_time, current_time = input().split()
+    num_correct_times, *correct_times = get_correct_times(original_time, current_time)
+    print(num_correct_times)
+    for correct_time in correct_times:
+        print(correct_time)
 
-    # Return the order list
-    return order
+if __name__ == '__main__':
+    main()
 

@@ -1,31 +1,15 @@
 
-import sys
-input = sys.stdin.read()
-n, m, s = map(int, input.split())
-edges = []
-for i in range(m):
-    t, u, v = map(int, input.split())
-    edges.append((t, u, v))
+def get_power_of_two(n, e):
+    count = 0
+    for i in range(n):
+        if str(i).find(str(2**e)) != -1:
+            count += 1
+    return count
 
-# Plan 1: Maximize the number of reachable vertices
-reachable = set([s])
-for t, u, v in edges:
-    if t == 1 or u == s or v == s:
-        continue
-    reachable.add(u)
-    reachable.add(v)
+def main():
+    n, e = map(int, input().split())
+    print(get_power_of_two(n, e))
 
-print(len(reachable))
-print('-' * (m - len(reachable)))
-
-# Plan 2: Minimize the number of reachable vertices
-reachable = set([s])
-for t, u, v in edges:
-    if t == 1 or u == s or v == s:
-        continue
-    reachable.add(u)
-    reachable.add(v)
-
-print(len(reachable))
-print('+' * (m - len(reachable)))
+if __name__ == '__main__':
+    main()
 

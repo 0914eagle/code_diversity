@@ -1,18 +1,25 @@
 
-def hex_compare(x, y):
-    x_value = hex_to_decimal(x)
-    y_value = hex_to_decimal(y)
-    if x_value < y_value:
-        return "<"
-    elif x_value > y_value:
-        return ">"
-    else:
-        return "="
+def get_input():
+    N, M = map(int, input().split())
+    roads = []
+    for _ in range(M):
+        a, b = map(int, input().split())
+        roads.append((a, b))
+    return N, M, roads
 
-def hex_to_decimal(hex_string):
-    hex_dict = {"A": 10, "B": 11, "C": 12, "D": 13, "E": 14, "F": 15}
-    return hex_dict[hex_string]
+def count_roads(N, M, roads):
+    city_roads = [0] * (N + 1)
+    for a, b in roads:
+        city_roads[a] += 1
+        city_roads[b] += 1
+    return city_roads[1:]
 
-x, y = input().split()
-print(hex_compare(x, y))
+def main():
+    N, M, roads = get_input()
+    city_roads = count_roads(N, M, roads)
+    for road in city_roads:
+        print(road)
+
+if __name__ == '__main__':
+    main()
 

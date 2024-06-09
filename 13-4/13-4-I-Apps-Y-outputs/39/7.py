@@ -1,24 +1,41 @@
 
-def solve(N, T, M, P, X):
-    # Initialize a list to store the time it takes to solve all problems
-    time_taken = [0] * (M + 1)
+def read_input():
+    k = int(input())
+    sequences = []
+    for i in range(k):
+        n = int(input())
+        sequence = list(map(int, input().split()))
+        sequences.append(sequence)
+    return k, sequences
 
-    # Loop through each drink
-    for i in range(1, M + 1):
-        # Initialize a list to store the time it takes to solve each problem
-        problem_time = [0] * (N + 1)
+def solve(k, sequences):
+    for i in range(k):
+        for j in range(i+1, k):
+            if sequences[i][0] + sequences[j][0] == 0:
+                return i+1, 1, j+1, 1
+            for x in range(1, len(sequences[i])):
+                if sequences[i][x] + sequences[j][0] == 0:
+                    return i+1, x+1, j+1, 1
+                for y in range(1, len(sequences[j])):
+                    if sequences[i][0] + sequences[j][y] == 0:
+                        return i+1, 1, j+1, y+1
+                    if sequences[i][x] + sequences[j][y] == 0:
+                        return i+1, x+1, j+1, y+1
+    return -1, -1, -1, -1
 
-        # Loop through each problem
-        for j in range(1, N + 1):
-            # If the problem is not affected by the drink, use the original time
-            if j not in P:
-                problem_time[j] = T[j - 1]
-            # Otherwise, use the modified time
-            else:
-                problem_time[j] = T[j - 1] + X[i - 1]
+def print_output(answer):
+    if answer[0] == -1:
+        print("NO")
+    else:
+        print("YES")
+        print(answer[0], answer[1])
+        print(answer[2], answer[3])
 
-        # Calculate the total time it takes to solve all problems with the current drink
-        time_taken[i] = sum(problem_time)
+def main():
+    k, sequences = read_input()
+    answer = solve(k, sequences)
+    print_output(answer)
 
-    return time_taken
+if __name__ == '__main__':
+    main()
 

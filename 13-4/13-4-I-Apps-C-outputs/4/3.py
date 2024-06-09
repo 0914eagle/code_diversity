@@ -1,36 +1,41 @@
 
-def solve(n, m):
-    # Calculate the total number of sequences
-    total_sequences = 2**n
+def get_max_or(numbers, k, x):
+    # Sort the numbers in descending order
+    numbers.sort(reverse=True)
     
-    # Initialize a set to store the indices of wool sequences
-    wool_sequences = set()
+    # Initialize the maximum OR value
+    max_or = 0
     
-    # Iterate over all possible lengths of wool sequences
-    for l in range(1, n+1):
-        # Iterate over all possible starting indices
-        for i in range(n-l+1):
-            # Calculate the ending index
-            j = i + l - 1
-            # Check if the xor of the sequence is 0
-            if xor_sequence(i, j, n) == 0:
-                # Add the indices to the set of wool sequences
-                wool_sequences.add(i)
-                wool_sequences.add(j)
+    # Loop through the numbers
+    for i in range(len(numbers)):
+        # Check if we can perform an operation
+        if k > 0:
+            # Multiply the current number by x
+            numbers[i] *= x
+            
+            # Decrement the number of operations
+            k -= 1
+            
+            # Update the maximum OR value
+            max_or = max(max_or, numbers[i])
+        else:
+            # We can't perform any more operations, so break the loop
+            break
     
-    # Calculate the number of non-wool sequences
-    non_wool_sequences = total_sequences - len(wool_sequences)
-    
-    # Return the result modulo 1000000009
-    return non_wool_sequences % 1000000009
+    # Return the maximum OR value
+    return max_or
 
-def xor_sequence(i, j, n):
-    # Initialize the xor of the sequence to 0
-    xor = 0
-    # Iterate over the indices of the sequence
-    for k in range(i, j+1):
-        # Calculate the xor of the current element with the previous xor
-        xor ^= k
-    # Return the xor of the sequence
-    return xor
+def main():
+    # Read the input
+    n, k, x = map(int, input().split())
+    numbers = list(map(int, input().split()))
+    
+    # Get the maximum OR value
+    max_or = get_max_or(numbers, k, x)
+    
+    # Print the result
+    print(max_or)
+
+if __name__ == '__main__':
+    main()
 

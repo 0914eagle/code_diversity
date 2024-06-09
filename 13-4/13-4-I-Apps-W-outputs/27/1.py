@@ -1,15 +1,17 @@
 
-def get_maximum_types(n, m, a, k):
-    # Sort the list of already owned toys in ascending order
-    a.sort()
-    # Initialize variables to keep track of the current cost and number of types
-    cost = 0
-    types = set()
-    # Iterate through the list of toys and add them to the gift if they are not already owned and the cost does not exceed the budget
-    for i in range(n):
-        if a[i] not in types and cost + i <= m:
-            types.add(a[i])
-            cost += i
-    # Return the number of types and the list of types as a set
-    return len(types), types
+def f1(n, m):
+    # Calculate the number of distinct subsequences of a sequence of length n
+    # with elements from 1 to m, including the empty subsequence
+    if n == 0:
+        return 1
+    else:
+        return (m * f1(n-1, m)) % 1000000007
+
+def f2(n, m):
+    # Calculate the sum of f(a) over all sequences of length n with elements from 1 to m
+    return sum(f1(i, m) for i in range(n+1)) % 1000000007
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    print(f2(n, m))
 

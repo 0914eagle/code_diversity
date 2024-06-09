@@ -1,27 +1,46 @@
 
-def reconstruct_painting(commands):
-    # Initialize the canvas with a 2D array of ones
-    canvas = [[1] * N for _ in range(N)]
+def is_graph_valid(n, m, edges):
+    # Initialize a dictionary to store the neighbors of each vertex
+    neighbors = {i: set() for i in range(1, n + 1)}
 
-    # Iterate through the commands and apply them to the canvas
-    for command in commands:
-        if command.startswith("PAINT"):
-            # Extract the colour and coordinates of the rectangle from the command
-            colour, x1, y1, x2, y2 = map(int, command.split()[1:])
+    # Add edges to the graph
+    for u, v in edges:
+        neighbors[u].add(v)
+        neighbors[v].add(u)
 
-            # Iterate over the cells in the rectangle and paint them with the chosen colour
-            for x in range(x1, x2 + 1):
-                for y in range(y1, y2 + 1):
-                    canvas[x][y] = colour
+    # Check that the graph is connected
+    visited = set()
+    queue = [1]
+    while queue:
+        vertex = queue.pop(0)
+        if vertex not in visited:
+            visited.add(vertex)
+            queue.extend(neighbors[vertex])
 
-        elif command.startswith("SAVE"):
-            # Save the current state of the canvas
-            saved_state = canvas.copy()
+    return len(visited) == n
 
-        elif command.startswith("LOAD"):
-            # Load the saved state of the canvas
-            canvas = saved_state.copy()
+def find_string(n, m, edges):
+    # Initialize a set to store the possible strings
+    strings = set()
 
-    # Return the final state of the canvas
-    return canvas
+    # Iterate over all possible strings of length n
+    for string in itertools.product("abc", repeat=n):
+        # Convert the string to a list of integers
+        string_list = [ord(char) - ord("a") + 1 for char in string]
+
+        # Check if the string is valid
+        if is_graph_valid(n, m, zip(string_list, string_list[1:])):
+            strings.add("".join(string))
+
+    return strings
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    edges = [tuple(map(int, input().split())) for _ in range(m)]
+    strings = find_string(n, m, edges)
+    if strings:
+        print("Yes")
+        print(strings.pop())
+    else:
+        print("No")
 

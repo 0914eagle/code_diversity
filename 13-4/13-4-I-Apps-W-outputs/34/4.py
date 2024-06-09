@@ -1,25 +1,21 @@
 
-def solve(students, tutors):
-    # Calculate the distance between each student and tutor
-    distances = []
-    for student in students:
-        for tutor in tutors:
-            distance = abs(student[0] - tutor[0]) + abs(student[1] - tutor[1])
-            distances.append((student, tutor, distance))
+def get_unlucky_day(jacket_cost, sock_cost, money):
+    # Calculate the number of socks that Chef can buy with the given money
+    num_socks = money // sock_cost
     
-    # Sort the distances in ascending order
-    distances.sort(key=lambda x: x[2])
+    # Calculate the number of days it takes for Chef to use all the socks
+    num_days = num_socks // 2
     
-    # Initialize the minimum distance traveled by the student who is worst off
-    min_distance = distances[0][2]
-    
-    # Iterate through the distances and check if the distance traveled by the student who is worst off is less than the current distance
-    for i in range(1, len(distances)):
-        if distances[i][2] < min_distance:
-            min_distance = distances[i][2]
-        else:
-            break
-    
-    # Return the minimum distance traveled by the student who is worst off
-    return min_distance
+    # Check if there is a day when Chef will have only 1 clean sock left
+    if num_days % 2 == 1:
+        return "Unlucky Chef"
+    else:
+        return "Lucky Chef"
+
+def main():
+    jacket_cost, sock_cost, money = map(int, input().split())
+    print(get_unlucky_day(jacket_cost, sock_cost, money))
+
+if __name__ == '__main__':
+    main()
 

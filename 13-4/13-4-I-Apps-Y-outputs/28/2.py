@@ -1,20 +1,29 @@
 
-def get_min_teams(a):
-    # Sort the array in ascending order
-    a.sort()
-    # Initialize the minimum number of teams as 1
-    min_teams = 1
-    # Loop through the array
-    for i in range(len(a)-1):
-        # Check if the difference between the current element and the next element is 1
-        if a[i+1] - a[i] == 1:
-            # Increment the minimum number of teams
-            min_teams += 1
-    return min_teams
+def get_two_grams(s):
+    two_grams = []
+    for i in range(len(s) - 1):
+        two_grams.append(s[i:i+2])
+    return two_grams
 
-q = int(input())
-for i in range(q):
+def get_most_frequent_two_gram(two_grams):
+    freq = {}
+    for two_gram in two_grams:
+        if two_gram in freq:
+            freq[two_gram] += 1
+        else:
+            freq[two_gram] = 1
+    max_freq = max(freq.values())
+    for two_gram, count in freq.items():
+        if count == max_freq:
+            return two_gram
+
+def main():
     n = int(input())
-    a = list(map(int, input().split()))
-    print(get_min_teams(a))
+    s = input()
+    two_grams = get_two_grams(s)
+    most_frequent_two_gram = get_most_frequent_two_gram(two_grams)
+    print(most_frequent_two_gram)
+
+if __name__ == '__main__':
+    main()
 

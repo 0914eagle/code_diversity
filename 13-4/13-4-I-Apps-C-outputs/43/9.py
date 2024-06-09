@@ -1,24 +1,33 @@
 
-def solve(r, s, m, d, n, b, dishes):
-    # Initialize a set to store the different dinner experiences
-    dinner_experiences = set()
+def get_resistors_needed(a, b):
+    # Initialize the number of resistors needed to 0
+    resistors_needed = 0
+    
+    # While the resistance is not equal to the target resistance
+    while a / b != 1:
+        # If the resistance is even, divide it by 2
+        if a % 2 == 0:
+            a /= 2
+        # If the resistance is odd, subtract 1 and divide it by 2
+        else:
+            a = (a - 1) / 2
+        
+        # Increment the number of resistors needed
+        resistors_needed += 1
+    
+    # Return the number of resistors needed
+    return resistors_needed
 
-    # Iterate over the dishes
-    for dish in dishes:
-        # Get the ingredients of the dish
-        ingredients = dish[1:]
+def main():
+    # Read the input
+    a, b = map(int, input().split())
+    
+    # Call the function to get the number of resistors needed
+    resistors_needed = get_resistors_needed(a, b)
+    
+    # Print the output
+    print(resistors_needed)
 
-        # Initialize a set to store the different brands of the ingredients
-        ingredient_brands = set()
-
-        # Iterate over the ingredients of the dish
-        for ingredient in ingredients:
-            # Add the brand of the ingredient to the set of ingredient brands
-            ingredient_brands.add(b[ingredient])
-
-        # Add the combination of ingredient brands to the set of dinner experiences
-        dinner_experiences.add(frozenset(ingredient_brands))
-
-    # Return the number of different dinner experiences
-    return len(dinner_experiences)
+if __name__ == '__main__':
+    main()
 

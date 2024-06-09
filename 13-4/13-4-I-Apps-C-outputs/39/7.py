@@ -1,33 +1,41 @@
 
-def get_min_time(n, traffic_lights):
-    # Initialize variables
-    min_time = 0
-    current_time = 0
-    speed = 1
-    distance = 0
+def get_event_durations(observations):
+    # Initialize a dictionary to store the event durations
+    event_durations = {}
+    
+    # Iterate over the observations
+    for observation in observations:
+        # Extract the start and end dates and the number of events observed
+        start_date, end_date, *event_counts = observation
+        
+        # Convert the dates to integers
+        start_date = int(start_date)
+        end_date = int(end_date)
+        
+        # Iterate over the event counts
+        for event_index, event_count in enumerate(event_counts):
+            # Check if the event has already been observed before
+            if event_index in event_durations:
+                # If the event has been observed before, add the current duration to the total duration
+                event_durations[event_index] += end_date - start_date
+            else:
+                # If the event has not been observed before, set the total duration to the current duration
+                event_durations[event_index] = end_date - start_date
+    
+    # Return the event durations
+    return event_durations
 
-    # Iterate through each traffic light
-    for i in range(n - 1):
-        # Get the time, green duration, and red duration of the current light
-        t, g, r = traffic_lights[i]
+def main():
+    # Read the input
+    num_telescopes, num_event_types = map(int, input().split())
+    observations = [list(map(int, input().split())) for _ in range(num_telescopes)]
+    
+    # Calculate the event durations
+    event_durations = get_event_durations(observations)
+    
+    # Print the event durations
+    print(*event_durations.values(), sep='\n')
 
-        # If the current time is before the start of the green duration, accelerate
-        if current_time < t:
-            distance += (t - current_time) * speed
-            current_time = t
-
-        # If the current time is during the green duration, maintain speed
-        elif current_time < t + g:
-            distance += speed
-            current_time += 1
-
-        # If the current time is during the red duration, stop
-        elif current_time < t + g + r:
-            current_time += 1
-
-        # Update the minimum time
-        min_time = max(min_time, distance / speed)
-
-    # Return the minimum time required to reach the end of the road
-    return min_time
+if __name__ == '__main__':
+    main()
 

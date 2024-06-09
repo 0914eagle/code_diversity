@@ -1,28 +1,31 @@
 
-import sys
+def get_possible_values(dice_sides, total_sum):
+    possible_values = []
+    for i in range(1, dice_sides+1):
+        if i > total_sum:
+            break
+        possible_values.append(i)
+    return possible_values
 
-N, K = map(int, input().split())
-A = list(map(int, input().split()))
+def get_impossible_values(dice_sides, total_sum):
+    impossible_values = []
+    for i in range(1, dice_sides+1):
+        if i <= total_sum:
+            impossible_values.append(i)
+    return impossible_values
 
-def count_subsequences(A, K):
-    # Initialize the number of contiguous subsequences to 0
-    count = 0
-    
-    # Iterate over the elements of A
-    for i in range(len(A)):
-        # Initialize the sum of the current subsequence to 0
-        sum = 0
-        
-        # Iterate over the elements of A starting from the current element
-        for j in range(i, len(A)):
-            # Add the current element to the sum
-            sum += A[j]
-            
-            # If the sum is greater than or equal to K, increment the count
-            if sum >= K:
-                count += 1
-    
-    return count
+def get_number_of_possible_values(dice_sides, total_sum):
+    return len(get_possible_values(dice_sides, total_sum))
 
-print(count_subsequences(A, K))
+def get_number_of_impossible_values(dice_sides, total_sum):
+    return len(get_impossible_values(dice_sides, total_sum))
+
+def main():
+    num_dice, total_sum = map(int, input().split())
+    dice_sides = list(map(int, input().split()))
+    for i in range(num_dice):
+        print(get_number_of_impossible_values(dice_sides[i], total_sum))
+
+if __name__ == '__main__':
+    main()
 

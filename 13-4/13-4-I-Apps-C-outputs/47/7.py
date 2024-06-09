@@ -1,18 +1,33 @@
 
-def get_maximum_expected_profit(x, p):
-    # Calculate the probability of winning and losing for each bet
-    win_prob = p / 100
-    lose_prob = 1 - win_prob
+def get_closest_handsome_numbers(n):
+    # Convert the input number to a list of individual digits
+    digits = [int(d) for d in str(n)]
+    
+    # Initialize variables to keep track of the closest handsome numbers
+    closest_handsome_numbers = []
+    closest_distance = float('inf')
+    
+    # Iterate through all possible handsome numbers
+    for i in range(10**(len(digits)-1)):
+        # Convert the current handsome number to a list of individual digits
+        handsome_digits = [int(d) for d in str(i)]
+        
+        # Check if the current handsome number is closer to the input number than the previous closest handsome number
+        distance = abs(n - i)
+        if distance < closest_distance:
+            closest_distance = distance
+            closest_handsome_numbers = [i]
+        elif distance == closest_distance:
+            closest_handsome_numbers.append(i)
+    
+    # Return the closest handsome numbers
+    return closest_handsome_numbers
 
-    # Calculate the expected value for each bet
-    win_expectation = 2
-    lose_expectation = -1
+def main():
+    n = int(input())
+    handsome_numbers = get_closest_handsome_numbers(n)
+    print(*handsome_numbers)
 
-    # Calculate the expected value for the entire game
-    expected_value = win_prob * win_expectation + lose_prob * lose_expectation
-
-    # Calculate the maximum expected profit
-    maximum_expected_profit = expected_value - x / 100
-
-    return maximum_expected_profit
+if __name__ == '__main__':
+    main()
 

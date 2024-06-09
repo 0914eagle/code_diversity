@@ -1,31 +1,20 @@
 
-def solve(n, m, k, roads, routes):
-    # Initialize a graph with the given roads
-    graph = {i: set() for i in range(1, n + 1)}
-    for x, y, w in roads:
-        graph[x].add((y, w))
-        graph[y].add((x, w))
+def get_input():
+    return int(input())
 
-    # Find the shortest path between each pair of districts using Dijkstra's algorithm
-    distances = {i: float("inf") for i in range(1, n + 1)}
-    previous = {i: None for i in range(1, n + 1)}
-    queue = [(0, 1)]
-    while queue:
-        distance, node = heapq.heappop(queue)
-        if distance > distances[node]:
-            continue
-        for neighbor, weight in graph[node]:
-            distance_to_neighbor = distance + weight
-            if distance_to_neighbor < distances[neighbor]:
-                distances[neighbor] = distance_to_neighbor
-                previous[neighbor] = node
-                heapq.heappush(queue, (distance_to_neighbor, neighbor))
+def is_valid_tuple(a, b, c, n):
+    return a > 0 and b > 0 and c > 0 and a * b + c == n
 
-    # Calculate the total cost of each route
-    total_cost = 0
-    for a, b in routes:
-        total_cost += distances[a] + distances[b]
+def count_valid_tuples(n):
+    count = 0
+    for a in range(1, n + 1):
+        for b in range(1, n + 1):
+            c = n - a * b
+            if is_valid_tuple(a, b, c, n):
+                count += 1
+    return count
 
-    # Return the minimum total cost
-    return total_cost
+if __name__ == '__main__':
+    n = get_input()
+    print(count_valid_tuples(n))
 

@@ -1,25 +1,49 @@
 
-import math
-
-def solve(N, LR_pairs):
-    expected_damages = 0
+def f1(N, W, H, map_pieces):
+    # Initialize a dictionary to store the map pieces
+    map_pieces_dict = {}
     for i in range(N):
-        L, R = LR_pairs[i]
-        damages = 0
-        for j in range(i+1, N):
-            L_j, R_j = LR_pairs[j]
-            if L_j > L:
-                damages += R_j - L
-            if R_j < R:
-                damages += R - R_j
-        expected_damages += damages / (N - i - 1)
-    return expected_damages / N ** 2
+        map_pieces_dict[i+1] = map_pieces[i]
+    
+    # Initialize a list to store the reconstructed map
+    reconstructed_map = []
+    
+    # Loop through the map pieces and add them to the reconstructed map
+    for i in range(N):
+        for j in range(H):
+            for k in range(W):
+                if map_pieces_dict[i][j][k] != " ":
+                    reconstructed_map.append(map_pieces_dict[i][j][k])
+    
+    # Return the reconstructed map
+    return "".join(reconstructed_map)
 
-N = int(input())
-LR_pairs = []
-for i in range(N):
-    L, R = map(float, input().split())
-    LR_pairs.append((L, R))
+def f2(N, W, H, map_pieces):
+    # Initialize a dictionary to store the map pieces
+    map_pieces_dict = {}
+    for i in range(N):
+        map_pieces_dict[i+1] = map_pieces[i]
+    
+    # Initialize a list to store the reconstructed map
+    reconstructed_map = []
+    
+    # Loop through the map pieces and add them to the reconstructed map
+    for i in range(N):
+        for j in range(H):
+            for k in range(W):
+                if map_pieces_dict[i][j][k] != " ":
+                    reconstructed_map.append(map_pieces_dict[i][j][k])
+    
+    # Return the reconstructed map
+    return "".join(reconstructed_map)
 
-print(solve(N, LR_pairs))
+if __name__ == '__main__':
+    N = int(input())
+    W = int(input())
+    H = int(input())
+    map_pieces = []
+    for i in range(N):
+        map_pieces.append(input())
+    reconstructed_map = f1(N, W, H, map_pieces)
+    print(reconstructed_map)
 

@@ -1,7 +1,11 @@
 
-word = input()
+def f1(l, d, n):
+    return l - n * d - 6 * 2
 
-capitalized_word = word[0].upper() + word[1:]
+def f2(l, d, n):
+    return l - n * d - 6 * 2
 
-print(capitalized_word)
+if __name__ == '__main__':
+    l, d, n = map(int, input().split())
+    print(f1(l, d, n))
 

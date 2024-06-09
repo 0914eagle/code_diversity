@@ -1,27 +1,23 @@
 
-def solve(s, d):
-    # Initialize variables
-    correct_translations = 0
-    incorrect_translations = 0
-    possible_translations = []
+def get_correct_codes(n, m, c, b, a):
+    correct_codes = 0
+    for i in range(n):
+        sum = 0
+        for j in range(m):
+            sum += a[i][j] * b[j]
+        sum += c
+        if sum > 0:
+            correct_codes += 1
+    return correct_codes
 
-    # Iterate through each word in the sentence
-    for word in s:
-        # Check if the word is in the dictionary
-        if word in d:
-            # If the word is in the dictionary, check if it is a correct or incorrect translation
-            if d[word] == "correct":
-                correct_translations += 1
-            else:
-                incorrect_translations += 1
-        else:
-            # If the word is not in the dictionary, add it to the list of possible translations
-            possible_translations.append(word)
+def main():
+    n, m, c = map(int, input().split())
+    b = list(map(int, input().split()))
+    a = []
+    for i in range(n):
+        a.append(list(map(int, input().split())))
+    print(get_correct_codes(n, m, c, b, a))
 
-    # If there is only one possible translation, return it and its correctness
-    if len(possible_translations) == 1:
-        return f"{possible_translations[0]}\n{'' if correct_translations == 1 else 'in'}correct"
-
-    # If there are multiple possible translations, return the total number of correct and incorrect translations
-    return f"{correct_translations}\n{incorrect_translations}\n"
+if __name__ == '__main__':
+    main()
 

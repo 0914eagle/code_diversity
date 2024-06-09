@@ -1,23 +1,29 @@
 
-def get_max_distance(grid):
-    # Initialize variables
-    max_distance = 0
-    spy_location = None
-    safe_houses = []
+def get_center_coordinates(x_coordinates, y_coordinates):
+    x_sum = sum(x_coordinates)
+    y_sum = sum(y_coordinates)
+    center_x = x_sum // len(x_coordinates)
+    center_y = y_sum // len(y_coordinates)
+    return center_x, center_y
 
-    # Find the location of the spy and the safe houses
-    for i in range(len(grid)):
-        for j in range(len(grid[0])):
-            if grid[i][j] == "S":
-                spy_location = (i, j)
-            elif grid[i][j] == "H":
-                safe_houses.append((i, j))
+def get_height(x_coordinates, y_coordinates, heights):
+    height = max(heights)
+    return height
 
-    # Calculate the distance from the spy to each safe house
-    for safe_house in safe_houses:
-        distance = abs(safe_house[0] - spy_location[0]) + abs(safe_house[1] - spy_location[1])
-        if distance > max_distance:
-            max_distance = distance
+def main():
+    num_points = int(input())
+    x_coordinates = []
+    y_coordinates = []
+    heights = []
+    for i in range(num_points):
+        x, y, h = map(int, input().split())
+        x_coordinates.append(x)
+        y_coordinates.append(y)
+        heights.append(h)
+    center_x, center_y = get_center_coordinates(x_coordinates, y_coordinates)
+    height = get_height(x_coordinates, y_coordinates, heights)
+    print(center_x, center_y, height)
 
-    return max_distance
+if __name__ == '__main__':
+    main()
 

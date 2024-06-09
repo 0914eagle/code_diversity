@@ -1,37 +1,41 @@
 
-def solve(problems, drinks):
-    # Initialize a dictionary to store the time it takes to solve each problem
-    times = {}
+def read_input():
+    k = int(input())
+    sequences = []
+    for i in range(k):
+        n = int(input())
+        sequence = list(map(int, input().split()))
+        sequences.append(sequence)
+    return k, sequences
 
-    # Loop through each problem and calculate the time it takes to solve it
-    for i, t in enumerate(problems, start=1):
-        times[i] = t
+def solve(k, sequences):
+    for i in range(k):
+        for j in range(i+1, k):
+            if sequences[i][0] + sequences[j][0] == 0:
+                return i+1, 1, j+1, 1
+            for x in range(1, len(sequences[i])):
+                if sequences[i][x] + sequences[j][0] == 0:
+                    return i+1, x+1, j+1, 1
+                for y in range(1, len(sequences[j])):
+                    if sequences[i][0] + sequences[j][y] == 0:
+                        return i+1, 1, j+1, y+1
+                    if sequences[i][x] + sequences[j][y] == 0:
+                        return i+1, x+1, j+1, y+1
+    return -1, -1, -1, -1
 
-    # Loop through each drink and calculate the time it takes to solve all problems if we take that drink
-    for i, (p, x) in enumerate(drinks, start=1):
-        # Initialize a variable to store the total time it takes to solve all problems
-        total_time = 0
+def print_output(i, x, j, y):
+    if i == -1:
+        print("NO")
+    else:
+        print("YES")
+        print(i, x)
+        print(j, y)
 
-        # Loop through each problem and calculate the time it takes to solve it if we take the drink
-        for j in range(1, len(problems) + 1):
-            if j == p:
-                total_time += x
-            else:
-                total_time += times[j]
+def main():
+    k, sequences = read_input()
+    i, x, j, y = solve(k, sequences)
+    print_output(i, x, j, y)
 
-        # Print the total time it takes to solve all problems if we take the drink
-        print(total_time)
-
-# Main function
-if __name__ == "__main__":
-    # Read the number of problems and the time it takes to solve each problem from stdin
-    num_problems = int(input())
-    problems = list(map(int, input().split()))
-
-    # Read the number of drinks and the problem and time it takes to solve each problem if we take that drink from stdin
-    num_drinks = int(input())
-    drinks = [list(map(int, input().split())) for _ in range(num_drinks)]
-
-    # Solve the problem
-    solve(problems, drinks)
+if __name__ == '__main__':
+    main()
 

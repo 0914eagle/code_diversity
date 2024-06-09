@@ -1,59 +1,53 @@
 
-def solve(n, gravity, system_type, e, links):
-    # Initialize variables
-    min_distance = float('inf')
-    human_system, alien_system = None, None
+def pre_print(t):
+    output(t.value)
+    if t.left != null: pre_print(t.left)
+    if t.right != null: pre_print(t.right)
 
-    # Iterate over all possible pairs of systems
-    for i in range(n):
-        for j in range(i+1, n):
-            # Check if the systems are of different types
-            if system_type[i] != system_type[j]:
-                # Calculate the UW distance between the systems
-                distance = calculate_distance(gravity[i], gravity[j], links)
+def in_print(t):
+    if t.left != null: pre_print(t.left)
+    output(t.value)
+    if t.right != null: pre_print(t.right)
 
-                # Check if the distance is less than the minimum distance
-                if distance < min_distance:
-                    min_distance = distance
-                    human_system, alien_system = i, j
+def post_print(t):
+    if t.left != null: pre_print(t.left)
+    if t.right != null: pre_print(t.right)
+    output(t.value)
 
-    # Return the minimum UW distance and the pair of systems
-    return min_distance, (human_system, alien_system)
-
-def calculate_distance(g1, g2, links):
-    # Calculate the capacitance, potential, and inductance of the sequence
-    capacitance = g1 + g2
-    potential = g1 - g2
-    inductance = g1 * g2
-
-    # Calculate the UW distance
-    distance = abs(potential * (capacitance * capacitance - inductance))
-
-    # Return the UW distance
-    return distance
-
-def main():
-    # Read the input
-    n = int(input())
-    gravity = []
-    system_type = []
-    e = int(input())
-    links = []
-    for i in range(n):
-        g, t = map(int, input().split())
-        gravity.append(g)
-        system_type.append(t)
-    for i in range(e):
-        s1, s2 = map(int, input().split())
-        links.append((s1, s2))
-
-    # Solve the problem
-    min_distance, (human_system, alien_system) = solve(n, gravity, system_type, e, links)
-
-    # Print the output
-    print(min_distance)
-    print(human_system, alien_system)
+def find_reconstruction(pre_output, in_output, post_output):
+    # Find the possible calls to pre_print, in_print, and post_print
+    pre_calls = []
+    in_calls = []
+    post_calls = []
+    for i in range(len(pre_output)):
+        if pre_output[i] == 'P':
+            pre_calls.append(i)
+        elif in_output[i] == 'I':
+            in_calls.append(i)
+        elif post_output[i] == 'P':
+            post_calls.append(i)
+    
+    # Find the possible trees that could have generated the output
+    trees = []
+    for pre_call in pre_calls:
+        for in_call in in_calls:
+            for post_call in post_calls:
+                if pre_call < in_call and in_call < post_call:
+                    tree = [pre_output[pre_call], in_output[in_call], post_output[post_call]]
+                    trees.append(tree)
+    
+    # Find the alphabetically first tree
+    first_tree = None
+    for tree in trees:
+        if first_tree == None or tree < first_tree:
+            first_tree = tree
+    
+    return first_tree
 
 if __name__ == '__main__':
-    main()
+    pre_output = input("Preorder output: ")
+    in_output = input("Inorder output: ")
+    post_output = input("Postorder output: ")
+    reconstruction = find_reconstruction(pre_output, in_output, post_output)
+    print(reconstruction)
 

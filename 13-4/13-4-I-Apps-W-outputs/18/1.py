@@ -1,11 +1,18 @@
 
-def get_min_time(a, b, w, x, c):
-    if c <= a:
-        return 0
-    if b >= x:
-        b -= x
-    else:
-        a -= 1
-        b = w - (x - b)
-    return 1 + get_min_time(a, b, w, x, c-1)
+def get_assignment(n, m):
+    assignment = []
+    for i in range(m):
+        a = i % n + 1
+        b = (i + 1) % n + 1
+        assignment.append([a, b])
+    return assignment
+
+def main():
+    n, m = map(int, input().split())
+    assignment = get_assignment(n, m)
+    for a, b in assignment:
+        print(a, b)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,23 +1,22 @@
 
-def reconstruct_towers(box_heights):
-    # Sort the box heights in descending order
-    sorted_box_heights = sorted(box_heights, reverse=True)
+def get_shifted_string(s, n):
+    # Create a dictionary to map each character to its shifted character
+    char_map = {}
+    for i in range(26):
+        char_map[chr(i + ord('A'))] = chr((i + n) % 26 + ord('A'))
+    
+    # Use the dictionary to shift each character in the string
+    shifted_string = ""
+    for char in s:
+        shifted_string += char_map[char]
+    
+    return shifted_string
 
-    # Find the two tower heights
-    tower_heights = sorted_box_heights[-2:]
+def main():
+    n = int(input())
+    s = input()
+    print(get_shifted_string(s, n))
 
-    # Find the indices of the tower heights in the sorted box heights list
-    tower_indices = [i for i, x in enumerate(sorted_box_heights) if x in tower_heights]
-
-    # Create a list to store the tower box heights
-    tower_box_heights = []
-
-    # Loop through the tower indices and add the corresponding box heights to the tower list
-    for i in range(len(tower_indices)):
-        tower_box_heights.append(sorted_box_heights[tower_indices[i]])
-        tower_box_heights.append(sorted_box_heights[tower_indices[i] + 1])
-        tower_box_heights.append(sorted_box_heights[tower_indices[i] + 2])
-
-    # Return the tower box heights in order of decreasing height
-    return tower_box_heights
+if __name__ == '__main__':
+    main()
 

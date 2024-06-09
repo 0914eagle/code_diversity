@@ -1,18 +1,38 @@
 
-def solve(n, m):
-    mod = 1000000009
-    # Initialize a list to store the results
-    results = [0] * (n + 1)
-    results[0] = 1
+def get_max_or_value(numbers, k, x):
+    # Sort the numbers in descending order
+    numbers.sort(reverse=True)
     
-    # Iterate over each possible length of the sequence
-    for i in range(1, n + 1):
-        # Iterate over each possible starting index for the sequence
-        for j in range(m):
-            # If the sequence is not a wool sequence, add it to the results
-            if j ^ (j + i - 1) != 0:
-                results[i] += results[i - 1]
-        results[i] %= mod
+    # Initialize the maximum OR value
+    max_or_value = 0
     
-    return results[n]
+    # Loop through the numbers
+    for i in range(len(numbers)):
+        # Check if we can perform an operation
+        if k > 0:
+            # Multiply the current number by x
+            numbers[i] *= x
+            
+            # Decrement the number of operations
+            k -= 1
+            
+            # Update the maximum OR value
+            max_or_value = max(max_or_value, numbers[i])
+    
+    # Return the maximum OR value
+    return max_or_value
+
+def main():
+    # Read the input
+    n, k, x = map(int, input().split())
+    numbers = list(map(int, input().split()))
+    
+    # Get the maximum OR value
+    max_or_value = get_max_or_value(numbers, k, x)
+    
+    # Print the result
+    print(max_or_value)
+
+if __name__ == '__main__':
+    main()
 

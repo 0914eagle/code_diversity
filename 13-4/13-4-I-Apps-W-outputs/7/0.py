@@ -1,47 +1,67 @@
 
-def get_min_traps(m, x):
-    # Calculate the greatest common divisor (gcd) of x and m
-    gcd = get_gcd(x, m)
+def f1(n, m, similar):
+    # Initialize the number of ways to split the problems as 0
+    ways = 0
     
-    # If gcd is 1, then x and m are coprime, and we can use the Euclidean algorithm to find the multiplicative inverse of x modulo m
-    if gcd == 1:
-        # Find the multiplicative inverse of x modulo m using the Extended Euclidean algorithm
-        inv = get_multiplicative_inverse(x, m)
+    # Loop through each pair of similar problems
+    for i in range(m):
+        # Get the indices of the two similar problems
+        u, v = similar[i]
         
-        # If the multiplicative inverse exists, we can use it to find the minimum number of traps needed to catch the x-mouse
-        if inv != -1:
-            return inv
+        # If problem u is not used in any division, we can use it in division 1
+        if u not in division1 and u not in division2:
+            # Add problem u to division 1
+            division1.add(u)
+            # Add problem v to division 2
+            division2.add(v)
+            # Increment the number of ways to split the problems
+            ways += 1
     
-    # If gcd is not 1 or the multiplicative inverse does not exist, we cannot catch the x-mouse
-    return -1
+    # Return the number of ways to split the problems
+    return ways
 
-def get_gcd(a, b):
-    # Base case: if b is 0, the gcd is a
-    if b == 0:
-        return a
+def f2(n, m, similar):
+    # Initialize the number of ways to split the problems as 0
+    ways = 0
     
-    # Recursive case: calculate the gcd of b and the remainder of a divided by b
-    else:
-        return get_gcd(b, a % b)
+    # Loop through each pair of similar problems
+    for i in range(m):
+        # Get the indices of the two similar problems
+        u, v = similar[i]
+        
+        # If problem v is not used in any division, we can use it in division 2
+        if v not in division1 and v not in division2:
+            # Add problem u to division 1
+            division1.add(u)
+            # Add problem v to division 2
+            division2.add(v)
+            # Increment the number of ways to split the problems
+            ways += 1
+    
+    # Return the number of ways to split the problems
+    return ways
 
-def get_multiplicative_inverse(a, m):
-    # Calculate the extended Euclidean algorithm of a and m
-    g, x, y = egcd(a, m)
+def main():
+    # Read the input
+    n, m = map(int, input().split())
+    similar = []
+    for _ in range(m):
+        u, v = map(int, input().split())
+        similar.append((u, v))
     
-    # If g is 1, then x is the multiplicative inverse of a modulo m
-    if g == 1:
-        return x % m
+    # Initialize the divisions as empty sets
+    division1 = set()
+    division2 = set()
     
-    # If g is not 1, then the multiplicative inverse does not exist
-    else:
-        return -1
+    # Call the first function to count the number of ways to split the problems
+    ways1 = f1(n, m, similar)
+    
+    # Call the second function to count the number of ways to split the problems
+    ways2 = f2(n, m, similar)
+    
+    # Print the total number of ways to split the problems
+    print(ways1 + ways2)
 
-def egcd(a, b):
-    # Base case: if b is 0, the gcd is a and the multiplicative inverse is 1
-    if b == 0:
-        return a, 1, 0
-    
-    # Recursive case: calculate the extended Euclidean algorithm of b and the remainder of a divided by b
-    g, y, x = egcd(b, a % b)
-    return g, x, y - (a // b) * x
+if __name__ == '__main__':
+    main()
 

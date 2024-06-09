@@ -1,18 +1,36 @@
 
-import sys
+def get_possible_values(dice_values, sum_of_values):
+    possible_values = []
+    for i in range(1, dice_values+1):
+        if i > sum_of_values:
+            break
+        possible_values.append(i)
+    return possible_values
 
-def get_contiguous_subsequences(arr, k):
-    n = len(arr)
-    count = 0
+def get_impossible_values(dice_values, sum_of_values):
+    impossible_values = []
+    for i in range(1, dice_values+1):
+        if i > sum_of_values:
+            break
+        impossible_values.append(sum_of_values-i+1)
+    return impossible_values
+
+def get_guaranteed_values(dice_values, sum_of_values):
+    guaranteed_values = []
+    for i in range(1, dice_values+1):
+        if i > sum_of_values:
+            break
+        guaranteed_values.append(sum_of_values-i+1)
+    return guaranteed_values
+
+def main():
+    n, sum_of_values = map(int, input().split())
+    dice_values = list(map(int, input().split()))
+    guaranteed_values = []
     for i in range(n):
-        curr_sum = 0
-        for j in range(i, n):
-            curr_sum += arr[j]
-            if curr_sum >= k:
-                count += 1
-    return count
+        guaranteed_values.append(get_guaranteed_values(dice_values[i], sum_of_values))
+    print(*guaranteed_values)
 
-n, k = map(int, input().split())
-arr = list(map(int, input().split()))
-print(get_contiguous_subsequences(arr, k))
+if __name__ == '__main__':
+    main()
 

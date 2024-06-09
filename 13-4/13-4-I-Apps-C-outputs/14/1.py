@@ -1,39 +1,62 @@
 
-import sys
+def get_election_results(n_candidates, n_seats, n_citizens, n_voted, votes):
+    # Initialize the election results dictionary
+    election_results = {}
 
-def get_input():
-    n, e = map(int, input().split())
-    roads = []
-    for i in range(e):
-        a, b = map(int, input().split())
-        roads.append((a, b))
-    return n, e, roads
+    # Iterate over the votes and update the election results dictionary
+    for i in range(n_voted):
+        # Get the current vote
+        vote = votes[i]
 
-def solve(n, e, roads):
-    # Initialize the chains array with 0s
-    chains = [0] * (n + 1)
-    
-    # Loop through each road
-    for i in range(e):
-        # Get the two cities connected by the road
-        a, b = roads[i]
-        
-        # If the first chain has not been assigned to either city, assign it to the first city
-        if chains[a] == 0:
-            chains[a] = 1
-        
-        # If the second chain has not been assigned to either city, assign it to the second city
-        if chains[b] == 0:
-            chains[b] = 2
-        
-        # If both chains have been assigned to the cities, check if they are the same
-        if chains[a] != chains[b]:
-            # If they are not the same, return "0" as the solution is not unique
-            return "0"
-    
-    # If we reach this point, the solution is unique, so return the chains array
-    return "".join(str(chain) for chain in chains[1:])
+        # Check if the vote is already in the election results dictionary
+        if vote not in election_results:
+            # If not, add it to the dictionary with a count of 1
+            election_results[vote] = 1
+        else:
+            # If it is, increment the count by 1
+            election_results[vote] += 1
 
-n, e, roads = get_input()
-print(solve(n, e, roads))
+    # Sort the election results dictionary by value in descending order
+    sorted_election_results = sorted(election_results.items(), key=lambda x: x[1], reverse=True)
+
+    # Initialize the elected candidates list
+    elected_candidates = []
+
+    # Iterate over the sorted election results and add the top k candidates to the elected candidates list
+    for i in range(n_seats):
+        elected_candidates.append(sorted_election_results[i][0])
+
+    # Initialize the remaining candidates list
+    remaining_candidates = []
+
+    # Iterate over the sorted election results and add the remaining candidates to the remaining candidates list
+    for i in range(n_seats, n_candidates):
+        remaining_candidates.append(sorted_election_results[i][0])
+
+    # Initialize the output list
+    output = []
+
+    # Iterate over the elected candidates and set their output value to 1
+    for candidate in elected_candidates:
+        output.append(1)
+
+    # Iterate over the remaining candidates and set their output value to 2 if they are in the elected candidates list, otherwise set it to 3
+    for candidate in remaining_candidates:
+        if candidate in elected_candidates:
+            output.append(2)
+        else:
+            output.append(3)
+
+    return output
+
+def main():
+    # Read the input from stdin
+    n_candidates, n_seats, n_citizens, n_voted = map(int, input().split())
+    votes = list(map(int, input().split()))
+
+    # Call the get_election_results function and print the output
+    print(*get_election_results(n_candidates, n_seats, n_citizens, n_voted, votes))
+
+if __name__ == '__main__':
+    main()
 

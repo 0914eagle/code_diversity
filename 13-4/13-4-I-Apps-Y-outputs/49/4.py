@@ -1,36 +1,25 @@
 
-x, y = input().split()
+def get_input():
+    N, M = map(int, input().split())
+    roads = []
+    for _ in range(M):
+        a, b = map(int, input().split())
+        roads.append((a, b))
+    return N, M, roads
 
-if x == 'A':
-    x_value = 10
-elif x == 'B':
-    x_value = 11
-elif x == 'C':
-    x_value = 12
-elif x == 'D':
-    x_value = 13
-elif x == 'E':
-    x_value = 14
-else:
-    x_value = 15
+def count_roads(N, roads):
+    roads_per_city = [0] * (N + 1)
+    for a, b in roads:
+        roads_per_city[a] += 1
+        roads_per_city[b] += 1
+    return roads_per_city[1:]
 
-if y == 'A':
-    y_value = 10
-elif y == 'B':
-    y_value = 11
-elif y == 'C':
-    y_value = 12
-elif y == 'D':
-    y_value = 13
-elif y == 'E':
-    y_value = 14
-else:
-    y_value = 15
+def main():
+    N, M, roads = get_input()
+    roads_per_city = count_roads(N, roads)
+    for i in range(1, N + 1):
+        print(roads_per_city[i])
 
-if x_value < y_value:
-    print('<')
-elif x_value > y_value:
-    print('>')
-else:
-    print('=')
+if __name__ == '__main__':
+    main()
 

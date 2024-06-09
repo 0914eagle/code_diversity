@@ -1,28 +1,31 @@
 
-def solve(r, s, m, d, n, b, incompatible_dishes):
-    # Initialize a set to store the different dinner experiences
-    dinner_experiences = set()
+def get_resistors(a, b):
+    # Initialize the number of resistors needed
+    num_resistors = 0
+    
+    # While the resistance is not equal to the target resistance
+    while a / b != 1:
+        # If the resistance is not a whole number
+        if a % b != 0:
+            # Increment the number of resistors needed
+            num_resistors += 1
+            # Divide the resistance by the number of resistors
+            a = a // b
+        # If the resistance is a whole number
+        else:
+            # Break out of the loop
+            break
+    
+    # Return the number of resistors needed
+    return num_resistors
 
-    # Iterate over each starter, main, and dessert dish
-    for dish in starter_dishes + main_dishes + dessert_dishes:
-        # Get the ingredients for the current dish
-        ingredients = dish[1:]
+def main():
+    # Read the input
+    a, b = map(int, input().split())
+    
+    # Call the get_resistors function and print the result
+    print(get_resistors(a, b))
 
-        # Initialize a set to store the different brands of ingredients
-        brands = set()
-
-        # Iterate over each ingredient in the current dish
-        for ingredient in ingredients:
-            # Add the brand of the current ingredient to the set of brands
-            brands.add(ingredient[0])
-
-        # Add the current dish and its brands to the set of dinner experiences
-        dinner_experiences.add((dish, brands))
-
-    # If the number of dinner experiences is at most 10^18, return the number of dinner experiences
-    if len(dinner_experiences) <= 10**18:
-        return len(dinner_experiences)
-    # Otherwise, return "too many"
-    else:
-        return "too many"
+if __name__ == '__main__':
+    main()
 

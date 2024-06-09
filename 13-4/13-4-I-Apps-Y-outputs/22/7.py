@@ -1,15 +1,17 @@
 
-def get_maximum_sum(A, B, C, K):
-    # Initialize a list to store the values of the cards
-    cards = [1] * A + [0] * B + [-1] * C
-    # Sort the list in descending order
-    cards.sort(reverse=True)
-    # Initialize a variable to store the sum
-    sum = 0
-    # Iterate through the first K elements of the list
-    for i in range(K):
-        # Add the value of the current card to the sum
-        sum += cards[i]
-    # Return the sum
-    return sum
+def get_final_value(symbols):
+    value = 0
+    for symbol in symbols:
+        if symbol == "+":
+            value += 1
+        else:
+            value -= 1
+    return value
+
+def main():
+    symbols = input()
+    print(get_final_value(symbols))
+
+if __name__ == '__main__':
+    main()
 

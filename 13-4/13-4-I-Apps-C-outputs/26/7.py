@@ -1,52 +1,55 @@
 
-def get_minimum_changes(grid, commands):
-    # Initialize variables
-    start_row, start_col = None, None
-    goal_row, goal_col = None, None
-    obstacles = set()
+def get_energy_needed(cliff, start_points):
+    # Initialize a dictionary to store the minimum energy needed to reach each point
+    min_energy = {}
+    for point in cliff:
+        min_energy[point] = float('inf')
+    for start_point in start_points:
+        min_energy[start_point] = 0
+    
+    # Loop through the points in the cliff and calculate the minimum energy needed to reach each point
+    for _ in range(len(cliff)):
+        for point in cliff:
+            if point not in min_energy:
+                continue
+            for neighbor in get_neighbors(point, cliff):
+                energy = min_energy[point] + cliff[neighbor]
+                if energy < min_energy[neighbor]:
+                    min_energy[neighbor] = energy
+    
+    # Return the minimum energy needed to reach the bottom of the cliff
+    return min_energy[cliff[-1]]
 
-    # Parse the grid and find the start, goal, and obstacles
-    for row, line in enumerate(grid):
-        for col, char in enumerate(line):
-            if char == "S":
-                start_row, start_col = row, col
-            elif char == "G":
-                goal_row, goal_col = row, col
-            elif char == "#":
-                obstacles.add((row, col))
+def get_neighbors(point, cliff):
+    # Get the row and column of the point
+    row, col = point
+    
+    # Get the neighbors of the point
+    neighbors = []
+    if row > 0:
+        neighbors.append((row - 1, col))
+    if row < len(cliff) - 1:
+        neighbors.append((row + 1, col))
+    if col > 0:
+        neighbors.append((row, col - 1))
+    if col < len(cliff[0]) - 1:
+        neighbors.append((row, col + 1))
+    
+    # Return the neighbors that are in the cliff
+    return [neighbor for neighbor in neighbors if neighbor in cliff]
 
-    # Initialize the current position and commands
-    current_row, current_col = start_row, start_col
-    current_commands = commands
+def main():
+    # Read the input
+    R, C = map(int, input().split())
+    cliff = [list(map(int, input().split())) for _ in range(R)]
+    start_points = list(input())
+    
+    # Calculate the minimum energy needed to complete the climb
+    min_energy = get_energy_needed(cliff, start_points)
+    
+    # Print the minimum energy needed
+    print(min_energy)
 
-    # Initialize the minimum number of changes
-    min_changes = 0
-
-    # Loop through the commands and update the current position
-    for command in current_commands:
-        # If the command is L, move left
-        if command == "L":
-            current_col -= 1
-        # If the command is R, move right
-        elif command == "R":
-            current_col += 1
-        # If the command is U, move up
-        elif command == "U":
-            current_row -= 1
-        # If the command is D, move down
-        elif command == "D":
-            current_row += 1
-
-        # If the current position is an obstacle, skip the command
-        if (current_row, current_col) in obstacles:
-            continue
-        # If the current position is the goal, break the loop
-        if current_row == goal_row and current_col == goal_col:
-            break
-
-        # Increment the minimum number of changes
-        min_changes += 1
-
-    # Return the minimum number of changes
-    return min_changes
+if __name__ == '__main__':
+    main()
 

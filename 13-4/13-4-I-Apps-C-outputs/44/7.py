@@ -1,33 +1,32 @@
 
-def get_max_times(n, buttons):
-    # Initialize a list to store the results
-    results = []
+def find_sub_rectangle(n, m, x, y, a, b):
+    # Initialize the sub-rectangle with the given point (x, y)
+    x1, y1, x2, y2 = x, y, x, y
     
-    # Iterate over each possible combination of buttons
-    for combination in itertools.permutations(range(n)):
-        # Check if the current combination is valid
-        if is_valid_combination(combination, buttons):
-            # If it is valid, add it to the results list
-            results.append(list(combination))
+    # Iterate through the points inside the sub-rectangle
+    for i in range(x1, x2+1):
+        for j in range(y1, y2+1):
+            # If the point is outside the rectangle, update the sub-rectangle
+            if i < x1 or i > x2 or j < y1 or j > y2:
+                x1 = min(x1, i)
+                y1 = min(y1, j)
+                x2 = max(x2, i)
+                y2 = max(y2, j)
     
-    # Return the maximum number of times and the corresponding combinations
-    return len(results), results
+    # Check if the length-width ratio is correct
+    if x2-x1 != a*y2-y1:
+        return None
+    
+    return x1, y1, x2, y2
 
-def is_valid_combination(combination, buttons):
-    # Check if the current combination is valid
-    for i in range(len(combination)):
-        for j in range(i+1, len(combination)):
-            if combination[i] == combination[j] and buttons[i][j] == 'N':
-                return False
-    return True
+def main():
+    n, m, x, y, a, b = map(int, input().split())
+    sub_rectangle = find_sub_rectangle(n, m, x, y, a, b)
+    if sub_rectangle is None:
+        print("No sub-rectangle found")
+    else:
+        print(*sub_rectangle)
 
-n = int(input())
-buttons = []
-for i in range(n):
-    buttons.append(input())
-
-max_times, combinations = get_max_times(n, buttons)
-print(max_times)
-for combination in combinations:
-    print(*combination)
+if __name__ == '__main__':
+    main()
 

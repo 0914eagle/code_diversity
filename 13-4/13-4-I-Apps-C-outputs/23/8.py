@@ -1,36 +1,42 @@
 
-def can_zax_and_xaz_coexist(m, n, resources):
-    # Initialize a set to store the islands that the Zax have occupied
-    zax_islands = set()
-    # Initialize a set to store the islands that the Xaz have occupied
-    xaz_islands = set()
-    # Initialize a set to store the natural resources that the Zax have
-    zax_resources = set()
-    # Initialize a set to store the natural resources that the Xaz have
-    xaz_resources = set()
+def is_possible(N, P, X):
+    # Initialize a dictionary to store the color and weight of each vertex
+    colors = {}
+    weights = {}
+    
+    # Set the color and weight of the root vertex (Vertex 1)
+    colors[1] = "white"
+    weights[1] = X[1]
+    
+    # Iterate through the remaining vertices (Vertex 2 to N)
+    for i in range(2, N+1):
+        # Get the parent of the current vertex
+        parent = P[i-1]
+        
+        # If the parent has the same color as the current vertex, set the color of the current vertex to the opposite color
+        if colors[parent] == colors[i]:
+            colors[i] = "white" if colors[i] == "black" else "black"
+        
+        # Set the weight of the current vertex to the difference between the weight of its parent and the weight of the current vertex
+        weights[i] = weights[parent] - X[i]
+    
+    # Check if the weight of all vertices is non-negative
+    for i in range(1, N+1):
+        if weights[i] < 0:
+            return False
+    
+    return True
 
-    for i in range(m):
-        # Get the natural resources present on the current island
-        island_resources = resources[i]
-        # If the island has no resources, skip it
-        if not island_resources:
-            continue
-        # If the island has resources, add it to the appropriate set
-        if island_resources[0] in zax_resources:
-            xaz_islands.add(i)
-        else:
-            zax_islands.add(i)
-            zax_resources.add(island_resources[0])
+def main():
+    N = int(input())
+    P = list(map(int, input().split()))
+    X = list(map(int, input().split()))
+    
+    if is_possible(N, P, X):
+        print("POSSIBLE")
+    else:
+        print("IMPOSSIBLE")
 
-    # Check if the Zax have access to all natural resources
-    if len(zax_resources) == n:
-        return "YES"
-    # Check if the Xaz have access to all natural resources
-    if len(xaz_resources) == n:
-        return "YES"
-    # Check if the Zax and Xaz have occupied the same island
-    if len(zax_islands & xaz_islands) > 0:
-        return "NO"
-    # Otherwise, the Zax and Xaz can coexist
-    return "YES"
+if __name__ == '__main__':
+    main()
 

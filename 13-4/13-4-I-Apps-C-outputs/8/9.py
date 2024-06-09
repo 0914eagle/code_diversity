@@ -1,41 +1,62 @@
 
-def solve(flights, additional_flights):
-    # Initialize a dictionary to store the cost of each flight
-    flight_costs = {}
-    for flight in flights:
-        cost = flight[2]
-        flight_costs[(flight[0], flight[1])] = cost
-        flight_costs[(flight[1], flight[0])] = cost
+def f1(n, A, B):
+    # Initialize a graph with n nodes and no edges
+    graph = [[] for _ in range(n)]
 
-    # Initialize a set to store the airports that have been visited
-    visited_airports = set()
+    # Add edges to the graph based on the input
+    for i in range(n):
+        l, r, t = map(int, input().split())
+        if l != -1:
+            graph[i].append(l)
+        if r != -1:
+            graph[i].append(r)
 
-    # Initialize a list to store the flights that have been taken
-    taken_flights = []
+    # Find the shortest path from A to B
+    visited = [False] * n
+    queue = [(A, 0)]
+    while queue:
+        node, distance = queue.pop(0)
+        if node == B:
+            return distance
+        if visited[node]:
+            continue
+        visited[node] = True
+        for neighbor in graph[node]:
+            queue.append((neighbor, distance + 1))
 
-    # Loop through the additional flights and take the flights that are not in the list of flights to review
-    for flight in additional_flights:
-        if (flight[0], flight[1]) not in flight_costs and (flight[1], flight[0]) not in flight_costs:
-            taken_flights.append(flight)
-            visited_airports.add(flight[0])
-            visited_airports.add(flight[1])
+    # If no path exists, return -1
+    return -1
 
-    # Loop through the flights to review and take the flights that are not in the list of additional flights
-    for flight in flights:
-        if (flight[0], flight[1]) not in flight_costs and (flight[1], flight[0]) not in flight_costs:
-            taken_flights.append(flight)
-            visited_airports.add(flight[0])
-            visited_airports.add(flight[1])
+def f2(n, A, B):
+    # Initialize a graph with n nodes and no edges
+    graph = [[] for _ in range(n)]
 
-    # Loop through the list of airports and take the flights that connect them to Stockholm
-    for airport in visited_airports:
-        if (airport, 1) not in flight_costs and (1, airport) not in flight_costs:
-            taken_flights.append((airport, 1, flight_costs[(airport, 1)]))
+    # Add edges to the graph based on the input
+    for i in range(n):
+        l, r, t = map(int, input().split())
+        if l != -1:
+            graph[i].append(l)
+        if r != -1:
+            graph[i].append(r)
 
-    # Calculate the total cost of the flights
-    total_cost = 0
-    for flight in taken_flights:
-        total_cost += flight[2]
+    # Find the shortest path from A to B
+    visited = [False] * n
+    queue = [(A, 0)]
+    while queue:
+        node, distance = queue.pop(0)
+        if node == B:
+            return distance
+        if visited[node]:
+            continue
+        visited[node] = True
+        for neighbor in graph[node]:
+            queue.append((neighbor, distance + 1))
 
-    return total_cost
+    # If no path exists, return -1
+    return -1
+
+if __name__ == '__main__':
+    n, A, B = map(int, input().split())
+    print(f1(n, A, B))
+    print(f2(n, A, B))
 

@@ -1,27 +1,39 @@
 
-def is_multigram(word):
-    if len(word) <= 2:
-        return -1
+def get_min_distance(N, K, x_coords):
+    # Initialize the minimum distance to infinity
+    min_distance = float('inf')
     
-    # Check if the word is a palindrome
-    if word == word[::-1]:
-        return -1
+    # Loop through all possible combinations of robots
+    for i in range(2**N):
+        # Convert the binary representation of i to a list of booleans
+        robot_types = [bool(i & (1 << j)) for j in range(N)]
+        
+        # Initialize the total distance covered to 0
+        total_distance = 0
+        
+        # Loop through each robot and calculate the distance covered
+        for j in range(N):
+            # If the j-th robot is type A, calculate the distance from (0, j) to (x_j, j)
+            if robot_types[j]:
+                total_distance += abs(x_coords[j] - j)
+            # If the j-th robot is type B, calculate the distance from (K, j) to (x_j, j)
+            else:
+                total_distance += abs(x_coords[j] - K - j)
+        
+        # Update the minimum distance if the total distance covered is less than the current minimum distance
+        min_distance = min(min_distance, total_distance)
     
-    # Check if the word can be divided into two halves
-    half = len(word) // 2
-    if word[:half] == word[half:][::-1]:
-        return word[:half]
+    # Return the minimum distance
+    return min_distance
+
+def main():
+    # Read the input data from stdin
+    N, K = map(int, input().split())
+    x_coords = list(map(int, input().split()))
     
-    # Check if the word can be divided into three halves
-    third = len(word) // 3
-    if word[:third] == word[third:][::-1] == word[2*third:][::-1]:
-        return word[:third]
-    
-    # Check if the word can be divided into four halves
-    fourth = len(word) // 4
-    if word[:fourth] == word[fourth:][::-1] == word[2*fourth:][::-1] == word[3*fourth:][::-1]:
-        return word[:fourth]
-    
-    # If none of the above conditions are met, the word is not a multigram
-    return -1
+    # Call the get_min_distance function and print the result
+    print(get_min_distance(N, K, x_coords))
+
+if __name__ == '__main__':
+    main()
 

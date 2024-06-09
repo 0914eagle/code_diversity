@@ -1,34 +1,20 @@
 
-import sys
+def get_substrings(s):
+    substrings = []
+    for i in range(len(s)):
+        for j in range(i+1, len(s)+1):
+            substring = s[i:j]
+            if substring not in substrings:
+                substrings.append(substring)
+    return substrings
 
-def get_perket(ingredients):
-    # Sort the ingredients by their sourness in descending order
-    ingredients.sort(key=lambda x: x[0], reverse=True)
-    
-    # Initialize the sourness and bitterness sums to 0
-    sourness_sum = 0
-    bitterness_sum = 0
-    
-    # Loop through the ingredients and calculate the sourness and bitterness sums
-    for ingredient in ingredients:
-        sourness_sum += ingredient[0]
-        bitterness_sum += ingredient[1]
-    
-    # Calculate the absolute difference between the sourness and bitterness sums
-    difference = abs(sourness_sum - bitterness_sum)
-    
-    # Return the smallest possible difference
-    return difference
+def get_kth_lexicographically_smallest_substring(s, k):
+    substrings = get_substrings(s)
+    substrings.sort()
+    return substrings[k-1]
 
-if __name__ == "__main__":
-    # Read the input data from stdin
-    ingredients = []
-    for line in sys.stdin:
-        ingredients.append(list(map(int, line.strip().split())))
-    
-    # Get the smallest possible difference between sourness and bitterness
-    difference = get_perket(ingredients)
-    
-    # Print the result
-    print(difference)
+if __name__ == '__main__':
+    s = input()
+    k = int(input())
+    print(get_kth_lexicographically_smallest_substring(s, k))
 

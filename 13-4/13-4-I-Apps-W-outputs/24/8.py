@@ -1,38 +1,31 @@
 
-import sys
+def get_possible_values(dice_values, sum_of_values):
+    possible_values = []
+    for i in range(1, dice_values+1):
+        if i > sum_of_values:
+            break
+        possible_values.append(i)
+    return possible_values
 
-def solve():
-    N, K = map(int, input().split())
-    A = list(map(int, input().split()))
+def get_impossible_values(dice_values, sum_of_values):
+    impossible_values = []
+    for i in range(1, dice_values+1):
+        if i > sum_of_values:
+            break
+        impossible_values.append(sum_of_values-i+1)
+    return impossible_values
 
-    # Initialize the prefix sum array
-    prefix_sum = [0] * (N + 1)
-    for i in range(1, N + 1):
-        prefix_sum[i] = prefix_sum[i - 1] + A[i - 1]
-
-    # Initialize the answer
-    count = 0
-
-    # Iterate through the prefix sum array
-    for i in range(N):
-        # Find the first index j such that prefix_sum[j] >= K
-        j = bisect_left(prefix_sum, K, i, N)
-
-        # If j is not N, then we have found a contiguous subsequence that satisfies the condition
-        if j != N:
-            count += 1
-
-    return count
-
-def bisect_left(arr, x, lo, hi):
-    while lo < hi:
-        mid = (lo + hi) // 2
-        if arr[mid] < x:
-            lo = mid + 1
-        else:
-            hi = mid
-    return lo
+def main():
+    n, sum_of_values = map(int, input().split())
+    dice_values = [int(input()) for i in range(n)]
+    possible_values = []
+    for i in range(n):
+        possible_values.append(get_possible_values(dice_values[i], sum_of_values))
+    impossible_values = []
+    for i in range(n):
+        impossible_values.append(get_impossible_values(dice_values[i], sum_of_values))
+    print(*[len(possible_values[i]) for i in range(n)], sep=' ')
 
 if __name__ == '__main__':
-    print(solve())
+    main()
 

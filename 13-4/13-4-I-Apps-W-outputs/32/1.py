@@ -1,29 +1,30 @@
 
-import sys
+def get_graph(n, f, w):
+    graph = {}
+    for i in range(n):
+        graph[i] = [f[i], w[i]]
+    return graph
 
-def get_gis(g):
-    gis = []
-    for i in range(len(g)):
-        if i == 0:
-            gis.append(g[i])
-        else:
-            for j in range(i, len(g)):
-                if g[j] > g[i-1]:
-                    gis.append(g[j])
-                    break
-    return gis
+def get_path(graph, k):
+    s = 0
+    m = float('inf')
+    for i in range(k):
+        s += graph[i][1]
+        m = min(m, graph[i][1])
+    return [s, m]
 
-def count_permutations(n, gis):
-    mod = 1000000007
-    dp = [1] * (n+1)
-    for i in range(1, len(gis)):
-        for j in range(gis[i-1], n+1):
-            dp[j] += dp[j-1]
-            dp[j] %= mod
-    return dp[n]
+def solve(n, k, f, w):
+    graph = get_graph(n, f, w)
+    result = []
+    for i in range(n):
+        result.append(get_path(graph[i], k))
+    return result
 
-n, l = map(int, input().split())
-g = list(map(int, input().split()))
-gis = get_gis(g)
-print(count_permutations(n, gis))
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    f = list(map(int, input().split()))
+    w = list(map(int, input().split()))
+    result = solve(n, k, f, w)
+    for i in range(n):
+        print(result[i][0], result[i][1])
 
