@@ -1,0 +1,27 @@
+
+from typing import List
+
+def minPath(grid: List[List[int]], k: int) -> List[int]:
+    
+    # Initialize the grid with the given values
+    grid = [[grid[i][j] for j in range(len(grid[i]))] for i in range(len(grid))]
+    
+    # Initialize the minimum path with the first value
+    min_path = [grid[0][0]]
+    
+    # Loop through the remaining cells
+    for i in range(1, k):
+        # Find the minimum value in the current row
+        min_value = min(grid[i % len(grid)])
+        
+        # Add the minimum value to the path
+        min_path.append(min_value)
+        
+        # Update the grid by removing the minimum value
+        for j in range(len(grid[i % len(grid)])):
+            if grid[i % len(grid)][j] == min_value:
+                grid[i % len(grid)][j] = None
+                break
+    
+    return min_path
+

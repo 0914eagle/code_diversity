@@ -1,0 +1,18 @@
+
+import math
+
+def solve(n, s, locations):
+    # Calculate the total population of the locations
+    total_population = sum(location[2] for location in locations)
+
+    # Check if the total population is greater than the required population for a megacity
+    if total_population < s:
+        return -1
+
+    # Calculate the minimum radius needed to include all locations within the circle
+    radius = 0
+    for location in locations:
+        radius = max(radius, math.sqrt(location[0]**2 + location[1]**2))
+
+    return radius
+
