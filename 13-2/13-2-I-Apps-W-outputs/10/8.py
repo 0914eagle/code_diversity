@@ -1,7 +1,8 @@
 
-def solve(n, m):
-    result = 0
-    for i in range(n, m+1):
-        result += i % 1000000007
-    return result % 1000000007
+def max_vk(s):
+    count = 0
+    for i in range(len(s) - 1):
+        if s[i] == "V" and s[i + 1] == "K":
+            count += 1
+    return count
 

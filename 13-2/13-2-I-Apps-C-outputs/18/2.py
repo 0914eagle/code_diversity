@@ -1,37 +1,23 @@
 
-import sys
+n, k = map(int, input().split())
+teams = [list(map(int, input().split())) for _ in range(n)]
 
-def solve(n, m, hints):
-    # Initialize the answer sequence with all "false" answers
-    answer_sequence = [False] * n
+# Check if any team knows all problems
+if any(all(team) for team in teams):
+    print("NO")
+    exit()
 
-    # Iterate through the hints and update the answer sequence accordingly
-    for hint in hints:
-        l, r, same = hint
-        for i in range(l, r + 1):
-            if same == "same":
-                answer_sequence[i] = answer_sequence[l]
-            else:
-                answer_sequence[i] = not answer_sequence[l]
+# Check if any team knows at most half of the problems
+if any(sum(team) > n // 2 for team in teams):
+    print("NO")
+    exit()
 
-    # Count the number of different answer sequences
-    answer_sequences = set()
-    for i in range(2**n):
-        answer_sequence = []
-        for j in range(n):
-            if i & (1 << j):
-                answer_sequence.append(True)
-            else:
-                answer_sequence.append(False)
-        answer_sequences.add(tuple(answer_sequence))
+# Check if any two teams know the same problem
+for i in range(n):
+    for j in range(i + 1, n):
+        if teams[i][j] == 1 and teams[j][i] == 1:
+            print("NO")
+            exit()
 
-    return len(answer_sequences) % (10**9 + 7)
-
-if __name__ == '__main__':
-    n, m = map(int, input().split())
-    hints = []
-    for _ in range(m):
-        l, r, same = input().split()
-        hints.append((int(l), int(r), same))
-    print(solve(n, m, hints))
+print("YES")
 

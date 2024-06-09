@@ -1,26 +1,39 @@
 
-def solve(N, P, bad_pairs):
-    # Initialize a set to store the used ingredients
-    used_ingredients = set()
-    # Initialize a list to store the drinks
-    drinks = []
-    # Loop through each bad pair of ingredients
-    for a, b in bad_pairs:
-        # If both ingredients are already used, remove them from the used ingredients set
-        if a in used_ingredients and b in used_ingredients:
-            used_ingredients.remove(a)
-            used_ingredients.remove(b)
-    # Loop through each ingredient
-    for i in range(1, N + 1):
-        # If the ingredient is not used, add it to the used ingredients set
-        if i not in used_ingredients:
-            # Add the ingredient to the drink
-            drinks.append(i)
-            # Add the ingredient to the used ingredients set
-            used_ingredients.add(i)
-            # If the number of drinks is equal to the number of ingredients, return the number of nights
-            if len(drinks) == N:
-                return len(drinks)
-    # If all ingredients are used and the number of drinks is less than the number of ingredients, return 0
-    return 0
+def solve(N, program, grid):
+    # Initialize the robot's location and trail
+    location = (N-1, N-1)
+    trail = [location]
+
+    # Loop through the program
+    for char in program:
+        # Move the robot in the current direction
+        if char == "<":
+            location = (location[0]-1, location[1])
+        elif char == ">":
+            location = (location[0]+1, location[1])
+        elif char == "^":
+            location = (location[0], location[1]-1)
+        elif char == "v":
+            location = (location[0], location[1]+1)
+
+        # Check if the new location is passable
+        if grid[location[0]][location[1]] == ".":
+            # Add the new location to the trail
+            trail.append(location)
+        else:
+            # Skip the movement if the new location is impassable
+            continue
+
+    # Check if the trail is of finite length
+    if len(trail) < N*N:
+        return 1
+
+    # Find the smallest integer X such that the suffix of the trail will be a repetition of a continuous subsequence of the trail of length exactly X
+    X = 1
+    while True:
+        if trail[:X] == trail[len(trail)-X:]:
+            break
+        X += 1
+
+    return X
 

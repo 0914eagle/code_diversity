@@ -1,19 +1,32 @@
 
-def get_lexicographically_min_coloring(n, m):
-    # Initialize the coloring matrix
-    coloring = [["" for _ in range(m)] for _ in range(n)]
-    
-    # Fill the first row with the lexicographically minimum coloring
+import sys
+import math
+
+def solve(n, m, s, t):
+    # Initialize the probability of reaching room N from each room
+    prob = [0] * (n + 1)
+    prob[n] = 1
+
+    # Loop through all the passages
     for i in range(m):
-        coloring[0][i] = "A"
-    
-    # Fill the remaining rows
-    for i in range(1, n):
-        for j in range(m):
-            if j == 0:
-                coloring[i][j] = chr(ord(coloring[i-1][j]) + 1)
-            else:
-                coloring[i][j] = coloring[i-1][j]
-    
-    return ["".join(row) for row in coloring]
+        # Get the source and destination of the passage
+        source, destination = s[i] - 1, t[i] - 1
+
+        # Update the probability of reaching room N from the source room
+        prob[source] += prob[destination] / 2
+
+        # Update the probability of reaching room N from the destination room
+        prob[destination] += prob[source] / 2
+
+    # Return the expected number of passages taken to reach room N
+    return sum(prob[1:n])
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    s, t = [], []
+    for i in range(m):
+        s_i, t_i = map(int, input().split())
+        s.append(s_i)
+        t.append(t_i)
+    print(solve(n, m, s, t))
 

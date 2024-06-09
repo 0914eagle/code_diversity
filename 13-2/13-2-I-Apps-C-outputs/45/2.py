@@ -1,35 +1,27 @@
 
-def get_identical_rooms(maze):
-    # Initialize a dictionary to store the rooms and their connections
-    rooms = {}
-    for i, room in enumerate(maze):
-        rooms[i] = set(room[1:])
+def get_max_protected_rooms(num_rooms, num_doors, doors):
+    # Initialize a graph with the given number of rooms
+    graph = [[] for _ in range(num_rooms)]
 
-    # Initialize a set to store the effectively identical rooms
-    identical_rooms = set()
+    # Add edges to the graph based on the given doors
+    for u, v in doors:
+        if u != -1:
+            graph[u].append(v)
+        if v != -1:
+            graph[v].append(u)
 
-    # Loop through each room and its connections
-    for room, connections in rooms.items():
-        # If the room has already been marked as effectively identical, skip it
-        if room in identical_rooms:
-            continue
+    # Find the door that connects the most rooms to the outside of the building
+    max_protected_rooms = 0
+    for u in range(num_rooms):
+        if u != -1:
+            protected_rooms = 0
+            queue = [u]
+            while queue:
+                node = queue.pop(0)
+                if node != -1:
+                    protected_rooms += 1
+                    queue.extend(graph[node])
+            max_protected_rooms = max(max_protected_rooms, protected_rooms)
 
-        # Initialize a set to store the rooms that are effectively identical to the current room
-        identical_rooms_set = set([room])
-
-        # Loop through each connection and check if it is effectively identical to the current room
-        for connection in connections:
-            # If the connection is not in the dictionary or it is already marked as effectively identical, skip it
-            if connection not in rooms or connection in identical_rooms:
-                continue
-
-            # Check if the connection is effectively identical to the current room
-            if rooms[connection] == connections:
-                identical_rooms_set.add(connection)
-
-        # If the set of effectively identical rooms is not empty, add it to the overall set
-        if identical_rooms_set:
-            identical_rooms.update(identical_rooms_set)
-
-    return identical_rooms
+    return max_protected_rooms
 

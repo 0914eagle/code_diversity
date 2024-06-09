@@ -1,23 +1,37 @@
 
-def solve(n, k):
-    if k < 1 or k > n:
-        return "NO"
-    
-    MS = [i for i in range(1, n+1)]
-    ME = [i for i in range(1, n+1)]
-    VS = [i for i in range(1, n+1)]
-    VE = [i for i in range(1, n+1)]
-    
-    for i in range(k):
-        MS[i], ME[i] = i+1, i+2
-        VS[i], VE[i] = i+1, i+2
-    
-    for i in range(k):
-        for j in range(i+1, k):
-            if MS[i] < MS[j] and ME[i] < ME[j]:
-                return "NO"
-            if VS[i] < VS[j] and VE[i] < VE[j]:
-                return "NO"
-    
-    return "YES\n" + "\n".join([f"{MS[i]} {ME[i]}" for i in range(k)]) + "\n" + "\n".join([f"{VS[i]} {VE[i]}" for i in range(k)])
+import math
+
+def solve(n, m, neighbors, s, t):
+    # Initialize the probability of meeting at each station
+    probabilities = [0] * n
+    probabilities[s] = 1
+    probabilities[t] = 1
+
+    # Loop through each minute
+    for minute in range(1, 60):
+        # Find the stations that are neighbors to the current stations
+        current_neighbors = set()
+        for u, v in neighbors:
+            if u == s or v == s:
+                current_neighbors.add(v)
+            if u == t or v == t:
+                current_neighbors.add(u)
+
+        # Update the probabilities of meeting at each station
+        for i in range(n):
+            if i not in current_neighbors:
+                probabilities[i] = 0
+            else:
+                probabilities[i] = (probabilities[i] + probabilities[min(s, t)]) / 2
+
+        # Check if they will meet at the same station
+        if probabilities[s] > 0 and probabilities[t] > 0:
+            return minute
+
+        # Update the current stations
+        s = min(s, t)
+        t = max(s, t)
+
+    # They will never meet
+    return "never meet"
 

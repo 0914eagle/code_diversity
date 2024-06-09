@@ -1,15 +1,48 @@
 
-def solve(logs, cuts):
-    # Sort the logs in non-decreasing order
-    logs.sort()
-    # Initialize the longest log length to 0
-    longest_log = 0
-    # Loop through each log and calculate the longest length after at most K cuts
-    for log in logs:
-        # Calculate the number of cuts needed for this log
-        num_cuts = (log - 1) // cuts
-        # Calculate the length of the longest log after the cuts
-        longest_log = max(longest_log, log - num_cuts * cuts)
-    # Return the rounded up longest log length
-    return int(longest_log + 0.5)
+def solve(n, q, polygon, queries):
+    # Initialize the answer array
+    answer = []
+    
+    # Iterate over each query
+    for query in queries:
+        # If the query is of type 1, rotate the polygon
+        if query[0] == 1:
+            # Get the indices of the vertices to be pinned
+            f = query[1]
+            t = query[2]
+            
+            # Rotate the polygon
+            rotate_polygon(polygon, f, t)
+        
+        # If the query is of type 2, get the coordinates of the vertex
+        elif query[0] == 2:
+            # Get the index of the vertex
+            v = query[1]
+            
+            # Get the coordinates of the vertex
+            x, y = polygon[v]
+            
+            # Add the coordinates to the answer array
+            answer.append([x, y])
+    
+    return answer
+
+def rotate_polygon(polygon, f, t):
+    # Get the indices of the vertices to be pinned
+    f = f - 1
+    t = t - 1
+    
+    # Get the coordinates of the vertices to be pinned
+    x1, y1 = polygon[f]
+    x2, y2 = polygon[t]
+    
+    # Calculate the angle of rotation
+    angle = np.arctan2(y2 - y1, x2 - x1)
+    
+    # Rotate the polygon
+    for i in range(len(polygon)):
+        x, y = polygon[i]
+        x_new = x * np.cos(angle) - y * np.sin(angle)
+        y_new = x * np.sin(angle) + y * np.cos(angle)
+        polygon[i] = [x_new, y_new]
 

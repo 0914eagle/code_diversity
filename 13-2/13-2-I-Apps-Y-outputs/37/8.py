@@ -1,46 +1,21 @@
 
-def get_bridges(n, m, edges):
-    # Initialize a dictionary to store the graph
-    graph = {}
-    for i in range(1, n+1):
-        graph[i] = []
-
-    # Add edges to the graph
-    for edge in edges:
-        graph[edge[0]].append(edge[1])
-        graph[edge[1]].append(edge[0])
-
-    # Initialize a list to store the bridges
-    bridges = []
-
-    # Iterate over the edges and check if they are bridges
-    for edge in edges:
-        # Remove the edge and check if the graph is still connected
-        graph[edge[0]].remove(edge[1])
-        graph[edge[1]].remove(edge[0])
-        if not is_connected(graph):
-            bridges.append(edge)
-        # Add the edge back to the graph
-        graph[edge[0]].append(edge[1])
-        graph[edge[1]].append(edge[0])
-
-    return len(bridges)
-
-def is_connected(graph):
-    # Initialize a queue to do BFS
-    queue = [1]
-
-    # Do BFS to check if the graph is connected
-    while queue:
-        node = queue.pop(0)
-        for neighbor in graph[node]:
-            if neighbor not in queue:
-                queue.append(neighbor)
-
-    # If the queue is empty, the graph is not connected
-    return not queue
-
-edges = [(1, 3), (2, 7), (3, 4), (4, 5), (4, 6), (5, 6), (6, 7)]
-n, m = 7, 7
-print(get_bridges(n, m, edges))
+def solve(segments, k):
+    # Sort the segments by their left endpoint
+    segments.sort(key=lambda x: x[0])
+    
+    # Initialize the number of segments to remove to 0
+    num_segments_to_remove = 0
+    
+    # Iterate through the segments
+    for i in range(len(segments)):
+        # Get the current segment
+        segment = segments[i]
+        
+        # Check if the segment is covered by more than k segments
+        if len([j for j in range(i+1, len(segments)) if segments[j][0] <= segment[1]]) > k:
+            # If it is, add it to the list of segments to remove
+            num_segments_to_remove += 1
+    
+    # Return the number of segments to remove and the indices of the segments to remove
+    return num_segments_to_remove, [i for i in range(len(segments)) if segments[i][0] in [segments[j][0] for j in range(i+1, len(segments)) if segments[j][0] <= segments[i][1]]]
 

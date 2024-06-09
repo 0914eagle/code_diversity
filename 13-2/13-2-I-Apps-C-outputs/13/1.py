@@ -1,39 +1,43 @@
 
-def get_max_fruits(fruits):
-    # Sort the fruits by their x-coordinate
-    sorted_fruits = sorted(fruits, key=lambda x: x[0])
+def solve(tasks):
+    # Initialize the processor clock and the current priorities of the tasks
+    clock = 0
+    current_priorities = [task[1] for task in tasks]
 
-    # Initialize the maximum number of fruits that can be sliced
-    max_fruits = 0
+    # Loop until all tasks are completed
+    while True:
+        # Identify running tasks
+        running_tasks = [task for task in tasks if task[0] <= clock and len(task[2]) > 0]
 
-    # Iterate over the fruits
-    for i in range(len(sorted_fruits)):
-        # Get the current fruit
-        fruit = sorted_fruits[i]
+        # Determine the current priorities of the running tasks and which of the running tasks are blocked
+        blocked_tasks = []
+        for task in running_tasks:
+            next_instruction = task[2][0]
+            if next_instruction[0] == "L":
+                resource = next_instruction[1]
+                if resource in blocked_tasks or any(task[1] >= current_priorities[task_idx] for task_idx in blocked_tasks):
+                    blocked_tasks.append(task_idx)
+            elif next_instruction[0] == "U":
+                resource = next_instruction[1]
+                if resource in blocked_tasks:
+                    blocked_tasks.remove(resource)
 
-        # Check if the fruit is already sliced
-        if fruit[1] <= 0:
-            continue
+        # Execute the next instruction of the non-blocked running task (if any) with the highest current priority
+        if len(running_tasks) > 0:
+            running_tasks.sort(key=lambda x: x[1], reverse=True)
+            task = running_tasks[0]
+            next_instruction = task[2][0]
+            if next_instruction[0] == "C":
+                clock += 1
+            elif next_instruction[0] == "L":
+                resource = next_instruction[1]
+                current_priorities[task[3]] = max(current_priorities[task[3]], task[1])
+            elif next_instruction[0] == "U":
+                resource = next_instruction[1]
+                current_priorities[task[3]] = max(current_priorities[task[3]], task[1]) - 1
+            task[2].pop(0)
 
-        # Initialize the number of fruits that can be sliced with this fruit
-        num_fruits = 1
-
-        # Iterate over the remaining fruits
-        for j in range(i+1, len(sorted_fruits)):
-            # Get the next fruit
-            next_fruit = sorted_fruits[j]
-
-            # Check if the next fruit is already sliced
-            if next_fruit[1] <= 0:
-                break
-
-            # Check if the next fruit is within the slice of the current fruit
-            if next_fruit[0] >= fruit[0] and next_fruit[1] >= fruit[1]:
-                num_fruits += 1
-                next_fruit[1] = 0
-
-        # Update the maximum number of fruits if necessary
-        max_fruits = max(max_fruits, num_fruits)
-
-    return max_fruits
+        # If all tasks are completed, return the completion times
+        if len(tasks) == 0:
+            return [task[0] + clock for task in tasks]
 

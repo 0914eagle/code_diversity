@@ -1,8 +1,25 @@
 
-def solve(n, a, x, b, y):
-    # Check if Daniel and Vlad will ever be at the same station at the same time during their journey
-    if a == b or a == y or x == b or x == y:
-        return "YES"
-    else:
-        return "NO"
+def solve(n, m, rooks):
+    # Initialize a 2D array to store the board state
+    board = [[0] * n for _ in range(n)]
+
+    # Iterate through each rook and mark its row and column as attacked
+    for i in range(m):
+        x, y = rooks[i]
+        board[x - 1][y - 1] = 1
+        for j in range(n):
+            if board[j][y - 1] == 0:
+                board[j][y - 1] = 1
+        for k in range(n):
+            if board[x - 1][k] == 0:
+                board[x - 1][k] = 1
+
+    # Count the number of unattacked cells
+    unattacked_cells = 0
+    for i in range(n):
+        for j in range(n):
+            if board[i][j] == 0:
+                unattacked_cells += 1
+
+    return unattacked_cells
 

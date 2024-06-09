@@ -1,15 +1,28 @@
 
-def solve(N, a):
-    # Initialize the maximum amount of money to be earned to 0
-    max_earned = 0
-    # Iterate through the gems and their values
-    for i, ai in enumerate(a, start=1):
-        # If the gem is not smashed and its value is positive, add it to the maximum amount of money to be earned
-        if i not in a and ai > 0:
-            max_earned += ai
-        # If the gem is smashed and its value is negative, subtract it from the maximum amount of money to be earned
-        elif i in a and ai < 0:
-            max_earned -= ai
-    # Return the maximum amount of money that can be earned
-    return max_earned
+def solve(D, W, C):
+    # Initialize variables
+    total_smoothie = W
+    containers = []
+    current_container = 0
+    current_distance = 0
+
+    # While there is still smoothie left to bring
+    while total_smoothie > 0:
+        # Calculate the distance the monkey can walk with the current amount of smoothie
+        distance_left = total_smoothie / C
+
+        # If the distance left is less than the distance to the family, bring the remaining smoothie
+        if distance_left < D:
+            total_smoothie = 0
+        # Otherwise, bring as much smoothie as possible and leave the rest in a container
+        else:
+            total_smoothie -= C * D
+            containers.append(C * D)
+            current_container += 1
+            current_distance += D
+
+    # Calculate the total amount of smoothie brought
+    total_brought = sum(containers)
+
+    return total_brought
 

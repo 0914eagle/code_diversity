@@ -1,20 +1,27 @@
 
-def count_distinct_ball_orders(n, max_throws):
-    # Initialize the number of distinct ball orders to 1
-    num_distinct_orders = 1
+def is_possible(points):
+    # Sort the points by their x-coordinates
+    sorted_points = sorted(points, key=lambda point: point[0])
 
-    # Iterate over each student in the line
-    for i in range(n):
-        # Calculate the number of throws the current student can participate in
-        num_throws = min(max_throws[i], n - i)
+    # Initialize the variables for the left and right endpoints of the lines
+    left_endpoint = sorted_points[0]
+    right_endpoint = sorted_points[-1]
 
-        # Calculate the number of distinct ball orders for the current student
-        num_distinct_orders *= num_throws + 1
+    # Iterate through the points and check if they lie on the line
+    for i in range(1, len(sorted_points)):
+        current_point = sorted_points[i]
 
-        # Calculate the number of distinct ball orders for the remaining students
-        for j in range(i + 1, n):
-            num_distinct_orders *= num_throws + 1
+        # Check if the current point lies on the line between the left and right endpoints
+        if current_point[0] == left_endpoint[0] or current_point[0] == right_endpoint[0]:
+            continue
 
-    # Return the number of distinct ball orders modulo 1000000007
-    return num_distinct_orders % 1000000007
+        # Check if the current point lies between the left and right endpoints
+        if left_endpoint[0] < current_point[0] < right_endpoint[0]:
+            continue
+
+        # If the current point does not lie on the line or between the left and right endpoints, return False
+        return False
+
+    # If all points lie on the line or between the left and right endpoints, return True
+    return True
 

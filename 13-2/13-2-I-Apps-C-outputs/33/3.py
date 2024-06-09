@@ -1,50 +1,35 @@
 
-def solve_small_y_puzzle(t, n):
-    # Initialize the memoization dictionary
-    memo = {}
+def is_possible(N, M, roads):
+    # Initialize a graph with N nodes and 0 edges
+    graph = [[] for _ in range(N)]
 
-    # Initialize the minimum cost to infinity
-    min_cost = float('inf')
+    # Add edges to the graph
+    for road in roads:
+        graph[road[0] - 1].append(road[1] - 1)
+        graph[road[1] - 1].append(road[0] - 1)
 
-    # Recursively solve the puzzle
-    solve_small_y_puzzle_recursive(t, n, 1, 2, 3, memo, min_cost)
+    # Check if the graph is connected
+    visited = [False] * N
+    queue = [0]
+    visited[0] = True
+    while queue:
+        node = queue.pop(0)
+        for neighbor in graph[node]:
+            if not visited[neighbor]:
+                visited[neighbor] = True
+                queue.append(neighbor)
 
-    # Return the minimum cost
-    return min_cost
+    # If the graph is not connected, return NO
+    if not all(visited):
+        return "NO"
 
-def solve_small_y_puzzle_recursive(t, n, i, j, k, memo, min_cost):
-    # Base case: if there are no disks, return 0
-    if n == 0:
-        return 0
+    # If the graph is connected, return YES and a possible direction assignment
+    direction = []
+    for road in roads:
+        if road[0] != 1:
+            direction.append([road[0], road[1]])
+        else:
+            direction.append([road[1], road[0]])
 
-    # If the current state is already in the memoization dictionary, return the stored value
-    if (n, i, j, k) in memo:
-        return memo[(n, i, j, k)]
-
-    # Initialize the minimum cost for the current state
-    min_cost_current_state = float('inf')
-
-    # Try moving the top disk from rod i to rod j
-    cost_move_i_to_j = t[i - 1][j - 1]
-    cost_move_i_to_j += solve_small_y_puzzle_recursive(t, n - 1, i, k, j, memo, min_cost)
-
-    # Try moving the top disk from rod i to rod k
-    cost_move_i_to_k = t[i - 1][k - 1]
-    cost_move_i_to_k += solve_small_y_puzzle_recursive(t, n - 1, i, j, k, memo, min_cost)
-
-    # Try moving the top disk from rod j to rod k
-    cost_move_j_to_k = t[j - 1][k - 1]
-    cost_move_j_to_k += solve_small_y_puzzle_recursive(t, n - 1, j, i, k, memo, min_cost)
-
-    # Update the minimum cost for the current state
-    min_cost_current_state = min(cost_move_i_to_j, cost_move_i_to_k, cost_move_j_to_k)
-
-    # Store the minimum cost in the memoization dictionary
-    memo[(n, i, j, k)] = min_cost_current_state
-
-    # Update the global minimum cost
-    min_cost = min(min_cost, min_cost_current_state)
-
-    # Return the minimum cost for the current state
-    return min_cost_current_state
+    return "YES\n" + "\n".join(str(road) for road in direction)
 

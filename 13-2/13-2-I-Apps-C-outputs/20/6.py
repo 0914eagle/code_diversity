@@ -1,54 +1,25 @@
 
-def balanced_equation(equation):
-    # Initialize variables
-    elements = {}
-    coefficients = {}
-    total_coefficients = 0
+def solve(W, v_h, N, x, y, S, s):
+    # Initialize the minimum time to pass through the course
+    min_time = float('inf')
+    # Initialize the minimum speed required to pass through the course
+    min_speed = float('inf')
 
-    # Parse the equation
-    for line in equation:
-        if line == "0 0":
-            break
-        sign, num_elements = line.split(" ")
-        num_elements = int(num_elements)
-        elements[sign] = {}
-        coefficients[sign] = 1
-        for i in range(num_elements):
-            element, count = line.split(" ")
-            elements[sign][element] = int(count)
-            total_coefficients += int(count)
+    # Loop through each pair of skis
+    for i in range(S):
+        # Calculate the horizontal speed required to pass through the course with the current pair of skis
+        horizontal_speed = min(v_h, s[i])
+        # Calculate the time required to pass through the course with the current pair of skis
+        time = (W - x[N-1]) / horizontal_speed + y[N-1] / s[i]
+        # Check if the time required is less than the minimum time
+        if time < min_time:
+            # Update the minimum time and speed
+            min_time = time
+            min_speed = s[i]
 
-    # Find the least common multiple of the coefficients
-    lcm = 1
-    for coefficient in coefficients.values():
-        lcm = _lcm(lcm, coefficient)
-
-    # Divide the coefficients by the least common multiple
-    for sign in elements.keys():
-        elements[sign] = {k: v // lcm for k, v in elements[sign].items()}
-        coefficients[sign] //= lcm
-
-    # Find the minimum number of each element needed to balance the equation
-    min_elements = {}
-    for element in set().union(*elements.values()):
-        min_elements[element] = 0
-        for sign in elements.keys():
-            if element in elements[sign]:
-                min_elements[element] += elements[sign][element]
-        min_elements[element] //= len(elements)
-
-    # Return the minimum number of each element needed to balance the equation
-    return [min_elements[element] for element in sorted(min_elements)]
-
-def _lcm(a, b):
-    if a == 0 or b == 0:
-        return 0
+    # Check if it is possible to pass through the course with any pair of skis
+    if min_time == float('inf'):
+        return "IMPOSSIBLE"
     else:
-        return a * b // _gcd(a, b)
-
-def _gcd(a, b):
-    if b == 0:
-        return a
-    else:
-        return _gcd(b, a % b)
+        return min_speed
 

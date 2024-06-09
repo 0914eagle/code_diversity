@@ -1,38 +1,60 @@
 
-def solve(n, m, t, op):
-    # Initialize a 2D array to store the grid
-    grid = [[0 for _ in range(n)] for _ in range(n)]
-    
-    # Fill in the grid with the given values
-    for i in range(m):
-        r, c = map(int, input().split())
-        grid[r-1][c-1] = i+1
-    
-    # Use a recursive function to count the number of valid ways to fill in the section
-    return count_ways(grid, t, op)
-
-def count_ways(grid, t, op):
-    # Base case: if the target value is 0, return 1
-    if t == 0:
-        return 1
-    
-    # Initialize a variable to store the number of valid ways
-    ways = 0
-    
-    # Iterate over the possible values that can be placed in the current grid square
+def is_valid_sudoku(grid):
+    # Check rows
     for i in range(len(grid)):
-        # If the current grid square is not empty, skip it
-        if grid[i][i] != 0:
-            continue
-        
-        # Place the current value in the current grid square
-        grid[i][i] = t
-        
-        # Recursively call the function to count the number of valid ways to fill in the rest of the section
-        ways += count_ways(grid, t-1, op)
-        
-        # Backtrack and remove the current value from the current grid square
-        grid[i][i] = 0
-    
-    return ways
+        row = grid[i]
+        if len(set(row)) != len(row):
+            return False
+
+    # Check columns
+    for i in range(len(grid[0])):
+        column = [row[i] for row in grid]
+        if len(set(column)) != len(column):
+            return False
+
+    # Check boxes
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            box = [grid[x][y] for x in range(i * 3, i * 3 + 3) for y in range(j * 3, j * 3 + 3)]
+            if len(set(box)) != len(box):
+                return False
+
+    return True
+
+def solve_superdoku(grid, k):
+    # Check if the first k rows are valid
+    for i in range(k):
+        if not is_valid_sudoku(grid[i]):
+            return False
+
+    # Check if the remaining rows are valid
+    for i in range(k, len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j] != 0 and grid[i][j] not in grid[i]:
+                return False
+
+    # Check if the grid is valid
+    if not is_valid_sudoku(grid):
+        return False
+
+    # If the grid is valid, return it
+    return grid
+
+def main():
+    n, k = map(int, input().split())
+    grid = []
+    for i in range(k):
+        grid.append(list(map(int, input().split())))
+    for i in range(k, n):
+        grid.append([0] * n)
+    solution = solve_superdoku(grid, k)
+    if solution:
+        print("yes")
+        for row in solution:
+            print(" ".join(map(str, row)))
+    else:
+        print("no")
+
+if __name__ == "__main__":
+    main()
 

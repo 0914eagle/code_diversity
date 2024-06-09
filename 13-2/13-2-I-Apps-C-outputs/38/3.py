@@ -1,35 +1,24 @@
 
-def solve(h, m, s, t1, t2):
-    # Convert the time to a single integer
-    time1 = h * 3600 + m * 60 + s
-    time2 = t1 * 3600 + m * 60 + s
+def solve(sticks):
+    # Sort the sticks by their x-coordinate
+    sticks.sort(key=lambda x: x[0])
     
-    # Check if the times are equal
-    if time1 == time2:
-        return "NO"
+    # Initialize the output list
+    output = []
     
-    # Check if Misha can move forward or backward
-    if time1 < time2:
-        direction = 1
-    else:
-        direction = -1
+    # Loop through the sticks
+    for stick in sticks:
+        # Find the closest stick to the current stick
+        closest_stick = None
+        for other_stick in sticks:
+            if other_stick != stick:
+                distance = abs(stick[0] - other_stick[0])
+                if closest_stick is None or distance < closest_stick[0]:
+                    closest_stick = (distance, other_stick)
+        
+        # Add the closest stick to the output list
+        output.append(closest_stick[1])
     
-    # Check if Misha can move along the top arc
-    if (time1 + direction) % 12 == t2:
-        return "YES"
-    
-    # Check if Misha can move along the bottom arc
-    if (time1 + direction) % 12 == t2 - 12:
-        return "YES"
-    
-    # Check if Misha can move along the left arc
-    if (time1 + direction) % 12 == t2 - 1:
-        return "YES"
-    
-    # Check if Misha can move along the right arc
-    if (time1 + direction) % 12 == t2 + 1:
-        return "YES"
-    
-    # If Misha cannot move along any arc, return "NO"
-    return "NO"
+    # Return the output list
+    return output
 

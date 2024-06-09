@@ -1,26 +1,27 @@
 
-def solve(n, k, a):
-    # Calculate the number of possible permutations of the array
-    permutations = 1
-    for i in range(n):
-        permutations *= n - i
-    
-    # Calculate the number of permutations that result in a sorted array
-    sorted_permutations = 1
-    for i in range(n - 1):
-        sorted_permutations *= n - i
-    
-    # Calculate the number of permutations that result in a non-sorted array
-    non_sorted_permutations = permutations - sorted_permutations
-    
-    # Calculate the probability that the array is sorted after k operations
-    probability = non_sorted_permutations / permutations
-    
-    # Raise the probability to the kth power
-    probability = probability ** k
-    
-    # Calculate the final answer
-    answer = int(probability * 1000000007)
-    
-    return answer
+def get_moon_status(n, records):
+    # Convert the records to a list of integers
+    records = [int(x) for x in records]
+
+    # Check if the length of the records is greater than or equal to n
+    if len(records) < n:
+        return -1
+
+    # Get the last n records
+    last_n_records = records[-n:]
+
+    # Check if the last n records form a cycle
+    if len(set(last_n_records)) == len(last_n_records):
+        return -1
+
+    # Get the next record
+    next_record = last_n_records[0]
+
+    # Check if the next record is less than the current record
+    if next_record < last_n_records[-1]:
+        return "DOWN"
+    elif next_record > last_n_records[-1]:
+        return "UP"
+    else:
+        return -1
 

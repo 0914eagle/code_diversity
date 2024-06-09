@@ -1,18 +1,12 @@
 
-# Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.next = None
+N = int(input())
 
-def hasCycle(head):
-    # Using Floyd's cycle-finding algorithm
-    slow = head
-    fast = head
-    while fast and fast.next:
-        slow = slow.next
-        fast = fast.next.next
-        if slow == fast:
-            return True
-    return False
+# Calculate the number of 1000-yen bills needed to pay the price
+num_bills = N // 1000
+
+# Calculate the amount of change
+change = N - (num_bills * 1000)
+
+# Print the amount of change
+print(change)
 

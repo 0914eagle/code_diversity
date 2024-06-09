@@ -1,16 +1,19 @@
 
-def solve(N, L, drawers):
-    items = {}
-    for i in range(N):
-        item = i + 1
-        drawer_a, drawer_b = drawers[i]
-        if drawer_a not in items and drawer_b not in items:
-            items[drawer_a] = item
-        elif drawer_a in items and drawer_b not in items:
-            items[drawer_b] = item
-        elif drawer_a not in items and drawer_b in items:
-            items[drawer_a] = item
-        else:
-            items[drawer_b] = item
-    return ["LADICA" if item in items else "SMECE" for item in range(1, N + 1)]
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def hasCycle(self, head: ListNode) -> bool:
+        # use a set to keep track of the nodes we've visited
+        visited = set()
+        # loop through the list until we find a node we've visited before
+        while head:
+            if head in visited:
+                return True
+            visited.add(head)
+            head = head.next
+        return False
 

@@ -1,36 +1,36 @@
 
-def get_minimum_distance(planets):
-    # Calculate the distance between each pair of planets
-    distances = {}
-    for i in range(len(planets)):
-        for j in range(i+1, len(planets)):
-            distance = get_distance(planets[i], planets[j])
-            distances[(i, j)] = distance
+def solve_bar_code(n, vertical_spec, horizontal_spec):
+    # Initialize the solution matrix
+    solution = [[0] * (n+1) for _ in range(n)]
 
-    # Use a priority queue to keep track of the next planet to visit
-    import heapq
-    queue = [(0, 0)]
-    visited = set()
-    total_distance = 0
-    while queue:
-        distance, planet = heapq.heappop(queue)
-        if planet in visited:
-            continue
-        visited.add(planet)
-        total_distance += distance
-        for neighbor in get_neighbors(planets, planet):
-            if neighbor not in visited:
-                heapq.heappush(queue, (distances[(planet, neighbor)], neighbor))
+    # Iterate through the vertical specification
+    for i, spec in enumerate(vertical_spec):
+        # Find the number of groups to form
+        num_groups = len(spec)
 
-    return total_distance
+        # Iterate through the groups
+        for j, group_size in enumerate(spec):
+            # Find the starting index of the group
+            start_index = j * group_size
 
-def get_distance(planet1, planet2):
-    return ((planet1[0] - planet2[0]) ** 2 + (planet1[1] - planet2[1]) ** 2 + (planet1[2] - planet2[2]) ** 2) ** 0.5
+            # Mark the borders in the group
+            for k in range(start_index, start_index + group_size):
+                solution[i][k] = 1
 
-def get_neighbors(planets, planet):
-    neighbors = []
-    for i in range(len(planets)):
-        if i != planet:
-            neighbors.append(i)
-    return neighbors
+    # Iterate through the horizontal specification
+    for j, spec in enumerate(horizontal_spec):
+        # Find the number of groups to form
+        num_groups = len(spec)
+
+        # Iterate through the groups
+        for i, group_size in enumerate(spec):
+            # Find the starting index of the group
+            start_index = i * group_size
+
+            # Mark the borders in the group
+            for k in range(start_index, start_index + group_size):
+                solution[k][j] = 1
+
+    # Return the solution matrix
+    return solution
 

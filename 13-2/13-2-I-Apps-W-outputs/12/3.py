@@ -1,28 +1,28 @@
 
-def solve(n, roads, repairs):
-    # Initialize a dictionary to store the length of each road
-    road_lengths = {}
-    for road in roads:
-        a, b, length = road
-        road_lengths[(a, b)] = length
-        road_lengths[(b, a)] = length
+def longest_non_palindrome(s):
+    # Initialize variables
+    longest_substring = ""
+    current_substring = ""
     
-    # Initialize a dictionary to store the expected cost of building the network
-    expected_cost = {}
-    for i in range(1, n + 1):
-        for j in range(i + 1, n + 1):
-            for k in range(j + 1, n + 1):
-                expected_cost[(i, j, k)] = road_lengths[(i, j)] + road_lengths[(j, k)] + road_lengths[(k, i)]
+    # Iterate through the string
+    for i in range(len(s)):
+        # Check if the current character is the same as the previous character
+        if s[i] == s[i-1]:
+            # If it is, append it to the current substring
+            current_substring += s[i]
+        else:
+            # If it's not, check if the current substring is longer than the longest substring found so far
+            if len(current_substring) > len(longest_substring):
+                # If it is, update the longest substring
+                longest_substring = current_substring
+            # Reset the current substring
+            current_substring = s[i]
     
-    # Apply the repairs
-    for repair in repairs:
-        road, new_length = repair
-        old_length = road_lengths[road]
-        difference = new_length - old_length
-        for key in expected_cost:
-            if key[0] == road[0] or key[1] == road[1]:
-                expected_cost[key] += difference
+    # Check if the last character is the same as the first character
+    if s[0] == s[-1] and len(current_substring) > len(longest_substring):
+        # If it is, update the longest substring
+        longest_substring = current_substring
     
-    # Return the expected cost of building the network
-    return expected_cost
+    # Return the length of the longest substring
+    return len(longest_substring)
 

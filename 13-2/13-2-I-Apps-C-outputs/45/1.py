@@ -1,45 +1,28 @@
 
-def get_identical_rooms(maze):
-    # Initialize a dictionary to store the room numbers and their connections
-    room_connections = {}
-    for i, room in enumerate(maze):
-        room_connections[i] = set(room[1:])
-
-    # Initialize a set to store the effectively identical rooms
-    identical_rooms = set()
-
-    # Loop through each room and its connections
-    for room, connections in room_connections.items():
-        # If the room has already been marked as effectively identical, skip it
-        if room in identical_rooms:
+def get_max_protected_rooms(N, M, doors):
+    # Initialize a graph with N nodes and M edges
+    graph = [[] for _ in range(N)]
+    for u, v in doors:
+        graph[u].append(v)
+        graph[v].append(u)
+    
+    # Find all rooms that can be reached from the outside of the building
+    outside_rooms = []
+    for i in range(N):
+        if -1 in graph[i]:
+            outside_rooms.append(i)
+    
+    # Find the room that is connected to the maximum number of outside rooms
+    max_protected_rooms = 0
+    for i in range(N):
+        if i in outside_rooms:
             continue
-        # If the room has no connections, add it to the set of effectively identical rooms
-        if not connections:
-            identical_rooms.add(room)
-            continue
-        # If the room has connections, find the effectively identical rooms by recursively searching the graph
-        find_identical_rooms(room, connections, identical_rooms, room_connections)
-
-    return identical_rooms
-
-def find_identical_rooms(room, connections, identical_rooms, room_connections):
-    # If the room has already been marked as effectively identical, return
-    if room in identical_rooms:
-        return
-    # If the room has no connections, add it to the set of effectively identical rooms
-    if not connections:
-        identical_rooms.add(room)
-        return
-    # Recursively search the graph for effectively identical rooms
-    for connection in connections:
-        find_identical_rooms(connection, room_connections[connection] - {room}, identical_rooms, room_connections)
-    identical_rooms.add(room)
-
-def main():
-    maze = [[2, 4], [3, 1, 3, 5], [2, 2, 4], [3, 1, 3, 6], [2, 2, 6], [2, 4, 5], [2, 8, 9], [2, 7, 9], [2, 7, 8], [2, 11, 13], [2, 10, 12], [2, 11, 13], [2, 10, 12]]
-    identical_rooms = get_identical_rooms(maze)
-    print(identical_rooms)
-
-if __name__ == "__main__":
-    main()
+        protected_rooms = 0
+        for j in range(N):
+            if j in outside_rooms and j in graph[i]:
+                protected_rooms += 1
+        if protected_rooms > max_protected_rooms:
+            max_protected_rooms = protected_rooms
+    
+    return max_protected_rooms
 

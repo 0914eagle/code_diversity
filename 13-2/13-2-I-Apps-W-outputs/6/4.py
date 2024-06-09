@@ -1,17 +1,11 @@
 
-def solve(s):
-    # Initialize the score to 0
-    score = 0
-    
-    # Iterate through the string s
-    for i in range(len(s)):
-        # If the i-th character in s is 'g', play 'p' to maximize the score
-        if s[i] == 'g':
-            score += 1
-        # If the i-th character in s is 'p', play 'g' to minimize the score
-        else:
-            score -= 1
-    
-    # Return the maximum possible score
-    return score
+def get_points(a, b, c, d):
+    misha_points = max(a // 10, a - (a // 250) * c)
+    vasya_points = max(b // 10, b - (b // 250) * d)
+    if misha_points > vasya_points:
+        return "Misha"
+    elif misha_points < vasya_points:
+        return "Vasya"
+    else:
+        return "Tie"
 

@@ -1,14 +1,9 @@
 
-def solve(n):
-    for x in range(1, n+1):
-        k = 1
-        sum = x
-        while sum < n:
-            k += 1
-            sum += 2**(k-1) * x
-            if sum > n:
-                break
-        if sum == n:
-            return x
-    return -1
+a = int(input())
+s = input()
+
+if a >= 3200:
+    print(s)
+else:
+    print("red")
 

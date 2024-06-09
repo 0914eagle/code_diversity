@@ -1,14 +1,23 @@
 
-def solve(a):
-    # Step 1: Find the minimal element in the list
-    min_element = min(a)
+def get_max_beauty(n):
+    # Initialize a list to store the permutations
+    permutations = []
     
-    # Step 2: Count the number of elements that are divisible by the minimal element
-    count = 0
-    for element in a:
-        if element % min_element == 0:
-            count += 1
+    # Iterate from 0 to n
+    for i in range(n+1):
+        # Get the permutation of integers from 0 to n
+        permutation = list(range(n+1))
+        permutation[i] = permutation[0]
+        permutation.pop(0)
+        
+        # Calculate the beauty of the permutation
+        beauty = 0
+        for j in range(n+1):
+            beauty += (j ^ permutation[j])
+        
+        # Add the permutation to the list of permutations
+        permutations.append((beauty, permutation))
     
-    # Step 3: Return the number of colors needed
-    return count
+    # Return the permutation with the maximum beauty
+    return max(permutations)[1]
 

@@ -1,27 +1,33 @@
 
-def solve(n, m):
-    # Initialize the coloring matrix
-    coloring = [["" for _ in range(m)] for _ in range(n)]
+import sys
+import math
 
-    # Fill the first row with the lexicographically minimum coloring
+def get_expected_number_of_passages(n, m, s, t):
+    # Initialize the probability of reaching room N from each room
+    probabilities = [1 for _ in range(n)]
+
+    # Loop through each passage
     for i in range(m):
-        coloring[0][i] = "A"
+        # Get the source and destination rooms of the passage
+        source = s[i]
+        destination = t[i]
 
-    # Fill the remaining rows
-    for i in range(1, n):
-        for j in range(m):
-            # If the cell is in the first column, use the next lexicographically minimum color
-            if j == 0:
-                coloring[i][j] = chr(ord(coloring[i-1][j]) + 1)
-            # If the cell is in the first row, use the same color as the cell above
-            elif i == 0:
-                coloring[i][j] = coloring[i][j-1]
-            # If the cell is in both the first row and column, use the next lexicographically minimum color
-            else:
-                coloring[i][j] = chr(ord(coloring[i-1][j]) + 1)
-                if coloring[i][j] == coloring[i][j-1]:
-                    coloring[i][j] = chr(ord(coloring[i][j]) + 1)
+        # Update the probability of reaching room N from the source room
+        probabilities[source-1] *= 1 / (destination - source + 1)
 
-    # Return the coloring matrix
-    return coloring
+        # Update the probability of reaching room N from the destination room
+        probabilities[destination-1] += probabilities[source-1] * (destination - source) / (destination - source + 1)
+
+    # Return the expected number of passages
+    return sum(probabilities)
+
+n, m = map(int, input().split())
+s = list(map(int, input().split()))
+t = list(map(int, input().split()))
+
+# Get the expected number of passages when Aoki blocks the passage from Room 1 to Room 2
+expected_number_of_passages = get_expected_number_of_passages(n, m-1, s[1:], t[1:])
+
+# Print the expected number of passages
+print(expected_number_of_passages)
 

@@ -1,26 +1,16 @@
 
-def find_sub_rectangle(n, m, x, y, a, b):
-    # Initialize the minimum distance as a large value
-    min_distance = 1000000000
-    # Initialize the minimum rectangle as (0, 0, 0, 0)
-    min_rectangle = (0, 0, 0, 0)
-    
-    # Iterate over all possible left-bottom points (x1, y1)
-    for x1 in range(n):
-        for y1 in range(m):
-            # Calculate the right-up point (x2, y2) based on the given ratio
-            x2 = x1 + a * (y2 - y1) // b
-            y2 = y1 + b * (x2 - x1) // a
-            
-            # Check if the right-up point is within the grid
-            if x2 <= n and y2 <= m:
-                # Calculate the distance between (x, y) and the center of the rectangle
-                distance = ((x - (x1 + x2) // 2) ** 2 + (y - (y1 + y2) // 2) ** 2) ** 0.5
-                
-                # If the distance is smaller than the minimum distance, update the minimum distance and rectangle
-                if distance < min_distance:
-                    min_distance = distance
-                    min_rectangle = (x1, y1, x2, y2)
-    
-    return min_rectangle
+def get_invited_employees(teams, my_id):
+    # Initialize a set to store the IDs of employees to invite
+    invited_employees = set()
+    # Add the ID of the friend to the set
+    invited_employees.add(my_id)
+    # Iterate through the teams
+    for team in teams:
+        # If the team has both employees from Stockholm and London, skip it
+        if team[0] // 1000 == team[1] // 1000:
+            continue
+        # Add the ID of the employee from the other city to the set
+        invited_employees.add(team[0] if team[0] // 1000 == 1 else team[1])
+    # Return the set of invited employees
+    return invited_employees
 

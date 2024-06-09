@@ -1,25 +1,24 @@
 
-def solve(n, m, ships):
-    # Initialize a list to store the instructions
-    instructions = []
-
-    # Loop through each ship and check if it can be avoided
-    for ship in ships:
-        # Check if the ship is already passed by the torpedo
-        if ship[0] < 0 and ship[1] < 0:
-            continue
-
-        # Check if the ship is already hit by the torpedo
-        if ship[0] > n and ship[1] > n:
-            continue
-
-        # Check if the ship is within the range of the torpedo
-        if ship[0] > n or ship[1] > n:
-            return "impossible"
-
-        # Add the instruction to avoid the ship
-        instructions.append("-")
-
-    # If all ships are avoided, return the instructions
-    return "".join(instructions)
+def solve(message):
+    # Split the message into individual words
+    words = message.split()
+    
+    # Create a dictionary of words and their vowel counts
+    word_vowels = {}
+    for word in words:
+        vowel_count = 0
+        for letter in word:
+            if letter in "AEIOU":
+                vowel_count += 1
+        word_vowels[word] = vowel_count
+    
+    # Sort the words by vowel count in descending order
+    sorted_words = sorted(word_vowels.items(), key=lambda x: x[1], reverse=True)
+    
+    # Reconstruct the original sentence
+    sentence = []
+    for word, vowel_count in sorted_words:
+        sentence.append(word)
+    
+    return " ".join(sentence)
 

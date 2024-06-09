@@ -1,17 +1,10 @@
 
-def longest_sequence(s, i, j):
-    # Initialize the longest sequence length to 0
-    longest = 0
-    # Loop through the string from i to j
-    for k in range(i, j):
-        # If the current character is the same as the previous character
-        if s[k] == s[k-1]:
-            # Increment the longest sequence length
-            longest += 1
-        # If the current character is not the same as the previous character
-        else:
-            # Break out of the loop
-            break
-    # Return the longest sequence length
-    return longest
+def get_total_segments(n, k, a):
+    total = 0
+    for i in range(n):
+        for j in range(i, n):
+            segment_sum = sum(a[i:j+1])
+            if segment_sum >= 0 and segment_sum ** (1/k) % 1 == 0:
+                total += 1
+    return total
 

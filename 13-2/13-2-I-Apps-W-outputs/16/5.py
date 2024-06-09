@@ -1,25 +1,18 @@
 
-def solve(n, x, vouchers):
-    # Sort the vouchers by their cost in non-decreasing order
-    vouchers.sort(key=lambda x: x[2])
+def count_good_substrings(s, k):
+    # Initialize a dictionary to store the count of good substrings
+    good_substrings = {}
 
-    # Initialize the minimum cost to infinity
-    min_cost = float("inf")
+    # Iterate over the characters of the input string
+    for i in range(len(s)):
+        # Check if the current character is good
+        if s[i].isalpha() and s[i].islower():
+            # If the current character is good, check if the substring starting from the current character and ending at the previous good character is good
+            if i > 0 and s[i-1].isalpha() and s[i-1].islower():
+                substring = s[i-1:i+1]
+                if substring not in good_substrings or good_substrings[substring] <= k:
+                    good_substrings[substring] = good_substrings.get(substring, 0) + 1
 
-    # Iterate over all possible pairs of vouchers
-    for i in range(n - 1):
-        for j in range(i + 1, n):
-            # Check if the vouchers are disjoint
-            if vouchers[i][1] < vouchers[j][0] or vouchers[j][1] < vouchers[i][0]:
-                # Calculate the total duration and cost of the two vouchers
-                total_duration = vouchers[i][1] - vouchers[i][0] + 1 + vouchers[j][1] - vouchers[j][0] + 1
-                total_cost = vouchers[i][2] + vouchers[j][2]
-
-                # Check if the total duration is equal to x and the total cost is less than the current minimum cost
-                if total_duration == x and total_cost < min_cost:
-                    min_cost = total_cost
-
-    # If a pair of vouchers with the total duration equal to x and minimum cost is found, return the cost
-    # Otherwise, return -1
-    return min_cost if min_cost != float("inf") else -1
+    # Return the number of distinct good substrings
+    return len(good_substrings)
 

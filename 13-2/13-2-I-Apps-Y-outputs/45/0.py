@@ -1,7 +1,9 @@
 
-def solve(s):
-    if 'ss' in s:
-        return 'hiss'
-    else:
-        return 'no hiss'
+import math
+
+def get_probability(n):
+    return 1 - math.factorial(n) / (math.factorial(n) * n)
+
+n = int(input())
+print(get_probability(n))
 

@@ -1,39 +1,27 @@
 
-def solve(gigs, venues, roads, travel_time):
-    # Initialize a graph to store the connections between venues
-    graph = [[] for _ in range(venues + 1)]
+def count_valid_colorings(n, a):
+    # Initialize a 2D array to store the number of colored edges for each hexagon
+    colored_edges = [[0] * n for _ in range(n)]
 
-    # Add the roads to the graph
-    for road in roads:
-        graph[road[0]].append((road[1], road[2]))
-        graph[road[1]].append((road[0], road[2]))
+    # Loop through each row of the input array
+    for i in range(n):
+        # Loop through each element in the row
+        for j in range(n):
+            # If the element is not -1, add the number of colored edges for the hexagon to the total
+            if a[i][j] != -1:
+                colored_edges[i][j] += a[i][j]
 
-    # Initialize a dictionary to store the gig offers
-    gig_offers = {}
+    # Initialize a set to store the valid colorings
+    valid_colorings = set()
 
-    # Add the gigs to the dictionary
-    for gig in gigs:
-        gig_offers[gig[0]] = (gig[1], gig[2], gig[3])
+    # Loop through each row of the input array
+    for i in range(n):
+        # Loop through each element in the row
+        for j in range(n):
+            # If the element is not -1, add the number of colored edges for the hexagon to the total
+            if a[i][j] != -1:
+                valid_colorings.add(tuple(colored_edges[i][j]))
 
-    # Initialize a variable to store the maximum amount of cryptocents
-    max_cryptocents = 0
-
-    # Iterate over the gig offers
-    for gig in gig_offers:
-        # Check if the gig is at the current venue
-        if gig == venue:
-            # Add the cryptocents to the maximum amount
-            max_cryptocents += gig_offers[gig][2]
-        # Check if the gig is at a different venue
-        else:
-            # Calculate the time it takes to travel to the gig venue
-            travel_time_to_gig = travel_time(graph, venue, gig)
-
-            # Check if the gig is within the time window
-            if gig_offers[gig][0] <= travel_time_to_gig <= gig_offers[gig][1]:
-                # Add the cryptocents to the maximum amount
-                max_cryptocents += gig_offers[gig][2]
-
-    # Return the maximum amount of cryptocents
-    return max_cryptocents
+    # Return the number of valid colorings
+    return len(valid_colorings)
 

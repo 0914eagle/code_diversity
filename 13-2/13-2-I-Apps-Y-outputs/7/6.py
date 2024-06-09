@@ -1,17 +1,20 @@
 
-def count_ways(n, m, a):
-    # Initialize a table to store the results
-    dp = [0] * (n+1)
-    dp[0] = 1
+def solve(s, t):
+    # Initialize the result string
+    result = "UNRESTORABLE"
 
-    # Iterate over the broken steps
-    for i in range(m):
-        # Iterate over the possible steps to reach the broken step
-        for j in range(a[i]):
-            # If the step is not broken, add the number of ways to reach it
-            if j not in a:
-                dp[j+1] += dp[j]
+    # Iterate through all possible strings that satisfy Condition 1
+    for i in range(26):
+        # Create a new string by replacing the ? with the ith letter of the alphabet
+        new_string = s.replace("?", chr(i + 97))
 
-    # Return the number of ways to reach the top step
-    return dp[n] % 1000000007
+        # Check if the new string contains T as a contiguous substring
+        if t in new_string:
+            # If it does, check if it is lexicographically smaller than the current result
+            if new_string < result:
+                # If it is, update the result
+                result = new_string
+
+    # Return the result
+    return result
 

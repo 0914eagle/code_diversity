@@ -1,10 +1,9 @@
 
-def solve(k):
-    a, b = 0, 0
-    for i in range(k):
-        if i % 2 == 0:
-            a += 1
-        else:
-            b += 1
-    return a, b
+def solve(N, K, x):
+    # Calculate the minimum distance covered by each robot
+    min_dist_A = sum([abs(x_i - 0) for x_i in x])
+    min_dist_B = sum([abs(x_i - K) for x_i in x])
+
+    # Return the minimum of the two distances
+    return min(min_dist_A, min_dist_B)
 

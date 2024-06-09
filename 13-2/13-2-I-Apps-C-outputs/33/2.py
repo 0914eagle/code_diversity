@@ -1,36 +1,35 @@
 
-def solve_small_y_puzzle(t, n):
-    # Initialize the memoization dictionary
-    memo = {}
+def is_possible(N, M, roads):
+    # Initialize a graph with N nodes and 0 edges
+    graph = [[] for _ in range(N)]
 
-    # Initialize the minimum cost to solve the puzzle
-    min_cost = float('inf')
+    # Add edges to the graph
+    for road in roads:
+        graph[road[0] - 1].append(road[1] - 1)
+        graph[road[1] - 1].append(road[0] - 1)
 
-    # Recursively solve the puzzle
-    solve_small_y_puzzle_helper(t, n, 1, 2, 3, memo, min_cost)
+    # Check if the graph is connected
+    visited = [False] * N
+    queue = [0]
+    visited[0] = True
+    while queue:
+        node = queue.pop(0)
+        for neighbor in graph[node]:
+            if not visited[neighbor]:
+                visited[neighbor] = True
+                queue.append(neighbor)
 
-    # Return the minimum cost to solve the puzzle
-    return min_cost
+    # If the graph is not connected, return NO
+    if not all(visited):
+        return "NO"
 
-def solve_small_y_puzzle_helper(t, n, i, j, k, memo, min_cost):
-    # Base case: if there are no disks left to move, return 0
-    if n == 0:
-        return 0
+    # If the graph is connected, return YES and a possible direction assignment
+    direction = []
+    for road in roads:
+        if road[0] != 1:
+            direction.append([road[0], road[1]])
+        else:
+            direction.append([road[1], road[0]])
 
-    # Base case: if the current configuration has already been visited, return the memoized value
-    if (n, i, j, k) in memo:
-        return memo[(n, i, j, k)]
-
-    # Recursive case: move the top disk from rod i to rod j
-    cost1 = t[i - 1][j - 1] + solve_small_y_puzzle_helper(t, n - 1, i, k, j, memo, min_cost)
-
-    # Recursive case: move the top disk from rod i to rod k
-    cost2 = t[i - 1][k - 1] + solve_small_y_puzzle_helper(t, n - 1, i, j, k, memo, min_cost)
-
-    # Recursive case: move the top disk from rod j to rod k
-    cost3 = t[j - 1][k - 1] + solve_small_y_puzzle_helper(t, n - 1, i, j, k, memo, min_cost)
-
-    # Memoize the current configuration and return the minimum cost
-    memo[(n, i, j, k)] = min(cost1, cost2, cost3)
-    return memo[(n, i, j, k)]
+    return "YES\n" + "\n".join(str(d) for d in direction)
 

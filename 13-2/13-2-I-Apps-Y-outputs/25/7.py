@@ -1,14 +1,10 @@
 
-import datetime
-
-def is_halloween(date_string):
-    month, day = date_string.split()
-    month = month.upper()
-    day = int(day)
-    if month == "OCT" and day == 31:
-        return "yup"
-    elif month == "DEC" and day == 25:
-        return "yup"
-    else:
-        return "nope"
+def solve():
+    N = int(input())
+    A = list(map(int, input().split()))
+    count = 0
+    while all(a % 2 == 0 for a in A):
+        count += 1
+        A = [a // 2 for a in A]
+    return count
 

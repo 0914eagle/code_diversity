@@ -1,32 +1,22 @@
 
-def solve(N, M, list, order):
-    # Initialize a dictionary to store the number of inspections needed for each student
-    inspections = {}
+def solve(offers):
+    # Sort the offers by the first section of the fence
+    sorted_offers = sorted(offers, key=lambda x: x[1])
 
-    # Initialize a set to store the names of the students that have been inspected
-    inspected = set()
+    # Initialize the variables to keep track of the colors and sections
+    colors = set()
+    sections = set()
 
-    # Initialize the number of inspections needed
-    num_inspections = 0
+    # Loop through the sorted offers and accept them if they are valid
+    for offer in sorted_offers:
+        color, start, end = offer
+        if color not in colors and len(colors) < 3 and start not in sections and end not in sections:
+            colors.add(color)
+            sections.update(range(start, end + 1))
 
-    # Loop through the list of students in the order they appear in the line
-    for i in range(N):
-        # If the student has not been inspected yet, inspect them
-        if i not in inspected:
-            num_inspections += 1
-            inspected.add(i)
-
-            # If the student's name is on the list, strike it
-            if order[i] in list:
-                list.remove(order[i])
-
-            # If the list is empty, break the loop
-            if not list:
-                break
-
-            # Move the student to the back of the line
-            order.append(order.pop(0))
-
-    # Return the number of inspections needed and the order of the students in the line after the inspections
-    return num_inspections, order
+    # Check if all sections of the fence have been painted
+    if len(sections) == 10000:
+        return len(offers)
+    else:
+        return "IMPOSSIBLE"
 

@@ -1,39 +1,50 @@
 
-def solve(n, m, t, op):
-    # Initialize a 2D array to store the grid
-    grid = [[0 for _ in range(n)] for _ in range(n)]
+def is_valid_solution(grid, n, k):
+    # Check if all rows are valid
+    for i in range(n):
+        row = [grid[i][j] for j in range(n)]
+        if len(set(row)) != n:
+            return False
     
-    # Fill in the grid with the given values
-    for i in range(m):
-        r, c = map(int, input().split())
-        grid[r-1][c-1] = i+1
+    # Check if all columns are valid
+    for j in range(n):
+        col = [grid[i][j] for i in range(n)]
+        if len(set(col)) != n:
+            return False
     
-    # Use recursion to find the number of valid ways to fill in the section
-    return count_ways(grid, t, op)
+    # Check if all subgrids are valid
+    for i in range(n):
+        for j in range(n):
+            subgrid = []
+            for row in range(i, i + 3):
+                for col in range(j, j + 3):
+                    subgrid.append(grid[row][col])
+            if len(set(subgrid)) != n:
+                return False
+    
+    return True
 
-def count_ways(grid, t, op):
-    # Base case: if the target value is 0, return 1
-    if t == 0:
-        return 1
+def solve_superdoku(n, k, grid):
+    # Check if the given grid is valid
+    if not is_valid_solution(grid, n, k):
+        return []
     
-    # Initialize the number of valid ways to 0
-    ways = 0
-    
-    # Iterate over the possible values that can be placed in the current grid square
-    for i in range(len(grid)):
-        # If the current grid square is not empty, skip it
-        if grid[i][i] != 0:
-            continue
-        
-        # Place the current value in the grid square
-        grid[i][i] = t
-        
-        # Recursively call the function to find the number of valid ways to fill in the rest of the section
-        ways += count_ways(grid, t-1, op)
-        
-        # Backtrack and remove the current value from the grid square
-        grid[i][i] = 0
-    
-    # Return the number of valid ways to fill in the section
-    return ways
+    # If the grid is valid, return it
+    return grid
+
+def main():
+    n, k = map(int, input().split())
+    grid = []
+    for i in range(k):
+        grid.append(list(map(int, input().split())))
+    solution = solve_superdoku(n, k, grid)
+    if solution:
+        print("yes")
+        for row in solution:
+            print(" ".join(map(str, row)))
+    else:
+        print("no")
+
+if __name__ == "__main__":
+    main()
 

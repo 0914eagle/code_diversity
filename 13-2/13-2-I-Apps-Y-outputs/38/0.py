@@ -1,24 +1,16 @@
 
-def get_max_team_size(a):
-    # Sort the array in ascending order
-    a.sort()
-    # Initialize the maximum team size and the current team size
-    max_team_size = 0
-    current_team_size = 0
-    # Iterate through the array
-    for i in range(len(a)):
-        # If the current team size is 0, add the current student to the team
-        if current_team_size == 0:
-            current_team_size += 1
-        # If the current team size is not 0, check if the current student's skill is within 5 of the previous student's skill
-        else:
-            if abs(a[i] - a[i-1]) <= 5:
-                current_team_size += 1
-            else:
-                # If the current student's skill is not within 5 of the previous student's skill, update the maximum team size
-                max_team_size = max(max_team_size, current_team_size)
-                current_team_size = 1
-    # Add the last student to the team
-    max_team_size = max(max_team_size, current_team_size + 1)
-    return max_team_size
+def solve(N, M):
+    # Initialize a set to store the even numbers
+    even_numbers = set()
+
+    # Add all even numbers from 2 to 2N to the set
+    for i in range(2, 2*N+1, 2):
+        even_numbers.add(i)
+
+    # Add all odd numbers from 1 to M to the set
+    for i in range(1, M+1, 2):
+        even_numbers.add(i)
+
+    # Return the number of pairs of numbers that add up to an even number
+    return len(even_numbers)
 

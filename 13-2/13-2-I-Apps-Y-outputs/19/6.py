@@ -1,25 +1,12 @@
 
-# Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.next = None
+N = int(input())
 
-def hasCycle(head):
-    # Use two pointers: fast and slow
-    # If there is a cycle, fast will eventually catch slow
-    # Since the cycle has a fixed length, we can use the following logic:
-    # If fast catches slow, we know that the cycle length is k
-    # We then move fast to the head of the list and slow to the beginning of the cycle
-    # After one round of the cycle, fast will be k nodes ahead of slow
-    # So we move fast k steps, and then fast and slow will be at the same node
-    # If they are at the same node, then we know there is a cycle
-    fast = head
-    slow = head
-    while fast and fast.next:
-        fast = fast.next.next
-        slow = slow.next
-        if fast == slow:
-            return True
-    return False
+# Calculate the number of 1000-yen bills needed to pay the price
+num_bills = N // 1000
+
+# Calculate the change
+change = N - (num_bills * 1000)
+
+# Print the change
+print(change)
 

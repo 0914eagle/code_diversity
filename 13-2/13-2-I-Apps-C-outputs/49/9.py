@@ -1,19 +1,36 @@
 
-def solve(n, planets):
-    # Initialize the minimum distance to travel
-    min_distance = 0
-    # Loop through each planet
-    for i in range(n):
-        # Find the distance to the current planet
-        distance = find_distance(planets[i], planets[(i+1)%n])
-        # Add the distance to the minimum distance
-        min_distance += distance
-    # Return the minimum distance
-    return min_distance
+def solve_bar_code(n, vertical_spec, horizontal_spec):
+    # Initialize the solution matrix
+    solution = [[0] * (n+1) for _ in range(n)]
 
-def find_distance(planet1, planet2):
-    # Find the Euclidean distance between the two planets
-    distance = ((planet1[0]-planet2[0])**2 + (planet1[1]-planet2[1])**2 + (planet1[2]-planet2[2])**2)**0.5
-    # Return the distance
-    return distance
+    # Iterate through the vertical specification
+    for i, spec in enumerate(vertical_spec):
+        # Find the number of groups to form
+        num_groups = len(spec)
+
+        # Iterate through the groups
+        for j, group_size in enumerate(spec):
+            # Find the starting index of the group
+            start_index = j * group_size
+
+            # Mark the borders in the group
+            for k in range(start_index, start_index + group_size):
+                solution[i][k] = 1
+
+    # Iterate through the horizontal specification
+    for j, spec in enumerate(horizontal_spec):
+        # Find the number of groups to form
+        num_groups = len(spec)
+
+        # Iterate through the groups
+        for i, group_size in enumerate(spec):
+            # Find the starting index of the group
+            start_index = i * group_size
+
+            # Mark the borders in the group
+            for k in range(start_index, start_index + group_size):
+                solution[k][j] = 1
+
+    # Return the solution matrix
+    return solution
 

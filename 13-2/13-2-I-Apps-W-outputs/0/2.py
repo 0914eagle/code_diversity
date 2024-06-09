@@ -1,23 +1,11 @@
 
-def solve(s):
-    # Initialize variables
-    n = len(s)
-    count = 0
-    complementary_pairs = {"A": "T", "T": "A", "C": "G", "G": "C"}
-    
-    # Iterate through each substring of length 2 to n
-    for i in range(n):
-        for j in range(i+1, n+1):
-            # Check if the substring is complementary
-            if is_complementary(s[i:j], complementary_pairs):
-                count += 1
-    
-    return count
+import math
 
-def is_complementary(s, complementary_pairs):
-    # Check if the string is complementary
-    for i in range(len(s)):
-        if s[i] != complementary_pairs[s[i]]:
-            return False
-    return True
+def get_star_area(n, r):
+    # Calculate the area of a regular polygon
+    area = (n * r ** 2) / (4 * math.tan(math.pi / n))
+    return area
+
+n, r = map(int, input().split())
+print(get_star_area(n, r))
 

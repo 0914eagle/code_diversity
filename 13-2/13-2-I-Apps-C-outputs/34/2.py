@@ -1,28 +1,60 @@
 
-def solve(a, b, l, r):
-    # Initialize the string with the first a letters of the alphabet
-    s = "".join(chr(i + ord('a')) for i in range(a))
+def solve(grid):
+    # Initialize the minimum number of moves to infinity
+    min_moves = float('inf')
+    # Initialize the optimal solution as an empty list
+    optimal_solution = []
+    
+    # Loop through each possible move (row or column)
+    for move in range(1, len(grid) + 1):
+        # Check if the move is valid (i.e., the move is within the bounds of the grid)
+        if move <= len(grid):
+            # Clone the grid to prevent modifying the original grid
+            grid_clone = grid.copy()
+            # Perform the move by adding 1 to all cells in the selected row or column
+            for i in range(len(grid_clone)):
+                if move == 1:
+                    grid_clone[i][move - 1] += 1
+                else:
+                    grid_clone[move - 1][i] += 1
+            # Check if the grid is solved after the move
+            if is_solved(grid_clone):
+                # If the grid is solved, update the minimum number of moves and the optimal solution
+                min_moves = 1
+                optimal_solution = [move]
+                break
+            # If the grid is not solved, check if the number of moves is less than the current minimum
+            elif len(optimal_solution) == 0 or len(optimal_solution) > min_moves + 1:
+                # If the number of moves is less than the current minimum, update the minimum number of moves and the optimal solution
+                min_moves += 1
+                optimal_solution = [move]
+    
+    # Return the optimal solution
+    return optimal_solution
 
-    # Mister B's opponent's algorithm
-    def opponent_algorithm(suffix):
-        # Create a set of letters to choose from
-        letters = set(suffix)
-        # Generate a string of length a with distinct letters
-        t = "".join(chr(i + ord('a')) for i in range(a) if chr(i + ord('a')) not in letters)
-        return t
+def is_solved(grid):
+    # Check if all cells in the grid are equal to the target value
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j] != grid[0][0]:
+                return False
+    return True
 
-    # Mister B's strategy
-    while l <= r:
-        # Get the suffix of length a from position l to position r
-        suffix = s[l-1:r]
-        # Generate a string of length b using the opponent's algorithm
-        t = opponent_algorithm(suffix)
-        # Append the generated string to the end of s
-        s += t
-        # Increment l and r by b
-        l += b
-        r += b
+def main():
+    # Read the input grid from stdin
+    grid = []
+    for _ in range(int(input())):
+        grid.append(list(map(int, input().split())))
+    
+    # Solve the grid and print the output
+    solution = solve(grid)
+    if len(solution) == 0:
+        print(-1)
+    else:
+        print(len(solution))
+        for move in solution:
+            print(move)
 
-    # Return the number of different letters in the segment from position l to position r, inclusive
-    return len(set(s[l-1:r]))
+if __name__ == '__main__':
+    main()
 

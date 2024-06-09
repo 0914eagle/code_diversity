@@ -1,29 +1,21 @@
 
-def solve(n, k, c, names, enemies):
-    # Initialize variables
-    groups = []
-    current_group = []
-    group_size = 0
+def get_max_apples(n, positions, apples):
+    # Sort the positions and apples arrays based on the position
+    sorted_positions = sorted(positions)
+    sorted_apples = [apples[i] for i in range(n) if positions[i] in sorted_positions]
 
-    # Sort the names and enemies by the number of enemies each kid has
-    sorted_names = sorted(names, key=lambda x: len(enemies[x]))
+    # Initialize the maximum number of apples and the current position
+    max_apples = 0
+    current_position = 0
 
-    # Iterate through the sorted names
-    for name in sorted_names:
-        # If the current group is full, create a new group
-        if group_size == c:
-            groups.append(current_group)
-            current_group = []
-            group_size = 0
+    # Iterate through the sorted positions and apples arrays
+    for i in range(n):
+        # If the current position is not the same as the current position, move to the next position
+        if sorted_positions[i] != current_position:
+            current_position = sorted_positions[i]
 
-        # If the name is not an enemy of anyone in the current group, add it to the group
-        if all(name not in group for group in current_group):
-            current_group.append(name)
-            group_size += 1
+        # Add the number of apples at the current position to the maximum number of apples
+        max_apples += sorted_apples[i]
 
-    # Add the last group if it is not empty
-    if current_group:
-        groups.append(current_group)
-
-    return groups
+    return max_apples
 

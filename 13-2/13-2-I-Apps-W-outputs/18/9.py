@@ -1,29 +1,34 @@
 
-def get_maximum_moves(maze):
-    # Initialize variables
-    max_moves = 0
-    start_row, start_col = 0, 0
-    end_row, end_col = 0, 0
-
-    # Find the starting and ending squares
-    for row in range(len(maze)):
-        for col in range(len(maze[0])):
-            if maze[row][col] == "S":
-                start_row, start_col = row, col
-            if maze[row][col] == "G":
-                end_row, end_col = row, col
-
-    # Breadth-first search to find the maximum number of moves
-    queue = [(start_row, start_col)]
-    visited = set()
-    while queue:
-        row, col = queue.pop(0)
-        visited.add((row, col))
-        if row == end_row and col == end_col:
-            return len(visited) - 1
-        for r, c in [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]:
-            if 0 <= r < len(maze) and 0 <= c < len(maze[0]) and maze[r][c] == "." and (r, c) not in visited:
-                queue.append((r, c))
-
-    return max_moves
+def solve(a, b):
+    # Initialize the maximum number of notes that can be read
+    max_notes = 0
+    # Initialize the number of notes to read in the first day
+    n = 0
+    # Initialize the number of notes to read in the second day
+    m = 0
+    # Initialize the list of notes to read in the first day
+    p = []
+    # Initialize the list of notes to read in the second day
+    q = []
+    
+    # Iterate through all possible combinations of notes to read
+    for i in range(1, a+1):
+        for j in range(1, b+1):
+            # Calculate the total number of hours needed to read the current combination of notes
+            total_hours = i + j
+            # Check if the current combination of notes is the largest possible
+            if total_hours > max_notes:
+                # Update the maximum number of notes that can be read
+                max_notes = total_hours
+                # Update the number of notes to read in the first day
+                n = i
+                # Update the number of notes to read in the second day
+                m = j
+                # Update the list of notes to read in the first day
+                p = list(range(1, n+1))
+                # Update the list of notes to read in the second day
+                q = list(range(n+1, n+m+1))
+    
+    # Return the maximum number of notes that can be read and the lists of notes to read in the first and second days
+    return max_notes, p, m, q
 

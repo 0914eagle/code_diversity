@@ -1,29 +1,17 @@
 
-def solve(n, m, ships):
-    # Initialize a list to store the instructions
-    instructions = []
+def solve_nvwls(dictionary, message):
+    # Initialize an empty list to store the reconstruction
+    reconstruction = []
 
-    # Loop through each ship and check if it can be avoided
-    for ship in ships:
-        # Check if the ship is already outside the range of the torpedo
-        if ship[0] > n or ship[1] < -n:
-            continue
+    # Iterate through the dictionary
+    for word in dictionary:
+        # Check if the word is a prefix of the message
+        if message.startswith(word):
+            # If it is, add it to the reconstruction
+            reconstruction.append(word)
+            # Update the message to remove the word
+            message = message[len(word):]
 
-        # Check if the ship is within the range of the torpedo
-        if -n <= ship[0] <= n and -n <= ship[1] <= n:
-            # Calculate the distance between the ship and the torpedo
-            distance = abs(ship[0] - ship[1])
-
-            # Check if the ship can be avoided by turning left or right
-            if distance % 2 == 0:
-                instructions.append("-")
-            else:
-                instructions.append("+")
-
-    # If all ships can be avoided, return the instructions
-    if len(instructions) == m:
-        return "".join(instructions)
-
-    # If not all ships can be avoided, return "impossible"
-    return "impossible"
+    # Return the reconstruction
+    return " ".join(reconstruction)
 

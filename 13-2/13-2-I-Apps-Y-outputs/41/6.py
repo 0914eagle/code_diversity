@@ -1,17 +1,18 @@
 
-def solve(N, clock_direction, minutes_to_change, hour, minute):
-    if clock_direction == "F":
-        new_hour = hour + minutes_to_change // 60
-        new_minute = minute + minutes_to_change % 60
-    else:
-        new_hour = hour - minutes_to_change // 60
-        new_minute = minute - minutes_to_change % 60
-    
-    if new_hour > 23:
-        new_hour = new_hour - 24
-    
-    if new_minute < 0:
-        new_minute = new_minute + 60
-    
-    return f"{new_hour:02d} {new_minute:02d}"
+def safe_order(n, students):
+    # Initialize the pile with the first room's exams
+    pile = sum(students)
+    # Initialize the safe order with the first room
+    order = [1]
+    # Iterate through the remaining rooms
+    for i in range(2, n+1):
+        # If the pile has enough exams, distribute them randomly to the students in the current room
+        if pile >= students[i-1]:
+            pile -= students[i-1]
+            order.append(i)
+        # If the pile runs out of exams, return "impossible"
+        else:
+            return "impossible"
+    # Return the safe order
+    return order
 

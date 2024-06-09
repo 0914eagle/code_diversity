@@ -1,13 +1,16 @@
 
-def solve(a, p):
-    n = len(a)
-    m = len(p)
-    for i in range(m):
-        for j in range(i+1, m):
-            if p[i] > p[j]:
-                p[i], p[j] = p[j], p[i]
-    for i in range(n-1):
-        if a[i] > a[i+1]:
-            return "NO"
-    return "YES"
+n, k = map(int, input().split())
+
+# Calculate the minimum difference
+diff = n // k
+
+# Calculate the remainder
+rem = n % k
+
+# Distribute the remainder equally among the first k-1 users
+for i in range(k-1):
+    diff += 1
+
+# Print the minimum difference
+print(diff)
 

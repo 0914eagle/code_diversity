@@ -1,38 +1,25 @@
 
-def get_identical_rooms(maze):
-    # Initialize a dictionary to store the room numbers and their connections
-    room_connections = {}
-    for room in maze:
-        room_connections[room[0]] = set(room[1:])
+def get_max_protected_rooms(num_rooms, num_doors, door_list):
+    # Initialize a graph with the given number of rooms
+    graph = [[] for _ in range(num_rooms)]
 
-    # Initialize a set to store the effectively identical rooms
-    identical_rooms = set()
+    # Add edges to the graph based on the door list
+    for u, v in door_list:
+        graph[u].append(v)
+        graph[v].append(u)
 
-    # Iterate through the rooms and their connections
-    for room, connections in room_connections.items():
-        # If the room has already been marked as effectively identical, skip it
-        if room in identical_rooms:
-            continue
-        # If the room has no connections, it is effectively identical to itself
-        if not connections:
-            identical_rooms.add(room)
-            continue
-        # If the room has connections, find the effectively identical rooms
-        for connection in connections:
-            # If the connection is not in the dictionary, it is effectively identical to the current room
-            if connection not in room_connections:
-                identical_rooms.add(room)
-                break
-            # If the connection is in the dictionary but has no connections, it is effectively identical to the current room
-            elif not room_connections[connection]:
-                identical_rooms.add(room)
-                break
-            # If the connection is in the dictionary and has connections, find the effectively identical rooms recursively
-            else:
-                recursive_identical_rooms = get_identical_rooms(room_connections[connection])
-                identical_rooms.update(recursive_identical_rooms)
-                identical_rooms.add(room)
-                break
+    # Find the door that connects the most rooms to the outside of the building
+    max_protected_rooms = 0
+    for door in range(num_doors):
+        # Count the number of rooms that can only be reached from the outside through this door
+        protected_rooms = 0
+        for room in range(num_rooms):
+            if room != door and graph[door].count(room) == 1:
+                protected_rooms += 1
 
-    return identical_rooms
+        # Update the maximum number of protected rooms if necessary
+        if protected_rooms > max_protected_rooms:
+            max_protected_rooms = protected_rooms
+
+    return max_protected_rooms
 

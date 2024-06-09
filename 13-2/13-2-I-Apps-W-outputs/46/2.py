@@ -1,11 +1,13 @@
 
-def max_orders(orders):
-    orders.sort(key=lambda x: x[0])
+def solve(a, b, s):
+    n = len(a)
+    m = len(b)
     count = 0
-    end_time = 0
-    for order in orders:
-        if order[0] >= end_time:
-            count += 1
-            end_time = order[1]
+    for i in range(n):
+        for j in range(i+1, n+1):
+            for k in range(m):
+                for l in range(k+1, m+1):
+                    if a[i:j] + b[k:l] == s:
+                        count += 1
     return count
 

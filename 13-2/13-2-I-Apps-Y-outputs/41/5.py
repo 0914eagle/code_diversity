@@ -1,20 +1,33 @@
 
-def get_new_time(clock_change):
-    # Initialize variables
-    roll_forward, minutes_changed, hour, minute = clock_change
+def is_safe_order(rooms):
+    # Initialize a pile of exams with the number of exams in the first room
+    pile = rooms[0]
+    # Iterate through the remaining rooms
+    for i in range(1, len(rooms)):
+        # If the pile has enough exams to distribute to the current room, distribute them and add the exams from the current room to the pile
+        if pile >= rooms[i]:
+            pile += rooms[i]
+        # If the pile does not have enough exams to distribute to the current room, return False
+        else:
+            return False
+    return True
 
-    # Calculate the new time
-    new_hour = hour + int(minutes_changed / 60)
-    new_minute = minute + (minutes_changed % 60)
+def find_safe_order(rooms):
+    # Initialize a list to store the safe order
+    safe_order = []
+    # Iterate through the rooms
+    for i in range(len(rooms)):
+        # If the current room is safe to visit, add it to the safe order
+        if is_safe_order(rooms[i:]):
+            safe_order.append(i)
+            break
+    # If no safe order was found, return "impossible"
+    if not safe_order:
+        return "impossible"
+    # Return the safe order
+    return safe_order
 
-    # Handle rollover
-    if roll_forward == "F":
-        if new_hour == 24:
-            new_hour = 0
-    else:
-        if new_hour == -1:
-            new_hour = 23
-
-    # Return the new time
-    return f"{new_hour:02d} {new_minute:02d}"
+n = int(input())
+rooms = [int(i) for i in input().split()]
+print(find_safe_order(rooms))
 

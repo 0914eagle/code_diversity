@@ -1,20 +1,25 @@
 
-def solve(n, runners):
-    # Sort the runners by their time for the 1st leg in descending order
-    runners.sort(key=lambda x: x[1], reverse=True)
+import sys
+
+# Get the number of relatives
+N = int(input())
+
+# Initialize the total value to 0
+total_value = 0
+
+# Loop through each relative
+for i in range(N):
+    # Get the amount and currency of the otoshidama
+    amount, currency = input().split()
     
-    # Initialize the team with the fastest runner for the 1st leg
-    team = [runners[0]]
+    # If the currency is JPY, add the amount to the total value
+    if currency == "JPY":
+        total_value += float(amount)
     
-    # Iterate over the remaining runners
-    for runner in runners[1:]:
-        # If the runner's time for the 1st leg is faster than the current team's time, replace the team with the current runner for the 1st leg
-        if runner[1] < team[0][1]:
-            team = [runner]
-        # If the runner's time for the 2nd leg is faster than the current team's time, add the runner to the team for the 2nd leg
-        elif runner[2] < team[0][2]:
-            team.append(runner)
-    
-    # Return the team with the fastest time
-    return team
+    # If the currency is BTC, convert it to JPY and add it to the total value
+    elif currency == "BTC":
+        total_value += float(amount) * 380000.0
+
+# Print the total value
+print(total_value)
 

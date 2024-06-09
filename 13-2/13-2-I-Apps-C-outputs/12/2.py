@@ -1,41 +1,36 @@
 
-def count_valid_colorings(n, grid):
-    # Initialize a dictionary to store the number of valid colorings for each row
-    valid_colorings = {i: 0 for i in range(1, n+1)}
-    
-    # Loop through each row of the grid
-    for i in range(1, n+1):
-        # If the row is odd, there are n hexagons in the row
-        if i % 2 == 1:
-            num_hexagons = n
-        # If the row is even, there are n-1 hexagons in the row
-        else:
-            num_hexagons = n-1
-        
-        # Loop through each hexagon in the row
-        for j in range(1, num_hexagons+1):
-            # If the current hexagon is not colored, skip it
-            if grid[i][j] == -1:
-                continue
-            
-            # If the current hexagon is colored, check if it forms a valid loop
-            valid_loop = True
-            
-            # Loop through each neighboring hexagon
-            for k in range(1, num_hexagons+1):
-                # If the neighboring hexagon is not colored, skip it
-                if grid[i][k] == -1:
-                    continue
-                
-                # If the neighboring hexagon is colored and is not the current hexagon, check if it forms a valid loop
-                if grid[i][k] != grid[i][j] and grid[i][k] != 6-grid[i][j]:
-                    valid_loop = False
-                    break
-            
-            # If the current hexagon forms a valid loop, increment the number of valid colorings for the row
-            if valid_loop:
-                valid_colorings[i] += 1
-    
-    # Return the sum of the number of valid colorings for each row
-    return sum(valid_colorings.values())
+def black_vienna(investigations):
+    num_investigations = len(investigations)
+    num_suspects = 26
+    num_solutions = 0
+
+    for i in range(num_investigations):
+        suspects = investigations[i][:2]
+        player = investigations[i][2]
+        reply = investigations[i][3]
+
+        # Check if the reply is valid
+        if reply < 0 or reply > 2:
+            return 0
+
+        # Check if the suspects are valid
+        if not (suspects[0] in range(num_suspects) and suspects[1] in range(num_suspects)):
+            return 0
+
+        # Check if the player is valid
+        if player != 1 and player != 2:
+            return 0
+
+        # Check if the reply is consistent with the player's hand
+        if player == 1:
+            if reply > num_suspects - 2:
+                return 0
+        elif player == 2:
+            if reply > num_suspects - 1:
+                return 0
+
+        # Update the number of solutions
+        num_solutions += reply
+
+    return num_solutions
 

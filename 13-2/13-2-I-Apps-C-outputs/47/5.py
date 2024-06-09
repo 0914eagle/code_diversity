@@ -1,19 +1,45 @@
 
-def solve(n, cans):
-    # Initialize a list to store the number of cans that will explode
-    num_exploding_cans = [0] * n
-
-    # Loop through each can
+def solve(n, m, io_list):
+    # Initialize a dictionary to store the IOUs
+    io_dict = {}
     for i in range(n):
-        # Get the location and blast radius of the current can
-        x, r = cans[i]
-
-        # Loop through each can again
+        io_dict[i] = {}
+    for i, j, c in io_list:
+        # If the IOU is not already in the dictionary, add it
+        if j not in io_dict[i]:
+            io_dict[i][j] = c
+        # If the IOU is already in the dictionary, update the amount
+        else:
+            io_dict[i][j] += c
+    
+    # While there are still IOUs to cancel
+    while True:
+        # Find the smallest IOU amount in the dictionary
+        min_amount = float('inf')
+        for i in range(n):
+            for j in range(n):
+                if i != j and i in io_dict and j in io_dict[i] and io_dict[i][j] < min_amount:
+                    min_amount = io_dict[i][j]
+        
+        # If there are no more IOUs to cancel, break the loop
+        if min_amount == float('inf'):
+            break
+        
+        # Cancel the smallest IOU amount
+        for i in range(n):
+            for j in range(n):
+                if i != j and i in io_dict and j in io_dict[i] and io_dict[i][j] == min_amount:
+                    io_dict[i][j] = 0
+                    if j in io_dict and i in io_dict[j] and io_dict[j][i] == min_amount:
+                        io_dict[j][i] = 0
+    
+    # Count the number of IOUs left
+    num_io_left = 0
+    for i in range(n):
         for j in range(n):
-            # If the current can is not the same as the current can and it is within the blast radius
-            if i != j and abs(cans[j][0] - x) <= r:
-                # Increment the number of cans that will explode
-                num_exploding_cans[i] += 1
-
-    return num_exploding_cans
+            if i != j and i in io_dict and j in io_dict[i] and io_dict[i][j] > 0:
+                num_io_left += 1
+    
+    # Return the number of IOUs left and the IOUs that are left
+    return num_io_left, io_dict
 

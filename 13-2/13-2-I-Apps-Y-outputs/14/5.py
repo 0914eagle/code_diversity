@@ -1,27 +1,28 @@
 
-def solve(n, p, m, participants, scores):
-    # Initialize a dictionary to store the names and scores of the participants
-    participant_scores = {}
-
-    # Iterate over the list of participants and their scores
-    for i in range(m):
-        # Extract the name and score of the current participant
-        name, score = participants[i], scores[i]
-
-        # If the participant is not in the dictionary, add them with their score
-        if name not in participant_scores:
-            participant_scores[name] = score
-        # If the participant is already in the dictionary, add their score to the current total
-        else:
-            participant_scores[name] += score
-
-    # Find the winner(s)
-    winners = [name for name, score in participant_scores.items() if score >= p]
-
-    # If no one reached the minimum required score, return "No winner!"
-    if not winners:
-        return "No winner!"
-
-    # Return the winner(s) in the order they reached the required score
-    return "\n".join([f"{name} wins!" for name in winners])
+def can_atcodeer_carry_out_his_plan(plan):
+    # Initialize a set to store the visited points
+    visited = set()
+    # Add the starting point to the set
+    visited.add((0, 0))
+    # Iterate through the plan
+    for t, x, y in plan:
+        # Get the current point
+        current_point = (x, y)
+        # Check if the current point has been visited before
+        if current_point in visited:
+            # If it has, return False
+            return False
+        # Add the current point to the set of visited points
+        visited.add(current_point)
+        # Get the next four points that AtCoDeer can visit
+        next_points = [(x+1, y), (x-1, y), (x, y+1), (x, y-1)]
+        # Check if any of the next points have been visited before
+        for next_point in next_points:
+            if next_point in visited:
+                # If any of them have, return False
+                return False
+        # If none of the next points have been visited before, add them to the set of visited points
+        visited.update(next_points)
+    # If AtCoDeer has visited all the points in the plan, return True
+    return True
 

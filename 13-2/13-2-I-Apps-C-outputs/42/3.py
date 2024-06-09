@@ -1,14 +1,6 @@
 
-def solve(a):
-    # Step 1: Find the minimal element in the list
-    min_element = min(a)
-    
-    # Step 2: Count the number of elements that are divisible by the minimal element
-    count = 0
-    for element in a:
-        if element % min_element == 0:
-            count += 1
-    
-    # Step 3: Return the number of colors needed
-    return count
+def get_max_beauty(n):
+    def beauty(p):
+        return sum(i ^ p[i] for i in range(n+1))
+    return max(itertools.permutations(range(n+1)), key=beauty)
 

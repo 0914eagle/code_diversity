@@ -1,36 +1,21 @@
 
-def solve(n, k, c, names, enemies):
-    # Initialize the minimum number of groups to n
-    min_groups = n
-    # Initialize the current number of groups to 0
-    current_groups = 0
-    # Initialize the current group size to 0
-    current_group_size = 0
-    # Initialize the groups dictionary to store the groups
-    groups = {}
+def get_max_apples(n, positions, apples):
+    # Sort the positions and apples arrays based on the position
+    sorted_positions = sorted(positions)
+    sorted_apples = [apples[i] for i in range(n) if positions[i] in sorted_positions]
 
-    # Sort the names and enemies lists
-    names.sort()
-    enemies.sort(key=lambda x: (x[0], x[1]))
+    # Initialize the maximum number of apples and the current position
+    max_apples = 0
+    current_position = 0
 
-    # Iterate through the names and enemies lists
+    # Iterate through the sorted positions and apples arrays
     for i in range(n):
-        # If the current group size is less than the capacity of the bus, add the current name to the current group
-        if current_group_size < c:
-            current_group_size += 1
-            groups[current_groups] = groups.get(current_groups, []) + [names[i]]
-        # If the current group size is equal to the capacity of the bus, create a new group and add the current name to it
-        else:
-            current_groups += 1
-            current_group_size = 1
-            groups[current_groups] = [names[i]]
+        # If the current position is not the same as the current position, move to the next position
+        if sorted_positions[i] != current_position:
+            current_position = sorted_positions[i]
 
-        # If the current name is an enemy of the previous name, create a new group and add both names to it
-        if i > 0 and (names[i], names[i-1]) in enemies:
-            current_groups += 1
-            current_group_size = 2
-            groups[current_groups] = [names[i], names[i-1]]
+        # Add the number of apples at the current position to the maximum number of apples
+        max_apples += sorted_apples[i]
 
-    # Return the minimum number of groups and the groups dictionary
-    return min_groups, groups
+    return max_apples
 

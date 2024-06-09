@@ -1,26 +1,34 @@
 
-def get_correct_answers(answers, sequence):
-    correct_answers = 0
-    for i, answer in enumerate(answers):
-        if answer == sequence[i % len(sequence)]:
-            correct_answers += 1
-    return correct_answers
+def is_round(n):
+    return n % 10 == 0 and all(int(d) == 0 for d in str(n)[1:])
 
-def get_winner(answers, sequences):
-    correct_answers = [get_correct_answers(answers, sequence) for sequence in sequences]
-    max_correct_answers = max(correct_answers)
-    winners = [name for i, name in enumerate(names) if correct_answers[i] == max_correct_answers]
-    return max_correct_answers, sorted(winners)
+def get_min_summands(n):
+    k = 1
+    while n > 0:
+        if is_round(n):
+            return k
+        n -= 1
+        k += 1
+    return k
 
-names = ["Adrian", "Bruno", "Goran"]
-sequences = [
-    "A", "B", "C", "A", "B", "C", "A", "B", "C", "A", "B", "C",
-    "B", "A", "B", "C", "B", "A", "B", "C", "B", "A", "B", "C",
-    "C", "C", "A", "A", "B", "B", "C", "C", "A", "A", "B", "B"
-]
+def get_summands(n):
+    k = get_min_summands(n)
+    result = []
+    while n > 0:
+        if is_round(n):
+            result.append(n)
+            return result
+        n -= 1
+    return result
 
-answers = input()
-max_correct_answers, winners = get_winner(answers, sequences)
-print(max_correct_answers)
-print(" ".join(winners))
+def solve(n):
+    k = get_min_summands(n)
+    result = get_summands(n)
+    return f"{k}\n{' '.join(str(r) for r in result)}"
+
+if __name__ == "__main__":
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        print(solve(n))
 

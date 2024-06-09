@@ -1,23 +1,34 @@
 
-def solve(n, k):
-    if k < 1 or k > n:
-        return "NO"
-    
-    MS = [i for i in range(1, n+1)]
-    ME = [i for i in range(1, n+1)]
-    VS = [i for i in range(1, n+1)]
-    VE = [i for i in range(1, n+1)]
-    
-    for i in range(k):
-        MS[i], ME[i] = i+1, i+2
-        VS[i], VE[i] = i+1, i+2
-    
-    for i in range(k):
-        for j in range(i+1, k):
-            if MS[i] < MS[j] and ME[i] < ME[j]:
-                return "NO"
-            if VS[i] < VS[j] and VE[i] < VE[j]:
-                return "NO"
-    
-    return "YES\n" + "\n".join([f"{MS[i]} {ME[i]}" for i in range(k)]) + "\n" + "\n".join([f"{VS[i]} {VE[i]}" for i in range(k)])
+import sys
+input = sys.stdin.read()
+n, m = map(int, input.split('\n')[0].split())
+neighbors = [set() for _ in range(n)]
+for i in range(m):
+    u, v = map(int, input.split('\n')[i+1].split())
+    neighbors[u].add(v)
+    neighbors[v].add(u)
+s, t = map(int, input.split('\n')[-1].split())
+
+# Initialize the probability of meeting at each station
+prob = [0] * n
+prob[s] = 1
+prob[t] = 1
+
+# Loop until the probability of meeting at each station is the same
+while True:
+    new_prob = [0] * n
+    for i in range(n):
+        for j in neighbors[i]:
+            new_prob[i] += prob[j] / len(neighbors[i])
+    if new_prob == prob:
+        break
+    prob = new_prob
+
+# Calculate the expected time of meeting
+expected_time = 0
+for i in range(n):
+    expected_time += prob[i] * i
+expected_time /= sum(prob)
+
+print(expected_time)
 

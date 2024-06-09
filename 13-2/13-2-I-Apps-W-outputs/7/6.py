@@ -1,34 +1,18 @@
 
-def get_maximum_circular_value(numbers):
-    n = len(numbers)
-    if n == 1:
-        return numbers[0]
-    
-    # initialize the maximum circular value
-    max_value = 0
-    
-    # iterate through all possible starting indices
-    for i in range(n):
-        # calculate the circular value for the current starting index
-        value = get_circular_value(numbers, i)
-        
-        # update the maximum circular value
-        max_value = max(max_value, value)
-    
-    return max_value
+def solve(n, T, times):
+    # Calculate the probability of solving each crossword
+    probabilities = [1 / 2] * n
 
-def get_circular_value(numbers, start_index):
-    n = len(numbers)
-    value = 0
-    
-    # iterate through the circle
+    # Calculate the expected number of crosswords solved
+    expected = 0
     for i in range(n):
-        # calculate the sum of the current element and the next element
-        value += numbers[(start_index + i) % n] + numbers[(start_index + i + 1) % n]
-        
-        # delete the current element and the next element
-        numbers.pop((start_index + i) % n)
-        numbers.pop((start_index + i + 1) % n)
-    
-    return value
+        expected += i * probabilities[i]
+
+    # Calculate the expected number of crosswords solved in T seconds
+    expected_in_T_seconds = expected * T
+
+    # Calculate the answer
+    answer = expected_in_T_seconds * 1000000007
+
+    return answer
 

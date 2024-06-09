@@ -1,23 +1,38 @@
 
-def get_max_sum(B):
+def is_tree(n, d, k):
+    # Check if the input is valid
+    if n < 1 or d < 1 or k < 1:
+        return False
     
-    # Initialize the maximum sum and the current sum
-    max_sum = 0
-    current_sum = 0
+    # Initialize a graph with n vertices and no edges
+    graph = [[] for _ in range(n)]
     
-    # Iterate through the sequence B
-    for i in range(len(B)):
-        # Add the current element to the current sum
-        current_sum += B[i]
+    # Add edges to the graph
+    for i in range(n - 1):
+        # Choose two random vertices
+        v1 = random.randint(0, n - 1)
+        v2 = random.randint(0, n - 1)
         
-        # If the current sum is greater than the maximum sum, update the maximum sum
-        if current_sum > max_sum:
-            max_sum = current_sum
-        
-        # If the current element is greater than the next element, subtract the next element from the current sum
-        if i < len(B) - 1 and B[i] > B[i+1]:
-            current_sum -= B[i+1]
+        # Check if the vertices are not already connected and if the degree of the vertices is less than or equal to k
+        if v1 != v2 and len(graph[v1]) + len(graph[v2]) <= k:
+            graph[v1].append(v2)
+            graph[v2].append(v1)
     
-    # Return the maximum sum
-    return max_sum
+    # Check if the graph is connected
+    visited = set()
+    queue = [0]
+    while queue:
+        vertex = queue.pop(0)
+        if vertex not in visited:
+            visited.add(vertex)
+            queue.extend(graph[vertex])
+    
+    # Check if the graph has diameter at most d
+    diameter = 0
+    for vertex in visited:
+        for neighbor in graph[vertex]:
+            if neighbor not in visited:
+                diameter = max(diameter, vertex - neighbor)
+    
+    return diameter <= d
 

@@ -1,46 +1,22 @@
 
-def solve(maze):
-    # Convert the maze to a graph
-    graph = {}
-    for i in range(len(maze)):
-        for j in range(len(maze[0])):
-            if maze[i][j] == '.':
-                graph[(i, j)] = []
+def solve(a, b):
+    # Initialize variables
+    notes_read_today = 0
+    notes_read_tomorrow = 0
+    notes_to_read_today = []
+    notes_to_read_tomorrow = []
     
-    # Find all the neighbors for each road square
-    for i in range(len(maze)):
-        for j in range(len(maze[0])):
-            if maze[i][j] == '.':
-                if i > 0 and maze[i-1][j] == '.':
-                    graph[(i, j)].append((i-1, j))
-                if i < len(maze)-1 and maze[i+1][j] == '.':
-                    graph[(i, j)].append((i+1, j))
-                if j > 0 and maze[i][j-1] == '.':
-                    graph[(i, j)].append((i, j-1))
-                if j < len(maze[0])-1 and maze[i][j+1] == '.':
-                    graph[(i, j)].append((i, j+1))
+    # Iterate through all possible notes
+    for i in range(1, a+b+1):
+        # Check if the note can be read today
+        if i <= a:
+            notes_to_read_today.append(i)
+            notes_read_today += 1
+        # Check if the note can be read tomorrow
+        if i <= b:
+            notes_to_read_tomorrow.append(i)
+            notes_read_tomorrow += 1
     
-    # Find the shortest path between the starting and goal squares
-    start = None
-    goal = None
-    for i in range(len(maze)):
-        for j in range(len(maze[0])):
-            if maze[i][j] == '.':
-                if start is None:
-                    start = (i, j)
-                if goal is None:
-                    goal = (i, j)
-    
-    visited = set()
-    queue = [(start, 0)]
-    while queue:
-        (current, distance) = queue.pop(0)
-        if current not in visited:
-            visited.add(current)
-            if current == goal:
-                return distance
-            for neighbor in graph[current]:
-                queue.append((neighbor, distance+1))
-    
-    return -1
+    # Return the maximum number of notes that can be read
+    return notes_read_today, notes_to_read_today, notes_read_tomorrow, notes_to_read_tomorrow
 

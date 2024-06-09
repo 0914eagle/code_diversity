@@ -1,11 +1,19 @@
 
-def solve(queries):
-    answers = []
-    for query in queries:
-        n, k = query
-        if n == 0:
-            answers.append('.')
-        else:
-            answers.append(f"What are you doing while sending \"What are you doing at the end of the world? Are you busy? Will you save us?\"? Are you busy? Will you send \"What are you doing at the end of the world? Are you busy? Will you save us?\"?")[k-1]
-    return "".join(answers)
+def solve(N, M, K, onions, fence):
+    # Calculate the convex hull of the fence posts
+    hull = []
+    for i in range(M):
+        hull.append((fence[i][0], fence[i][1]))
+    for i in range(M):
+        hull.append((fence[i][0], fence[i][1]))
+    hull = set(hull)
+
+    # Calculate the number of onions inside the convex hull
+    num_onions = 0
+    for i in range(N):
+        if (onions[i][0], onions[i][1]) in hull:
+            num_onions += 1
+
+    # Return the maximum number of onions that can be protected
+    return num_onions
 

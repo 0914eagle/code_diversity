@@ -1,45 +1,44 @@
 
-def balanced_equation(equation):
-    # Initialize a dictionary to store the elements and their counts
-    elements = {}
+def solve(W, v_h, N, x, y, S, s):
+    # Initialize a dictionary to store the minimum time required to pass through each gate
+    min_time = {}
+    for i in range(N):
+        min_time[(x[i], y[i])] = float('inf')
     
-    # Iterate over the equation and parse the input
-    for line in equation:
-        if line == "0 0":
-            break
-        sign, num_elements = line.split(" ")
-        num_elements = int(num_elements)
-        for i in range(num_elements):
-            element, count = line.split(" ")
-            count = int(count)
-            if element not in elements:
-                elements[element] = 0
-            elements[element] += count if sign == "+" else -count
+    # Initialize a dictionary to store the minimum time required to pass through each gate with each pair of skis
+    min_time_skis = {}
+    for i in range(N):
+        min_time_skis[(x[i], y[i])] = {s[j]: float('inf') for j in range(S)}
     
-    # Find the least common multiple (LCM) of the counts for each element
-    lcm = 1
-    for count in elements.values():
-        lcm = lcm_of_two_numbers(lcm, count)
+    # Initialize the minimum time required to pass through the first gate with each pair of skis
+    for j in range(S):
+        min_time_skis[(x[0], y[0])][s[j]] = s[j]
     
-    # Divide the counts for each element by the LCM to get the balanced counts
-    balanced_elements = {}
-    for element, count in elements.items():
-        balanced_elements[element] = count // lcm
+    # Loop through each gate
+    for i in range(1, N):
+        # Loop through each pair of skis
+        for j in range(S):
+            # Check if the current pair of skis can pass through the current gate
+            if x[i] - W <= x[i-1] + v_h * min_time_skis[(x[i-1], y[i-1])][s[j]]:
+                # Update the minimum time required to pass through the current gate with the current pair of skis
+                min_time_skis[(x[i], y[i])][s[j]] = min(min_time_skis[(x[i], y[i])][s[j]], s[j] + min_time_skis[(x[i-1], y[i-1])][s[j]])
+            else:
+                # If the current pair of skis cannot pass through the current gate, set the minimum time to infinity
+                min_time_skis[(x[i], y[i])][s[j]] = float('inf')
+        
+        # Update the minimum time required to pass through the current gate
+        min_time[(x[i], y[i])] = min(min_time[(x[i], y[i])], min(min_time_skis[(x[i], y[i])].values()))
     
-    # Return the balanced counts in the order of the input equation
-    return [balanced_elements[element] for element in equation if element != "0 0"]
-
-def lcm_of_two_numbers(x, y):
-    if x > y:
-        greater = x
-    else:
-        greater = y
+    # Check if it is possible to pass through all the gates with any pair of skis
+    if min(min_time.values()) == float('inf'):
+        return "IMPOSSIBLE"
     
-    while(True):
-        if(greater % x == 0 and greater % y == 0):
-            lcm = greater
-            break
-        greater += 1
+    # Find the pair of skis that allows you to pass through all the gates in the shortest time
+    min_time_skis_shortest = float('inf')
+    for j in range(S):
+        if min_time_skis[(x[-1], y[-1])][s[j]] < min_time_skis_shortest:
+            min_time_skis_shortest = min_time_skis[(x[-1], y[-1])][s[j]]
+            best_ski = s[j]
     
-    return lcm
+    return best_ski
 

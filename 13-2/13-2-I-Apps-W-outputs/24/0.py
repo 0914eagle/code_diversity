@@ -1,4 +1,8 @@
 
-def solve(hex_number):
-    return int(hex_number, 16) % 2
+n = int(input())
+
+for i in range(n):
+    abbreviation = input()
+    year = int(abbreviation[-2:])
+    print(year)
 

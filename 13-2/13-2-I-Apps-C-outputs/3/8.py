@@ -1,24 +1,50 @@
 
-def find_sub_rectangle(n, m, x, y, a, b):
-    # Initialize the minimum distance as a large value
-    min_distance = 1e9
-    # Initialize the lexicographically minimum sub-rectangle
-    sub_rectangle = [0, 0, 0, 0]
-    
-    # Iterate over all possible sub-rectangles
-    for x1 in range(n):
-        for y1 in range(m):
-            for x2 in range(x1, n+1):
-                for y2 in range(y1, m+1):
-                    # Check if the sub-rectangle satisfies the conditions
-                    if x1 <= x <= x2 and y1 <= y <= y2 and (x2-x1)/(y2-y1) == a/b:
-                        # Calculate the distance between the center of the sub-rectangle and (x, y)
-                        distance = ((x2-x1)//2 - x + (y2-y1)//2 - y)**2
-                        # Check if the distance is smaller than the minimum distance
-                        if distance < min_distance:
-                            # Update the minimum distance and the lexicographically minimum sub-rectangle
-                            min_distance = distance
-                            sub_rectangle = [x1, y1, x2, y2]
-    
-    return sub_rectangle
+def get_smallest_number_of_invitees(teams, my_id):
+    # Initialize a set to store the IDs of the invitees
+    invitees = set()
+    # Add the ID of the friend to the set of invitees
+    invitees.add(my_id)
+    # Iterate through the teams
+    for team in teams:
+        # If the ID of the friend is not in the team, add the other employee in the team to the set of invitees
+        if my_id not in team:
+            invitees.add(team[0] if team[0] != my_id else team[1])
+    # Return the length of the set of invitees, which is the smallest number of invitees needed to meet the requirements
+    return len(invitees)
+
+def get_invitees(teams, my_id):
+    # Initialize a set to store the IDs of the invitees
+    invitees = set()
+    # Add the ID of the friend to the set of invitees
+    invitees.add(my_id)
+    # Iterate through the teams
+    for team in teams:
+        # If the ID of the friend is not in the team, add the other employee in the team to the set of invitees
+        if my_id not in team:
+            invitees.add(team[0] if team[0] != my_id else team[1])
+    # Return the set of invitees
+    return invitees
+
+def main():
+    # Read the number of teams from stdin
+    num_teams = int(input())
+    # Read the teams from stdin
+    teams = []
+    for _ in range(num_teams):
+        team = list(map(int, input().split()))
+        teams.append(team)
+    # Get the ID of the friend from stdin
+    my_id = int(input())
+    # Get the smallest number of invitees needed to meet the requirements
+    num_invitees = get_smallest_number_of_invitees(teams, my_id)
+    # Get the set of invitees
+    invitees = get_invitees(teams, my_id)
+    # Print the number of invitees
+    print(num_invitees)
+    # Print the IDs of the invitees
+    for invitee in invitees:
+        print(invitee)
+
+if __name__ == "__main__":
+    main()
 

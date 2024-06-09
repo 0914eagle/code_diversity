@@ -1,57 +1,70 @@
 
-def solve(N, edges):
-    # Initialize the graph as a dictionary of sets
-    graph = {i: set() for i in range(1, N + 1)}
+import math
 
-    # Add edges to the graph
-    for edge in edges:
-        graph[edge[0]].add(edge[1])
-        graph[edge[1]].add(edge[0])
+def solve(n, circles):
+    # Convert the input circles to a set of line segments
+    segments = []
+    for circle in circles:
+        x, y, r = circle
+        segments.append([(x + r, y), (x - r, y)])
+        segments.append([(x, y + r), (x, y - r)])
+    
+    # Sort the segments by their slope
+    segments.sort(key=lambda segment: segment[0][1] - segment[1][1])
+    
+    # Initialize the number of regions to 0
+    regions = 0
+    
+    # Iterate through the segments and count the number of regions
+    for segment in segments:
+        x1, y1 = segment[0]
+        x2, y2 = segment[1]
+        if x1 == x2:
+            # Horizontal segment, ignore
+            continue
+        elif y1 == y2:
+            # Vertical segment, ignore
+            continue
+        else:
+            # Calculate the equation of the line
+            m = (y2 - y1) / (x2 - x1)
+            c = y1 - m * x1
+            
+            # Check if the line intersects with any of the other segments
+            for other_segment in segments:
+                x3, y3 = other_segment[0]
+                x4, y4 = other_segment[1]
+                if x3 == x4:
+                    # Horizontal segment, ignore
+                    continue
+                elif y3 == y4:
+                    # Vertical segment, ignore
+                    continue
+                else:
+                    # Calculate the equation of the other line
+                    m_other = (y4 - y3) / (x4 - x3)
+                    c_other = y3 - m_other * x3
+                    
+                    # Check if the lines intersect
+                    if m == m_other:
+                        # Parallel lines, ignore
+                        continue
+                    else:
+                        # Calculate the intersection point
+                        x_intersect = (c_other - c) / (m - m_other)
+                        y_intersect = m * x_intersect + c
+                        
+                        # Check if the intersection point is between the endpoints of both segments
+                        if x_intersect >= min(x1, x2) and x_intersect <= max(x1, x2) and x_intersect >= min(x3, x4) and x_intersect <= max(x3, x4) and y_intersect >= min(y1, y2) and y_intersect <= max(y1, y2) and y_intersect >= min(y3, y4) and y_intersect <= max(y3, y4):
+                            regions += 1
+    
+    return regions
 
-    # Initialize the niceness sum
-    niceness_sum = 0
+n = int(input())
+circles = []
+for i in range(n):
+    x, y, r = map(int, input().split())
+    circles.append((x, y, r))
 
-    # Iterate over all possible colorings of the graph
-    for coloring in range(2 ** N):
-        # Initialize the niceness of this coloring
-        niceness = 0
-
-        # Iterate over all vertices in the graph
-        for vertex in graph:
-            # If the vertex is white in this coloring
-            if coloring & (1 << (vertex - 1)):
-                # Find the distance to the nearest black vertex
-                distance = find_distance(graph, vertex, coloring, 0)
-
-                # Update the niceness with the maximum distance
-                niceness = max(niceness, distance)
-
-        # Add the niceness of this coloring to the sum
-        niceness_sum += niceness
-
-    # Return the sum of nicenesses modulo (10^9 + 7)
-    return niceness_sum % (10 ** 9 + 7)
-
-def find_distance(graph, vertex, coloring, distance):
-    # If the vertex is black in this coloring
-    if not (coloring & (1 << (vertex - 1))):
-        # Return the current distance
-        return distance
-
-    # Otherwise, find the distance to the nearest black vertex
-    for neighbor in graph[vertex]:
-        # If the neighbor is black in this coloring
-        if not (coloring & (1 << (neighbor - 1))):
-            # Return the maximum distance between the two vertices
-            return max(distance, find_distance(graph, neighbor, coloring, distance + 1))
-
-    # If there are no black vertices, return 0
-    return 0
-
-# Main function
-N = int(input())
-edges = []
-for _ in range(N - 1):
-    edges.append(list(map(int, input().split())))
-print(solve(N, edges))
+print(solve(n, circles))
 

@@ -1,22 +1,40 @@
 
-def solve(n, cans):
-    # Initialize a list to store the number of cans that will explode
-    num_exploding_cans = [0] * n
-
-    # Loop through each can
+def solve(n, m, io_list):
+    # Initialize a dictionary to store the IOUs
+    io_dict = {}
     for i in range(n):
-        # Get the location and blast radius of the current can
-        x, r = cans[i]
-
-        # Loop through each can after the current can
+        io_dict[i] = {}
+    for i, j, c in io_list:
+        if i not in io_dict[j]:
+            io_dict[j][i] = -c
+        else:
+            io_dict[j][i] -= c
+        if j not in io_dict[i]:
+            io_dict[i][j] = c
+        else:
+            io_dict[i][j] += c
+    
+    # Find cycles and cancel IOUs
+    while True:
+        cancelled = False
+        for i in range(n):
+            for j in range(i+1, n):
+                if i in io_dict[j] and j in io_dict[i]:
+                    cancelled = True
+                    io_dict[i][j] = 0
+                    io_dict[j][i] = 0
+        if not cancelled:
+            break
+    
+    # Count the number of IOUs left and output them
+    io_count = 0
+    for i in range(n):
         for j in range(i+1, n):
-            # Get the location of the next can
-            y = cans[j][0]
-
-            # Check if the next can is in the blast radius of the current can
-            if x - y <= r:
-                # Increment the number of cans that will explode if the current can is shot
-                num_exploding_cans[i] += 1
-
-    return num_exploding_cans
+            if io_dict[i][j] != 0:
+                io_count += 1
+    print(io_count)
+    for i in range(n):
+        for j in range(i+1, n):
+            if io_dict[i][j] != 0:
+                print(i, j, io_dict[i][j])
 

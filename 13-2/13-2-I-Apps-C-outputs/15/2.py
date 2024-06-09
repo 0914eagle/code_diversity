@@ -1,53 +1,48 @@
 
-def solve(n, files):
-    # Initialize a graph with the given files as nodes
-    graph = {file: set() for file in files}
+import math
 
-    # Populate the graph with edges based on the import statements
-    for file, imports in files.items():
-        for import_file in imports:
-            graph[file].add(import_file)
-
-    # Find a shortest cycle in the graph
-    cycle = find_shortest_cycle(graph)
-
-    # If there is no cycle, return "SHIP IT"
-    if not cycle:
-        return "SHIP IT"
-
-    # Otherwise, return the names of the files in the cycle
-    return " ".join(cycle)
-
-def find_shortest_cycle(graph):
-    # Initialize a set to keep track of visited nodes
+def get_least_turning(nodes, edges):
+    # Initialize variables
+    turning = 0
     visited = set()
+    current_node = 0
+    previous_node = None
 
-    # Initialize a queue to keep track of nodes to visit
-    queue = [node for node in graph if node not in visited]
+    # Loop through the edges
+    for edge in edges:
+        # If the current node has not been visited before, add it to the visited set
+        if current_node not in visited:
+            visited.add(current_node)
+        # If the current node has been visited before, calculate the turning required
+        else:
+            # Calculate the angle between the current node and the previous node
+            angle = math.atan2(nodes[current_node][1] - nodes[previous_node][1], nodes[current_node][0] - nodes[previous_node][0])
+            # Add the angle to the total turning
+            turning += angle
+        # Set the current node as the previous node for the next iteration
+        previous_node = current_node
+        # Set the current node as the next node
+        current_node = edge
 
-    # While the queue is not empty
-    while queue:
-        # Dequeue a node and mark it as visited
-        node = queue.pop(0)
-        visited.add(node)
+    # Calculate the total turning required for the Eulerian circuit
+    turning += math.atan2(nodes[current_node][1] - nodes[previous_node][1], nodes[current_node][0] - nodes[previous_node][0])
 
-        # If the node has neighbors that have not been visited, add them to the queue
-        for neighbor in graph[node]:
-            if neighbor not in visited:
-                queue.append(neighbor)
+    return turning
 
-        # If the node has a neighbor that has already been visited, we have found a cycle
-        for neighbor in graph[node]:
-            if neighbor in visited:
-                # Return the cycle by tracing back the path from the node to the neighbor
-                cycle = [node]
-                while True:
-                    cycle.append(neighbor)
-                    neighbor = graph[neighbor].intersection(visited).pop()
-                    if neighbor == node:
-                        break
-                return cycle
+# Test the function with the sample input
+nodes = [(0, 0), (0, 1), (1, 0)]
+edges = [(0, 1), (0, 2), (1, 2)]
+print(get_least_turning(nodes, edges))
 
-    # If we reach this point, there is no cycle
-    return []
+# Part 2: Read input from file
+with open("input.txt", "r") as f:
+    # Read the number of nodes and edges
+    nodes, edges = map(int, f.readline().split())
+    # Read the node coordinates
+    nodes = [(int(x), int(y)) for x, y in [f.readline().split() for _ in range(nodes)]]
+    # Read the edge list
+    edges = [tuple(map(int, f.readline().split())) for _ in range(edges)]
+
+# Calculate the least turning required for the Eulerian circuit
+print(get_least_turning(nodes, edges))
 

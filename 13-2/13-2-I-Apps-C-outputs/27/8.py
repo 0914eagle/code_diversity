@@ -1,24 +1,37 @@
 
-def solve(n, m, s, a, b, c):
-    # Sort the bugs by complexity in descending order
-    sorted_bugs = sorted(range(m), key=lambda i: a[i])
+n = int(input())
+arr = list(map(int, input().split()))
 
-    # Initialize the students' passes and the number of days needed to fix the bugs
-    passes = [0] * n
-    days = 0
+# Initialize variables to keep track of the number of days Vasya has rest
+rest_days = 0
 
-    # Iterate through the bugs and assign them to the students
-    for i in sorted_bugs:
-        # Find the student with the highest level of ability who can fix the current bug
-        student = max(range(n), key=lambda j: b[j] - a[i])
+# Iterate through the list of days
+for i in range(n):
+    # If the gym is closed and the contest is not carried out, Vasya has a rest
+    if arr[i] == 0:
+        rest_days += 1
+    # If the gym is open and the contest is carried out, Vasya has a rest
+    elif arr[i] == 3:
+        rest_days += 1
+    # If the gym is open and the contest is not carried out, Vasya does sport
+    elif arr[i] == 2:
+        # If the next day is also open and the contest is not carried out, Vasya has a rest
+        if i < n-1 and arr[i+1] == 2:
+            rest_days += 1
+        # If the next day is closed or the contest is carried out, Vasya does sport
+        else:
+            pass
+    # If the gym is closed and the contest is carried out, Vasya does sport
+    elif arr[i] == 1:
+        # If the next day is also closed and the contest is carried out, Vasya has a rest
+        if i < n-1 and arr[i+1] == 1:
+            rest_days += 1
+        # If the next day is open and the contest is not carried out, Vasya does sport
+        elif i < n-1 and arr[i+1] == 2:
+            pass
+        # If the next day is closed or the contest is carried out, Vasya does sport
+        else:
+            pass
 
-        # Increase the student's passes and the number of days needed to fix the bug
-        passes[student] += c[student]
-        days += 1
-
-    # Check if the university can give the students the required passes
-    if sum(passes) <= s:
-        return "YES"
-    else:
-        return "NO"
+print(rest_days)
 

@@ -1,33 +1,20 @@
 
-def is_wall_completed(h, w, n, x):
-    # Initialize variables
-    current_layer = 0
-    current_row = 0
-    total_bricks = 0
-
-    # Iterate through the bricks
-    for i in range(n):
-        # Check if the current brick fits in the current layer
-        if total_bricks + x[i] <= w:
-            # Add the brick to the current layer
-            total_bricks += x[i]
-        else:
-            # Move to the next layer
-            current_layer += 1
-            current_row = 0
-            total_bricks = x[i]
-
-        # Check if the current layer is complete
-        if current_layer == h:
-            # Check if the current brick fits in the last layer
-            if total_bricks == w:
-                return "YES"
-            else:
-                return "NO"
-
-    # Check if the last layer is complete
-    if total_bricks == w:
-        return "YES"
+def solve(A, B, C, X, Y):
+    # Calculate the cost of buying X A-pizzas and Y B-pizzas separately
+    cost_A = X * A
+    cost_B = Y * B
+    
+    # Calculate the cost of buying two AB-pizzas and rearranging them into A-pizzas and B-pizzas
+    cost_AB = 2 * C
+    cost_A_from_AB = A
+    cost_B_from_AB = B
+    
+    # Calculate the total cost of buying X A-pizzas and Y B-pizzas
+    total_cost = cost_A + cost_B
+    
+    # If buying two AB-pizzas and rearranging them is cheaper than buying X A-pizzas and Y B-pizzas separately, return the cheaper option
+    if cost_AB + cost_A_from_AB + cost_B_from_AB < total_cost:
+        return cost_AB + cost_A_from_AB + cost_B_from_AB
     else:
-        return "NO"
+        return total_cost
 

@@ -1,37 +1,32 @@
 
-def solve(N, M, list, order):
-    # Initialize a dictionary to store the number of inspections needed for each student
-    inspections = {}
+def solve(offers):
+    # Sort the offers by the first section of the fence
+    sorted_offers = sorted(offers, key=lambda x: x[1])
 
-    # Initialize a set to store the names of the students that have been inspected
-    inspected = set()
+    # Initialize the variables to keep track of the number of colors and sections painted
+    num_colors = 0
+    num_sections = 0
 
-    # Loop through the list of students in the order given
-    for i in range(N):
-        # Get the name of the current student
-        name = order[i]
+    # Initialize the list to store the accepted offers
+    accepted_offers = []
 
-        # If the student has not been inspected yet, add them to the set of inspected students
-        if name not in inspected:
-            inspected.add(name)
+    # Iterate through the sorted offers
+    for offer in sorted_offers:
+        # Check if the current offer can be accepted
+        if num_colors < 3 and num_sections < 10000:
+            # Accept the offer and update the variables
+            accepted_offers.append(offer)
+            num_colors += 1
+            num_sections += offer[2] - offer[1] + 1
+        else:
+            # If the current offer cannot be accepted, break the loop
+            break
 
-            # If the student is on the list, add them to the dictionary of inspections
-            if name in list:
-                inspections[name] = i
-
-    # Loop through the list of students in the order given
-    for i in range(N):
-        # Get the name of the current student
-        name = order[i]
-
-        # If the student has not been inspected yet, add them to the set of inspected students
-        if name not in inspected:
-            inspected.add(name)
-
-            # If the student is on the list, add them to the dictionary of inspections
-            if name in list:
-                inspections[name] = i
-
-    # Return the minimum number of inspections needed and the positions of the students to go back to
-    return len(inspections), [inspections[name] for name in inspections]
+    # Check if all sections of the fence have been painted
+    if num_sections == 10000:
+        # If all sections have been painted, return the number of accepted offers
+        return len(accepted_offers)
+    else:
+        # If not all sections have been painted, return "IMPOSSIBLE"
+        return "IMPOSSIBLE"
 

@@ -1,23 +1,15 @@
 
-def solve(n, a, b, k, s):
-    # Convert the sequence to a list of integers
-    s = [1 if x == '+' else -1 for x in s]
+def solve(shadow_walk, lydia_walk):
+    # Calculate the distance between the two dogs at each point in their walks
+    distances = []
+    for i in range(len(shadow_walk)):
+        for j in range(len(lydia_walk)):
+            distances.append(calculate_distance(shadow_walk[i], lydia_walk[j]))
     
-    # Initialize the sum to 0
-    sum = 0
-    
-    # Iterate over the sequence
-    for i in range(k):
-        # Calculate the current term
-        term = s[i] * a ** (n - i) * b ** i
-        
-        # Add the term to the sum
-        sum += term
-        
-        # If the sum exceeds 10^9 + 9, subtract 10^9 + 9 to keep it in the correct range
-        if sum > 10**9 + 9:
-            sum -= 10**9 + 9
-    
-    # Return the sum modulo 10^9 + 9
-    return sum % (10**9 + 9)
+    # Find the minimum distance between the two dogs
+    return min(distances)
+
+def calculate_distance(point1, point2):
+    # Calculate the Euclidean distance between two points
+    return ((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2) ** 0.5
 

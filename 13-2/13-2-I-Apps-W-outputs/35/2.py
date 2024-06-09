@@ -1,19 +1,21 @@
 
-def get_min_thickness(books):
-    # Sort the books by width in descending order
-    books.sort(key=lambda x: x[1], reverse=True)
-    # Initialize the total thickness and width of the vertical books
-    total_thickness = 0
-    total_width = 0
-    # Loop through the books
-    for book in books:
-        # If the width of the book is greater than the total width of the vertical books,
-        # add the book to the vertical books
-        if book[1] > total_width:
-            total_thickness += book[0]
-            total_width += book[1]
-        # Otherwise, add the book to the horizontal books
-        else:
-            total_thickness += book[0]
-    return total_thickness
+def get_min_unfortunate_sum(n, a):
+    # Sort the banknote values in descending order
+    a.sort(reverse=True)
+    # Initialize the minimum unfortunate sum as the largest banknote value
+    min_sum = a[0]
+    # Iterate through the banknote values and check if they can be used to form an unfortunate sum
+    for i in range(1, n):
+        if a[i] > min_sum:
+            break
+        min_sum += a[i]
+    # If all banknote values are less than or equal to the minimum unfortunate sum, there are no unfortunate sums
+    if min_sum > a[-1]:
+        return -1
+    else:
+        return min_sum
+
+n = int(input())
+a = list(map(int, input().split()))
+print(get_min_unfortunate_sum(n, a))
 

@@ -1,41 +1,41 @@
 
-def find_shortest_cycle(files):
-    # Initialize a graph with the given files as nodes
-    graph = {}
-    for file in files:
-        graph[file] = []
+import math
 
-    # Add edges to the graph based on the import statements
-    for file in files:
-        imports = files[file]
-        for import_file in imports:
-            graph[file].append(import_file)
+def get_least_turning(nodes, edges):
+    # Initialize variables
+    turning = 0
+    visited = set()
+    current_node = 0
+    previous_node = None
 
-    # Find a shortest cycle in the graph
-    cycle = []
-    for file in files:
-        if file not in cycle:
-            cycle = find_cycle(graph, file, cycle)
-            if len(cycle) > 0:
-                break
+    # Loop through the edges
+    for edge in edges:
+        # If the current node has not been visited before, add it to the visited set
+        if current_node not in visited:
+            visited.add(current_node)
+        # If the previous node is not None, calculate the turning required for this edge
+        if previous_node is not None:
+            turning += get_turning(nodes[current_node], nodes[previous_node])
+        # Update the previous node and current node
+        previous_node = current_node
+        current_node = edge
 
-    # Return the shortest cycle
-    return cycle
+    # Calculate the turning required for the final edge
+    turning += get_turning(nodes[current_node], nodes[previous_node])
 
-def find_cycle(graph, node, cycle):
-    # If the node is already in the cycle, we have found a cycle
-    if node in cycle:
-        return cycle
+    return turning
 
-    # Add the node to the cycle
-    cycle.append(node)
+def get_turning(node1, node2):
+    # Calculate the angle between the two nodes
+    angle = math.atan2(node2[1] - node1[1], node2[0] - node1[0])
+    # Convert the angle to radians
+    turning = math.radians(angle)
+    return turning
 
-    # Recursively search for a cycle starting from the node's neighbors
-    for neighbor in graph[node]:
-        cycle = find_cycle(graph, neighbor, cycle)
-        if len(cycle) > 0:
-            break
+# Test the function with the sample input
+nodes = [(0, 0), (0, 1), (1, 0)]
+edges = [(0, 1), (0, 2), (1, 2)]
+print(get_least_turning(nodes, edges))
 
-    # Return the cycle
-    return cycle
+# 6.283185
 

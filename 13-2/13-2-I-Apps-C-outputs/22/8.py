@@ -1,32 +1,36 @@
 
-def solve(n, k):
-    # Check if k is valid
-    if k < 1 or k > n:
-        return "NO"
+import sys
+input = sys.stdin.read()
+n, m = map(int, input.split('\n')[0].split())
+neighbors = [set(map(int, input.split('\n')[i].split())) for i in range(1, m+1)]
+s, t = map(int, input.split('\n')[-1].split())
+
+# Initialize the probability of meeting at each station
+probability = [0] * n
+probability[s] = 1
+probability[t] = 1
+
+# Loop through each minute
+for i in range(1, n):
+    # Find the neighbors of the current stations
+    neighbor_s = neighbors[s]
+    neighbor_t = neighbors[t]
     
-    # Initialize the stations as a list of tuples (MS, ME) and (VS, VE)
-    stations_mobi = [(i, i+1) for i in range(1, n, 2)]
-    stations_vina = [(i+1, i) for i in range(2, n, 2)]
+    # Update the probability of meeting at each station
+    for j in range(n):
+        if j in neighbor_s:
+            probability[j] += probability[s] / len(neighbor_s)
+        if j in neighbor_t:
+            probability[j] += probability[t] / len(neighbor_t)
     
-    # Check if the stations are valid
-    for i in range(k):
-        ms, me = stations_mobi[i]
-        vs, ve = stations_vina[i]
-        if ms >= ve or vs >= me:
-            return "NO"
-    
-    # Check if the conditions are satisfied
-    for i in range(k):
-        ms, me = stations_mobi[i]
-        vs, ve = stations_vina[i]
-        for j in range(i+1, k):
-            ms_j, me_j = stations_mobi[j]
-            vs_j, ve_j = stations_vina[j]
-            if ms < ms_j and me < me_j:
-                return "NO"
-            if vs < vs_j and ve < ve_j:
-                return "NO"
-    
-    # If all conditions are satisfied, return the stations
-    return "YES\n" + "\n".join([f"{ms} {me}" for ms, me in stations_mobi]) + "\n" + "\n".join([f"{vs} {ve}" for vs, ve in stations_vina])
+    # Update the current stations
+    s = (s + 1) % n
+    t = (t + 1) % n
+
+# Find the station with the highest probability of meeting
+max_prob = max(probability)
+meeting_station = probability.index(max_prob)
+
+# Output the expected time of meeting
+print(meeting_station)
 

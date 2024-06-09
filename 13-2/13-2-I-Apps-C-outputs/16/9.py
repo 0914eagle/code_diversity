@@ -1,67 +1,29 @@
 
-def solve(n, k, seq, costs):
-    # Initialize a dictionary to store the minimum effort required to make the sequence unbalanced
-    dp = {i: 0 for i in range(n)}
+def get_cards(x, y):
+    # Initialize variables
+    oranges = x
+    apples = y
+    cards = []
 
-    # Loop through each position in the sequence
-    for i in range(n):
-        # If the position is already unbalanced, skip it
-        if seq[i] != '(' and seq[i] != ')':
-            continue
+    # Check if the number of oranges and apples is valid
+    if x < 1 or y < 1 or x * y < 2:
+        return "Impossible"
 
-        # If the position is balanced and the cost is negative, update the minimum effort required to make the sequence unbalanced
-        if seq[i] == '(' and costs[i] < 0:
-            dp[i] = costs[i]
+    # Add cards to the list
+    while oranges > 0 and apples > 0:
+        # Add a card with letter 'A' if there are more oranges than apples
+        if oranges > apples:
+            cards.append("A")
+            oranges -= 1
+        # Add a card with letter 'B' if there are more apples than oranges
+        elif apples > oranges:
+            cards.append("B")
+            apples -= 1
+        # If the number of oranges and apples is equal, add a card with letter 'A'
+        else:
+            cards.append("A")
+            oranges -= 1
 
-        # If the position is balanced and the cost is positive, update the minimum effort required to make the sequence unbalanced
-        if seq[i] == ')' and costs[i] > 0:
-            dp[i] = costs[i]
-
-        # If the position is balanced and the cost is zero, skip it
-        if seq[i] == '(' and costs[i] == 0:
-            continue
-        if seq[i] == ')' and costs[i] == 0:
-            continue
-
-        # If the position is balanced and the cost is negative, update the minimum effort required to make the sequence unbalanced
-        if seq[i] == '(' and costs[i] < 0:
-            dp[i] = costs[i]
-
-        # If the position is balanced and the cost is positive, update the minimum effort required to make the sequence unbalanced
-        if seq[i] == ')' and costs[i] > 0:
-            dp[i] = costs[i]
-
-    # Initialize a variable to store the minimum sum of effort required to make the sequence unbalanced
-    min_effort = 0
-
-    # Loop through each position in the sequence
-    for i in range(n):
-        # If the position is already unbalanced, skip it
-        if seq[i] != '(' and seq[i] != ')':
-            continue
-
-        # If the position is balanced and the cost is negative, update the minimum sum of effort required to make the sequence unbalanced
-        if seq[i] == '(' and costs[i] < 0:
-            min_effort += costs[i]
-
-        # If the position is balanced and the cost is positive, update the minimum sum of effort required to make the sequence unbalanced
-        if seq[i] == ')' and costs[i] > 0:
-            min_effort += costs[i]
-
-        # If the position is balanced and the cost is zero, skip it
-        if seq[i] == '(' and costs[i] == 0:
-            continue
-        if seq[i] == ')' and costs[i] == 0:
-            continue
-
-        # If the position is balanced and the cost is negative, update the minimum sum of effort required to make the sequence unbalanced
-        if seq[i] == '(' and costs[i] < 0:
-            min_effort += costs[i]
-
-        # If the position is balanced and the cost is positive, update the minimum sum of effort required to make the sequence unbalanced
-        if seq[i] == ')' and costs[i] > 0:
-            min_effort += costs[i]
-
-    # Return the minimum sum of effort required to make the sequence unbalanced
-    return min_effort
+    # Return the compressed string of cards
+    return "".join(cards)
 

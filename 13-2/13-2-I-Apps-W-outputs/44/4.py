@@ -1,27 +1,25 @@
 
-def solve(n, k, a):
-    # Calculate the number of possible permutations of the array
-    permutations = 1
-    for i in range(n):
-        permutations *= n - i
-    
-    # Calculate the number of permutations that result in a sorted array
-    sorted_permutations = 1
-    for i in range(n - 1):
-        sorted_permutations *= n - i
-    
-    # Calculate the number of permutations that result in a non-sorted array
-    non_sorted_permutations = permutations - sorted_permutations
-    
-    # Calculate the probability that the array is sorted after k operations
-    probability = non_sorted_permutations / permutations
-    
-    # Raise the probability to the kth power
-    probability = probability ** k
-    
-    # Calculate the modular inverse of the probability
-    modular_inverse = 1000000007 - probability % 1000000007
-    
-    # Return the result
-    return modular_inverse
+def is_moon_down(n, records):
+    # Convert the records to a list of integers
+    records = [int(x) for x in records]
+
+    # Check if the length of the records is valid
+    if len(records) != n:
+        return -1
+
+    # Check if the records are in the correct order
+    if not all(records[i] < records[i+1] for i in range(len(records)-1)):
+        return -1
+
+    # Check if the records form a cycle
+    if records[0] != records[-1]:
+        return -1
+
+    # Check if the next day's size is less than the current day's size
+    if records[-1] < records[0]:
+        return "DOWN"
+    elif records[-1] > records[0]:
+        return "UP"
+    else:
+        return -1
 

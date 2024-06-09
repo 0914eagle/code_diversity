@@ -1,41 +1,41 @@
 
-def solve(gigs, venues, roads, travel_time):
-    # Initialize a graph to store the connections between venues
-    graph = [[] for _ in range(venues + 1)]
-
-    # Add the roads to the graph
-    for road in roads:
-        graph[road[0]].append((road[1], road[2]))
-        graph[road[1]].append((road[0], road[2]))
-
-    # Initialize a dictionary to store the gig offers
-    gig_offers = {}
-
-    # Add the gigs to the dictionary
-    for gig in gigs:
-        gig_offers[gig[0]] = (gig[1], gig[2], gig[3])
-
-    # Initialize a variable to store the maximum amount of cryptocents that can be earned
-    max_cryptocents = 0
-
-    # Iterate over the gig offers
-    for gig in gig_offers:
-        # If the gig is at the current venue
-        if gig == venue:
-            # Add the amount of cryptocents earned by playing the gig to the maximum amount
-            max_cryptocents += gig_offers[gig][2]
-        # If the gig is at a different venue
+def count_valid_colorings(n, a):
+    # Initialize the number of valid colorings to 0
+    num_valid_colorings = 0
+    
+    # Loop through each row of the grid
+    for i in range(n):
+        # If the row is odd, there are n hexagons in the row
+        if i % 2 == 1:
+            num_hexagons = n
+        # If the row is even, there are n-1 hexagons in the row
         else:
-            # Find the shortest path between the current venue and the gig venue
-            path = dijkstra(graph, venue, gig)
-
-            # If there is a path between the current venue and the gig venue
-            if path:
-                # Add the amount of cryptocents earned by playing the gig to the maximum amount
-                max_cryptocents += gig_offers[gig][2]
-
-                # Update the current venue to the gig venue
-                venue = gig
-
-    return max_cryptocents
+            num_hexagons = n - 1
+        
+        # Loop through each hexagon in the row
+        for j in range(num_hexagons):
+            # If the current hexagon is not colored, skip it
+            if a[i][j] == -1:
+                continue
+            
+            # If the current hexagon is colored, check if it forms a valid loop
+            valid_loop = True
+            
+            # Loop through each neighbor of the current hexagon
+            for k in range(num_hexagons):
+                # If the neighbor is not colored, skip it
+                if a[i][k] == -1:
+                    continue
+                
+                # If the neighbor is colored and is not the current hexagon, check if it forms a valid loop
+                if a[i][k] != a[i][j] and a[i][k] != 0:
+                    valid_loop = False
+                    break
+            
+            # If the current hexagon forms a valid loop, increment the number of valid colorings
+            if valid_loop:
+                num_valid_colorings += 1
+    
+    # Return the number of valid colorings
+    return num_valid_colorings
 

@@ -1,20 +1,42 @@
 
-def solve(n, temperatures):
-    # Sort the temperatures in non-decreasing order
-    temperatures.sort()
-    # Initialize the rearranged temperatures list
-    rearranged_temperatures = []
-    # Loop through the temperatures and find the next temperature that satisfies the condition
-    for i in range(n):
-        # Find the next temperature that satisfies the condition
-        next_temperature = next((temperature for temperature in temperatures[i:] if temperature > temperatures[i] + 1), None)
-        # If no such temperature exists, return "impossible"
-        if next_temperature is None:
-            return "impossible"
-        # Add the next temperature to the rearranged temperatures list
-        rearranged_temperatures.append(next_temperature)
-        # Remove the used temperature from the original temperatures list
-        temperatures.remove(next_temperature)
-    # Return the rearranged temperatures list
-    return rearranged_temperatures
+def get_max_output(input_molecule, input_count, output_molecule):
+    input_atoms = parse_molecule(input_molecule)
+    output_atoms = parse_molecule(output_molecule)
+
+    max_output = 0
+    for i in range(input_count + 1):
+        current_input = input_atoms.copy()
+        current_input.subtract(output_atoms)
+        if current_input.is_valid():
+            max_output = max(max_output, i)
+
+    return max_output
+
+def parse_molecule(molecule):
+    atoms = {}
+    for atom in molecule:
+        if atom.isupper():
+            atoms[atom] = atoms.get(atom, 0) + 1
+        else:
+            atoms[atom.upper()] = atoms.get(atom.upper(), 0) + int(atom)
+    return atoms
+
+class Atoms:
+    def __init__(self, atoms):
+        self.atoms = atoms
+
+    def subtract(self, other):
+        for atom, count in other.atoms.items():
+            self.atoms[atom] -= count
+            if self.atoms[atom] == 0:
+                del self.atoms[atom]
+
+    def is_valid(self):
+        for atom, count in self.atoms.items():
+            if count < 0:
+                return False
+        return True
+
+    def __repr__(self):
+        return str(self.atoms)
 

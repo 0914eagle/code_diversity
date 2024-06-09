@@ -1,18 +1,31 @@
 
-def solve(n, temperatures):
-    # Sort the temperatures in non-decreasing order
-    temperatures.sort()
-    # Initialize the rearranged temperatures list
-    rearranged_temperatures = []
-    # Loop through the temperatures and find the next temperature that satisfies the requirement
-    for i in range(n):
-        # Find the next temperature that is greater than the current temperature and has not been used yet
-        next_temperature = next((t for t in temperatures if t > temperatures[i] and t not in rearranged_temperatures), None)
-        # If no such temperature exists, return "impossible"
-        if next_temperature is None:
-            return "impossible"
-        # Add the next temperature to the rearranged temperatures list
-        rearranged_temperatures.append(next_temperature)
-    # Return the rearranged temperatures list
-    return rearranged_temperatures
+def get_max_output(input_molecule, input_count, output_molecule):
+    input_atoms = {}
+    for atom in input_molecule:
+        if atom.isupper():
+            if atom not in input_atoms:
+                input_atoms[atom] = 1
+            else:
+                input_atoms[atom] += 1
+        else:
+            input_atoms[atom.upper()] = int(atom)
+
+    output_atoms = {}
+    for atom in output_molecule:
+        if atom.isupper():
+            if atom not in output_atoms:
+                output_atoms[atom] = 1
+            else:
+                output_atoms[atom] += 1
+        else:
+            output_atoms[atom.upper()] = int(atom)
+
+    max_output = 0
+    for atom, count in output_atoms.items():
+        if atom in input_atoms and input_atoms[atom] >= count:
+            max_output += count
+        else:
+            return 0
+
+    return max_output * input_count
 

@@ -1,30 +1,17 @@
 
-def solve(trips, queries):
-    # Create a dictionary to store the trips
-    trips_dict = {}
-    for trip in trips:
-        country, year = trip
-        if country not in trips_dict:
-            trips_dict[country] = []
-        trips_dict[country].append(year)
+def get_largest_piece(n, h, v):
+    # Calculate the area of each piece
+    area_1 = (n - h) * (n - v)
+    area_2 = h * (n - v)
+    area_3 = (n - h) * v
+    area_4 = h * v
 
-    # Iterate over the queries and return the corresponding year
-    for query in queries:
-        country, k = query
-        year = trips_dict[country][k-1]
-        print(year)
+    # Calculate the volume of each piece
+    volume_1 = area_1 * 4
+    volume_2 = area_2 * 4
+    volume_3 = area_3 * 4
+    volume_4 = area_4 * 4
 
-# Test the function with example input
-trips = [
-    ["Iceland", 2016],
-    ["Sweden", 2015],
-    ["Iceland", 1982],
-    ["Norway", 1999]
-]
-queries = [
-    ["Sweden", 1],
-    ["Iceland", 1],
-    ["Iceland", 2]
-]
-solve(trips, queries)
+    # Return the volume of the largest piece
+    return max(volume_1, volume_2, volume_3, volume_4)
 

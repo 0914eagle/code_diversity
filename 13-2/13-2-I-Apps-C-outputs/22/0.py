@@ -1,20 +1,32 @@
 
-def solve(n, k):
-    # Check if k is valid
-    if k < 1 or k > n:
-        return "NO"
+import sys
+input = sys.stdin.read()
+n, m = map(int, input.split('\n')[0].split())
+neighbors = [set(map(int, input.split('\n')[i].split())) for i in range(1, m+1)]
+s, t = map(int, input.split('\n')[-1].split())
+
+# Initialize the probability of meeting at each station
+prob = [0] * n
+prob[s] = 1
+prob[t] = 1
+
+# Loop until the probability of meeting at each station is the same
+while True:
+    # Calculate the probability of meeting at each neighboring station
+    for i in range(n):
+        if i not in neighbors[i]:
+            continue
+        for j in neighbors[i]:
+            prob[j] += prob[i] / len(neighbors[i])
     
-    # Initialize the stations for Mobi and Vina
-    mobi_stations = [i for i in range(1, n+1)]
-    vina_stations = [i for i in range(1, n+1)]
-    
-    # Iterate through each pair of stations
-    for i in range(n-1):
-        for j in range(i+1, n):
-            # Check if the stations are connected by both companies
-            if mobi_stations[i] < mobi_stations[j] and vina_stations[i] < vina_stations[j]:
-                return "NO"
-    
-    # If all conditions are satisfied, return the stations for Mobi and Vina
-    return "YES\n" + "\n".join([f"{mobi_stations[i]} {mobi_stations[i+1]}" for i in range(k)]) + "\n" + "\n".join([f"{vina_stations[i]} {vina_stations[i+1]}" for i in range(k)])
+    # Check if the probability of meeting at each station is the same
+    if all(prob[i] == prob[-1] for i in range(n)):
+        break
+
+# Calculate the expected time of meeting
+expected_time = 0
+for i in range(n):
+    expected_time += prob[i] * (i + 1)
+
+print(expected_time)
 

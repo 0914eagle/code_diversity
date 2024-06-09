@@ -1,43 +1,25 @@
 
-def balanced_equation(equation):
-    # Initialize variables
-    elements = {}
-    coefficients = {}
-    total_coefficients = 0
+def solve(W, v_h, N, x, y, S, s):
+    # Initialize the minimum time to pass through the course
+    min_time = float('inf')
+    # Initialize the minimum speed required to pass through the course
+    min_speed = 0
 
-    # Parse the equation
-    for line in equation:
-        if line == "0 0":
-            break
-        sign, num_elements = line.split(" ")
-        num_elements = int(num_elements)
-        elements[sign] = {}
-        coefficients[sign] = 1
-        for i in range(num_elements):
-            element, count = line.split(" ")
-            elements[sign][element] = int(count)
-            total_coefficients += int(count)
+    # Loop through each pair of skis
+    for i in range(S):
+        # Calculate the horizontal speed required to pass through the course with the current pair of skis
+        horizontal_speed = min(v_h, s[i])
+        # Calculate the time required to pass through the course with the current pair of skis
+        time = (y[-1] - y[0]) / s[i] + (x[-1] - x[0]) / horizontal_speed
+        # Check if the time required is less than the minimum time
+        if time < min_time:
+            # Update the minimum time and speed
+            min_time = time
+            min_speed = s[i]
 
-    # Find the least common multiple of the coefficients
-    lcm = 1
-    for coefficient in coefficients.values():
-        lcm = find_lcm(lcm, coefficient)
-
-    # Fill in the blanks in the equation
-    output = []
-    for sign in ["+1", "-1"]:
-        for element in elements[sign]:
-            count = elements[sign][element] * lcm // coefficients[sign]
-            output.append(str(count))
-    return " ".join(output)
-
-def find_lcm(a, b):
-    if a == 0:
-        return b
-    if b == 0:
-        return a
-    while True:
-        a, b = b, a % b
-        if b == 0:
-            return a
+    # Check if it is possible to pass through the course with any pair of skis
+    if min_time == float('inf'):
+        return "IMPOSSIBLE"
+    else:
+        return min_speed
 

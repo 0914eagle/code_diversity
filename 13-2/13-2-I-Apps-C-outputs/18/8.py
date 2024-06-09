@@ -1,37 +1,22 @@
 
-import sys
+def is_interesting_problemset(problems, teams):
+    # Calculate the maximum number of problems that each team can know
+    max_problems = len(problems) // 2
 
-def solve(n, m, hints):
-    # Initialize the answer sequence with all "false" answers
-    answer_sequence = [False] * n
+    # Initialize a set to store the problems that each team knows
+    team_problems = [set() for _ in range(len(teams))]
 
-    # Iterate through the hints and update the answer sequence accordingly
-    for hint in hints:
-        l, r, same = hint
-        for i in range(l, r + 1):
-            if same == "same":
-                answer_sequence[i] = answer_sequence[l]
-            else:
-                answer_sequence[i] = not answer_sequence[l]
+    # Loop through each problem and team to check if the team knows the problem
+    for i, problem in enumerate(problems):
+        for j, team in enumerate(teams):
+            if team[i] == 1:
+                team_problems[j].add(i)
 
-    # Count the number of different answer sequences
-    answer_sequences = set()
-    for i in range(2**n):
-        answer_sequence = []
-        for j in range(n):
-            if i & (1 << j):
-                answer_sequence.append(True)
-            else:
-                answer_sequence.append(False)
-        answer_sequences.add(tuple(answer_sequence))
+    # Check if any team knows more than the maximum number of problems allowed
+    for team in team_problems:
+        if len(team) > max_problems:
+            return "NO"
 
-    return len(answer_sequences) % (10**9 + 7)
-
-if __name__ == '__main__':
-    n, m = map(int, input().split())
-    hints = []
-    for _ in range(m):
-        l, r, same = input().split()
-        hints.append((int(l), int(r), same))
-    print(solve(n, m, hints))
+    # If we reach this point, it means that each team knows at most half of the problems
+    return "YES"
 

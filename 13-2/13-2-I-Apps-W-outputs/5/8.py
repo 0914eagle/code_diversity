@@ -1,15 +1,18 @@
 
-def get_min_energy(n, shortcuts):
-    # Initialize the minimum energy required to reach each intersection
-    min_energy = [0] * (n + 1)
-
-    # Loop through each shortcut
-    for shortcut in shortcuts:
-        # Get the starting and ending intersections of the shortcut
-        start, end = shortcut[0], shortcut[1]
-
-        # Update the minimum energy required to reach the ending intersection
-        min_energy[end] = min(min_energy[end], min_energy[start] + 1)
-
-    return min_energy[1:]
+def solve(n, a):
+    # Sort the ratings in descending order
+    a.sort(reverse=True)
+    
+    # Initialize the optimal distribution
+    b = [0] * n
+    
+    # Loop through the ratings and assign them to the users
+    for i in range(n):
+        # Find the user with the highest rating who has not yet received a rating
+        for j in range(n):
+            if b[j] == 0:
+                b[j] = a[i]
+                break
+    
+    return b
 

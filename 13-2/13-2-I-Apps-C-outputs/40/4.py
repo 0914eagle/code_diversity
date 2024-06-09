@@ -1,36 +1,55 @@
 
-def solve(n, m, t, op):
-    # Initialize a 2D array to store the possible values for each cell
-    values = [[[] for _ in range(n)] for _ in range(n)]
+def is_valid_solution(grid, n, k):
+    # Check if all rows are valid
+    for i in range(n):
+        row = [grid[i][j] for j in range(n)]
+        if len(set(row)) != n:
+            return False
     
-    # Fill in the values for the first cell
-    values[0][0] = list(range(1, n+1))
+    # Check if all columns are valid
+    for j in range(n):
+        col = [grid[i][j] for i in range(n)]
+        if len(set(col)) != n:
+            return False
     
-    # Iterate over the remaining cells
-    for i in range(1, m):
-        for j in range(i):
-            # If the cells are connected, copy the values from the previous cell
-            if j % n == i % n - 1 or j // n == i // n - 1:
-                values[i][j] = values[j][j]
-            # Otherwise, use the arithmetic operator to generate the possible values
-            else:
-                if op == "+":
-                    values[i][j] = [x + y for x in values[j][j] for y in values[j][j]]
-                elif op == "-":
-                    values[i][j] = [x - y for x in values[j][j] for y in values[j][j]]
-                elif op == "*":
-                    values[i][j] = [x * y for x in values[j][j] for y in values[j][j]]
-                elif op == "/":
-                    values[i][j] = [x // y for x in values[j][j] for y in values[j][j] if y != 0]
+    # Check if all subgrids are valid
+    for i in range(n):
+        for j in range(n):
+            subgrid = []
+            for row in range(i, i + 3):
+                for col in range(j, j + 3):
+                    subgrid.append(grid[row][col])
+            if len(set(subgrid)) != n:
+                return False
     
-    # Flatten the 2D array into a 1D array
-    values = [item for sublist in values for item in sublist]
+    return True
+
+def solve_superdoku(grid, n, k):
+    # Check if the given grid is valid
+    if not is_valid_solution(grid, n, k):
+        return False
     
-    # Count the number of valid ways to fill in the section
-    count = 0
-    for assignment in itertools.product(*values):
-        if sum(assignment) == t:
-            count += 1
+    # Check if all rows and columns are filled
+    for i in range(n):
+        for j in range(n):
+            if grid[i][j] == 0:
+                return False
     
-    return count
+    return True
+
+def main():
+    n, k = map(int, input().split())
+    grid = []
+    for i in range(k):
+        grid.append(list(map(int, input().split())))
+    
+    if solve_superdoku(grid, n, k):
+        print("yes")
+        for i in range(n):
+            print(" ".join(map(str, grid[i])))
+    else:
+        print("no")
+
+if __name__ == "__main__":
+    main()
 

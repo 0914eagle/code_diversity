@@ -1,31 +1,43 @@
 
-import math
+def solve(N, V, A, B):
+    # Initialize a set to store the types of jokes told by the invited employees
+    invited_jokes = set()
 
-def solve(A, B):
-    # Calculate the sum of distances between each pair of numbers in the interval [A, B]
-    sum_distances = 0
-    for i in range(A, B+1):
-        for j in range(A, B+1):
-            sum_distances += distance(i, j)
-    
-    # Return the result modulo 1000000007
-    return sum_distances % 1000000007
+    # Iterate through the list of employees and their supervisors
+    for i in range(N):
+        # If the employee is not Petar, check if their supervisor is invited
+        if i != 1 and A[i] not in invited_jokes:
+            continue
+        # If the employee is not Petar, check if the set of jokes told by their supervisor and their direct supervisor form a set of consecutive numbers
+        if i != 1 and not is_consecutive(invited_jokes, V[A[i]]):
+            continue
+        # If the employee is not Petar, check if the set of jokes told by their supervisor and their direct supervisor form a set of consecutive numbers
+        if i != 1 and not is_consecutive(invited_jokes, V[B[i]]):
+            continue
+        # If the employee is Petar, or if their supervisor and direct supervisor form a set of consecutive numbers, add the employee to the set of invited employees
+        invited_jokes.add(V[i])
 
-def distance(a, b):
-    # Convert the numbers to strings
-    a_str = str(a)
-    b_str = str(b)
-    
-    # Pad the shorter string with leading zeroes
-    if len(a_str) < len(b_str):
-        a_str = '0' * (len(b_str) - len(a_str)) + a_str
-    elif len(b_str) < len(a_str):
-        b_str = '0' * (len(a_str) - len(b_str)) + b_str
-    
-    # Calculate the distance between the two numbers
-    distance = 0
-    for i in range(len(a_str)):
-        distance += abs(int(a_str[i]) - int(b_str[i]))
-    
-    return distance
+    # Return the number of different sets of jokes told by the invited employees
+    return len(invited_jokes)
+
+# Check if the set of jokes forms a set of consecutive numbers
+def is_consecutive(jokes, joke):
+    # If the set of jokes is empty, return True
+    if not jokes:
+        return True
+    # Get the minimum and maximum values in the set of jokes
+    min_joke = min(jokes)
+    max_joke = max(jokes)
+    # If the joke is within the range of the minimum and maximum values in the set of jokes, return True
+    if min_joke <= joke <= max_joke:
+        return True
+    # If the joke is not within the range of the minimum and maximum values in the set of jokes, return False
+    return False
+
+# Test the solve function with the sample input
+N = 4
+V = [2, 1, 3, 4]
+A = [1, 2, 1, 3]
+B = [1, 3, 2, 4]
+print(solve(N, V, A, B))
 

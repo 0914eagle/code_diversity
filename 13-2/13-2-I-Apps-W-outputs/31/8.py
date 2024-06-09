@@ -1,16 +1,27 @@
 
-def max_rectangle_area(matrix):
-    rows = len(matrix)
-    cols = len(matrix[0])
-    max_area = 0
-    for i in range(rows):
-        for j in range(cols):
-            if matrix[i][j] == "1":
-                area = 0
-                for k in range(i, rows):
-                    if matrix[k][j] == "0":
-                        break
-                    area += 1
-                max_area = max(max_area, area)
-    return max_area
+def solve(n, H):
+    # Initialize the heights of the sand pillars as a list of zeros
+    heights = [0] * (n + 1)
+    
+    # Set the height of the first pillar to be the height of the fence
+    heights[0] = H
+    
+    # Initialize the number of spots occupied to be 1
+    spots = 1
+    
+    # Loop through the remaining spots
+    for i in range(1, n):
+        # If the height of the current pillar is less than or equal to the height of the previous pillar, set it to be one more than the previous pillar
+        if heights[i - 1] <= heights[i]:
+            heights[i] = heights[i - 1] + 1
+        # Otherwise, set it to be one less than the previous pillar
+        else:
+            heights[i] = heights[i - 1] - 1
+        
+        # Increment the number of spots occupied if the current pillar is not zero
+        if heights[i] != 0:
+            spots += 1
+    
+    # Return the number of spots occupied
+    return spots
 

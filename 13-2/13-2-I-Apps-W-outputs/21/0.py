@@ -1,18 +1,9 @@
 
-def solve(s):
-    lexemes = []
-    current_lexeme = ""
-    in_quotes = False
-    for char in s:
-        if char == " " and not in_quotes:
-            if current_lexeme != "":
-                lexemes.append(current_lexeme)
-                current_lexeme = ""
-        elif char == '"':
-            in_quotes = not in_quotes
-        else:
-            current_lexeme += char
-    if current_lexeme != "":
-        lexemes.append(current_lexeme)
-    return lexemes
+def solve(A, B):
+    count = 0
+    for a in range(1, A+1):
+        for b in range(1, B+1):
+            if str(a) not in str(b) and str(b) not in str(a) and a*b + a + b == int(str(a)+str(b)):
+                count += 1
+    return count
 

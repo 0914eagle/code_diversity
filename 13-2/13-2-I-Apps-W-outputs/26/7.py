@@ -1,13 +1,27 @@
 
-def count_distinct_ball_orders(n, throws):
-    # Initialize a list to store the number of ways for each ball
-    ways = [1] * n
+def is_possible(points):
+    # Sort the points by their x-coordinates
+    sorted_points = sorted(points, key=lambda point: point[0])
 
-    # Iterate over the throws
-    for i in range(n - 1):
-        # Swap the balls for the current throw
-        ways[i], ways[i + 1] = ways[i + 1], ways[i]
+    # Initialize the variables for the left and right endpoints of the lines
+    left_endpoint = sorted_points[0]
+    right_endpoint = sorted_points[-1]
 
-    # Return the number of distinct ways modulo 1000000007
-    return sum(ways) % 1000000007
+    # Iterate through the points and check if they lie on the line
+    for i in range(1, len(sorted_points)):
+        current_point = sorted_points[i]
+
+        # Check if the current point lies on the line between the left and right endpoints
+        if current_point[0] == left_endpoint[0] or current_point[0] == right_endpoint[0]:
+            continue
+
+        # Check if the current point lies between the left and right endpoints
+        if left_endpoint[0] < current_point[0] < right_endpoint[0]:
+            continue
+
+        # If the current point does not lie on the line or between the left and right endpoints, return False
+        return False
+
+    # If all points lie on the line or between the left and right endpoints, return True
+    return True
 

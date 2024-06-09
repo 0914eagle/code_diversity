@@ -1,29 +1,35 @@
 
-def solve(n, x, vouchers):
-    # Sort the vouchers by their cost in non-decreasing order
-    vouchers.sort(key=lambda x: x[2])
+def solve(s, k):
+    # Initialize a dictionary to store the number of good substrings
+    # for each prefix of the string
+    prefix_counts = {}
+    prefix_counts[""] = 1
 
-    # Initialize the minimum cost to infinity
-    min_cost = float("inf")
+    # Iterate through the string and calculate the number of good substrings
+    # for each prefix
+    for i in range(len(s)):
+        # Get the current prefix
+        prefix = s[:i+1]
 
-    # Iterate over all possible pairs of vouchers
-    for i in range(n - 1):
-        for j in range(i + 1, n):
-            # Check if the vouchers are disjoint
-            if vouchers[i][1] < vouchers[j][0] or vouchers[j][1] < vouchers[i][0]:
-                # Calculate the total duration and cost of the two vouchers
-                total_duration = vouchers[i][1] - vouchers[i][0] + 1 + vouchers[j][1] - vouchers[j][0] + 1
-                total_cost = vouchers[i][2] + vouchers[j][2]
+        # If the prefix is already in the dictionary, it means we have already
+        # calculated the number of good substrings for this prefix, so we can skip it
+        if prefix in prefix_counts:
+            continue
 
-                # Check if the total duration is equal to x and the total cost is less than the minimum cost
-                if total_duration == x and total_cost < min_cost:
-                    # Update the minimum cost
-                    min_cost = total_cost
+        # Get the number of good substrings for the previous prefix
+        prev_prefix_count = prefix_counts.get(prefix[:-1], 0)
 
-    # Check if a pair of vouchers with the total duration equal to x and minimum cost exists
-    if min_cost == float("inf"):
-        return -1
+        # If the last character of the prefix is good, add the number of good
+        # substrings for the previous prefix to the current prefix
+        if s[i] == "1":
+            prefix_counts[prefix] = prev_prefix_count + 1
+        # If the last character of the prefix is bad, add the number of good
+        # substrings for the previous prefix to the current prefix, but make
+        # sure to subtract the number of bad characters that are in the current
+        # prefix
+        else:
+            prefix_counts[prefix] = prev_prefix_count - min(k, prefix.count("0"))
 
-    # Return the minimum cost
-    return min_cost
+    # Return the number of good substrings for the entire string
+    return prefix_counts[s]
 

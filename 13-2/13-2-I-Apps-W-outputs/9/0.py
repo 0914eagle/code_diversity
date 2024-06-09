@@ -1,17 +1,37 @@
 
-def solve(n, m):
-    # Initialize the coloring as a 2D array of characters
-    coloring = [['A' for _ in range(m)] for _ in range(n)]
+import sys
+import math
+
+def solve(n, m, passages):
+    # Initialize the expected number of passages as 0
+    E = 0
     
-    # Loop through each row of the coloring
-    for i in range(n):
-        # Loop through each column of the coloring
-        for j in range(m):
-            # If the current cell is not the first cell in its row, check if the previous cell has the same color
-            if j > 0 and coloring[i][j-1] == coloring[i][j]:
-                # If the previous cell has the same color, change the current cell to the next letter in the alphabet
-                coloring[i][j] = chr(ord(coloring[i][j]) + 1)
+    # Loop through each passage
+    for i in range(m):
+        # Get the current passage
+        s, t = passages[i]
+        
+        # If the passage is from Room 1 to Room 2, block it
+        if s == 1 and t == 2:
+            continue
+        
+        # Add the probability of taking this passage to the expected number of passages
+        E += (t - s) / n
     
-    # Return the lexicographically minimum coloring
-    return "".join("".join(row) for row in coloring)
+    # Return the expected number of passages
+    return E
+
+n, m = map(int, input().split())
+passages = []
+
+# Loop through each passage
+for i in range(m):
+    # Get the current passage
+    s, t = map(int, input().split())
+    
+    # Add the passage to the list of passages
+    passages.append((s, t))
+
+# Call the solve function and print the result
+print(solve(n, m, passages))
 

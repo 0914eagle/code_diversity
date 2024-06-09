@@ -1,66 +1,50 @@
 
-def balanced_equation(equation):
-    # Split the equation into reactants and products
-    reactants, products = equation.split("->")
-    # Split the reactants and products into individual molecules
-    reactant_molecules = reactants.split("+")
-    product_molecules = products.split("+")
-    # Create dictionaries to store the elements and their counts for the reactants and products
-    reactant_elements = {}
-    product_elements = {}
-    for molecule in reactant_molecules:
-        elements = molecule.split()
-        for element in elements:
-            if element not in reactant_elements:
-                reactant_elements[element] = 1
-            else:
-                reactant_elements[element] += 1
-    for molecule in product_molecules:
-        elements = molecule.split()
-        for element in elements:
-            if element not in product_elements:
-                product_elements[element] = 1
-            else:
-                product_elements[element] += 1
-    # Find the least common multiple (LCM) of the counts for each element in the reactants and products
-    lcm_dict = {}
-    for element in reactant_elements:
-        if element not in product_elements:
-            lcm_dict[element] = reactant_elements[element]
-        else:
-            lcm_dict[element] = find_lcm(reactant_elements[element], product_elements[element])
-    for element in product_elements:
-        if element not in reactant_elements:
-            lcm_dict[element] = product_elements[element]
-        else:
-            lcm_dict[element] = find_lcm(reactant_elements[element], product_elements[element])
-    # Use the LCM to balance the equation
-    balanced_equation = []
-    for molecule in reactant_molecules:
-        balanced_equation.append(balance_molecule(molecule, lcm_dict))
-    balanced_equation.append("->")
-    for molecule in product_molecules:
-        balanced_equation.append(balance_molecule(molecule, lcm_dict))
-    return " ".join(balanced_equation)
-
-def balance_molecule(molecule, lcm_dict):
-    elements = molecule.split()
-    balanced_molecule = []
-    for element in elements:
-        count = lcm_dict[element]
-        balanced_molecule.append(f"{element}{count}")
-    return " ".join(balanced_molecule)
-
-def find_lcm(a, b):
-    if a == 0:
-        return b
-    if b == 0:
-        return a
-    while True:
-        if (a * b) % a == 0 and (a * b) % b == 0:
-            return a * b
-        a += 1
-
-equation = "+1 2 H 2 O 1 +1 2 C 1 O 2 -1 1 O 2 -1 3 C 6 H 12 O 6 0 0"
-print(balanced_equation(equation))
+def solve(W, v_h, N, x, y, S, s):
+    # Initialize a dictionary to store the minimum time required to pass through each gate
+    min_time = {}
+    for i in range(N):
+        min_time[(x[i], y[i])] = float('inf')
+    
+    # Initialize a dictionary to store the maximum horizontal speed at each gate
+    max_speed = {}
+    for i in range(N):
+        max_speed[(x[i], y[i])] = v_h
+    
+    # Loop through each gate and calculate the minimum time required to pass through it
+    for i in range(N):
+        for j in range(i+1, N):
+            # Calculate the horizontal distance between the two gates
+            dist = abs(x[i] - x[j])
+            
+            # Calculate the time required to pass through the gate at the current speed
+            time = dist / s[i]
+            
+            # Update the minimum time required to pass through the gate
+            min_time[(x[i], y[i])] = min(min_time[(x[i], y[i])], time)
+            min_time[(x[j], y[j])] = min(min_time[(x[j], y[j])], time)
+            
+            # Update the maximum horizontal speed at the gate
+            max_speed[(x[i], y[i])] = min(max_speed[(x[i], y[i])], s[i])
+            max_speed[(x[j], y[j])] = min(max_speed[(x[j], y[j])], s[i])
+    
+    # Loop through each gate and calculate the minimum time required to pass through it with the maximum horizontal speed
+    for i in range(N):
+        for j in range(i+1, N):
+            # Calculate the horizontal distance between the two gates
+            dist = abs(x[i] - x[j])
+            
+            # Calculate the time required to pass through the gate at the maximum speed
+            time = dist / max_speed[(x[i], y[i])]
+            
+            # Update the minimum time required to pass through the gate
+            min_time[(x[i], y[i])] = min(min_time[(x[i], y[i])], time)
+            min_time[(x[j], y[j])] = min(min_time[(x[j], y[j])], time)
+    
+    # Calculate the total time required to pass through all the gates
+    total_time = 0
+    for i in range(N):
+        total_time += min_time[(x[i], y[i])]
+    
+    # Return the speed of the pair of skis that allows you to get through the race course in the shortest time
+    return s[total_time]
 

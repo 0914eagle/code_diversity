@@ -1,21 +1,16 @@
 
-def solve(n, edges):
-    # Initialize a dictionary to store the labels for each edge
-    labels = {}
-    # Initialize a set to store the used labels
-    used_labels = set()
-    # Iterate over the edges and assign labels
-    for edge in edges:
-        # If the edge has not been labeled yet, assign a label that is not used yet
-        if edge not in labels:
-            # Find the smallest available label that is not used yet
-            for label in range(n-2):
-                if label not in used_labels:
-                    break
-            # Assign the label to the edge
-            labels[edge] = label
-            # Add the label to the set of used labels
-            used_labels.add(label)
-    # Return the list of labels
-    return [labels[edge] for edge in edges]
+def get_max_bottles(n, h, bottle_heights):
+    # Initialize a list to store the maximum number of bottles that can be placed on each shelf
+    max_bottles_per_shelf = [0] * h
+    max_bottles_per_shelf[0] = 1
+
+    # Loop through the bottles and calculate the maximum number of bottles that can be placed on each shelf
+    for i in range(1, n):
+        for j in range(h-1, -1, -1):
+            if bottle_heights[i] <= j:
+                max_bottles_per_shelf[j] = max(max_bottles_per_shelf[j], max_bottles_per_shelf[j+1] + 1)
+                break
+
+    # Return the maximum number of bottles that can be placed on the top shelf
+    return max_bottles_per_shelf[0]
 

@@ -1,40 +1,18 @@
 
-def solve(n, m, e, roads, exits, start_brothers, start_police):
-    # Initialize the minimal speed required to escape as infinity
-    min_speed = float('inf')
-    
-    # Loop through all possible routes from the brothers' starting point to the highway exits
-    for exit in exits:
-        # Calculate the distance from the brothers' starting point to the highway exit
-        distance = calculate_distance(roads, start_brothers, exit)
-        
-        # Calculate the time it takes for the brothers to travel this distance at the minimum speed required to escape
-        time = distance / min_speed
-        
-        # Calculate the time it takes for the police car to travel this distance at its maximum speed
-        police_time = distance / 160
-        
-        # If the brothers' time is less than or equal to the police car's time, the brothers can escape
-        if time <= police_time:
-            # Update the minimal speed required to escape if necessary
-            min_speed = min(min_speed, distance / time)
-    
-    # If the minimal speed is still infinity, it is impossible to escape
-    if min_speed == float('inf'):
-        return "IMPOSSIBLE"
-    else:
-        return min_speed
+def get_water_height(vertices, depth, liters):
+    # Calculate the area of the polygon
+    area = 0
+    for i in range(len(vertices)):
+        x1, y1 = vertices[i]
+        x2, y2 = vertices[(i+1)%len(vertices)]
+        area += (x1*y2 - x2*y1)
+    area = abs(area) / 2
 
-def calculate_distance(roads, start, end):
-    # Initialize the total distance as zero
-    distance = 0
-    
-    # Loop through all roads between the start and end points
-    for road in roads:
-        # If the current road connects the start and end points, add its length to the total distance
-        if road[0] == start and road[1] == end:
-            distance += road[2]
-    
-    # Return the total distance
-    return distance
+    # Calculate the volume of the tank
+    volume = area * depth
+
+    # Calculate the height of the water
+    height = (liters * 1000) / volume
+
+    return height
 

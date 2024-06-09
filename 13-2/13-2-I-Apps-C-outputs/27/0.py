@@ -1,24 +1,27 @@
 
-def solve(n, m, s, a, b, c):
-    # Sort the bugs by complexity in descending order
-    sorted_bugs = sorted(range(m), key=lambda i: a[i])
+n = int(input())
+arr = list(map(int, input().split()))
 
-    # Initialize the students' passes and the number of days needed to fix the bugs
-    passes = [0] * n
-    days = 0
+# Initialize variables to keep track of the number of days Vasya has rest
+rest_days = 0
 
-    # Iterate through the bugs and assign them to the students
-    for i in sorted_bugs:
-        # Find the student with the highest level of ability who can fix the current bug
-        student = max(range(n), key=lambda j: b[j] - a[i])
+# Iterate through the list of days
+for i in range(n):
+    # If the gym is closed and the contest is not carried out, Vasya has a rest
+    if arr[i] == 0:
+        rest_days += 1
+    # If the gym is open and the contest is carried out, Vasya has a rest
+    elif arr[i] == 3:
+        rest_days += 1
+    # If the gym is open and the contest is not carried out, Vasya does sport
+    elif arr[i] == 2:
+        # If Vasya has a rest on the previous day, he can do sport on this day
+        if rest_days > 0:
+            rest_days -= 1
+        # If Vasya does not have a rest on the previous day, he can do sport on this day
+        else:
+            rest_days = 0
 
-        # Increase the student's passes and the number of days needed to fix the bug
-        passes[student] += c[student]
-        days += 1
-
-    # Check if the university can give the students the total of not more than s passes
-    if sum(passes) <= s:
-        return "YES"
-    else:
-        return "NO"
+# Print the minimum number of days Vasya has rest
+print(rest_days)
 

@@ -1,33 +1,37 @@
 
-def solve(n, m, s, a, b, c):
-    # Sort the bugs by complexity in ascending order
-    sorted_bugs = sorted(enumerate(a), key=lambda x: x[1])
+n = int(input())
+arr = list(map(int, input().split()))
 
-    # Sort the students by their ability level in descending order
-    sorted_students = sorted(enumerate(b), key=lambda x: x[1], reverse=True)
+# Initialize variables to keep track of the number of days Vasya has rest
+rest_days = 0
 
-    # Initialize the passes given to each student to 0
-    passes_given = [0] * n
+# Iterate through the list of days
+for i in range(n):
+    # If the gym is closed and the contest is not carried out, Vasya has a rest
+    if arr[i] == 0:
+        rest_days += 1
+    # If the gym is open and the contest is carried out, Vasya has a rest
+    elif arr[i] == 3:
+        rest_days += 1
+    # If the gym is open and the contest is not carried out, Vasya does sport
+    elif arr[i] == 2:
+        # If the next day is also open and the contest is not carried out, Vasya has a rest
+        if i < n-1 and arr[i+1] == 2:
+            rest_days += 1
+        # If the next day is closed or the contest is carried out, Vasya does sport
+        else:
+            pass
+    # If the gym is closed and the contest is carried out, Vasya does sport
+    elif arr[i] == 1:
+        # If the next day is also closed and the contest is carried out, Vasya has a rest
+        if i < n-1 and arr[i+1] == 1:
+            rest_days += 1
+        # If the next day is open and the contest is not carried out, Vasya does sport
+        elif i < n-1 and arr[i+1] == 2:
+            pass
+        # If the next day is closed or the contest is carried out, Vasya does sport
+        else:
+            pass
 
-    # Initialize the number of days needed to fix all bugs to 0
-    days_needed = 0
-
-    # Iterate through the sorted bugs and students
-    for i, (bug_index, bug_complexity) in sorted_bugs:
-        for j, (student_index, student_ability) in sorted_students:
-            # Check if the student's ability is greater than or equal to the bug's complexity
-            if student_ability >= bug_complexity:
-                # Give the student one pass for fixing the bug
-                passes_given[student_index] += 1
-                # Increment the number of days needed to fix all bugs
-                days_needed += 1
-                # Break out of the inner loop to move on to the next bug
-                break
-
-    # Check if the total number of passes given exceeds the maximum number of passes the university is willing to give
-    if sum(passes_given) > s:
-        return "NO"
-
-    # If all bugs are fixed and the total number of passes given does not exceed the maximum, return the schedule of work
-    return "YES\n" + " ".join(str(student_index + 1) for student_index, _ in sorted_students)
+print(rest_days)
 

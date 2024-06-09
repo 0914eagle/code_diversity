@@ -1,16 +1,11 @@
 
-def solve(trips, queries):
-    trips_dict = {}
-    for trip in trips:
-        country, year = trip
-        if country not in trips_dict:
-            trips_dict[country] = []
-        trips_dict[country].append(year)
+import math
 
-    result = []
-    for query in queries:
-        country, k = query
-        result.append(trips_dict[country][k-1])
+def get_volume(n, h, v):
+    # Calculate the volume of the largest piece of cake
+    volume = (n - h) * (n - v) * 4
+    return volume
 
-    return result
+n, h, v = map(int, input().split())
+print(get_volume(n, h, v))
 

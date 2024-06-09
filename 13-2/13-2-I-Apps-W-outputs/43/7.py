@@ -1,22 +1,26 @@
 
-def solve(n, m, words, lecture):
-    # Create a dictionary to map each word to its corresponding word in the other language
-    word_map = {}
-    for i in range(m):
-        word_map[words[i][0]] = words[i][1]
-        word_map[words[i][1]] = words[i][0]
+def solve(n, x, y, c, k):
+    # Calculate the total cost of building a power station in each city
+    total_cost = [c[i-1] for i in range(1, n+1)]
     
-    # Initialize an empty list to store the recorded lecture
-    recorded_lecture = []
+    # Calculate the total cost of connecting each pair of cities
+    for i in range(1, n+1):
+        for j in range(1, n+1):
+            if i != j:
+                total_cost[i-1] += k[i-1] + k[j-1] * abs(x[i-1] - x[j-1]) + k[j-1] * abs(y[i-1] - y[j-1])
     
-    # Iterate through the lecture text
-    for word in lecture:
-        # If the word is in the first language, add it to the recorded lecture
-        if word in word_map:
-            recorded_lecture.append(word)
-        # If the word is in the second language, add its corresponding word in the first language to the recorded lecture
-        else:
-            recorded_lecture.append(word_map[word])
+    # Find the minimum total cost
+    min_cost = min(total_cost)
     
-    return recorded_lecture
+    # Find the cities with the minimum total cost
+    min_cities = [i for i in range(1, n+1) if total_cost[i-1] == min_cost]
+    
+    # Find the connections to be made
+    connections = []
+    for i in range(1, n+1):
+        for j in range(1, n+1):
+            if i != j and total_cost[i-1] + total_cost[j-1] == 2*min_cost:
+                connections.append((i, j))
+    
+    return min_cost, min_cities, connections
 

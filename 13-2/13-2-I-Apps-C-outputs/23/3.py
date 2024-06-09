@@ -1,14 +1,57 @@
 
-def get_badge_numbers(start, end, locks):
-    # Initialize a set to store the badge numbers that can pass through the locks
-    badge_numbers = set()
+class LongLongString:
+    def __init__(self, string):
+        self.string = string
 
-    # Iterate through the locks
-    for lock in locks:
-        # If the lock is between the start and end rooms, add the badge numbers to the set
-        if lock[0] == start and lock[1] == end:
-            badge_numbers.update(range(lock[2], lock[3] + 1))
+    def __len__(self):
+        return len(self.string)
 
-    # Return the number of badge numbers in the set
-    return len(badge_numbers)
+    def __getitem__(self, index):
+        return self.string[index]
+
+    def __setitem__(self, index, char):
+        self.string = self.string[:index] + char + self.string[index+1:]
+
+    def __delitem__(self, index):
+        self.string = self.string[:index] + self.string[index+1:]
+
+    def __str__(self):
+        return self.string
+
+def compare_programs(program1, program2):
+    string1 = LongLongString("")
+    string2 = LongLongString("")
+
+    for operation in program1:
+        if operation[0] == "D":
+            string1.__delitem__(int(operation[1]))
+        elif operation[0] == "I":
+            string1.__setitem__(int(operation[1]), operation[2])
+
+    for operation in program2:
+        if operation[0] == "D":
+            string2.__delitem__(int(operation[1]))
+        elif operation[0] == "I":
+            string2.__setitem__(int(operation[1]), operation[2])
+
+    return string1 == string2
+
+def main():
+    program1 = []
+    program2 = []
+
+    while True:
+        line = input()
+        if line == "E":
+            break
+        operation = line.split()
+        if operation[0] == "D":
+            program1.append(operation)
+        elif operation[0] == "I":
+            program2.append(operation)
+
+    print(compare_programs(program1, program2))
+
+if __name__ == "__main__":
+    main()
 

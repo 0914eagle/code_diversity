@@ -1,26 +1,28 @@
 
-def solve(n, p, m, names, points):
-    # Initialize a dictionary to store the names and points
-    name_points = {}
-    for i in range(n):
-        name_points[names[i]] = 0
-    
-    # Loop through the points and update the dictionary
-    for i in range(m):
-        name = points[i][0]
-        points_scored = points[i][1]
-        name_points[name] += points_scored
-    
-    # Find the winners
-    winners = []
-    for name, points in name_points.items():
-        if points >= p:
-            winners.append(name)
-    
-    # Print the winners
-    if len(winners) == 0:
-        print("No winner!")
-    else:
-        for winner in winners:
-            print(f"{winner} wins!")
+def can_atcodeer_carry_out_his_plan(plan):
+    # Initialize a set to store the visited points
+    visited = set()
+    # Add the starting point to the set
+    visited.add((0, 0))
+    # Iterate through the plan
+    for t, x, y in plan:
+        # Get the current point
+        current_point = (x, y)
+        # Check if the current point has been visited before
+        if current_point in visited:
+            # If it has, return False
+            return False
+        # Add the current point to the set of visited points
+        visited.add(current_point)
+        # Get the next four points that AtCoDeer can visit
+        next_points = [(x+1, y), (x-1, y), (x, y+1), (x, y-1)]
+        # Check if any of the next points have been visited before
+        for next_point in next_points:
+            if next_point in visited:
+                # If any of them have, return False
+                return False
+        # If none of the next points have been visited before, add them to the set of visited points
+        visited.update(next_points)
+    # If we reach this point, it means that AtCoDeer can carry out his plan
+    return True
 

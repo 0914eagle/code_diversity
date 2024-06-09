@@ -1,21 +1,23 @@
 
-import sys
+n, k = map(int, input().split())
+teams = [list(map(int, input().split())) for _ in range(n)]
 
-def solve(n, m, hints):
-    mod = 1000000007
-    dp = [1, 1] + [0] * (n - 1)
-    for l, r, same in hints:
-        for i in range(l - 1, r):
-            if same == "same":
-                dp[i] = (dp[i - 1] + dp[i]) % mod
-            else:
-                dp[i] = (dp[i - 1] - dp[i]) % mod
-    return sum(dp) % mod
+# Check if any team knows all the problems
+if any(all(team) for team in teams):
+    print("NO")
+    exit()
 
-n, m = map(int, input().split())
-hints = []
-for _ in range(m):
-    l, r, same = input().split()
-    hints.append((int(l), int(r), same))
-print(solve(n, m, hints))
+# Check if any team knows at most half the problems
+if any(sum(team) > n // 2 for team in teams):
+    print("NO")
+    exit()
+
+# Check if any two teams know the same problem
+for i in range(n):
+    for j in range(i + 1, n):
+        if teams[i][j] == 1 and teams[j][i] == 1:
+            print("NO")
+            exit()
+
+print("YES")
 

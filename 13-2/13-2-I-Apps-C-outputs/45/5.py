@@ -1,36 +1,27 @@
 
-def get_identical_rooms(maze):
-    # Initialize a dictionary to store the rooms and their connections
-    rooms = {}
-    for i, room in enumerate(maze):
-        rooms[i] = set(room[1:])
-
-    # Initialize a set to store the effectively identical rooms
-    identical_rooms = set()
-
-    # Loop through each room and its connections
-    for room, connections in rooms.items():
-        # If the room has already been marked as effectively identical, skip it
-        if room in identical_rooms:
+def get_max_protected_rooms(N, M, doors):
+    # Initialize a graph with N nodes and M edges
+    graph = [[] for _ in range(N)]
+    for u, v in doors:
+        graph[u].append(v)
+        graph[v].append(u)
+    
+    # Find all rooms that can be reached from the outside of the building
+    outside_rooms = []
+    for i in range(N):
+        if -1 in graph[i]:
+            outside_rooms.append(i)
+    
+    # Find the room that is connected to the maximum number of outside rooms
+    max_rooms = 0
+    best_room = -1
+    for i in range(N):
+        if i in outside_rooms:
             continue
-
-        # Initialize a set to store the rooms that are effectively identical to the current room
-        identical_rooms_set = set([room])
-
-        # Loop through each connection of the current room
-        for connection in connections:
-            # If the connection is not already in the set of effectively identical rooms, add it
-            if connection not in identical_rooms_set:
-                identical_rooms_set.add(connection)
-
-                # If the connection has any connections of its own, add them to the set as well
-                for connection_connection in rooms[connection]:
-                    if connection_connection not in identical_rooms_set:
-                        identical_rooms_set.add(connection_connection)
-
-        # Add the set of effectively identical rooms to the overall set
-        identical_rooms.update(identical_rooms_set)
-
-    # Return the set of effectively identical rooms
-    return identical_rooms
+        num_rooms = len(set(outside_rooms) & set(graph[i]))
+        if num_rooms > max_rooms:
+            max_rooms = num_rooms
+            best_room = i
+    
+    return max_rooms
 

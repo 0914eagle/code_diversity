@@ -1,21 +1,30 @@
 
-def is_balanced(grid):
-    # Initialize variables to keep track of the leftmost and rightmost points
-    leftmost = float('inf')
-    rightmost = -float('inf')
+def is_adjacent(s):
+    count = 0
+    for i in range(len(s)-1):
+        if s[i] == '-' and s[i+1] == '-':
+            count += 1
+    return count
 
-    # Iterate through the grid and find the leftmost and rightmost points
-    for i in range(len(grid)):
-        for j in range(len(grid[0])):
-            if grid[i][j] != '.':
-                leftmost = min(leftmost, j)
-                rightmost = max(rightmost, j)
+def is_valid(s):
+    count = 0
+    for i in range(len(s)-1):
+        if s[i] == '-' and s[i+1] == 'o':
+            count += 1
+        elif s[i] == 'o' and s[i+1] == '-':
+            count += 1
+    return count % 2 == 0
 
-    # Check if the center of gravity is between the leftmost and rightmost points
-    if leftmost < rightmost:
-        return 'balanced'
-    elif leftmost > rightmost:
-        return 'right'
-    else:
-        return 'left'
+def solve(s):
+    if len(s) == 1:
+        return "YES"
+    if len(s) == 2:
+        return "YES"
+    if len(s) == 3:
+        return "NO"
+    if is_adjacent(s) == 0:
+        return "YES"
+    if is_valid(s):
+        return "YES"
+    return "NO"
 

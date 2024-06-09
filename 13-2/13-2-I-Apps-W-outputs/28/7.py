@@ -1,17 +1,23 @@
 
-def get_max_profit(n, h, m, restrictions):
-    # Initialize the dp table with 0 as the base case
-    dp = [0] * (n + 1)
+def get_min_operations(letter_list):
+    # Initialize variables
+    num_unread_letters = letter_list.count(0)
+    num_operations = 0
+    current_index = 0
 
-    # Loop through each restriction
-    for l, r, x in restrictions:
-        # Loop through each spot on the street
-        for i in range(l, r + 1):
-            # Check if the current spot is within the restriction
-            if i >= l and i <= r:
-                # Update the dp table with the maximum profit possible
-                dp[i] = max(dp[i], dp[i - 1] + (x - h) ** 2)
+    # Loop through the letter list
+    while num_unread_letters > 0:
+        # If the current letter is unread, open it
+        if letter_list[current_index] == 0:
+            num_unread_letters -= 1
+            num_operations += 1
 
-    # Return the maximum profit possible
-    return dp[n]
+        # Move to the next letter
+        current_index += 1
+
+        # If we reach the end of the list, move back to the beginning
+        if current_index == len(letter_list):
+            current_index = 0
+
+    return num_operations
 

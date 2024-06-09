@@ -1,24 +1,28 @@
 
-import math
-
-def special_numbers(n, k):
-    def count_set_bits(n):
-        count = 0
-        while n:
-            count += n & 1
-            n >>= 1
-        return count
+def get_max_simultaneously_on_lights(n, s, a, b):
+    # Initialize a list to store the states of the lights
+    lights = [1 if s[i] == "1" else 0 for i in range(n)]
     
-    def is_special(n, k):
-        count = count_set_bits(n)
-        return count == k
+    # Initialize a variable to store the maximum number of simultaneously on lights
+    max_simultaneously_on = 0
     
-    def count_special_numbers(n, k):
-        count = 0
-        for i in range(1, n+1):
-            if is_special(i, k):
-                count += 1
-        return count
+    # Iterate through each light
+    for i in range(n):
+        # Calculate the time at which the light will toggle
+        toggle_time = a[i] * (b[i] // a[i])
+        
+        # If the light is on, turn it off
+        if lights[i] == 1:
+            lights[i] = 0
+            max_simultaneously_on -= 1
+        
+        # If the light is off, turn it on
+        else:
+            lights[i] = 1
+            max_simultaneously_on += 1
+        
+        # Update the maximum number of simultaneously on lights
+        max_simultaneously_on = max(max_simultaneously_on, sum(lights))
     
-    return count_special_numbers(n, k) % (10**9 + 7)
+    return max_simultaneously_on
 

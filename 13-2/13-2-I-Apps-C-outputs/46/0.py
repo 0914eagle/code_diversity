@@ -1,39 +1,42 @@
 
-def get_min_rain(d, t, c, r, clouds, roofs):
-    # Initialize variables
-    min_rain = 0
-    current_time = 0
-    current_position = 0
-    roof_index = 0
-    roof_start = 0
-    roof_end = 0
+def get_maximum_gold(n, m, roads, gold):
+    # Initialize a graph with the given roads
+    graph = [[] for _ in range(n + 1)]
+    for i in range(m):
+        graph[roads[i][0]].append(roads[i][1])
+        graph[roads[i][1]].append(roads[i][0])
+    
+    # Initialize a visited array and a parent array
+    visited = [False] * (n + 1)
+    parent = [0] * (n + 1)
+    
+    # Initialize the maximum gold to 0
+    max_gold = 0
+    
+    # Iterate through all the villages
+    for village in range(1, n + 1):
+        # If the village has not been visited yet
+        if not visited[village]:
+            # Perform DFS to find the maximum gold that can be stolen
+            max_gold = max(max_gold, dfs(graph, visited, parent, village, gold))
+    
+    return max_gold
 
-    # Sort the clouds by starting time
-    clouds.sort(key=lambda x: x[0])
-
-    # Loop through the clouds
-    for cloud in clouds:
-        s, e, p, a = cloud
-        # Check if the cloud is in the current zip code
-        if current_position >= d:
-            break
-        # Check if the cloud is over the current position
-        if current_position >= s and current_position < e:
-            # Add the rain amount to the total rain
-            min_rain += a
-        # Check if the current time is greater than the cloud ending time
-        if current_time >= e:
-            continue
-        # Check if the current position is within a roof segment
-        while roof_index < r and current_position >= roof_end:
-            roof_index += 1
-            roof_start, roof_end = roofs[roof_index]
-        if current_position >= roof_start and current_position < roof_end:
-            # Add the rain amount to the total rain
-            min_rain += a
-        # Update the current time and position
-        current_time = e
-        current_position = current_position + (current_time - s) * 1
-
-    return min_rain
+def dfs(graph, visited, parent, village, gold):
+    # Mark the current village as visited
+    visited[village] = True
+    parent[village] = 1
+    
+    # Initialize the maximum gold to 0
+    max_gold = 0
+    
+    # Iterate through the neighbors of the current village
+    for neighbor in graph[village]:
+        # If the neighbor has not been visited yet
+        if not visited[neighbor]:
+            # Perform DFS on the neighbor
+            max_gold = max(max_gold, dfs(graph, visited, parent, neighbor, gold))
+    
+    # Return the maximum gold that can be stolen from the current village
+    return max_gold + gold[village]
 

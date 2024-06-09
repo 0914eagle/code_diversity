@@ -1,13 +1,23 @@
 
-def get_sorted_probability(a, k):
-    n = len(a)
-    dp = [[0] * (k+1) for _ in range(n+1)]
-    dp[0][0] = 1
-    for i in range(1, n+1):
-        for j in range(1, k+1):
-            if a[i-1] == 0:
-                dp[i][j] = dp[i-1][j-1]
-            else:
-                dp[i][j] = dp[i-1][j-1] + dp[i-1][j]
-    return dp[n][k]
+def is_moon_down(n, records):
+    # Convert the records to a list of integers
+    records = [int(x) for x in records]
+
+    # Check if the length of the records is valid
+    if len(records) != n:
+        return -1
+
+    # Check if the records are in the correct order
+    if not all(records[i] < records[i+1] for i in range(len(records)-1)):
+        return -1
+
+    # Check if the records form a cycle
+    if records[0] != records[-1]:
+        return -1
+
+    # Check if the next day's record is less than the current day's record
+    if records[0] < records[-1]:
+        return "DOWN"
+    else:
+        return "UP"
 

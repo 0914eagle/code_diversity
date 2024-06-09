@@ -1,45 +1,71 @@
 
-def solve(N, edges):
-    # Initialize the graph as a dictionary of sets
-    graph = {i: set() for i in range(1, N + 1)}
+import math
 
-    # Add edges to the graph
-    for edge in edges:
-        graph[edge[0]].add(edge[1])
-        graph[edge[1]].add(edge[0])
+def solve(n, circles):
+    # Convert the input circles to a set of line segments
+    segments = []
+    for circle in circles:
+        x, y, r = circle
+        segments.append([(x + r, y), (x - r, y)])
+        segments.append([(x, y + r), (x, y - r)])
+    
+    # Sort the segments by their slope
+    segments.sort(key=lambda segment: segment[0][1] - segment[1][1])
+    
+    # Initialize the number of regions as 0
+    regions = 0
+    
+    # Iterate through the segments and count the number of regions
+    for segment in segments:
+        x1, y1 = segment[0]
+        x2, y2 = segment[1]
+        if x1 == x2:
+            # Horizontal segment, ignore
+            continue
+        elif y1 == y2:
+            # Vertical segment, ignore
+            continue
+        else:
+            # Calculate the equation of the line
+            m = (y2 - y1) / (x2 - x1)
+            c = y1 - m * x1
+            
+            # Check if the line intersects with any of the other segments
+            for other_segment in segments:
+                x3, y3 = other_segment[0]
+                x4, y4 = other_segment[1]
+                if x3 == x4:
+                    # Horizontal segment, ignore
+                    continue
+                elif y3 == y4:
+                    # Vertical segment, ignore
+                    continue
+                else:
+                    # Calculate the equation of the other line
+                    m_other = (y4 - y3) / (x4 - x3)
+                    c_other = y3 - m_other * x3
+                    
+                    # Check if the lines intersect
+                    if m == m_other:
+                        # Parallel lines, ignore
+                        continue
+                    else:
+                        # Calculate the intersection point
+                        x_intersect = (c_other - c) / (m - m_other)
+                        y_intersect = m * x_intersect + c
+                        
+                        # Check if the intersection point is between the endpoints of both segments
+                        if x_intersect >= min(x1, x2) and x_intersect <= max(x1, x2) and x_intersect >= min(x3, x4) and x_intersect <= max(x3, x4) and y_intersect >= min(y1, y2) and y_intersect <= max(y1, y2) and y_intersect >= min(y3, y4) and y_intersect <= max(y3, y4):
+                            regions += 1
+    
+    return regions
 
-    # Initialize the niceness sum
-    niceness_sum = 0
+n = int(input())
+circles = []
+for i in range(n):
+    x, y, r = map(int, input().split())
+    circles.append([x, y, r])
 
-    # Iterate over all possible colorings of the graph
-    for coloring in range(2 ** N):
-        # Convert the binary representation of the coloring to a list of colors
-        colors = []
-        for i in range(N):
-            colors.append(coloring >> i & 1)
-
-        # Initialize the maximum distance between white and black vertices
-        max_white_distance = 0
-        max_black_distance = 0
-
-        # Iterate over all edges in the graph
-        for i in range(N - 1):
-            # Get the vertices connected by the current edge
-            u, v = edges[i]
-
-            # If the current edge is between two vertices of the same color, skip it
-            if colors[u - 1] == colors[v - 1]:
-                continue
-
-            # If the current edge is between a white and a black vertex, update the maximum distance
-            if colors[u - 1] == 0 and colors[v - 1] == 1:
-                max_white_distance = max(max_white_distance, graph[u].index(v))
-            elif colors[u - 1] == 1 and colors[v - 1] == 0:
-                max_black_distance = max(max_black_distance, graph[u].index(v))
-
-        # Add the niceness of the current coloring to the sum
-        niceness_sum += max(max_white_distance, max_black_distance)
-
-    # Return the sum of the nicenesses modulo (10^9 + 7)
-    return niceness_sum % (10 ** 9 + 7)
+regions = solve(n, circles)
+print(regions)
 

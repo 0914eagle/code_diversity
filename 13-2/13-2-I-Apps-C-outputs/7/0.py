@@ -1,41 +1,35 @@
 
-def solve(N, M, list, order):
-    # Initialize a dictionary to store the number of inspections needed for each student
-    inspections = {}
+def solve(offers):
+    # Sort the offers by the first section of the fence
+    sorted_offers = sorted(offers, key=lambda x: x[1])
 
-    # Initialize a set to store the names of the students that have been inspected
-    inspected = set()
+    # Initialize the variables to keep track of the number of colors and sections painted
+    num_colors = 0
+    num_sections = 0
 
-    # Initialize the number of inspections needed
-    num_inspections = 0
+    # Initialize the list to store the accepted offers
+    accepted_offers = []
 
-    # Loop through the list of students in order
-    for i in range(N):
-        # Get the name of the current student
-        name = order[i]
+    # Iterate through the sorted offers
+    for offer in sorted_offers:
+        # Check if the current offer overlaps with the previous offer
+        if num_sections > 0 and offer[1] <= accepted_offers[-1][2]:
+            # If it overlaps, merge the offers and update the variables
+            accepted_offers[-1][2] = max(accepted_offers[-1][2], offer[2])
+            num_sections += offer[2] - accepted_offers[-1][1] + 1
+        else:
+            # If it does not overlap, add the offer to the list of accepted offers
+            accepted_offers.append(offer)
+            num_sections += offer[2] - offer[1] + 1
+            num_colors += 1
 
-        # If the student has not been inspected yet, inspect them
-        if name not in inspected:
-            # Increment the number of inspections needed
-            num_inspections += 1
+        # Check if the maximum number of colors has been reached
+        if num_colors > 3:
+            return "IMPOSSIBLE"
 
-            # Add the student to the set of inspected students
-            inspected.add(name)
-
-            # If the student is on the list, strike their name from the list
-            if name in list:
-                list.remove(name)
-
-            # If the list is empty, break the loop
-            if not list:
-                break
-
-        # Get the position of the current student in the line
-        position = order.index(name)
-
-        # Add the position of the current student to the dictionary of inspections
-        inspections[name] = position
-
-    # Return the number of inspections needed and the dictionary of inspections
-    return num_inspections, inspections
+    # Check if all sections have been painted
+    if num_sections == 10000:
+        return len(accepted_offers)
+    else:
+        return "IMPOSSIBLE"
 

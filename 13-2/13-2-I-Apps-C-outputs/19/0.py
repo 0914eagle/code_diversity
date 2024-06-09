@@ -1,17 +1,42 @@
 
-def solve(transcript):
-    # Initialize the character types of the candidates as unknown
-    character_types = ["unknown"] * len(transcript[0])
+import itertools
 
-    # Iterate over each utterance in the transcript
-    for utterance in transcript:
-        # Split the utterance into the name of the speaker and the statement
-        speaker, statement = utterance.split(" ")
+def count_evolution_plans(gyms, types):
+    # Initialize a list to store the number of Pokemons of each type
+    type_counts = [0] * (types + 1)
+    
+    # Iterate over the gyms and count the number of Pokemons of each type
+    for gym in gyms:
+        for pokemon in gym:
+            type_counts[pokemon] += 1
+    
+    # Initialize a list to store the evolution plans
+    evolution_plans = []
+    
+    # Iterate over the permutations of the types
+    for perm in itertools.permutations(range(1, types + 1)):
+        # Initialize a list to store the number of Pokemons of each type after evolution
+        evolved_type_counts = [0] * (types + 1)
+        
+        # Iterate over the gyms and evolve the Pokemons according to the current permutation
+        for gym in gyms:
+            for pokemon in gym:
+                evolved_type_counts[perm[pokemon]] += 1
+        
+        # Check if the number of Pokemons of each type is the same before and after evolution
+        if type_counts == evolved_type_counts:
+            evolution_plans.append(perm)
+    
+    return len(evolution_plans)
 
-        # If the statement is a character type claim, update the character type of the speaker
-        if statement.startswith("truther") or statement.startswith("fabulist") or statement.startswith("charlatan"):
-            character_types[int(speaker) - 1] = statement.split(" ")[0]
+def main():
+    n, types = map(int, input().split())
+    gyms = []
+    for i in range(n):
+        gym = list(map(int, input().split()))
+        gyms.append(gym[1:])
+    print(count_evolution_plans(gyms, types))
 
-    # Return the character types of the candidates
-    return character_types
+if __name__ == "__main__":
+    main()
 

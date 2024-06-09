@@ -1,16 +1,16 @@
 
-def get_maximal_factoring_weight(string):
-    # Initialize a dictionary to store the factorings and their weights
-    factorings = {}
-    
-    # Loop through each substring of the string
-    for i in range(len(string)):
-        for j in range(i+1, len(string)+1):
-            # Check if the substring is a factor of the string
-            if string[i:j] in string:
-                # If it is, add it to the dictionary with its weight
-                factorings[string[i:j]] = j - i
-    
-    # Find the maximal factoring with the smallest weight
-    return min(factorings, key=factorings.get)
+def count_intersections(lines):
+    points = set()
+    for line in lines:
+        x0, y0, x1, y1 = line
+        if x0 == x1:
+            for y in range(min(y0, y1), max(y0, y1) + 1):
+                points.add((x0, y))
+        elif y0 == y1:
+            for x in range(min(x0, x1), max(x0, x1) + 1):
+                points.add((x, y0))
+        else:
+            for x, y in zip(range(min(x0, x1), max(x0, x1) + 1), range(min(y0, y1), max(y0, y1) + 1)):
+                points.add((x, y))
+    return len(points)
 

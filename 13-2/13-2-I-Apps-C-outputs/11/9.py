@@ -1,16 +1,22 @@
 
-def solve(N, k, heights):
-    # Calculate the average height of the neighbors
-    avg_height = sum(heights) / N
+def get_max_or_value(numbers, k, x):
+    # Sort the numbers in descending order
+    numbers.sort(reverse=True)
     
-    # Calculate the final height of each house
-    final_heights = []
-    for i in range(N):
-        if heights[i] >= avg_height + k:
-            final_heights.append(heights[i])
-        else:
-            final_heights.append((heights[i-1] + heights[i+1]) / 2 + k)
+    # Initialize the result
+    result = 0
     
-    # Return the height of the tallest house
-    return max(final_heights)
+    # Loop through the numbers
+    for i in range(len(numbers)):
+        # Check if we can perform an operation
+        if k > 0:
+            # Multiply the current number by x
+            numbers[i] *= x
+            # Decrement the number of operations
+            k -= 1
+        # Update the result
+        result |= numbers[i]
+    
+    # Return the result
+    return result
 

@@ -1,23 +1,32 @@
 
-def is_balanced(grid):
-    # Initialize variables to keep track of the leftmost and rightmost points
-    leftmost, rightmost = float('inf'), -float('inf')
+def is_adjacent(s):
+    count = 0
+    for i in range(len(s)-1):
+        if s[i] == '-' and s[i+1] == '-':
+            count += 1
+    return count
 
-    # Iterate through the grid and find the leftmost and rightmost points
-    for i in range(len(grid)):
-        for j in range(len(grid[0])):
-            if grid[i][j] != '.':
-                leftmost = min(leftmost, j)
-                rightmost = max(rightmost, j)
+def is_valid(s):
+    count = 0
+    for i in range(len(s)-1):
+        if s[i] == '-' and s[i+1] == 'o':
+            count += 1
+    return count % 2 == 0
 
-    # Calculate the center of gravity
-    center_x = (leftmost + rightmost) / 2
+def can_rejoin(s):
+    if len(s) == 1:
+        return "YES"
+    if is_adjacent(s) == 0:
+        return "NO"
+    if is_valid(s):
+        return "YES"
+    for i in range(len(s)):
+        if s[i] == '-':
+            s = s[:i] + 'o' + s[i+1:]
+            if can_rejoin(s) == "YES":
+                return "YES"
+    return "NO"
 
-    # Check if the structure is balanced or falls to the left or right
-    if center_x < leftmost:
-        return 'left'
-    elif center_x > rightmost:
-        return 'right'
-    else:
-        return 'balanced'
+s = input()
+print(can_rejoin(s))
 

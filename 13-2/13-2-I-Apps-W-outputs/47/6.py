@@ -1,39 +1,18 @@
 
-def split_message(n, s, a):
-    # Initialize the number of ways to split the message
-    num_ways = 0
-    # Initialize the longest substring length
-    longest_substring = 0
-    # Initialize the minimum number of substrings
-    min_substrings = n + 1
-    
-    # Iterate over all possible split positions
+def solve(n, m, k, arrays):
+    # Initialize the array of pairs
+    pairs = []
+
+    # Loop through each array
     for i in range(n):
-        # Get the length of the substring starting from position i
-        substring_length = 1
-        # Iterate over the remaining substring
-        for j in range(i+1, n):
-            # If the substring length is less than the maximum length of the current character
-            if substring_length < a[ord(s[j]) - ord('a')]:
-                # Increment the substring length
-                substring_length += 1
-            # If the substring length is equal to the maximum length of the current character
-            elif substring_length == a[ord(s[j]) - ord('a')]:
-                # Break the loop
-                break
-            # If the substring length is greater than the maximum length of the current character
-            else:
-                # Break the loop
-                break
-        # If the substring length is equal to the number of characters in the message
-        if substring_length == n:
-            # Increment the number of ways to split the message
-            num_ways += 1
-            # Update the longest substring length
-            longest_substring = max(longest_substring, substring_length)
-            # Update the minimum number of substrings
-            min_substrings = min(min_substrings, substring_length)
-    
-    # Return the number of ways to split the message, the longest substring length, and the minimum number of substrings
-    return num_ways, longest_substring, min_substrings
+        # Find the indices of the smallest and largest elements
+        smallest = arrays[i].index(min(arrays[i])) + 1
+        largest = arrays[i].index(max(arrays[i])) + 1
+
+        # If the arrays are not already sorted, add the pair of indices to the array
+        if (k == 0 and arrays[i][smallest] > arrays[i][largest]) or (k == 1 and arrays[i][smallest] < arrays[i][largest]):
+            pairs.append([smallest, largest])
+
+    # Return the array of pairs
+    return pairs
 

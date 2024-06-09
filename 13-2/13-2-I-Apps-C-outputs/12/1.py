@@ -1,41 +1,40 @@
 
-def count_valid_colorings(n, a):
-    # Initialize the number of valid colorings to 0
-    valid_colorings = 0
-    
-    # Loop through each row of the grid
-    for i in range(1, n+1):
-        # If the row is odd, there are n hexagons in the row
-        if i % 2 == 1:
-            num_hexagons = n
-        # If the row is even, there are n-1 hexagons in the row
-        else:
-            num_hexagons = n-1
-        
-        # Loop through each hexagon in the row
-        for j in range(1, num_hexagons+1):
-            # If the current hexagon is not colored, skip it
-            if a[i-1][j-1] == -1:
-                continue
-            
-            # If the current hexagon is colored, check if it is part of a valid loop
-            valid_loop = True
-            
-            # Loop through the neighbors of the current hexagon
-            for k in range(1, num_hexagons+1):
-                # If the neighbor is not colored, skip it
-                if a[i-1][k-1] == -1:
-                    continue
-                
-                # If the neighbor is colored and is not part of the current loop, the current loop is not valid
-                if a[i-1][j-1] != a[i-1][k-1]:
-                    valid_loop = False
-                    break
-            
-            # If the current loop is valid, increment the number of valid colorings
-            if valid_loop:
-                valid_colorings += 1
-    
-    # Return the number of valid colorings
-    return valid_colorings
+def black_vienna(investigations):
+    num_investigations = len(investigations)
+    num_suspects = 26
+    num_solutions = 0
+
+    for i in range(num_investigations):
+        suspects = investigations[i][:2]
+        player = investigations[i][2]
+        reply = investigations[i][3]
+
+        # If the player has all the cards, there is only one solution
+        if reply == num_suspects:
+            num_solutions += 1
+            continue
+
+        # If the player has no cards, there are no solutions
+        if reply == 0:
+            return 0
+
+        # If the player has some cards, we need to count the number of solutions
+        num_solutions += count_solutions(suspects, player, reply, num_suspects)
+
+    return num_solutions
+
+def count_solutions(suspects, player, reply, num_suspects):
+    num_solutions = 0
+
+    # If the player has only one card, there is only one solution
+    if reply == 1:
+        return 1
+
+    # If the player has two cards, we need to count the number of solutions
+    for i in range(num_suspects):
+        for j in range(i+1, num_suspects):
+            if i != j and i not in suspects and j not in suspects:
+                num_solutions += 1
+
+    return num_solutions
 

@@ -1,38 +1,48 @@
 
-def solve(n, files):
-    # Initialize a graph with n nodes
-    graph = [[] for _ in range(n)]
+import math
 
-    # Populate the graph with edges
-    for i, file in enumerate(files):
-        name, k = file[0], int(file[1])
-        for j in range(2, len(file)):
-            graph[i].append(file[j].split(", ")[1])
-
-    # Find a shortest cycle in the graph
-    cycle = []
-    for i in range(n):
-        if graph[i]:
-            cycle = find_cycle(graph, i)
-            if cycle:
-                break
-
-    # If there is no cycle, return "SHIP IT"
-    if not cycle:
-        return "SHIP IT"
-
-    # Otherwise, return the names of the files in the cycle
-    return " ".join(cycle)
-
-def find_cycle(graph, node):
+def get_least_turning(nodes, edges):
+    # Initialize variables
+    turning = 0
     visited = set()
-    stack = [node]
-    while stack:
-        node = stack.pop()
-        if node not in visited:
-            visited.add(node)
-            stack.extend(graph[node])
+    current_node = 0
+    previous_node = None
+
+    # Loop through the edges
+    for edge in edges:
+        # If the current node has not been visited before, add it to the visited set
+        if current_node not in visited:
+            visited.add(current_node)
+        # If the current node has been visited before, calculate the turning required
         else:
-            return graph[node]
-    return []
+            # Calculate the angle between the current node and the previous node
+            angle = math.atan2(nodes[current_node][1] - nodes[previous_node][1], nodes[current_node][0] - nodes[previous_node][0])
+            # Add the angle to the total turning
+            turning += angle
+        # Set the current node as the previous node for the next iteration
+        previous_node = current_node
+        # Set the current node as the next node
+        current_node = edge
+
+    # Calculate the total turning required for the Eulerian circuit
+    total_turning = turning + math.atan2(nodes[current_node][1] - nodes[previous_node][1], nodes[current_node][0] - nodes[previous_node][0])
+
+    return total_turning
+
+# Test the function with the sample input
+nodes = [(0, 0), (0, 1), (1, 0)]
+edges = [(0, 1), (0, 2), (1, 2)]
+print(get_least_turning(nodes, edges))
+
+# Part 2: Read input from file
+with open("input.txt", "r") as f:
+    # Read the number of nodes and edges
+    nodes, edges = map(int, f.readline().split())
+    # Read the node coordinates
+    nodes = [(int(x), int(y)) for x, y in [f.readline().split() for _ in range(nodes)]]
+    # Read the edge list
+    edges = [tuple(map(int, f.readline().split())) for _ in range(edges)]
+
+# Calculate the least turning required for the Eulerian circuit
+print(get_least_turning(nodes, edges))
 

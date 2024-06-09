@@ -1,29 +1,32 @@
 
-def get_max_moves(maze):
+def solve(a, b):
     # Initialize variables
-    max_moves = 0
-    start_row, start_col = 0, 0
-    end_row, end_col = 0, 0
-
-    # Find the starting and ending squares
-    for row in range(len(maze)):
-        for col in range(len(maze[0])):
-            if maze[row][col] == 'S':
-                start_row, start_col = row, col
-            if maze[row][col] == 'G':
-                end_row, end_col = row, col
-
-    # Breadth-first search to find the maximum number of moves
-    queue = [(start_row, start_col)]
-    visited = set()
-    while queue:
-        row, col = queue.pop(0)
-        visited.add((row, col))
-        if row == end_row and col == end_col:
-            return len(visited) - 1
-        for r, c in [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]:
-            if 0 <= r < len(maze) and 0 <= c < len(maze[0]) and maze[r][c] == '.' and (r, c) not in visited:
-                queue.append((r, c))
-
-    return max_moves
+    n = 0
+    m = 0
+    p = []
+    q = []
+    
+    # Loop through all possible values of n
+    for n in range(1, a+1):
+        # Calculate the total time required to read n notes in the first day
+        time_first_day = sum(range(1, n+1))
+        
+        # Check if the total time required is less than or equal to a
+        if time_first_day <= a:
+            # Calculate the total time required to read m notes in the second day
+            time_second_day = a - time_first_day
+            
+            # Check if the total time required is less than or equal to b
+            if time_second_day <= b:
+                # Calculate the number of notes that can be read in the second day
+                m = b - time_second_day
+                
+                # Add the notes that can be read in the second day to the list q
+                q = list(range(n+1, n+m+1))
+                
+                # Break out of the loop
+                break
+    
+    # Return the results
+    return n, p, m, q
 

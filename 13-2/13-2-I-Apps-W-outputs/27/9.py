@@ -1,14 +1,18 @@
 
-def solve(x, y, z, t1, t2, t3):
-    # Calculate the time it takes to use the stairs
-    time_stairs = abs(x - y) * t1
-    
-    # Calculate the time it takes to use the elevator
-    time_elevator = t3 + t2 * abs(z - y) + t3
-    
-    # Check if the time it takes to use the elevator is less than the time it takes to use the stairs
-    if time_elevator < time_stairs:
-        return "YES"
-    else:
-        return "NO"
+import sys
+
+n = int(input().strip())
+points = []
+
+for _ in range(n):
+    x, y = map(int, input().strip().split())
+    points.append((x, y))
+
+max_distance = 0
+for i in range(n):
+    for j in range(i+1, n):
+        distance = abs(points[i][0] - points[j][0]) + abs(points[i][1] - points[j][1])
+        max_distance = max(max_distance, distance)
+
+print(max_distance)
 

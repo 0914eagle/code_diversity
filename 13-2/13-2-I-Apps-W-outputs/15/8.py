@@ -1,21 +1,23 @@
 
-def solve(n, edges):
-    # Initialize a dictionary to store the labels for each edge
-    labels = {}
-    # Initialize a set to store the used labels
-    used_labels = set()
-    # Iterate over the edges and assign labels
-    for edge in edges:
-        # If the edge has not been labeled yet, assign a label that is not already used
-        if edge not in labels:
-            for label in range(n-2):
-                if label not in used_labels:
-                    labels[edge] = label
-                    used_labels.add(label)
-                    break
-        # If the edge has already been labeled, add the label to the set of used labels
+def get_max_bottles(bottles, fridge_height):
+    # Initialize variables
+    max_bottles = 0
+    current_height = 0
+    shelves = []
+
+    # Iterate through the bottles
+    for i, bottle in enumerate(bottles):
+        # Check if the current bottle fits on the current shelf
+        if current_height + bottle <= fridge_height:
+            # Add the bottle to the current shelf
+            current_height += bottle
+            shelves.append(i)
+            max_bottles = max(max_bottles, len(shelves))
         else:
-            used_labels.add(labels[edge])
-    # Return the list of labels
-    return [labels[edge] for edge in edges]
+            # Add a new shelf and place the bottle on it
+            current_height = bottle
+            shelves.append(i)
+            max_bottles = max(max_bottles, len(shelves))
+
+    return max_bottles
 

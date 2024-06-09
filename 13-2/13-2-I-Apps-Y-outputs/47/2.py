@@ -1,26 +1,19 @@
 
-def is_wall_completable(height, width, bricks):
-    # Initialize variables
-    current_layer = 0
-    current_row = 0
-    layers = []
-
-    # Iterate through the bricks
-    for brick in bricks:
-        # If the current layer is full, move to the next layer
-        if current_row == width:
-            current_layer += 1
-            current_row = 0
-
-        # If the current layer is not full, place the brick
-        if current_layer < height:
-            layers.append(brick)
-            current_row += 1
-
-    # If the last layer is not full, the construction worker will be annoyed
-    if current_layer < height - 1:
-        return "NO"
-
-    # If the last layer is full, the construction worker will complete the wall
-    return "YES"
+def solve(A, B, C, X, Y):
+    # Calculate the cost of buying X A-pizzas and Y B-pizzas separately
+    cost_A = X * A
+    cost_B = Y * B
+    
+    # Calculate the cost of buying two AB-pizzas and rearranging them into one A-pizza and one B-pizza
+    cost_AB = 2 * C
+    
+    # Calculate the total cost of buying X A-pizzas and Y B-pizzas
+    total_cost = cost_A + cost_B
+    
+    # If the cost of buying two AB-pizzas and rearranging them is less than the total cost, return the cost of buying two AB-pizzas and rearranging them
+    if cost_AB < total_cost:
+        return cost_AB
+    # Otherwise, return the total cost
+    else:
+        return total_cost
 

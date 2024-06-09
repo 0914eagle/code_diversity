@@ -1,11 +1,29 @@
 
-def get_min_distance(x, y, x1, y1, x2, y2):
-    # Calculate the distance from the fence post to each corner of the house
-    dist_to_corner1 = ((x - x1) ** 2 + (y - y1) ** 2) ** 0.5
-    dist_to_corner2 = ((x - x2) ** 2 + (y - y2) ** 2) ** 0.5
-    dist_to_corner3 = ((x - x1) ** 2 + (y - y2) ** 2) ** 0.5
-    dist_to_corner4 = ((x - x2) ** 2 + (y - y1) ** 2) ** 0.5
+def get_days(n, m, a):
+    # Initialize variables
+    days = 0
+    pages_written = 0
+    cups_drunk = 0
 
-    # Return the minimum distance
-    return min(dist_to_corner1, dist_to_corner2, dist_to_corner3, dist_to_corner4)
+    # Sort the cups of coffee by caffeine dosage in descending order
+    a.sort(reverse=True)
+
+    # Loop through each cup of coffee
+    for i in range(n):
+        # If the current cup of coffee has enough caffeine to write at least one page,
+        # drink it and write the maximum number of pages possible
+        if a[i] > 0:
+            cups_drunk += 1
+            pages_written += min(m - pages_written, a[i])
+
+        # If all pages have been written, break the loop
+        if pages_written == m:
+            break
+
+    # If all pages have been written, return the number of days
+    # otherwise, return -1
+    if pages_written == m:
+        return days
+    else:
+        return -1
 

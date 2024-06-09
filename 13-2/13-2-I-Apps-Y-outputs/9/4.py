@@ -1,34 +1,18 @@
 
-def solve(n, x):
-    # Sort the chips by their coordinates
-    x.sort()
-    
-    # Initialize the minimum number of coins to move all chips to the same coordinate as infinity
-    min_coins = float('inf')
-    
-    # Loop through all possible coordinates
-    for coord in x:
-        # Initialize the number of coins to move chips to this coordinate as 0
-        coins = 0
-        
-        # Loop through all chips
-        for i in range(n):
-            # If the chip is not at the current coordinate, calculate the number of coins needed to move it to this coordinate
-            if x[i] != coord:
-                # If the chip is more than 2 positions away from the current coordinate, move it by 2 positions and pay 1 coin
-                if abs(x[i] - coord) > 2:
-                    coins += 1
-                # If the chip is 2 positions away from the current coordinate, move it by 1 position and pay 1 coin
-                elif abs(x[i] - coord) == 2:
-                    coins += 1
-                # If the chip is 1 position away from the current coordinate, move it by 1 position and pay 0 coins
-                elif abs(x[i] - coord) == 1:
-                    pass
-        
-        # If the number of coins needed to move all chips to this coordinate is less than the current minimum, update the minimum
-        if coins < min_coins:
-            min_coins = coins
-    
-    # Return the minimum number of coins needed to move all chips to the same coordinate
-    return min_coins
+def solve(n, x, y, number):
+    # Convert the number to a list of digits
+    number = [int(digit) for digit in number]
+
+    # Initialize the minimum number of operations to perform
+    min_operations = 0
+
+    # Iterate over the digits of the number
+    for i in range(n):
+        # If the current digit is 0 and the next digit is 1, flip the current digit
+        if number[i] == 0 and i + 1 < n and number[i + 1] == 1:
+            number[i] = 1
+            min_operations += 1
+
+    # Return the minimum number of operations to perform
+    return min_operations
 

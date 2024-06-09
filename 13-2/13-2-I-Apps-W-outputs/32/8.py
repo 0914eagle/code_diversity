@@ -1,14 +1,15 @@
 
-def solve(n, a, x, b, y):
-    # Check if Daniel and Vlad will ever be at the same station at the same time during their journey
-    if a == x or b == y:
-        return "YES"
-    elif a == b or x == y:
-        return "NO"
-    else:
-        # Check if Daniel and Vlad will ever be at the same station at the same time during their journey
-        if (a < b and x < y) or (a > b and x > y):
-            return "NO"
-        else:
-            return "YES"
+n, m = map(int, input().split())
+
+board = [[0] * n for _ in range(n)]
+
+for i in range(m):
+    x, y = map(int, input().split())
+    board[x - 1][y - 1] = 1
+
+    # Count the number of cells not under attack
+    count = 0
+    for row in board:
+        count += row.count(0)
+    print(count)
 

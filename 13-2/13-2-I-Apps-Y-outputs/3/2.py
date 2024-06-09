@@ -1,20 +1,10 @@
 
-def solve(coordinates):
-    # Convert the coordinates to a list of tuples
-    coordinates = [(x, y, h) for x, y, h in coordinates]
-    
-    # Initialize the center coordinates and height
-    center_x, center_y, height = 0, 0, 0
-    
-    # Iterate over the coordinates and calculate the center coordinates and height
-    for x, y, h in coordinates:
-        center_x += x
-        center_y += y
-        height = max(height, h)
-    
-    # Calculate the average center coordinates
-    center_x //= len(coordinates)
-    center_y //= len(coordinates)
-    
-    return center_x, center_y, height
+x = int(input())
+y = int(input())
+z = int(input())
+n = int(input())
+
+coordinates = [(i, j, k) for i in range(x+1) for j in range(y+1) for k in range(z+1) if i+j+k != n]
+
+print(coordinates)
 

@@ -1,22 +1,13 @@
 
-def get_maximal_orders(orders):
-    # Sort the orders by their start time
-    sorted_orders = sorted(orders, key=lambda x: x[0])
-
-    # Initialize the maximum number of accepted orders to 0
-    max_accepted_orders = 0
-
-    # Initialize the current time to 0
-    current_time = 0
-
-    # Iterate through the sorted orders
-    for order in sorted_orders:
-        # If the start time of the current order is greater than the current time, we can accept the order
-        if order[0] > current_time:
-            # Update the current time to the finish time of the current order
-            current_time = order[1]
-            # Increment the maximum number of accepted orders
-            max_accepted_orders += 1
-
-    return max_accepted_orders
+def count_ways(a, b, s):
+    n = len(a)
+    m = len(b)
+    count = 0
+    for i in range(n):
+        for j in range(i+1, n+1):
+            for k in range(m):
+                for l in range(k+1, m+1):
+                    if a[i:j] + b[k:l] == s:
+                        count += 1
+    return count
 

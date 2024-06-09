@@ -1,23 +1,14 @@
 
-def reconstruct_winner(record):
-    # Initialize the score and the lead
-    score = [0, 0]
-    lead = 0
+def worm_climbing(a, b, h):
+    # Calculate the number of times the worm needs to crawl up
+    num_crawls = h // a
     
-    # Iterate through the record
-    for i in range(0, len(record), 2):
-        # Get the current player and the number of points scored
-        player = record[i]
-        points = int(record[i+1])
-        
-        # Update the score and the lead
-        score[player == "A"] += points
-        lead = score[0] - score[1]
-        
-        # Check if the game is over
-        if abs(lead) >= 2:
-            break
+    # Calculate the number of inches the worm falls during the last crawl
+    last_crawl_fall = h % a
     
-    # Return the winner
-    return "A" if lead > 0 else "B"
+    # If the worm falls during the last crawl, add an additional crawl
+    if last_crawl_fall > 0:
+        num_crawls += 1
+    
+    return num_crawls
 

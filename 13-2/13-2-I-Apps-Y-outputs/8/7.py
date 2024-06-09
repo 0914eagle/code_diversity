@@ -1,44 +1,34 @@
 
-def solve(n, answers):
-    # Initialize variables
-    adrian_seq = "A" * n
-    bruno_seq = "B" * n
-    goran_seq = "C" * n
-    max_correct = 0
-    winners = []
+def is_round(n):
+    return n % 10 == 0 and all(int(d) == 0 for d in str(n)[1:])
 
-    # Loop through each question
-    for i in range(n):
-        # Check which sequence has the correct answer
-        if answers[i] == "A":
-            adrian_seq = adrian_seq.replace("A", "B", 1)
-            bruno_seq = bruno_seq.replace("B", "C", 1)
-            goran_seq = goran_seq.replace("C", "A", 1)
-        elif answers[i] == "B":
-            adrian_seq = adrian_seq.replace("A", "C", 1)
-            bruno_seq = bruno_seq.replace("B", "A", 1)
-            goran_seq = goran_seq.replace("C", "B", 1)
-        else:
-            adrian_seq = adrian_seq.replace("A", "B", 1)
-            bruno_seq = bruno_seq.replace("B", "C", 1)
-            goran_seq = goran_seq.replace("C", "A", 1)
+def get_min_summands(n):
+    k = 1
+    while n > 0:
+        if is_round(n):
+            return k
+        n -= 1
+        k += 1
+    return k
 
-        # Count the number of correct answers for each sequence
-        adrian_correct = adrian_seq.count("A")
-        bruno_correct = bruno_seq.count("B")
-        goran_correct = goran_seq.count("C")
+def get_summands(n):
+    k = get_min_summands(n)
+    result = []
+    while n > 0:
+        if is_round(n):
+            result.append(n)
+            return result
+        n -= 1
+    return result
 
-        # Update the maximum number of correct answers
-        max_correct = max(max_correct, adrian_correct, bruno_correct, goran_correct)
+def solve(n):
+    k = get_min_summands(n)
+    result = get_summands(n)
+    return f"{k}\n{' '.join(str(r) for r in result)}"
 
-        # Add the winners to the list
-        if adrian_correct == max_correct:
-            winners.append("Adrian")
-        if bruno_correct == max_correct:
-            winners.append("Bruno")
-        if goran_correct == max_correct:
-            winners.append("Goran")
-
-    # Return the maximum number of correct answers and the winners
-    return max_correct, sorted(winners)
+if __name__ == "__main__":
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        print(solve(n))
 

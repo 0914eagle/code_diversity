@@ -1,48 +1,50 @@
 
-def balanced_equation(equation):
-    # Initialize variables
-    elements = {}
-    coefficients = {}
-    total_coefficients = 0
+def solve(W, v_h, N, x, y, S, s):
+    # Initialize a dictionary to store the minimum time required to pass through each gate
+    min_time = {}
+    for i in range(N):
+        min_time[(x[i], y[i])] = float('inf')
 
-    # Parse the equation
-    for line in equation:
-        if line == "0 0":
-            break
-        sign, num_elements = line.split(" ")
-        num_elements = int(num_elements)
-        elements[sign] = {}
-        coefficients[sign] = 1
-        for i in range(num_elements):
-            element, count = line.split(" ")
-            elements[sign][element] = int(count)
-            total_coefficients += int(count)
+    # Initialize a dictionary to store the maximum horizontal speed at each gate
+    max_speed = {}
+    for i in range(N):
+        max_speed[(x[i], y[i])] = v_h
 
-    # Find the least common multiple of the coefficients
-    lcm = 1
-    for coefficient in coefficients.values():
-        lcm = find_lcm(lcm, coefficient)
+    # Loop through each gate and calculate the minimum time required to pass through it
+    for i in range(N):
+        for j in range(i+1, N):
+            # Calculate the horizontal distance between the two gates
+            dist = abs(x[i] - x[j])
 
-    # Divide the coefficients by the least common multiple
-    for sign in elements.keys():
-        elements[sign] = {k: v // lcm for k, v in elements[sign].items()}
-        coefficients[sign] //= lcm
+            # Calculate the time required to pass through the gate at the current speed
+            time = dist / s[i]
 
-    # Find the minimum number of each element needed to balance the equation
-    min_elements = {}
-    for element in elements["+1"].keys():
-        min_elements[element] = total_coefficients // elements["+1"][element]
+            # Update the minimum time required to pass through the gate
+            min_time[(x[i], y[i])] = min(min_time[(x[i], y[i])], time)
+            min_time[(x[j], y[j])] = min(min_time[(x[j], y[j])], time)
 
-    # Return the minimum number of each element needed to balance the equation
-    return [min_elements[element] for element in sorted(min_elements.keys())]
+            # Update the maximum horizontal speed at the gate
+            max_speed[(x[i], y[i])] = min(max_speed[(x[i], y[i])], s[i])
+            max_speed[(x[j], y[j])] = min(max_speed[(x[j], y[j])], s[i])
 
-def find_lcm(a, b):
-    if a == 0:
-        return b
-    if b == 0:
-        return a
-    while True:
-        a, b = b, a % b
-        if b == 0:
-            return a
+    # Loop through each gate and calculate the minimum time required to pass through it with the maximum horizontal speed
+    for i in range(N):
+        for j in range(i+1, N):
+            # Calculate the horizontal distance between the two gates
+            dist = abs(x[i] - x[j])
+
+            # Calculate the time required to pass through the gate at the maximum speed
+            time = dist / max_speed[(x[i], y[i])]
+
+            # Update the minimum time required to pass through the gate
+            min_time[(x[i], y[i])] = min(min_time[(x[i], y[i])], time)
+            min_time[(x[j], y[j])] = min(min_time[(x[j], y[j])], time)
+
+    # Calculate the total time required to pass through all the gates
+    total_time = 0
+    for i in range(N):
+        total_time += min_time[(x[i], y[i])]
+
+    # Return the speed of the pair of skis that allows you to get through the race course in the shortest time
+    return s[total_time]
 

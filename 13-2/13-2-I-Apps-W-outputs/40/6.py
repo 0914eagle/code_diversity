@@ -1,20 +1,17 @@
 
-def solve(arr, operations):
-    # Initialize an empty list to store the results
-    results = []
+def solve(queries):
+    intervals = []
+    for query in queries:
+        if query[0] == 1:
+            intervals.append((query[1], query[2]))
+        elif query[0] == 2:
+            for i in range(len(intervals)):
+                if intervals[i][0] == query[1] and intervals[i][1] == query[2]:
+                    print("YES")
+                    break
+            else:
+                print("NO")
 
-    # Loop through each operation
-    for operation in operations:
-        # If the operation is to make an element equal to a specific value, perform the assignment
-        if operation[0] == 1:
-            arr[operation[1] - 1] = operation[2]
-        # If the operation is to increase each element by a specific value, perform the increment
-        elif operation[0] == 2:
-            arr = [x + operation[1] for x in arr]
-        # If the operation is to print a specific element, add it to the results list
-        elif operation[0] == 3:
-            results.append(arr[operation[1] - 1])
-
-    # Return the results list
-    return results
+queries = [(1, 1, 5), (1, 5, 11), (2, 1, 2), (1, 2, 9), (2, 1, 2)]
+solve(queries)
 

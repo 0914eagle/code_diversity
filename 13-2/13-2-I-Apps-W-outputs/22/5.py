@@ -1,19 +1,32 @@
 
-def get_highest_score(n, m, a):
-    # Calculate the average score of the class
-    average = sum(a) / n
+def solve():
+    s = input()
+    t = input()
 
-    # Initialize the highest possible score for student 1
-    highest_score = 0
+    # Initialize the minimum value of i as the length of s
+    min_i = len(s)
 
-    # Iterate through all possible scores for student 1
-    for i in range(m + 1):
-        # Calculate the new average score if student 1 gets score i
-        new_average = (average * n - a[0] + i) / n
+    # Loop through all possible values of i
+    for i in range(len(s)):
+        # Check if t is a subsequence of the first i characters of s'
+        if is_subsequence(t, s * 100000000000000000)[0:i]:
+            # If it is, update the minimum value of i
+            min_i = min(min_i, i)
 
-        # Check if the new average is an integer and if it satisfies the condition that the average score of the class doesn't change
-        if new_average % 1 == 0 and new_average >= average:
-            highest_score = max(highest_score, i)
+    # If no value of i satisfies the condition, return -1
+    if min_i == len(s):
+        return -1
+    else:
+        return min_i
 
-    return highest_score
+# Check if t is a subsequence of s
+def is_subsequence(t, s):
+    i, j = 0, 0
+    while i < len(t) and j < len(s):
+        if t[i] == s[j]:
+            i += 1
+        j += 1
+    return i == len(t)
+
+print(solve())
 

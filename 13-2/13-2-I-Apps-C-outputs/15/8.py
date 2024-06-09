@@ -1,43 +1,55 @@
 
-def find_shortest_cycle(files):
-    # Initialize a graph with the given files as nodes
-    graph = {}
-    for file in files:
-        graph[file] = []
+import math
 
-    # Add edges to the graph based on the import statements
-    for file in files:
-        imports = files[file]
-        for import_file in imports:
-            graph[file].append(import_file)
+def get_least_turning(nodes, edges):
+    # Initialize variables
+    turning = 0
+    visited = set()
+    current_node = 0
+    previous_node = None
 
-    # Find a shortest cycle in the graph
-    cycle = []
-    for file in files:
-        if file not in cycle:
-            cycle = find_cycle(graph, file, cycle)
-            if len(cycle) > 0:
-                break
+    # Loop through the edges
+    for edge in edges:
+        # If the current node has not been visited before, add it to the visited set
+        if current_node not in visited:
+            visited.add(current_node)
+        # If the current node has been visited before, calculate the turning required
+        else:
+            # Calculate the angle between the current node and the previous node
+            angle = math.atan2(nodes[current_node][1] - nodes[previous_node][1], nodes[current_node][0] - nodes[previous_node][0])
+            # Add the angle to the total turning
+            turning += angle
+        # Set the current node as the previous node for the next iteration
+        previous_node = current_node
+        # Set the current node as the next node
+        current_node = edge
 
-    # Return the cycle if found, otherwise return "SHIP IT"
-    if len(cycle) == 0:
-        return "SHIP IT"
-    else:
-        return " ".join(cycle)
+    # Calculate the total turning required for the Eulerian circuit
+    total_turning = turning + math.atan2(nodes[current_node][1] - nodes[previous_node][1], nodes[current_node][0] - nodes[previous_node][0])
 
-def find_cycle(graph, node, cycle):
-    # If the node is already in the cycle, we have found a cycle
-    if node in cycle:
-        return cycle
+    return total_turning
 
-    # Add the node to the cycle
-    cycle.append(node)
+# Test the function with the sample input
+nodes = [(0, 0), (0, 1), (1, 0)]
+edges = [(0, 1), (0, 2), (1, 2)]
+print(get_least_turning(nodes, edges))
 
-    # Recursively search for a cycle starting from the node's neighbors
-    for neighbor in graph[node]:
-        cycle = find_cycle(graph, neighbor, cycle)
-        if len(cycle) > 0:
-            break
-
-    return cycle
+# Part 2: Read input from file
+with open("input.txt", "r") as f:
+    nodes = []
+    edges = []
+    for line in f:
+        # Read the number of nodes and edges
+        num_nodes, num_edges = map(int, line.split())
+        # Read the node coordinates
+        for _ in range(num_nodes):
+            x, y = map(int, f.readline().split())
+            nodes.append((x, y))
+        # Read the edge connections
+        for _ in range(num_edges):
+            i, j = map(int, f.readline().split())
+            edges.append((i, j))
+    # Calculate the least turning required for the Eulerian circuit
+    least_turning = get_least_turning(nodes, edges)
+    print(least_turning)
 

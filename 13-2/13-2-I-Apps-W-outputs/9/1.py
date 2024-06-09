@@ -1,16 +1,37 @@
 
-def solve(n, m):
-    # Initialize the coloring with 'A'
-    coloring = ['A' for _ in range(n * m)]
-    
-    # Iterate through each row
-    for i in range(n):
-        # Iterate through each column
-        for j in range(m):
-            # If the cell is not in the first row or column, check if the cell above and to the left is the same color
-            if i > 0 and j > 0 and coloring[i * m + j - 1] == coloring[(i - 1) * m + j]:
-                # If the cell above and to the left is the same color, change the current cell to the next letter in the alphabet
-                coloring[i * m + j] = chr(ord(coloring[i * m + j - 1]) + 1)
-    
-    return "".join(coloring)
+import sys
+import math
+
+def get_expected_number_of_passages(n, m, s, t):
+    # Initialize the probability of reaching room N from each room
+    probabilities = [1 for _ in range(n)]
+
+    # Loop through each passage
+    for i in range(m):
+        # Get the current passage
+        current_s = s[i]
+        current_t = t[i]
+
+        # Update the probability of reaching room N from the current passage's start room
+        probabilities[current_s-1] += probabilities[current_t-1] / n
+
+    # Return the expected number of passages
+    return sum(probabilities)
+
+n, m = map(int, input().split())
+s = list(map(int, input().split()))
+t = list(map(int, input().split()))
+
+# Get the expected number of passages for each possible passage blocking
+expected_numbers = []
+for i in range(m):
+    # Block the current passage
+    blocked_s = s[:i] + s[i+1:]
+    blocked_t = t[:i] + t[i+1:]
+
+    # Get the expected number of passages for the blocked passage
+    expected_numbers.append(get_expected_number_of_passages(n, m-1, blocked_s, blocked_t))
+
+# Print the minimum expected number of passages
+print(min(expected_numbers))
 

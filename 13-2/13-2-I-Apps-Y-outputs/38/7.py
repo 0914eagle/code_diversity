@@ -1,17 +1,16 @@
 
-def get_max_team_size(skills):
-    # Sort the skills in non-decreasing order
-    skills.sort()
-    # Initialize the maximum team size and the current team size
-    max_team_size = 0
-    current_team_size = 0
-    # Iterate through the skills and check if they are balanced
-    for i in range(len(skills)):
-        if current_team_size == 0 or skills[i] - skills[i - 1] <= 5:
-            current_team_size += 1
-        else:
-            max_team_size = max(max_team_size, current_team_size)
-            current_team_size = 1
-    # Return the maximum possible team size
-    return max(max_team_size, current_team_size)
+def solve(N, M):
+    # Initialize a set to store the even numbers
+    even_numbers = set()
+
+    # Add all even numbers from 2 to 2N to the set
+    for i in range(2, 2 * N + 1, 2):
+        even_numbers.add(i)
+
+    # Add all odd numbers from 1 to 2M to the set
+    for i in range(1, 2 * M + 1, 2):
+        even_numbers.add(i)
+
+    # Return the number of pairs of numbers that add up to an even number
+    return len(even_numbers)
 

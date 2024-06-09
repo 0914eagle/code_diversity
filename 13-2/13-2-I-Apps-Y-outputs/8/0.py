@@ -1,31 +1,34 @@
 
-def solve(n, answers):
-    # Initialize variables to keep track of the correct answers for each boy
-    adrian_correct = 0
-    bruno_correct = 0
-    goran_correct = 0
-    
-    # Iterate through the answers and count the correct answers for each boy
-    for i, answer in enumerate(answers):
-        if i % 3 == 0:
-            # Adrian's sequence
-            if answer == 'A':
-                adrian_correct += 1
-        elif i % 3 == 1:
-            # Bruno's sequence
-            if answer == 'B':
-                bruno_correct += 1
-        else:
-            # Goran's sequence
-            if answer == 'C':
-                goran_correct += 1
-    
-    # Find the boy with the most correct answers
-    max_correct = max(adrian_correct, bruno_correct, goran_correct)
-    if adrian_correct == max_correct:
-        return "Adrian"
-    elif bruno_correct == max_correct:
-        return "Bruno"
-    else:
-        return "Goran"
+def is_round(n):
+    return n % 10 == 0 and all(int(d) == 0 for d in str(n)[1:])
+
+def get_min_summands(n):
+    k = 1
+    while n > 0:
+        if is_round(n):
+            return k
+        n -= 1
+        k += 1
+    return k
+
+def get_summands(n):
+    k = get_min_summands(n)
+    result = []
+    while n > 0:
+        if is_round(n):
+            result.append(n)
+            return result
+        n -= 1
+    return result
+
+def solve(n):
+    k = get_min_summands(n)
+    result = get_summands(n)
+    return f"{k}\n{' '.join(str(r) for r in result)}"
+
+if __name__ == "__main__":
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        print(solve(n))
 

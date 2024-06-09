@@ -1,18 +1,19 @@
 
-def max_rectangle_area(matrix):
-    def max_rectangle_area_helper(matrix, row, col, dp):
-        if row < 0 or col < 0 or row >= len(matrix) or col >= len(matrix[0]) or matrix[row][col] == '0':
-            return 0
-        if dp[row][col] != -1:
-            return dp[row][col]
-        dp[row][col] = 1 + max_rectangle_area_helper(matrix, row - 1, col, dp) + max_rectangle_area_helper(matrix, row, col - 1, dp) - max_rectangle_area_helper(matrix, row - 1, col - 1, dp)
-        return dp[row][col]
-    
-    dp = [[-1 for i in range(len(matrix[0]))] for j in range(len(matrix))]
-    max_area = 0
-    for i in range(len(matrix)):
-        for j in range(len(matrix[0])):
-            if matrix[i][j] == '1':
-                max_area = max(max_area, max_rectangle_area_helper(matrix, i, j, dp))
-    return max_area
+def get_min_spots(n, H):
+    # Initialize the height of the first spot as 1
+    heights = [1]
+    # Initialize the number of spots as 1
+    spots = 1
+    # Loop through the remaining spots
+    for i in range(1, n):
+        # If the current spot is within the fence, set its height to 1
+        if i <= H:
+            heights.append(1)
+        # Otherwise, set its height to the minimum of the previous two spots
+        else:
+            heights.append(min(heights[i-1], heights[i-2]) + 1)
+        # Update the number of spots
+        spots += 1
+    # Return the minimum number of spots
+    return spots
 

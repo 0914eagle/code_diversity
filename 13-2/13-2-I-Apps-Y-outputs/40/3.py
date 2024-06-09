@@ -1,11 +1,10 @@
 
-def get_max_values(sequence):
-    max_values = []
-    for i in range(len(sequence)):
-        max_value = 0
-        for j in range(len(sequence)):
-            if j != i and sequence[j] > max_value:
-                max_value = sequence[j]
-        max_values.append(max_value)
-    return max_values
+def get_min_flight_time(p, q, r):
+    # Calculate the sum of the flight times for each route
+    route_1 = p + q
+    route_2 = q + r
+    route_3 = r + p
+
+    # Return the minimum of the three routes
+    return min(route_1, route_2, route_3)
 

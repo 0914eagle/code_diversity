@@ -1,15 +1,21 @@
 
-def get_maximum_profit(n, h, m, restrictions):
-    # Initialize a list to store the height of each house
-    heights = [0] * (n + 1)
-    
-    # Loop through each restriction and update the height of the houses within that restriction
-    for l, r, x in restrictions:
-        for i in range(l, r + 1):
-            heights[i] = min(heights[i], x)
-    
-    # Calculate the profit by summing the squares of the heights of all the houses
-    profit = sum(x**2 for x in heights)
-    
-    return profit
+def get_min_operations(n, letters):
+    # Initialize variables
+    operations = 0
+    current_letter = 0
+    read_letters = 0
+
+    # Iterate through the letters
+    for letter in letters:
+        # If the letter is unread, open it
+        if letter == 0:
+            operations += 1
+            read_letters += 1
+        # If the letter is read, move to the next letter
+        else:
+            operations += 1
+            current_letter += 1
+
+    # Return the minimum number of operations needed to read all unread letters
+    return operations + (n - read_letters)
 

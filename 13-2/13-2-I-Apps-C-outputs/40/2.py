@@ -1,62 +1,59 @@
 
-def solve(n, m, t, op):
-    # Initialize a 2D array to store the grid
-    grid = [[0 for _ in range(n)] for _ in range(n)]
-    
-    # Fill in the grid with the given values
-    for i in range(m):
-        r, c = map(int, input().split())
-        grid[r-1][c-1] = i+1
-    
-    # Use recursion to find all possible combinations of numbers that satisfy the conditions
-    return count_combinations(grid, t, op)
-
-def count_combinations(grid, t, op):
-    # Base case: if the grid is empty, return 1 if the target is 0, and 0 otherwise
-    if not grid:
-        return 1 if t == 0 else 0
-    
-    # Initialize the number of combinations to 0
-    combinations = 0
-    
-    # Iterate over all possible values for the current grid square
-    for i in range(1, len(grid)+1):
-        # If the value is valid (i.e., it doesn't appear in the same row or column), recurse with the updated grid and target
-        if is_valid(grid, i, op):
-            combinations += count_combinations(update_grid(grid, i), t-i, op)
-    
-    # Return the number of combinations
-    return combinations
-
-def is_valid(grid, value, op):
-    # Check if the value appears in the same row
-    for row in grid:
-        if value in row:
+def is_valid_solution(grid, n, k):
+    # Check if all rows are valid
+    for i in range(n):
+        row = [grid[i][j] for j in range(n)]
+        if len(set(row)) != n:
             return False
     
-    # Check if the value appears in the same column
-    for i in range(len(grid)):
-        if value == grid[i][i]:
+    # Check if all columns are valid
+    for j in range(n):
+        col = [grid[i][j] for i in range(n)]
+        if len(set(col)) != n:
             return False
     
-    # Check if the value appears in the same diagonal
-    for i in range(len(grid)):
-        if value == grid[i][len(grid)-i-1]:
-            return False
+    # Check if all subgrids are valid
+    for i in range(n):
+        for j in range(n):
+            subgrid = []
+            for row in range(i, i + 3):
+                for col in range(j, j + 3):
+                    subgrid.append(grid[row][col])
+            if len(set(subgrid)) != n:
+                return False
     
-    # If none of the above conditions are met, the value is valid
     return True
 
-def update_grid(grid, value):
-    # Create a new grid with the updated value
-    new_grid = [[0 for _ in range(len(grid))] for _ in range(len(grid))]
-    for i in range(len(grid)):
-        for j in range(len(grid)):
-            if i == j:
-                new_grid[i][j] = value
-            else:
-                new_grid[i][j] = grid[i][j]
+def solve_superdoku(grid, n, k):
+    if k == n:
+        if is_valid_solution(grid, n, k):
+            return grid
+        else:
+            return None
     
-    # Return the new grid
-    return new_grid
+    for i in range(n):
+        for j in range(n):
+            if grid[i][j] == 0:
+                for num in range(1, n + 1):
+                    grid[i][j] = num
+                    if solve_superdoku(grid, n, k + 1) is not None:
+                        return grid
+                grid[i][j] = 0
+    return None
+
+def main():
+    n, k = map(int, input().split())
+    grid = [[0] * n for _ in range(n)]
+    for i in range(k):
+        grid[i] = list(map(int, input().split()))
+    solution = solve_superdoku(grid, n, k)
+    if solution is not None:
+        print("yes")
+        for row in solution:
+            print(" ".join(map(str, row)))
+    else:
+        print("no")
+
+if __name__ == "__main__":
+    main()
 

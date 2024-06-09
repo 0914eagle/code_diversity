@@ -1,32 +1,19 @@
 
-def speedrun_game(n, r, m, tricks):
-    # Initialize the variables
-    expected_time = 0
-    current_time = 0
-    num_resets = 0
-
-    # Loop through each trick in the route
-    for trick in tricks:
-        t, p, d = trick
-
-        # If the trick occurs before the current time, reset the game
-        if t < current_time:
-            num_resets += 1
-            current_time = 0
-
-        # If the trick occurs after the current time, update the current time
-        if t > current_time:
-            current_time = t
-
-        # Calculate the expected time to recover from the trick
-        expected_recovery_time = d * (1 - p)
-
-        # Add the expected time to recover from the trick to the expected time
-        expected_time += expected_recovery_time
-
-    # Calculate the expected time to set a new record
-    expected_time += n - current_time
-
-    # Return the expected time to set a new record
-    return expected_time
+def max_operations(arr, pairs):
+    # Sort the array in non-decreasing order
+    arr.sort()
+    # Initialize a variable to store the maximum number of operations
+    max_ops = 0
+    # Iterate over the good pairs
+    for i, j in pairs:
+        # Check if the pair is valid
+        if i + j % 2 == 1 and 1 <= i < j <= len(arr):
+            # Divide both numbers by the smaller number
+            smaller = min(arr[i], arr[j])
+            arr[i] //= smaller
+            arr[j] //= smaller
+            # Increment the maximum number of operations
+            max_ops += 1
+    # Return the maximum number of operations
+    return max_ops
 

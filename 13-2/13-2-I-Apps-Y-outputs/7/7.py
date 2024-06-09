@@ -1,16 +1,15 @@
 
-def count_ways(n, m, a):
-    # Initialize a table to store the results
-    dp = [0] * (n+1)
-    dp[0] = 1
+def solve(s, t):
+    # Initialize the result string
+    result = "UNRESTORABLE"
 
-    # Iterate over the broken steps
-    for i in range(m):
-        # Iterate over the remaining steps
-        for j in range(a[i]-1, n):
-            # Add the previous result to the current result
-            dp[j+1] += dp[j]
+    # Iterate through all possible strings that satisfy Condition 1
+    for i in range(26):
+        curr_string = chr(ord('a') + i) + t + chr(ord('a') + i)
+        if curr_string in s:
+            # If the current string is lexicographically smaller than the previous one, update the result
+            if curr_string < result:
+                result = curr_string
 
-    # Return the result modulo 1000000007
-    return dp[n] % 1000000007
+    return result
 

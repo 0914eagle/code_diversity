@@ -1,35 +1,30 @@
 
-def solve(n, k, c, names, enemies):
-    # Initialize variables
-    groups = []
-    current_group = []
-    group_size = 0
-    i = 0
+def get_max_apples(n, apple_trees):
+    # Sort the apple trees by their position
+    apple_trees.sort(key=lambda x: x[0])
 
-    # Iterate through the names
-    while i < n:
-        # If the current group is full, add it to the list of groups and create a new group
-        if group_size == c:
-            groups.append(current_group)
-            current_group = []
-            group_size = 0
+    # Initialize the maximum number of apples collected
+    max_apples = 0
 
-        # If the current name is not an enemy of anyone in the current group, add it to the group
-        if not any(name in current_group for name in enemies[i]):
-            current_group.append(names[i])
-            group_size += 1
+    # Initialize the current position
+    current_position = 0
 
-        # If the current name is an enemy of everyone in the current group, create a new group with only that name
-        elif all(name in current_group for name in enemies[i]):
-            groups.append([names[i]])
+    # Initialize the current direction (0 for left, 1 for right)
+    current_direction = 0
 
-        # Increment the index
-        i += 1
+    # Loop through the apple trees
+    for tree in apple_trees:
+        # If the current position is not the same as the position of the current tree
+        if current_position != tree[0]:
+            # Update the current position
+            current_position = tree[0]
 
-    # Add the last group to the list of groups
-    if current_group:
-        groups.append(current_group)
+            # Update the current direction
+            current_direction = 1 - current_direction
 
-    # Return the minimum number of groups and the list of groups
-    return len(groups), groups
+        # Add the number of apples on the current tree to the maximum number of apples collected
+        max_apples += tree[1]
+
+    # Return the maximum number of apples collected
+    return max_apples
 

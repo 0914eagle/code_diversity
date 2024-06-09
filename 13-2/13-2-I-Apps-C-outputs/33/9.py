@@ -1,35 +1,28 @@
 
-def solve_small_y_puzzle(t, n):
-    # Initialize the memoization dictionary
-    memo = {}
+def is_possible(N, M, roads):
+    # Initialize a graph with N nodes and 0 edges
+    graph = [[] for _ in range(N)]
 
-    # Initialize the minimum cost to solve the puzzle
-    min_cost = float('inf')
+    # Add edges to the graph
+    for road in roads:
+        graph[road[0] - 1].append(road[1] - 1)
+        graph[road[1] - 1].append(road[0] - 1)
 
-    # Recursively solve the puzzle
-    solve_small_y_puzzle_helper(t, n, 1, 2, 3, 0, memo)
+    # Check if the graph is connected
+    visited = [False] * N
+    queue = [0]
+    visited[0] = True
+    while queue:
+        node = queue.pop(0)
+        for neighbor in graph[node]:
+            if not visited[neighbor]:
+                visited[neighbor] = True
+                queue.append(neighbor)
 
-    # Return the minimum cost to solve the puzzle
-    return min_cost
+    # If the graph is not connected, return False
+    if not all(visited):
+        return False
 
-def solve_small_y_puzzle_helper(t, n, i, j, k, cost, memo):
-    # Base case: if the number of disks is 1, return the cost of moving the disk from i to j
-    if n == 1:
-        return t[i - 1][j - 1]
-
-    # Memoization: if the state has already been visited, return the memoized value
-    if (i, j, k, n) in memo:
-        return memo[(i, j, k, n)]
-
-    # Recursive call: solve the puzzle by moving the top disk from i to j, and the top disk from j to k, and the top disk from i to k
-    cost1 = t[i - 1][j - 1] + solve_small_y_puzzle_helper(t, n - 1, j, k, i, cost + t[i - 1][j - 1], memo)
-    cost2 = t[j - 1][k - 1] + solve_small_y_puzzle_helper(t, n - 1, i, j, k, cost + t[j - 1][k - 1], memo)
-    cost3 = t[i - 1][k - 1] + solve_small_y_puzzle_helper(t, n - 1, j, k, i, cost + t[i - 1][k - 1], memo)
-
-    # Update the minimum cost
-    min_cost = min(cost1, cost2, cost3)
-
-    # Memoize the state and return the minimum cost
-    memo[(i, j, k, n)] = min_cost
-    return min_cost
+    # If the graph is connected, return True
+    return True
 

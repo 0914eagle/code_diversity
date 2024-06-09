@@ -1,31 +1,23 @@
 
-def solve(A, B, queries):
-    # Calculate the height of each Karafs
-    heights = [A + (i - 1) * B for i in range(1, 1000001)]
+def get_min_keys(n, s):
+    # Initialize the number of keys needed to 0
+    keys_needed = 0
     
-    # Iterate over the queries
-    for l, t, m in queries:
-        # Initialize the maximum number of Karafs that can be eaten
-        max_eaten = 0
-        
-        # Iterate over the possible number of Karafs that can be eaten
-        for i in range(l, 1000001):
-            # Check if the current number of Karafs can be eaten
-            if heights[i] >= m * B:
-                # Update the maximum number of Karafs that can be eaten
-                max_eaten = i
+    # Iterate through the string s
+    for i in range(0, len(s), 2):
+        # If the current position is odd, it represents a key
+        if i % 2 == 1:
+            # Get the type of the key
+            key_type = s[i]
+            # Get the type of the door in the next room
+            door_type = s[i + 1]
+            # If the key type and door type are the same, the key is not needed
+            if key_type == door_type:
+                keys_needed -= 1
+            # Otherwise, the key is needed
             else:
-                # Break the loop if the current number of Karafs cannot be eaten
-                break
-        
-        # Check if the maximum number of Karafs that can be eaten is less than or equal to t
-        if max_eaten <= t:
-            # Print the maximum number of Karafs that can be eaten
-            print(max_eaten)
-        else:
-            # Print -1 if the maximum number of Karafs that can be eaten is greater than t
-            print(-1)
-            
-solve(2, 1, [(1, 5, 3), (3, 3, 10), (7, 10, 2), (6, 4, 8)])
-solve(1, 5, [(1, 5, 10), (2, 7, 4)])
+                keys_needed += 1
+    
+    # Return the minimum number of keys needed
+    return keys_needed
 

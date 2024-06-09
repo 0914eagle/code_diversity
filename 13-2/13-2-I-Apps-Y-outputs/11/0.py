@@ -1,13 +1,14 @@
 
-def solve(A, B):
-    # Find the greatest common divisor of A and B
-    gcd = find_gcd(A, B)
-    # Return the minimum number of pieces that can be evenly distributed to the guests
-    return A * B // gcd
+import sys
 
-def find_gcd(a, b):
-    if b == 0:
-        return a
-    else:
-        return find_gcd(b, a % b)
+n, k = map(int, input().split())
+sticks = list(map(int, input().split()))
+
+sticks.sort()
+
+max_length = 0
+for i in range(k):
+    max_length += sticks[i]
+
+print(max_length)
 

@@ -1,22 +1,37 @@
 
-import math
+def solve(N, V, A, B):
+    # Initialize a set to store the types of jokes told by the employees
+    jokes = set()
 
-def solve(A, B):
-    # Calculate the sum of distances between each pair of numbers in the interval [A, B]
-    total_distance = 0
-    for i in range(A, B+1):
-        for j in range(A, B+1):
-            total_distance += distance(i, j)
-    
-    # Return the result modulo 1000000007
-    return total_distance % 1000000007
+    # Add the types of jokes told by the employees to the set
+    for i in range(N):
+        jokes.add(V[i])
 
-def distance(a, b):
-    # Calculate the distance between a and b
-    distance = 0
-    for i in range(max(len(str(a)), len(str(b)))):
-        x = int(str(a)[i]) if i < len(str(a)) else 0
-        y = int(str(b)[i]) if i < len(str(b)) else 0
-        distance += abs(x - y)
-    return distance
+    # Initialize a dictionary to store the direct supervisors of each employee
+    supervisors = {}
+
+    # Add the direct supervisors of each employee to the dictionary
+    for i in range(N-1):
+        supervisors[A[i]] = B[i]
+
+    # Initialize a set to store the types of jokes that can be told at the party
+    party_jokes = set()
+
+    # Add the types of jokes told by the employees to the set
+    for i in range(N):
+        party_jokes.add(V[i])
+
+    # Initialize a variable to store the number of different sets of jokes that can be told at the party
+    num_party_jokes = 0
+
+    # Iterate over the types of jokes told by the employees
+    for i in range(N):
+        # If the type of joke is not already in the set of jokes that can be told at the party
+        if V[i] not in party_jokes:
+            # Add the type of joke to the set of jokes that can be told at the party
+            party_jokes.add(V[i])
+            num_party_jokes += 1
+
+    # Return the number of different sets of jokes that can be told at the party
+    return num_party_jokes
 

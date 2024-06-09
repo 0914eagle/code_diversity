@@ -1,25 +1,60 @@
 
-def solve(s, t):
-    # Initialize variables
-    max_length = 0
-    current_length = 0
-    s_index = 0
-    t_index = 0
+def is_star(grid, row, col, size):
+    # Check if the star is inside the grid
+    if row < 0 or row + size > len(grid) or col < 0 or col + size > len(grid[0]):
+        return False
+    
+    # Check if the star is completely inside the grid
+    for i in range(row, row + size):
+        for j in range(col, col + size):
+            if grid[i][j] != '*':
+                return False
+    
+    return True
 
-    # Loop through s and t simultaneously
-    while s_index < len(s) and t_index < len(t):
-        # If the current character in s is the same as the current character in t, increment the current length
-        if s[s_index] == t[t_index]:
-            current_length += 1
-            t_index += 1
-        # If the current character in s is not the same as the current character in t, reset the current length
-        else:
-            current_length = 0
-        # Update the maximum length if the current length is greater than the maximum length
-        if current_length > max_length:
-            max_length = current_length
-        s_index += 1
+def draw_grid(grid):
+    # Initialize the number of stars needed
+    num_stars = 0
+    
+    # Iterate through the grid
+    for row in range(len(grid)):
+        for col in range(len(grid[0])):
+            # If the current cell is a star, check if it is a valid star
+            if grid[row][col] == '*':
+                # Check if the star is valid
+                if is_star(grid, row, col, 1):
+                    num_stars += 1
+                elif is_star(grid, row, col, 2):
+                    num_stars += 2
+                elif is_star(grid, row, col, 3):
+                    num_stars += 3
+                else:
+                    return "-1"
+    
+    # If the number of stars is greater than the number of cells, it is impossible to draw the grid
+    if num_stars > len(grid) * len(grid[0]):
+        return "-1"
+    
+    # If the number of stars is valid, return the coordinates of the stars
+    stars = []
+    for row in range(len(grid)):
+        for col in range(len(grid[0])):
+            if grid[row][col] == '*':
+                stars.append([row, col, 1])
+                grid[row][col] = '.'
+    
+    return str(num_stars) + "\n" + "\n".join([str(star[0]) + " " + str(star[1]) + " " + str(star[2]) for star in stars])
 
-    # Return the maximum length
-    return max_length
+grid = [
+    ['.', '.', '.', '.', '.', '.', '.', '.'],
+    ['.', '*', '*', '*', '*', '*', '*', '.'],
+    ['.', '*', '*', '*', '*', '*', '*', '.'],
+    ['.', '*', '*', '*', '*', '*', '*', '.'],
+    ['.', '*', '*', '*', '*', '*', '*', '.'],
+    ['.', '*', '*', '*', '*', '*', '*', '.'],
+    ['.', '*', '*', '*', '*', '*', '*', '.'],
+    ['.', '.', '.', '.', '.', '.', '.', '.']
+]
+
+print(draw_grid(grid))
 

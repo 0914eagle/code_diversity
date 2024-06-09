@@ -1,48 +1,20 @@
 
-def connect_servers(n, m, k, capacities, connections):
-    # Initialize a graph with the given number of servers and connections
-    graph = [[] for _ in range(n)]
-    for u, v in connections:
-        graph[u].append(v)
-        graph[v].append(u)
+def get_wcd(pairs):
+    # Initialize a set to store the common divisors
+    common_divisors = set()
 
-    # Initialize a list to keep track of the number of sockets used by each server
-    sockets = [0] * n
+    # Iterate over the pairs
+    for a, b in pairs:
+        # Get the common divisors of a and b
+        divisors = set(range(2, min(a, b) + 1))
 
-    # Initialize a list to keep track of the number of edits made
-    edits = 0
+        # Intersect the common divisors with the previous set
+        common_divisors &= divisors
 
-    # Loop through each server and try to connect it to the rest of the network
-    for server in range(n):
-        # If the server is already connected to the rest of the network, skip it
-        if len(graph[server]) == n - 1:
-            continue
+        # If the set is empty, return -1
+        if not common_divisors:
+            return -1
 
-        # If the server has no sockets available, skip it
-        if sockets[server] == capacities[server]:
-            continue
-
-        # Try to connect the server to the rest of the network
-        for other_server in range(n):
-            # If the server is already connected to the other server, skip it
-            if other_server in graph[server]:
-                continue
-
-            # If the other server is full, skip it
-            if sockets[other_server] == capacities[other_server]:
-                continue
-
-            # If the edit limit has been reached, return "no"
-            if edits == k:
-                return "no"
-
-            # Make the edit and update the sockets and graph
-            sockets[server] += 1
-            sockets[other_server] += 1
-            graph[server].append(other_server)
-            graph[other_server].append(server)
-            edits += 1
-
-    # If all servers are connected, return "yes", otherwise return "no"
-    return "yes" if all(len(graph[server]) == n - 1 for server in range(n)) else "no"
+    # Return the largest element in the set
+    return max(common_divisors)
 

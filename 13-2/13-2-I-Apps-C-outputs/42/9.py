@@ -1,28 +1,23 @@
 
-def solve(a):
-    # Step 1: Find the minimum element in the list
-    min_element = min(a)
+def get_max_beauty(n):
+    # Initialize a list to store the permutations
+    permutations = []
     
-    # Step 2: Create a dictionary to store the colors and their corresponding elements
-    colors = {}
+    # Iterate from 0 to n
+    for i in range(n + 1):
+        # Get the permutation of integers from 0 to n
+        permutation = list(range(n + 1))
+        permutation[i] = permutation[0]
+        permutation.pop(0)
+        
+        # Calculate the beauty of the permutation
+        beauty = 0
+        for j in range(n):
+            beauty += (j ^ permutation[j])
+        
+        # Add the permutation to the list of permutations
+        permutations.append((beauty, permutation))
     
-    # Step 3: Iterate through the list and assign elements to colors
-    for element in a:
-        if element % min_element == 0:
-            # If the element is divisible by the minimum element, assign it to the first color
-            if 1 not in colors:
-                colors[1] = [element]
-            else:
-                colors[1].append(element)
-        else:
-            # If the element is not divisible by the minimum element, assign it to the next color
-            for i in range(2, len(colors) + 2):
-                if i not in colors:
-                    colors[i] = [element]
-                    break
-                else:
-                    colors[i].append(element)
-    
-    # Step 4: Return the number of colors used
-    return len(colors)
+    # Return the permutation with the maximum beauty
+    return max(permutations)[1]
 

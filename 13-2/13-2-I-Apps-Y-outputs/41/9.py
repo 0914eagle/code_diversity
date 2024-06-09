@@ -1,16 +1,18 @@
 
-def get_new_time(clock_change):
-    # Initialize variables
-    roll_forward, minutes_changed, hour, minute = clock_change
-
-    # Calculate the new time
-    if roll_forward == "F":
-        minute = (minute + minutes_changed) % 60
-        hour = (hour + int(minute / 60)) % 24
-    else:
-        minute = (minute - minutes_changed) % 60
-        hour = (hour - int(minute / 60)) % 24
-
-    # Return the new time
-    return f"{hour:02d} {minute:02d}"
+def safe_order(n, students):
+    # Initialize the pile with the first room's exams
+    pile = sum(students)
+    # Initialize the safe order with the first room
+    order = [1]
+    # Iterate through the remaining rooms
+    for i in range(2, n+1):
+        # If the pile has enough exams, distribute them randomly to the students in the current room
+        if pile >= students[i-1]:
+            pile -= students[i-1]
+            order.append(i)
+        # If the pile runs out of exams, return "impossible"
+        else:
+            return "impossible"
+    # Return the safe order
+    return order
 

@@ -1,20 +1,34 @@
 
-def solve(n, answers):
-    # Initialize variables
-    adrian_seq = "A" * n
-    bruno_seq = "B" * n
-    goran_seq = "C" * n
-    correct_answers = 0
+def is_round(n):
+    return n % 10 == 0 and all(int(d) == 0 for d in str(n)[1:])
 
-    # Loop through the answers and count the number of correct answers for each sequence
-    for i in range(n):
-        if adrian_seq[i] == answers[i]:
-            correct_answers += 1
-        if bruno_seq[i] == answers[i]:
-            correct_answers += 1
-        if goran_seq[i] == answers[i]:
-            correct_answers += 1
+def get_min_summands(n):
+    k = 1
+    while n > 0:
+        if is_round(n):
+            return k
+        n -= 1
+        k += 1
+    return k
 
-    # Return the number of correct answers and the names of the boys whose sequences result in the most correct answers
-    return correct_answers, "Adrian", "Bruno", "Goran"
+def get_summands(n):
+    k = get_min_summands(n)
+    result = []
+    while n > 0:
+        if is_round(n):
+            result.append(n)
+            return result
+        n -= 1
+    return result
+
+def solve(n):
+    k = get_min_summands(n)
+    result = get_summands(n)
+    return f"{k}\n{' '.join(str(r) for r in result)}"
+
+if __name__ == "__main__":
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        print(solve(n))
 

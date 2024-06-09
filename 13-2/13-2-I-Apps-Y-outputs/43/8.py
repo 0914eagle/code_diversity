@@ -1,16 +1,18 @@
 
-def solve(s, t):
-    # Initialize variables
-    max_length = 0
-    s_len = len(s)
-    t_len = len(t)
-
-    # Loop through all possible starting indices of t in s
-    for i in range(s_len - t_len + 1):
-        # Check if t is a subsequence of s starting from index i
-        if s[i:i+t_len] == t:
-            # If it is, update the maximum length
-            max_length = max(max_length, t_len)
-
-    return max_length
+def solve(grid):
+    n, m = len(grid), len(grid[0])
+    stars = []
+    for i in range(n):
+        for j in range(m):
+            if grid[i][j] == '*':
+                stars.append((i, j))
+    for star in stars:
+        i, j = star
+        for k in range(n):
+            for l in range(m):
+                if k == i and l == j:
+                    continue
+                if grid[k][l] == '*':
+                    return "-1"
+    return str(len(stars)) + "\n" + "\n".join(str(i+1) + " " + str(j+1) + " " + str(1) for i, j in stars)
 

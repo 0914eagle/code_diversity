@@ -1,17 +1,23 @@
 
-def count_ways(n, m, a):
-    # Initialize a table to store the results
-    dp = [0] * (n+1)
-    dp[0] = 1
+import itertools
 
-    # Iterate over the broken steps
-    for i in range(m):
-        # Iterate over the possible steps to reach the broken step
-        for j in range(a[i]):
-            # If the step is not broken, add the number of ways to reach it
-            if j not in a:
-                dp[j+1] += dp[j]
+def get_smallest_string(s, t):
+    # Create a list of all possible strings that satisfy Condition 1
+    possible_strings = [s[i:i+len(t)] for i in range(len(s)-len(t)+1)]
+    
+    # Filter out strings that do not contain T as a contiguous substring
+    possible_strings = [s for s in possible_strings if t in s]
+    
+    # Sort the list of possible strings lexicographically
+    possible_strings.sort()
+    
+    # Return the first string in the list, which is the lexicographically smallest string that satisfies Condition 1
+    if possible_strings:
+        return possible_strings[0]
+    else:
+        return "UNRESTORABLE"
 
-    # Return the number of ways to reach the top step
-    return dp[n] % 1000000007
+s = input()
+t = input()
+print(get_smallest_string(s, t))
 

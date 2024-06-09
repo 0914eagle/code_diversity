@@ -1,33 +1,28 @@
 
-def solve(n, p, m, names, points):
-    # Initialize a dictionary to store the names and points
-    name_points = {}
-
-    # Iterate over the input names and points
-    for i in range(m):
-        # Extract the name and points from the input
-        name, points = names[i], points[i]
-
-        # If the name is not in the dictionary, add it and set its points to the current points
-        if name not in name_points:
-            name_points[name] = points
-        # Otherwise, add the current points to the total points of the name
-        else:
-            name_points[name] += points
-
-    # Initialize a list to store the winners
-    winners = []
-
-    # Iterate over the names and points
-    for name, points in name_points.items():
-        # If the points are greater than or equal to the minimum required score, add the name to the winners list
-        if points >= p:
-            winners.append(name)
-
-    # If no one reached the minimum required score, return "No winner!"
-    if not winners:
-        return "No winner!"
-
-    # Otherwise, return the winners in the order they reached the minimum required score
-    return "\n".join([f"{winner} wins!" for winner in winners])
+def can_atcodeer_carry_out_his_plan(plan):
+    # Initialize a set to store the visited points
+    visited = set()
+    # Add the starting point to the set
+    visited.add((0, 0))
+    # Iterate through the plan
+    for t, x, y in plan:
+        # Get the current point
+        current_point = (x, y)
+        # Check if the current point has been visited before
+        if current_point in visited:
+            # If it has, return False
+            return False
+        # Add the current point to the set of visited points
+        visited.add(current_point)
+        # Get the next four points that AtCoDeer can visit
+        next_points = [(x+1, y), (x-1, y), (x, y+1), (x, y-1)]
+        # Check if any of the next points have been visited before
+        for next_point in next_points:
+            if next_point in visited:
+                # If any of them have, return False
+                return False
+        # If none of the next points have been visited before, add them to the set of visited points
+        visited.update(next_points)
+    # If we reach this point, it means that AtCoDeer can carry out his plan
+    return True
 

@@ -1,21 +1,26 @@
 
-def max_rectangle_area(matrix):
-    def largest_rectangle_in_rectangle(heights):
-        max_area = 0
-        stack = [-1]
-        for i in range(len(heights)):
-            while stack[-1] != -1 and heights[stack[-1]] >= heights[i]:
-                max_area = max(max_area, heights[stack.pop()] * (i - stack[-1] - 1))
-            stack.append(i)
-        while stack[-1] != -1:
-            max_area = max(max_area, heights[stack.pop()] * (len(heights) - stack[-1] - 1))
-        return max_area
-
-    max_area = 0
-    for i in range(len(matrix)):
-        heights = [0] * len(matrix[0])
-        for j in range(len(matrix[0])):
-            heights[j] = heights[j] + 1 if matrix[i][j] == "1" else 0
-        max_area = max(max_area, largest_rectangle_in_rectangle(heights))
-    return max_area
+def solve(n, H):
+    # Initialize the heights of the pillars as a list of zeros
+    heights = [0] * (n + 1)
+    
+    # Set the height of the first pillar to be the height of the fence
+    heights[0] = H
+    
+    # Initialize the number of spots as 1
+    spots = 1
+    
+    # Loop through the remaining pillars
+    for i in range(1, n):
+        # If the height of the current pillar is less than or equal to the height of the previous pillar, set it to be one more than the previous pillar
+        if heights[i - 1] <= heights[i]:
+            heights[i] = heights[i - 1] + 1
+        # Otherwise, set it to be one less than the previous pillar
+        else:
+            heights[i] = heights[i - 1] - 1
+        
+        # Increment the number of spots
+        spots += 1
+    
+    # Return the number of spots
+    return spots
 

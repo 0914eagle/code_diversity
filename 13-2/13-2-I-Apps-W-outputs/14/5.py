@@ -1,15 +1,16 @@
 
-def solve(n, A, dice):
-    # Initialize a dictionary to store the number of values for which each dice couldn't show
-    cant_show = {i: 0 for i in range(1, max(dice) + 1)}
+def is_power_of_three_and_five(n):
+    for i in range(1, n):
+        if n == 3**i + 5**i:
+            return True
+    return False
 
-    # Iterate over the dice and calculate the number of values for which each dice couldn't show
-    for i in range(n):
-        for j in range(1, dice[i] + 1):
-            if A - j < 0:
-                break
-            cant_show[j] += 1
-
-    # Return the number of values for which each dice couldn't show
-    return [cant_show[i] for i in range(1, max(dice) + 1)]
+n = int(input())
+if is_power_of_three_and_five(n):
+    print(-1)
+else:
+    for i in range(1, n):
+        if n == 3**i + 5**i:
+            print(i, n-i)
+            break
 

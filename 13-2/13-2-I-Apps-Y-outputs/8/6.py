@@ -1,29 +1,34 @@
 
-def get_correct_answers(n, correct_answers):
-    # Initialize a dictionary to store the number of correct answers for each boy
-    correct_answers_dict = {"Adrian": 0, "Bruno": 0, "Goran": 0}
+def is_round(n):
+    return n % 10 == 0 and all(int(d) == 0 for d in str(n)[1:])
 
-    # Iterate through the correct answers and increment the number of correct answers for each boy
-    for i, answer in enumerate(correct_answers):
-        if i % 3 == 0:
-            # Adrian's sequence
-            if answer == "A":
-                correct_answers_dict["Adrian"] += 1
-        elif i % 3 == 1:
-            # Bruno's sequence
-            if answer == "B":
-                correct_answers_dict["Bruno"] += 1
-        else:
-            # Goran's sequence
-            if answer == "C":
-                correct_answers_dict["Goran"] += 1
+def get_min_summands(n):
+    k = 1
+    while n > 0:
+        if is_round(n):
+            return k
+        n -= 1
+        k += 1
+    return k
 
-    # Find the boy with the most correct answers
-    max_correct_answers = max(correct_answers_dict.values())
-    boys_with_max_correct_answers = [
-        boy for boy, num_correct in correct_answers_dict.items() if num_correct == max_correct_answers
-    ]
+def get_summands(n):
+    k = get_min_summands(n)
+    result = []
+    while n > 0:
+        if is_round(n):
+            result.append(n)
+            return result
+        n -= 1
+    return result
 
-    # Return the number of correct answers and the names of the boys with the most correct answers
-    return max_correct_answers, sorted(boys_with_max_correct_answers)
+def solve(n):
+    k = get_min_summands(n)
+    result = get_summands(n)
+    return f"{k}\n{' '.join(str(r) for r in result)}"
+
+if __name__ == "__main__":
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        print(solve(n))
 

@@ -1,19 +1,12 @@
 
-def longest_sequence(s, i, j):
-    # Initialize the longest sequence length to 0
-    longest = 0
-
-    # Loop through the string from i to j
-    for k in range(i, j):
-        # If the current character is the same as the previous character
-        if s[k] == s[k-1]:
-            # Increment the longest sequence length
-            longest += 1
-        # If the current character is not the same as the previous character
-        else:
-            # Break out of the loop
+def get_valid_segments(affection_values, k):
+    total = 0
+    valid_segments = 0
+    for i in range(len(affection_values)):
+        total += affection_values[i]
+        if total == k:
+            valid_segments += 1
+        elif total > k:
             break
-
-    # Return the longest sequence length
-    return longest
+    return valid_segments
 

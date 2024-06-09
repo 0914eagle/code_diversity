@@ -1,29 +1,20 @@
 
-def connect_servers(n, m, k, capacities, connections):
-    # Initialize a graph with the given number of servers and connections
-    graph = {i: set() for i in range(n)}
-    for u, v in connections:
-        graph[u].add(v)
-        graph[v].add(u)
+def get_wcd(pairs):
+    # Initialize a set to store the common divisors
+    common_divisors = set()
 
-    # Initialize a list to keep track of the servers that still need to be connected
-    to_connect = list(range(n))
+    # Iterate over the pairs
+    for a, b in pairs:
+        # Get the common divisors of a and b
+        divisors = set(range(2, min(a, b) + 1))
 
-    # Loop through the connections and edit the graph as needed
-    for i in range(k):
-        # Find the server with the least number of connections
-        server = min(to_connect, key=lambda x: len(graph[x]))
+        # Intersect the common divisors with the previous set
+        common_divisors &= divisors
 
-        # Find the server that is not directly connected to the current server and has the least number of connections
-        neighbor = min([n for n in graph[server] if n not in graph[server]], key=lambda x: len(graph[x]))
+        # If the set becomes empty, return -1
+        if not common_divisors:
+            return -1
 
-        # Add a connection between the current server and the neighboring server
-        graph[server].add(neighbor)
-        graph[neighbor].add(server)
-
-        # Remove the server from the list of servers to connect
-        to_connect.remove(server)
-
-    # If all servers are connected, return "yes", otherwise return "no"
-    return "yes" if not to_connect else "no"
+    # Return the largest element in the set
+    return max(common_divisors)
 

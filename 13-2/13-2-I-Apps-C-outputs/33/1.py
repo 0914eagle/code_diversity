@@ -1,20 +1,28 @@
 
-def solve_small_y_puzzle(t, n):
-    # Initialize the memoization dictionary
-    memo = {}
-    
-    # Initialize the result variable
-    result = 0
-    
-    # Iterate over the disks
-    for i in range(n):
-        # Calculate the cost of moving the current disk to the third rod
-        cost = t[0][2] + t[1][2] + t[2][2]
-        
-        # If the cost is less than the current result, update the result
-        if cost < result:
-            result = cost
-    
-    # Return the result
-    return result
+def is_possible(n, m, roads):
+    # Initialize a graph with n nodes and 0 edges
+    graph = [[] for _ in range(n)]
+
+    # Add edges to the graph
+    for road in roads:
+        graph[road[0] - 1].append(road[1] - 1)
+        graph[road[1] - 1].append(road[0] - 1)
+
+    # Check if the graph is connected
+    visited = [False] * n
+    queue = [0]
+    visited[0] = True
+    while queue:
+        node = queue.pop(0)
+        for neighbor in graph[node]:
+            if not visited[neighbor]:
+                visited[neighbor] = True
+                queue.append(neighbor)
+
+    # If the graph is connected, return YES and a possible direction assignment
+    if visited.count(True) == n:
+        return "YES"
+
+    # If the graph is not connected, return NO
+    return "NO"
 

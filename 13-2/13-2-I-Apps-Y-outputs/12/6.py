@@ -1,8 +1,5 @@
 
-def get_lexicographically_min_permutation(permutation):
-    n = len(permutation)
-    for i in range(n-1):
-        if permutation[i] > permutation[i+1]:
-            permutation[i], permutation[i+1] = permutation[i+1], permutation[i]
-    return permutation
+R1, S = map(int, input().split())
+R2 = (2*S - R1)
+print(R2)
 

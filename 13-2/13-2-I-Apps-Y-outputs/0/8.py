@@ -1,11 +1,17 @@
 
-def is_sorted_string(s):
-    n = len(s)
-    if n == 1:
-        return "YES"
-    else:
-        for i in range(n-1):
-            if s[i] > s[i+1]:
-                return "NO"
-        return "YES"
+blimp_list = []
+
+for i in range(5):
+    blimp_list.append(input())
+
+cia_blimps = []
+
+for i, blimp in enumerate(blimp_list):
+    if "FBI" in blimp:
+        cia_blimps.append(i+1)
+
+if len(cia_blimps) == 0:
+    print("HE GOT AWAY!")
+else:
+    print(" ".join(map(str, cia_blimps)))
 

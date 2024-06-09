@@ -1,23 +1,34 @@
 
-def get_max_sum(B):
+def is_tree(n, d, k):
+    # Check if the input is valid
+    if n < 1 or d < 1 or k < 1:
+        return False
     
-    # Initialize the maximum sum and the current sum
-    max_sum = 0
-    current_sum = 0
+    # Initialize the graph as an adjacency list
+    graph = [[] for _ in range(n)]
     
-    # Iterate through the elements of B
-    for i in range(len(B)):
-        # Add the current element to the current sum
-        current_sum += B[i]
-        
-        # If the current sum is greater than the maximum sum, update the maximum sum
-        if current_sum > max_sum:
-            max_sum = current_sum
-        
-        # If the current element is greater than the next element, subtract the next element from the current sum
-        if i < len(B) - 1 and B[i] > B[i+1]:
-            current_sum -= B[i+1]
+    # Add edges to the graph
+    for i in range(n - 1):
+        for j in range(i + 1, n):
+            if j - i <= d and len(graph[i]) < k and len(graph[j]) < k:
+                graph[i].append(j)
+                graph[j].append(i)
     
-    # Return the maximum sum
-    return max_sum
+    # Check if the graph is connected
+    visited = [False] * n
+    queue = [0]
+    visited[0] = True
+    while queue:
+        vertex = queue.pop(0)
+        for neighbor in graph[vertex]:
+            if not visited[neighbor]:
+                visited[neighbor] = True
+                queue.append(neighbor)
+    
+    # Check if all vertices are reachable from the first vertex
+    for i in range(1, n):
+        if not visited[i]:
+            return False
+    
+    return True
 

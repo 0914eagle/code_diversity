@@ -1,36 +1,20 @@
 
-def solve(n, m, pairs):
-    # Initialize a graph with n vertices
-    graph = [[] for _ in range(n + 1)]
+def solve(n, k, a):
+    # Initialize a set to store the divine digits
+    divine_digits = set()
 
-    # Add edges to the graph
-    for p, q, c in pairs:
-        graph[p].append((q, c))
-        graph[q].append((p, c))
+    # Iterate over the banknote denominations
+    for i in range(n):
+        # Get the value of the current banknote
+        value = a[i]
 
-    # Find the minimum spanning tree of the graph
-    parent = [-1] * (n + 1)
-    cost = [0] * (n + 1)
-    priority_queue = [(0, 1)]
-    while priority_queue:
-        _, vertex = heapq.heappop(priority_queue)
-        if parent[vertex] != -1:
-            continue
-        parent[vertex] = vertex
-        for neighbor, weight in graph[vertex]:
-            if parent[neighbor] == -1 and weight + cost[vertex] < cost[neighbor]:
-                cost[neighbor] = weight + cost[vertex]
-                heapq.heappush(priority_queue, (cost[neighbor], neighbor))
+        # Iterate over the possible values of the last digit
+        for d in range(k):
+            # Check if the current value plus the current digit is a multiple of the base
+            if value + d == 0 or value + d % k == 0:
+                # Add the current digit to the set of divine digits
+                divine_digits.add(d)
 
-    # Check if the minimum spanning tree has n - 1 edges
-    if len(priority_queue) != n - 1:
-        return "impossible"
-
-    # Calculate the total cost of the minimum spanning tree
-    total_cost = 0
-    for vertex in range(1, n + 1):
-        if parent[vertex] != -1:
-            total_cost += cost[vertex]
-
-    return total_cost
+    # Return the number of divine digits and the set of divine digits
+    return len(divine_digits), divine_digits
 

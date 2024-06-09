@@ -1,30 +1,45 @@
 
-def solve(N, M, list, order):
-    # Initialize a dictionary to store the number of inspections needed for each student
-    inspections = {}
+def solve(offers):
+    # Sort the offers by the first section of each offer
+    sorted_offers = sorted(offers, key=lambda x: x[1])
 
-    # Initialize a set to store the names of the students that have been inspected
-    inspected = set()
+    # Initialize the variables to keep track of the number of colors and sections painted
+    num_colors = 0
+    num_sections = 0
 
-    # Initialize the number of inspections needed
-    num_inspections = 0
+    # Initialize the list to store the accepted offers
+    accepted_offers = []
 
-    # Loop through the list of names
-    for name in list:
-        # If the name is not in the set of inspected names, add it to the set and increment the number of inspections needed
-        if name not in inspected:
-            inspections[name] = num_inspections + 1
-            inspected.add(name)
-            num_inspections += 1
+    # Iterate through the sorted offers
+    for offer in sorted_offers:
+        # Check if the current offer overlaps with any of the accepted offers
+        overlap = False
+        for accepted_offer in accepted_offers:
+            if offer[1] <= accepted_offer[2] and offer[2] >= accepted_offer[1]:
+                overlap = True
+                break
 
-    # Loop through the order of the students
-    for i in range(N):
-        # If the current student is not in the set of inspected names, add it to the set and increment the number of inspections needed
-        if order[i] not in inspected:
-            inspections[order[i]] = num_inspections + 1
-            inspected.add(order[i])
-            num_inspections += 1
+        # If the current offer does not overlap with any of the accepted offers, accept it
+        if not overlap:
+            accepted_offers.append(offer)
+            num_colors += 1
+            num_sections += offer[2] - offer[1] + 1
 
-    # Return the number of inspections needed and the positions of the students after each inspection
-    return num_inspections, [inspections[i] for i in order]
+        # If the current offer overlaps with any of the accepted offers, reject it
+        else:
+            continue
+
+        # If the number of colors exceeds 3, reject the current offer
+        if num_colors > 3:
+            accepted_offers.pop()
+            num_colors -= 1
+            num_sections -= offer[2] - offer[1] + 1
+
+    # If all the sections of the fence are painted, return the number of accepted offers
+    if num_sections == 10000:
+        return len(accepted_offers)
+
+    # If not all the sections of the fence are painted, return "IMPOSSIBLE"
+    else:
+        return "IMPOSSIBLE"
 

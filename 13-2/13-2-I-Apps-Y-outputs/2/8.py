@@ -1,19 +1,25 @@
 
-def solve(n, temperatures):
-    # Sort the temperatures in non-decreasing order
-    temperatures.sort()
-    # Initialize the rearranged temperatures list
-    rearranged_temperatures = []
-    # Loop through the temperatures and find the maximum difference between subsequent temperatures
-    for i in range(n-1):
-        # Find the maximum difference between the ith and (i+1)th temperatures
-        max_diff = max(temperatures[i+1] - temperatures[i], temperatures[n-1] - temperatures[i])
-        # Add the ith temperature to the rearranged temperatures list
-        rearranged_temperatures.append(temperatures[i])
-        # Add the (i+1)th temperature to the rearranged temperatures list
-        rearranged_temperatures.append(temperatures[i+1] + max_diff)
-    # If the last temperature is not already in the rearranged temperatures list, add it
-    if rearranged_temperatures[-1] != temperatures[n-1]:
-        rearranged_temperatures.append(temperatures[n-1])
-    return rearranged_temperatures
+def get_max_output(input_molecule, input_count, output_molecule):
+    input_atoms = parse_molecule(input_molecule)
+    output_atoms = parse_molecule(output_molecule)
+    max_output = 0
+    for i in range(input_count):
+        if can_construct(input_atoms, output_atoms):
+            max_output += 1
+    return max_output
+
+def parse_molecule(molecule):
+    atoms = {}
+    for atom in molecule:
+        if atom.isupper():
+            atoms[atom] = atoms.get(atom, 0) + 1
+        else:
+            atoms[atom.upper()] = atoms.get(atom.upper(), 0) + int(atom)
+    return atoms
+
+def can_construct(input_atoms, output_atoms):
+    for atom, count in output_atoms.items():
+        if input_atoms.get(atom, 0) < count:
+            return False
+    return True
 

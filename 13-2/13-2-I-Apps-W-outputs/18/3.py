@@ -1,29 +1,36 @@
 
-def get_maximum_moves(maze):
-    # Initialize variables
-    max_moves = 0
-    start_row, start_col = 0, 0
-    end_row, end_col = 0, 0
+a, b = map(int, input().split())
 
-    # Find the starting and ending squares
-    for row in range(len(maze)):
-        for col in range(len(maze[0])):
-            if maze[row][col] == 'S':
-                start_row, start_col = row, col
-            if maze[row][col] == 'G':
-                end_row, end_col = row, col
+# Find the maximum number of notes that can be read in a day
+max_notes = min(a, b)
 
-    # Breadth-first search to find the maximum number of moves
-    queue = [(start_row, start_col)]
-    visited = set()
-    while queue:
-        row, col = queue.pop(0)
-        visited.add((row, col))
-        if row == end_row and col == end_col:
-            return len(visited) - 1
-        for r, c in [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]:
-            if 0 <= r < len(maze) and 0 <= c < len(maze[0]) and maze[r][c] == '.' and (r, c) not in visited:
-                queue.append((r, c))
+# Initialize the list of notes to read in the first day
+notes_first_day = []
 
-    return max_moves
+# Initialize the list of notes to read in the second day
+notes_second_day = []
+
+# Loop through the maximum number of notes that can be read in a day
+for i in range(1, max_notes + 1):
+    # Check if the current note can be read in the first day
+    if i <= a:
+        # Add the current note to the list of notes to read in the first day
+        notes_first_day.append(i)
+    
+    # Check if the current note can be read in the second day
+    if i <= b:
+        # Add the current note to the list of notes to read in the second day
+        notes_second_day.append(i)
+
+# Print the number of notes to read in the first day
+print(len(notes_first_day))
+
+# Print the notes to read in the first day
+print(*notes_first_day)
+
+# Print the number of notes to read in the second day
+print(len(notes_second_day))
+
+# Print the notes to read in the second day
+print(*notes_second_day)
 

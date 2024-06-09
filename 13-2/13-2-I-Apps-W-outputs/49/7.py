@@ -1,17 +1,21 @@
 
-def solve(n, a, m, queries):
-    # Initialize an array to store the water levels
-    water_levels = [0] * (n + 1)
-
-    # Loop through each query
-    for query in queries:
-        # If the query is of type 1, add the water to the corresponding vessel
-        if query[0] == 1:
-            water_levels[query[1]] += query[2]
-        # If the query is of type 2, print the water level in the corresponding vessel
-        else:
-            print(water_levels[query[1]])
-
-    # Return the final water levels
-    return water_levels
+def get_maximum_median(arr, k):
+    # Sort the array in non-decreasing order
+    arr.sort()
+    # Initialize the median and the number of operations made
+    median = arr[len(arr) // 2]
+    operations = 0
+    # Loop through the array and find the element that is closest to the median
+    for i in range(len(arr)):
+        if abs(arr[i] - median) < abs(arr[(i + 1) % len(arr)] - median):
+            # If the element is not already the median, increase it by 1 and update the median
+            if arr[i] != median:
+                arr[i] += 1
+                median += 1
+                operations += 1
+                # If the number of operations exceeds the given limit, break the loop
+                if operations > k:
+                    break
+    # Return the maximum possible median
+    return median
 

@@ -1,23 +1,32 @@
 
-def get_highest_score(n, m, a):
-    # Calculate the current average score
-    current_average = sum(a) / n
+def solve():
+    s = input()
+    t = input()
 
-    # Sort the array in descending order
-    a.sort(reverse=True)
+    # Initialize the minimum value of i as the length of s
+    min_i = len(s)
 
-    # Initialize the highest possible score
-    highest_score = 0
+    # Loop through all possible values of i
+    for i in range(len(s)):
+        # Check if t is a subsequence of the first i characters of s'
+        if is_subsequence(t, s * 100000000000000000)[0:i]:
+            # If it is, update the minimum value of i
+            min_i = min(min_i, i)
 
-    # Loop through the array and find the highest possible score
-    for i in range(n):
-        # Calculate the new average score if the current student gets the highest possible score
-        new_average = (current_average * n - a[i] + m) / (n - 1)
+    # If no value of i satisfies the condition, return -1
+    if min_i == len(s):
+        return -1
+    else:
+        return min_i
 
-        # Check if the new average is greater than or equal to the current average
-        if new_average >= current_average:
-            # Update the highest possible score
-            highest_score = max(highest_score, m - a[i])
+# Check if t is a subsequence of s
+def is_subsequence(t, s):
+    i, j = 0, 0
+    while i < len(t) and j < len(s):
+        if t[i] == s[j]:
+            i += 1
+        j += 1
+    return i == len(t)
 
-    return highest_score
+print(solve())
 

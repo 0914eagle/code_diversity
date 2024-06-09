@@ -1,26 +1,48 @@
 
-def solve(N, K, logs):
-    # Sort the logs in non-decreasing order
-    logs.sort()
+def solve(n, q, polygon, queries):
+    # Initialize the answer array
+    answer = []
     
-    # Initialize the maximum length of a log to 0
-    max_length = 0
-    
-    # Loop through each log and try to cut it at different points
-    for i in range(N):
-        # Get the length of the current log
-        length = logs[i]
-        
-        # Loop through each possible cut point (0 to length - 1)
-        for j in range(K + 1):
-            # Calculate the length of the two logs that will be created by cutting the current log at point j
-            left_length = j
-            right_length = length - j
+    # Iterate over each query
+    for query in queries:
+        # If the query is of type 1, rotate the polygon
+        if query[0] == 1:
+            # Get the indices of the vertices to be pinned
+            f = query[1]
+            t = query[2]
             
-            # If the sum of the lengths of the two logs is greater than the maximum length, update the maximum length
-            if left_length + right_length > max_length:
-                max_length = left_length + right_length
+            # Rotate the polygon
+            rotate_polygon(polygon, f, t)
+        
+        # If the query is of type 2, get the coordinates of the vertex
+        elif query[0] == 2:
+            # Get the index of the vertex
+            v = query[1]
+            
+            # Get the coordinates of the vertex
+            x, y = polygon[v]
+            
+            # Add the coordinates to the answer array
+            answer.append([x, y])
     
-    # Return the maximum length rounded up to the nearest integer
-    return int(math.ceil(max_length))
+    return answer
+
+def rotate_polygon(polygon, f, t):
+    # Get the indices of the vertices to be pinned
+    f = f - 1
+    t = t - 1
+    
+    # Get the coordinates of the vertices to be pinned
+    x1, y1 = polygon[f]
+    x2, y2 = polygon[t]
+    
+    # Calculate the angle of rotation
+    angle = math.atan2(y2 - y1, x2 - x1)
+    
+    # Rotate the polygon
+    for i in range(len(polygon)):
+        x, y = polygon[i]
+        nx = x * math.cos(angle) - y * math.sin(angle)
+        ny = x * math.sin(angle) + y * math.cos(angle)
+        polygon[i] = [nx, ny]
 

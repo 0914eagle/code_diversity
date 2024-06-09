@@ -1,10 +1,14 @@
 {
     "inputs": [
-        "11\nBETWEEN\nSUBTLE\nSHADING\nAND\nTHE\nABSENCE\nOF\nLIGHT\nLIES\nNUANCE\nIQLUSION\nBTWNSBTLSHDNGNDTHBSNCFLGHTLSTHNNCFQLSN\n",
-        "4\nNA\nNNANNA\nNANNA\nBATMAN\nNNNNNNNNNNNNNBTMN\n"
+        "4 8\n..#..#..\n.######.\n.######.\n..#..#..\n",
+        "3 3\n...\n.#.\n...\n",
+        "2 6\n.#####\n#####.\n",
+        "2 5\n.#.#.\n#.#.#\n"
     ],
     "outputs": [
-        "BETWEEN SUBTLE SHADING AND THE ABSENCE OF LIGHT LIES THE NUANCE OF IQLUSION\n",
-        "NA NA NA NA NA NA NA NA NA NA NA NA NA BATMAN\n"
+        "8\n",
+        "1\n",
+        "5\n",
+        "3\n"
     ]
 }

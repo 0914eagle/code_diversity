@@ -1,32 +1,17 @@
 
-def find_sub_rectangle(n, m, x, y, a, b):
-    # Initialize the minimum distance as a large number
-    min_distance = 1e9
-    # Initialize the lexicographically minimum sub-rectangle
-    sub_rectangle = [0, 0, 0, 0]
-    
-    # Iterate over all possible sub-rectangles
-    for x1 in range(n):
-        for y1 in range(m):
-            for x2 in range(x1, n+1):
-                for y2 in range(y1, m+1):
-                    # Check if the sub-rectangle is valid
-                    if x1 <= x <= x2 and y1 <= y <= y2:
-                        # Calculate the length-width ratio
-                        length = x2 - x1
-                        width = y2 - y1
-                        ratio = length / width
-                        
-                        # Check if the length-width ratio is equal to (a, b)
-                        if ratio == a/b:
-                            # Calculate the distance between (x, y) and the center of the sub-rectangle
-                            distance = ((x - (x1 + x2)//2)**2 + (y - (y1 + y2)//2)**2)**0.5
-                            
-                            # Check if the distance is smaller than the minimum distance
-                            if distance < min_distance:
-                                # Update the minimum distance and the lexicographically minimum sub-rectangle
-                                min_distance = distance
-                                sub_rectangle = [x1, y1, x2, y2]
-    
-    return sub_rectangle
+def get_smallest_number_of_invitees(teams, my_id):
+    # Initialize a set to store the IDs of the employees to invite
+    invitees = set()
+    # Add the ID of the friend to the set of invitees
+    invitees.add(my_id)
+    # Iterate over the teams
+    for team in teams:
+        # If the ID of the employee from Stockholm is not in the set of invitees, add it
+        if team[0] not in invitees:
+            invitees.add(team[0])
+        # If the ID of the employee from London is not in the set of invitees, add it
+        if team[1] not in invitees:
+            invitees.add(team[1])
+    # Return the length of the set of invitees
+    return len(invitees)
 

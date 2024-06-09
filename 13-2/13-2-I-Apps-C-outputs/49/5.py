@@ -1,36 +1,36 @@
 
-def solve(n, planets):
-    # Initialize the distance matrix with the Euclidean distance between each pair of planets
-    distance_matrix = [[0] * n for _ in range(n)]
-    for i in range(n):
-        for j in range(i+1, n):
-            distance_matrix[i][j] = distance_matrix[j][i] = ((planets[i][0] - planets[j][0]) ** 2 + (planets[i][1] - planets[j][1]) ** 2 + (planets[i][2] - planets[j][2]) ** 2) ** 0.5
-    
-    # Initialize the visited matrix with all False values
-    visited = [[False] * n for _ in range(n)]
-    
-    # Initialize the distance variable to 0
-    distance = 0
-    
-    # Initialize the current planet index to 0
-    current_planet = 0
-    
-    # Loop until all planets have been visited
-    while not all(all(visited[i]) for i in range(n)):
-        # Find the next planet to visit that has not been visited yet
-        next_planet = -1
-        for i in range(n):
-            if not visited[current_planet][i]:
-                next_planet = i
-                break
-        
-        # Update the distance and visited matrix
-        distance += distance_matrix[current_planet][next_planet]
-        visited[current_planet][next_planet] = visited[next_planet][current_planet] = True
-        
-        # Update the current planet index
-        current_planet = next_planet
-    
-    # Return the total distance traveled
-    return distance
+def solve_bar_code(n, vertical_spec, horizontal_spec):
+    # Initialize the solution matrix
+    solution = [[0] * (n+1) for _ in range(n)]
+
+    # Iterate through the vertical specification
+    for i, spec in enumerate(vertical_spec):
+        # Find the number of groups to form
+        num_groups = len(spec)
+
+        # Iterate through the groups
+        for j, group_size in enumerate(spec):
+            # Find the starting index of the group
+            start_index = j * group_size
+
+            # Mark the borders in the group
+            for k in range(start_index, start_index + group_size):
+                solution[i][k] = 1
+
+    # Iterate through the horizontal specification
+    for j, spec in enumerate(horizontal_spec):
+        # Find the number of groups to form
+        num_groups = len(spec)
+
+        # Iterate through the groups
+        for i, group_size in enumerate(spec):
+            # Find the starting index of the group
+            start_index = i * group_size
+
+            # Mark the borders in the group
+            for k in range(start_index, start_index + group_size):
+                solution[k][j] = 1
+
+    # Return the solution matrix
+    return solution
 
