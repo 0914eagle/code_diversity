@@ -1,37 +1,41 @@
 
-n = int(input())
-arr = list(map(int, input().split()))
+def f1(n, k, vertices):
+    # Calculate the total area of the polygon
+    total_area = 0
+    for i in range(n):
+        total_area += (vertices[i][0] * vertices[i-1][1]) - (vertices[i-1][0] * vertices[i][1])
+    total_area = abs(total_area) / 2
 
-# Initialize variables to keep track of the number of days Vasya has rest
-rest_days = 0
+    # Calculate the area of each map
+    map_area = total_area / k
 
-# Iterate through the list of days
-for i in range(n):
-    # If the gym is closed and the contest is not carried out, Vasya has a rest
-    if arr[i] == 0:
-        rest_days += 1
-    # If the gym is open and the contest is carried out, Vasya has a rest
-    elif arr[i] == 3:
-        rest_days += 1
-    # If the gym is open and the contest is not carried out, Vasya does sport
-    elif arr[i] == 2:
-        # If the next day is also open and the contest is not carried out, Vasya has a rest
-        if i < n-1 and arr[i+1] == 2:
-            rest_days += 1
-        # If the next day is closed or the contest is carried out, Vasya does sport
-        else:
-            pass
-    # If the gym is closed and the contest is carried out, Vasya does sport
-    elif arr[i] == 1:
-        # If the next day is also closed and the contest is carried out, Vasya has a rest
-        if i < n-1 and arr[i+1] == 1:
-            rest_days += 1
-        # If the next day is open and the contest is not carried out, Vasya does sport
-        elif i < n-1 and arr[i+1] == 2:
-            pass
-        # If the next day is closed or the contest is carried out, Vasya does sport
-        else:
-            pass
+    # Calculate the side length of each map
+    side_length = (map_area / n) ** 0.5
 
-print(rest_days)
+    return round(side_length, 2)
+
+def f2(n, k, vertices):
+    # Calculate the total area of the polygon
+    total_area = 0
+    for i in range(n):
+        total_area += (vertices[i][0] * vertices[i-1][1]) - (vertices[i-1][0] * vertices[i][1])
+    total_area = abs(total_area) / 2
+
+    # Calculate the area of each map
+    map_area = total_area / k
+
+    # Calculate the side length of each map
+    side_length = (map_area / n) ** 0.5
+
+    return round(side_length, 2)
+
+if __name__ == '__main__':
+    n = int(input())
+    k = int(input())
+    vertices = []
+    for i in range(n):
+        x, y = map(int, input().split())
+        vertices.append([x, y])
+    print(f1(n, k, vertices))
+    print(f2(n, k, vertices))
 

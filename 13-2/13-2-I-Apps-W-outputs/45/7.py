@@ -1,37 +1,29 @@
 
-def get_min_passwords(passwords):
-    # Initialize a set to store the equivalent passwords
-    equivalent_passwords = set()
+def can_rejoin_necklace(necklace):
+    # Initialize variables
+    num_links = 0
+    num_pearls = 0
+    adjacent_pearls = []
 
-    # Iterate over the passwords
-    for i in range(len(passwords)):
-        for j in range(i+1, len(passwords)):
-            # Check if the passwords are equivalent
-            if are_equivalent(passwords[i], passwords[j]):
-                # If they are equivalent, add them to the set of equivalent passwords
-                equivalent_passwords.add(passwords[i])
-                equivalent_passwords.add(passwords[j])
+    # Iterate through the necklace
+    for i in range(len(necklace)):
+        if necklace[i] == '-':
+            num_links += 1
+        elif necklace[i] == 'o':
+            num_pearls += 1
+            if i > 0 and necklace[i-1] == 'o':
+                adjacent_pearls.append(necklace[i-1])
+            if i < len(necklace)-1 and necklace[i+1] == 'o':
+                adjacent_pearls.append(necklace[i+1])
 
-    # Return the length of the set of equivalent passwords
-    return len(equivalent_passwords)
+    # Check if the number of links between adjacent pearls is equal
+    for pearl in adjacent_pearls:
+        if adjacent_pearls.count(pearl) != num_links:
+            return "NO"
 
-def are_equivalent(password1, password2):
-    # Check if the passwords have any common letters
-    for letter in password1:
-        if letter in password2:
-            return True
-    return False
+    return "YES"
 
-n = int(input())
-passwords = []
-
-# Read the passwords from the input
-for i in range(n):
-    passwords.append(input())
-
-# Call the function to get the minimal number of passwords
-result = get_min_passwords(passwords)
-
-# Print the result
-print(result)
+if __name__ == '__main__':
+    necklace = input()
+    print(can_rejoin_necklace(necklace))
 

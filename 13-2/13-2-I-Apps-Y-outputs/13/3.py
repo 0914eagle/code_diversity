@@ -1,26 +1,28 @@
 
-def solve(sequence, k):
-    # Sort the sequence in ascending order
-    sequence.sort()
+def get_least_time(intersections, streets, start_intersection, end_intersection, k):
+    # Initialize a dictionary to store the time it takes to reach each intersection
+    times = {start_intersection: 0}
+    queue = [start_intersection]
 
-    # Initialize the left and right boundaries of the binary search
-    left = 1
-    right = 10**9
+    # Breadth-first search to calculate the time it takes to reach each intersection
+    while queue:
+        intersection = queue.pop(0)
+        for street in streets:
+            if street[0] == intersection:
+                neighbor = street[1]
+                time = times[intersection] + street[2]
+                if neighbor not in times or time < times[neighbor]:
+                    times[neighbor] = time
+                    queue.append(neighbor)
 
-    # Perform binary search to find the smallest number that satisfies the condition
-    while left <= right:
-        mid = (left + right) // 2
-        count = 0
-        for num in sequence:
-            if num <= mid:
-                count += 1
-        if count == k:
-            return mid
-        elif count < k:
-            left = mid + 1
-        else:
-            right = mid - 1
+    # Calculate the least time it takes to make the delivery
+    return times[end_intersection] + k
 
-    # If no such number is found, return -1
-    return -1
+def main():
+    intersections, streets, start_intersection, end_intersection, k = map(int, input().split())
+    streets = [tuple(map(int, input().split())) for _ in range(streets)]
+    print(get_least_time(intersections, streets, start_intersection, end_intersection, k))
+
+if __name__ == '__main__':
+    main()
 

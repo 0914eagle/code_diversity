@@ -1,34 +1,30 @@
 
-def solve(N, M, K, onions, fence):
-    # Calculate the convex hull of the fence posts
-    hull = []
-    for i in range(M):
-        hull.append((fence[i][0], fence[i][1]))
-    for i in range(M):
-        hull.append((fence[i][0], fence[i][1]))
-    hull = set(hull)
+def f1(n, numbers):
+    # find the number of odd numbers
+    odd_numbers = 0
+    for num in numbers:
+        if num % 2 == 1:
+            odd_numbers += 1
+    
+    # find the number of ways to choose the first number
+    ways = 0
+    for i in range(n):
+        if numbers[i] % 2 == 1:
+            ways += 1
+    
+    return ways
 
-    # Calculate the area of each onion
-    areas = []
-    for i in range(N):
-        area = 0
-        for j in range(M):
-            area += (fence[j][0] - onions[i][0]) * (fence[j][1] - onions[i][1])
-        areas.append(area)
+def f2(n, numbers):
+    # find the number of ways to choose the first number
+    ways = 0
+    for i in range(n):
+        if numbers[i] % 2 == 1:
+            ways += 1
+    
+    return ways
 
-    # Sort the onions by area in descending order
-    sorted_areas = sorted(areas, reverse=True)
-
-    # Upgrade the fence posts to protect the onions with the largest areas
-    upgraded_posts = set()
-    for i in range(K):
-        upgraded_posts.add(sorted_areas[i])
-
-    # Calculate the number of onions protected by the upgraded fence posts
-    protected_onions = 0
-    for i in range(N):
-        if (onions[i][0], onions[i][1]) in upgraded_posts:
-            protected_onions += 1
-
-    return protected_onions
+if __name__ == '__main__':
+    n = int(input())
+    numbers = list(map(int, input().split()))
+    print(f1(n, numbers))
 

@@ -1,10 +1,45 @@
 
-x = int(input())
-y = int(input())
-z = int(input())
-n = int(input())
+def get_speed(photos):
+    # Initialize variables
+    max_speed = 0
+    current_speed = 0
+    previous_distance = 0
 
-coordinates = [[i, j, k] for i in range(x+1) for j in range(y+1) for k in range(z+1) if i+j+k != n]
+    # Iterate through the photos
+    for photo in photos:
+        # Calculate the time and distance between this photo and the previous one
+        time_diff = photo[0] - previous_distance
+        distance_diff = photo[1] - previous_distance
 
-print(coordinates)
+        # Calculate the speed between this photo and the previous one
+        current_speed = distance_diff / time_diff
+
+        # Update the maximum speed if necessary
+        if current_speed > max_speed:
+            max_speed = current_speed
+
+        # Update the previous distance and time for the next iteration
+        previous_distance = photo[1]
+
+    # Return the maximum speed
+    return max_speed
+
+def main():
+    # Read the number of photos
+    n = int(input())
+
+    # Read the photos
+    photos = []
+    for i in range(n):
+        t, d = map(int, input().split())
+        photos.append((t, d))
+
+    # Calculate the maximum speed
+    max_speed = get_speed(photos)
+
+    # Print the result
+    print(max_speed)
+
+if __name__ == '__main__':
+    main()
 

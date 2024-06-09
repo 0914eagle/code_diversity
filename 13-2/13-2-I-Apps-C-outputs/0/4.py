@@ -1,39 +1,53 @@
 
-def is_spanning_tree_possible(n, m, k, edges):
-    # Initialize a graph with n nodes and m edges
-    graph = [[] for _ in range(n)]
-    for edge in edges:
-        graph[edge[1] - 1].append(edge[2] - 1)
-        graph[edge[2] - 1].append(edge[1] - 1)
+def f1(n, wishes):
+    # Initialize a dictionary to store the count of each topping
+    topping_count = {}
 
-    # Initialize a visited array and a count of blue edges
-    visited = [False] * n
-    blue_edges = 0
+    # Iterate over the wishes of each friend
+    for friend in wishes:
+        # Iterate over the wishes of each friend
+        for wish in friend:
+            # If the wish is positive, increment the count of the topping
+            if wish.startswith("+"):
+                topping = wish[1:]
+                if topping not in topping_count:
+                    topping_count[topping] = 1
+                else:
+                    topping_count[topping] += 1
 
-    # Start from an arbitrary node and do a depth-first search
-    node = 0
-    visited[node] = True
-    while visited[node] == False:
-        for neighbor in graph[node]:
-            if visited[neighbor] == False:
-                visited[neighbor] = True
-                if edges[neighbor][0] == "B":
-                    blue_edges += 1
-                node = neighbor
-                break
-        else:
-            node = 0
-            for i in range(n):
-                if visited[i] == False:
-                    node = i
-                    break
+    # Sort the toppings by count in descending order
+    sorted_toppings = sorted(topping_count.items(), key=lambda x: x[1], reverse=True)
 
-    # Return True if the blue edge count is equal to k, False otherwise
-    return blue_edges == k
+    # Return the top 3 toppings with the highest count
+    return [topping for topping, count in sorted_toppings[:3]]
 
-n, m, k = map(int, input().split())
-edges = []
-for _ in range(m):
-    edges.append(list(map(str, input().split())))
-print(is_spanning_tree_possible(n, m, k, edges))
+def f2(n, wishes):
+    # Initialize a dictionary to store the count of each topping
+    topping_count = {}
+
+    # Iterate over the wishes of each friend
+    for friend in wishes:
+        # Iterate over the wishes of each friend
+        for wish in friend:
+            # If the wish is positive, increment the count of the topping
+            if wish.startswith("+"):
+                topping = wish[1:]
+                if topping not in topping_count:
+                    topping_count[topping] = 1
+                else:
+                    topping_count[topping] += 1
+
+    # Sort the toppings by count in descending order
+    sorted_toppings = sorted(topping_count.items(), key=lambda x: x[1], reverse=True)
+
+    # Return the top 3 toppings with the highest count
+    return [topping for topping, count in sorted_toppings if count >= 2]
+
+if __name__ == '__main__':
+    n = int(input())
+    wishes = []
+    for _ in range(n):
+        wishes.append(input().split())
+    print(*f1(n, wishes))
+    print(*f2(n, wishes))
 

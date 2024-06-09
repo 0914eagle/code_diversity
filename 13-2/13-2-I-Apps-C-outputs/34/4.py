@@ -1,36 +1,37 @@
 
-def solve_puzzle(grid):
-    # Initialize the minimum number of moves to infinity
-    min_moves = float('inf')
-    # Initialize the optimal solution as an empty list
-    optimal_solution = []
-    
-    # Loop through each row of the grid
-    for row in range(len(grid)):
-        # Loop through each column of the grid
-        for col in range(len(grid[0])):
-            # Check if the current cell is equal to the target value
-            if grid[row][col] == grid[0][0]:
-                # If it is, add a move to select the current row to the optimal solution
-                optimal_solution.append(f"row {row + 1}")
-                # Add the number of moves to the minimum number of moves
-                min_moves += 1
-                # Break out of the inner loop
-                break
-    
-    # Loop through each column of the grid
-    for col in range(len(grid[0])):
-        # Loop through each row of the grid
-        for row in range(len(grid)):
-            # Check if the current cell is equal to the target value
-            if grid[row][col] == grid[0][0]:
-                # If it is, add a move to select the current column to the optimal solution
-                optimal_solution.append(f"col {col + 1}")
-                # Add the number of moves to the minimum number of moves
-                min_moves += 1
-                # Break out of the inner loop
-                break
-    
-    # Return the minimum number of moves and the optimal solution
-    return min_moves, optimal_solution
+def interpret(program):
+    # Initialize the variables
+    variables = {}
+    for line in program:
+        # Split the line into label and statement
+        label, statement = line.split()
+        # Check if the statement is a LET statement
+        if statement.startswith("LET"):
+            # Extract the variable name and value
+            var_name, var_value = statement.split("=")
+            # Evaluate the value and assign it to the variable
+            variables[var_name] = eval_expression(var_value, variables)
+        # Check if the statement is a PRINT or PRINTLN statement
+        elif statement.startswith("PRINT"):
+            # Extract the print statement
+            print_statement = statement.split("PRINT")[1]
+            # Evaluate the print statement and print the result
+            print(eval_expression(print_statement, variables), end="")
+        elif statement.startswith("PRINTLN"):
+            # Extract the print statement
+            print_statement = statement.split("PRINTLN")[1]
+            # Evaluate the print statement and print the result with a newline
+            print(eval_expression(print_statement, variables))
+    # Return the variables dictionary
+    return variables
+
+def eval_expression(expression, variables):
+    # Evaluate the expression using the variables dictionary
+    return eval(expression, variables)
+
+if __name__ == '__main__':
+    # Test the interpreter with the sample input
+    program = ["10 LET A = 1", "20 PRINT \"HELLO THERE \"", "30 PRINTLN A", "40 LET A = A + 1", "50 IF A <= 5 THEN GOTO 20", "60 PRINTLN \"DONE\""]
+    variables = interpret(program)
+    print(variables)
 

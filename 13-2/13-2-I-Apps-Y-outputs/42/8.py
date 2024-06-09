@@ -1,20 +1,10 @@
 
-import sys
-
-# Read the input
-N = int(input())
-otoshidama = []
-for i in range(N):
-    x, u = input().split()
-    if u == "JPY":
-        otohashi = int(x)
-    else:
-        otohashi = float(x) * 380000.0
-    otohashi.append(otohashi)
-
-# Calculate the total value of the gifts
-total = sum(otohashi)
-
-# Print the output
-print(total)
+def f1(S):
+    result = 0
+    for symbol in S:
+        if symbol == "+":
+            result += 1
+        else:
+            result -= 1
+    return result
 

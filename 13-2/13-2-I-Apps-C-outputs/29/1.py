@@ -1,28 +1,47 @@
 
-def get_winner_probability(N, M, p_list):
-    # Initialize the probability of Anthony winning as 0
-    probability = 0
+def f1(K, T, rolls):
+    # Initialize a dictionary to store the number of dice to pick up and their corresponding probabilities
+    dice_to_pick = {}
 
-    # Loop through each round
-    for i in range(N + M - 1):
-        # Calculate the probability of Anthony winning the current round
-        win_probability = p_list[i]
+    # Iterate over all possible numbers of dice to pick up
+    for i in range(1, K + 1):
+        # Calculate the probability of getting the target number with the current number of dice to pick up
+        prob = calc_probability(rolls, i, T)
 
-        # If Anthony wins the current round, he will have N - 1 points left
-        # and Cora will have M - 1 points left
-        if i < N - 1:
-            N = N - 1
-        else:
-            M = M - 1
+        # If the probability is non-zero, add it to the dictionary
+        if prob != 0:
+            dice_to_pick[i] = prob
 
-        # Calculate the probability of Anthony winning the next round
-        if N == 0 or M == 0:
-            # If one of them has no points left, the game is over and Anthony wins
-            probability = 1
-            break
-        else:
-            # If neither of them has no points left, calculate the probability of Anthony winning the next round
-            probability += win_probability * (N / (N + M))
+    # Return the key (number of dice to pick up) with the highest value (probability)
+    return max(dice_to_pick, key=dice_to_pick.get)
 
-    return probability
+def f2(K, T, rolls):
+    # Initialize a dictionary to store the number of dice to pick up and their corresponding probabilities
+    dice_to_pick = {}
+
+    # Iterate over all possible numbers of dice to pick up
+    for i in range(1, K + 1):
+        # Calculate the probability of getting the target number with the current number of dice to pick up
+        prob = calc_probability(rolls, i, T)
+
+        # If the probability is non-zero, add it to the dictionary
+        if prob != 0:
+            dice_to_pick[i] = prob
+
+    # Return the key (number of dice to pick up) with the highest value (probability)
+    return max(dice_to_pick, key=dice_to_pick.get)
+
+def calc_probability(rolls, num_dice, target):
+    # Calculate the probability of getting the target number with the current number of dice to pick up
+    prob = 0
+    for roll in rolls:
+        if roll <= target:
+            prob += (target - roll + 1) / 6 ** num_dice
+    return prob
+
+if __name__ == '__main__':
+    K, T = map(int, input().split())
+    rolls = list(map(int, input().split()))
+    print(f1(K, T, rolls))
+    print(f2(K, T, rolls))
 

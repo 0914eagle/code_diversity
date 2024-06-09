@@ -1,18 +1,25 @@
 
-def get_average_distance(n, distances):
-    # Calculate the average distance between all pairs of port towns
-    average_distance = 0
-    for i in range(n):
-        for j in range(i+1, n):
-            average_distance += distances[i][j]
-    average_distance /= (n * (n - 1)) / 2
+def f1(n, r, m):
+    # Initialize variables
+    tricks = []
+    expected_time = 0
 
-    # Calculate the average distance between all pairs of distance signs
-    total_distance = 0
-    for i in range(n):
-        for j in range(i+1, n):
-            total_distance += distances[i][j]
-    average_distance_signs = total_distance / (n * (n - 1))
+    # Read input data
+    for i in range(m):
+        t, p, d = map(int, input().split())
+        tricks.append((t, p, d))
 
-    return average_distance_signs
+    # Sort tricks by time
+    tricks.sort(key=lambda x: x[0])
+
+    # Loop through tricks and calculate expected time
+    for i in range(m):
+        t, p, d = tricks[i]
+        expected_time += t * p + d * (1 - p)
+
+    # Add time to complete the route
+    expected_time += n
+
+    # Return expected time
+    return expected_time
 

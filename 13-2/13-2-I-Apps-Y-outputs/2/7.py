@@ -1,31 +1,52 @@
 
-def get_max_output(input_molecule, input_count, output_molecule):
-    input_atoms = {}
-    for atom in input_molecule:
-        if atom.isupper():
-            if atom not in input_atoms:
-                input_atoms[atom] = 1
-            else:
-                input_atoms[atom] += 1
-        else:
-            input_atoms[atom.upper()] = int(atom)
+def f1(n, k):
+    # Initialize the egg holder and the list of throw commands
+    egg_holder = 0
+    throw_commands = []
 
-    output_atoms = {}
-    for atom in output_molecule:
-        if atom.isupper():
-            if atom not in output_atoms:
-                output_atoms[atom] = 1
-            else:
-                output_atoms[atom] += 1
+    # Read the throw commands from stdin
+    for _ in range(k):
+        command = input()
+        if command.isdigit():
+            throw_commands.append(int(command))
         else:
-            output_atoms[atom.upper()] = int(atom)
+            throw_commands.append(command)
 
-    max_output = 0
-    for atom, count in output_atoms.items():
-        if atom in input_atoms and input_atoms[atom] >= count:
-            max_output += count
+    # Simulate the game
+    for command in throw_commands:
+        if isinstance(command, int):
+            egg_holder = (egg_holder + command) % n
         else:
-            return 0
+            for _ in range(int(command[4:])):
+                egg_holder = (egg_holder - 1) % n
 
-    return max_output * input_count
+    return egg_holder
+
+def f2(n, k):
+    # Initialize the egg holder and the list of throw commands
+    egg_holder = 0
+    throw_commands = []
+
+    # Read the throw commands from stdin
+    for _ in range(k):
+        command = input()
+        if command.isdigit():
+            throw_commands.append(int(command))
+        else:
+            throw_commands.append(command)
+
+    # Simulate the game
+    for command in throw_commands:
+        if isinstance(command, int):
+            egg_holder = (egg_holder + command) % n
+        else:
+            for _ in range(int(command[4:])):
+                egg_holder = (egg_holder - 1) % n
+
+    return egg_holder
+
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    print(f1(n, k))
+    print(f2(n, k))
 

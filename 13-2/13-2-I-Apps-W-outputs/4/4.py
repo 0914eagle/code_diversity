@@ -1,22 +1,25 @@
 
-def restore_sequence(n, l_list, r_list):
-    # Initialize an empty sequence
-    sequence = []
-
-    # Iterate through the list of opening brackets
+def get_min_operations(table):
+    # Initialize variables
+    n, m = len(table), len(table[0])
+    operations = 0
+    visited = set()
+    
+    # Loop through each cell in the table
     for i in range(n):
-        # Find the corresponding closing bracket for the current opening bracket
-        closing_bracket = sequence[l_list[i] - 1] if l_list[i] > 0 else sequence[r_list[i] - 1]
-
-        # Check if the distance between the opening and closing brackets is within the allowed range
-        if abs(l_list[i] - r_list[i]) <= r_list[i]:
-            # Add the opening and closing brackets to the sequence
-            sequence.append("(")
-            sequence.append(")")
-        else:
-            # If the distance is not within the allowed range, return "IMPOSSIBLE"
-            return "IMPOSSIBLE"
-
-    # If all the brackets are added successfully, return the sequence
-    return "".join(sequence)
+        for j in range(m):
+            # If the cell is good and has not been visited yet, perform a BFS from that cell
+            if table[i][j] == 1 and (i, j) not in visited:
+                queue = [(i, j)]
+                visited.add((i, j))
+                while queue:
+                    x, y = queue.pop(0)
+                    for dx, dy in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+                        nx, ny = x + dx, y + dy
+                        if 0 <= nx < n and 0 <= ny < m and table[nx][ny] == 1 and (nx, ny) not in visited:
+                            queue.append((nx, ny))
+                            visited.add((nx, ny))
+                operations += 1
+    
+    return operations
 

@@ -1,48 +1,55 @@
 
-def solve(tasks):
-    # Initialize the processor clock and the current priorities of the tasks
-    clock = 0
-    current_priorities = [task[1] for task in tasks]
+def is_graph_valid(n, m, edges):
+    # Initialize a dictionary to store the neighbors of each vertex
+    neighbors = {i: set() for i in range(1, n + 1)}
 
-    # Run the infinite loop until all tasks complete
-    while True:
-        # Identify the running tasks
-        running_tasks = [task for task in tasks if task[0] <= clock and len(task[2]) > 0]
+    # Add edges to the dictionary
+    for u, v in edges:
+        neighbors[u].add(v)
+        neighbors[v].add(u)
 
-        # Determine the current priorities of the running tasks and which tasks are blocked
-        blocked_tasks = []
-        for task in running_tasks:
-            next_instruction = task[2][0]
-            if next_instruction[0] == "L":
-                resource = next_instruction[1]
-                if resource in blocked_tasks or any(task[1] >= current_priorities[task_idx] for task_idx in blocked_tasks):
-                    blocked_tasks.append(task_idx)
-            elif next_instruction[0] == "U":
-                resource = next_instruction[1]
-                if resource in blocked_tasks:
-                    blocked_tasks.remove(resource)
+    # Check that the graph is connected
+    visited = set()
+    queue = [1]
+    while queue:
+        vertex = queue.pop(0)
+        if vertex not in visited:
+            visited.add(vertex)
+            queue.extend(neighbors[vertex])
 
-        # Execute the next instruction of the non-blocked running task with the highest current priority
-        if len(running_tasks) > 0:
-            running_tasks.sort(key=lambda x: x[1], reverse=True)
-            task = running_tasks[0]
-            next_instruction = task[2][0]
-            if next_instruction[0] == "C":
-                clock += 1
-            elif next_instruction[0] == "L":
-                resource = next_instruction[1]
-                current_priorities[task[3]] = max(current_priorities[task[3]], task[1])
-            elif next_instruction[0] == "U":
-                resource = next_instruction[1]
-                current_priorities[task[3]] = max(current_priorities[task[3]], task[1]) - 1
+    if len(visited) == n:
+        return True
+    else:
+        return False
 
-            # Remove the executed instruction from the task
-            task[2] = task[2][1:]
+def find_string(n, m, edges):
+    # Initialize a set to store the possible strings
+    strings = set()
 
-        # Check if all tasks have completed
-        if all(len(task[2]) == 0 for task in tasks):
-            break
+    # Iterate over the edges of the graph
+    for u, v in edges:
+        # If the vertices are adjacent, add the corresponding string to the set
+        if u == v - 1 or v == u + 1:
+            strings.add(chr(u + 96) + chr(v + 96))
+        # If the vertices are not adjacent, add all possible strings to the set
+        else:
+            for i in range(97, 97 + n):
+                for j in range(97, 97 + n):
+                    if i != j and (i == u + 96 or i == v + 96) and (j == u + 96 or j == v + 96):
+                        strings.add(chr(i) + chr(j))
 
-    # Return the completion times of the tasks
-    return [task[0] + clock for task in tasks]
+    # Return any string from the set
+    return strings.pop()
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    edges = []
+    for _ in range(m):
+        u, v = map(int, input().split())
+        edges.append((u, v))
+    if is_graph_valid(n, m, edges):
+        print("Yes")
+        print(find_string(n, m, edges))
+    else:
+        print("No")
 

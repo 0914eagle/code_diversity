@@ -1,7 +1,13 @@
 
-A, B = map(int, input().split())
+def f1(n, t, m):
+    return n * t * m
 
-result = max(A+B, A-B, A*B)
+def f2(...):
+    ...
 
-print(result)
+if __name__ == '__main__':
+    n = int(input())
+    t = int(input())
+    m = int(input())
+    print(f1(n, t, m))
 

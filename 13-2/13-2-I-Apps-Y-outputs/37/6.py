@@ -1,22 +1,63 @@
 
-def solve(segments, k):
-    # Sort the segments by their left endpoint
-    segments.sort(key=lambda x: x[0])
+def f1(n, k, matrix):
+    # Initialize a dictionary to store the shortest distance from tile 1 to each other tile
+    distances = {1: 0}
+    # Initialize a set to keep track of the tiles that have been visited
+    visited = set()
+    # Initialize a queue to perform BFS
+    queue = [1]
+    # Loop until the queue is empty
+    while queue:
+        # Dequeue a tile from the queue
+        current_tile = queue.pop(0)
+        # If the current tile is the target tile, return the shortest distance
+        if current_tile == k:
+            return distances[current_tile]
+        # If the current tile has not been visited, mark it as visited and add its neighbors to the queue
+        if current_tile not in visited:
+            visited.add(current_tile)
+            # Get the neighbors of the current tile
+            neighbors = get_neighbors(current_tile, matrix)
+            # Loop through the neighbors
+            for neighbor in neighbors:
+                # If the neighbor has not been visited, add it to the queue and update the shortest distance
+                if neighbor not in visited:
+                    queue.append(neighbor)
+                    distances[neighbor] = distances[current_tile] + 1
+    # If the target tile has not been reached, return -1
+    return -1
 
-    # Initialize the number of segments to remove to 0
-    num_segments_to_remove = 0
+def get_neighbors(tile, matrix):
+    # Get the row and column of the tile
+    row, col = tile // n, tile % n
+    # Initialize a list to store the neighbors
+    neighbors = []
+    # Loop through the possible neighbors
+    for i in range(row-1, row+2):
+        for j in range(col-1, col+2):
+            # If the neighbor is valid, add it to the list
+            if 0 <= i < n and 0 <= j < n and (i != row or j != col):
+                neighbors.append(i * n + j)
+    return neighbors
 
-    # Iterate through the segments
-    for i in range(len(segments)):
-        # Get the current segment
-        segment = segments[i]
+def f2(n, k, matrix):
+    # Initialize the shortest distance to infinity
+    shortest_distance = float('inf')
+    # Loop through all possible starting tiles
+    for i in range(1, n*n+1):
+        # If the starting tile is not the target tile, calculate the shortest distance from the starting tile to the target tile
+        if i != k:
+            distance = f1(n, k, matrix)
+            # If the distance is shorter than the current shortest distance, update the shortest distance
+            if distance != -1 and distance < shortest_distance:
+                shortest_distance = distance
+    # Return the shortest distance
+    return shortest_distance
 
-        # Check if the segment is covered by more than k segments
-        if segment[1] - segment[0] + 1 > k:
-            # If so, remove the segment and increment the number of segments to remove
-            segments.pop(i)
-            num_segments_to_remove += 1
-
-    # Return the number of segments to remove and the indices of the segments to remove
-    return num_segments_to_remove, [i for i in range(1, len(segments) + 1)]
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    matrix = []
+    for i in range(n):
+        matrix.append(list(map(int, input().split())))
+    print(f2(n, k, matrix))
 

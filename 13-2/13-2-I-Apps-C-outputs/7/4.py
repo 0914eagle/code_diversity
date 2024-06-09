@@ -1,45 +1,44 @@
 
-def solve(offers):
-    # Sort the offers by the first section of the fence
-    sorted_offers = sorted(offers, key=lambda x: x[1])
+def get_cluster_size(a, b, c):
+    # Sort the data by the measure a*S + b*T
+    sorted_data = sorted(zip(a, b, c), key=lambda x: x[0]*S + x[1]*T)
+    
+    # Find the indices of the first and last results with c=1
+    j = 0
+    k = 0
+    for i in range(len(sorted_data)):
+        if sorted_data[i][2] == 1:
+            j = i
+            break
+    for i in range(len(sorted_data)-1, -1, -1):
+        if sorted_data[i][2] == 1:
+            k = i
+            break
+    
+    # Return the cluster size
+    return k-j+1
 
-    # Initialize the variables to keep track of the number of colors and sections painted
-    num_colors = 0
-    num_sections = 0
+def solve(n, a, b, c):
+    # Initialize the smallest cluster size
+    smallest_cluster_size = float('inf')
+    
+    # Iterate over all possible values of S and T
+    for S in range(100):
+        for T in range(100):
+            # Get the cluster size for this (S, T) pair
+            cluster_size = get_cluster_size(a, b, c)
+            
+            # Update the smallest cluster size
+            if cluster_size < smallest_cluster_size:
+                smallest_cluster_size = cluster_size
+    
+    # Return the smallest cluster size
+    return smallest_cluster_size
 
-    # Initialize the list to store the accepted offers
-    accepted_offers = []
-
-    # Iterate through the sorted offers
-    for offer in sorted_offers:
-        # Check if the current offer overlaps with any of the accepted offers
-        overlap = False
-        for accepted_offer in accepted_offers:
-            if offer[1] <= accepted_offer[2] and offer[2] >= accepted_offer[1]:
-                overlap = True
-                break
-
-        # If the current offer does not overlap with any of the accepted offers, accept it
-        if not overlap:
-            accepted_offers.append(offer)
-            num_colors += 1
-            num_sections += offer[2] - offer[1] + 1
-
-        # If the current offer overlaps with any of the accepted offers, reject it
-        else:
-            continue
-
-        # If the number of colors exceeds 3, reject the current offer
-        if num_colors > 3:
-            accepted_offers.pop()
-            num_colors -= 1
-            num_sections -= offer[2] - offer[1] + 1
-
-    # If all the sections of the fence are painted, return the number of accepted offers
-    if num_sections == 10000:
-        return len(accepted_offers)
-
-    # If not all the sections of the fence are painted, return "IMPOSSIBLE"
-    else:
-        return "IMPOSSIBLE"
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    c = list(map(int, input().split()))
+    print(solve(n, a, b, c))
 

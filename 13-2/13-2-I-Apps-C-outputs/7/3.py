@@ -1,32 +1,28 @@
 
-def solve(offers):
-    # Sort the offers by the first section of the fence
-    sorted_offers = sorted(offers, key=lambda x: x[1])
+def get_cluster_size(a, b, c):
+    # Find the indices of the first and last results with c true
+    j = next((i for i, x in enumerate(c) if x), None)
+    k = next((i for i in range(len(c)-1, -1, -1) if c[i]), None)
+    return k-j+1
 
-    # Initialize the variables to keep track of the number of colors and sections painted
-    num_colors = 0
-    num_sections = 0
+def solve(n, a, b, c):
+    # Initialize the smallest cluster size
+    smallest_cluster_size = float('inf')
+    # Iterate over all possible values of S and T
+    for S in range(0, 2000001):
+        for T in range(0, 2000001):
+            # Sort the poll results by the measure a*S + b*T
+            sorted_results = sorted(zip(a, b, c), key=lambda x: x[0]*S + x[1]*T)
+            # Get the cluster size for this (S, T) pair
+            cluster_size = get_cluster_size(sorted_results)
+            # Update the smallest cluster size if necessary
+            smallest_cluster_size = min(smallest_cluster_size, cluster_size)
+    return smallest_cluster_size
 
-    # Initialize the list to store the accepted offers
-    accepted_offers = []
-
-    # Iterate through the sorted offers
-    for offer in sorted_offers:
-        # Check if the current offer can be accepted
-        if num_colors < 3 and num_sections < 10000:
-            # Accept the offer and update the variables
-            accepted_offers.append(offer)
-            num_colors += 1
-            num_sections += offer[2] - offer[1] + 1
-        else:
-            # If the current offer cannot be accepted, break the loop
-            break
-
-    # Check if all sections of the fence have been painted
-    if num_sections == 10000:
-        # If all sections have been painted, return the number of accepted offers
-        return len(accepted_offers)
-    else:
-        # If not all sections have been painted, return "IMPOSSIBLE"
-        return "IMPOSSIBLE"
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    c = list(map(int, input().split()))
+    print(solve(n, a, b, c))
 

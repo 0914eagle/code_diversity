@@ -1,17 +1,37 @@
 
-def get_invitees(teams, my_id):
-    # Initialize a set to store the IDs of the employees to invite
-    invitees = set()
+def is_tolerable(s, p):
+    if len(s) > p:
+        return False
     
-    # Add the ID of the friend to the set of invitees
-    invitees.add(my_id)
+    for i in range(len(s)):
+        if s[i] > chr(ord('a') + p - 1):
+            return False
     
-    # Iterate over the teams
-    for team in teams:
-        # If the team does not contain the friend, add its members to the set of invitees
-        if my_id not in team:
-            invitees.update(team)
+    for i in range(len(s) - 1):
+        if s[i] == s[i + 1]:
+            return False
     
-    # Return the set of invitees
-    return invitees
+    return True
+
+def next_tolerable(s, p):
+    if len(s) == 0:
+        return "NO"
+    
+    for i in range(len(s) - 1, -1, -1):
+        if s[i] < chr(ord('z')):
+            return s[:i] + chr(ord(s[i]) + 1) + s[i + 1:]
+    
+    return "NO"
+
+def main():
+    n, p = map(int, input().split())
+    s = input()
+    
+    if is_tolerable(s, p):
+        print(next_tolerable(s, p))
+    else:
+        print("NO")
+
+if __name__ == '__main__':
+    main()
 

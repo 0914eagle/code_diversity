@@ -1,36 +1,28 @@
 
-import sys
-input = sys.stdin.read()
-n, m = map(int, input.split('\n')[0].split())
-neighbors = [set(map(int, input.split('\n')[i].split())) for i in range(1, m+1)]
-s, t = map(int, input.split('\n')[-1].split())
-
-# Initialize the probability of meeting at each station
-probability = [0] * n
-probability[s] = 1
-probability[t] = 1
-
-# Loop through each minute
-for i in range(1, n):
-    # Find the neighbors of the current stations
-    neighbor_s = neighbors[s]
-    neighbor_t = neighbors[t]
+def is_reproducible(grid):
+    # Initialize a set to store the colors of the art piece
+    colors = set()
     
-    # Update the probability of meeting at each station
-    for j in range(n):
-        if j in neighbor_s:
-            probability[j] += probability[s] / len(neighbor_s)
-        if j in neighbor_t:
-            probability[j] += probability[t] / len(neighbor_t)
+    # Iterate through the grid and add the colors to the set
+    for row in grid:
+        for color in row:
+            colors.add(color)
     
-    # Update the current stations
-    s = (s + 1) % n
-    t = (t + 1) % n
+    # Check if the set of colors is a subset of the set of all colors
+    all_colors = {"R", "G", "B", "W"}
+    return colors.issubset(all_colors)
 
-# Find the station with the highest probability of meeting
-max_prob = max(probability)
-meeting_station = probability.index(max_prob)
+def main():
+    # Read the input grid
+    N, M = map(int, input().split())
+    grid = [input() for _ in range(N)]
+    
+    # Check if the art piece is reproducible
+    if is_reproducible(grid):
+        print("YES")
+    else:
+        print("NO")
 
-# Output the expected time of meeting
-print(meeting_station)
+if __name__ == '__main__':
+    main()
 

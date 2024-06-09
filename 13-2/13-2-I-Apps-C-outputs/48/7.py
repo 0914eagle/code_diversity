@@ -1,37 +1,40 @@
 
-def solve(N, V, A, B):
-    # Initialize a set to store the types of jokes told by the employees
-    jokes = set()
+def get_max_recordable_shows(n, k, shows):
+    # Sort the shows by their start time
+    shows.sort(key=lambda x: x[0])
+    
+    # Initialize the number of recordable shows to 0
+    recordable_shows = 0
+    
+    # Iterate through the shows
+    for i in range(n):
+        # Check if the current show can be recorded
+        if recordable_shows < k:
+            # Increment the number of recordable shows
+            recordable_shows += 1
+        # Check if the current show ends before the next show starts
+        elif shows[i][1] <= shows[i+1][0]:
+            # Decrement the number of recordable shows
+            recordable_shows -= 1
+    
+    # Return the maximum number of recordable shows
+    return recordable_shows
 
-    # Add the types of jokes told by the employees to the set
-    for i in range(N):
-        jokes.add(V[i])
+def main():
+    # Read the number of shows and the number of recording slots
+    n, k = map(int, input().split())
+    
+    # Read the shows
+    shows = []
+    for i in range(n):
+        shows.append(list(map(int, input().split())))
+    
+    # Call the function to get the maximum number of recordable shows
+    max_recordable_shows = get_max_recordable_shows(n, k, shows)
+    
+    # Print the result
+    print(max_recordable_shows)
 
-    # Initialize a dictionary to store the direct supervisors of each employee
-    supervisors = {}
-
-    # Add the direct supervisors of each employee to the dictionary
-    for i in range(N-1):
-        supervisors[A[i]] = B[i]
-
-    # Initialize a set to store the types of jokes that can be told at the party
-    party_jokes = set()
-
-    # Add the types of jokes told by the employees to the set
-    for i in range(N):
-        party_jokes.add(V[i])
-
-    # Initialize a variable to store the number of different sets of jokes that can be told at the party
-    num_party_jokes = 0
-
-    # Iterate over the types of jokes told by the employees
-    for i in range(N):
-        # If the type of joke is not already in the set of jokes that can be told at the party
-        if V[i] not in party_jokes:
-            # Add the type of joke to the set of jokes that can be told at the party
-            party_jokes.add(V[i])
-            num_party_jokes += 1
-
-    # Return the number of different sets of jokes that can be told at the party
-    return num_party_jokes
+if __name__ == '__main__':
+    main()
 

@@ -1,25 +1,42 @@
 
-def get_min_nubs(mark):
-    n, m = map(int, input().split())
-    mark = [input() for _ in range(n)]
-    # Count the number of '#' symbols in the mark
-    num_hashes = sum(line.count('#') for line in mark)
-    # Initialize a set to store the positions of the '#' symbols
-    hash_positions = set()
-    for i in range(n):
-        for j in range(m):
-            if mark[i][j] == '#':
-                hash_positions.add((i, j))
-    # Initialize a set to store the positions of the '#' symbols in the second stamping
-    second_stamp_positions = set()
-    for i, j in hash_positions:
-        if (i, j) in second_stamp_positions:
-            continue
-        second_stamp_positions.add((i, j))
-        for k in range(i, n):
-            for l in range(m):
-                if mark[k][l] == '#':
-                    second_stamp_positions.add((k, l))
-                    break
-    return num_hashes - len(second_stamp_positions)
+def find_shortest_cycle(dependencies):
+    
+    visited = set()
+    cycle = []
+    for file in dependencies:
+        if file not in visited:
+            visited.add(file)
+            cycle.append(file)
+            dependencies[file] = [dep for dep in dependencies[file] if dep not in visited]
+            if not dependencies[file]:
+                return cycle
+    return None
+
+def eliminate_cycles(dependencies):
+    
+    while True:
+        cycle = find_shortest_cycle(dependencies)
+        if cycle is None:
+            break
+        for file in cycle:
+            dependencies[file] = [dep for dep in dependencies[file] if dep not in cycle]
+    return dependencies
+
+def main():
+    num_files = int(input())
+    files = [input() for _ in range(num_files)]
+    dependencies = {}
+    for file in files:
+        num_deps = int(input())
+        deps = [input() for _ in range(num_deps)]
+        dependencies[file] = deps
+    dependencies = eliminate_cycles(dependencies)
+    if all(not deps for deps in dependencies.values()):
+        print("SHIP IT")
+    else:
+        cycle = find_shortest_cycle(dependencies)
+        print(*cycle)
+
+if __name__ == '__main__':
+    main()
 

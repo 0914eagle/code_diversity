@@ -1,9 +1,16 @@
 
-def solve(N, K, x):
-    # Calculate the minimum distance covered by each robot
-    min_dist_A = sum([abs(x_i - 0) for x_i in x])
-    min_dist_B = sum([abs(x_i - K) for x_i in x])
-
-    # Return the minimum of the two distances
-    return min(min_dist_A, min_dist_B)
+def is_balanced(s):
+    # Initialize the number of black and white stones
+    black_stones = 0
+    white_stones = 0
+    
+    # Iterate through the string
+    for stone in s:
+        if stone == "B":
+            black_stones += 1
+        else:
+            white_stones += 1
+    
+    # Check if the number of black and white stones is equal
+    return black_stones == white_stones
 

@@ -1,32 +1,45 @@
 
-def solve():
-    s = input()
-    t = input()
+def get_maximum_students_with_favorite_drink(n, k, a):
+    # Initialize variables
+    max_students = 0
+    current_students = 0
+    current_drink = 1
+    drink_count = [0] * (k + 1)
+    drink_pairs = []
 
-    # Initialize the minimum value of i as the length of s
-    min_i = len(s)
+    # Iterate through the students' preferences
+    for i in range(n):
+        # If the current student's preference is not the current drink, move on to the next drink
+        if a[i] != current_drink:
+            continue
 
-    # Loop through all possible values of i
-    for i in range(len(s)):
-        # Check if t is a subsequence of the first i characters of s'
-        if is_subsequence(t, s * 100000000000000000)[0:i]:
-            # If it is, update the minimum value of i
-            min_i = min(min_i, i)
+        # If the current drink is not in the list of drink pairs, add it
+        if current_drink not in drink_pairs:
+            drink_pairs.append(current_drink)
 
-    # If no value of i satisfies the condition, return -1
-    if min_i == len(s):
-        return -1
-    else:
-        return min_i
+        # Increment the count of the current drink
+        drink_count[current_drink] += 1
 
-# Check if t is a subsequence of s
-def is_subsequence(t, s):
-    i, j = 0, 0
-    while i < len(t) and j < len(s):
-        if t[i] == s[j]:
-            i += 1
-        j += 1
-    return i == len(t)
+        # If the count of the current drink is 2, move on to the next drink
+        if drink_count[current_drink] == 2:
+            current_drink += 1
+            drink_count[current_drink] = 0
 
-print(solve())
+        # Increment the number of students who have received a drink
+        current_students += 1
+
+        # If the number of students who have received a drink is equal to the ceiling of n/2, update the maximum number of students
+        if current_students == int(n/2) + 1:
+            max_students = max(max_students, current_students)
+
+    # Return the maximum number of students who can get their favorite drink
+    return max_students
+
+def main():
+    n, k = map(int, input().split())
+    a = list(map(int, input().split()))
+    print(get_maximum_students_with_favorite_drink(n, k, a))
+
+if __name__ == '__main__':
+    main()
 

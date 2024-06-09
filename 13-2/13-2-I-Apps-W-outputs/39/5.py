@@ -1,30 +1,40 @@
 
-import math
+def get_max_cookies(n, k, a, b):
+    # Initialize variables
+    max_cookies = 0
+    current_cookies = 0
+    current_ingredients = [0] * n
 
-def get_expected_inversions(n, p):
-    # Calculate the number of -1 in the sequence
-    num_of_neg_one = p.count(-1)
-    
-    # Calculate the number of valid permutations
-    num_of_valid_permutations = math.factorial(n) // math.factorial(num_of_neg_one) // math.factorial(n - num_of_neg_one)
-    
-    # Calculate the number of inversions in each valid permutation
-    inversions = 0
-    for i in range(n):
-        for j in range(i+1, n):
-            if p[i] != -1 and p[j] != -1 and p[i] > p[j]:
-                inversions += 1
-    
-    # Calculate the expected number of inversions
-    expected_inversions = inversions * num_of_valid_permutations
-    
-    # Calculate the gcd of the expected number of inversions and the modulus
-    gcd = math.gcd(expected_inversions, 998244353)
-    
-    # Return the result modulo the modulus
-    return expected_inversions // gcd * 998244353 // gcd
+    # Sort the ingredients in descending order
+    sorted_ingredients = sorted(range(n), key=lambda i: a[i], reverse=True)
 
-n = int(input())
-p = list(map(int, input().split()))
-print(get_expected_inversions(n, p))
+    # Loop through the ingredients and try to make cookies
+    for i in sorted_ingredients:
+        # Check if we have enough of the current ingredient
+        if b[i] >= a[i]:
+            # We have enough of the current ingredient, so we can make a cookie
+            current_cookies += 1
+            current_ingredients[i] += 1
+            b[i] -= a[i]
+            k -= 1
+        else:
+            # We don't have enough of the current ingredient, so we can't make a cookie
+            pass
+
+        # Check if we have used up all of the magic powder
+        if k == 0:
+            # We have used up all of the magic powder, so we can stop making cookies
+            break
+
+    # Return the maximum number of cookies we can make
+    return current_cookies
+
+def main():
+    n, k = map(int, input().split())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    print(get_max_cookies(n, k, a, b))
+
+if __name__ == '__main__':
+    main()
 

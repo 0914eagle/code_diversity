@@ -1,13 +1,8 @@
 
-def is_power_of_three_and_five(n):
-    for i in range(1, n):
-        if n == 3**i + 5**i:
-            return True
-    return False
-
-n = int(input())
-if is_power_of_three_and_five(n):
-    print(n)
-else:
-    print(-1)
+def f1(s, a, b):
+    if len(s) < a or len(s) < b:
+        return "NO"
+    if a % b == 0:
+        return "YES"
+    return "NO"
 

@@ -1,39 +1,32 @@
 
-def black_vienna(investigations):
-    num_investigations = len(investigations)
-    num_suspects = 26
-    num_solutions = 0
-
-    for i in range(num_investigations):
-        suspects = investigations[i][:2]
-        player = investigations[i][2]
-        reply = investigations[i][3]
-
-        # Check if the reply is valid
-        if reply < 0 or reply > 2:
-            return 0
-
-        # Check if the suspects are valid
-        if not (suspects[0] in range(num_suspects) and suspects[1] in range(num_suspects)):
-            return 0
-
-        # Check if the player is valid
-        if player != 1 and player != 2:
-            return 0
-
-        # Check if the reply is consistent with the player's hand
-        if player == 1:
-            if reply > len(set(suspects)):
-                return 0
+def find_best_subsequence(k, answers):
+    # Initialize variables
+    best_subsequence = []
+    best_success_rate = 0
+    current_subsequence = []
+    current_success_rate = 0
+    
+    # Iterate through the answers
+    for answer in answers:
+        # If the answer is correct, add it to the current subsequence
+        if answer == 1:
+            current_subsequence.append(answer)
+            current_success_rate += 1
+        # If the answer is incorrect, add it to the current subsequence and check if it is a better subsequence
         else:
-            if reply > len(set(suspects)) - 1:
-                return 0
-
-    # If the replies are consistent, count the number of admissible solutions
-    for i in range(num_suspects):
-        for j in range(i+1, num_suspects):
-            for k in range(j+1, num_suspects):
-                num_solutions += 1
-
-    return num_solutions
+            current_subsequence.append(answer)
+            current_success_rate += 1
+            if len(current_subsequence) >= k and current_success_rate / len(current_subsequence) > best_success_rate:
+                best_subsequence = current_subsequence
+                best_success_rate = current_success_rate / len(current_subsequence)
+            current_subsequence = []
+            current_success_rate = 0
+    
+    # If there are any remaining answers in the current subsequence, check if it is a better subsequence
+    if len(current_subsequence) >= k and current_success_rate / len(current_subsequence) > best_success_rate:
+        best_subsequence = current_subsequence
+        best_success_rate = current_success_rate / len(current_subsequence)
+    
+    # Return the index and length of the best subsequence
+    return [answers.index(best_subsequence[0]) + 1, len(best_subsequence)]
 

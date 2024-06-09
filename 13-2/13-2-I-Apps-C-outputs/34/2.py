@@ -1,60 +1,43 @@
 
-def solve(grid):
-    # Initialize the minimum number of moves to infinity
-    min_moves = float('inf')
-    # Initialize the optimal solution as an empty list
-    optimal_solution = []
-    
-    # Loop through each possible move (row or column)
-    for move in range(1, len(grid) + 1):
-        # Check if the move is valid (i.e., the move is within the bounds of the grid)
-        if move <= len(grid):
-            # Clone the grid to prevent modifying the original grid
-            grid_clone = grid.copy()
-            # Perform the move by adding 1 to all cells in the selected row or column
-            for i in range(len(grid_clone)):
-                if move == 1:
-                    grid_clone[i][move - 1] += 1
-                else:
-                    grid_clone[move - 1][i] += 1
-            # Check if the grid is solved after the move
-            if is_solved(grid_clone):
-                # If the grid is solved, update the minimum number of moves and the optimal solution
-                min_moves = 1
-                optimal_solution = [move]
-                break
-            # If the grid is not solved, check if the number of moves is less than the current minimum
-            elif len(optimal_solution) == 0 or len(optimal_solution) > min_moves + 1:
-                # If the number of moves is less than the current minimum, update the minimum number of moves and the optimal solution
-                min_moves += 1
-                optimal_solution = [move]
-    
-    # Return the optimal solution
-    return optimal_solution
-
-def is_solved(grid):
-    # Check if all cells in the grid are equal to the target value
-    for i in range(len(grid)):
-        for j in range(len(grid[0])):
-            if grid[i][j] != grid[0][0]:
-                return False
-    return True
-
-def main():
-    # Read the input grid from stdin
-    grid = []
-    for _ in range(int(input())):
-        grid.append(list(map(int, input().split())))
-    
-    # Solve the grid and print the output
-    solution = solve(grid)
-    if len(solution) == 0:
-        print(-1)
-    else:
-        print(len(solution))
-        for move in solution:
-            print(move)
-
-if __name__ == '__main__':
-    main()
+def interpret_basic(program):
+    # Initialize the variables
+    variables = {}
+    for line in program:
+        # Split the line into label and statement
+        label, statement = line.split()
+        # Convert the label to an integer
+        label = int(label)
+        # Check if the statement is a LET statement
+        if statement.startswith("LET"):
+            # Extract the variable name and value
+            variable_name, value = statement.split("=")
+            # Convert the value to an integer
+            value = int(value)
+            # Assign the value to the variable
+            variables[variable_name] = value
+        # Check if the statement is a PRINT statement
+        elif statement.startswith("PRINT"):
+            # Extract the print statement
+            print_statement = statement.split("PRINT")[1]
+            # Print the statement
+            print(print_statement, end="")
+        # Check if the statement is a PRINTLN statement
+        elif statement.startswith("PRINTLN"):
+            # Extract the print statement
+            print_statement = statement.split("PRINTLN")[1]
+            # Print the statement with a newline
+            print(print_statement)
+        # Check if the statement is an IF statement
+        elif statement.startswith("IF"):
+            # Extract the condition and label
+            condition, label = statement.split("THEN")
+            # Evaluate the condition
+            if eval(condition):
+                # Go to the label
+                label = int(label)
+        # Check if the statement is a GOTO statement
+        elif statement.startswith("GOTO"):
+            # Extract the label
+            label = int(statement.split("GOTO")[1])
+    return variables
 

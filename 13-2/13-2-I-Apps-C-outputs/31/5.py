@@ -1,24 +1,29 @@
 
-def get_smoothie_amount(distance, total_smoothie, carrying_capacity):
-    # Initialize variables
-    smoothie_amount = 0
-    containers = []
-    current_container = 0
+def f1(s):
+    # Calculate the average value of L(C) over all possible sequences C represented by s
+    n = len(s)
+    count = 0
+    total = 0
+    for i in range(1, n+1):
+        for j in range(n-i+1):
+            if s[j] == 'H' and s[j+i-1] == 'H':
+                count += 1
+                total += i
+    return total / count
 
-    # Loop until all smoothie is consumed or the carrying capacity is reached
-    while smoothie_amount < total_smoothie and current_container < carrying_capacity:
-        # Calculate the amount of smoothie that can be carried in the current container
-        container_smoothie = min(total_smoothie - smoothie_amount, carrying_capacity - current_container)
+def f2(s):
+    # Calculate the average value of L(C) over all possible sequences C represented by s
+    n = len(s)
+    count = 0
+    total = 0
+    for i in range(1, n+1):
+        for j in range(n-i+1):
+            if s[j] == 'H' and s[j+i-1] == 'H':
+                count += 1
+                total += i
+    return total / count
 
-        # Add the container to the list of containers
-        containers.append(container_smoothie)
-
-        # Update the current container amount
-        current_container += container_smoothie
-
-        # Update the smoothie amount
-        smoothie_amount += container_smoothie
-
-    # Return the total amount of smoothie that can be brought to the family
-    return smoothie_amount
+if __name__ == '__main__':
+    s = input()
+    print(f1(s))
 

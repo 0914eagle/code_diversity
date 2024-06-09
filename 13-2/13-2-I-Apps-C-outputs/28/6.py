@@ -1,26 +1,27 @@
 
-def is_right_triangle(p1, p2, p3):
-    # Calculate the lengths of the sides of the triangle
-    a = abs(p1[0] - p2[0])
-    b = abs(p1[1] - p2[1])
-    c = abs(p1[0] - p3[0])
-
-    # Check if the triangle is right by checking the angles
-    return a**2 + b**2 == c**2
-
-def count_right_triangles(points):
-    count = 0
-    for i in range(len(points)):
-        for j in range(i+1, len(points)):
-            for k in range(j+1, len(points)):
-                if is_right_triangle(points[i], points[j], points[k]):
-                    count += 1
-    return count
-
-points = []
-for i in range(int(input())):
-    x, y = map(int, input().split())
-    points.append((x, y))
-
-print(count_right_triangles(points))
+def solve(A, K, Q):
+    # Step 1: Sort the input array
+    A.sort()
+    
+    # Step 2: Initialize the minimum difference
+    min_diff = float('inf')
+    
+    # Step 3: Loop through each possible starting index
+    for i in range(N-K+1):
+        # Step 4: Initialize the maximum and minimum values
+        max_val = -float('inf')
+        min_val = float('inf')
+        
+        # Step 5: Loop through each element in the subsequence
+        for j in range(i, i+K):
+            # Step 6: Update the maximum and minimum values
+            max_val = max(max_val, A[j])
+            min_val = min(min_val, A[j])
+        
+        # Step 7: Calculate the difference and update the minimum difference
+        diff = max_val - min_val
+        min_diff = min(min_diff, diff)
+    
+    # Step 8: Return the minimum difference
+    return min_diff
 

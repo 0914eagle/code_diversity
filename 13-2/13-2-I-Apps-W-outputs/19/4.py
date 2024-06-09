@@ -1,31 +1,27 @@
 
-def is_adjacent(s):
-    count = 0
-    for i in range(len(s)-1):
-        if s[i] == '-' and s[i+1] == '-':
-            count += 1
-    return count
+def count_ways_to_paint_tree(n, k, edges):
+    # Initialize a dictionary to store the number of ways to paint each vertex
+    ways = {i: 1 for i in range(1, n + 1)}
+    
+    # Iterate over the edges of the tree
+    for u, v in edges:
+        # If the distance between the two vertices is less than or equal to k,
+        # then the number of ways to paint the two vertices is the product of the number of ways to paint each vertex
+        if u != v and abs(u - v) <= k:
+            ways[u] *= ways[v]
+            ways[v] = ways[u]
+    
+    # Return the number of ways to paint the tree modulo 10^9 + 7
+    return ways[1] % (10**9 + 7)
 
-def is_valid(s):
-    count = 0
-    for i in range(len(s)-1):
-        if s[i] == '-' and s[i+1] == 'o':
-            count += 1
-    return count % 2 == 0
+def main():
+    n, k = map(int, input().split())
+    edges = []
+    for _ in range(n - 1):
+        u, v = map(int, input().split())
+        edges.append((u, v))
+    print(count_ways_to_paint_tree(n, k, edges))
 
-def can_rejoin(s):
-    if len(s) == 1:
-        return "YES"
-    if len(s) == 2:
-        return "YES"
-    if len(s) == 3:
-        return "NO"
-    if is_adjacent(s) == 0:
-        return "YES"
-    if is_valid(s):
-        return "YES"
-    return "NO"
-
-s = input()
-print(can_rejoin(s))
+if __name__ == '__main__':
+    main()
 

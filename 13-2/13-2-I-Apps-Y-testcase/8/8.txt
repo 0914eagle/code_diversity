@@ -1,16 +1,14 @@
 {
-  "inputs": [
-    "5\n5009\n7\n9876\n10000\n10\n",
-    "7\n1\n1\n1\n1\n1\n1\n1\n",
-    "2\n9999\n52\n",
-    "2\n999\n52\n",
-    "2\n954\n18\n"
-  ],
-  "outputs": [
-    "2\n9 5000 \n1\n7 \n4\n6 70 800 9000 \n1\n10000 \n1\n10 \n",
-    "1\n1 \n1\n1 \n1\n1 \n1\n1 \n1\n1 \n1\n1 \n1\n1 \n",
-    "4\n9 90 900 9000 \n2\n2 50 \n",
-    "3\n9 90 900 \n2\n2 50 \n",
-    "3\n4 50 900 \n2\n8 10 \n"
-  ]
+    "inputs": [
+        "4\nWBBW\nWBWB\nBWWB\nBWBW\n",
+        "4\nBWWB\nBWBB\nWBBW\nWBWW\n",
+        "6\nBWBWWB\nWBWBWB\nWBBWBW\nBBWBWW\nBWWBBW\nWWBWBB\n",
+        "6\nWWBBWB\nBBWWBW\nWBWBWB\nBWBWBW\nBWBBWW\nWBWWBB\n"
+    ],
+    "outputs": [
+        "1\n",
+        "0\n",
+        "0\n",
+        "1\n"
+    ]
 }

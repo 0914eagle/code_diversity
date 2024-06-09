@@ -1,40 +1,53 @@
 
-def solve(map_pieces):
-    # Initialize the reconstructed map with the first map piece
-    reconstructed_map = map_pieces[0]
-    used_map_pieces = [0]
+def f1(n, v, a, b):
+    # find the direct supervisor of each person
+    supervisor = [0] * (n + 1)
+    for i in range(len(a)):
+        supervisor[a[i]] = b[i]
+    
+    # find the set of jokes told by each person and their supervisor
+    jokes = [set() for _ in range(n + 1)]
+    for i in range(1, n + 1):
+        jokes[i].add(v[i - 1])
+        if supervisor[i] != 0:
+            jokes[i].update(jokes[supervisor[i]])
+    
+    # count the number of different sets of jokes
+    num_sets = 0
+    for i in range(1, n + 1):
+        for j in range(i + 1, n + 1):
+            if jokes[i].isdisjoint(jokes[j]):
+                num_sets += 1
+    
+    return num_sets
 
-    # Loop through the remaining map pieces
-    for i in range(1, len(map_pieces)):
-        # Try rotating the map piece and see if it fits
-        for rotation in range(4):
-            rotated_map_piece = rotate_map_piece(map_pieces[i], rotation)
-            if fits_in_map(reconstructed_map, rotated_map_piece):
-                # If it fits, add it to the reconstructed map and mark it as used
-                reconstructed_map = add_map_piece_to_map(reconstructed_map, rotated_map_piece)
-                used_map_pieces.append(i + 1)
-                break
+def f2(n, v, a, b):
+    # find the direct supervisor of each person
+    supervisor = [0] * (n + 1)
+    for i in range(len(a)):
+        supervisor[a[i]] = b[i]
+    
+    # find the set of jokes told by each person and their supervisor
+    jokes = [set() for _ in range(n + 1)]
+    for i in range(1, n + 1):
+        jokes[i].add(v[i - 1])
+        if supervisor[i] != 0:
+            jokes[i].update(jokes[supervisor[i]])
+    
+    # count the number of different sets of jokes
+    num_sets = 0
+    for i in range(1, n + 1):
+        for j in range(i + 1, n + 1):
+            if jokes[i].isdisjoint(jokes[j]):
+                num_sets += 1
+    
+    return num_sets
 
-    # Return the reconstructed map and the used map pieces
-    return reconstructed_map, used_map_pieces
-
-def rotate_map_piece(map_piece, rotation):
-    # Rotate the map piece by 90 degrees clockwise
-    return list(map(list, zip(*map_piece[::-1])))[::rotation]
-
-def fits_in_map(reconstructed_map, map_piece):
-    # Check if the map piece fits in the reconstructed map
-    for i in range(len(map_piece)):
-        for j in range(len(map_piece[0])):
-            if map_piece[i][j] != 0 and reconstructed_map[i + 1][j + 1] != 0:
-                return False
-    return True
-
-def add_map_piece_to_map(reconstructed_map, map_piece):
-    # Add the map piece to the reconstructed map
-    for i in range(len(map_piece)):
-        for j in range(len(map_piece[0])):
-            if map_piece[i][j] != 0:
-                reconstructed_map[i + 1][j + 1] = map_piece[i][j]
-    return reconstructed_map
+if __name__ == '__main__':
+    n = int(input())
+    v = list(map(int, input().split()))
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    print(f1(n, v, a, b))
+    print(f2(n, v, a, b))
 

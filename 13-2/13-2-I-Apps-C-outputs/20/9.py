@@ -1,25 +1,55 @@
 
-def solve(W, v_h, N, x, y, S, s):
-    # Initialize the minimum time to pass through the course
-    min_time = float('inf')
-    # Initialize the minimum speed required to pass through the course
-    min_speed = 0
+def f1(r, c, k, l, x0, y0, times):
+    # Initialize a 2D array to store the number of fish at each point
+    fish = [[0] * c for _ in range(r)]
+    
+    # Initialize a set to store the points that have fish
+    points = set()
+    
+    # Iterate through the input times and update the fish array and points set
+    for i in range(r):
+        for j in range(c):
+            if times[i][j] <= l:
+                fish[i][j] = 1
+                points.add((i, j))
+    
+    # Initialize a queue to store the points to visit
+    queue = [(x0, y0)]
+    
+    # Initialize a set to store the visited points
+    visited = set()
+    
+    # Iterate through the queue and visit each point
+    while queue:
+        x, y = queue.pop(0)
+        visited.add((x, y))
+        
+        # Check if the point has fish and has not been visited before
+        if fish[x][y] and (x, y) not in visited:
+            # Add the point to the set of points with fish
+            points.add((x, y))
+            
+            # Add the neighboring points to the queue
+            if x > 0:
+                queue.append((x - 1, y))
+            if x < r - 1:
+                queue.append((x + 1, y))
+            if y > 0:
+                queue.append((x, y - 1))
+            if y < c - 1:
+                queue.append((x, y + 1))
+    
+    # Return the number of points with fish
+    return len(points)
 
-    # Loop through each pair of skis
-    for i in range(S):
-        # Calculate the horizontal speed required to pass through the course with the current pair of skis
-        horizontal_speed = min(v_h, s[i])
-        # Calculate the time required to pass through the course with the current pair of skis
-        time = (y[-1] - y[0]) / s[i] + (x[-1] - x[0]) / horizontal_speed
-        # Check if the time required is less than the minimum time
-        if time < min_time:
-            # Update the minimum time and speed
-            min_time = time
-            min_speed = s[i]
+def f2(...):
+    # Implement f2 here
+    pass
 
-    # Check if it is possible to pass through the course with any pair of skis
-    if min_time == float('inf'):
-        return "IMPOSSIBLE"
-    else:
-        return min_speed
+if __name__ == '__main__':
+    r, c, k, l, x0, y0 = map(int, input().split())
+    times = []
+    for i in range(r):
+        times.append(list(map(int, input().split())))
+    print(f1(r, c, k, l, x0, y0, times))
 

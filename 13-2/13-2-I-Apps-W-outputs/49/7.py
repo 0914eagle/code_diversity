@@ -1,21 +1,27 @@
 
-def get_maximum_median(arr, k):
-    # Sort the array in non-decreasing order
-    arr.sort()
-    # Initialize the median and the number of operations made
-    median = arr[len(arr) // 2]
-    operations = 0
-    # Loop through the array and find the element that is closest to the median
-    for i in range(len(arr)):
-        if abs(arr[i] - median) < abs(arr[(i + 1) % len(arr)] - median):
-            # If the element is not already the median, increase it by 1 and update the median
-            if arr[i] != median:
-                arr[i] += 1
-                median += 1
-                operations += 1
-                # If the number of operations exceeds the given limit, break the loop
-                if operations > k:
-                    break
-    # Return the maximum possible median
-    return median
+def count_divisible_integers(A):
+    # Initialize a set to store the divisible integers
+    divisible_integers = set()
+    # Iterate through the array
+    for i in range(len(A)):
+        # Check if the current element is divisible by any of the previous elements
+        for j in range(i):
+            if A[i] % A[j] == 0:
+                # If it is, add it to the set of divisible integers
+                divisible_integers.add(i+1)
+                break
+    # Return the length of the set
+    return len(divisible_integers)
+
+def main():
+    # Read the input data
+    N = int(input())
+    A = list(map(int, input().split()))
+    # Call the function to count the divisible integers
+    count = count_divisible_integers(A)
+    # Print the result
+    print(count)
+
+if __name__ == '__main__':
+    main()
 

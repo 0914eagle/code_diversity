@@ -1,50 +1,54 @@
 
-def solve(W, v_h, N, x, y, S, s):
-    # Initialize a dictionary to store the minimum time required to pass through each gate
-    min_time = {}
-    for i in range(N):
-        min_time[(x[i], y[i])] = float('inf')
+def f1(r, c, k, l, x0, y0, times):
+    # Initialize a 2D array to store the number of fish at each point
+    fish_count = [[0] * c for _ in range(r)]
     
-    # Initialize a dictionary to store the maximum horizontal speed at each gate
-    max_speed = {}
-    for i in range(N):
-        max_speed[(x[i], y[i])] = v_h
+    # Initialize a 2D array to store the maximum number of fish that can be caught at each point
+    max_fish = [[0] * c for _ in range(r)]
     
-    # Loop through each gate and calculate the minimum time required to pass through it
-    for i in range(N):
-        for j in range(i+1, N):
-            # Calculate the horizontal distance between the two gates
-            dist = abs(x[i] - x[j])
-            
-            # Calculate the time required to pass through the gate at the current speed
-            time = dist / s[i]
-            
-            # Update the minimum time required to pass through the gate
-            min_time[(x[i], y[i])] = min(min_time[(x[i], y[i])], time)
-            min_time[(x[j], y[j])] = min(min_time[(x[j], y[j])], time)
-            
-            # Update the maximum horizontal speed at the gate
-            max_speed[(x[i], y[i])] = min(max_speed[(x[i], y[i])], s[i])
-            max_speed[(x[j], y[j])] = min(max_speed[(x[j], y[j])], s[i])
+    # Set the initial position to the starting position
+    x, y = x0, y0
     
-    # Loop through each gate and calculate the minimum time required to pass through it with the maximum horizontal speed
-    for i in range(N):
-        for j in range(i+1, N):
-            # Calculate the horizontal distance between the two gates
-            dist = abs(x[i] - x[j])
-            
-            # Calculate the time required to pass through the gate at the maximum speed
-            time = dist / max_speed[(x[i], y[i])]
-            
-            # Update the minimum time required to pass through the gate
-            min_time[(x[i], y[i])] = min(min_time[(x[i], y[i])], time)
-            min_time[(x[j], y[j])] = min(min_time[(x[j], y[j])], time)
+    # Loop through each time step
+    for t in range(1, l + 1):
+        # If the current position has fish at the current time step, catch them
+        if fish_count[x][y] > 0:
+            max_fish[x][y] += fish_count[x][y]
+        
+        # Move to the next position in the direction of the fish
+        if t < times[x][y]:
+            # If the current position has fish, move to the next position in the direction of the fish
+            if fish_count[x][y] > 0:
+                if y + 1 < c and fish_count[x][y + 1] > 0:
+                    x, y = x, y + 1
+                elif x + 1 < r and fish_count[x + 1][y] > 0:
+                    x, y = x + 1, y
+                elif y - 1 >= 0 and fish_count[x][y - 1] > 0:
+                    x, y = x, y - 1
+                elif x - 1 >= 0 and fish_count[x - 1][y] > 0:
+                    x, y = x - 1, y
+            # If the current position does not have fish, move to the next position in any direction
+            else:
+                if y + 1 < c:
+                    x, y = x, y + 1
+                elif x + 1 < r:
+                    x, y = x + 1, y
+                elif y - 1 >= 0:
+                    x, y = x, y - 1
+                elif x - 1 >= 0:
+                    x, y = x - 1, y
     
-    # Calculate the total time required to pass through all the gates
-    total_time = 0
-    for i in range(N):
-        total_time += min_time[(x[i], y[i])]
-    
-    # Return the speed of the pair of skis that allows you to get through the race course in the shortest time
-    return s[total_time]
+    # Return the maximum number of fish that can be caught
+    return max(max_fish[x][y] for x in range(r) for y in range(c))
+
+def f2(...):
+    # Implement function f2 here
+    pass
+
+if __name__ == '__main__':
+    r, c, k, l, x0, y0 = map(int, input().split())
+    times = []
+    for _ in range(r):
+        times.append(list(map(int, input().split())))
+    print(f1(r, c, k, l, x0, y0, times))
 

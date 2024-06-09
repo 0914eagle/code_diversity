@@ -1,25 +1,25 @@
 
-def solve(n, m, rooks):
-    # Initialize a 2D array to store the board state
-    board = [[0] * n for _ in range(n)]
+def count_ways(n, m, permutations):
+    # Initialize a set to store the common parts
+    common_parts = set()
+    
+    # Iterate over each permutation
+    for permutation in permutations:
+        # Iterate over each position in the permutation
+        for i in range(n):
+            # Check if the current position is a common part
+            if all(permutation[i] in p for p in permutations):
+                # Add the current position to the set of common parts
+                common_parts.add(permutation[i])
+    
+    # Return the number of ways to delete a prefix and suffix from each permutation
+    return len(common_parts)
 
-    # Iterate through each rook and mark its row and column as attacked
-    for i in range(m):
-        x, y = rooks[i]
-        board[x - 1][y - 1] = 1
-        for j in range(n):
-            if board[j][y - 1] == 0:
-                board[j][y - 1] = 1
-        for k in range(n):
-            if board[x - 1][k] == 0:
-                board[x - 1][k] = 1
+def main():
+    n, m = map(int, input().split())
+    permutations = [list(map(int, input().split())) for _ in range(m)]
+    print(count_ways(n, m, permutations))
 
-    # Count the number of unattacked cells
-    unattacked_cells = 0
-    for i in range(n):
-        for j in range(n):
-            if board[i][j] == 0:
-                unattacked_cells += 1
-
-    return unattacked_cells
+if __name__ == '__main__':
+    main()
 

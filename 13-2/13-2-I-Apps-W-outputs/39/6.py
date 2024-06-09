@@ -1,31 +1,31 @@
 
-import math
+def get_max_cookies(n, k, a, b):
+    # Sort the ingredients in descending order
+    sorted_ingredients = sorted(zip(a, b), key=lambda x: x[1], reverse=True)
 
-def get_expected_inversions(n, p):
-    # Calculate the number of -1 in the sequence
-    num_of_ones = p.count(1)
-    
-    # Calculate the number of valid permutations
-    num_of_permutations = math.factorial(n) // math.factorial(n - num_of_ones)
-    
-    # Calculate the number of inversions in each valid permutation
-    inversions = 0
+    # Initialize the variables
+    current_cookies = 0
+    current_weight = 0
+
+    # Iterate through the ingredients
     for i in range(n):
-        for j in range(i+1, n):
-            if p[i] != -1 and p[j] != -1 and p[i] > p[j]:
-                inversions += 1
-    
-    # Calculate the expected number of inversions
-    expected_inversions = inversions / num_of_permutations
-    
-    # Calculate the value of P \* Q^-1 % 998244353
-    p = int(expected_inversions * num_of_permutations)
-    q = int(num_of_permutations)
-    result = p * pow(q, -1, 998244353)
-    
-    return result
+        # Calculate the number of cookies that can be baked with the current ingredient
+        num_cookies = min(sorted_ingredients[i][1], k // sorted_ingredients[i][0])
 
-n = int(input())
-p = list(map(int, input().split()))
-print(get_expected_inversions(n, p))
+        # Update the current weight and number of cookies
+        current_weight += num_cookies * sorted_ingredients[i][0]
+        current_cookies += num_cookies
+
+        # Check if the current weight is greater than the total weight
+        if current_weight > k:
+            break
+
+    # Return the maximum number of cookies that can be baked
+    return current_cookies
+
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    print(get_max_cookies(n, k, a, b))
 

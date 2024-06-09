@@ -1,12 +1,28 @@
 
-def solve(n, paths):
-    # Initialize a set to store the colors
-    colors = set()
-    # Loop through each path
-    for path in paths:
-        # Add the colors of the two squares in the path to the set
-        colors.add(path[0])
-        colors.add(path[1])
-    # Return the length of the set, which is the minimum number of colors needed
-    return len(colors)
+def f1(s):
+    n = len(s)
+    if n == 1:
+        return 1
+    else:
+        count = 0
+        for i in range(n-1):
+            if s[i] != s[i+1]:
+                count += 1
+        return count + 1
+
+def f2(s):
+    n = len(s)
+    if n == 1:
+        return 1
+    else:
+        count = 0
+        for i in range(n-1):
+            if s[i] == s[i+1]:
+                count += 1
+        return count + 1
+
+if __name__ == '__main__':
+    s = input()
+    print(f1(s))
+    print(f2(s))
 

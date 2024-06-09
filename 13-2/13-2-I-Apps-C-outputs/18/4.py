@@ -1,14 +1,13 @@
 
-def is_interesting_problemset(problems, teams):
-    # Calculate the total number of problems known by each team
-    team_problems = [sum(team) for team in teams]
+def count_bulbasaurs(s):
+    # Initialize a counter for the number of Bulbasaurs
+    count = 0
     
-    # Calculate the maximum number of problems that can be known by any team
-    max_team_problems = max(team_problems)
+    # Loop through the string s and check if the substring "bulbasaur" can be formed
+    for i in range(len(s) - 6):
+        if s[i:i+7].lower() == "bulbasaur":
+            count += 1
     
-    # Check if the maximum number of problems is less than or equal to the half of the total number of problems
-    if max_team_problems <= len(problems) // 2:
-        return "YES"
-    else:
-        return "NO"
+    # Return the number of Bulbasaurs
+    return count
 

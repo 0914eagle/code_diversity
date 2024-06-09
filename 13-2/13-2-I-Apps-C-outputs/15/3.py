@@ -1,43 +1,58 @@
 
-import math
+def f1(n, roads):
+    # Initialize a graph with n nodes and 0 edges
+    graph = [[] for _ in range(n)]
 
-def get_least_turning(nodes, edges):
-    # Initialize variables
-    turning = 0
-    visited = set()
-    current_node = 0
+    # Add edges to the graph
+    for road in roads:
+        graph[road[0] - 1].append(road[1])
+        graph[road[1] - 1].append(road[0])
 
-    # Loop through the edges
-    for edge in edges:
-        # If the current node has not been visited, mark it as visited and add its turning to the total turning
-        if current_node not in visited:
-            visited.add(current_node)
-            turning += nodes[current_node][2]
-        # If the current node has been visited, find the next node to visit and add its turning to the total turning
-        else:
-            for node in nodes:
-                if node[0] == current_node and node[1] not in visited:
-                    visited.add(node[1])
-                    turning += node[2]
-                    current_node = node[1]
-                    break
+    # Find a Eulerian circuit in the graph
+    eulerian_circuit = []
+    for node in range(n):
+        if len(graph[node]) % 2 == 1:
+            eulerian_circuit.append(node + 1)
+        for i in range(len(graph[node])):
+            graph[node][i] = graph[node][i] ^ 1
 
-    # Return the total turning
-    return turning
+    # Construct the output
+    output = []
+    for i in range(len(eulerian_circuit) - 1):
+        output.append([eulerian_circuit[i], eulerian_circuit[i + 1]])
 
-# Main function
-if __name__ == "__main__":
-    # Read input from stdin
-    nodes = []
-    edges = []
-    for _ in range(int(input())):
-        nodes.append(list(map(int, input().split())))
-    for _ in range(int(input())):
-        edges.append(list(map(int, input().split())))
+    return output
 
-    # Get the least turning
-    turning = get_least_turning(nodes, edges)
+def f2(n, roads):
+    # Initialize a graph with n nodes and 0 edges
+    graph = [[] for _ in range(n)]
 
-    # Print the output
-    print(turning)
+    # Add edges to the graph
+    for road in roads:
+        graph[road[0] - 1].append(road[1])
+        graph[road[1] - 1].append(road[0])
+
+    # Find a Eulerian path in the graph
+    eulerian_path = []
+    for node in range(n):
+        if len(graph[node]) % 2 == 1:
+            eulerian_path.append(node + 1)
+        for i in range(len(graph[node])):
+            graph[node][i] = graph[node][i] ^ 1
+
+    # Construct the output
+    output = []
+    for i in range(len(eulerian_path) - 1):
+        output.append([eulerian_path[i], eulerian_path[i + 1]])
+
+    return output
+
+if __name__ == '__main__':
+    n = int(input())
+    roads = []
+    for _ in range(n):
+        roads.append(list(map(int, input().split())))
+    output = f1(n, roads)
+    for road in output:
+        print(road[0], road[1])
 

@@ -1,36 +1,83 @@
 
-def solve(tasks):
-    # Initialize the processor clock and the list of running tasks
-    clock = 0
-    running_tasks = []
-    
-    # Loop through each task and execute its instructions
-    for task in tasks:
-        # Identify running tasks
-        running_tasks = [t for t in tasks if t["start"] <= clock and not t["completed"]]
-        
-        # Determine the current priorities of the running tasks and which of the running tasks are blocked
-        blocked_tasks = []
-        for task in running_tasks:
-            if task["instructions"][0] == "L":
-                resource = task["instructions"][1]
-                if resource in blocked_tasks or any(t["priority"] >= task["priority"] for t in running_tasks if t != task):
-                    blocked_tasks.append(task)
-        
-        # Execute the next instruction of the non-blocked running task (if any) with the highest current priority
-        if running_tasks:
-            task = max(running_tasks, key=lambda x: x["priority"])
-            instruction = task["instructions"][0]
-            if instruction == "C":
-                clock += 1
-            elif instruction == "L":
-                task["owned_resources"].append(task["instructions"][1])
-            elif instruction == "U":
-                task["owned_resources"].remove(task["instructions"][1])
-            task["instructions"] = task["instructions"][1:]
-            if not task["instructions"]:
-                task["completed"] = True
-        
-    # Return the time each task completes execution
-    return [task["start"] + task["duration"] for task in tasks]
+def is_graph_exist(n, m, edges):
+    # Initialize a dictionary to store the neighbors of each vertex
+    neighbors = {i: set() for i in range(1, n + 1)}
+
+    # Add edges to the dictionary
+    for u, v in edges:
+        neighbors[u].add(v)
+        neighbors[v].add(u)
+
+    # Check if the graph is connected
+    visited = set()
+    queue = [1]
+    while queue:
+        vertex = queue.pop(0)
+        if vertex not in visited:
+            visited.add(vertex)
+            queue.extend(neighbors[vertex] - visited)
+
+    # If the graph is not connected, return False
+    if len(visited) != n:
+        return False
+
+    # Initialize a list to store the possible strings
+    strings = []
+
+    # Recursive function to generate all possible strings
+    def generate_strings(string, index):
+        # Base case: if the string is complete, add it to the list of possible strings
+        if index == n:
+            strings.append(string)
+            return
+
+        # Recursive case: try all possible characters at the current index
+        for char in "abc":
+            # If the character is not a neighbor of the current vertex, skip it
+            if char not in neighbors[index + 1]:
+                continue
+
+            # Add the character to the string and recurse
+            generate_strings(string + char, index + 1)
+
+    # Generate all possible strings
+    generate_strings("", 0)
+
+    # Check if any of the possible strings correspond to the given graph
+    for string in strings:
+        # Initialize a dictionary to store the neighbors of each vertex in the string
+        string_neighbors = {i: set() for i in range(1, n + 1)}
+
+        # Add edges to the dictionary
+        for i in range(n - 1):
+            if string[i] == string[i + 1]:
+                string_neighbors[i + 1].add(i + 2)
+                string_neighbors[i + 2].add(i + 1)
+
+        # Check if the string graph is connected
+        visited = set()
+        queue = [1]
+        while queue:
+            vertex = queue.pop(0)
+            if vertex not in visited:
+                visited.add(vertex)
+                queue.extend(string_neighbors[vertex] - visited)
+
+        # If the string graph is connected, return True
+        if len(visited) == n:
+            return True
+
+    # If no string corresponds to the given graph, return False
+    return False
+
+def main():
+    n, m = map(int, input().split())
+    edges = []
+    for _ in range(m):
+        u, v = map(int, input().split())
+        edges.append((u, v))
+    print("Yes") if is_graph_exist(n, m, edges) else print("No")
+
+if __name__ == '__main__':
+    main()
 

@@ -1,34 +1,27 @@
 
-def is_round(n):
-    return n % 10 == 0 and all(int(d) == 0 for d in str(n)[1:])
+def is_correct_grid(grid):
+    n = len(grid)
+    for i in range(n):
+        row = grid[i]
+        col = [row[j] for row in grid]
+        if not is_balanced(row) or not is_balanced(col):
+            return False
+    return True
 
-def get_min_summands(n):
-    k = 1
-    while n > 0:
-        if is_round(n):
-            return k
-        n -= 1
-        k += 1
-    return k
+def is_balanced(lst):
+    n = len(lst)
+    count = 0
+    for i in range(n):
+        if lst[i] == "B":
+            count += 1
+        else:
+            count -= 1
+        if count == 3 or count == -3:
+            return False
+    return True
 
-def get_summands(n):
-    k = get_min_summands(n)
-    result = []
-    while n > 0:
-        if is_round(n):
-            result.append(n)
-            return result
-        n -= 1
-    return result
-
-def solve(n):
-    k = get_min_summands(n)
-    result = get_summands(n)
-    return f"{k}\n{' '.join(str(r) for r in result)}"
-
-if __name__ == "__main__":
-    t = int(input())
-    for _ in range(t):
-        n = int(input())
-        print(solve(n))
+if __name__ == '__main__':
+    n = int(input())
+    grid = [input() for _ in range(n)]
+    print(int(is_correct_grid(grid)))
 

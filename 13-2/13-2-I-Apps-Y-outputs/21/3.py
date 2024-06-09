@@ -1,24 +1,21 @@
 
-import math
+def restore_permutation(n, q):
+    # Initialize a list to store the permutation
+    permutation = [0] * n
+    # Set the first element of the permutation to 1
+    permutation[0] = 1
+    # Iterate over the remaining elements of the permutation
+    for i in range(1, n):
+        # Find the next element of the permutation based on the previous elements and the given array q
+        permutation[i] = permutation[i-1] + q[i-1]
+        # If the element is already used, return -1
+        if permutation[i] in permutation[:i]:
+            return -1
+    # Return the permutation if it is valid
+    return permutation
 
-def get_largest_piece(n, h, v):
-    # Calculate the area of each piece
-    area_1 = (n - h) * (n - v)
-    area_2 = h * (n - v)
-    area_3 = (n - h) * v
-    area_4 = h * v
-
-    # Calculate the volume of each piece
-    volume_1 = area_1 * 4
-    volume_2 = area_2 * 4
-    volume_3 = area_3 * 4
-    volume_4 = area_4 * 4
-
-    # Find the largest piece
-    largest_piece = max(volume_1, volume_2, volume_3, volume_4)
-
-    return largest_piece
-
-n, h, v = map(int, input().split())
-print(get_largest_piece(n, h, v))
+if __name__ == '__main__':
+    n = int(input())
+    q = list(map(int, input().split()))
+    print(*restore_permutation(n, q))
 

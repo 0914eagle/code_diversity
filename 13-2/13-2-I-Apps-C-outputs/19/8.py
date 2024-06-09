@@ -1,43 +1,64 @@
 
-import itertools
+def f1(n, m, pegs, dry_plan, wet_plan):
+    # Initialize variables
+    safe_wet_plan = []
+    used_pegs = set()
+    removed_pegs = set()
 
-def count_evolution_plans(gyms, types):
-    # Initialize a list to store the number of Pokemons of each type
-    type_counts = [0] * (types + 1)
-    
-    # Iterate over the gyms and count the number of Pokemons of each type
-    for gym in gyms:
-        for pokemon in gym:
-            type_counts[pokemon] += 1
-    
-    # Use itertools.permutations to generate all possible evolution plans
-    evolution_plans = itertools.permutations(range(1, types + 1))
-    
-    # Initialize a set to store the distinct evolution plans
-    distinct_plans = set()
-    
-    # Iterate over the evolution plans and check if they satisfy the protocol
-    for plan in evolution_plans:
-        # Initialize a list to store the number of Pokemons of each type after evolution
-        evolved_type_counts = [0] * (types + 1)
-        
-        # Iterate over the gyms and count the number of Pokemons of each type after evolution
-        for gym in gyms:
-            for pokemon in gym:
-                evolved_type_counts[plan[pokemon]] += 1
-        
-        # Check if the number of Pokemons of each type is the same before and after evolution
-        if type_counts == evolved_type_counts:
-            distinct_plans.add(plan)
-    
-    # Return the number of distinct evolution plans
-    return len(distinct_plans)
+    # Iterate through the dry plan
+    for i in dry_plan:
+        # If the current step is a peg placement, check if the peg is safe to place
+        if i > 0:
+            # Check if the peg is safe to place
+            if i not in removed_pegs and i not in used_pegs:
+                # Add the peg to the safe wet plan
+                safe_wet_plan.append(i)
+                used_pegs.add(i)
+            # If the peg is not safe to place, return -1
+            else:
+                return -1
+        # If the current step is a peg removal, remove the peg from the safe wet plan
+        else:
+            # Remove the peg from the safe wet plan
+            safe_wet_plan.append(-i)
+            removed_pegs.add(i)
 
-def main():
-    gyms, types = map(int, input().split())
-    gyms = [list(map(int, input().split())) for _ in range(gyms)]
-    print(count_evolution_plans(gyms, types))
+    # Return the safe wet plan
+    return safe_wet_plan
 
-if __name__ == "__main__":
-    main()
+def f2(n, m, pegs, dry_plan, wet_plan):
+    # Initialize variables
+    safe_wet_plan = []
+    used_pegs = set()
+    removed_pegs = set()
+
+    # Iterate through the dry plan
+    for i in dry_plan:
+        # If the current step is a peg placement, check if the peg is safe to place
+        if i > 0:
+            # Check if the peg is safe to place
+            if i not in removed_pegs and i not in used_pegs:
+                # Add the peg to the safe wet plan
+                safe_wet_plan.append(i)
+                used_pegs.add(i)
+            # If the peg is not safe to place, return -1
+            else:
+                return -1
+        # If the current step is a peg removal, remove the peg from the safe wet plan
+        else:
+            # Remove the peg from the safe wet plan
+            safe_wet_plan.append(-i)
+            removed_pegs.add(i)
+
+    # Return the safe wet plan
+    return safe_wet_plan
+
+if __name__ == '__main__':
+    n = int(input())
+    m = int(input())
+    pegs = [int(x) for x in input().split()]
+    dry_plan = [int(x) for x in input().split()]
+    wet_plan = [int(x) for x in input().split()]
+    print(f1(n, m, pegs, dry_plan, wet_plan))
+    print(f2(n, m, pegs, dry_plan, wet_plan))
 

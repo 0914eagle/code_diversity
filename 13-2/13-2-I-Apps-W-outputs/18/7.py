@@ -1,36 +1,24 @@
 
-a, b = map(int, input().split())
-
-# Find the maximum number of notes that can be read in a day
-max_notes = min(a, b)
-
-# Initialize the list of notes to read in the first day
-notes_first_day = []
-
-# Initialize the list of notes to read in the second day
-notes_second_day = []
-
-# Loop through the maximum number of notes that can be read in a day
-for i in range(1, max_notes + 1):
-    # Check if the current note can be read in the first day
-    if i <= a:
-        # Add the current note to the list of notes to read in the first day
-        notes_first_day.append(i)
+def can_rearrange(a, b, x):
     
-    # Check if the current note can be read in the second day
-    if i <= b:
-        # Add the current note to the list of notes to read in the second day
-        notes_second_day.append(i)
+    n = len(a)
+    b = sorted(b)
+    for i in range(n):
+        if a[i] + b[i] > x:
+            return False
+    return True
 
-# Print the number of notes to read in the first day
-print(len(notes_first_day))
+def main():
+    t = int(input())
+    for _ in range(t):
+        n, x = map(int, input().split())
+        a = list(map(int, input().split()))
+        b = list(map(int, input().split()))
+        if can_rearrange(a, b, x):
+            print("Yes")
+        else:
+            print("No")
 
-# Print the notes to read in the first day
-print(*notes_first_day)
-
-# Print the number of notes to read in the second day
-print(len(notes_second_day))
-
-# Print the notes to read in the second day
-print(*notes_second_day)
+if __name__ == '__main__':
+    main()
 

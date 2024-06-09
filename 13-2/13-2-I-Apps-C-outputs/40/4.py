@@ -1,55 +1,69 @@
 
-def is_valid_solution(grid, n, k):
-    # Check if all rows are valid
-    for i in range(n):
-        row = [grid[i][j] for j in range(n)]
-        if len(set(row)) != n:
-            return False
+def f1(N, v, p):
+    # Initialize the expected payout
+    expected_payout = 0
     
-    # Check if all columns are valid
-    for j in range(n):
-        col = [grid[i][j] for i in range(n)]
-        if len(set(col)) != n:
-            return False
+    # Loop through each hole
+    for i in range(1, N * (N + 1) // 2 + 1):
+        # Calculate the probability of falling into the hole
+        probability = p[i - 1][4]
+        
+        # If the probability is not zero, calculate the expected payout
+        if probability != 0:
+            # Calculate the expected payout from the hole
+            expected_payout_from_hole = v[i - 1] * probability
+            
+            # Loop through the neighbors of the hole
+            for j in range(i - 1, i + 2):
+                # If the neighbor is valid, calculate the expected payout from the neighbor
+                if j >= 0 and j < N * (N + 1) // 2 + 1:
+                    expected_payout_from_neighbor = p[i - 1][j % 4] * f1(N, v, p)
+                    expected_payout += expected_payout_from_neighbor
+                    
+            # Add the expected payout from the hole to the total expected payout
+            expected_payout += expected_payout_from_hole
     
-    # Check if all subgrids are valid
-    for i in range(n):
-        for j in range(n):
-            subgrid = []
-            for row in range(i, i + 3):
-                for col in range(j, j + 3):
-                    subgrid.append(grid[row][col])
-            if len(set(subgrid)) != n:
-                return False
-    
-    return True
+    # Return the total expected payout
+    return expected_payout
 
-def solve_superdoku(grid, n, k):
-    # Check if the given grid is valid
-    if not is_valid_solution(grid, n, k):
-        return False
+def f2(N, v, p):
+    # Initialize the expected payout
+    expected_payout = 0
     
-    # Check if all rows and columns are filled
-    for i in range(n):
-        for j in range(n):
-            if grid[i][j] == 0:
-                return False
+    # Loop through each hole
+    for i in range(1, N * (N + 1) // 2 + 1):
+        # Calculate the probability of falling into the hole
+        probability = p[i - 1][4]
+        
+        # If the probability is not zero, calculate the expected payout
+        if probability != 0:
+            # Calculate the expected payout from the hole
+            expected_payout_from_hole = v[i - 1] * probability
+            
+            # Loop through the neighbors of the hole
+            for j in range(i - 1, i + 2):
+                # If the neighbor is valid, calculate the expected payout from the neighbor
+                if j >= 0 and j < N * (N + 1) // 2 + 1:
+                    expected_payout_from_neighbor = p[i - 1][j % 4] * f2(N, v, p)
+                    expected_payout += expected_payout_from_neighbor
+                    
+            # Add the expected payout from the hole to the total expected payout
+            expected_payout += expected_payout_from_hole
     
-    return True
+    # Return the total expected payout
+    return expected_payout
 
-def main():
-    n, k = map(int, input().split())
-    grid = []
-    for i in range(k):
-        grid.append(list(map(int, input().split())))
+if __name__ == '__main__':
+    # Read the input
+    N = int(input())
+    v = list(map(int, input().split()))
+    p = []
+    for i in range(N * (N + 1) // 2):
+        p.append(list(map(float, input().split())))
     
-    if solve_superdoku(grid, n, k):
-        print("yes")
-        for i in range(n):
-            print(" ".join(map(str, grid[i])))
-    else:
-        print("no")
-
-if __name__ == "__main__":
-    main()
+    # Calculate the expected payout
+    expected_payout = f1(N, v, p)
+    
+    # Print the expected payout
+    print(expected_payout)
 

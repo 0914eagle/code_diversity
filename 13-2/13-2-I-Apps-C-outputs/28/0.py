@@ -1,26 +1,22 @@
 
-def is_right_triangle(p1, p2, p3):
-    # Calculate the lengths of the sides of the triangle
-    a = abs(p1[0] - p2[0])
-    b = abs(p1[1] - p2[1])
-    c = abs(p1[0] - p3[0])
-
-    # Check if the triangle is right by checking the angles
-    return a**2 + b**2 == c**2
-
-def count_right_triangles(points):
-    count = 0
-    for i in range(len(points)):
-        for j in range(i+1, len(points)):
-            for k in range(j+1, len(points)):
-                if is_right_triangle(points[i], points[j], points[k]):
-                    count += 1
-    return count
-
-points = []
-for i in range(int(input())):
-    x, y = map(int, input().split())
-    points.append((x, y))
-
-print(count_right_triangles(points))
+def get_smallest_diff(A, K, Q):
+    # Sort the array in non-decreasing order
+    A.sort()
+    # Initialize the smallest difference and the largest and smallest elements removed
+    smallest_diff = float('inf')
+    largest_removed = -1
+    smallest_removed = float('inf')
+    # Loop through each contiguous subsequence of length K
+    for i in range(len(A) - K + 1):
+        # Get the minimum element in the subsequence
+        min_elem = A[i]
+        # Get the maximum and minimum elements removed in this operation
+        max_removed = max(A[i + K - 1], largest_removed)
+        min_removed = min(A[i], smallest_removed)
+        # Update the smallest difference
+        smallest_diff = min(smallest_diff, max_removed - min_removed)
+        # Update the largest and smallest elements removed
+        largest_removed = max_removed
+        smallest_removed = min_removed
+    return smallest_diff
 

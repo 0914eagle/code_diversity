@@ -1,32 +1,43 @@
 
-def solve():
-    s = input()
-    t = input()
+def get_maximum_students_with_favorite_drink(n, k, a):
+    # Initialize variables
+    max_students = 0
+    current_students = 0
+    current_sets = 0
+    sets_needed = int(n / 2) + 1
+    drinks_needed = [0] * (k + 1)
+    drinks_given = [0] * (k + 1)
 
-    # Initialize the minimum value of i as the length of s
-    min_i = len(s)
+    # Loop through each student
+    for i in range(n):
+        # If the current student has a favorite drink that is not yet given, give it to them
+        if drinks_needed[a[i]] > 0 and drinks_given[a[i]] == 0:
+            drinks_given[a[i]] += 1
+            current_students += 1
+        # If the current student has a favorite drink that is already given, give them the other drink from the set
+        elif drinks_needed[a[i]] > 0 and drinks_given[a[i]] == 1:
+            drinks_given[a[i]] += 1
+            current_students += 1
+        # If the current student does not have a favorite drink, give them the drink that is needed the most
+        else:
+            for j in range(1, k + 1):
+                if drinks_needed[j] > 0 and drinks_given[j] == 0:
+                    drinks_given[j] += 1
+                    current_students += 1
+                    break
 
-    # Loop through all possible values of i
-    for i in range(len(s)):
-        # Check if t is a subsequence of the first i characters of s'
-        if is_subsequence(t, s * 100000000000000000)[0:i]:
-            # If it is, update the minimum value of i
-            min_i = min(min_i, i)
+        # If the current student is the last student, check if they got their favorite drink
+        if i == n - 1:
+            if current_students > max_students:
+                max_students = current_students
 
-    # If no value of i satisfies the condition, return -1
-    if min_i == len(s):
-        return -1
-    else:
-        return min_i
+    return max_students
 
-# Check if t is a subsequence of s
-def is_subsequence(t, s):
-    i, j = 0, 0
-    while i < len(t) and j < len(s):
-        if t[i] == s[j]:
-            i += 1
-        j += 1
-    return i == len(t)
+def main():
+    n, k = map(int, input().split())
+    a = list(map(int, input().split()))
+    print(get_maximum_students_with_favorite_drink(n, k, a))
 
-print(solve())
+if __name__ == '__main__':
+    main()
 

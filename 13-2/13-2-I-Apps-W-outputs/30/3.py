@@ -1,17 +1,12 @@
 
-def solve(recipes):
-    # Initialize a set to store the ingredients used
-    ingredients_used = set()
-    # Initialize a counter for the number of recipes concocted
-    num_concocted = 0
-
-    for recipe in recipes:
-        # Check if all ingredients in the recipe are available
-        if all(ingredient in ingredients_used for ingredient in recipe[1:]):
-            # Add the ingredients in the recipe to the set of used ingredients
-            ingredients_used.update(recipe[1:])
-            # Increment the counter for the number of recipes concocted
-            num_concocted += 1
-
-    return num_concocted
+def f1(user_name):
+    # count the number of distinct characters in the user name
+    num_distinct_chars = len(set(user_name))
+    
+    # if the number of distinct characters is odd, the user is male
+    if num_distinct_chars % 2 == 1:
+        return "IGNORE HIM!"
+    # otherwise, the user is female
+    else:
+        return "CHAT WITH HER!"
 

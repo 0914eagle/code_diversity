@@ -1,16 +1,26 @@
 
-def count_intersections(lines):
-    points = set()
-    for line in lines:
-        x0, y0, x1, y1 = line
-        if x0 == x1:
-            for y in range(min(y0, y1), max(y0, y1) + 1):
-                points.add((x0, y))
-        elif y0 == y1:
-            for x in range(min(x0, x1), max(x0, x1) + 1):
-                points.add((x, y0))
+def f1(N, A, K):
+    # Initialize the number of stones that can be removed from each pile
+    num_stones = [A[i] for i in range(N)]
+    # Initialize the maximum number of stones that can be removed from each pile
+    max_stones = [A[i] // K[i] for i in range(N)]
+    # Initialize the player who will play next
+    player = 0
+    # Loop until a player cannot make a move
+    while True:
+        # Get the index of the pile that the current player can remove stones from
+        i = player
+        # Check if the current player can make a move
+        if num_stones[i] > 0:
+            # Calculate the number of stones that the current player can remove
+            num_remove = min(num_stones[i], max_stones[i])
+            # Remove the stones from the pile
+            num_stones[i] -= num_remove
+            # Update the maximum number of stones that can be removed from the pile
+            max_stones[i] = num_stones[i] // K[i]
+            # Switch to the other player
+            player = 1 - player
         else:
-            for x, y in zip(range(min(x0, x1), max(x0, x1) + 1), range(min(y0, y1), max(y0, y1) + 1)):
-                points.add((x, y))
-    return len(points)
+            # If the current player cannot make a move, the other player wins
+            return 1 - player
 

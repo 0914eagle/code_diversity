@@ -1,19 +1,22 @@
 
-def get_max_prettiness(a):
-    n = len(a)
-    a.sort(reverse=True)
-    max_prettiness = 0
-    for i in range(n):
-        for j in range(i+1, n):
-            for k in range(j+1, n):
-                if a[i] % a[j] == 0 or a[i] % a[k] == 0 or a[j] % a[k] == 0:
-                    continue
-                max_prettiness = max(max_prettiness, a[i] + a[j] + a[k])
-    return max_prettiness
+def f1(N, L):
+    # Calculate the sum of the flavors of all apples
+    total_flavor = sum(range(L, L+N))
+    # Calculate the sum of the flavors of the remaining apples after eating one
+    remaining_flavor = sum(range(L+1, L+N))
+    # Return the difference between the two sums
+    return abs(total_flavor - remaining_flavor)
 
-q = int(input())
-for i in range(q):
-    n = int(input())
-    a = list(map(int, input().split()))
-    print(get_max_prettiness(a))
+def f2(N, L):
+    # Calculate the sum of the flavors of all apples
+    total_flavor = sum(range(L, L+N))
+    # Calculate the sum of the flavors of the remaining apples after eating one
+    remaining_flavor = sum(range(L+1, L+N))
+    # Return the difference between the two sums
+    return abs(total_flavor - remaining_flavor)
+
+if __name__ == '__main__':
+    N, L = map(int, input().split())
+    print(f1(N, L))
+    print(f2(N, L))
 

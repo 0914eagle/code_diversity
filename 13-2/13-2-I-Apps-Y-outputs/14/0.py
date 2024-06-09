@@ -1,28 +1,19 @@
 
-def can_atcodeer_carry_out_his_plan(plan):
-    # Initialize a set to store the visited points
-    visited = set()
-    # Add the starting point to the set
-    visited.add((0, 0))
-    # Iterate through the plan
-    for t, x, y in plan:
-        # Get the current point
-        current_point = (x, y)
-        # Check if the current point has been visited before
-        if current_point in visited:
-            # If it has, return False
-            return False
-        # Add the current point to the set of visited points
-        visited.add(current_point)
-        # Get the next four points that AtCoDeer can visit
-        next_points = [(x+1, y), (x-1, y), (x, y+1), (x, y-1)]
-        # Check if any of the next points have been visited before
-        for next_point in next_points:
-            if next_point in visited:
-                # If any of them have, return False
-                return False
-        # If none of the next points have been visited before, add them to the set of visited points
-        visited.update(next_points)
-    # If we reach this point, it means that AtCoDeer can carry out his plan
-    return True
+def get_max_divisible_numbers(s):
+    n = len(s)
+    dp = [0] * (n + 1)
+    dp[0] = 1
+    for i in range(1, n + 1):
+        if s[i - 1] == '3':
+            dp[i] = dp[i - 1] + 1
+        else:
+            dp[i] = dp[i - 1]
+    return dp[n]
+
+def main():
+    s = input()
+    print(get_max_divisible_numbers(s))
+
+if __name__ == '__main__':
+    main()
 

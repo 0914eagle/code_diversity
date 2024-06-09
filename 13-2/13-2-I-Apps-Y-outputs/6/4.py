@@ -1,24 +1,17 @@
 
-def solve(n, m, a):
-    # Initialize variables
-    days = 0
-    pages_written = 0
-    cups_drunk = [0] * n
-
-    # Loop through each day
-    while pages_written < m:
-        days += 1
-
-        # Loop through each cup of coffee
-        for i in range(n):
-            # If the cup has not been drunk yet and there is still work to be done, drink the cup
-            if cups_drunk[i] == 0 and pages_written < m:
-                cups_drunk[i] = 1
-                pages_written += max(0, a[i] - days + 1)
-
-    # If all pages have been written, return the number of days
-    if pages_written == m:
-        return days
-    else:
-        return -1
+def get_largest_sum(A, B, C, K):
+    # Initialize a list to store the integers
+    numbers = [A, B, C]
+    
+    # Loop through the operations
+    for _ in range(K):
+        # Find the largest number in the list
+        largest = max(numbers)
+        # Double the largest number
+        largest *= 2
+        # Replace the largest number with the doubled number
+        numbers[numbers.index(largest)] = largest
+    
+    # Return the sum of the numbers
+    return sum(numbers)
 

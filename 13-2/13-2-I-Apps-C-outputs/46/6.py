@@ -1,58 +1,34 @@
 
-def get_maximum_gold(n, m, roads, gold):
-    # Initialize a graph with the given roads
-    graph = [[] for _ in range(n + 1)]
-    for i in range(m):
-        graph[roads[i][0]].append(roads[i][1])
-        graph[roads[i][1]].append(roads[i][0])
-    
-    # Initialize a visited array and a parent array
-    visited = [False] * (n + 1)
-    parent = [0] * (n + 1)
-    
-    # Initialize the maximum gold to 0
-    max_gold = 0
-    
-    # Iterate through all the villages
-    for village in range(1, n + 1):
-        # If the village has not been visited yet
-        if not visited[village]:
-            # Perform DFS on the graph starting from the current village
-            dfs(graph, visited, parent, village)
-            # Get the maximum gold collected by the bandits during the DFS
-            max_gold = max(max_gold, get_max_gold(parent, village, gold))
-    
-    return max_gold
+def f1(Y, X, x_init):
+    # Initialize the map and the number of paths
+    map = []
+    num_paths = 0
 
-def dfs(graph, visited, parent, village):
-    # Mark the current village as visited
-    visited[village] = True
-    # Iterate through the neighbors of the current village
-    for neighbor in graph[village]:
-        # If the neighbor has not been visited yet
-        if not visited[neighbor]:
-            # Perform DFS on the neighbor
-            dfs(graph, visited, parent, neighbor)
-            # Update the parent of the current village
-            parent[village] = neighbor
+    # Read the map from stdin
+    for _ in range(Y):
+        map.append(list(input()))
 
-def get_max_gold(parent, village, gold):
-    # Initialize the maximum gold to 0
-    max_gold = 0
-    # Iterate through the parents of the current village
-    while village != 0:
-        # Add the gold in the current village to the maximum gold
-        max_gold += gold[village]
-        # Update the current village to its parent
-        village = parent[village]
-    
-    return max_gold
+    # Check if the ship can move east or west
+    can_move_east = False
+    can_move_west = False
+    for y in range(Y):
+        if map[y][x_init] == '>':
+            can_move_east = True
+        elif map[y][x_init] == '<':
+            can_move_west = True
 
-n, m = map(int, input().split())
-roads = []
-for _ in range(m):
-    a, b = map(int, input().split())
-    roads.append([a, b])
-gold = list(map(int, input().split()))
-print(get_maximum_gold(n, m, roads, gold))
+    # Check if the ship can move north
+    can_move_north = False
+    for x in range(x_init):
+        if map[Y-1][x] == '~':
+            can_move_north = True
+            break
+
+    # Calculate the number of paths
+    if can_move_east and can_move_west:
+        num_paths += 2
+    if can_move_north:
+        num_paths += 1
+
+    return num_paths % 1000003
 

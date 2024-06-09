@@ -1,32 +1,24 @@
 
-def solve(a, b):
-    # Initialize variables
-    n = 0
-    m = 0
-    p = []
-    q = []
+def can_rearrange(a, b, x):
     
-    # Loop through all possible values of n
-    for n in range(1, a+1):
-        # Calculate the total time required to read n notes in the first day
-        time_first_day = sum(range(1, n+1))
-        
-        # Check if the total time required is less than or equal to a
-        if time_first_day <= a:
-            # Calculate the total time required to read m notes in the second day
-            time_second_day = a - time_first_day
-            
-            # Check if the total time required is less than or equal to b
-            if time_second_day <= b:
-                # Calculate the number of notes that can be read in the second day
-                m = b - time_second_day
-                
-                # Add the notes that can be read in the second day to the list q
-                q = list(range(n+1, n+m+1))
-                
-                # Break out of the loop
-                break
-    
-    # Return the results
-    return n, p, m, q
+    n = len(a)
+    b = sorted(b)
+    for i in range(n):
+        if a[i] + b[i] > x:
+            return False
+    return True
+
+def main():
+    t = int(input())
+    for _ in range(t):
+        n, x = map(int, input().split())
+        a = list(map(int, input().split()))
+        b = list(map(int, input().split()))
+        if can_rearrange(a, b, x):
+            print("Yes")
+        else:
+            print("No")
+
+if __name__ == '__main__':
+    main()
 

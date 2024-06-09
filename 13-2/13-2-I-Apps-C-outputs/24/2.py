@@ -1,26 +1,36 @@
 
-def get_max_simultaneously_on_lights(n, s, a, b):
-    # Initialize a list to store the states of the lights
-    lights = [1 if s[i] == "1" else 0 for i in range(n)]
-    
-    # Initialize a variable to store the maximum number of simultaneously on lights
-    max_on_lights = 0
-    
-    # Iterate through each light
-    for i in range(n):
-        # Calculate the time at which the light will toggle
-        toggle_time = b[i] + a[i] * ((lights[i] + 1) // 2)
-        
-        # If the light is on, turn it off
-        if lights[i] == 1:
-            lights[i] = 0
-        
-        # If the light is off, turn it on
-        else:
-            lights[i] = 1
-        
-        # Update the maximum number of simultaneously on lights
-        max_on_lights = max(max_on_lights, sum(lights))
-    
-    return max_on_lights
+def create_binary_search_tree(sequence):
+    root = None
+    for num in sequence:
+        root = insert(root, num)
+    return root
+
+def insert(root, num):
+    if root is None:
+        return Node(num)
+    if num < root.val:
+        root.left = insert(root.left, num)
+    else:
+        root.right = insert(root.right, num)
+    return root
+
+class Node:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+def get_depth(root):
+    if root is None:
+        return 0
+    return 1 + max(get_depth(root.left), get_depth(root.right))
+
+def main():
+    n = int(input())
+    sequence = [int(input()) for _ in range(n)]
+    root = create_binary_search_tree(sequence)
+    print(get_depth(root))
+
+if __name__ == '__main__':
+    main()
 

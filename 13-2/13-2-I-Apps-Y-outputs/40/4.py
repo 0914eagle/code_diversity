@@ -1,13 +1,21 @@
 
-def get_min_flight_time(p, q, r):
-    # Calculate the sum of the flight times for each route
-    route_a_to_b_to_c = p + q
-    route_a_to_c_to_b = p + r
-    route_b_to_a_to_c = q + p
-    route_b_to_c_to_a = q + r
-    route_c_to_a_to_b = r + p
-    route_c_to_b_to_a = r + q
+def get_min_pockets(coins):
+    # Sort the coins in non-decreasing order
+    coins.sort()
+    # Initialize the number of pockets as 1
+    num_pockets = 1
+    # Iterate through the coins
+    for i in range(1, len(coins)):
+        # If the current coin is different from the previous coin, increase the number of pockets
+        if coins[i] != coins[i-1]:
+            num_pockets += 1
+    return num_pockets
 
-    # Return the minimum of the sum of the flight times
-    return min(route_a_to_b_to_c, route_a_to_c_to_b, route_b_to_a_to_c, route_b_to_c_to_a, route_c_to_a_to_b, route_c_to_b_to_a)
+def main():
+    n = int(input())
+    coins = list(map(int, input().split()))
+    print(get_min_pockets(coins))
+
+if __name__ == '__main__':
+    main()
 

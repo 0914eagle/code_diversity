@@ -1,27 +1,19 @@
 
-def can_reach_destination(start, end, charge):
-    x1, y1 = start
-    x2, y2 = end
-    dx, dy = x2 - x1, y2 - y1
-    if dx == 0 and dy == 0:
-        return charge >= 0
-    if abs(dx) > abs(dy):
-        if dx < 0:
-            return can_reach_destination((x1+1, y1), end, charge-1)
-        else:
-            return can_reach_destination((x1-1, y1), end, charge-1)
-    else:
-        if dy < 0:
-            return can_reach_destination(start, (x1, y1+1), charge-1)
-        else:
-            return can_reach_destination(start, (x1, y1-1), charge-1)
+import math
 
-def main():
-    start = tuple(map(int, input().split()))
-    end = tuple(map(int, input().split()))
-    charge = int(input())
-    print("Y" if can_reach_destination(start, end, charge) else "N")
+def get_percentage_cheese(r, c):
+    # Calculate the area of the crust
+    area_crust = math.pi * c ** 2
+    
+    # Calculate the area of the pizza
+    area_pizza = math.pi * r ** 2
+    
+    # Calculate the percentage of cheese
+    percentage_cheese = 100 * (area_pizza - area_crust) / area_pizza
+    
+    return percentage_cheese
 
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    r, c = map(int, input().split())
+    print(get_percentage_cheese(r, c))
 

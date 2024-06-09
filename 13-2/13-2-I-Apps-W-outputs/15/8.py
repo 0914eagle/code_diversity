@@ -1,23 +1,17 @@
 
-def get_max_bottles(bottles, fridge_height):
-    # Initialize variables
-    max_bottles = 0
-    current_height = 0
-    shelves = []
+def get_maximum_sum(p, m, k):
+    n = len(p)
+    dp = [[0] * (n + 1) for _ in range(k + 1)]
+    for i in range(1, k + 1):
+        for j in range(i, n + 1):
+            dp[i][j] = max(dp[i - 1][j - 1] + p[j - 1], dp[i][j - 1])
+    return dp[k][n]
 
-    # Iterate through the bottles
-    for i, bottle in enumerate(bottles):
-        # Check if the current bottle fits on the current shelf
-        if current_height + bottle <= fridge_height:
-            # Add the bottle to the current shelf
-            current_height += bottle
-            shelves.append(i)
-            max_bottles = max(max_bottles, len(shelves))
-        else:
-            # Add a new shelf and place the bottle on it
-            current_height = bottle
-            shelves.append(i)
-            max_bottles = max(max_bottles, len(shelves))
+def main():
+    n, m, k = map(int, input().split())
+    p = list(map(int, input().split()))
+    print(get_maximum_sum(p, m, k))
 
-    return max_bottles
+if __name__ == '__main__':
+    main()
 

@@ -1,38 +1,53 @@
 
-def is_spanning_tree_possible(n, m, k, edges):
-    # Initialize a graph with n nodes and m edges
-    graph = [[] for _ in range(n)]
-    for edge in edges:
-        graph[edge[1] - 1].append(edge[2] - 1)
-        graph[edge[2] - 1].append(edge[1] - 1)
+def f1(n, wishes):
+    # Initialize a dictionary to store the count of each topping
+    topping_count = {}
 
-    # Initialize a count of blue edges to 0
-    blue_edges = 0
+    # Iterate over the wishes of each friend
+    for friend in wishes:
+        # Iterate over the wishes of each friend
+        for wish in friend:
+            # If the wish is positive, increment the count of the topping
+            if wish[0] == "+":
+                topping = wish[1:]
+                if topping not in topping_count:
+                    topping_count[topping] = 1
+                else:
+                    topping_count[topping] += 1
 
-    # Initialize a queue to perform BFS
-    queue = [0]
+    # Sort the toppings by count in descending order
+    sorted_toppings = sorted(topping_count.items(), key=lambda x: x[1], reverse=True)
 
-    # Loop until the queue is empty
-    while queue:
-        # Dequeue a node from the queue
-        node = queue.pop(0)
+    # Return the top 3 toppings with the highest count
+    return [topping for topping, count in sorted_toppings[:3]]
 
-        # If the node is not visited, mark it as visited and add it to the queue
-        if node not in visited:
-            visited.add(node)
-            queue.extend(graph[node])
+def f2(n, wishes):
+    # Initialize a dictionary to store the count of each topping
+    topping_count = {}
 
-            # If the node is blue, increment the blue edge count
-            if edges[node][0] == "B":
-                blue_edges += 1
+    # Iterate over the wishes of each friend
+    for friend in wishes:
+        # Iterate over the wishes of each friend
+        for wish in friend:
+            # If the wish is positive, increment the count of the topping
+            if wish[0] == "+":
+                topping = wish[1:]
+                if topping not in topping_count:
+                    topping_count[topping] = 1
+                else:
+                    topping_count[topping] += 1
 
-    # Return True if the blue edge count is equal to k, False otherwise
-    return blue_edges == k
+    # Sort the toppings by count in descending order
+    sorted_toppings = sorted(topping_count.items(), key=lambda x: x[1], reverse=True)
 
-# Main function
-n, m, k = map(int, input().split())
-edges = []
-for _ in range(m):
-    edges.append(list(map(str, input().split())))
-print(is_spanning_tree_possible(n, m, k, edges))
+    # Return the top 3 toppings with the highest count
+    return [topping for topping, count in sorted_toppings if count >= 2]
+
+if __name__ == '__main__':
+    n = int(input())
+    wishes = []
+    for _ in range(n):
+        wishes.append(input().split())
+    print(*f1(n, wishes))
+    print(*f2(n, wishes))
 

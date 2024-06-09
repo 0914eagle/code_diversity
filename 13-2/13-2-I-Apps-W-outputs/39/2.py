@@ -1,35 +1,29 @@
 
-def get_expected_inversions(n, p):
-    # Initialize the number of inversions as 0
-    inversions = 0
+def get_max_cookies(n, k, a, b):
+    # Sort the ingredients in descending order
+    sorted_ingredients = sorted(zip(a, b), key=lambda x: x[1], reverse=True)
 
-    # Loop through each element in the array
-    for i in range(n):
-        # If the current element is not -1, skip it
-        if p[i] != -1:
-            continue
-        # If the current element is -1, find the number of inversions it creates
-        inversions += count_inversions(p, i)
+    # Initialize the variables
+    total_cookies = 0
+    current_powder = k
 
-    # Return the expected number of inversions
-    return inversions
+    # Loop through the ingredients
+    for ingredient in sorted_ingredients:
+        # Check if the current ingredient is enough to bake a cookie
+        if ingredient[1] <= current_powder:
+            # Bake a cookie and update the variables
+            total_cookies += 1
+            current_powder -= ingredient[1]
+        else:
+            # Break the loop if the current ingredient is not enough to bake a cookie
+            break
 
-def count_inversions(p, i):
-    # Initialize the number of inversions as 0
-    inversions = 0
+    # Return the maximum number of cookies that can be baked
+    return total_cookies
 
-    # Loop through each element after the current element
-    for j in range(i+1, len(p)):
-        # If the current element is not -1 and is less than the previous element, increment the number of inversions
-        if p[j] != -1 and p[j] < p[i]:
-            inversions += 1
-
-    # Return the number of inversions
-    return inversions
-
-n = int(input())
-p = list(map(int, input().split()))
-
-# Call the get_expected_inversions function and print the result
-print(get_expected_inversions(n, p))
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    print(get_max_cookies(n, k, a, b))
 

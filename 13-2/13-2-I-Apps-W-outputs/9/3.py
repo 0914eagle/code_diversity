@@ -1,31 +1,30 @@
 
-import sys
-import math
+def f1(n, x):
+    # Initialize variables
+    ice_cream = x
+    distressed_kids = 0
+    
+    # Iterate through the queue
+    for i in range(n):
+        # If the current person is a carrier, add their ice cream to the total
+        if i % 2 == 0:
+            ice_cream += int(input())
+        # If the current person is a child, try to give them ice cream
+        else:
+            d = int(input())
+            if ice_cream >= d:
+                ice_cream -= d
+            else:
+                distressed_kids += 1
+    
+    # Return the number of ice cream packs left and the number of distressed kids
+    return ice_cream, distressed_kids
 
-def solve(n, m, s, t):
-    # Initialize the probability of reaching room N from each room
-    prob = [0] * (n + 1)
-    prob[n] = 1
-
-    # Loop through all the passages
-    for i in range(m):
-        # Get the source and destination of the passage
-        source, destination = s[i] - 1, t[i] - 1
-
-        # Update the probability of reaching room N from the source room
-        prob[source] += prob[destination] / 2
-
-        # Update the probability of reaching room N from the destination room
-        prob[destination] += prob[source] / 2
-
-    # Return the expected number of passages taken to reach room N
-    return sum(prob[1:n])
+def f2(...):
+    # Implement function 2 here
+    pass
 
 if __name__ == '__main__':
-    n, m = map(int, input().split())
-    s, t = [], []
-    for i in range(m):
-        s.append(int(input()))
-        t.append(int(input()))
-    print(solve(n, m, s, t))
+    n, x = map(int, input().split())
+    print(*f1(n, x))
 

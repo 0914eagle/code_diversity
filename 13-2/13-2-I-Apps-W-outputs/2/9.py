@@ -1,17 +1,28 @@
 
-def solve(n, distances):
-    # Sort the distances in non-decreasing order
-    distances.sort()
+def get_maximum_ornaments(y, b, r):
+    # Initialize variables
+    max_ornaments = 0
+    yellow_ornaments = 0
+    blue_ornaments = 0
+    red_ornaments = 0
 
-    # Initialize the maximum number of locations to 0
-    max_locations = 0
+    # Loop through all possible combinations of ornaments
+    for i in range(y):
+        for j in range(b):
+            for k in range(r):
+                # Check if the combination of ornaments satisfies Bob's criteria
+                if j == i + 1 and k == j + 1:
+                    # Calculate the total number of ornaments used
+                    total_ornaments = i + j + k
 
-    # Iterate over the distances and find the maximum number of locations
-    for i in range(n):
-        # If the distance is greater than or equal to the current location, increment the location count
-        if distances[i] >= i:
-            max_locations += 1
+                    # Check if the total number of ornaments used is greater than the current maximum
+                    if total_ornaments > max_ornaments:
+                        # Update the maximum number of ornaments and the corresponding colors of ornaments used
+                        max_ornaments = total_ornaments
+                        yellow_ornaments = i
+                        blue_ornaments = j
+                        red_ornaments = k
 
-    # Return the maximum number of locations
-    return max_locations
+    # Return the maximum number of ornaments and the corresponding colors of ornaments used
+    return max_ornaments, yellow_ornaments, blue_ornaments, red_ornaments
 

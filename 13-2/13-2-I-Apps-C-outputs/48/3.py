@@ -1,38 +1,40 @@
 
-def solve(N, V, A, B):
-    # Initialize a set to store the types of jokes told by the invited employees
-    invited_jokes = set()
-    # Initialize a set to store the types of jokes told by the direct supervisors of the invited employees
-    direct_supervisor_jokes = set()
-    # Initialize a set to store the types of jokes told by the indirect supervisors of the invited employees
-    indirect_supervisor_jokes = set()
+def get_max_recordable_shows(n, k, shows):
+    # Sort the shows by their start time
+    shows.sort(key=lambda x: x[0])
+    
+    # Initialize the number of recordable shows to 0
+    recordable_shows = 0
+    
+    # Iterate through the shows
+    for i in range(n):
+        # Check if the current show can be recorded
+        if recordable_shows < k:
+            # Increment the number of recordable shows
+            recordable_shows += 1
+        # Check if the current show ends before the next show starts
+        elif shows[i][1] <= shows[i+1][0]:
+            # Decrement the number of recordable shows
+            recordable_shows -= 1
+    
+    # Return the maximum number of recordable shows
+    return recordable_shows
 
-    # Iterate through the list of employees and their jokes
-    for i in range(N):
-        # If the employee is invited, add their joke to the set of invited jokes
-        if i in A:
-            invited_jokes.add(V[i])
-        # If the employee is a direct supervisor, add their joke to the set of direct supervisor jokes
-        if i in B:
-            direct_supervisor_jokes.add(V[i])
-        # If the employee is an indirect supervisor, add their joke to the set of indirect supervisor jokes
-        for j in range(N):
-            if B[j] == i:
-                indirect_supervisor_jokes.add(V[j])
+def main():
+    # Read the number of shows and the number of recording slots
+    n, k = map(int, input().split())
+    
+    # Read the shows
+    shows = []
+    for i in range(n):
+        shows.append(list(map(int, input().split())))
+    
+    # Call the function to get the maximum number of recordable shows
+    max_recordable_shows = get_max_recordable_shows(n, k, shows)
+    
+    # Print the result
+    print(max_recordable_shows)
 
-    # Initialize a set to store the consecutive sets of jokes
-    consecutive_jokes = set()
-
-    # Iterate through the set of invited jokes
-    for i in invited_jokes:
-        # If the invited joke is not in the set of direct supervisor jokes, add it to the set of consecutive jokes
-        if i not in direct_supervisor_jokes:
-            consecutive_jokes.add(i)
-        # If the invited joke is in the set of direct supervisor jokes, check if it is in the set of indirect supervisor jokes
-        elif i in direct_supervisor_jokes and i in indirect_supervisor_jokes:
-            # If the invited joke is in the set of indirect supervisor jokes, add it to the set of consecutive jokes
-            consecutive_jokes.add(i)
-
-    # Return the number of consecutive sets of jokes
-    return len(consecutive_jokes)
+if __name__ == '__main__':
+    main()
 

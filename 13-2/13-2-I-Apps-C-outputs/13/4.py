@@ -1,42 +1,61 @@
 
-def solve(tasks):
-    # Initialize the processor clock and the list of running tasks
-    clock = 0
-    running_tasks = []
-    
-    # Loop until all tasks are completed
-    while tasks:
-        # Identify running tasks
-        running_tasks = [task for task in tasks if task["start"] <= clock and not all(instruction["type"] == "compute" for instruction in task["instructions"])]
-        
-        # Determine the current priorities of the running tasks and which of the running tasks are blocked
-        blocked_tasks = []
-        for task in running_tasks:
-            # Check if the task is blocked by any other task
-            for other_task in running_tasks:
-                if other_task is not task and task["instructions"][0]["type"] == "lock" and other_task["instructions"][0]["type"] == "lock" and other_task["instructions"][0]["resource"] == task["instructions"][0]["resource"]:
-                    blocked_tasks.append(other_task)
-                    break
-        
-        # Determine the current priority of each running task
-        for task in running_tasks:
-            task["current_priority"] = max(task["base_priority"], max(other_task["current_priority"] for other_task in blocked_tasks))
-        
-        # Execute the next instruction of the non-blocked running task (if any) with the highest current priority
-        if running_tasks:
-            running_task = max(running_tasks, key=lambda x: x["current_priority"])
-            instruction = running_task["instructions"][0]
-            if instruction["type"] == "compute":
-                clock += 1
-            elif instruction["type"] == "lock":
-                running_task["instructions"].pop(0)
-            elif instruction["type"] == "unlock":
-                running_task["instructions"].pop(0)
-                running_task["current_priority"] = running_task["base_priority"]
-        
-        # Remove completed tasks from the list of tasks
-        tasks = [task for task in tasks if not all(instruction["type"] == "compute" for instruction in task["instructions"])]
-    
-    # Return the completion times of all tasks
-    return [task["start"] + task["instructions"][0]["time"] for task in tasks]
+def is_graph_reconstructable(n, m, edges):
+    # Initialize a dictionary to store the neighbors of each vertex
+    neighbors = {i: set() for i in range(1, n + 1)}
+
+    # Add edges to the graph
+    for u, v in edges:
+        neighbors[u].add(v)
+        neighbors[v].add(u)
+
+    # Check if the graph is connected
+    visited = set()
+    queue = [1]
+    while queue:
+        vertex = queue.pop(0)
+        if vertex not in visited:
+            visited.add(vertex)
+            queue.extend(neighbors[vertex] - visited)
+
+    # If the graph is not connected, return False
+    if len(visited) != n:
+        return False
+
+    # Initialize a list to store the possible strings
+    strings = []
+
+    # Recursively generate all possible strings
+    def generate_strings(string, index):
+        if index == n:
+            strings.append(string)
+            return
+        for char in "abc":
+            generate_strings(string + char, index + 1)
+
+    generate_strings("", 0)
+
+    # Check if any of the generated strings correspond to the given graph
+    for string in strings:
+        graph = {}
+        for i in range(n):
+            graph[i + 1] = set(string[i])
+        if all(graph[u].intersection(graph[v]) for u, v in edges):
+            return True, string
+    return False, None
+
+def main():
+    n, m = map(int, input().split())
+    edges = []
+    for _ in range(m):
+        u, v = map(int, input().split())
+        edges.append((u, v))
+    result = is_graph_reconstructable(n, m, edges)
+    if result[0]:
+        print("Yes")
+        print(result[1])
+    else:
+        print("No")
+
+if __name__ == '__main__':
+    main()
 

@@ -1,31 +1,21 @@
 
-import sys
-import math
-
-def solve(n, m, s, t):
-    # Initialize the probability of reaching room N from each room
-    prob = [0] * (n + 1)
-    prob[n] = 1
-
-    # Loop through all the passages
-    for i in range(m):
-        # Get the source and destination rooms of the current passage
-        src, dest = s[i] - 1, t[i] - 1
-
-        # Update the probability of reaching room N from the source room
-        prob[src] += prob[dest] / 2
-
-        # Update the probability of reaching room N from the destination room
-        prob[dest] += prob[src] / 2
-
-    # Return the expected number of passages taken to reach room N
-    return sum(prob[1:n])
-
-if __name__ == '__main__':
-    n, m = map(int, input().split())
-    s, t = [], []
-    for i in range(m):
-        s.append(int(input()))
-        t.append(int(input()))
-    print(solve(n, m, s, t))
+def f1(n, x):
+    # Initialize variables
+    ice_cream_packs = x
+    distressed_kids = 0
+    
+    # Iterate through the queue
+    for i in range(n):
+        # If the current person is a carrier, take all their ice cream packs
+        if i % 2 == 0:
+            ice_cream_packs += int(input())
+        # If the current person is a child, give them ice cream packs if possible, otherwise mark them as distressed
+        else:
+            if ice_cream_packs >= int(input()):
+                ice_cream_packs -= int(input())
+            else:
+                distressed_kids += 1
+    
+    # Return the number of ice cream packs left and the number of distressed kids
+    return ice_cream_packs, distressed_kids
 

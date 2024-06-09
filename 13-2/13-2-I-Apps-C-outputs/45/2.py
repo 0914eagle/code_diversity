@@ -1,27 +1,34 @@
 
-def get_max_protected_rooms(num_rooms, num_doors, doors):
-    # Initialize a graph with the given number of rooms
-    graph = [[] for _ in range(num_rooms)]
+def f1(n, arr):
+    # Sort the array
+    arr.sort()
+    # Initialize the minimum size of the subsegment to remove
+    min_size = 0
+    # Iterate through the array
+    for i in range(n-1):
+        # If the current element is equal to the next element
+        if arr[i] == arr[i+1]:
+            # Increment the minimum size of the subsegment to remove
+            min_size += 1
+    # Return the minimum size of the subsegment to remove
+    return min_size
 
-    # Add edges to the graph based on the given doors
-    for u, v in doors:
-        if u != -1:
-            graph[u].append(v)
-        if v != -1:
-            graph[v].append(u)
+def f2(n, arr):
+    # Initialize the minimum size of the subsegment to remove
+    min_size = 0
+    # Iterate through the array
+    for i in range(n-1):
+        # If the current element is equal to the next element
+        if arr[i] == arr[i+1]:
+            # Increment the minimum size of the subsegment to remove
+            min_size += 1
+            # Break out of the loop
+            break
+    # Return the minimum size of the subsegment to remove
+    return min_size
 
-    # Find the door that connects the most rooms to the outside of the building
-    max_protected_rooms = 0
-    for u in range(num_rooms):
-        if u != -1:
-            protected_rooms = 0
-            queue = [u]
-            while queue:
-                node = queue.pop(0)
-                if node != -1:
-                    protected_rooms += 1
-                    queue.extend(graph[node])
-            max_protected_rooms = max(max_protected_rooms, protected_rooms)
-
-    return max_protected_rooms
+if __name__ == '__main__':
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(f1(n, arr))
 

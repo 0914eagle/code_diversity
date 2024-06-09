@@ -1,17 +1,22 @@
 
-def get_largest_piece(n, h, v):
-    # Calculate the area of each piece
-    area_1 = (n - h) * (n - v)
-    area_2 = h * (n - v)
-    area_3 = (n - h) * v
-    area_4 = h * v
+def restore_permutation(n, q):
+    permutation = []
+    for i in range(n):
+        permutation.append(i+1)
+    for i in range(n-1):
+        if q[i] >= 0:
+            permutation[i], permutation[i+q[i]] = permutation[i+q[i]], permutation[i]
+    return permutation
 
-    # Calculate the volume of each piece
-    volume_1 = area_1 * 4
-    volume_2 = area_2 * 4
-    volume_3 = area_3 * 4
-    volume_4 = area_4 * 4
+def main():
+    n = int(input())
+    q = list(map(int, input().split()))
+    permutation = restore_permutation(n, q)
+    if permutation == []:
+        print(-1)
+    else:
+        print(*permutation)
 
-    # Return the volume of the largest piece
-    return max(volume_1, volume_2, volume_3, volume_4)
+if __name__ == '__main__':
+    main()
 

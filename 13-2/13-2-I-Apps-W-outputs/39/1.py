@@ -1,30 +1,31 @@
 
-import math
+def get_max_cookies(n, k, a, b):
+    # Sort the ingredients in descending order
+    sorted_ingredients = sorted(zip(a, b), key=lambda x: x[1], reverse=True)
 
-def get_expected_inversions(n, p):
-    # Calculate the number of -1 in the sequence
-    num_of_neg_one = p.count(-1)
-    
-    # Calculate the number of valid permutations
-    num_of_valid_permutations = math.factorial(n) // math.factorial(num_of_neg_one) // math.factorial(n - num_of_neg_one)
-    
-    # Calculate the number of inversions in each valid permutation
-    inversions = 0
+    # Initialize the variables
+    total_cookies = 0
+    current_weight = 0
+
+    # Iterate through the ingredients
     for i in range(n):
-        for j in range(i+1, n):
-            if p[i] != -1 and p[j] != -1 and p[i] > p[j]:
-                inversions += 1
-    
-    # Calculate the expected number of inversions
-    expected_inversions = inversions * num_of_valid_permutations
-    
-    # Calculate the gcd of the expected number of inversions and the modulus
-    gcd = math.gcd(expected_inversions, 998244353)
-    
-    # Return the result modulo the modulus
-    return expected_inversions // gcd * 998244353 // gcd
+        # Calculate the current weight
+        current_weight += sorted_ingredients[i][1]
 
-n = int(input())
-p = list(map(int, input().split()))
-print(get_expected_inversions(n, p))
+        # Check if the current weight is less than or equal to the magic powder
+        if current_weight <= k:
+            # Add the current cookie to the total
+            total_cookies += 1
+        else:
+            # Calculate the number of cookies that can be made with the current weight
+            total_cookies += int(current_weight / k)
+            break
+
+    return total_cookies
+
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    print(get_max_cookies(n, k, a, b))
 

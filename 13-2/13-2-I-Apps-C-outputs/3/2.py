@@ -1,14 +1,36 @@
 
-def get_smallest_number_of_invitees(teams, friend_id):
-    # Initialize a set to store the IDs of the employees to invite
-    invitees = set()
+def is_tolerable(s, p):
+    if len(s) > p:
+        return False
     
-    # Iterate over the teams
-    for team in teams:
-        # If the friend is not in the team, add both team members to the invitees set
-        if friend_id not in team:
-            invitees.update(team)
+    for i in range(len(s)):
+        if s[i] > chr(ord('a') + p - 1):
+            return False
     
-    # Return the length of the invitees set, which is the smallest number of invitees needed
-    return len(invitees)
+    for i in range(len(s) - 1):
+        if s[i] == s[len(s) - i - 1]:
+            return False
+    
+    return True
+
+def find_next_tolerable(s, p):
+    if len(s) == 0:
+        return "NO"
+    
+    next_s = ""
+    for i in range(len(s)):
+        if s[i] == chr(ord('z')):
+            next_s += "a"
+        else:
+            next_s += chr(ord(s[i]) + 1)
+    
+    if is_tolerable(next_s, p):
+        return next_s
+    else:
+        return "NO"
+
+if __name__ == '__main__':
+    n, p = map(int, input().split())
+    s = input()
+    print(find_next_tolerable(s, p))
 

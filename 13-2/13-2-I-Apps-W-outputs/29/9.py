@@ -1,13 +1,13 @@
 
-def is_palindrome(num):
-    return str(num) == str(num)[::-1]
+def f1(...):
+    # Your code for function 1 goes here
+    return ...
 
-def find_nth_palindrome(n):
-    count = 0
-    num = 1
-    while count < n:
-        if is_palindrome(num) and len(str(num)) % 2 == 0:
-            count += 1
-        num += 1
-    return num - 1
+def f2(...):
+    # Your code for function 2 goes here
+    return ...
+
+if __name__ == '__main__':
+    # Your code to call the functions and print the output goes here
+    ...
 

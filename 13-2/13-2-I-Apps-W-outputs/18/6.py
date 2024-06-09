@@ -1,22 +1,24 @@
 
-def solve(a, b):
-    # Initialize variables
-    notes_read_today = 0
-    notes_read_tomorrow = 0
-    notes_to_read_today = []
-    notes_to_read_tomorrow = []
+def can_rearrange(a, b, x):
     
-    # Iterate through all possible notes
-    for i in range(1, a+b+1):
-        # Check if the note can be read today
-        if i <= a:
-            notes_to_read_today.append(i)
-            notes_read_today += 1
-        # Check if the note can be read tomorrow
-        if i <= b:
-            notes_to_read_tomorrow.append(i)
-            notes_read_tomorrow += 1
-    
-    # Return the results
-    return notes_read_today, notes_to_read_today, notes_read_tomorrow, notes_to_read_tomorrow
+    n = len(a)
+    b = sorted(b)
+    for i in range(n):
+        if a[i] + b[i] > x:
+            return False
+    return True
+
+def main():
+    t = int(input())
+    for _ in range(t):
+        n, x = map(int, input().split())
+        a = list(map(int, input().split()))
+        b = list(map(int, input().split()))
+        if can_rearrange(a, b, x):
+            print("Yes")
+        else:
+            print("No")
+
+if __name__ == '__main__':
+    main()
 

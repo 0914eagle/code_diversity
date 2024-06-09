@@ -1,54 +1,58 @@
 
-class LongLongString:
-    def __init__(self, string):
-        self.string = string
+def f1(N, targets):
+    # Sort the targets by their x-coordinate
+    sorted_targets = sorted(targets, key=lambda x: x[0])
 
-    def __len__(self):
-        return len(self.string)
+    # Initialize the first and last target to be hit
+    first_target = sorted_targets[0]
+    last_target = sorted_targets[-1]
 
-    def __getitem__(self, index):
-        return self.string[index]
+    # Iterate through the targets and find the closest pair of targets that are not on the same line
+    for i in range(1, N-1):
+        current_target = sorted_targets[i]
+        if current_target[0] != last_target[0]:
+            # Find the slope of the line between the current target and the last target
+            slope = (current_target[1] - last_target[1]) / (current_target[0] - last_target[0])
 
-    def __setitem__(self, index, char):
-        self.string = self.string[:index] + char + self.string[index+1:]
+            # Find the x-coordinate of the point where the line between the current target and the last target intersects the x-axis
+            x_intercept = -last_target[1] / slope
 
-    def __delitem__(self, index):
-        self.string = self.string[:index] + self.string[index+1:]
+            # Check if the x-coordinate of the point where the line between the current target and the last target intersects the x-axis is between the x-coordinates of the current target and the last target
+            if first_target[0] <= x_intercept <= last_target[0]:
+                # If it is, then the two shots can hit all the targets
+                return "success"
 
-def compare_dna_programs(program1, program2):
-    string1 = LongLongString("")
-    string2 = LongLongString("")
+    # If no pair of targets is found that are not on the same line, then the two shots cannot hit all the targets
+    return "failure"
 
-    for operation in program1:
-        if operation[0] == "D":
-            string1.__delitem__(int(operation[1]))
-        elif operation[0] == "I":
-            string1.__setitem__(int(operation[1]), operation[2])
+def f2(N, targets):
+    # Initialize the first and last target to be hit
+    first_target = targets[0]
+    last_target = targets[-1]
 
-    for operation in program2:
-        if operation[0] == "D":
-            string2.__delitem__(int(operation[1]))
-        elif operation[0] == "I":
-            string2.__setitem__(int(operation[1]), operation[2])
+    # Iterate through the targets and find the closest pair of targets that are not on the same line
+    for i in range(1, N-1):
+        current_target = targets[i]
+        if current_target[0] != last_target[0]:
+            # Find the slope of the line between the current target and the last target
+            slope = (current_target[1] - last_target[1]) / (current_target[0] - last_target[0])
 
-    return string1.string == string2.string
+            # Find the x-coordinate of the point where the line between the current target and the last target intersects the x-axis
+            x_intercept = -last_target[1] / slope
 
-def main():
-    program1 = []
-    program2 = []
+            # Check if the x-coordinate of the point where the line between the current target and the last target intersects the x-axis is between the x-coordinates of the current target and the last target
+            if first_target[0] <= x_intercept <= last_target[0]:
+                # If it is, then the two shots can hit all the targets
+                return "success"
 
-    while True:
-        line = input()
-        if line == "E":
-            break
-        operation = line.split()
-        if operation[0] == "D":
-            program1.append(operation)
-        elif operation[0] == "I":
-            program2.append(operation)
+    # If no pair of targets is found that are not on the same line, then the two shots cannot hit all the targets
+    return "failure"
 
-    print(compare_dna_programs(program1, program2))
-
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    N = int(input())
+    targets = []
+    for i in range(N):
+        x, y = map(int, input().split())
+        targets.append((x, y))
+    print(f1(N, targets))
 

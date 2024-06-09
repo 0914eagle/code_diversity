@@ -1,42 +1,52 @@
 
-def get_max_output(input_molecule, input_count, output_molecule):
-    input_atoms = parse_molecule(input_molecule)
-    output_atoms = parse_molecule(output_molecule)
+def f1(n, k):
+    # Initialize the egg holder and the list of throw commands
+    egg_holder = 0
+    throw_commands = []
 
-    max_output = 0
-    for i in range(input_count + 1):
-        current_input = input_atoms.copy()
-        current_input.subtract(output_atoms)
-        if current_input.is_valid():
-            max_output = max(max_output, i)
-
-    return max_output
-
-def parse_molecule(molecule):
-    atoms = {}
-    for atom in molecule:
-        if atom.isupper():
-            atoms[atom] = atoms.get(atom, 0) + 1
+    # Read the throw commands from stdin
+    for _ in range(k):
+        command = input()
+        if command.isdigit():
+            throw_commands.append(int(command))
         else:
-            atoms[atom.upper()] = atoms.get(atom.upper(), 0) + int(atom)
-    return atoms
+            throw_commands.append(command)
 
-class Atoms:
-    def __init__(self, atoms):
-        self.atoms = atoms
+    # Simulate the game
+    for command in throw_commands:
+        if isinstance(command, int):
+            egg_holder = (egg_holder + command) % n
+        else:
+            for _ in range(int(command[4:])):
+                egg_holder = (egg_holder - 1) % n
 
-    def subtract(self, other):
-        for atom, count in other.atoms.items():
-            self.atoms[atom] -= count
-            if self.atoms[atom] == 0:
-                del self.atoms[atom]
+    return egg_holder
 
-    def is_valid(self):
-        for atom, count in self.atoms.items():
-            if count < 0:
-                return False
-        return True
+def f2(n, k):
+    # Initialize the egg holder and the list of throw commands
+    egg_holder = 0
+    throw_commands = []
 
-    def __repr__(self):
-        return str(self.atoms)
+    # Read the throw commands from stdin
+    for _ in range(k):
+        command = input()
+        if command.isdigit():
+            throw_commands.append(int(command))
+        else:
+            throw_commands.append(command)
+
+    # Simulate the game
+    for command in throw_commands:
+        if isinstance(command, int):
+            egg_holder = (egg_holder + command) % n
+        else:
+            for _ in range(int(command[4:])):
+                egg_holder = (egg_holder - 1) % n
+
+    return egg_holder
+
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    print(f1(n, k))
+    print(f2(n, k))
 

@@ -1,15 +1,17 @@
 
-def get_maximum_median(arr, k):
-    # Sort the array in non-decreasing order
-    arr.sort()
-    # Initialize the median and the number of operations made
-    median = arr[len(arr) // 2]
-    operations = 0
-    # Loop through the array and check if the median can be increased
-    for i in range(len(arr)):
-        if arr[i] < median and operations < k:
-            arr[i] += 1
-            operations += 1
-    # Return the maximum possible median after the operations
-    return median
+def count_divisible_numbers(numbers):
+    count = 0
+    for i in range(len(numbers)):
+        for j in range(i+1, len(numbers)):
+            if numbers[i] % numbers[j] == 0:
+                count += 1
+    return count
+
+def main():
+    n = int(input())
+    numbers = list(map(int, input().split()))
+    print(count_divisible_numbers(numbers))
+
+if __name__ == '__main__':
+    main()
 

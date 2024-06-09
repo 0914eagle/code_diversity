@@ -1,36 +1,22 @@
 
-def solve(n, m, d, a):
-    # Initialize a dictionary to store the number of days needed to pass each subject
-    days_needed = {}
-    for i in range(m):
-        days_needed[i+1] = a[i]
+def get_min_changes(arr, k):
+    n = len(arr)
+    if n % k != 0:
+        return -1
+    
+    count = 0
+    for i in range(n // k):
+        sub_arr = arr[i * k:(i + 1) * k]
+        if sub_arr != arr[:k]:
+            count += 1
+    
+    return count
 
-    # Initialize a set to store the passed subjects
-    passed_subjects = set()
+def main():
+    n, k = map(int, input().split())
+    arr = list(map(int, input().split()))
+    print(get_min_changes(arr, k))
 
-    # Initialize the number of days spent preparing
-    days_spent = 0
-
-    # Loop through each day
-    for i in range(n):
-        # If the current day is allowed to pass an exam
-        if d[i] != 0:
-            # If the current day is not already spent preparing for a subject
-            if d[i] not in passed_subjects:
-                # Spend the day preparing for the current subject
-                days_spent += 1
-                passed_subjects.add(d[i])
-            # If the current day is already spent preparing for a subject
-            else:
-                # Pass the exam on the current day
-                days_spent += 1
-                passed_subjects.add(d[i])
-                days_needed[d[i]] -= 1
-
-            # If all subjects have been passed, return the number of days spent
-            if len(passed_subjects) == m:
-                return days_spent
-
-    # If not all subjects have been passed, return -1
-    return -1
+if __name__ == '__main__':
+    main()
 

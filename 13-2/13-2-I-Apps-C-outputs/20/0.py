@@ -1,25 +1,58 @@
 
-def solve(W, v_h, N, x, y, S, s):
-    # Initialize the minimum time to pass through the course
-    min_time = float('inf')
-    # Initialize the minimum speed required to pass through the course
-    min_speed = 0
+def f1(r, c, k, l, x0, y0, times):
+    # Initialize a 2D array to store the number of fish at each point
+    fish = [[0] * c for _ in range(r)]
+    
+    # Initialize a queue to store the points to visit
+    queue = [(x0, y0)]
+    
+    # Initialize a set to store the points that have been visited
+    visited = set()
+    
+    # Loop through the queue until it is empty
+    while queue:
+        # Get the current point from the queue
+        x, y = queue.pop(0)
+        
+        # If the current point has not been visited before, mark it as visited and add it to the set
+        if (x, y) not in visited:
+            visited.add((x, y))
+            
+            # Update the number of fish at the current point
+            fish[x][y] += 1
+            
+            # Add the neighboring points to the queue
+            if x > 0:
+                queue.append((x - 1, y))
+            if x < r - 1:
+                queue.append((x + 1, y))
+            if y > 0:
+                queue.append((x, y - 1))
+            if y < c - 1:
+                queue.append((x, y + 1))
+    
+    # Return the maximum number of fish that can be caught
+    return max(sum(row) for row in fish)
 
-    # Loop through each pair of skis
-    for i in range(S):
-        # Calculate the horizontal speed required to pass through the course with the current pair of skis
-        horizontal_speed = min(v_h, s[i])
-        # Calculate the time required to pass through the course with the current pair of skis
-        time = (y[-1] - y[0]) / s[i] + (x[-1] - x[0]) / horizontal_speed
-        # Check if the time required is less than the minimum time
-        if time < min_time:
-            # Update the minimum time and speed
-            min_time = time
-            min_speed = s[i]
+def f2(r, c, k, l, x0, y0, times):
+    # Initialize a 2D array to store the number of fish at each point
+    fish = [[0] * c for _ in range(r)]
+    
+    # Loop through the times array and update the fish array accordingly
+    for i in range(len(times)):
+        for j in range(len(times[i])):
+            fish[i][j] += times[i][j]
+    
+    # Return the maximum number of fish that can be caught
+    return max(sum(row) for row in fish)
 
-    # Check if it is possible to pass through the course with any pair of skis
-    if min_time == float('inf'):
-        return "IMPOSSIBLE"
-    else:
-        return min_speed
+if __name__ == '__main__':
+    r, c, k, l = map(int, input().split())
+    x0, y0 = map(int, input().split())
+    times = []
+    for i in range(r):
+        times.append(list(map(int, input().split())))
+    
+    print(f1(r, c, k, l, x0, y0, times))
+    print(f2(r, c, k, l, x0, y0, times))
 

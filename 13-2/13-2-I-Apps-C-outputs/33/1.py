@@ -1,28 +1,44 @@
 
-def is_possible(n, m, roads):
-    # Initialize a graph with n nodes and 0 edges
-    graph = [[] for _ in range(n)]
+def get_immediate_boss(employees, employee_id):
+    for employee in employees:
+        if employee["id"] == employee_id:
+            return employee["boss_id"]
+    return 0
 
-    # Add edges to the graph
-    for road in roads:
-        graph[road[0] - 1].append(road[1] - 1)
-        graph[road[1] - 1].append(road[0] - 1)
+def get_subordinates(employees, employee_id):
+    subordinates = []
+    for employee in employees:
+        if employee["boss_id"] == employee_id:
+            subordinates.append(employee["id"])
+    return subordinates
 
-    # Check if the graph is connected
-    visited = [False] * n
-    queue = [0]
-    visited[0] = True
-    while queue:
-        node = queue.pop(0)
-        for neighbor in graph[node]:
-            if not visited[neighbor]:
-                visited[neighbor] = True
-                queue.append(neighbor)
+def main():
+    employees = []
+    while True:
+        try:
+            line = input()
+            if not line:
+                break
+            employee_id, salary, height = map(int, line.split())
+            employees.append({"id": employee_id, "salary": salary, "height": height})
+        except EOFError:
+            break
+    
+    queries = []
+    while True:
+        try:
+            line = input()
+            if not line:
+                break
+            queries.append(int(line))
+        except EOFError:
+            break
+    
+    for query in queries:
+        boss_id = get_immediate_boss(employees, query)
+        subordinates = get_subordinates(employees, query)
+        print(boss_id, len(subordinates))
 
-    # If the graph is connected, return YES and a possible direction assignment
-    if visited.count(True) == n:
-        return "YES"
-
-    # If the graph is not connected, return NO
-    return "NO"
+if __name__ == '__main__':
+    main()
 

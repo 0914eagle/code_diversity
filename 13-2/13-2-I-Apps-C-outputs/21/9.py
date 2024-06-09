@@ -1,20 +1,55 @@
 
-def get_wcd(pairs):
-    # Initialize a set to store the common divisors
-    common_divisors = set()
+def f1(n, a):
+    # Find the index of the number that is not sorted
+    index = 0
+    for i in range(1, n):
+        if a[i] < a[i-1]:
+            index = i
+            break
+    
+    # Find the digit that can be changed to make the number not sorted
+    digit = 0
+    for i in range(len(str(a[index]))):
+        if str(a[index])[i] != str(a[index-1])[i]:
+            digit = i
+            break
+    
+    # Change the digit to make the number not sorted
+    b = list(str(a[index]))
+    b[digit] = str(a[index-1])[digit]
+    b = int("".join(b))
+    
+    return b
 
-    # Iterate over the pairs
-    for a, b in pairs:
-        # Get the common divisors of a and b
-        divisors = set(range(2, min(a, b) + 1))
+def f2(n, a):
+    # Check if the list is sorted
+    for i in range(1, n):
+        if a[i] < a[i-1]:
+            return "impossible"
+    
+    # Find the index of the number that is not sorted
+    index = 0
+    for i in range(1, n):
+        if a[i] != a[i-1]:
+            index = i
+            break
+    
+    # Find the digit that can be changed to make the number not sorted
+    digit = 0
+    for i in range(len(str(a[index]))):
+        if str(a[index])[i] != str(a[index-1])[i]:
+            digit = i
+            break
+    
+    # Change the digit to make the number not sorted
+    b = list(str(a[index]))
+    b[digit] = str(a[index-1])[digit]
+    b = int("".join(b))
+    
+    return b
 
-        # Intersect the common divisors with the previous set
-        common_divisors &= divisors
-
-        # If the set becomes empty, return -1
-        if not common_divisors:
-            return -1
-
-    # Return the largest element in the set
-    return max(common_divisors)
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(f1(n, a))
 

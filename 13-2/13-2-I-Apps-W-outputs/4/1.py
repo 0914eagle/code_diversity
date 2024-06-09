@@ -1,27 +1,16 @@
 
-def restore_sequence(n, l_r_pairs):
-    # Initialize an empty sequence
-    sequence = []
-
-    # Iterate through the l_r_pairs
-    for l, r in l_r_pairs:
-        # Check if the sequence is empty
-        if not sequence:
-            # Add the first opening bracket
-            sequence.append("(")
-
-        # Check if the last element of the sequence is an opening bracket
-        if sequence[-1] == "(":
-            # Add the corresponding closing bracket
-            sequence.append(")")
-        else:
-            # Add an opening bracket
-            sequence.append("(")
-
-    # Check if the sequence is complete
-    if len(sequence) != 2 * n:
-        return "IMPOSSIBLE"
-
-    # Return the sequence
-    return "".join(sequence)
+def get_min_operations(n, m, table):
+    # Initialize the number of operations to 0
+    operations = 0
+    
+    # Loop through each row of the table
+    for i in range(n):
+        # Loop through each column of the current row
+        for j in range(m):
+            # If the current cell is good and not a corner, color it
+            if table[i][j] == 1 and (i != 1 or j != 1) and (i != n or j != m):
+                operations += 1
+    
+    # Return the minimum number of operations needed to color all good cells
+    return operations
 

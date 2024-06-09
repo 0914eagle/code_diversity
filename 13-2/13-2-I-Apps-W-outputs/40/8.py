@@ -1,17 +1,38 @@
 
-def solve(queries):
-    intervals = []
-    for query in queries:
-        if query[0] == 1:
-            intervals.append((query[1], query[2]))
-        elif query[0] == 2:
-            for i in range(len(intervals)):
-                if intervals[i][0] == query[1] and intervals[i][1] == query[2]:
-                    print("YES")
-                    break
-            else:
-                print("NO")
+def f1(n, arr):
+    # Sort the array in non-descending order
+    arr.sort()
+    # Initialize the number of swaps to 0
+    swaps = 0
+    # Loop through the array and check if it is sorted
+    for i in range(n-1):
+        # If the array is not sorted, increment the number of swaps
+        if arr[i] > arr[i+1]:
+            swaps += 1
+    # Return the number of swaps
+    return swaps
 
-queries = [(1, 1, 5), (1, 5, 11), (2, 1, 2), (1, 2, 9), (2, 1, 2)]
-solve(queries)
+def f2(n, arr):
+    # Sort the array in non-descending order
+    arr.sort()
+    # Initialize the number of swaps to 0
+    swaps = 0
+    # Loop through the array and check if it is sorted
+    for i in range(n-1):
+        # If the array is not sorted, increment the number of swaps
+        if arr[i] > arr[i+1]:
+            swaps += 1
+            # Swap the elements
+            arr[i], arr[i+1] = arr[i+1], arr[i]
+    # Return the number of swaps
+    return swaps, arr
+
+if __name__ == '__main__':
+    n = int(input())
+    arr = list(map(int, input().split()))
+    swaps = f1(n, arr)
+    print(swaps)
+    swaps, arr = f2(n, arr)
+    for i in range(swaps):
+        print(arr[i], arr[i+1])
 

@@ -1,20 +1,48 @@
 
-def solve(s, t):
-    # Initialize the result string
-    result = "UNRESTORABLE"
+def count_black_squares(grid):
+    # Initialize a counter for the number of black squares
+    black_squares = 0
 
-    # Iterate through all possible strings that satisfy Condition 1
-    for i in range(26):
-        # Create a new string by replacing the ? with the ith letter of the alphabet
-        new_string = s.replace("?", chr(i + 97))
+    # Iterate over the grid
+    for row in grid:
+        for square in row:
+            # If the current square is black, increment the counter
+            if square == '#':
+                black_squares += 1
 
-        # Check if the new string contains T as a contiguous substring
-        if t in new_string:
-            # If it does, check if it is lexicographically smaller than the current result
-            if new_string < result:
-                # If it is, update the result
-                result = new_string
+    # Return the number of black squares
+    return black_squares
 
-    # Return the result
-    return result
+def count_choices(grid, k):
+    # Initialize a counter for the number of choices
+    choices = 0
+
+    # Iterate over the grid
+    for row in grid:
+        for square in row:
+            # If the current square is black, increment the counter
+            if square == '#':
+                choices += 1
+
+    # Return the number of choices
+    return choices
+
+def main():
+    # Read the input grid
+    h, w, k = map(int, input().split())
+    grid = []
+    for _ in range(h):
+        grid.append(list(input()))
+
+    # Count the number of black squares
+    black_squares = count_black_squares(grid)
+
+    # Count the number of choices
+    choices = count_choices(grid, k)
+
+    # Print the number of choices
+    print(choices)
+
+if __name__ == '__main__':
+    main()
 

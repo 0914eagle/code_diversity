@@ -1,48 +1,63 @@
 
-def solve(tasks):
-    # Initialize the processor clock and the list of running tasks
-    clock = 0
-    running_tasks = []
-    
-    # Loop until all tasks are completed
-    while tasks:
-        # Identify running tasks
-        running_tasks = [task for task in tasks if task["start"] <= clock and not all(instruction["type"] == "C" for instruction in task["instructions"])]
-        
-        # Determine the current priorities of the running tasks and which of the running tasks are blocked
-        blocked_tasks = []
-        for task in running_tasks:
-            # Check if the task is blocked by any other task
-            for other_task in running_tasks:
-                if task is not other_task and task["base_priority"] < other_task["base_priority"]:
-                    # Check if the other task owns a resource that this task needs to lock
-                    for instruction in task["instructions"]:
-                        if instruction["type"] == "L" and instruction["resource"] in other_task["resources"]:
-                            blocked_tasks.append(other_task)
-                            break
-        
-        # Execute the next instruction of the non-blocked running task (if any) with the highest current priority
-        if running_tasks:
-            running_tasks.sort(key=lambda x: x["current_priority"], reverse=True)
-            task = running_tasks[0]
-            instruction = task["instructions"][0]
-            if instruction["type"] == "C":
-                # Compute instruction, increment the clock by one microsecond
-                clock += 1
-            elif instruction["type"] == "L":
-                # Lock instruction, add the resource to the task's resources list
-                task["resources"].append(instruction["resource"])
-            elif instruction["type"] == "U":
-                # Unlock instruction, remove the resource from the task's resources list
-                task["resources"].remove(instruction["resource"])
-            
-            # Remove the executed instruction from the task's instructions list
-            task["instructions"] = task["instructions"][1:]
-        
-        # If all instructions have been executed, remove the task from the list of running tasks
-        if not task["instructions"]:
-            running_tasks.remove(task)
-    
-    # Return the completion times of all tasks
-    return [task["start"] + task["duration"] for task in tasks]
+def is_graph_valid(n, m, edges):
+    # Initialize a dictionary to store the neighbors of each vertex
+    neighbors = {i: set() for i in range(1, n + 1)}
+
+    # Add edges to the graph
+    for u, v in edges:
+        neighbors[u].add(v)
+        neighbors[v].add(u)
+
+    # Check that the graph is connected
+    visited = set()
+    queue = [1]
+    while queue:
+        vertex = queue.pop(0)
+        if vertex not in visited:
+            visited.add(vertex)
+            queue.extend(neighbors[vertex])
+
+    return len(visited) == n
+
+def find_string(n, m, edges):
+    # Initialize a set to store the possible strings
+    strings = set()
+
+    # Iterate over all possible strings of length n
+    for string in itertools.product("abc", repeat=n):
+        # Initialize a dictionary to store the neighbors of each vertex
+        neighbors = {i: set() for i in range(1, n + 1)}
+
+        # Add edges to the graph
+        for u, v in edges:
+            neighbors[u].add(v)
+            neighbors[v].add(u)
+
+        # Check that the graph is connected
+        visited = set()
+        queue = [1]
+        while queue:
+            vertex = queue.pop(0)
+            if vertex not in visited:
+                visited.add(vertex)
+                queue.extend(neighbors[vertex])
+
+        # If the graph is connected, add the string to the set of possible strings
+        if len(visited) == n:
+            strings.add("".join(string))
+
+    # Return any string from the set of possible strings
+    return strings.pop()
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    edges = []
+    for _ in range(m):
+        u, v = map(int, input().split())
+        edges.append((u, v))
+    if is_graph_valid(n, m, edges):
+        print("Yes")
+        print(find_string(n, m, edges))
+    else:
+        print("No")
 

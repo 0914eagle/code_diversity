@@ -1,18 +1,33 @@
 
-def get_water_height(vertices, depth, liters):
-    # Calculate the area of the polygon
-    area = 0
-    for i in range(len(vertices)):
-        x1, y1 = vertices[i]
-        x2, y2 = vertices[(i+1)%len(vertices)]
-        area += (x1*y2 - x2*y1)
-    area = abs(area) / 2
+def get_flight_costs(flights):
+    costs = {}
+    for flight in flights:
+        cost = costs.get(flight[0], 0) + flight[2]
+        costs[flight[0]] = cost
+    return costs
 
-    # Calculate the volume of the tank
-    volume = area * depth
+def get_min_cost(flights, additional_flights, start, end):
+    costs = get_flight_costs(flights)
+    for flight in additional_flights:
+        if flight[0] == start or flight[1] == end:
+            costs[flight[0]] = min(costs.get(flight[0], 0) + flight[2], costs.get(flight[1], 0) + flight[2])
+    return costs[start]
 
-    # Calculate the height of the water
-    height = (liters * 1000) / volume
+def solve(flights, additional_flights, start, end):
+    costs = get_flight_costs(flights)
+    for flight in additional_flights:
+        if flight[0] == start or flight[1] == end:
+            costs[flight[0]] = min(costs.get(flight[0], 0) + flight[2], costs.get(flight[1], 0) + flight[2])
+    return costs[start]
 
-    return height
+if __name__ == '__main__':
+    num_airports, num_flights = map(int, input().split())
+    flights = []
+    for _ in range(num_flights):
+        flights.append(list(map(int, input().split())))
+    num_additional_flights = int(input())
+    additional_flights = []
+    for _ in range(num_additional_flights):
+        additional_flights.append(list(map(int, input().split())))
+    print(solve(flights, additional_flights, 1, num_airports))
 

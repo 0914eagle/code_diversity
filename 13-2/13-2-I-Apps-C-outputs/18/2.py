@@ -1,23 +1,21 @@
 
-n, k = map(int, input().split())
-teams = [list(map(int, input().split())) for _ in range(n)]
-
-# Check if any team knows all problems
-if any(all(team) for team in teams):
-    print("NO")
-    exit()
-
-# Check if any team knows at most half of the problems
-if any(sum(team) > n // 2 for team in teams):
-    print("NO")
-    exit()
-
-# Check if any two teams know the same problem
-for i in range(n):
-    for j in range(i + 1, n):
-        if teams[i][j] == 1 and teams[j][i] == 1:
-            print("NO")
-            exit()
-
-print("YES")
+def count_bulbasaurs(s):
+    # Initialize a counter for the number of Bulbasaurs
+    count = 0
+    
+    # Loop through the string s and check if we can form the word "Bulbasaur"
+    for i in range(len(s)):
+        # Check if the first letter is "B" and the second letter is "u"
+        if s[i] == "B" and s[i+1] == "u":
+            # Check if the third letter is "l" and the fourth letter is "b"
+            if s[i+2] == "l" and s[i+3] == "b":
+                # Check if the fifth letter is "a" and the sixth letter is "s"
+                if s[i+4] == "a" and s[i+5] == "s":
+                    # Check if the seventh letter is "a" and the eighth letter is "u"
+                    if s[i+6] == "a" and s[i+7] == "u":
+                        # If all conditions are met, increment the counter
+                        count += 1
+    
+    # Return the number of Bulbasaurs found
+    return count
 

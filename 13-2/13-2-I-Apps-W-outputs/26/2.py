@@ -1,27 +1,25 @@
 
-def is_possible(points):
-    # Sort the points by their x-coordinates
-    sorted_points = sorted(points, key=lambda point: point[0])
+def get_max_bottles(bottle_heights, fridge_height):
+    
+    # Initialize variables
+    max_bottles = 0
+    current_height = 0
+    bottles_placed = 0
 
-    # Initialize the variables for the left and right endpoints of the lines
-    left_endpoint = sorted_points[0]
-    right_endpoint = sorted_points[-1]
+    # Iterate through the bottles
+    for bottle_height in bottle_heights:
+        # Check if the current bottle fits on the current shelf
+        if current_height + bottle_height <= fridge_height:
+            # If it fits, place the bottle on the current shelf and update the current height
+            current_height += bottle_height
+            bottles_placed += 1
+        else:
+            # If it doesn't fit, start a new shelf
+            current_height = bottle_height
+            bottles_placed = 1
 
-    # Iterate through the points and check if they lie on the line
-    for i in range(1, len(sorted_points)):
-        current_point = sorted_points[i]
+        # Update the maximum number of bottles placed
+        max_bottles = max(max_bottles, bottles_placed)
 
-        # Check if the current point lies on the line between the left and right endpoints
-        if current_point[0] == left_endpoint[0] or current_point[0] == right_endpoint[0]:
-            continue
-
-        # Check if the current point lies between the left and right endpoints
-        if left_endpoint[0] < current_point[0] < right_endpoint[0]:
-            continue
-
-        # If the current point does not lie on the line or between the left and right endpoints, return False
-        return False
-
-    # If all points lie on the line or between the left and right endpoints, return True
-    return True
+    return max_bottles
 

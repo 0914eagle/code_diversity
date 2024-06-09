@@ -1,16 +1,22 @@
 
-n, k = map(int, input().split())
+def validate_delimiters(L):
+    opening_delimiters = ["(", "[", "{"]
+    closing_delimiters = [")", "]", "}"]
+    stack = []
+    for i, char in enumerate(L):
+        if char in opening_delimiters:
+            stack.append(char)
+        elif char in closing_delimiters:
+            if not stack or stack[-1] != opening_delimiters[closing_delimiters.index(char)]:
+                return char, i
+            else:
+                stack.pop()
+    if stack:
+        return "ok so far", -1
+    else:
+        return "ok so far", -1
 
-# Calculate the minimum difference
-diff = n // k
-
-# Calculate the remainder
-rem = n % k
-
-# Distribute the remainder equally among the first k-1 users
-for i in range(k-1):
-    diff += 1
-
-# Print the minimum difference
-print(diff)
+if __name__ == '__main__':
+    L = input()
+    print(validate_delimiters(L))
 

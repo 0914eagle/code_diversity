@@ -1,27 +1,12 @@
 
-def solve(n, H):
-    # Initialize the heights of the sand pillars as a list of zeros
-    heights = [0] * (n + 1)
-    
-    # Set the height of the first pillar to be the height of the fence
-    heights[0] = H
-    
-    # Initialize the number of spots occupied to be 1
-    spots = 1
-    
-    # Loop through the remaining spots
-    for i in range(1, n):
-        # If the height of the current pillar is less than or equal to the height of the previous pillar, set it to be one more than the previous pillar
-        if heights[i - 1] <= heights[i]:
-            heights[i] = heights[i - 1] + 1
-        # Otherwise, set it to be one less than the previous pillar
-        else:
-            heights[i] = heights[i - 1] - 1
-        
-        # Increment the number of spots occupied if the current pillar is not zero
-        if heights[i] != 0:
-            spots += 1
-    
-    # Return the number of spots occupied
-    return spots
+def get_last_child(n, m, a):
+    line = list(range(1, n+1))
+    while line:
+        for i in range(m):
+            if line[0] <= a[line[0]-1]:
+                line.append(line.pop(0))
+            else:
+                line.pop(0)
+                break
+    return line[-1]
 

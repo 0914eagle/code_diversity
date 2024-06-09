@@ -1,37 +1,36 @@
 
-def solve():
-    s = input()
-    t = input()
-
-    # Initialize the minimum value of i as the length of s
-    min_i = len(s)
-
-    # Loop through each possible value of i
-    for i in range(len(s), 0, -1):
-        # Check if t is a subsequence of the first i characters of s'
-        if is_subsequence(t, s * 100)[:i]:
-            # If it is, update the minimum value of i
-            min_i = i
-            break
-
-    # Print the minimum value of i
-    print(min_i)
-
-def is_subsequence(s, t):
-    # Initialize the index of the first character in s
-    i = 0
-
-    # Loop through each character in t
-    for c in t:
-        # If the current character in t is in s, update the index of the first character in s
-        if c in s[i:]:
-            i = s.index(c) + 1
-        # If the current character in t is not in s, return False
+def get_maximum_students_with_favorite_drink(n, k, a):
+    # Initialize variables
+    max_students = 0
+    current_students = 0
+    current_drink = 1
+    drink_count = [0] * (k + 1)
+    
+    # Iterate through the students
+    for i in range(n):
+        # If the current student has the current drink as their favorite, increment the count
+        if a[i] == current_drink:
+            current_students += 1
+        # If the current student has a different drink as their favorite, or if we have reached the end of the list
         else:
-            return False
+            # If the current number of students with the current drink is greater than the maximum, update the maximum
+            if current_students > max_students:
+                max_students = current_students
+            # Reset the current number of students and increment the current drink
+            current_students = 1
+            current_drink += 1
+    
+    # If the last group of students has the maximum number of students, update the maximum
+    if current_students > max_students:
+        max_students = current_students
+    
+    return max_students
 
-    # If we reach the end of t, return True
-    return True
+def main():
+    n, k = map(int, input().split())
+    a = list(map(int, input().split()))
+    print(get_maximum_students_with_favorite_drink(n, k, a))
 
-solve()
+if __name__ == '__main__':
+    main()
 

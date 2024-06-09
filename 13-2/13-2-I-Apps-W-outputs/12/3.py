@@ -1,28 +1,47 @@
 
-def longest_non_palindrome(s):
-    # Initialize variables
-    longest_substring = ""
-    current_substring = ""
+def get_good_string(strings):
+    # Initialize a dictionary to store the frequency of each substring
+    substring_freq = {}
+    for string in strings:
+        for i in range(len(string)):
+            for j in range(i + 1, len(string) + 1):
+                substring = string[i:j]
+                if substring not in substring_freq:
+                    substring_freq[substring] = 1
+                else:
+                    substring_freq[substring] += 1
     
-    # Iterate through the string
-    for i in range(len(s)):
-        # Check if the current character is the same as the previous character
-        if s[i] == s[i-1]:
-            # If it is, append it to the current substring
-            current_substring += s[i]
-        else:
-            # If it's not, check if the current substring is longer than the longest substring found so far
-            if len(current_substring) > len(longest_substring):
-                # If it is, update the longest substring
-                longest_substring = current_substring
-            # Reset the current substring
-            current_substring = s[i]
+    # Find the most frequent substring
+    most_frequent_substring = ""
+    most_frequent_substring_freq = 0
+    for substring, freq in substring_freq.items():
+        if freq > most_frequent_substring_freq:
+            most_frequent_substring = substring
+            most_frequent_substring_freq = freq
     
-    # Check if the last character is the same as the first character
-    if s[0] == s[-1] and len(current_substring) > len(longest_substring):
-        # If it is, update the longest substring
-        longest_substring = current_substring
+    # Check if all strings are the most frequent substring
+    for string in strings:
+        if most_frequent_substring not in string:
+            return "NO"
     
-    # Return the length of the longest substring
-    return len(longest_substring)
+    # Find the lexicographically minimum string with the most frequent substring
+    min_string = ""
+    for string in strings:
+        if string.startswith(most_frequent_substring):
+            if min_string == "":
+                min_string = string
+            elif string < min_string:
+                min_string = string
+    
+    return min_string
+
+def main():
+    n = int(input())
+    strings = []
+    for i in range(n):
+        strings.append(input())
+    print(get_good_string(strings))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,26 +1,21 @@
 
-def is_right_triangle(p1, p2, p3):
-    # Calculate the lengths of the sides of the triangle
-    a = abs(p1[0] - p2[0])
-    b = abs(p1[1] - p2[1])
-    c = abs(p1[0] - p3[0])
-
-    # Check if the triangle is right by checking the angles
-    return a**2 + b**2 == c**2 or b**2 + c**2 == a**2 or c**2 + a**2 == b**2
-
-def count_right_triangles(points):
-    num_right_triangles = 0
-    for i in range(len(points)):
-        for j in range(i+1, len(points)):
-            for k in range(j+1, len(points)):
-                if is_right_triangle(points[i], points[j], points[k]):
-                    num_right_triangles += 1
-    return num_right_triangles
-
-# Test the function with the sample input
-points = [(4, 2), (2, 1), (1, 3)]
-print(count_right_triangles(points)) # Output: 1
-
-points = [(5, 0), (2, 6), (8, 6), (5, 7)]
-print(count_right_triangles(points)) # Output: 0
+def get_smallest_diff(A, K, Q):
+    # Sort the array in ascending order
+    A.sort()
+    # Initialize the smallest difference
+    smallest_diff = float('inf')
+    # Loop through each possible starting index
+    for i in range(len(A) - K + 1):
+        # Get the subsequence of length K starting from index i
+        subsequence = A[i:i+K]
+        # Get the minimum element in the subsequence
+        min_element = min(subsequence)
+        # Get the index of the minimum element in the subsequence
+        min_index = subsequence.index(min_element)
+        # Remove the minimum element from the array
+        A.remove(min_element)
+        # Update the smallest difference
+        smallest_diff = min(smallest_diff, min_element - A[min_index])
+    # Return the smallest difference
+    return smallest_diff
 

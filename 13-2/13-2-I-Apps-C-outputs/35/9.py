@@ -1,19 +1,33 @@
 
-def max_operations(arr, pairs):
-    # Sort the array in non-decreasing order
-    arr.sort()
-    # Initialize a variable to store the maximum number of operations
-    max_ops = 0
-    # Iterate over the good pairs
-    for i, j in pairs:
-        # Check if the pair is valid
-        if i + j % 2 == 1 and 1 <= i < j <= len(arr):
-            # Divide both numbers by the smaller number
-            smaller = min(arr[i], arr[j])
-            arr[i] //= smaller
-            arr[j] //= smaller
-            # Increment the maximum number of operations
-            max_ops += 1
-    # Return the maximum number of operations
-    return max_ops
+import re
+
+def generate_grammar(rules):
+    grammar = {}
+    for rule in rules:
+        variable, production = rule.split(" -> ")
+        grammar[variable] = production
+    return grammar
+
+def search_text(text, grammar):
+    matches = []
+    for line in text:
+        longest_match = ""
+        for variable in grammar:
+            pattern = grammar[variable]
+            match = re.search(pattern, line)
+            if match:
+                longest_match = max(longest_match, match.group())
+        matches.append(longest_match)
+    return matches
+
+def main():
+    rules = [input() for _ in range(int(input()))]
+    grammar = generate_grammar(rules)
+    text = [input() for _ in range(int(input()))]
+    matches = search_text(text, grammar)
+    for match in matches:
+        print(match)
+
+if __name__ == '__main__':
+    main()
 

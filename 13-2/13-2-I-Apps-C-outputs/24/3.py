@@ -1,24 +1,36 @@
 
-def max_lights_on(n, s, a, b):
-    # Initialize a list to store the states of the lights
-    lights = [1 if s[i] == "1" else 0 for i in range(n)]
-    
-    # Initialize a list to store the maximum number of lights on at each moment
-    max_lights = [0] * (max(b) + 1)
-    
-    # Loop through each light and its parameters
-    for i in range(n):
-        # Loop through each moment when the light will toggle
-        for j in range(b[i], max(b) + 1, a[i]):
-            # If the light is on, turn it off
-            if lights[i] == 1:
-                lights[i] = 0
-            # Otherwise, turn it on
-            else:
-                lights[i] = 1
-            # Update the maximum number of lights on at this moment
-            max_lights[j] = max(max_lights[j], sum(lights))
-    
-    # Return the maximum number of lights on at any moment
-    return max(max_lights)
+def create_binary_search_tree(sequence):
+    root = None
+    for num in sequence:
+        root = insert(root, num)
+    return root
+
+def insert(root, num):
+    if root is None:
+        return Node(num)
+    if num < root.val:
+        root.left = insert(root.left, num)
+    else:
+        root.right = insert(root.right, num)
+    return root
+
+class Node:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+def get_depth(root):
+    if root is None:
+        return 0
+    return 1 + max(get_depth(root.left), get_depth(root.right))
+
+def main():
+    n = int(input())
+    sequence = [int(input()) for _ in range(n)]
+    root = create_binary_search_tree(sequence)
+    print(get_depth(root))
+
+if __name__ == '__main__':
+    main()
 

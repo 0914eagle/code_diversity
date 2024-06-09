@@ -1,38 +1,42 @@
 
-def solve(W, v_h, N, x, y, S, s):
-    # Initialize a dictionary to store the minimum time required to pass through each gate
-    min_time = {}
-    for i in range(N):
-        min_time[(x[i], y[i])] = float('inf')
+def f1(r, c, k, l, x0, y0, times):
+    # Initialize a 2D array to store the number of fish at each point
+    fish_count = [[0] * c for _ in range(r)]
     
-    # Initialize a dictionary to store the minimum time required to pass through each gate with each pair of skis
-    min_time_skis = {}
-    for i in range(N):
-        min_time_skis[(x[i], y[i])] = {s[j]: float('inf') for j in range(S)}
+    # Initialize a set to store the points that have fish
+    fish_points = set()
     
-    # Initialize the minimum time required to pass through the first gate with each pair of skis
-    for j in range(S):
-        min_time_skis[(x[0], y[0])][s[j]] = s[j]
+    # Loop through each point and update the fish count and fish points
+    for i in range(r):
+        for j in range(c):
+            if times[i][j] <= l:
+                fish_count[i][j] = 1
+                fish_points.add((i, j))
     
-    # Loop through each gate
-    for i in range(1, N):
-        # Loop through each pair of skis
-        for j in range(S):
-            # Check if the current pair of skis can pass through the current gate
-            if x[i] - x[i-1] <= v_h * min_time_skis[(x[i-1], y[i-1])][s[j]]:
-                # Calculate the minimum time required to pass through the current gate with the current pair of skis
-                min_time_skis[(x[i], y[i])][s[j]] = min(min_time_skis[(x[i], y[i])][s[j]], min_time_skis[(x[i-1], y[i-1])][s[j]] + s[j])
-            else:
-                # If the current pair of skis cannot pass through the current gate, set the minimum time to infinity
-                min_time_skis[(x[i], y[i])][s[j]] = float('inf')
+    # Initialize a set to store the points that are reachable from the starting point
+    reachable_points = set([(x0, y0)])
     
-    # Find the minimum time required to pass through all gates with any pair of skis
-    min_time = min([min_time_skis[(x[i], y[i])][s[j]] for i in range(N) for j in range(S)])
+    # Loop through each point and update the reachable points
+    for i in range(r):
+        for j in range(c):
+            if (i, j) in reachable_points:
+                for dx, dy in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+                    x = i + dx
+                    y = j + dy
+                    if 0 <= x < r and 0 <= y < c and (x, y) not in reachable_points:
+                        reachable_points.add((x, y))
     
-    # If the minimum time is infinity, it is impossible to complete the race with any pair of skis
-    if min_time == float('inf'):
-        return "IMPOSSIBLE"
-    
-    # Otherwise, return the pair of skis with the minimum time
-    return min([s[j] for i in range(N) for j in range(S) if min_time_skis[(x[i], y[i])][s[j]] == min_time])
+    # Return the number of fish points that are reachable from the starting point
+    return len([point for point in fish_points if point in reachable_points])
+
+def f2(...):
+    # Implement f2 here
+    pass
+
+if __name__ == '__main__':
+    r, c, k, l, x0, y0 = map(int, input().split())
+    times = []
+    for i in range(r):
+        times.append(list(map(int, input().split())))
+    print(f1(r, c, k, l, x0, y0, times))
 

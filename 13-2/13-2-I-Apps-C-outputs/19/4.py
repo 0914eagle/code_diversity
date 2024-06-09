@@ -1,43 +1,83 @@
 
-import itertools
+def f1(n, m, pegs, dry_plan):
+    # Initialize a set to store the pegs that are safe to remove
+    safe_to_remove = set()
+    
+    # Iterate through the dry plan
+    for i in dry_plan:
+        # If the current step is a removal, add the peg to the safe to remove set
+        if i < 0:
+            safe_to_remove.add(-i)
+        # If the current step is a placement, remove the peg from the safe to remove set
+        else:
+            safe_to_remove.remove(i)
+    
+    # Initialize a set to store the pegs that are safe to place
+    safe_to_place = set(range(1, n + 1))
+    
+    # Iterate through the dry plan in reverse
+    for i in reversed(dry_plan):
+        # If the current step is a placement, add the peg to the safe to place set
+        if i > 0:
+            safe_to_place.add(i)
+        # If the current step is a removal, remove the peg from the safe to place set
+        else:
+            safe_to_place.remove(-i)
+    
+    # Initialize a list to store the wet plan
+    wet_plan = []
+    
+    # Iterate through the safe to place set
+    for i in safe_to_place:
+        # If the current peg is not in the safe to remove set, add it to the wet plan
+        if i not in safe_to_remove:
+            wet_plan.append(i)
+    
+    # Return the wet plan
+    return wet_plan
 
-def count_evolution_plans(gyms, types):
-    # Initialize a list to store the number of Pokemons of each type
-    type_counts = [0] * (types + 1)
+def f2(n, m, pegs, dry_plan):
+    # Initialize a set to store the pegs that are safe to remove
+    safe_to_remove = set()
     
-    # Iterate over the gyms and count the number of Pokemons of each type
-    for gym in gyms:
-        for pokemon in gym:
-            type_counts[pokemon] += 1
+    # Iterate through the dry plan
+    for i in dry_plan:
+        # If the current step is a removal, add the peg to the safe to remove set
+        if i < 0:
+            safe_to_remove.add(-i)
+        # If the current step is a placement, remove the peg from the safe to remove set
+        else:
+            safe_to_remove.remove(i)
     
-    # Use itertools.permutations to generate all possible evolution plans
-    evolution_plans = itertools.permutations(range(1, types + 1))
+    # Initialize a set to store the pegs that are safe to place
+    safe_to_place = set(range(1, n + 1))
     
-    # Initialize a set to store the distinct evolution plans
-    distinct_plans = set()
+    # Iterate through the dry plan in reverse
+    for i in reversed(dry_plan):
+        # If the current step is a placement, add the peg to the safe to place set
+        if i > 0:
+            safe_to_place.add(i)
+        # If the current step is a removal, remove the peg from the safe to place set
+        else:
+            safe_to_place.remove(-i)
     
-    # Iterate over the evolution plans and check if they satisfy the protocol
-    for plan in evolution_plans:
-        # Initialize a list to store the number of Pokemons of each type after evolution
-        evolved_type_counts = [0] * (types + 1)
-        
-        # Iterate over the gyms and count the number of Pokemons of each type after evolution
-        for gym in gyms:
-            for pokemon in gym:
-                evolved_type_counts[plan[pokemon]] += 1
-        
-        # Check if the number of Pokemons of each type is the same before and after evolution
-        if type_counts == evolved_type_counts:
-            distinct_plans.add(plan)
+    # Initialize a list to store the wet plan
+    wet_plan = []
     
-    # Return the number of distinct evolution plans
-    return len(distinct_plans)
+    # Iterate through the safe to place set
+    for i in safe_to_place:
+        # If the current peg is not in the safe to remove set, add it to the wet plan
+        if i not in safe_to_remove:
+            wet_plan.append(i)
+    
+    # Return the wet plan
+    return wet_plan
 
-def main():
-    gyms, types = map(int, input().split())
-    gyms = [list(map(int, input().split())) for _ in range(gyms)]
-    print(count_evolution_plans(gyms, types))
-
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    n, m, pegs, dry_plan = map(int, input().split())
+    dry_plan = [int(i) for i in input().split()]
+    wet_plan = f1(n, m, pegs, dry_plan)
+    print(len(wet_plan))
+    for i in wet_plan:
+        print(i)
 

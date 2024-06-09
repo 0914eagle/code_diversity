@@ -1,34 +1,56 @@
 
-def is_round(n):
-    return n % 10 == 0 and all(int(d) == 0 for d in str(n)[1:])
+def is_correct_grid(grid):
+    n = len(grid)
+    if n % 2 == 1 or n > 24:
+        return 0
+    
+    for i in range(n):
+        row = grid[i]
+        if len(row) != n:
+            return 0
+        for j in range(n):
+            if row[j] not in ["B", "W"]:
+                return 0
+    
+    for i in range(n):
+        count_b = 0
+        count_w = 0
+        for j in range(n):
+            if grid[j][i] == "B":
+                count_b += 1
+            else:
+                count_w += 1
+        if count_b != count_w:
+            return 0
+    
+    for i in range(n):
+        count_b = 0
+        count_w = 0
+        for j in range(n):
+            if grid[i][j] == "B":
+                count_b += 1
+            else:
+                count_w += 1
+        if count_b != count_w:
+            return 0
+    
+    for i in range(n):
+        for j in range(n-2):
+            if grid[i][j] == grid[i][j+1] == grid[i][j+2]:
+                return 0
+        for j in range(n-2):
+            if grid[j][i] == grid[j+1][i] == grid[j+2][i]:
+                return 0
+    
+    return 1
 
-def get_min_summands(n):
-    k = 1
-    while n > 0:
-        if is_round(n):
-            return k
-        n -= 1
-        k += 1
-    return k
+def main():
+    n = int(input())
+    grid = []
+    for i in range(n):
+        grid.append(input())
+    print(is_correct_grid(grid))
 
-def get_summands(n):
-    k = get_min_summands(n)
-    result = []
-    while n > 0:
-        if is_round(n):
-            result.append(n)
-            return result
-        n -= 1
-    return result
-
-def solve(n):
-    k = get_min_summands(n)
-    result = get_summands(n)
-    return f"{k}\n{' '.join(str(r) for r in result)}"
-
-if __name__ == "__main__":
-    t = int(input())
-    for _ in range(t):
-        n = int(input())
-        print(solve(n))
+if __name__ == '__main__':
+    main()
 

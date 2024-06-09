@@ -1,24 +1,27 @@
 
-import re
-
-def get_missing_cards(deck):
-    suits = ["P", "K", "H", "T"]
-    numbers = [str(i) for i in range(1, 14)]
-    card_count = {suit: 0 for suit in suits}
-    for card in deck:
-        suit, number = card[0], card[2:]
-        if suit in suits and number in numbers:
-            card_count[suit] += 1
-    missing_cards = []
-    for suit in suits:
-        if card_count[suit] != 13:
-            missing_cards.append(13 - card_count[suit])
+def get_max_prettiness(a):
+    # Sort the array in descending order
+    a.sort(reverse=True)
+    # Initialize the maximum prettiness to 0
+    max_prettiness = 0
+    # Loop through the array
+    for i in range(len(a)):
+        # Check if the current element is divisible by the previous elements
+        for j in range(i-1, -1, -1):
+            if a[i] % a[j] == 0:
+                break
         else:
-            missing_cards.append(0)
-    if len(set(deck)) != len(deck):
-        return "GRESKA"
-    return " ".join(str(card) for card in missing_cards)
+            # If the current element is not divisible by any of the previous elements, add it to the maximum prettiness
+            max_prettiness += a[i]
+    return max_prettiness
 
-deck = input()
-print(get_missing_cards(deck))
+def main():
+    q = int(input())
+    for _ in range(q):
+        n = int(input())
+        a = list(map(int, input().split()))
+        print(get_max_prettiness(a))
+
+if __name__ == '__main__':
+    main()
 

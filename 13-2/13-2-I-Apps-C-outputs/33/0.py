@@ -1,28 +1,29 @@
 
-def is_possible(n, m, roads):
-    # Initialize a graph with n nodes and 0 edges
-    graph = [[] for _ in range(n)]
+def get_boss_and_subordinates(employees, query):
+    # Find the employee with the given ID
+    employee = next((emp for emp in employees if emp[0] == query), None)
+    if employee is None:
+        return (0, 0)
 
-    # Add edges to the graph
-    for road in roads:
-        graph[road[0] - 1].append(road[1] - 1)
-        graph[road[1] - 1].append(road[0] - 1)
+    # Find the employee's boss
+    boss = next((emp for emp in employees if emp[0] != query and emp[1] > employee[1] and emp[2] >= employee[2]), None)
+    if boss is None:
+        return (0, 0)
 
-    # Check if the graph is connected
-    visited = [False] * n
-    queue = [0]
-    visited[0] = True
-    while queue:
-        node = queue.pop(0)
-        for neighbor in graph[node]:
-            if not visited[neighbor]:
-                visited[neighbor] = True
-                queue.append(neighbor)
+    # Find the employee's subordinates
+    subordinates = [emp for emp in employees if emp[0] != query and emp[1] < employee[1] and emp[2] >= employee[2]]
 
-    # If the graph is not connected, return False
-    if not all(visited):
-        return False
+    return (boss[0], len(subordinates))
 
-    # If the graph is connected, return True
-    return True
+def main():
+    m, q = map(int, input().split())
+    employees = []
+    for _ in range(m):
+        employees.append(tuple(map(int, input().split())))
+    for _ in range(q):
+        query = int(input())
+        print(*get_boss_and_subordinates(employees, query))
+
+if __name__ == '__main__':
+    main()
 

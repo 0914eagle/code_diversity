@@ -1,31 +1,26 @@
 
-def solve(n, x, y, c, k):
-    # Convert input to a list of cities and their coordinates
-    cities = [(x[i], y[i]) for i in range(n)]
+def count_setlists(hype_ratings):
+    n = len(hype_ratings)
+    if n < 3:
+        return 0
     
-    # Initialize the minimum cost and the set of cities with power stations
-    min_cost = 0
-    power_stations = set()
+    # Initialize the dp table with all values set to 0
+    dp = [0] * (n + 1)
+    dp[0] = 1
     
-    # Loop through each city and calculate the cost of connecting it to the nearest power station
-    for i in range(n):
-        # If the city has not been assigned a power station, calculate the cost of connecting it to the nearest power station
-        if i not in power_stations:
-            # Find the nearest power station to the city
-            nearest_power_station = min(power_stations, key=lambda x: abs(x[0] - cities[i][0]) + abs(x[1] - cities[i][1]))
-            
-            # Calculate the cost of connecting the city to the nearest power station
-            cost = k[i] + k[nearest_power_station[1]] + abs(cities[i][0] - nearest_power_station[0]) + abs(cities[i][1] - nearest_power_station[1])
-            
-            # If the cost is less than the minimum cost, update the minimum cost and the set of power stations
-            if cost < min_cost:
-                min_cost = cost
-                power_stations = set([i])
-        
-        # If the city has already been assigned a power station, add it to the set of power stations
-        else:
-            power_stations.add(i)
+    # Fill in the dp table
+    for i in range(1, n + 1):
+        if hype_ratings[i - 1] == 1:
+            dp[i] += dp[i - 1]
+        if hype_ratings[i - 1] == 2:
+            dp[i] += dp[i - 2]
+        if hype_ratings[i - 1] == 3:
+            dp[i] += dp[i - 3]
     
-    # Return the minimum cost and the set of power stations
-    return min_cost, power_stations
+    return dp[n] % 1000000007
+
+if __name__ == '__main__':
+    n = int(input())
+    hype_ratings = list(map(int, input().split()))
+    print(count_setlists(hype_ratings))
 

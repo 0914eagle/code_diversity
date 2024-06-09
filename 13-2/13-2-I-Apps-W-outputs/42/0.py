@@ -1,19 +1,20 @@
 
-def get_min_keys(n, s):
-    # Initialize the number of keys needed to be bought
-    keys_needed = 0
-    # Iterate through the string s
-    for i in range(0, len(s), 2):
-        # If the current position is an odd position
-        if i % 2 == 1:
-            # Get the type of the key from the string s
-            key_type = s[i]
-            # Get the type of the door from the string s
-            door_type = s[i + 1]
-            # If the key type and door type are the same
-            if key_type == door_type:
-                # Increment the number of keys needed
-                keys_needed += 1
-    # Return the minimum number of keys needed
-    return keys_needed
+def is_pythagorean_triple(a, b, c):
+    return a*a + b*b == c*c
+
+def find_pythagorean_triple(n):
+    for a in range(1, n+1):
+        for b in range(a, n+1):
+            c = n**2 - a**2 - b**2
+            if c >= 0 and is_pythagorean_triple(a, b, c):
+                return a, b, c
+    return -1, -1, -1
+
+if __name__ == '__main__':
+    n = int(input())
+    a, b, c = find_pythagorean_triple(n)
+    if a == -1:
+        print(-1)
+    else:
+        print(a, b, c)
 

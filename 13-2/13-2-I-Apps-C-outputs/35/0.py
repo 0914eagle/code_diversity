@@ -1,36 +1,51 @@
 
-def max_operations(arr, pairs):
-    # Sort the array in non-decreasing order
-    arr.sort()
-    # Initialize a variable to store the maximum number of operations
-    max_ops = 0
-    # Iterate over the good pairs
-    for i, j in pairs:
-        # Check if the sum of the indices is odd
-        if i + j % 2 == 1:
-            # Find the greatest common divisor of the two elements
-            gcd = find_gcd(arr[i - 1], arr[j - 1])
-            # Check if the gcd is greater than 1
-            if gcd > 1:
-                # Divide both elements by the gcd
-                arr[i - 1] //= gcd
-                arr[j - 1] //= gcd
-                # Increment the maximum number of operations
-                max_ops += 1
-    # Return the maximum number of operations
-    return max_ops
+import re
 
-def find_gcd(a, b):
-    if b == 0:
-        return a
-    else:
-        return find_gcd(b, a % b)
+def generate_grammar(rules):
+    grammar = {}
+    for rule in rules:
+        head, production = rule.split(" -> ")
+        grammar[head] = production
+    return grammar
 
-n, m = map(int, input().split())
-arr = list(map(int, input().split()))
-pairs = []
-for i in range(m):
-    pairs.append(list(map(int, input().split())))
+def generate_strings(grammar, start_variable):
+    strings = []
+    for variable in grammar:
+        if variable == start_variable:
+            strings.append(grammar[variable])
+        else:
+            for production in grammar[variable]:
+                strings.append(production)
+    return strings
 
-print(max_operations(arr, pairs))
+def search_text(text, grammar, start_variable):
+    strings = generate_strings(grammar, start_variable)
+    for string in strings:
+        if re.search(string, text):
+            return string
+    return "NONE"
+
+def main():
+    rules = []
+    while True:
+        try:
+            line = input()
+            if line == "":
+                break
+            rules.append(line)
+        except EOFError:
+            break
+    grammar = generate_grammar(rules)
+    start_variable = rules[0].split(" -> ")[0]
+    while True:
+        try:
+            line = input()
+            if line == "":
+                break
+            print(search_text(line, grammar, start_variable))
+        except EOFError:
+            break
+
+if __name__ == '__main__':
+    main()
 

@@ -1,12 +1,16 @@
 
-import re
-
-n = int(input())
-
-for i in range(n):
-    number = input()
-    if re.match(r'^[789]\d{9}$', number):
-        print("YES")
+def get_number_of_colors(s):
+    colors = set(s)
+    if len(colors) == 3:
+        return "Three"
     else:
-        print("NO")
+        return "Four"
+
+def main():
+    n = int(input())
+    s = input()
+    print(get_number_of_colors(s))
+
+if __name__ == '__main__':
+    main()
 

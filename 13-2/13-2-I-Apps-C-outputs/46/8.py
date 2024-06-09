@@ -1,18 +1,34 @@
 
-def get_maximum_gold(n, m, roads, gold):
-    # Initialize a graph with the given roads
-    graph = [[] for _ in range(n + 1)]
-    for a, b in roads:
-        graph[a].append(b)
-        graph[b].append(a)
-    
-    # Initialize a dictionary to store the maximum gold that can be stolen from each village
-    max_gold = {1: 0}
-    
-    # Iterate through each village and calculate the maximum gold that can be stolen from it
-    for i in range(2, n + 1):
-        max_gold[i] = max(max_gold[j] + gold[i] for j in graph[i])
-    
-    # Return the maximum gold that can be stolen from the bandit's home
-    return max_gold[1]
+def f1(Y, X, x_init):
+    # Initialize the map and the number of paths
+    map = []
+    num_paths = 0
+
+    # Read the map from stdin
+    for _ in range(Y):
+        map.append(list(input()))
+
+    # Check if the ship can move east or west
+    can_move_east = False
+    can_move_west = False
+    for y in range(Y):
+        if map[y][x_init] == '>':
+            can_move_east = True
+        elif map[y][x_init] == '<':
+            can_move_west = True
+
+    # Check if the ship can move north
+    can_move_north = False
+    for x in range(x_init):
+        if map[Y-1][x] == '~':
+            can_move_north = True
+            break
+
+    # Count the number of paths
+    if can_move_east and can_move_west:
+        num_paths += 2
+    if can_move_north:
+        num_paths += 1
+
+    return num_paths % 1000003
 

@@ -1,23 +1,21 @@
 
-def restore_sequence(n, l_list, r_list):
-    # Initialize an empty sequence
-    sequence = []
-
-    # Loop through each opening bracket
+def get_min_operations(table):
+    # Initialize variables
+    n, m = len(table), len(table[0])
+    operations = 0
+    visited = set()
+    
+    # Loop through each cell in the table
     for i in range(n):
-        # Find the corresponding closing bracket
-        for j in range(i+1, n):
-            if l_list[i] <= j-i <= r_list[i]:
-                sequence.append(')')
-                break
-        else:
-            sequence.append('(')
-
-    # Check if the sequence is correct
-    if sequence[0] == '(' and sequence[-1] == ')':
-        for i in range(1, n-1):
-            if sequence[i] == '(' and sequence[i+1] == ')':
-                return ''.join(sequence)
-
-    return "IMPOSSIBLE"
+        for j in range(m):
+            # If the cell is good and has not been visited yet, perform an operation
+            if table[i][j] == 1 and (i, j) not in visited:
+                operations += 1
+                visited.add((i, j))
+                # Find all adjacent good cells and mark them as visited
+                for x, y in [(i-1, j), (i+1, j), (i, j-1), (i, j+1)]:
+                    if 0 <= x < n and 0 <= y < m and table[x][y] == 1 and (x, y) not in visited:
+                        visited.add((x, y))
+    
+    return operations
 

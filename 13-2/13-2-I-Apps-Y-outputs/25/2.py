@@ -1,10 +1,16 @@
 
-def solve():
-    N = int(input())
-    A = list(map(int, input().split()))
-    count = 0
-    while all(a % 2 == 0 for a in A):
-        count += 1
-        A = [a // 2 for a in A]
-    return count
+def is_connected(stations):
+    # Check if there are two stations with different companies
+    # and are next to each other
+    for i in range(len(stations) - 1):
+        if stations[i] != stations[i + 1] and stations[i] != stations[i - 1]:
+            return True
+    return False
+
+def main():
+    stations = input()
+    print("Yes") if is_connected(stations) else print("No")
+
+if __name__ == '__main__':
+    main()
 

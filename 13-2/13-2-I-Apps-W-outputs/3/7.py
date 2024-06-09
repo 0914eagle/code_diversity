@@ -1,26 +1,23 @@
 
-def solve(r, n, reclaimed_cells):
-    # Initialize a set to store the reclaimed cells
-    reclaimed = set(reclaimed_cells)
-    
-    # Initialize a set to store the cells that are not allowed to be reclaimed
-    not_allowed = set()
-    
-    # Loop through each reclaimed cell
-    for cell in reclaimed:
-        # Get the row and column of the cell
-        row, col = cell
-        
-        # Add the cells that are not allowed to be reclaimed to the set
-        not_allowed.add((row - 1, 3 - col))
-        not_allowed.add((row, 3 - col))
-        not_allowed.add((row + 1, 3 - col))
-    
-    # Check if there are any cells that are not allowed to be reclaimed and are not already reclaimed
-    for cell in not_allowed:
-        if cell in reclaimed:
-            return "LOSE"
-    
-    # If all cells are allowed to be reclaimed, return "WIN"
-    return "WIN"
+def find_mex(arr):
+    n = len(arr)
+    mex = 0
+    for i in range(n):
+        if arr[i] != mex:
+            return mex
+        mex += 1
+    return mex + 1
+
+def solve(n, a):
+    b = [0] * n
+    for i in range(n):
+        b[i] = find_mex(b[:i+1])
+        if b[i] != a[i]:
+            return [-1]
+    return b
+
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(*solve(n, a))
 

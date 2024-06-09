@@ -1,61 +1,58 @@
 
-class LongLongString:
-    def __init__(self, string):
-        self.string = string
+def f1(N, targets):
+    # Sort the targets by their x-coordinate
+    sorted_targets = sorted(targets, key=lambda x: x[0])
 
-    def __len__(self):
-        return len(self.string)
+    # Initialize the first shot
+    first_shot = (sorted_targets[0][0], sorted_targets[0][1])
 
-    def __getitem__(self, index):
-        return self.string[index]
+    # Initialize the second shot
+    second_shot = (sorted_targets[-1][0], sorted_targets[-1][1])
 
-    def __setitem__(self, index, char):
-        self.string = self.string[:index] + char + self.string[index+1:]
-
-    def __delitem__(self, index):
-        self.string = self.string[:index] + self.string[index+1:]
-
-    def __str__(self):
-        return self.string
-
-def compare_dna_programs(program1, program2):
-    string1 = LongLongString("")
-    string2 = LongLongString("")
-
-    for operation in program1:
-        if operation[0] == "D":
-            string1.__delitem__(int(operation[1:]))
-        elif operation[0] == "I":
-            string1.__setitem__(int(operation[1]), operation[3])
-
-    for operation in program2:
-        if operation[0] == "D":
-            string2.__delitem__(int(operation[1:]))
-        elif operation[0] == "I":
-            string2.__setitem__(int(operation[1]), operation[3])
-
-    return string1 == string2
-
-def main():
-    program1 = []
-    program2 = []
-
-    while True:
-        line = input()
-        if line == "E":
-            break
+    # Loop through the targets and check if they can be hit with the two shots
+    for i in range(1, N):
+        # Check if the current target is between the first and second shot
+        if first_shot[0] < sorted_targets[i][0] < second_shot[0]:
+            # If it is, update the first shot to be the current target
+            first_shot = (sorted_targets[i][0], sorted_targets[i][1])
+        elif first_shot[0] > sorted_targets[i][0] > second_shot[0]:
+            # If it is, update the second shot to be the current target
+            second_shot = (sorted_targets[i][0], sorted_targets[i][1])
         else:
-            program1.append(line)
+            # If the current target cannot be hit with the two shots, return failure
+            return "failure"
 
-    while True:
-        line = input()
-        if line == "E":
-            break
+    # If all targets have been hit, return success
+    return "success"
+
+def f2(N, targets):
+    # Initialize the first shot
+    first_shot = (targets[0][0], targets[0][1])
+
+    # Initialize the second shot
+    second_shot = (targets[-1][0], targets[-1][1])
+
+    # Loop through the targets and check if they can be hit with the two shots
+    for i in range(1, N):
+        # Check if the current target is between the first and second shot
+        if first_shot[0] < targets[i][0] < second_shot[0]:
+            # If it is, update the first shot to be the current target
+            first_shot = (targets[i][0], targets[i][1])
+        elif first_shot[0] > targets[i][0] > second_shot[0]:
+            # If it is, update the second shot to be the current target
+            second_shot = (targets[i][0], targets[i][1])
         else:
-            program2.append(line)
+            # If the current target cannot be hit with the two shots, return failure
+            return "failure"
 
-    print(compare_dna_programs(program1, program2))
+    # If all targets have been hit, return success
+    return "success"
 
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    N = int(input())
+    targets = []
+    for i in range(N):
+        x, y = map(int, input().split())
+        targets.append((x, y))
+    print(f1(N, targets))
 

@@ -1,32 +1,29 @@
 
-import sys
-input = sys.stdin.read()
-n, m = map(int, input.split('\n')[0].split())
-neighbors = [set(map(int, input.split('\n')[i].split())) for i in range(1, m+1)]
-s, t = map(int, input.split('\n')[-1].split())
+def is_reproducible(art_piece):
+    # Initialize a 2D array to store the colors of the art piece
+    art_piece_array = []
+    for row in art_piece:
+        art_piece_array.append([])
+        for col in row:
+            art_piece_array[-1].append(col)
 
-# Initialize the probability of meeting at each station
-prob = [0] * n
-prob[s] = 1
-prob[t] = 1
+    # Initialize a 2D array to store the colors of the reproduced art piece
+    reproduced_art_piece_array = [[0] * len(art_piece_array[0]) for _ in range(len(art_piece_array))]
 
-# Loop until the probability of meeting at each station is the same
-while True:
-    # Calculate the probability of meeting at each neighboring station
-    for i in range(n):
-        if i not in neighbors[i]:
-            continue
-        for j in neighbors[i]:
-            prob[j] += prob[i] / len(neighbors[i])
-    
-    # Check if the probability of meeting at each station is the same
-    if all(prob[i] == prob[-1] for i in range(n)):
-        break
+    # Loop through the art piece array and check if the colors match
+    for i in range(len(art_piece_array)):
+        for j in range(len(art_piece_array[0])):
+            if art_piece_array[i][j] != reproduced_art_piece_array[i][j]:
+                return "NO"
 
-# Calculate the expected time of meeting
-expected_time = 0
-for i in range(n):
-    expected_time += prob[i] * (i + 1)
+    return "YES"
 
-print(expected_time)
+def main():
+    art_piece = []
+    for _ in range(int(input())):
+        art_piece.append(input())
+    print(is_reproducible(art_piece))
+
+if __name__ == '__main__':
+    main()
 

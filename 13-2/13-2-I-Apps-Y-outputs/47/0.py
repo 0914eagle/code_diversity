@@ -1,21 +1,29 @@
 
-def solve(A, B, C, X, Y):
-    # Calculate the cost of buying X A-pizzas and Y B-pizzas separately
-    cost_A = X * A
-    cost_B = Y * B
-    
-    # Calculate the cost of buying two AB-pizzas and rearranging them into A-pizzas and B-pizzas
-    cost_AB = 2 * C
-    cost_A_from_AB = A
-    cost_B_from_AB = B
-    
-    # Calculate the total cost of buying X A-pizzas and Y B-pizzas
-    total_cost = cost_A + cost_B
-    
-    # If buying two AB-pizzas and rearranging them is cheaper than buying X A-pizzas and Y B-pizzas separately, return the total cost of buying two AB-pizzas and rearranging them
-    if cost_AB < total_cost:
-        return cost_AB
-    # Otherwise, return the total cost of buying X A-pizzas and Y B-pizzas separately
+def f1(n, k):
+    if n % 2 == 0:
+        return f2(n, k, 0)
     else:
-        return total_cost
+        return f2(n, k, 1)
+
+def f2(n, k, parity):
+    if k == 1:
+        return [n]
+    else:
+        for i in range(1, n + 1):
+            if i % 2 == parity:
+                result = f2(n - i, k - 1, parity)
+                if result != -1:
+                    return [i] + result
+        return -1
+
+if __name__ == '__main__':
+    t = int(input())
+    for _ in range(t):
+        n, k = map(int, input().split())
+        result = f1(n, k)
+        if result == -1:
+            print("NO")
+        else:
+            print("YES")
+            print(" ".join(map(str, result)))
 

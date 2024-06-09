@@ -1,31 +1,31 @@
 
-def get_max_output(input_molecule, input_count, output_molecule):
-    input_atoms = {}
-    for atom in input_molecule:
-        if atom.isupper():
-            if atom not in input_atoms:
-                input_atoms[atom] = 1
-            else:
-                input_atoms[atom] += 1
+def f1(n, k, commands):
+    # Initialize the egg holder and the number of children
+    egg_holder = 0
+    num_children = n
+    
+    # Iterate through the commands
+    for command in commands:
+        # If the command is a number, throw the egg that number of positions clockwise
+        if command.isdigit():
+            egg_holder = (egg_holder + int(command)) % num_children
+        # If the command is undo, undo the last m throws
         else:
-            input_atoms[atom.upper()] = int(atom.lower())
+            m = int(command.split()[1])
+            egg_holder = (egg_holder - m) % num_children
+            if egg_holder < 0:
+                egg_holder += num_children
+    
+    # Return the number of the child with the egg
+    return egg_holder
 
-    output_atoms = {}
-    for atom in output_molecule:
-        if atom.isupper():
-            if atom not in output_atoms:
-                output_atoms[atom] = 1
-            else:
-                output_atoms[atom] += 1
-        else:
-            output_atoms[atom.upper()] = int(atom.lower())
+def f2(...):
+    # Implement function f2 here
+    pass
 
-    max_output = 0
-    for atom, count in output_atoms.items():
-        if atom in input_atoms and input_atoms[atom] >= count:
-            max_output += count
-        else:
-            return 0
-
-    return max_output * input_count
+if __name__ == '__main__':
+    n = int(input())
+    k = int(input())
+    commands = input().split()
+    print(f1(n, k, commands))
 

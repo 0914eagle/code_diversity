@@ -1,51 +1,8 @@
 
-def is_star(grid, row, col, size):
-    # Check if the star is inside the grid
-    if row < 0 or col < 0 or row + size > len(grid) or col + size > len(grid[0]):
-        return False
-    
-    # Check if the star is completely inside the grid
-    if any(grid[row + i][col + j] != '*' for i in range(size) for j in range(size)):
-        return False
-    
-    # Check if the star is not overlapping with any other star
-    for i in range(size):
-        for j in range(size):
-            if grid[row + i][col + j] == '*':
-                return False
-    
-    return True
-
-def draw_grid(grid):
-    # Initialize the number of stars needed to draw the grid
-    num_stars = 0
-    
-    # Iterate through the grid
-    for row in range(len(grid)):
-        for col in range(len(grid[0])):
-            # If the current cell is a star, check if it is a valid star
-            if grid[row][col] == '*':
-                # Check if the star is valid
-                if is_star(grid, row, col, 1):
-                    num_stars += 1
-                # If the star is not valid, return -1
-                else:
-                    return -1
-    
-    # If all stars are valid, return the number of stars needed to draw the grid
-    return num_stars
-
-grid = [
-    ['.', '.', '.', '.', '.', '.', '.', '.'],
-    ['.', '*', '*', '*', '*', '*', '.', '.'],
-    ['.', '*', '*', '*', '*', '*', '.', '.'],
-    ['.', '*', '*', '*', '*', '*', '.', '.'],
-    ['.', '*', '*', '*', '*', '*', '.', '.'],
-    ['.', '*', '*', '*', '*', '*', '.', '.'],
-    ['.', '.', '.', '.', '.', '.', '.', '.'],
-    ['.', '.', '.', '.', '.', '.', '.', '.']
-]
-
-result = draw_grid(grid)
-print(result)
+def f1(k):
+    count = 0
+    for i in range(1, k+1, 2):
+        for j in range(2, k+1, 2):
+            count += 1
+    return count
 

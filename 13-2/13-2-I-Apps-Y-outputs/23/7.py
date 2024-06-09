@@ -1,16 +1,13 @@
 
-n, k = map(int, input().split())
-
-# Calculate the minimum difference
-diff = n // k
-
-# Calculate the remainder
-rem = n % k
-
-# Distribute the remainder equally among the first k-1 users
-for i in range(k-1):
-    diff += 1
-
-# Print the minimum difference
-print(diff)
+def check_delimiters(L):
+    opening = ["(", "[", "{"]
+    closing = [")", "]", "}"]
+    stack = []
+    for i, char in enumerate(L):
+        if char in opening:
+            stack.append(char)
+        elif char in closing:
+            if not stack or opening.index(stack.pop()) != closing.index(char):
+                return char, i
+    return "ok so far", -1
 

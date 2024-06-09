@@ -1,10 +1,12 @@
 
-def solve():
-    N = int(input())
-    A = list(map(int, input().split()))
-    count = 0
-    while all(a % 2 == 0 for a in A):
-        count += 1
-        A = [a // 2 for a in A]
-    return count
+def is_bus_service_available(stations):
+    # Check if there are two stations with different companies
+    if stations[0] != stations[1] and stations[1] != stations[2]:
+        return "Yes"
+    else:
+        return "No"
+
+if __name__ == '__main__':
+    stations = input()
+    print(is_bus_service_available(stations))
 

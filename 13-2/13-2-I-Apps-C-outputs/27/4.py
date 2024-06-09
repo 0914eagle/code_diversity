@@ -1,13 +1,14 @@
 
-n = int(input())
-arr = list(map(int, input().split()))
+def f1(n, k):
+    # Your code here
+    return 0.00
 
-count = 0
-for i in range(n-1):
-    if arr[i] == 0 and arr[i+1] == 0:
-        count += 1
-    elif arr[i] == 2 and arr[i+1] == 2:
-        count += 1
+def f2(...):
+    # Your code here
+    return 0.00
 
-print(count)
+if __name__ == '__main__':
+    n = int(input())
+    k = int(input())
+    print(f1(n, k))
 

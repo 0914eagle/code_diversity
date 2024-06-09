@@ -1,37 +1,34 @@
 
-def solve():
-    s = input()
-    t = input()
+def get_maximum_students_with_favorite_drink(n, k, a):
+    # Initialize variables
+    max_students = 0
+    current_students = 0
+    current_drinks = []
+    
+    # Iterate through the students
+    for i in range(n):
+        # If the current student has a favorite drink that is not in the current list of drinks, add it to the list
+        if a[i] not in current_drinks:
+            current_drinks.append(a[i])
+            current_students += 1
+        
+        # If the current list of drinks has two drinks, calculate the maximum number of students that can be given these drinks
+        if len(current_drinks) == 2:
+            max_students = max(max_students, current_students)
+            current_students = 0
+            current_drinks = []
+    
+    # If there are an odd number of students, one portion will remain unused and the teacher will drink it
+    if n % 2 == 1:
+        max_students -= 1
+    
+    return max_students
 
-    # Initialize the minimum value of i as the length of s
-    min_i = len(s)
+def main():
+    n, k = map(int, input().split())
+    a = list(map(int, input().split()))
+    print(get_maximum_students_with_favorite_drink(n, k, a))
 
-    # Loop through each possible value of i
-    for i in range(len(s), 0, -1):
-        # Check if t is a subsequence of the first i characters of s'
-        if is_subsequence(t, s * 100)[:i]:
-            # If it is, update the minimum value of i
-            min_i = i
-            break
-
-    # Print the minimum value of i
-    print(min_i)
-
-def is_subsequence(s, t):
-    # Initialize the index of the first character in s
-    i = 0
-
-    # Loop through each character in t
-    for c in t:
-        # If the current character in t is in s, update the index of the first character in s
-        if c in s[i:]:
-            i = s.index(c) + 1
-        # If the current character in t is not in s, return False
-        else:
-            return False
-
-    # If we reach the end of t, return True
-    return True
-
-solve()
+if __name__ == '__main__':
+    main()
 

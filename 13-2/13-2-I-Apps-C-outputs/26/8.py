@@ -1,36 +1,58 @@
 
-import math
+def f1(n, current_sequence, fossil_sequences):
+    # Initialize variables
+    first_path_sequences = []
+    second_path_sequences = []
+    first_path_count = 0
+    second_path_count = 0
 
-def solve(n, circles):
-    # Convert the circles to a set of line segments
-    segments = []
-    for circle in circles:
-        x, y, r = circle
-        segments.append([(x + r, y), (x - r, y)])
-        segments.append([(x, y + r), (x, y - r)])
-    
-    # Sort the segments by their slope
-    segments.sort(key=lambda segment: segment[0][1] - segment[1][1])
-    
-    # Count the number of regions
-    regions = set()
-    for segment in segments:
-        x1, y1 = segment[0]
-        x2, y2 = segment[1]
-        if x1 == x2:
-            continue
-        
-        m = (y2 - y1) / (x2 - x1)
-        b = y1 - m * x1
-        regions.add((m, b))
-    
-    return len(regions)
+    # Iterate through the fossil sequences
+    for sequence in fossil_sequences:
+        # Check if the sequence is in the genetic history of the current species
+        if sequence in current_sequence:
+            # If it is, add it to the first path
+            first_path_sequences.append(sequence)
+            first_path_count += 1
+        else:
+            # If it's not, add it to the second path
+            second_path_sequences.append(sequence)
+            second_path_count += 1
 
-n = int(input())
-circles = []
-for i in range(n):
-    x, y, r = map(int, input().split())
-    circles.append((x, y, r))
+    # Return the number of sequences in each path and the sequences themselves
+    return first_path_count, first_path_sequences, second_path_count, second_path_sequences
 
-print(solve(n, circles))
+def f2(n, current_sequence, fossil_sequences):
+    # Initialize variables
+    first_path_sequences = []
+    second_path_sequences = []
+    first_path_count = 0
+    second_path_count = 0
+
+    # Iterate through the fossil sequences
+    for sequence in fossil_sequences:
+        # Check if the sequence is in the genetic history of the current species
+        if sequence in current_sequence:
+            # If it is, add it to the first path
+            first_path_sequences.append(sequence)
+            first_path_count += 1
+        else:
+            # If it's not, add it to the second path
+            second_path_sequences.append(sequence)
+            second_path_count += 1
+
+    # Return the number of sequences in each path and the sequences themselves
+    return first_path_count, first_path_sequences, second_path_count, second_path_sequences
+
+if __name__ == '__main__':
+    n = int(input())
+    current_sequence = input()
+    fossil_sequences = []
+    for i in range(n):
+        fossil_sequences.append(input())
+    first_path_count, first_path_sequences, second_path_count, second_path_sequences = f1(n, current_sequence, fossil_sequences)
+    print(first_path_count, second_path_count)
+    for sequence in first_path_sequences:
+        print(sequence)
+    for sequence in second_path_sequences:
+        print(sequence)
 

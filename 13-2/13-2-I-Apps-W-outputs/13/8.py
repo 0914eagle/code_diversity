@@ -1,30 +1,35 @@
 
-def get_max_apples(n, apple_trees):
-    # Sort the apple trees by their position
-    apple_trees.sort(key=lambda x: x[0])
+def get_min_operations(balances):
+    # Initialize the minimum number of operations to 0
+    min_operations = 0
 
-    # Initialize the maximum number of apples collected
-    max_apples = 0
+    # Loop through the balances and find the bank with the largest balance
+    largest_balance = max(balances)
 
-    # Initialize the current position
-    current_position = 0
+    # Loop through the balances again and find the bank with the smallest balance
+    smallest_balance = min(balances)
 
-    # Initialize the current direction (0 for left, 1 for right)
-    current_direction = 0
+    # Calculate the difference between the largest and smallest balance
+    balance_diff = largest_balance - smallest_balance
 
-    # Loop through the apple trees
-    for tree in apple_trees:
-        # If the current position is not the same as the position of the current tree
-        if current_position != tree[0]:
-            # Update the current position
-            current_position = tree[0]
+    # If the difference is positive, we need to transfer money from the bank with the largest balance to the bank with the smallest balance
+    if balance_diff > 0:
+        # Calculate the minimum number of operations required to transfer the difference
+        min_operations += balance_diff
 
-            # Update the current direction
-            current_direction = 1 - current_direction
+        # Update the balances to reflect the transfer
+        balances[largest_balance] -= balance_diff
+        balances[smallest_balance] += balance_diff
 
-        # Add the number of apples on the current tree to the maximum number of apples collected
-        max_apples += tree[1]
+    # If the difference is negative, we need to transfer money from the bank with the smallest balance to the bank with the largest balance
+    elif balance_diff < 0:
+        # Calculate the minimum number of operations required to transfer the difference
+        min_operations += abs(balance_diff)
 
-    # Return the maximum number of apples collected
-    return max_apples
+        # Update the balances to reflect the transfer
+        balances[largest_balance] += abs(balance_diff)
+        balances[smallest_balance] -= abs(balance_diff)
+
+    # Return the minimum number of operations required to make all balances equal
+    return min_operations
 

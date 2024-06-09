@@ -1,39 +1,49 @@
 
-def solve(tasks):
-    # Initialize the processor clock and the list of running tasks
-    clock = 0
-    running_tasks = []
-    
-    # Loop until all tasks are completed
-    while tasks:
-        # Identify running tasks
-        running_tasks = [task for task in tasks if task["start"] <= clock and not task["completed"]]
-        
-        # Determine the current priorities of the running tasks and which of the running tasks are blocked
-        blocked_tasks = []
-        for task in running_tasks:
-            if task["next_instruction"] == "lock":
-                resource = task["next_resource"]
-                if resource in task["owned_resources"] or any(task["owned_resources"][resource] >= task["priority"] for task in running_tasks):
-                    blocked_tasks.append(task)
-        
-        # Execute the next instruction of the non-blocked running task with the highest current priority
-        if running_tasks and not blocked_tasks:
-            task = max(running_tasks, key=lambda x: x["priority"])
-            instruction = task["next_instruction"]
-            if instruction == "compute":
-                clock += 1
-            elif instruction == "lock":
-                task["owned_resources"][task["next_resource"]] = task["priority"]
-            elif instruction == "unlock":
-                resource = task["next_resource"]
-                task["owned_resources"][resource] = 0
-                task["next_instruction"] = "lock" if task["next_resource"] in task["owned_resources"] else "compute"
-            task["next_instruction"] = "compute"
-        
-        # Increment the processor clock by one microsecond
-        clock += 1
-    
-    # Return the completion times of the tasks
-    return [task["completion_time"] for task in tasks]
+def is_graph_valid(n, m, edges):
+    # Initialize a dictionary to store the neighbors of each vertex
+    neighbors = {i: set() for i in range(1, n + 1)}
+
+    # Add edges to the graph
+    for u, v in edges:
+        neighbors[u].add(v)
+        neighbors[v].add(u)
+
+    # Check that the graph is connected
+    visited = set()
+    queue = [1]
+    while queue:
+        vertex = queue.pop(0)
+        if vertex not in visited:
+            visited.add(vertex)
+            queue.extend(neighbors[vertex])
+
+    return len(visited) == n
+
+def find_string(n, m, edges):
+    # Initialize a set to store the possible strings
+    strings = set()
+
+    # Iterate over all possible strings of length n
+    for string in itertools.product("abc", repeat=n):
+        # Convert the string to a list of integers
+        string_list = [ord(char) - ord("a") + 1 for char in string]
+
+        # Check if the string is valid
+        if is_graph_valid(n, m, zip(string_list, string_list[1:])):
+            strings.add("".join(string))
+
+    return strings
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    edges = []
+    for _ in range(m):
+        u, v = map(int, input().split())
+        edges.append((u, v))
+    strings = find_string(n, m, edges)
+    if len(strings) == 0:
+        print("No")
+    else:
+        print("Yes")
+        print(strings.pop())
 

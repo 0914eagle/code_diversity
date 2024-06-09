@@ -1,23 +1,32 @@
 
-import itertools
+def count_black_squares(grid):
+    # Initialize a counter for the number of black squares
+    black_squares = 0
 
-def get_smallest_string(s, t):
-    # Create a list of all possible strings that satisfy Condition 1
-    possible_strings = [s[i:i+len(t)] for i in range(len(s)-len(t)+1)]
-    
-    # Filter out strings that do not contain T as a contiguous substring
-    possible_strings = [s for s in possible_strings if t in s]
-    
-    # Sort the list of possible strings lexicographically
-    possible_strings.sort()
-    
-    # Return the first string in the list, which is the lexicographically smallest string that satisfies Condition 1
-    if possible_strings:
-        return possible_strings[0]
-    else:
-        return "UNRESTORABLE"
+    # Iterate through the grid and count the number of black squares
+    for row in grid:
+        for square in row:
+            if square == "#":
+                black_squares += 1
 
-s = input()
-t = input()
-print(get_smallest_string(s, t))
+    return black_squares
+
+def count_choices(grid, k):
+    # Initialize a counter for the number of choices
+    choices = 0
+
+    # Iterate through the grid and count the number of choices that result in k black squares
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if count_black_squares(grid) == k:
+                choices += 1
+
+    return choices
+
+if __name__ == '__main__':
+    h, w, k = map(int, input().split())
+    grid = []
+    for _ in range(h):
+        grid.append(list(input()))
+    print(count_choices(grid, k))
 

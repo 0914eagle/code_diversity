@@ -1,39 +1,71 @@
 
-def solve(tasks):
-    # Initialize the processor clock and the list of running tasks
-    clock = 0
-    running_tasks = []
+def is_graph_reconstructable(n, m, edges):
     
-    # Loop until all tasks are completed
-    while tasks:
-        # Identify running tasks
-        running_tasks = [task for task in tasks if task["start"] <= clock and not task["completed"]]
-        
-        # Determine the current priorities of the running tasks and which of the running tasks are blocked
-        blocked_tasks = []
-        for task in running_tasks:
-            if task["instructions"][0] == "L":
-                resource = task["instructions"][1]
-                if resource in blocked_tasks or any(task["priority"] < task2["priority"] for task2 in blocked_tasks if task2["resource"] == resource):
-                    blocked_tasks.append(task)
-        
-        # Execute the next instruction of the non-blocked running task (if any) with the highest current priority
-        if running_tasks:
-            running_tasks.sort(key=lambda x: x["priority"], reverse=True)
-            task = running_tasks[0]
-            instruction = task["instructions"][0]
-            if instruction == "C":
-                clock += 1
-            elif instruction == "L":
-                task["resource"] = task["instructions"][1]
-                task["priority"] = task["base_priority"]
-            elif instruction == "U":
-                task["resource"] = None
-                task["priority"] = task["base_priority"]
-            task["instructions"] = task["instructions"][1:]
-            if not task["instructions"]:
-                task["completed"] = True
+    # Initialize a dictionary to keep track of the edges in the graph
+    edge_dict = {}
+    for edge in edges:
+        u, v = edge
+        if u not in edge_dict:
+            edge_dict[u] = []
+        edge_dict[u].append(v)
     
-    # Return the time each task completes execution
-    return [task["start"] + task["duration"] for task in tasks]
+    # Initialize a set to keep track of the vertices that have been visited
+    visited = set()
+    
+    # Recursively explore the graph starting from vertex 1
+    if explore_graph(1, edge_dict, visited, n):
+        return True
+    else:
+        return False
+
+def explore_graph(vertex, edge_dict, visited, n):
+    
+    # If all vertices have been visited, return True
+    if len(visited) == n:
+        return True
+    
+    # If the current vertex has not been visited, mark it as visited and explore its neighbors
+    if vertex not in visited:
+        visited.add(vertex)
+        for neighbor in edge_dict[vertex]:
+            if explore_graph(neighbor, edge_dict, visited, n):
+                return True
+    
+    # If the current vertex has been visited and all of its neighbors have been visited, return False
+    return False
+
+def reconstruct_string(n, m, edges):
+    
+    # Initialize an empty string
+    string = ""
+    
+    # Initialize a dictionary to keep track of the vertices that have been visited
+    visited = {}
+    
+    # Recursively explore the graph starting from vertex 1
+    explore_graph(1, edges, visited, n)
+    
+    # Fill in the string with the letters corresponding to the visited vertices
+    for vertex in range(1, n + 1):
+        if vertex in visited:
+            string += "a"
+        else:
+            string += "b"
+    
+    return string
+
+def main():
+    n, m = map(int, input().split())
+    edges = []
+    for _ in range(m):
+        u, v = map(int, input().split())
+        edges.append((u, v))
+    if is_graph_reconstructable(n, m, edges):
+        print("Yes")
+        print(reconstruct_string(n, m, edges))
+    else:
+        print("No")
+
+if __name__ == '__main__':
+    main()
 

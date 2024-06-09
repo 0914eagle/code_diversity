@@ -1,43 +1,29 @@
 
-import sys
-input = sys.stdin.read()
-n, m = map(int, input.split('\n')[0].split())
-neighbors = [set() for _ in range(n)]
-for i in range(m):
-    u, v = map(int, input.split('\n')[i + 1].split())
-    neighbors[u].add(v)
-    neighbors[v].add(u)
-s, t = map(int, input.split('\n')[-1].split())
-
-# Initialize the probability of meeting at each station
-prob = [0] * n
-prob[s] = 1
-prob[t] = 1
-
-# Iterate through each minute
-for i in range(1, n * n):
-    # Find the current station of Alice and Bob
-    current_s = (s + i) % n
-    current_t = (t + i) % n
+def is_reproducible(art_piece):
+    # Initialize a 2D array to store the colors of the art piece
+    art_piece_array = []
+    for row in art_piece:
+        art_piece_array.append([])
+        for col in row:
+            art_piece_array[-1].append(col)
     
-    # If they are at the same station, they meet
-    if current_s == current_t:
-        print(i)
-        break
+    # Initialize a 2D array to store the colors of the reproduced art piece
+    reproduced_art_piece_array = [[0] * len(art_piece_array[0]) for _ in range(len(art_piece_array))]
     
-    # Otherwise, they take a train to a neighboring station
-    neighbors_s = neighbors[current_s]
-    neighbors_t = neighbors[current_t]
-    for neighbor_s in neighbors_s:
-        for neighbor_t in neighbors_t:
-            prob[neighbor_s] += prob[current_s] / len(neighbors_s)
-            prob[neighbor_t] += prob[current_t] / len(neighbors_t)
+    # Iterate through the art piece array and check if the colors match
+    for i in range(len(art_piece_array)):
+        for j in range(len(art_piece_array[0])):
+            if art_piece_array[i][j] != reproduced_art_piece_array[i][j]:
+                return "NO"
     
-    # Reset the probability of meeting at the current station
-    prob[current_s] = 0
-    prob[current_t] = 0
+    return "YES"
 
-# If they never meet, print "never meet"
-else:
-    print("never meet")
+def main():
+    art_piece = []
+    for _ in range(int(input())):
+        art_piece.append(input())
+    print(is_reproducible(art_piece))
+
+if __name__ == '__main__':
+    main()
 

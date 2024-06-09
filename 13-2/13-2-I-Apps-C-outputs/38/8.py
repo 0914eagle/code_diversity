@@ -1,26 +1,22 @@
 
-def solve(sticks):
-    # Sort the sticks by their x-coordinate
-    sticks.sort(key=lambda x: x[0])
+def get_min_transactions(receipts):
+    # Initialize a dictionary to store the net balance of each person
+    net_balance = {i: 0 for i in range(len(receipts))}
     
-    # Initialize the output list
-    output = []
+    # Iterate over the receipts and update the net balance of each person
+    for receipt in receipts:
+        net_balance[receipt[0]] -= receipt[2]
+        net_balance[receipt[1]] += receipt[2]
     
-    # Loop through the sticks
-    for stick in sticks:
-        # Find the closest stick to the current stick
-        closest_stick = None
-        min_distance = float('inf')
-        for other_stick in sticks:
-            if other_stick != stick:
-                distance = abs(stick[0] - other_stick[0])
-                if distance < min_distance:
-                    min_distance = distance
-                    closest_stick = other_stick
-        
-        # Add the closest stick to the output list
-        output.append(closest_stick)
+    # Initialize a set to store the transactions
+    transactions = set()
     
-    # Return the output list
-    return output
+    # Iterate over the net balance of each person and add the transactions to the set
+    for i in range(len(net_balance)):
+        for j in range(i+1, len(net_balance)):
+            if net_balance[i] != 0 and net_balance[j] != 0 and net_balance[i] != net_balance[j]:
+                transactions.add((i, j))
+    
+    # Return the number of transactions needed to settle the score
+    return len(transactions)
 

@@ -1,22 +1,24 @@
 
-import re
+def get_max_prettiness(a):
+    n = len(a)
+    if n == 1:
+        return a[0]
+    if n == 2:
+        return a[0] + a[1]
+    if n == 3:
+        return max(a[0] + a[1], a[1] + a[2], a[0] + a[2])
+    dp = [0] * (n + 1)
+    for i in range(1, n + 1):
+        dp[i] = max(dp[i - 1], dp[i - 2] + a[i - 1], dp[i - 3] + a[i - 2] + a[i - 1])
+    return dp[n]
 
-def get_missing_cards(deck):
-    suits = ["P", "K", "H", "T"]
-    numbers = [str(i) for i in range(1, 14)]
-    card_count = {suit: 0 for suit in suits}
-    for card in deck:
-        match = re.match(r"([PKHT])0?(\d)", card)
-        if match:
-            suit, number = match.groups()
-            card_count[suit] += 1
-            if card_count[suit] > 1 and card_count[suit] > card_count["P"]:
-                return "GRESKA"
-    for suit in suits:
-        if card_count[suit] < 13:
-            card_count[suit] = 13 - card_count[suit]
-    return " ".join(str(card_count[suit]) for suit in suits)
+def main():
+    q = int(input())
+    for _ in range(q):
+        n = int(input())
+        a = list(map(int, input().split()))
+        print(get_max_prettiness(a))
 
-deck = input()
-print(get_missing_cards(deck))
+if __name__ == '__main__':
+    main()
 

@@ -1,16 +1,17 @@
 
-def get_max_bottles(n, h, bottle_heights):
-    # Initialize a list to store the maximum number of bottles that can be placed on each shelf
-    max_bottles = [0] * (h + 1)
-    max_bottles[0] = 1
+def get_maximum_sum(p, m, k):
+    n = len(p)
+    dp = [[0] * (n + 1) for _ in range(k + 1)]
+    for i in range(1, k + 1):
+        for j in range(i, n + 1):
+            dp[i][j] = max(dp[i - 1][j - 1] + p[j - 1], dp[i][j - 1])
+    return dp[k][n]
 
-    # Loop through each bottle and calculate the maximum number of bottles that can be placed on each shelf
-    for i in range(n):
-        for j in range(h, 0, -1):
-            if bottle_heights[i] <= j:
-                max_bottles[j] = max(max_bottles[j], max_bottles[j - bottle_heights[i]] + 1)
-                break
+def main():
+    n, m, k = map(int, input().split())
+    p = list(map(int, input().split()))
+    print(get_maximum_sum(p, m, k))
 
-    # Return the maximum number of bottles that can be placed on the top shelf
-    return max_bottles[h]
+if __name__ == '__main__':
+    main()
 

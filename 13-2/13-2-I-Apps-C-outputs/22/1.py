@@ -1,38 +1,29 @@
 
-import math
+def is_reproducible(art_piece):
+    # Initialize a 2D array to store the colors of the art piece
+    art_piece_array = []
+    for row in art_piece:
+        art_piece_array.append([])
+        for col in row:
+            art_piece_array[-1].append(col)
 
-def solve(n, m, neighbors, s, t):
-    # Initialize the probability of meeting at each station
-    probabilities = [0] * n
-    probabilities[s] = 1
-    probabilities[t] = 1
+    # Initialize a 2D array to store the colors of the reproduced art piece
+    reproduced_art_piece_array = [[0] * len(art_piece_array[0]) for _ in range(len(art_piece_array))]
 
-    # Loop through each minute
-    for minute in range(1, 60):
-        # Find the stations that are neighbors to the current stations
-        neighbor_stations = set()
-        for u, v in neighbors:
-            if u == s or v == s:
-                neighbor_stations.add(v)
-            if u == t or v == t:
-                neighbor_stations.add(u)
+    # Loop through the art piece array and check if the colors match
+    for i in range(len(art_piece_array)):
+        for j in range(len(art_piece_array[0])):
+            if art_piece_array[i][j] != reproduced_art_piece_array[i][j]:
+                return "NO"
 
-        # Update the probabilities of meeting at each station
-        for station in range(n):
-            if station in neighbor_stations:
-                probabilities[station] += probabilities[s] * probabilities[t] / (n - 1)
-            else:
-                probabilities[station] += probabilities[s] * (1 - probabilities[t]) / n
-                probabilities[station] += probabilities[t] * (1 - probabilities[s]) / n
+    return "YES"
 
-        # Check if Alice and Bob will meet
-        if s == t:
-            return minute
+def main():
+    art_piece = []
+    for _ in range(int(input())):
+        art_piece.append(input())
+    print(is_reproducible(art_piece))
 
-        # Update the current stations
-        s = (s + 1) % n
-        t = (t + 1) % n
-
-    # If they will never meet, return "never meet"
-    return "never meet"
+if __name__ == '__main__':
+    main()
 

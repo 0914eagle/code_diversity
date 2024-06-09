@@ -1,28 +1,29 @@
 
-def solve(D, W, C):
-    # Initialize variables
-    total_smoothie = W
-    containers = []
-    current_container = 0
-    current_distance = 0
+def f1(s):
+    # Calculate the average value of L(C) over all possible sequences C represented by s
+    n = len(s)
+    count = 0
+    total = 0
+    for i in range(1, n+1):
+        for j in range(n-i+1):
+            if s[j] == 'H' and s[j+i-1] == 'H':
+                count += 1
+                total += i
+    return total / count
 
-    # While there is still smoothie left to bring
-    while total_smoothie > 0:
-        # Calculate the distance the monkey can walk with the current amount of smoothie
-        distance_left = total_smoothie / C
+def f2(s):
+    # Calculate the average value of L(C) over all possible sequences C represented by s
+    n = len(s)
+    count = 0
+    total = 0
+    for i in range(1, n+1):
+        for j in range(n-i+1):
+            if s[j] == 'H' and s[j+i-1] == 'H':
+                count += 1
+                total += i
+    return total / count
 
-        # If the distance left is less than the distance to the family, bring the remaining smoothie
-        if distance_left < D:
-            total_smoothie = 0
-        # Otherwise, bring as much smoothie as possible and leave the rest in a container
-        else:
-            total_smoothie -= C * D
-            containers.append(C * D)
-            current_container += 1
-            current_distance += D
-
-    # Calculate the total amount of smoothie brought
-    total_brought = sum(containers)
-
-    return total_brought
+if __name__ == '__main__':
+    s = input()
+    print(f1(s))
 

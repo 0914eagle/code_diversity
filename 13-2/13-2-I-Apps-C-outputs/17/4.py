@@ -1,69 +1,23 @@
 
-def solve(R, C, K, grid, scores):
-    # Initialize the maximum score to 0
-    max_score = 0
-    
-    # Loop through each possible direction for the conveyor belts
-    for direction in ["R", "L"]:
-        # Set the direction for the conveyor belts
-        set_conveyor_belts(grid, direction)
-        
-        # Initialize the current score to 0
-        current_score = 0
-        
-        # Loop through each cell in the grid
-        for i in range(R):
-            for j in range(C):
-                # If the cell is not an obstacle and the ball is not outside of the grid
-                if grid[i][j] != "X" and i != R and j != C:
-                    # Move the ball to the next cell based on the conveyor belts
-                    move_ball(grid, i, j)
-                    
-                    # If the ball is in the last row of a part
-                    if i == R - 1:
-                        # Add the score for the current cell to the current score
-                        current_score += scores[j]
-                        
-                        # Break out of the loop if the ball goes through 10^20 cells
-                        if current_score > 10**20:
-                            break
-                        
-        # Update the maximum score if the current score is higher
-        max_score = max(max_score, current_score)
-    
-    # Return the maximum score
-    return max_score
+def get_largest_sum(n):
+    for a in range(n+1):
+        for b in range(a, n+1):
+            if a + b == n:
+                return a, b
+    return None
 
-def set_conveyor_belts(grid, direction):
-    # Loop through each row in the grid
-    for i in range(len(grid)):
-        # Loop through each cell in the row
-        for j in range(len(grid[i])):
-            # If the cell is a conveyor belt and it is not yet set
-            if grid[i][j] == "?" and direction != "?":
-                # Set the direction of the conveyor belt
-                grid[i][j] = direction
+def get_sum_of_digits(n):
+    sum = 0
+    while n > 0:
+        sum += n % 10
+        n //= 10
+    return sum
 
-def move_ball(grid, i, j):
-    # If the ball is in the last row of a part
-    if i == R - 1:
-        # Break out of the loop
-        break
-    
-    # If the cell is not an obstacle and the ball is not outside of the grid
-    if grid[i][j] != "X" and i != R and j != C:
-        # Move the ball to the next cell based on the conveyor belts
-        i += 1
-        j += 1
-        move_ball(grid, i, j)
+def get_largest_possible_sum(n):
+    a, b = get_largest_sum(n)
+    return get_sum_of_digits(a) + get_sum_of_digits(b)
 
-grid = [
-    [".", ".", ".", ".", "."],
-    [".", "X", ".", ".", "."],
-    [".", ".", ".", ".", "."],
-    [".", ".", ".", ".", "."],
-    [".", ".", ".", ".", "."]
-]
-scores = [100, 100, 7, 100, 8]
-print(solve(5, 5, 2, grid, scores))
+if __name__ == '__main__':
+    n = int(input())
+    print(get_largest_possible_sum(n))
 

@@ -1,22 +1,46 @@
 
-def solve(offers):
-    # Sort the offers by the first section of the fence
-    sorted_offers = sorted(offers, key=lambda x: x[1])
+def get_cluster_size(a, b, c):
+    # Sort the data by the measure a*S + b*T
+    sorted_data = sorted(zip(a, b, c), key=lambda x: x[0]*S + x[1]*T)
+    
+    # Find the indices of the first and last results with c=1
+    j = 0
+    k = 0
+    for i in range(len(sorted_data)):
+        if sorted_data[i][2] == 1:
+            j = i
+            break
+    for i in range(len(sorted_data)-1, -1, -1):
+        if sorted_data[i][2] == 1:
+            k = i
+            break
+    
+    # Return the cluster size
+    return k-j+1
 
-    # Initialize the variables to keep track of the colors and sections
-    colors = set()
-    sections = set()
+def main():
+    # Read the input
+    n = int(input())
+    a = []
+    b = []
+    c = []
+    for i in range(n):
+        ai, bi, ci = map(int, input().split())
+        a.append(ai)
+        b.append(bi)
+        c.append(ci)
+    
+    # Find the smallest possible cluster size over all possible (S, T) pairs
+    smallest_cluster_size = float('inf')
+    for S in range(100):
+        for T in range(100):
+            cluster_size = get_cluster_size(a, b, c, S, T)
+            if cluster_size < smallest_cluster_size:
+                smallest_cluster_size = cluster_size
+    
+    # Print the smallest possible cluster size
+    print(smallest_cluster_size)
 
-    # Loop through the sorted offers and accept them if they are valid
-    for offer in sorted_offers:
-        color, start, end = offer
-        if color not in colors and len(colors) < 3 and start not in sections and end not in sections:
-            colors.add(color)
-            sections.update(range(start, end + 1))
-
-    # If all sections of the fence are painted, return the number of accepted offers
-    if len(sections) == 10000:
-        return len(offers)
-    else:
-        return "IMPOSSIBLE"
+if __name__ == '__main__':
+    main()
 

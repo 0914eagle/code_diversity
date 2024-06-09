@@ -1,40 +1,35 @@
 
-def get_max_apples(n, x_a_pairs):
-    # Sort the x_a_pairs by x coordinate in ascending order
-    x_a_pairs.sort(key=lambda x: x[0])
+def get_min_operations(balances):
+    # Initialize the minimum number of operations to 0
+    min_operations = 0
 
-    # Initialize the maximum number of apples collected to 0
-    max_apples = 0
+    # Loop through the balances and find the bank with the largest balance
+    largest_balance = max(balances)
 
-    # Initialize the current x coordinate to 0
-    current_x = 0
+    # Loop through the balances again and find the bank with the smallest balance
+    smallest_balance = min(balances)
 
-    # Initialize the current direction to "right"
-    current_direction = "right"
+    # Calculate the difference between the largest and smallest balance
+    balance_diff = largest_balance - smallest_balance
 
-    # Iterate through the x_a_pairs
-    for x, a in x_a_pairs:
-        # If the current x coordinate is less than the x coordinate of the current apple tree
-        if current_x < x:
-            # Update the current direction to "right"
-            current_direction = "right"
-        # If the current x coordinate is greater than the x coordinate of the current apple tree
-        elif current_x > x:
-            # Update the current direction to "left"
-            current_direction = "left"
+    # If the difference is positive, we need to transfer money from the bank with the largest balance to the bank with the smallest balance
+    if balance_diff > 0:
+        # Calculate the minimum number of operations required to transfer the difference
+        min_operations += balance_diff
 
-        # Update the current x coordinate to the x coordinate of the current apple tree
-        current_x = x
+        # Update the balances to reflect the transfer
+        balances[largest_balance] -= balance_diff
+        balances[smallest_balance] += balance_diff
 
-        # If the current direction is "right"
-        if current_direction == "right":
-            # Update the maximum number of apples collected
-            max_apples += a
-        # If the current direction is "left"
-        elif current_direction == "left":
-            # Update the maximum number of apples collected
-            max_apples += a
+    # If the difference is negative, we need to transfer money from the bank with the smallest balance to the bank with the largest balance
+    elif balance_diff < 0:
+        # Calculate the minimum number of operations required to transfer the difference
+        min_operations += abs(balance_diff)
 
-    # Return the maximum number of apples collected
-    return max_apples
+        # Update the balances to reflect the transfer
+        balances[largest_balance] += abs(balance_diff)
+        balances[smallest_balance] -= abs(balance_diff)
+
+    # Return the minimum number of operations required to make all balances equal
+    return min_operations
 

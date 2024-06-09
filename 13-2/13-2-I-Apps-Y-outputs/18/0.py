@@ -1,24 +1,22 @@
 
-def get_max_prettiness(a):
-    
-    a.sort(reverse=True)
-    if len(a) == 1:
-        return a[0]
-    if len(a) == 2:
-        return a[0] + a[1]
-    if len(a) == 3:
-        return max(a[0] + a[1], a[1] + a[2], a[0] + a[2])
-    # If there are more than 3 problems, we need to find the maximum possible cumulative prettiness by considering all possible combinations of 3 problems.
-    # We can use a dynamic programming approach to solve this problem.
-    dp = [0] * (len(a) + 1)
-    for i in range(1, len(a) + 1):
-        dp[i] = max(dp[i - 1], dp[i - 2] + a[i - 1], dp[i - 3] + a[i - 2] + a[i - 1])
-    return dp[-1]
+def f1(N, L):
+    # Calculate the sum of the flavors of all apples
+    total_flavor = sum(range(L, L+N))
+    # Calculate the sum of the flavors of the remaining apples after eating one
+    remaining_flavor = sum(range(L+1, L+N))
+    # Return the difference between the two sums
+    return abs(total_flavor - remaining_flavor)
 
+def f2(N, L):
+    # Calculate the sum of the flavors of all apples
+    total_flavor = sum(range(L, L+N))
+    # Calculate the sum of the flavors of the remaining apples after eating one
+    remaining_flavor = sum(range(L+1, L+N))
+    # Return the difference between the two sums
+    return abs(total_flavor - remaining_flavor)
 
-q = int(input())
-for _ in range(q):
-    n = int(input())
-    a = list(map(int, input().split()))
-    print(get_max_prettiness(a))
+if __name__ == '__main__':
+    N, L = map(int, input().split())
+    print(f1(N, L))
+    print(f2(N, L))
 

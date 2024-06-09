@@ -1,20 +1,33 @@
 
-def get_wcd(pairs):
-    # Initialize a set to store the common divisors
-    common_divisors = set()
+def f1(n, a):
+    # Find the index of the smallest element in the list
+    smallest_index = a.index(min(a))
+    # Find the index of the largest element in the list
+    largest_index = a.index(max(a))
+    # If the smallest element is not at the start of the list, swap it with the first element
+    if smallest_index != 0:
+        a[smallest_index], a[0] = a[0], a[smallest_index]
+    # If the largest element is not at the end of the list, swap it with the last element
+    if largest_index != n-1:
+        a[largest_index], a[n-1] = a[n-1], a[largest_index]
+    return a
 
-    # Iterate over the pairs
-    for a, b in pairs:
-        # Get the common divisors of a and b
-        divisors = set(range(2, min(a, b) + 1))
+def f2(n, a):
+    # Find the index of the smallest element in the list
+    smallest_index = a.index(min(a))
+    # Find the index of the largest element in the list
+    largest_index = a.index(max(a))
+    # If the smallest element is not at the start of the list, swap it with the first element
+    if smallest_index != 0:
+        a[smallest_index], a[0] = a[0], a[smallest_index]
+    # If the largest element is not at the end of the list, swap it with the last element
+    if largest_index != n-1:
+        a[largest_index], a[n-1] = a[n-1], a[largest_index]
+    return a
 
-        # Intersect the common divisors with the previous set
-        common_divisors &= divisors
-
-        # If the set becomes empty, return -1
-        if not common_divisors:
-            return -1
-
-    # Return the largest element in the set
-    return max(common_divisors)
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(f1(n, a))
+    print(f2(n, a))
 

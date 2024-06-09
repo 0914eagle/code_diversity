@@ -1,36 +1,45 @@
 
-def black_vienna(investigations):
-    num_investigations = len(investigations)
-    num_suspects = 26
-    num_solutions = 0
+def find_best_subsequence(k, answers):
+    # Initialize variables
+    best_subsequence = []
+    current_subsequence = []
+    success_rate = 0
+    best_success_rate = 0
+    f = 0
+    l = 0
 
-    for i in range(num_investigations):
-        suspects = investigations[i][:2]
-        player = investigations[i][2]
-        reply = investigations[i][3]
+    # Iterate through the answers
+    for i, answer in enumerate(answers):
+        # If the answer is correct, add it to the current subsequence
+        if answer == "1":
+            current_subsequence.append(i)
+        # If the answer is incorrect or the subsequence is full
+        else:
+            # If the subsequence is full and the success rate is higher than the best success rate, update the best subsequence
+            if len(current_subsequence) == k and success_rate > best_success_rate:
+                best_subsequence = current_subsequence
+                best_success_rate = success_rate
+                f = current_subsequence[0]
+                l = len(current_subsequence)
+            # Reset the current subsequence and success rate
+            current_subsequence = []
+            success_rate = 0
 
-        # Check if the reply is valid
-        if reply < 0 or reply > 2:
-            return 0
+        # Update the success rate
+        success_rate += 1 / len(current_subsequence)
 
-        # Check if the suspects are valid
-        if not (suspects[0] in range(num_suspects) and suspects[1] in range(num_suspects)):
-            return 0
+    # If the last subsequence is not empty and the success rate is higher than the best success rate, update the best subsequence
+    if len(current_subsequence) > 0 and success_rate > best_success_rate:
+        best_subsequence = current_subsequence
+        best_success_rate = success_rate
+        f = current_subsequence[0]
+        l = len(current_subsequence)
 
-        # Check if the player is valid
-        if player != 1 and player != 2:
-            return 0
+    return f, l
 
-        # Check if the reply is consistent with the player's hand
-        if player == 1:
-            if reply > num_suspects - 2:
-                return 0
-        elif player == 2:
-            if reply > num_suspects - 1:
-                return 0
-
-        # Update the number of solutions
-        num_solutions += reply
-
-    return num_solutions
+if __name__ == '__main__':
+    k = int(input())
+    answers = input()
+    f, l = find_best_subsequence(k, answers)
+    print(f, l)
 

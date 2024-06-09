@@ -1,11 +1,22 @@
 
-def get_largest_piece(n, h, v):
-    # Calculate the volume of each piece
-    piece1 = (n-h) * (n-v) * 4
-    piece2 = h * (n-v) * 4
-    piece3 = (n-h) * v * 4
-    piece4 = h * v * 4
+def get_permutation(n, q):
+    permutation = []
+    for i in range(n):
+        permutation.append(i+1)
+    for i in range(n-1):
+        if q[i] >= 0:
+            permutation[i], permutation[i+q[i]] = permutation[i+q[i]], permutation[i]
+    return permutation
 
-    # Return the largest piece
-    return max(piece1, piece2, piece3, piece4)
+def main():
+    n = int(input())
+    q = list(map(int, input().split()))
+    permutation = get_permutation(n, q)
+    if permutation == []:
+        print(-1)
+    else:
+        print(*permutation)
+
+if __name__ == '__main__':
+    main()
 

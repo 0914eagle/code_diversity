@@ -1,22 +1,34 @@
 
-def solve(segments, k):
-    # Sort the segments by their left endpoint
-    segments.sort(key=lambda x: x[0])
+def f1(n, k, matrix):
+    # Initialize a dictionary to store the distances from tile 1 to each other tile
+    distances = {1: 0}
+    
+    # Loop through each tile in the matrix
+    for i in range(n):
+        for j in range(n):
+            # If the current tile is not tile 1, check if it is reachable from tile 1
+            if matrix[i][j] != 1:
+                # Check if the current tile is reachable from any of the already visited tiles
+                for visited_tile in distances:
+                    # If the current tile is reachable from the visited tile, update the distance
+                    if matrix[i][j] == visited_tile + 1:
+                        distances[matrix[i][j]] = distances[visited_tile] + 1
+                        break
+    
+    # Check if tile k is reachable from tile 1
+    if k not in distances:
+        return -1
+    
+    # Return the shortest distance from tile 1 to tile k
+    return distances[k]
 
-    # Initialize the number of segments to remove to 0
-    num_segments_to_remove = 0
+def f2(...):
+    ...
 
-    # Iterate through the segments
-    for i in range(len(segments)):
-        # Get the current segment
-        segment = segments[i]
-
-        # Check if the segment is covered by more than k segments
-        if segment[1] - segment[0] + 1 > k:
-            # If so, remove the segment and increment the number of segments to remove
-            segments.pop(i)
-            num_segments_to_remove += 1
-
-    # Return the number of segments to remove and the indices of the segments to remove
-    return num_segments_to_remove, [i for i in range(1, len(segments) + 1)]
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    matrix = []
+    for i in range(n):
+        matrix.append(list(map(int, input().split())))
+    print(f1(n, k, matrix))
 

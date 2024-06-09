@@ -1,35 +1,31 @@
 
-def is_possible(N, M, roads):
-    # Initialize a graph with N nodes and 0 edges
-    graph = [[] for _ in range(N)]
+def get_boss_and_subordinates(employees, query):
+    # Find the employee with the given ID
+    employee = next((emp for emp in employees if emp["id"] == query), None)
+    if employee is None:
+        return (0, 0)
 
-    # Add edges to the graph
-    for road in roads:
-        graph[road[0] - 1].append(road[1] - 1)
-        graph[road[1] - 1].append(road[0] - 1)
+    # Find the employee's boss
+    boss = next((emp for emp in employees if emp["height"] >= employee["height"] and emp["salary"] > employee["salary"]), None)
+    if boss is None:
+        return (0, 0)
 
-    # Check if the graph is connected
-    visited = [False] * N
-    queue = [0]
-    visited[0] = True
-    while queue:
-        node = queue.pop(0)
-        for neighbor in graph[node]:
-            if not visited[neighbor]:
-                visited[neighbor] = True
-                queue.append(neighbor)
+    # Find the employee's subordinates
+    subordinates = [emp for emp in employees if emp["height"] >= employee["height"] and emp["salary"] > employee["salary"] and emp["id"] != employee["id"]]
 
-    # If the graph is not connected, return NO
-    if not all(visited):
-        return "NO"
+    return (boss["id"], len(subordinates))
 
-    # If the graph is connected, return YES and a possible direction assignment
-    direction = []
-    for road in roads:
-        if road[0] != 1:
-            direction.append([road[0], road[1]])
-        else:
-            direction.append([road[1], road[0]])
+def main():
+    m, q = map(int, input().split())
+    employees = []
+    for _ in range(m):
+        employee = {"id": int(input()), "salary": int(input()), "height": int(input())}
+        employees.append(employee)
+    for _ in range(q):
+        query = int(input())
+        boss, subordinates = get_boss_and_subordinates(employees, query)
+        print(boss, subordinates)
 
-    return "YES\n" + "\n".join(str(road) for road in direction)
+if __name__ == '__main__':
+    main()
 

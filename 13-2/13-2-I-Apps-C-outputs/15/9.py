@@ -1,48 +1,57 @@
 
-import math
+def f1(n, roads):
+    # Initialize a graph with n vertices and 0 edges
+    graph = [[] for _ in range(n)]
 
-def get_least_turning(nodes, edges):
-    # Initialize variables
-    turning = 0
-    visited = set()
-    current_node = 0
-    previous_node = None
+    # Add edges to the graph
+    for road in roads:
+        graph[road[0] - 1].append(road[1])
+        graph[road[1] - 1].append(road[0])
 
-    # Loop through the edges
-    for edge in edges:
-        # If the current node has not been visited before, add it to the visited set
-        if current_node not in visited:
-            visited.add(current_node)
-        # If the current node has been visited before, calculate the turning required
-        else:
-            # Calculate the angle between the current node and the previous node
-            angle = math.atan2(nodes[current_node][1] - nodes[previous_node][1], nodes[current_node][0] - nodes[previous_node][0])
-            # Add the angle to the total turning
-            turning += angle
-        # Set the current node as the previous node for the next iteration
-        previous_node = current_node
-        # Set the current node as the next node
-        current_node = edge
+    # Find a Eulerian circuit in the graph
+    eulerian_circuit = []
+    for vertex in range(n):
+        if len(graph[vertex]) % 2 == 1:
+            eulerian_circuit.append(vertex + 1)
+            break
 
-    # Calculate the total turning required for the Eulerian circuit
-    turning += math.atan2(nodes[current_node][1] - nodes[previous_node][1], nodes[current_node][0] - nodes[previous_node][0])
+    # Construct the output
+    output = []
+    for i in range(len(eulerian_circuit) - 1):
+        output.append([eulerian_circuit[i], eulerian_circuit[i + 1]])
 
-    return turning
+    return output
 
-# Test the function with the sample input
-nodes = [(0, 0), (0, 1), (1, 0)]
-edges = [(0, 1), (0, 2), (1, 2)]
-print(get_least_turning(nodes, edges))
+def f2(n, roads):
+    # Initialize a graph with n vertices and 0 edges
+    graph = [[] for _ in range(n)]
 
-# Part 2: Read input from file
-with open("input.txt", "r") as f:
-    # Read the number of nodes and edges
-    nodes, edges = map(int, f.readline().split())
-    # Read the node coordinates
-    nodes = [(int(x), int(y)) for x, y in [f.readline().split() for _ in range(nodes)]]
-    # Read the edge list
-    edges = [tuple(map(int, f.readline().split())) for _ in range(edges)]
+    # Add edges to the graph
+    for road in roads:
+        graph[road[0] - 1].append(road[1])
+        graph[road[1] - 1].append(road[0])
 
-# Calculate the least turning required for the Eulerian circuit
-print(get_least_turning(nodes, edges))
+    # Find a Eulerian path in the graph
+    eulerian_path = []
+    for vertex in range(n):
+        if len(graph[vertex]) % 2 == 1:
+            eulerian_path.append(vertex + 1)
+            break
+
+    # Construct the output
+    output = []
+    for i in range(len(eulerian_path) - 1):
+        output.append([eulerian_path[i], eulerian_path[i + 1]])
+
+    return output
+
+if __name__ == '__main__':
+    n = int(input())
+    roads = []
+    for _ in range(n):
+        roads.append(list(map(int, input().split())))
+
+    output = f1(n, roads)
+    for road in output:
+        print(road[0], road[1])
 

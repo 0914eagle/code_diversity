@@ -1,28 +1,39 @@
 
-def is_possible(N, M, roads):
-    # Initialize a graph with N nodes and 0 edges
-    graph = [[] for _ in range(N)]
+def get_boss_and_subordinates(employees, query):
+    # Initialize the boss and subordinates for the query employee
+    boss, subordinates = None, 0
+    
+    # Iterate through the employees
+    for employee in employees:
+        # If the query employee is taller than the current employee and earns more than the current employee, set the current employee as the boss
+        if query[1] > employee[1] and query[2] > employee[2]:
+            boss = employee
+        # If the query employee is the boss of the current employee, increment the subordinates count
+        elif employee[0] == query[0]:
+            subordinates += 1
+    
+    # Return the boss and subordinates for the query employee
+    return boss, subordinates
 
-    # Add edges to the graph
-    for road in roads:
-        graph[road[0] - 1].append(road[1] - 1)
-        graph[road[1] - 1].append(road[0] - 1)
+def main():
+    # Read the number of employees and queries
+    m, q = map(int, input().split())
+    
+    # Read the employees
+    employees = []
+    for _ in range(m):
+        employees.append(list(map(int, input().split())))
+    
+    # Read the queries
+    for _ in range(q):
+        query = list(map(int, input().split()))
+        
+        # Get the boss and subordinates for the query employee
+        boss, subordinates = get_boss_and_subordinates(employees, query)
+        
+        # Print the boss and subordinates for the query employee
+        print(boss[0] if boss else 0, subordinates)
 
-    # Check if the graph is connected
-    visited = [False] * N
-    queue = [0]
-    visited[0] = True
-    while queue:
-        node = queue.pop(0)
-        for neighbor in graph[node]:
-            if not visited[neighbor]:
-                visited[neighbor] = True
-                queue.append(neighbor)
-
-    # If the graph is not connected, return False
-    if not all(visited):
-        return False
-
-    # If the graph is connected, return True
-    return True
+if __name__ == '__main__':
+    main()
 

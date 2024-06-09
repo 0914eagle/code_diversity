@@ -1,37 +1,35 @@
 
-import sys
-import math
+def f1(n, x):
+    # Initialize variables
+    ice_cream = x
+    distressed_kids = 0
+    
+    # Iterate through the queue
+    for i in range(n):
+        # Read the next operation
+        operation = input().split()
+        
+        # If the operation is "+", a carrier arrives with d ice cream packs
+        if operation[0] == "+":
+            d = int(operation[1])
+            ice_cream += d
+        
+        # If the operation is "-", a child asks for d ice cream packs
+        elif operation[0] == "-":
+            d = int(operation[1])
+            if ice_cream >= d:
+                ice_cream -= d
+            else:
+                distressed_kids += 1
+    
+    # Return the number of ice cream packs left and the number of distressed kids
+    return ice_cream, distressed_kids
 
-def get_expected_number_of_passages(n, m, s, t):
-    # Initialize the probability of reaching room N from each room
-    probabilities = [1 for _ in range(n)]
+def f2(...):
+    # Implement function f2 here
+    pass
 
-    # Loop through each passage
-    for i in range(m):
-        # Get the current passage
-        current_s = s[i]
-        current_t = t[i]
-
-        # Update the probability of reaching room N from the current passage's start room
-        probabilities[current_s-1] *= 1 / (current_t - current_s + 1)
-
-        # Update the probability of reaching room N from the current passage's end room
-        probabilities[current_t-1] *= 1 / (current_t - current_s + 1)
-
-    # Calculate the expected number of passages
-    expected_number_of_passages = 0
-    for probability in probabilities:
-        expected_number_of_passages += probability
-
-    return expected_number_of_passages
-
-n, m = map(int, input().split())
-s = list(map(int, input().split()))
-t = list(map(int, input().split()))
-
-# Get the expected number of passages when Aoki blocks the passage from Room 1 to Room 2
-expected_number_of_passages = get_expected_number_of_passages(n, m, s, t)
-
-# Print the expected number of passages
-print(expected_number_of_passages)
+if __name__ == '__main__':
+    n, x = map(int, input().split())
+    print(*f1(n, x))
 

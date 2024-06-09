@@ -1,18 +1,26 @@
 
-def solve(n, x, y, number):
-    # Convert the number to a list of digits
-    number = [int(digit) for digit in number]
+def get_cleanup_phases(n, dirty_pushes):
+    # Initialize variables
+    cleanup_phases = 0
+    dirtiness = 0
 
-    # Initialize the minimum number of operations to perform
-    min_operations = 0
-
-    # Iterate over the digits of the number
+    # Iterate through the dirty pushes
     for i in range(n):
-        # If the current digit is 0 and the next digit is 1, flip the current digit
-        if number[i] == 0 and i + 1 < n and number[i + 1] == 1:
-            number[i] = 1
-            min_operations += 1
+        # Calculate the dirtiness for the current day
+        dirtiness += dirty_pushes[i]
 
-    # Return the minimum number of operations to perform
-    return min_operations
+        # Check if the dirtiness is greater than or equal to 20
+        if dirtiness >= 20:
+            # Increment the cleanup phases
+            cleanup_phases += 1
+
+            # Reset the dirtiness to 0
+            dirtiness = 0
+
+    return cleanup_phases
+
+if __name__ == '__main__':
+    n = int(input())
+    dirty_pushes = list(map(int, input().split()))
+    print(get_cleanup_phases(n, dirty_pushes))
 

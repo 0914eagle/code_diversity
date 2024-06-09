@@ -1,21 +1,61 @@
 
-def solve(segments, k):
-    # Sort the segments by their left endpoint
-    segments.sort(key=lambda x: x[0])
-    
-    # Initialize the number of segments to remove to 0
-    num_segments_to_remove = 0
-    
-    # Iterate through the segments
-    for i in range(len(segments)):
-        # Get the current segment
-        segment = segments[i]
-        
-        # Check if the segment is covered by more than k segments
-        if len([j for j in range(i+1, len(segments)) if segments[j][0] <= segment[1]]) > k:
-            # If it is, add it to the list of segments to remove
-            num_segments_to_remove += 1
-    
-    # Return the number of segments to remove and the indices of the segments to remove
-    return num_segments_to_remove, [i for i in range(len(segments)) if segments[i][0] in [segments[j][0] for j in range(i+1, len(segments)) if segments[j][0] <= segments[i][1]]]
+def f1(n, k, art_installation):
+    # Initialize a graph with n*n nodes
+    graph = [[] for _ in range(n*n)]
+
+    # Populate the graph with edges
+    for i in range(n):
+        for j in range(n):
+            tile = art_installation[i][j]
+            if tile != 0:
+                graph[tile-1].append((i, j))
+
+    # Find the shortest path from node 0 to node k-1
+    visited = [False] * n*n
+    queue = [(0, 0, 0)]
+    while queue:
+        node, dist, parent = queue.pop(0)
+        if node == k-1:
+            return dist
+        if visited[node]:
+            continue
+        visited[node] = True
+        for neighbor in graph[node]:
+            queue.append((neighbor[0]*n + neighbor[1], dist+1, node))
+
+    return -1
+
+def f2(n, k, art_installation):
+    # Initialize a graph with n*n nodes
+    graph = [[] for _ in range(n*n)]
+
+    # Populate the graph with edges
+    for i in range(n):
+        for j in range(n):
+            tile = art_installation[i][j]
+            if tile != 0:
+                graph[tile-1].append((i, j))
+
+    # Find the shortest path from node 0 to node k-1
+    visited = [False] * n*n
+    queue = [(0, 0, 0)]
+    while queue:
+        node, dist, parent = queue.pop(0)
+        if node == k-1:
+            return dist
+        if visited[node]:
+            continue
+        visited[node] = True
+        for neighbor in graph[node]:
+            queue.append((neighbor[0]*n + neighbor[1], dist+1, node))
+
+    return -1
+
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    art_installation = []
+    for _ in range(n):
+        art_installation.append(list(map(int, input().split())))
+    print(f1(n, k, art_installation))
+    print(f2(n, k, art_installation))
 

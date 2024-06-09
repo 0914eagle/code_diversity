@@ -1,20 +1,30 @@
 
-def solve(A, B, C, X, Y):
-    # Calculate the cost of buying X A-pizzas and Y B-pizzas separately
-    cost_A = X * A
-    cost_B = Y * B
-    
-    # Calculate the cost of buying two AB-pizzas and rearranging them into one A-pizza and one B-pizza
-    cost_AB = 2 * C
-    
-    # Calculate the total cost of buying X A-pizzas and Y B-pizzas
-    total_cost = cost_A + cost_B
-    
-    # If the total cost is greater than or equal to the cost of buying two AB-pizzas and rearranging them, then it is optimal to buy two AB-pizzas and rearrange them
-    if total_cost >= cost_AB:
-        return cost_AB
-    
-    # Otherwise, return the total cost of buying X A-pizzas and Y B-pizzas
+def solve(n, k):
+    if n % 2 == 0:
+        return solve_even(n, k)
     else:
-        return total_cost
+        return solve_odd(n, k)
+
+def solve_even(n, k):
+    a = [2] * k
+    for i in range(k):
+        a[i] += n - sum(a)
+    return a
+
+def solve_odd(n, k):
+    a = [1] * k
+    for i in range(k):
+        a[i] += n - sum(a)
+    return a
+
+if __name__ == '__main__':
+    t = int(input())
+    for _ in range(t):
+        n, k = map(int, input().split())
+        a = solve(n, k)
+        if a is not None:
+            print("YES")
+            print(*a)
+        else:
+            print("NO")
 

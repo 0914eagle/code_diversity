@@ -1,29 +1,82 @@
 
-def solve(n, m, io_list):
-    # Initialize a dictionary to store the IOUs
-    io_dict = {}
-    for i in range(n):
-        io_dict[i] = {}
-    for i, j, c in io_list:
-        # If the IOU is not already in the dictionary, add it
-        if j not in io_dict[i]:
-            io_dict[i][j] = c
-        # If the IOU is already in the dictionary, add the amount to the existing amount
-        else:
-            io_dict[i][j] += c
-    
-    # While there are any IOUs left, find the smallest amount and cancel it out
-    while any(io_dict[i] for i in range(n)):
-        # Find the smallest amount owed by any friend
-        smallest = min(io_dict[i][j] for i in range(n) for j in io_dict[i] if io_dict[i][j] > 0)
-        # Find the friend who owes the smallest amount
-        i = next((i for i in range(n) if smallest in io_dict[i] and io_dict[i][smallest] > 0), None)
-        # Find the friend who is owed the smallest amount
-        j = next(j for j in io_dict[i] if io_dict[i][j] == smallest)
-        # Cancel out the IOU by updating the dictionary
-        io_dict[i][j] -= smallest
-        io_dict[j][i] += smallest
-    
-    # Return the number of IOUs left and the IOUs that are not canceled out
-    return len(io_dict[i]), [(i, j, c) for i in range(n) for j in io_dict[i] if io_dict[i][j] > 0]
+def f1(N, program, grid):
+    # Initialize the robot's location and trail
+    location = (0, 0)
+    trail = [location]
+
+    # Loop through the program
+    for char in program:
+        # Move the robot in the current direction
+        if char == "<":
+            location = (location[0] - 1, location[1])
+        elif char == ">":
+            location = (location[0] + 1, location[1])
+        elif char == "^":
+            location = (location[0], location[1] - 1)
+        elif char == "v":
+            location = (location[0], location[1] + 1)
+
+        # Add the new location to the trail
+        trail.append(location)
+
+        # Check if the robot has reached the end of the grid
+        if location[0] < 0 or location[0] >= N or location[1] < 0 or location[1] >= N:
+            break
+
+    # Check if the trail is finite
+    if len(trail) < N * N:
+        return 1
+
+    # Find the smallest integer X such that the suffix of the trail is a repetition of a continuous subsequence of the trail of length exactly X
+    X = 1
+    while True:
+        if trail[:X] * int(len(trail) / X) == trail:
+            break
+        X += 1
+
+    return X
+
+def f2(N, program, grid):
+    # Initialize the robot's location and trail
+    location = (0, 0)
+    trail = [location]
+
+    # Loop through the program
+    for char in program:
+        # Move the robot in the current direction
+        if char == "<":
+            location = (location[0] - 1, location[1])
+        elif char == ">":
+            location = (location[0] + 1, location[1])
+        elif char == "^":
+            location = (location[0], location[1] - 1)
+        elif char == "v":
+            location = (location[0], location[1] + 1)
+
+        # Add the new location to the trail
+        trail.append(location)
+
+        # Check if the robot has reached the end of the grid
+        if location[0] < 0 or location[0] >= N or location[1] < 0 or location[1] >= N:
+            break
+
+    # Check if the trail is finite
+    if len(trail) < N * N:
+        return 1
+
+    # Find the smallest integer X such that the suffix of the trail is a repetition of a continuous subsequence of the trail of length exactly X
+    X = 1
+    while True:
+        if trail[:X] * int(len(trail) / X) == trail:
+            break
+        X += 1
+
+    return X
+
+if __name__ == '__main__':
+    N = int(input())
+    program = input()
+    grid = [input() for _ in range(N)]
+    print(f1(N, program, grid))
+    print(f2(N, program, grid))
 

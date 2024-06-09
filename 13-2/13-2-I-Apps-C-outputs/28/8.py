@@ -1,20 +1,22 @@
 
-def is_right_triangle(p1, p2, p3):
-    return (p1[0]**2 + p1[1]**2) + (p2[0]**2 + p2[1]**2) == (p3[0]**2 + p3[1]**2)
-
-def count_right_triangles(points):
-    count = 0
-    for i in range(len(points)):
-        for j in range(i+1, len(points)):
-            for k in range(j+1, len(points)):
-                if is_right_triangle(points[i], points[j], points[k]):
-                    count += 1
-    return count
-
-points = []
-for i in range(int(input())):
-    x, y = map(int, input().split())
-    points.append((x, y))
-
-print(count_right_triangles(points))
+def get_smallest_diff(A, K, Q):
+    # Sort the array in ascending order
+    A.sort()
+    # Initialize the smallest difference
+    smallest_diff = float('inf')
+    # Loop through each possible starting index
+    for i in range(len(A) - K + 1):
+        # Get the subsequence of length K starting from index i
+        subsequence = A[i:i+K]
+        # Get the minimum element in the subsequence
+        min_element = min(subsequence)
+        # Get the index of the minimum element in the subsequence
+        min_index = subsequence.index(min_element)
+        # Remove the minimum element from the array
+        A.pop(i + min_index)
+        # Update the smallest difference
+        smallest_diff = min(smallest_diff, A[-1] - A[0])
+        # Add the minimum element back to the array
+        A.insert(i + min_index, min_element)
+    return smallest_diff
 

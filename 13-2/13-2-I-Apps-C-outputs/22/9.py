@@ -1,24 +1,32 @@
 
-import math
+def is_reproducible(art_piece):
+    # Initialize a 2D array to store the colors of the art piece
+    art_piece_array = []
+    for row in art_piece:
+        art_piece_array.append([])
+        for col in row:
+            art_piece_array[-1].append(col)
 
-def solve(n, m, edges, s, t):
-    # Initialize the probability of meeting at each station
-    prob = [0] * n
-    prob[s] = 1
-    prob[t] = 1
+    # Check if the art piece can be reproduced
+    for i in range(len(art_piece_array)):
+        for j in range(len(art_piece_array[0])):
+            if art_piece_array[i][j] != 'W':
+                continue
+            for k in range(i, i+3):
+                for l in range(j, j+3):
+                    if k >= len(art_piece_array) or l >= len(art_piece_array[0]):
+                        return "NO"
+                    if art_piece_array[k][l] != 'W':
+                        return "NO"
 
-    # Loop until the probability of meeting at each station is the same
-    while True:
-        # Calculate the probability of meeting at each neighboring station
-        for i in range(n):
-            for j in range(n):
-                if i != j and edges[i][j] == 1:
-                    prob[i] += prob[j] / (n - 1)
+    return "YES"
 
-        # Check if the probability of meeting at each station is the same
-        if all(prob[i] == prob[0] for i in range(1, n)):
-            break
+def main():
+    art_piece = []
+    for _ in range(int(input())):
+        art_piece.append(input())
+    print(is_reproducible(art_piece))
 
-    # Return the expected time of meeting
-    return sum(i * prob[i] for i in range(n))
+if __name__ == '__main__':
+    main()
 

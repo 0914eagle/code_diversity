@@ -1,16 +1,31 @@
 
-def is_power_of_three_and_five(n):
-    for i in range(1, n):
-        if n == 3**i + 5**i:
-            return True
-    return False
+def f1(s, a, b):
+    if len(s) < a:
+        return "NO"
+    if len(s) < b:
+        return "YES"
+    if s[:b].count("X") == b:
+        return "NO"
+    if s[a-b:a].count("X") == b:
+        return "YES"
+    return "NO"
 
-n = int(input())
-if is_power_of_three_and_five(n):
-    print(-1)
-else:
-    for i in range(1, n):
-        if n == 3**i + 5**i:
-            print(i, n-i)
-            break
+def f2(s, a, b):
+    if len(s) < a:
+        return "NO"
+    if len(s) < b:
+        return "YES"
+    if s[:b].count("X") == b:
+        return "NO"
+    if s[a-b:a].count("X") == b:
+        return "YES"
+    return "NO"
+
+if __name__ == '__main__':
+    q = int(input())
+    for _ in range(q):
+        a, b = map(int, input().split())
+        s = input()
+        print(f1(s, a, b))
+        print(f2(s, a, b))
 

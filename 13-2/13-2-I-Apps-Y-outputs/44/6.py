@@ -1,15 +1,13 @@
 
-# Read from stdin, A and B
-A, B = map(int, input().split())
+def f1(n, t, m):
+    return n * t * m
 
-# Calculate the three expressions
-sum = A + B
-diff = A - B
-product = A * B
+def f2(...):
+    ...
 
-# Find the largest value
-largest = max(sum, diff, product)
-
-# Print the largest value
-print(largest)
+if __name__ == '__main__':
+    n = int(input())
+    t = int(input())
+    m = int(input())
+    print(f1(n, t, m))
 

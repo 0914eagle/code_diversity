@@ -1,19 +1,18 @@
 
-def solve(A, B, C, X, Y):
-    # Calculate the cost of buying X A-pizzas and Y B-pizzas separately
-    cost_A = X * A
-    cost_B = Y * B
+def solve(n, k):
+    if n < k:
+        return "NO"
     
-    # Calculate the cost of buying two AB-pizzas and rearranging them into one A-pizza and one B-pizza
-    cost_AB = 2 * C
-    
-    # Calculate the total cost of buying X A-pizzas and Y B-pizzas
-    total_cost = cost_A + cost_B
-    
-    # If the cost of buying two AB-pizzas and rearranging them is less than the total cost, return the cost of buying two AB-pizzas and rearranging them
-    if cost_AB < total_cost:
-        return cost_AB
-    # Otherwise, return the total cost
+    if n % 2 == 0:
+        parity = "even"
     else:
-        return total_cost
+        parity = "odd"
+    
+    a = [int(n / k) for _ in range(k)]
+    if parity == "even":
+        a[0] += n % k
+    else:
+        a[0] += 1
+    
+    return "YES\n" + " ".join(str(x) for x in a)
 

@@ -1,40 +1,48 @@
 
-def black_vienna(investigations):
-    num_investigations = len(investigations)
-    num_suspects = 26
-    num_solutions = 0
+def f1(k, answers):
+    # find the longest substring of correct answers
+    longest_substring = 0
+    current_substring = 0
+    for i in range(len(answers)):
+        if answers[i] == "1":
+            current_substring += 1
+        else:
+            longest_substring = max(longest_substring, current_substring)
+            current_substring = 0
+    longest_substring = max(longest_substring, current_substring)
 
-    for i in range(num_investigations):
-        suspects = investigations[i][:2]
-        player = investigations[i][2]
-        reply = investigations[i][3]
+    # find the first index of the longest substring
+    first_index = 0
+    for i in range(len(answers)):
+        if answers[i] == "1":
+            first_index = i
+            break
 
-        # If the player has all the cards, there is only one solution
-        if reply == num_suspects:
-            num_solutions += 1
-            continue
+    return first_index + 1, longest_substring
 
-        # If the player has no cards, there are no solutions
-        if reply == 0:
-            return 0
+def f2(k, answers):
+    # find the longest substring of correct answers
+    longest_substring = 0
+    current_substring = 0
+    for i in range(len(answers)):
+        if answers[i] == "1":
+            current_substring += 1
+        else:
+            longest_substring = max(longest_substring, current_substring)
+            current_substring = 0
+    longest_substring = max(longest_substring, current_substring)
 
-        # If the player has some cards, we need to count the number of solutions
-        num_solutions += count_solutions(suspects, player, reply, num_suspects)
+    # find the first index of the longest substring
+    first_index = 0
+    for i in range(len(answers)):
+        if answers[i] == "1":
+            first_index = i
+            break
 
-    return num_solutions
+    return first_index + 1, longest_substring
 
-def count_solutions(suspects, player, reply, num_suspects):
-    num_solutions = 0
-
-    # If the player has only one card, there is only one solution
-    if reply == 1:
-        return 1
-
-    # If the player has two cards, we need to count the number of solutions
-    for i in range(num_suspects):
-        for j in range(i+1, num_suspects):
-            if i != j and i not in suspects and j not in suspects:
-                num_solutions += 1
-
-    return num_solutions
+if __name__ == '__main__':
+    k = int(input())
+    answers = input()
+    print(f1(k, answers))
 

@@ -1,22 +1,60 @@
 
-def get_max_or_value(numbers, k, x):
-    # Sort the numbers in descending order
-    numbers.sort(reverse=True)
-    
-    # Initialize the result with the first number
-    result = numbers[0]
-    
-    # Loop through the remaining numbers
-    for i in range(1, len(numbers)):
-        # Check if we can perform an operation
-        if k > 0:
-            # Multiply the current number by x and add it to the result
-            result += numbers[i] * x
-            # Decrement the number of operations
-            k -= 1
+def is_magic_checkerboard(checkerboard):
+    n, m = len(checkerboard), len(checkerboard[0])
+    for i in range(n):
+        for j in range(m):
+            if checkerboard[i][j] == 0:
+                return False
+    for i in range(n):
+        for j in range(m):
+            if i > 0 and checkerboard[i][j] == checkerboard[i-1][j]:
+                return False
+            if j > 0 and checkerboard[i][j] == checkerboard[i][j-1]:
+                return False
+    for i in range(n-1):
+        for j in range(m-1):
+            if checkerboard[i][j] == checkerboard[i+1][j+1]:
+                return False
+    return True
+
+def fill_magic_checkerboard(checkerboard):
+    n, m = len(checkerboard), len(checkerboard[0])
+    for i in range(n):
+        for j in range(m):
+            if checkerboard[i][j] == 0:
+                checkerboard[i][j] = 1
+    for i in range(n):
+        for j in range(m):
+            if i > 0 and checkerboard[i][j] == checkerboard[i-1][j]:
+                checkerboard[i][j] += 1
+            if j > 0 and checkerboard[i][j] == checkerboard[i][j-1]:
+                checkerboard[i][j] += 1
+    for i in range(n-1):
+        for j in range(m-1):
+            if checkerboard[i][j] == checkerboard[i+1][j+1]:
+                checkerboard[i][j] += 1
+                checkerboard[i+1][j+1] += 1
+    return checkerboard
+
+def get_min_sum(checkerboard):
+    n, m = len(checkerboard), len(checkerboard[0])
+    sum = 0
+    for i in range(n):
+        for j in range(m):
+            sum += checkerboard[i][j]
+    return sum
+
+def solve(checkerboard):
+    if is_magic_checkerboard(checkerboard):
+        return get_min_sum(checkerboard)
+    else:
+        filled_checkerboard = fill_magic_checkerboard(checkerboard)
+        if is_magic_checkerboard(filled_checkerboard):
+            return get_min_sum(filled_checkerboard)
         else:
-            # Add the current number to the result
-            result |= numbers[i]
-    
-    return result
+            return -1
+
+if __name__ == '__main__':
+    checkerboard = [[1, 2, 3, 0], [0, 0, 5, 6], [0, 0, 7, 8], [7, 0, 0, 10]]
+    print(solve(checkerboard))
 

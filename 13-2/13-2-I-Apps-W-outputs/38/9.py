@@ -1,29 +1,35 @@
 
-class FenwickTree:
-    def __init__(self, n):
-        self.n = n
-        self.tree = [0] * (n + 1)
+def f1(n, k, a):
+    # Initialize variables
+    line = a
+    winner = 0
+    games_won = 0
+    
+    # Loop through the line of players
+    while len(line) > 1:
+        # Play a game between the first two players
+        if line[0] > line[1]:
+            # Player 1 wins
+            games_won += 1
+        else:
+            # Player 2 wins
+            games_won = 0
+        # Send the loser to the end of the line
+        line.append(line.pop(0))
+        # Check if the winner has won k games in a row
+        if games_won == k:
+            # The winner is the first player in the line
+            winner = line[0]
+            break
+    
+    return winner
 
-    def update(self, i, delta):
-        while i <= self.n:
-            self.tree[i] += delta
-            i += i & -i
+def f2(...):
+    ...
 
-    def query(self, i):
-        result = 0
-        while i > 0:
-            result += self.tree[i]
-            i -= i & -i
-        return result
-
-n, q = map(int, input().split())
-ft = FenwickTree(n)
-for _ in range(q):
-    query = input()
-    if query.startswith("+"):
-        i, delta = map(int, query.split()[1:])
-        ft.update(i, delta)
-    else:
-        i = int(query.split()[1])
-        print(ft.query(i))
+if __name__ == '__main__':
+    n = int(input())
+    k = int(input())
+    a = list(map(int, input().split()))
+    print(f1(n, k, a))
 

@@ -1,20 +1,12 @@
 
-def is_moon_down(n, records):
-    # Convert the records to a list of integers
-    records = [int(x) for x in records]
+def rotate_string(s, n):
+    return s[n:] + s[:n]
 
-    # Check if the records form a cycle
-    if len(records) != 30:
-        return -1
+def main():
+    s = input()
+    n = int(input())
+    print(rotate_string(s, n))
 
-    # Check if the records are in ascending order
-    if all(records[i] < records[i+1] for i in range(len(records)-1)):
-        return "UP"
-
-    # Check if the records are in descending order
-    if all(records[i] > records[i+1] for i in range(len(records)-1)):
-        return "DOWN"
-
-    # If the records are not in ascending or descending order, it cannot be determined
-    return -1
+if __name__ == '__main__':
+    main()
 

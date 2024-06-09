@@ -1,21 +1,41 @@
 
-def get_min_unfortunate_sum(n, a):
-    # Sort the banknote values in descending order
-    a.sort(reverse=True)
-    # Initialize the minimum unfortunate sum as the largest banknote value
-    min_sum = a[0]
-    # Iterate through the banknote values and check if they can be used to form an unfortunate sum
-    for i in range(1, n):
-        if a[i] > min_sum:
-            break
-        min_sum += a[i]
-    # If all banknote values are less than or equal to the minimum unfortunate sum, there are no unfortunate sums
-    if min_sum > a[-1]:
-        return -1
-    else:
-        return min_sum
+def f1(n, k, a):
+    # Initialize variables
+    segments = 0
+    xor_sum = 0
+    
+    # Iterate through the array
+    for i in range(n):
+        # Calculate the XOR sum of the current segment
+        xor_sum ^= a[i]
+        
+        # If the XOR sum is not equal to 0, increment the number of segments
+        if xor_sum != 0:
+            segments += 1
+    
+    # Return the maximum number of segments
+    return segments
 
-n = int(input())
-a = list(map(int, input().split()))
-print(get_min_unfortunate_sum(n, a))
+def f2(n, k, a):
+    # Initialize variables
+    segments = 0
+    xor_sum = 0
+    
+    # Iterate through the array
+    for i in range(n):
+        # Calculate the XOR sum of the current segment
+        xor_sum ^= a[i]
+        
+        # If the XOR sum is not equal to 0, increment the number of segments
+        if xor_sum != 0:
+            segments += 1
+    
+    # Return the maximum number of segments
+    return segments
+
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    a = list(map(int, input().split()))
+    print(f1(n, k, a))
+    print(f2(n, k, a))
 

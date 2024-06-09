@@ -1,22 +1,48 @@
 
-def restore_sequence(n, l_list, r_list):
-    # Initialize an empty sequence
-    sequence = []
-
-    # Iterate through the list of opening brackets
+def get_min_operations(table):
+    # Initialize variables
+    n, m = len(table), len(table[0])
+    good_cells = []
     for i in range(n):
-        # Find the corresponding closing bracket for the current opening bracket
-        closing_bracket = sequence[l_list[i] - 1] if l_list[i] > 0 else sequence[r_list[i] - 1]
+        for j in range(m):
+            if table[i][j] == 1:
+                good_cells.append((i, j))
+    operations = 0
 
-        # Check if the distance between the opening and closing brackets is within the allowed range
-        if abs(l_list[i] - r_list[i]) <= r_list[i]:
-            # Add the opening and closing brackets to the sequence
-            sequence.append("(")
-            sequence.append(")")
-        else:
-            # If the distance is not within the allowed range, return "IMPOSSIBLE"
-            return "IMPOSSIBLE"
+    # Loop through all good cells
+    for i in range(len(good_cells)):
+        for j in range(i+1, len(good_cells)):
+            # Get the coordinates of the two good cells
+            x1, y1 = good_cells[i]
+            x2, y2 = good_cells[j]
 
-    # Return the restored sequence
-    return "".join(sequence)
+            # Check if the two good cells are in the same row or column
+            if x1 == x2 or y1 == y2:
+                continue
+
+            # Get the minimum and maximum values of the two good cells
+            min_x = min(x1, x2)
+            max_x = max(x1, x2)
+            min_y = min(y1, y2)
+            max_y = max(y1, y2)
+
+            # Loop through all cells in the table
+            for i in range(n):
+                for j in range(m):
+                    # Check if the current cell is in the rectangle defined by the two good cells
+                    if min_x <= i <= max_x and min_y <= j <= max_y:
+                        # Increment the number of operations
+                        operations += 1
+
+    return operations
+
+def main():
+    n, m = map(int, input().split())
+    table = []
+    for i in range(n):
+        table.append(list(map(int, input().split())))
+    print(get_min_operations(table))
+
+if __name__ == '__main__':
+    main()
 

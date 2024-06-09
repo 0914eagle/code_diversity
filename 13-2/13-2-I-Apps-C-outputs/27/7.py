@@ -1,37 +1,38 @@
 
-n = int(input())
-arr = list(map(int, input().split()))
+def f1(n, k, polygon):
+    # Calculate the area of the polygon
+    area = 0
+    for i in range(n):
+        area += polygon[i][0] * polygon[i-1][1] - polygon[i-1][0] * polygon[i][1]
+    area = abs(area) / 2
 
-# Initialize variables to keep track of the number of days Vasya has rest
-rest_days = 0
+    # Calculate the side length of the square maps
+    side_length = (area / k) ** 0.5
 
-# Iterate through the list of days
-for i in range(n):
-    # If the gym is closed and the contest is not carried out, Vasya has a rest
-    if arr[i] == 0:
-        rest_days += 1
-    # If the gym is open and the contest is carried out, Vasya has a rest
-    elif arr[i] == 3:
-        rest_days += 1
-    # If the gym is open and the contest is not carried out, Vasya does sport
-    elif arr[i] == 2:
-        # If the next day is also open and the contest is not carried out, Vasya has a rest
-        if i < n-1 and arr[i+1] == 2:
-            rest_days += 1
-        # If the next day is closed or the contest is carried out, Vasya does sport
-        else:
-            pass
-    # If the gym is closed and the contest is carried out, Vasya does sport
-    elif arr[i] == 1:
-        # If the next day is also closed and the contest is carried out, Vasya has a rest
-        if i < n-1 and arr[i+1] == 1:
-            rest_days += 1
-        # If the next day is open and the contest is not carried out, Vasya does sport
-        elif i < n-1 and arr[i+1] == 2:
-            pass
-        # If the next day is closed or the contest is carried out, Vasya does sport
-        else:
-            pass
+    return round(side_length, 2)
 
-print(rest_days)
+def f2(n, k, polygon):
+    # Calculate the area of the polygon
+    area = 0
+    for i in range(n):
+        area += polygon[i][0] * polygon[i-1][1] - polygon[i-1][0] * polygon[i][1]
+    area = abs(area) / 2
+
+    # Calculate the side length of the square maps
+    side_length = (area / k) ** 0.5
+
+    # Calculate the minimum area of the maps
+    min_area = side_length ** 2
+
+    return round(min_area, 2)
+
+if __name__ == '__main__':
+    n = int(input())
+    k = int(input())
+    polygon = []
+    for i in range(n):
+        x, y = map(int, input().split())
+        polygon.append([x, y])
+    print(f1(n, k, polygon))
+    print(f2(n, k, polygon))
 

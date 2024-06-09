@@ -1,22 +1,23 @@
 
-def get_maximum_score(grid):
-    # Initialize the maximum score to 0
-    max_score = 0
-    
-    # Loop through each part of the grid
-    for part in grid:
-        # Initialize the current score to 0
-        current_score = 0
-        
-        # Loop through each row in the part
-        for row in part:
-            # If the current row is the last row, add the score to the current score
-            if row == "R":
-                current_score += 1
-        
-        # Add the current score to the maximum score
-        max_score += current_score
-    
-    # Return the maximum score
-    return max_score
+def get_largest_sum(n):
+    for a in range(n+1):
+        for b in range(a, n+1):
+            if a + b == n:
+                return a, b
+    return None
+
+def get_sum_of_digits(n):
+    sum = 0
+    while n > 0:
+        sum += n % 10
+        n //= 10
+    return sum
+
+def get_largest_possible_sum(n):
+    a, b = get_largest_sum(n)
+    return get_sum_of_digits(a) + get_sum_of_digits(b)
+
+if __name__ == '__main__':
+    n = int(input())
+    print(get_largest_possible_sum(n))
 

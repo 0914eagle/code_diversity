@@ -1,22 +1,48 @@
 
-def solve(S, T):
-    # Initialize a list to store the possible strings that satisfy Condition 1
-    possible_strings = []
+def count_black_squares(grid):
+    # Initialize a counter for the number of black squares
+    black_squares = 0
 
-    # Iterate through all possible strings that are contiguous substrings of S
-    for i in range(len(S) - len(T) + 1):
-        # Check if the substring is equal to T
-        if S[i:i+len(T)] == T:
-            # If it is, add it to the list of possible strings
-            possible_strings.append(S[i:i+len(T)])
+    # Iterate through the grid
+    for row in grid:
+        for square in row:
+            # If the current square is black, increment the counter
+            if square == '#':
+                black_squares += 1
 
-    # If there are no possible strings, return "UNRESTORABLE"
-    if not possible_strings:
-        return "UNRESTORABLE"
+    # Return the number of black squares
+    return black_squares
 
-    # Sort the list of possible strings in lexicographic order
-    possible_strings.sort()
+def count_choices(grid, k):
+    # Initialize a counter for the number of choices
+    choices = 0
 
-    # Return the first string in the list, which is the lexicographically smallest string that satisfies Condition 1
-    return possible_strings[0]
+    # Iterate through the grid
+    for row in grid:
+        for square in row:
+            # If the current square is black, increment the counter
+            if square == '#':
+                choices += 1
+
+    # Return the number of choices
+    return choices
+
+def main():
+    # Read the input grid from stdin
+    h, w, k = map(int, input().split())
+    grid = []
+    for _ in range(h):
+        grid.append(list(input()))
+
+    # Count the number of black squares in the grid
+    black_squares = count_black_squares(grid)
+
+    # Count the number of choices of rows and columns that result in exactly k black squares
+    choices = count_choices(grid, k)
+
+    # Print the number of choices
+    print(choices)
+
+if __name__ == '__main__':
+    main()
 

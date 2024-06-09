@@ -1,16 +1,17 @@
 
-n = int(input())
-words = input().split()
+def get_earliest_time(x):
+    # Initialize the earliest time to reach the nest as 0
+    earliest_time = 0
 
-count = 0
-for word in words:
-    if word.isdigit():
-        count += 1
-    elif word == "mumble":
-        count = 0
+    # Loop through the possible jump lengths from 1 to x
+    for jump_length in range(1, x + 1):
+        # Calculate the time it takes to reach the nest with the current jump length
+        time_taken = (x - 1) // jump_length + 1
 
-if count == n:
-    print("makes sense")
-else:
-    print("something is fishy")
+        # If the time taken is less than the current earliest time, update the earliest time
+        if time_taken < earliest_time:
+            earliest_time = time_taken
+
+    # Return the earliest time
+    return earliest_time
 

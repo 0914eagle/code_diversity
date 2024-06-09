@@ -1,12 +1,12 @@
 {
     "inputs": [
-        "3\n10 14\n13 17\n25 26\n",
-        "2\n1 365\n20 28\n",
-        "4\n29 29\n48 48\n102 102\n94 94\n"
+        "0 1 0\n",
+        "2 1 0\n",
+        "0 0 1\n"
     ],
     "outputs": [
-        "10\n",
-        "365\n",
-        "4\n"
+        "Estate or Copper\n",
+        "Province or Gold\n",
+        "Copper\n"
     ]
 }

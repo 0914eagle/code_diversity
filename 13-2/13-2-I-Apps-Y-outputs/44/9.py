@@ -1,13 +1,13 @@
 
-# Read the input
-A, B = map(int, input().split())
+def f1(N, T, M):
+    return N * T * M
 
-# Calculate the three expressions
-expressions = [A+B, A-B, A*B]
+def f2(...):
+    ...
 
-# Find the largest value
-largest = max(expressions)
-
-# Print the largest value
-print(largest)
+if __name__ == '__main__':
+    N = int(input())
+    T = int(input())
+    M = int(input())
+    print(f1(N, T, M))
 

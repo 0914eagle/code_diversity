@@ -1,41 +1,29 @@
 
-def solve():
-    s = input()
-    t = input()
+def get_maximum_students_with_favorite_drink(n, k, a):
+    # Calculate the minimum number of sets needed to give each student a drink
+    min_sets = int(n / 2) + 1
+    
+    # Initialize a dictionary to store the number of students with each drink type
+    drink_count = {i: 0 for i in range(1, k+1)}
+    
+    # Iterate over the students and increment the drink count for their favorite drink type
+    for i in range(n):
+        drink_count[a[i]] += 1
+    
+    # Initialize the maximum number of students with a favorite drink as 0
+    max_students = 0
+    
+    # Iterate over the drink types and calculate the maximum number of students with that drink type
+    for i in range(1, k+1):
+        max_students = max(max_students, min_sets - drink_count[i] + 1)
+    
+    return max_students
 
-    # Initialize the minimum value of i as the length of s
-    i = len(s)
+def main():
+    n, k = map(int, input().split())
+    a = list(map(int, input().split()))
+    print(get_maximum_students_with_favorite_drink(n, k, a))
 
-    # Loop through each substring of s of length i
-    for j in range(len(s)):
-        # Check if t is a subsequence of the substring
-        if is_subsequence(t, s[j:j+i]):
-            # If it is, update the minimum value of i
-            i = j
-            break
-
-    # If i is the length of s, then t is not a subsequence of any substring of s
-    if i == len(s):
-        print(-1)
-    else:
-        print(i)
-
-def is_subsequence(t, s):
-    # Initialize the index of t as 0
-    i = 0
-
-    # Loop through each character of s
-    for j in range(len(s)):
-        # If the current character of s is the same as the current character of t, update the index of t
-        if s[j] == t[i]:
-            i += 1
-
-        # If the index of t has reached the end, return True
-        if i == len(t):
-            return True
-
-    # If the index of t has not reached the end, return False
-    return False
-
-solve()
+if __name__ == '__main__':
+    main()
 

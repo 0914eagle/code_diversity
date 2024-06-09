@@ -1,15 +1,17 @@
 
-def binary_to_octal(binary_numeral):
-    # Pad the binary numeral with zeros on the left until the number of digits is divisible by 3
-    binary_numeral = binary_numeral.zfill(len(binary_numeral) + len(binary_numeral) % 3)
+def count_second_smallest(p):
+    n = len(p)
+    count = 0
+    for i in range(1, n-1):
+        if p[i] < p[i-1] and p[i] < p[i+1]:
+            count += 1
+    return count
 
-    # Group adjacent binary digits into groups of 3 digits
-    groups = [binary_numeral[i:i+3] for i in range(0, len(binary_numeral), 3)]
+def main():
+    n = int(input())
+    p = list(map(int, input().split()))
+    print(count_second_smallest(p))
 
-    # Replace each group of binary digits with the corresponding octal digit
-    octal_numeral = ""
-    for group in groups:
-        octal_numeral += str(int(group, 2))
-
-    return octal_numeral
+if __name__ == '__main__':
+    main()
 

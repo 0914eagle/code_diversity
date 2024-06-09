@@ -1,48 +1,40 @@
 
-def solve(n, q, polygon, queries):
-    # Initialize the answer array
-    answer = []
+def get_max_height(n, h1, h2):
+    # Initialize variables
+    max_height = 0
+    current_height = 0
+    current_row = 1
+    chosen_students = []
     
-    # Iterate over each query
-    for query in queries:
-        # If the query is of type 1, rotate the polygon
-        if query[0] == 1:
-            # Get the indices of the vertices to be pinned
-            f = query[1]
-            t = query[2]
-            
-            # Rotate the polygon
-            rotate_polygon(polygon, f, t)
-        
-        # If the query is of type 2, get the coordinates of the vertex
-        elif query[0] == 2:
-            # Get the index of the vertex
-            v = query[1]
-            
-            # Get the coordinates of the vertex
-            x, y = polygon[v]
-            
-            # Add the coordinates to the answer array
-            answer.append([x, y])
+    # Iterate through the students
+    for i in range(n):
+        # Check if the current student is in the same row as the previous student
+        if current_row == 1:
+            # If the current student is in the same row as the previous student, skip them
+            if i in chosen_students:
+                continue
+        # Add the current student to the chosen students list
+        chosen_students.append(i)
+        # Update the current height
+        current_height += h1[i]
+        # Update the current row
+        current_row = 3 - current_row
     
-    return answer
+    # Return the maximum height
+    return current_height
 
-def rotate_polygon(polygon, f, t):
-    # Get the indices of the vertices to be pinned
-    f = f - 1
-    t = t - 1
+def main():
+    # Read the input
+    n = int(input())
+    h1 = list(map(int, input().split()))
+    h2 = list(map(int, input().split()))
     
-    # Get the coordinates of the vertices to be pinned
-    x1, y1 = polygon[f]
-    x2, y2 = polygon[t]
+    # Call the function to get the maximum height
+    max_height = get_max_height(n, h1, h2)
     
-    # Calculate the angle of rotation
-    angle = math.atan2(y2 - y1, x2 - x1)
-    
-    # Rotate the polygon
-    for i in range(len(polygon)):
-        x, y = polygon[i]
-        nx = x * math.cos(angle) - y * math.sin(angle)
-        ny = x * math.sin(angle) + y * math.cos(angle)
-        polygon[i] = [nx, ny]
+    # Print the result
+    print(max_height)
+
+if __name__ == '__main__':
+    main()
 

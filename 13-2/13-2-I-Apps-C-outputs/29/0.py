@@ -1,27 +1,31 @@
 
-def get_winner_probability(N, M, p_list):
-    # Initialize the probability of Anthony winning as 0
-    probability = 0
+def get_dice_to_roll(k, t, rolls):
+    # Initialize a dictionary to store the number of dice to roll and their corresponding probabilities
+    dice_probabilities = {}
 
-    # Loop through each round
-    for i in range(N + M - 1):
-        # Get the probability of Anthony winning the current round
-        probability_current_round = p_list[i]
+    # Loop through each die and calculate the probability of getting the target number
+    for i in range(1, k+1):
+        # Calculate the probability of getting the target number with i dice
+        probability = (rolls.count(i) + 1) / (len(rolls) + k)
 
-        # If Anthony wins the current round, he will have N - 1 points left
-        # If Cora wins the current round, she will have M - 1 points left
-        if i % 2 == 0:
-            N -= 1
-        else:
-            M -= 1
+        # Add the probability and the number of dice to the dictionary
+        dice_probabilities[i] = probability
 
-        # If either Anthony or Cora has no points left, the game ends
-        if N == 0 or M == 0:
-            break
+    # Find the key (number of dice) with the highest probability
+    max_probability = max(dice_probabilities.values())
+    dice_to_roll = [key for key, value in dice_probabilities.items() if value == max_probability]
 
-        # Update the probability of Anthony winning based on the probability of winning the current round
-        probability += probability_current_round
+    # If there is a tie, return the smallest number of dice to roll
+    if len(dice_to_roll) > 1:
+        return min(dice_to_roll)
+    else:
+        return dice_to_roll[0]
 
-    # Return the probability of Anthony winning the game
-    return probability
+def main():
+    k, t = map(int, input().split())
+    rolls = list(map(int, input().split()))
+    print(get_dice_to_roll(k, t, rolls))
+
+if __name__ == '__main__':
+    main()
 

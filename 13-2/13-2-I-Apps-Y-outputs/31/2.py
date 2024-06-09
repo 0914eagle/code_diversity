@@ -1,24 +1,16 @@
 
-def solve(golorp_name):
-    # Convert the golorp name to a list of characters
-    golorp_name_list = list(golorp_name)
+def f1(N, K):
+    # Initialize the probability of winning as 0
+    probability = 0
     
-    # Initialize an empty list to store the variable values
-    variable_values = []
+    # Iterate over all possible values that the die can show
+    for i in range(1, N+1):
+        # Calculate the probability of getting a score of K or above with the current die value
+        probability_i = (i / N) * (0.5)**(K-1)
+        
+        # Add the probability of getting a score of K or above with the current die value to the total probability
+        probability += probability_i
     
-    # Iterate through the characters in the golorp name
-    for char in golorp_name_list:
-        # If the character is a digit, add it to the list of variable values
-        if char.isdigit():
-            variable_values.append(int(char))
-    
-    # If the list of variable values is empty, return "false"
-    if not variable_values:
-        return "false"
-    
-    # Sort the list of variable values in ascending order
-    variable_values.sort()
-    
-    # Return the sorted list of variable values as a string
-    return "".join(str(x) for x in variable_values)
+    # Return the total probability of winning
+    return probability
 

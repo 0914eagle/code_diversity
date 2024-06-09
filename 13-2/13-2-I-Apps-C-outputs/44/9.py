@@ -1,19 +1,33 @@
 
-def solve(N, M, K, onions, fence):
-    # Calculate the convex hull of the fence posts
-    hull = []
-    for i in range(M):
-        hull.append((fence[i][0], fence[i][1]))
-    for i in range(M):
-        hull.append((fence[i][0], fence[i][1]))
-    hull = set(hull)
+def f1(n, numbers):
+    # find the number of odd numbers
+    odd_numbers = 0
+    for num in numbers:
+        if num % 2 == 1:
+            odd_numbers += 1
+    
+    # find the number of ways to choose two odd numbers
+    ways = 0
+    for i in range(odd_numbers):
+        for j in range(i+1, odd_numbers):
+            ways += 1
+    
+    return ways
 
-    # Calculate the number of onions inside the convex hull
-    num_onions = 0
-    for i in range(N):
-        if (onions[i][0], onions[i][1]) in hull:
-            num_onions += 1
+def f2(n, numbers):
+    # find the number of ways to choose two odd numbers
+    ways = f1(n, numbers)
+    
+    # find the number of ways to choose two even numbers
+    even_numbers = n - odd_numbers
+    for i in range(even_numbers):
+        for j in range(i+1, even_numbers):
+            ways += 1
+    
+    return ways
 
-    # Return the maximum number of onions that can be protected
-    return num_onions
+if __name__ == '__main__':
+    n = int(input())
+    numbers = list(map(int, input().split()))
+    print(f2(n, numbers))
 

@@ -1,40 +1,48 @@
 
-def solve(n, m, io_list):
-    # Initialize a dictionary to store the IOUs
-    io_dict = {}
-    for i in range(n):
-        io_dict[i] = {}
-    for i, j, c in io_list:
-        if i not in io_dict[j]:
-            io_dict[j][i] = -c
-        else:
-            io_dict[j][i] -= c
-        if j not in io_dict[i]:
-            io_dict[i][j] = c
-        else:
-            io_dict[i][j] += c
-    
-    # Find cycles and cancel IOUs
-    while True:
-        cancelled = False
-        for i in range(n):
-            for j in range(i+1, n):
-                if i in io_dict[j] and j in io_dict[i]:
-                    cancelled = True
-                    io_dict[i][j] = 0
-                    io_dict[j][i] = 0
-        if not cancelled:
-            break
-    
-    # Count the number of IOUs left and output them
-    io_count = 0
-    for i in range(n):
-        for j in range(i+1, n):
-            if io_dict[i][j] != 0:
-                io_count += 1
-    print(io_count)
-    for i in range(n):
-        for j in range(i+1, n):
-            if io_dict[i][j] != 0:
-                print(i, j, io_dict[i][j])
+def find_trail_length(grid, program):
+    # Initialize the robot's location and trail
+    location = (0, 0)
+    trail = [location]
+
+    # Loop through the program
+    for char in program:
+        # Move the robot in the current direction
+        if char == "<":
+            location = (location[0] - 1, location[1])
+        elif char == ">":
+            location = (location[0] + 1, location[1])
+        elif char == "^":
+            location = (location[0], location[1] - 1)
+        elif char == "v":
+            location = (location[0], location[1] + 1)
+
+        # Add the new location to the trail
+        trail.append(location)
+
+        # If the new location is impassable, skip this movement
+        if grid[location[1]][location[0]] == "#":
+            continue
+
+    # Return the length of the trail
+    return len(trail)
+
+def main():
+    # Read the input
+    N = int(input())
+    program = input()
+    grid = []
+    for _ in range(N):
+        grid.append(input())
+
+    # Find the trail length
+    trail_length = find_trail_length(grid, program)
+
+    # Print the output
+    if trail_length == N:
+        print(1)
+    else:
+        print(trail_length)
+
+if __name__ == '__main__':
+    main()
 

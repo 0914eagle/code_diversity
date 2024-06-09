@@ -1,34 +1,64 @@
 
-def solve(n, m, k, books):
-    # Sort the books by their reading time in ascending order
-    books = sorted(books, key=lambda x: x[0])
+def f1(n, edges):
+    # create an empty graph with n vertices and no edges
+    graph = [[] for _ in range(n)]
 
-    # Initialize the minimum total reading time and the chosen books
-    min_time = float('inf')
-    chosen_books = []
+    # add edges to the graph
+    for edge in edges:
+        graph[edge[0] - 1].append(edge[1])
+        graph[edge[1] - 1].append(edge[0])
 
-    # Iterate over all possible combinations of books
-    for b in range(1, 2 ** n):
-        # Convert the binary representation of b to a list of indices of chosen books
-        books_chosen = [i for i in range(n) if b & (1 << i)]
+    # check if the graph is connected and has no cycles
+    visited = [False] * n
+    queue = [0]
+    while queue:
+        vertex = queue.pop(0)
+        if visited[vertex]:
+            continue
+        visited[vertex] = True
+        queue += graph[vertex]
 
-        # Check if the number of chosen books is less than or equal to m
-        if len(books_chosen) <= m:
-            # Calculate the total reading time of the chosen books
-            time = sum(books[i][0] for i in books_chosen)
+    # if the graph is connected and has no cycles, return the graph
+    if all(visited):
+        return graph
+    else:
+        return None
 
-            # Check if the total reading time is less than or equal to the minimum total reading time
-            if time <= min_time:
-                # Check if the number of liked books by Alice and Bob is greater than or equal to k
-                if all(books[i][1] + books[i][2] >= k for i in books_chosen):
-                    # Update the minimum total reading time and the chosen books
-                    min_time = time
-                    chosen_books = books_chosen
+def f2(graph):
+    # find the root of the tree
+    root = 0
+    for i in range(len(graph)):
+        if len(graph[i]) == 1:
+            root = i
+            break
 
-    # Check if a suitable set of books exists
-    if not chosen_books:
-        return [-1]
+    # perform a depth-first search starting from the root
+    visited = [False] * len(graph)
+    result = []
+    def dfs(vertex):
+        if visited[vertex]:
+            return
+        visited[vertex] = True
+        for neighbor in graph[vertex]:
+            dfs(neighbor)
+        result.append(vertex + 1)
+    dfs(root)
 
-    # Return the minimum total reading time and the chosen books
-    return [min_time] + chosen_books
+    # return the result in the correct format
+    return result
+
+if __name__ == '__main__':
+    n = int(input())
+    edges = []
+    for i in range(n - 1):
+        a, b = map(int, input().split())
+        edges.append((a, b))
+    graph = f1(n, edges)
+    if graph is None:
+        print("NO")
+    else:
+        print("YES")
+        result = f2(graph)
+        for i in range(n - 1):
+            print(result[i], result[i + 1])
 

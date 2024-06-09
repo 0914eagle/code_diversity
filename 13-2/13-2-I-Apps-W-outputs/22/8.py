@@ -1,37 +1,38 @@
 
-def solve():
-    s = input()
-    t = input()
+def get_maximum_students_with_favorite_drink(n, k, a):
+    # Initialize variables
+    max_students = 0
+    current_students = 0
+    current_sets = 0
+    sets_needed = int(n / 2) + 1
+    drinks_needed = [0] * (k + 1)
+    drinks_given = [0] * (k + 1)
 
-    # Initialize the minimum value of i as the length of s
-    min_i = len(s)
+    # Loop through each student
+    for i in range(n):
+        # If the current student has a favorite drink that is not yet given, give it to them
+        if drinks_needed[a[i]] > 0 and drinks_given[a[i]] == 0:
+            drinks_given[a[i]] += 1
+            current_students += 1
+        # If the current student does not have a favorite drink or all favorite drinks are given, give them a random drink
+        else:
+            current_students += 1
 
-    # Loop through each possible value of i
-    for i in range(len(s), 0, -1):
-        # Check if t is a subsequence of the first i characters of s'
-        if is_subsequence(t, s * 100[:i]):
-            # If it is, update the minimum value of i
-            min_i = i
-            break
+        # If the current student is the last student or the number of sets needed is reached, update the maximum number of students with a favorite drink
+        if i == n - 1 or current_sets == sets_needed:
+            max_students = max(max_students, current_students)
+            current_students = 0
+            current_sets = 0
+            drinks_needed = [0] * (k + 1)
+            drinks_given = [0] * (k + 1)
 
-    # Print the minimum value of i
-    print(min_i)
+    return max_students
 
-def is_subsequence(s, t):
-    # Initialize the index of the first character in s
-    i = 0
+def main():
+    n, k = map(int, input().split())
+    a = list(map(int, input().split()))
+    print(get_maximum_students_with_favorite_drink(n, k, a))
 
-    # Loop through each character in t
-    for c in t:
-        # If the current character in t is not in s, return False
-        if c not in s[i:]:
-            return False
-
-        # Otherwise, update the index of the first character in s
-        i += 1
-
-    # If we reach the end of t without returning False, return True
-    return True
-
-solve()
+if __name__ == '__main__':
+    main()
 

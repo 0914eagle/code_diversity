@@ -1,35 +1,33 @@
 
-def solve(offers):
-    # Sort the offers by the first section of the fence
-    sorted_offers = sorted(offers, key=lambda x: x[1])
+def get_cluster_size(a, b, c):
+    # Find the indices of the first and last results with c_i true
+    j = next((i for i, x in enumerate(c) if x), None)
+    k = next((i for i in range(len(c)-1, -1, -1) if c[i]), None)
+    return k-j+1
 
-    # Initialize the variables to keep track of the number of colors and sections painted
-    num_colors = 0
-    num_sections = 0
+def solve(n, a, b, c):
+    # Initialize the smallest cluster size
+    smallest_cluster_size = float('inf')
 
-    # Initialize the list to store the accepted offers
-    accepted_offers = []
+    # Iterate over all possible values of S and T
+    for S in range(0, 2000001):
+        for T in range(0, 2000001):
+            # Sort the poll results by the measure a_i * S + b_i * T
+            sorted_results = sorted(zip(a, b, c), key=lambda x: x[0] * S + x[1] * T)
 
-    # Iterate through the sorted offers
-    for offer in sorted_offers:
-        # Check if the current offer overlaps with the previous offer
-        if num_sections > 0 and offer[1] <= accepted_offers[-1][2]:
-            # If it overlaps, merge the offers and update the variables
-            accepted_offers[-1][2] = max(accepted_offers[-1][2], offer[2])
-            num_sections += offer[2] - accepted_offers[-1][1] + 1
-        else:
-            # If it does not overlap, add the offer to the list of accepted offers
-            accepted_offers.append(offer)
-            num_sections += offer[2] - offer[1] + 1
-            num_colors += 1
+            # Get the cluster size for this (S, T) pair
+            cluster_size = get_cluster_size(sorted_results)
 
-        # Check if the maximum number of colors has been reached
-        if num_colors > 3:
-            return "IMPOSSIBLE"
+            # Update the smallest cluster size if necessary
+            if cluster_size < smallest_cluster_size:
+                smallest_cluster_size = cluster_size
 
-    # Check if all sections have been painted
-    if num_sections == 10000:
-        return len(accepted_offers)
-    else:
-        return "IMPOSSIBLE"
+    return smallest_cluster_size
+
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    c = list(map(int, input().split()))
+    print(solve(n, a, b, c))
 

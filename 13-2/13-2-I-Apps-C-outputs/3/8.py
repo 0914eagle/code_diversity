@@ -1,50 +1,44 @@
 
-def get_smallest_number_of_invitees(teams, my_id):
-    # Initialize a set to store the IDs of the invitees
-    invitees = set()
-    # Add the ID of the friend to the set of invitees
-    invitees.add(my_id)
-    # Iterate through the teams
-    for team in teams:
-        # If the ID of the friend is not in the team, add the other employee in the team to the set of invitees
-        if my_id not in team:
-            invitees.add(team[0] if team[0] != my_id else team[1])
-    # Return the length of the set of invitees, which is the smallest number of invitees needed to meet the requirements
-    return len(invitees)
+def is_tolerable(s, p):
+    if len(s) > p:
+        return False
+    
+    for i in range(len(s)):
+        if s[i] > chr(ord('a') + p - 1):
+            return False
+    
+    for i in range(len(s) - 1):
+        if s[i] == s[len(s) - i - 1]:
+            return False
+    
+    return True
 
-def get_invitees(teams, my_id):
-    # Initialize a set to store the IDs of the invitees
-    invitees = set()
-    # Add the ID of the friend to the set of invitees
-    invitees.add(my_id)
-    # Iterate through the teams
-    for team in teams:
-        # If the ID of the friend is not in the team, add the other employee in the team to the set of invitees
-        if my_id not in team:
-            invitees.add(team[0] if team[0] != my_id else team[1])
-    # Return the set of invitees
-    return invitees
+def next_tolerable(s, p):
+    if len(s) == 0:
+        return "NO"
+    
+    i = len(s) - 1
+    while i >= 0 and s[i] == chr(ord('z') - p + 1):
+        i -= 1
+    
+    if i == -1:
+        return "NO"
+    
+    s = list(s)
+    s[i] = chr(ord(s[i]) + 1)
+    s = "".join(s)
+    
+    return s
 
 def main():
-    # Read the number of teams from stdin
-    num_teams = int(input())
-    # Read the teams from stdin
-    teams = []
-    for _ in range(num_teams):
-        team = list(map(int, input().split()))
-        teams.append(team)
-    # Get the ID of the friend from stdin
-    my_id = int(input())
-    # Get the smallest number of invitees needed to meet the requirements
-    num_invitees = get_smallest_number_of_invitees(teams, my_id)
-    # Get the set of invitees
-    invitees = get_invitees(teams, my_id)
-    # Print the number of invitees
-    print(num_invitees)
-    # Print the IDs of the invitees
-    for invitee in invitees:
-        print(invitee)
+    n, p = map(int, input().split())
+    s = input()
+    
+    if is_tolerable(s, p):
+        print(next_tolerable(s, p))
+    else:
+        print("NO")
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
 

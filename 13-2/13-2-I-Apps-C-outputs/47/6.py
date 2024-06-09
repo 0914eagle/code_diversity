@@ -1,52 +1,61 @@
 
-def solve(n, m, io_list):
-    # Initialize a dictionary to store the IOUs
-    io_dict = {}
-    for i in range(n):
-        io_dict[i] = {}
-    for i, j, c in io_list:
-        # If the IOU is not already in the dictionary, add it
-        if j not in io_dict[i]:
-            io_dict[i][j] = c
-        # If the IOU is already in the dictionary, add the amount to the existing amount
-        else:
-            io_dict[i][j] += c
-    
-    # While there are still IOUs to be settled
-    while True:
-        # Find the smallest amount of IOU that is still outstanding
-        min_amount = float('inf')
-        for i in range(n):
-            for j in range(n):
-                if i != j and i in io_dict[j] and io_dict[j][i] < min_amount:
-                    min_amount = io_dict[j][i]
-        
-        # If there are no more IOUs to be settled, break the loop
-        if min_amount == float('inf'):
-            break
-        
-        # Settle the IOUs by reducing the amount by the smallest amount
-        for i in range(n):
-            for j in range(n):
-                if i != j and i in io_dict[j] and io_dict[j][i] > 0:
-                    io_dict[j][i] -= min_amount
-        
-        # Remove any IOUs that have been fully settled
-        for i in range(n):
-            for j in range(n):
-                if i != j and io_dict[j][i] == 0:
-                    del io_dict[j][i]
-    
-    # Count the number of IOUs that are still outstanding
-    num_io_left = 0
-    for i in range(n):
-        num_io_left += len(io_dict[i])
-    
-    # Print the number of IOUs that are still outstanding
-    print(num_io_left)
-    
-    # Print the IOUs that are still outstanding
-    for i in range(n):
-        for j in io_dict[i]:
-            print(i, j, io_dict[i][j])
+def get_trail(program, grid):
+    # Initialize the robot's location and the trail
+    location = (0, 0)
+    trail = [location]
+
+    # Loop through the program
+    for char in program:
+        # Get the new location based on the character
+        if char == "<":
+            new_location = (location[0] - 1, location[1])
+        elif char == ">":
+            new_location = (location[0] + 1, location[1])
+        elif char == "^":
+            new_location = (location[0], location[1] - 1)
+        elif char == "v":
+            new_location = (location[0], location[1] + 1)
+
+        # Check if the new location is valid
+        if new_location[0] < 0 or new_location[0] >= len(grid) or new_location[1] < 0 or new_location[1] >= len(grid[0]):
+            continue
+        if grid[new_location[0]][new_location[1]] == "#":
+            continue
+
+        # Add the new location to the trail and update the location
+        trail.append(new_location)
+        location = new_location
+
+    return trail
+
+def get_repetition_length(trail):
+    # Find the length of the trail
+    length = len(trail)
+
+    # Check if the trail is finite
+    if length == 1:
+        return 1
+
+    # Find the smallest integer X such that the suffix of the trail will be a repetition of a continuous subsequence of the trail of length exactly X
+    for x in range(2, length + 1):
+        if trail[-x:] == trail[:x]:
+            return x
+
+    # If no such integer X exists, return 1
+    return 1
+
+if __name__ == '__main__':
+    # Read the input
+    N = int(input())
+    program = input()
+    grid = [input() for _ in range(N)]
+
+    # Get the trail of the robot
+    trail = get_trail(program, grid)
+
+    # Find the repetition length of the trail
+    repetition_length = get_repetition_length(trail)
+
+    # Print the output
+    print(repetition_length)
 

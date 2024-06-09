@@ -1,9 +1,13 @@
 
-def solve(N, K):
-    min_diff = N
-    for i in range(1, N+1):
-        diff = abs(i - (N%K))
-        if diff < min_diff:
-            min_diff = diff
-    return min_diff
+def check_delimiters(L):
+    opening = ["(", "[", "{"]
+    closing = [")", "]", "}"]
+    stack = []
+    for i, char in enumerate(L):
+        if char in opening:
+            stack.append(char)
+        elif char in closing:
+            if not stack or opening.index(stack.pop()) != closing.index(char):
+                return char, i
+    return "ok so far", -1
 

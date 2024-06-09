@@ -1,19 +1,20 @@
 
-def get_min_distance(shadow_walk, lydia_walk):
-    # Calculate the distance between the two dogs at each point in their walks
-    distances = []
-    for i in range(len(shadow_walk)):
-        for j in range(len(lydia_walk)):
-            distances.append(get_distance(shadow_walk[i], lydia_walk[j]))
-    
-    # Return the minimum distance between the two dogs
-    return min(distances)
+def f1(A, B, S):
+    count = 0
+    smallest = None
+    for i in range(A, B+1):
+        if sum(int(digit) for digit in str(i)) == S:
+            count += 1
+            if smallest is None or i < smallest:
+                smallest = i
+    return count, smallest
 
-def get_distance(point1, point2):
-    # Calculate the Euclidean distance between two points
-    return ((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2) ** 0.5
+def f2(A, B, S):
+    count, smallest = f1(A, B, S)
+    print(count)
+    print(smallest)
 
-shadow_walk = [(0, 0), (10, 0)]
-lydia_walk = [(30, 0), (15, 0)]
-print(get_min_distance(shadow_walk, lydia_walk))
+if __name__ == '__main__':
+    A, B, S = map(int, input().split())
+    f2(A, B, S)
 

@@ -1,20 +1,18 @@
 
-def solve(n, k, a):
-    # Initialize a set to store the divine digits
-    divine_digits = set()
+def f1(string, explosion):
+    while explosion in string:
+        index = string.index(explosion)
+        string = string[:index] + string[index+len(explosion):]
+    return string
 
-    # Iterate over the banknote denominations
-    for i in range(n):
-        # Get the value of the current banknote
-        value = a[i]
+def f2(string, explosion):
+    if string == "":
+        return "FRULA"
+    else:
+        return string
 
-        # Iterate over the possible values of the last digit
-        for d in range(k):
-            # Check if the current value plus the last digit is a multiple of the current banknote
-            if (value + d) % a[i] == 0:
-                # Add the last digit to the set of divine digits
-                divine_digits.add(d)
-
-    # Return the number of divine digits and the set of divine digits
-    return len(divine_digits), divine_digits
+if __name__ == '__main__':
+    string, explosion = input().split()
+    result = f1(string, explosion)
+    print(f2(result, explosion))
 

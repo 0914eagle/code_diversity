@@ -1,18 +1,41 @@
 
-def get_water_height(vertices, depth, liters):
-    # Calculate the area of the polygon
-    area = 0
-    for i in range(len(vertices)):
-        x1, y1 = vertices[i]
-        x2, y2 = vertices[(i+1)%len(vertices)]
-        area += (x1*y2 - x2*y1)
-    area = abs(area) / 2
+def get_lowest_cost(flights, additional_flights):
+    # Initialize a dictionary to store the cost of each flight
+    flight_costs = {}
+    for flight in flights:
+        flight_costs[flight] = flights[flight]
 
-    # Calculate the volume of the tank
-    volume = area * depth
+    # Add the additional flights to the dictionary
+    for flight in additional_flights:
+        flight_costs[flight] = additional_flights[flight]
 
-    # Calculate the height of the water
-    water_height = (liters * 1000) / volume
+    # Find the minimum cost of all flights
+    min_cost = min(flight_costs.values())
 
-    return round(water_height, 2)
+    # Return the minimum cost
+    return min_cost
+
+def main():
+    # Read the input
+    num_airports, num_flights = map(int, input().split())
+    flights = {}
+    for _ in range(num_flights):
+        a, b, c = map(int, input().split())
+        flights[(a, b)] = c
+        flights[(b, a)] = c
+    num_additional_flights = int(input())
+    additional_flights = {}
+    for _ in range(num_additional_flights):
+        a, b, c = map(int, input().split())
+        additional_flights[(a, b)] = c
+        additional_flights[(b, a)] = c
+
+    # Call the get_lowest_cost function
+    lowest_cost = get_lowest_cost(flights, additional_flights)
+
+    # Print the output
+    print(lowest_cost)
+
+if __name__ == '__main__':
+    main()
 

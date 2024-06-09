@@ -1,30 +1,26 @@
 
-def get_max_apples(n, apple_trees):
-    # Sort the apple trees by their position
-    apple_trees.sort(key=lambda x: x[0])
+def get_min_operations(balances):
+    # Initialize the minimum number of operations to 0
+    min_operations = 0
 
-    # Initialize the maximum number of apples collected
-    max_apples = 0
+    # Loop through the balances and find the bank with the largest absolute balance
+    largest_balance = max(balances, key=abs)
 
-    # Initialize the current position
-    current_position = 0
+    # While the largest balance is not 0, perform operations
+    while largest_balance != 0:
+        # Find the bank with the largest absolute balance that is not the current bank
+        next_bank = balances.index(largest_balance)
 
-    # Initialize the current direction (0 for left, 1 for right)
-    current_direction = 0
+        # Transfer the largest balance to the next bank
+        balances[next_bank] += largest_balance
+        balances[largest_balance] -= largest_balance
 
-    # Loop through the apple trees
-    for tree in apple_trees:
-        # If the current position is not the same as the position of the current tree
-        if current_position != tree[0]:
-            # Update the current position
-            current_position = tree[0]
+        # Update the largest balance
+        largest_balance = max(balances, key=abs)
 
-            # Update the current direction
-            current_direction = 1 - current_direction
+        # Increment the minimum number of operations
+        min_operations += 1
 
-        # Add the number of apples on the current tree to the maximum number of apples collected
-        max_apples += tree[1]
-
-    # Return the maximum number of apples collected
-    return max_apples
+    # Return the minimum number of operations
+    return min_operations
 

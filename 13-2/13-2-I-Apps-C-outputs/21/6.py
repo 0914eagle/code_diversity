@@ -1,20 +1,56 @@
 
-def get_wcd(pairs):
-    # Initialize a set to store the common divisors
-    common_divisors = set()
+def f1(n, a):
+    # Check if the list is already sorted
+    if a == sorted(a):
+        return "impossible"
+    
+    # Find the index of the first number that is not in sorted order
+    i = 0
+    while i < n-1 and a[i] <= a[i+1]:
+        i += 1
+    
+    # If all numbers are in sorted order, return impossible
+    if i == n-1:
+        return "impossible"
+    
+    # Find the index of the number to change
+    j = i+1
+    while j < n and a[j] <= a[i]:
+        j += 1
+    
+    # Change the number at index i to be equal to the number at index j
+    a[i] = a[j]
+    
+    # Return the resulting list
+    return a
 
-    # Iterate over the pairs
-    for a, b in pairs:
-        # Get the common divisors of a and b
-        divisors = set(range(2, min(a, b) + 1))
+def f2(n, a):
+    # Check if the list is already sorted
+    if a == sorted(a):
+        return "impossible"
+    
+    # Find the index of the first number that is not in sorted order
+    i = 0
+    while i < n-1 and a[i] <= a[i+1]:
+        i += 1
+    
+    # If all numbers are in sorted order, return impossible
+    if i == n-1:
+        return "impossible"
+    
+    # Find the index of the number to change
+    j = i+1
+    while j < n and a[j] <= a[i]:
+        j += 1
+    
+    # Change the number at index i to be equal to the number at index j
+    a[i] = a[j]
+    
+    # Return the resulting list
+    return a
 
-        # Intersect the common divisors with the previous set
-        common_divisors &= divisors
-
-        # If the set is empty, return -1
-        if not common_divisors:
-            return -1
-
-    # Return the largest element in the set
-    return max(common_divisors)
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(f1(n, a))
 

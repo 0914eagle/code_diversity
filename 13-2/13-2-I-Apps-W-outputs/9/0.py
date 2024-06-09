@@ -1,37 +1,26 @@
 
-import sys
-import math
-
-def solve(n, m, passages):
-    # Initialize the expected number of passages as 0
-    E = 0
+def f1(n, x):
+    # Initialize variables
+    ice_cream = x
+    distressed_kids = 0
     
-    # Loop through each passage
-    for i in range(m):
-        # Get the current passage
-        s, t = passages[i]
+    # Iterate through the queue
+    for i in range(n):
+        # Read the next operation
+        operation, amount = input().split()
+        amount = int(amount)
         
-        # If the passage is from Room 1 to Room 2, block it
-        if s == 1 and t == 2:
-            continue
-        
-        # Add the probability of taking this passage to the expected number of passages
-        E += (t - s) / n
+        # If the operation is to give ice cream, give it to the child
+        if operation == "-":
+            if ice_cream >= amount:
+                ice_cream -= amount
+            else:
+                distressed_kids += 1
+                ice_cream = 0
+        # If the operation is to take ice cream, take it from the carrier
+        elif operation == "+":
+            ice_cream += amount
     
-    # Return the expected number of passages
-    return E
-
-n, m = map(int, input().split())
-passages = []
-
-# Loop through each passage
-for i in range(m):
-    # Get the current passage
-    s, t = map(int, input().split())
-    
-    # Add the passage to the list of passages
-    passages.append((s, t))
-
-# Call the solve function and print the result
-print(solve(n, m, passages))
+    # Return the number of ice cream packs left and the number of distressed kids
+    return ice_cream, distressed_kids
 

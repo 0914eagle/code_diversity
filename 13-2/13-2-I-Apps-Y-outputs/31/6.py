@@ -1,49 +1,16 @@
 
-def get_golorp_diet(golorp_name):
-    # Initialize variables
-    jaws_shape = []
-    stomach_size = 0
-    diet = []
-
-    # Parse the golorp name to get the jaws shape and stomach size
-    for char in golorp_name:
-        if char == '(':
-            jaws_shape.append(0)
-        elif char == ')':
-            jaws_shape.append(1)
-        elif char == '+':
-            jaws_shape.append(2)
-        elif char == '-':
-            jaws_shape.append(3)
-        elif char == '*':
-            jaws_shape.append(4)
-        elif char == '/':
-            jaws_shape.append(5)
-        elif char == ':':
-            jaws_shape.append(6)
-        elif char == '>':
-            jaws_shape.append(7)
-        elif char == '<':
-            jaws_shape.append(8)
-        elif char == ',':
-            jaws_shape.append(9)
-        elif char == '.':
-            jaws_shape.append(10)
-        elif char == '_':
-            stomach_size += 1
-
-    # Check if the golorp is impossible to feed
-    if len(jaws_shape) > stomach_size:
-        return "false"
-
-    # Generate all possible diets for the golorp
-    for i in range(11):
-        for combination in itertools.product([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], repeat=stomach_size):
-            diet.append("".join(map(str, combination)))
-
-    # Sort the diet in lexicographic order
-    diet.sort()
-
-    # Return the first diet in the sorted list
-    return diet[0]
+def f1(N, K):
+    # Initialize the probability of winning as 0
+    probability = 0
+    
+    # Iterate over all possible values that the die can show
+    for i in range(1, N+1):
+        # Calculate the probability of getting a score of K or above with the current die value
+        probability_i = (i / N) * (0.5 ** (K-1))
+        
+        # Add the probability of winning with the current die value to the total probability
+        probability += probability_i
+    
+    # Return the probability of winning
+    return probability
 

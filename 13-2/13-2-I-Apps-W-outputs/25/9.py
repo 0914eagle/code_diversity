@@ -1,17 +1,50 @@
 
-n = int(input())
-cities = list(map(int, input().split()))
+def f1(n):
+    # Calculate the area of the polygon
+    area = n * (n - 3) / 2
+    
+    # Initialize the minimum weight to infinity
+    min_weight = float('inf')
+    
+    # Iterate over all possible ways to cut the polygon into triangles
+    for i in range(n):
+        for j in range(i + 1, n):
+            for k in range(j + 1, n):
+                # Calculate the weight of the current triangle
+                weight = i * j * k
+                
+                # Check if the weight is less than the minimum weight
+                if weight < min_weight:
+                    # Update the minimum weight
+                    min_weight = weight
+    
+    # Return the minimum weight
+    return min_weight
 
-# Calculate the distance between each pair of cities
-distances = []
-for i in range(n):
-    for j in range(i+1, n):
-        distance = abs(cities[i] - cities[j])
-        distances.append(distance)
+def f2(n):
+    # Calculate the area of the polygon
+    area = n * (n - 3) / 2
+    
+    # Initialize the minimum weight to infinity
+    min_weight = float('inf')
+    
+    # Iterate over all possible ways to cut the polygon into triangles
+    for i in range(n):
+        for j in range(i + 1, n):
+            for k in range(j + 1, n):
+                # Calculate the weight of the current triangle
+                weight = i * j * k
+                
+                # Check if the weight is less than the minimum weight
+                if weight < min_weight:
+                    # Update the minimum weight
+                    min_weight = weight
+    
+    # Return the minimum weight
+    return min_weight
 
-# Find the minimum distance and the number of pairs with that distance
-min_distance = min(distances)
-num_pairs = len([distance for distance in distances if distance == min_distance])
-
-print(min_distance, num_pairs)
+if __name__ == '__main__':
+    n = int(input())
+    print(f1(n))
+    print(f2(n))
 

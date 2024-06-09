@@ -1,30 +1,29 @@
 
-def get_max_apples(n, apple_trees):
-    # Sort the apple trees by their position
-    apple_trees.sort(key=lambda x: x[0])
+def get_min_operations(balances):
+    # Initialize the minimum number of operations to 0
+    min_operations = 0
 
-    # Initialize the maximum number of apples collected
-    max_apples = 0
+    # Loop through the balances and find the bank with the largest balance
+    largest_balance = max(balances)
+    largest_balance_index = balances.index(largest_balance)
 
-    # Initialize the current position
-    current_position = 0
+    # Loop through the balances again and find the bank with the smallest balance
+    smallest_balance = min(balances)
+    smallest_balance_index = balances.index(smallest_balance)
 
-    # Initialize the current direction (0 for left, 1 for right)
-    current_direction = 0
+    # Calculate the difference between the largest and smallest balances
+    balance_difference = largest_balance - smallest_balance
 
-    # Loop through the apple trees
-    for tree in apple_trees:
-        # If the current position is not the same as the position of the current tree
-        if current_position != tree[0]:
-            # Update the current position
-            current_position = tree[0]
+    # If the difference is positive, transfer the difference from the largest balance to the smallest balance
+    if balance_difference > 0:
+        min_operations += 1
+        balances[largest_balance_index] -= balance_difference
+        balances[smallest_balance_index] += balance_difference
 
-            # Update the current direction
-            current_direction = 1 - current_direction
+    # Return the minimum number of operations required to change the balance of each bank to zero
+    return min_operations
 
-        # Add the number of apples on the current tree to the maximum number of apples collected
-        max_apples += tree[1]
-
-    # Return the maximum number of apples collected
-    return max_apples
+if __name__ == '__main__':
+    balances = [5, 0, -5]
+    print(get_min_operations(balances))
 

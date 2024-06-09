@@ -1,40 +1,32 @@
 
-def black_vienna(investigations):
-    num_investigations = len(investigations)
-    num_suspects = 26
-    num_solutions = 0
+def f1(k, answers):
+    # find the longest subsequence of length at least k with the highest success rate
+    max_success_rate = 0
+    best_subsequence = []
+    for i in range(len(answers) - k + 1):
+        subsequence = answers[i:i+k]
+        success_rate = subsequence.count("1") / len(subsequence)
+        if success_rate > max_success_rate:
+            max_success_rate = success_rate
+            best_subsequence = subsequence
+    return best_subsequence
 
-    for i in range(num_investigations):
-        suspects = investigations[i][:2]
-        player = investigations[i][2]
-        reply = investigations[i][3]
+def f2(k, answers):
+    # find the subsequence with the highest success rate that is at least k long
+    max_success_rate = 0
+    best_subsequence = []
+    for i in range(len(answers) - k + 1):
+        for j in range(i+k, len(answers)+1):
+            subsequence = answers[i:j]
+            success_rate = subsequence.count("1") / len(subsequence)
+            if success_rate > max_success_rate:
+                max_success_rate = success_rate
+                best_subsequence = subsequence
+    return best_subsequence
 
-        # If the player has all the cards, there is only one solution
-        if reply == num_suspects:
-            num_solutions += 1
-            continue
-
-        # If the player has no cards, there are no solutions
-        if reply == 0:
-            return 0
-
-        # If the player has some cards, we need to count the number of solutions
-        num_solutions += count_solutions(suspects, player, reply, num_suspects)
-
-    return num_solutions
-
-def count_solutions(suspects, player, reply, num_suspects):
-    num_solutions = 0
-
-    # If the player has only one card, there is only one solution
-    if reply == 1:
-        return 1
-
-    # If the player has two cards, we need to count the number of solutions
-    for i in range(num_suspects):
-        for j in range(i+1, num_suspects):
-            if i != j and i not in suspects and j not in suspects:
-                num_solutions += 1
-
-    return num_solutions
+if __name__ == '__main__':
+    k = int(input())
+    answers = input()
+    print(f1(k, answers))
+    print(f2(k, answers))
 

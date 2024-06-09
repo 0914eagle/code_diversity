@@ -1,57 +1,52 @@
 
-class LongLongString:
-    def __init__(self, string):
-        self.string = string
+def f1(N, targets):
+    # Sort the targets by their x-coordinate
+    sorted_targets = sorted(targets, key=lambda x: x[0])
 
-    def __len__(self):
-        return len(self.string)
+    # Initialize the first and last target to be hit
+    first_target = sorted_targets[0]
+    last_target = sorted_targets[-1]
 
-    def __getitem__(self, index):
-        return self.string[index]
+    # Iterate through the targets and find the closest pair of targets that are not on the same line
+    for i in range(1, N-1):
+        current_target = sorted_targets[i]
+        if current_target[0] != last_target[0]:
+            # Find the slope of the line between the current target and the last target
+            slope = (current_target[1] - last_target[1]) / (current_target[0] - last_target[0])
 
-    def __setitem__(self, index, char):
-        self.string = self.string[:index] + char + self.string[index+1:]
+            # Check if the slope is equal to the slope of the line between the first target and the last target
+            if slope == (last_target[1] - first_target[1]) / (last_target[0] - first_target[0]):
+                # If the slopes are equal, return "success"
+                return "success"
 
-    def __delitem__(self, index):
-        self.string = self.string[:index] + self.string[index+1:]
+    # If no pair of targets with equal slopes is found, return "failure"
+    return "failure"
 
-    def __str__(self):
-        return self.string
+def f2(N, targets):
+    # Initialize the first and last target to be hit
+    first_target = targets[0]
+    last_target = targets[-1]
 
-def compare_dna_programs(program1, program2):
-    string1 = LongLongString("")
-    string2 = LongLongString("")
+    # Iterate through the targets and find the closest pair of targets that are not on the same line
+    for i in range(1, N-1):
+        current_target = targets[i]
+        if current_target[0] != last_target[0]:
+            # Find the slope of the line between the current target and the last target
+            slope = (current_target[1] - last_target[1]) / (current_target[0] - last_target[0])
 
-    for operation in program1:
-        if operation[0] == "D":
-            string1.__delitem__(int(operation[1]))
-        elif operation[0] == "I":
-            string1.__setitem__(int(operation[1]), operation[2])
+            # Check if the slope is equal to the slope of the line between the first target and the last target
+            if slope == (last_target[1] - first_target[1]) / (last_target[0] - first_target[0]):
+                # If the slopes are equal, return "success"
+                return "success"
 
-    for operation in program2:
-        if operation[0] == "D":
-            string2.__delitem__(int(operation[1]))
-        elif operation[0] == "I":
-            string2.__setitem__(int(operation[1]), operation[2])
+    # If no pair of targets with equal slopes is found, return "failure"
+    return "failure"
 
-    return string1 == string2
-
-def main():
-    program1 = []
-    program2 = []
-
-    while True:
-        line = input()
-        if line == "E":
-            break
-        operation = line.split()
-        if operation[0] == "D":
-            program1.append(operation)
-        elif operation[0] == "I":
-            program2.append(operation)
-
-    print(compare_dna_programs(program1, program2))
-
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    N = int(input())
+    targets = []
+    for i in range(N):
+        x, y = map(int, input().split())
+        targets.append((x, y))
+    print(f1(N, targets))
 

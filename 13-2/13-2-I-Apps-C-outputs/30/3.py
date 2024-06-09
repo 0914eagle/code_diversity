@@ -1,39 +1,50 @@
 
-def solve(N, program, grid):
-    # Initialize the robot's location and trail
-    location = (N-1, N-1)
-    trail = [location]
+def f1(N, M, doors):
+    # Initialize a graph with N nodes
+    graph = [[] for _ in range(N)]
 
-    # Loop through the program
-    for char in program:
-        # Move the robot in the current direction
-        if char == "<":
-            location = (location[0]-1, location[1])
-        elif char == ">":
-            location = (location[0]+1, location[1])
-        elif char == "^":
-            location = (location[0], location[1]-1)
-        elif char == "v":
-            location = (location[0], location[1]+1)
+    # Add edges to the graph based on the doors
+    for u, v in doors:
+        graph[u].append(v)
+        graph[v].append(u)
 
-        # Check if the new location is passable
-        if grid[location[0]][location[1]] == ".":
-            # Add the new location to the trail
-            trail.append(location)
-        else:
-            # Skip the movement if the new location is impassable
-            continue
+    # Find the node with the maximum number of neighbors
+    max_neighbors = 0
+    node = 0
+    for i in range(N):
+        if len(graph[i]) > max_neighbors:
+            max_neighbors = len(graph[i])
+            node = i
 
-    # Check if the trail is of finite length
-    if len(trail) < N*N:
-        return 1
+    # Return the node with the maximum number of neighbors
+    return node
 
-    # Find the smallest integer X such that the suffix of the trail is a repetition of a continuous subsequence of the trail of length exactly X
-    X = 1
-    while True:
-        if trail[:X] * int(len(trail)/X) == trail:
-            break
-        X += 1
+def f2(N, M, doors):
+    # Initialize a graph with N nodes
+    graph = [[] for _ in range(N)]
 
-    return X
+    # Add edges to the graph based on the doors
+    for u, v in doors:
+        graph[u].append(v)
+        graph[v].append(u)
+
+    # Find the node with the maximum number of neighbors that can only be reached from the outside
+    max_neighbors = 0
+    node = 0
+    for i in range(N):
+        if len(graph[i]) > max_neighbors and i != -1:
+            max_neighbors = len(graph[i])
+            node = i
+
+    # Return the node with the maximum number of neighbors that can only be reached from the outside
+    return node
+
+if __name__ == '__main__':
+    N, M = map(int, input().split())
+    doors = []
+    for _ in range(M):
+        u, v = map(int, input().split())
+        doors.append((u, v))
+    print(f1(N, M, doors))
+    print(f2(N, M, doors))
 

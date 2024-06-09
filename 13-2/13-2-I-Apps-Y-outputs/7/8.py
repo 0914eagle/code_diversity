@@ -1,29 +1,48 @@
 
-import itertools
+def count_black_squares(grid):
+    # Initialize a counter for the number of black squares
+    black_squares = 0
 
-def get_smallest_string(s, t):
-    # Generate all possible strings that satisfy Condition 1
-    possible_strings = ["".join(p) for p in itertools.product(["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"], repeat=len(t))]
-    
-    # Filter out strings that do not contain T as a contiguous substring
-    possible_strings = [s for s in possible_strings if t in s]
-    
-    # Find the lexicographically smallest string that satisfies Condition 1 and Condition 2
-    smallest_string = None
-    for s in possible_strings:
-        if smallest_string is None or s < smallest_string:
-            smallest_string = s
-    
-    return smallest_string
+    # Loop through the grid and count the number of black squares
+    for row in grid:
+        for square in row:
+            if square == '#':
+                black_squares += 1
+
+    # Return the number of black squares
+    return black_squares
+
+def choose_rows_and_columns(grid, k):
+    # Initialize a list to store the choices of rows and columns
+    choices = []
+
+    # Loop through the grid and find the k black squares
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j] == '#':
+                # Add the current row and column to the choices list
+                choices.append((i, j))
+                # If we have found k black squares, return the choices list
+                if len(choices) == k:
+                    return choices
+
+    # If we have not found k black squares, return an empty list
+    return []
 
 def main():
-    s, t = input().split()
-    smallest_string = get_smallest_string(s, t)
-    if smallest_string is None:
-        print("UNRESTORABLE")
-    else:
-        print(smallest_string)
+    # Read the input from stdin
+    h, w, k = map(int, input().split())
+    grid = [input() for _ in range(h)]
 
-if __name__ == "__main__":
+    # Count the number of black squares in the grid
+    black_squares = count_black_squares(grid)
+
+    # Choose the rows and columns with k black squares
+    choices = choose_rows_and_columns(grid, k)
+
+    # Print the number of choices
+    print(len(choices))
+
+if __name__ == '__main__':
     main()
 

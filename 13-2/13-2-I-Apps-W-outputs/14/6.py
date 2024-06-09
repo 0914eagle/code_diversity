@@ -1,15 +1,16 @@
 
-def is_pair_exists(n):
-    for a in range(1, n):
-        b = (n - 3**a) // 5
-        if 3**a + 5**b == n:
-            return True, a, b
-    return False, -1, -1
+def f1(q):
+    # Your code here
+    return "YES"
 
-n = int(input())
-exists, a, b = is_pair_exists(n)
-if exists:
-    print(a, b)
-else:
-    print(-1)
+def f2(q):
+    # Your code here
+    return "NO"
+
+if __name__ == '__main__':
+    q = int(input())
+    for _ in range(q):
+        a, b = map(int, input().split())
+        s = input()
+        print(f1(a, b, s))
 

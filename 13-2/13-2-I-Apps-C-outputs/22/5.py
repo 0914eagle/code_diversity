@@ -1,33 +1,29 @@
 
-import math
+def is_reproducible(art_piece):
+    # Initialize a 2D array to store the colors of the art piece
+    art_piece_array = []
+    for row in art_piece:
+        art_piece_array.append([])
+        for col in row:
+            art_piece_array[-1].append(col)
 
-def solve(n, m, edges, s, t):
-    # Initialize the probability matrix
-    prob = [[0] * n for _ in range(n)]
+    # Initialize a 2D array to store the colors of the reproduced art piece
+    reproduced_art_piece_array = [[0] * len(art_piece_array[0]) for _ in range(len(art_piece_array))]
 
-    # Set the initial probability of being at the same station to 1
-    prob[s][t] = 1
+    # Loop through the art piece array and check if the colors match
+    for i in range(len(art_piece_array)):
+        for j in range(len(art_piece_array[0])):
+            if art_piece_array[i][j] != reproduced_art_piece_array[i][j]:
+                return "NO"
 
-    # Loop through each minute
-    for i in range(1, n):
-        # Loop through each station
-        for u in range(n):
-            # Loop through each neighbouring station
-            for v in range(n):
-                # Check if u and v are neighbours
-                if edges[u][v] == 1:
-                    # Add the probability of being at the same station from the previous minute
-                    prob[u][v] += prob[u][v]
+    return "YES"
 
-                    # Add the probability of being at the same station from the previous minute
-                    prob[v][u] += prob[u][v]
+def main():
+    art_piece = []
+    for _ in range(int(input())):
+        art_piece.append(input())
+    print(is_reproducible(art_piece))
 
-    # Calculate the expected time to meet
-    expected_time = 0
-    for u in range(n):
-        for v in range(n):
-            if edges[u][v] == 1:
-                expected_time += prob[u][v] * (i + 1)
-
-    return expected_time
+if __name__ == '__main__':
+    main()
 

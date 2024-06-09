@@ -1,21 +1,78 @@
 
-def get_min_operations(n, letters):
-    # Initialize variables
-    operations = 0
-    current_letter = 0
-    read_letters = 0
+def f1(n, m, edges, q, queries):
+    # Initialize a dictionary to store the graph
+    graph = {}
+    for i in range(n):
+        graph[i+1] = []
+    
+    # Add edges to the graph
+    for edge in edges:
+        graph[edge[0]].append(edge[1])
+        graph[edge[1]].append(edge[0])
+    
+    # Initialize a dictionary to store the number of colors for each query
+    query_answers = {}
+    
+    # Process each query
+    for query in queries:
+        u, v = query
+        query_answers[query] = 0
+        visited = set()
+        queue = [u]
+        while queue:
+            node = queue.pop(0)
+            if node == v:
+                query_answers[query] += 1
+                break
+            if node not in visited:
+                visited.add(node)
+                queue += graph[node]
+    
+    return query_answers
 
-    # Iterate through the letters
-    for letter in letters:
-        # If the letter is unread, open it
-        if letter == 0:
-            operations += 1
-            read_letters += 1
-        # If the letter is read, move to the next letter
-        else:
-            operations += 1
-            current_letter += 1
+def f2(n, m, edges, q, queries):
+    # Initialize a dictionary to store the graph
+    graph = {}
+    for i in range(n):
+        graph[i+1] = []
+    
+    # Add edges to the graph
+    for edge in edges:
+        graph[edge[0]].append(edge[1])
+        graph[edge[1]].append(edge[0])
+    
+    # Initialize a dictionary to store the number of colors for each query
+    query_answers = {}
+    
+    # Process each query
+    for query in queries:
+        u, v = query
+        query_answers[query] = 0
+        visited = set()
+        queue = [u]
+        while queue:
+            node = queue.pop(0)
+            if node == v:
+                query_answers[query] += 1
+                break
+            if node not in visited:
+                visited.add(node)
+                queue += graph[node]
+    
+    return query_answers
 
-    # Return the minimum number of operations needed to read all unread letters
-    return operations + (n - read_letters)
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    edges = []
+    for i in range(m):
+        a, b, c = map(int, input().split())
+        edges.append((a, b, c))
+    q = int(input())
+    queries = []
+    for i in range(q):
+        u, v = map(int, input().split())
+        queries.append((u, v))
+    query_answers = f1(n, m, edges, q, queries)
+    for query, answer in query_answers.items():
+        print(answer)
 

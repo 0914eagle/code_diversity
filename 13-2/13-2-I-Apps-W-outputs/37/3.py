@@ -1,16 +1,33 @@
 
-import math
+def get_frequencies(n, edges):
+    frequencies = [0] * (2 * n)
+    for i in range(n):
+        frequencies[i * 2] = i + 1
+        frequencies[i * 2 + 1] = i + 1
+    
+    for edge in edges:
+        i, j = edge
+        if frequencies[i * 2] == frequencies[j * 2]:
+            frequencies[j * 2 + 1] = frequencies[i * 2]
+        elif frequencies[i * 2 + 1] == frequencies[j * 2]:
+            frequencies[i * 2] = frequencies[j * 2 + 1]
+        elif frequencies[i * 2] == frequencies[j * 2 + 1]:
+            frequencies[j * 2] = frequencies[i * 2 + 1]
+        elif frequencies[i * 2 + 1] == frequencies[j * 2 + 1]:
+            frequencies[i * 2] = frequencies[j * 2]
+    
+    return frequencies
 
-def get_coprime_subsequences(a):
-    n = len(a)
-    dp = [1] * (n + 1)
-    for i in range(1, n + 1):
-        for j in range(1, i):
-            if a[i - 1] % a[j - 1] == 0:
-                dp[i] = (dp[i] - dp[j] + 1000000007) % 1000000007
-    return dp[n]
+def main():
+    n = int(input())
+    edges = []
+    for _ in range(n - 1):
+        edges.append(list(map(int, input().split())))
+    
+    frequencies = get_frequencies(n, edges)
+    for i in range(n):
+        print(frequencies[i * 2], frequencies[i * 2 + 1])
 
-n = int(input())
-a = list(map(int, input().split()))
-print(get_coprime_subsequences(a))
+if __name__ == '__main__':
+    main()
 

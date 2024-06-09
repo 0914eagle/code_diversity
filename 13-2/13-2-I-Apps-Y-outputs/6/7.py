@@ -1,29 +1,15 @@
 
-def get_days(n, m, a):
-    # Initialize variables
-    days = 0
-    pages_written = 0
-    cups_drunk = 0
-
-    # Sort the cups of coffee by caffeine dosage in descending order
-    a.sort(reverse=True)
-
-    # Loop through each cup of coffee
-    for i in range(n):
-        # If the current cup of coffee has enough caffeine to write at least one page,
-        # drink it and write the maximum number of pages possible
-        if a[i] > 0:
-            cups_drunk += 1
-            pages_written += min(m - pages_written, a[i])
-
-        # If all pages have been written, break the loop
-        if pages_written == m:
-            break
-
-    # If all pages have been written, return the number of days
-    # otherwise, return -1
-    if pages_written == m:
-        return days
-    else:
-        return -1
+def get_largest_sum(a, b, c, k):
+    # Initialize a list to store the values of a, b, and c
+    numbers = [a, b, c]
+    
+    # Loop through the list of numbers k times
+    for _ in range(k):
+        # Find the index of the largest number in the list
+        largest_index = numbers.index(max(numbers))
+        # Double the largest number
+        numbers[largest_index] *= 2
+    
+    # Return the sum of the numbers
+    return sum(numbers)
 

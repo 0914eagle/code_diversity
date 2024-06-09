@@ -1,15 +1,22 @@
 
-import math
+def get_permutation(n, q):
+    permutation = []
+    for i in range(n):
+        permutation.append(i+1)
+    for i in range(n-1):
+        if q[i] >= 0:
+            permutation[i], permutation[i+q[i]] = permutation[i+q[i]], permutation[i]
+    return permutation
 
-def get_volume(n, h, v):
-    # Calculate the area of the largest piece of cake
-    area = (n - h) * (n - v)
-    
-    # Calculate the volume of the largest piece of cake
-    volume = area * 4
-    
-    return volume
+def main():
+    n = int(input())
+    q = list(map(int, input().split()))
+    permutation = get_permutation(n, q)
+    if permutation == []:
+        print(-1)
+    else:
+        print(*permutation)
 
-n, h, v = map(int, input().split())
-print(get_volume(n, h, v))
+if __name__ == '__main__':
+    main()
 

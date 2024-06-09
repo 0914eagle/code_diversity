@@ -1,27 +1,32 @@
 
-def is_possible(points):
-    # Sort the points by their x-coordinates
-    sorted_points = sorted(points, key=lambda point: point[0])
+def get_max_bottles(bottles, height):
+    # Initialize a list to store the maximum number of bottles that can be placed on each shelf
+    max_bottles = [0] * height
+    # Initialize a variable to store the maximum number of bottles that can be placed in the fridge
+    max_total_bottles = 0
+    # Loop through the bottles
+    for bottle in bottles:
+        # Loop through the shelves
+        for i in range(height):
+            # Check if the bottle fits on the current shelf
+            if bottle <= height - i:
+                # Update the maximum number of bottles that can be placed on the current shelf
+                max_bottles[i] += 1
+                # Update the maximum number of bottles that can be placed in the fridge
+                max_total_bottles = max(max_total_bottles, max_bottles[i])
+                # Break out of the loop since we have found a valid placement for the bottle
+                break
+    # Return the maximum number of bottles that can be placed in the fridge
+    return max_total_bottles
 
-    # Initialize the variables for the left and right endpoints of the lines
-    left_endpoint = sorted_points[0]
-    right_endpoint = sorted_points[-1]
+def main():
+    # Read the number of bottles and the height of the fridge from stdin
+    n, h = map(int, input().split())
+    # Read the heights of the bottles from stdin
+    bottles = list(map(int, input().split()))
+    # Call the get_max_bottles function and print the result
+    print(get_max_bottles(bottles, h))
 
-    # Iterate through the points and check if they lie on the line
-    for i in range(1, len(sorted_points)):
-        current_point = sorted_points[i]
-
-        # Check if the current point lies on the line between the left and right endpoints
-        if current_point[0] == left_endpoint[0] or current_point[0] == right_endpoint[0]:
-            continue
-
-        # Check if the current point lies between the left and right endpoints
-        if left_endpoint[0] < current_point[0] < right_endpoint[0]:
-            continue
-
-        # If the current point does not lie on the line or between the left and right endpoints, return False
-        return False
-
-    # If all points lie on the line or between the left and right endpoints, return True
-    return True
+if __name__ == '__main__':
+    main()
 

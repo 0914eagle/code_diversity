@@ -1,14 +1,11 @@
 
-import sys
+def check_sheep_and_wolves(num_sheep, num_wolves):
+    if num_wolves >= num_sheep:
+        return "unsafe"
+    else:
+        return "safe"
 
-n, k = map(int, input().split())
-lengths = list(map(int, input().split()))
-
-lengths.sort()
-
-max_length = 0
-for i in range(k):
-    max_length += lengths[i]
-
-print(max_length)
+if __name__ == '__main__':
+    num_sheep, num_wolves = map(int, input().split())
+    print(check_sheep_and_wolves(num_sheep, num_wolves))
 

@@ -1,36 +1,58 @@
 
-import math
+def f1(n, live_seq, fossil_seqs):
+    # Initialize variables
+    first_path = []
+    second_path = []
+    visited = set()
 
-def solve(n, circles):
-    # Convert the circles to a set of line segments
-    segments = []
-    for circle in circles:
-        x, y, r = circle
-        segments.append([(x + r, y), (x - r, y)])
-        segments.append([(x, y + r), (x, y - r)])
-    
-    # Sort the segments by their slope
-    segments.sort(key=lambda segment: segment[0][1] - segment[1][1])
-    
-    # Count the number of regions
-    regions = set()
-    for segment in segments:
-        x1, y1 = segment[0]
-        x2, y2 = segment[1]
-        if x1 == x2:
-            continue
-        
-        m = (y2 - y1) / (x2 - x1)
-        b = y1 - m * x1
-        regions.add((m, b))
-    
-    return len(regions)
+    # Add the live sequence to the first path
+    first_path.append(live_seq)
+    visited.add(live_seq)
 
-n = int(input())
-circles = []
-for i in range(n):
-    x, y, r = map(int, input().split())
-    circles.append((x, y, r))
+    # Iterate through the fossil sequences
+    for seq in fossil_seqs:
+        # If the sequence is not in the visited set, add it to the first path
+        if seq not in visited:
+            first_path.append(seq)
+            visited.add(seq)
+        # If the sequence is already in the visited set, add it to the second path
+        else:
+            second_path.append(seq)
 
-print(solve(n, circles))
+    # Return the first path and the second path
+    return first_path, second_path
+
+def f2(n, live_seq, fossil_seqs):
+    # Initialize variables
+    first_path = []
+    second_path = []
+    visited = set()
+
+    # Add the live sequence to the first path
+    first_path.append(live_seq)
+    visited.add(live_seq)
+
+    # Iterate through the fossil sequences
+    for seq in fossil_seqs:
+        # If the sequence is not in the visited set, add it to the first path
+        if seq not in visited:
+            first_path.append(seq)
+            visited.add(seq)
+        # If the sequence is already in the visited set, add it to the second path
+        else:
+            second_path.append(seq)
+
+    # Return the first path and the second path
+    return first_path, second_path
+
+if __name__ == '__main__':
+    n = int(input())
+    live_seq = input()
+    fossil_seqs = [input() for _ in range(n)]
+    first_path, second_path = f1(n, live_seq, fossil_seqs)
+    print(len(first_path), len(second_path))
+    for seq in first_path:
+        print(seq)
+    for seq in second_path:
+        print(seq)
 

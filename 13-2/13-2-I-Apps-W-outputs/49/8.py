@@ -1,13 +1,17 @@
 
-def get_max_median(arr, k):
-    n = len(arr)
-    arr.sort()
-    median = arr[n//2]
-    for i in range(k):
-        for j in range(n):
-            if arr[j] < median:
-                arr[j] += 1
-                median = max(median, arr[j])
-                break
-    return median
+def count_divisible_integers(numbers):
+    count = 0
+    for i in range(len(numbers)):
+        for j in range(i+1, len(numbers)):
+            if numbers[i] % numbers[j] == 0:
+                count += 1
+    return count
+
+def main():
+    n = int(input())
+    numbers = list(map(int, input().split()))
+    print(count_divisible_integers(numbers))
+
+if __name__ == '__main__':
+    main()
 

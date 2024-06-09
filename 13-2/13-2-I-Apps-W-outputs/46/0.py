@@ -1,13 +1,29 @@
 
-def count_ways(a, b, s):
-    n = len(a)
-    m = len(b)
-    count = 0
-    for i in range(n):
-        for j in range(i+1, n+1):
-            for k in range(m):
-                for l in range(k+1, m+1):
-                    if a[i:j] + b[k:l] == s:
-                        count += 1
+def f1(t, pieces):
+    # convert the pieces to a set to remove duplicates
+    pieces = set(pieces)
+    # count the number of instances of t in the pieces
+    count = pieces.count(t)
+    # if t is not in the pieces, return 0
+    if count == 0:
+        return 0
+    # if t is in the pieces, return the count
     return count
+
+def f2(t, pieces):
+    # convert the pieces to a set to remove duplicates
+    pieces = set(pieces)
+    # count the number of instances of t in the pieces
+    count = pieces.count(t)
+    # if t is not in the pieces, return 0
+    if count == 0:
+        return 0
+    # if t is in the pieces, return the count
+    return count
+
+if __name__ == '__main__':
+    t = int(input())
+    pieces = input()
+    print(f1(t, pieces))
+    print(f2(t, pieces))
 

@@ -1,48 +1,35 @@
 
-def solve(n, q, polygon, queries):
-    # Initialize the answer array
-    answer = []
-    
-    # Iterate over each query
-    for query in queries:
-        # If the query is of type 1, rotate the polygon
-        if query[0] == 1:
-            # Get the indices of the vertices to be pinned
-            f = query[1]
-            t = query[2]
-            
-            # Rotate the polygon
-            rotate_polygon(polygon, f, t)
-        
-        # If the query is of type 2, get the coordinates of the vertex
-        elif query[0] == 2:
-            # Get the index of the vertex
-            v = query[1]
-            
-            # Get the coordinates of the vertex
-            x, y = polygon[v]
-            
-            # Add the coordinates to the answer array
-            answer.append([x, y])
-    
-    return answer
+def get_max_height(n, h1, h2):
+    # Initialize variables
+    max_height = 0
+    current_height = 0
+    current_row = 1
+    chosen_students = []
 
-def rotate_polygon(polygon, f, t):
-    # Get the indices of the vertices to be pinned
-    f = f - 1
-    t = t - 1
-    
-    # Get the coordinates of the vertices to be pinned
-    x1, y1 = polygon[f]
-    x2, y2 = polygon[t]
-    
-    # Calculate the angle of rotation
-    angle = np.arctan2(y2 - y1, x2 - x1)
-    
-    # Rotate the polygon
-    for i in range(len(polygon)):
-        x, y = polygon[i]
-        x_new = x * np.cos(angle) - y * np.sin(angle)
-        y_new = x * np.sin(angle) + y * np.cos(angle)
-        polygon[i] = [x_new, y_new]
+    # Iterate through the students in each row
+    for i in range(n):
+        # If the current student is not in the chosen students list, add it to the list
+        if h1[i] not in chosen_students and h2[i] not in chosen_students:
+            # Add the current student to the chosen students list
+            chosen_students.append(h1[i])
+            chosen_students.append(h2[i])
+            # Update the current height
+            current_height += h1[i] + h2[i]
+            # Update the maximum height if necessary
+            if current_height > max_height:
+                max_height = current_height
+            # Update the current row
+            current_row = 3 - current_row
+        # If the current student is already in the chosen students list, move to the next student
+        else:
+            continue
+
+    # Return the maximum height
+    return max_height
+
+if __name__ == '__main__':
+    n = int(input())
+    h1 = list(map(int, input().split()))
+    h2 = list(map(int, input().split()))
+    print(get_max_height(n, h1, h2))
 

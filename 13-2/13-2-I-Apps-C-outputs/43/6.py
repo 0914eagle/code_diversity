@@ -1,25 +1,42 @@
 
-def get_min_nubs(mark):
-    n, m = map(int, input().split())
-    mark = [input() for _ in range(n)]
-    # Count the number of '#' symbols in the mark
-    num_hashes = sum(line.count('#') for line in mark)
-    # Initialize a 2D array to store the number of '#' symbols in each cell
-    num_hashes_array = [[0] * m for _ in range(n)]
-    # Fill in the 2D array based on the mark
-    for i in range(n):
-        for j in range(m):
-            if mark[i][j] == '#':
-                num_hashes_array[i][j] = 1
-    # Check if the mark can be made by stamping exactly twice
-    for i in range(n):
-        for j in range(m):
-            if num_hashes_array[i][j] != 2:
-                return -1
-    # Count the number of unique '#' symbols in the mark
-    unique_hashes = set()
-    for i in range(n):
-        for j in range(m):
-            unique_hashes.add((i, j))
-    return num_hashes - len(unique_hashes)
+def find_shortest_cycle(dependencies):
+    
+    visited = set()
+    cycle = []
+    for file in dependencies:
+        if file not in visited:
+            visited.add(file)
+            cycle = find_cycle(file, dependencies, visited, cycle)
+            if len(cycle) > 0:
+                break
+    return cycle
+
+def find_cycle(file, dependencies, visited, cycle):
+    
+    if file in visited:
+        cycle.append(file)
+        return cycle
+    visited.add(file)
+    for imported_file in dependencies[file]:
+        cycle = find_cycle(imported_file, dependencies, visited, cycle)
+        if len(cycle) > 0:
+            break
+    return cycle
+
+def main():
+    num_files = int(input())
+    dependencies = {}
+    for _ in range(num_files):
+        file = input()
+        num_imports = int(input())
+        imports = input().split(', ')
+        dependencies[file] = imports
+    cycle = find_shortest_cycle(dependencies)
+    if len(cycle) == 0:
+        print("SHIP IT")
+    else:
+        print(" ".join(cycle))
+
+if __name__ == '__main__':
+    main()
 

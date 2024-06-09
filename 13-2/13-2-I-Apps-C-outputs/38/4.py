@@ -1,24 +1,29 @@
 
-def solve(sticks):
-    # Sort the sticks by their x-coordinate
-    sticks.sort(key=lambda x: x[0])
+def get_minimum_transactions(receipts):
+    # Initialize a dictionary to store the net balance of each person
+    net_balance = {}
+    for person in range(len(receipts)):
+        net_balance[person] = 0
     
-    # Initialize the output list
-    output = []
+    # Iterate through the receipts and update the net balance of each person
+    for receipt in receipts:
+        person1, person2, amount = receipt
+        net_balance[person1] -= amount
+        net_balance[person2] += amount
     
-    # Loop through the sticks
-    for stick in sticks:
-        # Find the closest stick to the current stick
-        closest_stick = None
-        for other_stick in sticks:
-            if other_stick != stick:
-                distance = abs(stick[0] - other_stick[0])
-                if closest_stick is None or distance < closest_stick[0]:
-                    closest_stick = (distance, other_stick)
-        
-        # Add the closest stick to the output list
-        output.append(closest_stick[1])
+    # Find the person with the highest net balance and the person with the lowest net balance
+    highest_balance = max(net_balance.values())
+    lowest_balance = min(net_balance.values())
     
-    # Return the output list
-    return output
+    # Return the difference between the highest and lowest net balance
+    return highest_balance - lowest_balance
+
+def main():
+    receipts = []
+    for _ in range(int(input())):
+        receipts.append(list(map(int, input().split())))
+    print(get_minimum_transactions(receipts))
+
+if __name__ == '__main__':
+    main()
 

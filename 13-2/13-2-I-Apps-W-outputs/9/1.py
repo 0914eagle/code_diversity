@@ -1,37 +1,29 @@
 
-import sys
-import math
-
-def get_expected_number_of_passages(n, m, s, t):
-    # Initialize the probability of reaching room N from each room
-    probabilities = [1 for _ in range(n)]
-
-    # Loop through each passage
-    for i in range(m):
-        # Get the current passage
-        current_s = s[i]
-        current_t = t[i]
-
-        # Update the probability of reaching room N from the current passage's start room
-        probabilities[current_s-1] += probabilities[current_t-1] / n
-
-    # Return the expected number of passages
-    return sum(probabilities)
-
-n, m = map(int, input().split())
-s = list(map(int, input().split()))
-t = list(map(int, input().split()))
-
-# Get the expected number of passages for each possible passage blocking
-expected_numbers = []
-for i in range(m):
-    # Block the current passage
-    blocked_s = s[:i] + s[i+1:]
-    blocked_t = t[:i] + t[i+1:]
-
-    # Get the expected number of passages for the blocked passage
-    expected_numbers.append(get_expected_number_of_passages(n, m-1, blocked_s, blocked_t))
-
-# Print the minimum expected number of passages
-print(min(expected_numbers))
+def f1(n, x):
+    # Initialize variables
+    ice_cream = x
+    distressed_kids = 0
+    
+    # Iterate through the queue
+    for i in range(n):
+        # Read the next operation
+        operation = input().split()
+        
+        # If the operation is "+", a carrier has arrived
+        if operation[0] == "+":
+            # Add the number of ice cream packs to the total
+            ice_cream += int(operation[1])
+        
+        # If the operation is "-", a child has arrived
+        elif operation[0] == "-":
+            # Try to give the child the requested number of ice cream packs
+            if ice_cream >= int(operation[1]):
+                # If there are enough ice cream packs, give them to the child
+                ice_cream -= int(operation[1])
+            else:
+                # If there are not enough ice cream packs, the child goes away distressed
+                distressed_kids += 1
+    
+    # Return the number of ice cream packs left and the number of distressed kids
+    return ice_cream, distressed_kids
 

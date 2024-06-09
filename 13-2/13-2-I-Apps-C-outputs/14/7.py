@@ -1,20 +1,19 @@
 
-def solve(n, k, a):
-    # Initialize a set to store the divine digits
-    divine_digits = set()
+def f1(string, explosion):
+    while explosion in string:
+        string = string.replace(explosion, "")
+    return string
 
-    # Iterate over the denominations of banknotes
-    for i in range(n):
-        # Get the value of the current banknote
-        value = a[i]
+def f2(string, explosion):
+    while True:
+        if explosion in string:
+            string = string.replace(explosion, "")
+        else:
+            break
+    return string
 
-        # Iterate over the digits of the value
-        for digit in str(value):
-            # Check if the digit is the divine digit
-            if digit == str(k - 1):
-                # Add the divine digit to the set
-                divine_digits.add(digit)
-
-    # Return the number of divine digits and the set of divine digits
-    return len(divine_digits), divine_digits
+if __name__ == '__main__':
+    string, explosion = input(), input()
+    print(f1(string, explosion))
+    print(f2(string, explosion))
 

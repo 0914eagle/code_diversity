@@ -1,28 +1,27 @@
 
-def is_possible(N, M, roads):
-    # Initialize a graph with N nodes and 0 edges
-    graph = [[] for _ in range(N)]
+def get_boss_and_subordinates(employees, query):
+    bosses = {}
+    subordinates = {}
+    for employee in employees:
+        bosses[employee[0]] = employee[1]
+        subordinates[employee[1]] = subordinates.get(employee[1], []) + [employee[0]]
+    
+    boss = bosses[query]
+    subordinates = subordinates.get(query, [])
+    return boss, len(subordinates)
 
-    # Add edges to the graph
-    for road in roads:
-        graph[road[0] - 1].append(road[1] - 1)
-        graph[road[1] - 1].append(road[0] - 1)
+def main():
+    m, q = map(int, input().split())
+    employees = []
+    for i in range(m):
+        employee = list(map(int, input().split()))
+        employees.append(employee)
+    
+    for i in range(q):
+        query = int(input())
+        boss, subordinates = get_boss_and_subordinates(employees, query)
+        print(boss, subordinates)
 
-    # Check if the graph is connected
-    visited = [False] * N
-    queue = [0]
-    visited[0] = True
-    while queue:
-        node = queue.pop(0)
-        for neighbor in graph[node]:
-            if not visited[neighbor]:
-                visited[neighbor] = True
-                queue.append(neighbor)
-
-    # If the graph is connected, return YES and a possible direction assignment
-    if all(visited):
-        return "YES\n" + "\n".join(str(i + 1) + " " + str(j + 1) for i, row in enumerate(graph) for j in row if i < j)
-
-    # If the graph is not connected, return NO
-    return "NO"
+if __name__ == '__main__':
+    main()
 

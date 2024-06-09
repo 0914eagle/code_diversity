@@ -1,16 +1,50 @@
 
-import math
+def f1(n, edges):
+    # Initialize the frequency assignment for each NIC
+    freqs = [0] * (2 * n)
+    
+    # Iterate through each edge in the network
+    for i in range(n - 1):
+        # Get the indices of the two nodes in the edge
+        node1, node2 = edges[i]
+        
+        # If the frequency of NIC 1 is not already assigned, assign it to the edge frequency
+        if freqs[node1 - 1] == 0:
+            freqs[node1 - 1] = i + 1
+        
+        # If the frequency of NIC 2 is not already assigned, assign it to the edge frequency
+        if freqs[node2 - 1] == 0:
+            freqs[node2 - 1] = i + 1
+    
+    # Return the frequency assignment for each NIC
+    return freqs
 
-def get_coprime_subsequences(a):
-    n = len(a)
-    dp = [1] * (n + 1)
-    for i in range(1, n + 1):
-        for j in range(1, i):
-            if a[i - 1] % a[j - 1] == 0:
-                dp[i] = (dp[i] - dp[j] + 1000000007) % 1000000007
-    return dp[n]
+def f2(n, edges):
+    # Initialize the frequency assignment for each NIC
+    freqs = [0] * (2 * n)
+    
+    # Iterate through each edge in the network
+    for i in range(n - 1):
+        # Get the indices of the two nodes in the edge
+        node1, node2 = edges[i]
+        
+        # If the frequency of NIC 1 is not already assigned, assign it to the edge frequency
+        if freqs[node1 - 1] == 0:
+            freqs[node1 - 1] = i + 1
+        
+        # If the frequency of NIC 2 is not already assigned, assign it to the edge frequency
+        if freqs[node2 - 1] == 0:
+            freqs[node2 - 1] = i + 1
+    
+    # Return the frequency assignment for each NIC
+    return freqs
 
-n = int(input())
-a = list(map(int, input().split()))
-print(get_coprime_subsequences(a))
+if __name__ == '__main__':
+    n = int(input())
+    edges = []
+    for i in range(n - 1):
+        edges.append(tuple(map(int, input().split())))
+    freqs = f1(n, edges)
+    for i in range(n):
+        print(freqs[i], freqs[i + n])
 

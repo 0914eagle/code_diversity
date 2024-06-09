@@ -1,50 +1,47 @@
 
-def solve(W, v_h, N, x, y, S, s):
-    # Initialize a dictionary to store the minimum time required to pass through each gate
-    min_time = {}
-    for i in range(N):
-        min_time[(x[i], y[i])] = float('inf')
+def f1(r, c, k, l, x0, y0, times):
+    # Initialize a 2D array to store the number of fish at each point
+    fish = [[0] * c for _ in range(r)]
+    
+    # Initialize a set to store the points that have fish
+    points = set()
+    
+    # Loop through each row of the input and update the fish array and the points set
+    for i in range(r):
+        for j in range(c):
+            if times[i][j] <= l:
+                fish[i][j] = 1
+                points.add((i, j))
+    
+    # Initialize a queue to store the points to visit
+    queue = [(x0, y0)]
+    
+    # Loop until the queue is empty
+    while queue:
+        x, y = queue.pop(0)
+        
+        # Check if the current point has fish and if it is within the time limit
+        if fish[x][y] and times[x][y] <= l:
+            # Catch the fish at the current point
+            fish[x][y] = 0
+            points.remove((x, y))
+            
+            # Add the neighbors of the current point to the queue
+            for dx, dy in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+                nx, ny = x + dx, y + dy
+                if 0 <= nx < r and 0 <= ny < c and (nx, ny) not in points:
+                    queue.append((nx, ny))
+    
+    # Return the number of points with fish
+    return len(points)
 
-    # Initialize a dictionary to store the maximum horizontal speed at each gate
-    max_speed = {}
-    for i in range(N):
-        max_speed[(x[i], y[i])] = v_h
+def f2(...):
+    ...
 
-    # Loop through each gate and calculate the minimum time required to pass through it
-    for i in range(N):
-        for j in range(i+1, N):
-            # Calculate the horizontal distance between the two gates
-            dist = abs(x[i] - x[j])
-
-            # Calculate the time required to pass through the gate at the current speed
-            time = dist / s[i]
-
-            # Update the minimum time required to pass through the gate
-            min_time[(x[i], y[i])] = min(min_time[(x[i], y[i])], time)
-            min_time[(x[j], y[j])] = min(min_time[(x[j], y[j])], time)
-
-            # Update the maximum horizontal speed at the gate
-            max_speed[(x[i], y[i])] = min(max_speed[(x[i], y[i])], s[i])
-            max_speed[(x[j], y[j])] = min(max_speed[(x[j], y[j])], s[i])
-
-    # Loop through each gate and calculate the minimum time required to pass through it with the maximum horizontal speed
-    for i in range(N):
-        for j in range(i+1, N):
-            # Calculate the horizontal distance between the two gates
-            dist = abs(x[i] - x[j])
-
-            # Calculate the time required to pass through the gate at the maximum speed
-            time = dist / max_speed[(x[i], y[i])]
-
-            # Update the minimum time required to pass through the gate
-            min_time[(x[i], y[i])] = min(min_time[(x[i], y[i])], time)
-            min_time[(x[j], y[j])] = min(min_time[(x[j], y[j])], time)
-
-    # Calculate the total time required to pass through all the gates
-    total_time = 0
-    for i in range(N):
-        total_time += min_time[(x[i], y[i])]
-
-    # Return the speed of the pair of skis that allows you to get through the race course in the shortest time
-    return s[total_time]
+if __name__ == '__main__':
+    r, c, k, l, x0, y0 = map(int, input().split())
+    times = []
+    for _ in range(r):
+        times.append(list(map(int, input().split())))
+    print(f1(r, c, k, l, x0, y0, times))
 

@@ -1,19 +1,22 @@
 
-def get_max_prettiness(a):
-    n = len(a)
-    a.sort(reverse=True)
-    max_prettiness = 0
-    for i in range(n):
-        for j in range(i+1, n):
-            for k in range(j+1, n):
-                if a[i] % a[j] == 0 or a[i] % a[k] == 0 or a[j] % a[k] == 0:
-                    continue
-                max_prettiness = max(max_prettiness, a[i] + a[j] + a[k])
-    return max_prettiness
+def get_flavor(apples, apple_to_eat):
+    return sum(apples) - apples[apple_to_eat]
 
-q = int(input())
-for i in range(q):
-    n = int(input())
-    a = list(map(int, input().split()))
-    print(get_max_prettiness(a))
+def get_optimal_flavor(apples):
+    n = len(apples)
+    if n == 1:
+        return apples[0]
+    if n == 2:
+        return apples[0] + apples[1]
+    optimal_flavor = 0
+    for i in range(n):
+        flavor = get_flavor(apples, i)
+        if flavor < optimal_flavor or optimal_flavor == 0:
+            optimal_flavor = flavor
+    return optimal_flavor
+
+if __name__ == '__main__':
+    n, l = map(int, input().split())
+    apples = [int(input()) for _ in range(n)]
+    print(get_optimal_flavor(apples))
 

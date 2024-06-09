@@ -1,30 +1,55 @@
 
-class FenwickTree:
-    def __init__(self, n):
-        self.tree = [0] * (n + 1)
-        self.n = n
+def f1(n, k, a):
+    # Initialize the game state
+    game_state = {i: i for i in range(1, n + 1)}
+    game_wins = [0] * (n + 1)
+    game_wins[1] = 1
+    game_wins[2] = 1
 
-    def update(self, i, delta):
-        while i <= self.n:
-            self.tree[i] += delta
-            i += i & -i
+    # Play the game
+    while len(set(game_state.values())) > 1:
+        for i in range(3, n + 1):
+            if game_state[i] != 0:
+                winner = game_state[i]
+                loser = game_state[i - 1]
+                if a[winner - 1] > a[loser - 1]:
+                    game_wins[winner] += 1
+                    if game_wins[winner] == k:
+                        return winner
+                else:
+                    game_wins[loser] = 0
+                    game_state[i] = 0
+                    game_state[i - 1] = winner
 
-    def query(self, i):
-        result = 0
-        while i > 0:
-            result += self.tree[i]
-            i -= i & -i
-        return result
+    return list(game_state.values())[0]
 
+def f2(n, k, a):
+    # Initialize the game state
+    game_state = {i: i for i in range(1, n + 1)}
+    game_wins = [0] * (n + 1)
+    game_wins[1] = 1
+    game_wins[2] = 1
 
-n, q = map(int, input().split())
-ft = FenwickTree(n)
-for _ in range(q):
-    query = input()
-    if query.startswith("+"):
-        i, delta = map(int, query.split())
-        ft.update(i, delta)
-    else:
-        i = int(query)
-        print(ft.query(i))
+    # Play the game
+    while len(set(game_state.values())) > 1:
+        for i in range(3, n + 1):
+            if game_state[i] != 0:
+                winner = game_state[i]
+                loser = game_state[i - 1]
+                if a[winner - 1] > a[loser - 1]:
+                    game_wins[winner] += 1
+                    if game_wins[winner] == k:
+                        return winner
+                else:
+                    game_wins[loser] = 0
+                    game_state[i] = 0
+                    game_state[i - 1] = winner
+
+    return list(game_state.values())[0]
+
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    a = list(map(int, input().split()))
+    print(f1(n, k, a))
+    print(f2(n, k, a))
 

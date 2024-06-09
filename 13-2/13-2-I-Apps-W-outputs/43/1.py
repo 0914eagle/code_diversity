@@ -1,28 +1,26 @@
 
-def solve(n, x, y, c, k):
-    # Initialize the minimum cost to infinity
-    min_cost = float('inf')
-    # Initialize the optimal solution
-    optimal_solution = []
+def count_setlists(hype_ratings):
+    n = len(hype_ratings)
+    if n < 3:
+        return 0
+    
+    # Initialize the dp table with all values set to 0
+    dp = [0] * (n + 1)
+    dp[0] = 1
+    
+    # Fill in the dp table
+    for i in range(1, n + 1):
+        if hype_ratings[i - 1] == 1:
+            dp[i] += dp[i - 1]
+        if hype_ratings[i - 1] == 2:
+            dp[i] += dp[i - 2]
+        if hype_ratings[i - 1] == 3:
+            dp[i] += dp[i - 3]
+    
+    return dp[n] % 1000000007
 
-    # Loop through all possible combinations of power stations and connections
-    for power_stations in range(n + 1):
-        for connections in itertools.combinations(range(n), power_stations):
-            # Calculate the cost of the current combination
-            cost = 0
-            for i in range(n):
-                if i in connections:
-                    # Calculate the cost of connecting City i to its neighbors
-                    cost += k[i] * len(connections)
-                else:
-                    # Calculate the cost of building a power station in City i
-                    cost += c[i]
-
-            # If the current combination has a lower cost than the minimum cost, update the minimum cost and the optimal solution
-            if cost < min_cost:
-                min_cost = cost
-                optimal_solution = [power_stations, connections]
-
-    # Return the optimal solution
-    return optimal_solution
+if __name__ == '__main__':
+    n = int(input())
+    hype_ratings = list(map(int, input().split()))
+    print(count_setlists(hype_ratings))
 

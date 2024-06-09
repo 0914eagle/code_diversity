@@ -1,25 +1,28 @@
 
-def get_winner_probability(N, M, p_list):
-    # Initialize the probability of Anthony winning as 0
-    probability = 0
+def get_dice_to_pick(k, t, rolls):
+    # Initialize a dictionary to store the number of dice to pick and their corresponding probabilities
+    dice_to_pick = {}
 
-    # Loop through each round
-    for i in range(N + M - 1):
-        # Calculate the probability of Anthony winning the current round
-        win_probability = p_list[i]
+    # Iterate over the rolls and calculate the probability of each dice to be rolled again
+    for roll in rolls:
+        # Calculate the probability of the current dice to be rolled again
+        prob = (t - roll) / (6 * (k - 1))
 
-        # If Anthony wins the current round, add his probability to the total probability
-        if i % 2 == 0:
-            probability += win_probability
+        # If the probability is non-zero, add the dice to the dictionary with its probability
+        if prob > 0:
+            dice_to_pick[roll] = prob
 
-        # If Cora wins the current round, subtract 1 from the total probability
-        else:
-            probability -= 1
+    # Sort the dictionary by probability in descending order
+    sorted_dice_to_pick = sorted(dice_to_pick.items(), key=lambda x: x[1], reverse=True)
 
-        # If the total probability becomes less than 0, set it to 0
-        if probability < 0:
-            probability = 0
+    # Return the number of dice to pick with the highest probability
+    return sorted_dice_to_pick[0][0]
 
-    # Return the probability of Anthony winning the game
-    return probability
+def main():
+    k, t = map(int, input().split())
+    rolls = list(map(int, input().split()))
+    print(get_dice_to_pick(k, t, rolls))
+
+if __name__ == '__main__':
+    main()
 

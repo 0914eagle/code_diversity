@@ -1,70 +1,53 @@
 
-def solve(map_pieces):
-    # Initialize the reconstructed map with the first map piece
-    reconstructed_map = map_pieces[0]
-    used_pieces = [0]
+def f1(n, v, a, b):
+    # find the direct supervisor of each person
+    supervisor = [0] * (n + 1)
+    for i in range(len(a)):
+        supervisor[a[i]] = b[i]
+    
+    # find the set of jokes told by each person and their supervisor
+    jokes = [set() for _ in range(n + 1)]
+    for i in range(1, n + 1):
+        jokes[i].add(v[i - 1])
+        if supervisor[i] != 0:
+            jokes[i].update(jokes[supervisor[i]])
+    
+    # count the number of different sets of jokes
+    num_sets = 0
+    for i in range(1, n + 1):
+        for j in range(i + 1, n + 1):
+            if len(jokes[i].symmetric_difference(jokes[j])) == 0:
+                num_sets += 1
+    
+    return num_sets
 
-    # Loop through the remaining map pieces
-    for i in range(1, len(map_pieces)):
-        # Try rotating and flipping the current map piece to find a matching position in the reconstructed map
-        for rotation in range(4):
-            for flip in [False, True]:
-                # Rotate and flip the current map piece as needed
-                rotated_piece = rotate_piece(map_pieces[i], rotation, flip)
+def f2(n, v, a, b):
+    # find the direct supervisor of each person
+    supervisor = [0] * (n + 1)
+    for i in range(len(a)):
+        supervisor[a[i]] = b[i]
+    
+    # find the set of jokes told by each person and their supervisor
+    jokes = [set() for _ in range(n + 1)]
+    for i in range(1, n + 1):
+        jokes[i].add(v[i - 1])
+        if supervisor[i] != 0:
+            jokes[i].update(jokes[supervisor[i]])
+    
+    # count the number of different sets of jokes
+    num_sets = 0
+    for i in range(1, n + 1):
+        for j in range(i + 1, n + 1):
+            if len(jokes[i].symmetric_difference(jokes[j])) == 0:
+                num_sets += 1
+    
+    return num_sets
 
-                # Find the position in the reconstructed map where the current map piece fits
-                position = find_position(reconstructed_map, rotated_piece)
-
-                # If a matching position is found, update the reconstructed map and used pieces
-                if position is not None:
-                    reconstructed_map = update_map(reconstructed_map, rotated_piece, position)
-                    used_pieces.append(i)
-                    break
-
-    # Find the width and height of the reconstructed map
-    width = len(reconstructed_map[0])
-    height = len(reconstructed_map)
-
-    # Return the width, height, and used pieces
-    return width, height, used_pieces
-
-def rotate_piece(piece, rotation, flip):
-    # Rotate the piece as needed
-    if rotation == 1:
-        piece = list(map(list, zip(*piece[::-1])))
-    elif rotation == 2:
-        piece = list(map(list, zip(*piece)))[::-1]
-    elif rotation == 3:
-        piece = list(map(list, zip(*piece)))[::-1][::-1]
-
-    # Flip the piece as needed
-    if flip:
-        piece = list(map(list, zip(*piece)))[::-1]
-
-    return piece
-
-def find_position(reconstructed_map, piece):
-    # Find the position in the reconstructed map where the piece fits
-    for i in range(len(reconstructed_map)):
-        for j in range(len(reconstructed_map[0])):
-            if reconstructed_map[i][j] == '0' and piece_fits(reconstructed_map, piece, i, j):
-                return (i, j)
-    return None
-
-def piece_fits(reconstructed_map, piece, i, j):
-    # Check if the piece fits in the reconstructed map at the given position
-    for x in range(len(piece)):
-        for y in range(len(piece[0])):
-            if piece[x][y] != '0' and reconstructed_map[i+x][j+y] != '0':
-                return False
-    return True
-
-def update_map(reconstructed_map, piece, position):
-    # Update the reconstructed map with the piece at the given position
-    i, j = position
-    for x in range(len(piece)):
-        for y in range(len(piece[0])):
-            if piece[x][y] != '0':
-                reconstructed_map[i+x][j+y] = piece[x][y]
-    return reconstructed_map
+if __name__ == '__main__':
+    n = int(input())
+    v = list(map(int, input().split()))
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    print(f1(n, v, a, b))
+    print(f2(n, v, a, b))
 

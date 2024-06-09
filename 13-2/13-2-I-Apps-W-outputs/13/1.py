@@ -1,21 +1,31 @@
 
-def get_max_apples(n, positions, apples):
-    # Sort the positions and apples arrays based on the position
-    sorted_positions = sorted(positions)
-    sorted_apples = [apples[i] for i in range(n) if positions[i] in sorted_positions]
+def get_min_operations(balances):
+    # Initialize the minimum number of operations to 0
+    min_operations = 0
 
-    # Initialize the maximum number of apples and the current position
-    max_apples = 0
-    current_position = 0
+    # Loop through the balances and find the bank with the largest absolute balance
+    largest_balance = max(balances, key=abs)
 
-    # Iterate through the sorted positions and apples arrays
-    for i in range(n):
-        # If the current position is not the same as the current position, move to the next position
-        if sorted_positions[i] != current_position:
-            current_position = sorted_positions[i]
+    # While the largest balance is not 0, perform operations
+    while largest_balance != 0:
+        # Find the bank with the next largest absolute balance
+        next_largest_balance = max(balances, key=abs)
 
-        # Add the number of apples at the current position to the maximum number of apples
-        max_apples += sorted_apples[i]
+        # If the next largest balance is 0, break out of the loop
+        if next_largest_balance == 0:
+            break
 
-    return max_apples
+        # Perform an operation to transfer the difference between the largest and next largest balance
+        # to the next largest balance
+        balances[balances.index(largest_balance)] += balances[balances.index(next_largest_balance)]
+        balances[balances.index(next_largest_balance)] = 0
+
+        # Increment the minimum number of operations
+        min_operations += 1
+
+        # Update the largest balance to the next largest balance
+        largest_balance = next_largest_balance
+
+    # Return the minimum number of operations
+    return min_operations
 

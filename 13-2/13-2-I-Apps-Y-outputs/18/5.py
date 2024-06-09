@@ -1,22 +1,32 @@
 
-def get_max_prettiness(a):
-    
-    a.sort(reverse=True)
-    if len(a) == 1:
-        return a[0]
-    if len(a) == 2:
-        return a[0] + a[1]
-    if len(a) == 3:
-        return max(a[0] + a[1], a[1] + a[2], a[0] + a[2])
-    # If there are more than 3 problems, find the maximum possible prettiness by considering all possible combinations of 3 problems.
-    max_prettiness = 0
-    for i in range(len(a) - 2):
-        for j in range(i + 1, len(a) - 1):
-            for k in range(j + 1, len(a)):
-                if a[i] % a[j] == 0 or a[i] % a[k] == 0 or a[j] % a[k] == 0:
-                    continue
-                prettiness = a[i] + a[j] + a[k]
-                if prettiness > max_prettiness:
-                    max_prettiness = prettiness
-    return max_prettiness
+def get_optimal_flavor(n, ls):
+    # Sort the list of flavors in ascending order
+    sorted_ls = sorted(ls)
+    # Initialize the sum of the flavors of the remaining apples
+    sum_remaining_apples = sum(sorted_ls[1:])
+    # Initialize the sum of the flavors of all apples
+    sum_all_apples = sum(sorted_ls)
+    # Initialize the minimum difference between the two sums
+    min_diff = abs(sum_all_apples - sum_remaining_apples)
+    # Initialize the index of the apple to eat
+    apple_to_eat = 0
+    # Iterate over the list of flavors
+    for i in range(1, n):
+        # Calculate the sum of the flavors of the remaining apples
+        sum_remaining_apples = sum_remaining_apples - sorted_ls[i] + sorted_ls[i-1]
+        # Calculate the difference between the two sums
+        diff = abs(sum_all_apples - sum_remaining_apples)
+        # If the difference is smaller than the minimum difference, update the minimum difference and the index of the apple to eat
+        if diff < min_diff:
+            min_diff = diff
+            apple_to_eat = i
+    # Return the flavor of the apple pie made of the remaining N-1 apples
+    return sum_remaining_apples
+
+def main():
+    n, ls = map(int, input().split())
+    print(get_optimal_flavor(n, ls))
+
+if __name__ == '__main__':
+    main()
 

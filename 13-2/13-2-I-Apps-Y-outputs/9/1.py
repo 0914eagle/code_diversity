@@ -1,18 +1,16 @@
 
-def solve(n, x, y, number):
-    # Convert the number to a list of digits
-    number = [int(digit) for digit in number]
+def get_cleanup_phases(days):
+    dirtiness = 0
+    cleanup_phases = 0
+    for day in days:
+        dirtiness += 1
+        if dirtiness > 20:
+            cleanup_phases += 1
+            dirtiness = 0
+    return cleanup_phases
 
-    # Initialize the minimum number of operations to perform
-    min_operations = 0
-
-    # Iterate over the digits of the number
-    for i in range(n):
-        # If the current digit is 0 and the next digit is 1, flip the current digit
-        if number[i] == 0 and i + 1 < n and number[i + 1] == 1:
-            number[i] = 1
-            min_operations += 1
-
-    # Return the minimum number of operations to perform
-    return min_operations
+if __name__ == '__main__':
+    num_dirty_pushes = int(input())
+    days = [int(x) for x in input().split()]
+    print(get_cleanup_phases(days))
 

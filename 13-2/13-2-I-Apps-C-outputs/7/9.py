@@ -1,45 +1,30 @@
 
-def solve(offers):
-    # Sort the offers by the first section of the fence
-    sorted_offers = sorted(offers, key=lambda x: x[1])
-
-    # Initialize the variables to keep track of the number of colors and sections painted
-    num_colors = 0
-    num_sections = 0
-
-    # Initialize the list to store the accepted offers
-    accepted_offers = []
-
-    # Iterate through the sorted offers
-    for offer in sorted_offers:
-        # Check if the current offer overlaps with any of the accepted offers
-        overlap = False
-        for accepted_offer in accepted_offers:
-            if offer[1] <= accepted_offer[2] and offer[2] >= accepted_offer[1]:
-                overlap = True
-                break
-
-        # If the current offer does not overlap with any of the accepted offers, accept it
-        if not overlap:
-            accepted_offers.append(offer)
-            num_colors += 1
-            num_sections += offer[2] - offer[1] + 1
-
-        # If the current offer overlaps with any of the accepted offers, reject it
-        else:
-            continue
-
-        # If the number of colors exceeds 3, reject the current offer
-        if num_colors > 3:
-            accepted_offers.pop()
-            num_colors -= 1
-            num_sections -= offer[2] - offer[1] + 1
-
-    # If all the sections of the fence are painted, return the number of accepted offers
-    if num_sections == 10000:
-        return len(accepted_offers)
-
-    # If not all the sections of the fence are painted, return "IMPOSSIBLE"
-    else:
-        return "IMPOSSIBLE"
+def get_smallest_cluster_size(n, a, b, c):
+    # Initialize the smallest cluster size
+    smallest_cluster_size = float('inf')
+    
+    # Iterate over all possible values of S and T
+    for S in range(0, 2000001):
+        for T in range(0, 2000001):
+            # Sort the poll results by the measure a_i * S + b_i * T
+            sorted_results = sorted(zip(a, b, c), key=lambda x: x[0] * S + x[1] * T)
+            
+            # Find the indices of the first and last results with c_i true
+            j = 0
+            k = 0
+            for i in range(n):
+                if sorted_results[i][2] == 1:
+                    j = i
+                    break
+            for i in range(n-1, -1, -1):
+                if sorted_results[i][2] == 1:
+                    k = i
+                    break
+            
+            # Calculate the cluster size and update the smallest cluster size if necessary
+            cluster_size = k - j + 1
+            if cluster_size < smallest_cluster_size:
+                smallest_cluster_size = cluster_size
+    
+    return smallest_cluster_size
 

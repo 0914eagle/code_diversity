@@ -1,16 +1,83 @@
 
-n = int(input())
-prices = list(map(int, input().split()))
-q = int(input())
-m = [int(input()) for _ in range(q)]
+def f1(n, m, field):
+    # Initialize variables
+    moves = 0
+    dwarves = []
+    candy = []
 
-result = []
-for day in m:
-    count = 0
+    # Parse the field
     for i in range(n):
-        if prices[i] <= day:
-            count += 1
-    result.append(count)
+        for j in range(m):
+            if field[i][j] == "G":
+                dwarves.append((i, j))
+            elif field[i][j] == "S":
+                candy.append((i, j))
 
-print(*result, sep='\n')
+    # Game loop
+    while dwarves and candy:
+        # Find the closest dwarf to the candy
+        min_dist = float("inf")
+        for dwarf in dwarves:
+            for candy_pos in candy:
+                dist = abs(dwarf[0] - candy_pos[0]) + abs(dwarf[1] - candy_pos[1])
+                if dist < min_dist:
+                    min_dist = dist
+                    closest_dwarf = dwarf
+                    closest_candy = candy_pos
+
+        # Move the closest dwarf to the candy
+        dwarves.remove(closest_dwarf)
+        candy.remove(closest_candy)
+        moves += 1
+
+    # Check if all dwarves have reached the candy
+    if not dwarves:
+        return moves
+    else:
+        return -1
+
+def f2(n, m, field):
+    # Initialize variables
+    moves = 0
+    dwarves = []
+    candy = []
+
+    # Parse the field
+    for i in range(n):
+        for j in range(m):
+            if field[i][j] == "G":
+                dwarves.append((i, j))
+            elif field[i][j] == "S":
+                candy.append((i, j))
+
+    # Game loop
+    while dwarves and candy:
+        # Find the closest dwarf to the candy
+        min_dist = float("inf")
+        for dwarf in dwarves:
+            for candy_pos in candy:
+                dist = abs(dwarf[0] - candy_pos[0]) + abs(dwarf[1] - candy_pos[1])
+                if dist < min_dist:
+                    min_dist = dist
+                    closest_dwarf = dwarf
+                    closest_candy = candy_pos
+
+        # Move the closest dwarf to the candy
+        dwarves.remove(closest_dwarf)
+        candy.remove(closest_candy)
+        moves += 1
+
+        # Check if all dwarves have reached the candy
+        if not dwarves:
+            return moves
+        else:
+            return -1
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    field = []
+    for _ in range(n):
+        field.append(list(input()))
+    print(f1(n, m, field))
+    print(f2(n, m, field))
 

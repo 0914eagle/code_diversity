@@ -1,22 +1,40 @@
 
-def is_winning_word(word):
-    return word in ["ak", "ka"]
+def is_possible(n):
+    # Initialize a list to store the positions of the swaps
+    swaps = []
 
-def get_most_beautiful_word(word):
-    return "ak" if word in ["ak", "ka"] else "ka"
+    # Iterate through each pair of positions (i, j) where i < j
+    for i in range(n):
+        for j in range(i + 1, n):
+            # If the swap (i, j) is not already in the list, add it
+            if (i, j) not in swaps:
+                swaps.append((i, j))
 
-def solve(n, word):
-    if n == 0:
-        return "NE", ""
-    if n == 1:
-        return "DA", word
-    if is_winning_word(word):
-        return "DA", get_most_beautiful_word(word)
-    return solve(n-1, word[1:] + word[0])
+    # If the length of the swaps list is equal to the number of pairs of positions, return "YES"
+    if len(swaps) == n * (n - 1) // 2:
+        return "YES"
+    else:
+        return "NO"
 
-n = int(input())
-word = input()
-result = solve(n, word)
-print("DA" if result[0] == "DA" else "NE")
-print(result[1])
+def get_swaps(n):
+    # Initialize a list to store the positions of the swaps
+    swaps = []
+
+    # Iterate through each pair of positions (i, j) where i < j
+    for i in range(n):
+        for j in range(i + 1, n):
+            # If the swap (i, j) is not already in the list, add it
+            if (i, j) not in swaps:
+                swaps.append((i, j))
+
+    # Return the list of swaps
+    return swaps
+
+if __name__ == '__main__':
+    n = int(input())
+    print(is_possible(n))
+    if is_possible(n) == "YES":
+        swaps = get_swaps(n)
+        for swap in swaps:
+            print(swap[0], swap[1])
 

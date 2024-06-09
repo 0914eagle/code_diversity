@@ -1,35 +1,29 @@
 
-import math
+def get_max_cookies(n, k, a, b):
+    # Sort the ingredients in descending order
+    sorted_ingredients = sorted(zip(a, b), key=lambda x: x[1], reverse=True)
 
-def get_expected_inversions(n, p):
-    # Initialize the number of inversions and the number of valid permutations
-    inversions = 0
-    valid_permutations = 0
+    # Initialize the variables
+    total_cookies = 0
+    current_k = k
 
-    # Iterate over the given sequence
-    for i in range(n):
-        # If the current element is not -1, it is a valid permutation
-        if p[i] != -1:
-            valid_permutations += 1
+    # Iterate through the ingredients
+    for ingredient in sorted_ingredients:
+        # Check if the current ingredient is enough to make at least one cookie
+        if current_k >= ingredient[0]:
+            # Calculate the number of cookies that can be made with the current ingredient
+            num_cookies = current_k // ingredient[0]
+            total_cookies += num_cookies
+            current_k -= num_cookies * ingredient[0]
+        else:
+            # If the current ingredient is not enough to make at least one cookie, break the loop
+            break
 
-            # Iterate over the remaining elements
-            for j in range(i+1, n):
-                # If the current element is not -1 and it is less than the current element, it is an inversion
-                if p[j] != -1 and p[j] < p[i]:
-                    inversions += 1
+    return total_cookies
 
-    # Calculate the expected number of inversions
-    expected_inversions = inversions / valid_permutations
-
-    # Calculate the value of P * Q^-1 % 998244353
-    p = int(expected_inversions * 998244353)
-    q = int(valid_permutations * 998244353)
-    result = p * pow(q, -1, 998244353)
-
-    return result
-
-n = int(input())
-p = list(map(int, input().split()))
-result = get_expected_inversions(n, p)
-print(result)
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    print(get_max_cookies(n, k, a, b))
 

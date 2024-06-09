@@ -1,17 +1,24 @@
 
-import math
+def get_council_members(n, residents):
+    council_members = []
+    for resident in residents:
+        if resident[1] not in council_members:
+            council_members.append(resident[1])
+    return council_members
 
-def count_ways(n, m, p):
-    # Calculate the number of ways to place the minimum number of obstacles
-    num_obstacles = (n // 2) * (m // 2)
-    num_ways = math.factorial(num_obstacles)
-    
-    # Calculate the number of ways to place the obstacles in the grid
-    num_ways *= math.factorial(n * m - num_obstacles)
-    
-    # Calculate the number of ways to place the obstacles in the grid modulo p
-    return num_ways % p
+def main():
+    num_test_cases = int(input())
+    for i in range(num_test_cases):
+        n = int(input())
+        residents = []
+        for j in range(n):
+            resident = input().split()
+            residents.append(resident)
+        council_members = get_council_members(n, residents)
+        for council_member in council_members:
+            print(council_member)
+        print()
 
-n, m, p = map(int, input().split())
-print(count_ways(n, m, p))
+if __name__ == '__main__':
+    main()
 
