@@ -1,53 +1,32 @@
 
-def get_color_code(n, p, palettes):
-    # Initialize an empty code
-    code = []
+def get_max_payout(deck):
+    # Initialize variables
+    stop_counting_index = 0
+    start_counting_index = 0
+    total_counted_cards = 0
+    total_card_value = 0
+    max_payout = 0
 
-    # Check if the palette is valid
-    if len(set(palettes)) != len(palettes):
-        return "impossible"
+    # Iterate through the deck
+    for i, card in enumerate(deck):
+        # If the card is counted, update the total card value and counted cards
+        if i >= stop_counting_index and i < start_counting_index:
+            total_card_value += card
+            total_counted_cards += 1
 
-    # Check if the palette is too large
-    if max(palettes) > n:
-        return "impossible"
+        # If the card is not counted, update the stop counting index
+        elif i >= start_counting_index:
+            stop_counting_index = i + 1
 
-    # Iterate through all possible codes
-    for i in range(2**n):
-        # Convert the current number to binary
-        binary = bin(i)[2:]
+        # If the card is counted, update the start counting index
+        elif i >= stop_counting_index:
+            start_counting_index = i + 1
 
-        # Pad the binary string with zeros
-        binary = binary.zfill(n)
+        # Calculate the current payout
+        current_payout = total_card_value / total_counted_cards if total_counted_cards > 0 else 0
 
-        # Check if the current code is valid
-        valid = True
-        for j in range(n-1):
-            # Get the Hamming distance between the current and next number
-            dist = hamming_distance(binary[j:j+2], binary[j+1:j+3])
+        # Update the maximum payout
+        max_payout = max(max_payout, current_payout)
 
-            # Check if the distance is in the palette
-            if dist not in palettes:
-                valid = False
-                break
-
-        # If the code is valid, add it to the code
-        if valid:
-            code.append(binary)
-
-    # Return the code
-    return code
-
-# Function to calculate the Hamming distance between two binary strings
-def hamming_distance(s1, s2):
-    # Initialize the distance
-    dist = 0
-
-    # Loop through the characters of the strings
-    for c1, c2 in zip(s1, s2):
-        # Check if the characters are different
-        if c1 != c2:
-            dist += 1
-
-    # Return the distance
-    return dist
+    return max_payout
 

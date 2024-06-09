@@ -1,24 +1,16 @@
 
-def solve(heights):
-    n = len(heights)
-    # Sort the heights in non-decreasing order
-    sorted_heights = sorted(heights)
-    # Initialize the minimum discomfort to a large value
-    min_discomfort = float('inf')
-    # Initialize the optimal order to an empty list
-    optimal_order = []
-    # Iterate over all possible starting points
-    for i in range(n):
-        # Calculate the discomfort of the current order
-        discomfort = 0
-        for j in range(n):
-            # Calculate the absolute difference between the current and next height
-            abs_diff = abs(sorted_heights[j] - sorted_heights[(j+i)%n])
-            # Add the absolute difference to the total discomfort
-            discomfort += abs_diff
-        # If the current order has a smaller discomfort than the minimum discomfort, update the minimum discomfort and the optimal order
-        if discomfort < min_discomfort:
-            min_discomfort = discomfort
-            optimal_order = sorted_heights[(i+1)%n:]+sorted_heights[:i+1]
-    return optimal_order
+def max_sum_modulo(a, m):
+    n = len(a)
+    dp = [0] * (n + 1)
+    for i in range(1, n + 1):
+        dp[i] = max(dp[i - 1], dp[i - 2] + a[i - 1])
+    return dp[n] % m
+
+def main():
+    n, m = map(int, input().split())
+    a = list(map(int, input().split()))
+    print(max_sum_modulo(a, m))
+
+if __name__ == '__main__':
+    main()
 

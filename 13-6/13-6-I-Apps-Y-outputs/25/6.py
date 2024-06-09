@@ -1,38 +1,33 @@
 
-def solve(N, K, health):
+def get_rating(grid):
     # Initialize variables
-    attack_count = 0
-    special_move_count = 0
-    max_health = max(health)
+    rating = 0
+    moves = []
 
-    # Loop through each monster and attack or special move as needed
-    for i in range(N):
-        if health[i] == max_health:
-            # Special move on the strongest monster
-            special_move_count += 1
-            health[i] = 0
-        else:
-            # Attack the monster
-            attack_count += 1
-            health[i] -= 1
+    # Iterate through the grid
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            # If the current character is '$', add the current move to the moves list
+            if grid[i][j] == '$':
+                moves.append((i, j))
+    # Iterate through the moves list
+    for i in range(len(moves) - 1):
+        # If the current move is not the last move and the next move is not the last move, check if the current move and the next move are in the same row
+        if moves[i] != moves[-1] and moves[i + 1] != moves[-1]:
+            if moves[i][0] == moves[i + 1][0]:
+                # If the current move and the next move are in the same row, remove the current move from the moves list
+                moves.remove(moves[i])
+    # Return the length of the moves list as the rating
+    return len(moves)
 
-    # Check if Fennec has won
-    if all(h == 0 for h in health):
-        return attack_count
+def main():
+    # Read the input grid
+    grid = []
+    for _ in range(int(input())):
+        grid.append(input())
+    # Call the get_rating function and print the result
+    print(get_rating(grid))
 
-    # If Fennec has not won, use special move as many times as possible
-    while special_move_count < K and any(h > 0 for h in health):
-        # Find the strongest monster that is not already dead
-        max_health = max(h for h in health if h > 0)
-
-        # Special move on the strongest monster
-        special_move_count += 1
-        health[health.index(max_health)] = 0
-
-        # Check if Fennec has won
-        if all(h == 0 for h in health):
-            return attack_count
-
-    # If Fennec has not won, return the number of attacks done so far
-    return attack_count + special_move_count
+if __name__ == '__main__':
+    main()
 

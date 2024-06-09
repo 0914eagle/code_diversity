@@ -1,24 +1,29 @@
 
-def is_valid_bracket_sequence(s):
-    stack = []
-    for char in s:
-        if char == "(":
-            stack.append(char)
-        elif char == ")":
-            if not stack:
-                return False
-            stack.pop()
-    return not stack
+def f1(N):
+    # create a list to store the numbers 1 to 2^N - 1
+    numbers = list(range(1, 2**N))
+    # create an empty list to store the preorder traversal of the tree
+    preorder = []
+    # call the recursive function to build the tree
+    build_tree(numbers, preorder, 0)
+    # return the preorder traversal of the tree
+    return " ".join(map(str, preorder))
 
-def make_valid_bracket_sequence(s):
-    if is_valid_bracket_sequence(s):
-        return "possible"
-    
-    # Find the first unmatched bracket
-    for i in range(len(s)):
-        if s[i] == "(":
-            break
-    # Invert the segment [i, i]
-    s = s[:i] + ")" + s[i+1:]
-    return "possible" if is_valid_bracket_sequence(s) else "impossible"
+def build_tree(numbers, preorder, level):
+    # if there are no more numbers to assign, return
+    if not numbers:
+        return
+    # if this is the last level, assign the next number to the current node and return
+    if level == N - 1:
+        preorder.append(numbers.pop(0))
+        return
+    # recursively build the left and right subtrees
+    build_tree(numbers, preorder, level + 1)
+    build_tree(numbers, preorder, level + 1)
+    # assign the next number to the current node
+    preorder.append(numbers.pop(0))
+
+if __name__ == '__main__':
+    N = int(input())
+    print(f1(N))
 

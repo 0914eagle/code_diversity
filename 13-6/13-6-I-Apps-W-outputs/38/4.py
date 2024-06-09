@@ -1,16 +1,30 @@
 
-def get_maximum_happiness(n, m, a, b):
-    # Initialize the dp table
-    dp = [[0] * (n + 1) for _ in range(m + 1)]
+def get_unique_names(names):
+    unique_names = []
+    for name in names:
+        if name not in unique_names:
+            unique_names.append(name)
+    return unique_names
 
-    # Fill in the dp table
-    for i in range(1, m + 1):
-        for j in range(1, n + 1):
-            if i == 1:
-                dp[i][j] = max(a[i - 1] + dp[i][j - 1], dp[i - 1][j])
-            else:
-                dp[i][j] = max(a[i - 1] + dp[i][j - 1], b[i - 1] + dp[i - 1][j - 1], dp[i - 1][j])
+def get_repeated_names(names):
+    repeated_names = []
+    for name in names:
+        if name in repeated_names:
+            repeated_names.append(name)
+    return repeated_names
 
-    # Return the maximum happiness
-    return dp[m][n]
+def main():
+    n = int(input())
+    names = []
+    for i in range(n):
+        names.append(input())
+    unique_names = get_unique_names(names)
+    repeated_names = get_repeated_names(names)
+    for name in unique_names:
+        print("NO")
+    for name in repeated_names:
+        print("YES")
+
+if __name__ == '__main__':
+    main()
 

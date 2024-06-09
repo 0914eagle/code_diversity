@@ -1,38 +1,33 @@
 
-def solve(n, pattern):
-    # Initialize a set to store all valid IDs
-    valid_ids = set()
-    
-    # Iterate through all possible IDs of length n
-    for i in range(2**n):
-        # Convert the integer i to a binary string of length n
-        id_str = bin(i)[2:].zfill(n)
-        
-        # Check if the ID satisfies the pattern
-        if satisfies_pattern(id_str, pattern):
-            # If it does, add it to the set of valid IDs
-            valid_ids.add(id_str)
-    
-    # Return the number of valid IDs
-    return len(valid_ids)
+def get_average_score(scores, n):
+    return sum(scores) / n
 
-def satisfies_pattern(id_str, pattern):
-    # If the length of the ID is not equal to the length of the pattern, return False
-    if len(id_str) != len(pattern):
-        return False
-    
-    # Initialize a counter to keep track of the number of 1s in the ID
-    count = 0
-    
-    # Iterate through the characters of the ID and the pattern
-    for i in range(len(id_str)):
-        # If the character in the ID is 1 and the character in the pattern is 1, increment the counter
-        if id_str[i] == "1" and pattern[i] == "1":
-            count += 1
-        # If the character in the ID is 0 and the character in the pattern is *, return True
-        elif id_str[i] == "0" and pattern[i] == "*":
-            return True
-    
-    # If the counter is greater than or equal to half the length of the ID, return True
-    return count >= len(id_str) // 2
+def get_permutation(n, m, k):
+    # Initialize the permutation as a list of numbers from 1 to n
+    permutation = list(range(1, n + 1))
+    # Initialize the average score as the target average score
+    average_score = k / n
+    # Iterate through the permutation
+    for i in range(n):
+        # Get the current critic's score
+        current_score = permutation[i]
+        # Get the average score of the previous critics
+        previous_average_score = get_average_score(permutation[:i], i)
+        # If the current critic's score is less than or equal to the previous average score, give them a score of m
+        if current_score <= previous_average_score:
+            permutation[i] = m
+        # Otherwise, give them a score of 0
+        else:
+            permutation[i] = 0
+    # Return the permutation if the average score is equal to the target average score
+    if get_average_score(permutation, n) == average_score:
+        return permutation
+    # Otherwise, return "impossible"
+    else:
+        return "impossible"
+
+if __name__ == '__main__':
+    n, m, k = map(int, input().split())
+    scores = list(map(int, input().split()))
+    print(get_permutation(n, m, k))
 

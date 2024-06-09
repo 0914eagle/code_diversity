@@ -1,26 +1,25 @@
 
-def solve(n, t, times):
-    # Sort the times in ascending order
-    times.sort(key=lambda x: x[0])
+def is_good_graph(graph):
+    # check if the graph is good
+    # return True if the graph is good, False otherwise
+    pass
 
-    # Initialize the current time to 0
-    current_time = 0
+def add_edge(graph, u, v):
+    # add an edge between vertices u and v to the graph
+    # return the updated graph
+    pass
 
-    # Iterate through each photograph and check if it can be taken
-    for i in range(n):
-        # Check if the current time is before the start time of the photograph
-        if current_time < times[i][0]:
-            # Add the time it takes to take the photograph
-            current_time += t
+def play_game(graph):
+    # play the game optimally
+    # return the winner of the game (Taro or Jiro)
+    pass
 
-        # Check if the current time is after the end time of the photograph
-        if current_time > times[i][1]:
-            # Return no, since it is not possible to take all photographs
-            return "no"
+def main():
+    # read the input
+    # call the play_game function to determine the winner of the game
+    # print the result
+    pass
 
-        # Add the time it takes to take the photograph
-        current_time += t
-
-    # Return yes, since it is possible to take all photographs
-    return "yes"
+if __name__ == '__main__':
+    main()
 

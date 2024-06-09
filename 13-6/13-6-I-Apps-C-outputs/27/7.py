@@ -1,20 +1,29 @@
 
-def get_max_spies(n, pattern):
-    # Calculate the number of 1s in the pattern
-    num_ones = pattern.count('1')
-    
-    # Calculate the number of stars in the pattern
-    num_stars = pattern.count('*')
-    
-    # If the number of 1s is equal to the number of stars,
-    # then the pattern is valid for all binary strings of length n
-    if num_ones == num_stars:
-        return 2**n
-    
-    # If the number of 1s is less than the number of stars,
-    # then the pattern is valid for some binary strings of length n
-    else:
-        # Calculate the number of possible substrings that satisfy the pattern
-        num_substrings = (2**(n-num_ones)) * (num_ones + num_stars)
-        return num_substrings
+def get_permutation(n, m, k, a):
+    # Initialize the permutation with the first critic
+    permutation = [1]
+    # Initialize the average score with the initial opinion of the first critic
+    avg_score = a[0]
+    # Iterate over the remaining critics
+    for i in range(1, n):
+        # Calculate the average score of the previous critics
+        prev_avg_score = avg_score
+        # Update the average score with the current critic's opinion
+        avg_score = (avg_score * i + a[i]) / (i + 1)
+        # If the current critic's opinion is greater than the average score, add them to the permutation
+        if a[i] > avg_score:
+            permutation.append(i + 1)
+    # If the average score is equal to the target score, return the permutation
+    if avg_score == k / n:
+        return permutation
+    # Otherwise, return "impossible"
+    return "impossible"
+
+def main():
+    n, m, k = map(int, input().split())
+    a = list(map(int, input().split()))
+    print(get_permutation(n, m, k, a))
+
+if __name__ == '__main__':
+    main()
 

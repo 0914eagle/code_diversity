@@ -1,28 +1,22 @@
 
-def solve(n, friends):
-    # Initialize a dictionary to store the toppings and their counts
-    toppings = {}
+def get_divisors(n):
+    divisors = []
+    for i in range(1, int(n**0.5) + 1):
+        if n % i == 0:
+            divisors.append(i)
+            if n // i != i:
+                divisors.append(n // i)
+    divisors.sort()
+    return divisors
 
-    # Iterate over the friends' lists of wishes
-    for friend in friends:
-        # Iterate over the friend's list of wishes
-        for wish in friend:
-            # If the wish is positive (i.e. the friend wants the topping), increment the count
-            if wish.startswith("+"):
-                toppings[wish[1:]] = toppings.get(wish[1:], 0) + 1
-            # If the wish is negative (i.e. the friend does not want the topping), decrement the count
-            elif wish.startswith("-"):
-                toppings[wish[1:]] = toppings.get(wish[1:], 0) - 1
+def get_aesthetic_colors(n):
+    divisors = get_divisors(n)
+    return len(set(divisors))
 
-    # Initialize a list to store the selected toppings
-    selected_toppings = []
+def main():
+    n = int(input())
+    print(get_aesthetic_colors(n))
 
-    # Iterate over the toppings and their counts
-    for topping, count in toppings.items():
-        # If the count is greater than 0, add the topping to the list of selected toppings
-        if count > 0:
-            selected_toppings.append(topping)
-
-    # Return the list of selected toppings
-    return selected_toppings
+if __name__ == '__main__':
+    main()
 

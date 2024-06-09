@@ -1,37 +1,39 @@
 
-def solve(N, V, direct_supervisors):
-    # Initialize a set to store the types of jokes told by the invited guests
-    invited_jokes = set()
-    # Initialize a set to store the types of jokes told by the direct supervisors of the invited guests
-    direct_supervisor_jokes = set()
-    # Initialize a set to store the types of jokes told by the indirect supervisors of the invited guests
-    indirect_supervisor_jokes = set()
+def get_operation_type(operation):
+    if operation[0] == 'a':
+        return 1
+    elif operation[0] == 'b':
+        return 2
+    else:
+        return 3
 
-    # Iterate through the direct supervisors and their respective supervisors
-    for direct_supervisor, supervisor in direct_supervisors:
-        # If the direct supervisor is not invited, continue to the next iteration
-        if direct_supervisor not in invited_jokes:
-            continue
-        # If the direct supervisor's supervisor is not invited, continue to the next iteration
-        if supervisor not in invited_jokes:
-            continue
-        # Add the type of joke told by the direct supervisor to the set of jokes told by their supervisor
-        indirect_supervisor_jokes.add(V[supervisor - 1])
+def get_stack_labels(operation):
+    if operation[0] == 'a':
+        return [int(operation[1])]
+    elif operation[0] == 'b':
+        return [int(operation[1])]
+    else:
+        return [int(operation[1]), int(operation[2])]
 
-    # Iterate through the guests and check if they are invited
-    for guest in range(1, N + 1):
-        # If the guest is not invited, continue to the next iteration
-        if guest not in invited_jokes:
-            continue
-        # If the guest's type of joke is not consecutive with the types of jokes told by their direct supervisors, continue to the next iteration
-        if guest - 1 not in direct_supervisor_jokes and guest + 1 not in direct_supervisor_jokes:
-            continue
-        # If the guest's type of joke is not consecutive with the types of jokes told by their indirect supervisors, continue to the next iteration
-        if guest - 1 not in indirect_supervisor_jokes and guest + 1 not in indirect_supervisor_jokes:
-            continue
-        # Add the type of joke told by the guest to the set of jokes seen at the party
-        invited_jokes.add(V[guest - 1])
+def perform_operation(operation, stacks):
+    operation_type = get_operation_type(operation)
+    stack_labels = get_stack_labels(operation)
+    if operation_type == 1:
+        stacks[stack_labels[0]].append(len(stacks))
+    elif operation_type == 2:
+        return stacks[stack_labels[0]].pop()
+    else:
+        return len(set(stacks[stack_labels[0]] + stacks[stack_labels[1]]))
 
-    # Return the number of different sets of jokes seen at the party
-    return len(invited_jokes)
+def main():
+    num_operations = int(input())
+    stacks = [[] for _ in range(num_operations)]
+    for _ in range(num_operations):
+        operation = input()
+        result = perform_operation(operation, stacks)
+        if result is not None:
+            print(result)
+
+if __name__ == '__main__':
+    main()
 

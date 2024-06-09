@@ -1,34 +1,55 @@
 
-def get_minimum_heaters(n, r, arr):
-    # Sort the array and find the leftmost and rightmost warm positions
-    arr.sort()
-    leftmost_warm = 0
-    rightmost_warm = 0
-    for i in range(n):
-        if arr[i] == 1:
-            leftmost_warm = i
-            break
-    for i in range(n-1, -1, -1):
-        if arr[i] == 1:
-            rightmost_warm = i
-            break
-    
-    # Initialize the number of heaters needed to warm up the whole house
-    num_heaters = 0
-    
-    # Iterate through the array and check if each element is warmed up by at least one heater
-    for i in range(n):
-        # If the element is not warmed up by any heater, increment the number of heaters needed
-        if arr[i] == 0:
-            num_heaters += 1
-        # If the element is warmed up by a heater, check if it is within the range of the heater
+def get_candy_sizes(n):
+    return list(map(int, input().split()))
+
+def get_move_count(n, a):
+    alice_moves = 0
+    bob_moves = 0
+    total_alice_moves = 0
+    total_bob_moves = 0
+    while n > 0:
+        if alice_moves == 0:
+            alice_moves = 1
+            bob_moves = 0
+        elif bob_moves == 0:
+            bob_moves = 1
+            alice_moves = 0
         else:
-            # If the element is within the range of the heater, do nothing
-            if i >= leftmost_warm - r + 1 and i <= rightmost_warm + r - 1:
-                pass
-            # If the element is not within the range of the heater, increment the number of heaters needed
+            if alice_moves < bob_moves:
+                alice_moves += 1
+            elif bob_moves < alice_moves:
+                bob_moves += 1
             else:
-                num_heaters += 1
-    
-    return num_heaters
+                alice_moves += 1
+                bob_moves += 1
+        total_alice_moves += alice_moves
+        total_bob_moves += bob_moves
+        n -= alice_moves + bob_moves
+    return total_alice_moves, total_bob_moves
+
+def get_alice_and_bobs_candy_sizes(n, a):
+    alice_sizes = []
+    bob_sizes = []
+    for i in range(n):
+        if i % 2 == 0:
+            alice_sizes.append(a[i])
+        else:
+            bob_sizes.append(a[i])
+    return alice_sizes, bob_sizes
+
+def get_total_candy_sizes(alice_sizes, bob_sizes):
+    return sum(alice_sizes), sum(bob_sizes)
+
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        a = get_candy_sizes(n)
+        alice_sizes, bob_sizes = get_alice_and_bobs_candy_sizes(n, a)
+        alice_moves, bob_moves = get_move_count(n, a)
+        alice_total, bob_total = get_total_candy_sizes(alice_sizes, bob_sizes)
+        print(alice_moves, alice_total, bob_total)
+
+if __name__ == '__main__':
+    main()
 

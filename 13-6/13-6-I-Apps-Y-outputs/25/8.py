@@ -1,22 +1,36 @@
 
-def solve(N, K, health):
+def get_rating(grid):
     # Initialize variables
-    attacks = 0
-    special_moves = K
-    health = sorted(health, reverse=True)
+    rating = 0
+    current_move = 0
+    previous_column = None
 
-    # Loop through the monsters
-    for i in range(N):
-        # If the monster's health is 1, we can use Special Move to kill it
-        if health[i] == 1:
-            special_moves -= 1
-            if special_moves == 0:
-                break
-        # Otherwise, we need to do Attack
-        else:
-            attacks += 1
-            health[i] -= 1
+    # Iterate through the grid
+    for row in grid:
+        for column in row:
+            # Check if the current column is blank
+            if column == "_":
+                # Check if the previous column was blank
+                if previous_column == "_":
+                    # Increment the current move
+                    current_move += 1
+            # Update the previous column
+            previous_column = column
 
-    # Return the number of Attacks needed
-    return attacks
+    # Return the rating
+    return current_move
+
+def main():
+    # Read the input
+    N, M = map(int, input().split())
+    grid = [input() for _ in range(N)]
+
+    # Get the rating
+    rating = get_rating(grid)
+
+    # Print the output
+    print(rating)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,15 +1,20 @@
 
-def get_badge_numbers(start, end, locks):
-    # Initialize a set to store the badge numbers
-    badge_numbers = set()
+def carryless_multiplication(a, b):
+    c = 0
+    for i in range(len(a)):
+        for j in range(len(b)):
+            c += a[i] * b[j]
+    return c % 10
 
-    # Iterate through the locks
-    for lock in locks:
-        # Check if the lock is between the start and end rooms
-        if lock[0] == start and lock[1] == end:
-            # Add the badge numbers to the set
-            badge_numbers.update(range(lock[2], lock[3] + 1))
+def find_smallest_positive_integer(N):
+    a = 1
+    while True:
+        if carryless_multiplication(a, a) == N:
+            return a
+        a += 1
+    return -1
 
-    # Return the length of the set
-    return len(badge_numbers)
+if __name__ == '__main__':
+    N = int(input())
+    print(find_smallest_positive_integer(N))
 

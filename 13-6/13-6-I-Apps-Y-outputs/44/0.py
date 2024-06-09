@@ -1,15 +1,16 @@
 
-def count_inns_with_ocean_view(heights):
-    # Initialize a variable to store the number of inns with ocean view
-    inns_with_ocean_view = 0
+def compare_magnitudes(a, b):
+    if a > b:
+        return "GREATER"
+    elif a < b:
+        return "LESS"
+    else:
+        return "EQUAL"
 
-    # Iterate through the list of heights
-    for i in range(len(heights)):
-        # Check if the current inn is visible from the ocean
-        if all(heights[j] <= heights[i] for j in range(i)):
-            # If visible, increment the number of inns with ocean view
-            inns_with_ocean_view += 1
+def main():
+    a, b = map(int, input().split())
+    print(compare_magnitudes(a, b))
 
-    # Return the number of inns with ocean view
-    return inns_with_ocean_view
+if __name__ == '__main__':
+    main()
 

@@ -1,27 +1,15 @@
 
-def is_berlanese(s):
-    vowels = ["a", "o", "u", "i", "e"]
-    consonants = ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z"]
-    
-    if len(s) == 0:
-        return "YES"
-    
-    if s[0] in vowels:
-        return is_berlanese(s[1:])
-    
-    if s[0] == "n":
-        if len(s) == 1:
-            return "YES"
-        else:
-            return is_berlanese(s[1:])
-    
-    if s[0] in consonants:
-        if len(s) == 1:
-            return "NO"
-        else:
-            if s[1] in vowels:
-                return is_berlanese(s[2:])
-            else:
-                return "NO"
-    return "NO"
+def get_number_of_boxes(n, m, a, X):
+    # Write your code here
+    return ...
+
+def main():
+    n, m = map(int, input().split())
+    a = list(map(int, input().split()))
+    X = list(map(int, input().split()))
+    for i in range(m):
+        print(get_number_of_boxes(n, m, a, X[i]))
+
+if __name__ == '__main__':
+    main()
 

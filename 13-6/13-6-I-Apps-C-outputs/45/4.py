@@ -1,24 +1,48 @@
 
-def find_triple_correlation(sequence):
-    p = len(sequence)
-    for a in range(1, 10):
-        for b in range(1, 10):
-            for c in range(1, 10):
-                for n in range(1, 10):
-                    for m in range(1, 10):
-                        if check_triple_correlation(sequence, a, b, c, n, m, p):
-                            return f"triple correlation {a}({n}){b}({m}){c} found"
-    return "random sequence"
+def f1(k, d, t):
+    # Calculate the time it takes to cook the chicken when the stove is on
+    time_on = t
+    
+    # Calculate the time it takes to cook the chicken when the stove is off
+    time_off = 2 * t
+    
+    # Calculate the total time it takes to cook the chicken
+    total_time = time_on + time_off
+    
+    # Calculate the number of times Julia needs to turn on the stove
+    num_turn_on = total_time // k
+    
+    # Calculate the time it takes for Julia to turn on the stove
+    time_turn_on = num_turn_on * d
+    
+    # Calculate the total time it takes for Julia to cook the chicken
+    total_time_cook = total_time + time_turn_on
+    
+    return total_time_cook
 
-def check_triple_correlation(sequence, a, b, c, n, m, p):
-    count = 0
-    for i in range(p - n - m):
-        if sequence[i] == a and sequence[i + n] == b and sequence[i + n + m] == c:
-            count += 1
-        if count >= ceil(p / 40) + 1:
-            return True
-    return False
+def f2(k, d, t):
+    # Calculate the time it takes to cook the chicken when the stove is on
+    time_on = t
+    
+    # Calculate the time it takes to cook the chicken when the stove is off
+    time_off = 2 * t
+    
+    # Calculate the total time it takes to cook the chicken
+    total_time = time_on + time_off
+    
+    # Calculate the number of times Julia needs to turn on the stove
+    num_turn_on = total_time // k
+    
+    # Calculate the time it takes for Julia to turn on the stove
+    time_turn_on = num_turn_on * d
+    
+    # Calculate the total time it takes for Julia to cook the chicken
+    total_time_cook = total_time + time_turn_on
+    
+    return total_time_cook
 
-def ceil(x):
-    return -int(x) if x < 0 else int(x + 0.99999999)
+if __name__ == '__main__':
+    k, d, t = map(int, input().split())
+    print(f1(k, d, t))
+    print(f2(k, d, t))
 

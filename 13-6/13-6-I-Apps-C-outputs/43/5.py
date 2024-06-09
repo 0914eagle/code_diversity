@@ -1,23 +1,28 @@
 
-def count_hidden_strings(s):
-    # Initialize a dictionary to store the count of hidden strings
-    hidden_strings = {}
+import math
 
-    # Loop through each substring of the given string
-    for i in range(len(s)):
-        for j in range(i+1, len(s)):
-            # Check if the substring is a hidden string
-            if is_hidden_string(s[i:j+1]):
-                # If it is a hidden string, increment its count in the dictionary
-                if s[i:j+1] in hidden_strings:
-                    hidden_strings[s[i:j+1]] += 1
-                else:
-                    hidden_strings[s[i:j+1]] = 1
+def f1(N, H, v, p):
+    # Calculate the expected value for each hole
+    ev = [0] * H
+    for i in range(H):
+        ev[i] = v[i] + p[i] * f1(N, H, v, p)
+    return sum(ev)
 
-    # Return the maximum count of hidden strings
-    return max(hidden_strings.values())
+def f2(N, H, v, p):
+    # Calculate the expected value for each hole
+    ev = [0] * H
+    for i in range(H):
+        ev[i] = v[i] + p[i] * f2(N, H, v, p)
+    return sum(ev)
 
-def is_hidden_string(s):
-    # Check if the substring is a hidden string by checking if it is a subsequence of the given string
-    return s in s
+def main():
+    N, H = map(int, input().split())
+    v = list(map(int, input().split()))
+    p = []
+    for i in range(H):
+        p.append(list(map(float, input().split())))
+    print(round(f1(N, H, v, p), 4))
+
+if __name__ == '__main__':
+    main()
 

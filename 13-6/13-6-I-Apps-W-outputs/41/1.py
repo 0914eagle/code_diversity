@@ -1,23 +1,27 @@
 
-def solve(n, k, l, d):
-    # Initialize variables
-    x = 0
-    t = 0
-    p = [i for i in range(0, 2*k)]
+def is_rated(n, ratings):
+    # Check if at least one rating has changed
+    if len(set(ratings)) == 1:
+        return "unrated"
+    
+    # Check if the round was rated and a participant with lower rating took a better place than a participant with higher rating
+    for i in range(n-1):
+        if ratings[i] > ratings[i+1] and ratings[i] != ratings[i+1]:
+            return "rated"
+    
+    # Check if the participants took places in non-increasing order of their rating
+    for i in range(n-1):
+        if ratings[i] < ratings[i+1]:
+            return "maybe"
+    
+    # If none of the above conditions are met, the round is unrated
+    return "unrated"
 
-    # Loop through each second
-    for i in range(0, n):
-        # Calculate the current depth at position x
-        depth = d[x] + p[t % 2*k]
+def main():
+    n = int(input())
+    ratings = list(map(int, input().split()))
+    print(is_rated(n, ratings))
 
-        # Check if Koa can swim or not
-        if depth <= l:
-            x += 1
-        t += 1
-
-    # Check if Koa reached the island
-    if x == n:
-        return "Yes"
-    else:
-        return "No"
+if __name__ == '__main__':
+    main()
 

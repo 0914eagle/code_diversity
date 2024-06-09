@@ -1,30 +1,28 @@
 
-def is_possible(n, t, photography_list):
-    # Sort the photography list by the earliest time
-    photography_list.sort(key=lambda x: x[0])
+def is_good_graph(graph):
+    # Check if the graph is still a good graph after adding the edge
+    # Return True if it is still a good graph, False otherwise
+    pass
 
-    # Initialize the current time to 0
-    current_time = 0
+def add_edge(graph, u, v):
+    # Add an edge between vertices u and v to the graph
+    # Return the updated graph
+    pass
 
-    # Loop through each photography
-    for i in range(n):
-        # Get the earliest and latest time for the current photography
-        earliest_time = photography_list[i][0]
-        latest_time = photography_list[i][1]
+def play_game(graph):
+    # Play the game between Taro and Jiro
+    # Return True if Taro wins, False otherwise
+    pass
 
-        # Check if the current time is before the earliest time
-        if current_time < earliest_time:
-            # If so, wait until the earliest time
-            current_time = earliest_time
-
-        # Check if the current time is after the latest time
-        if current_time + t > latest_time:
-            # If so, return false
-            return "no"
-
-        # Increment the current time by the time required for each photography
-        current_time += t
-
-    # If all the photography are taken successfully, return true
-    return "yes"
+if __name__ == '__main__':
+    num_cases = int(input())
+    for case in range(1, num_cases + 1):
+        n, m = map(int, input().split())
+        graph = {}
+        for i in range(m):
+            u, v = map(int, input().split())
+            graph[u] = graph.get(u, []) + [v]
+            graph[v] = graph.get(v, []) + [u]
+        result = "First" if play_game(graph) else "Second"
+        print("Case {}: {}".format(case, result))
 

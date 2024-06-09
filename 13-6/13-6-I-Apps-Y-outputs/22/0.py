@@ -1,30 +1,22 @@
 
-from collections import namedtuple
+def get_median(numbers):
+    numbers.sort()
+    if len(numbers) % 2 == 0:
+        return (numbers[len(numbers) // 2 - 1] + numbers[len(numbers) // 2]) / 2
+    else:
+        return numbers[len(numbers) // 2]
 
-def get_average_marks(my_list):
-    # create a namedtuple to represent a student
-    Student = namedtuple('Student', 'id marks class name')
+def get_b_values(numbers):
+    b_values = []
+    for i in range(len(numbers)):
+        numbers_copy = numbers[:i] + numbers[i+1:]
+        b_values.append(get_median(numbers_copy))
+    return b_values
 
-    # create an empty list to store the students
-    students = []
-
-    # iterate over the input list
-    for line in my_list:
-        # split the line into columns
-        columns = line.split()
-
-        # create a Student object from the columns
-        student = Student(id=columns[0], marks=columns[1], class=columns[2], name=columns[3])
-
-        # add the student to the list
-        students.append(student)
-
-    # calculate the sum of all marks
-    sum_marks = sum(student.marks for student in students)
-
-    # calculate the average marks
-    average_marks = sum_marks / len(students)
-
-    # return the average marks rounded to 2 decimal places
-    return round(average_marks, 2)
+if __name__ == '__main__':
+    n = int(input())
+    numbers = list(map(int, input().split()))
+    b_values = get_b_values(numbers)
+    for b in b_values:
+        print(b)
 

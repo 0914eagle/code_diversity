@@ -1,24 +1,23 @@
 
-def solve(a, b, c, d, e, f):
-    # Initialize variables
-    sugar_water = 0
-    sugar_dissolved = 0
+def get_valid_expressions(a, b, c, d):
+    expressions = []
+    for op1 in ['+', '-', '*', '/']:
+        for op2 in ['+', '-', '*', '/']:
+            try:
+                result = eval(f'{a} {op1} {b} {op2} {c} {op2} {d}')
+                expressions.append(f'{a} {op1} {b} = {c} {op2} {d}')
+            except ZeroDivisionError:
+                pass
+    return sorted(expressions)
 
-    # Loop through all possible combinations of operations
-    for i in range(a + 1):
-        for j in range(b + 1):
-            for k in range(c + 1):
-                for l in range(d + 1):
-                    # Calculate the mass of sugar water and sugar dissolved
-                    sugar_water_temp = i * 100 + j * 100
-                    sugar_dissolved_temp = k * e + l * e
+def main():
+    a, b, c, d = map(int, input().split())
+    expressions = get_valid_expressions(a, b, c, d)
+    if expressions:
+        print('\n'.join(expressions))
+    else:
+        print('problems ahead')
 
-                    # Check if the sugar water is within the desired range
-                    if sugar_water_temp <= f:
-                        # Check if the sugar water is the highest density possible
-                        if (sugar_dissolved_temp / sugar_water_temp) >= (sugar_dissolved / sugar_water):
-                            sugar_water = sugar_water_temp
-                            sugar_dissolved = sugar_dissolved_temp
-
-    return [sugar_water, sugar_dissolved]
+if __name__ == '__main__':
+    main()
 

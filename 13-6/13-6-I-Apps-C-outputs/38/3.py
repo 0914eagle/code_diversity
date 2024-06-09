@@ -1,18 +1,42 @@
 
-import math
+def f1(n, a):
+    # Initialize a set to store the distinct values of f
+    distinct_values = set()
 
-def solve(n, m, p):
-    # Calculate the number of ways to place the minimum number of obstacles
-    num_obstacles = (n // 2) * (m // 2)
-    num_ways = math.factorial(num_obstacles)
+    # Iterate over the sequence
+    for i in range(n):
+        for j in range(i+1, n+1):
+            # Calculate the value of f(i, j)
+            f_value = gcd(a[i], a[i+1], a[j-1], a[j])
 
-    # Calculate the number of ways to place the obstacles in each cell
-    num_cells = n * m
-    num_cell_ways = math.factorial(num_cells)
+            # Add the value to the set of distinct values
+            distinct_values.add(f_value)
 
-    # Calculate the final answer by dividing the number of ways to place the obstacles by the number of ways to place them in each cell
-    answer = num_ways // num_cell_ways
+    # Return the number of distinct values
+    return len(distinct_values)
 
-    # Return the answer modulo p
-    return answer % p
+def f2(n, a):
+    # Initialize a dictionary to store the counts of each distinct value of f
+    distinct_values = {}
+
+    # Iterate over the sequence
+    for i in range(n):
+        for j in range(i+1, n+1):
+            # Calculate the value of f(i, j)
+            f_value = gcd(a[i], a[i+1], a[j-1], a[j])
+
+            # Increment the count of the value in the dictionary
+            if f_value in distinct_values:
+                distinct_values[f_value] += 1
+            else:
+                distinct_values[f_value] = 1
+
+    # Return the number of distinct values
+    return len(distinct_values)
+
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(f1(n, a))
+    print(f2(n, a))
 

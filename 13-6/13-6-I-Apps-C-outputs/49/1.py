@@ -1,52 +1,30 @@
 
-def solve(N, V, direct_supervisors):
-    # Initialize a set to store the types of jokes told by the invited guests
-    invited_jokes = set()
-    # Initialize a set to store the types of jokes told by the uninvited guests
-    uninvited_jokes = set()
-    # Iterate over the direct supervisors
-    for supervisor, employee in direct_supervisors:
-        # If the supervisor is not invited, add the type of joke told by the employee to the uninvited jokes set
-        if supervisor not in invited_jokes:
-            uninvited_jokes.add(V[employee - 1])
-        # If the employee is not invited, add the type of joke told by the employee to the uninvited jokes set
-        if employee not in invited_jokes:
-            uninvited_jokes.add(V[supervisor - 1])
-    
-    # Initialize a set to store the consecutive sets of jokes
-    consecutive_sets = set()
-    # Iterate over the uninvited jokes
-    for joke in uninvited_jokes:
-        # If the joke is not already in the invited jokes set, add it to the invited jokes set
-        if joke not in invited_jokes:
-            invited_jokes.add(joke)
-            # Check if the set of jokes is consecutive
-            if is_consecutive(invited_jokes):
-                consecutive_sets.add(frozenset(invited_jokes))
-            # If the set of jokes is not consecutive, remove the last joke added to the set
-            else:
-                invited_jokes.remove(joke)
-    
-    return len(consecutive_sets)
+def f1(N):
+    # Initialize an empty stack with label 0
+    stacks = [{}]
 
-def is_consecutive(jokes):
-    # Sort the jokes in ascending order
-    sorted_jokes = sorted(jokes)
-    # Iterate over the jokes
-    for i in range(len(sorted_jokes) - 1):
-        # If the difference between the current joke and the next joke is not 1, return False
-        if sorted_jokes[i + 1] - sorted_jokes[i] != 1:
-            return False
-    return True
+    # Iterate through the steps of the game
+    for i in range(1, N + 1):
+        # Get the current step
+        step = input()
 
-def main():
-    N = int(input())
-    V = list(map(int, input().split()))
-    direct_supervisors = []
-    for _ in range(N - 1):
-        direct_supervisors.append(list(map(int, input().split())))
-    print(solve(N, V, direct_supervisors))
+        # Check the type of operation
+        if step[0] == "a":
+            # Create a new stack with label i
+            stacks.append({})
+        elif step[0] == "b":
+            # Remove the top element from the stack with label step[1]
+            stack = stacks[int(step[1])]
+            top = stack.pop()
+            print(top)
+        elif step[0] == "c":
+            # Count the number of elements in common between the stacks with labels step[1] and step[2]
+            stack1 = stacks[int(step[1])]
+            stack2 = stacks[int(step[2])]
+            count = len(set(stack1).intersection(stack2))
+            print(count)
 
 if __name__ == "__main__":
-    main()
+    N = int(input())
+    f1(N)
 

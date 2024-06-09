@@ -1,11 +1,21 @@
 
-def solve(arr):
-    n = len(arr)
-    count = 0
-    for i in range(n-1):
-        for j in range(n-i-1):
-            if arr[j] > arr[j+1]:
-                arr[j], arr[j+1] = arr[j+1], arr[j]
-                count += 1
-    return count
+def is_adorable(s):
+    n = len(s)
+    if n % 2 == 1:
+        return False
+    for i in range(n // 2):
+        if s[i] != s[n - i - 1]:
+            return False
+    return True
+
+def can_be_split_into_adorable_subsequences(s):
+    n = len(s)
+    for i in range(1, n):
+        if is_adorable(s[:i]) and is_adorable(s[i:]):
+            return True
+    return False
+
+if __name__ == '__main__':
+    s = input()
+    print("Yes") if can_be_split_into_adorable_subsequences(s) else print("No")
 

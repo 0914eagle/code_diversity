@@ -1,10 +1,14 @@
 
-def solve(arr):
-    n = len(arr)
-    blocks = []
-    for i in range(n):
-        for j in range(i+1, n):
-            if arr[i] + arr[j] == 0:
-                blocks.append((i, j))
-    return blocks
+def get_coins(k, x):
+    if k * 500 >= x:
+        return "Yes"
+    else:
+        return "No"
+
+def main():
+    k, x = map(int, input().split())
+    print(get_coins(k, x))
+
+if __name__ == '__main__':
+    main()
 

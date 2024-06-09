@@ -1,18 +1,23 @@
 
-def solve(socks, capacity, max_color_diff):
-    # Sort the socks by color
-    socks.sort()
-    # Initialize the number of machines to 0
-    num_machines = 0
-    # Loop through the socks
-    for i in range(len(socks)):
-        # Check if the current sock is within the maximum color difference of the previous sock
-        if i == 0 or abs(socks[i] - socks[i-1]) <= max_color_diff:
-            # If it is, add it to the current machine
-            num_machines += 1
-        # If it's not, start a new machine
-        else:
-            num_machines += 1
-    # Return the number of machines needed
-    return num_machines
+def get_permutation(n, q):
+    permutation = []
+    for i in range(n):
+        permutation.append(i+1)
+    for i in range(n-1):
+        for j in range(n-i-1):
+            if q[i] < q[j]:
+                permutation[i], permutation[j] = permutation[j], permutation[i]
+    return permutation
+
+def main():
+    n = int(input())
+    q = list(map(int, input().split()))
+    permutation = get_permutation(n, q)
+    if permutation == []:
+        print(-1)
+    else:
+        print(*permutation)
+
+if __name__ == '__main__':
+    main()
 

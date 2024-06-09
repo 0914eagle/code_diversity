@@ -1,28 +1,44 @@
 
-def largest_sum_of_digits(n):
-    # Initialize the maximum sum of digits as 0
-    max_sum = 0
-    # Loop through all possible values of a
-    for a in range(n+1):
-        # Find the corresponding value of b
-        b = n - a
-        # Calculate the sum of digits of a and b
-        sum_of_digits = sum_of_digits_in_base_10(a) + sum_of_digits_in_base_10(b)
-        # If the sum of digits is greater than the maximum sum, update the maximum sum
-        if sum_of_digits > max_sum:
-            max_sum = sum_of_digits
-    # Return the maximum sum
-    return max_sum
+import math
 
-def sum_of_digits_in_base_10(n):
-    # Initialize the sum of digits as 0
-    sum_of_digits = 0
-    # Loop through the digits of n
-    while n > 0:
-        # Add the current digit to the sum of digits
-        sum_of_digits += n % 10
-        # Divide n by 10 to move to the next digit
-        n //= 10
-    # Return the sum of digits
-    return sum_of_digits
+def get_input():
+    N = int(input())
+    stars = []
+    for _ in range(N):
+        T, s, a = map(float, input().split())
+        stars.append((T, s, a))
+    return N, stars
+
+def get_distance(star, angle):
+    T, s, a = star
+    dist = math.fabs(angle - a)
+    if dist > math.pi:
+        dist = 2 * math.pi - dist
+    return max(0, T - s * dist)
+
+def get_max_distance(stars):
+    max_distance = 0
+    for star in stars:
+        max_distance += get_distance(star, math.pi / 2)
+    return max_distance
+
+def f1():
+    N, stars = get_input()
+    return get_max_distance(stars)
+
+def f2():
+    N, stars = get_input()
+    max_distance = 0
+    for i in range(N):
+        for j in range(i+1, N):
+            star1 = stars[i]
+            star2 = stars[j]
+            angle = (star1[2] + star2[2]) / 2
+            distance = get_distance(star1, angle) + get_distance(star2, angle)
+            max_distance = max(max_distance, distance)
+    return max_distance
+
+if __name__ == '__main__':
+    print(f1())
+    print(f2())
 

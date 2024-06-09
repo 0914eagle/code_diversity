@@ -1,26 +1,17 @@
 
-def is_edward_right(intervals):
-    # Sort the intervals by their start time
-    intervals.sort(key=lambda x: x[0])
+def get_number_of_ways(N, K):
+    # Base case: if N is 1, there is only one way to paint the ball
+    if N == 1:
+        return K
+    
+    # Recursive case: if N is greater than 1, there are K ways to paint the first ball
+    # and then recursively find the number of ways to paint the remaining balls
+    return K * get_number_of_ways(N-1, K)
 
-    # Initialize variables to keep track of the current boiling time and the previous boiling time
-    current_time = 0
-    previous_time = 0
+def main():
+    N, K = map(int, input().split())
+    print(get_number_of_ways(N, K))
 
-    # Loop through each interval
-    for interval in intervals:
-        # If the interval starts before the current boiling time, it means the pot has already boiled
-        if interval[0] < current_time:
-            return "gunilla has a point"
-
-        # If the interval starts after the current boiling time, it means the pot has not yet boiled
-        if interval[0] > current_time:
-            current_time = interval[1]
-
-        # If the interval ends after the current boiling time, it means the pot has not yet boiled
-        if interval[1] > current_time:
-            current_time = interval[1]
-
-    # If we have reached the end of the intervals and the pot has not yet boiled, it means Edward is right
-    return "edward is right"
+if __name__ == '__main__':
+    main()
 

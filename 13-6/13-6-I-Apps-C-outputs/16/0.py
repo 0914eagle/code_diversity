@@ -1,28 +1,20 @@
 
-def solve(n_friends, friends_wishes):
-    # Initialize a dictionary to store the count of each topping
-    topping_count = {}
+def get_maximum_colors(n):
+    # Initialize a set to store the colors
+    colors = set()
+    # Iterate through all possible pairs of tiles
+    for i in range(1, n + 1):
+        for j in range(i + 1, n + 1):
+            # If the difference between the two tiles is a divisor of n greater than 1,
+            # and n mod the difference is 0, then they should have the same color
+            if n % abs(i - j) == 0 and abs(i - j) > 1:
+                colors.add(i)
+    return len(colors)
 
-    # Iterate over the list of friends and their wishes
-    for friend in friends_wishes:
-        # Split the friend's wishes into a list of toppings
-        toppings = friend.split()
+def main():
+    n = int(input())
+    print(get_maximum_colors(n))
 
-        # Iterate over the toppings and increment the count for each topping
-        for topping in toppings:
-            if topping not in topping_count:
-                topping_count[topping] = 1
-            else:
-                topping_count[topping] += 1
-
-    # Initialize a list to store the selected toppings
-    selected_toppings = []
-
-    # Iterate over the dictionary of topping counts and select the toppings with the highest count
-    for topping, count in topping_count.items():
-        if count >= n_friends / 3:
-            selected_toppings.append(topping)
-
-    # Return the list of selected toppings
-    return selected_toppings
+if __name__ == '__main__':
+    main()
 

@@ -1,50 +1,31 @@
 
-def solve(n, pattern):
-    # Convert the pattern to a list of 1s and *s
-    pattern_list = list(pattern)
+def get_order(n, m, k, a):
+    # Initialize the permutation as the identity permutation
+    order = list(range(1, n+1))
+    
+    # Loop through each critic and their initial score
+    for i in range(n):
+        # Calculate the average score given by the previous critics
+        avg_score = (k - a[i]) / (n - i - 1)
+        
+        # If the average score is less than or equal to the initial score,
+        # the current critic will give a score of m
+        if avg_score <= a[i]:
+            # Find the index of the current critic in the permutation
+            index = order.index(i+1)
+            
+            # Swap the current critic with the last critic in the permutation
+            order[index] = order[-1]
+            order[n-1] = i+1
+    
+    return order
 
-    # Initialize the maximum number of members to 0
-    max_members = 0
+def main():
+    n, m, k = map(int, input().split())
+    a = list(map(int, input().split()))
+    order = get_order(n, m, k, a)
+    print(*order)
 
-    # Loop through all possible IDs
-    for i in range(2**n):
-        # Convert the current ID to a binary string
-        binary_string = bin(i)[2:]
-
-        # Pad the binary string with 0s to make it the same length as the pattern
-        binary_string = binary_string.zfill(n)
-
-        # Check if the current ID satisfies the pattern
-        if satisfies_pattern(binary_string, pattern_list):
-            # Increment the maximum number of members
-            max_members += 1
-
-    # Return the maximum number of members
-    return max_members
-
-# Check if a binary string satisfies a pattern
-def satisfies_pattern(binary_string, pattern):
-    # Initialize the number of 1s in the binary string to 0
-    num_ones = 0
-
-    # Loop through the characters of the binary string and the pattern
-    for i in range(len(binary_string)):
-        # If the current character of the binary string is 1, increment the number of 1s
-        if binary_string[i] == "1":
-            num_ones += 1
-
-        # If the current character of the pattern is *, continue to the next iteration
-        if pattern[i] == "*":
-            continue
-
-        # If the current character of the binary string is not the same as the current character of the pattern, return False
-        if binary_string[i] != pattern[i]:
-            return False
-
-    # If the number of 1s is not at least half the length of the pattern, return False
-    if num_ones < len(pattern) // 2:
-        return False
-
-    # Return True if the binary string satisfies the pattern
-    return True
+if __name__ == '__main__':
+    main()
 

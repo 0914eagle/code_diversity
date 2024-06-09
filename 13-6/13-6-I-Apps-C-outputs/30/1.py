@@ -1,42 +1,44 @@
 
-def solve(n, s, params):
-    # Initialize the number of on lights to 0
-    num_on_lights = 0
-    # Initialize a list to store the on and off times of each light
-    light_states = []
+def get_cost(graph, s, t):
+    # Use BFS to find the shortest path between s and t
+    queue = [(s, 0)]
+    visited = set()
+    while queue:
+        node, cost = queue.pop(0)
+        if node == t:
+            return cost
+        if node not in visited:
+            visited.add(node)
+            for neighbor, weight in graph[node]:
+                queue.append((neighbor, cost + weight))
+    return -1
 
-    # Iterate over the parameters of each light
-    for i in range(n):
-        # Extract the a and b parameters of the current light
-        a, b = params[i]
-        # If the current light is initially on
-        if s[i] == "1":
-            # Add the current light to the list of on lights
-            light_states.append([b, b + a])
-            # Increment the number of on lights
-            num_on_lights += 1
+def solve(n, m, edges, q, queries):
+    # Create a graph with the given edges
+    graph = [[] for _ in range(n + 1)]
+    for u, v, w in edges:
+        graph[u].append((v, w))
+        graph[v].append((u, w))
+    
+    # Solve the queries
+    result = []
+    for s, t in queries:
+        result.append(get_cost(graph, s, t))
+    
+    return result
 
-    # Sort the list of on and off times of each light in ascending order
-    light_states.sort()
-
-    # Initialize the maximum number of on lights to 0
-    max_on_lights = 0
-    # Initialize a variable to store the current number of on lights
-    current_on_lights = 0
-
-    # Iterate over the sorted list of on and off times of each light
-    for i in range(len(light_states)):
-        # If the current light is on
-        if light_states[i][0] <= i:
-            # Increment the current number of on lights
-            current_on_lights += 1
-        # If the current light is off
-        else:
-            # Decrement the current number of on lights
-            current_on_lights -= 1
-        # Update the maximum number of on lights if necessary
-        max_on_lights = max(max_on_lights, current_on_lights)
-
-    # Return the maximum number of on lights
-    return max_on_lights
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    edges = []
+    for _ in range(m):
+        u, v, w = map(int, input().split())
+        edges.append((u, v, w))
+    q = int(input())
+    queries = []
+    for _ in range(q):
+        s, t = map(int, input().split())
+        queries.append((s, t))
+    result = solve(n, m, edges, q, queries)
+    for cost in result:
+        print(cost)
 

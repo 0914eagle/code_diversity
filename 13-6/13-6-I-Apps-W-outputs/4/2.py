@@ -1,14 +1,19 @@
 
-def solve(p):
-    n = len(p)
-    m = 0
-    swaps = []
-    for i in range(n):
-        for j in range(i+1, n):
-            if abs(i-j) >= n//2:
-                swaps.append((i, j))
-                m += 1
-                if m > 5*n:
-                    return -1
-    return swaps
+def solve_query(query, s):
+    if query[0] == 1:
+        s.add(query[1])
+    else:
+        max_value = max(s)
+        mean = sum(s) / len(s)
+        return max_value - mean
+
+def main():
+    q = int(input())
+    s = set()
+    for i in range(q):
+        query = list(map(int, input().split()))
+        print(solve_query(query, s))
+
+if __name__ == '__main__':
+    main()
 

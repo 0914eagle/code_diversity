@@ -1,19 +1,31 @@
 
-import math
+def f(a):
+    # Calculate the greatest common divisor of the sequence
+    gcd = a[0]
+    for i in range(1, len(a)):
+        gcd = gcd(gcd, a[i])
+    return gcd
 
-def count_ways(n, m, p):
-    # Calculate the number of ways to place the minimum number of obstacles
-    num_obstacles = (n // 2) * (m // 2)
-    num_ways = math.factorial(num_obstacles)
-    
-    # Calculate the number of ways to place the obstacles in the grid
-    num_ways *= math.factorial(n * m - num_obstacles)
-    
-    # Calculate the number of ways to place the obstacles in each subgrid
-    for i in range(1, n // 2 + 1):
-        for j in range(1, m // 2 + 1):
-            num_ways *= math.factorial(i * j)
-    
-    # Return the number of ways modulo p
-    return num_ways % p
+def f1(n, a):
+    # Calculate the number of distinct values of f over the sequence
+    values = set()
+    for i in range(n):
+        for j in range(i+1, n+1):
+            values.add(f(a[i:j]))
+    return len(values)
+
+def f2(n, a):
+    # Calculate the number of distinct values of f over the sequence using a more efficient approach
+    values = set()
+    for i in range(n):
+        gcd = a[i]
+        for j in range(i+1, n+1):
+            gcd = gcd(gcd, a[j])
+            values.add(gcd)
+    return len(values)
+
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(f1(n, a))
 

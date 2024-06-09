@@ -1,26 +1,27 @@
 
-def solve(s, k):
+def get_min_operations(n, x, y, number):
     # Initialize variables
-    n = len(s)
-    count = 0
-    i = 0
-    j = 0
+    operations = 0
+    remainder = 1
 
-    # Loop through the string
-    while i < n and j < k:
-        # If the current character is not 'R', 'G', or 'B', increase the count
-        if s[i] != "R" and s[i] != "G" and s[i] != "B":
-            count += 1
-        # If the current character is 'R', 'G', or 'B', and the substring is not a substring of "RGB", increase the count
-        elif s[i] == "R" and s[i + 1] != "G" or s[i] == "G" and s[i + 1] != "B" or s[i] == "B" and s[i + 1] != "R":
-            count += 1
-        # If the current character is 'R', 'G', or 'B', and the substring is a substring of "RGB", increase the count
-        elif s[i] == "R" and s[i + 1] == "G" and s[i + 2] == "B" or s[i] == "G" and s[i + 1] == "B" and s[i + 2] == "R" or s[i] == "B" and s[i + 1] == "R" and s[i + 2] == "G":
-            count += 2
-        # Increase the indices
-        i += 1
-        j += 1
+    # Iterate through the digits of the number
+    for i in range(n):
+        # If the current digit is 0, change it to 1 and increment the operations count
+        if number[i] == "0":
+            number = number[:i] + "1" + number[i+1:]
+            operations += 1
+        # If the current digit is 1, change it to 0 and calculate the remainder
+        else:
+            remainder = (remainder * 10) % (10**x)
 
-    # Return the count
-    return count
+    # Return the minimum number of operations needed to obtain the desired remainder
+    return operations + (10**y - remainder) // (10**(y-1))
+
+def main():
+    n, x, y = map(int, input().split())
+    number = input()
+    print(get_min_operations(n, x, y, number))
+
+if __name__ == '__main__':
+    main()
 

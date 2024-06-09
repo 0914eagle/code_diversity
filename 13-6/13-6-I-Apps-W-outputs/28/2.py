@@ -1,19 +1,24 @@
 
-def solve(s, t):
-    # Replace all '?' characters with all possible lowercase letters
-    s = s.replace("?", "abcdefghijklmnopqrstuvwxyz")
-    # Initialize a list to store the suitability of each string
-    suitabilities = []
-    # Iterate over each possible string
-    for i in range(len(s)):
-        # Calculate the suitability of the current string
-        suitability = 0
-        for j in range(len(t)):
-            # If the current string contains the j-th character of t, increment the suitability
-            if s[i+j] == t[j]:
-                suitability += 1
-        # Add the suitability of the current string to the list
-        suitabilities.append(suitability)
-    # Return the string with the highest suitability
-    return s[suitabilities.index(max(suitabilities))]
+def get_gcd(a, b):
+    if a == 0:
+        return b
+    return get_gcd(b % a, a)
+
+def get_max_gcd(n):
+    max_gcd = 1
+    for i in range(1, n):
+        for j in range(i + 1, n + 1):
+            gcd = get_gcd(i, j)
+            if gcd > max_gcd:
+                max_gcd = gcd
+    return max_gcd
+
+def main():
+    num_test_cases = int(input())
+    for i in range(num_test_cases):
+        n = int(input())
+        print(get_max_gcd(n))
+
+if __name__ == '__main__':
+    main()
 

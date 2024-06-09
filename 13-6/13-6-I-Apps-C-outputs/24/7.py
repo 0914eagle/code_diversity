@@ -1,35 +1,30 @@
 
-def solve(sequence):
-    # Initialize variables
-    max_value = 0
-    operations = 0
-    choice = 0
-    sequence_length = len(sequence)
+def get_input():
+    n, m = map(int, input().split())
+    mark = [input() for _ in range(n)]
+    return n, m, mark
 
-    # Loop until the sequence has only one element
-    while sequence_length > 1:
-        # Find the maximum value in the sequence
-        max_value = max(sequence)
+def get_stamp_size(mark):
+    stamp_size = 0
+    for row in mark:
+        for cell in row:
+            if cell == '#':
+                stamp_size += 1
+    return stamp_size
 
-        # Choose an element of the sequence
-        choice = sequence.index(max_value)
+def get_min_nubs(mark):
+    n, m, mark = get_input()
+    stamp_size = get_stamp_size(mark)
+    min_nubs = 0
+    for i in range(n - 1):
+        for j in range(m - 1):
+            if mark[i][j] == '#' and mark[i + 1][j] == '#' and mark[i][j + 1] == '#' and mark[i + 1][j + 1] == '#':
+                min_nubs = max(min_nubs, stamp_size)
+    return min_nubs
 
-        # If the chosen element is at either end of the sequence, delete it
-        if choice == 0 or choice == sequence_length - 1:
-            sequence.pop(choice)
-            sequence_length -= 1
-        else:
-            # If the chosen element is not at either end of the sequence, replace it with the sum of the two elements that are adjacent to it
-            sequence[choice] = sequence[choice - 1] + sequence[choice + 1]
+def main():
+    print(get_min_nubs())
 
-            # Delete the two elements that are adjacent to the chosen element
-            sequence.pop(choice - 1)
-            sequence.pop(choice)
-            sequence_length -= 2
-
-        # Increment the number of operations
-        operations += 1
-
-    # Return the maximum value of the final element and the number of operations
-    return max_value, operations, choice + 1
+if __name__ == '__main__':
+    main()
 

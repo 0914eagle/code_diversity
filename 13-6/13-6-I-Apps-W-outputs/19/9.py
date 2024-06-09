@@ -1,24 +1,23 @@
 
-def get_min_distance(coordinates):
-    # Sort the coordinates in ascending order
-    sorted_coordinates = sorted(coordinates)
+def get_maximum_fruits(lemons, apples, pears):
+    if lemons == 0 and apples == 0 and pears == 0:
+        return 0
+    
+    max_lemons = lemons
+    max_apples = apples // 2
+    max_pears = pears // 4
+    
+    total_fruits = max_lemons + max_apples + max_pears
+    
+    return total_fruits
 
-    # Initialize the minimum distance and quantity of pairs
-    min_distance = float('inf')
-    quantity = 0
+def main():
+    lemons = int(input())
+    apples = int(input())
+    pears = int(input())
+    
+    print(get_maximum_fruits(lemons, apples, pears))
 
-    # Iterate over the sorted coordinates
-    for i in range(len(sorted_coordinates)):
-        for j in range(i+1, len(sorted_coordinates)):
-            # Calculate the distance between the current pair of coordinates
-            distance = abs(sorted_coordinates[i] - sorted_coordinates[j])
-
-            # Update the minimum distance and quantity of pairs if necessary
-            if distance < min_distance:
-                min_distance = distance
-                quantity = 1
-            elif distance == min_distance:
-                quantity += 1
-
-    return min_distance, quantity
+if __name__ == '__main__':
+    main()
 

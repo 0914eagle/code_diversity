@@ -1,20 +1,40 @@
 
-def solve(N, V, C):
-    # Initialize the maximum total happiness as 0
-    max_happiness = 0
-    # Loop through each prime number from 2 to N
-    for p in range(2, N+1):
-        # If the prime number is not in the list of costs, skip it
-        if p not in C:
-            continue
-        # Calculate the happiness increase for each Pokenom
-        happiness_increase = sum([V[i] for i in range(N) if i % p == 0])
-        # Calculate the happiness decrease for each Pokenom
-        happiness_decrease = sum([C[p] * (i // p) ** 2 for i in range(N) if i % p == 0])
-        # Calculate the total happiness for this prime number
-        total_happiness = happiness_increase - happiness_decrease
-        # Update the maximum total happiness if necessary
-        max_happiness = max(max_happiness, total_happiness)
-    # Return the maximum total happiness
-    return max_happiness
+def get_criminal_information(city_index, num_cities, criminals):
+    # Initialize a dictionary to store the information about the criminals
+    criminal_info = {}
+
+    # Iterate over the criminals and store the information in the dictionary
+    for criminal in criminals:
+        distance = abs(city_index - criminal)
+        if distance in criminal_info:
+            criminal_info[distance] += 1
+        else:
+            criminal_info[distance] = 1
+
+    return criminal_info
+
+def catch_criminals(city_index, num_cities, criminals, criminal_info):
+    # Initialize a set to store the indices of the cities where criminals are caught
+    caught_cities = set()
+
+    # Iterate over the information about the criminals and catch the criminals in the cities where they are sure to be
+    for distance, num_criminals in criminal_info.items():
+        for i in range(distance):
+            city = (city_index - i) % num_cities
+            if city not in caught_cities and criminals[city] == 1:
+                caught_cities.add(city)
+                num_criminals -= 1
+        if num_criminals == 0:
+            break
+
+    return len(caught_cities)
+
+def main():
+    city_index, num_cities = map(int, input().split())
+    criminals = list(map(int, input().split()))
+    criminal_info = get_criminal_information(city_index, num_cities, criminals)
+    print(catch_criminals(city_index, num_cities, criminals, criminal_info))
+
+if __name__ == '__main__':
+    main()
 

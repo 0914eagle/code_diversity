@@ -1,31 +1,66 @@
 
-def solve(N, p, times):
-    # Sort the times in non-decreasing order
-    sorted_times = sorted(times)
+def find_largest(numbers):
+    return max(numbers)
 
-    # Initialize the number of accepted problems and penalty time
-    num_ac = 0
-    penalty_time = 0
+def find_smallest(numbers):
+    return min(numbers)
 
-    # Loop through each problem in the sorted times
-    for i in range(N):
-        # If the current problem is the first problem to be solved
-        if i == p:
-            # Add the time for the current problem to the penalty time
-            penalty_time += sorted_times[i]
-        # If the current problem is not the first problem to be solved
-        else:
-            # Check if the current problem can be solved within the remaining time
-            if sorted_times[i] <= 300 - penalty_time:
-                # Add the time for the current problem to the penalty time
-                penalty_time += sorted_times[i]
-                # Increment the number of accepted problems
-                num_ac += 1
-            # If the current problem cannot be solved within the remaining time
-            else:
-                # Break out of the loop
-                break
+def find_sum(numbers):
+    return sum(numbers)
 
-    # Return the number of accepted problems and penalty time
-    return num_ac, penalty_time
+def find_product(numbers):
+    result = 1
+    for num in numbers:
+        result *= num
+    return result
+
+def find_average(numbers):
+    return sum(numbers) / len(numbers)
+
+def find_median(numbers):
+    numbers.sort()
+    if len(numbers) % 2 == 0:
+        return (numbers[len(numbers)//2] + numbers[len(numbers)//2 - 1]) / 2
+    else:
+        return numbers[len(numbers)//2]
+
+def find_mode(numbers):
+    counts = {}
+    for num in numbers:
+        counts[num] = counts.get(num, 0) + 1
+    max_count = max(counts.values())
+    return [key for key, value in counts.items() if value == max_count]
+
+def find_range(numbers):
+    return max(numbers) - min(numbers)
+
+def find_variance(numbers):
+    mean = find_average(numbers)
+    return sum((x - mean) ** 2 for x in numbers) / (len(numbers) - 1)
+
+def find_standard_deviation(numbers):
+    variance = find_variance(numbers)
+    return variance ** 0.5
+
+def find_confidence_interval(numbers, confidence=0.95):
+    mean = find_average(numbers)
+    standard_deviation = find_standard_deviation(numbers)
+    t_value = t.ppf((1 + confidence) / 2, len(numbers) - 1)
+    half_width = t_value * standard_deviation / sqrt(len(numbers))
+    return (mean - half_width, mean + half_width)
+
+if __name__ == '__main__':
+    n = int(input())
+    numbers = list(map(int, input().split()))
+    print(find_largest(numbers))
+    print(find_smallest(numbers))
+    print(find_sum(numbers))
+    print(find_product(numbers))
+    print(find_average(numbers))
+    print(find_median(numbers))
+    print(find_mode(numbers))
+    print(find_range(numbers))
+    print(find_variance(numbers))
+    print(find_standard_deviation(numbers))
+    print(find_confidence_interval(numbers))
 

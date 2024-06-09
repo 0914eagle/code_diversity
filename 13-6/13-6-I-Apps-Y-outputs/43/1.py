@@ -1,29 +1,24 @@
 
-def is_pot_boiling_at_same_time(intervals):
-    # Sort the intervals by their start time
-    intervals.sort(key=lambda x: x[0])
+def paint_balls(n, k):
+    # Initialize a 2D array to store the number of ways to paint the balls
+    dp = [[0] * (k + 1) for _ in range(n + 1)]
+    
+    # Initialize the first row of the array with 1, because there is only one way to paint the first ball
+    for i in range(k + 1):
+        dp[0][i] = 1
+    
+    # Fill in the rest of the array using the recurrence relation
+    for i in range(1, n + 1):
+        for j in range(1, k + 1):
+            dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j]
+    
+    # Return the number of ways to paint the last ball
+    return dp[n][k]
 
-    # Initialize variables to keep track of the current time and the last time the pot was seen boiling
-    current_time = 0
-    last_boiling_time = 0
+def main():
+    n, k = map(int, input().split())
+    print(paint_balls(n, k))
 
-    # Iterate through the intervals
-    for interval in intervals:
-        # If the current time is within the interval, the pot was not being watched
-        if current_time >= interval[0] and current_time <= interval[1]:
-            continue
-
-        # If the current time is after the interval and the pot was seen boiling, update the last boiling time
-        if current_time > interval[1] and last_boiling_time == 0:
-            last_boiling_time = current_time
-
-        # Increment the current time by the length of the interval
-        current_time += interval[1] - interval[0]
-
-    # If the last boiling time is still 0, it means the pot was never seen boiling
-    if last_boiling_time == 0:
-        return "edward is right"
-
-    # If the last boiling time is not 0, it means the pot was seen boiling at least once
-    return "gunilla has a point"
+if __name__ == '__main__':
+    main()
 

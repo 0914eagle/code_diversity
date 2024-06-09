@@ -1,23 +1,34 @@
 
-def get_min_price(n, prices, vitamins):
-    # Initialize a dictionary to store the count of vitamins
-    vitamin_count = {"A": 0, "B": 0, "C": 0}
-    
-    # Iterate over the vitamins in each juice
+def get_max_strength(n, p, assignment):
+    # Initialize the maximum strength and the optimal prefix or suffix
+    max_strength = 0
+    opt_prefix_or_suffix = ""
+
+    # Iterate over all possible prefixes or suffixes
     for i in range(n):
-        for vitamin in vitamins[i]:
-            # If the vitamin is not already in the dictionary, add it
-            if vitamin not in vitamin_count:
-                vitamin_count[vitamin] = 1
-            # If the vitamin is already in the dictionary, increment its count
-            else:
-                vitamin_count[vitamin] += 1
-    
-    # Check if all three vitamins are present
-    if "A" in vitamin_count and "B" in vitamin_count and "C" in vitamin_count:
-        # Return the minimum price
-        return min(prices)
-    # If not all three vitamins are present, return -1
-    else:
-        return -1
+        # Get the strength of the pieces in the current prefix or suffix
+        curr_strength = sum(p[i:i+n])
+
+        # If the current strength is greater than the maximum strength, update the maximum strength and the optimal prefix or suffix
+        if curr_strength > max_strength:
+            max_strength = curr_strength
+            opt_prefix_or_suffix = assignment[i:i+n]
+
+    # Return the maximum strength and the optimal prefix or suffix
+    return max_strength, opt_prefix_or_suffix
+
+def main():
+    # Read the input
+    n = int(input())
+    p = list(map(int, input().split()))
+    assignment = input()
+
+    # Get the maximum strength and the optimal prefix or suffix
+    max_strength, opt_prefix_or_suffix = get_max_strength(n, p, assignment)
+
+    # Print the maximum strength
+    print(max_strength)
+
+if __name__ == '__main__':
+    main()
 

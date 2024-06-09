@@ -1,9 +1,24 @@
 
-def get_nice_indices(arr):
-    nice_indices = []
+def get_median(arr):
+    arr.sort()
+    if len(arr) % 2 == 0:
+        return (arr[len(arr) // 2 - 1] + arr[len(arr) // 2]) / 2
+    else:
+        return arr[len(arr) // 2]
+
+def count_pairs(arr, m):
+    count = 0
     for i in range(len(arr)):
-        sum_of_others = sum(arr) - arr[i]
-        if arr[i] == sum_of_others:
-            nice_indices.append(i)
-    return nice_indices
+        for j in range(i, len(arr)):
+            if get_median(arr[i:j+1]) == m:
+                count += 1
+    return count
+
+def main():
+    n, m = map(int, input().split())
+    arr = list(map(int, input().split()))
+    print(count_pairs(arr, m))
+
+if __name__ == '__main__':
+    main()
 

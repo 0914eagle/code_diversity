@@ -1,38 +1,32 @@
 
-def get_color_code(n, p, s):
-    # Initialize an empty list to store the color code
-    code = []
+def get_maximum_payout(cards):
+    # Initialize variables to keep track of the sum and count of counted cards
+    sum_counted_cards = 0
+    count_counted_cards = 0
     
-    # Check if the palette is valid
-    if len(set(s)) != p:
-        return "impossible"
+    # Initialize variables to keep track of the sum and count of uncounted cards
+    sum_uncounted_cards = 0
+    count_uncounted_cards = 0
     
-    # Check if the palette is a subset of {1, 2, ..., n}
-    if not set(s).issubset({i for i in range(1, n+1)}):
-        return "impossible"
+    # Initialize a variable to keep track of the maximum payout
+    maximum_payout = 0
     
-    # Initialize the first string with all 0s
-    current_string = "0" * n
-    code.append(current_string)
-    
-    # Iterate through the palette
-    for i in range(p):
-        # Get the current string and its binary negation
-        current_string = code[-1]
-        negated_string = current_string[:]
-        for j in range(n):
-            if negated_string[j] == "0":
-                negated_string[j] = "1"
-            else:
-                negated_string[j] = "0"
+    # Iterate through the cards
+    for i, card in enumerate(cards):
+        # If the card is counted, add it to the sum and count of counted cards
+        if i < len(cards) - 1 and card > 0:
+            sum_counted_cards += card
+            count_counted_cards += 1
+        # If the card is uncounted, add it to the sum and count of uncounted cards
+        else:
+            sum_uncounted_cards += card
+            count_uncounted_cards += 1
         
-        # Check if the negated string is already in the code
-        if negated_string in code:
-            return "impossible"
-        
-        # Add the negated string to the code
-        code.append(negated_string)
+        # If the card is the last card, calculate the payout and update the maximum payout if necessary
+        if i == len(cards) - 1:
+            payout = sum_counted_cards / count_counted_cards if count_counted_cards > 0 else 0
+            maximum_payout = max(maximum_payout, payout)
     
-    # Return the code
-    return "\n".join(code)
+    # Return the maximum payout
+    return maximum_payout
 

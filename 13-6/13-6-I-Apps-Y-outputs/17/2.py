@@ -1,19 +1,11 @@
 
-def get_max_problems(n, a):
-    # Sort the topics in ascending order
-    sorted_topics = sorted(set(a))
+def get_input():
+    return list(map(int, input().split()))
 
-    # Initialize the maximum number of problems to 0
-    max_problems = 0
+def largest_value(a, b):
+    return max(a+b, a-b, a*b)
 
-    # Loop through each topic
-    for topic in sorted_topics:
-        # Get the number of problems with the current topic
-        num_problems = a.count(topic)
-
-        # If the number of problems is greater than the maximum number of problems, update the maximum number of problems
-        if num_problems > max_problems:
-            max_problems = num_problems
-
-    return max_problems
+if __name__ == '__main__':
+    a, b = get_input()
+    print(largest_value(a, b))
 

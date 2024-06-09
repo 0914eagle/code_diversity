@@ -1,7 +1,13 @@
 
-def solve(n, k, d, s):
-    if k == 0:
-        return "impossible"
-    else:
-        return round(d - (d-s)*k/n, 6)
+import math
+
+def get_probability(n):
+    return 1 - (math.factorial(n) / math.factorial(n-1))
+
+def main():
+    n = int(input())
+    print(get_probability(n))
+
+if __name__ == '__main__':
+    main()
 

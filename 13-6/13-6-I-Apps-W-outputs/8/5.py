@@ -1,20 +1,16 @@
 
-def count_almost_identity_permutations(n, k):
-    # Initialize a list to store the result
-    result = [0]
+def get_bitwise_xor_pairs(l, r):
+    pairs = []
+    for a in range(l, r+1):
+        for b in range(a, r+1):
+            pairs.append(a ^ b)
+    return pairs
 
-    # Iterate over all possible permutations
-    for perm in itertools.permutations(range(1, n + 1)):
-        # Count the number of indices i such that perm[i] = i
-        count = 0
-        for i in range(n):
-            if perm[i] == i + 1:
-                count += 1
+def get_max_bitwise_xor(l, r):
+    pairs = get_bitwise_xor_pairs(l, r)
+    return max(pairs)
 
-        # If the number of indices is greater than or equal to k, add the permutation to the result
-        if count >= k:
-            result.append(perm)
-
-    # Return the number of almost identity permutations
-    return len(result)
+if __name__ == '__main__':
+    l, r = map(int, input().split())
+    print(get_max_bitwise_xor(l, r))
 

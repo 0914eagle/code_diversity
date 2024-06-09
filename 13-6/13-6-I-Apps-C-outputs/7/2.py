@@ -1,28 +1,32 @@
 
-import sys
-
-def solve(n, a):
-    # Initialize the answer and the piles
-    ans = 0
-    piles = []
-
-    # Loop through each box
+def get_courses(n, k):
+    courses = []
     for i in range(n):
-        # Check if the current box is divisible by any of the previous boxes
-        for j in range(i):
-            if a[i] % a[j] == 0:
-                # If it is, add it to the current pile
-                piles[-1].append(a[i])
-                break
-        else:
-            # If it is not divisible by any of the previous boxes, create a new pile
-            piles.append([a[i]])
+        name, difficulty = input().split()
+        courses.append((name, int(difficulty)))
+    return courses[:k]
 
-    # Return the number of piles
-    return len(piles)
+def get_min_difficulty(courses):
+    difficulty = 0
+    for course, d in courses:
+        difficulty += d
+    return difficulty
+
+def get_schedule(courses):
+    schedule = []
+    for course, d in sorted(courses, key=lambda x: x[1], reverse=True):
+        schedule.append(course)
+    return schedule
+
+def main():
+    n, k = map(int, input().split())
+    courses = get_courses(n, k)
+    difficulty = get_min_difficulty(courses)
+    schedule = get_schedule(courses)
+    print(difficulty)
+    for course in schedule:
+        print(course)
 
 if __name__ == '__main__':
-    n = int(input())
-    a = list(map(int, input().split()))
-    print(solve(n, a))
+    main()
 

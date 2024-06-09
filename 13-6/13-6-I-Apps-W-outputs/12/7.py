@@ -1,24 +1,48 @@
 
-def solve(a, b):
-    # Initialize variables
-    subsequence = ""
-    i, j = 0, 0
+import sys
 
-    # Loop through both strings
-    while i < len(a) and j < len(b):
-        # If the current character in a is the same as the current character in b, add it to the subsequence
-        if a[i] == b[j]:
-            subsequence += a[i]
-            i += 1
-            j += 1
-        # If the current character in a is not the same as the current character in b, move on to the next character in a
-        else:
-            i += 1
+def shortest_paths(G, s, t):
+    # Initialize the distance from source to all vertices as infinity
+    distance = [float('inf')] * len(G)
+    distance[s] = 0
+    
+    # Initialize the previous vertex for each vertex as -1
+    previous = [-1] * len(G)
+    
+    # Relax all edges |V| - 1 times
+    for i in range(len(G) - 1):
+        for u in range(len(G)):
+            for v in G[u]:
+                if distance[u] + v[1] < distance[v[0]]:
+                    distance[v[0]] = distance[u] + v[1]
+                    previous[v[0]] = u
+    
+    # Find the shortest path from source to destination
+    path = []
+    u = t
+    while previous[u] != -1:
+        path.append(u)
+        u = previous[u]
+    path.append(s)
+    path.reverse()
+    
+    return len(path)
 
-    # If the subsequence is empty, return a minus sign
-    if not subsequence:
-        return "-"
+def main():
+    # Read the input from stdin
+    V, E = map(int, input().split())
+    G = [[] for _ in range(V)]
+    for _ in range(E):
+        u, v, w = map(int, input().split())
+        G[u].append((v, w))
+    s, t = map(int, input().split())
+    
+    # Find the shortest paths between s and t
+    paths = shortest_paths(G, s, t)
+    
+    # Print the number of shortest paths
+    print(paths)
 
-    # Return the subsequence
-    return subsequence
+if __name__ == '__main__':
+    main()
 

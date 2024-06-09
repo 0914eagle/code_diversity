@@ -1,51 +1,58 @@
 
-def solve(R, C, K, grid, scores):
-    # Initialize the maximum score to 0
-    max_score = 0
-    
-    # Loop through all possible combinations of conveyor belt directions
-    for i in range(2**(R*C)):
-        # Convert the binary representation of the combination to a list of directions
-        directions = []
-        for j in range(R*C):
-            if i & (1 << j):
-                directions.append('R')
-            else:
-                directions.append('L')
-        
-        # Initialize the current score to 0
-        current_score = 0
-        
-        # Loop through each part of the grid
-        for k in range(K):
-            # Loop through each row in the part
-            for r in range(R):
-                # Loop through each column in the part
-                for c in range(C):
-                    # If the current cell is a conveyor belt, set its direction based on the direction list
-                    if grid[k][r][c] == '?':
-                        grid[k][r][c] = directions[k*R*C + r*C + c]
-                    
-                    # If the current cell is an obstacle, the exam ends, so break out of the loops
-                    if grid[k][r][c] == 'X':
-                        break
-                
-                # If the current row is the last row, add the score to the current score
-                if r == R-1:
-                    current_score += scores[c]
-                
-                # If the current cell is an obstacle or the ball goes outside of the grid, the exam ends, so break out of the loops
-                if grid[k][r][c] == 'X' or c == C:
-                    break
-            
-            # If the exam ends, break out of the loops
-            if grid[k][R-1][C-1] == 'X' or c == C:
-                break
-        
-        # If the current score is greater than the maximum score, update the maximum score
-        if current_score > max_score:
-            max_score = current_score
-    
-    # Return the maximum score
-    return max_score
+def f1(N, K, directions, plants):
+    # Initialize Barica's current position as the first plant
+    current_position = plants[0]
+
+    # Iterate through the directions and update Barica's position accordingly
+    for i in range(K):
+        direction = directions[i]
+        if direction == "A":
+            current_position = (current_position[0] + 1, current_position[1] + 1)
+        elif direction == "B":
+            current_position = (current_position[0] + 1, current_position[1] - 1)
+        elif direction == "C":
+            current_position = (current_position[0] - 1, current_position[1] + 1)
+        elif direction == "D":
+            current_position = (current_position[0] - 1, current_position[1] - 1)
+
+    # Return Barica's final position
+    return current_position
+
+def f2(N, K, directions, plants):
+    # Initialize a dictionary to store the coordinates of the plants
+    plant_coordinates = {}
+    for i in range(N):
+        plant_coordinates[i] = plants[i]
+
+    # Initialize Barica's current position as the first plant
+    current_position = plants[0]
+
+    # Iterate through the directions and update Barica's position accordingly
+    for i in range(K):
+        direction = directions[i]
+        if direction == "A":
+            current_position = (current_position[0] + 1, current_position[1] + 1)
+        elif direction == "B":
+            current_position = (current_position[0] + 1, current_position[1] - 1)
+        elif direction == "C":
+            current_position = (current_position[0] - 1, current_position[1] + 1)
+        elif direction == "D":
+            current_position = (current_position[0] - 1, current_position[1] - 1)
+
+        # If Barica jumps to a plant that is not in the dictionary, add it to the dictionary
+        if current_position not in plant_coordinates:
+            plant_coordinates[len(plant_coordinates)] = current_position
+
+    # Return Barica's final position
+    return current_position
+
+if __name__ == '__main__':
+    N, K = map(int, input().split())
+    directions = input()
+    plants = []
+    for i in range(N):
+        x, y = map(int, input().split())
+        plants.append((x, y))
+    print(f1(N, K, directions, plants))
+    print(f2(N, K, directions, plants))
 

@@ -1,7 +1,13 @@
 
-def solve(n, k, d, s):
-    if s > d:
-        return "impossible"
-    else:
-        return (d * (n - k) + s * k) / n
+import math
+
+def get_probability(n):
+    return 1 - (math.factorial(n) / (math.factorial(n-1) * n))
+
+def main():
+    n = int(input())
+    print(get_probability(n))
+
+if __name__ == '__main__':
+    main()
 

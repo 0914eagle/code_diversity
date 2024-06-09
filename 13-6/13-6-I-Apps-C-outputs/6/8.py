@@ -1,12 +1,17 @@
 
-def antimatter_rain(droplets, sensors):
-    disintegrated_droplets = []
-    for droplet in droplets:
-        for sensor in sensors:
-            if droplet[0] >= sensor[0] and droplet[0] <= sensor[1] and droplet[1] == sensor[2]:
-                disintegrated_droplets.append(droplet[1])
-                break
-        else:
-            disintegrated_droplets.append(0)
-    return disintegrated_droplets
+def f(b, n):
+    if n < b:
+        return n
+    else:
+        return f(b, n // b) + (n % b)
+
+def solve(n, s):
+    for b in range(2, 1000000000):
+        if f(b, n) == s:
+            return b
+    return -1
+
+if __name__ == '__main__':
+    n, s = map(int, input().split())
+    print(solve(n, s))
 

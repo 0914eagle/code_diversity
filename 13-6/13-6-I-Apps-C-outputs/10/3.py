@@ -1,74 +1,44 @@
 
-def is_k_multihedgehog(graph, k):
-    # Check if the graph is a tree
-    if not is_tree(graph):
-        return False
+def get_input():
+    N, M = map(int, input().split())
+    doors = []
+    for _ in range(M):
+        u, v = map(int, input().split())
+        doors.append((u, v))
+    return N, M, doors
 
-    # Check if the graph has at least one vertex with degree at least 3
-    center = None
-    for vertex in graph:
-        if graph.degree[vertex] >= 3:
-            center = vertex
-            break
-    if center is None:
-        return False
-
-    # Check if all other vertices have degree 1
-    for vertex in graph:
-        if vertex != center and graph.degree[vertex] != 1:
-            return False
-
-    # Check if the graph is a k-multihedgehog
-    for vertex in graph:
-        if vertex == center:
+def find_secure_door(N, M, doors):
+    # Initialize a graph with N nodes and M edges
+    graph = [[] for _ in range(N)]
+    for u, v in doors:
+        graph[u].append(v)
+        graph[v].append(u)
+    
+    # Find the door that connects the most rooms to the outside of the building
+    max_rooms = 0
+    secure_door = None
+    for u in range(N):
+        if u == -1:
             continue
-        neighbor = graph.neighbors(vertex)[0]
-        if not is_k_multihedgehog_helper(graph, neighbor, center, k-1):
-            return False
+        rooms = set()
+        queue = [u]
+        while queue:
+            node = queue.pop(0)
+            if node == -1:
+                continue
+            rooms.add(node)
+            queue.extend(graph[node])
+        if len(rooms) > max_rooms:
+            max_rooms = len(rooms)
+            secure_door = u
+    
+    return secure_door
 
-    return True
+def main():
+    N, M, doors = get_input()
+    secure_door = find_secure_door(N, M, doors)
+    print(secure_door)
 
-def is_k_multihedgehog_helper(graph, vertex, center, k):
-    if k == 0:
-        return True
-    if graph.degree[vertex] != 1:
-        return False
-    neighbor = graph.neighbors(vertex)[0]
-    if neighbor == center:
-        return False
-    return is_k_multihedgehog_helper(graph, neighbor, center, k-1)
-
-def is_tree(graph):
-    # Check if the graph is connected
-    if not is_connected(graph):
-        return False
-
-    # Check if the graph is a tree
-    visited = set()
-    to_visit = [0]
-    while to_visit:
-        vertex = to_visit.pop()
-        if vertex in visited:
-            continue
-        visited.add(vertex)
-        for neighbor in graph.neighbors(vertex):
-            if neighbor not in visited:
-                to_visit.append(neighbor)
-
-    return len(visited) == graph.order()
-
-def is_connected(graph):
-    # Check if the graph is connected
-    visited = set()
-    to_visit = [0]
-    while to_visit:
-        vertex = to_visit.pop()
-        if vertex in visited:
-            continue
-        visited.add(vertex)
-        for neighbor in graph.neighbors(vertex):
-            if neighbor not in visited:
-                to_visit.append(neighbor)
-
-    return len(visited) == graph.order()
+if __name__ == '__main__':
+    main()
 

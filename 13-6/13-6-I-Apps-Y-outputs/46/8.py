@@ -1,21 +1,30 @@
 
-def solve(D, G, *problems):
-    total_score = 0
-    problems_solved = 0
+def get_tower_heights(box_heights):
+    # Find the two tower heights
+    tower_heights = set(box_heights) - set(range(1, 101))
+    assert len(tower_heights) == 2
+    tower_heights = list(tower_heights)
 
-    for i in range(1, D+1):
-        p_i, c_i = problems[i-1]
-        problems_solved += p_i
-        total_score += p_i * 100 * i
+    # Find the box heights for the first tower
+    first_tower = []
+    for box_height in box_heights:
+        if box_height != tower_heights[0] and box_height != tower_heights[1]:
+            first_tower.append(box_height)
+    first_tower.sort(reverse=True)
 
-    if total_score >= G:
-        return problems_solved
+    # Find the box heights for the second tower
+    second_tower = []
+    for box_height in box_heights:
+        if box_height != first_tower[0] and box_height != first_tower[1] and box_height != first_tower[2]:
+            second_tower.append(box_height)
+    second_tower.sort(reverse=True)
 
-    for i in range(D, 0, -1):
-        p_i, c_i = problems[i-1]
-        if total_score + c_i >= G:
-            return problems_solved + p_i
-        total_score += c_i
+    return first_tower + second_tower
 
-    return problems_solved
+def main():
+    box_heights = [int(input()) for _ in range(8)]
+    print(*get_tower_heights(box_heights))
+
+if __name__ == '__main__':
+    main()
 

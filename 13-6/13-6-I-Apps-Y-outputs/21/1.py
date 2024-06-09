@@ -1,23 +1,28 @@
 
-def solve(n, m):
-    # Initialize the array with all elements as 0
-    arr = [0] * n
-    
-    # Fill the array with the maximum possible value, i.e., m/n
-    for i in range(n):
-        arr[i] = m//n
-    
-    # Calculate the remaining sum
-    remaining_sum = m % n
-    
-    # Distribute the remaining sum among the elements of the array
-    for i in range(remaining_sum):
-        arr[i] += 1
-    
-    # Calculate the sum of absolute differences between adjacent elements
-    abs_diff_sum = 0
-    for i in range(n-1):
-        abs_diff_sum += abs(arr[i] - arr[i+1])
-    
-    return abs_diff_sum
+def is_shiritori_observed(words):
+    # Initialize a set to store the words announced
+    announced_words = set()
+    # Iterate through the words
+    for word in words:
+        # If the word has already been announced, return False
+        if word in announced_words:
+            return False
+        # Add the word to the set of announced words
+        announced_words.add(word)
+    # If all words have been announced and no word has been repeated, return True
+    return True
+
+def main():
+    # Read the number of words from stdin
+    num_words = int(input())
+    # Read the words from stdin
+    words = [input() for _ in range(num_words)]
+    # Check if the rules of shiritori were observed
+    if is_shiritori_observed(words):
+        print("Yes")
+    else:
+        print("No")
+
+if __name__ == '__main__':
+    main()
 

@@ -1,24 +1,21 @@
 
-def is_edward_right(intervals):
-    # Sort the intervals by their start time
-    intervals.sort(key=lambda x: x[0])
+def get_num_ways_to_paint(N, K):
+    # Base case: if there is only one ball, there is only one way to paint it
+    if N == 1:
+        return K
+    
+    # Recursive case: if there are multiple balls, consider the first ball and the remaining balls
+    num_ways = 0
+    for color in range(K):
+        # Consider the first ball to be painted in the current color
+        num_ways += get_num_ways_to_paint(N-1, K)
+    
+    return num_ways
 
-    # Initialize the current time to 0
-    current_time = 0
+def main():
+    N, K = map(int, input().split())
+    print(get_num_ways_to_paint(N, K))
 
-    # Loop through each interval
-    for interval in intervals:
-        # If the interval starts after the current time, add the difference to the current time
-        if interval[0] > current_time:
-            current_time += interval[0] - current_time
-
-        # If the interval ends after the current time, set the current time to the end of the interval
-        if interval[1] > current_time:
-            current_time = interval[1]
-
-    # If the current time is greater than or equal to 1000, return "edward is right"
-    if current_time >= 1000:
-        return "edward is right"
-    else:
-        return "gunilla has a point"
+if __name__ == '__main__':
+    main()
 

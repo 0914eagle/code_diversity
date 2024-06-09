@@ -1,36 +1,43 @@
 
-def is_k_multihedgehog(n, k, edges):
-    # Initialize a dictionary to store the degrees of each vertex
-    degrees = {i: 0 for i in range(1, n + 1)}
+def get_max_protected_rooms(num_rooms, doors):
+    # Initialize a graph with the given number of rooms
+    graph = [[] for _ in range(num_rooms)]
 
-    # Count the degrees of each vertex
-    for edge in edges:
-        degrees[edge[0]] += 1
-        degrees[edge[1]] += 1
+    # Add edges to the graph based on the given doors
+    for u, v in doors:
+        graph[u].append(v)
+        graph[v].append(u)
 
-    # Find the center of the hedgehog
-    center = None
-    for vertex, degree in degrees.items():
-        if degree >= 3:
-            center = vertex
+    # Find the room that is not connected to the outside
+    outside_room = -1
+    for i in range(num_rooms):
+        if i not in graph[i]:
+            outside_room = i
             break
 
-    # Check if the tree is a k-multihedgehog
-    if k == 1:
-        # For k=1, the tree should be a hedgehog with one center and n-1 vertices of degree 1
-        return degrees[center] == 3 and all(degree == 1 for degree in degrees.values())
-    else:
-        # For k>1, the tree should be a (k-1)-multihedgehog with one center and n-1 vertices of degree 1
-        return is_k_multihedgehog(n, k - 1, edges) and degrees[center] == 3 and all(degree == 1 for degree in degrees.values())
+    # Initialize a set to store the protected rooms
+    protected_rooms = set()
+
+    # DFS to find the maximum number of protected rooms
+    def dfs(curr_room):
+        nonlocal protected_rooms
+        protected_rooms.add(curr_room)
+        for neighbor in graph[curr_room]:
+            if neighbor != outside_room and neighbor not in protected_rooms:
+                dfs(neighbor)
+
+    dfs(outside_room)
+
+    return len(protected_rooms)
 
 def main():
-    n, k = map(int, input().split())
-    edges = []
-    for i in range(n - 1):
+    num_rooms, num_doors = map(int, input().split())
+    doors = []
+    for _ in range(num_doors):
         u, v = map(int, input().split())
-        edges.append((u, v))
-    print("Yes") if is_k_multihedgehog(n, k, edges) else print("No")
+        doors.append((u, v))
+    print(get_max_protected_rooms(num_rooms, doors))
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
 

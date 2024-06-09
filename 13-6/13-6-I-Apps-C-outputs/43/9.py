@@ -1,40 +1,67 @@
 
-def count_hidden_strings(s):
-    # Initialize a dictionary to store the count of each hidden string
-    hidden_strings = {}
+def f1(N, H, v, p):
+    # Initialize the expected payout
+    expected_payout = 0
 
-    # Loop through each substring of the input string
-    for i in range(len(s)):
-        for j in range(i+1, len(s)+1):
-            # Check if the substring is a hidden string
-            if is_hidden_string(s[i:j]):
-                # Increment the count of the hidden string
-                if s[i:j] in hidden_strings:
-                    hidden_strings[s[i:j]] += 1
-                else:
-                    hidden_strings[s[i:j]] = 1
+    # Loop through each hole
+    for i in range(H):
+        # Calculate the probability of falling into the hole
+        probability = p[i][4]
 
-    # Return the maximum count
-    return max(hidden_strings.values())
+        # If the probability is not zero, calculate the expected payout
+        if probability != 0:
+            # Calculate the expected payout from the hole
+            expected_payout_from_hole = v[i] * probability
 
-# Check if a substring is a hidden string
-def is_hidden_string(s):
-    # Check if the substring is not the empty string
-    if len(s) == 0:
-        return False
+            # Calculate the expected payout from the neighbors
+            expected_payout_from_neighbors = 0
+            for j in range(4):
+                if p[i][j] != 0:
+                    expected_payout_from_neighbors += p[i][j] * f1(N, H, v, p)
 
-    # Check if the substring is a subsequence of the input string
-    if s not in input_string:
-        return False
+            # Add the expected payout from the hole and neighbors
+            expected_payout += expected_payout_from_hole + expected_payout_from_neighbors
 
-    # Check if the indices of the substring form an arithmetic progression
-    indices = [i for i, c in enumerate(input_string) if c == s[0]]
-    if len(indices) == 0:
-        return False
-    difference = indices[1] - indices[0]
-    for i in range(2, len(indices)):
-        if indices[i] - indices[i-1] != difference:
-            return False
+    # Return the expected payout
+    return expected_payout
 
-    return True
+def f2(N, H, v, p):
+    # Initialize the expected payout
+    expected_payout = 0
+
+    # Loop through each hole
+    for i in range(H):
+        # Calculate the probability of falling into the hole
+        probability = p[i][4]
+
+        # If the probability is not zero, calculate the expected payout
+        if probability != 0:
+            # Calculate the expected payout from the hole
+            expected_payout_from_hole = v[i] * probability
+
+            # Calculate the expected payout from the neighbors
+            expected_payout_from_neighbors = 0
+            for j in range(4):
+                if p[i][j] != 0:
+                    expected_payout_from_neighbors += p[i][j] * f2(N, H, v, p)
+
+            # Add the expected payout from the hole and neighbors
+            expected_payout += expected_payout_from_hole + expected_payout_from_neighbors
+
+    # Return the expected payout
+    return expected_payout
+
+if __name__ == '__main__':
+    # Read the input
+    N, H = map(int, input().split())
+    v = list(map(int, input().split()))
+    p = []
+    for i in range(H):
+        p.append(list(map(float, input().split())))
+
+    # Calculate the expected payout
+    expected_payout = f1(N, H, v, p)
+
+    # Print the expected payout
+    print(expected_payout)
 

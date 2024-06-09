@@ -1,18 +1,18 @@
 
-def solve(N, L, B, S, D, locks):
-    # Initialize a set to store the badge numbers that can pass from S to D
-    badge_numbers = set()
+def carryless_multiplication(a, b):
+    result = 0
+    for i in range(len(a)):
+        for j in range(len(b)):
+            result += a[i] * b[j]
+    return result % 10
 
-    # Loop through each lock
-    for lock in locks:
-        # Extract the information from the lock
-        a, b, x, y = lock
+def find_solution(n):
+    for i in range(1, n+1):
+        if carryless_multiplication(str(i), str(i)) == n:
+            return i
+    return -1
 
-        # Check if the lock is between the starting and destination rooms
-        if a == S and b == D:
-            # Add the badge numbers that can pass through this lock to the set
-            badge_numbers |= set(range(x, y + 1))
-
-    # Return the number of badge numbers that can pass from S to D
-    return len(badge_numbers)
+if __name__ == '__main__':
+    n = int(input())
+    print(find_solution(n))
 

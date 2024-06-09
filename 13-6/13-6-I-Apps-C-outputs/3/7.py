@@ -1,24 +1,31 @@
 
-def max_profit(producer_prices, producer_start_dates, consumer_prices, consumer_end_dates):
-    # Initialize variables
-    max_profit = 0
-    selected_producer = None
-    selected_consumer = None
+def get_number_of_moves(numbers):
+    # Initialize a set to store the numbers that have been taken
+    taken_numbers = set()
+    # Initialize a list to store the moves that Ivana can make
+    moves = []
+    # Loop through the numbers
+    for number in numbers:
+        # Check if the number has already been taken
+        if number not in taken_numbers:
+            # Add the number to the set of taken numbers
+            taken_numbers.add(number)
+            # Check if the number is odd
+            if number % 2 == 1:
+                # Add the number to the list of moves
+                moves.append(number)
+    # Return the length of the list of moves
+    return len(moves)
 
-    # Iterate over each producer and consumer combination
-    for producer_index, producer_price in enumerate(producer_prices):
-        for consumer_index, consumer_price in enumerate(consumer_prices):
-            # Check if the producer is available on the day the consumer needs the widget
-            if producer_start_dates[producer_index] <= consumer_end_dates[consumer_index]:
-                # Calculate the profit for this combination
-                profit = producer_price - consumer_price
+def main():
+    # Read the number of numbers and the numbers from stdin
+    n = int(input())
+    numbers = [int(x) for x in input().split()]
+    # Call the function to get the number of moves that Ivana can make
+    moves = get_number_of_moves(numbers)
+    # Print the number of moves
+    print(moves)
 
-                # Check if the profit is greater than the current maximum profit
-                if profit > max_profit:
-                    max_profit = profit
-                    selected_producer = producer_index
-                    selected_consumer = consumer_index
-
-    # Return the maximum profit and the indices of the selected producer and consumer
-    return max_profit, selected_producer, selected_consumer
+if __name__ == '__main__':
+    main()
 

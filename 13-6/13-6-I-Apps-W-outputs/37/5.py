@@ -1,36 +1,25 @@
 
-def solve(s):
-    # Check if the string is empty
-    if not s:
-        return "NET"
+def get_binary_representation(x, n):
+    return [int(i) for i in bin(x)[2:].zfill(n)]
 
-    # Check if the string has only one character
-    if len(s) == 1:
-        return "DA"
+def get_difference_in_bits(x, y, n):
+    return sum([int(i) for i in bin(x ^ y)[2:].zfill(n)])
 
-    # Check if the string has only two characters and they are the same
-    if len(s) == 2 and s[0] == s[1]:
-        return "NET"
+def get_friends(x_list, n, k):
+    friends = 0
+    for i in range(len(x_list)):
+        for j in range(i+1, len(x_list)):
+            if get_difference_in_bits(x_list[i], x_list[j], n) <= k:
+                friends += 1
+    return friends
 
-    # Check if the string has only two characters and they are different
-    if len(s) == 2 and s[0] != s[1]:
-        return "DA"
+def main():
+    n, m, k = map(int, input().split())
+    x_list = []
+    for i in range(m+1):
+        x_list.append(int(input()))
+    print(get_friends(x_list, n, k))
 
-    # Check if the string has more than two characters
-    if len(s) > 2:
-        # Check if the first and last characters are the same
-        if s[0] == s[-1]:
-            # Check if the second and second-to-last characters are the same
-            if s[1] == s[-2]:
-                return "DA"
-            else:
-                return "NET"
-        else:
-            # Check if the second and second-to-last characters are the same
-            if s[1] == s[-2]:
-                return "NET"
-            else:
-                return "DA"
-
-    return "NET"
+if __name__ == '__main__':
+    main()
 

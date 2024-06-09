@@ -1,26 +1,57 @@
 
-def solve(n, t, m, intervals):
-    # Initialize the variables to keep track of the number of goals
-    sportify_goals = 0
-    spoilify_goals = 0
-    # Initialize a list to keep track of the cheerleaders' activities
-    activities = [0] * 91
-    # Loop through the intervals given by the Spoilify cheerleading team
-    for interval in intervals:
-        # Loop through the time intervals of the game
-        for i in range(interval[0], interval[1]):
-            # If the current time is within the interval, mark the activity as 1
-            activities[i] = 1
-    # Loop through the time intervals of the game
-    for i in range(90):
-        # If the current time is within the interval and the activity is 1, it means Sportify is cheering
-        if activities[i] == 1:
-            # Check if the current time is within 5 minutes of the previous time
-            if i - activities[i-1] <= 5:
-                # If it is, increment the Sportify goal count
-                sportify_goals += 1
-            # Reset the activity to 0
-            activities[i] = 0
-    # Return the number of goals for both teams
-    return sportify_goals, spoilify_goals
+def f1(program1, program2):
+    # Initialize an empty string to store the result of applying the two programs
+    result1, result2 = "", ""
+    
+    # Iterate through the operations of both programs
+    for op1, op2 in zip(program1, program2):
+        # If the current operation is a Del operation, delete the character at the specified position in both results
+        if op1[0] == "D":
+            result1 = result1[:op1[1]-1] + result1[op1[1]:]
+            result2 = result2[:op2[1]-1] + result2[op2[1]:]
+        # If the current operation is an Ins operation, insert the specified character at the specified position in both results
+        elif op1[0] == "I":
+            result1 = result1[:op1[1]-1] + op1[2] + result1[op1[1]-1:]
+            result2 = result2[:op2[1]-1] + op2[2] + result2[op2[1]-1:]
+    
+    # Return 0 if the results of applying the two programs are identical, 1 otherwise
+    return result1 == result2
+
+def f2(program1, program2):
+    # Initialize an empty string to store the result of applying the first program
+    result1 = ""
+    
+    # Iterate through the operations of the first program
+    for op1 in program1:
+        # If the current operation is a Del operation, delete the character at the specified position in the result
+        if op1[0] == "D":
+            result1 = result1[:op1[1]-1] + result1[op1[1]:]
+        # If the current operation is an Ins operation, insert the specified character at the specified position in the result
+        elif op1[0] == "I":
+            result1 = result1[:op1[1]-1] + op1[2] + result1[op1[1]-1:]
+    
+    # Return 0 if the result of applying the first program is identical to the result of applying the second program, 1 otherwise
+    return result1 == f1(program2, program1)
+
+if __name__ == '__main__':
+    # Read the input programs from stdin
+    program1 = []
+    while True:
+        line = input()
+        if line == "E":
+            break
+        op = line.split()
+        program1.append(op)
+    
+    program2 = []
+    while True:
+        line = input()
+        if line == "E":
+            break
+        op = line.split()
+        program2.append(op)
+    
+    # Call the functions to compare the programs and print the result
+    print(f1(program1, program2))
+    print(f2(program1, program2))
 

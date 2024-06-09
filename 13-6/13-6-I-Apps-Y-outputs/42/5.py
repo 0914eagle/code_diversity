@@ -1,28 +1,30 @@
 
-def solve(picture, racket_length):
-    # Initialize variables
-    max_kills = 0
-    racket_pos = []
+def get_triples(sticks):
+    triples = []
+    for i in range(len(sticks)):
+        for j in range(i+1, len(sticks)):
+            for k in range(j+1, len(sticks)):
+                if sticks[i] != sticks[j] and sticks[j] != sticks[k] and sticks[i] != sticks[k]:
+                    triples.append((i, j, k))
+    return triples
 
-    # Iterate through the picture
-    for i in range(len(picture)):
-        for j in range(len(picture[0])):
-            # Check if the current position is a fly
-            if picture[i][j] == "*":
-                # Check if the racket can be placed at the current position
-                if i - racket_length + 1 >= 0 and j - racket_length + 1 >= 0:
-                    # Count the number of flies that can be killed with the current racket position
-                    kills = 0
-                    for r in range(racket_length):
-                        for c in range(racket_length):
-                            if picture[i - racket_length + 1 + r][j - racket_length + 1 + c] == "*":
-                                kills += 1
+def get_triangles(triples, sticks):
+    triangles = 0
+    for triple in triples:
+        a = sticks[triple[0]]
+        b = sticks[triple[1]]
+        c = sticks[triple[2]]
+        if a + b > c and b + c > a and a + c > b:
+            triangles += 1
+    return triangles
 
-                    # If the current racket position kills more flies than the previous one, update the variables
-                    if kills > max_kills:
-                        max_kills = kills
-                        racket_pos = [(i, j)]
+def main():
+    n = int(input())
+    sticks = list(map(int, input().split()))
+    triples = get_triples(sticks)
+    triangles = get_triangles(triples, sticks)
+    print(triangles)
 
-    # Return the maximum number of flies that can be killed and the racket position
-    return (max_kills, racket_pos)
+if __name__ == '__main__':
+    main()
 

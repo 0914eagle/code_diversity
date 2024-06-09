@@ -1,19 +1,27 @@
 
-def longest_repeated_substring(input_string):
-    # Initialize variables
-    start_index = 0
-    end_index = 0
-    longest_substring = ""
+import sys
 
-    # Iterate over the input string
-    for i in range(len(input_string)):
-        # Check if the substring starting from the current index is repeated
-        if input_string[i:].startswith(input_string[:i]):
-            # If it is repeated, update the longest substring and its indices
-            longest_substring = input_string[:i]
-            start_index = i
-            end_index = start_index + len(longest_substring) - 1
+def f1(n, a):
+    # Calculate the number of entirely unsorted sequences
+    num_entirely_unsorted = 0
+    for i in range(1, n + 1):
+        for j in range(i + 1, n + 1):
+            if a[i] != a[j]:
+                num_entirely_unsorted += 1
+    return num_entirely_unsorted
 
-    # Return the longest repeated substring
-    return longest_substring
+def f2(n, a):
+    # Calculate the number of entirely unsorted sequences using a more efficient approach
+    num_entirely_unsorted = 0
+    for i in range(1, n + 1):
+        for j in range(i + 1, n + 1):
+            if a[i] != a[j] and a[i] != a[j - 1]:
+                num_entirely_unsorted += 1
+    return num_entirely_unsorted
+
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(f1(n, a) % (10**9 + 9))
+    print(f2(n, a) % (10**9 + 9))
 

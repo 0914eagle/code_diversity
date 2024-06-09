@@ -1,28 +1,36 @@
 
-def solve(n, r, arr):
-    # Sort the array to group together the heaters
-    arr.sort()
-
-    # Initialize the number of heaters needed to warm up the whole house
-    num_heaters = 0
-
-    # Iterate through the array and count the number of heaters needed
-    for i in range(n):
-        # If the current element is a heater, increment the number of heaters
-        if arr[i] == 1:
-            num_heaters += 1
-
-        # If the current element is not a heater, check if it is within the range of a heater
+def get_move_count(n, a):
+    # Initialize variables to keep track of the move count and the total size of candies eaten by Alice and Bob
+    move_count = 1
+    alice_total = a[0]
+    bob_total = 0
+    
+    # Loop through the remaining candies
+    for i in range(1, n):
+        # Check if Alice or Bob has eaten all the remaining candies
+        if alice_total >= bob_total + a[i]:
+            # Alice has eaten all the remaining candies, so the game ends
+            break
+        elif bob_total >= alice_total + a[i]:
+            # Bob has eaten all the remaining candies, so the game ends
+            break
         else:
-            # Get the index of the next heater in the array
-            next_heater = next((i for i in range(i, n) if arr[i] == 1), n)
+            # Neither Alice nor Bob has eaten all the remaining candies, so the game continues
+            move_count += 1
+            alice_total += a[i]
+            bob_total += a[n-i]
+    
+    # Return the move count and the total size of candies eaten by Alice and Bob
+    return move_count, alice_total, bob_total
 
-            # If there is a heater within the range, do not increment the number of heaters
-            if next_heater - i <= r:
-                continue
+def get_output(n, a):
+    move_count, alice_total, bob_total = get_move_count(n, a)
+    return str(move_count) + " " + str(alice_total) + " " + str(bob_total)
 
-            # Otherwise, increment the number of heaters
-            num_heaters += 1
-
-    return num_heaters
+if __name__ == '__main__':
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        a = list(map(int, input().split()))
+        print(get_output(n, a))
 

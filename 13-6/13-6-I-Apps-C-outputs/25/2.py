@@ -1,20 +1,29 @@
 
-def can_take_all_photos(n, t, times):
-    # Sort the times in ascending order
-    sorted_times = sorted(times)
+def is_good_graph(graph):
+    # Check if the graph is still good
+    # Return True if the graph is good, False otherwise
+    pass
 
-    # Initialize the current time to 0
-    current_time = 0
+def add_edge(graph, u, v):
+    # Add an edge between vertices u and v to the graph
+    # Return the updated graph
+    pass
 
-    # Iterate through the times and check if they can be taken within the given time frame
-    for i in range(n):
-        start_time, end_time = sorted_times[i]
-        if current_time + t <= start_time:
-            current_time = start_time + t
-        elif current_time + t > end_time:
-            return "no"
+def play_game(graph):
+    # Play the game between Taro and Jiro
+    # Return True if Taro wins, False otherwise
+    pass
+
+if __name__ == '__main__':
+    num_cases = int(input())
+    for case in range(1, num_cases + 1):
+        n, m = map(int, input().split())
+        graph = []
+        for i in range(m):
+            a, b = map(int, input().split())
+            graph.append((a, b))
+        if play_game(graph):
+            print("First")
         else:
-            current_time += t
-
-    return "yes"
+            print("Second")
 

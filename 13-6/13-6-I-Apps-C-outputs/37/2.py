@@ -1,31 +1,33 @@
 
-import itertools
 import math
 
-def explosion_probability(n, m, d, my_minions, opp_minions):
-    # Calculate the total number of combinations of minions that can be affected by the explosion
-    total_combinations = math.comb(n + m, d)
+def f1(N, Q, queries):
+    # Initialize the number of stones in each box to 0
+    num_stones = [0] * (N + 1)
+    
+    # Loop through each query
+    for query in queries:
+        # If the query is of type 1, put a stone in the box between u and v
+        if query[0] == 1:
+            u, v = query[1], query[2]
+            num_stones[u] += 1
+            num_stones[v] += 1
+        # If the query is of type 2, calculate the expected value of A
+        else:
+            expected_value = 0
+            for i in range(1, N + 1):
+                expected_value += num_stones[i] ** 2
+            return expected_value
 
-    # Initialize a list to store the probabilities for each combination
-    probabilities = [0] * total_combinations
+def f2(...):
+    # Implement function 2 here
+    pass
 
-    # Iterate over all possible combinations of minions that can be affected by the explosion
-    for i, combination in enumerate(itertools.combinations(range(n + m), d)):
-        # Initialize the probability for this combination to 1
-        probability = 1
-
-        # Iterate over the minions in the combination
-        for minion in combination:
-            # If the minion is an opponent's minion, calculate the probability that it will be removed
-            if minion >= n:
-                probability *= (opp_minions[minion - n] - 1) / 6
-            # If the minion is one of your own minions, calculate the probability that it will be removed
-            else:
-                probability *= (my_minions[minion] - 1) / 6
-
-        # Add the probability for this combination to the list of probabilities
-        probabilities[i] = probability
-
-    # Return the sum of the probabilities for all combinations
-    return sum(probabilities)
+if __name__ == '__main__':
+    N, Q = map(int, input().split())
+    queries = []
+    for i in range(Q):
+        queries.append(list(map(int, input().split())))
+    result = f1(N, Q, queries)
+    print(result)
 

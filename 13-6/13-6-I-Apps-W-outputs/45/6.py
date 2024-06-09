@@ -1,20 +1,32 @@
 
-def solve(N, K, P, C):
-    # Initialize the maximum score to 0
-    max_score = 0
-    # Loop through each possible starting square
-    for i in range(1, N+1):
-        # Initialize the current score to 0
-        current_score = 0
-        # Loop through each possible move
-        for j in range(K+1):
-            # Calculate the new score after the move
-            new_score = current_score + C[P[i]]
-            # If the new score is greater than the maximum score, update the maximum score
-            if new_score > max_score:
-                max_score = new_score
-            # Update the current score for the next move
-            current_score = new_score
-    # Return the maximum score
-    return max_score
+def count_ways(n, a):
+    # Base case: if n is 1, there is only one way to break the chocolate
+    if n == 1:
+        return 1
+    
+    # Initialize the number of ways to break the chocolate
+    ways = 0
+    
+    # Iterate over all possible breaks
+    for i in range(n - 1):
+        # If the current piece contains a nut
+        if a[i] == 1:
+            # Count the number of ways to break the chocolate after the current piece
+            ways += count_ways(n - i - 1, a[i + 1:])
+    
+    return ways
+
+def main():
+    # Read the input
+    n = int(input())
+    a = list(map(int, input().split()))
+    
+    # Calculate the number of ways to break the chocolate
+    ways = count_ways(n, a)
+    
+    # Print the result
+    print(ways)
+
+if __name__ == '__main__':
+    main()
 

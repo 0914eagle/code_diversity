@@ -1,11 +1,44 @@
 
-def find_lipschitz_constant(f):
-    # Find the maximum and minimum values of the function over the input domain
-    max_val = max(f.values())
-    min_val = min(f.values())
-    
-    # Calculate the Lipschitz constant as the difference between the maximum and minimum values divided by the number of input points minus 1
-    lipschitz_constant = (max_val - min_val) / (len(f) - 1)
-    
-    return lipschitz_constant
+def get_unread_letters(letter_states):
+    return [i for i, state in enumerate(letter_states) if state == 0]
+
+def get_read_letters(letter_states):
+    return [i for i, state in enumerate(letter_states) if state == 1]
+
+def get_next_unread_letter(current_letter, letter_states):
+    unread_letters = get_unread_letters(letter_states)
+    if current_letter == len(letter_states) - 1:
+        return None
+    return unread_letters[unread_letters.index(current_letter) + 1]
+
+def get_previous_unread_letter(current_letter, letter_states):
+    unread_letters = get_unread_letters(letter_states)
+    if current_letter == 0:
+        return None
+    return unread_letters[unread_letters.index(current_letter) - 1]
+
+def get_minimum_operations(letter_states):
+    unread_letters = get_unread_letters(letter_states)
+    operations = 0
+    current_letter = 0
+    while unread_letters:
+        next_letter = get_next_unread_letter(current_letter, letter_states)
+        if next_letter:
+            operations += 1
+            current_letter = next_letter
+        else:
+            previous_letter = get_previous_unread_letter(current_letter, letter_states)
+            if previous_letter:
+                operations += 1
+                current_letter = previous_letter
+            else:
+                break
+    return operations
+
+def main():
+    letter_states = list(map(int, input().split()))
+    print(get_minimum_operations(letter_states))
+
+if __name__ == '__main__':
+    main()
 

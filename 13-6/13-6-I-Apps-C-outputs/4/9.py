@@ -1,33 +1,39 @@
 
-def solve(n):
-    # If n is odd, it is not possible to swap all pairs of positions so that the permutation stays the same
-    if n % 2 == 1:
-        return "NO"
-    
-    # Initialize the permutation as [1, 2, 3, ..., n]
-    permutation = list(range(1, n + 1))
-    
-    # Initialize the number of swaps to be performed
-    num_swaps = n * (n - 1) // 2
-    
-    # Initialize the list of swaps to be performed
-    swaps = []
-    
-    # Loop through each pair of positions (i, j), where i < j
-    for i in range(n - 1):
-        for j in range(i + 1, n):
-            # If the positions are not already swapped
-            if permutation[i] != i + 1 or permutation[j] != j + 1:
-                # Perform the swap
-                permutation[i], permutation[j] = permutation[j], permutation[i]
-                # Add the swap to the list of swaps
-                swaps.append((i + 1, j + 1))
-                # Decrement the number of swaps to be performed
-                num_swaps -= 1
-    
-    # If all pairs of positions have been swapped
-    if num_swaps == 0:
-        return "YES\n" + "\n".join([f"{a} {b}" for a, b in swaps])
-    else:
-        return "NO"
+def get_railway_network(n, m):
+    # Function to get the railway network
+    railway_network = []
+    for i in range(m):
+        u, v = map(int, input().split())
+        railway_network.append((u, v))
+    return railway_network
+
+def get_road_network(n, m):
+    # Function to get the road network
+    road_network = []
+    for i in range(m):
+        u, v = map(int, input().split())
+        road_network.append((u, v))
+    return road_network
+
+def get_min_time(railway_network, road_network, n):
+    # Function to get the minimum time required for both vehicles to reach town n
+    time = 0
+    for i in range(n):
+        if i == n-1:
+            break
+        for j in range(i+1, n):
+            if (i, j) in railway_network or (j, i) in railway_network:
+                time += 1
+            elif (i, j) in road_network or (j, i) in road_network:
+                time += 1
+    return time
+
+def main():
+    n, m = map(int, input().split())
+    railway_network = get_railway_network(n, m)
+    road_network = get_road_network(n, m)
+    print(get_min_time(railway_network, road_network, n))
+
+if __name__ == '__main__':
+    main()
 

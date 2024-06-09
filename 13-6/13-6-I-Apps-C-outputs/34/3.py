@@ -1,27 +1,71 @@
 
-def solve(n, t, m, intervals):
-    # Initialize the variables to keep track of the cheerleading schedule
-    sportify_cheerleaders = [0] * 91
-    spoilify_cheerleaders = [0] * 91
+def f1(program1, program2):
+    # Convert the programs to lists of operations
+    program1 = program1.split()
+    program2 = program2.split()
+    
+    # Initialize the string to be edited
+    string = ""
+    
+    # Apply the operations in program1 to the string
+    for operation in program1:
+        if operation[0] == "D":
+            # Delete the character at the given position
+            string = string[:operation[1]-1] + string[operation[1]:]
+        elif operation[0] == "I":
+            # Insert the given character at the given position
+            string = string[:operation[1]-1] + operation[2] + string[operation[1]-1:]
+    
+    # Apply the operations in program2 to the string
+    for operation in program2:
+        if operation[0] == "D":
+            # Delete the character at the given position
+            string = string[:operation[1]-1] + string[operation[1]:]
+        elif operation[0] == "I":
+            # Insert the given character at the given position
+            string = string[:operation[1]-1] + operation[2] + string[operation[1]-1:]
+    
+    # Check if the strings are identical
+    if string == "":
+        return "0"
+    else:
+        return "1"
 
-    # Add the Spoilify cheerleaders to the schedule
-    for interval in intervals:
-        for i in range(interval[0], interval[1]):
-            spoilify_cheerleaders[i] += 1
+def f2(program1, program2):
+    # Convert the programs to lists of operations
+    program1 = program1.split()
+    program2 = program2.split()
+    
+    # Initialize the string to be edited
+    string = ""
+    
+    # Apply the operations in program1 to the string
+    for operation in program1:
+        if operation[0] == "D":
+            # Delete the character at the given position
+            string = string[:operation[1]-1] + string[operation[1]:]
+        elif operation[0] == "I":
+            # Insert the given character at the given position
+            string = string[:operation[1]-1] + operation[2] + string[operation[1]-1:]
+    
+    # Apply the operations in program2 to the string
+    for operation in program2:
+        if operation[0] == "D":
+            # Delete the character at the given position
+            string = string[:operation[1]-1] + string[operation[1]:]
+        elif operation[0] == "I":
+            # Insert the given character at the given position
+            string = string[:operation[1]-1] + operation[2] + string[operation[1]-1:]
+    
+    # Check if the strings are identical
+    if string == "":
+        return "0"
+    else:
+        return "1"
 
-    # Initialize the variables to keep track of the goals scored
-    sportify_goals = 0
-    spoilify_goals = 0
-
-    # Iterate through each minute of the game
-    for i in range(90):
-        # Check if Sportify has more cheerleaders cheering than Spoilify
-        if sportify_cheerleaders[i] > spoilify_cheerleaders[i]:
-            sportify_goals += 1
-        # Check if Spoilify has more cheerleaders cheering than Sportify
-        elif sportify_cheerleaders[i] < spoilify_cheerleaders[i]:
-            spoilify_goals += 1
-
-    # Return the results
-    return sportify_goals, spoilify_goals
+if __name__ == '__main__':
+    program1 = input("Enter the first DNA editing program: ")
+    program2 = input("Enter the second DNA editing program: ")
+    print(f1(program1, program2))
+    print(f2(program1, program2))
 

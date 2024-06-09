@@ -1,51 +1,42 @@
 
-def find_celery(sightings):
-    # Sort the sightings by x-coordinate
-    sightings.sort(key=lambda x: x[0])
+def f1(N, barbarians):
+    # Initialize a dictionary to store the words on the stone tablets
+    tablets = {}
+    for i in range(N):
+        tablets[i+1] = barbarians[i]
+    return tablets
 
-    # Initialize the minimum polygon with all sightings
-    polygon = sightings[:]
+def f2(Q, rounds, tablets):
+    # Initialize a list to store the answers to Tarzan's questions
+    answers = []
+    for i in range(Q):
+        # If the round is of type 1, show the word to the barbarians
+        if rounds[i][0] == 1:
+            word = rounds[i][1]
+            for barbarian in tablets.values():
+                if word in barbarian:
+                    answers.append(1)
+                    break
+            else:
+                answers.append(0)
+        # If the round is of type 2, ask the barbarian the question
+        elif rounds[i][0] == 2:
+            barbarian = rounds[i][1]
+            word = tablets[barbarian]
+            count = 0
+            for other_word in tablets.values():
+                if word in other_word:
+                    count += 1
+            answers.append(count)
+    return answers
 
-    # Iterate through the sightings and remove points that are not in the polygon
-    for i in range(len(sightings)):
-        for j in range(i+1, len(sightings)):
-            if not is_inside_polygon(sightings[i], sightings[j], polygon):
-                polygon.remove(sightings[j])
-
-    return len(polygon)
-
-def is_inside_polygon(p1, p2, polygon):
-    # Check if p1 is inside the polygon
-    for i in range(len(polygon)):
-        p3 = polygon[i]
-        p4 = polygon[(i+1) % len(polygon)]
-        if is_inside_triangle(p1, p2, p3, p4):
-            return True
-
-    return False
-
-def is_inside_triangle(p1, p2, p3, p4):
-    # Check if p1 is inside the triangle p3-p4-p2
-    v1 = (p2[0] - p1[0], p2[1] - p1[1])
-    v2 = (p3[0] - p1[0], p3[1] - p1[1])
-    v3 = (p4[0] - p1[0], p4[1] - p1[1])
-    dot1 = v1[0] * v2[1] - v1[1] * v2[0]
-    dot2 = v1[0] * v3[1] - v1[1] * v3[0]
-    return dot1 > 0 and dot2 > 0
-
-def main():
-    n = int(input())
-    vertices = []
-    for i in range(n):
-        x, y = map(int, input().split())
-        vertices.append((x, y))
-    k = int(input())
-    sightings = []
-    for i in range(k):
-        x, y = map(int, input().split())
-        sightings.append((x, y))
-    print(find_celery(sightings))
-
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    N = int(input())
+    barbarians = [input() for _ in range(N)]
+    Q = int(input())
+    rounds = [input().split() for _ in range(Q)]
+    tablets = f1(N, barbarians)
+    answers = f2(Q, rounds, tablets)
+    for answer in answers:
+        print(answer)
 

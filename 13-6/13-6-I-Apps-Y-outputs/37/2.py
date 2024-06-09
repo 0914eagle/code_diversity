@@ -1,20 +1,29 @@
 
-def solve(N, M, edges):
-    # Initialize a dictionary to store the vertices visited
-    visited = {1: False}
-    for i in range(2, N+1):
-        visited[i] = False
-    
-    # Initialize a list to store the paths
-    paths = []
-    
-    # Iterate through the edges and find the paths that start from vertex 1 and visit all the vertices exactly once
-    for i in range(M):
-        edge = edges[i]
-        if edge[0] == 1 and not visited[edge[1]]:
-            visited[edge[1]] = True
-            paths.append(edge)
-    
-    # Return the number of paths
-    return len(paths)
+def is_palindrome(arr):
+    # Check if the array is a palindrome
+    for i in range(len(arr)):
+        if arr[i] != arr[len(arr) - i - 1]:
+            return False
+    return True
+
+def has_subsequence_of_length_at_least_3(arr):
+    # Check if the array has a subsequence of length at least 3
+    for i in range(len(arr) - 2):
+        if is_palindrome(arr[i:i+3]):
+            return True
+    return False
+
+def solve(arr):
+    # Check if the array has a subsequence of length at least 3 that is a palindrome
+    if has_subsequence_of_length_at_least_3(arr):
+        return "YES"
+    else:
+        return "NO"
+
+if __name__ == '__main__':
+    t = int(input())
+    for i in range(t):
+        n = int(input())
+        arr = list(map(int, input().split()))
+        print(solve(arr))
 

@@ -1,15 +1,22 @@
 
-def solve(socks, capacity, k):
-    # Sort the socks by color
-    socks.sort()
-    # Initialize the number of machines to 0
-    machines = 0
-    # Iterate through the socks
-    for i in range(len(socks)):
-        # Check if the current sock is further than k from the previous sock
-        if i == 0 or abs(socks[i] - socks[i-1]) > k:
-            # Increment the number of machines
-            machines += 1
-    # Return the number of machines
-    return machines
+def get_permutation(n, q):
+    permutation = []
+    for i in range(n):
+        permutation.append(i+1)
+    for i in range(n-1):
+        if q[i] >= 0:
+            permutation[i], permutation[i+q[i]] = permutation[i+q[i]], permutation[i]
+    return permutation
+
+def main():
+    n = int(input())
+    q = list(map(int, input().split()))
+    permutation = get_permutation(n, q)
+    if permutation == []:
+        print(-1)
+    else:
+        print(*permutation)
+
+if __name__ == '__main__':
+    main()
 

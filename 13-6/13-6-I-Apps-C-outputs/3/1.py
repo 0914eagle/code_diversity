@@ -1,38 +1,30 @@
 
-def max_profit(producer_companies, consumer_companies):
-    # Initialize variables
-    max_profit = 0
-    selected_producer = None
-    selected_consumer = None
+def f1(n, numbers):
+    # find the number of odd numbers in the list
+    odd_numbers = 0
+    for num in numbers:
+        if num % 2 == 1:
+            odd_numbers += 1
+    
+    # find the number of ways Ivana can make the first move
+    first_moves = 0
+    for i in range(n):
+        if numbers[i] % 2 == 1:
+            first_moves += 1
+    
+    return first_moves
 
-    # Iterate over each producer company
-    for producer in producer_companies:
-        # Iterate over each consumer company
-        for consumer in consumer_companies:
-            # Calculate the profit for this pair of companies
-            profit = calculate_profit(producer, consumer)
+def f2(n, numbers):
+    # find the number of ways Ivana can make the first move and win
+    first_moves = 0
+    for i in range(n):
+        if numbers[i] % 2 == 1:
+            first_moves += 1
+    
+    return first_moves
 
-            # Check if the profit is greater than the current maximum profit
-            if profit > max_profit:
-                # Update the maximum profit and the selected companies
-                max_profit = profit
-                selected_producer = producer
-                selected_consumer = consumer
-
-    # Return the maximum profit and the selected companies
-    return max_profit, selected_producer, selected_consumer
-
-def calculate_profit(producer, consumer):
-    # Calculate the profit for this pair of companies
-    profit = 0
-
-    # Iterate over each day
-    for day in range(producer["start_day"], consumer["end_day"] + 1):
-        # Check if the producer is delivering widgets on this day
-        if day >= producer["start_day"] and day <= producer["end_day"]:
-            # Calculate the profit for this day
-            profit += producer["price"] - consumer["price"]
-
-    # Return the total profit
-    return profit
+if __name__ == '__main__':
+    n = int(input())
+    numbers = list(map(int, input().split()))
+    print(f2(n, numbers))
 

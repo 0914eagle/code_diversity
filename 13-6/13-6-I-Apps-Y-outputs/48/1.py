@@ -1,13 +1,23 @@
 
-def get_number_of_machines(socks, capacity, max_color_diff):
-    num_machines = 1
-    current_machine = 1
-    for i in range(1, len(socks)):
-        if abs(socks[i] - socks[i-1]) <= max_color_diff:
-            current_machine += 1
-        else:
-            num_machines += 1
-            current_machine = 1
-    
-    return num_machines
+def get_permutation(n, q):
+    permutation = []
+    for i in range(n):
+        permutation.append(i+1)
+    for i in range(n-1):
+        for j in range(n-i-1):
+            if q[i] < q[j]:
+                permutation[i], permutation[j] = permutation[j], permutation[i]
+    return permutation
+
+def main():
+    n = int(input())
+    q = list(map(int, input().split()))
+    permutation = get_permutation(n, q)
+    if permutation == []:
+        print(-1)
+    else:
+        print(*permutation)
+
+if __name__ == '__main__':
+    main()
 

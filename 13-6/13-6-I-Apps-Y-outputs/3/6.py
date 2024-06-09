@@ -1,22 +1,32 @@
 
-def get_min_heaters(n, r, arr):
-    # Sort the array and find the first and last positions of all 1s
-    sorted_arr = sorted(arr)
-    first_positions = [i for i, x in enumerate(sorted_arr) if x == 1]
-    last_positions = [i for i, x in enumerate(sorted_arr[::-1]) if x == 1]
+def get_move_count(n, a):
+    # Initialize variables to track the number of moves and the total size of candies eaten by Alice and Bob
+    move_count = 0
+    alice_size = 0
+    bob_size = 0
+    
+    # Loop through the candies from left to right
+    for i in range(n):
+        # Alice eats the current candy
+        alice_size += a[i]
+        move_count += 1
+        
+        # Bob eats the current candy if the total size of candies eaten by Alice is greater than the total size of candies eaten by Bob
+        if alice_size > bob_size:
+            bob_size += a[n-i-1]
+            move_count += 1
+        
+    # Return the number of moves and the total size of candies eaten by Alice and Bob
+    return move_count, alice_size, bob_size
 
-    # Initialize the minimum number of heaters needed to warm up the whole house
-    min_heaters = 0
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        a = list(map(int, input().split()))
+        move_count, alice_size, bob_size = get_move_count(n, a)
+        print(move_count, alice_size, bob_size)
 
-    # Iterate through the first and last positions of all 1s
-    for first, last in zip(first_positions, last_positions):
-        # Calculate the range of elements that can be warmed up by the current heater
-        range_start = max(first - r, 0)
-        range_end = min(last + r, n - 1)
-
-        # If the current heater can warm up all the elements in the range, increase the minimum number of heaters needed
-        if range_start <= first and range_end >= last:
-            min_heaters += 1
-
-    return min_heaters
+if __name__ == '__main__':
+    main()
 

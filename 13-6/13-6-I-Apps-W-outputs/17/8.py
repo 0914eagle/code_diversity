@@ -1,23 +1,26 @@
 
-def get_maximum_segments(arr, k):
-    # Initialize variables
-    n = len(arr)
-    segments = 0
-    xor_sum = 0
-    
-    # Iterate over the array
-    for i in range(n):
-        # Calculate the XOR sum of the current segment
-        xor_sum ^= arr[i]
-        
-        # If the XOR sum is not equal to 0, increment the number of segments
-        if xor_sum != 0:
-            segments += 1
-        
-        # If we are not at the last element, calculate the XOR sum of the next segment
-        if i != n-1:
-            xor_sum ^= arr[i+1]
-    
-    # Return the maximum number of segments
-    return segments
+def get_t_shirt_places(s):
+    i = (s // 50) % 475
+    t_shirt_places = []
+    for _ in range(25):
+        i = (i * 96 + 42) % 475
+        t_shirt_places.append(26 + i)
+    return t_shirt_places
+
+def get_min_hacks(p, x, y):
+    t_shirt_places = get_t_shirt_places(x)
+    min_hacks = 0
+    for t_shirt_place in t_shirt_places:
+        if t_shirt_place > p:
+            min_hacks += 1
+        elif t_shirt_place == p and x < y:
+            min_hacks += 1
+    return min_hacks
+
+def main():
+    p, x, y = map(int, input().split())
+    print(get_min_hacks(p, x, y))
+
+if __name__ == '__main__':
+    main()
 

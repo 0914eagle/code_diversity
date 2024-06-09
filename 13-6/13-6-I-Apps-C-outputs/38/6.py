@@ -1,18 +1,22 @@
 
-import math
+import sys
 
-def place_obstacles(n, m, p):
-    # Calculate the number of ways to place the minimum number of obstacles
-    num_ways = 0
-    
-    # Loop through all possible positions for the obstacles
+def gcd(a, b):
+    if b == 0:
+        return a
+    else:
+        return gcd(b, a % b)
+
+def f(a):
+    n = len(a)
+    values = set()
     for i in range(n):
-        for j in range(m):
-            # Check if the current position is valid (i.e., it is not on the border of the grid)
-            if i > 0 and i < n-1 and j > 0 and j < m-1:
-                # Count the number of ways to place the obstacle in the current position
-                num_ways += 1
-    
-    # Return the result modulo p
-    return num_ways % p
+        for j in range(i+1, n+1):
+            values.add(gcd(a[i], *a[i+1:j]))
+    return len(values)
+
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(f(a))
 

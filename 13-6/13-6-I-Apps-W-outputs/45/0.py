@@ -1,25 +1,34 @@
 
-def solve(N, K, P, C):
-    # Initialize the maximum score to 0
-    max_score = 0
-    # Loop through each possible starting square
-    for i in range(1, N+1):
-        # Initialize the current score to 0
-        curr_score = 0
-        # Loop through each possible move
-        for j in range(K+1):
-            # Calculate the next square based on the permutation
-            next_square = P[i]
-            # Add the score of the current square to the current score
-            curr_score += C[i]
-            # If the next square is the same as the starting square, break the loop
-            if next_square == i:
-                break
-            # Update the current square to the next square
-            i = next_square
-        # If the current score is greater than the maximum score, update the maximum score
-        if curr_score > max_score:
-            max_score = curr_score
-    # Return the maximum score
-    return max_score
+def count_ways(n, pieces):
+    # Initialize the number of ways to be 0
+    ways = 0
+    
+    # Iterate over each piece in the chocolate bar
+    for i in range(n):
+        # If the current piece has a nut
+        if pieces[i] == 1:
+            # Check if the previous piece has a nut
+            if i > 0 and pieces[i-1] == 1:
+                # If the previous piece has a nut, we can break the chocolate between the current piece and the previous piece
+                ways += 1
+            # Check if the next piece has a nut
+            if i < n-1 and pieces[i+1] == 1:
+                # If the next piece has a nut, we can break the chocolate between the current piece and the next piece
+                ways += 1
+    
+    # Return the number of ways to break the chocolate
+    return ways
+
+def main():
+    # Read the number of pieces in the chocolate bar
+    n = int(input())
+    # Read the pieces of the chocolate bar
+    pieces = list(map(int, input().split()))
+    # Calculate the number of ways to break the chocolate
+    ways = count_ways(n, pieces)
+    # Print the number of ways
+    print(ways)
+
+if __name__ == '__main__':
+    main()
 

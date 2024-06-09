@@ -1,39 +1,47 @@
 
-def get_maximum_points(n, T, p, t, d, graph):
-    # Initialize the maximum points and the tasks to perform
-    max_points = 0
-    tasks = []
-    
-    # Loop through each task
-    for i in range(n):
-        # Check if the task has a deadline
-        if d[i] != -1:
-            # Calculate the time needed to complete the task
-            time_needed = t[i] + d[i]
-        else:
-            # If there is no deadline, the task can be completed immediately
-            time_needed = 0
-        
-        # Loop through each location
-        for j in range(n+2):
-            # Check if the task can be performed at the current location
-            if time_needed <= T - t[j]:
-                # Calculate the points that can be earned by performing the task at the current location
-                points = p[i]
-                
-                # Check if the points are higher than the current maximum
-                if points > max_points:
-                    # Update the maximum points and the tasks to perform
-                    max_points = points
-                    tasks = [i]
-                # Check if the points are equal to the current maximum
-                elif points == max_points:
-                    # Add the task to the list of tasks to perform
-                    tasks.append(i)
-    
-    # Sort the tasks by their indices
-    tasks.sort()
-    
-    # Return the maximum points and the tasks to perform
-    return max_points, tasks
+def get_input():
+    n, m, t, op = map(int, input().split())
+    grid = []
+    for i in range(m):
+        grid.append(list(map(int, input().split())))
+    return n, m, t, op, grid
+
+def is_valid_section(grid, op, t):
+    # Check if the section is valid
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j] == 0:
+                return False
+    # Check if the section satisfies the target value
+    if op == '-':
+        if sum(grid[0]) - sum(grid[1]) != t:
+            return False
+    elif op == '+':
+        if sum(grid[0]) + sum(grid[1]) != t:
+            return False
+    elif op == '*':
+        if sum(grid[0]) * sum(grid[1]) != t:
+            return False
+    elif op == '/':
+        if sum(grid[0]) / sum(grid[1]) != t:
+            return False
+    return True
+
+def count_valid_ways(n, m, t, op, grid):
+    # Initialize the number of valid ways to 0
+    valid_ways = 0
+    # Iterate over all possible assignments of digits to the section
+    for assignment in itertools.product(range(1, n+1), repeat=m):
+        # Create a copy of the grid with the current assignment
+        grid_copy = [[0] * n for _ in range(n)]
+        for i in range(m):
+            grid_copy[grid[i][0]-1][grid[i][1]-1] = assignment[i]
+        # Check if the section is valid with the current assignment
+        if is_valid_section(grid_copy, op, t):
+            valid_ways += 1
+    return valid_ways
+
+if __name__ == '__main__':
+    n, m, t, op, grid = get_input()
+    print(count_valid_ways(n, m, t, op, grid))
 

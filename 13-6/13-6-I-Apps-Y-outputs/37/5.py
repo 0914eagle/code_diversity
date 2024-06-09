@@ -1,41 +1,37 @@
 
-def num_paths(N, M, edges):
-    # Initialize a dictionary to store the paths
-    paths = {}
+def check_palindrome(arr):
+    # Check if the array is a palindrome
+    for i in range(len(arr)):
+        if arr[i] != arr[len(arr) - i - 1]:
+            return False
+    return True
 
-    # Initialize the starting vertex
-    start = 1
+def check_subsequence(arr, sub):
+    # Check if the subsequence is in the array
+    for i in range(len(arr) - len(sub) + 1):
+        if arr[i:i+len(sub)] == sub:
+            return True
+    return False
 
-    # Iterate over the edges
-    for edge in edges:
-        # Get the endpoints of the edge
-        a, b = edge
+def has_palindromic_subsequence(arr):
+    # Check if the array has a subsequence of length at least 3 that is a palindrome
+    for i in range(len(arr) - 2):
+        for j in range(i+1, len(arr) - 1):
+            sub = arr[i:j+1]
+            if check_palindrome(sub) and check_subsequence(arr, sub):
+                return True
+    return False
 
-        # If the edge is not a self-loop
-        if a != b:
-            # If the starting vertex is not already in the path
-            if start not in paths:
-                # Add the starting vertex to the path
-                paths[start] = [start]
+def main():
+    tests = int(input())
+    for i in range(tests):
+        n = int(input())
+        arr = list(map(int, input().split()))
+        if has_palindromic_subsequence(arr):
+            print("YES")
+        else:
+            print("NO")
 
-            # If the ending vertex is not already in the path
-            if b not in paths:
-                # Add the ending vertex to the path
-                paths[b] = [b]
-
-            # Add the edge to the path
-            paths[b].append(a)
-
-    # Initialize a variable to store the number of paths
-    num_paths = 0
-
-    # Iterate over the paths
-    for path in paths.values():
-        # If the path visits all the vertices exactly once
-        if len(path) == N:
-            # Increment the number of paths
-            num_paths += 1
-
-    # Return the number of paths
-    return num_paths
+if __name__ == '__main__':
+    main()
 

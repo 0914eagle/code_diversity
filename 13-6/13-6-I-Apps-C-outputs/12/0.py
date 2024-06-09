@@ -1,35 +1,32 @@
 
-def solve(n):
-    # Initialize the maximum sum as 0
-    max_sum = 0
-    # Loop through all possible values of a
-    for a in range(n+1):
-        # Find the corresponding value of b
-        b = n-a
-        # Calculate the sum of digits in a and b
-        sum_a = sum_digits(a)
-        sum_b = sum_digits(b)
-        # Check if a and b satisfy the conditions
-        if a <= n and b <= n and a + b == n:
-            # Calculate the total sum
-            total_sum = sum_a + sum_b
-            # Check if the total sum is greater than the maximum sum
-            if total_sum > max_sum:
-                # Update the maximum sum
-                max_sum = total_sum
-    # Return the maximum sum
-    return max_sum
+def get_max_distance(N, T_i, s_i, a_i):
+    # Calculate the minimum radians needed to go from angle a_i to the x-axis
+    dist = abs(a_i - 0)
+    
+    # Calculate the maximum distance that the spaceship can travel from star i
+    max_dist = max(0, T_i - s_i * dist)
+    
+    return max_dist
 
-# Function to calculate the sum of digits in a number
-def sum_digits(n):
-    # Initialize the sum as 0
-    sum = 0
-    # Loop through the digits of the number
-    while n > 0:
-        # Add the last digit to the sum
-        sum += n % 10
-        # Remove the last digit from the number
-        n //= 10
-    # Return the sum
-    return sum
+def solve(N, T_i, s_i, a_i):
+    # Calculate the maximum distance that the spaceship can travel from each star
+    max_dist_list = [get_max_distance(N, T_i, s_i, a_i) for T_i, s_i, a_i in zip(T_i, s_i, a_i)]
+    
+    # Calculate the total distance that the spaceship can travel
+    total_dist = sum(max_dist_list)
+    
+    return total_dist
+
+if __name__ == '__main__':
+    N = int(input())
+    T_i = []
+    s_i = []
+    a_i = []
+    
+    for _ in range(N):
+        T_i.append(float(input()))
+        s_i.append(float(input()))
+        a_i.append(float(input()))
+    
+    print(solve(N, T_i, s_i, a_i))
 

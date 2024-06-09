@@ -1,25 +1,43 @@
 
-import random
-
-def solve(expression):
-    # Split the expression into a list of integers and plus symbols
-    tokens = expression.split('+')
+def get_winner(record):
+    # Initialize the score of Alice and Barbara
+    alice_score = 0
+    barbara_score = 0
     
-    # Initialize a set to store the distinct integers
-    distinct_ints = set()
-    
-    # Iterate through each token in the list
-    for token in tokens:
-        # If the token is an integer, add it to the set of distinct integers
-        if token.isdigit():
-            distinct_ints.add(int(token))
-        # If the token is a plus symbol, randomly choose whether to interpret it as addition or string concatenation
+    # Iterate through the record
+    for i in range(0, len(record), 2):
+        # Get the score of the current player
+        score = int(record[i+1])
+        
+        # Check if the current player is Alice
+        if record[i] == "A":
+            alice_score += score
         else:
-            if random.randint(0, 1) == 0:
-                distinct_ints.add(str(distinct_ints.pop()) + token)
+            barbara_score += score
+        
+        # Check if the game is over
+        if alice_score >= 11 and barbara_score >= 11:
+            # Check if the score is tied
+            if alice_score == barbara_score:
+                # Check if the lead is at least 2
+                if alice_score - barbara_score >= 2:
+                    return "A"
+                else:
+                    return "B"
             else:
-                distinct_ints.add(str(distinct_ints.pop()) + str(distinct_ints.pop()))
+                # Return the player with the higher score
+                if alice_score > barbara_score:
+                    return "A"
+                else:
+                    return "B"
     
-    # Return the number of distinct integers
-    return len(distinct_ints)
+    # If the game is not over, return None
+    return None
+
+def main():
+    record = input("Enter the record of the game: ")
+    print(get_winner(record))
+
+if __name__ == '__main__':
+    main()
 

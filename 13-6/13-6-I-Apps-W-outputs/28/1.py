@@ -1,15 +1,24 @@
 
-def solve(s, t):
-    # Replace all '?' characters with all lowercase letters
-    s = s.replace("?", "abcdefghijklmnopqrstuvwxyz")
-    # Initialize a counter for the number of non-intersecting occurrences of t
-    count = 0
-    # Iterate over all possible pairs of positions in s
-    for i in range(len(s) - len(t) + 1):
-        # Check if the substring of s starting at position i and ending at position i + len(t) - 1 is equal to t
-        if s[i:i+len(t)] == t:
-            # Increment the counter
-            count += 1
-    # Return the string s with the maximum number of non-intersecting occurrences of t
-    return s
+def get_gcd(a, b):
+    if a == 0:
+        return b
+    return get_gcd(b % a, a)
+
+def get_max_gcd(n):
+    max_gcd = 0
+    for i in range(1, n):
+        for j in range(i + 1, n + 1):
+            gcd = get_gcd(i, j)
+            if gcd > max_gcd:
+                max_gcd = gcd
+    return max_gcd
+
+def main():
+    num_test_cases = int(input())
+    for i in range(num_test_cases):
+        n = int(input())
+        print(get_max_gcd(n))
+
+if __name__ == '__main__':
+    main()
 

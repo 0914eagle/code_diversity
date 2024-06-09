@@ -1,27 +1,45 @@
 
-def is_possible(n, a):
-    # Calculate the total number of pizzas needed
-    total_pizzas = sum(a)
+def get_largest_rectangle(matrix):
+    # Initialize variables
+    max_area = 0
+    current_area = 0
+    top_row = 0
+    bottom_row = len(matrix) - 1
+    left_col = 0
+    right_col = len(matrix[0]) - 1
+    
+    # Loop through the matrix
+    while top_row <= bottom_row and left_col <= right_col:
+        # Check if the current cell is 1
+        if matrix[top_row][left_col] == "1":
+            # Increment the current area
+            current_area += 1
+        else:
+            # If the current cell is 0, check if the current area is larger than the max area
+            if current_area > max_area:
+                max_area = current_area
+            # Reset the current area
+            current_area = 0
+        
+        # Move to the next cell
+        top_row += 1
+        left_col += 1
+    
+    # Check if the current area is larger than the max area
+    if current_area > max_area:
+        max_area = current_area
+    
+    return max_area
 
-    # Initialize the number of pizzas needed for each day
-    pizzas_needed = [0] * n
+def main():
+    matrix = [
+      ["1","0","1","0","0"],
+      ["1","0","1","1","1"],
+      ["1","1","1","1","1"],
+      ["1","0","0","1","0"]
+    ]
+    print(get_largest_rectangle(matrix))
 
-    # Loop through each day
-    for i in range(n):
-        # If there are teams present on this day, add the number of pizzas needed for this day
-        if a[i] > 0:
-            pizzas_needed[i] += a[i]
-
-    # Loop through each day
-    for i in range(n):
-        # If there are teams present on this day and the number of pizzas needed for this day is odd, return "NO"
-        if a[i] > 0 and pizzas_needed[i] % 2 == 1:
-            return "NO"
-
-    # If the total number of pizzas needed is even, return "YES"
-    if total_pizzas % 2 == 0:
-        return "YES"
-    else:
-        # If the total number of pizzas needed is odd, return "NO"
-        return "NO"
+if __name__ == '__main__':
+    main()
 

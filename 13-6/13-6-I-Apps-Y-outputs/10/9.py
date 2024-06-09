@@ -1,8 +1,22 @@
 
-def solve(x1, y1, x2, y2):
-    x3 = y2 - y1
-    y3 = x1 - x2
-    x4 = x3 + x1
-    y4 = y3 + y1
-    return x3, y3, x4, y4
+def max_sum_after_modifying_array(arr, k):
+    # Step 1: Sort the array in non-decreasing order
+    arr.sort()
+    
+    # Step 2: Initialize the sum of the array
+    sum_arr = sum(arr)
+    
+    # Step 3: Loop through the array and modify each element
+    for i in range(k):
+        # Find the index of the largest positive element in the array
+        largest_positive_index = arr.index(max(arr))
+        
+        # Replace the largest positive element with its negative
+        arr[largest_positive_index] = -arr[largest_positive_index]
+        
+        # Update the sum of the array
+        sum_arr += arr[largest_positive_index]
+    
+    # Return the largest possible sum of the array after modifying it
+    return sum_arr
 

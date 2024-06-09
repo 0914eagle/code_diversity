@@ -1,16 +1,33 @@
 
-def solve(n, m):
-    # Initialize the array with 0s
-    arr = [0] * n
-    # Set the first element to m
-    arr[0] = m
-    # Calculate the maximum possible value of the sum of absolute differences
-    max_value = abs(arr[0] - arr[1])
-    for i in range(1, n-1):
-        # Calculate the sum of absolute differences for the current array
-        current_value = abs(arr[i] - arr[i+1])
-        # If the current sum is greater than the maximum possible value, update the maximum possible value
-        if current_value > max_value:
-            max_value = current_value
-    return max_value
+def is_shiritori_observed(words):
+    # Initialize a set to store the words announced
+    announced_words = set()
+    
+    # Iterate through the words
+    for i in range(len(words)):
+        # Check if the current word is already in the set of announced words
+        if words[i] in announced_words:
+            # If it is, return False
+            return False
+        # Add the current word to the set of announced words
+        announced_words.add(words[i])
+    
+    # If all words are unique and satisfy the shiritori condition, return True
+    return True
+
+def main():
+    # Read the number of words and the words from stdin
+    num_words = int(input())
+    words = []
+    for i in range(num_words):
+        words.append(input())
+    
+    # Check if the rules of shiritori were observed
+    if is_shiritori_observed(words):
+        print("Yes")
+    else:
+        print("No")
+
+if __name__ == '__main__':
+    main()
 

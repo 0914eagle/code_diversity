@@ -1,18 +1,23 @@
 
-def sock_washing(S, C, K, D):
-    # Sort the socks by their color values
-    D.sort()
-    # Initialize the number of machines to 0
-    machines = 0
-    # Loop through the socks
-    for i in range(S):
-        # Check if the current sock is too far from the previous sock
-        if i > 0 and abs(D[i] - D[i-1]) > K:
-            # Increment the number of machines
-            machines += 1
-        # Check if the current sock is the first sock or if the current machine has reached its capacity
-        if i == 0 or (i % C == 0 and i > 0):
-            # Increment the number of machines
-            machines += 1
-    return machines
+def get_permutation(n, q):
+    permutation = []
+    for i in range(n):
+        permutation.append(i+1)
+    for i in range(n-1):
+        for j in range(n-i-1):
+            if q[i] < q[j]:
+                permutation[i], permutation[j] = permutation[j], permutation[i]
+    return permutation
+
+def main():
+    n = int(input())
+    q = list(map(int, input().split()))
+    permutation = get_permutation(n, q)
+    if permutation == []:
+        print(-1)
+    else:
+        print(*permutation)
+
+if __name__ == '__main__':
+    main()
 

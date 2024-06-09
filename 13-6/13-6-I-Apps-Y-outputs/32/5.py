@@ -1,10 +1,30 @@
 
-def enlarge_article(article, z_r, z_c):
-    enlarged_article = []
-    for row in article:
-        enlarged_row = []
-        for char in row:
-            enlarged_row += [char] * z_c
-        enlarged_article += [enlarged_row]
-    return enlarged_article
+def get_intersection(l1, r1, l2, r2):
+    if l1 <= l2:
+        if r1 >= l2:
+            return l2
+        elif r1 >= r2:
+            return r2
+        else:
+            return 0
+    else:
+        if l1 <= r2:
+            return l1
+        elif r1 >= r2:
+            return r1
+        else:
+            return 0
+
+def solve(l1, r1, l2, r2):
+    intersection = get_intersection(l1, r1, l2, r2)
+    if intersection == 0:
+        return []
+    else:
+        return [intersection, intersection+1]
+
+if __name__ == '__main__':
+    q = int(input())
+    for i in range(q):
+        l1, r1, l2, r2 = map(int, input().split())
+        print(*solve(l1, r1, l2, r2))
 

@@ -1,19 +1,26 @@
 
-def is_pot_boiling_at_same_time(intervals):
-    # Sort the intervals by their start time
-    intervals.sort(key=lambda x: x[0])
+def count_ways(N, K):
+    # Initialize a 2D array to store the results
+    dp = [[0 for i in range(K+1)] for j in range(N+1)]
+    
+    # Initialize the first row and column with 1
+    for i in range(K+1):
+        dp[0][i] = 1
+    for j in range(N+1):
+        dp[j][0] = 1
+    
+    # Fill in the rest of the 2D array using the recurrence relation
+    for i in range(1, N+1):
+        for j in range(1, K+1):
+            dp[i][j] = dp[i-1][j] + dp[i-1][j-1]
+    
+    # Return the last entry of the last row
+    return dp[N][K]
 
-    # Initialize the current time to 0
-    current_time = 0
+def main():
+    N, K = map(int, input().split())
+    print(count_ways(N, K))
 
-    # Iterate through the intervals
-    for interval in intervals:
-        # If the current time is within the interval, the pot is boiling
-        if current_time >= interval[0] and current_time <= interval[1]:
-            return "edward is right"
-        # Otherwise, increment the current time by the length of the interval
-        current_time += (interval[1] - interval[0])
-
-    # If the pot has not boiled by the end of the last interval, Gunilla has a point
-    return "gunilla has a point"
+if __name__ == '__main__':
+    main()
 

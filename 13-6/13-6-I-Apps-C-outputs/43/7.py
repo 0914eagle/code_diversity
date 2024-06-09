@@ -1,26 +1,61 @@
 
-def hidden_message(s):
-    # Initialize a dictionary to store the hidden strings and their indices
-    hidden_strings = {}
+import math
 
-    # Loop through each substring of the text
-    for i in range(len(s)):
-        for j in range(i+1, len(s)):
-            # Check if the substring is a hidden string
-            if s[i:j+1] in hidden_strings:
-                # If it is, add its index to the list of indices
-                hidden_strings[s[i:j+1]].append(i)
-            else:
-                # If it's not, add it to the dictionary with its first index
-                hidden_strings[s[i:j+1]] = [i]
+def f1(N, H, p, v):
+    # Initialize the expected payout
+    expected_payout = 0
+    
+    # Loop through each hole
+    for i in range(H):
+        # Calculate the probability of falling into the hole
+        probability = p[i]
+        
+        # Calculate the expected payout if the ball falls into the hole
+        expected_payout_hole = v[i]
+        
+        # Calculate the expected payout if the ball bounces to a neighbor
+        expected_payout_neighbor = 0
+        for j in range(4):
+            if p[i * 5 + j + 1] > 0:
+                expected_payout_neighbor += p[i * 5 + j + 1] * f1(N, H, p[i * 5 + j + 1:], v)
+        
+        # Calculate the total expected payout for this hole
+        expected_payout += probability * (expected_payout_hole + expected_payout_neighbor)
+    
+    return expected_payout
 
-    # Find the hidden string that occurs the most times
-    most_frequent_string = ""
-    most_frequent_count = 0
-    for hidden_string, indices in hidden_strings.items():
-        if len(indices) > most_frequent_count:
-            most_frequent_count = len(indices)
-            most_frequent_string = hidden_string
+def f2(N, H, p, v):
+    # Initialize the expected payout
+    expected_payout = 0
+    
+    # Loop through each hole
+    for i in range(H):
+        # Calculate the probability of falling into the hole
+        probability = p[i]
+        
+        # Calculate the expected payout if the ball falls into the hole
+        expected_payout_hole = v[i]
+        
+        # Calculate the expected payout if the ball bounces to a neighbor
+        expected_payout_neighbor = 0
+        for j in range(4):
+            if p[i * 5 + j + 1] > 0:
+                expected_payout_neighbor += p[i * 5 + j + 1] * f2(N, H, p[i * 5 + j + 1:], v)
+        
+        # Calculate the total expected payout for this hole
+        expected_payout += probability * (expected_payout_hole + expected_payout_neighbor)
+    
+    return expected_payout
 
-    return most_frequent_count
+if __name__ == '__main__':
+    N = int(input())
+    H = int(input())
+    p = [float(i) for i in input().split()]
+    v = [int(i) for i in input().split()]
+    
+    # Calculate the expected payout
+    expected_payout = f1(N, H, p, v)
+    
+    # Print the expected payout
+    print(expected_payout)
 

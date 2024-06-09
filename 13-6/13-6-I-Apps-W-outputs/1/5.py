@@ -1,34 +1,42 @@
 
-def solve(n, x, edges):
-    # Initialize a dictionary to store the neighbors of each vertex
-    neighbors = {i: set() for i in range(1, n + 1)}
-    for edge in edges:
-        neighbors[edge[0]].add(edge[1])
-        neighbors[edge[1]].add(edge[0])
+def calculate_time(total_time, monkey_types):
+    # Initialize variables
+    time_spent = 0
+    monkey_type = 1
+    monkey_count = 0
+    coconut_count = 0
 
-    # Initialize a queue to store the vertices to be visited
-    queue = [x]
+    # Loop through the total time
+    for i in range(total_time):
+        # Check if it's time for the next monkey to arrive
+        if time_spent == 0 or time_spent % monkey_types[monkey_type-1]["arrival_time"] == 0:
+            # Increment the monkey count
+            monkey_count += 1
 
-    # Initialize a set to store the visited vertices
-    visited = set()
+            # Check if it's time for the next coconut to be picked
+            if monkey_count % monkey_types[monkey_type-1]["coconut_time"] == 0:
+                # Increment the coconut count
+                coconut_count += 1
 
-    # Loop through the queue until it is empty
-    while queue:
-        # Get the current vertex from the queue
-        vertex = queue.pop(0)
+        # Increment the time spent
+        time_spent += 1
 
-        # If the current vertex is the root vertex, return the number of moves
-        if vertex == 1:
-            return len(visited)
+    # Return the time between the arrival of the first and second types of monkeys
+    return time_spent - coconut_count * monkey_types[1]["arrival_time"]
 
-        # Add the current vertex to the visited set
-        visited.add(vertex)
+def main():
+    # Read the input
+    total_time = int(input())
+    monkey_types = []
+    for i in range(2):
+        monkey_types.append({"arrival_time": int(input()), "coconut_time": int(input())})
 
-        # Add the neighbors of the current vertex to the queue
-        for neighbor in neighbors[vertex]:
-            if neighbor not in visited:
-                queue.append(neighbor)
+    # Calculate the time between the arrival of the first and second types of monkeys
+    time_between = calculate_time(total_time, monkey_types)
 
-    # If the queue is empty, return the number of moves
-    return len(visited)
+    # Print the output
+    print(time_between)
+
+if __name__ == '__main__':
+    main()
 

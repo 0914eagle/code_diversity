@@ -1,23 +1,34 @@
 
-def explosion_probability(n, m, d, your_minions, opponent_minions):
-    # Calculate the total number of minions
-    total_minions = n + m
+def f1(N, Q):
+    # Initialize the array of stones
+    stones = [0] * (N + 1)
     
-    # Calculate the probability of a minion surviving the explosion
-    minion_survival_probability = 1 - (d / total_minions)
-    
-    # Calculate the probability of all opponent's minions surviving the explosion
-    opponent_minions_survival_probability = 1
-    for i in range(m):
-        opponent_minions_survival_probability *= minion_survival_probability
-    
-    # Calculate the probability of all your minions surviving the explosion
-    your_minions_survival_probability = 1
-    for i in range(n):
-        your_minions_survival_probability *= minion_survival_probability
-    
-    # Calculate the probability of all opponent's minions being removed
-    probability = opponent_minions_survival_probability * your_minions_survival_probability
-    
-    return probability
+    # Iterate over the queries
+    for _ in range(Q):
+        # Read the query type and values
+        query_type, u, v = map(int, input().split())
+        
+        # If the query is to put a stone inside a box
+        if query_type == 1:
+            # Put a stone inside the box with equal probability
+            stones[u] += 1
+            stones[v] += 1
+        
+        # If the query is to calculate the expected value of A
+        elif query_type == 2:
+            # Calculate the expected value of A
+            expected_A = 0
+            for i in range(1, N + 1):
+                expected_A += stones[i] ** 2
+            
+            # Print the expected value of A modulo 10^9 + 7
+            print(expected_A % (10**9 + 7))
+
+def f2(...):
+    # Implement f2 here
+    pass
+
+if __name__ == '__main__':
+    N, Q = map(int, input().split())
+    f1(N, Q)
 

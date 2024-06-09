@@ -1,25 +1,25 @@
 
-def solve(p):
-    n = len(p)
-    m = 0
-    while not is_sorted(p):
-        i, j = find_farthest_indices(p)
-        p[i], p[j] = p[j], p[i]
-        m += 1
-    return m
+def solve(S, x):
+    S.append(x)
+    S.sort()
+    return S
 
-def is_sorted(p):
-    return p == list(range(1, len(p) + 1))
+def find_subset(S):
+    max_value = 0
+    for i in range(len(S)):
+        for j in range(i+1, len(S)):
+            subset = S[i:j+1]
+            max_value = max(max_value, max(subset) - sum(subset) / len(subset))
+    return max_value
 
-def find_farthest_indices(p):
-    n = len(p)
-    max_diff = -1
-    i, j = -1, -1
-    for k in range(n):
-        for l in range(k+1, n):
-            diff = abs(p[k] - p[l])
-            if diff > max_diff:
-                max_diff = diff
-                i, j = k, l
-    return i, j
+if __name__ == '__main__':
+    S = []
+    queries = int(input())
+    for _ in range(queries):
+        query = input().split()
+        if query[0] == '1':
+            x = int(query[1])
+            S = solve(S, x)
+        else:
+            print(find_subset(S))
 

@@ -1,22 +1,16 @@
 
-def is_multigram(word):
-    if len(word) < 3:
-        return -1
-    
-    # Split the word into pairs of consecutive letters
-    pairs = [word[i:i+2] for i in range(len(word)-1)]
-    
-    # Check if all pairs are anagrams
-    for i in range(len(pairs)):
-        for j in range(i+1, len(pairs)):
-            if pairs[i] != pairs[j]:
-                return -1
-    
-    # If all pairs are anagrams, find the shortest root
-    roots = set()
-    for i in range(1, len(word)):
-        if word[:i] == word[i:]:
-            roots.add(word[:i])
-    
-    return min(roots)
+def get_mean(r1, r2):
+    return (r1 + r2) / 2
+
+def get_r2(r1, s):
+    r2 = s * 2 - r1
+    return r2
+
+def main():
+    r1, s = map(int, input().split())
+    r2 = get_r2(r1, s)
+    print(r2)
+
+if __name__ == '__main__':
+    main()
 

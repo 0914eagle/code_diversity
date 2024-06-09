@@ -1,31 +1,38 @@
 
-def solve(k, a):
-    # Convert the input array to a binary string
-    binary_string = "".join(str(int(i)) for i in a)
+def get_max_subsquare_area(picture, r1, c1, r2, c2):
+    # Initialize the maximum area of sub-square as 0
+    max_area = 0
+    
+    # Iterate over the sub-rectangle
+    for i in range(r1, r2):
+        for j in range(c1, c2):
+            # Check if the current cell is the top-left cell of a sub-square
+            if picture[i][j] == picture[i][j+1] == picture[i+1][j] == picture[i+1][j+1]:
+                # Calculate the area of the sub-square
+                area = (j - c1 + 1) * (i - r1 + 1)
+                # Update the maximum area if necessary
+                max_area = max(max_area, area)
+    
+    return max_area
 
-    # Initialize the minimum number of days to stay in the capital as the length of the binary string
-    min_days = len(binary_string)
+def solve(n, m, q, picture, options):
+    # Iterate over the options
+    for i in range(q):
+        # Get the coordinates of the current option
+        r1, c1, r2, c2 = options[i]
+        # Get the maximum area of sub-square inside the current option
+        max_area = get_max_subsquare_area(picture, r1, c1, r2, c2)
+        # Print the result
+        print(max_area)
 
-    # Iterate over the possible starting positions in the binary string
-    for i in range(len(binary_string)):
-        # Initialize the number of days spent in the capital as 0
-        days = 0
+def main():
+    # Read the input
+    n, m, q = map(int, input().split())
+    picture = [input() for _ in range(n)]
+    options = [list(map(int, input().split())) for _ in range(q)]
+    # Solve the problem
+    solve(n, m, q, picture, options)
 
-        # Iterate over the characters in the binary string starting from the current position
-        for j in range(i, len(binary_string)):
-            # If the current character is 1, it means there are classes for guest students on the corresponding day of the week
-            if binary_string[j] == "1":
-                # Increment the number of days spent in the capital
-                days += 1
-
-                # If the number of days spent in the capital is equal to the required number of days, break the loop
-                if days == k:
-                    break
-
-        # If the number of days spent in the capital is less than the minimum number of days, update the minimum number of days
-        if days < min_days:
-            min_days = days
-
-    # Return the minimum number of days to stay in the capital
-    return min_days
+if __name__ == '__main__':
+    main()
 

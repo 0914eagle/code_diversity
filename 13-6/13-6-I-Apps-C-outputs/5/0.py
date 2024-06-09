@@ -1,12 +1,22 @@
 
-def predict_temperature(average_temperatures):
-    n = len(average_temperatures)
-    if n == 1:
-        return average_temperatures[0]
-    else:
-        ap = average_temperatures[1] - average_temperatures[0]
-        for i in range(2, n):
-            if average_temperatures[i] - average_temperatures[i-1] != ap:
-                return average_temperatures[n-1]
-        return average_temperatures[n-1] + ap
+def f(string):
+    # Your code here
+    return string
+
+def main():
+    S = input()
+    T = [input() for _ in range(13)]
+    K = int(input())
+    M = int(input())
+    m = [int(i) for i in input().split()]
+
+    password = S
+    for i in range(K):
+        password = f(password)
+
+    for i in range(M):
+        print(password[m[i] - 1])
+
+if __name__ == '__main__':
+    main()
 

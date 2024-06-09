@@ -1,26 +1,33 @@
 
-def get_best_flight_to_cancel_and_new_flight_to_add(n, flights):
-    # Initialize a graph with the given flights
-    graph = {i: set() for i in range(1, n + 1)}
-    for flight in flights:
-        graph[flight[0]].add(flight[1])
-        graph[flight[1]].add(flight[0])
+def find_events(evidence, implications):
+    # Initialize a set to store the events that have certainly occurred
+    certainly_occurred = set()
 
-    # Find the flight with the maximum number of connections
-    max_connections = 0
-    flight_to_cancel = None
-    for flight in flights:
-        connections = len(graph[flight[0]] & graph[flight[1]])
-        if connections > max_connections:
-            max_connections = connections
-            flight_to_cancel = flight
+    # Add the given evidence to the set of certainly occurred events
+    certainly_occurred.update(evidence)
 
-    # Find the best new flight to add
-    flight_to_add = None
-    for city in range(1, n + 1):
-        if city not in graph[flight_to_cancel[0]] and city not in graph[flight_to_cancel[1]]:
-            flight_to_add = (flight_to_cancel[0], city)
-            break
+    # Iterate through the implications and find the events that can be deduced
+    for implication in implications:
+        # If the event on the left side of the implication is in the set of certainly occurred events,
+        # and the event on the right side of the implication is not, then add it to the set
+        if implication[0] in certainly_occurred and implication[1] not in certainly_occurred:
+            certainly_occurred.add(implication[1])
 
-    return (max_connections - 1, flight_to_cancel, flight_to_add)
+    # Return the set of certainly occurred events
+    return certainly_occurred
+
+def main():
+    # Read the input data
+    num_events, num_implications, num_evidence = map(int, input().split())
+    implications = [tuple(map(int, input().split())) for _ in range(num_implications)]
+    evidence = set(map(int, input().split()))
+
+    # Find the events that have certainly occurred
+    certainly_occurred = find_events(evidence, implications)
+
+    # Print the events that have certainly occurred
+    print(*sorted(certainly_occurred), sep=' ')
+
+if __name__ == '__main__':
+    main()
 

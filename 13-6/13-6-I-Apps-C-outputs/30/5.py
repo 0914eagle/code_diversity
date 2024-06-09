@@ -1,24 +1,44 @@
 
-def get_max_lights_on(n, s, a, b):
-    # Initialize a list to store the state of each light
-    lights = [1 if s[i] == "1" else 0 for i in range(n)]
+def f1(n, m, q):
+    # Initialize a graph with n nodes and m edges
+    graph = [[] for _ in range(n)]
+    for _ in range(m):
+        a, b, w = map(int, input().split())
+        graph[a-1].append((b-1, w))
+        graph[b-1].append((a-1, w))
     
-    # Initialize a list to store the number of lights that are on at each second
-    seconds = [0] * (max(b) + 1)
-    
-    # Loop through each light and its parameters
+    # Find the shortest path between every pair of nodes using BFS
+    dist = [[float('inf') for _ in range(n)] for _ in range(n)]
     for i in range(n):
-        # Loop through each second when the light will toggle
-        for j in range(b[i], max(b) + 1, a[i]):
-            # If the light is on, turn it off
-            if lights[i]:
-                lights[i] = 0
-                seconds[j] -= 1
-            # If the light is off, turn it on
-            else:
-                lights[i] = 1
-                seconds[j] += 1
+        dist[i][i] = 0
+    queue = [(0, i) for i in range(n)]
+    while queue:
+        cost, node = queue.pop(0)
+        for neighbor, weight in graph[node]:
+            if dist[node][neighbor] > cost + weight:
+                dist[node][neighbor] = cost + weight
+                queue.append((cost + weight, neighbor))
     
-    # Return the maximum number of lights that are on at the same time
-    return max(seconds)
+    # Return the shortest distance between any pair of nodes
+    return dist
+
+def f2(s, t, q):
+    # Initialize the cost of sending a crystal from s to t as 0
+    cost = 0
+    
+    # Loop through each day
+    for _ in range(q):
+        # Read the input for the current day
+        s, t = map(int, input().split())
+        
+        # Calculate the cost of sending a crystal from s to t for the current day
+        cost = f1(n, m, q)[s-1][t-1]
+        
+        # Print the cost of sending a crystal from s to t for the current day
+        print(cost)
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    q = int(input())
+    f2(s, t, q)
 

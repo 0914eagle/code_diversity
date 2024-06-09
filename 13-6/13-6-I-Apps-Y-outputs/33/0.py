@@ -1,16 +1,16 @@
 
-def frequency_sorter(message, C):
-    # Convert the message to a dictionary, where each key is a number and each value is the frequency of that number
-    frequency = {}
-    for num in message:
-        if num in frequency:
-            frequency[num] += 1
-        else:
-            frequency[num] = 1
+def calculate_years(x):
+    balance = 100
+    years = 0
+    while balance < x:
+        balance *= 1.01
+        years += 1
+    return years
 
-    # Sort the dictionary by frequency in descending order, and then by value in ascending order
-    sorted_frequency = sorted(frequency.items(), key=lambda x: (-x[1], x[0]))
+def main():
+    x = int(input())
+    print(calculate_years(x))
 
-    # Return the sorted message
-    return [num for num, _ in sorted_frequency]
+if __name__ == '__main__':
+    main()
 

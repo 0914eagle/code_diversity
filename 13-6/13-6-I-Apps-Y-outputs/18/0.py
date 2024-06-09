@@ -1,16 +1,18 @@
 
-def solve(l1, r1, l2, r2):
-    # Find the leftmost and rightmost points of the two segments
-    left = max(l1, l2)
-    right = min(r1, r2)
-    
-    # If the segments do not overlap, return None
-    if left >= right:
-        return None
-    
-    # Find the middle point of the overlap
-    mid = (left + right) // 2
-    
-    # Return the two points
-    return (mid, mid + 1)
+def is_even(n):
+    return n % 2 == 0
+
+def is_odd(n):
+    return n % 2 == 1
+
+def solve(a, b):
+    product = a * b
+    if is_even(product):
+        return "Even"
+    else:
+        return "Odd"
+
+if __name__ == '__main__':
+    a, b = map(int, input().split())
+    print(solve(a, b))
 

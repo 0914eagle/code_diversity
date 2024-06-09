@@ -1,31 +1,28 @@
 
-def get_sugar_water(a, b, c, d, e, f):
-    # Initialize variables
-    sugar_water = 0
-    sugar_dissolved = 0
+def get_operators(a, b, c, d):
+    operators = ["+", "-", "*", "/"]
+    valid_expressions = []
+    for op1 in operators:
+        for op2 in operators:
+            for op3 in operators:
+                for op4 in operators:
+                    expression = f"{a} {op1} {b} {op2} {c} {op3} {d} {op4}"
+                    try:
+                        result = eval(expression)
+                        if result:
+                            valid_expressions.append(expression)
+                    except ZeroDivisionError:
+                        pass
+    return valid_expressions
 
-    # Loop through possible combinations of operations
-    for operation_1 in range(0, f + 1):
-        for operation_2 in range(0, f + 1 - operation_1):
-            for operation_3 in range(0, f + 1 - operation_1 - operation_2):
-                for operation_4 in range(0, f + 1 - operation_1 - operation_2 - operation_3):
-                    # Calculate the total mass of substances in the beaker
-                    total_mass = operation_1 * a + operation_2 * b + operation_3 * c + operation_4 * d
+def main():
+    a, b, c, d = map(int, input().split())
+    valid_expressions = get_operators(a, b, c, d)
+    if valid_expressions:
+        print("\n".join(sorted(valid_expressions)))
+    else:
+        print("problems ahead")
 
-                    # Check if the total mass is within the allowed range
-                    if total_mass <= f:
-                        # Calculate the mass of sugar water
-                        sugar_water = operation_1 * a + operation_2 * b + operation_3 * c + operation_4 * d
-
-                        # Calculate the mass of sugar dissolved
-                        sugar_dissolved = operation_3 * c + operation_4 * d
-
-                        # Check if the density of the sugar water is higher than the previous one
-                        if sugar_water * 100 / (sugar_dissolved + sugar_water) > sugar_water * 100 / (sugar_dissolved + sugar_water - e):
-                            # Update the solution
-                            sugar_water = sugar_water
-                            sugar_dissolved = sugar_dissolved
-
-    # Return the solution
-    return sugar_water, sugar_dissolved
+if __name__ == '__main__':
+    main()
 

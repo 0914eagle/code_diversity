@@ -1,10 +1,16 @@
 
-def arild_counting(n, words):
-    count = 0
-    for word in words:
-        if word.isdigit():
-            count += 1
-        elif word == "mumble":
-            return "something is fishy"
-    return "makes sense" if count == n else "something is fishy"
+def evaluate_formula(formula):
+    A, op, B = formula.split()
+    if op == "+":
+        return int(A) + int(B)
+    else:
+        return int(A) - int(B)
+
+def main():
+    formula = input("Enter the formula: ")
+    result = evaluate_formula(formula)
+    print(result)
+
+if __name__ == '__main__':
+    main()
 

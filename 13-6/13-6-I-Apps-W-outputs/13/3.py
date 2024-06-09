@@ -1,26 +1,47 @@
 
-def is_possible(n, a):
-    # Initialize the number of pizzas needed and the number of active coupons
-    needed_pizzas, active_coupons = sum(a), 0
-
-    # Iterate through the number of training sessions
-    for i in range(n):
-        # If there are teams present on the current day
-        if a[i]:
-            # Use the coupon if there is an active coupon and the number of needed pizzas is even
-            if active_coupons and needed_pizzas % 2 == 0:
-                needed_pizzas -= 1
-                active_coupons -= 1
-            # Use the discount if the number of needed pizzas is greater than 1
-            elif needed_pizzas > 1:
-                needed_pizzas -= 2
-            # If the number of needed pizzas is 1 and there is no active coupon, it's not possible to order the pizzas
+def find_largest_rectangle(matrix):
+    # Initialize a list to store the heights of the bars
+    heights = [0] * len(matrix[0])
+    # Loop through each row of the matrix
+    for i in range(len(matrix)):
+        # Loop through each column of the row
+        for j in range(len(matrix[i])):
+            # If the current element is 1, increment the height
+            if matrix[i][j] == "1":
+                heights[j] += 1
+            # If the current element is 0, set the height to 0
             else:
-                return False
-        # If there are no teams present on the current day, activate the coupon
-        else:
-            active_coupons += 1
+                heights[j] = 0
+    # Find the largest rectangle by traversing the heights list and calculating the area of each rectangle
+    largest_rectangle = 0
+    for i in range(len(heights)):
+        # Initialize the current area to 0
+        current_area = 0
+        # Loop through each element in the heights list from the current index to the end
+        for j in range(i, len(heights)):
+            # Update the current area by adding the current height to the previous area
+            current_area += heights[j]
+            # If the current area is greater than the largest area, update the largest area
+            if current_area > largest_rectangle:
+                largest_rectangle = current_area
+    return largest_rectangle
 
-    # If all the pizzas were ordered and there are no active coupons, it's possible to order the pizzas
-    return needed_pizzas == 0 and active_coupons == 0
+def input_matrix():
+    # Input the number of rows and columns in the matrix
+    rows, cols = map(int, input("Enter the number of rows and columns: ").split())
+    # Initialize a list to store the matrix
+    matrix = []
+    # Loop through each row of the matrix
+    for i in range(rows):
+        # Input a list of integers for the current row
+        matrix.append(list(map(int, input("Enter a row: ").split())))
+    return matrix
+
+if __name__ == '__main__':
+    # Get the matrix from the user
+    matrix = input_matrix()
+    # Find the largest rectangle in the matrix
+    largest_rectangle = find_largest_rectangle(matrix)
+    # Print the largest rectangle
+    print(f"The largest rectangle in the matrix is: {largest_rectangle}")
 

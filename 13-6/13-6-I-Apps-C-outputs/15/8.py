@@ -1,36 +1,73 @@
 
-def solve(R, C, K, grid, points):
-    # Initialize the maximum score to 0
-    max_score = 0
-    
-    # Loop through all possible combinations of conveyor belts
-    for i in range(2**K):
-        # Convert the binary representation of i to a list of 0s and 1s
-        conveyor_belts = [int(x) for x in bin(i)[2:].zfill(K)]
-        
-        # Initialize the current score to 0
-        current_score = 0
-        
-        # Loop through each row of the grid
-        for r in range(R):
-            # Loop through each column of the grid
-            for c in range(C):
-                # If the current cell is a conveyor belt and it has not been set, set it to the direction indicated by the current bit in the conveyor_belts list
-                if grid[r][c] == '?' and conveyor_belts[r]:
-                    grid[r][c] = 'R' if conveyor_belts[r] == 1 else 'L'
-                
-                # If the current cell is a point, add its score to the current score
-                if grid[r][c] in '123456789':
-                    current_score += int(grid[r][c])
-                    
-                # If the current cell is an obstacle, break out of the loop
-                if grid[r][c] == 'X':
-                    break
-                    
-        # If the current score is greater than the maximum score, update the maximum score
-        if current_score > max_score:
-            max_score = current_score
-    
-    # Return the maximum score
-    return max_score
+def f1(n, k, directions):
+    # Initialize a list to store the coordinates of the plants
+    plants = []
+
+    # Iterate through the input and add the coordinates of the plants to the list
+    for i in range(n):
+        x, y = map(int, input().split())
+        plants.append((x, y))
+
+    # Initialize a dictionary to store the coordinates of the plants that Barica has visited
+    visited = {}
+
+    # Initialize the current coordinates of Barica
+    current_x, current_y = plants[0]
+
+    # Iterate through the directions and update the current coordinates of Barica
+    for direction in directions:
+        if direction == "A":
+            current_x += 1
+        elif direction == "B":
+            current_y += 1
+        elif direction == "C":
+            current_x -= 1
+        elif direction == "D":
+            current_y -= 1
+
+        # If the current coordinates are not in the visited dictionary, add them to the dictionary
+        if (current_x, current_y) not in visited:
+            visited[(current_x, current_y)] = True
+
+    # Return the final coordinates of Barica
+    return current_x, current_y
+
+def f2(n, k, directions):
+    # Initialize a list to store the coordinates of the plants
+    plants = []
+
+    # Iterate through the input and add the coordinates of the plants to the list
+    for i in range(n):
+        x, y = map(int, input().split())
+        plants.append((x, y))
+
+    # Initialize a dictionary to store the coordinates of the plants that Barica has visited
+    visited = {}
+
+    # Initialize the current coordinates of Barica
+    current_x, current_y = plants[0]
+
+    # Iterate through the directions and update the current coordinates of Barica
+    for direction in directions:
+        if direction == "A":
+            current_x += 1
+        elif direction == "B":
+            current_y += 1
+        elif direction == "C":
+            current_x -= 1
+        elif direction == "D":
+            current_y -= 1
+
+        # If the current coordinates are not in the visited dictionary, add them to the dictionary
+        if (current_x, current_y) not in visited:
+            visited[(current_x, current_y)] = True
+
+    # Return the final coordinates of Barica
+    return current_x, current_y
+
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    directions = input()
+    print(*f1(n, k, directions))
+    print(*f2(n, k, directions))
 

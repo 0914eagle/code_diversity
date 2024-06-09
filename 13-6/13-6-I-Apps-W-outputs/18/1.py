@@ -1,22 +1,26 @@
 
-def get_maximum_happiness(N, V, C):
-    # Initialize the maximum happiness value
-    max_happiness = 0
+def get_criminals_detected(n, a, t):
+    # Initialize a list to store the number of criminals detected at each distance
+    criminals_detected = [0] * (n + 1)
     
-    # Iterate over all possible combinations of ingredients
-    for i in range(1, N + 1):
-        for j in range(1, N + 1):
-            if i * j % N == 0:
-                # Calculate the happiness value for this combination
-                happiness = V[i] + V[j]
-                
-                # Calculate the cost of this combination
-                cost = i ** 2 * C[i] + j ** 2 * C[j]
-                
-                # Check if the happiness value is greater than the maximum happiness value
-                if happiness > max_happiness:
-                    max_happiness = happiness
+    # Iterate over the t[i] for each city i
+    for i in range(n):
+        # If there is a criminal in city i, update the number of criminals detected at each distance
+        if t[i] == 1:
+            for j in range(i + 1):
+                criminals_detected[j] += 1
     
-    # Return the maximum happiness value
-    return max_happiness
+    # Return the number of criminals detected at distance a
+    return criminals_detected[a]
+
+def main():
+    # Read the input n, a, and t
+    n, a = map(int, input().split())
+    t = list(map(int, input().split()))
+    
+    # Call the get_criminals_detected function and print the result
+    print(get_criminals_detected(n, a, t))
+
+if __name__ == '__main__':
+    main()
 

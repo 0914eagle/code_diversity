@@ -1,21 +1,31 @@
 
-def solve(n, k, p):
-    # Calculate the number of permutations of length n
-    num_permutations = 1
-    for i in range(n):
-        num_permutations = (num_permutations * (n - i)) % p
-    
-    # Calculate the number of permutations with runs of length k
-    num_runs = 0
-    for i in range(n - k + 1):
-        # Calculate the number of permutations with a run of length k at position i
-        num_runs_at_i = 1
-        for j in range(i + 1, i + k):
-            num_runs_at_i = (num_runs_at_i * (j - i)) % p
-        
-        # Add the number of permutations with a run of length k at position i to the total
-        num_runs = (num_runs + num_runs_at_i) % p
-    
-    # Return the number of permutations with runs of length at most k
-    return num_permutations - num_runs
+def get_input():
+    N, M = map(int, input().split())
+    assert 2 <= N <= 50 and 2 <= M <= 50
+    food_preferences = []
+    for _ in range(N):
+        food_preferences.append(list(map(int, input().split())))
+    assert all(1 <= t <= 200 for row in food_preferences for t in row)
+    return N, M, food_preferences
+
+def solve(N, M, food_preferences):
+    # Initialize a list to store the minimum time required to feed each dog
+    min_times = [0] * N
+    # Loop through each dog
+    for i in range(N):
+        # Loop through each bowl
+        for j in range(M):
+            # If the current time required to feed the dog is greater than the minimum time required to feed the dog
+            if min_times[i] < food_preferences[i][j]:
+                # Update the minimum time required to feed the dog
+                min_times[i] = food_preferences[i][j]
+    # Return the sum of the minimum times required to feed all dogs
+    return sum(min_times)
+
+def main():
+    N, M, food_preferences = get_input()
+    print(solve(N, M, food_preferences))
+
+if __name__ == '__main__':
+    main()
 

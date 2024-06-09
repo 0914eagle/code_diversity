@@ -1,34 +1,47 @@
 
-def solve(R, S, L, lawsuits):
-    # Initialize a dictionary to store the number of lawsuits won by each individual and corporation
-    wins = {}
-    for i in range(1, R+1):
-        wins[f"INDV {i}"] = 0
-    for i in range(1, S+1):
-        wins[f"CORP {i}"] = 0
+def get_button_presses(current_state, desired_state):
+    # Initialize the queue of button presses
+    queue = []
     
-    # Iterate through the lawsuits and increment the number of lawsuits won by the winning party
-    for lawsuit in lawsuits:
-        individual, corporation = lawsuit
-        if wins[f"INDV {individual}"] < wins[f"CORP {corporation}"]:
-            wins[f"INDV {individual}"] += 1
-        else:
-            wins[f"CORP {corporation}"] += 1
+    # Loop through the current state of the staircase room
+    for i in range(len(current_state)):
+        # Get the current floor and the floor it is connected to
+        current_floor, connected_floor = current_state[i]
+        
+        # Get the desired floor and the floor it is connected to
+        desired_floor, desired_connected_floor = desired_state[i]
+        
+        # If the current floor and the desired floor are not the same, add a red button press to the queue
+        if current_floor != desired_floor:
+            queue.append(("R", current_floor))
+        
+        # If the connected floors are not the same, add a green button press to the queue
+        if connected_floor != desired_connected_floor:
+            queue.append(("G", current_floor))
     
-    # Find the individual or corporation with the minimum number of lawsuits won
-    min_wins = min(wins.values())
-    for key, value in wins.items():
-        if value == min_wins:
-            return key
+    # Return the queue of button presses
+    return queue
 
-def main():
-    R, S, L = map(int, input().split())
-    lawsuits = []
-    for i in range(L):
-        individual, corporation = map(int, input().split())
-        lawsuits.append((individual, corporation))
-    print(solve(R, S, L, lawsuits))
+def f1():
+    # Read the input from stdin
+    N, M = map(int, input().split())
+    current_state = []
+    desired_state = []
+    for i in range(M):
+        current_state.append(list(map(int, input().split())))
+    for i in range(M):
+        desired_state.append(list(map(int, input().split())))
+    
+    # Get the button presses
+    queue = get_button_presses(current_state, desired_state)
+    
+    # Print the length of the queue
+    print(len(queue))
+    
+    # Print the button presses
+    for press in queue:
+        print(press[0], press[1])
 
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    f1()
 

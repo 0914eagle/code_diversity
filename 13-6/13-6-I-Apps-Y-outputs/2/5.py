@@ -1,29 +1,30 @@
 
-def refill_fridge(n, m, s, d, current_bottles):
-    # Initialize the probability of all students getting a cold soda as 0
-    prob = 0
-    # Initialize the refill scheme as an empty list
-    refill_scheme = []
+def is_same_group(x, y):
+    # Define the criteria for dividing the integers into groups
+    group_1 = [1, 2, 3, 4, 5]
+    group_2 = [6, 7, 8, 9, 10]
+    group_3 = [11, 12]
     
-    # Loop through each slot in the fridge
-    for i in range(s):
-        # Calculate the number of empty slots in the current slot
-        empty_slots = d - current_bottles[i]
-        # If there are enough empty slots to fit all the new bottles, update the probability and refill scheme
-        if empty_slots >= n:
-            prob += 1 / (s * m)
-            refill_scheme += [n]
-            break
-        # If there are not enough empty slots, update the probability and refill scheme
-        else:
-            prob += empty_slots / (s * m)
-            refill_scheme += [empty_slots]
-            n -= empty_slots
-    
-    # If the probability is greater than or equal to 1, return the refill scheme
-    if prob >= 1:
-        return refill_scheme
-    # If the probability is less than 1, return "impossible"
+    # Check if x and y belong to the same group
+    if x in group_1 and y in group_1:
+        return True
+    elif x in group_2 and y in group_2:
+        return True
+    elif x in group_3 and y in group_3:
+        return True
     else:
-        return "impossible"
+        return False
+
+def main():
+    # Accept input from the user
+    x, y = map(int, input().split())
+    
+    # Check if x and y belong to the same group
+    if is_same_group(x, y):
+        print("Yes")
+    else:
+        print("No")
+
+if __name__ == '__main__':
+    main()
 

@@ -1,15 +1,32 @@
 
-def solve(n, m, p):
-    # Initialize the number of ways to place the minimum number of obstacles
-    ways = 0
-    
-    # Loop through all possible positions of the obstacle
-    for i in range(n - 1):
-        for j in range(m - 1):
-            # Check if the current position forms a valid 2x2 subgrid with at least one obstacle
-            if (i == 0 or j == 0 or i == n - 2 or j == m - 2) and (i != n - 1 or j != m - 1):
-                ways += 1
-    
-    # Return the number of ways modulo p
-    return ways % p
+def f(a):
+    # Calculate the gcd of the sequence
+    gcd = a[0]
+    for i in range(1, len(a)):
+        gcd = gcd(gcd, a[i])
+    return gcd
+
+def f1(n, a):
+    # Calculate the number of distinct values of f
+    distinct_values = set()
+    for i in range(n):
+        for j in range(i+1, n+1):
+            distinct_values.add(f(a[i:j]))
+    return len(distinct_values)
+
+def f2(n, a):
+    # Calculate the number of distinct values of f using a more efficient algorithm
+    distinct_values = set()
+    for i in range(n):
+        gcd = a[i]
+        for j in range(i+1, n+1):
+            gcd = gcd(gcd, a[j])
+            distinct_values.add(gcd)
+    return len(distinct_values)
+
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(f1(n, a))
+    print(f2(n, a))
 

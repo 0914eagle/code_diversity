@@ -1,24 +1,22 @@
 
-def solve(R, S, K, picture):
-    # Initialize variables
-    max_kills = 0
-    racket_position = []
+def get_input():
+    N = int(input())
+    L = list(map(int, input().split()))
+    return N, L
 
-    # Iterate through each row of the picture
-    for i in range(R):
-        # Iterate through each column of the picture
-        for j in range(S):
-            # If the current pixel is a fly, check if it is within the racket's range
-            if picture[i][j] == "*":
-                # Calculate the distance from the current pixel to the racket's center
-                distance = abs(i - (R // 2)) + abs(j - (S // 2))
-                # If the distance is less than or equal to the racket's length, it is within the racket's range
-                if distance <= K:
-                    # Increment the number of kills
-                    max_kills += 1
-                    # Add the current pixel to the racket position
-                    racket_position.append((i, j))
+def find_triples(N, L):
+    triples = 0
+    for i in range(N-2):
+        for j in range(i+1, N-1):
+            for k in range(j+1, N):
+                if L[i] != L[j] and L[j] != L[k] and L[k] != L[i]:
+                    triples += 1
+    return triples
 
-    # Return the maximum number of kills and the racket position
-    return max_kills, racket_position
+def main():
+    N, L = get_input()
+    print(find_triples(N, L))
+
+if __name__ == '__main__':
+    main()
 

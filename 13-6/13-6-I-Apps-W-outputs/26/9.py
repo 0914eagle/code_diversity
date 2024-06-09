@@ -1,28 +1,26 @@
 
-def get_max_vegetables(m, v, d, a):
-    # Sort the lanes based on the day they become edible
-    sorted_lanes = sorted(zip(d, a), key=lambda x: x[0])
+def get_neighbors(student_id, neighbors):
+    for neighbor in neighbors:
+        if neighbor[0] == student_id:
+            return neighbor[1]
+    return 0
 
-    # Initialize the variables
-    total_vegetables = 0
-    current_day = 1
-    collected_vegetables = 0
+def restore_queue(n, neighbors):
+    queue = []
+    for i in range(n):
+        student_id = i + 1
+        neighbor_id = get_neighbors(student_id, neighbors)
+        queue.append(neighbor_id)
+    return queue
 
-    # Loop through the lanes
-    for i in range(m):
-        # Check if the current day is within the range of the current lane
-        if current_day >= sorted_lanes[i][0] and current_day <= sorted_lanes[i][0] + 1:
-            # Check if the collected vegetables are less than the capacity
-            if collected_vegetables < v:
-                # Add the vegetables to the total and increase the collected vegetables
-                total_vegetables += sorted_lanes[i][1]
-                collected_vegetables += sorted_lanes[i][1]
-            # If the collected vegetables are greater than the capacity, then break the loop
-            else:
-                break
+def main():
+    n = int(input())
+    neighbors = []
+    for i in range(n):
+        neighbors.append(list(map(int, input().split())))
+    queue = restore_queue(n, neighbors)
+    print(*queue, sep=' ')
 
-        # Increase the current day
-        current_day += 1
-
-    return total_vegetables
+if __name__ == '__main__':
+    main()
 

@@ -1,20 +1,45 @@
 
-def is_possible(n, a):
-    # Initialize the number of pizzas needed and the number of days with at least one team as 0
-    needed_pizzas, days_with_teams = 0, 0
+def get_largest_rectangle(matrix):
+    # Initialize variables
+    max_area = 0
+    current_area = 0
+    top_row = 0
+    bottom_row = len(matrix) - 1
+    left_col = 0
+    right_col = len(matrix[0]) - 1
+    
+    # Loop through the matrix
+    while top_row <= bottom_row and left_col <= right_col:
+        # Check if the current cell is 1
+        if matrix[top_row][left_col] == "1":
+            # Increment the current area
+            current_area += 1
+        else:
+            # If the current cell is 0, check if the current area is greater than the max area
+            if current_area > max_area:
+                max_area = current_area
+            # Reset the current area
+            current_area = 0
+        
+        # Move to the next cell
+        top_row += 1
+        left_col += 1
+    
+    # Check if the current area is greater than the max area
+    if current_area > max_area:
+        max_area = current_area
+    
+    return max_area
 
-    # Iterate through the array of teams per day
-    for i in range(n):
-        # If there are teams on the current day, increase the number of days with at least one team
-        if a[i] > 0:
-            days_with_teams += 1
-            # Increase the number of pizzas needed by the number of teams on the current day
-            needed_pizzas += a[i]
+def main():
+    matrix = [
+      ["1","0","1","0","0"],
+      ["1","0","1","1","1"],
+      ["1","1","1","1","1"],
+      ["1","0","0","1","0"]
+    ]
+    print(get_largest_rectangle(matrix))
 
-    # Check if the number of pizzas needed is divisible by 2 (using the coupon discount)
-    # and if the number of days with at least one team is divisible by 2 (using the coupon discount)
-    if needed_pizzas % 2 == 0 and days_with_teams % 2 == 0:
-        return "YES"
-    else:
-        return "NO"
+if __name__ == '__main__':
+    main()
 

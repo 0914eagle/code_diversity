@@ -1,27 +1,22 @@
 
-def can_koa_get_to_the_island(n, k, l, d):
-    # Initialize variables
-    x = 0
-    t = 0
-    p = [0] * (2 * k)
-    for i in range(1, k):
-        p[i] = 1
-    for i in range(k, 2 * k):
-        p[i] = -1
+def is_rated(n, ratings):
+    # Check if at least one rating has changed
+    if len(set(ratings)) == 1:
+        return "unrated"
+    
+    # Check if the round was rated and a participant with lower rating took a better place than a participant with higher rating
+    for i in range(n-1):
+        if ratings[i] > ratings[i+1] and ratings[i] - ratings[i+1] > 1:
+            return "rated"
+    
+    # If the round was not rated and no one's rating has changed, it's impossible to determine whether the round is rated or not
+    return "maybe"
 
-    # Loop through each second
-    while x < n:
-        # Check if Koa can swim to the next meter
-        if d[x] + p[t % (2 * k)] <= l:
-            x += 1
-        # Koa stays at the current meter
-        else:
-            x = x
-        t += 1
+def main():
+    n = int(input())
+    ratings = list(map(int, input().split()))
+    print(is_rated(n, ratings))
 
-    # Check if Koa reached the island
-    if x == n:
-        return "Yes"
-    else:
-        return "No"
+if __name__ == '__main__':
+    main()
 

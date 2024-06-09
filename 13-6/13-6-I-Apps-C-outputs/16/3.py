@@ -1,24 +1,23 @@
 
-def get_toppings(n_friends, friends_wishes):
-    # Initialize a dictionary to count the number of wishes for each topping
-    topping_counts = {}
-    for friend in friends_wishes:
-        for wish in friend:
-            if wish.startswith("+"):
-                topping = wish[1:]
-                if topping not in topping_counts:
-                    topping_counts[topping] = 1
-                else:
-                    topping_counts[topping] += 1
-    
-    # Sort the toppings by their count in descending order
-    sorted_toppings = sorted(topping_counts.items(), key=lambda x: x[1], reverse=True)
-    
-    # Create a list of toppings with at least 2/3 of their wishes fulfilled
-    fulfilled_toppings = []
-    for topping, count in sorted_toppings:
-        if count >= n_friends / 3:
-            fulfilled_toppings.append(topping)
-    
-    return fulfilled_toppings
+def is_aesthetic(path_length, color_count):
+    # Check if the path is aesthetic with the given color count
+    for i in range(1, path_length + 1):
+        for j in range(i + 1, path_length + 1):
+            if path_length % abs(i - j) == 0 and color_count > 1:
+                return True
+    return False
+
+
+def find_max_color_count(path_length):
+    # Find the maximum number of colors that can be used to make the path aesthetic
+    max_color_count = 1
+    for i in range(2, path_length + 1):
+        if is_aesthetic(path_length, i):
+            max_color_count = i
+    return max_color_count
+
+
+if __name__ == '__main__':
+    path_length = int(input())
+    print(find_max_color_count(path_length))
 

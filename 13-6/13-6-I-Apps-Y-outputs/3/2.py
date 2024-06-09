@@ -1,22 +1,56 @@
 
-def get_min_heaters(n, r, a):
-    # Sort the heaters in ascending order
-    sorted_heaters = sorted(a)
-
-    # Initialize the minimum number of heaters needed to warm up the whole house
-    min_heaters = 0
-
-    # Iterate through the heaters and count the number of heaters needed to warm up each element
+def get_move_count(n, a):
+    # Initialize variables
+    alice_moves = 0
+    bob_moves = 0
+    alice_total = 0
+    bob_total = 0
+    
+    # Loop through each candy
     for i in range(n):
-        # Find the closest heater to the current element
-        closest_heater = sorted_heaters[0]
-        for j in range(1, len(sorted_heaters)):
-            if abs(sorted_heaters[j] - i) < abs(closest_heater - i):
-                closest_heater = sorted_heaters[j]
+        # Alice's turn
+        if i % 2 == 0:
+            alice_total += a[i]
+            alice_moves += 1
+        
+        # Bob's turn
+        else:
+            bob_total += a[i]
+            bob_moves += 1
+        
+        # Check if the game has ended
+        if alice_total > bob_total:
+            break
+        elif bob_total > alice_total:
+            break
+    
+    # Return the number of moves
+    return alice_moves, bob_moves
 
-        # If the current element is not warmed up by any heater, increment the minimum number of heaters needed
-        if closest_heater - r + 1 > i or closest_heater + r - 1 < i:
-            min_heaters += 1
+def get_total_sweets(n, a):
+    # Initialize variables
+    alice_total = 0
+    bob_total = 0
+    
+    # Loop through each candy
+    for i in range(n):
+        # Alice's turn
+        if i % 2 == 0:
+            alice_total += a[i]
+        
+        # Bob's turn
+        else:
+            bob_total += a[i]
+    
+    # Return the total sweets eaten
+    return alice_total, bob_total
 
-    return min_heaters
+if __name__ == '__main__':
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        a = list(map(int, input().split()))
+        moves = get_move_count(n, a)
+        alice_total, bob_total = get_total_sweets(n, a)
+        print(moves[0], alice_total, bob_total)
 

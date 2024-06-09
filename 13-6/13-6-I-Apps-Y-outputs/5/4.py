@@ -1,29 +1,25 @@
 
-def get_sugar_water(A, B, C, D, E, F):
-    # Initialize variables
-    sugar_water = 0
-    sugar_dissolved = 0
+def get_valid_expressions(a, b, c, d):
+    valid_expressions = []
+    for operator1 in ['+', '-', '*', '/']:
+        for operator2 in ['+', '-', '*', '/']:
+            expression = f"{a} {operator1} {b} = {c} {operator2} {d}"
+            try:
+                result = eval(expression)
+                if result:
+                    valid_expressions.append(expression)
+            except ZeroDivisionError:
+                pass
+    return valid_expressions
 
-    # Calculate the maximum amount of sugar that can be dissolved in water
-    max_sugar_dissolved = E * 100 / A
+def main():
+    a, b, c, d = map(int, input().split())
+    valid_expressions = get_valid_expressions(a, b, c, d)
+    if valid_expressions:
+        print(*valid_expressions, sep='\n')
+    else:
+        print("problems ahead")
 
-    # Loop through all possible combinations of operations
-    for i in range(A + 1):
-        for j in range(B + 1):
-            for k in range(min(C, max_sugar_dissolved) + 1):
-                for l in range(min(D, max_sugar_dissolved - k) + 1):
-                    # Calculate the total mass of sugar and water in the beaker
-                    total_mass = i * A + j * B + k + l
-
-                    # Check if the total mass is within the allowed range and if the beaker contains no undissolved sugar
-                    if total_mass <= F and k + l == 0:
-                        # Calculate the density of the sugar water
-                        density = (k * 100) / (i * A + j * B + k + l)
-
-                        # Check if the density is higher than the current best density
-                        if density > sugar_water:
-                            sugar_water = density
-                            sugar_dissolved = k
-
-    return sugar_water, sugar_dissolved
+if __name__ == '__main__':
+    main()
 

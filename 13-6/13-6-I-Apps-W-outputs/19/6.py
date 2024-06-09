@@ -1,25 +1,25 @@
 
-def solve(n, arr):
-    # Sort the array in ascending order
-    arr.sort()
+def get_maximum_fruits(lemons, apples, pears):
+    # Find the greatest common divisor of lemons, apples, and pears
+    gcd = _get_gcd(lemons, apples, pears)
+    
+    # Divide lemons, apples, and pears by their greatest common divisor
+    # to get the maximum number of fruits that can be used in the compote
+    max_lemons = lemons // gcd
+    max_apples = apples // gcd
+    max_pears = pears // gcd
+    
+    return max_lemons + max_apples + max_pears
 
-    # Initialize the minimum distance and quantity of pairs
-    min_dist = float('inf')
-    quantity = 0
+def _get_gcd(a, b, c):
+    if b == 0:
+        return a
+    else:
+        return _get_gcd(b, c % b, a)
 
-    # Iterate over the array
-    for i in range(n - 1):
-        # Calculate the distance between the current city and the next city
-        dist = abs(arr[i + 1] - arr[i])
-
-        # If the distance is less than the minimum distance, update the minimum distance and quantity of pairs
-        if dist < min_dist:
-            min_dist = dist
-            quantity = 1
-        # If the distance is equal to the minimum distance, increment the quantity of pairs
-        elif dist == min_dist:
-            quantity += 1
-
-    # Return the minimum distance and quantity of pairs
-    return min_dist, quantity
+if __name__ == '__main__':
+    lemons = int(input())
+    apples = int(input())
+    pears = int(input())
+    print(get_maximum_fruits(lemons, apples, pears))
 

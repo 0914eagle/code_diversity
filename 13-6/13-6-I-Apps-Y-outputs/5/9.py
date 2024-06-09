@@ -1,22 +1,27 @@
 
-def get_sugar_water(A, B, C, D, E, F):
-    # Initialize variables
-    sugar_water = 0
-    sugar_dissolved = 0
+def get_valid_expressions(a, b, c, d):
+    expressions = []
+    for op1 in ['*', '+', '-', '/']:
+        for op2 in ['*', '+', '-', '/']:
+            for op3 in ['*', '+', '-', '/']:
+                for op4 in ['*', '+', '-', '/']:
+                    expression = f"{a} {op1} {b} {op2} {c} {op3} {d} {op4}"
+                    try:
+                        result = eval(expression)
+                        if result:
+                            expressions.append(expression)
+                    except ZeroDivisionError:
+                        pass
+    return sorted(expressions)
 
-    # Loop through all possible combinations of operations
-    for a in range(A, B + 1):
-        for c in range(C, D + 1):
-            # Calculate the mass of sugar water and sugar dissolved
-            sugar_water_mass = a + c
-            sugar_dissolved_mass = a * E / 100
+def main():
+    a, b, c, d = map(int, input().split())
+    expressions = get_valid_expressions(a, b, c, d)
+    if expressions:
+        print(*expressions, sep='\n')
+    else:
+        print("problems ahead")
 
-            # Check if the mass of substances in the beaker is within the limit
-            if sugar_water_mass + sugar_dissolved_mass <= F:
-                # Check if the density of the sugar water is higher than the current best solution
-                if sugar_water_mass * 100 / (sugar_dissolved_mass + sugar_water_mass) > sugar_water * 100 / (sugar_dissolved + sugar_water):
-                    sugar_water = sugar_water_mass
-                    sugar_dissolved = sugar_dissolved_mass
-
-    return sugar_water, sugar_dissolved
+if __name__ == '__main__':
+    main()
 

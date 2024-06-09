@@ -1,34 +1,25 @@
 
-def solve(n, crush):
-    # Initialize a dictionary to store the crushes
-    crushes = {i: crush[i-1] for i in range(1, n+1)}
+def get_max_coins(d, g, n, k):
+    # Initialize the maximum coins that Donald can have
+    max_coins = 0
     
-    # Initialize a set to store the visited nodes
-    visited = set()
+    # Loop through each round
+    for round in range(1, n + 1):
+        # If Gladstone is distracted, Donald can look at his cards and swap them to ensure a win
+        if round <= k:
+            # If Donald has more coins than Gladstone, Donald can win the round
+            if d > g:
+                # Update the maximum coins that Donald can have
+                max_coins = max(max_coins, d + g)
+            # If Gladstone has more coins than Donald, Donald can still win the round by swapping his cards
+            else:
+                # Update the maximum coins that Donald can have
+                max_coins = max(max_coins, g)
+        # If Gladstone is not distracted, Donald has no advantage and his coins will be lost
+        else:
+            # Update the maximum coins that Donald can have
+            max_coins = max(max_coins, 0)
     
-    # Initialize a queue to store the nodes to be visited
-    queue = [1]
-    
-    # Loop until the queue is empty
-    while queue:
-        # Dequeue a node from the queue
-        node = queue.pop(0)
-        
-        # If the node is already visited, skip it
-        if node in visited:
-            continue
-        
-        # Mark the node as visited
-        visited.add(node)
-        
-        # If the node is the crush of another node, add it to the queue
-        if node in crushes:
-            queue.append(crushes[node])
-    
-    # If all nodes are visited, return the minimum value of t
-    if len(visited) == n:
-        return 1
-    
-    # Otherwise, return -1
-    return -1
+    # Return the maximum coins that Donald can have
+    return max_coins
 

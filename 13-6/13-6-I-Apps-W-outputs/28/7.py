@@ -1,25 +1,24 @@
 
-def solve(s, t):
-    # Replace all '?' characters with all possible letters
-    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-    for i in range(len(s)):
-        if s[i] == '?':
-            s = s[:i] + letters + s[i+1:]
-    
-    # Find all occurrences of string t in string s
-    occurrences = []
-    for i in range(len(s) - len(t) + 1):
-        if s[i:i+len(t)] == t:
-            occurrences.append(i)
-    
-    # Replace letters in string s with letters that don't intersect with any occurrence of string t
-    for i in range(len(s)):
-        if i in occurrences:
-            continue
-        for j in range(len(letters)):
-            if s[i] == letters[j]:
-                s = s[:i] + letters[j+1] + s[i+1:]
-                break
-    
-    return s
+def get_gcd(a, b):
+    if a == 0:
+        return b
+    return get_gcd(b % a, a)
+
+def get_max_gcd(n):
+    max_gcd = 0
+    for i in range(1, n + 1):
+        for j in range(i + 1, n + 1):
+            gcd = get_gcd(i, j)
+            if gcd > max_gcd:
+                max_gcd = gcd
+    return max_gcd
+
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        print(get_max_gcd(n))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,29 +1,42 @@
 
-def solve(expression):
-    # Split the expression into a list of integers and plus symbols
-    tokens = expression.split()
+def get_winner(record):
+    # Initialize the score of Alice and Barbara
+    alice_score = 0
+    barbara_score = 0
     
-    # Initialize a set to store the distinct integers
-    distinct_ints = set()
-    
-    # Iterate over the tokens
-    for i in range(len(tokens)):
-        # If the current token is a plus symbol, choose a random meaning for it
-        if tokens[i] == "+":
-            # Choose a random integer between 0 and 1
-            random_int = randint(0, 1)
-            
-            # If the random integer is 0, interpret the plus symbol as string concatenation
-            if random_int == 0:
-                tokens[i] = "+"
-            # Otherwise, interpret the plus symbol as arithmetic addition
-            else:
-                tokens[i] = "+"
+    # Iterate through the record
+    for i in range(0, len(record), 2):
+        # Get the current player and the number of points scored
+        current_player = record[i]
+        points_scored = int(record[i+1])
         
-        # If the current token is an integer, add it to the set of distinct integers
-        elif tokens[i].isdigit():
-            distinct_ints.add(int(tokens[i]))
+        # Update the score of the current player
+        if current_player == "A":
+            alice_score += points_scored
+        else:
+            barbara_score += points_scored
+        
+        # Check if the game is over
+        if alice_score >= 11 and barbara_score >= 11:
+            # If the score is tied, the first player to lead by at least 2 points wins
+            if alice_score - barbara_score >= 2:
+                return "A"
+            elif barbara_score - alice_score >= 2:
+                return "B"
+        elif alice_score >= 11:
+            # Alice wins if she reaches 11 points first
+            return "A"
+        elif barbara_score >= 11:
+            # Barbara wins if she reaches 11 points first
+            return "B"
     
-    # Return the number of distinct integers
-    return len(distinct_ints)
+    # If the game is not over, return "D" for draw
+    return "D"
+
+def main():
+    record = input("Enter the game record: ")
+    print(get_winner(record))
+
+if __name__ == '__main__':
+    main()
 

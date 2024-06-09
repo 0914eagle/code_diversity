@@ -1,22 +1,27 @@
 
-def is_reproducible(grid):
-    # Check if the grid is valid
-    if not grid or not all(len(row) == len(grid[0]) for row in grid):
-        return "NO"
-    
-    # Initialize the colors dictionary
-    colors = {"R": 0, "G": 0, "B": 0, "W": 0}
-    
-    # Loop through the grid and count the number of each color
-    for row in grid:
-        for col in row:
-            colors[col] += 1
-    
-    # Check if the number of each color is even
-    for color, count in colors.items():
-        if count % 2 != 0:
-            return "NO"
-    
-    # If all colors are even, the grid is reproducible
-    return "YES"
+def read_input():
+    N, K, Q = map(int, input().split())
+    A = list(map(int, input().split()))
+    return N, K, Q, A
+
+def f1(A, K):
+    return min(A[:K])
+
+def f2(A, K):
+    return max(A[K:]) - min(A[K:])
+
+def solve(N, K, Q, A):
+    X, Y = 0, 0
+    for i in range(Q):
+        smallest = f1(A, K)
+        largest = f2(A, K)
+        X += largest
+        Y += smallest
+        A.remove(smallest)
+        A = A[1:]
+    return X - Y
+
+if __name__ == '__main__':
+    N, K, Q, A = read_input()
+    print(solve(N, K, Q, A))
 

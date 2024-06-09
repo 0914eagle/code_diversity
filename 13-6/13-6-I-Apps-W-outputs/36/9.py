@@ -1,23 +1,44 @@
 
-def get_min_price(n, prices, vitamins):
-    # Initialize a dictionary to store the count of vitamins for each juice
-    vitamin_count = {}
-    for i in range(n):
-        vitamin_count[i] = 0
-        for vitamin in vitamins[i]:
-            vitamin_count[i] += 1
+def get_max_strength(n, p, assignment):
+    # Initialize the maximum strength and the suffix to flip
+    max_strength = 0
+    suffix_to_flip = ""
+    
+    # Iterate over all possible suffixes of length 1 to n-1
+    for i in range(1, n):
+        # Get the strength of the pieces in the suffix
+        suffix_strength = sum(p[j] for j in range(n-i, n))
+        
+        # If the suffix strength is greater than the current maximum strength, update the maximum strength and the suffix to flip
+        if suffix_strength > max_strength:
+            max_strength = suffix_strength
+            suffix_to_flip = assignment[n-i:]
+    
+    # Return the maximum strength and the suffix to flip
+    return max_strength, suffix_to_flip
 
-    # Sort the juices by their price in non-decreasing order
-    sorted_juices = sorted(range(n), key=lambda i: prices[i])
+def solve(n, p, assignment):
+    # Get the maximum strength and the suffix to flip
+    max_strength, suffix_to_flip = get_max_strength(n, p, assignment)
+    
+    # Initialize the updated assignment
+    updated_assignment = assignment
+    
+    # If the suffix to flip is not empty, flip the characters in the suffix
+    if suffix_to_flip != "":
+        for i in range(len(suffix_to_flip)):
+            if suffix_to_flip[i] == "A":
+                updated_assignment = updated_assignment[:n-i-1] + "B" + updated_assignment[n-i:]
+            else:
+                updated_assignment = updated_assignment[:n-i-1] + "A" + updated_assignment[n-i:]
+    
+    # Return the maximum strength and the updated assignment
+    return max_strength, updated_assignment
 
-    # Initialize the minimum total price to obtain all three vitamins as -1
-    min_price = -1
-
-    # Iterate through the sorted juices and check if they contain all three vitamins
-    for i in sorted_juices:
-        if vitamin_count[i] == 3:
-            min_price = prices[i]
-            break
-
-    return min_price
+if __name__ == '__main__':
+    n = int(input())
+    p = list(map(int, input().split()))
+    assignment = input()
+    max_strength, updated_assignment = solve(n, p, assignment)
+    print(max_strength)
 

@@ -1,37 +1,39 @@
 
-import itertools
 import math
 
-def explosion_probability(n, m, d, my_minions, opp_minions):
-    # Calculate the total number of possible outcomes
-    total_outcomes = math.factorial(n + m)
+def get_expected_value(n, queries):
+    # Initialize the number of stones in each box to 0
+    num_stones = [0] * (n + 1)
     
-    # Calculate the number of outcomes where all opponent's minions are removed
-    num_outcomes = 0
-    for perm in itertools.permutations(range(n + m)):
-        # Initialize the health of all minions
-        minions = [0] * (n + m)
-        for i in range(n):
-            minions[i] = my_minions[i]
-        for i in range(n, n + m):
-            minions[i] = opp_minions[i - n]
-        
-        # Simulate the explosion
-        for i in range(d):
-            # Find the index of the minion to receive the damage
-            idx = perm[i]
-            if minions[idx] > 0:
-                minions[idx] -= 1
-            if minions[idx] == 0:
-                # Remove the minion from the game
-                minions[idx] = -1
-        
-        # Check if all opponent's minions are removed
-        if all(minions[n:] == 0):
-            num_outcomes += 1
+    # Loop through each query
+    for query in queries:
+        # If the query is of type 1, insert a stone into the box between u and v
+        if query[0] == 1:
+            num_stones[query[1]] += 1
+            num_stones[query[2]] += 1
+        # If the query is of type 2, calculate the expected value of A
+        elif query[0] == 2:
+            # Calculate the sum of the squares of the number of stones in each box
+            sum_squares = sum([x**2 for x in num_stones])
+            # Calculate the expected value of A
+            expected_value = sum_squares / n
     
-    # Calculate the probability
-    probability = num_outcomes / total_outcomes
+    # Return the expected value of A
+    return expected_value
+
+def main():
+    # Read the input
+    n, q = map(int, input().split())
+    queries = []
+    for i in range(q):
+        queries.append(list(map(int, input().split())))
     
-    return probability
+    # Calculate the expected value of A
+    expected_value = get_expected_value(n, queries)
+    
+    # Print the result
+    print(expected_value)
+
+if __name__ == '__main__':
+    main()
 

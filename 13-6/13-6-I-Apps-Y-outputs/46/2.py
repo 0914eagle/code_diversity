@@ -1,25 +1,29 @@
 
-def solve(D, G, *args):
-    p_scores = list(zip(*args))[0]
-    c_bonuses = list(zip(*args))[1]
+def get_sorted_boxes(box_heights):
+    # Sort the box heights in descending order
+    sorted_box_heights = sorted(box_heights, reverse=True)
+    # Get the two tower heights
+    tower_heights = sorted_box_heights[-2:]
+    # Get the three boxes in the first tower
+    first_tower = sorted_box_heights[:3]
+    # Get the three boxes in the second tower
+    second_tower = sorted_box_heights[3:6]
+    # Return the sorted boxes
+    return first_tower, second_tower
 
-    # Initialize the minimum number of problems to solve as the highest possible score
-    min_problems = sum(p_scores)
+def main():
+    # Test case 1
+    box_heights = [12, 8, 2, 4, 10, 3, 25, 14]
+    first_tower, second_tower = get_sorted_boxes(box_heights)
+    print(first_tower)
+    print(second_tower)
 
-    # Iterate through each possible number of problems to solve
-    for num_problems in range(1, D + 1):
-        # Initialize the current score as the base score
-        current_score = sum(p_scores[:num_problems])
+    # Test case 2
+    box_heights = [14, 10, 8, 4, 3, 2, 25, 12]
+    first_tower, second_tower = get_sorted_boxes(box_heights)
+    print(first_tower)
+    print(second_tower)
 
-        # Add the perfect bonus for each group of problems with the same score
-        for i in range(1, D + 1):
-            num_problems_with_score = p_scores.count(100 * i)
-            if num_problems_with_score > 0:
-                current_score += c_bonuses[i - 1]
-
-        # If the current score is greater than or equal to the goal, update the minimum number of problems to solve
-        if current_score >= G:
-            min_problems = min(min_problems, num_problems)
-
-    return min_problems
+if __name__ == '__main__':
+    main()
 

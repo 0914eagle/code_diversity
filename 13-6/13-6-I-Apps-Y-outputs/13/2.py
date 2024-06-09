@@ -1,11 +1,14 @@
 
-def reconstruct_equation(numbers):
-    for operation in ["+", "-", "*", "/"]:
-        for i in range(len(numbers)):
-            for j in range(len(numbers)):
-                if i != j:
-                    eq = str(numbers[i]) + operation + str(numbers[j]) + "=" + str(numbers[i+j])
-                    if eval(eq):
-                        return eq
-    return "No solution found."
+def is_palindrome(string):
+    return string == string[::-1]
+
+def main():
+    string = input("Enter a string: ")
+    if is_palindrome(string):
+        print("Yes")
+    else:
+        print("No")
+
+if __name__ == '__main__':
+    main()
 

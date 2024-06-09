@@ -1,18 +1,28 @@
 
-def solve(n, x):
-    # Initialize a list to store the moves
-    moves = []
-    # Set the starting position of Alice and Bob
-    alice = 1
-    bob = x
-    # Loop until Alice and Bob are at the same position
-    while alice != bob:
-        # Bob moves first
-        bob = moves.pop() if moves else 1
-        # Alice moves
-        alice = bob + 1 if alice % n != 0 else 1
-        # Add Bob's move to the list
-        moves.append(bob)
-    # Return the total number of moves
-    return len(moves) + 1
+def get_coconut_picking_time(N, A, B):
+    return (N * A) + (N * (N - 1) / 2) * B
+
+def get_coconut_opening_time(M, C, D):
+    return (M * C) + (M * (M - 1) / 2) * D
+
+def get_time_difference(total_time, coconut_picking_time, coconut_opening_time):
+    return total_time - coconut_picking_time - coconut_opening_time
+
+def main():
+    total_time = int(input())
+    N = int(input())
+    A = list(map(int, input().split()))
+    B = list(map(int, input().split()))
+    M = int(input())
+    C = list(map(int, input().split()))
+    D = list(map(int, input().split()))
+
+    coconut_picking_time = get_coconut_picking_time(N, A, B)
+    coconut_opening_time = get_coconut_opening_time(M, C, D)
+    time_difference = get_time_difference(total_time, coconut_picking_time, coconut_opening_time)
+
+    print(time_difference)
+
+if __name__ == '__main__':
+    main()
 

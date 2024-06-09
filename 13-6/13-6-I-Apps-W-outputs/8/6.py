@@ -1,14 +1,17 @@
 
-def count_almost_identity_permutations(n, k):
-    # Initialize a list to store the almost identity permutations
-    almost_identity_permutations = []
+def get_max_xor(l, r):
+    max_xor = 0
+    for a in range(l, r + 1):
+        for b in range(a, r + 1):
+            xor = a ^ b
+            if xor > max_xor:
+                max_xor = xor
+    return max_xor
 
-    # Iterate over all possible permutations
-    for permutation in itertools.permutations(range(1, n + 1)):
-        # Check if the permutation is an almost identity permutation
-        if len(set(permutation)) == n:
-            almost_identity_permutations.append(permutation)
+def main():
+    l, r = map(int, input().split())
+    print(get_max_xor(l, r))
 
-    # Return the number of almost identity permutations
-    return len(almost_identity_permutations)
+if __name__ == '__main__':
+    main()
 

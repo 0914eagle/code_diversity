@@ -1,28 +1,24 @@
 
-def get_sugar_water(A, B, C, D, E, F):
-    # Initialize variables
-    sugar_water = 0
-    sugar_dissolved = 0
+def get_valid_expressions(a, b, c, d):
+    expressions = []
+    for operator1 in ["*", "+", "-", "/"]:
+        for operator2 in ["*", "+", "-", "/"]:
+            expression = str(a) + " " + operator1 + " " + str(b) + " " + operator2 + " " + str(c) + " " + operator2 + " " + str(d)
+            try:
+                result = eval(expression)
+                expressions.append(expression)
+            except ZeroDivisionError:
+                pass
+    return sorted(expressions)
 
-    # Loop through all possible combinations of operations
-    for a in range(A, B+1):
-        for c in range(C, D+1):
-            # Calculate the mass of sugar water that can be made with the current combination of operations
-            sugar_water_temp = a + c
+def main():
+    a, b, c, d = map(int, input().split())
+    expressions = get_valid_expressions(a, b, c, d)
+    if expressions:
+        print("\n".join(expressions))
+    else:
+        print("problems ahead")
 
-            # Check if the mass of sugar water is within the allowed range
-            if sugar_water_temp <= F:
-                # Calculate the mass of sugar dissolved in the sugar water
-                sugar_dissolved_temp = (c * 100) // (a + c)
-
-                # Check if the mass of sugar dissolved is within the allowed range
-                if sugar_dissolved_temp <= E:
-                    # Check if the current combination of operations results in a higher density than the previous one
-                    if (sugar_water_temp * 100) // (sugar_dissolved_temp + sugar_water_temp) > (sugar_water * 100) // (sugar_dissolved + sugar_water):
-                        # Update the variables with the current combination of operations if it results in a higher density
-                        sugar_water = sugar_water_temp
-                        sugar_dissolved = sugar_dissolved_temp
-
-    # Return the mass of sugar water and the mass of sugar dissolved in it
-    return sugar_water, sugar_dissolved
+if __name__ == '__main__':
+    main()
 

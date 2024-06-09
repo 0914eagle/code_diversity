@@ -1,15 +1,24 @@
 
-def expected_gifts_taken(n):
-    # Calculate the expected number of gifts taken out of the bag
-    # until the process ends and everyone has gotten their gift
-    expected_gifts_taken = 0
-    for i in range(n):
-        # Probability that the ith person picks their own gift
-        prob_pick_own_gift = 1 / n
-        # Probability that the ith person picks a gift other than their own
-        prob_pick_other_gift = 1 - prob_pick_own_gift
-        # Expected number of gifts taken out of the bag by the ith person
-        expected_gifts_taken_by_i = prob_pick_own_gift * (i + 1) + prob_pick_other_gift * (n - 1)
-        expected_gifts_taken += expected_gifts_taken_by_i
-    return expected_gifts_taken
+def get_largest_committee(N, K, disagreements):
+    # Initialize a set to store the committee members
+    committee = set()
+    # Loop through each politician and their disagreements
+    for i in range(N):
+        # If the politician has disagreements, add them to the committee
+        if disagreements[i]:
+            committee |= set(disagreements[i])
+    # Return the size of the largest committee
+    return len(committee)
+
+def main():
+    # Read the input data
+    N, K = map(int, input().split())
+    disagreements = [set(map(int, input().split())) for _ in range(N)]
+    # Find the largest committee
+    largest_committee = get_largest_committee(N, K, disagreements)
+    # Print the result
+    print(largest_committee)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,28 +1,28 @@
 
-def largest_sum_of_digits(n):
-    # Initialize the maximum sum of digits as 0
-    max_sum = 0
-    # Loop through all possible values of a
-    for a in range(n+1):
-        # Find the corresponding value of b
-        b = n - a
-        # Calculate the sum of digits of a and b
-        sum_of_digits = sum_of_digits_in_base_10(a) + sum_of_digits_in_base_10(b)
-        # If the sum of digits is greater than the maximum sum, update the maximum sum
-        if sum_of_digits > max_sum:
-            max_sum = sum_of_digits
-    # Return the maximum sum
-    return max_sum
+import math
 
-def sum_of_digits_in_base_10(n):
-    # Initialize the sum of digits as 0
-    sum_of_digits = 0
-    # Loop through the digits of n
-    while n > 0:
-        # Add the last digit of n to the sum of digits
-        sum_of_digits += n % 10
-        # Remove the last digit of n
-        n //= 10
-    # Return the sum of digits
-    return sum_of_digits
+def get_max_distance(N, T, s, a):
+    max_distance = 0
+    for i in range(N):
+        distance = math.fabs(T[i] - s[i] * math.fmod(a[i] - math.pi/2, 2*math.pi))
+        max_distance += distance
+    return max_distance
+
+def f1(N, T, s, a):
+    return get_max_distance(N, T, s, a)
+
+def f2(N, T, s, a):
+    return get_max_distance(N, T, s, a)
+
+if __name__ == '__main__':
+    N = int(input())
+    T = []
+    s = []
+    a = []
+    for i in range(N):
+        T.append(float(input()))
+        s.append(float(input()))
+        a.append(float(input()))
+    print(f1(N, T, s, a))
+    print(f2(N, T, s, a))
 

@@ -1,31 +1,22 @@
 
-def get_color_code(n, p, palettes):
-    # Check if the palette is valid
-    if len(set(palettes)) != len(palettes):
-        return "impossible"
-    
-    # Initialize the color code with the first string
-    color_code = ["0" * n]
-    
-    # Iterate through the remaining strings
-    for i in range(1, 2**n):
-        # Find the previous string
-        prev_string = color_code[i-1]
-        
-        # Find the next string by changing exactly one bit
-        next_string = ""
-        for j in range(n):
-            if prev_string[j] == "0":
-                next_string += "1"
-            else:
-                next_string += "0"
-        
-        # Check if the next string is valid
-        if next_string in color_code:
-            return "impossible"
-        
-        # Add the next string to the color code
-        color_code.append(next_string)
-    
-    return "\n".join(color_code)
+def get_counted_cards(cards):
+    counted_cards = []
+    for i, card in enumerate(cards):
+        if i == 0 or card != cards[i - 1]:
+            counted_cards.append(card)
+    return counted_cards
+
+def get_payout(counted_cards):
+    if len(counted_cards) == 0:
+        return 0.0
+    return sum(counted_cards) / len(counted_cards)
+
+def solve(cards):
+    counted_cards = get_counted_cards(cards)
+    return get_payout(counted_cards)
+
+if __name__ == '__main__':
+    num_cards = int(input())
+    cards = list(map(int, input().split()))
+    print(solve(cards))
 

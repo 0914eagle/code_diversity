@@ -1,26 +1,43 @@
 
-def solve(n, k, a):
-    # Calculate the total power Inna tells Dima off with for each task
-    total_power = [0] * (n + 1)
-    for i in range(1, n):
-        total_power[i] = total_power[i - 1] + a[i - 1]
+def get_min_coins(numbers):
+    # Initialize the minimum number of coins to infinity
+    min_coins = float('inf')
     
-    # Initialize the minimum total power and the corresponding first task
-    min_total_power = total_power[n]
-    first_task = 1
-    
-    # Iterate through all possible first tasks
-    for i in range(1, n - k + 2):
-        # Calculate the total power for this first task
-        total_power = 0
-        for j in range(i, i + k - 1):
-            total_power += a[j - 1]
-        total_power += total_power[i + k - 1] - total_power[i - 1]
+    # Loop through all possible signs
+    for sign in ['+', '-']:
+        # Initialize the current product to 1
+        product = 1
         
-        # Update the minimum total power and the corresponding first task if necessary
-        if total_power < min_total_power:
-            min_total_power = total_power
-            first_task = i
+        # Loop through all numbers
+        for i in range(len(numbers)):
+            # If the current number is not 0, add or subtract 1 from it
+            if numbers[i] != 0:
+                if sign == '+':
+                    numbers[i] += 1
+                else:
+                    numbers[i] -= 1
+            
+            # Multiply the current product by the current number
+            product *= numbers[i]
+        
+        # If the current product is 1, update the minimum number of coins
+        if product == 1:
+            min_coins = min(min_coins, len(numbers))
     
-    return first_task
+    # Return the minimum number of coins
+    return min_coins
+
+def main():
+    # Read the number of numbers and the numbers from stdin
+    n = int(input())
+    numbers = list(map(int, input().split()))
+    
+    # Get the minimum number of coins needed to make the product equal to 1
+    min_coins = get_min_coins(numbers)
+    
+    # Print the minimum number of coins
+    print(min_coins)
+
+if __name__ == '__main__':
+    main()
 

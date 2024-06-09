@@ -1,21 +1,29 @@
 
-def solve(n, k, l, d):
-    # Initialize variables
-    x = 0
-    t = 0
-    p = [0, 1]
-    while x < n:
-        # Check if Koa can swim to the next meter
-        if x + 1 <= n and d[x] + p[t % 2] <= l:
-            x += 1
-        # If not, wait for one second
-        else:
-            x = x
-        # Increment time
-        t += 1
-    # Check if Koa reached the island
-    if x == n:
-        return "Yes"
-    else:
-        return "No"
+def is_rated(n, ratings):
+    # Check if at least one rating has changed
+    if len(set(ratings)) == 1:
+        return "unrated"
+    
+    # Check if there is a participant with lower rating than the one with higher rating
+    for i in range(n-1):
+        if ratings[i] > ratings[i+1]:
+            return "rated"
+    
+    # Check if the participants took places in non-increasing order of their rating
+    for i in range(n-1):
+        if ratings[i] < ratings[i+1]:
+            return "maybe"
+    
+    # If none of the above conditions are met, the round is unrated
+    return "unrated"
+
+def main():
+    n = int(input())
+    ratings = []
+    for i in range(n):
+        ratings.append(int(input()))
+    print(is_rated(n, ratings))
+
+if __name__ == '__main__':
+    main()
 

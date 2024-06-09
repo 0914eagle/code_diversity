@@ -1,48 +1,37 @@
 
-def solve(n, lengths, terrain):
-    # Initialize variables
-    time = 0
-    stamina = 0
-    current_terrain = 0
-    current_length = 0
+def parse_expression(expression):
+    # Convert the expression to a list of tokens
+    tokens = expression.split()
+    
+    # Initialize the stack to hold the operators and operands
+    stack = []
+    
+    # Iterate through the tokens
+    for token in tokens:
+        # If the token is a number, push it to the stack
+        if token.isdigit():
+            stack.append(int(token))
+        # If the token is an operator, pop the top two elements from the stack, apply the operator, and push the result back to the stack
+        elif token == '+':
+            stack.append(stack.pop() + stack.pop())
+        elif token == '-':
+            stack.append(-stack.pop() + stack.pop())
+    
+    # The final result is at the top of the stack
+    return stack.pop()
 
-    # Loop through the segments
-    for i in range(n):
-        # Check the terrain type
-        if terrain[i] == "G":
-            # Grass, Bob can walk
-            current_terrain = 1
-        elif terrain[i] == "W":
-            # Water, Bob can swim
-            current_terrain = 2
-        else:
-            # Lava, Bob can fly
-            current_terrain = 3
+def get_max_value(expression, num_plus, num_minus):
+    # Replace the ? characters with the appropriate operators
+    expression = expression.replace('?', '+') * num_plus
+    expression = expression.replace('?', '-') * num_minus
+    
+    # Parse the expression and return the maximum value
+    return parse_expression(expression)
 
-        # Check if Bob needs to spend stamina
-        if current_terrain != current_length:
-            # Bob needs to spend stamina
-            if current_terrain == 1:
-                # Walking, Bob gains 1 stamina
-                stamina += 1
-            elif current_terrain == 2:
-                # Swimming, Bob spends 1 stamina
-                stamina -= 1
-            elif current_terrain == 3:
-                # Flying, Bob spends 1 stamina
-                stamina -= 1
+def main():
+    expression, num_plus, num_minus = input().split()
+    print(get_max_value(expression, int(num_plus), int(num_minus)))
 
-        # Check if Bob's stamina is negative
-        if stamina < 0:
-            # Bob's stamina is negative, he can't continue
-            return -1
-
-        # Add the length of the current segment to the total time
-        time += lengths[i]
-
-        # Update the current length and terrain
-        current_length = current_terrain
-
-    # Return the total time
-    return time
+if __name__ == '__main__':
+    main()
 

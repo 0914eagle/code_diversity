@@ -1,34 +1,37 @@
 
-import itertools
-import math
+def f1(N, Q):
+    # Initialize the number of stones in each box to 0
+    num_stones = [0] * (N + 1)
+    # Initialize the probability of each box to 1/N
+    prob = [1/N] * (N + 1)
+    # Loop through each query
+    for _ in range(Q):
+        # Read the query
+        query = input().split()
+        # If the query is to put a stone in a box
+        if query[0] == "1":
+            # Get the indices of the boxes
+            u, v = map(int, query[1:])
+            # Update the number of stones in each box
+            num_stones[u] += 1
+            num_stones[v] += 1
+            # Update the probability of each box
+            for i in range(u, v + 1):
+                prob[i] = (prob[i] + prob[i - 1]) / 2
+        # If the query is to calculate the expected value
+        elif query[0] == "2":
+            # Calculate the expected value
+            expected_value = 0
+            for i in range(1, N + 1):
+                expected_value += num_stones[i] ** 2 * prob[i]
+            # Return the expected value modulo 10^9 + 7
+            return expected_value % (10**9 + 7)
+def f2(...):
+    # Implement function f2 here
+    pass
 
-def explosion_probability(n, m, d, my_minions, op_minions):
-    # Calculate the total number of minions on the board
-    total_minions = n + m
-    
-    # Calculate the probability of each minion receiving a unit of damage
-    prob = 1 / total_minions
-    
-    # Calculate the number of units of damage that will be dealt
-    num_units = min(d, total_minions)
-    
-    # Initialize the probability of removing all opponent's minions to 0
-    probability = 0
-    
-    # Iterate over all possible combinations of minions receiving damage
-    for combination in itertools.combinations(range(total_minions), num_units):
-        # Calculate the probability of this specific combination of minions receiving damage
-        combination_probability = prob ** len(combination) * (1 - prob) ** (total_minions - len(combination))
-        
-        # Calculate the number of opponent's minions that will be removed by this combination
-        num_op_minions_removed = sum(1 for i in combination if i >= n)
-        
-        # Calculate the probability of removing all opponent's minions with this combination
-        num_op_minions_remaining = m - num_op_minions_removed
-        probability_all_op_minions_removed = num_op_minions_remaining == 0
-        
-        # Add the probability of this specific combination to the total probability
-        probability += combination_probability * probability_all_op_minions_removed
-    
-    return probability
+if __name__ == '__main__':
+    N, Q = map(int, input().split())
+    for _ in range(Q):
+        print(f1(N, Q))
 

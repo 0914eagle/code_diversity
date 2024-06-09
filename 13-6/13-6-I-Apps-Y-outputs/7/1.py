@@ -1,7 +1,13 @@
 
-def get_average_difficulty(n, k, d, s):
-    if k == 0:
-        return "impossible"
-    else:
-        return (d * (n - k) + s * k) / n
+import math
+
+def get_probability(n):
+    return 1 - math.factorial(n) / (math.factorial(n) * n)
+
+def main():
+    n = int(input())
+    print(get_probability(n))
+
+if __name__ == '__main__':
+    main()
 

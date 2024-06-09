@@ -1,21 +1,51 @@
 
-def is_possible(n, a):
-    # Initialize the number of pizzas as 0
-    num_pizzas = 0
-    # Initialize the number of days as 0
-    num_days = 0
-    # Iterate over the list of teams present on each day
-    for i in a:
-        # Check if the number of teams present on the current day is greater than 0
-        if i > 0:
-            # Increment the number of days by 1
-            num_days += 1
-            # Check if the number of pizzas is even and the number of teams present is greater than 1
-            if num_pizzas % 2 == 0 and i > 1:
-                # Use the coupon to buy one pizza
-                num_pizzas += 1
-            # Increment the number of pizzas by the number of teams present on the current day
-            num_pizzas += i
-    # Check if the number of pizzas is divisible by 2 and the number of days is equal to the number of training sessions
-    return num_pizzas % 2 == 0 and num_days == n
+def find_largest_rectangle(matrix):
+    # Initialize variables
+    max_area = 0
+    row_count = len(matrix)
+    col_count = len(matrix[0])
+    visited = [[False] * col_count for _ in range(row_count)]
+
+    # Iterate over each cell in the matrix
+    for i in range(row_count):
+        for j in range(col_count):
+            # If the current cell is not visited and is 1, find the largest rectangle
+            if not visited[i][j] and matrix[i][j] == "1":
+                area = find_largest_rectangle_helper(matrix, i, j, visited)
+                max_area = max(max_area, area)
+
+    return max_area
+
+def find_largest_rectangle_helper(matrix, i, j, visited):
+    # Base case: if we reach the edge of the matrix, return 0
+    if i < 0 or j < 0 or i == len(matrix) or j == len(matrix[0]):
+        return 0
+
+    # If the current cell is not 1, return 0
+    if matrix[i][j] == "0":
+        return 0
+
+    # If the current cell is already visited, return the area
+    if visited[i][j]:
+        return 1
+
+    # Mark the current cell as visited
+    visited[i][j] = True
+
+    # Recursive calls to find the largest rectangle in all 4 directions
+    area = 1 + find_largest_rectangle_helper(matrix, i-1, j, visited) + find_largest_rectangle_helper(matrix, i, j-1, visited) + find_largest_rectangle_helper(matrix, i+1, j, visited) + find_largest_rectangle_helper(matrix, i, j+1, visited)
+
+    return area
+
+def main():
+    matrix = [
+      ["1","0","1","0","0"],
+      ["1","0","1","1","1"],
+      ["1","1","1","1","1"],
+      ["1","0","0","1","0"]
+    ]
+    print(find_largest_rectangle(matrix))
+
+if __name__ == '__main__':
+    main()
 

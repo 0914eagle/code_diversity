@@ -1,26 +1,31 @@
 
-def elevator_buttons(floors, start, goal, up, down):
-    # Initialize variables
-    current_floor = start
-    pushes = 0
-    up_pushes = 0
-    down_pushes = 0
+def get_divisors(n):
+    divisors = []
+    for i in range(1, n+1):
+        if n % i == 0:
+            divisors.append(i)
+    return divisors
 
-    # Loop until the goal floor is reached
-    while current_floor != goal:
-        # Check if the up button can be pressed
-        if current_floor + up <= floors:
-            current_floor += up
-            up_pushes += 1
-        # Check if the down button can be pressed
-        elif current_floor - down >= 1:
-            current_floor -= down
-            down_pushes += 1
-        # If neither button can be pressed, return "use the stairs"
-        else:
-            return "use the stairs"
-        pushes += 1
+def get_factorial(n):
+    factorial = 1
+    for i in range(1, n+1):
+        factorial *= i
+    return factorial
 
-    # Return the total number of pushes
-    return pushes
+def get_positive_divisors(n):
+    divisors = get_divisors(n)
+    positive_divisors = []
+    for divisor in divisors:
+        if divisor > 0:
+            positive_divisors.append(divisor)
+    return positive_divisors
+
+def solve(n):
+    factorial = get_factorial(n)
+    positive_divisors = get_positive_divisors(factorial)
+    return len(positive_divisors)
+
+if __name__ == '__main__':
+    n = int(input())
+    print(solve(n))
 

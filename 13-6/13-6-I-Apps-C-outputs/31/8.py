@@ -1,30 +1,25 @@
 
-def solve(balls):
-    # Initialize variables
-    white_balls = []
-    black_balls = []
-    operations = 0
+def f1(n, t):
+    # Calculate the number of ways to choose the values of s_i
+    num_ways = 1
+    for i in range(n):
+        num_ways *= (t[i] - 1)
+    
+    # Return the result modulo 10^9 + 7
+    return num_ways % 1000000007
 
-    # Separate the white and black balls
-    for ball in balls:
-        if ball[1] == "W":
-            white_balls.append(ball)
-        else:
-            black_balls.append(ball)
+def f2(n, t):
+    # Calculate the number of ways to choose the values of s_i
+    num_ways = 1
+    for i in range(n):
+        num_ways *= (t[i] - 1)
+    
+    # Return the result modulo 10^9 + 7
+    return num_ways % 1000000007
 
-    # Sort the white balls in ascending order
-    white_balls.sort(key=lambda x: x[0])
-
-    # Sort the black balls in ascending order
-    black_balls.sort(key=lambda x: x[0])
-
-    # Swap the first white ball with the first black ball
-    operations += 1
-    white_balls[0], black_balls[0] = black_balls[0], white_balls[0]
-
-    # Swap the last white ball with the last black ball
-    operations += 1
-    white_balls[-1], black_balls[-1] = black_balls[-1], white_balls[-1]
-
-    return operations
+if __name__ == '__main__':
+    n = int(input())
+    t = list(map(int, input().split()))
+    print(f1(n, t))
+    print(f2(n, t))
 

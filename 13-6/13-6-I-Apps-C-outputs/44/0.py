@@ -1,19 +1,61 @@
 
-import math
+def f1(n, k, circle):
+    # f1 function to count the number of distinct starting circles
+    # that give the same circle after k transformations as Stanko's original circle does
+    # n: number of pebbles in the circle
+    # k: number of transformations made by Stanko
+    # circle: the configuration of the circle before Stanko performed the transformation
 
-def solve(m, n, t, p):
-    # Calculate the probability of each person winning the lottery
-    prob = n / m
+    # initialize a dictionary to store the number of occurrences of each starting circle
+    circle_count = {}
 
-    # Calculate the number of people who can win the lottery
-    num_winners = min(n, p)
+    # iterate through all possible starting circles
+    for i in range(n):
+        # get the starting circle by rotating the original circle i positions
+        starting_circle = circle[i:] + circle[:i]
 
-    # Calculate the probability of the group winning the lottery
-    group_prob = math.comb(n, num_winners) * prob ** num_winners * (1 - prob) ** (n - num_winners)
+        # if the starting circle is not in the dictionary, add it to the dictionary with a count of 1
+        if starting_circle not in circle_count:
+            circle_count[starting_circle] = 1
+        # if the starting circle is already in the dictionary, increment its count
+        else:
+            circle_count[starting_circle] += 1
 
-    # Calculate the probability of each person winning at least one ticket
-    ticket_prob = group_prob * t / m
+    # return the number of distinct starting circles
+    return len(circle_count)
 
-    # Calculate the probability of the group getting tickets
-    return ticket_prob ** p
+def f2(n, k, circle):
+    # f2 function to determine the number of possible starting circles
+    # that give the same circle after k transformations as Stanko's original circle does
+    # n: number of pebbles in the circle
+    # k: number of transformations made by Stanko
+    # circle: the configuration of the circle before Stanko performed the transformation
+
+    # initialize a set to store the possible starting circles
+    possible_circles = set()
+
+    # iterate through all possible starting circles
+    for i in range(n):
+        # get the starting circle by rotating the original circle i positions
+        starting_circle = circle[i:] + circle[:i]
+
+        # add the starting circle to the set of possible starting circles
+        possible_circles.add(starting_circle)
+
+    # return the number of possible starting circles
+    return len(possible_circles)
+
+if __name__ == '__main__':
+    # read the input from stdin
+    n, k = map(int, input().split())
+    circle = input()
+
+    # call f1 function to count the number of distinct starting circles
+    distinct_circles = f1(n, k, circle)
+
+    # call f2 function to determine the number of possible starting circles
+    possible_circles = f2(n, k, circle)
+
+    # print the number of possible starting circles
+    print(possible_circles)
 

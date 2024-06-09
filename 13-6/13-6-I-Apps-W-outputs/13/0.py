@@ -1,31 +1,42 @@
 
-def is_possible(n, a):
+def get_largest_rectangle(matrix):
     # Initialize variables
-    total_teams = 0
-    coupon_count = 0
-    discount_count = 0
+    max_area = 0
+    current_area = 0
+    top_row = 0
+    bottom_row = len(matrix) - 1
+    left_col = 0
+    right_col = len(matrix[0]) - 1
+    
+    # Loop through the matrix
+    while top_row <= bottom_row and left_col <= right_col:
+        # Check if the current cell is 1
+        if matrix[top_row][left_col] == "1":
+            # Increment the current area
+            current_area += 1
+        # Check if the current cell is 0
+        elif matrix[top_row][left_col] == "0":
+            # Check if the current area is greater than the max area
+            if current_area > max_area:
+                max_area = current_area
+            # Reset the current area
+            current_area = 0
+        # Increment the top row
+        top_row += 1
+    
+    # Return the max area
+    return max_area
 
-    # Iterate through the list of teams
-    for i in range(n):
-        # Calculate the total number of teams for this day
-        total_teams += a[i]
+def main():
+    # Test the get_largest_rectangle function
+    matrix = [
+      ["1","0","1","0","0"],
+      ["1","0","1","1","1"],
+      ["1","1","1","1","1"],
+      ["1","0","0","1","0"]
+    ]
+    print(get_largest_rectangle(matrix))
 
-        # Check if the total number of teams is even
-        if total_teams % 2 == 0:
-            # Use a coupon
-            coupon_count += 1
-        else:
-            # Use a discount
-            discount_count += 1
-
-    # Check if the total number of teams is even
-    if total_teams % 2 == 0:
-        # Use the last coupon
-        coupon_count += 1
-
-    # Check if the number of coupons is equal to the number of discounts
-    if coupon_count == discount_count:
-        return "YES"
-    else:
-        return "NO"
+if __name__ == '__main__':
+    main()
 

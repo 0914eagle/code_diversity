@@ -1,42 +1,23 @@
 
-def number_of_paths(n, m, edges):
-    # Initialize a dictionary to store the neighbors of each vertex
-    neighbors = {i: set() for i in range(1, n + 1)}
+def has_palindrome_subsequence(a):
+    n = len(a)
+    for i in range(n):
+        for j in range(i+2, n+1):
+            if a[i] == a[j-1] and a[i+1] == a[j-2]:
+                return True
+    return False
 
-    # Add the edges to the dictionary
-    for edge in edges:
-        neighbors[edge[0]].add(edge[1])
-        neighbors[edge[1]].add(edge[0])
+def has_palindrome_subsequence_optimized(a):
+    n = len(a)
+    for i in range(n):
+        if a[i] == a[n-i-1]:
+            return True
+    return False
 
-    # Initialize a set to store the visited vertices
-    visited = set()
-
-    # Initialize a list to store the paths
-    paths = []
-
-    # Recursive function to find the paths
-    def find_paths(start, path):
-        # If the start vertex is the destination vertex, add the path to the list of paths
-        if start == n:
-            paths.append(path)
-            return
-
-        # If the start vertex has not been visited, mark it as visited and add it to the path
-        if start not in visited:
-            visited.add(start)
-            path.append(start)
-
-            # Recursively find the paths for all the neighbors of the start vertex
-            for neighbor in neighbors[start]:
-                find_paths(neighbor, path)
-
-            # Backtrack and remove the start vertex from the path
-            path.pop()
-            visited.remove(start)
-
-    # Start the recursion from vertex 1
-    find_paths(1, [])
-
-    # Return the number of paths
-    return len(paths)
+if __name__ == '__main__':
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        a = list(map(int, input().split()))
+        print("YES") if has_palindrome_subsequence_optimized(a) else print("NO")
 

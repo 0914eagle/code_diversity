@@ -1,21 +1,25 @@
 
-def solve(n, crush):
-    # Initialize a dictionary to store the number of rounds required for each person to become the Joon-Joon
-    rounds = {}
+def get_max_coins(d, g, n, k):
+    # Initialize variables
+    max_coins = 0
+    distracted_rounds = 0
+    
+    # Loop through each round
     for i in range(n):
-        # If a person's crush is themselves, they require 1 round to become the Joon-Joon
-        if crush[i] == i:
-            rounds[i] = 1
-        # Otherwise, they require 2 rounds to become the Joon-Joon
-        else:
-            rounds[i] = 2
+        # If Gladstone is distracted, Donald can look at his cards and swap them to win the round
+        if distracted_rounds < k:
+            distracted_rounds += 1
+            continue
+        
+        # Otherwise, Donald chooses the minimum of the two amounts of coins
+        coins = min(d, g)
+        
+        # Update the amounts of coins
+        d -= coins
+        g -= coins
+        
+        # Update the maximum amount of coins
+        max_coins = max(max_coins, d)
     
-    # Iterate through the dictionary and find the minimum number of rounds required for all persons to become the Joon-Joon
-    min_rounds = min(rounds.values())
-    
-    # If the minimum number of rounds is 1, return 1, otherwise return -1
-    if min_rounds == 1:
-        return 1
-    else:
-        return -1
+    return max_coins
 

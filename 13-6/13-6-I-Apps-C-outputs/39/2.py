@@ -1,47 +1,46 @@
 
-def solve(connections, additional_flights):
-    # Initialize a dictionary to store the cost of each flight
-    costs = {}
-    for connection in connections:
-        # Add the cost of the flight to the dictionary
-        costs[connection[0], connection[1]] = connection[2]
-        costs[connection[1], connection[0]] = connection[2]
+def get_statue_positions(n, a, b):
+    # Initialize a dictionary to store the current position of each statue
+    statue_positions = {}
+    for i in range(n):
+        if a[i] != 0:
+            statue_positions[a[i]] = i
+    return statue_positions
 
-    # Initialize a set to store the airports that have been visited
-    visited = set()
-    visited.add(1)  # Add Stockholm as the starting airport
+def get_empty_island(n, a):
+    # Find the island with no statue
+    for i in range(n):
+        if a[i] == 0:
+            return i
+    return -1
 
-    # Initialize a queue to store the airports to be visited
-    queue = [1]
+def is_valid_move(n, statue_positions, empty_island, desired_statue):
+    # Check if the move is valid
+    if desired_statue == 0:
+        return True
+    if desired_statue not in statue_positions:
+        return False
+    current_position = statue_positions[desired_statue]
+    if abs(current_position - empty_island) > 1:
+        return False
+    return True
 
-    # Loop until all airports have been visited
-    while queue:
-        # Get the current airport from the queue
-        current_airport = queue.pop(0)
+def can_rearrange_statues(n, a, b):
+    # Get the current positions of the statues
+    statue_positions = get_statue_positions(n, a, b)
+    empty_island = get_empty_island(n, a)
+    # Check if the desired statues can be rearranged
+    for i in range(n):
+        if not is_valid_move(n, statue_positions, empty_island, b[i]):
+            return False
+    return True
 
-        # Loop through the connections for the current airport
-        for connection in connections:
-            # Check if the connection is valid and has not been visited yet
-            if connection[0] == current_airport and connection[1] not in visited:
-                # Add the cost of the flight to the total cost
-                costs[current_airport, connection[1]] += costs[current_airport, connection[0]]
-                costs[connection[1], current_airport] += costs[current_airport, connection[0]]
+def main():
+    n = int(input())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    print("YES") if can_rearrange_statues(n, a, b) else print("NO")
 
-                # Add the airport to the queue and visited set
-                queue.append(connection[1])
-                visited.add(connection[1])
-
-    # Loop through the additional flights
-    for flight in additional_flights:
-        # Check if the flight is valid and has not been visited yet
-        if flight[0] in visited and flight[1] not in visited:
-            # Add the cost of the flight to the total cost
-            costs[flight[0], flight[1]] += flight[2]
-            costs[flight[1], flight[0]] += flight[2]
-
-            # Add the airport to the visited set
-            visited.add(flight[1])
-
-    # Return the lowest total cost of flight tickets
-    return min(costs.values())
+if __name__ == '__main__':
+    main()
 

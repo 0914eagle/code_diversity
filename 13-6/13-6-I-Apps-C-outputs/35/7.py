@@ -1,54 +1,30 @@
 
-def solve(r, c, i, j, n):
-    # Initialize the ice rink as a 2D array of white cells
-    ice = [['.' for _ in range(c)] for _ in range(r)]
+def get_meow_factor(string):
+    # Initialize the meow factor to 0
+    meow_factor = 0
     
-    # Set the starting position of the Zamboni
-    ice[i-1][j-1] = '@'
+    # Loop through each character in the string
+    for i in range(len(string)):
+        # Check if the current character is 'm'
+        if string[i] == 'm':
+            # If it is, check if the next three characters are 'e', 'o', and 'w'
+            if i + 1 < len(string) and string[i + 1] == 'e' and i + 2 < len(string) and string[i + 2] == 'o' and i + 3 < len(string) and string[i + 3] == 'w':
+                # If they are, return the current meow factor
+                return meow_factor
+            # If the current character is 'm' and the next three characters are not 'e', 'o', and 'w', increment the meow factor
+            else:
+                meow_factor += 1
     
-    # Set the current color to A
-    color = 'A'
-    
-    # Iterate over the number of steps
-    for step in range(n):
-        # Move the Zamboni in the current direction
-        if direction == 'U':
-            i -= 1
-        elif direction == 'D':
-            i += 1
-        elif direction == 'L':
-            j -= 1
-        elif direction == 'R':
-            j += 1
-        
-        # Wrap the Zamboni around the edges of the rink
-        if i < 0:
-            i = r-1
-        elif i == r:
-            i = 0
-        if j < 0:
-            j = c-1
-        elif j == c:
-            j = 0
-        
-        # Set the color of the current cell to the current color
-        ice[i][j] = color
-        
-        # Rotate the direction of the Zamboni 90 degrees clockwise
-        direction = next_direction[direction]
-        
-        # Switch to the next color
-        color = next_color[color]
-    
-    # Return the state of the ice rink after the Zamboni has completed its run
-    return '\n'.join(''.join(row) for row in ice)
+    # If the string does not contain the word 'meow', return -1
+    return -1
 
-# Define the directions that the Zamboni can move
-directions = ['U', 'D', 'L', 'R']
+def main():
+    # Read a single line of input from stdin and convert it to a string
+    string = input().strip()
+    
+    # Call the get_meow_factor function and print the result
+    print(get_meow_factor(string))
 
-# Define the next direction for each direction
-next_direction = {'U': 'R', 'D': 'L', 'L': 'D', 'R': 'U'}
-
-# Define the next color for each color
-next_color = {'A': 'B', 'B': 'C', 'C': 'D', 'D': 'E', 'E': 'F', 'F': 'G', 'G': 'H', 'H': 'I', 'I': 'J', 'J': 'K', 'K': 'L', 'L': 'M', 'M': 'N', 'N': 'O', 'O': 'P', 'P': 'Q', 'Q': 'R', 'R': 'S', 'S': 'T', 'T': 'U', 'U': 'V', 'V': 'W', 'W': 'X', 'X': 'Y', 'Y': 'Z', 'Z': 'A'}
+if __name__ == '__main__':
+    main()
 

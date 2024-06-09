@@ -1,38 +1,36 @@
 
-def is_k_multihedgehog(n, k, edges):
-    # Initialize a dictionary to store the degree of each vertex
-    degrees = {}
-    for i in range(1, n+1):
-        degrees[i] = 0
-    
-    # Count the degree of each vertex
-    for edge in edges:
-        degrees[edge[0]] += 1
-        degrees[edge[1]] += 1
-    
-    # Check if the degree of the center vertex is at least 3
-    center = -1
-    for i in range(1, n+1):
-        if degrees[i] >= 3:
-            center = i
-            break
-    
-    if center == -1:
-        return False
-    
-    # Check if the tree is a k-multihedgehog
-    visited = set()
-    queue = [center]
-    while queue:
-        vertex = queue.pop(0)
-        if vertex in visited:
-            continue
-        visited.add(vertex)
-        if degrees[vertex] != 1:
-            return False
-        for edge in edges:
-            if edge[0] == vertex or edge[1] == vertex:
-                queue.append(edge[0] if edge[1] == vertex else edge[1])
-    
-    return True
+def get_max_protected_rooms(num_rooms, num_doors, doors):
+    # Initialize a graph with the given number of rooms
+    graph = [[] for _ in range(num_rooms)]
+
+    # Add edges to the graph based on the given doors
+    for u, v in doors:
+        graph[u].append(v)
+        graph[v].append(u)
+
+    # Find the door that connects the most rooms to the outside of the building
+    max_protected_rooms = 0
+    for door in range(num_doors):
+        # Count the number of rooms that can only be reached from the outside of the building through this door
+        protected_rooms = 0
+        for room in range(num_rooms):
+            if room not in graph[door] and -1 not in graph[room]:
+                protected_rooms += 1
+
+        # Update the maximum number of protected rooms if necessary
+        if protected_rooms > max_protected_rooms:
+            max_protected_rooms = protected_rooms
+
+    return max_protected_rooms
+
+def main():
+    num_rooms, num_doors = map(int, input().split())
+    doors = []
+    for _ in range(num_doors):
+        u, v = map(int, input().split())
+        doors.append((u, v))
+    print(get_max_protected_rooms(num_rooms, num_doors, doors))
+
+if __name__ == '__main__':
+    main()
 

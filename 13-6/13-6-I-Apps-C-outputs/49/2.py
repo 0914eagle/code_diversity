@@ -1,23 +1,74 @@
 
-def solve(N, V, supervisors):
-    # Initialize a set to store the types of jokes told by the invitees
-    jokes = set()
-    # Iterate over the direct supervisors
-    for supervisor, employee in supervisors:
-        # If the direct supervisor is not invited, do not include the employee in the party
-        if supervisor not in V:
-            continue
-        # If the set of jokes told by the direct supervisor and the employee don't form a set of consecutive numbers, do not include the employee in the party
-        if not is_consecutive(V[supervisor], V[employee]):
-            continue
-        # Add the type of joke told by the employee to the set
-        jokes.add(V[employee])
-    # Return the number of different sets of jokes
-    return len(jokes)
+def f1(n):
+    # Initialize an empty stack
+    stack = []
+    
+    # Iterate through the input operations
+    for i in range(n):
+        # Get the operation and the accompanying stack labels
+        operation, stack_labels = input().split()
+        
+        # Check the type of operation
+        if operation == "a":
+            # Add the current step to the stack
+            stack.append(i)
+        elif operation == "b":
+            # Remove the top element from the stack and print it
+            print(stack.pop())
+        elif operation == "c":
+            # Get the second stack label and count the number of elements in common with the current stack
+            stack_label2 = int(stack_labels[1])
+            count = 0
+            for element in stack:
+                if element in stacks[stack_label2]:
+                    count += 1
+            # Print the number of elements in common
+            print(count)
+        else:
+            raise ValueError("Invalid operation")
+    
+    # Return the final stack
+    return stack
 
-def is_consecutive(a, b):
-    # Sort the two numbers in ascending order
-    a, b = sorted([a, b])
-    # Return True if the difference between the two numbers is exactly 1
-    return b == a + 1
+def f2(stacks):
+    # Initialize the number of operations of type 2 and 3
+    num_op2 = 0
+    num_op3 = 0
+    
+    # Iterate through the input operations
+    for i in range(len(stacks)):
+        # Get the operation and the accompanying stack labels
+        operation, stack_labels = input().split()
+        
+        # Check the type of operation
+        if operation == "a":
+            # Add the current step to the stack
+            stacks[i].append(i)
+        elif operation == "b":
+            # Remove the top element from the stack and print it
+            print(stacks[i].pop())
+            num_op2 += 1
+        elif operation == "c":
+            # Get the second stack label and count the number of elements in common with the current stack
+            stack_label2 = int(stack_labels[1])
+            count = 0
+            for element in stacks[i]:
+                if element in stacks[stack_label2]:
+                    count += 1
+            # Print the number of elements in common
+            print(count)
+            num_op3 += 1
+        else:
+            raise ValueError("Invalid operation")
+    
+    # Return the number of operations of type 2 and 3
+    return num_op2, num_op3
+
+if __name__ == '__main__':
+    n = int(input())
+    stacks = [[] for _ in range(n)]
+    f1(n)
+    num_op2, num_op3 = f2(stacks)
+    print(num_op2)
+    print(num_op3)
 

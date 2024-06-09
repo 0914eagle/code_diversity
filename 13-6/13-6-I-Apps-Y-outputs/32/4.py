@@ -1,23 +1,33 @@
 
-def solve(article):
-    # Split the article into rows and columns
-    rows = article.split('\n')
-    cols = [list(row) for row in rows]
+def get_intersection(l1, r1, l2, r2):
+    if l1 <= l2:
+        if r1 >= l2:
+            return l2
+        elif r1 >= r2:
+            return r2
+        else:
+            return 0
+    else:
+        if l1 <= r2:
+            return l1
+        elif r1 >= r2:
+            return r2
+        else:
+            return 0
 
-    # Get the parameters for the scanner
-    r, c, z_r, z_c = map(int, input().split())
+def solve(l1, r1, l2, r2):
+    intersection = get_intersection(l1, r1, l2, r2)
+    if intersection != 0:
+        return [intersection, intersection]
+    else:
+        if l1 <= l2:
+            return [l1, r2]
+        else:
+            return [l2, r1]
 
-    # Create a matrix to store the enlarged article
-    enlarged_article = [['' for _ in range(c*z_c)] for _ in range(r*z_r)]
-
-    # Loop through the original article and enlarge it
-    for i in range(r):
-        for j in range(c):
-            char = cols[i][j]
-            for k in range(z_r):
-                for l in range(z_c):
-                    enlarged_article[i*z_r+k][j*z_c+l] = char
-
-    # Return the enlarged article
-    return '\n'.join(''.join(row) for row in enlarged_article)
+if __name__ == '__main__':
+    q = int(input())
+    for i in range(q):
+        l1, r1, l2, r2 = map(int, input().split())
+        print(*solve(l1, r1, l2, r2))
 

@@ -1,18 +1,37 @@
 
-def get_min_triples(arr):
-    # Sort the array in ascending order
-    arr.sort()
-    # Initialize variables to keep track of the minimum product and its indices
-    min_product = arr[0] * arr[1] * arr[2]
-    min_indices = [0, 1, 2]
-    # Iterate over the array
-    for i in range(len(arr) - 2):
-        # Calculate the product of the current element with the two following elements
-        product = arr[i] * arr[i + 1] * arr[i + 2]
-        # If the product is less than the minimum product, update the minimum product and its indices
-        if product < min_product:
-            min_product = product
-            min_indices = [i, i + 1, i + 2]
-    # Return the minimum product and its indices
-    return min_product, min_indices
+def get_triangulation_weight(n):
+    # Calculate the weight of the triangulation
+    weight = 0
+    for i in range(n):
+        for j in range(i+1, n):
+            for k in range(j+1, n):
+                if i < j < k:
+                    weight += i * j * k
+                elif j < i < k:
+                    weight += j * i * k
+                elif k < i < j:
+                    weight += k * i * j
+    return weight
+
+def get_min_weight_triangulation(n):
+    # Initialize the minimum weight to a large value
+    min_weight = float('inf')
+    # Iterate over all possible triangulations
+    for i in range(n):
+        for j in range(i+1, n):
+            for k in range(j+1, n):
+                if i < j < k:
+                    weight = i * j * k
+                elif j < i < k:
+                    weight = j * i * k
+                elif k < i < j:
+                    weight = k * i * j
+                # Check if the current triangulation has a smaller weight than the minimum weight so far
+                if weight < min_weight:
+                    min_weight = weight
+    return min_weight
+
+if __name__ == '__main__':
+    n = int(input())
+    print(get_min_weight_triangulation(n))
 

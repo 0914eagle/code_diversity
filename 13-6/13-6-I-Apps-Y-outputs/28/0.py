@@ -1,21 +1,16 @@
 
-def solve(n, words):
-    # Initialize a variable to keep track of Arild's count
-    count = 0
-    
-    # Iterate through the list of words
-    for word in words:
-        # If the word is a number, update the count
-        if word.isdigit():
-            count += int(word)
-        # If the word is "mumble", something is fishy
-        elif word == "mumble":
-            return "something is fishy"
-    
-    # If the count is equal to the total number of bites, Arild's counting makes sense
-    if count == n:
-        return "makes sense"
-    # Otherwise, something is fishy
+def evaluate_formula(formula):
+    A, op, B = formula.split()
+    if op == "+":
+        return int(A) + int(B)
     else:
-        return "something is fishy"
+        return int(A) - int(B)
+
+def main():
+    formula = input("Enter a formula: ")
+    result = evaluate_formula(formula)
+    print(result)
+
+if __name__ == '__main__':
+    main()
 

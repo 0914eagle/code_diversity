@@ -1,25 +1,24 @@
 
-def get_max_segments(arr, k):
-    # Initialize the result variable
-    result = 0
+def get_codecraft_t_shirt_winners(s):
+    i = (s // 50) % 475
+    winners = []
+    for _ in range(25):
+        i = (i * 96 + 42) % 475
+        winners.append(26 + i)
+    return winners
 
-    # Iterate over the array
-    for i in range(len(arr)):
-        # Get the current element and its complement
-        curr = arr[i]
-        comp = (1 << k) - 1 - curr
+def get_minimum_hacks(p, x, y):
+    codecraft_t_shirt_winners = get_codecraft_t_shirt_winners(x)
+    if p in codecraft_t_shirt_winners:
+        return 0
+    else:
+        hacks = 0
+        while x < y:
+            x += 100
+            hacks += 1
+        return hacks
 
-        # Check if the current element is not equal to its complement
-        if curr != comp:
-            # Get the number of segments that start at the current index
-            segments = 1
-            for j in range(i+1, len(arr)):
-                if arr[j] == comp:
-                    segments += 1
-
-            # Update the result if necessary
-            result = max(result, segments)
-
-    # Return the result
-    return result
+if __name__ == '__main__':
+    p, x, y = map(int, input().split())
+    print(get_minimum_hacks(p, x, y))
 

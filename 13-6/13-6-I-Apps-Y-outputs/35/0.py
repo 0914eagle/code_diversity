@@ -1,21 +1,11 @@
 
-def solve(n, prefixes, suffixes):
-    # Initialize a dictionary to store the prefixes and suffixes
-    prefix_suffixes = {}
+def sand_consumption(upper_bulb_size, time_elapsed):
+    return upper_bulb_size - (upper_bulb_size * time_elapsed / 100)
 
-    # Loop through the prefixes and suffixes and add them to the dictionary
-    for i in range(len(prefixes)):
-        prefix_suffixes[prefixes[i]] = "P"
-        prefix_suffixes[suffixes[i]] = "S"
+def main():
+    upper_bulb_size, time_elapsed = map(int, input().split())
+    print(sand_consumption(upper_bulb_size, time_elapsed))
 
-    # Initialize a list to store the result
-    result = []
-
-    # Loop through the dictionary and check if the key is a prefix or suffix
-    for key in prefix_suffixes:
-        if len(key) == n:
-            result.append(prefix_suffixes[key])
-
-    # Return the result as a string
-    return "".join(result)
+if __name__ == '__main__':
+    main()
 

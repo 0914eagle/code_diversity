@@ -1,36 +1,31 @@
 
-def solve(n, crush):
-    # Initialize a dictionary to store the crushes
-    crushes = {i: crush[i-1] for i in range(1, n+1)}
+def get_maximum_coins(d, g, n, k):
+    # Initialize variables
+    maximum_coins = 0
+    current_coins = d
+    gladstone_coins = g
+    rounds_played = 0
     
-    # Initialize a set to store the visited nodes
-    visited = set()
+    # Loop through each round
+    while rounds_played < n:
+        # If Gladstone is distracted, look at his cards and swap them if necessary
+        if rounds_played in range(k):
+            # Swap cards if necessary
+            if current_coins > gladstone_coins:
+                current_coins += gladstone_coins
+                gladstone_coins = current_coins - gladstone_coins
+                current_coins -= gladstone_coins
+        
+        # Both players place their bets
+        current_coins -= 1
+        gladstone_coins -= 1
+        
+        # Update the maximum coins
+        maximum_coins = max(maximum_coins, current_coins)
+        
+        # Update the number of rounds played
+        rounds_played += 1
     
-    # Initialize a queue to store the nodes to be processed
-    queue = [1]
-    
-    # Loop until the queue is empty
-    while queue:
-        # Get the current node from the queue
-        node = queue.pop(0)
-        
-        # If the node is already visited, skip it
-        if node in visited:
-            continue
-        
-        # Mark the node as visited
-        visited.add(node)
-        
-        # Get the crush of the current node
-        crush_node = crushes[node]
-        
-        # If the crush is the current node, return the length of the queue
-        if crush_node == node:
-            return len(queue)
-        
-        # Add the crush of the current node to the queue
-        queue.append(crush_node)
-    
-    # If the queue is empty, return -1
-    return -1
+    # Return the maximum coins
+    return maximum_coins
 

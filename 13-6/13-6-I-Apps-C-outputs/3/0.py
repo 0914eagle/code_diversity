@@ -1,31 +1,30 @@
 
-def solve(producer_companies, consumer_companies):
-    # Initialize variables
-    max_profit = 0
-    selected_producer = None
-    selected_consumer = None
+def get_num_moves(numbers):
+    # Initialize a set to store the numbers that have been taken
+    taken_numbers = set()
+    # Initialize a list to store the moves that Ivana can make
+    moves = []
+    # Loop through the numbers
+    for num in numbers:
+        # Check if the number is odd
+        if num % 2 != 0:
+            # If the number is odd, check if it has been taken already
+            if num not in taken_numbers:
+                # If the number has not been taken, add it to the set of taken numbers and add the move to the list of moves
+                taken_numbers.add(num)
+                moves.append(num)
+    # Return the length of the list of moves
+    return len(moves)
 
-    # Iterate over each producer company
-    for producer in producer_companies:
-        # Iterate over each consumer company
-        for consumer in consumer_companies:
-            # Calculate the profit for this combination of producer and consumer
-            profit = calculate_profit(producer, consumer)
+def main():
+    # Read the input from stdin
+    n = int(input())
+    numbers = list(map(int, input().split()))
+    # Call the function to get the number of moves that Ivana can make
+    num_moves = get_num_moves(numbers)
+    # Print the number of moves
+    print(num_moves)
 
-            # Check if the profit is higher than the current maximum profit
-            if profit > max_profit:
-                # Update the maximum profit and the selected producer and consumer
-                max_profit = profit
-                selected_producer = producer
-                selected_consumer = consumer
-
-    # Return the maximum profit and the selected producer and consumer
-    return max_profit, selected_producer, selected_consumer
-
-def calculate_profit(producer, consumer):
-    # Calculate the profit for this combination of producer and consumer
-    profit = producer["price"] - consumer["price"]
-
-    # Return the profit
-    return profit
+if __name__ == '__main__':
+    main()
 

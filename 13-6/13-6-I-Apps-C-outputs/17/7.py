@@ -1,36 +1,35 @@
 
-def get_smallest_t(n, crush):
-    # Initialize a dictionary to store the crushes
-    crushes = {i: crush[i-1] for i in range(1, n+1)}
-    
-    # Initialize a set to store the visited nodes
-    visited = set()
-    
-    # Initialize a queue to store the nodes to be visited
-    queue = [1]
-    
-    # Loop until the queue is empty
-    while queue:
-        # Get the current node from the queue
-        node = queue.pop(0)
-        
-        # If the node is already visited, skip it
-        if node in visited:
+def f1(d, g, n, k):
+    # Initialize variables
+    max_coins = 0
+    coins_left = d
+    gladstone_coins_left = g
+    distracted_rounds = k
+
+    # Play the game
+    for i in range(n):
+        # Determine if Gladstone will be distracted during this round
+        if distracted_rounds > 0:
+            distracted_rounds -= 1
             continue
-        
-        # Mark the node as visited
-        visited.add(node)
-        
-        # Get the crush of the current node
-        crush_node = crushes[node]
-        
-        # If the crush is the current node, return the length of the queue
-        if crush_node == node:
-            return len(queue)
-        
-        # Add the crush of the current node to the queue
-        queue.append(crush_node)
-    
-    # If the queue is empty and no node is visited, return -1
-    return -1
+
+        # Determine the amount of coins to bet
+        bet = min(coins_left, gladstone_coins_left)
+
+        # Update the amount of coins left
+        coins_left -= bet
+        gladstone_coins_left -= bet
+
+        # Update the maximum amount of coins
+        max_coins = max(max_coins, coins_left)
+
+    return max_coins
+
+def f2(...):
+    # Implement f2 here
+    pass
+
+if __name__ == '__main__':
+    d, g, n, k = map(int, input().split())
+    print(f1(d, g, n, k))
 

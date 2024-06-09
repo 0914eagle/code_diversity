@@ -1,19 +1,26 @@
 
-def get_max_segments(arr, k):
-    # Initialize the result variable
-    result = 0
+def get_t_shirt_winners(s):
+    i = (s // 50) % 475
+    t_shirt_winners = []
+    for _ in range(25):
+        i = (i * 96 + 42) % 475
+        t_shirt_winners.append(26 + i)
+    return t_shirt_winners
 
-    # Iterate over the array
-    for i in range(len(arr)):
-        # Get the current element and its complement
-        current = arr[i]
-        complement = (1 << k) - 1 - current
+def get_min_hacks(p, x, y):
+    t_shirt_winners = get_t_shirt_winners(x)
+    min_hacks = 0
+    for t_shirt_winner in t_shirt_winners:
+        if t_shirt_winner > p:
+            min_hacks += 1
+        elif t_shirt_winner == p:
+            break
+    return min_hacks
 
-        # If the current element is not equal to its complement,
-        # then it forms a segment with its complement
-        if current != complement:
-            result += 1
+def main():
+    p, x, y = map(int, input().split())
+    print(get_min_hacks(p, x, y))
 
-    # Return the result
-    return result
+if __name__ == '__main__':
+    main()
 

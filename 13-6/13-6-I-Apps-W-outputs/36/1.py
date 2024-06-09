@@ -1,13 +1,34 @@
 
-def solve(n, prices, vitamins):
-    # Initialize the minimum total price to obtain all three vitamins as -1
-    min_price = -1
-    # Iterate over the juices
+def get_maximum_strength(n, p, assignment):
+    # Initialize the maximum strength and the optimal prefix or suffix
+    max_strength = 0
+    optimal_prefix_or_suffix = ""
+
+    # Iterate over all possible prefixes or suffixes
     for i in range(n):
-        # Check if the current juice contains all three vitamins
-        if "A" in vitamins[i] and "B" in vitamins[i] and "C" in vitamins[i]:
-            # If the current juice contains all three vitamins, update the minimum total price
-            min_price = min(min_price, prices[i])
-    # Return the minimum total price
-    return min_price
+        # Get the strength of the pieces in the current prefix or suffix
+        current_strength = sum(p[i:i+n])
+
+        # If the current strength is greater than the maximum strength, update the maximum strength and the optimal prefix or suffix
+        if current_strength > max_strength:
+            max_strength = current_strength
+            optimal_prefix_or_suffix = assignment[i:i+n]
+
+    # Return the maximum strength and the optimal prefix or suffix
+    return max_strength, optimal_prefix_or_suffix
+
+def main():
+    # Read the input
+    n = int(input())
+    p = list(map(int, input().split()))
+    assignment = input()
+
+    # Call the get_maximum_strength function to get the maximum strength and the optimal prefix or suffix
+    max_strength, optimal_prefix_or_suffix = get_maximum_strength(n, p, assignment)
+
+    # Print the maximum strength
+    print(max_strength)
+
+if __name__ == '__main__':
+    main()
 

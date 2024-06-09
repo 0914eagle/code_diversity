@@ -1,22 +1,14 @@
 
-import math
+def f1(N, K, circle):
+    # f1(N, K, circle) returns the number of distinct starting circles that give the same circle after K transformations as the circle described by the string circle does after K transformations.
+    pass
 
-def get_probability(m, n, t, p):
-    # Calculate the probability that a single person wins the lottery
-    prob_win = n / m
-    
-    # Calculate the probability that a person wins the lottery and buys all p tickets
-    prob_win_all = prob_win * (t ** p)
-    
-    # Calculate the probability that a person wins the lottery and buys at least one ticket
-    prob_win_at_least_one = prob_win * (t ** (p - 1)) * (1 - (t - 1) / t)
-    
-    # Calculate the probability that your group wins the lottery and gets all p tickets
-    prob_group_wins = prob_win_all * (p / m)
-    
-    # Calculate the probability that your group wins the lottery and gets at least one ticket
-    prob_group_wins_at_least_one = prob_win_at_least_one * (p / m)
-    
-    # Return the probability that your group gets tickets to the show
-    return prob_group_wins + prob_group_wins_at_least_one
+def f2(N, K, circle):
+    # f2(N, K, circle) returns the number of distinct starting circles that give the same circle after K transformations as the circle described by the string circle does after K transformations.
+    pass
+
+if __name__ == '__main__':
+    N, K = map(int, input().split())
+    circle = input()
+    print(f1(N, K, circle))
 

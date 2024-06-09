@@ -1,12 +1,17 @@
 
-def solve(droplets, sensors):
-    result = []
-    for droplet in droplets:
-        for sensor in sensors:
-            if sensor[0] <= droplet[0] <= sensor[1] and droplet[1] == sensor[2]:
-                result.append(sensor[2])
-                break
-        else:
-            result.append(0)
-    return result
+def f(b, n):
+    if n < b:
+        return n
+    else:
+        return f(b, n // b) + (n % b)
+
+def solve(n, s):
+    for b in range(2, 1000000000):
+        if f(b, n) == s:
+            return b
+    return -1
+
+if __name__ == '__main__':
+    n, s = map(int, input().split())
+    print(solve(n, s))
 

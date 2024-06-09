@@ -1,47 +1,70 @@
 
-def solve(n, t, m, spoilify_cheerleaders):
-    # Initialize the variables to keep track of the number of goals scored by each team
-    sportify_goals = 0
-    spoilify_goals = 0
-    
-    # Initialize a list to keep track of the active cheerleaders for each team
-    sportify_cheerleaders = []
-    spoilify_cheerleaders = []
-    
-    # Iterate through the spoilify cheerleaders and add them to the appropriate list
-    for cheerleader in spoilify_cheerleaders:
-        if cheerleader[0] < 45:
-            spoilify_cheerleaders.append(cheerleader)
-        else:
-            sportify_cheerleaders.append(cheerleader)
-    
-    # Iterate through the time intervals
-    for i in range(90):
-        # Check if the current time interval is active for any of the cheerleaders
-        active_cheerleaders = []
-        for cheerleader in sportify_cheerleaders:
-            if i >= cheerleader[0] and i < cheerleader[1]:
-                active_cheerleaders.append(cheerleader)
-        for cheerleader in spoilify_cheerleaders:
-            if i >= cheerleader[0] and i < cheerleader[1]:
-                active_cheerleaders.append(cheerleader)
-        
-        # Check if the current time interval is within the 5 minute interval
-        if len(active_cheerleaders) > 5:
-            # Increment the number of goals scored by the team with more active cheerleaders
-            if len(active_cheerleaders) > len(sportify_cheerleaders):
-                spoilify_goals += 1
-            else:
-                sportify_goals += 1
-        
-        # Remove any cheerleaders from the list that are no longer active
-        for cheerleader in sportify_cheerleaders:
-            if i == cheerleader[1]:
-                sportify_cheerleaders.remove(cheerleader)
-        for cheerleader in spoilify_cheerleaders:
-            if i == cheerleader[1]:
-                spoilify_cheerleaders.remove(cheerleader)
-    
-    # Return the number of goals scored by each team
-    return sportify_goals, spoilify_goals
+class LongLongString:
+    def __init__(self, string):
+        self.string = string
+
+    def __len__(self):
+        return len(self.string)
+
+    def __getitem__(self, key):
+        return self.string[key]
+
+    def __setitem__(self, key, value):
+        self.string = self.string[:key] + value + self.string[key+1:]
+
+    def __delitem__(self, key):
+        self.string = self.string[:key] + self.string[key+1:]
+
+    def __str__(self):
+        return self.string
+
+def parse_operation(operation):
+    op, pos = operation.split()
+    pos = int(pos)
+    if op == "D":
+        return ("D", pos)
+    elif op == "I":
+        return ("I", pos)
+    else:
+        raise ValueError("Invalid operation")
+
+def apply_operation(string, operation):
+    op, pos = operation
+    if op == "D":
+        del string[pos]
+    elif op == "I":
+        string[pos] = "X"
+    else:
+        raise ValueError("Invalid operation")
+    return string
+
+def compare_programs(program1, program2):
+    string1 = LongLongString("")
+    string2 = LongLongString("")
+    for operation in program1:
+        apply_operation(string1, operation)
+    for operation in program2:
+        apply_operation(string2, operation)
+    return string1 == string2
+
+def main():
+    program1 = []
+    program2 = []
+    while True:
+        operation = input()
+        if operation == "E":
+            break
+        program1.append(parse_operation(operation))
+    while True:
+        operation = input()
+        if operation == "E":
+            break
+        program2.append(parse_operation(operation))
+    if compare_programs(program1, program2):
+        print("0")
+    else:
+        print("1")
+
+if __name__ == '__main__':
+    main()
 

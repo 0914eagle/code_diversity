@@ -1,27 +1,27 @@
 
-def solve(D, G, *args):
-    p_scores = list(zip(*args))[0]
-    c_scores = list(zip(*args))[1]
+def get_tower_heights(box_heights):
+    tower_heights = []
+    for i in range(2):
+        tower_heights.append(box_heights.pop())
+    return tower_heights
 
-    # Initialize the minimum number of problems to solve
-    min_problems = 0
+def get_box_heights(box_heights, tower_heights):
+    box_heights.sort(reverse=True)
+    tower_1_heights = []
+    tower_2_heights = []
+    for i in range(3):
+        tower_1_heights.append(box_heights.pop())
+    for i in range(3):
+        tower_2_heights.append(box_heights.pop())
+    return tower_1_heights, tower_2_heights
 
-    # Loop through each difficulty level
-    for i in range(1, D+1):
-        # Calculate the number of problems that can be solved at this difficulty level
-        num_problems = p_scores[i-1]
+def main():
+    box_heights = [12, 8, 2, 4, 10, 3, 25, 14]
+    tower_heights = get_tower_heights(box_heights)
+    tower_1_heights, tower_2_heights = get_box_heights(box_heights, tower_heights)
+    print(tower_1_heights)
+    print(tower_2_heights)
 
-        # Calculate the perfect bonus for solving all problems at this difficulty level
-        perfect_bonus = c_scores[i-1]
-
-        # Check if solving all problems at this difficulty level will give us a total score of G or more
-        if num_problems * 100 * i + perfect_bonus >= G:
-            # If it will, return the minimum number of problems needed to solve
-            return min_problems + num_problems
-
-        # Otherwise, increment the minimum number of problems to solve
-        min_problems += num_problems
-
-    # If we reach this point, it means that we need to solve all problems to achieve the objective
-    return min_problems
+if __name__ == '__main__':
+    main()
 

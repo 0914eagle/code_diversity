@@ -1,19 +1,53 @@
 
-def solve(n, k, p):
-    # Calculate the number of permutations of length n
-    num_permutations = 1
-    for i in range(n):
-        num_permutations = (num_permutations * (n - i)) % p
-    
-    # Calculate the number of permutations with runs of length k
-    num_runs = 0
-    for i in range(n - k + 1):
-        # Calculate the number of permutations with a run of length k starting at position i
-        num_runs_i = 1
-        for j in range(i + 1, i + k):
-            num_runs_i = (num_runs_i * (n - j + 1)) % p
-        num_runs = (num_runs + num_runs_i) % p
-    
-    # Return the number of permutations with runs of length at most k
-    return (num_permutations - num_runs + p) % p
+def get_input():
+    N, M = map(int, input().split())
+    assert 2 <= N <= 50 and 2 <= M <= 50
+    food_times = []
+    for i in range(N):
+        food_times.append(list(map(int, input().split())))
+    assert all(1 <= t <= 200 for row in food_times for t in row)
+    return N, M, food_times
+
+def f1(N, M, food_times):
+    # Initialize the solution with the first dog eating from the first bowl
+    solution = [0] * N
+    solution[0] = 1
+    # Initialize the available bowls
+    available_bowls = set(range(1, M + 1))
+    for i in range(1, N):
+        # Find the bowl with the shortest time
+        shortest_time = float('inf')
+        for j in available_bowls:
+            if food_times[i][j] < shortest_time:
+                shortest_time = food_times[i][j]
+                shortest_bowl = j
+        # Assign the dog to eat from the shortest bowl
+        solution[i] = shortest_bowl
+        # Remove the shortest bowl from the available bowls
+        available_bowls.remove(shortest_bowl)
+    return solution
+
+def f2(N, M, food_times):
+    # Initialize the solution with the first dog eating from the first bowl
+    solution = [0] * N
+    solution[0] = 1
+    # Initialize the available bowls
+    available_bowls = set(range(1, M + 1))
+    for i in range(1, N):
+        # Find the bowl with the shortest time
+        shortest_time = float('inf')
+        for j in available_bowls:
+            if food_times[i][j] < shortest_time:
+                shortest_time = food_times[i][j]
+                shortest_bowl = j
+        # Assign the dog to eat from the shortest bowl
+        solution[i] = shortest_bowl
+        # Remove the shortest bowl from the available bowls
+        available_bowls.remove(shortest_bowl)
+    return solution
+
+if __name__ == '__main__':
+    N, M, food_times = get_input()
+    solution = f1(N, M, food_times)
+    print(sum(food_times[i][solution[i] - 1] for i in range(N)))
 

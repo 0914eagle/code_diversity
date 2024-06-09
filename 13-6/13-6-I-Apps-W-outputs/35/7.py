@@ -1,19 +1,40 @@
 
-def solve(h1, h2, a, b):
-    # Calculate the total distance the caterpillar needs to travel
-    total_distance = h2 - h1
+def get_room_assignment(events):
+    # Initialize the room assignment list with all rooms empty
+    room_assignment = [0] * 10
+    
+    # Iterate through the events
+    for event in events:
+        # If the event is 'L', a customer arrives from the left entrance
+        if event == 'L':
+            # Find the first empty room from the left entrance
+            for i in range(10):
+                if room_assignment[i] == 0:
+                    room_assignment[i] = 1
+                    break
+        # If the event is 'R', a customer arrives from the right entrance
+        elif event == 'R':
+            # Find the first empty room from the right entrance
+            for i in range(10):
+                if room_assignment[9 - i] == 0:
+                    room_assignment[9 - i] = 1
+                    break
+        # If the event is a digit (0-9), a customer in that room leaves
+        elif event.isdigit():
+            # Set the room to empty
+            room_assignment[int(event)] = 0
+    
+    # Return the final room assignment list
+    return room_assignment
 
-    # Calculate the distance the caterpillar travels by day and night
-    day_distance = a * 10
-    night_distance = b * 10
+def main():
+    # Read the number of events and the events from stdin
+    n = int(input())
+    events = input()
+    
+    # Call the get_room_assignment function and print the result
+    print("".join(str(room) for room in get_room_assignment(events)))
 
-    # Calculate the number of days it takes for the caterpillar to travel the total distance
-    days = total_distance // (day_distance + night_distance)
-
-    # If the caterpillar can't get the apple in the given time frame, return -1
-    if days == 0:
-        return -1
-
-    # Return the number of days it takes for the caterpillar to get the apple
-    return days
+if __name__ == '__main__':
+    main()
 

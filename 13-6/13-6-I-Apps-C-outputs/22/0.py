@@ -1,28 +1,45 @@
 
-def solve(n, flights):
-    # Initialize a graph with the given flights
-    graph = {i: set() for i in range(1, n + 1)}
-    for i, j in flights:
-        graph[i].add(j)
-        graph[j].add(i)
+def f1(D, M, N, implications, events):
+    # Initialize a set to store the events that have certainly occurred
+    certainly_occurred = set()
 
-    # Find the flight with the maximum number of connections
-    max_connections = 0
-    flight_to_cancel = None
-    for i in range(1, n + 1):
-        connections = len(graph[i])
-        if connections > max_connections:
-            max_connections = connections
-            flight_to_cancel = i
+    # Iterate over the implications
+    for implication in implications:
+        # If the event that is implied by the current implication is in the set of events that have occurred,
+        # then the event that caused the implication must have occurred as well
+        if implication[1] in events:
+            certainly_occurred.add(implication[0])
 
-    # Find the city with the minimum number of connections
-    min_connections = n
-    city_to_add = None
-    for i in range(1, n + 1):
-        connections = len(graph[i])
-        if connections < min_connections:
-            min_connections = connections
-            city_to_add = i
+    # Return the set of events that have certainly occurred
+    return certainly_occurred
 
-    return (max_connections - 1, flight_to_cancel, city_to_add)
+def f2(D, M, N, implications, events):
+    # Initialize a set to store the events that have certainly occurred
+    certainly_occurred = set()
+
+    # Iterate over the implications
+    for implication in implications:
+        # If the event that caused the current implication is in the set of events that have occurred,
+        # then the event that is implied by the current implication must have occurred as well
+        if implication[0] in events:
+            certainly_occurred.add(implication[1])
+
+    # Return the set of events that have certainly occurred
+    return certainly_occurred
+
+def main():
+    # Read the input
+    D, M, N = map(int, input().split())
+    implications = [tuple(map(int, input().split())) for _ in range(M)]
+    events = set(map(int, input().split()))
+
+    # Find the events that have certainly occurred
+    certainly_occurred = f1(D, M, N, implications, events)
+    certainly_occurred = certainly_occurred.union(f2(D, M, N, implications, events))
+
+    # Print the events that have certainly occurred
+    print(*sorted(certainly_occurred), sep=' ')
+
+if __name__ == '__main__':
+    main()
 

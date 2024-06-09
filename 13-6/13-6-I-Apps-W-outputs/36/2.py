@@ -1,22 +1,61 @@
 
-def get_min_price(n, prices, vitamins):
-    # Initialize a dictionary to store the count of vitamins for each juice
-    vitamin_count = {}
+def get_maximum_strength(n, p, assignment):
+    # Initialize variables
+    strength_a = 0
+    strength_b = 0
+    
+    # Iterate through the game pieces
     for i in range(n):
-        vitamin_count[i] = 0
-        for vitamin in vitamins[i]:
-            vitamin_count[i] += 1
+        # If the piece is assigned to team A
+        if assignment[i] == 'A':
+            strength_a += p[i]
+        # If the piece is assigned to team B
+        else:
+            strength_b += p[i]
+    
+    # Return the maximum strength
+    return max(strength_a, strength_b)
 
-    # Sort the juices by the count of vitamins in descending order
-    sorted_juices = sorted(vitamin_count.items(), key=lambda x: x[1], reverse=True)
+def get_optimal_strategy(n, p, assignment):
+    # Initialize variables
+    optimal_strategy = ''
+    current_strength = 0
+    
+    # Iterate through the game pieces
+    for i in range(n):
+        # If the piece is assigned to team A
+        if assignment[i] == 'A':
+            current_strength += p[i]
+        # If the piece is assigned to team B
+        else:
+            current_strength -= p[i]
+        
+        # If the current strength is greater than the optimal strength
+        if current_strength > 0:
+            optimal_strategy += 'A'
+        # If the current strength is less than the optimal strength
+        else:
+            optimal_strategy += 'B'
+    
+    # Return the optimal strategy
+    return optimal_strategy
 
-    # Initialize the minimum total price to 0
-    min_price = 0
+def main():
+    # Read the input
+    n = int(input())
+    p = list(map(int, input().split()))
+    assignment = input()
+    
+    # Get the maximum strength
+    maximum_strength = get_maximum_strength(n, p, assignment)
+    
+    # Get the optimal strategy
+    optimal_strategy = get_optimal_strategy(n, p, assignment)
+    
+    # Print the output
+    print(maximum_strength)
+    print(optimal_strategy)
 
-    # Iterate through the sorted juices and add the price of the juice if it contains at least one vitamin
-    for juice, count in sorted_juices:
-        if count > 0:
-            min_price += prices[juice]
-
-    return min_price
+if __name__ == '__main__':
+    main()
 

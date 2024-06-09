@@ -1,41 +1,56 @@
 
-def num_paths(n, m, edges):
-    # Initialize a dictionary to store the number of paths for each vertex
-    num_paths_dict = {1: 1}
+def has_palindrome_subsequence(a):
+    # Base case: if the input array has only one element, return False
+    if len(a) == 1:
+        return False
     
-    # Iterate over the edges
-    for i in range(m):
-        # Get the current edge
-        edge = edges[i]
-        
-        # If the current edge is not a self-loop
-        if edge[0] != edge[1]:
-            # If the starting vertex of the current edge is not already in the dictionary
-            if edge[0] not in num_paths_dict:
-                # Add the starting vertex to the dictionary with a value of 0
-                num_paths_dict[edge[0]] = 0
-                
-            # If the ending vertex of the current edge is not already in the dictionary
-            if edge[1] not in num_paths_dict:
-                # Add the ending vertex to the dictionary with a value of 0
-                num_paths_dict[edge[1]] = 0
-            
-            # Increment the number of paths for the starting vertex
-            num_paths_dict[edge[0]] += 1
-            
-            # Increment the number of paths for the ending vertex
-            num_paths_dict[edge[1]] += 1
+    # Initialize a set to store the indices of the elements in the input array
+    indices = set()
     
-    # Initialize a variable to store the total number of paths
-    total_paths = 0
+    # Iterate over the elements in the input array
+    for i in range(len(a)):
+        # If the current element is already in the set, skip it
+        if i in indices:
+            continue
+        # If the current element is the middle element of a palindrome, return True
+        if i > 0 and i < len(a) - 1 and a[i] == a[i - 1] == a[i + 1]:
+            return True
+        # If the current element is the first element of a palindrome, add the indices of the next two elements to the set
+        if i < len(a) - 2 and a[i] == a[i + 1] == a[i + 2]:
+            indices.add(i + 1)
+            indices.add(i + 2)
     
-    # Iterate over the dictionary
-    for vertex, paths in num_paths_dict.items():
-        # If the vertex has at least one path
-        if paths > 0:
-            # Increment the total number of paths
-            total_paths += paths
+    # If no palindrome has been found, return False
+    return False
+
+def has_palindrome_subsequence_2(a):
+    # Base case: if the input array has only one element, return False
+    if len(a) == 1:
+        return False
     
-    # Return the total number of paths
-    return total_paths
+    # Initialize a set to store the indices of the elements in the input array
+    indices = set()
+    
+    # Iterate over the elements in the input array
+    for i in range(len(a)):
+        # If the current element is already in the set, skip it
+        if i in indices:
+            continue
+        # If the current element is the middle element of a palindrome, return True
+        if i > 0 and i < len(a) - 1 and a[i] == a[i - 1] == a[i + 1]:
+            return True
+        # If the current element is the first element of a palindrome, add the indices of the next two elements to the set
+        if i < len(a) - 2 and a[i] == a[i + 1] == a[i + 2]:
+            indices.add(i + 1)
+            indices.add(i + 2)
+    
+    # If no palindrome has been found, return False
+    return False
+
+if __name__ == '__main__':
+    t = int(input())
+    for i in range(t):
+        n = int(input())
+        a = list(map(int, input().split()))
+        print("YES") if has_palindrome_subsequence(a) else print("NO")
 

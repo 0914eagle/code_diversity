@@ -1,23 +1,32 @@
 
-def solve(N, K, P, C):
-    # Initialize the maximum score to 0
-    max_score = 0
-    # Loop through each starting square
-    for i in range(1, N+1):
-        # Initialize the current score to 0
-        curr_score = 0
-        # Loop through each move
-        for j in range(K+1):
-            # Calculate the next square based on the permutation
-            next_square = P[i]
-            # Add the cost of the current square to the current score
-            curr_score += C[i]
-            # If the next square is the final square, update the maximum score
-            if next_square == N:
-                max_score = max(max_score, curr_score)
-                break
-            # Update the current square and move on to the next move
-            i = next_square
-    # Return the maximum score
-    return max_score
+def count_ways(n, arr):
+    # Base case: if there is only one piece, return 1
+    if n == 1:
+        return 1
+    
+    # Initialize the number of ways to break the chocolate
+    ways = 0
+    
+    # Iterate over the array of pieces
+    for i in range(n):
+        # If the current piece has a nut, try breaking the chocolate into two parts
+        if arr[i] == 1:
+            # Calculate the number of ways to break the chocolate into two parts
+            ways += count_ways(i, arr[:i] + arr[i+1:])
+    
+    return ways
+
+def main():
+    # Read the number of pieces and the array of pieces from stdin
+    n = int(input())
+    arr = list(map(int, input().split()))
+    
+    # Calculate the number of ways to break the chocolate
+    ways = count_ways(n, arr)
+    
+    # Print the number of ways
+    print(ways)
+
+if __name__ == '__main__':
+    main()
 

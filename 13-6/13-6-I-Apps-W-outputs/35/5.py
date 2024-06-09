@@ -1,29 +1,40 @@
 
-def solve(h1, h2, a, b):
-    # Calculate the total distance the caterpillar needs to travel
-    total_distance = h2 - h1
+def get_room_assignment(events):
+    # Initialize an empty list to store the room assignment
+    room_assignment = [0] * 10
+    
+    # Iterate through the events
+    for event in events:
+        # If the event is 'L', assign the customer to the first empty room from the left
+        if event == 'L':
+            for i in range(10):
+                if room_assignment[i] == 0:
+                    room_assignment[i] = 1
+                    break
+        # If the event is 'R', assign the customer to the first empty room from the right
+        elif event == 'R':
+            for i in range(9, -1, -1):
+                if room_assignment[i] == 0:
+                    room_assignment[i] = 1
+                    break
+        # If the event is a digit (0-9), mark the corresponding room as empty
+        else:
+            room_assignment[int(event)] = 0
+    
+    # Return the final room assignment
+    return ''.join(str(room) for room in room_assignment)
 
-    # Calculate the distance the caterpillar travels during the day
-    day_distance = a * 10
+def main():
+    # Read the number of events and the events from stdin
+    n = int(input())
+    events = input()
+    
+    # Get the room assignment from the events
+    room_assignment = get_room_assignment(events)
+    
+    # Print the room assignment
+    print(room_assignment)
 
-    # Calculate the distance the caterpillar travels during the night
-    night_distance = b * 10
-
-    # Calculate the number of days it takes for the caterpillar to travel the total distance
-    days = total_distance // day_distance
-
-    # Check if the caterpillar can get the apple on the last day
-    if total_distance % day_distance == 0:
-        return days
-
-    # Check if the caterpillar can get the apple on the first day
-    if h1 + day_distance >= h2:
-        return 1
-
-    # Check if the caterpillar can get the apple on the last night
-    if h2 - night_distance <= h1:
-        return days + 1
-
-    # If the caterpillar can't get the apple, return -1
-    return -1
+if __name__ == '__main__':
+    main()
 

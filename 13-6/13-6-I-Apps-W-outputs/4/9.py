@@ -1,21 +1,24 @@
 
-def solve(p):
-    n = len(p)
-    m = 0
-    while not is_sorted(p):
-        i, j = find_swap_indices(p)
-        p[i], p[j] = p[j], p[i]
-        m += 1
-    return m
+def add_to_set(x):
+    # add x to the set, if it's not already in the set
+    if x not in set:
+        set.add(x)
 
-def is_sorted(p):
-    return p == list(range(1, len(p) + 1))
+def find_subset():
+    # find the subset with the maximum possible value of max(s) - mean(s)
+    # return the maximum possible value
+    pass
 
-def find_swap_indices(p):
-    n = len(p)
-    for i in range(n):
-        for j in range(i + 1, n):
-            if abs(i - j) >= n // 2:
-                return i, j
-    return -1, -1
+def main():
+    set = set()
+    queries = int(input())
+    for i in range(queries):
+        query = input().split()
+        if query[0] == "1":
+            add_to_set(int(query[1]))
+        elif query[0] == "2":
+            print(find_subset())
+
+if __name__ == '__main__':
+    main()
 

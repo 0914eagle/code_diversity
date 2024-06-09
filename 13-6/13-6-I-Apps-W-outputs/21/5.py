@@ -1,32 +1,31 @@
 
-def solve(n, lengths, terrain, stamina):
-    # Initialize variables
-    time = 0
-    position = 0
-    current_terrain = terrain[0]
-    current_stamina = 0
+def get_expression(expression):
+    # Replace all '?' with '+'
+    expression = expression.replace("?", "+")
+    # Evaluate the expression
+    return eval(expression)
 
-    # Loop through each segment
-    for i in range(n):
-        # Check if Bob can move to the next segment
-        if current_stamina == 0 and current_terrain == "L":
-            return -1
+def get_maximum_value(expression, num_plus, num_minus):
+    # Get all possible combinations of '+' and '-' operators
+    combinations = [(num_plus, num_minus)]
+    if num_plus > 0:
+        combinations += [(num_plus - 1, num_minus + 1)]
+    if num_minus > 0:
+        combinations += [(num_plus + 1, num_minus - 1)]
+    
+    # Get the maximum value for each combination
+    maximum_value = 0
+    for num_plus, num_minus in combinations:
+        # Replace the first '?' with '+' and the second '?' with '-'
+        expression = expression.replace("?", "+", 1).replace("?", "-", 1)
+        value = get_expression(expression)
+        if value > maximum_value:
+            maximum_value = value
+    
+    return maximum_value
 
-        # Calculate the time to move to the next segment
-        if current_terrain == "G":
-            time += 5 * lengths[i]
-            current_stamina += lengths[i]
-        elif current_terrain == "W":
-            time += 3 * lengths[i]
-            current_stamina += lengths[i]
-        else:
-            time += 1 * lengths[i]
-            current_stamina -= lengths[i]
-
-        # Update the position and terrain
-        position += lengths[i]
-        current_terrain = terrain[i % n]
-
-    # Return the time it took Bob to reach Alice's nest
-    return time
+if __name__ == '__main__':
+    expression = input()
+    num_plus, num_minus = map(int, input().split())
+    print(get_maximum_value(expression, num_plus, num_minus))
 

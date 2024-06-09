@@ -1,21 +1,24 @@
 
-def get_toppings(num_friends, friends_wishes):
-    # Initialize a dictionary to store the toppings and their counts
-    toppings = {}
+def is_aesthetic(path_length, colors_used):
+    
+    for i in range(1, path_length + 1):
+        for j in range(i + 1, path_length + 1):
+            if (j - i) % path_length > 1 and colors_used >= 2:
+                if path_length % (j - i) == 0:
+                    return False
+    return True
 
-    # Iterate over the friends' wishes and increment the count of each topping
-    for friend in friends_wishes:
-        for wish in friend:
-            if wish[0] == "+":
-                topping = wish[1:]
-                if topping not in toppings:
-                    toppings[topping] = 1
-                else:
-                    toppings[topping] += 1
 
-    # Sort the toppings by count in descending order
-    sorted_toppings = sorted(toppings.items(), key=lambda x: x[1], reverse=True)
+def find_max_colors(path_length):
+    
+    max_colors = 1
+    for i in range(1, path_length + 1):
+        if is_aesthetic(path_length, i):
+            max_colors = max(max_colors, i)
+    return max_colors
 
-    # Return the top 3 toppings with the highest count
-    return [topping for topping, count in sorted_toppings[:3]]
+
+if __name__ == '__main__':
+    path_length = int(input())
+    print(find_max_colors(path_length))
 

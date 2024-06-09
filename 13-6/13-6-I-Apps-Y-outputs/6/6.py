@@ -1,16 +1,27 @@
 
-def solve(n, a, b, c):
-    # Initialize the sum of satisfaction points
-    satisfaction_points = 0
-    
-    # Iterate over the dishes
-    for i in range(n):
-        # Add the satisfaction points gained from eating the current dish
-        satisfaction_points += b[i]
-        
-        # If the current dish is not the last dish, add the satisfaction points gained from eating the next dish
-        if i < n - 1:
-            satisfaction_points += c[i]
-    
-    return satisfaction_points
+def get_input():
+    N = int(input())
+    a = list(map(int, input().split()))
+    return N, a
+
+def get_min_distance(a):
+    # Sort the list of coordinates in ascending order
+    a.sort()
+    # Initialize the minimum distance to be traveled
+    min_distance = 0
+    # Iterate through the list of coordinates
+    for i in range(len(a)):
+        # Calculate the distance traveled from the current coordinate to the next coordinate
+        distance = a[i+1] - a[i]
+        # If the distance is greater than the minimum distance, update the minimum distance
+        if distance > min_distance:
+            min_distance = distance
+    return min_distance
+
+def main():
+    N, a = get_input()
+    print(get_min_distance(a))
+
+if __name__ == '__main__':
+    main()
 

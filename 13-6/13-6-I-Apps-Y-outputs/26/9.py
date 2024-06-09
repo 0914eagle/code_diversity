@@ -1,19 +1,32 @@
 
-def common_divisors(arr):
-    # Find the greatest common divisor (GCD) of all elements in the array
-    gcd = arr[0]
-    for i in range(1, len(arr)):
-        gcd = _gcd(gcd, arr[i])
+def get_tree_cost(n, a, edges):
+    # Initialize the cost of the tree as 0
+    cost = 0
     
-    # Return the number of positive integers that divide gcd
-    count = 0
-    for i in range(1, gcd + 1):
-        if gcd % i == 0:
-            count += 1
-    return count
+    # Create a dictionary to store the distances between vertices
+    distances = {}
+    
+    # Loop through each edge and calculate the distance between the vertices
+    for edge in edges:
+        u, v = edge
+        distances[u] = distances.get(u, 0) + 1
+        distances[v] = distances.get(v, 0) + 1
+    
+    # Loop through each vertex and calculate the cost of the tree
+    for i in range(1, n + 1):
+        cost += distances[i] * a[i - 1]
+    
+    return cost
 
-def _gcd(a, b):
-    while b != 0:
-        a, b = b, a % b
-    return a
+def main():
+    n = int(input())
+    a = list(map(int, input().split()))
+    edges = []
+    for i in range(n - 1):
+        u, v = map(int, input().split())
+        edges.append((u, v))
+    print(get_tree_cost(n, a, edges))
+
+if __name__ == '__main__':
+    main()
 

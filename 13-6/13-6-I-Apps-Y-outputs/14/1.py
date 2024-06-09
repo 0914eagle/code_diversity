@@ -1,15 +1,30 @@
 
-def get_max_sum_of_reposted_pictures(news_feed, k, x):
-    n = len(news_feed)
-    if n < x or n < k:
-        return -1
+def get_operations_required(amount):
+    # Initialize variables
+    operations = 0
+    current_amount = 0
     
-    dp = [0] * (n + 1)
-    for i in range(1, n + 1):
-        if i >= k:
-            dp[i] = max(dp[i - 1], dp[i - k] + news_feed[i - 1])
-        else:
-            dp[i] = dp[i - 1] + news_feed[i - 1]
+    # Loop through the series of amounts
+    for i in range(1, amount + 1):
+        # Check if the current amount is a power of 6 or 9
+        if i % 6 == 0 or i % 9 == 0:
+            # If it is, add it to the current amount and increment the number of operations
+            current_amount += i
+            operations += 1
     
-    return dp[n]
+    # Return the number of operations required to reach the total amount
+    return operations
+
+def main():
+    # Read the input amount from stdin
+    amount = int(input())
+    
+    # Call the function to get the number of operations required
+    operations = get_operations_required(amount)
+    
+    # Print the result
+    print(operations)
+
+if __name__ == '__main__':
+    main()
 

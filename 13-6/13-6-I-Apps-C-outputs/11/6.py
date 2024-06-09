@@ -1,24 +1,34 @@
 
-def is_valid_bracket_sequence(s):
-    stack = []
-    for char in s:
-        if char == "(":
-            stack.append(char)
-        elif char == ")":
-            if not stack:
-                return False
-            stack.pop()
-    return not stack
-
-def make_valid_bracket_sequence(s):
-    if is_valid_bracket_sequence(s):
-        return "possible"
+def f1(N):
+    # Calculate the number of nodes in the tree
+    num_nodes = 2**N - 1
     
-    # Find the first unmatched bracket
-    for i in range(len(s)):
-        if s[i] == "(":
-            break
-    # Invert the segment [i, i]
-    s = s[:i] + ")" + s[i+1:]
-    return "possible" if is_valid_bracket_sequence(s) else "impossible"
+    # Initialize an empty list to store the tree
+    tree = []
+    
+    # Add the root node
+    tree.append(1)
+    
+    # Add the left and right subtrees recursively
+    add_subtrees(tree, 1, num_nodes)
+    
+    # Return the tree in preorder traversal
+    return tree
+
+def add_subtrees(tree, idx, num_nodes):
+    # Base case: if the current node is a leaf node, return
+    if idx >= num_nodes:
+        return
+    
+    # Add the left subtree
+    tree.append(idx*2)
+    add_subtrees(tree, idx*2, num_nodes)
+    
+    # Add the right subtree
+    tree.append(idx*2 + 1)
+    add_subtrees(tree, idx*2 + 1, num_nodes)
+
+if __name__ == '__main__':
+    N = int(input())
+    print(*f1(N))
 

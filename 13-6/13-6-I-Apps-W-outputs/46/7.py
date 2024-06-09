@@ -1,23 +1,37 @@
 
-def solve(n, a):
-    # Count the number of occurrences of each color
-    count = [0] * 21
-    for i in a:
-        count[i] += 1
+def get_min_sum_squares(numbers):
+    # Sort the numbers in non-decreasing order
+    numbers.sort()
     
-    # Find the leftmost and rightmost position of each color
-    left = [0] * 21
-    right = [0] * 21
-    for i in range(1, 21):
-        if count[i] > 0:
-            left[i] = a.index(i) + 1
-            right[i] = left[i] + count[i] - 1
+    # Initialize the minimum sum of squares to a large value
+    min_sum_squares = float('inf')
     
-    # Calculate the minimum number of operations
-    operations = 0
-    for i in range(1, 21):
-        if count[i] > 1:
-            operations += count[i] - 1
+    # Iterate over all possible combinations of numbers
+    for i in range(1, len(numbers)):
+        for j in range(0, len(numbers) - i + 1):
+            # Calculate the sum of the current combination
+            current_sum = sum(numbers[j:j+i])
+            
+            # Calculate the sum of the squares of the current combination
+            current_sum_squares = sum([x**2 for x in numbers[j:j+i]])
+            
+            # Update the minimum sum of squares if necessary
+            if current_sum_squares < min_sum_squares:
+                min_sum_squares = current_sum_squares
     
-    return operations
+    return min_sum_squares
+
+def main():
+    # Read the input data
+    n = int(input())
+    numbers = [int(x) for x in input().split()]
+    
+    # Calculate the minimum sum of squares
+    min_sum_squares = get_min_sum_squares(numbers)
+    
+    # Print the result
+    print(min_sum_squares)
+
+if __name__ == '__main__':
+    main()
 

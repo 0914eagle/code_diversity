@@ -1,31 +1,41 @@
 
-def get_min_price(n, prices, vitamins):
-    # Initialize a dictionary to store the count of vitamins for each price
-    vitamin_count = {}
+def get_optimal_strategy(n, p, assignment):
+    # Initialize the optimal strategy as an empty string
+    optimal_strategy = ""
+    
+    # Loop through each piece and check if it is assigned to team A or B
     for i in range(n):
-        price = prices[i]
-        vitamin_count[price] = 0
-        for vitamin in vitamins[i]:
-            vitamin_count[price] += 1
+        # If the piece is assigned to team A, append a 1 to the optimal strategy
+        if assignment[i] == "A":
+            optimal_strategy += "1"
+        # If the piece is assigned to team B, append a 0 to the optimal strategy
+        else:
+            optimal_strategy += "0"
+    
+    # Return the optimal strategy
+    return optimal_strategy
 
-    # Sort the dictionary by price in ascending order
-    sorted_vitamin_count = sorted(vitamin_count.items(), key=lambda x: x[0])
+def get_maximum_strength(n, p, assignment, optimal_strategy):
+    # Initialize the maximum strength as 0
+    maximum_strength = 0
+    
+    # Loop through each piece and check if it is assigned to team A or B
+    for i in range(n):
+        # If the piece is assigned to team A and the optimal strategy is 1, add its strength to the maximum strength
+        if assignment[i] == "A" and optimal_strategy[i] == "1":
+            maximum_strength += p[i]
+        # If the piece is assigned to team B and the optimal strategy is 0, add its strength to the maximum strength
+        elif assignment[i] == "B" and optimal_strategy[i] == "0":
+            maximum_strength += p[i]
+    
+    # Return the maximum strength
+    return maximum_strength
 
-    # Initialize the minimum price and the count of vitamins as 0
-    min_price = 0
-    total_vitamins = 0
-
-    # Iterate through the dictionary and calculate the minimum price and the count of vitamins
-    for price, count in sorted_vitamin_count:
-        min_price += price
-        total_vitamins += count
-        if total_vitamins == 3:
-            break
-
-    # If the total count of vitamins is not 3, then return -1
-    if total_vitamins != 3:
-        return -1
-
-    # Otherwise, return the minimum price
-    return min_price
+if __name__ == '__main__':
+    n = int(input())
+    p = list(map(int, input().split()))
+    assignment = input()
+    optimal_strategy = get_optimal_strategy(n, p, assignment)
+    maximum_strength = get_maximum_strength(n, p, assignment, optimal_strategy)
+    print(maximum_strength)
 

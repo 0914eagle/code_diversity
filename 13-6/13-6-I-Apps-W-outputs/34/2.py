@@ -1,15 +1,44 @@
 
-def get_min_time(a, b, x, y):
-    # Initialize a dictionary to store the minimum time to reach each floor
-    # from the a-th floor of A
-    min_time = {a: 0}
+def get_antipalindromic_permutation(s):
+    n = len(s)
+    if n % 2 == 1:
+        return ""
+    else:
+        s = list(s)
+        for i in range(n // 2):
+            s[i], s[n - i - 1] = s[n - i - 1], s[i]
+        return "".join(s)
 
-    # Loop until we reach the b-th floor of B
-    while b not in min_time:
-        # Get the minimum time to reach the next floor from the current floor
-        next_floor = min((f for f in range(a, b + 1) if f not in min_time), key=lambda f: min_time[f])
-        min_time[next_floor] = min(min_time[next_floor], min_time[a] + x if next_floor > a else min_time[a])
-        a = next_floor
+def get_beauty(s, b):
+    n = len(s)
+    beauty = 0
+    for i in range(n):
+        if s[i] == s[n - i - 1]:
+            beauty += b[i]
+    return beauty
 
-    return min_time[b]
+def get_maximum_beauty(s, b):
+    n = len(s)
+    max_beauty = 0
+    for i in range(n):
+        for j in range(i + 1, n):
+            if s[i] == s[j]:
+                continue
+            else:
+                s_temp = s[:i] + s[j] + s[i + 1:j] + s[i] + s[j + 1:]
+                beauty = get_beauty(s_temp, b)
+                if beauty > max_beauty:
+                    max_beauty = beauty
+    return max_beauty
+
+def main():
+    n = int(input())
+    s = input()
+    b = list(map(int, input().split()))
+    antipalindromic_permutation = get_antipalindromic_permutation(s)
+    maximum_beauty = get_maximum_beauty(antipalindromic_permutation, b)
+    print(maximum_beauty)
+
+if __name__ == '__main__':
+    main()
 

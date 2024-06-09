@@ -1,21 +1,54 @@
 
-def get_min_heaters(n, r, house):
-    # Initialize the number of heaters as 0
-    num_heaters = 0
-    
-    # Sort the house positions
-    sorted_positions = sorted(house)
-    
-    # Iterate through the sorted positions
-    for i in range(len(sorted_positions)):
-        # Check if the current position is within the range of the current heater
-        if sorted_positions[i] <= r:
-            # If the current position is within the range, increase the number of heaters
-            num_heaters += 1
+def get_move_count(n, a):
+    # Initialize variables
+    alice_moves = 0
+    bob_moves = 0
+    alice_total = 0
+    bob_total = 0
+
+    # Loop through the candies
+    for i in range(n):
+        # Alice's turn
+        if i % 2 == 0:
+            alice_total += a[i]
+            alice_moves += 1
+
+        # Bob's turn
         else:
-            # If the current position is not within the range, break the loop
-            break
-    
-    # Return the number of heaters
-    return num_heaters
+            bob_total += a[i]
+            bob_moves += 1
+
+            # Check if Bob's move is greater than Alice's previous move
+            if bob_total > alice_total:
+                break
+
+    # Return the number of moves
+    return alice_moves, bob_moves
+
+def get_total_sweets(n, a):
+    # Initialize variables
+    alice_total = 0
+    bob_total = 0
+
+    # Loop through the candies
+    for i in range(n):
+        # Alice's turn
+        if i % 2 == 0:
+            alice_total += a[i]
+
+        # Bob's turn
+        else:
+            bob_total += a[i]
+
+    # Return the total number of sweets eaten
+    return alice_total, bob_total
+
+if __name__ == '__main__':
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        a = list(map(int, input().split()))
+        alice_moves, bob_moves = get_move_count(n, a)
+        alice_total, bob_total = get_total_sweets(n, a)
+        print(alice_moves, bob_total, bob_total)
 

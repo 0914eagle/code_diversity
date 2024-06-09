@@ -1,10 +1,11 @@
 
-def find_blocks(arr):
-    n = len(arr)
-    blocks = []
-    for i in range(n):
-        for j in range(i+1, n):
-            if arr[i] + arr[j] == 0:
-                blocks.append((i, j))
-    return blocks
+def get_coins():
+    return list(map(int, input().split()))
+
+def solve(coins, x):
+    return "Yes" if sum(coins) >= x else "No"
+
+if __name__ == '__main__':
+    coins, x = get_coins()
+    print(solve(coins, x))
 

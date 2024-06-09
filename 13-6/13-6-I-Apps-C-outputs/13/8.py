@@ -1,24 +1,25 @@
 
-def longest_repeated_substring(input_string):
-    # Initialize variables
-    longest_substring = ""
-    current_substring = ""
-    substring_map = {}
+import itertools
 
-    # Iterate through the input string
-    for char in input_string:
-        # If the current character is already in the substring map,
-        # update the longest substring and reset the current substring
-        if char in substring_map:
-            longest_substring = max(longest_substring, current_substring, key=len)
-            current_substring = ""
+def is_sorted(arr):
+    for i in range(len(arr)):
+        for j in range(i+1, len(arr)):
+            if arr[i] > arr[j]:
+                return False
+    return True
 
-        # Add the current character to the current substring
-        current_substring += char
-        substring_map[char] = 1
+def count_unsorted(arr):
+    count = 0
+    for perm in itertools.permutations(arr):
+        if not is_sorted(perm):
+            count += 1
+    return count % (10**9 + 9)
 
-    # After iterating through the entire input string,
-    # update the longest substring and return it
-    longest_substring = max(longest_substring, current_substring, key=len)
-    return longest_substring
+def main():
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(count_unsorted(arr))
+
+if __name__ == '__main__':
+    main()
 

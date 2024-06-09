@@ -1,14 +1,22 @@
 
-def solve(N):
-    # Initialize variables
-    operations = 0
-    currencies = [1, 6, 9]
+def get_powers(N):
+    powers = []
+    for i in range(N):
+        powers.append(int(input()))
+    return powers
 
-    # Loop through the currencies and check if they can be used to withdraw N yen
-    for currency in currencies:
-        while N >= currency:
-            N -= currency
-            operations += 1
+def get_x(powers):
+    x = 0
+    for power in powers:
+        x += power
+    return x
 
-    return operations
+def main():
+    N = int(input())
+    powers = get_powers(N)
+    x = get_x(powers)
+    print(x)
+
+if __name__ == '__main__':
+    main()
 

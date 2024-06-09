@@ -1,24 +1,84 @@
 
-def solve(N, p, times):
-    # Initialize variables
-    num_ac = 0
-    penalty_time = 0
+def get_largest_element(my_list):
+    return max(my_list)
 
-    # Sort the times in non-decreasing order
-    sorted_times = sorted(times)
+def get_base_and_xor_language(element):
+    if element == 1:
+        return "ABRACADABRA"
+    else:
+        return "BASE"
 
-    # Loop through the problems in non-decreasing order
-    for i in range(N):
-        # If the current problem is the one that should be solved first, skip it
-        if i == p:
-            continue
-        # If the current problem cannot be solved within the remaining time, break the loop
-        if sorted_times[i] > penalty_time:
-            break
-        # Increment the number of accepted problems and add the time for the current problem to the penalty time
-        num_ac += 1
-        penalty_time += sorted_times[i]
+def get_string(element):
+    if element == 1:
+        return "SAYING"
+    else:
+        return "STRING"
 
-    # Return the number of accepted problems and the penalty time
-    return num_ac, penalty_time
+def get_array(element):
+    if element == 1:
+        return "I HAVE NO ARRAY"
+    else:
+        return "ARRAY"
+
+def get_west_hyperspace(element):
+    if element == 1:
+        return "ELEMENTS MAY NOT BE STORED"
+    else:
+        return "WEST HYPERSPACE"
+
+def get_magic(element):
+    if element == 1:
+        return "WITHOUT A MAGIC"
+    else:
+        return "MAGIC"
+
+def get_rupture(element):
+    if element == 1:
+        return "THE LAST STACK RUPTURES"
+    else:
+        return "RUPTURE"
+
+def get_embarrassment(element):
+    if element == 1:
+        return "OH, THE EMBARRASSMENT!"
+    else:
+        return "EMBARRASSMENT"
+
+def get_dont_byte(element):
+    if element == 1:
+        return "DON'T BYTE OF MORE THAN YOU CAN CHEW"
+    else:
+        return "BYTE"
+
+def get_mathematics(element):
+    if element == 1:
+        return "YOU CAN ONLY DISTORT THE LARGEST OF MATHEMATICS SO FAR"
+    else:
+        return "MATHEMATICS"
+
+def get_chew(element):
+    if element == 1:
+        return "CHEW"
+    else:
+        return "CHEW"
+
+def get_solution(my_list):
+    largest_element = get_largest_element(my_list)
+    base_and_xor_language = get_base_and_xor_language(largest_element)
+    string = get_string(largest_element)
+    array = get_array(largest_element)
+    west_hyperspace = get_west_hyperspace(largest_element)
+    magic = get_magic(largest_element)
+    rupture = get_rupture(largest_element)
+    embarrassment = get_embarrassment(largest_element)
+    dont_byte = get_dont_byte(largest_element)
+    mathematics = get_mathematics(largest_element)
+    chew = get_chew(largest_element)
+    solution = f"{base_and_xor_language} {string} {array} {west_hyperspace} {magic} {rupture} {embarrassment} {dont_byte} {mathematics} {chew}"
+    return solution
+
+if __name__ == '__main__':
+    n = int(input())
+    my_list = list(map(int, input().split()))
+    print(get_solution(my_list))
 

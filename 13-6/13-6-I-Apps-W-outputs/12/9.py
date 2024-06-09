@@ -1,23 +1,46 @@
 
-def solve(a, b):
-    # Initialize variables
-    subsequence = ""
-    i, j = 0, 0
+import sys
 
-    # Loop through both strings
-    while i < len(a) and j < len(b):
-        # If the current character in a is equal to the current character in b, add it to the subsequence
-        if a[i] == b[j]:
-            subsequence += a[i]
-            i += 1
-            j += 1
-        # If the current character in a is not equal to the current character in b, move on to the next character in a
-        else:
-            i += 1
+def bfs(G, s, t):
+    queue = [(s, 0)]
+    visited = set()
+    while queue:
+        u, dist = queue.pop(0)
+        if u == t:
+            return dist
+        if u in visited:
+            continue
+        visited.add(u)
+        for v in G[u]:
+            if v not in visited:
+                queue.append((v, dist + 1))
+    return -1
 
-    # If the subsequence is empty, return a minus sign
-    if not subsequence:
-        return "-"
+def shortest_paths(G, s, t):
+    paths = []
+    queue = [(s, [])]
+    visited = set()
+    while queue:
+        u, path = queue.pop(0)
+        if u == t:
+            paths.append(path)
+        if u in visited:
+            continue
+        visited.add(u)
+        for v in G[u]:
+            if v not in visited:
+                queue.append((v, path + [v]))
+    return paths
 
-    return subsequence
+def main():
+    V, E = map(int, input().split())
+    G = [[] for _ in range(V)]
+    for _ in range(E):
+        u, v, w = map(int, input().split())
+        G[u].append((v, w))
+    s, t = map(int, input().split())
+    print(len(shortest_paths(G, s, t)))
+
+if __name__ == '__main__':
+    main()
 

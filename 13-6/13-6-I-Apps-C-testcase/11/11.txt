@@ -1,12 +1,10 @@
 {
     "inputs": [
-        "()))\n",
-        ")))(\n",
-        "()\n"
+        "2\n",
+        "3\n"
     ],
     "outputs": [
-        "possible\n",
-        "impossible\n",
-        "possible\n"
+        "1 2 3 \n",
+        "1 3 4 6 2 5 7 \n"
     ]
 }

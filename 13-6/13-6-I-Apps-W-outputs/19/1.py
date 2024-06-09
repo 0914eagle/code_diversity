@@ -1,19 +1,20 @@
 
-def solve(n, a):
-    # Calculate the distance between each pair of cities
-    distances = [(abs(a[i] - a[j]), i, j) for i in range(n) for j in range(i+1, n)]
-    
-    # Sort the distances in ascending order
-    distances.sort()
-    
-    # Initialize the minimum distance and quantity of pairs with this distance
-    min_distance = distances[0][0]
-    quantity = 1
-    
-    # Iterate through the distances and count the quantity of pairs with the same distance as the minimum distance
-    for distance in distances:
-        if distance[0] == min_distance:
-            quantity += 1
-    
-    return min_distance, quantity
+def get_max_fruits(lemons, apples, pears):
+    if lemons == 0 and apples == 0 and pears == 0:
+        return 0
+    if lemons < 0 or apples < 0 or pears < 0:
+        return -1
+    max_lemons = min(lemons, apples // 2, pears // 4)
+    max_apples = min(apples, lemons * 2, pears // 4)
+    max_pears = min(pears, lemons * 4, apples // 2)
+    return max_lemons + max_apples + max_pears
+
+def main():
+    lemons = int(input())
+    apples = int(input())
+    pears = int(input())
+    print(get_max_fruits(lemons, apples, pears))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,10 +1,24 @@
 
-def get_maximum_segments(arr, k):
-    # Replace each element with its complement
-    arr = [2**k - 1 - x for x in arr]
-    # XOR all elements together
-    result = arr[0]
-    for i in range(1, len(arr)):
-        result ^= arr[i]
-    return bin(result).count("1")
+def get_t_shirt_winners(s):
+    i = (s // 50) % 475
+    winners = []
+    for _ in range(25):
+        i = (i * 96 + 42) % 475
+        winners.append(26 + i)
+    return winners
+
+def get_min_hacks(p, x, y):
+    t_shirt_winners = get_t_shirt_winners(x)
+    if p in t_shirt_winners:
+        return 0
+    else:
+        min_hacks = float('inf')
+        for i in range(1, 25):
+            if x + 100 * i >= y:
+                min_hacks = min(min_hacks, i)
+        return min_hacks
+
+if __name__ == '__main__':
+    p, x, y = map(int, input().split())
+    print(get_min_hacks(p, x, y))
 

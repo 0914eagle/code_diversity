@@ -1,33 +1,47 @@
 
-def solve(n, s, parameters):
-    # Initialize the number of on lights to 0
-    num_on_lights = 0
-    # Initialize a list to store the on and off times of each light
-    light_times = []
+def f1(n, m, roads):
+    # Initialize a dictionary to store the distances between each pair of cities
+    distances = {}
+    for a, b, w in roads:
+        if a not in distances:
+            distances[a] = {}
+        if b not in distances:
+            distances[b] = {}
+        distances[a][b] = w
+        distances[b][a] = w
+    
+    # Fill in the distances for each city pair using the bitwise OR operation
+    for a in distances:
+        for b in distances[a]:
+            for c in distances:
+                if c != a and c != b:
+                    distances[a][c] = distances[a][b] | distances[b][c]
+    
+    return distances
 
-    # Iterate over the parameters of each light
-    for i in range(n):
-        # Get the on and off times of the current light
-        on_time, off_time = parameters[i]
-        # If the light is initially on, add its on time to the list
-        if s[i] == "1":
-            light_times.append(on_time)
-        # If the light is initially off, add its off time to the list
-        else:
-            light_times.append(off_time)
+def f2(distances, queries):
+    # Calculate the cost of sending a crystal from city s to city t for each query
+    costs = []
+    for s, t in queries:
+        cost = distances[s][t]
+        costs.append(cost)
+    
+    return costs
 
-    # Sort the list of on and off times in ascending order
-    light_times.sort()
-
-    # Iterate over the sorted list of on and off times
-    for i in range(len(light_times)):
-        # If the current time is an on time, increase the number of on lights
-        if light_times[i] % 2 == 1:
-            num_on_lights += 1
-        # If the current time is an off time, decrease the number of on lights
-        else:
-            num_on_lights -= 1
-
-    # Return the maximum number of on lights
-    return num_on_lights
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    roads = []
+    for _ in range(m):
+        a, b, w = map(int, input().split())
+        roads.append((a, b, w))
+    q = int(input())
+    queries = []
+    for _ in range(q):
+        s, t = map(int, input().split())
+        queries.append((s, t))
+    
+    distances = f1(n, m, roads)
+    costs = f2(distances, queries)
+    for cost in costs:
+        print(cost)
 

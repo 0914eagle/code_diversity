@@ -1,16 +1,12 @@
 
-def is_multigram(word):
-    if len(word) <= 2:
-        return -1
-    
-    # Split the word into pairs of characters
-    pairs = [word[i:i+2] for i in range(len(word)-1)]
-    
-    # Check if any pair is an anagram of the other
-    for i in range(len(pairs)):
-        for j in range(i+1, len(pairs)):
-            if sorted(pairs[i]) == sorted(pairs[j]):
-                return pairs[i]
-    
-    return -1
+def get_mean(r1, r2):
+    return (r1 + r2) / 2
+
+def get_r2(r1, mean):
+    return 2 * mean - r1
+
+if __name__ == '__main__':
+    r1, mean = map(int, input().split())
+    r2 = get_r2(r1, mean)
+    print(r2)
 

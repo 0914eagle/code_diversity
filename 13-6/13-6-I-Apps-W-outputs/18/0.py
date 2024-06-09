@@ -1,24 +1,37 @@
 
-def get_max_happiness(N, V, C):
-    # Initialize the happiness of Bash and his Pokenoms to 0
-    happiness = 0
-    
-    # Iterate through each Pokenom and its corresponding cake
-    for i in range(1, N+1):
-        # Calculate the ingredients needed for the ith cake
-        ingredients = []
-        for j in range(2, int(N**0.5) + 1):
-            if i % j == 0:
-                ingredients.append(j)
-        ingredients = list(set(ingredients))
-        
-        # Calculate the cost of buying the ingredients needed for the ith cake
-        cost = 0
-        for j in ingredients:
-            cost += C[j-1] * j
-        
-        # Update the happiness of Bash and his Pokenoms
-        happiness += V[i-1] - cost
-    
-    return happiness
+def get_criminals(n, a, t):
+    # Initialize a list to store the criminals
+    criminals = []
+
+    # Iterate over the input array
+    for i in range(n):
+        # If there is a criminal in the current city
+        if t[i] == 1:
+            # Add the city to the list of criminals
+            criminals.append(i)
+
+    # Return the list of criminals
+    return criminals
+
+def get_criminals_caught(n, a, t):
+    # Get the list of criminals
+    criminals = get_criminals(n, a, t)
+
+    # Initialize a variable to store the number of criminals caught
+    caught = 0
+
+    # Iterate over the list of criminals
+    for criminal in criminals:
+        # If the criminal is not in the current city
+        if criminal != a:
+            # Increment the number of criminals caught
+            caught += 1
+
+    # Return the number of criminals caught
+    return caught
+
+if __name__ == '__main__':
+    n, a = map(int, input().split())
+    t = list(map(int, input().split()))
+    print(get_criminals_caught(n, a, t))
 

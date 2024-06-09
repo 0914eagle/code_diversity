@@ -1,27 +1,32 @@
 
-def solve(s):
-    # Initialize variables
-    k = 0
-    n = len(s)
-    palindrome = ""
+def get_target_weight(weights):
+    # Sort the weights in non-decreasing order
+    weights.sort()
+    
+    # Initialize the target weight as the smallest weight
+    target_weight = weights[0]
+    
+    # Iterate through the weights and find the first weight that is greater than the target weight
+    for i in range(1, len(weights)):
+        if weights[i] > target_weight:
+            break
+        target_weight += 1
+    
+    return target_weight
 
-    # While the length of the palindrome is less than the length of the original string
-    while len(palindrome) < n:
-        # If the palindrome is not empty and the first character is not the same as the last character
-        if palindrome and palindrome[0] != palindrome[-1]:
-            # Find the first occurrence of the first character that is not the same as the last character
-            i = palindrome.find(palindrome[0])
-            # If the first occurrence is not the last character
-            if i != len(palindrome) - 1:
-                # Append the substring from the first occurrence to the end of the palindrome
-                palindrome += palindrome[i:]
-                # Increment the number of operations
-                k += 1
-        # If the palindrome is empty or the first character is the same as the last character
-        else:
-            # Append the first character of the original string to the palindrome
-            palindrome += s[0]
+def main():
+    # Read the number of animals and their weights from stdin
+    num_animals = int(input())
+    weights = []
+    for _ in range(num_animals):
+        weights.append(int(input()))
+    
+    # Call the get_target_weight function to find the smallest target weight
+    target_weight = get_target_weight(weights)
+    
+    # Print the target weight to stdout
+    print(target_weight)
 
-    # Return the number of operations and the palindrome
-    return k, palindrome
+if __name__ == '__main__':
+    main()
 

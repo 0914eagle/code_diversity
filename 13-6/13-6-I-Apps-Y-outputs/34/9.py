@@ -1,13 +1,20 @@
 
-def get_button_presses(floors, start, goal, up, down):
-    # Calculate the difference between the start and goal floors
-    diff = abs(start - goal)
-    
-    # Check if the difference is greater than the up or down button can reach
-    if diff > up or diff > down:
-        return "use the stairs"
-    
-    # Calculate the minimum number of button presses needed to reach the goal floor
-    # by considering the up and down buttons separately and returning the minimum value
-    return min(diff // up + (diff % up != 0), diff // down + (diff % down != 0))
+import math
+
+def get_divisors(n):
+    divisors = []
+    for i in range(1, int(math.sqrt(n)) + 1):
+        if n % i == 0:
+            divisors.append(i)
+            if i * i != n:
+                divisors.append(n // i)
+    divisors.sort()
+    return divisors
+
+def solve(n):
+    return len(get_divisors(math.factorial(n)))
+
+if __name__ == '__main__':
+    n = int(input())
+    print(solve(n))
 

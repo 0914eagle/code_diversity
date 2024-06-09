@@ -1,16 +1,25 @@
 
-def solve(mission_probabilities):
-    # Initialize the maximum probability to 0
-    max_probability = 0
-    # Loop through all possible arrangements of missions and Bonds
-    for assignment in range(len(mission_probabilities)):
-        # Calculate the probability of success for this assignment
-        probability = 1
-        for i in range(len(mission_probabilities)):
-            probability *= mission_probabilities[i][assignment]
-        # Update the maximum probability if necessary
-        if probability > max_probability:
-            max_probability = probability
-    # Return the maximum probability
-    return max_probability
+def f1(n, m, w, h, volumes, x, min_sand, max_sand):
+    # Your code here
+    return ...
+
+def f2(n, m, w, h, volumes, x, min_sand, max_sand):
+    # Your code here
+    return ...
+
+if __name__ == '__main__':
+    n, m, w, h = map(int, input().split())
+    volumes = list(map(float, input().split()))
+    x = list(map(float, input().split()))
+    min_sand = []
+    for i in range(n):
+        min_sand.append(list(map(float, input().split())))
+    max_sand = []
+    for i in range(n):
+        max_sand.append(list(map(float, input().split())))
+
+    # Your code here
+    ...
+
+    print(round(f1(n, m, w, h, volumes, x, min_sand, max_sand), 3))
 

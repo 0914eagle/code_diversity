@@ -1,15 +1,24 @@
 
-def solve(s, t):
-    # Replace '?' characters with all possible lowercase letters
-    s = s.replace("?", "abcdefghijklmnopqrstuvwxyz")
-    # Initialize suitability variable
-    suitability = 0
-    # Loop through all possible combinations of letters
-    for i in range(len(s) - len(t) + 1):
-        # Check if the current combination forms a valid string
-        if s[i:i+len(t)] == t:
-            # If it does, update the suitability variable
-            suitability = max(suitability, 1)
-    # Return the string with the highest suitability
-    return s
+def get_gcd(a, b):
+    if a == 0:
+        return b
+    return get_gcd(b % a, a)
+
+def solve(n):
+    max_gcd = 0
+    for i in range(1, n):
+        for j in range(i + 1, n + 1):
+            gcd = get_gcd(i, j)
+            if gcd > max_gcd:
+                max_gcd = gcd
+    return max_gcd
+
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        print(solve(n))
+
+if __name__ == '__main__':
+    main()
 

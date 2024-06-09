@@ -1,32 +1,31 @@
 
-def solve(N, V, A, B):
-    # Initialize a dictionary to store the jokes told by each person
-    jokes = {i: set() for i in range(1, N+1)}
-
-    # Add the jokes told by each person to the dictionary
+def f1(N):
+    # Initialize an empty stack
+    stack = []
+    # Iterate through the steps of the game
     for i in range(N):
-        jokes[i+1].add(V[i])
+        # Get the current step
+        step = input()
+        # Check the type of operation
+        if step[0] == 'a':
+            # Add the current step to the stack
+            stack.append(i)
+        elif step[0] == 'b':
+            # Remove the top element from the stack
+            stack.pop()
+        elif step[0] == 'c':
+            # Get the two stacks involved in the operation
+            stack1 = step[2]
+            stack2 = step[3]
+            # Count the number of elements in both stacks
+            count = len(set(stack1).intersection(set(stack2)))
+            # Print the result
+            print(count)
 
-    # Initialize a set to store the jokes that have been seen
-    seen = set()
+def f2(...):
+    ...
 
-    # Iterate through each person and their supervisor
-    for i in range(N-1):
-        # If the supervisor has not been invited, skip this person
-        if A[i] not in jokes:
-            continue
-
-        # If the set of jokes told by the supervisor and the current person do not form a set of consecutive numbers, skip this person
-        if not is_consecutive(jokes[A[i]] | jokes[i+1]):
-            continue
-
-        # Add the jokes told by the current person to the set of seen jokes
-        seen |= jokes[i+1]
-
-    # Return the number of different sets of jokes that have been seen
-    return len(seen)
-
-# Check if a set of numbers is consecutive
-def is_consecutive(nums):
-    return all(nums[i+1] - nums[i] == 1 for i in range(len(nums)-1))
+if __name__ == '__main__':
+    N = int(input())
+    f1(N)
 

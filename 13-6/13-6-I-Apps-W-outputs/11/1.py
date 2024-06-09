@@ -1,28 +1,27 @@
 
-def solve(s):
-    # Initialize variables
-    k = 0
-    n = len(s)
-    result = s
+def get_target_weight(weights):
+    # Sort the weights in non-decreasing order
+    weights.sort()
+    
+    # Initialize the target weight as the median of the weights
+    target_weight = weights[len(weights) // 2]
+    
+    # Loop through the weights and check if the sum of the weights
+    # in one group is equal to the sum of the weights in the other group
+    for i in range(len(weights)):
+        if sum(weights[:i]) == sum(weights[i:]):
+            return target_weight
+    
+    # If no such target weight is found, return the maximum weight
+    return max(weights)
 
-    # Loop until the string is a palindrome or the maximum number of operations is reached
-    while k < 30 and result != result[::-1]:
-        # Check if the first operation can be applied
-        if n > 2 and s[1] != s[-2]:
-            # Apply the first operation
-            result = s[1] + s[:-1] + s[1]
-            k += 1
-            print("L", 1)
-        # Check if the second operation can be applied
-        elif n > 2 and s[0] != s[-1]:
-            # Apply the second operation
-            result = s[:-1] + s[-1] + s[0]
-            k += 1
-            print("R", n-1)
-        # If both operations are not possible, return the current string
-        else:
-            return result
+def main():
+    m = int(input())
+    weights = []
+    for i in range(m):
+        weights.append(int(input()))
+    print(get_target_weight(weights))
 
-    # Return the final string
-    return result
+if __name__ == '__main__':
+    main()
 

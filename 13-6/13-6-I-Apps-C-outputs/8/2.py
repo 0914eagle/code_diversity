@@ -1,24 +1,38 @@
 
-def is_reproducible(grid):
-    # Initialize a set to store the colors of the art piece
-    art_colors = set()
+def get_smallest_difference(sequence, k, q):
     
-    # Loop through the grid and add the colors to the set
-    for row in grid:
-        for color in row:
-            art_colors.add(color)
+    # Sort the sequence in non-decreasing order
+    sequence.sort()
     
-    # Initialize a set to store the colors of the reproduced grid
-    reproduced_colors = set()
+    # Initialize the smallest and largest elements removed
+    smallest, largest = None, None
     
-    # Loop through the grid and add the colors to the set
-    for row in grid:
-        for color in row:
-            reproduced_colors.add(color)
+    # Loop through each operation
+    for i in range(q):
+        # Get the subsequence of length k starting from the current index
+        subsequence = sequence[i:i+k]
+        
+        # Remove the smallest element from the subsequence
+        smallest_element = min(subsequence)
+        subsequence.remove(smallest_element)
+        
+        # Update the smallest and largest elements removed
+        if smallest is None or smallest_element < smallest:
+            smallest = smallest_element
+        if largest is None or largest < smallest_element:
+            largest = smallest_element
     
-    # Check if the sets are equal
-    if art_colors == reproduced_colors:
-        return "YES"
-    else:
-        return "NO"
+    # Return the smallest possible value of the difference between the largest and smallest elements removed
+    return largest - smallest
+
+def main():
+    # Read the input sequence, k, and q from stdin
+    n, k, q = map(int, input().split())
+    sequence = list(map(int, input().split()))
+    
+    # Call the get_smallest_difference function and print the result
+    print(get_smallest_difference(sequence, k, q))
+
+if __name__ == '__main__':
+    main()
 

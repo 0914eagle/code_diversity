@@ -1,26 +1,35 @@
 
-def solve(N, K, health):
+def get_rating(grid):
     # Initialize variables
-    attacks = 0
-    special_moves = K
-    health = sorted(health, reverse=True)
+    rating = 0
+    moves = []
 
-    # Loop through the monsters
-    for i in range(N):
-        # If the monster's health is 1, we can win without using Special Move
-        if health[i] == 1:
-            return attacks
+    # Loop through the grid
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            # If the current character is '$', add the current move to the list of moves
+            if grid[i][j] == '$':
+                moves.append((i, j))
+    # Loop through the list of moves
+    for i in range(len(moves) - 1):
+        # If the current move is not the last move and the next move is not in the same column, increment the rating
+        if moves[i] != moves[-1] and moves[i + 1][1] != moves[i][1]:
+            rating += 1
 
-        # If we have Special Move available, use it
-        if special_moves > 0:
-            special_moves -= 1
-            health[i] = 0
-            continue
+    return rating
 
-        # Do Attack
-        attacks += 1
-        health[i] -= 1
+def main():
+    # Read the input grid
+    grid = []
+    for _ in range(int(input())):
+        grid.append(input())
 
-    # If we reach this point, we need to do Attack at least once more
-    return attacks + 1
+    # Get the rating of the dance
+    rating = get_rating(grid)
+
+    # Print the rating
+    print(rating)
+
+if __name__ == '__main__':
+    main()
 

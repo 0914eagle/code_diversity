@@ -1,35 +1,34 @@
 
-import sys
+def f(a):
+    # Calculate the gcd of all the elements in the list
+    gcd = a[0]
+    for i in range(1, len(a)):
+        gcd = gcd(gcd, a[i])
+    return gcd
 
-def solve(n, m, p):
-    # Initialize the dp array with 0s
-    dp = [[0] * (m + 1) for _ in range(n + 1)]
+def f1(n, a):
+    # Initialize a set to store the distinct values of f
+    distinct_values = set()
+    for i in range(n):
+        for j in range(i, n):
+            distinct_values.add(f(a[i:j+1]))
+    return len(distinct_values)
 
-    # Loop through each row
-    for i in range(1, n + 1):
-        # Loop through each column
-        for j in range(1, m + 1):
-            # If the current cell is not blocked by an obstacle
-            if dp[i][j] == 0:
-                # Check if the current cell is in the last row
-                if i == n:
-                    # If it is, set the number of ways to place obstacles to 1
-                    dp[i][j] = 1
-                else:
-                    # Otherwise, add the number of ways to place obstacles in the next row
-                    dp[i][j] += dp[i + 1][j]
+def f2(n, a):
+    # Initialize a dictionary to store the counts of each distinct value of f
+    counts = {}
+    for i in range(n):
+        for j in range(i, n):
+            value = f(a[i:j+1])
+            if value in counts:
+                counts[value] += 1
+            else:
+                counts[value] = 1
+    return len(counts)
 
-                # Check if the current cell is in the last column
-                if j == m:
-                    # If it is, add the number of ways to place obstacles in the previous row
-                    dp[i][j] += dp[i - 1][j]
-                else:
-                    # Otherwise, add the number of ways to place obstacles in the next column
-                    dp[i][j] += dp[i][j + 1]
-
-    # Return the number of ways to place obstacles modulo p
-    return dp[1][1] % p
-
-n, m, p = map(int, sys.stdin.readline().split())
-print(solve(n, m, p))
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(f1(n, a))
+    print(f2(n, a))
 

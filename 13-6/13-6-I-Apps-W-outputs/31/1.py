@@ -1,27 +1,32 @@
 
-def solve(k, a):
-    # Convert the input array to a binary string
-    binary_str = "".join(str(int(x)) for x in a)
+def get_max_area(picture, r1, c1, r2, c2):
+    # Initialize the maximum area to 0
+    max_area = 0
     
-    # Initialize the variables
-    current_day = 0
-    days_spent = 0
-    classes_taken = 0
+    # Loop through the rows and columns of the sub-rectangle
+    for i in range(r1, r2 + 1):
+        for j in range(c1, c2 + 1):
+            # Check if the current cell is part of a Nanosoft logo
+            if picture[i][j] == "R" and picture[i][j + 1] == "G" and picture[i][j + 2] == "G" and picture[i][j + 3] == "B":
+                # Calculate the area of the sub-square
+                area = (r2 - r1 + 1) * (c2 - c1 + 1)
+                # Update the maximum area if necessary
+                max_area = max(max_area, area)
     
-    # Loop through the binary string
-    for i in range(len(binary_str)):
-        # If the current day has classes, take a class and increment the number of classes taken
-        if binary_str[i] == "1":
-            classes_taken += 1
-        
-        # If the number of classes taken is equal to the required number of classes, break the loop
-        if classes_taken == k:
-            break
-        
-        # Increment the current day and the number of days spent
-        current_day = (current_day + 1) % 7
-        days_spent += 1
-    
-    # Return the number of days spent
-    return days_spent
+    # Return the maximum area
+    return max_area
+
+def main():
+    # Read the input
+    n, m, q = map(int, input().split())
+    picture = [input() for _ in range(n)]
+    for _ in range(q):
+        r1, c1, r2, c2 = map(int, input().split())
+        # Call the function to get the maximum area
+        max_area = get_max_area(picture, r1, c1, r2, c2)
+        # Print the result
+        print(max_area)
+
+if __name__ == '__main__':
+    main()
 

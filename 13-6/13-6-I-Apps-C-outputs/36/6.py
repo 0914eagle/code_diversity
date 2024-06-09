@@ -1,27 +1,18 @@
 
-def solve(encrypted_message, decrypted_fragment):
-    # Initialize a dictionary to store the frequency of each letter in the decrypted fragment
-    fragment_freq = {}
-    for letter in decrypted_fragment:
-        if letter not in fragment_freq:
-            fragment_freq[letter] = 1
-        else:
-            fragment_freq[letter] += 1
+def longest_non_decreasing_sequence(arr):
+    n = len(arr)
+    dp = [1] * n
+    for i in range(1, n):
+        for j in range(i):
+            if arr[i] >= arr[j]:
+                dp[i] = max(dp[i], dp[j] + 1)
+    return max(dp)
 
-    # Initialize a variable to store the number of positions in the encrypted message where the fragment could occur
-    num_positions = 0
+def main():
+    n, T = map(int, input().split())
+    arr = list(map(int, input().split()))
+    print(longest_non_decreasing_sequence(arr))
 
-    # Iterate through the encrypted message
-    for i in range(len(encrypted_message)):
-        # Check if the letter at the current position in the encrypted message is in the decrypted fragment
-        if encrypted_message[i] in fragment_freq:
-            # Increment the number of positions where the fragment could occur
-            num_positions += 1
-
-            # If the number of positions is 1, return the substring of the encrypted message that could correspond to the fragment
-            if num_positions == 1:
-                return encrypted_message[i:i+len(decrypted_fragment)]
-
-    # If the number of positions is greater than 1, return the number of positions
-    return num_positions
+if __name__ == '__main__':
+    main()
 

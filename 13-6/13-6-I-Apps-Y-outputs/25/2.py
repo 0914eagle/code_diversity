@@ -1,26 +1,40 @@
 
-def solve(N, K, healths):
+def get_rating(grid):
     # Initialize variables
-    attacks = 0
-    special_move = K
-    healths = sorted(healths, reverse=True)
+    rating = 0
+    current_move = 0
+    previous_move = 0
 
-    # Loop through the monsters
-    for i in range(N):
-        # If the monster's health is 1, we can win without using Special Move
-        if healths[i] == 1:
-            return attacks
+    # Iterate through the grid
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            # Check if the current position is a '$'
+            if grid[i][j] == '$':
+                # Check if the previous position was a '$'
+                if previous_move == 1:
+                    # Increment the current move
+                    current_move += 1
+                # Set the previous move to 1
+                previous_move = 1
+            else:
+                # Set the previous move to 0
+                previous_move = 0
 
-        # If we have Special Move left, use it
-        if special_move > 0:
-            special_move -= 1
-            healths[i] = 0
+    # Return the rating
+    return current_move
 
-        # Otherwise, do Attack
-        else:
-            attacks += 1
-            healths[i] -= 1
+def main():
+    # Read the grid from stdin
+    grid = []
+    for _ in range(int(input())):
+        grid.append(input())
 
-    # If we reach this point, all monsters' healths are greater than 1, so we need to do Attack more times
-    return attacks + N
+    # Get the rating of the grid
+    rating = get_rating(grid)
+
+    # Print the rating
+    print(rating)
+
+if __name__ == '__main__':
+    main()
 

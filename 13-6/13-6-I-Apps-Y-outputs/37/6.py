@@ -1,25 +1,27 @@
 
-def solve(N, M, edges):
-    # Initialize a dictionary to store the vertices visited
-    visited = {1: False}
-    for i in range(2, N+1):
-        visited[i] = False
-    
-    # Initialize a list to store the paths
-    paths = []
-    
-    # Iterate through the edges and find the paths that start from vertex 1 and visit all the vertices exactly once
-    for i in range(M):
-        edge = edges[i]
-        if edge[0] == 1 and not visited[edge[1]]:
-            visited[edge[1]] = True
-            paths.append(edge)
-    
-    # Count the number of paths that visit all the vertices exactly once
-    count = 0
-    for i in range(M):
-        if visited[edges[i][1]]:
-            count += 1
-    
-    return count
+def has_palindromic_subsequence(a):
+    n = len(a)
+    for i in range(n - 2):
+        for j in range(i + 1, n):
+            if a[i] == a[j] and a[i + 1] == a[j - 1]:
+                return True
+    return False
+
+def has_palindromic_subsequence_of_length_at_least_3(a):
+    n = len(a)
+    for i in range(n - 2):
+        for j in range(i + 1, n):
+            if a[i] == a[j] and a[i + 1] == a[j - 1] and j - i >= 2:
+                return True
+    return False
+
+if __name__ == '__main__':
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        a = list(map(int, input().split()))
+        if has_palindromic_subsequence_of_length_at_least_3(a):
+            print("YES")
+        else:
+            print("NO")
 

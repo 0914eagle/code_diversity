@@ -1,13 +1,19 @@
 
-def get_days_till_next_sunday(day_of_week):
-    days_till_sunday = {
-        "MON": 6,
-        "TUE": 5,
-        "WED": 4,
-        "THU": 3,
-        "FRI": 2,
-        "SAT": 1,
-        "SUN": 0,
-    }
-    return days_till_sunday[day_of_week]
+def gcd(a, b, c):
+    return __gcd(a, __gcd(b, c))
+
+def sum_gcd(K):
+    result = 0
+    for a in range(1, K+1):
+        for b in range(1, K+1):
+            for c in range(1, K+1):
+                result += gcd(a, b, c)
+    return result
+
+def main():
+    K = int(input())
+    print(sum_gcd(K))
+
+if __name__ == '__main__':
+    main()
 

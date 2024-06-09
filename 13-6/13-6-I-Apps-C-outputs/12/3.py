@@ -1,32 +1,37 @@
 
-def solve(n):
-    # Initialize the maximum sum as 0
-    max_sum = 0
-    # Loop through all possible values of a
-    for a in range(n+1):
-        # Find the corresponding value of b
-        b = n - a
-        # Calculate the sum of digits in a and b
-        sum_a = sum_digits(a)
-        sum_b = sum_digits(b)
-        # Check if the sum of digits is larger than the maximum sum
-        if sum_a + sum_b > max_sum:
-            # If it is, update the maximum sum and the values of a and b
-            max_sum = sum_a + sum_b
-            best_a = a
-            best_b = b
-    # Return the values of a and b with the maximum sum of digits
-    return (best_a, best_b)
+def get_max_distance(stars):
+    # Sort the stars by their angle with the x-axis in ascending order
+    stars.sort(key=lambda x: x[2])
+    
+    # Initialize the maximum distance traveled
+    max_distance = 0
+    
+    # Iterate over the stars
+    for i in range(len(stars)):
+        # Calculate the distance traveled by the current star
+        distance = stars[i][0] - stars[i][1] * abs(stars[i][2] - stars[i-1][2]) if i > 0 else stars[i][0]
+        
+        # Update the maximum distance traveled
+        max_distance = max(max_distance, distance)
+    
+    return max_distance
 
-def sum_digits(n):
-    # Initialize the sum as 0
-    sum = 0
-    # Loop through the digits of n
-    while n > 0:
-        # Add the last digit to the sum
-        sum += n % 10
-        # Remove the last digit
-        n //= 10
-    # Return the sum
-    return sum
+def main():
+    # Read the number of stars
+    num_stars = int(input())
+    
+    # Read the information of each star
+    stars = []
+    for _ in range(num_stars):
+        t, s, a = map(float, input().split())
+        stars.append((t, s, a))
+    
+    # Find the maximum distance traveled
+    max_distance = get_max_distance(stars)
+    
+    # Print the result
+    print(max_distance)
+
+if __name__ == '__main__':
+    main()
 

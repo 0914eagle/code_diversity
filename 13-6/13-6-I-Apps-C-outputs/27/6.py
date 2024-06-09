@@ -1,20 +1,38 @@
 
-def get_max_members(n, pattern):
-    # Convert the pattern to a list of 1s and *s
-    pattern_list = list(pattern)
+def get_permutation(n, m, k, a):
+    # Calculate the average score for each critic
+    avg_scores = [0] * n
+    for i in range(n):
+        avg_scores[i] = (k - a[i]) / (n - i - 1)
+    
+    # Find the maximum average score
+    max_avg = max(avg_scores)
+    
+    # Check if the maximum average score is greater than or equal to the minimum score
+    if max_avg < m:
+        return "impossible"
+    
+    # Find the index of the maximum average score
+    max_index = avg_scores.index(max_avg)
+    
+    # Create a permutation with the maximum average score at the beginning
+    permutation = [max_index + 1]
+    
+    # Fill in the remaining positions with the remaining critics
+    for i in range(n - 1):
+        permutation.append((max_index + i + 1) % n + 1)
+    
+    return permutation
 
-    # Initialize a counter for the number of 1s in the pattern
-    num_ones = 0
+def main():
+    n, m, k = map(int, input().split())
+    a = list(map(int, input().split()))
+    permutation = get_permutation(n, m, k, a)
+    if permutation == "impossible":
+        print("impossible")
+    else:
+        print(*permutation)
 
-    # Iterate through the pattern list and count the number of 1s
-    for char in pattern_list:
-        if char == "1":
-            num_ones += 1
-
-    # Calculate the maximum number of members based on the length of the ID and the number of 1s in the pattern
-    max_members = 2 ** n
-    if num_ones < n:
-        max_members -= 2 ** (n - num_ones)
-
-    return max_members
+if __name__ == '__main__':
+    main()
 

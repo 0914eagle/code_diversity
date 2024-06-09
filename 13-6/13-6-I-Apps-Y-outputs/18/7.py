@@ -1,14 +1,21 @@
 
-def solve_queries(queries):
-    answers = []
-    for query in queries:
-        l1, r1, l2, r2 = query
-        if l1 <= l2:
-            a = l1
-            b = l2
-        else:
-            a = l2
-            b = l1
-        answers.append([a, b])
-    return answers
+def get_input():
+    return map(int, input().split())
+
+def is_even(n):
+    return n % 2 == 0
+
+def is_odd(n):
+    return n % 2 == 1
+
+def solve():
+    a, b = get_input()
+    product = a * b
+    if is_even(product):
+        return "Even"
+    else:
+        return "Odd"
+
+if __name__ == '__main__':
+    print(solve())
 

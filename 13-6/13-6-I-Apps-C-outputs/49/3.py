@@ -1,53 +1,51 @@
 
-def solve(n, jokes, supervisors):
-    # Initialize a set to store the types of jokes told by the invited employees
-    invited_jokes = set()
-    # Initialize a set to store the types of jokes told by the direct supervisors of the invited employees
-    direct_supervisor_jokes = set()
-    # Initialize a set to store the types of jokes told by the indirect supervisors of the invited employees
-    indirect_supervisor_jokes = set()
+def f1(N, steps):
+    # Initialize an empty stack
+    stack = []
+    
+    # Iterate through the steps
+    for step in steps:
+        # If the step is of type 1, add the current stack to the stack
+        if step[0] == "a":
+            stack.append(stack)
+        # If the step is of type 2, remove the top element from the stack
+        elif step[0] == "b":
+            stack.pop()
+        # If the step is of type 3, count the number of elements in common with the other stack
+        elif step[0] == "c":
+            other_stack = stack[int(step[2])]
+            count = 0
+            for element in stack:
+                if element in other_stack:
+                    count += 1
+            print(count)
 
-    # Iterate through the list of jokes told by each employee
-    for i in range(n):
-        # If the employee is invited, add their joke to the set of invited jokes
-        if i in supervisors[0]:
-            invited_jokes.add(jokes[i])
-        # If the employee is a direct supervisor, add their joke to the set of direct supervisor jokes
-        for supervisor in supervisors:
-            if i == supervisor[0]:
-                direct_supervisor_jokes.add(jokes[i])
-        # If the employee is an indirect supervisor, add their joke to the set of indirect supervisor jokes
-        for supervisor in supervisors:
-            if i in supervisor[1:]:
-                indirect_supervisor_jokes.add(jokes[i])
+def f2(N, steps):
+    # Initialize an empty stack
+    stack = []
+    
+    # Iterate through the steps
+    for step in steps:
+        # If the step is of type 1, add the current stack to the stack
+        if step[0] == "a":
+            stack.append(stack)
+        # If the step is of type 2, remove the top element from the stack and print it
+        elif step[0] == "b":
+            print(stack.pop())
+        # If the step is of type 3, count the number of elements in common with the other stack
+        elif step[0] == "c":
+            other_stack = stack[int(step[2])]
+            count = 0
+            for element in stack:
+                if element in other_stack:
+                    count += 1
+            print(count)
 
-    # Initialize a set to store the consecutive sets of jokes
-    consecutive_jokes = set()
-
-    # Iterate through the set of invited jokes
-    for joke in invited_jokes:
-        # If the joke is not already in the set of consecutive jokes, add it to the set
-        if joke not in consecutive_jokes:
-            consecutive_jokes.add(joke)
-        # If the joke is already in the set of consecutive jokes, find the largest consecutive set of jokes that includes the current joke
-        else:
-            largest_consecutive_set = find_largest_consecutive_set(consecutive_jokes, joke)
-            # If the largest consecutive set of jokes includes the direct supervisor jokes, add the direct supervisor jokes to the set of consecutive jokes
-            if direct_supervisor_jokes.issubset(largest_consecutive_set):
-                consecutive_jokes.update(direct_supervisor_jokes)
-            # If the largest consecutive set of jokes includes the indirect supervisor jokes, add the indirect supervisor jokes to the set of consecutive jokes
-            if indirect_supervisor_jokes.issubset(largest_consecutive_set):
-                consecutive_jokes.update(indirect_supervisor_jokes)
-
-    return len(consecutive_jokes)
-
-def find_largest_consecutive_set(consecutive_jokes, joke):
-    # Initialize a set to store the consecutive set of jokes that includes the current joke
-    current_consecutive_set = set()
-    # Iterate through the set of consecutive jokes
-    for consecutive_joke in consecutive_jokes:
-        # If the current joke is adjacent to the current consecutive set of jokes, add it to the set
-        if consecutive_joke - 1 == joke or consecutive_joke + 1 == joke:
-            current_consecutive_set.add(consecutive_joke)
-    return current_consecutive_set
+if __name__ == '__main__':
+    N = int(input())
+    steps = []
+    for i in range(N):
+        steps.append(input().split())
+    f1(N, steps)
+    f2(N, steps)
 

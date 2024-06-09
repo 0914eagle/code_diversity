@@ -1,28 +1,34 @@
 
-def get_min_price(n, prices, vitamins):
-    # Initialize a dictionary to store the count of vitamins for each juice
-    vitamin_count = {}
+def get_max_strength(n, p, assignment):
+    # Initialize the maximum strength and the optimal prefix or suffix
+    max_strength = 0
+    optimal_prefix_or_suffix = ""
+
+    # Iterate over all possible prefixes or suffixes
     for i in range(n):
-        vitamin_count[i] = 0
-        for vitamin in vitamins[i]:
-            vitamin_count[i] += 1
+        # Get the strength of the pieces in the current prefix or suffix
+        current_strength = sum(p[i:i+n])
 
-    # Sort the juices by the count of vitamins in descending order
-    sorted_juices = sorted(vitamin_count.items(), key=lambda x: x[1], reverse=True)
+        # If the current strength is greater than the maximum strength, update the maximum strength and the optimal prefix or suffix
+        if current_strength > max_strength:
+            max_strength = current_strength
+            optimal_prefix_or_suffix = assignment[i:]
 
-    # Initialize the minimum total price and the count of vitamins obtained
-    min_price = 0
-    vitamins_obtained = 0
+    # Return the maximum strength and the optimal prefix or suffix
+    return max_strength, optimal_prefix_or_suffix
 
-    # Iterate through the sorted juices and add the price of the juice if it contains a vitamin that Petya hasn't obtained yet
-    for juice, count in sorted_juices:
-        if vitamins_obtained < 3:
-            min_price += prices[juice]
-            vitamins_obtained += 1
+def main():
+    # Read the input data
+    n = int(input())
+    p = list(map(int, input().split()))
+    assignment = input()
 
-    # If Petya has obtained all three vitamins, return the minimum total price, otherwise return -1
-    if vitamins_obtained == 3:
-        return min_price
-    else:
-        return -1
+    # Call the get_max_strength function to get the maximum strength and the optimal prefix or suffix
+    max_strength, optimal_prefix_or_suffix = get_max_strength(n, p, assignment)
+
+    # Print the maximum strength
+    print(max_strength)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,21 +1,29 @@
 
-def get_common_divisors(arr):
-    # Find the greatest common divisor (GCD) of all elements in the array
-    gcd = arr[0]
-    for i in range(1, len(arr)):
-        gcd = get_gcd(gcd, arr[i])
-    
-    # Return the number of positive integers that divide gcd
-    count = 0
-    for i in range(1, gcd + 1):
-        if gcd % i == 0:
-            count += 1
-    
-    return count
+def get_cost(tree, root):
+    cost = 0
+    for vertex in tree:
+        cost += tree[root][vertex] * vertex
+    return cost
 
-def get_gcd(a, b):
-    if b == 0:
-        return a
-    else:
-        return get_gcd(b, a % b)
+def get_maximum_cost(tree):
+    maximum_cost = 0
+    for root in tree:
+        cost = get_cost(tree, root)
+        if cost > maximum_cost:
+            maximum_cost = cost
+    return maximum_cost
+
+def main():
+    n = int(input())
+    tree = {}
+    for i in range(n):
+        tree[i+1] = {}
+    for i in range(n-1):
+        u, v = map(int, input().split())
+        tree[u][v] = 1
+        tree[v][u] = 1
+    print(get_maximum_cost(tree))
+
+if __name__ == '__main__':
+    main()
 

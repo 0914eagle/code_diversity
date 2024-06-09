@@ -1,17 +1,35 @@
 
-def solve(s):
-    n = len(s)
-    k = 1
-    count = 0
-    for i in range(n):
-        if s[i] == "0":
-            left = max(0, i-k)
-            right = min(n-1, i+k)
-            for j in range(left, right+1):
-                if s[j] == "1":
-                    break
-            else:
-                count += 1
-                s = s[:i] + "1" + s[i+1:]
-    return count
+def get_min_moves(n):
+    # Initialize the minimum number of moves to -1
+    min_moves = -1
+    
+    # Loop through each digit in the number
+    for i in range(len(n)):
+        # If the current digit is not a 0 or a 5, skip this digit
+        if n[i] not in ["0", "5"]:
+            continue
+        
+        # If the current digit is a 0, try swapping it with the next digit
+        if n[i] == "0":
+            # If the next digit is a 5, swap them and update the minimum number of moves
+            if n[i+1] == "5":
+                min_moves = 1
+                break
+        
+        # If the current digit is a 5, try swapping it with the previous digit
+        if n[i] == "5":
+            # If the previous digit is a 0, swap them and update the minimum number of moves
+            if n[i-1] == "0":
+                min_moves = 1
+                break
+    
+    # Return the minimum number of moves
+    return min_moves
+
+def main():
+    n = input("Enter a number: ")
+    print(get_min_moves(n))
+
+if __name__ == '__main__':
+    main()
 

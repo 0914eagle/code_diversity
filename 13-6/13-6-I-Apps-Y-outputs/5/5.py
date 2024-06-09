@@ -1,29 +1,26 @@
 
-def get_sugar_water(A, B, C, D, E, F):
-    # Calculate the maximum amount of sugar that can be dissolved in water
-    max_sugar = E * 100 / A
+def get_expressions(a, b, c, d):
+    expressions = []
+    for op1 in ["+", "-", "*", "/"]:
+        for op2 in ["+", "-", "*", "/"]:
+            expr = f"{a} {op1} {b} {op2} {c} {op2} {d}"
+            try:
+                result = eval(expr)
+                if result == 0:
+                    expressions.append(expr)
+            except ZeroDivisionError:
+                pass
+    return sorted(expressions)
 
-    # Initialize the variables to track the best solution
-    best_sugar_water = 0
-    best_sugar = 0
+def main():
+    a, b, c, d = map(int, input().split())
+    expressions = get_expressions(a, b, c, d)
+    if expressions:
+        for expr in expressions:
+            print(expr)
+    else:
+        print("problems ahead")
 
-    # Iterate over the possible ranges of sugar and water
-    for sugar in range(C, D + 1):
-        for water in range(A, B + 1):
-            # Calculate the total amount of substances in the beaker
-            total_substances = sugar + water
-
-            # Check if the total amount of substances is within the limit
-            if total_substances <= F:
-                # Calculate the density of the sugar water
-                density = water * 100 / (sugar + water)
-
-                # Check if the density is higher than the current best density
-                if density > best_sugar_water:
-                    # Update the best density and sugar amount
-                    best_sugar_water = density
-                    best_sugar = sugar
-
-    # Return the best solution
-    return best_sugar_water, best_sugar
+if __name__ == '__main__':
+    main()
 

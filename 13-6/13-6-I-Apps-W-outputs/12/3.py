@@ -1,23 +1,20 @@
 
-def solve(a, b):
-    # Initialize variables
-    subsequence = ""
-    i, j = 0, 0
+import sys
 
-    # Loop through both strings
-    while i < len(a) and j < len(b):
-        # If the current character in a is the same as the current character in b, add it to the subsequence
-        if a[i] == b[j]:
-            subsequence += a[i]
-            i += 1
-            j += 1
-        # If the current character in a is not the same as the current character in b, skip the character in a
-        else:
-            i += 1
+def shortest_paths(G, s, t):
+    # Implement Dijkstra's algorithm here
+    pass
 
-    # If the subsequence is empty, return a minus sign
-    if not subsequence:
-        return "-"
+def main():
+    V, E = map(int, input().split())
+    G = {}
+    for _ in range(E):
+        u, v, w = map(int, input().split())
+        G[u] = G.get(u, {})
+        G[u][v] = w
+    s, t = map(int, input().split())
+    print(shortest_paths(G, s, t))
 
-    return subsequence
+if __name__ == '__main__':
+    main()
 

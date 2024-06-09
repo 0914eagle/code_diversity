@@ -1,24 +1,60 @@
 
-def max_lights_on(n, s, a, b):
-    # Initialize a list to store the states of the lights
-    lights = [1 if s[i] == "1" else 0 for i in range(n)]
+def f1(n, m, roads):
+    # Initialize a dictionary to store the distance of each path
+    distances = {}
     
-    # Initialize a list to store the number of lights that are on at each moment
-    moments = [0] * (max(a) + max(b))
+    # Loop through each road
+    for road in roads:
+        # Get the start and end cities of the road
+        start, end = road[0], road[1]
+        # Get the length of the road
+        length = road[2]
+        
+        # If the path has not been seen before, add it to the dictionary with the length as the value
+        if (start, end) not in distances:
+            distances[(start, end)] = length
+        # If the path has been seen before, update the value if the length is smaller
+        elif length < distances[(start, end)]:
+            distances[(start, end)] = length
     
-    # Iterate over each light and its parameters
-    for i in range(n):
-        # Iterate over each moment when the light will toggle
-        for j in range(b[i], max(a) + max(b), a[i]):
-            # If the light is on, turn it off and decrease the number of lights that are on
-            if lights[i]:
-                lights[i] = 0
-                moments[j] -= 1
-            # If the light is off, turn it on and increase the number of lights that are on
-            else:
-                lights[i] = 1
-                moments[j] += 1
+    # Return the dictionary of distances
+    return distances
+
+def f2(distances, q, transfers):
+    # Initialize a list to store the costs of each transfer
+    costs = []
     
-    # Return the maximum number of lights that were on at the same time
-    return max(moments)
+    # Loop through each transfer
+    for transfer in transfers:
+        # Get the start and end cities of the transfer
+        start, end = transfer[0], transfer[1]
+        
+        # Get the cost of the transfer by finding the smallest distance of any path between the cities
+        cost = min(distances[(start, end)], distances[(end, start)])
+        
+        # Add the cost to the list of costs
+        costs.append(cost)
+    
+    # Return the list of costs
+    return costs
+
+def main():
+    # Read the input
+    n, m = map(int, input().split())
+    roads = [list(map(int, input().split())) for _ in range(m)]
+    q = int(input())
+    transfers = [list(map(int, input().split())) for _ in range(q)]
+    
+    # Call f1 to get the dictionary of distances
+    distances = f1(n, m, roads)
+    
+    # Call f2 to get the list of costs
+    costs = f2(distances, q, transfers)
+    
+    # Print the costs
+    for cost in costs:
+        print(cost)
+
+if __name__ == '__main__':
+    main()
 

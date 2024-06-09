@@ -1,18 +1,20 @@
 
-def get_toppings(wishes):
-    # Initialize a dictionary to count the number of wishes for each topping
-    topping_counts = {}
-    for wish in wishes:
-        if wish.startswith("+"):
-            topping = wish[1:]
-            if topping not in topping_counts:
-                topping_counts[topping] = 1
-            else:
-                topping_counts[topping] += 1
+def get_maximum_colors(n):
+    # Initialize a set to store the colors
+    colors = set()
+    # Iterate from 2 to n
+    for i in range(2, n + 1):
+        # Check if i is a divisor of n
+        if n % i == 0:
+            # Add the color to the set
+            colors.add(i)
+    # Return the length of the set
+    return len(colors)
 
-    # Sort the toppings by their count in descending order
-    sorted_toppings = sorted(topping_counts.items(), key=lambda x: x[1], reverse=True)
+def main():
+    n = int(input())
+    print(get_maximum_colors(n))
 
-    # Return the top 3 toppings with the highest count
-    return [topping for topping, count in sorted_toppings[:3]]
+if __name__ == '__main__':
+    main()
 

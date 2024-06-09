@@ -1,25 +1,34 @@
 
-def solve(N, K, P, C):
-    # Initialize the maximum score to 0
-    max_score = 0
-    # Loop through each possible starting square
-    for i in range(1, N+1):
-        # Initialize the current score to 0
-        curr_score = 0
-        # Loop through each possible move
-        for j in range(K+1):
-            # Calculate the next square based on the permutation and current square
-            next_square = P[i-1]
-            # Add the score of the current square to the current score
-            curr_score += C[i-1]
-            # If the next square is the same as the starting square, break the loop
-            if next_square == i:
-                break
-            # Update the current square to the next square
-            i = next_square
-        # If the current score is greater than the maximum score, update the maximum score
-        if curr_score > max_score:
-            max_score = curr_score
-    # Return the maximum score
-    return max_score
+def count_ways(n, arr):
+    # Base case: if the array has only one element, return 1
+    if n == 1:
+        return 1
+    
+    # Initialize the number of ways to break the chocolate to 0
+    ways = 0
+    
+    # Iterate over the array
+    for i in range(n):
+        # If the current element is 1 (i.e., it contains a nut), check if the previous element is 0 (i.e., it does not contain a nut)
+        if arr[i] == 1 and (i == 0 or arr[i-1] == 0):
+            # If the previous element is 0, we can break the chocolate after the current element
+            ways += count_ways(n-i-1, arr[i+1:])
+        # If the current element is 0 (i.e., it does not contain a nut), check if the next element is 1 (i.e., it contains a nut)
+        elif arr[i] == 0 and (i == n-1 or arr[i+1] == 1):
+            # If the next element is 1, we can break the chocolate before the current element
+            ways += count_ways(n-i-1, arr[i+1:])
+    
+    # Return the number of ways to break the chocolate
+    return ways
+
+def main():
+    # Read the input n and the array of n integers
+    n = int(input())
+    arr = list(map(int, input().split()))
+    
+    # Call the count_ways function and print the result
+    print(count_ways(n, arr))
+
+if __name__ == '__main__':
+    main()
 

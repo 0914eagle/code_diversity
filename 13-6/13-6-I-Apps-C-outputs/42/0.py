@@ -1,27 +1,54 @@
 
-def solve(R, S, L):
-    # Initialize a dictionary to store the number of lawsuits won by each individual and corporation
-    wins = {}
-    for i in range(1, R+1):
-        wins[f"INDV{i}"] = 0
-    for i in range(1, S+1):
-        wins[f"CORP{i}"] = 0
+def get_staircase_plan(current_state, desired_state):
+    # Initialize the plan as an empty list
+    plan = []
+    
+    # Loop through the current state of the staircase room
+    for floor in range(len(current_state)):
+        # If the current state of the staircase room is different from the desired state, add a button press to the plan
+        if current_state[floor] != desired_state[floor]:
+            # Determine which button to press (red or green) based on the current state and desired state of the staircase room
+            if current_state[floor] < desired_state[floor]:
+                plan.append(("R", floor))
+            else:
+                plan.append(("G", floor))
+    
+    # Return the plan
+    return plan
 
-    # Iterate through the lawsuits and update the dictionary with the winner of each lawsuit
-    for i in range(L):
-        a, b = map(int, input().split())
-        if wins[f"INDV{a}"] < wins[f"CORP{b}"]:
-            wins[f"INDV{a}"] += 1
+def get_button_presses(plan):
+    # Initialize the button presses as an empty list
+    button_presses = []
+    
+    # Loop through the plan and add the appropriate button presses to the list
+    for action, floor in plan:
+        if action == "R":
+            button_presses.append(("R", floor))
         else:
-            wins[f"CORP{b}"] += 1
+            button_presses.append(("G", floor))
+    
+    # Return the button presses
+    return button_presses
 
-    # Find the individual or corporation with the minimum number of wins
-    min_wins = min(wins.values())
+def main():
+    # Read the input from stdin
+    n, m = map(int, input().split())
+    current_state = list(map(int, input().split()))
+    desired_state = list(map(int, input().split()))
+    
+    # Get the staircase plan
+    plan = get_staircase_plan(current_state, desired_state)
+    
+    # Get the button presses
+    button_presses = get_button_presses(plan)
+    
+    # Print the length of the button presses
+    print(len(button_presses))
+    
+    # Print the button presses
+    for action, floor in button_presses:
+        print(action, floor)
 
-    # Find all individuals or corporations with the minimum number of wins
-    winners = [k for k, v in wins.items() if v == min_wins]
-
-    # Randomly select one of the winners to return
-    import random
-    return random.choice(winners)
+if __name__ == '__main__':
+    main()
 

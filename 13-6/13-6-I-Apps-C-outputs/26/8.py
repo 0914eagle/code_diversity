@@ -1,26 +1,25 @@
 
-def solve(n, missions):
-    # Initialize a list to store the probability of each mission being completed successfully
-    probabilities = [0] * n
-
-    # Iterate over the missions
+def get_input():
+    n, m, w, h = map(int, input().split())
+    volumes = list(map(float, input().split()))
+    x = list(map(float, input().split()))
+    min_sand = [[0] * m for _ in range(n)]
+    max_sand = [[0] * m for _ in range(n)]
     for i in range(n):
-        # Initialize a list to store the probability of each Jimmy Bond completing the current mission
-        bond_probabilities = [0] * n
+        min_sand[i] = list(map(float, input().split()))
+        max_sand[i] = list(map(float, input().split()))
+    return n, m, w, h, volumes, x, min_sand, max_sand
 
-        # Iterate over the Jimmy Bonds
-        for j in range(n):
-            # Calculate the probability of the current Jimmy Bond completing the current mission
-            bond_probabilities[j] = missions[j][i] / 100
+def f1(n, m, w, h, volumes, x, min_sand, max_sand):
+    # implement your solution here
+    return 0
 
-        # Calculate the probability of all Jimmy Bonds completing the current mission
-        probabilities[i] = 1
-        for j in range(n):
-            probabilities[i] *= bond_probabilities[j]
+def f2(n, m, w, h, volumes, x, min_sand, max_sand):
+    # implement your solution here
+    return 0
 
-    # Find the maximum probability of all missions being completed successfully
-    max_probability = max(probabilities)
-
-    # Return the maximum probability as a percentage
-    return max_probability * 100
+if __name__ == '__main__':
+    n, m, w, h, volumes, x, min_sand, max_sand = get_input()
+    print(f1(n, m, w, h, volumes, x, min_sand, max_sand))
+    print(f2(n, m, w, h, volumes, x, min_sand, max_sand))
 

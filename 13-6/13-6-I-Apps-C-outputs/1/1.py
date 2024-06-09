@@ -1,21 +1,42 @@
 
-def solve(n, k, characters):
-    # Initialize the feature vector for Tira's character
-    tira_features = [0] * k
+def get_cost(n, m, p, insecure_buildings, connections):
+    # Initialize a graph with n nodes and 0 edges
+    graph = [[] for _ in range(n)]
 
-    # Iterate over the existing characters
-    for character in characters:
-        # Calculate the similarity between Tira's character and the current character
-        similarity = 0
-        for i in range(k):
-            if character[i] == tira_features[i]:
-                similarity += 1
+    # Add edges to the graph
+    for connection in connections:
+        x, y, cost = connection
+        graph[x - 1].append((y - 1, cost))
+        graph[y - 1].append((x - 1, cost))
 
-        # If the similarity is lower than the current minimum similarity, update the minimum similarity and the features of Tira's character
-        if similarity < min_similarity:
-            min_similarity = similarity
-            tira_features = character
+    # Find the minimum cost of a path from the first building to the last building that avoids insecure buildings
+    cost = float('inf')
+    for i in range(n):
+        if i + 1 not in insecure_buildings:
+            cost = min(cost, dfs(graph, i, n - 1, insecure_buildings, 0))
 
-    # Return the features of Tira's character
-    return "".join(str(feature) for feature in tira_features)
+    return cost if cost < float('inf') else -1
+
+def dfs(graph, start, end, insecure_buildings, cost):
+    if start == end:
+        return cost
+
+    for neighbor, weight in graph[start]:
+        if neighbor not in insecure_buildings:
+            new_cost = cost + weight
+            dfs(graph, neighbor, end, insecure_buildings, new_cost)
+
+    return cost
+
+def main():
+    n, m, p = map(int, input().split())
+    insecure_buildings = set(map(int, input().split()))
+    connections = []
+    for _ in range(m):
+        x, y, cost = map(int, input().split())
+        connections.append((x, y, cost))
+    print(get_cost(n, m, p, insecure_buildings, connections))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,23 +1,26 @@
 
-def solve(n, path):
-    # Initialize a list to store the path
-    router_path = [1]
+def get_min_arrows(heights):
+    # Initialize variables
+    min_arrows = 0
+    current_height = 1
 
-    # Iterate through the path
-    for i in range(1, n):
-        # Find the next router in the path
-        next_router = path[i-1]
+    # Iterate through the heights of the balloons
+    for height in heights:
+        # If the current height is less than or equal to the height of the balloon, we need to shoot an arrow
+        if current_height <= height:
+            min_arrows += 1
+            current_height += 1
 
-        # Check if the next router is already in the path
-        if next_router in router_path:
-            # If it is, find the first router that is not in the path
-            for j in range(1, n+1):
-                if j not in router_path:
-                    next_router = j
-                    break
+    return min_arrows
 
-        # Add the next router to the path
-        router_path.append(next_router)
+def main():
+    # Read the number of balloons and their heights from stdin
+    num_balloons = int(input())
+    balloon_heights = list(map(int, input().split()))
 
-    return router_path
+    # Call the get_min_arrows function and print the result
+    print(get_min_arrows(balloon_heights))
+
+if __name__ == '__main__':
+    main()
 

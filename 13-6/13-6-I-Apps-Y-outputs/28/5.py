@@ -1,13 +1,15 @@
 
-def solve(n, words):
-    count = 0
-    for word in words:
-        if word.isdigit():
-            count += 1
-        elif word == "mumble":
-            return "something is fishy"
-    if count == n:
-        return "makes sense"
+def evaluate_formula(formula):
+    A, op, B = formula.split()
+    if op == "+":
+        return int(A) + int(B)
     else:
-        return "something is fishy"
+        return int(A) - int(B)
+
+def main():
+    formula = input()
+    print(evaluate_formula(formula))
+
+if __name__ == '__main__':
+    main()
 

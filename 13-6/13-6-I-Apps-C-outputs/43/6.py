@@ -1,28 +1,64 @@
 
-def find_secret_message(s):
-    # Initialize a dictionary to store the hidden strings and their indices
-    hidden_strings = {}
-    
-    # Iterate over the characters in the string
-    for i in range(len(s)):
-        # Check if the current character is already in the dictionary
-        if s[i] in hidden_strings:
-            # If it is, add the current index to the list of indices
-            hidden_strings[s[i]].append(i)
-        else:
-            # If it's not, create a new list of indices with the current index as the only element
-            hidden_strings[s[i]] = [i]
-    
-    # Initialize a variable to store the number of occurrences of the secret message
-    num_occurrences = 0
-    
-    # Iterate over the hidden strings and their indices
-    for hidden_string, indices in hidden_strings.items():
-        # Check if the length of the list of indices is greater than the number of occurrences
-        if len(indices) > num_occurrences:
-            # If it is, update the number of occurrences
-            num_occurrences = len(indices)
-    
-    # Return the number of occurrences of the secret message
-    return num_occurrences
+def f1(N, v):
+    # calculate the expected value for each hole
+    expected_values = [0] * (N * (N + 1) // 2)
+    for i in range(N * (N + 1) // 2):
+        expected_values[i] = v[i]
+        for j in range(i + 1, N * (N + 1) // 2):
+            if i % N != 0 and j % N != 0:
+                expected_values[i] += 0.25 * v[j]
+            elif i % N != 0:
+                expected_values[i] += 0.5 * v[j]
+            elif j % N != 0:
+                expected_values[i] += 0.5 * v[j]
+            else:
+                expected_values[i] += v[j]
+    return expected_values
+
+def f2(N, v, p):
+    # calculate the expected value for each hole after bouncing once
+    expected_values = [0] * (N * (N + 1) // 2)
+    for i in range(N * (N + 1) // 2):
+        expected_values[i] = v[i]
+        for j in range(i + 1, N * (N + 1) // 2):
+            if i % N != 0 and j % N != 0:
+                expected_values[i] += 0.25 * p[i][j] * v[j]
+            elif i % N != 0:
+                expected_values[i] += 0.5 * p[i][j] * v[j]
+            elif j % N != 0:
+                expected_values[i] += 0.5 * p[i][j] * v[j]
+            else:
+                expected_values[i] += p[i][j] * v[j]
+    return expected_values
+
+def f3(N, v, p, b):
+    # calculate the expected value for each hole after bouncing b times
+    expected_values = [0] * (N * (N + 1) // 2)
+    for i in range(N * (N + 1) // 2):
+        expected_values[i] = v[i]
+        for j in range(i + 1, N * (N + 1) // 2):
+            if i % N != 0 and j % N != 0:
+                expected_values[i] += (0.25 * p[i][j]) ** b * v[j]
+            elif i % N != 0:
+                expected_values[i] += (0.5 * p[i][j]) ** b * v[j]
+            elif j % N != 0:
+                expected_values[i] += (0.5 * p[i][j]) ** b * v[j]
+            else:
+                expected_values[i] += p[i][j] ** b * v[j]
+    return expected_values
+
+def main():
+    N = int(input())
+    v = list(map(int, input().split()))
+    p = []
+    for i in range(N * (N + 1) // 2):
+        p.append(list(map(float, input().split())))
+    b = int(input())
+    expected_values = f1(N, v)
+    for i in range(b):
+        expected_values = f2(N, expected_values, p)
+    print(sum(expected_values))
+
+if __name__ == '__main__':
+    main()
 

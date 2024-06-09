@@ -1,18 +1,24 @@
 
-def suitability(s, t):
-    # Replace all '?' characters with all possible letters
-    s = s.replace("?", "abcdefghijklmnopqrstuvwxyz")
-    # Initialize suitability score to 0
-    score = 0
-    # Loop through all positions in s
-    for i in range(len(s)):
-        # If the letter at the current position is not '?', skip to the next position
-        if s[i] != "?":
-            continue
-        # If the letter at the current position is '?', replace it with all possible letters
-        s = s[:i] + "abcdefghijklmnopqrstuvwxyz" + s[i+1:]
-        # Increment suitability score by the number of non-intersecting occurrences of t in s
-        score += s.count(t)
-    # Return the suitability score
-    return score
+def get_gcd(a, b):
+    if a == 0:
+        return b
+    return get_gcd(b % a, a)
+
+def get_max_gcd(n):
+    max_gcd = 1
+    for i in range(1, n):
+        for j in range(i + 1, n + 1):
+            gcd = get_gcd(i, j)
+            if gcd > max_gcd:
+                max_gcd = gcd
+    return max_gcd
+
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        print(get_max_gcd(n))
+
+if __name__ == '__main__':
+    main()
 

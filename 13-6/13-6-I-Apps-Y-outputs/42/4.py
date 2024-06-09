@@ -1,22 +1,25 @@
 
-def solve(R, S, K, picture):
-    # Initialize variables
-    max_kills = 0
-    racket_position = []
+def get_sticks_input():
+    N = int(input())
+    L = list(map(int, input().split()))
+    return N, L
 
-    # Iterate through each row of the picture
-    for i in range(R):
-        # Iterate through each column of the picture
-        for j in range(S):
-            # If the current pixel is a fly, check if it can be killed with the racket
-            if picture[i][j] == "*":
-                # Check if the fly is within the racket's range
-                if i >= K and j >= K and i < R - K and j < S - K:
-                    # Increment the number of kills
-                    max_kills += 1
-                    # Add the fly's position to the racket position
-                    racket_position.append((i, j))
+def is_triangle(a, b, c):
+    return (a**2 + b**2) >= c**2
 
-    # Return the maximum number of kills and the racket position
-    return max_kills, racket_position
+def count_triangles(L):
+    count = 0
+    for i in range(len(L)):
+        for j in range(i+1, len(L)):
+            for k in range(j+1, len(L)):
+                if L[i] != L[j] and L[j] != L[k] and L[i] != L[k] and is_triangle(L[i], L[j], L[k]):
+                    count += 1
+    return count
+
+def main():
+    N, L = get_sticks_input()
+    print(count_triangles(L))
+
+if __name__ == '__main__':
+    main()
 

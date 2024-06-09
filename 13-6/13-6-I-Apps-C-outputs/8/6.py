@@ -1,20 +1,30 @@
 
-def is_reproducible(art_piece):
-    # Initialize a 2D array to store the colors of the art piece
-    art_array = []
-    for row in art_piece:
-        art_array.append([])
-        for col in row:
-            art_array[-1].append(col)
+def read_input():
+    N, K, Q = map(int, input().split())
+    A = list(map(int, input().split()))
+    return N, K, Q, A
+
+def solve(N, K, Q, A):
+    # Initialize the minimum and maximum values
+    min_val, max_val = float('inf'), -float('inf')
     
-    # Initialize a 2D array to store the colors of the reproduced art piece
-    reproduced_array = [[0] * len(art_array[0]) for _ in range(len(art_array))]
+    # Perform the Q operations
+    for i in range(Q):
+        # Find the smallest element in the current subsequence
+        smallest = min(A[i:i+K])
+        # Update the minimum and maximum values
+        min_val = min(min_val, smallest)
+        max_val = max(max_val, smallest)
+        # Remove the smallest element from the subsequence
+        A = A[:i] + A[i+1:i+K] + A[i+K:]
     
-    # Iterate through the art piece and check if it is possible to reproduce it
-    for i in range(len(art_array)):
-        for j in range(len(art_array[0])):
-            if art_array[i][j] != reproduced_array[i][j]:
-                return "NO"
-    
-    return "YES"
+    # Return the difference between the minimum and maximum values
+    return max_val - min_val
+
+def main():
+    N, K, Q, A = read_input()
+    print(solve(N, K, Q, A))
+
+if __name__ == '__main__':
+    main()
 

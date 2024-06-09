@@ -1,9 +1,16 @@
 
-def get_index_of_lucky_number(n):
-    lucky_digits = ["4", "7"]
-    lucky_numbers = []
-    for i in range(1, n+1):
-        if sorted(str(i)) in lucky_digits:
-            lucky_numbers.append(i)
-    return lucky_numbers.index(n) + 1
+def get_max_sum(numbers):
+    n = len(numbers)
+    dp = [0] * (n + 1)
+    for i in range(1, n + 1):
+        dp[i] = max(dp[i - 1], dp[i - 2] + numbers[i - 1])
+    return dp[n]
+
+def main():
+    n = int(input())
+    numbers = list(map(int, input().split()))
+    print(get_max_sum(numbers))
+
+if __name__ == '__main__':
+    main()
 

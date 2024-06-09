@@ -1,16 +1,27 @@
 
-def find_lipschitz_constant(points):
-    # Sort the points by their x-coordinate
-    sorted_points = sorted(points, key=lambda x: x[0])
+def get_unread_letters(letter_list):
+    return [letter for letter in letter_list if letter == 0]
 
-    # Initialize the Lipschitz constant to the maximum possible value
-    lipschitz_constant = float('inf')
+def get_read_letters(letter_list):
+    return [letter for letter in letter_list if letter == 1]
 
-    # Iterate over the points and calculate the Lipschitz constant
-    for i in range(len(sorted_points) - 1):
-        x1, y1 = sorted_points[i]
-        x2, y2 = sorted_points[i + 1]
-        lipschitz_constant = min(lipschitz_constant, abs(y1 - y2) / abs(x1 - x2))
+def get_minimum_operations(letter_list):
+    unread_letters = get_unread_letters(letter_list)
+    read_letters = get_read_letters(letter_list)
+    operations = 0
+    for i in range(len(unread_letters)):
+        if i == 0:
+            operations += 1
+        elif i == len(unread_letters) - 1:
+            operations += 2
+        else:
+            operations += 3
+    return operations + len(read_letters)
 
-    return lipschitz_constant
+def main():
+    letter_list = list(map(int, input().split()))
+    print(get_minimum_operations(letter_list))
+
+if __name__ == '__main__':
+    main()
 

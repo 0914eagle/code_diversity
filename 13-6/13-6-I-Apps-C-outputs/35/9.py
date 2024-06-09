@@ -1,50 +1,29 @@
 
-def solve(r, c, i, j, n):
-    # Initialize the grid with white color
-    grid = [["." for _ in range(c)] for _ in range(r)]
+def get_meow_factor(string):
+    # Initialize the meow factor to 0
+    meow_factor = 0
     
-    # Set the starting location of the Zamboni
-    grid[i-1][j-1] = "@"
+    # Loop through each character in the string
+    for i in range(len(string)):
+        # Check if the current character is 'm'
+        if string[i] == 'm':
+            # If it is, check if the next three characters are 'e', 'o', and 'w'
+            if i < len(string) - 3 and string[i+1] == 'e' and string[i+2] == 'o' and string[i+3] == 'w':
+                # If they are, return the current meow factor
+                return meow_factor
+            # If the current character is 'm' and the next three characters are not 'e', 'o', and 'w', increment the meow factor
+            meow_factor += 1
     
-    # Set the step size and direction
-    step_size = 1
-    direction = "up"
+    # If the string does not contain the word "meow", return -1
+    return -1
+
+def main():
+    # Read a single line of input from stdin and convert it to a string
+    string = input().strip()
     
-    # Loop through the number of steps
-    for _ in range(n):
-        # Move the Zamboni in the current direction
-        if direction == "up":
-            i -= step_size
-        elif direction == "down":
-            i += step_size
-        elif direction == "left":
-            j -= step_size
-        else:
-            j += step_size
-        
-        # Wrap the Zamboni around the edges of the rink
-        i = i % r
-        j = j % c
-        
-        # Set the next color
-        color = chr(ord('A') + (ord(grid[i][j]) - ord('A') + 1) % 26)
-        
-        # Set the new location and color in the grid
-        grid[i][j] = color
-        
-        # Rotate the direction of the Zamboni
-        if direction == "up":
-            direction = "right"
-        elif direction == "right":
-            direction = "down"
-        elif direction == "down":
-            direction = "left"
-        else:
-            direction = "up"
-        
-        # Increment the step size
-        step_size += 1
-    
-    # Return the grid
-    return grid
+    # Print the meow factor of the string
+    print(get_meow_factor(string))
+
+if __name__ == '__main__':
+    main()
 

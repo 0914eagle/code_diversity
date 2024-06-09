@@ -1,27 +1,34 @@
 
-def get_minimum_cost(n, prices, vitamins):
-    # Initialize a dictionary to store the count of vitamins for each juice
-    vitamin_count = {}
+def get_maximum_strength(n, p, assignment):
+    # Initialize the maximum strength and the optimal prefix or suffix
+    max_strength = 0
+    optimal_prefix_or_suffix = ""
+
+    # Iterate over all possible prefixes or suffixes
     for i in range(n):
-        vitamin_count[i] = 0
-        for vitamin in vitamins[i]:
-            vitamin_count[i] += 1
+        # Get the strength of the pieces in the current prefix or suffix
+        current_strength = sum(p[i:i+n])
 
-    # Sort the juices by the number of vitamins they contain, in descending order
-    sorted_juices = sorted(range(n), key=lambda i: vitamin_count[i], reverse=True)
+        # If the current strength is greater than the maximum strength, update the maximum strength and the optimal prefix or suffix
+        if current_strength > max_strength:
+            max_strength = current_strength
+            optimal_prefix_or_suffix = assignment[i:]
 
-    # Initialize the minimum cost to obtain all three vitamins
-    minimum_cost = 0
+    # Return the maximum strength and the optimal prefix or suffix
+    return max_strength, optimal_prefix_or_suffix
 
-    # Iterate through the sorted juices and add the cost of the juice if it contains a vitamin that has not been obtained yet
-    for i in sorted_juices:
-        if vitamin_count[i] > 0:
-            minimum_cost += prices[i]
-            vitamin_count[i] -= 1
+def main():
+    # Read the input data
+    n = int(input())
+    p = list(map(int, input().split()))
+    assignment = input()
 
-    # If all three vitamins have been obtained, return the minimum cost, otherwise return -1
-    if minimum_cost == 3:
-        return minimum_cost
-    else:
-        return -1
+    # Get the maximum strength and the optimal prefix or suffix
+    max_strength, optimal_prefix_or_suffix = get_maximum_strength(n, p, assignment)
+
+    # Print the maximum strength
+    print(max_strength)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,19 +1,30 @@
 
-def get_max_happiness(n, m, a, b):
-    # Initialize the dp table
-    dp = [[0] * (n + 1) for _ in range(m + 1)]
+def get_unique_names(names):
+    unique_names = []
+    for name in names:
+        if name not in unique_names:
+            unique_names.append(name)
+    return unique_names
 
-    # Initialize the first row and column
-    for i in range(m + 1):
-        dp[i][0] = 0
-    for j in range(n + 1):
-        dp[0][j] = 0
+def get_presence_status(names):
+    unique_names = get_unique_names(names)
+    presence_status = []
+    for name in names:
+        if name in unique_names:
+            presence_status.append("NO")
+        else:
+            presence_status.append("YES")
+    return presence_status
 
-    # Fill in the dp table
-    for i in range(1, m + 1):
-        for j in range(1, n + 1):
-            dp[i][j] = max(dp[i - 1][j], dp[i][j - 1] + a[i - 1] + (j - 1) * b[i - 1])
+def main():
+    n = int(input())
+    names = []
+    for i in range(n):
+        names.append(input())
+    presence_status = get_presence_status(names)
+    for status in presence_status:
+        print(status)
 
-    # Return the final answer
-    return dp[m][n]
+if __name__ == '__main__':
+    main()
 

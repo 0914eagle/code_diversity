@@ -1,19 +1,44 @@
 
-def count_occurrences(s):
-    # Initialize a dictionary to store the count of each hidden string
-    hidden_strings = {}
+def get_expected_payout(num_rows, hole_payouts, bounce_probabilities):
+    # Initialize the expected payout to zero
+    expected_payout = 0
 
-    # Loop through each substring of the text
-    for i in range(len(s)):
-        for j in range(i+1, len(s)+1):
-            # Check if the substring is a hidden string
-            if s[i:j] in hidden_strings:
-                # If it is, increment the count
-                hidden_strings[s[i:j]] += 1
-            else:
-                # If it's not, add it to the dictionary with count 1
-                hidden_strings[s[i:j]] = 1
+    # Loop through each hole
+    for hole in range(1, num_rows * (num_rows + 1) // 2 + 1):
+        # Get the payout for the current hole
+        payout = hole_payouts[hole - 1]
 
-    # Return the maximum count
-    return max(hidden_strings.values())
+        # Loop through each possible bounce
+        for bounce in range(4):
+            # Get the probability of the ball bouncing to the current bounce
+            probability = bounce_probabilities[hole - 1][bounce]
+
+            # If the probability is non-zero, calculate the expected payout for the next hole
+            if probability != 0:
+                # Get the next hole number
+                next_hole = hole + bounce - 2
+
+                # If the next hole is valid, calculate the expected payout for that hole
+                if next_hole > 0 and next_hole <= num_rows * (num_rows + 1) // 2:
+                    expected_payout += probability * get_expected_payout(num_rows, hole_payouts, bounce_probabilities)
+
+    # Return the expected payout for the current hole
+    return expected_payout + payout
+
+def main():
+    # Read the input
+    num_rows = int(input())
+    hole_payouts = list(map(int, input().split()))
+    bounce_probabilities = []
+    for _ in range(num_rows):
+        bounce_probabilities.append(list(map(float, input().split())))
+
+    # Calculate the expected payout
+    expected_payout = get_expected_payout(num_rows, hole_payouts, bounce_probabilities)
+
+    # Print the expected payout
+    print(expected_payout)
+
+if __name__ == '__main__':
+    main()
 

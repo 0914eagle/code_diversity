@@ -1,24 +1,33 @@
 
-def get_rectangular_isosceles_triangle(x, y):
-    # Find the length of the hypotenuse of the right triangle
-    hypotenuse = max(x, y)
+def get_maximum_total_income(sequence, k):
+    # Sort the sequence in non-decreasing order
+    sequence.sort()
     
-    # Find the length of the other two sides of the triangle
-    side1 = hypotenuse - x
-    side2 = hypotenuse - y
+    # Initialize the total income and the number of changes made
+    total_income = sum(sequence)
+    changes_made = 0
     
-    # Find the coordinates of the two points on the hypotenuse
-    x1 = 0
-    y1 = hypotenuse
-    x2 = hypotenuse
-    y2 = 0
+    # Loop through the sequence and change the sign of each number
+    for i in range(len(sequence)):
+        # Check if the number of changes made is less than the given number of changes
+        if changes_made < k:
+            # Change the sign of the current number
+            sequence[i] *= -1
+            # Increment the total income and the number of changes made
+            total_income += sequence[i]
+            changes_made += 1
     
-    # Find the coordinates of the two points on the other sides of the triangle
-    x3 = side1
-    y3 = 0
-    x4 = 0
-    y4 = side2
+    # Return the maximum total income
+    return total_income
+
+def main():
+    # Read the input sequence and the number of changes from stdin
+    n, k = map(int, input().split())
+    sequence = list(map(int, input().split()))
     
-    # Return the coordinates of the required points
-    return x1, y1, x2, y2, x3, y3, x4, y4
+    # Call the get_maximum_total_income function and print the result
+    print(get_maximum_total_income(sequence, k))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,13 +1,32 @@
 
-def common_divisors(arr):
-    # Convert the array to a set to remove duplicates
-    unique_elements = set(arr)
-    # Initialize a variable to store the number of common divisors
-    num_common_divisors = 0
-    # Iterate over the unique elements in the array
-    for element in unique_elements:
-        # Check if the element is a common divisor of all elements in the array
-        if all(element % num == 0 for num in arr):
-            num_common_divisors += 1
-    return num_common_divisors
+def get_maximum_cost(n, a, edges):
+    # Initialize the distance array with 0 for the root vertex
+    distance = [0] * n
+    # Initialize the cost array with the value of the root vertex
+    cost = [a[0]] * n
+
+    # Loop through each edge and update the distance and cost arrays
+    for edge in edges:
+        u, v = edge
+        distance[v] = distance[u] + 1
+        cost[v] = cost[u] + a[v]
+
+    # Find the maximum cost by traversing the tree from the root vertex
+    max_cost = 0
+    for i in range(n):
+        max_cost = max(max_cost, cost[i])
+
+    return max_cost
+
+def main():
+    n = int(input())
+    a = list(map(int, input().split()))
+    edges = []
+    for i in range(n - 1):
+        u, v = map(int, input().split())
+        edges.append((u, v))
+    print(get_maximum_cost(n, a, edges))
+
+if __name__ == '__main__':
+    main()
 

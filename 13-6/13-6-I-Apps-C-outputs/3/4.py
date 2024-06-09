@@ -1,31 +1,39 @@
 
-def max_profit(producer_companies, consumer_companies):
-    # Initialize variables
-    max_profit = 0
-    selected_producer = None
-    selected_consumer = None
+def get_number_of_first_moves(numbers):
+    # Initialize a set to store the numbers that have been taken
+    taken_numbers = set()
+    # Initialize a list to store the first moves
+    first_moves = []
+    # Iterate through the numbers
+    for number in numbers:
+        # Check if the number has not been taken yet
+        if number not in taken_numbers:
+            # Add the number to the taken numbers set
+            taken_numbers.add(number)
+            # Add the number to the first moves list
+            first_moves.append(number)
+    # Return the length of the first moves list
+    return len(first_moves)
 
-    # Iterate over each producer company
-    for producer in producer_companies:
-        # Iterate over each consumer company
-        for consumer in consumer_companies:
-            # Calculate the profit for this combination of producer and consumer
-            profit = calculate_profit(producer, consumer)
+def get_winnable_first_moves(numbers):
+    # Initialize a set to store the numbers that have been taken
+    taken_numbers = set()
+    # Initialize a list to store the first moves
+    first_moves = []
+    # Iterate through the numbers
+    for number in numbers:
+        # Check if the number has not been taken yet
+        if number not in taken_numbers:
+            # Add the number to the taken numbers set
+            taken_numbers.add(number)
+            # Add the number to the first moves list
+            first_moves.append(number)
+    # Return the length of the first moves list
+    return len(first_moves)
 
-            # Check if the profit is greater than the current maximum profit
-            if profit > max_profit:
-                # Update the maximum profit and the selected producer and consumer
-                max_profit = profit
-                selected_producer = producer
-                selected_consumer = consumer
-
-    # Return the maximum profit and the selected producer and consumer
-    return max_profit, selected_producer, selected_consumer
-
-def calculate_profit(producer, consumer):
-    # Calculate the profit for this combination of producer and consumer
-    profit = producer[0] - consumer[0]
-
-    # Return the profit
-    return profit
+if __name__ == '__main__':
+    num_numbers = int(input())
+    numbers = [int(x) for x in input().split()]
+    print(get_number_of_first_moves(numbers))
+    print(get_winnable_first_moves(numbers))
 

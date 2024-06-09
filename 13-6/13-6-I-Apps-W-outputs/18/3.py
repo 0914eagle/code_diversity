@@ -1,25 +1,37 @@
 
-def solve(N, V, C):
-    # Initialize the maximum total happiness as 0
-    max_happiness = 0
-    # Loop through each possible amount of ingredients
-    for i in range(1, N+1):
-        # Calculate the happiness of Bash and the Pokenoms with the current amount of ingredients
-        happiness = calculate_happiness(i, V, C)
-        # Update the maximum total happiness if the current happiness is greater than the previous maximum
-        max_happiness = max(max_happiness, happiness)
-    # Return the maximum total happiness
-    return max_happiness
+def get_criminals(n, a, t):
+    # Initialize a list to store the criminals
+    criminals = []
+    
+    # Iterate through the input array
+    for i in range(n):
+        # If there is a criminal in the current city
+        if t[i] == 1:
+            # Add the city to the list of criminals
+            criminals.append(i)
+    
+    # Return the list of criminals
+    return criminals
 
-def calculate_happiness(i, V, C):
-    # Initialize the happiness of Bash and the Pokenoms as 0
-    happiness = 0
-    # Loop through each prime number up to the current amount of ingredients
-    for p in range(2, i+1):
-        # If the prime number is a factor of the current amount of ingredients
-        if i % p == 0:
-            # Add the happiness of Bash and the Pokenoms from the current ingredient to the total happiness
-            happiness += V[p-1] + C[p-1] * (i // p) ** 2
-    # Return the total happiness
-    return happiness
+def get_criminals_caught(n, a, t):
+    # Get the list of criminals
+    criminals = get_criminals(n, a, t)
+    
+    # Initialize a variable to store the number of criminals caught
+    criminals_caught = 0
+    
+    # Iterate through the list of criminals
+    for criminal in criminals:
+        # If the criminal is not in the current city
+        if criminal != a:
+            # Increment the number of criminals caught
+            criminals_caught += 1
+    
+    # Return the number of criminals caught
+    return criminals_caught
+
+if __name__ == '__main__':
+    n, a = map(int, input().split())
+    t = list(map(int, input().split()))
+    print(get_criminals_caught(n, a, t))
 

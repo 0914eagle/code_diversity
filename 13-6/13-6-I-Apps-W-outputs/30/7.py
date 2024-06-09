@@ -1,28 +1,22 @@
 
-def solve(n, heights):
-    # Sort the heights in non-decreasing order
-    sorted_heights = sorted(heights)
-    # Initialize the minimum discomfort to a large value
-    min_discomfort = float('inf')
-    # Initialize the optimal order to an empty list
-    optimal_order = []
-    # Iterate over all possible starting points
-    for i in range(n):
-        # Calculate the discomfort of the circle with the current starting point
-        discomfort = calculate_discomfort(sorted_heights, i)
-        # If the discomfort is smaller than the minimum discomfort, update the minimum discomfort and the optimal order
-        if discomfort < min_discomfort:
-            min_discomfort = discomfort
-            optimal_order = sorted_heights[i:i+n]
-    return optimal_order
+def get_max_sum(a, m):
+    n = len(a)
+    dp = [0] * (n + 1)
+    for i in range(1, n + 1):
+        dp[i] = max(dp[i - 1], dp[i - 2] + a[i - 1])
+    max_sum = 0
+    for i in range(n, 0, -1):
+        if dp[i] > max_sum:
+            max_sum = dp[i]
+        if max_sum > m:
+            break
+    return max_sum % m
 
-def calculate_discomfort(heights, start):
-    # Calculate the absolute differences between adjacent heights in the circle
-    absolute_differences = [abs(heights[i] - heights[(i+1)%len(heights)]) for i in range(len(heights))]
-    # Return the sum of the absolute differences
-    return sum(absolute_differences)
+def main():
+    n, m = map(int, input().split())
+    a = list(map(int, input().split()))
+    print(get_max_sum(a, m))
 
-n = int(input())
-heights = list(map(int, input().split()))
-print(*solve(n, heights))
+if __name__ == '__main__':
+    main()
 

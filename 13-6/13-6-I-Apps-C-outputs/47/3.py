@@ -1,16 +1,31 @@
 
-import math
+def get_maximum_amount(n, m, coupons):
+    # Initialize a dictionary to store the counts of each number
+    counts = {}
+    for coupon in coupons:
+        q, w = coupon
+        if q not in counts:
+            counts[q] = 0
+        counts[q] += 1
+    
+    # Initialize a variable to store the maximum amount
+    maximum_amount = 0
+    
+    # Iterate over the counts and calculate the maximum amount
+    for q, count in counts.items():
+        maximum_amount += count * q
+    
+    return maximum_amount
 
-def number_of_perfect_sets(k):
-    count = 0
-    for i in range(k+1):
-        if i == 0:
-            count += 1
-        else:
-            xor = i
-            while xor <= k:
-                if xor in range(i+1):
-                    count += 1
-                xor ^= i
-    return count % 1000000007
+def main():
+    n, m = map(int, input().split())
+    coupons = []
+    for i in range(m):
+        q, w = map(int, input().split())
+        coupons.append((q, w))
+    maximum_amount = get_maximum_amount(n, m, coupons)
+    print(maximum_amount)
+
+if __name__ == '__main__':
+    main()
 

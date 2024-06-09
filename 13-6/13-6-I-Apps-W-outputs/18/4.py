@@ -1,25 +1,48 @@
 
-def solve(N, V, C):
-    # Initialize the maximum total happiness as 0
-    max_happiness = 0
-    # Loop through each prime number from 2 to N
-    for p in range(2, N+1):
-        # If the prime number is not in the list of costs, skip it
-        if p not in C:
-            continue
-        # Find the exponent of the prime number in the recipe
-        exponent = 0
-        while p ** (exponent+1) <= N:
-            exponent += 1
-        # Calculate the amount of ingredient needed for the cake
-        amount = p ** exponent
-        # Calculate the cost of the ingredient
-        cost = amount * C[p]
-        # Calculate the happiness increase for Bash and the Pokenoms
-        happiness = amount * V[p] - cost
-        # If the happiness increase is positive, update the maximum total happiness
-        if happiness > 0:
-            max_happiness = max(max_happiness, happiness)
-    # Return the maximum total happiness
-    return max_happiness
+def get_criminals_info(cities, city_index, criminals):
+    # Initialize a dictionary to store the information about the criminals
+    criminals_info = {}
+    
+    # Iterate over the criminals
+    for criminal in criminals:
+        # Get the distance between the current criminal and the city where Limak lives
+        distance = abs(criminal - city_index)
+        
+        # If the distance is not already in the dictionary, add it and set the number of criminals to 1
+        if distance not in criminals_info:
+            criminals_info[distance] = 1
+        # If the distance is already in the dictionary, increment the number of criminals by 1
+        else:
+            criminals_info[distance] += 1
+    
+    return criminals_info
+
+def catch_criminals(criminals_info):
+    # Initialize a variable to store the number of criminals caught
+    criminals_caught = 0
+    
+    # Iterate over the criminals_info dictionary
+    for distance, num_criminals in criminals_info.items():
+        # If the number of criminals at the current distance is 1, increment the number of criminals caught
+        if num_criminals == 1:
+            criminals_caught += 1
+    
+    return criminals_caught
+
+def main():
+    # Read the input
+    n, a = map(int, input().split())
+    t = list(map(int, input().split()))
+    
+    # Get the information about the criminals using the BCD
+    criminals_info = get_criminals_info(n, a, t)
+    
+    # Catch the criminals
+    criminals_caught = catch_criminals(criminals_info)
+    
+    # Print the number of criminals caught
+    print(criminals_caught)
+
+if __name__ == '__main__':
+    main()
 

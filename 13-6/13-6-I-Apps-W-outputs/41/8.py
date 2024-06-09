@@ -1,28 +1,24 @@
 
-def solve(n, k, l, d):
-    # Initialize variables
-    x = 0
-    t = 0
-    p = [0, 1]
+def is_rated(n, ratings):
+    # Check if at least one rating has changed
+    if len(set(ratings)) == 1:
+        return "unrated"
     
-    # Loop through each second
+    # Check if the round was rated and a participant with lower rating took a better place in the standings than a participant with higher rating
+    for i in range(n-1):
+        if ratings[i] > ratings[i+1] and ratings[i] - ratings[i+1] > 1:
+            return "rated"
+    
+    # If the round was not rated and no one's rating has changed, it's impossible to determine whether the round is rated or not
+    return "maybe"
+
+def main():
+    n = int(input())
+    ratings = []
     for i in range(n):
-        # Calculate the current depth
-        depth = d[i] + p[t % 2]
-        
-        # Check if Koa can swim or not
-        if depth <= l:
-            x += 1
-        else:
-            break
-        
-        # Update the time and the period array
-        t += 1
-        p = [p[1], p[0]]
-    
-    # Check if Koa reached the island
-    if x == n:
-        return "Yes"
-    else:
-        return "No"
+        ratings.append(int(input()))
+    print(is_rated(n, ratings))
+
+if __name__ == '__main__':
+    main()
 

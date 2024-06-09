@@ -1,14 +1,40 @@
 
-def solve(snukes, snacks):
-    # Initialize a set to store the snukes who have no snacks
-    no_snacks = set()
+def is_achievable(M, N, C, A, X):
+    # Initialize the minimum amount of money needed to achieve the objective
+    min_money = 0
+    
+    # Initialize the understanding levels of the algorithms
+    understanding_levels = [0] * M
+    
+    # Sort the books by their cost in descending order
+    sorted_books = sorted(range(N), key=lambda i: C[i])
+    
+    # Iterate through the books in descending order of cost
+    for i in sorted_books:
+        # Check if buying the current book will increase the understanding levels of any algorithms
+        for j in range(M):
+            if understanding_levels[j] < X and A[i, j] > 0:
+                # Increase the understanding level of the algorithm
+                understanding_levels[j] += A[i, j]
+                
+                # Check if all the algorithms have reached the required understanding level
+                if all(understanding_level >= X for understanding_level in understanding_levels):
+                    # Return the minimum amount of money needed to achieve the objective
+                    return min_money + C[i]
+                break
+        else:
+            # If none of the algorithms can be increased, increase the minimum amount of money needed
+            min_money += C[i]
+    
+    # If all the algorithms have not been achieved, return -1
+    return -1
 
-    # Iterate over the snukes and their snacks
-    for snuke, snack_list in enumerate(snacks, start=1):
-        # If the snuke has no snacks, add them to the set
-        if not snack_list:
-            no_snacks.add(snuke)
+def main():
+    M, N, C, A, X = map(int, input().split())
+    C = [int(x) for x in input().split()]
+    A = [[int(x) for x in input().split()] for _ in range(N)]
+    print(is_achievable(M, N, C, A, X))
 
-    # Return the number of snukes who have no snacks
-    return len(no_snacks)
+if __name__ == '__main__':
+    main()
 

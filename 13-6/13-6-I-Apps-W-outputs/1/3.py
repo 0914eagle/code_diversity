@@ -1,21 +1,48 @@
 
-def solve(n, x, edges):
-    # Create a graph from the edges
-    graph = {i: set() for i in range(1, n + 1)}
-    for edge in edges:
-        graph[edge[0]].add(edge[1])
-        graph[edge[1]].add(edge[0])
-    # Initialize the distances from vertex 1 to all other vertices
-    distances = [float('inf')] * (n + 1)
-    distances[1] = 0
-    # Breadth-first search from vertex 1 to find the shortest distance to all other vertices
-    queue = [1]
-    while queue:
-        vertex = queue.pop(0)
-        for neighbor in graph[vertex]:
-            if distances[neighbor] == float('inf'):
-                distances[neighbor] = distances[vertex] + 1
-                queue.append(neighbor)
-    # Return the minimum number of moves required for Alice to reach Bob
-    return distances[x]
+def calculate_time_between_arrivals(total_time, monkey_type_1_data, monkey_type_2_data):
+    # Initialize variables
+    time_spent_by_monkey_type_1 = 0
+    time_spent_by_monkey_type_2 = 0
+    time_between_arrivals = 0
+
+    # Iterate through the data for monkey type 1
+    for monkey_data in monkey_type_1_data:
+        # Calculate the time spent by each monkey of type 1
+        time_spent_by_monkey_type_1 += monkey_data[0] + (monkey_data[1] * total_time)
+
+    # Iterate through the data for monkey type 2
+    for monkey_data in monkey_type_2_data:
+        # Calculate the time spent by each monkey of type 2
+        time_spent_by_monkey_type_2 += monkey_data[0] + (monkey_data[1] * total_time)
+
+    # Calculate the time between the arrivals
+    time_between_arrivals = time_spent_by_monkey_type_1 - time_spent_by_monkey_type_2
+
+    return time_between_arrivals
+
+def main():
+    total_time = int(input())
+    monkey_type_1_data = []
+    monkey_type_2_data = []
+
+    # Read the data for monkey type 1
+    num_monkeys_type_1 = int(input())
+    for _ in range(num_monkeys_type_1):
+        monkey_data = list(map(int, input().split()))
+        monkey_type_1_data.append(monkey_data)
+
+    # Read the data for monkey type 2
+    num_monkeys_type_2 = int(input())
+    for _ in range(num_monkeys_type_2):
+        monkey_data = list(map(int, input().split()))
+        monkey_type_2_data.append(monkey_data)
+
+    # Calculate the time between the arrivals
+    time_between_arrivals = calculate_time_between_arrivals(total_time, monkey_type_1_data, monkey_type_2_data)
+
+    # Print the result
+    print(time_between_arrivals)
+
+if __name__ == '__main__':
+    main()
 

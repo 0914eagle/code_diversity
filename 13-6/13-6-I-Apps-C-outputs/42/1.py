@@ -1,25 +1,38 @@
 
-def solve(R, S, L, A, B):
-    # Initialize a dictionary to store the number of lawsuits won by each individual and corporation
-    counts = {}
-    for i in range(1, R+1):
-        counts[f"INDV {i}"] = 0
-    for i in range(1, S+1):
-        counts[f"CORP {i}"] = 0
+def get_button_presses(current_state, desired_state):
+    # Initialize the queue of button presses
+    queue = []
+    
+    # Loop through the current state and desired state
+    for i in range(len(current_state)):
+        # If the current state and desired state are not the same, add a button press to the queue
+        if current_state[i] != desired_state[i]:
+            # If the current state is 0 and the desired state is 1, add a red button press
+            if current_state[i] == 0 and desired_state[i] == 1:
+                queue.append("R " + str(i))
+            # If the current state is 1 and the desired state is 0, add a green button press
+            elif current_state[i] == 1 and desired_state[i] == 0:
+                queue.append("G " + str(i))
+    
+    # Return the queue of button presses
+    return queue
 
-    # Iterate through the lawsuits and increment the count for the party that wins each lawsuit
-    for i in range(L):
-        if A[i] not in counts:
-            counts[f"INDV {A[i]}"] = 0
-        if B[i] not in counts:
-            counts[f"CORP {B[i]}"] = 0
-        counts[f"INDV {A[i]}"] += 1
-        counts[f"CORP {B[i]}"] += 1
+def main():
+    # Read the input
+    N, M = map(int, input().split())
+    current_state = list(map(int, input().split()))
+    desired_state = list(map(int, input().split()))
+    
+    # Get the button presses
+    queue = get_button_presses(current_state, desired_state)
+    
+    # Print the length of the queue
+    print(len(queue))
+    
+    # Print the button presses
+    for press in queue:
+        print(press)
 
-    # Find the individual or corporation with the minimum number of lawsuits won
-    min_count = min(counts.values())
-    winners = [k for k, v in counts.items() if v == min_count]
-
-    # Return the winners in the required format
-    return [f"{winner}" for winner in winners]
+if __name__ == '__main__':
+    main()
 

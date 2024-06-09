@@ -1,17 +1,39 @@
 
-def get_min_heaters(n, r, arr):
-    # Sort the array and find the maximum range that can be warmed up
-    arr.sort()
-    max_range = arr[-1] - arr[0]
-
-    # Initialize the number of heaters needed to warm up the whole house
-    num_heaters = 0
-
-    # Iterate through the array and check if the current element is within the range of the heater
+def get_moves(n, a):
+    # Initialize variables
+    alice_moves = 0
+    bob_moves = 0
+    alice_sum = 0
+    bob_sum = 0
+    
+    # Loop through each candy
     for i in range(n):
-        if arr[i] + r - 1 >= max_range:
+        # Alice's move
+        if i % 2 == 0:
+            alice_sum += a[i]
+            alice_moves += 1
+        # Bob's move
+        else:
+            bob_sum += a[i]
+            bob_moves += 1
+        
+        # Check if either player has won the game
+        if alice_sum > bob_sum:
             break
-        num_heaters += 1
+        if bob_sum > alice_sum:
+            break
+    
+    # Return the number of moves and the total sum of candies eaten by Alice and Bob
+    return alice_moves, bob_moves, alice_sum, bob_sum
 
-    return num_heaters
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        a = list(map(int, input().split()))
+        alice_moves, bob_moves, alice_sum, bob_sum = get_moves(n, a)
+        print(alice_moves, bob_moves, alice_sum, bob_sum)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,60 +1,52 @@
 
-def is_k_multihedgehog(n, k, edges):
-    # Initialize a dictionary to store the degree of each vertex
-    degrees = {}
-    for i in range(1, n+1):
-        degrees[i] = 0
-    
-    # Count the degree of each vertex based on the given edges
-    for edge in edges:
-        degrees[edge[0]] += 1
-        degrees[edge[1]] += 1
-    
-    # Check if there is a vertex with degree at least k
-    has_center = False
-    for vertex, degree in degrees.items():
-        if degree >= k:
-            has_center = True
+def get_maximum_protected_rooms(num_rooms, doors):
+    # Initialize a graph with the given number of rooms
+    graph = [[] for _ in range(num_rooms)]
+
+    # Add edges to the graph based on the given doors
+    for u, v in doors:
+        graph[u].append(v)
+        graph[v].append(u)
+
+    # Find the room that is not connected to the outside
+    outside_room = -1
+    for i in range(num_rooms):
+        if i not in graph[i]:
+            outside_room = i
             break
-    
-    # If there is no vertex with degree at least k, return False
-    if not has_center:
-        return False
-    
-    # If there is a vertex with degree at least k, check if the graph is a tree
-    return is_tree(n, edges)
 
-def is_tree(n, edges):
-    # Initialize a set to store the visited vertices
-    visited = set()
-    
-    # Check if the graph is connected
-    for edge in edges:
-        if edge[0] not in visited:
-            visited.add(edge[0])
-        if edge[1] not in visited:
-            visited.add(edge[1])
-    
-    # If the graph is not connected, return False
-    if len(visited) != n:
-        return False
-    
-    # If the graph is connected, check if it has no cycles
-    for edge in edges:
-        if edge[0] in visited and edge[1] in visited:
-            return False
-    
-    # If the graph has no cycles, return True
-    return True
+    # Initialize a variable to store the maximum number of protected rooms
+    max_protected_rooms = 0
 
-n, k = map(int, input().split())
-edges = []
-for i in range(n-1):
-    u, v = map(int, input().split())
-    edges.append((u, v))
+    # Iterate over all possible doors to replace
+    for door in range(num_rooms):
+        # Skip the door that is already connected to the outside
+        if door == outside_room:
+            continue
 
-if is_k_multihedgehog(n, k, edges):
-    print("Yes")
-else:
-    print("No")
+        # Initialize a variable to store the number of protected rooms
+        protected_rooms = 0
+
+        # Iterate over all rooms in the graph
+        for room in range(num_rooms):
+            # If the room is not connected to the outside and is not connected to the current door, increment the number of protected rooms
+            if room not in graph[door] and room not in graph[outside_room]:
+                protected_rooms += 1
+
+        # Update the maximum number of protected rooms if necessary
+        if protected_rooms > max_protected_rooms:
+            max_protected_rooms = protected_rooms
+
+    return max_protected_rooms
+
+def main():
+    num_rooms, num_doors = map(int, input().split())
+    doors = []
+    for _ in range(num_doors):
+        u, v = map(int, input().split())
+        doors.append((u, v))
+    print(get_maximum_protected_rooms(num_rooms, doors))
+
+if __name__ == '__main__':
+    main()
 

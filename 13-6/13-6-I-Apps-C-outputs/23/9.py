@@ -1,33 +1,30 @@
 
-def shortest_article_length(n, proofs):
-    # Initialize a dictionary to store the length of each proof and the number of theorems it depends on
-    proof_lengths = {}
-    for proof in proofs:
-        l, k, *deps = proof
-        proof_lengths[l] = k
+def f1(s):
+    # Calculate the average value of L(C) over all possible sequences C represented by s
+    n = len(s)
+    count = 0
+    sum = 0
+    for i in range(1, n+1):
+        for j in range(n):
+            if s[j] == 'H':
+                count += 1
+                sum += i
+    return sum / count
 
-    # Initialize a set to store the theorems that have been proven
-    proven_theorems = set()
+def f2(s):
+    # Calculate the average value of L(C) over all possible sequences C represented by s
+    n = len(s)
+    count = 0
+    sum = 0
+    for i in range(1, n+1):
+        for j in range(n):
+            if s[j] == 'H':
+                count += 1
+                sum += i
+    return sum / count
 
-    # Initialize the shortest article length
-    shortest_length = 0
-
-    # Iterate through the proofs in order of length
-    for l in sorted(proof_lengths):
-        # If the current proof depends on any theorems that have not been proven, skip it
-        if proof_lengths[l] - len(proven_theorems) > 0:
-            continue
-
-        # If the current proof is the main theorem, return its length
-        if l == 0:
-            return l
-
-        # Add the current proof to the set of proven theorems
-        proven_theorems.add(l)
-
-        # Update the shortest article length
-        shortest_length = l
-
-    # If the main theorem has not been proven, return -1
-    return -1
+if __name__ == '__main__':
+    s = input()
+    print(f1(s))
+    print(f2(s))
 

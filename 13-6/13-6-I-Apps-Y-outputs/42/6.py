@@ -1,23 +1,26 @@
 
-def solve(R, S, K, picture):
-    # Initialize variables
-    max_kills = 0
-    racket_position = []
+def get_sticks_input():
+    N = int(input())
+    L = list(map(int, input().split()))
+    return N, L
 
-    # Iterate over each row of the picture
-    for i in range(R):
-        # Iterate over each column of the picture
-        for j in range(S):
-            # If the current pixel is a fly, check if it is within the racket's range
-            if picture[i][j] == "*":
-                # Calculate the distance between the current pixel and the racket's center
-                distance = abs(i - (R // 2)) + abs(j - (S // 2))
-                # If the distance is less than or equal to the racket's length, increment the kill count
-                if distance <= K:
-                    max_kills += 1
-                    # Add the current pixel to the racket's position
-                    racket_position.append((i, j))
+def is_triangle(a, b, c):
+    return a**2 + b**2 > c**2
 
-    # Return the maximum kill count and the racket's position
-    return max_kills, racket_position
+def count_triangles(L):
+    count = 0
+    for i in range(len(L)):
+        for j in range(i+1, len(L)):
+            for k in range(j+1, len(L)):
+                if L[i] != L[j] and L[j] != L[k] and L[i] != L[k]:
+                    if is_triangle(L[i], L[j], L[k]):
+                        count += 1
+    return count
+
+def main():
+    N, L = get_sticks_input()
+    print(count_triangles(L))
+
+if __name__ == '__main__':
+    main()
 

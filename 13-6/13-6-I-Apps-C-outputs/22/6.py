@@ -1,28 +1,47 @@
 
-def solve(n, flights):
-    # Initialize a graph with the given flights
-    graph = {i: set() for i in range(1, n + 1)}
-    for i, j in flights:
-        graph[i].add(j)
-        graph[j].add(i)
+def f1(D, M, N, implications, events):
+    # Initialize a set to store the events that have certainly occurred
+    certainly_occurred = set()
 
-    # Find the flight with the maximum number of connections
-    max_connections = 0
-    flight_to_cancel = None
-    for i in range(1, n + 1):
-        connections = len(graph[i])
-        if connections > max_connections:
-            max_connections = connections
-            flight_to_cancel = i
+    # Iterate over the implications
+    for implication in implications:
+        # If the event that must have occurred (B) is in the set of events that have certainly occurred,
+        # and the event that must have occurred (A) is not in the set of events that have certainly occurred,
+        # then add the event that must have occurred (A) to the set of events that have certainly occurred
+        if implication[1] in certainly_occurred and implication[0] not in certainly_occurred:
+            certainly_occurred.add(implication[0])
 
-    # Find the city with the maximum number of connections
-    max_connections = 0
-    city_to_add = None
-    for i in range(1, n + 1):
-        connections = len(graph[i])
-        if connections > max_connections:
-            max_connections = connections
-            city_to_add = i
+    # Add the events that are known to have occurred to the set of events that have certainly occurred
+    certainly_occurred.update(events)
 
-    return (max_connections - 1, flight_to_cancel, city_to_add)
+    # Return the set of events that have certainly occurred
+    return certainly_occurred
+
+def f2(D, M, N, implications, events):
+    # Initialize a set to store the events that have certainly occurred
+    certainly_occurred = set()
+
+    # Iterate over the implications
+    for implication in implications:
+        # If the event that must have occurred (B) is in the set of events that have certainly occurred,
+        # and the event that must have occurred (A) is not in the set of events that have certainly occurred,
+        # then add the event that must have occurred (A) to the set of events that have certainly occurred
+        if implication[1] in certainly_occurred and implication[0] not in certainly_occurred:
+            certainly_occurred.add(implication[0])
+
+    # Add the events that are known to have occurred to the set of events that have certainly occurred
+    certainly_occurred.update(events)
+
+    # Return the set of events that have certainly occurred
+    return certainly_occurred
+
+if __name__ == '__main__':
+    D, M, N = map(int, input().split())
+    implications = []
+    for _ in range(M):
+        a, b = map(int, input().split())
+        implications.append((a, b))
+    events = set(map(int, input().split()))
+    certainly_occurred = f1(D, M, N, implications, events)
+    print(*sorted(certainly_occurred), sep=' ')
 

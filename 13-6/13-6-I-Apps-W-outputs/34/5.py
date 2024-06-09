@@ -1,27 +1,25 @@
 
-def get_min_time(a, b, x, y):
-    # Initialize a dictionary to store the minimum time needed to reach each floor
-    # The key is the floor number, and the value is the minimum time needed to reach that floor
-    min_time = {1: 0}
+def get_antipalindromic_permutation(s):
+    n = len(s)
+    if n % 2 == 1:
+        return ""
+    s = list(s)
+    for i in range(n // 2):
+        s[i], s[n - i - 1] = s[n - i - 1], s[i]
+    return "".join(s)
 
-    # Loop through each floor from 1 to 100
-    for floor in range(1, 100):
-        # If we have already calculated the minimum time to reach this floor, skip it
-        if floor in min_time:
-            continue
+def get_maximum_beauty(s, b):
+    n = len(s)
+    if n % 2 == 1:
+        return 0
+    s = list(s)
+    for i in range(n // 2):
+        s[i], s[n - i - 1] = s[n - i - 1], s[i]
+    return sum(b)
 
-        # If we can reach this floor from the a-th floor of A, calculate the minimum time needed
-        if floor - a >= 0:
-            min_time[floor] = min_time[a] + x * (floor - a)
-
-        # If we can reach this floor from the b-th floor of B, calculate the minimum time needed
-        if b - floor >= 0:
-            min_time[floor] = min(min_time[floor], min_time[b] + x * (b - floor))
-
-        # If we can reach this floor from the a-th floor of A and the b-th floor of B, calculate the minimum time needed
-        if floor - a >= 0 and b - floor >= 0:
-            min_time[floor] = min(min_time[floor], min_time[a] + x * (floor - a) + min_time[b] + x * (b - floor))
-
-    # Return the minimum time needed to reach the b-th floor of B from the a-th floor of A
-    return min_time[b]
+if __name__ == '__main__':
+    n = int(input())
+    s = input()
+    b = list(map(int, input().split()))
+    print(get_maximum_beauty(s, b))
 

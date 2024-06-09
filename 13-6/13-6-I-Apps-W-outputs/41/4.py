@@ -1,26 +1,24 @@
 
-def solve(n, k, l, d):
-    # Initialize variables
-    x = 0
-    t = 0
-    p = [0] * (2 * k)
-    for i in range(1, 2 * k):
-        p[i] = p[i - 1] + 1
-    for i in range(1, k):
-        p[i] = p[i - 1] - 1
+def is_rated(participants):
+    # Check if at least one participant's rating has changed
+    if len(set([participant[0] for participant in participants])) < len(participants):
+        return "rated"
+    
+    # Check if the round was rated and a participant with lower rating took a better place in the standings than a participant with higher rating
+    for i in range(1, len(participants)):
+        if participants[i][0] < participants[i-1][0] and participants[i][1] > participants[i-1][1]:
+            return "rated"
+    
+    # If none of the above conditions are met, it's impossible to determine whether the round is rated or not
+    return "maybe"
 
-    # Check if Koa can reach the island
-    while x < n:
-        # Check if Koa can swim to the next meter
-        if d[x] + p[t % (2 * k)] <= l:
-            x += 1
-            t += 1
-        else:
-            t += 1
+def main():
+    n = int(input())
+    participants = []
+    for i in range(n):
+        participants.append(list(map(int, input().split())))
+    print(is_rated(participants))
 
-    # Return result
-    if x == n:
-        return "Yes"
-    else:
-        return "No"
+if __name__ == '__main__':
+    main()
 

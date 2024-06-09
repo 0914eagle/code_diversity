@@ -1,18 +1,21 @@
 
-def solve(D, G, *args):
-    p_list, c_list = [], []
-    for i in range(D):
-        p, c = args[i * 2], args[i * 2 + 1]
-        p_list.append(p)
-        c_list.append(c)
-    
-    total_score = 0
-    num_problems = 0
-    for i in range(D):
-        while p_list[i] > 0 and total_score + (100 * i + c_list[i]) <= G:
-            total_score += 100 * i + c_list[i]
-            p_list[i] -= 1
-            num_problems += 1
-    
-    return num_problems
+def get_sorted_boxes(box_heights):
+    # Sort the box heights in decreasing order
+    sorted_box_heights = sorted(box_heights, reverse=True)
+    # Get the two tower heights
+    tower_heights = sorted_box_heights[-2:]
+    # Get the three boxes in the first tower
+    first_tower = sorted_box_heights[:3]
+    # Get the three boxes in the second tower
+    second_tower = sorted_box_heights[3:]
+    return first_tower, second_tower
+
+def main():
+    box_heights = [12, 8, 2, 4, 10, 3, 25, 14]
+    first_tower, second_tower = get_sorted_boxes(box_heights)
+    print(first_tower)
+    print(second_tower)
+
+if __name__ == '__main__':
+    main()
 

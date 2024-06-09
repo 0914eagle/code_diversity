@@ -1,20 +1,38 @@
 
-def get_max_points(n, k, M, t):
-    # Sort the subtask times in non-decreasing order
-    t.sort()
-    # Initialize the maximum points to 0
-    max_points = 0
-    # Iterate over the subtask times
-    for i in range(k):
-        # Check if the current subtask time is less than or equal to the remaining time
-        if t[i] <= M:
-            # Update the maximum points
-            max_points += 1
-            # Subtract the current subtask time from the remaining time
-            M -= t[i]
-        else:
-            # If the current subtask time is greater than the remaining time, break the loop
-            break
-    # Return the maximum points
-    return max_points
+def count_arrays(n, m):
+    # Initialize a list to store the arrays
+    arrays = []
+    
+    # Loop through all possible values of the first element
+    for i in range(1, m + 1):
+        # Add the first element to the array
+        array = [i]
+        
+        # Loop through the remaining elements
+        for j in range(1, n):
+            # Find the next element that is not equal to any of the previous elements
+            element = 1
+            while element in array:
+                element += 1
+            if element > m:
+                break
+            
+            # Add the element to the array
+            array.append(element)
+            
+            # Check if the array is strictly ascending before the i-th element and strictly descending after it
+            if array[j] < array[j - 1] and array[j] > array[j + 1]:
+                # Add the array to the list of arrays
+                arrays.append(array)
+                break
+    
+    # Return the number of arrays modulo 998244353
+    return len(arrays) % 998244353
+
+def main():
+    n, m = map(int, input().split())
+    print(count_arrays(n, m))
+
+if __name__ == '__main__':
+    main()
 

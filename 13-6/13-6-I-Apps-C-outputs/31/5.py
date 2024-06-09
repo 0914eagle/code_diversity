@@ -1,20 +1,27 @@
 
-def solve(balls):
-    # Initialize the minimum number of operations to 0
-    min_operations = 0
+import math
 
-    # Sort the balls by their values in ascending order
-    sorted_balls = sorted(balls, key=lambda x: x[1])
+def f1(n, t):
+    # Calculate the number of ways to choose the values of s_i
+    num_ways = 1
+    for i in range(n):
+        num_ways *= math.factorial(n - i)
+    
+    # Return the result modulo 10^9 + 7
+    return num_ways % (10**9 + 7)
 
-    # Iterate through the sorted balls
-    for i in range(len(sorted_balls)):
-        # Check if the current ball is white and the next ball is also white
-        if sorted_balls[i][0] == "W" and i + 1 < len(sorted_balls) and sorted_balls[i + 1][0] == "W":
-            # Swap the current white ball with the next white ball
-            sorted_balls[i], sorted_balls[i + 1] = sorted_balls[i + 1], sorted_balls[i]
-            # Increment the minimum number of operations
-            min_operations += 1
+def f2(n, t):
+    # Calculate the number of ways to choose the values of s_i
+    num_ways = 1
+    for i in range(n):
+        num_ways *= math.factorial(n - i)
+    
+    # Return the result modulo 10^9 + 7
+    return num_ways % (10**9 + 7)
 
-    # Return the minimum number of operations required to achieve the objective
-    return min_operations
+if __name__ == '__main__':
+    n = int(input())
+    t = list(map(int, input().split()))
+    print(f1(n, t))
+    print(f2(n, t))
 

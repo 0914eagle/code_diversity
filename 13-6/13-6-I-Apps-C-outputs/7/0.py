@@ -1,37 +1,76 @@
 
-def solve(n, a):
-    # Initialize the maximum number of boxes in a pile as 0
-    max_boxes = 0
-    # Initialize the number of distinct piles as 0
-    num_piles = 0
+import sys
+import itertools
+
+def get_input():
+    n, k = map(int, input().split())
+    courses = []
+    for _ in range(n):
+        name, diff = input().split()
+        courses.append((name, int(diff)))
+    return n, k, courses
+
+def f1(n, k, courses):
+    # create a graph with courses as nodes and edges between courses with the same name but different levels
+    graph = [[] for _ in range(n)]
+    for i, (name, _) in enumerate(courses):
+        for j, (name2, _) in enumerate(courses):
+            if name == name2 and i != j:
+                graph[i].append(j)
     
-    # Iterate over all possible combinations of 3 indices
+    # find the shortest path in the graph with at most k nodes
+    visited = [False] * n
+    queue = [(0, 0, [])]
+    while queue:
+        dist, node, path = heapq.heappop(queue)
+        if len(path) == k:
+            return dist
+        visited[node] = True
+        for neighbor in graph[node]:
+            if not visited[neighbor]:
+                heapq.heappush(queue, (dist + courses[neighbor][1], neighbor, path + [neighbor]))
+    
+    return -1
+
+def f2(n, k, courses):
+    # create a graph with courses as nodes and edges between courses with the same name but different levels
+    graph = [[] for _ in range(n)]
+    for i, (name, _) in enumerate(courses):
+        for j, (name2, _) in enumerate(courses):
+            if name == name2 and i != j:
+                graph[i].append(j)
+    
+    # find the minimum spanning tree in the graph
+    parent = [-1] * n
+    rank = [0] * n
     for i in range(n):
-        for j in range(i+1, n):
-            for k in range(j+1, n):
-                # Check if a[i] divides a[j] and a[k]
-                if a[i] % a[j] == 0 and a[i] % a[k] == 0:
-                    # Increment the number of boxes in the pile
-                    boxes = 1
-                    # Check if a[i] is a factor of a[j]
-                    if a[j] % a[i] == 0:
-                        # Increment the number of boxes in the pile
-                        boxes += 1
-                    # Check if a[i] is a factor of a[k]
-                    if a[k] % a[i] == 0:
-                        # Increment the number of boxes in the pile
-                        boxes += 1
-                    # Check if the number of boxes in the pile is greater than the maximum number of boxes in a pile
-                    if boxes > max_boxes:
-                        # Update the maximum number of boxes in a pile
-                        max_boxes = boxes
-                        # Reset the number of distinct piles
-                        num_piles = 0
-                    # Check if the number of boxes in the pile is equal to the maximum number of boxes in a pile
-                    elif boxes == max_boxes:
-                        # Increment the number of distinct piles
-                        num_piles += 1
+        if parent[i] == -1:
+            dfs(i, -1, graph, parent, rank)
     
-    # Return the number of distinct piles modulo 10^9 + 7
-    return num_piles % 1000000007
+    # find the shortest path in the minimum spanning tree with at most k nodes
+    visited = [False] * n
+    queue = [(0, 0, [])]
+    while queue:
+        dist, node, path = heapq.heappop(queue)
+        if len(path) == k:
+            return dist
+        visited[node] = True
+        for neighbor in graph[node]:
+            if not visited[neighbor] and parent[neighbor] == node:
+                heapq.heappush(queue, (dist + courses[neighbor][1], neighbor, path + [neighbor]))
+    
+    return -1
+
+def dfs(node, parent, graph, parent_list, rank_list):
+    parent_list[node] = parent
+    rank_list[node] = 0
+    for neighbor in graph[node]:
+        if parent_list[neighbor] == -1:
+            dfs(neighbor, node, graph, parent_list, rank_list)
+            rank_list[node] = max(rank_list[node], rank_list[neighbor] + 1)
+
+if __name__ == '__main__':
+    n, k, courses = get_input()
+    print(f1(n, k, courses))
+    print(f2(n, k, courses))
 

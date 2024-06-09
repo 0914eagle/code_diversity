@@ -1,27 +1,34 @@
 
-def solve(s, k):
-    # Initialize variables
-    n = len(s)
-    count = 0
-    i = 0
-    j = 0
+def get_remainder(n, x, y, number):
+    # Initialize the minimum number of operations to perform
+    min_operations = 0
     
-    # Loop through the string
-    while i < n and j < k:
-        # If the current character is not 'R', 'G', or 'B', increase the count
-        if s[i] not in ["R", "G", "B"]:
-            count += 1
-        # If the current character is 'R', 'G', or 'B' and the substring is not a substring of "RGBRGBRGB...", increase the count
-        elif s[i] not in ["R", "G", "B"]:
-            count += 1
-        # If the current character is 'R', 'G', or 'B' and the substring is a substring of "RGBRGBRGB...", increase the count
-        elif s[i] in ["R", "G", "B"]:
-            count += 1
-        
-        # Increase the indices
-        i += 1
-        j += 1
+    # Initialize the current number
+    current_number = number
     
-    # Return the count
-    return count
+    # Iterate over the digits of the number
+    for i in range(n):
+        # Check if the current digit is 0
+        if current_number[i] == "0":
+            # Increment the minimum number of operations
+            min_operations += 1
+            # Set the current digit to 1
+            current_number = current_number[:i] + "1" + current_number[i+1:]
+    
+    # Return the minimum number of operations
+    return min_operations
+
+def main():
+    # Read the input
+    n, x, y = map(int, input().split())
+    number = input()
+    
+    # Get the remainder
+    remainder = get_remainder(n, x, y, number)
+    
+    # Print the result
+    print(remainder)
+
+if __name__ == '__main__':
+    main()
 

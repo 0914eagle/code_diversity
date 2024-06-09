@@ -1,42 +1,63 @@
 
-def mad(grid, a, b):
-    # Initialize empty list to store densities
-    densities = []
+import sys
 
-    # Loop through all possible rectangles
-    for i in range(a, b + 1):
-        for j in range(a, b + 1):
-            # Calculate density of statisticians in current rectangle
-            density = calculate_density(grid, i, j)
-            densities.append(density)
+def f1(R, C, maze):
+    # Initialize variables
+    joe_row, joe_col = 0, 0
+    fire_row, fire_col = 0, 0
+    time = 0
+    visited = set()
+    queue = [(0, 0)]
 
-    # Return median of densities
-    return median(densities)
+    # Find Joe's position in the maze
+    for i in range(R):
+        for j in range(C):
+            if maze[i][j] == 'J':
+                joe_row, joe_col = i, j
+                break
 
-def calculate_density(grid, i, j):
-    # Initialize sum of statisticians in current rectangle
-    sum = 0
+    # Breadth-first search to find the shortest path to the edge of the maze
+    while queue:
+        row, col = queue.pop(0)
+        visited.add((row, col))
+        if (row, col) in [(0, 0), (R-1, 0), (0, C-1), (R-1, C-1)]:
+            return time
+        for r, c in [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]:
+            if 0 <= r < R and 0 <= c < C and maze[r][c] != '#' and (r, c) not in visited:
+                queue.append((r, c))
+                time += 1
+    return -1
 
-    # Loop through all squares in current rectangle
-    for x in range(i):
-        for y in range(j):
-            # Add number of statisticians in current square to sum
-            sum += grid[x][y]
+def f2(R, C, maze):
+    # Initialize variables
+    joe_row, joe_col = 0, 0
+    fire_row, fire_col = 0, 0
+    time = 0
+    visited = set()
+    queue = [(0, 0)]
 
-    # Return density of statisticians in current rectangle
-    return sum / (i * j)
+    # Find Joe's position in the maze
+    for i in range(R):
+        for j in range(C):
+            if maze[i][j] == 'J':
+                joe_row, joe_col = i, j
+                break
 
-def median(my_list):
-    # Sort list
-    my_list.sort()
+    # Breadth-first search to find the shortest path to the edge of the maze
+    while queue:
+        row, col = queue.pop(0)
+        visited.add((row, col))
+        if (row, col) in [(0, 0), (R-1, 0), (0, C-1), (R-1, C-1)]:
+            return time
+        for r, c in [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]:
+            if 0 <= r < R and 0 <= c < C and maze[r][c] != '#' and (r, c) not in visited:
+                queue.append((r, c))
+                time += 1
+    return -1
 
-    # Check if list has odd or even number of elements
-    if len(my_list) % 2 == 0:
-        # If even, return mean of two middle elements
-        mid = len(my_list) // 2
-        return (my_list[mid] + my_list[mid - 1]) / 2
-    else:
-        # If odd, return middle element
-        mid = len(my_list) // 2
-        return my_list[mid]
+if __name__ == '__main__':
+    R, C = map(int, input().split())
+    maze = [input() for _ in range(R)]
+    print(f1(R, C, maze))
+    print(f2(R, C, maze))
 

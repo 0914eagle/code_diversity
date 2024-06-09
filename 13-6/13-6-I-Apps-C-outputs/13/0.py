@@ -1,26 +1,18 @@
 
-def longest_repeated_substring(input_string):
-    # Initialize variables
-    longest_substring = ""
-    current_substring = ""
-    substring_start_index = 0
-    substring_end_index = 0
+def get_entirely_unsorted_sequences(arr):
+    n = len(arr)
+    count = 0
+    for i in range(n):
+        for j in range(i+1, n):
+            if arr[i] > arr[j]:
+                count += 1
+    return count
 
-    # Iterate through the input string
-    for i in range(len(input_string)):
-        # If the current character is already in the current substring, update the substring end index
-        if input_string[i] in current_substring:
-            substring_end_index = i
-        # If the current substring is longer than the longest substring, update the longest substring
-        if len(current_substring) > len(longest_substring):
-            longest_substring = current_substring
-        # Add the current character to the current substring
-        current_substring += input_string[i]
+def main():
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(get_entirely_unsorted_sequences(arr) % (10**9 + 9))
 
-    # If the current substring is longer than the longest substring, update the longest substring
-    if len(current_substring) > len(longest_substring):
-        longest_substring = current_substring
-
-    # Return the longest substring
-    return longest_substring
+if __name__ == '__main__':
+    main()
 

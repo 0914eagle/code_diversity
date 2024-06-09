@@ -1,14 +1,28 @@
 
-def solve(p):
-    n = len(p)
-    m = 0
-    swaps = []
-    for i in range(n):
-        for j in range(i+1, n):
-            if abs(i-j) >= n//2:
-                swaps.append([i, j])
-                m += 1
-                if m > 5*n:
-                    return -1
-    return [m, swaps]
+def solve_query_1(x, S):
+    S.append(x)
+    S.sort()
+    return S
+
+def solve_query_2(S):
+    if len(S) == 0:
+        return 0
+    else:
+        max_val = max(S)
+        mean = sum(S) / len(S)
+        return max_val - mean
+
+def main():
+    Q = int(input())
+    S = []
+    for i in range(Q):
+        query = input().split()
+        if query[0] == "1":
+            x = int(query[1])
+            S = solve_query_1(x, S)
+        else:
+            print(solve_query_2(S))
+
+if __name__ == '__main__':
+    main()
 

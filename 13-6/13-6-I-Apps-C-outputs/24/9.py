@@ -1,39 +1,24 @@
 
-def solve(sequence):
-    # Find the maximum element in the sequence
-    max_element = max(sequence)
+def get_stamp_size(mark):
+    stamp_size = 1
+    for i in range(len(mark)):
+        if mark[i] == '#':
+            stamp_size += 1
+    return stamp_size
 
-    # Initialize the number of operations to 0
-    operations = 0
+def get_min_nubs(mark):
+    stamp_size = get_stamp_size(mark)
+    return stamp_size * 2 - 1
 
-    # While the length of the sequence is greater than 1
-    while len(sequence) > 1:
-        # Find the index of the maximum element in the sequence
-        max_index = sequence.index(max_element)
+def main():
+    while True:
+        try:
+            n, m = map(int, input().split())
+            mark = [input() for _ in range(n)]
+            print(get_min_nubs(mark))
+        except EOFError:
+            break
 
-        # If the maximum element is at the end of the sequence
-        if max_index == len(sequence) - 1:
-            # Delete the maximum element
-            sequence.pop()
-        # If the maximum element is at the beginning of the sequence
-        elif max_index == 0:
-            # Delete the maximum element
-            sequence.pop(0)
-        # If the maximum element is in the middle of the sequence
-        else:
-            # Find the sum of the two elements adjacent to the maximum element
-            sum = sequence[max_index - 1] + sequence[max_index + 1]
-
-            # Replace the maximum element with the sum
-            sequence[max_index] = sum
-
-            # Delete the two elements adjacent to the maximum element
-            sequence.pop(max_index - 1)
-            sequence.pop(max_index - 1)
-
-        # Increment the number of operations
-        operations += 1
-
-    # Return the maximum possible value of the final element and the number of operations
-    return max_element, operations
+if __name__ == '__main__':
+    main()
 

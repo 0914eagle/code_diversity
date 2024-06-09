@@ -1,29 +1,24 @@
 
-def get_max_simultaneously_on_lights(n, s, a, b):
-    # Initialize a list to store the states of the lights
-    lights = [1 if s[i] == "1" else 0 for i in range(n)]
-    
-    # Initialize a variable to store the maximum number of simultaneously on lights
-    max_on_lights = 0
-    
-    # Iterate through each light
-    for i in range(n):
-        # Calculate the period of the light
-        period = a[i]
-        
-        # Calculate the number of times the light will toggle
-        num_toggles = (b[i] - 1) // period + 1
-        
-        # Iterate through each toggle of the light
-        for j in range(num_toggles):
-            # Calculate the time of the toggle
-            toggle_time = b[i] + j * period
-            
-            # Toggle the light
-            lights[i] ^= 1
-            
-            # Update the maximum number of simultaneously on lights
-            max_on_lights = max(max_on_lights, sum(lights))
-    
-    return max_on_lights
+def f1(n, m, q):
+    # f1 should return a list of lists, where the inner list contains the cost of sending a crystal from city s to city t on each day
+    return [[0] * q for _ in range(n)]
+
+def f2(n, m, q):
+    # f2 should return a list of lists, where the inner list contains the cost of sending a crystal from city s to city t on each day
+    return [[0] * q for _ in range(n)]
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    q = int(input())
+    graph = [[] for _ in range(n)]
+    for _ in range(m):
+        a, b, w = map(int, input().split())
+        graph[a - 1].append((b - 1, w))
+        graph[b - 1].append((a - 1, w))
+    costs = f1(n, m, q)
+    for i in range(q):
+        s, t = map(int, input().split())
+        costs[s - 1][i] = f2(s - 1, t - 1, graph)
+    for cost in costs:
+        print(*cost)
 

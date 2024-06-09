@@ -1,10 +1,19 @@
 
-def is_coffee_like(s):
-    if len(s) != 6:
-        return False
-    if s[2] != s[3]:
-        return False
-    if s[4] != s[5]:
-        return False
-    return True
+def solve(p):
+    n = len(p)
+    a = [0] * n
+    for i in range(n):
+        a[i] = p.index(i)
+    return a
+
+def main():
+    q = int(input())
+    for i in range(q):
+        n = int(input())
+        p = list(map(int, input().split()))
+        a = solve(p)
+        print(*a)
+
+if __name__ == '__main__':
+    main()
 

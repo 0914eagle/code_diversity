@@ -1,32 +1,29 @@
 
-def count_ways(n, m, p):
-    # Initialize a 2D array to store the number of obstacles in each subgrid
-    obstacles = [[0] * (m // 2) for _ in range(n // 2)]
+def f(n, a):
+    # Initialize a set to store the distinct values of f
+    distinct_values = set()
+    
+    # Iterate over the sequence
+    for i in range(n):
+        for j in range(i+1, n+1):
+            # Calculate the value of f for the current subsequence
+            value = gcd(a[i:j])
+            
+            # Add the value to the set of distinct values
+            distinct_values.add(value)
+    
+    # Return the number of distinct values
+    return len(distinct_values)
 
-    # Initialize a variable to store the number of ways to place obstacles
-    ways = 0
+def gcd(numbers):
+    # Calculate the greatest common divisor of a list of numbers
+    gcd = 1
+    for num in numbers:
+        gcd = gcd(gcd, num)
+    return gcd
 
-    # Loop through each subgrid in the grid
-    for i in range(n // 2):
-        for j in range(m // 2):
-            # If the subgrid contains no obstacles, we can place an obstacle in this subgrid
-            if obstacles[i][j] == 0:
-                # Increment the number of ways to place obstacles
-                ways += 1
-                # Place an obstacle in this subgrid
-                obstacles[i][j] = 1
-                # If the subgrid is on the edge of the grid, we can place obstacles in the adjacent subgrids as well
-                if i == 0 or j == 0 or i == n // 2 - 1 or j == m // 2 - 1:
-                    # Loop through the adjacent subgrids
-                    for k in range(i, min(i + 2, n // 2)):
-                        for l in range(j, min(j + 2, m // 2)):
-                            # If the subgrid contains no obstacles, we can place an obstacle in this subgrid
-                            if obstacles[k][l] == 0:
-                                # Increment the number of ways to place obstacles
-                                ways += 1
-                                # Place an obstacle in this subgrid
-                                obstacles[k][l] = 1
-
-    # Return the number of ways to place obstacles modulo p
-    return ways % p
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(f(n, a))
 

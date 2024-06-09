@@ -1,23 +1,61 @@
 
-def solve(n, k, p):
-    # Calculate the number of permutations of length n
-    num_permutations = 1
-    for i in range(n):
-        num_permutations *= n - i
-    
-    # Initialize the number of permutations with runs of length k or less
-    num_permutations_with_runs = 0
-    
-    # Iterate through all possible runs of length k or less
-    for i in range(k + 1):
-        # Calculate the number of permutations with exactly i runs of length k or less
-        num_permutations_with_i_runs = 1
-        for j in range(i):
-            num_permutations_with_i_runs *= n - j
-        
-        # Add the number of permutations with exactly i runs of length k or less to the total
-        num_permutations_with_runs += num_permutations_with_i_runs
-    
-    # Return the number of permutations with runs of length k or less, modulo p
-    return num_permutations_with_runs % p
+def get_input():
+    N, M = map(int, input().split())
+    assert 2 <= N <= 50 and 2 <= M <= 50
+    food_bowls = []
+    for _ in range(N):
+        food_bowls.append(list(map(int, input().split())))
+    return N, M, food_bowls
+
+def f1(N, M, food_bowls):
+    # Initialize the waiting times for each dog
+    waiting_times = [0] * N
+
+    # Sort the food bowls by the amount of time each dog will spend eating
+    sorted_food_bowls = sorted(food_bowls, key=lambda x: x[0])
+
+    # Loop through each dog and assign them to a food bowl
+    for i in range(N):
+        waiting_times[i] += sorted_food_bowls[i][0]
+        sorted_food_bowls[i][0] = 0
+
+    # Loop through each dog and assign them to the next available food bowl
+    for i in range(N):
+        for j in range(M):
+            if sorted_food_bowls[i][j] > 0:
+                waiting_times[i] += sorted_food_bowls[i][j]
+                sorted_food_bowls[i][j] = 0
+                break
+
+    return waiting_times
+
+def f2(N, M, food_bowls):
+    # Initialize the waiting times for each dog
+    waiting_times = [0] * N
+
+    # Sort the food bowls by the amount of time each dog will spend eating
+    sorted_food_bowls = sorted(food_bowls, key=lambda x: x[0])
+
+    # Loop through each dog and assign them to a food bowl
+    for i in range(N):
+        waiting_times[i] += sorted_food_bowls[i][0]
+        sorted_food_bowls[i][0] = 0
+
+    # Loop through each dog and assign them to the next available food bowl
+    for i in range(N):
+        for j in range(M):
+            if sorted_food_bowls[i][j] > 0:
+                waiting_times[i] += sorted_food_bowls[i][j]
+                sorted_food_bowls[i][j] = 0
+                break
+
+    return waiting_times
+
+def main():
+    N, M, food_bowls = get_input()
+    waiting_times = f1(N, M, food_bowls)
+    print(sum(waiting_times))
+
+if __name__ == '__main__':
+    main()
 

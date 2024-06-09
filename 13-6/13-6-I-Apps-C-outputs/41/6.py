@@ -1,19 +1,30 @@
 
-def solve(N, C, a, b, Q, changes):
-    # Initialize the number of purchases as 0
-    num_purchases = 0
-    # Loop through each change in requirements
-    for change in changes:
-        # Extract the client, colored paintings, and black and white paintings from the change
-        client, colored_paintings, black_and_white_paintings = change
-        # If the client wants at least one colored painting
-        if colored_paintings > 0:
-            # Increment the number of purchases
-            num_purchases += 1
-        # If the client wants at least one black and white painting and the number of purchases is less than the minimum required
-        if black_and_white_paintings > 0 and num_purchases < C:
-            # Increment the number of purchases
-            num_purchases += 1
-    # Return the number of purchases modulo 10007
-    return num_purchases % 10007
+def get_lawn_widths(n, s_list, g_list):
+    total_lawn_width = 0
+    s_prime_list = []
+    for i in range(n):
+        s_prime = s_list[i] + g_list[i]
+        g_prime = g_list[i] - s_list[i]
+        total_lawn_width += g_prime
+        s_prime_list.append(s_prime)
+    return total_lawn_width, s_prime_list
+
+def get_solution(n, s_list, g_list):
+    total_lawn_width, s_prime_list = get_lawn_widths(n, s_list, g_list)
+    for i in range(n-1):
+        if abs(s_prime_list[i] + 1 - s_prime_list[i+1]) > 1:
+            return -1
+    return total_lawn_width, s_prime_list
+
+if __name__ == '__main__':
+    n = int(input())
+    s_list = []
+    g_list = []
+    for i in range(n):
+        s, g = map(int, input().split())
+        s_list.append(s)
+        g_list.append(g)
+    total_lawn_width, s_prime_list = get_solution(n, s_list, g_list)
+    print(total_lawn_width)
+    print(*s_prime_list)
 

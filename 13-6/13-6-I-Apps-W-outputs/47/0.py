@@ -1,13 +1,19 @@
 
-def solve(n, m):
-    # Calculate the probability of Alex successfully performing the trick
-    probability = 0
-    
-    # Iterate over each possible combination of cards
-    for i in range(1, n+1):
-        for j in range(1, m+1):
-            # Calculate the probability of Alex taking i cards with value j from m decks
-            probability += (i * j * (m-1)**(n-i)) / (n * m**n)
-    
-    return probability
+def solve(a):
+    n = len(a)
+    for i in range(n):
+        for j in range(i+1, n):
+            if a[i] + a[j] % 2 == 0:
+                return [i+1, j+1]
+    return -1
+
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        a = list(map(int, input().split()))
+        print(solve(a))
+
+if __name__ == '__main__':
+    main()
 

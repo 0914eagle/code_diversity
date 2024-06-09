@@ -1,15 +1,33 @@
 
-def solve(n, m):
-    # Initialize the array with all elements as 0
-    arr = [0] * n
-    # Set the first element as m
-    arr[0] = m
-    # Iterate from the second element to the last element
-    for i in range(1, n):
-        # Calculate the difference between the current element and the previous element
-        diff = m - arr[i-1]
-        # If the difference is positive, set the current element as the difference, otherwise set it as 0
-        arr[i] = diff if diff > 0 else 0
-    # Return the sum of absolute differences between adjacent elements
-    return sum(map(abs, [arr[i+1] - arr[i] for i in range(n-1)]))
+def is_shiritori(words):
+    # Initialize a set to store the words announced
+    announced_words = set()
+    
+    # Iterate through the words
+    for i in range(len(words)):
+        # Check if the word has been announced before
+        if words[i] in announced_words:
+            return False
+        # Add the word to the set of announced words
+        announced_words.add(words[i])
+    
+    return True
+
+def main():
+    # Read the number of words from stdin
+    num_words = int(input())
+    
+    # Read the words from stdin
+    words = []
+    for i in range(num_words):
+        words.append(input())
+    
+    # Check if the rules of shiritori were observed
+    if is_shiritori(words):
+        print("Yes")
+    else:
+        print("No")
+
+if __name__ == '__main__':
+    main()
 

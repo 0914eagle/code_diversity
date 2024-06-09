@@ -1,28 +1,39 @@
 
-def largest_sum_of_digits(n):
-    # Initialize the maximum sum of digits as 0
-    max_sum = 0
-    # Loop through all possible values of a
-    for a in range(n+1):
-        # Find the corresponding value of b
-        b = n - a
-        # Calculate the sum of digits of a and b
-        sum_of_digits = sum_of_digits_in_base_10(a) + sum_of_digits_in_base_10(b)
-        # Update the maximum sum of digits if necessary
-        if sum_of_digits > max_sum:
-            max_sum = sum_of_digits
-    # Return the maximum sum of digits
-    return max_sum
+def get_max_distance(N, T, s, a):
+    # Calculate the minimum radians needed to go from angle a to b
+    def dist(a, b):
+        return min(abs(a - b), abs(a - b + 2 * math.pi), abs(a - b - 2 * math.pi))
 
-def sum_of_digits_in_base_10(n):
-    # Initialize the sum of digits as 0
-    sum_of_digits = 0
-    # Loop through the digits of n
-    while n > 0:
-        # Add the last digit of n to the sum of digits
-        sum_of_digits += n % 10
-        # Divide n by 10 to get the next digit
-        n //= 10
-    # Return the sum of digits
-    return sum_of_digits
+    # Initialize the maximum distance
+    max_dist = 0
+
+    # Iterate over each star
+    for i in range(N):
+        # Calculate the distance that the spaceship can travel from star i
+        dist_i = max(0, T[i] - s[i] * dist(a[i], math.pi / 2))
+
+        # Update the maximum distance
+        max_dist += dist_i
+
+    return max_dist
+
+def main():
+    # Read the input
+    N = int(input())
+    T = []
+    s = []
+    a = []
+    for i in range(N):
+        T.append(float(input()))
+        s.append(float(input()))
+        a.append(float(input()))
+
+    # Calculate the maximum distance
+    max_dist = get_max_distance(N, T, s, a)
+
+    # Print the result
+    print(max_dist)
+
+if __name__ == '__main__':
+    main()
 

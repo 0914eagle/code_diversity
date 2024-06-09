@@ -1,23 +1,36 @@
 
-def max_profit(producer_companies, consumer_companies):
-    # Initialize variables
-    max_profit = 0
-    chosen_producer, chosen_consumer = None, None
+def get_first_moves(numbers):
+    # Initialize a set to store the first moves
+    first_moves = set()
+    
+    # Iterate over the numbers
+    for i in range(len(numbers)):
+        # Get the current number and its adjacent numbers
+        current_number = numbers[i]
+        adjacent_numbers = [numbers[(i-1)%len(numbers)], numbers[(i+1)%len(numbers)]]
+        
+        # Add the current number to the set of first moves if it is not already present
+        if current_number not in first_moves:
+            first_moves.add(current_number)
+        
+        # Add the adjacent numbers to the set of first moves if they are not already present
+        for adjacent_number in adjacent_numbers:
+            if adjacent_number not in first_moves:
+                first_moves.add(adjacent_number)
+    
+    return len(first_moves)
 
-    # Iterate over each producer company
-    for producer in producer_companies:
-        # Iterate over each consumer company
-        for consumer in consumer_companies:
-            # Calculate the profit for this pair of producer and consumer companies
-            profit = producer.price - consumer.price
+def main():
+    # Read the input
+    N = int(input())
+    numbers = [int(x) for x in input().split()]
+    
+    # Call the function to get the number of first moves
+    result = get_first_moves(numbers)
+    
+    # Print the result
+    print(result)
 
-            # Check if the profit is greater than the current maximum profit
-            if profit > max_profit:
-                # If so, update the maximum profit and the chosen producer and consumer companies
-                max_profit = profit
-                chosen_producer = producer
-                chosen_consumer = consumer
-
-    # Return the maximum profit and the chosen producer and consumer companies
-    return max_profit, chosen_producer, chosen_consumer
+if __name__ == '__main__':
+    main()
 

@@ -1,18 +1,20 @@
 
-def solve(n, cities):
-    # Calculate the distance between each pair of cities
-    distances = []
-    for i in range(n):
-        for j in range(i+1, n):
-            distance = abs(cities[i] - cities[j])
-            distances.append(distance)
+def get_fruits(a, b, c):
+    # Calculate the maximum total number of lemons, apples, and pears that can be used to make the compote
+    total_lemons = a // 1
+    total_apples = b // 2
+    total_pears = c // 4
     
-    # Find the minimum distance and the number of pairs with that distance
-    min_distance = min(distances)
-    num_pairs = 0
-    for distance in distances:
-        if distance == min_distance:
-            num_pairs += 1
+    # Return the maximum total number of fruits that can be used to make the compote
+    return total_lemons + total_apples + total_pears
+
+def main():
+    # Read the input data from stdin
+    a, b, c = map(int, input().split())
     
-    return min_distance, num_pairs
+    # Call the get_fruits function and print the result
+    print(get_fruits(a, b, c))
+
+if __name__ == '__main__':
+    main()
 

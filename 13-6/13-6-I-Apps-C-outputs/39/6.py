@@ -1,32 +1,42 @@
 
-def solve(flights, additional_flights):
-    # Initialize a dictionary to store the cost of each flight
-    flight_costs = {}
-    for flight in flights:
-        cost = flight[2]
-        flight_costs[(flight[0], flight[1])] = cost
-        flight_costs[(flight[1], flight[0])] = cost
+def get_statue_position(statue_list, island_index):
+    return statue_list[island_index - 1]
 
-    # Add the additional flights to the dictionary
-    for flight in additional_flights:
-        cost = flight[2]
-        flight_costs[(flight[0], flight[1])] = cost
-        flight_costs[(flight[1], flight[0])] = cost
+def get_empty_island_index(statue_list):
+    return statue_list.index(0)
 
-    # Find the shortest path using Dijkstra's algorithm
-    from collections import deque
-    import heapq
-    queue = deque([(1, 0)])
-    visited = set()
-    while queue:
-        city, cost = heapq.heappop(queue)
-        if city == 1:
-            return cost
-        if city in visited:
-            continue
-        visited.add(city)
-        for neighbor, weight in flight_costs.items():
-            if neighbor[0] == city:
-                heapq.heappush(queue, (neighbor[1], cost + weight))
-    return -1
+def can_move_statue(statue_list, island_index):
+    empty_island_index = get_empty_island_index(statue_list)
+    if empty_island_index == island_index:
+        return False
+    if empty_island_index == island_index - 1:
+        return True
+    if empty_island_index == island_index + 1:
+        return True
+    return False
+
+def move_statue(statue_list, island_index):
+    empty_island_index = get_empty_island_index(statue_list)
+    statue_list[empty_island_index] = get_statue_position(statue_list, island_index)
+    statue_list[island_index - 1] = 0
+    return statue_list
+
+def is_desired_order(statue_list, desired_order):
+    return statue_list == desired_order
+
+def solve_puzzle(statue_list, desired_order):
+    if is_desired_order(statue_list, desired_order):
+        return "YES"
+    for island_index in range(1, len(statue_list) + 1):
+        if can_move_statue(statue_list, island_index):
+            statue_list = move_statue(statue_list, island_index)
+            if is_desired_order(statue_list, desired_order):
+                return "YES"
+    return "NO"
+
+if __name__ == '__main__':
+    n = int(input())
+    statue_list = list(map(int, input().split()))
+    desired_order = list(map(int, input().split()))
+    print(solve_puzzle(statue_list, desired_order))
 

@@ -1,22 +1,33 @@
 
-def solve(N, V, supervisors):
-    # Initialize a set to store the types of jokes seen
-    jokes_seen = set()
-    # Initialize a set to store the types of jokes told by the CEO
-    ceo_jokes = set(V[0])
-    # Initialize a dictionary to store the direct supervisors of each employee
-    direct_supervisors = {i: supervisors[i-1] for i in range(1, N+1)}
-    # Initialize a dictionary to store the types of jokes told by each employee
-    employee_jokes = {i: set(V[i-1]) for i in range(1, N+1)}
+def f1(N):
+    # Initialize an empty stack
+    stack = []
+    
+    # Iterate through the input operations
+    for i in range(N):
+        # Read the operation type and stack labels
+        op, v, w = input().split()
+        v, w = int(v), int(w)
+        
+        # Perform the operation
+        if op == "a":
+            # Add a new stack with label v
+            stack.append(v)
+        elif op == "b":
+            # Remove the top element from stack v
+            stack[v].pop()
+        elif op == "c":
+            # Count the number of elements in common between stack v and w
+            count = 0
+            for elem in stack[v]:
+                if elem in stack[w]:
+                    count += 1
+            print(count)
+            
+def f2(...):
+    # Your code here
 
-    # Iterate through the employees in the company
-    for employee in range(1, N+1):
-        # If the employee is not the CEO, check if their direct supervisor is invited
-        if employee != 1 and direct_supervisors[employee] not in jokes_seen:
-            continue
-        # If the employee is the CEO or their direct supervisor is invited, add their jokes to the set of jokes seen
-        jokes_seen.update(employee_jokes[employee])
-
-    # Return the number of different sets of jokes seen
-    return len(jokes_seen)
+if __name__ == '__main__':
+    N = int(input())
+    f1(N)
 

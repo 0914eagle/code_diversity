@@ -1,30 +1,24 @@
 
-def can_koa_get_to_the_island(n, k, l, d):
-    # Initialize variables
-    x = 0
-    t = 0
-    p = [0, 1]
+def is_rated(n, ratings):
+    # Check if at least one rating has changed
+    if len(set(ratings)) == 1:
+        return "unrated"
+    
+    # Check if the round was rated and a participant with lower rating took a better place in the standings than a participant with higher rating
+    for i in range(n-1):
+        if ratings[i] > ratings[i+1] and ratings[i] - ratings[i+1] > 100:
+            return "rated"
+    
+    # If none of the above conditions are met, it's impossible to determine whether the round is rated or not
+    return "maybe"
 
-    # Loop through each second
-    for second in range(n):
-        # Calculate the current depth at Koa's position
-        current_depth = d[x] + p[t % 2]
+def main():
+    n = int(input())
+    ratings = []
+    for i in range(n):
+        ratings.append(int(input()))
+    print(is_rated(n, ratings))
 
-        # Check if Koa can swim or not
-        if current_depth <= l:
-            # Koa can swim, so she moves forward one meter
-            x += 1
-        else:
-            # Koa can't swim, so she stays at the same position
-            pass
-
-        # Update the time and the array of depths
-        t += 1
-        p = [p[1], p[0]]
-
-    # Check if Koa reached the island
-    if x == n:
-        return "Yes"
-    else:
-        return "No"
+if __name__ == '__main__':
+    main()
 

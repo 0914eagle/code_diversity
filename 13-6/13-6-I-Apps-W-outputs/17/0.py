@@ -1,11 +1,24 @@
 
-def get_max_segments(arr):
-    n = len(arr)
-    segments = 0
-    for i in range(n):
-        if arr[i] != 0:
-            segments += 1
-        if i > 0 and arr[i] != arr[i-1]:
-            segments += 1
-    return segments
+def get_codecraft_winners(s):
+    i = (s // 50) % 475
+    winners = []
+    for _ in range(25):
+        i = (i * 96 + 42) % 475
+        winners.append(26 + i)
+    return winners
+
+def get_min_hacks(p, x, y):
+    codecraft_winners = get_codecraft_winners(x)
+    if p in codecraft_winners:
+        return 0
+    else:
+        hacks = 0
+        while x < y:
+            x += 100
+            hacks += 1
+        return hacks
+
+if __name__ == '__main__':
+    p, x, y = map(int, input().split())
+    print(get_min_hacks(p, x, y))
 

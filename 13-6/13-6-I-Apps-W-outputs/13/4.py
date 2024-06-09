@@ -1,35 +1,45 @@
 
-def is_possible(days, teams):
-    # Initialize the number of pizzas needed and the number of discounts and coupons used
-    num_pizzas_needed = sum(teams)
-    num_discounts_used = 0
-    num_coupons_used = 0
-
-    # Iterate through the days
-    for i in range(len(days)):
-        # If there are no teams on this day, skip this day
-        if days[i] == 0:
-            continue
-
-        # If the number of pizzas needed is even and there are enough teams on this day to use a discount, use a discount
-        if num_pizzas_needed % 2 == 0 and days[i] >= 2:
-            num_pizzas_needed -= 1
-            num_discounts_used += 1
-
-        # If the number of pizzas needed is odd and there are enough teams on this day to use a coupon, use a coupon
-        elif num_pizzas_needed % 2 == 1 and days[i] >= 1:
-            num_pizzas_needed -= 1
-            num_coupons_used += 1
-
-        # If the number of pizzas needed is odd and there are not enough teams on this day to use a coupon, buy one extra pizza
+def get_largest_rectangle(matrix):
+    # Initialize variables
+    max_area = 0
+    current_area = 0
+    top_row = 0
+    bottom_row = len(matrix) - 1
+    left_col = 0
+    right_col = len(matrix[0]) - 1
+    
+    # Loop through the matrix
+    while top_row <= bottom_row and left_col <= right_col:
+        # Check if the current cell is 1
+        if matrix[top_row][left_col] == "1":
+            # Update the current area
+            current_area += 1
         else:
-            num_pizzas_needed -= 1
+            # If the current cell is 0, update the maximum area
+            max_area = max(max_area, current_area)
+            current_area = 0
+        
+        # Update the top row and bottom row
+        top_row += 1
+        bottom_row -= 1
+        
+        # Update the left column and right column
+        left_col += 1
+        right_col -= 1
+    
+    # Return the maximum area
+    return max_area
 
-    # If all the pizzas needed have been ordered and there are no active coupons at the end of the day n, return "YES"
-    if num_pizzas_needed == 0 and num_coupons_used % 2 == 0:
-        return "YES"
+def main():
+    # Test the function with an example matrix
+    matrix = [
+      ["1","0","1","0","0"],
+      ["1","0","1","1","1"],
+      ["1","1","1","1","1"],
+      ["1","0","0","1","0"]
+    ]
+    print(get_largest_rectangle(matrix))
 
-    # Otherwise, return "NO"
-    else:
-        return "NO"
+if __name__ == '__main__':
+    main()
 

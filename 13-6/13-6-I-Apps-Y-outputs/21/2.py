@@ -1,36 +1,34 @@
 
-def get_maximum_sum(n, m):
-    # Initialize the array with all elements as 0
-    arr = [0] * n
+def is_shiritori_observed(words):
+    # Initialize a set to store the announced words
+    announced_words = set()
     
-    # Base case: if n is 1, then the only possible array is [m]
-    if n == 1:
-        return 0
+    # Iterate through the words
+    for i in range(len(words)):
+        # Check if the word is already announced
+        if words[i] in announced_words:
+            return False
+        # Add the word to the set of announced words
+        announced_words.add(words[i])
     
-    # Initialize the maximum sum to 0
-    max_sum = 0
-    
-    # Iterate over all possible values that the first element of the array can take
-    for i in range(m + 1):
-        # Recursively find the maximum sum for the remaining elements
-        remaining_sum = m - i
-        remaining_arr = get_maximum_sum(n - 1, remaining_sum)
-        
-        # Calculate the sum of absolute differences for the current array
-        current_sum = abs(i - remaining_arr[0])
-        
-        # Update the maximum sum if necessary
-        if current_sum > max_sum:
-            max_sum = current_sum
-    
-    return [max_sum] + remaining_arr
+    # If all words are unique, return True
+    return True
 
 def main():
-    t = int(input())
-    for _ in range(t):
-        n, m = map(int, input().split())
-        print(get_maximum_sum(n, m)[0])
+    # Read the number of words from stdin
+    num_words = int(input())
+    
+    # Read the words from stdin
+    words = []
+    for i in range(num_words):
+        words.append(input())
+    
+    # Check if the rules of shiritori were observed
+    if is_shiritori_observed(words):
+        print("Yes")
+    else:
+        print("No")
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
 

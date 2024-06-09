@@ -1,13 +1,50 @@
 
-def find_shortest_article_length(n, proofs):
-    # Initialize a dictionary to store the number of words for each theorem
-    theorem_words = {i: 0 for i in range(n)}
+def f1(s):
+    # Function to calculate the average value of L(C) for a given sequence S
+    # Initialize variables
+    n = len(s)
+    count = 0
+    sum = 0
+    
+    # Iterate over all possible sequences C represented by S
+    for i in range(1, n+1):
+        for j in range(n-i+1):
+            # Calculate the number of operations before Prof. Tuy stops for the current sequence C
+            k = i
+            while k <= n and s[k-1] == 'H':
+                k += 1
+            if k <= n:
+                count += 1
+                sum += k
+    
+    # Calculate the average value of L(C)
+    return sum / count
 
-    # Iterate over the proofs and update the number of words for each theorem
-    for proof in proofs:
-        length, dependencies = proof[0], proof[1:]
-        theorem_words[dependencies[0]] += length
+def f2(s):
+    # Function to solve the problem for a given sequence S
+    # Initialize variables
+    n = len(s)
+    count = 0
+    sum = 0
+    
+    # Iterate over all possible sequences C represented by S
+    for i in range(1, n+1):
+        for j in range(n-i+1):
+            # Calculate the number of operations before Prof. Tuy stops for the current sequence C
+            k = i
+            while k <= n and s[k-1] == 'H':
+                k += 1
+            if k <= n:
+                count += 1
+                sum += k
+    
+    # Calculate the average value of L(C)
+    avg = sum / count
+    
+    # Print the output
+    print(avg)
 
-    # Find the shortest length by finding the minimum number of words for Theorem 0
-    return theorem_words[0]
+if __name__ == '__main__':
+    s = input()
+    f2(s)
 

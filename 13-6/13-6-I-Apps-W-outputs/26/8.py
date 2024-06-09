@@ -1,17 +1,26 @@
 
-def get_max_vegetables(M, V, Di, Ai):
-    # Sort the lanes based on the day they become edible
-    lanes = sorted(zip(Di, Ai), key=lambda x: x[0])
-    
-    # Initialize variables to keep track of the number of vegetables collected and the current day
-    total_vegetables = 0
-    current_day = 1
-    
-    # Loop through each lane and collect vegetables if they are edible on the current day
-    for lane in lanes:
-        if lane[0] <= current_day:
-            total_vegetables += min(lane[1], V - (total_vegetables % V))
-            current_day += 1
-    
-    return total_vegetables
+def get_queue(n, records):
+    queue = []
+    for record in records:
+        queue.append(record[0])
+    return queue
+
+def restore_queue(queue):
+    n = len(queue)
+    for i in range(n):
+        if queue[i] == 0:
+            queue[i] = queue[(i-1)%n]
+    return queue
+
+def main():
+    n = int(input())
+    records = []
+    for i in range(n):
+        records.append(list(map(int, input().split())))
+    queue = get_queue(n, records)
+    restored_queue = restore_queue(queue)
+    print(*restored_queue)
+
+if __name__ == '__main__':
+    main()
 

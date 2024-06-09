@@ -1,17 +1,27 @@
 
-def get_scientific_points(cards):
-    points = 0
-    card_counts = {}
-    for card in cards:
-        if card not in card_counts:
-            card_counts[card] = 1
-        else:
-            card_counts[card] += 1
-    for card, count in card_counts.items():
-        points += count ** 2
-    sets = [(card_counts['T'], card_counts['C'], card_counts['G']), (card_counts['C'], card_counts['G'], card_counts['T']), (card_counts['G'], card_counts['T'], card_counts['C'])]
-    for set in sets:
-        if sum(set) == 3:
-            points += 7
-    return points
+def get_min_operations(s, t):
+    # Initialize variables
+    min_operations = 0
+    s_list = list(s)
+    t_list = list(t)
+
+    # Loop through both strings and check for differences
+    for i in range(len(s)):
+        if s_list[i] != t_list[i]:
+            min_operations += 1
+            s_list[i] = t_list[i]
+
+    # Return the minimum number of operations required
+    return min_operations
+
+def main():
+    # Read input from stdin
+    s = input()
+    t = input()
+
+    # Call the get_min_operations function and print the result
+    print(get_min_operations(s, t))
+
+if __name__ == '__main__':
+    main()
 

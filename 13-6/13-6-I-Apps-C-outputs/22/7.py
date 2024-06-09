@@ -1,35 +1,54 @@
 
-def get_optimal_flight_changes(n, flights):
-    # Initialize a graph with the given flights
-    graph = {i: set() for i in range(1, n + 1)}
-    for flight in flights:
-        graph[flight[0]].add(flight[1])
-        graph[flight[1]].add(flight[0])
+def get_certain_events(evidence, implications):
+    # Initialize a set to store the certain events
+    certain_events = set()
+    
+    # Iterate over the evidence
+    for event in evidence:
+        # Check if the event is directly known to have occurred
+        if event in implications:
+            # Add the event to the set of certain events
+            certain_events.add(event)
+    
+    # Return the set of certain events
+    return certain_events
 
-    # Find the flight with the maximum number of connections
-    max_connections = 0
-    flight_to_cancel = None
-    for flight in flights:
-        connections = len(graph[flight[0]]) + len(graph[flight[1]])
-        if connections > max_connections:
-            max_connections = connections
-            flight_to_cancel = flight
+def get_possible_events(implications, certain_events):
+    # Initialize a set to store the possible events
+    possible_events = set()
+    
+    # Iterate over the implications
+    for implication in implications:
+        # Check if the event on the left-hand side of the implication is known to have occurred
+        if implication[0] in certain_events:
+            # Add the event on the right-hand side of the implication to the set of possible events
+            possible_events.add(implication[1])
+    
+    # Return the set of possible events
+    return possible_events
 
-    # Find the city with the maximum number of connections
-    city_with_max_connections = 0
-    max_connections = 0
-    for city in range(1, n + 1):
-        connections = len(graph[city])
-        if connections > max_connections:
-            max_connections = connections
-            city_with_max_connections = city
+def get_events(implications, evidence):
+    # Get the set of certain events from the evidence
+    certain_events = get_certain_events(evidence, implications)
+    
+    # Get the set of possible events from the implications and the certain events
+    possible_events = get_possible_events(implications, certain_events)
+    
+    # Return the set of events that are both certain and possible
+    return certain_events.intersection(possible_events)
 
-    # Find the city that is not in the flight to cancel
-    city_to_add = 0
-    for city in range(1, n + 1):
-        if city not in flight_to_cancel and city != city_with_max_connections:
-            city_to_add = city
-            break
+def main():
+    # Read the input
+    num_events, num_implications, num_evidence = map(int, input().split())
+    implications = [tuple(map(int, input().split())) for _ in range(num_implications)]
+    evidence = set(map(int, input().split()))
+    
+    # Get the set of events that are both certain and possible
+    events = get_events(implications, evidence)
+    
+    # Print the events
+    print(*sorted(events), sep=' ')
 
-    return (max_connections - 1, flight_to_cancel[0], flight_to_cancel[1], city_to_add)
+if __name__ == '__main__':
+    main()
 

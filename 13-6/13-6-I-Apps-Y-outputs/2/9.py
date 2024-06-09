@@ -1,30 +1,16 @@
 
-def refill_fridge(n, m, s, d, current_bottles):
-    # Initialize the probability of all students getting a cold soda to 0
-    prob_cold_soda = 0
+def get_group(num):
+    if num <= 3:
+        return 1
+    elif num <= 6:
+        return 2
+    else:
+        return 3
 
-    # Initialize the number of new bottles to be placed in each slot
-    new_bottles = [0] * s
+def is_same_group(x, y):
+    return get_group(x) == get_group(y)
 
-    # Loop through each slot
-    for i in range(s):
-        # Calculate the number of cold bottles in the current slot
-        num_cold_bottles = current_bottles[i]
-
-        # Calculate the number of new bottles that need to be placed in the current slot
-        num_new_bottles = min(n, d - num_cold_bottles)
-
-        # Update the number of new bottles to be placed in each slot
-        new_bottles[i] += num_new_bottles
-        n -= num_new_bottles
-
-        # Calculate the probability of all students getting a cold soda from the current slot
-        prob_cold_soda += num_cold_bottles / (num_cold_bottles + num_new_bottles)
-
-    # Check if it is possible for all students to get a cold soda
-    if prob_cold_soda < m:
-        return "impossible"
-
-    # Return the refill scheme that maximizes the probability of all students getting a cold soda
-    return new_bottles
+if __name__ == '__main__':
+    x, y = map(int, input().split())
+    print("Yes" if is_same_group(x, y) else "No")
 

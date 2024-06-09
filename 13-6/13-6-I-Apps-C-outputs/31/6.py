@@ -1,28 +1,24 @@
 
-def solve(balls):
-    # Initialize variables
-    white_balls = []
-    black_balls = []
-    operations = 0
+import sys
 
-    # Separate the balls into white and black lists
-    for ball in balls:
-        if ball[1] == "W":
-            white_balls.append(ball)
-        else:
-            black_balls.append(ball)
+def hop(n, t):
+    # Initialize a dictionary to store the number of ways to choose s_i
+    ways = {i: 0 for i in range(1, n + 1)}
+    ways[1] = 1
+    
+    # Iterate over the hops
+    for i in range(2, n + 1):
+        # Calculate the number of ways to choose s_i
+        ways[i] = sum(ways[j] for j in range(1, i))
+    
+    # Return the number of ways to choose s_i modulo 10^9 + 7
+    return ways[t] % 1000000007
 
-    # Sort the white and black lists
-    white_balls.sort(key=lambda x: x[0])
-    black_balls.sort(key=lambda x: x[0])
+def main():
+    n = int(input())
+    t = list(map(int, input().split()))
+    print(hop(n, t))
 
-    # Iterate through the lists and count the number of swaps needed
-    for i in range(len(white_balls)):
-        if white_balls[i][0] != i + 1:
-            operations += 1
-    for i in range(len(black_balls)):
-        if black_balls[i][0] != i + 1:
-            operations += 1
-
-    return operations
+if __name__ == '__main__':
+    main()
 

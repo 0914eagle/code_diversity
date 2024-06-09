@@ -1,20 +1,26 @@
 
-def get_scientific_points(cards):
-    points = 0
-    tablet_count = 0
-    compass_count = 0
-    gear_count = 0
-    for card in cards:
-        if card == 'T':
-            tablet_count += 1
-        elif card == 'C':
-            compass_count += 1
-        elif card == 'G':
-            gear_count += 1
-    points += tablet_count * tablet_count
-    points += compass_count * compass_count
-    points += gear_count * gear_count
-    if tablet_count + compass_count + gear_count >= 3:
-        points += 7
-    return points
+def get_min_operations(s, t):
+    # Initialize variables
+    operations = 0
+    i = 0
+
+    # Loop through both strings simultaneously
+    while i < len(s) and i < len(t):
+        # If the characters at the current position are not the same, increment the operation count
+        if s[i] != t[i]:
+            operations += 1
+        i += 1
+
+    return operations
+
+def main():
+    # Read the input strings from stdin
+    s = input()
+    t = input()
+
+    # Call the get_min_operations function and print the result
+    print(get_min_operations(s, t))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,19 +1,22 @@
 
-def longest_repeated_substring(input_string):
-    # Initialize variables
-    start_index = 0
-    end_index = 0
-    longest_substring = ""
+import itertools
 
-    # Loop through the input string
-    for i in range(len(input_string)):
-        # Check if the substring starting at position i is a repeated substring
-        if input_string[i:].startswith(input_string[:i]):
-            # If it is, update the longest substring and its indices
-            longest_substring = input_string[:i]
-            start_index = i - len(longest_substring) + 1
-            end_index = i + 1
+def is_sorted(arr):
+    for i in range(len(arr) - 1):
+        for j in range(i + 1, len(arr)):
+            if arr[i] > arr[j]:
+                return False
+    return True
 
-    # Return the longest repeated substring
-    return longest_substring[start_index:end_index]
+def count_unsorted(arr):
+    count = 0
+    for perm in itertools.permutations(arr):
+        if not is_sorted(perm):
+            count += 1
+    return count % (10**9 + 9)
+
+if __name__ == '__main__':
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(count_unsorted(arr))
 

@@ -1,24 +1,29 @@
 
-def solve(N, K, P, C):
-    # Initialize the maximum score to 0
-    max_score = 0
-    # Loop through each possible starting square
-    for i in range(1, N+1):
-        # Initialize the current score to 0
-        score = 0
-        # Loop through each possible move
-        for j in range(K+1):
-            # Calculate the next square based on the permutation
-            next_square = P[i]
-            # Add the score of the current square to the total score
-            score += C[next_square]
-            # Break if we have reached the last square
-            if next_square == N:
-                break
-            # Update the current square to the next square
-            i = next_square
-        # Update the maximum score if the current score is greater than the previous maximum score
-        max_score = max(max_score, score)
-    # Return the maximum score
-    return max_score
+def get_number_of_ways(n, a):
+    # Initialize the number of ways to 0
+    number_of_ways = 0
+    
+    # Loop through all possible breaks
+    for i in range(n):
+        # Check if the current break is valid
+        if a[i] == 1:
+            # Increment the number of ways
+            number_of_ways += 1
+    
+    # Return the number of ways
+    return number_of_ways
+
+def main():
+    # Read the input
+    n = int(input())
+    a = list(map(int, input().split()))
+    
+    # Calculate the number of ways
+    number_of_ways = get_number_of_ways(n, a)
+    
+    # Print the result
+    print(number_of_ways)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,29 +1,27 @@
 
-def solve(balls):
-    # Initialize variables
-    num_balls = len(balls)
-    num_white_balls = num_balls // 2
-    num_black_balls = num_white_balls
-    white_balls = balls[:num_white_balls]
-    black_balls = balls[num_white_balls:]
-    operations = 0
+def f1(n):
+    return n * (n - 1) // 2
 
-    # Sort the white balls
-    white_balls.sort(key=lambda x: x[1])
+def f2(n, t):
+    import math
+    import itertools
+    from fractions import Fraction
+    from functools import reduce
 
-    # Sort the black balls
-    black_balls.sort(key=lambda x: x[1])
+    # Calculate the number of ways to choose the values of s_i
+    num_ways = 1
+    for i in range(n):
+        num_ways *= math.factorial(t[i] - 1)
 
-    # Swap the white and black balls to achieve the objective
-    for i in range(num_white_balls):
-        if white_balls[i][1] != i + 1:
-            operations += 1
-            white_balls[i], white_balls[i + 1] = white_balls[i + 1], white_balls[i]
+    # Calculate the number of ways to permute the values of s_i
+    num_permutations = math.factorial(n)
 
-    for i in range(num_black_balls):
-        if black_balls[i][1] != i + 1:
-            operations += 1
-            black_balls[i], black_balls[i + 1] = black_balls[i + 1], black_balls[i]
+    # Calculate the final answer
+    answer = num_ways * num_permutations
+    return answer % (10**9 + 7)
 
-    return operations
+if __name__ == '__main__':
+    n = int(input())
+    t = list(map(int, input().split()))
+    print(f2(n, t))
 

@@ -1,22 +1,29 @@
 
-def solve(N):
-    # Initialize variables
-    operations = 0
-    current_amount = 0
-
-    # While the current amount is less than the target amount
-    while current_amount < N:
-        # Check if the current amount is a multiple of 6 or 9
-        if current_amount % 6 == 0 or current_amount % 9 == 0:
-            # If it is, add the corresponding power of 6 or 9
-            current_amount += current_amount % 6 ** operations if current_amount % 6 == 0 else current_amount % 9 ** operations
+def get_powers(powers):
+    powers_dict = {}
+    for power in powers:
+        num, pow = str(power)
+        if num not in powers_dict:
+            powers_dict[num] = [int(pow)]
         else:
-            # If it is not, add 1 yen
-            current_amount += 1
+            powers_dict[num].append(int(pow))
+    return powers_dict
 
-        # Increment the number of operations
-        operations += 1
+def get_x(numbers, powers):
+    x = 0
+    for num, pow in powers.items():
+        x += int(num) ** sum(pow)
+    return x
 
-    # Return the number of operations required
-    return operations
+def main():
+    n = int(input())
+    numbers = []
+    for i in range(n):
+        numbers.append(int(input()))
+    powers = get_powers(numbers)
+    x = get_x(numbers, powers)
+    print(x)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,25 +1,29 @@
 
-def is_possible(n, a):
-    # Initialize the number of pizzas as 0
-    pizzas = 0
+def largest_rectangle(matrix):
+    rows = len(matrix)
+    cols = len(matrix[0])
+    max_area = 0
+    for i in range(rows):
+        for j in range(cols):
+            if matrix[i][j] == "1":
+                area = 0
+                for k in range(i, rows):
+                    if matrix[k][j] == "1":
+                        area += 1
+                    else:
+                        break
+                max_area = max(max_area, area)
+    return max_area
 
-    # Loop through each day
-    for i in range(n):
-        # If there are no teams on this day, skip this day
-        if a[i] == 0:
-            continue
+def main():
+    matrix = [
+      ["1","0","1","0","0"],
+      ["1","0","1","1","1"],
+      ["1","1","1","1","1"],
+      ["1","0","0","1","0"]
+    ]
+    print(largest_rectangle(matrix))
 
-        # If the number of pizzas is already more than the number of teams, return False
-        if pizzas > a[i]:
-            return False
-
-        # If the number of pizzas is less than the number of teams, add the number of teams to the number of pizzas
-        pizzas += a[i]
-
-    # If the number of pizzas is not equal to the total number of teams, return False
-    if pizzas != sum(a):
-        return False
-
-    # If the number of pizzas is equal to the total number of teams, return True
-    return True
+if __name__ == '__main__':
+    main()
 

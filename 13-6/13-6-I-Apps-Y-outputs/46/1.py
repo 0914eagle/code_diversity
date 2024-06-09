@@ -1,22 +1,25 @@
 
-def solve(D, G, p_c_list):
-    # Initialize variables
-    total_score = 0
-    problems_solved = 0
+def find_boxes(box_heights):
+    # Sort the box heights in decreasing order
+    sorted_box_heights = sorted(box_heights, reverse=True)
 
-    # Sort the list of problems by score in descending order
-    p_c_list.sort(key=lambda x: x[0], reverse=True)
+    # Find the two tower heights
+    tower_heights = sorted_box_heights[-2:]
 
-    # Loop through the list of problems
-    for p, c in p_c_list:
-        # Check if solving this problem will give us a total score of G or more
-        if total_score + p >= G:
-            # If so, break out of the loop
-            break
-        # Otherwise, solve the problem and update the total score
-        total_score += p
-        problems_solved += 1
+    # Find the three boxes in the first tower
+    first_tower = sorted_box_heights[:3]
 
-    # Return the number of problems solved
-    return problems_solved
+    # Find the three boxes in the second tower
+    second_tower = sorted_box_heights[3:6]
+
+    return first_tower, second_tower
+
+def main():
+    box_heights = [12, 8, 2, 4, 10, 3, 25, 14]
+    first_tower, second_tower = find_boxes(box_heights)
+    print(first_tower)
+    print(second_tower)
+
+if __name__ == '__main__':
+    main()
 

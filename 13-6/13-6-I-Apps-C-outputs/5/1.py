@@ -1,26 +1,23 @@
 
-def predict_temperature(average_temperatures):
-    n = len(average_temperatures)
-    if n == 1:
-        return average_temperatures[0]
-    else:
-        ap = is_arithmetic_progression(average_temperatures)
-        if ap:
-            return average_temperatures[-1] + (n + 1) * (average_temperatures[1] - average_temperatures[0])
-        else:
-            return average_temperatures[-1]
+def f(s):
+    # Your code here
+    return s
 
-def is_arithmetic_progression(average_temperatures):
-    n = len(average_temperatures)
-    if n == 1:
-        return True
-    else:
-        common_difference = average_temperatures[1] - average_temperatures[0]
-        for i in range(2, n):
-            if average_temperatures[i] - average_temperatures[i - 1] != common_difference:
-                return False
-        return True
+def f1(s, k):
+    # Your code here
+    return s
 
-average_temperatures = [10, 5, 0, -5, -10]
-print(predict_temperature(average_temperatures))
+def f2(s, m):
+    # Your code here
+    return s
+
+if __name__ == '__main__':
+    s = input()
+    k = int(input())
+    m = int(input())
+    m_list = list(map(int, input().split()))
+    result = []
+    for i in range(m):
+        result.append(s[m_list[i] - 1])
+    print(*result, sep='\n')
 

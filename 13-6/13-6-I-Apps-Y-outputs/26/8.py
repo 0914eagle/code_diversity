@@ -1,15 +1,29 @@
 
-def solve(a):
-    # Find the greatest common divisor (gcd) of all elements in the array
-    gcd = a[0]
-    for i in range(1, len(a)):
-        gcd = gcd(gcd, a[i])
+def get_tree_cost(n, a, edges):
+    # Initialize the distance array with 0s
+    dist = [0] * (n + 1)
     
-    # Count the number of positive integers that divide gcd
-    count = 0
-    for i in range(1, gcd + 1):
-        if gcd % i == 0:
-            count += 1
+    # Loop through each edge and update the distance array
+    for edge in edges:
+        u, v = edge[0], edge[1]
+        dist[u] += 1
+        dist[v] += 1
     
-    return count
+    # Calculate the cost of the tree
+    cost = 0
+    for i in range(1, n + 1):
+        cost += dist[i] * a[i - 1]
+    
+    return cost
+
+def main():
+    n = int(input())
+    a = list(map(int, input().split()))
+    edges = []
+    for i in range(n - 1):
+        edges.append(list(map(int, input().split())))
+    print(get_tree_cost(n, a, edges))
+
+if __name__ == '__main__':
+    main()
 

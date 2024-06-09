@@ -1,5 +1,16 @@
 
-def next_sunday(day):
-    days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
-    return (days.index(day) - days.index("SUN") + 1) % 7
+def gcd(a, b, c):
+    return __gcd(a, __gcd(b, c))
+
+def solve(K):
+    result = 0
+    for a in range(1, K+1):
+        for b in range(1, K+1):
+            for c in range(1, K+1):
+                result += gcd(a, b, c)
+    return result
+
+if __name__ == '__main__':
+    K = int(input())
+    print(solve(K))
 

@@ -1,23 +1,25 @@
 
-def solve(A, B, C, D, E, F):
-    # Initialize variables
-    sugar_water = 0
-    sugar_dissolved = 0
+def get_operators(a, b, c, d):
+    operators = ["+", "-", "*", "/"]
+    valid_expressions = []
+    for op1 in operators:
+        for op2 in operators:
+            for op3 in operators:
+                expression = "{} {} {} {}".format(a, op1, b, op2)
+                if eval(expression) == c:
+                    expression = "{} {} {} {}".format(expression, op3, d)
+                    if eval(expression) == True:
+                        valid_expressions.append(expression)
+    return valid_expressions
 
-    # Loop through all possible combinations of operations
-    for a in range(A, B+1):
-        for c in range(C, D+1):
-            # Calculate the mass of sugar water and sugar dissolved
-            sugar_water_temp = a + c
-            sugar_dissolved_temp = (100*c)/(a+c)
+def main():
+    a, b, c, d = map(int, input().split())
+    valid_expressions = get_operators(a, b, c, d)
+    if valid_expressions:
+        print("\n".join(sorted(valid_expressions)))
+    else:
+        print("problems ahead")
 
-            # Check if the sugar water is within the maximum capacity of the beaker
-            if sugar_water_temp <= F:
-                # Check if the sugar water has higher density than the current solution
-                if sugar_dissolved_temp > sugar_dissolved:
-                    sugar_water = sugar_water_temp
-                    sugar_dissolved = sugar_dissolved_temp
-
-    # Return the results
-    return sugar_water, sugar_dissolved
+if __name__ == '__main__':
+    main()
 

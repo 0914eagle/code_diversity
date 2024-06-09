@@ -1,44 +1,47 @@
 
-def solve(N, V, edges):
-    # Initialize a set to store the types of jokes told by the invited employees
-    invited_jokes = set()
-    # Initialize a set to store the types of jokes told by the employees directly or indirectly supervised by the CEO
-    ceo_jokes = set()
-    # Initialize a dictionary to map each employee to their supervisor
-    supervisors = {}
+def f1(N):
+    # Initialize an empty stack
+    stack = []
+    
+    # Iterate through the given steps
+    for i in range(N):
+        # Get the current step
+        step = input()
+        
+        # Check the type of operation
+        if step[0] == "a":
+            # Operation of type 1: Place number i on top of the new stack
+            stack.append(i)
+        elif step[0] == "b":
+            # Operation of type 2: Remove the number from the top of the new stack
+            stack.pop()
+        elif step[0] == "c":
+            # Operation of type 3: Count how many different numbers exist that are in the new stack and in the stack denoted with w
+            w = int(step[2])
+            count = 0
+            for num in stack:
+                if num in stack[w]:
+                    count += 1
+            print(count)
+        else:
+            raise ValueError("Invalid operation type")
+    
+    return stack
 
-    # Populate the dictionary with the given data
-    for i in range(1, N+1):
-        supervisors[i] = i
-    for edge in edges:
-        supervisors[edge[1]] = edge[0]
+def f2(stack):
+    # Output the required number for each operation of type 2 or 3
+    for step in stack:
+        if step[0] == "b":
+            print(step[1])
+        elif step[0] == "c":
+            print(step[2])
+        else:
+            raise ValueError("Invalid operation type")
+    
+    return stack
 
-    # Iterate through the employees and check if they are eligible to be invited
-    for i in range(1, N+1):
-        # If the employee is not the CEO, check if their supervisor is invited
-        if i != 1 and supervisors[i] not in invited_jokes:
-            continue
-        # If the employee is eligible, add their type of joke to the set of invited jokes
-        invited_jokes.add(V[i-1])
-        # If the employee is the CEO, add their type of joke to the set of jokes told by the CEO and their direct or indirect supervisors
-        if i == 1:
-            ceo_jokes.add(V[i-1])
-
-    # Count the number of different sets of jokes that comply to the constraints
-    count = 0
-    for i in range(1, N+1):
-        # If the employee is not invited, skip them
-        if i not in invited_jokes:
-            continue
-        # If the employee is invited, check if the set of jokes told by their direct or indirect supervisors forms a consecutive sequence
-        consecutive = True
-        for j in range(1, N+1):
-            if j in invited_jokes and (V[j-1] - V[i-1] != 1):
-                consecutive = False
-                break
-        # If the set of jokes forms a consecutive sequence, increment the count
-        if consecutive:
-            count += 1
-
-    return count
+if __name__ == '__main__':
+    N = int(input())
+    stack = f1(N)
+    f2(stack)
 

@@ -1,21 +1,30 @@
 
-import math
+def get_starting_circles(circle, k):
+    # Initialize a set to store the starting circles
+    starting_circles = set()
+    
+    # Iterate over the possible starting circles
+    for i in range(len(circle)):
+        # Get the starting circle by rotating the original circle i positions
+        starting_circle = circle[i:] + circle[:i]
+        
+        # Add the starting circle to the set
+        starting_circles.add(starting_circle)
+    
+    # Return the number of distinct starting circles
+    return len(starting_circles)
 
-def lottery_probability(m, n, t, p):
-    # Calculate the probability of each person winning
-    probability = n / m
+def main():
+    # Read the input
+    n, k = map(int, input().split())
+    circle = input()
     
-    # Calculate the number of people who can win
-    num_winners = min(n, p)
+    # Call the function to get the number of distinct starting circles
+    result = get_starting_circles(circle, k)
     
-    # Calculate the number of tickets each winner can buy
-    num_tickets = t * num_winners
-    
-    # Calculate the total number of tickets available
-    total_tickets = m * t
-    
-    # Calculate the probability that your group can get tickets
-    group_probability = math.comb(total_tickets, num_tickets) * probability ** num_winners * (1 - probability) ** (total_tickets - num_tickets)
-    
-    return group_probability
+    # Print the result
+    print(result)
+
+if __name__ == '__main__':
+    main()
 

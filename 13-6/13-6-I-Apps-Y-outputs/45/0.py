@@ -1,29 +1,40 @@
 
-def max_tables(n, k, s):
-    # Count the number of occupied tables
-    occupied_tables = s.count("1")
+def get_min_moves(n):
+    # Initialize the minimum number of moves to -1
+    min_moves = -1
+    
+    # Loop through each digit in the number
+    for i in range(len(n)):
+        # Check if the current digit is 0
+        if n[i] == "0":
+            # If the current digit is 0, return -1
+            return -1
+    
+    # If the number does not contain any leading zeroes, set the minimum number of moves to 0
+    min_moves = 0
+    
+    # Loop through each digit in the number
+    for i in range(len(n)):
+        # Check if the current digit is not the last digit in the number
+        if i != len(n) - 1:
+            # If the current digit is not the last digit, check if the next digit is 0
+            if n[i + 1] == "0":
+                # If the next digit is 0, increment the minimum number of moves
+                min_moves += 1
+    
+    # Return the minimum number of moves
+    return min_moves
 
-    # Check if the number of occupied tables is less than or equal to the maximum allowed
-    if occupied_tables <= n:
-        return 0
+def main():
+    # Read a single integer n from stdin
+    n = int(input().strip())
+    
+    # Call the get_min_moves function and store the result in min_moves
+    min_moves = get_min_moves(n)
+    
+    # Print the minimum number of moves
+    print(min_moves)
 
-    # Initialize the maximum number of tables that can be occupied
-    max_tables = 0
-
-    # Iterate over the string and check if the table at each position can be occupied
-    for i in range(n):
-        # Check if the table at the current position is empty
-        if s[i] == "0":
-            # Count the number of occupied tables between the current position and the previous occupied table
-            occupied_tables_between = 0
-            for j in range(i, -1, -1):
-                if s[j] == "1":
-                    occupied_tables_between += 1
-                    break
-
-            # Check if the number of occupied tables between the current position and the previous occupied table is less than or equal to k
-            if occupied_tables_between <= k:
-                max_tables += 1
-
-    return max_tables
+if __name__ == '__main__':
+    main()
 

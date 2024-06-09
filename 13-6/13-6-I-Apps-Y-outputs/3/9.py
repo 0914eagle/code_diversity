@@ -1,23 +1,56 @@
 
-def get_minimum_heaters(n, r, arr):
-    # Sort the array and find the leftmost and rightmost positions of the heaters
-    sorted_arr = sorted(arr)
-    leftmost = sorted_arr[0]
-    rightmost = sorted_arr[-1]
-
-    # Initialize the minimum number of heaters needed to warm up the whole house
-    min_heaters = 0
-
-    # Loop through each position in the array
+def get_moves(n, a):
+    # Initialize variables
+    alice_moves = 0
+    bob_moves = 0
+    alice_sum = 0
+    bob_sum = 0
+    
+    # Loop through each candy
     for i in range(n):
-        # If the current position is within the range of the leftmost heater
-        if i >= leftmost - r:
-            # Increment the minimum number of heaters needed
-            min_heaters += 1
-        # If the current position is within the range of the rightmost heater
-        if i <= rightmost + r:
-            # Increment the minimum number of heaters needed
-            min_heaters += 1
+        # Alice's turn
+        if i % 2 == 0:
+            alice_sum += a[i]
+            alice_moves += 1
+        # Bob's turn
+        else:
+            bob_sum += a[i]
+            bob_moves += 1
+        
+        # Check if either player can make a move
+        if alice_sum > bob_sum:
+            bob_moves += 1
+            alice_sum = 0
+        elif bob_sum > alice_sum:
+            alice_moves += 1
+            bob_sum = 0
+    
+    # Return the number of moves
+    return alice_moves, bob_moves
 
-    return min_heaters
+def get_sizes(n, a):
+    # Initialize variables
+    alice_sum = 0
+    bob_sum = 0
+    
+    # Loop through each candy
+    for i in range(n):
+        # Alice's turn
+        if i % 2 == 0:
+            alice_sum += a[i]
+        # Bob's turn
+        else:
+            bob_sum += a[i]
+    
+    # Return the total sizes
+    return alice_sum, bob_sum
+
+if __name__ == '__main__':
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        a = list(map(int, input().split()))
+        moves = get_moves(n, a)
+        sizes = get_sizes(n, a)
+        print(moves[0], sizes[0], sizes[1])
 

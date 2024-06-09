@@ -1,19 +1,17 @@
 
-def count_almost_identity_permutations(n, k):
-    # Initialize a list to store the result
-    result = []
+def get_max_xor(l, r):
+    max_xor = 0
+    for a in range(l, r + 1):
+        for b in range(a, r + 1):
+            xor = a ^ b
+            if xor > max_xor:
+                max_xor = xor
+    return max_xor
 
-    # Iterate from 1 to n
-    for i in range(1, n + 1):
-        # Check if the current number is equal to i
-        if i == n:
-            # If the current number is equal to i, add it to the result
-            result.append(i)
-        else:
-            # If the current number is not equal to i, add it to the result and then break the loop
-            result.append(i)
-            break
+def main():
+    l, r = map(int, input().split())
+    print(get_max_xor(l, r))
 
-    # Return the result
-    return result
+if __name__ == '__main__':
+    main()
 

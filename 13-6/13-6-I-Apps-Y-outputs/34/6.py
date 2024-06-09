@@ -1,23 +1,23 @@
 
-def solve(f, s, g, u, d):
-    # Initialize variables
-    pushes = 0
-    current_floor = s
+import math
 
-    # Loop until we reach the goal floor or exceed the number of floors
-    while current_floor != g and current_floor <= f:
-        # Calculate the next floor based on the up and down buttons
-        next_floor = current_floor + u if current_floor + u <= f else current_floor
-        next_floor = current_floor - d if current_floor - d >= 1 else current_floor
+def get_divisors(n):
+    divisors = []
+    for i in range(1, int(math.sqrt(n)) + 1):
+        if n % i == 0:
+            divisors.append(i)
+            if i * i != n:
+                divisors.append(n // i)
+    divisors.sort()
+    return divisors
 
-        # Increment the number of pushes and update the current floor
-        pushes += 1
-        current_floor = next_floor
+def count_divisors(n):
+    return len(get_divisors(n))
 
-    # If we reached the goal floor, return the number of pushes
-    if current_floor == g:
-        return pushes
-    # If we exceeded the number of floors, return "use the stairs"
-    else:
-        return "use the stairs"
+def main():
+    n = int(input())
+    print(count_divisors(n))
+
+if __name__ == '__main__':
+    main()
 

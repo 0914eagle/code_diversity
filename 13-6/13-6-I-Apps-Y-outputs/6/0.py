@@ -1,22 +1,27 @@
 
-def solve(N, A, B, C):
-    # Initialize variables
-    satisfaction_points = 0
-    current_dish = 0
+def get_min_distance(coordinates):
+    # Sort the coordinates in ascending order
+    sorted_coordinates = sorted(coordinates)
+    # Initialize the minimum distance to be traveled
+    min_distance = 0
+    # Iterate through the sorted coordinates
+    for i in range(len(sorted_coordinates)):
+        # Calculate the distance traveled from the current coordinate to the next coordinate
+        distance = sorted_coordinates[i] - sorted_coordinates[i-1]
+        # Update the minimum distance if the current distance is less than the previous minimum distance
+        if distance < min_distance or min_distance == 0:
+            min_distance = distance
+    return min_distance
 
-    # Loop through each dish
-    for i in range(N):
-        # Add satisfaction points from current dish
-        satisfaction_points += B[current_dish]
+def main():
+    # Read the number of houses and their coordinates from stdin
+    num_houses = int(input())
+    coordinates = list(map(int, input().split()))
+    # Calculate the minimum distance to be traveled
+    min_distance = get_min_distance(coordinates)
+    # Print the minimum distance
+    print(min_distance)
 
-        # If not the last dish, add satisfaction points from next dish
-        if i != N - 1:
-            next_dish = A[i + 1]
-            if next_dish == current_dish + 1:
-                satisfaction_points += C[current_dish]
-
-        # Update current dish
-        current_dish = A[i]
-
-    return satisfaction_points
+if __name__ == '__main__':
+    main()
 

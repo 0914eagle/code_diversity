@@ -1,25 +1,24 @@
 
-def boiling_pot(intervals):
-    # Sort the intervals by their start time
-    intervals.sort(key=lambda x: x[0])
+def get_number_of_ways_to_paint_balls(n, k):
+    # Initialize a 2D array to store the number of ways to paint the balls
+    dp = [[0] * (k + 1) for _ in range(n + 1)]
+    
+    # Initialize the first row of the 2D array with 1, because there is only one way to paint the first ball
+    for i in range(k + 1):
+        dp[0][i] = 1
+    
+    # Fill in the rest of the 2D array using the recurrence relation
+    for i in range(1, n + 1):
+        for j in range(1, k + 1):
+            dp[i][j] = dp[i - 1][j] + dp[i - 1][j - 1]
+    
+    # Return the number of ways to paint the last ball
+    return dp[n][k]
 
-    # Initialize the current time to 0
-    current_time = 0
+def main():
+    n, k = map(int, input().split())
+    print(get_number_of_ways_to_paint_balls(n, k))
 
-    # Iterate through the intervals
-    for interval in intervals:
-        # If the current time is less than the start time of the interval, move the current time to the start time of the interval
-        if current_time < interval[0]:
-            current_time = interval[0]
-
-        # If the current time is greater than or equal to the end time of the interval, move the current time to the end time of the interval
-        if current_time >= interval[1]:
-            current_time = interval[1]
-
-    # If the current time is equal to the end time of the last interval, return "edward is right"
-    if current_time == intervals[-1][1]:
-        return "edward is right"
-
-    # Otherwise, return "gunilla has a point"
-    return "gunilla has a point"
+if __name__ == '__main__':
+    main()
 

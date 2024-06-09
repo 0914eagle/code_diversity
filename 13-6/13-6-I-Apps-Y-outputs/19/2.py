@@ -1,35 +1,42 @@
 
-import random
-
-def solve(expression):
-    # Split the expression into a list of integers and plus symbols
-    tokens = expression.split('+')
+def get_winner(record):
+    # Initialize the score for Alice and Barbara
+    alice_score = 0
+    barbara_score = 0
     
-    # Initialize a set to store the distinct integers
-    distinct_ints = set()
-    
-    # Iterate over the tokens
-    for i in range(len(tokens)):
-        # If the current token is a plus symbol, randomly choose whether to interpret it as addition or string concatenation
-        if tokens[i] == '+':
-            if random.randint(0, 1) == 0:
-                tokens[i] = '+'
-            else:
-                tokens[i] = '+'
+    # Iterate through the record
+    for i in range(0, len(record), 2):
+        # Get the current player and the number of points scored
+        player = record[i]
+        points = int(record[i+1])
         
-        # If the current token is an integer, convert it to a string
+        # Update the score for the current player
+        if player == "A":
+            alice_score += points
         else:
-            tokens[i] = str(tokens[i])
+            barbara_score += points
+        
+        # Check if the game is over
+        if alice_score >= 11 and barbara_score >= 11:
+            # If the score is tied, the first player to lead by at least 2 points wins
+            if alice_score - barbara_score >= 2:
+                return "A"
+            elif barbara_score - alice_score >= 2:
+                return "B"
+        elif alice_score >= 11:
+            # Alice has won the game
+            return "A"
+        elif barbara_score >= 11:
+            # Barbara has won the game
+            return "B"
     
-    # Join the tokens back into a single string
-    expression = ''.join(tokens)
-    
-    # Evaluate the expression using the eval() function
-    result = eval(expression)
-    
-    # Add the result to the set of distinct integers
-    distinct_ints.add(result)
-    
-    # Return the length of the set of distinct integers
-    return len(distinct_ints)
+    # The game is still ongoing
+    return "D"
+
+def main():
+    record = input()
+    print(get_winner(record))
+
+if __name__ == '__main__':
+    main()
 

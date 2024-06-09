@@ -1,14 +1,24 @@
 
-def is_reproducible(grid):
-    # Initialize a set to store the colors of the art piece
-    colors = set()
-    # Loop through each row of the grid
-    for row in grid:
-        # Loop through each cell in the row
-        for cell in row:
-            # Add the color of the cell to the set
-            colors.add(cell)
-    # Check if the set of colors is a subset of the set of all colors
-    all_colors = {"R", "G", "B", "W"}
-    return colors.issubset(all_colors)
+def read_input():
+    N, K, Q = map(int, input().split())
+    A = list(map(int, input().split()))
+    return N, K, Q, A
+
+def find_min_diff(A, K, Q):
+    min_diff = float('inf')
+    for i in range(Q):
+        subsequence = A[i:i+K]
+        min_element = min(subsequence)
+        max_element = max(subsequence)
+        diff = max_element - min_element
+        if diff < min_diff:
+            min_diff = diff
+    return min_diff
+
+def main():
+    N, K, Q, A = read_input()
+    print(find_min_diff(A, K, Q))
+
+if __name__ == '__main__':
+    main()
 

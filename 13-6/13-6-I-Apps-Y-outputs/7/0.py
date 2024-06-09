@@ -1,9 +1,13 @@
 
-def solve(n, k, d, s):
-    if k == 0:
-        return "impossible"
-    total_difficulty = d * k
-    team_difficulty = s * k
-    unsolved_difficulty = total_difficulty - team_difficulty
-    return unsolved_difficulty / (n - k)
+import math
+
+def get_probability(n):
+    return 1 - math.factorial(n) / (math.factorial(n) * n)
+
+def main():
+    n = int(input())
+    print(get_probability(n))
+
+if __name__ == '__main__':
+    main()
 

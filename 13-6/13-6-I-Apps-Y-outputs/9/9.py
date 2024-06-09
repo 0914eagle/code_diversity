@@ -1,4 +1,17 @@
 
-def solve(n):
-    return (n // 15) * 200 + (n % 15) * 800
+def get_input():
+    n = int(input())
+    arr = list(map(int, input().split()))
+    return n, arr
+
+def sort_array(arr):
+    return sorted(arr)
+
+def main():
+    n, arr = get_input()
+    sorted_arr = sort_array(arr)
+    print(*sorted_arr, sep=' ')
+
+if __name__ == '__main__':
+    main()
 

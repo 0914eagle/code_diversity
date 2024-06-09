@@ -1,26 +1,35 @@
 
-def solve(N, C, a, b, Q, changes):
-    # Initialize the number of different purchases
-    num_purchases = 1
+def get_input():
+    n = int(input())
+    streets = []
+    for i in range(n):
+        street = list(map(int, input().split()))
+        streets.append(street)
+    return n, streets
 
-    # Loop through each requirement change
-    for i in range(Q):
-        # Get the client and their new requirements
-        client, a_new, b_new = changes[i]
+def solve(n, streets):
+    total_width = 0
+    for i in range(n):
+        total_width += streets[i][1]
+    if total_width % 2 == 1:
+        return -1
+    total_width //= 2
+    widths = [0] * n
+    for i in range(n):
+        widths[i] = streets[i][0] + streets[i][1]
+    for i in range(n):
+        if widths[i] % 2 == 1:
+            return -1
+        widths[i] //= 2
+    for i in range(n-1):
+        if abs(widths[i] - widths[i+1]) > 1:
+            return -1
+    return total_width
 
-        # Calculate the number of colored paintings available
-        num_colored = a[client] + a_new
+def main():
+    n, streets = get_input()
+    print(solve(n, streets))
 
-        # Calculate the number of black and white paintings available
-        num_bw = b[client] + b_new
-
-        # Calculate the number of different purchases with the new requirements
-        num_purchases_new = num_colored * num_bw
-
-        # If the number of different purchases with the new requirements is greater than the current number of purchases, update the number of purchases
-        if num_purchases_new > num_purchases:
-            num_purchases = num_purchases_new
-
-    # Return the number of different purchases modulo 10007
-    return num_purchases % 10007
+if __name__ == '__main__':
+    main()
 

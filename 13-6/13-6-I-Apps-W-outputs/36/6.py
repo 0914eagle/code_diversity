@@ -1,44 +1,51 @@
 
-def get_min_price(n, prices, vitamins):
-    # Initialize a dictionary to store the number of vitamins obtained by buying each juice
-    vitamins_obtained = {}
-    for i in range(n):
-        vitamins_obtained[i] = 0
-        for vitamin in vitamins[i]:
-            vitamins_obtained[i] += 1
+def get_maximum_strength(n, p, assignment):
+    # Initialize the maximum strength and the prefix or suffix to flip
+    max_strength = 0
+    prefix_or_suffix = ""
     
-    # Initialize a set to store the indices of juices that contain all three vitamins
-    all_vitamins = set()
-    for i in range(n):
-        if vitamins_obtained[i] == 3:
-            all_vitamins.add(i)
+    # Iterate over all possible prefixes or suffixes of length 1 to n-1
+    for i in range(1, n):
+        # Get the prefix or suffix of length i
+        prefix_or_suffix = assignment[:i]
+        
+        # Get the strength of the pieces in the prefix or suffix
+        prefix_or_suffix_strength = sum(p[j] for j in range(n) if assignment[j] == prefix_or_suffix[j])
+        
+        # If the strength of the prefix or suffix is greater than the current maximum strength, update the maximum strength and the prefix or suffix to flip
+        if prefix_or_suffix_strength > max_strength:
+            max_strength = prefix_or_suffix_strength
+            prefix_or_suffix = prefix_or_suffix
     
-    # Initialize a dictionary to store the minimum price to obtain all three vitamins by buying each juice
-    min_price = {}
-    for i in range(n):
-        min_price[i] = float('inf')
+    # Return the maximum strength and the prefix or suffix to flip
+    return max_strength, prefix_or_suffix
+
+def get_optimal_strategy(n, p, assignment):
+    # Get the maximum strength and the prefix or suffix to flip
+    max_strength, prefix_or_suffix = get_maximum_strength(n, p, assignment)
     
-    # Initialize a set to store the indices of juices that have been processed
-    processed = set()
+    # Initialize the optimal strategy as doing nothing
+    optimal_strategy = "N"
     
-    # Loop through each juice and calculate the minimum price to obtain all three vitamins by buying it and its cheapest neighbors
-    for i in range(n):
-        if i not in processed:
-            # If the current juice contains all three vitamins, its minimum price is 0
-            if i in all_vitamins:
-                min_price[i] = 0
-            else:
-                # Loop through the neighbors of the current juice and calculate the minimum price to obtain all three vitamins by buying it and its cheapest neighbor
-                for j in range(i-1, -1, -1):
-                    if j in all_vitamins:
-                        min_price[i] = min(min_price[i], prices[i] + min_price[j])
-                        break
-                for j in range(i+1, n):
-                    if j in all_vitamins:
-                        min_price[i] = min(min_price[i], prices[i] + min_price[j])
-                        break
-            processed.add(i)
+    # If the maximum strength is not equal to the current strength of Alice's team, update the optimal strategy to flip the prefix or suffix
+    if max_strength != sum(p[j] for j in range(n) if assignment[j] == "A"):
+        optimal_strategy = "F"
     
-    # Return the minimum price to obtain all three vitamins by buying the juice with the lowest price that contains all three vitamins
-    return min(min_price[i] for i in all_vitamins) if all_vitamins else -1
+    # Return the optimal strategy
+    return optimal_strategy
+
+def main():
+    # Read the input
+    n = int(input())
+    p = list(map(int, input().split()))
+    assignment = input()
+    
+    # Get the optimal strategy
+    optimal_strategy = get_optimal_strategy(n, p, assignment)
+    
+    # Print the optimal strategy
+    print(optimal_strategy)
+
+if __name__ == '__main__':
+    main()
 

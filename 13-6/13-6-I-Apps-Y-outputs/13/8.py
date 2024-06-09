@@ -1,11 +1,23 @@
 
-def reconstruct_equation(numbers):
-    for num1 in numbers:
-        for num2 in numbers:
-            for num3 in numbers:
-                for operation in ["+", "-", "*", "/"]:
-                    equation = str(num1) + operation + str(num2) + "=" + str(num3)
-                    if eval(equation) == num3:
-                        return equation
-    return "No solution found."
+def is_palindrome(string):
+    return string == string[::-1]
+
+def is_prime(number):
+    if number < 2:
+        return False
+    for i in range(2, number):
+        if number % i == 0:
+            return False
+    return True
+
+def solve(string):
+    num = int(string)
+    if is_palindrome(string) and is_prime(num):
+        return "Yes"
+    else:
+        return "No"
+
+if __name__ == '__main__':
+    string = input()
+    print(solve(string))
 

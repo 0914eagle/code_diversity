@@ -1,29 +1,16 @@
 
-def solve(S_A, S_B, S_C):
-    # Initialize the decks of the players
-    decks = {
-        "Alice": S_A,
-        "Bob": S_B,
-        "Charlie": S_C
-    }
-    
-    # Initialize the current player
-    current_player = "Alice"
-    
-    # While there are still cards in the decks
-    while any(decks.values()):
-        # Get the top card from the current player's deck
-        card = decks[current_player][0]
-        
-        # Remove the card from the current player's deck
-        decks[current_player] = decks[current_player][1:]
-        
-        # Determine the next player
-        next_player = "Alice" if card == "a" else "Bob" if card == "b" else "Charlie"
-        
-        # Update the current player
-        current_player = next_player
-    
-    # Return the winner
-    return current_player
+def get_max_divisible_elements(a):
+    # Your code here
+    return max_divisible_elements
+
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        a = list(map(int, input().split()))
+        max_divisible_elements = get_max_divisible_elements(a)
+        print(max_divisible_elements)
+
+if __name__ == '__main__':
+    main()
 

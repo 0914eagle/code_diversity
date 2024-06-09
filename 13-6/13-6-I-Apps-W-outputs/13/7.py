@@ -1,32 +1,35 @@
 
-def solve(n, a):
-    # Initialize variables
-    coupon_count = 0
-    discount_count = 0
-    total_pizzas = 0
+def find_largest_rectangle(matrix):
+    # Initialize a list to store the heights of the bars
+    heights = []
+    
+    # Loop through each row of the matrix
+    for i in range(len(matrix)):
+        # Loop through each column of the matrix
+        for j in range(len(matrix[i])):
+            # If the current element is 1, add its height to the list of heights
+            if matrix[i][j] == "1":
+                heights.append(int(matrix[i][j]))
+            # If the current element is 0, add 0 to the list of heights
+            else:
+                heights.append(0)
+    
+    # Find the largest rectangle in the list of heights
+    largest_rectangle = max(heights)
+    
+    return largest_rectangle
 
-    # Iterate through the number of training sessions
-    for i in range(n):
-        # Check if there are any teams on this day
-        if a[i] > 0:
-            # Check if the coupon can be used
-            if coupon_count > 0:
-                # Use the coupon and decrease the number of teams by 1
-                coupon_count -= 1
-                a[i] -= 1
+def main():
+    # Test the function with the example matrix
+    matrix = [
+      ["1","0","1","0","0"],
+      ["1","0","1","1","1"],
+      ["1","1","1","1","1"],
+      ["1","0","0","1","0"]
+    ]
+    largest_rectangle = find_largest_rectangle(matrix)
+    print(largest_rectangle)
 
-            # Check if the discount can be used
-            if discount_count > 0 and a[i] > 1:
-                # Use the discount and decrease the number of teams by 2
-                discount_count -= 1
-                a[i] -= 2
-
-            # Increase the total number of pizzas by the number of teams on this day
-            total_pizzas += a[i]
-
-    # Check if the total number of pizzas is even
-    if total_pizzas % 2 == 0:
-        return "YES"
-    else:
-        return "NO"
+if __name__ == '__main__':
+    main()
 

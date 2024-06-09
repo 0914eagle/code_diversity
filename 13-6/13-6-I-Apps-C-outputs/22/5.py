@@ -1,29 +1,42 @@
 
-def solve(n, flights):
-    # Initialize a graph with the given flights
-    graph = {i: set() for i in range(1, n + 1)}
-    for flight in flights:
-        graph[flight[0]].add(flight[1])
-        graph[flight[1]].add(flight[0])
+def get_events_that_occurred(evidence, implications):
+    # Initialize a set to store the events that occurred
+    occurred_events = set()
 
-    # Find the flight with the maximum number of connections
-    max_connections = 0
-    flight_to_cancel = None
-    for city in graph:
-        connections = len(graph[city])
-        if connections > max_connections:
-            max_connections = connections
-            flight_to_cancel = city
+    # Iterate over the evidence
+    for event in evidence:
+        # Add the event to the occurred events set
+        occurred_events.add(event)
 
-    # Find the best new flight to add
-    min_connections = float('inf')
-    flight_to_add = None
-    for city in graph:
-        if city != flight_to_cancel:
-            connections = len(graph[city])
-            if connections < min_connections:
-                min_connections = connections
-                flight_to_add = city
+        # Iterate over the implications
+        for implication in implications:
+            # If the event is the consequence of the implication
+            if event == implication[1]:
+                # Add the premise of the implication to the occurred events set
+                occurred_events.add(implication[0])
 
-    return [max_connections, flight_to_cancel, flight_to_add]
+    # Return the occurred events set
+    return occurred_events
+
+def main():
+    # Read the number of events, implications, and evidence from stdin
+    num_events, num_implications, num_evidence = map(int, input().split())
+
+    # Read the implications from stdin
+    implications = []
+    for _ in range(num_implications):
+        premise, consequence = map(int, input().split())
+        implications.append((premise, consequence))
+
+    # Read the evidence from stdin
+    evidence = set(map(int, input().split()))
+
+    # Call the function to get the events that occurred
+    occurred_events = get_events_that_occurred(evidence, implications)
+
+    # Print the occurred events
+    print(*sorted(occurred_events), sep=' ')
+
+if __name__ == '__main__':
+    main()
 

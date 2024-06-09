@@ -1,31 +1,28 @@
 
-def solve(n, x, edges):
-    # Initialize a dictionary to store the distances from vertex 1 to each other vertex
-    distances = {1: 0}
-    for i in range(2, n + 1):
-        distances[i] = float('inf')
+def get_total_time(N, A, B):
+    return sum(A) + sum(B)
 
-    # Initialize a queue to do BFS
-    queue = [1]
+def get_second_type_arrival_time(N, A, B, M, C, D):
+    total_time = get_total_time(N, A, B)
+    second_type_arrival_time = total_time - sum(C) - sum(D)
+    return second_type_arrival_time
 
-    # Loop until the queue is empty
-    while queue:
-        # Get the current vertex from the queue
-        current_vertex = queue.pop(0)
+def main():
+    total_time = int(input())
+    N = int(input())
+    A = []
+    B = []
+    for i in range(N):
+        A.append(int(input()))
+        B.append(int(input()))
+    M = int(input())
+    C = []
+    D = []
+    for i in range(M):
+        C.append(int(input()))
+        D.append(int(input()))
+    print(get_second_type_arrival_time(N, A, B, M, C, D))
 
-        # If the current vertex is the destination vertex, return the distance
-        if current_vertex == x:
-            return distances[current_vertex]
-
-        # Get the neighbors of the current vertex
-        neighbors = [edge[1] for edge in edges if edge[0] == current_vertex]
-
-        # Loop through the neighbors and update the distances
-        for neighbor in neighbors:
-            if distances[neighbor] == float('inf'):
-                distances[neighbor] = distances[current_vertex] + 1
-                queue.append(neighbor)
-
-    # If the destination vertex is not found, return -1
-    return -1
+if __name__ == '__main__':
+    main()
 

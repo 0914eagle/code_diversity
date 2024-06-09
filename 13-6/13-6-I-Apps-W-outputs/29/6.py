@@ -1,16 +1,42 @@
 
-def get_maximum_pleasure(playlist, k):
-    # Sort the playlist in descending order of beauty
-    playlist.sort(key=lambda x: x[1], reverse=True)
-    # Initialize the maximum pleasure to 0
-    max_pleasure = 0
-    # Initialize the total length of the selected songs to 0
-    total_length = 0
-    # Iterate through the playlist and select the k songs with the highest beauty
-    for i in range(k):
-        # Add the length and beauty of the current song to the total length and maximum pleasure
-        total_length += playlist[i][0]
-        max_pleasure += playlist[i][1]
-    # Return the maximum pleasure multiplied by the total length
-    return max_pleasure * total_length
+def read_input():
+    N, C = map(int, input().split())
+    D = [[0] * (C + 1) for _ in range(C + 1)]
+    for i in range(1, C + 1):
+        D[i] = list(map(int, input().split()))
+    c = []
+    for i in range(N):
+        c.append(list(map(int, input().split())))
+    return N, C, D, c
+
+def get_wrongness(c, D):
+    wrongness = 0
+    for i in range(len(c)):
+        for j in range(len(c[0])):
+            if c[i][j] != c[(i + j) % 3][(j + i) % 3]:
+                wrongness += D[c[i][j]][c[(i + j) % 3][(j + i) % 3]]
+    return wrongness
+
+def repaint(c, D):
+    N = len(c)
+    for i in range(N):
+        for j in range(N):
+            if c[i][j] != c[(i + j) % 3][(j + i) % 3]:
+                c[i][j] = c[(i + j) % 3][(j + i) % 3]
+    return c, get_wrongness(c, D)
+
+def solve(N, C, D, c):
+    wrongness = get_wrongness(c, D)
+    min_wrongness = wrongness
+    while True:
+        c, wrongness = repaint(c, D)
+        if wrongness < min_wrongness:
+            min_wrongness = wrongness
+        else:
+            break
+    return min_wrongness
+
+if __name__ == '__main__':
+    N, C, D, c = read_input()
+    print(solve(N, C, D, c))
 

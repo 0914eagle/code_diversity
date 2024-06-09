@@ -1,34 +1,33 @@
 
-def find_best_flight(n, flights):
-    # Initialize a graph with the given flights
-    graph = {i: set() for i in range(1, n + 1)}
-    for flight in flights:
-        graph[flight[0]].add(flight[1])
-        graph[flight[1]].add(flight[0])
+def find_certain_events(D, M, N, implications, events):
+    # Initialize a set to store the events that have certainly occurred
+    certain_events = set()
 
-    # Find the flight with the maximum number of connections
-    max_connections = 0
-    flight_to_cancel = None
-    for flight in flights:
-        connections = 0
-        for city in graph[flight[0]]:
-            if city in graph[flight[1]]:
-                connections += 1
-        if connections > max_connections:
-            max_connections = connections
-            flight_to_cancel = flight
+    # Iterate over the given implications
+    for implication in implications:
+        # If the event on the right-hand side of the implication has already occurred,
+        # then the event on the left-hand side of the implication must have occurred as well
+        if implication[1] in certain_events:
+            certain_events.add(implication[0])
 
-    # Find the best new flight to add
-    new_flight = None
-    for city in graph[flight_to_cancel[0]]:
-        if city not in graph[flight_to_cancel[1]]:
-            new_flight = (flight_to_cancel[0], city)
-            break
-    if new_flight is None:
-        for city in graph[flight_to_cancel[1]]:
-            if city not in graph[flight_to_cancel[0]]:
-                new_flight = (flight_to_cancel[1], city)
-                break
+    # Add the given events that have occurred to the set of certain events
+    certain_events.update(events)
 
-    return (max_connections - 1, flight_to_cancel, new_flight)
+    # Return the set of certain events in increasing order
+    return sorted(certain_events)
+
+def main():
+    # Read the input data
+    D, M, N = map(int, input().split())
+    implications = [tuple(map(int, input().split())) for _ in range(M)]
+    events = set(map(int, input().split()))
+
+    # Find the certain events
+    certain_events = find_certain_events(D, M, N, implications, events)
+
+    # Print the certain events in increasing order
+    print(*certain_events)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,16 +1,29 @@
 
-def get_scientific_points(cards):
-    points = 0
-    card_counts = {}
-    for card in cards:
-        if card not in card_counts:
-            card_counts[card] = 1
-        else:
-            card_counts[card] += 1
-    for card, count in card_counts.items():
-        points += count ** 2
-    for card in card_counts:
-        if card_counts[card] == 3:
-            points += 7
-    return points
+def get_minimum_operations(s, t):
+    # Initialize variables
+    operations = 0
+    i, j = 0, 0
+    
+    # Loop through both strings simultaneously
+    while i < len(s) and j < len(t):
+        # If the characters at the current indices are not the same, increment the operation count
+        if s[i] != t[j]:
+            operations += 1
+        # Increment the indices
+        i += 1
+        j += 1
+    
+    # Return the minimum number of operations required to convert s to t
+    return operations
+
+def main():
+    # Read the input strings from stdin
+    s = input()
+    t = input()
+    
+    # Call the get_minimum_operations function and print the result
+    print(get_minimum_operations(s, t))
+
+if __name__ == '__main__':
+    main()
 

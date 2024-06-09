@@ -1,30 +1,19 @@
 
-def elevator_buttons(f, s, g, u, d):
-    # Initialize variables
-    pushes = 0
-    current_floor = s
+def get_divisors(n):
+    divisors = []
+    for i in range(1, n+1):
+        if n % i == 0:
+            divisors.append(i)
+    return divisors
 
-    # Loop until we reach the goal floor or exceed the number of floors
-    while current_floor != g and current_floor <= f:
-        # Calculate the distance to the goal floor
-        distance = abs(g - current_floor)
+def solve(n):
+    factorial = 1
+    for i in range(1, n+1):
+        factorial = (factorial * i) % 1000000007
+    divisors = get_divisors(factorial)
+    return len(divisors)
 
-        # Check if we can reach the goal floor with the UP button
-        if distance <= u:
-            # Press the UP button and update the current floor
-            current_floor += distance
-            pushes += 1
-
-        # Check if we can reach the goal floor with the DOWN button
-        elif distance <= d:
-            # Press the DOWN button and update the current floor
-            current_floor -= distance
-            pushes += 1
-
-        # We cannot reach the goal floor with either button
-        else:
-            return "use the stairs"
-
-    # Return the number of pushes
-    return pushes
+if __name__ == '__main__':
+    n = int(input())
+    print(solve(n))
 

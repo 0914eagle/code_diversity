@@ -1,28 +1,32 @@
 
-def is_berlanese(s):
-    vowels = ["a", "o", "u", "i", "e"]
-    consonants = ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z"]
+def get_min_boxes(n, m, a, X):
+    # Calculate the total number of candies in each level
+    total_candies = [0] * (n + 1)
+    total_candies[0] = 1
+    for i in range(1, n + 1):
+        total_candies[i] = total_candies[i - 1] * a[i - 1]
     
-    if len(s) == 0:
-        return "YES"
+    # Initialize the minimum number of boxes to open for each query
+    min_boxes = [0] * m
     
-    if s[0] in vowels:
-        return is_berlanese(s[1:])
+    # Loop through each query and calculate the minimum number of boxes to open
+    for i in range(m):
+        # Find the level of the box that contains at least X[i] candies
+        for j in range(n, -1, -1):
+            if total_candies[j] >= X[i]:
+                min_boxes[i] = j
+                break
     
-    if s[0] == "n":
-        if len(s) == 1:
-            return "YES"
-        else:
-            return is_berlanese(s[1:])
-    
-    if s[0] in consonants:
-        if len(s) == 1:
-            return "NO"
-        else:
-            if s[1] in vowels:
-                return is_berlanese(s[2:])
-            else:
-                return "NO"
-    
-    return "NO"
+    return min_boxes
+
+def main():
+    n, m = map(int, input().split())
+    a = list(map(int, input().split()))
+    X = list(map(int, input().split()))
+    min_boxes = get_min_boxes(n, m, a, X)
+    for i in range(m):
+        print(min_boxes[i])
+
+if __name__ == '__main__':
+    main()
 

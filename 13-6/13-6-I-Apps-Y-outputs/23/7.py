@@ -1,25 +1,14 @@
 
-def solve(N, p, times):
-    # Initialize variables
-    num_ac = 0
-    penalty_time = 0
+def get_largest_element(my_list):
+    return max(my_list)
 
-    # Sort the times in non-decreasing order
-    sorted_times = sorted(times)
+def get_index_of_largest_element(my_list):
+    return my_list.index(max(my_list))
 
-    # Loop through the problems in non-decreasing order
-    for i in range(N):
-        # If the current problem is the first problem to be solved, skip it
-        if i == p:
-            continue
-        # If the current problem cannot be solved within the remaining time, break the loop
-        if sorted_times[i] > penalty_time:
-            break
-        # Increment the number of accepted problems
-        num_ac += 1
-        # Update the penalty time
-        penalty_time += sorted_times[i]
-
-    # Return the number of accepted problems and penalty time
-    return num_ac, penalty_time
+if __name__ == '__main__':
+    n = int(input())
+    my_list = list(map(int, input().split()))
+    largest_element = get_largest_element(my_list)
+    index_of_largest_element = get_index_of_largest_element(my_list)
+    print(index_of_largest_element)
 

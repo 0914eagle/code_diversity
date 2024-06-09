@@ -1,30 +1,35 @@
 
-def solve(n, flights):
-    # Initialize a graph with the given flights
-    graph = {i: set() for i in range(1, n + 1)}
-    for i, j in flights:
-        graph[i].add(j)
-        graph[j].add(i)
+def solve(evidence, implications):
+    # Initialize a set to store the events that have certainly occurred
+    certainly_occurred = set()
 
-    # Find the flight with the maximum number of changes
-    max_changes = 0
-    flight_to_cancel = None
-    for i in range(1, n + 1):
-        for j in range(i + 1, n + 1):
-            if len(graph[i] & graph[j]) > max_changes:
-                max_changes = len(graph[i] & graph[j])
-                flight_to_cancel = (i, j)
+    # Iterate over the evidence
+    for event in evidence:
+        # Add the event to the set of certainly occurred events
+        certainly_occurred.add(event)
 
-    # Find the best new flight to add
-    min_changes = float("inf")
-    new_flight = None
-    for i in range(1, n + 1):
-        for j in range(i + 1, n + 1):
-            if i not in graph[j] and j not in graph[i]:
-                changes = len(graph[i] & graph[j]) + 1
-                if changes < min_changes:
-                    min_changes = changes
-                    new_flight = (i, j)
+        # Iterate over the implications
+        for implication in implications:
+            # If the event is the antecedent of the implication
+            if implication[0] == event:
+                # Add the consequent of the implication to the set of certainly occurred events
+                certainly_occurred.add(implication[1])
 
-    return (max_changes - 1, flight_to_cancel, new_flight)
+    # Return the set of certainly occurred events
+    return certainly_occurred
+
+def main():
+    # Read the input
+    num_events, num_implications, num_evidence = map(int, input().split())
+    evidence = set(map(int, input().split()))
+    implications = [tuple(map(int, input().split())) for _ in range(num_implications)]
+
+    # Solve the problem
+    certainly_occurred = solve(evidence, implications)
+
+    # Print the result
+    print(*sorted(certainly_occurred), sep='\n')
+
+if __name__ == '__main__':
+    main()
 

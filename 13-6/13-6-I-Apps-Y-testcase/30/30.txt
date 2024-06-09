@@ -1,12 +1,10 @@
 {
     "inputs": [
-        "aaaa\n",
-        "ab\n",
-        "bbabab\n"
+        "11 15\n",
+        "4 3\n"
     ],
     "outputs": [
-        "a\n",
-        "-1\n",
-        "bba\n"
+        "19\n",
+        "2\n"
     ]
 }

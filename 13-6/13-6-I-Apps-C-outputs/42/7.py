@@ -1,36 +1,37 @@
 
-def solve(R, S, L, A, B):
-    # Initialize a dictionary to store the number of lawsuits won by each individual and corporation
-    wins = {}
-    for i in range(1, R+1):
-        wins[f"INDV{i}"] = 0
-    for i in range(1, S+1):
-        wins[f"CORP{i}"] = 0
-    
-    # Iterate through the lawsuits and update the number of lawsuits won by each individual and corporation
-    for i in range(L):
-        individual = f"INDV{A[i]}"
-        corporation = f"CORP{B[i]}"
-        wins[individual] += 1
-        wins[corporation] += 1
-    
-    # Find the individual and corporation with the minimum number of lawsuits won
-    min_individual = None
-    min_corporation = None
-    for individual, count in wins.items():
-        if min_individual is None or count < wins[min_individual]:
-            min_individual = individual
-    for corporation, count in wins.items():
-        if min_corporation is None or count < wins[min_corporation]:
-            min_corporation = corporation
-    
-    # Return the ruling for each lawsuit
-    ruling = []
-    for i in range(L):
-        if wins[f"INDV{A[i]}"] < wins[min_individual]:
-            ruling.append(f"INDV{A[i]}")
-        else:
-            ruling.append(f"CORP{B[i]}")
-    
-    return ruling
+def get_button_presses(current_state, desired_state):
+    # Initialize the button press sequence
+    button_presses = []
+
+    # Loop through the current state and compare it to the desired state
+    for i in range(len(current_state)):
+        # If the current state and desired state are different, add a button press to the sequence
+        if current_state[i] != desired_state[i]:
+            # Determine which button to press based on the current state and desired state
+            if current_state[i] > desired_state[i]:
+                button_presses.append("R " + str(i))
+            else:
+                button_presses.append("G " + str(i))
+
+    # Return the button press sequence
+    return button_presses
+
+def main():
+    # Read the input
+    N, M = map(int, input().split())
+    current_state = list(map(int, input().split()))
+    desired_state = list(map(int, input().split()))
+
+    # Get the button press sequence
+    button_presses = get_button_presses(current_state, desired_state)
+
+    # Print the length of the button press sequence
+    print(len(button_presses))
+
+    # Print the button press sequence
+    for button_press in button_presses:
+        print(button_press)
+
+if __name__ == '__main__':
+    main()
 

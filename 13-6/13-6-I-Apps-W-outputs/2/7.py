@@ -1,17 +1,43 @@
 
-def solve(n, s):
-    # Initialize the number of sets to 0
-    sets = 0
+def get_expected_length(n, roads):
+    # Initialize a dictionary to store the distances between each pair of cities
+    distances = {}
+    for road in roads:
+        city1, city2 = road[0], road[1]
+        if city1 not in distances:
+            distances[city1] = {}
+        distances[city1][city2] = 1
+        if city2 not in distances:
+            distances[city2] = {}
+        distances[city2][city1] = 1
+    
+    # Initialize a set to store the cities that have been visited
+    visited_cities = set()
+    visited_cities.add(1)
+    
+    # Initialize a list to store the expected lengths of each city
+    expected_lengths = [0] * (n + 1)
+    expected_lengths[1] = 0
+    
+    # Loop through each city and calculate the expected length of reaching it
+    for city in range(1, n + 1):
+        if city not in visited_cities:
+            visited_cities.add(city)
+            for neighbor in distances[city]:
+                if neighbor not in visited_cities:
+                    expected_lengths[neighbor] += expected_lengths[city] / len(distances[city])
+    
+    # Return the expected length of the journey
+    return sum(expected_lengths)
 
-    # Iterate over the string s
-    for i in range(n):
-        # If the current character is 0 or 1, increment the number of sets
-        if s[i] in "01":
-            sets += 1
-        # If the current character is ? and the previous character is 0 or 1, decrement the number of sets
-        elif s[i] == "?" and (i == 0 or s[i-1] in "01"):
-            sets -= 1
+def main():
+    n = int(input())
+    roads = []
+    for i in range(n - 1):
+        road = list(map(int, input().split()))
+        roads.append(road)
+    print(get_expected_length(n, roads))
 
-    # Return the number of sets
-    return sets
+if __name__ == '__main__':
+    main()
 

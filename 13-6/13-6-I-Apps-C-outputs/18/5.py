@@ -1,31 +1,15 @@
 
-def get_unused_switches(n, m, cables):
-    # Initialize a graph with n vertices and 0 edges
-    graph = [[] for _ in range(n)]
+def is_perfect_square(n):
+    return int(n**0.5)**2 == n
 
-    # Add edges to the graph based on the cables
-    for a, b, length in cables:
-        graph[a - 1].append((b - 1, length))
-        graph[b - 1].append((a - 1, length))
+def get_largest_non_perfect_square(arr):
+    return max([x for x in arr if not is_perfect_square(x)])
 
-    # Find all reachable vertices from switch 1
-    visited = [False] * n
-    queue = [0]
-    visited[0] = True
-    while queue:
-        vertex = queue.pop(0)
-        for neighbor, _ in graph[vertex]:
-            if not visited[neighbor]:
-                visited[neighbor] = True
-                queue.append(neighbor)
+def main():
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(get_largest_non_perfect_square(arr))
 
-    # Find all unused switches
-    unused_switches = []
-    for switch in range(n):
-        if switch == 0 or switch == n - 1:
-            continue
-        if not visited[switch]:
-            unused_switches.append(switch + 1)
-
-    return len(unused_switches), sorted(unused_switches)
+if __name__ == '__main__':
+    main()
 

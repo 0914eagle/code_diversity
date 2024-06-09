@@ -1,23 +1,32 @@
 
-def solve(n, x, edges):
-    # Create a graph object from the edge list
-    graph = {i: set() for i in range(1, n+1)}
-    for i, j in edges:
-        graph[i].add(j)
-        graph[j].add(i)
-    
-    # Breadth-first search to find the shortest path from the root to the target vertex
-    queue = [(1, [1])]
-    visited = set()
-    while queue:
-        vertex, path = queue.pop(0)
-        if vertex == x:
-            return len(path)
-        for neighbor in graph[vertex]:
-            if neighbor not in visited:
-                queue.append((neighbor, path + [neighbor]))
-                visited.add(neighbor)
-    
-    # If the target vertex is not reachable, return -1
-    return -1
+def calculate_time(total_time, monkeys_type_1, monkeys_type_2):
+    # Calculate the time it takes for each type of monkey to pick and open all the coconuts
+    time_type_1 = 0
+    time_type_2 = 0
+    for monkey in monkeys_type_1:
+        time_type_1 += monkey[0] + (monkey[1] * len(monkeys_type_1))
+    for monkey in monkeys_type_2:
+        time_type_2 += monkey[0] + (monkey[1] * len(monkeys_type_2))
+
+    # Calculate the time between the arrival of the first type of monkeys and the arrival of the second type
+    time_between = total_time - time_type_1 - time_type_2
+
+    return time_between
+
+def main():
+    total_time = int(input())
+    num_monkeys_type_1 = int(input())
+    monkeys_type_1 = []
+    for i in range(num_monkeys_type_1):
+        monkeys_type_1.append(list(map(int, input().split())))
+    num_monkeys_type_2 = int(input())
+    monkeys_type_2 = []
+    for i in range(num_monkeys_type_2):
+        monkeys_type_2.append(list(map(int, input().split())))
+
+    time_between = calculate_time(total_time, monkeys_type_1, monkeys_type_2)
+    print(time_between)
+
+if __name__ == '__main__':
+    main()
 

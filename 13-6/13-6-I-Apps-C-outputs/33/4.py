@@ -1,14 +1,20 @@
 
-def get_badge_numbers(start_room, end_room, locks):
-    # Initialize a set to store the badge numbers that can pass through the locks
-    badge_numbers = set()
+def carryless_multiplication(a, b):
+    result = 0
+    for i in range(len(a)):
+        for j in range(len(b)):
+            result += a[i] * b[j]
+    return result
 
-    # Iterate through the locks
-    for lock in locks:
-        # If the lock is between the start and end rooms, add the badge numbers to the set
-        if lock[0] == start_room and lock[1] == end_room:
-            badge_numbers.update(range(lock[2], lock[3] + 1))
+def find_smallest_a(n):
+    a = 1
+    while True:
+        if carryless_multiplication(a, a) == n:
+            return a
+        a += 1
+    return -1
 
-    # Return the length of the set, which is the number of badge numbers that can pass through the locks
-    return len(badge_numbers)
+if __name__ == '__main__':
+    n = int(input())
+    print(find_smallest_a(n))
 

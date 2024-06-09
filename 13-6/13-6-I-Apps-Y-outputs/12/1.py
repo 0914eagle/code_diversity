@@ -1,15 +1,20 @@
 
-def solve(parts, days):
-    # Initialize a set to store the unique parts
-    unique_parts = set()
-    # Iterate through the list of parts
-    for part in parts:
-        # If the part is not in the set, add it to the set
-        if part not in unique_parts:
-            unique_parts.add(part)
-        # If the set size is equal to the number of parts, return the current day
-        if len(unique_parts) == len(parts):
-            return days
-    # If the set size is not equal to the number of parts, return "paradox avoided"
-    return "paradox avoided"
+def get_input():
+    N = int(input())
+    sticks = list(map(int, input().split()))
+    return N, sticks
+
+def is_triangle(sticks):
+    sticks.sort()
+    return sticks[0] + sticks[1] > sticks[2]
+
+def main():
+    N, sticks = get_input()
+    if len(sticks) == 3 and is_triangle(sticks):
+        print("possible")
+    else:
+        print("impossible")
+
+if __name__ == '__main__':
+    main()
 

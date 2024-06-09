@@ -1,9 +1,20 @@
 
-def count_cells(n, x):
-    count = 0
-    for i in range(1, n+1):
-        for j in range(1, n+1):
-            if i * j == x:
-                count += 1
-    return count
+def get_final_value(programme):
+    x = 0
+    for statement in programme:
+        if statement == "++X":
+            x += 1
+        elif statement == "--X":
+            x -= 1
+    return x
+
+def main():
+    n = int(input())
+    programme = []
+    for _ in range(n):
+        programme.append(input())
+    print(get_final_value(programme))
+
+if __name__ == '__main__':
+    main()
 

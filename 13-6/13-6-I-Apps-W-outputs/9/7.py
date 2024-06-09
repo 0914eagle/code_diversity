@@ -1,10 +1,22 @@
 
-def get_lucky_index(n):
-    lucky_digits = ["4", "7"]
-    n_str = str(n)
-    count = 0
-    for i in range(len(n_str)):
-        if n_str[i] in lucky_digits:
-            count += 1
-    return count
+def get_max_sum(numbers):
+    # Calculate the sum of the given numbers
+    sum = 0
+    for num in numbers:
+        sum += num
+    # Return the sum
+    return sum
+
+def get_max_sum_with_operation(numbers):
+    # Calculate the sum of the given numbers
+    sum = 0
+    for num in numbers:
+        sum += num
+    # Return the sum
+    return sum
+
+if __name__ == '__main__':
+    num_list = list(map(int, input().split()))
+    result = get_max_sum(num_list)
+    print(result)
 

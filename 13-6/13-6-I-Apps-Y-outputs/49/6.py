@@ -1,14 +1,21 @@
 
-def solve(my_list):
-    # find the maximum and minimum elements in the list
-    max_element = max(my_list)
-    min_element = min(my_list)
+def get_input():
+    return list(map(int, input().split()))
 
-    # find the sum of the elements in the list
-    sum_of_elements = sum(my_list)
+def calculate_time(distance, speed):
+    return distance / speed
 
-    # calculate the result
-    result = max_element + min_element + sum_of_elements
+def check_if_on_time(meeting_time, travel_time):
+    return meeting_time >= travel_time
 
-    return result
+def main():
+    distance, meeting_time, speed = get_input()
+    travel_time = calculate_time(distance, speed)
+    if check_if_on_time(meeting_time, travel_time):
+        print("Yes")
+    else:
+        print("No")
+
+if __name__ == '__main__':
+    main()
 

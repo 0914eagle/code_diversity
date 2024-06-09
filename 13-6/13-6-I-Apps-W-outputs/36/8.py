@@ -1,27 +1,36 @@
 
-def get_min_price_to_obtain_all_vitamins(n, prices, vitamins):
-    # Initialize a dictionary to store the count of vitamins for each juice
-    vitamin_count = {}
+def get_optimal_strength(n, p, assignment):
+    # Initialize the maximum strength and the optimal assignment
+    max_strength = 0
+    optimal_assignment = ""
+    
+    # Iterate over all possible prefixes and suffixes
     for i in range(n):
-        vitamin_count[i] = 0
-        for vitamin in vitamins[i]:
-            vitamin_count[i] += 1
+        for j in range(i, n):
+            # Calculate the strength of the prefix or suffix
+            strength = sum(p[i:j+1])
+            
+            # If the strength is greater than the maximum strength, update the maximum strength and the optimal assignment
+            if strength > max_strength:
+                max_strength = strength
+                optimal_assignment = assignment[:i] + "".join(reversed(assignment[i:j+1])) + assignment[j+1:]
+    
+    # Return the maximum strength and the optimal assignment
+    return max_strength, optimal_assignment
 
-    # Sort the juices by the number of vitamins they contain, in descending order
-    sorted_juices = sorted(range(n), key=lambda i: vitamin_count[i], reverse=True)
+def main():
+    # Read the input
+    n = int(input())
+    p = list(map(int, input().split()))
+    assignment = input()
+    
+    # Call the get_optimal_strength function
+    max_strength, optimal_assignment = get_optimal_strength(n, p, assignment)
+    
+    # Print the output
+    print(max_strength)
+    print(optimal_assignment)
 
-    # Initialize the minimum total price to obtain all vitamins as the price of the first juice
-    min_price = prices[sorted_juices[0]]
-
-    # Iterate through the sorted juices and add the price of each juice if it contains a vitamin that is not yet obtained
-    for i in sorted_juices:
-        if vitamin_count[i] > 0:
-            min_price += prices[i]
-            vitamin_count[i] -= 1
-
-    # If all three vitamins are obtained, return the minimum total price, otherwise return -1
-    if vitamin_count == {0, 0, 0}:
-        return min_price
-    else:
-        return -1
+if __name__ == '__main__':
+    main()
 

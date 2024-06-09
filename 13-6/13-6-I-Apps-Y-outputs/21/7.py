@@ -1,17 +1,23 @@
 
-def get_maximum_sum_of_absolute_differences(n, m):
-    # Initialize the array with all elements as 0
-    arr = [0] * n
-    
-    # Fill the array in a way that the sum of elements is m
-    for i in range(n):
-        arr[i] = m // n
-        m -= m // n
-    
-    # Calculate the sum of absolute differences between adjacent elements
-    sum_abs_diff = 0
-    for i in range(n - 1):
-        sum_abs_diff += abs(arr[i] - arr[i + 1])
-    
-    return sum_abs_diff
+def is_shiritori_observed(words):
+    seen = set()
+    for word in words:
+        if word not in seen:
+            seen.add(word)
+        else:
+            return False
+    return True
+
+def main():
+    num_words = int(input())
+    words = []
+    for i in range(num_words):
+        words.append(input())
+    if is_shiritori_observed(words):
+        print("Yes")
+    else:
+        print("No")
+
+if __name__ == '__main__':
+    main()
 

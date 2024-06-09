@@ -1,14 +1,23 @@
 
-def solve(p):
-    n = len(p)
-    m = 0
-    swaps = []
-    for i in range(n):
-        for j in range(i+1, n):
-            if abs(i-j) >= n//2:
-                swaps.append([i, j])
-                m += 1
-                if m > 5*n:
-                    return -1
-    return swaps
+def add_to_set(S, x):
+    S.append(x)
+    S.sort()
+    return S
+
+def find_subset(S):
+    max_value = max(S)
+    mean = sum(S) / len(S)
+    subset = [x for x in S if x <= mean]
+    return max_value - mean
+
+if __name__ == '__main__':
+    Q = int(input())
+    S = []
+    for i in range(Q):
+        query = input().split()
+        if query[0] == '1':
+            x = int(query[1])
+            S = add_to_set(S, x)
+        else:
+            print(find_subset(S))
 

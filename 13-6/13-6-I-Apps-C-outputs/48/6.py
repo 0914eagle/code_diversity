@@ -1,48 +1,31 @@
 
-def find_celery(vertices, sightings):
-    # Convert the vertices and sightings to numpy arrays for easier computation
-    vertices = np.array(vertices)
-    sightings = np.array(sightings)
+def get_barbarian_words(barbarians):
+    return [barbarian.lower() for barbarian in barbarians]
 
-    # Initialize the minimum polygon with all the vertices of Alexa Forest
-    min_polygon = vertices
+def get_barbarian_tablets(barbarians):
+    return [barbarian.lower() for barbarian in barbarians]
 
-    # Loop through each sighting of Celery
-    for sighting in sightings:
-        # Find the polygon that contains the sighting and has the smallest number of vertices
-        containing_polygon = find_containing_polygon(sighting, vertices)
-        if len(containing_polygon) < len(min_polygon):
-            min_polygon = containing_polygon
+def get_barbarian_answers(barbarians, shown_words, questions):
+    answers = []
+    for question in questions:
+        if question[0] == 1:
+            shown_word = question[1]
+            answers.append(sum(1 for word in barbarians if shown_word in word))
+        else:
+            barbarian_index = question[1] - 1
+            answers.append(sum(1 for word in barbarians if barbarians[barbarian_index] in word))
+    return answers
 
-    return len(min_polygon)
+def main():
+    num_barbarians = int(input())
+    barbarians = [input() for _ in range(num_barbarians)]
+    num_rounds = int(input())
+    shown_words = [input() for _ in range(num_rounds)]
+    questions = [[int(x) for x in input().split()] for _ in range(num_rounds)]
+    answers = get_barbarian_answers(barbarians, shown_words, questions)
+    for answer in answers:
+        print(answer)
 
-def find_containing_polygon(sighting, vertices):
-    # Find the polygon that contains the sighting and has the smallest number of vertices
-    containing_polygon = []
-    for vertex in vertices:
-        if is_inside_polygon(sighting, vertex):
-            containing_polygon.append(vertex)
-
-    return containing_polygon
-
-def is_inside_polygon(point, polygon):
-    # Check if a point is inside a polygon
-    # Using the ray casting algorithm
-    x, y = point
-    poly = np.array(polygon)
-    n = len(polygon)
-    inside = False
-    p1x, p1y = poly[0]
-    for i in range(n+1):
-        p2x, p2y = poly[i % n]
-        if y > min(p1y, p2y):
-            if y <= max(p1y, p2y):
-                if x <= max(p1x, p2x):
-                    if p1y != p2y:
-                        xints = (y-p1y)*(p2x-p1x)/(p2y-p1y)+p1x
-                        if p1x == p2x or x <= xints:
-                            inside = not inside
-        p1x, p1y = p2x, p2y
-
-    return inside
+if __name__ == '__main__':
+    main()
 

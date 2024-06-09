@@ -1,19 +1,37 @@
 
-def max_lights_on(n, s, *lights):
-    # Initialize a list to store the on/off state of each light
-    light_states = [int(s[i]) for i in range(n)]
-    
-    # Initialize a list to store the maximum number of lights on at any moment
-    max_lights_on_list = [0]
-    
-    # Iterate through each light and its parameters
-    for i, (a, b) in enumerate(lights):
-        # Determine the on/off state of the light at each moment
-        light_states = [1 - light_states[i] if j % (a * 2) == b else light_states[i] for j in range(max(light_states))]
-        
-        # Update the maximum number of lights on at any moment
-        max_lights_on_list.append(max(max_lights_on_list[-1], sum(light_states)))
-    
-    # Return the maximum number of lights on at any moment
-    return max_lights_on_list[-1]
+def get_path_cost(graph, start, end):
+    visited = set()
+    queue = [(start, 0)]
+    while queue:
+        node, cost = queue.pop(0)
+        if node == end:
+            return cost
+        if node not in visited:
+            visited.add(node)
+            for neighbor, weight in graph[node].items():
+                queue.append((neighbor, cost | weight))
+    return 0
+
+def solve(n, m, roads, q, queries):
+    graph = {i: {} for i in range(1, n + 1)}
+    for a, b, w in roads:
+        graph[a][b] = w
+        graph[b][a] = w
+    results = []
+    for s, t in queries:
+        results.append(get_path_cost(graph, s, t))
+    return results
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    roads = []
+    for _ in range(m):
+        a, b, w = map(int, input().split())
+        roads.append((a, b, w))
+    q = int(input())
+    queries = []
+    for _ in range(q):
+        s, t = map(int, input().split())
+        queries.append((s, t))
+    print(*solve(n, m, roads, q, queries))
 

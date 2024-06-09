@@ -1,15 +1,32 @@
 
-def solve(a):
-    # Find the greatest common divisor (gcd) of all elements in the array
-    gcd = a[0]
-    for i in range(1, len(a)):
-        gcd = gcd(gcd, a[i])
+def get_cost(n, edges, values):
+    # Initialize the cost as 0
+    cost = 0
     
-    # Count the number of positive integers that divide gcd
-    count = 0
-    for i in range(1, gcd + 1):
-        if gcd % i == 0:
-            count += 1
+    # Loop through each edge and calculate the distance between the vertices
+    for edge in edges:
+        cost += values[edge[0] - 1] * (n - 1)
     
-    return count
+    return cost
+
+def main():
+    # Read the number of vertices and edges
+    n, m = map(int, input().split())
+    
+    # Read the values of the vertices
+    values = list(map(int, input().split()))
+    
+    # Read the edges
+    edges = []
+    for _ in range(m):
+        edges.append(list(map(int, input().split())))
+    
+    # Calculate the cost of the tree
+    cost = get_cost(n, edges, values)
+    
+    # Print the cost
+    print(cost)
+
+if __name__ == '__main__':
+    main()
 

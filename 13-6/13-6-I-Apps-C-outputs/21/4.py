@@ -1,15 +1,27 @@
 
-def is_winning_strategy(n, k, ancient_numbers):
-    # Check if k is one of the ancient numbers
-    if k in ancient_numbers:
-        return "Yes"
-    
-    # Check if there is any number that is not in the set of ancient numbers
-    # and has the same remainder as k when divided by any of the ancient numbers
-    for i in range(1, n+1):
-        if i not in ancient_numbers and i % k == 0:
-            return "No"
-    
-    # If we reach this point, then Arya can understand the value of x mod k
-    return "Yes"
+def get_discrete_dish(w, wi, ti, dt):
+    return (ti - (w-1)*dt) * w
+
+def get_continuous_dish(w, ti, dt):
+    return (ti - w*dt) * w
+
+def get_max_tastiness(dishes, w):
+    total_tastiness = 0
+    for dish in dishes:
+        if dish[0] == 'D':
+            total_tastiness += get_discrete_dish(w, dish[1], dish[2], dish[3])
+        else:
+            total_tastiness += get_continuous_dish(w, dish[1], dish[2])
+    return total_tastiness
+
+def main():
+    d, w = map(int, input().split())
+    dishes = []
+    for i in range(d):
+        dish = input().split()
+        dishes.append([dish[0], int(dish[1]), int(dish[2]), int(dish[3])])
+    print(get_max_tastiness(dishes, w))
+
+if __name__ == '__main__':
+    main()
 

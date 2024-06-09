@@ -1,11 +1,21 @@
 
-def ultra_quick_sort(arr):
-    n = len(arr)
-    if n <= 1:
-        return 0
-    else:
-        pivot = arr[0]
-        left = [x for x in arr[1:] if x <= pivot]
-        right = [x for x in arr[1:] if x > pivot]
-        return 1 + ultra_quick_sort(left) + ultra_quick_sort(right)
+def is_adorable(s):
+    n = len(s)
+    if n % 2 == 1:
+        return False
+    for i in range(n // 2):
+        if s[i] != s[n - 1 - i]:
+            return False
+    return True
+
+def can_be_split(s):
+    n = len(s)
+    for i in range(1, n):
+        if is_adorable(s[:i]) and is_adorable(s[i:]):
+            return True
+    return False
+
+if __name__ == '__main__':
+    s = input()
+    print("Yes") if can_be_split(s) else print("No")
 

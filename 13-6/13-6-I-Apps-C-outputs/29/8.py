@@ -1,45 +1,50 @@
 
-def mad(grid, a, b):
-    # Initialize an empty list to store the densities
-    densities = []
+def get_maze_size(maze):
+    return len(maze), len(maze[0])
 
-    # Iterate over each possible rectangle
-    for i in range(a, b + 1):
-        # Calculate the density of statisticians in the current rectangle
-        density = calculate_density(grid, i)
+def get_starting_position(maze):
+    for row in maze:
+        for col in row:
+            if col == "J":
+                return row.index(col), maze.index(row)
 
-        # Add the density to the list of densities
-        densities.append(density)
+def get_fire_position(maze):
+    for row in maze:
+        for col in row:
+            if col == "F":
+                return row.index(col), maze.index(row)
 
-    # Return the median of the densities
-    return median(densities)
+def is_safe_position(maze, row, col):
+    return maze[row][col] != "F" and maze[row][col] != "#"
 
-def calculate_density(grid, area):
-    # Initialize a counter for the number of statisticians
-    count = 0
+def find_path(maze, row, col, time):
+    if not is_safe_position(maze, row, col):
+        return -1
+    if row == 0 or col == 0 or row == len(maze) - 1 or col == len(maze[0]) - 1:
+        return time
+    min_time = float("inf")
+    for r, c in [(row - 1, col), (row + 1, col), (row, col - 1), (row, col + 1)]:
+        if is_safe_position(maze, r, c):
+            t = find_path(maze, r, c, time + 1)
+            if t != -1 and t < min_time:
+                min_time = t
+    return min_time
 
-    # Iterate over each square in the grid
-    for row in grid:
-        for cell in row:
-            # Check if the current square is within the rectangle
-            if cell >= area:
-                # Increment the counter
-                count += 1
+def solve(maze):
+    rows, cols = get_maze_size(maze)
+    start_row, start_col = get_starting_position(maze)
+    fire_row, fire_col = get_fire_position(maze)
+    time = find_path(maze, start_row, start_col, 0)
+    if time == -1:
+        return "IMPOSSIBLE"
+    return time
 
-    # Return the density as the number of statisticians per square
-    return count / (len(grid) * len(grid[0]))
-
-def median(my_list):
-    # Sort the list
-    my_list.sort()
-
-    # Check if the list has an odd or even number of elements
-    if len(my_list) % 2 == 0:
-        # If the list has an even number of elements, return the mean of the two middle elements
-        mid = len(my_list) // 2
-        return (my_list[mid - 1] + my_list[mid]) / 2
-    else:
-        # If the list has an odd number of elements, return the middle element
-        mid = len(my_list) // 2
-        return my_list[mid]
+if __name__ == '__main__':
+    maze = [
+        list("####"),
+        list("#JF#"),
+        list("#..#"),
+        list("#..#")
+    ]
+    print(solve(maze))
 

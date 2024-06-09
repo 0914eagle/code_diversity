@@ -1,18 +1,22 @@
 
-def get_badge_numbers(num_rooms, num_locks, num_badges, start_room, end_room, locks):
-    # Initialize a set to store the badge numbers that can pass through the locks
-    badge_numbers = set()
+def carryless_add(a, b):
+    return (a + b) % 10
 
-    # Iterate through the locks
-    for lock in locks:
-        # Extract the information from the lock
-        room_a, room_b, low, high = lock
+def carryless_multiply(a, b):
+    result = 0
+    for i in range(len(str(a))):
+        for j in range(len(str(b))):
+            result = carryless_add(result, carryless_add(a % 10 * b % 10, a // 10 * b // 10))
+        a //= 10
+    return result
 
-        # Check if the lock is between the start and end rooms
-        if room_a == start_room and room_b == end_room:
-            # Add the badge numbers that can pass through the lock to the set
-            badge_numbers |= set(range(low, high + 1))
+def find_square_root(n):
+    for i in range(1, n + 1):
+        if carryless_multiply(i, i) == n:
+            return i
+    return -1
 
-    # Return the number of badge numbers that can pass through the locks
-    return len(badge_numbers)
+if __name__ == '__main__':
+    n = int(input())
+    print(find_square_root(n))
 

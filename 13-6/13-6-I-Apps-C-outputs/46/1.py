@@ -1,24 +1,36 @@
 
-def construct_color_code(n, p, palettes):
-    # Check if the palette is valid
-    if len(set(palettes)) != len(palettes):
-        return "impossible"
-    
-    # Initialize the color code with the first element
-    color_code = [0] * 2**n
-    color_code[0] = palettes[0]
-    
-    # Fill in the remaining elements
-    for i in range(1, 2**n):
-        # Find the next element in the color code
-        next_element = (color_code[i-1] + 1) % len(palettes)
-        
-        # Check if the next element is in the palette
-        if next_element not in palettes:
-            return "impossible"
-        
-        # Add the next element to the color code
-        color_code[i] = next_element
-    
-    return color_code
+def get_max_payout(cards):
+    # Initialize variables
+    stop_counting_index = -1
+    start_counting_index = -1
+    total_sum = 0
+    count = 0
+
+    # Iterate through the cards
+    for i, card in enumerate(cards):
+        # If the card is counted, add it to the total sum and increment the count
+        if i > stop_counting_index and (i < start_counting_index or start_counting_index == -1):
+            total_sum += card
+            count += 1
+
+        # If the card is not counted and the player calls "Stop Counting!", set the stop_counting_index
+        if card != 0 and stop_counting_index == -1:
+            stop_counting_index = i
+
+        # If the card is not counted and the player calls "Start Counting!", set the start_counting_index
+        if card != 0 and start_counting_index == -1:
+            start_counting_index = i
+
+    # Calculate the maximum payout
+    max_payout = total_sum / count if count != 0 else 0
+
+    return max_payout
+
+def main():
+    num_cards = int(input())
+    cards = list(map(int, input().split()))
+    print(get_max_payout(cards))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,41 +1,33 @@
 
-def can_reproduce_art(art):
-    # Initialize a 2D array to store the colors of the art piece
-    art_array = []
-    for row in art:
-        art_array.append([])
-        for col in row:
-            art_array[-1].append(col)
+def read_input():
+    N, K, Q = map(int, input().split())
+    A = list(map(int, input().split()))
+    return N, K, Q, A
 
-    # Initialize a 2D array to store the colors of the reproduced art piece
-    reproduced_array = [[None for _ in range(len(art_array[0]))] for _ in range(len(art_array))]
+def find_min_diff(A, K, Q):
+    # Initialize the minimum difference to a large value
+    min_diff = float('inf')
+    # Loop through all possible starting indices
+    for i in range(N - K + 1):
+        # Find the minimum element in the subsequence
+        min_elem = min(A[i:i+K])
+        # Find the index of the minimum element in the subsequence
+        min_index = A[i:i+K].index(min_elem)
+        # Remove the minimum element from the subsequence
+        A[i+min_index] = float('inf')
+        # Find the new minimum and maximum elements in the subsequence
+        new_min = min(A[i:i+K])
+        new_max = max(A[i:i+K])
+        # Calculate the difference between the new minimum and maximum elements
+        diff = new_max - new_min
+        # Update the minimum difference if necessary
+        min_diff = min(min_diff, diff)
+    return min_diff
 
-    # Iterate through the art piece and check if it is possible to reproduce it
-    for i in range(len(art_array)):
-        for j in range(len(art_array[0])):
-            # If the current cell is not white, check if it is possible to reproduce it
-            if art_array[i][j] != "W":
-                # Check if the current cell is a corner cell
-                if i == 0 or j == 0 or i == len(art_array) - 1 or j == len(art_array[0]) - 1:
-                    # If the current cell is a corner cell, it is not possible to reproduce it
-                    return "NO"
-                # Check if the current cell has the same color as its adjacent cells
-                if (art_array[i - 1][j] == art_array[i][j] and
-                        art_array[i + 1][j] == art_array[i][j] and
-                        art_array[i][j - 1] == art_array[i][j] and
-                        art_array[i][j + 1] == art_array[i][j]):
-                    # If the current cell has the same color as its adjacent cells, it is possible to reproduce it
-                    reproduced_array[i][j] = art_array[i][j]
-                else:
-                    # If the current cell does not have the same color as its adjacent cells, it is not possible to reproduce it
-                    return "NO"
-            # If the current cell is white, it is possible to reproduce it
-            else:
-                reproduced_array[i][j] = "W"
+def main():
+    N, K, Q, A = read_input()
+    print(find_min_diff(A, K, Q))
 
-    # If all cells of the reproduced art piece have been colored, it is possible to reproduce the art piece
-    if all(all(cell is not None for cell in row) for row in reproduced_array):
-        return "YES"
-    else:
-        return "NO"
+if __name__ == '__main__':
+    main()
 

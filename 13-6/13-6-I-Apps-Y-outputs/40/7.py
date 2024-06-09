@@ -1,30 +1,47 @@
 
-def solve(s_a, s_b, s_c):
-    # Initialize the decks of the players
-    alice_deck = [c for c in s_a]
-    bob_deck = [c for c in s_b]
-    charlie_deck = [c for c in s_c]
+def get_divisible_elements(arr):
+    # Count the number of elements divisible by 3 in the array
+    count = 0
+    for num in arr:
+        if num % 3 == 0:
+            count += 1
+    return count
 
-    # Initialize the current player
-    current_player = "A"
+def get_max_divisible_elements(arr):
+    # Sort the array in non-decreasing order
+    arr.sort()
+    # Initialize the maximum number of elements divisible by 3 to 0
+    max_count = 0
+    # Loop through the array and try all possible pairs of elements
+    for i in range(len(arr)):
+        for j in range(i+1, len(arr)):
+            # Check if the sum of the two elements is divisible by 3
+            if (arr[i] + arr[j]) % 3 == 0:
+                # If the sum is divisible by 3, add it to the array and sort it
+                arr.append(arr[i] + arr[j])
+                arr.sort()
+                # Get the number of elements divisible by 3 in the array
+                count = get_divisible_elements(arr)
+                # Update the maximum number of elements divisible by 3 if necessary
+                max_count = max(max_count, count)
+                # Remove the last element from the array
+                arr.pop()
+    return max_count
 
-    # While there are still cards in the decks
-    while alice_deck or bob_deck or charlie_deck:
-        # If the current player's deck is not empty
-        if current_player == "A" and alice_deck:
-            current_player = alice_deck.pop()
-        elif current_player == "B" and bob_deck:
-            current_player = bob_deck.pop()
-        elif current_player == "C" and charlie_deck:
-            current_player = charlie_deck.pop()
-        else:
-            break
+def main():
+    # Read the number of queries
+    t = int(input())
+    # Loop through each query
+    for _ in range(t):
+        # Read the size of the array
+        n = int(input())
+        # Read the array
+        arr = list(map(int, input().split()))
+        # Get the maximum number of elements divisible by 3 in the array
+        max_count = get_max_divisible_elements(arr)
+        # Print the result
+        print(max_count)
 
-    # Return the winner
-    if current_player == "A":
-        return "A"
-    elif current_player == "B":
-        return "B"
-    else:
-        return "C"
+if __name__ == '__main__':
+    main()
 

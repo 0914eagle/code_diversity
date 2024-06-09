@@ -1,29 +1,61 @@
 
-def max_profit(producer_companies, consumer_companies):
-    # Initialize variables
-    max_profit = 0
-    selected_producer, selected_consumer = None, None
+def read_input():
+    N = int(input())
+    numbers = [int(i) for i in input().split()]
+    return N, numbers
 
-    # Iterate over each producer company
-    for producer in producer_companies:
-        # Iterate over each consumer company
-        for consumer in consumer_companies:
-            # Calculate the profit for this pair of companies
-            profit = calculate_profit(producer, consumer)
+def f1(N, numbers):
+    # find the number of odd numbers
+    odd_count = 0
+    for num in numbers:
+        if num % 2 == 1:
+            odd_count += 1
+    
+    # find the number of moves
+    moves = 0
+    for i in range(N):
+        if i % 2 == 0:
+            moves += 1
+        else:
+            moves += 2
+    
+    # find the number of first moves
+    first_moves = 0
+    for i in range(N):
+        if i % 2 == 0:
+            first_moves += 1
+        else:
+            first_moves += 2
+    
+    return first_moves
 
-            # If the profit is greater than the current maximum profit, update the maximum profit and the selected companies
-            if profit > max_profit:
-                max_profit = profit
-                selected_producer = producer
-                selected_consumer = consumer
+def f2(N, numbers):
+    # find the number of odd numbers
+    odd_count = 0
+    for num in numbers:
+        if num % 2 == 1:
+            odd_count += 1
+    
+    # find the number of moves
+    moves = 0
+    for i in range(N):
+        if i % 2 == 0:
+            moves += 1
+        else:
+            moves += 2
+    
+    # find the number of first moves
+    first_moves = 0
+    for i in range(N):
+        if i % 2 == 0:
+            first_moves += 1
+        else:
+            first_moves += 2
+    
+    return first_moves
 
-    # Return the maximum profit and the selected companies
-    return max_profit, selected_producer, selected_consumer
-
-def calculate_profit(producer, consumer):
-    # Calculate the profit for this pair of companies
-    profit = producer["price"] - consumer["price"]
-
-    # Return the profit
-    return profit
+if __name__ == '__main__':
+    N, numbers = read_input()
+    print(f1(N, numbers))
+    print(f2(N, numbers))
 

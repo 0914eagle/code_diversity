@@ -1,31 +1,22 @@
 
-def get_pizza_indices(n, m, friends, pizzas):
-    # Initialize variables
-    pleased_friends = 0
-    total_price = 0
-    chosen_pizzas = []
+def get_divisors(n):
+    divisors = []
+    for i in range(1, int(n**0.5) + 1):
+        if n % i == 0:
+            divisors.append(i)
+            if i * i != n:
+                divisors.append(n // i)
+    divisors.sort()
+    return divisors
 
-    # Iterate over each pizza
-    for i in range(m):
-        # Check if the pizza has at least one favorite ingredient of each friend
-        for friend in friends:
-            for ingredient in friend:
-                if ingredient in pizzas[i]:
-                    break
-            else:
-                break
-        else:
-            # If the pizza has at least one favorite ingredient of each friend, increment the pleased friends count
-            pleased_friends += 1
-            # Add the pizza to the chosen pizzas list
-            chosen_pizzas.append(i)
-            # Add the pizza price to the total price
-            total_price += pizzas[i][0]
+def sum_of_divisors(n):
+    divisors = get_divisors(n)
+    return sum(divisors)
 
-        # If the pleased friends count is equal to the number of friends, break the loop
-        if pleased_friends == n:
-            break
+def solve(n):
+    return sum(k * sum_of_divisors(k) for k in range(1, n + 1))
 
-    # Return the chosen pizzas indices and the total price
-    return chosen_pizzas, total_price
+if __name__ == '__main__':
+    n = int(input())
+    print(solve(n))
 

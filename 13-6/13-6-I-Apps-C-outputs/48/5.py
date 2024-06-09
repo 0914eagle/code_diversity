@@ -1,19 +1,38 @@
 
-def find_smallest_polygon(vertices, sightings):
-    # Sort the vertices and sightings
-    vertices.sort()
-    sightings.sort()
+def f1(N, words):
+    # Initialize a dictionary to store the words and their frequencies
+    word_freq = {}
+    for word in words:
+        if word in word_freq:
+            word_freq[word] += 1
+        else:
+            word_freq[word] = 1
     
-    # Initialize the minimum polygon with all vertices
-    min_polygon = vertices.copy()
+    # Return the sorted list of words and their frequencies
+    return sorted(word_freq.items(), key=lambda x: x[1], reverse=True)
+
+def f2(N, words, shown_word):
+    # Initialize a counter to keep track of the number of words that contain the shown word as a substring
+    count = 0
+    for word in words:
+        if shown_word in word:
+            count += 1
     
-    # Iterate through the sightings and check if they are inside the polygon
-    for sighting in sightings:
-        if sighting not in min_polygon:
-            # If the sighting is not in the polygon, find the closest vertex and add it to the polygon
-            closest_vertex = min(min_polygon, key=lambda vertex: abs(sighting - vertex))
-            min_polygon.append(closest_vertex)
-    
-    # Return the smallest polygon with the minimum number of vertices
-    return len(min_polygon)
+    # Return the number of words that contain the shown word as a substring
+    return count
+
+if __name__ == '__main__':
+    N = int(input())
+    words = []
+    for _ in range(N):
+        words.append(input())
+    Q = int(input())
+    for _ in range(Q):
+        T = int(input())
+        if T == 1:
+            shown_word = input()
+            print(f1(N, words))
+        else:
+            S = int(input())
+            print(f2(N, words, shown_word))
 

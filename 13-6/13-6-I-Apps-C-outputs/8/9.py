@@ -1,33 +1,29 @@
 
-def is_reproducible(art_piece):
-    # Initialize a 2D array to store the colors of the art piece
-    art_array = []
-    for row in art_piece:
-        art_array.append([])
-        for col in row:
-            art_array[-1].append(col)
+def read_input():
+    N, K, Q = map(int, input().split())
+    A = list(map(int, input().split()))
+    return N, K, Q, A
 
-    # Check if the art piece can be reproduced
-    for i in range(len(art_array)):
-        for j in range(len(art_array[0])):
-            if art_array[i][j] != 'W' and not can_reproduce(art_array, i, j):
-                return "NO"
+def solve(N, K, Q, A):
+    # Initialize the smallest and largest values
+    smallest, largest = float('inf'), -float('inf')
+    
+    # Perform the Q operations
+    for i in range(Q):
+        # Find the smallest element in the contiguous subsequence of length K
+        smallest_element = min(A[i:i+K])
+        
+        # Remove the smallest element from the sequence
+        A.remove(smallest_element)
+        
+        # Update the smallest and largest values
+        smallest = min(smallest, smallest_element)
+        largest = max(largest, smallest_element)
+    
+    # Return the difference between the smallest and largest values
+    return largest - smallest
 
-    return "YES"
-
-# Check if a given cell can be reproduced
-def can_reproduce(art_array, i, j):
-    # Check if the cell is on the boundary of the art piece
-    if i < 1 or j < 1 or i > len(art_array) - 2 or j > len(art_array[0]) - 2:
-        return False
-
-    # Check if the cell has the same color as its neighbors
-    if art_array[i][j] != art_array[i - 1][j] or art_array[i][j] != art_array[i + 1][j] or art_array[i][j] != art_array[i][j - 1] or art_array[i][j] != art_array[i][j + 1]:
-        return False
-
-    # Check if the cell has the same color as its diagonal neighbors
-    if art_array[i][j] != art_array[i - 1][j - 1] or art_array[i][j] != art_array[i - 1][j + 1] or art_array[i][j] != art_array[i + 1][j - 1] or art_array[i][j] != art_array[i + 1][j + 1]:
-        return False
-
-    return True
+if __name__ == '__main__':
+    N, K, Q, A = read_input()
+    print(solve(N, K, Q, A))
 

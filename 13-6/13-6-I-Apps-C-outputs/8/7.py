@@ -1,20 +1,28 @@
 
-def is_reproducible(art_piece):
-    # Initialize a 2D array to store the colors of the art piece
-    art_array = []
-    for row in art_piece:
-        art_array.append([])
-        for col in row:
-            art_array[-1].append(col)
+def read_input():
+    N, K, Q = map(int, input().split())
+    A = list(map(int, input().split()))
+    return N, K, Q, A
 
-    # Initialize a 2D array to store the colors of the reproduced art piece
-    reproduced_array = [[0] * len(art_array[0]) for _ in range(len(art_array))]
+def optimize_sequence(A, K, Q):
+    # Initialize the smallest and largest values removed as infinity and -infinity, respectively
+    smallest, largest = float('inf'), -float('inf')
+    
+    # Loop through each contiguous subsequence of length K
+    for i in range(N-K+1):
+        # Find the minimum element in the subsequence
+        min_elem = min(A[i:i+K])
+        # Update the smallest and largest values removed
+        smallest = min(smallest, min_elem)
+        largest = max(largest, min_elem)
+    
+    # Return the difference between the smallest and largest values removed
+    return largest - smallest
 
-    # Loop through the art piece and check if it can be reproduced
-    for i in range(len(art_array)):
-        for j in range(len(art_array[0])):
-            if art_array[i][j] != reproduced_array[i][j]:
-                return "NO"
+def main():
+    N, K, Q, A = read_input()
+    print(optimize_sequence(A, K, Q))
 
-    return "YES"
+if __name__ == '__main__':
+    main()
 

@@ -1,31 +1,36 @@
 
-def solve(flights, additional_flights):
-    # Initialize a dictionary to store the cost of each flight
-    flight_costs = {}
-    for flight in flights:
-        cost = flight[2]
-        flight_costs[(flight[0], flight[1])] = cost
-        flight_costs[(flight[1], flight[0])] = cost
+def get_adjacent_islands(n, a, b):
+    # Find the empty pedestal and the island with the desired statue
+    empty_pedestal = a.index(0)
+    desired_statue = b[empty_pedestal]
 
-    # Initialize a set to store the cities that have been visited
-    visited_cities = set()
+    # Find the island directly adjacent to the empty pedestal
+    adjacent_island = (empty_pedestal - 1) % n
+    if adjacent_island < 0:
+        adjacent_island += n
 
-    # Initialize the total cost of the flights
-    total_cost = 0
+    # Check if the island with the desired statue is adjacent to the empty pedestal
+    if b[adjacent_island] == desired_statue:
+        return True
+    else:
+        return False
 
-    # Loop through the additional flights
-    for flight in additional_flights:
-        # Check if the flight has already been visited
-        if (flight[0], flight[1]) in visited_cities or (flight[1], flight[0]) in visited_cities:
-            continue
+def is_rearrangement_possible(n, a, b):
+    # Base case: If the number of islands is 1, return True
+    if n == 1:
+        return True
 
-        # Add the cost of the flight to the total cost
-        total_cost += flight[2]
+    # Recursive case: If the number of islands is greater than 1, check if the islanders can rearrange the statues in the existing network
+    if get_adjacent_islands(n, a, b):
+        # If the islanders can move the statue in the existing network, recursively check if the islanders can rearrange the statues in the remaining islands
+        return is_rearrangement_possible(n-1, a, b)
+    else:
+        # If the islanders cannot move the statue in the existing network, return False
+        return False
 
-        # Add the cities to the set of visited cities
-        visited_cities.add((flight[0], flight[1]))
-        visited_cities.add((flight[1], flight[0]))
-
-    # Return the total cost of the flights
-    return total_cost
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    print("YES") if is_rearrangement_possible(n, a, b) else print("NO")
 

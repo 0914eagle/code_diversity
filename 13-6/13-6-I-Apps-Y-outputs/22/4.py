@@ -1,23 +1,20 @@
 
-from collections import namedtuple
+def get_median(numbers):
+    numbers.sort()
+    if len(numbers) % 2 == 0:
+        return (numbers[len(numbers) // 2 - 1] + numbers[len(numbers) // 2]) / 2
+    else:
+        return numbers[len(numbers) // 2]
 
-Student = namedtuple('Student', 'id marks class name')
-
-def get_average_marks(my_list):
-    total = 0
-    for student in my_list:
-        total += student.marks
-    return total / len(my_list)
+def get_median_excluding_i(numbers, i):
+    numbers.sort()
+    return get_median(numbers[:i] + numbers[i+1:])
 
 def main():
     n = int(input())
-    column_names = input().split()
-    my_list = []
-    for _ in range(n):
-        values = input().split()
-        student = Student(id=values[column_names.index('ID')], marks=int(values[column_names.index('MARKS')]), class=values[column_names.index('CLASS')], name=values[column_names.index('NAME')])
-        my_list.append(student)
-    print(f"{get_average_marks(my_list):.2f}")
+    numbers = [int(x) for x in input().split()]
+    for i in range(1, n+1):
+        print(get_median_excluding_i(numbers, i-1))
 
 if __name__ == '__main__':
     main()

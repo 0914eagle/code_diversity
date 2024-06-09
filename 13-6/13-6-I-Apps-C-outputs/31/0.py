@@ -1,28 +1,33 @@
 
-def solve(balls):
-    # Initialize variables
-    num_balls = len(balls)
-    num_white_balls = num_balls // 2
-    num_black_balls = num_balls // 2
-    white_balls = balls[:num_white_balls]
-    black_balls = balls[num_white_balls:]
-    operations = 0
+import math
 
-    # Sort the white balls
-    white_balls.sort(key=lambda x: x[1])
+def f1(n, t):
+    # Calculate the number of ways to choose the values of s_i
+    num_ways = math.factorial(n) // math.factorial(n - 2)
+    
+    # Calculate the number of ways to permute the chairs
+    num_permutations = math.factorial(n)
+    
+    # Calculate the number of ways to choose the values of s_i and permute the chairs
+    result = num_ways * num_permutations
+    
+    return result % (10**9 + 7)
 
-    # Sort the black balls
-    black_balls.sort(key=lambda x: x[1])
+def f2(n, t):
+    # Calculate the number of ways to choose the values of s_i
+    num_ways = math.factorial(n) // math.factorial(n - 2)
+    
+    # Calculate the number of ways to permute the chairs
+    num_permutations = math.factorial(n)
+    
+    # Calculate the number of ways to choose the values of s_i and permute the chairs
+    result = num_ways * num_permutations
+    
+    return result % (10**9 + 7)
 
-    # Swap the first white ball with the first black ball if necessary
-    if white_balls[0][1] > black_balls[0][1]:
-        operations += 1
-        white_balls[0], black_balls[0] = black_balls[0], white_balls[0]
-
-    # Swap the last white ball with the last black ball if necessary
-    if white_balls[-1][1] < black_balls[-1][1]:
-        operations += 1
-        white_balls[-1], black_balls[-1] = black_balls[-1], white_balls[-1]
-
-    return operations
+if __name__ == '__main__':
+    n = int(input())
+    t = list(map(int, input().split()))
+    print(f1(n, t))
+    print(f2(n, t))
 

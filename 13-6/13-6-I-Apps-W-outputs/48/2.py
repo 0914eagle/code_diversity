@@ -1,23 +1,24 @@
 
-def solve(n, k, a):
-    # Calculate the total power Inna tells Dima off with for each task
-    total_power = [0] * (n + 1)
-    for i in range(1, n):
-        total_power[i] = total_power[i - 1] + a[i - 1]
-    
-    # Initialize the minimum power and the corresponding first task
-    min_power = total_power[n]
-    first_task = 1
-    
-    # Iterate through all possible first tasks
-    for i in range(1, n - k + 2):
-        # Calculate the total power Inna tells Dima off with for the current first task
-        current_power = total_power[i + k - 1] - total_power[i - 1]
-        
-        # If the current power is less than the minimum power, update the minimum power and the corresponding first task
-        if current_power < min_power:
-            min_power = current_power
-            first_task = i
-    
-    return first_task
+def get_min_coins(numbers):
+    # Initialize the minimum number of coins to infinity
+    min_coins = float('inf')
+    # Loop through all possible combinations of numbers
+    for i in range(len(numbers)):
+        for j in range(i+1, len(numbers)):
+            # Check if the product of the two numbers is equal to 1
+            if numbers[i] * numbers[j] == 1:
+                # If it is, return the minimum number of coins needed
+                return 2
+    # If no combination of numbers has a product of 1, return the minimum number of coins needed
+    return min_coins
+
+def main():
+    # Read the input data
+    n = int(input())
+    numbers = list(map(int, input().split()))
+    # Call the get_min_coins function and print the result
+    print(get_min_coins(numbers))
+
+if __name__ == '__main__':
+    main()
 

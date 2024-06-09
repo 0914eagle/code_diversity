@@ -1,22 +1,38 @@
 
-def max_tables(n, k, s):
-    # Count the number of occupied tables
-    occupied_tables = s.count("1")
+def get_min_moves(n):
+    # Initialize the minimum number of moves to -1
+    min_moves = -1
+    
+    # Loop through each digit in the number
+    for i in range(len(n)):
+        # If the current digit is not a 0 or 5, skip this digit
+        if n[i] not in ["0", "5"]:
+            continue
+        
+        # If the current digit is a 0, try swapping it with the next digit
+        if n[i] == "0":
+            # If the next digit is a 5, swap them and update the minimum number of moves
+            if n[i+1] == "5":
+                min_moves = 1
+                break
+        
+        # If the current digit is a 5, try swapping it with the previous digit
+        if n[i] == "5":
+            # If the previous digit is a 0, swap them and update the minimum number of moves
+            if n[i-1] == "0":
+                min_moves = 1
+                break
+    
+    # Return the minimum number of moves
+    return min_moves
 
-    # Initialize the maximum number of free tables to occupy
-    max_free_tables = 0
+def main():
+    # Read a single integer n from stdin
+    n = int(input())
+    
+    # Call the get_min_moves function and print the result
+    print(get_min_moves(n))
 
-    # Iterate over the string
-    for i in range(n):
-        # Check if the current table is occupied
-        if s[i] == "0":
-            # Calculate the minimum distance between the current table and the next occupied table
-            min_distance = occupied_tables - i
-
-            # Check if the minimum distance is greater than or equal to k
-            if min_distance >= k:
-                # Increment the maximum number of free tables that can be occupied
-                max_free_tables += 1
-
-    return max_free_tables
+if __name__ == '__main__':
+    main()
 

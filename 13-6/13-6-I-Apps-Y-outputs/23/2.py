@@ -1,23 +1,49 @@
 
-def solve(N, p, estimations):
-    # Sort the estimations in non-decreasing order
-    estimations.sort()
-    # Initialize the number of accepted problems to 0
-    num_ac = 0
-    # Initialize the penalty time to 0
-    penalty_time = 0
-    # Iterate through the estimations
-    for i in range(N):
-        # If the current problem is the problem that the team wants to solve first
-        if i == p:
-            # Add the estimated time for the current problem to the penalty time
-            penalty_time += estimations[i]
-        # If the current problem is not the problem that the team wants to solve first
-        else:
-            # Add the estimated time for the current problem to the penalty time
-            penalty_time += estimations[i]
-            # Increment the number of accepted problems
-            num_ac += 1
-    # Return the number of accepted problems and the penalty time
-    return num_ac, penalty_time
+def get_largest_number(numbers):
+    return max(numbers)
+
+def get_base_and_xor_language(largest_number):
+    base = 1
+    xor_language = ""
+    while largest_number > 0:
+        remainder = largest_number % base
+        if remainder == 0:
+            xor_language += "ABRACADABRA"
+        largest_number //= base
+        base += 1
+    return xor_language
+
+def get_string_from_xor_language(xor_language):
+    string = ""
+    for char in xor_language:
+        if char == "A":
+            string += "1"
+        elif char == "B":
+            string += "0"
+        elif char == "R":
+            string += "1"
+        elif char == "C":
+            string += "0"
+        elif char == "D":
+            string += "1"
+        elif char == "A":
+            string += "0"
+        elif char == "B":
+            string += "1"
+        elif char == "R":
+            string += "0"
+        elif char == "A":
+            string += "1"
+    return string
+
+def get_output(numbers):
+    largest_number = get_largest_number(numbers)
+    xor_language = get_base_and_xor_language(largest_number)
+    string = get_string_from_xor_language(xor_language)
+    return string
+
+if __name__ == '__main__':
+    n = int(input())
+    numbers = list(map(int, input().split()))
+    print(get_output(numbers))
 

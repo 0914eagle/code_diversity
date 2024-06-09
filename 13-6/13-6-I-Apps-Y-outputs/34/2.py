@@ -1,22 +1,25 @@
 
-def solve(f, s, g, u, d):
-    # Initialize variables
-    pushes = 0
-    current_floor = s
+import math
 
-    # Loop until we reach the goal floor or exceed the number of floors
-    while current_floor != g and current_floor <= f:
-        # Calculate the next floor based on the up and down buttons
-        next_floor = current_floor + u if current_floor + u <= f else current_floor - d if current_floor - d >= 1 else None
+def factorial(n):
+    if n == 0:
+        return 1
+    else:
+        return n * factorial(n-1)
 
-        # If the next floor is None, we cannot reach the goal floor
-        if next_floor is None:
-            return "use the stairs"
+def count_divisors(n):
+    divisors = 0
+    for i in range(1, int(math.sqrt(n))+1):
+        if n % i == 0:
+            divisors += 2
+    if int(math.sqrt(n))**2 == n:
+        divisors -= 1
+    return divisors
 
-        # Update the current floor and the number of pushes
-        current_floor = next_floor
-        pushes += 1
+def solve(n):
+    return count_divisors(factorial(n)) % (10**9+7)
 
-    # Return the number of pushes
-    return pushes
+if __name__ == '__main__':
+    n = int(input())
+    print(solve(n))
 

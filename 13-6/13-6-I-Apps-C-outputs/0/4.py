@@ -1,42 +1,36 @@
 
-def solve(n, T, p, t, d, graph):
-    # Initialize the maximum points and the tasks to perform
-    max_points = 0
-    tasks = []
+def read_input():
+    n, m, t, op = map(int, input().split())
+    grid = []
+    for _ in range(m):
+        grid.append(list(map(int, input().split())))
+    return n, m, t, op, grid
+
+def get_valid_assignments(n, m, t, op, grid):
+    # Initialize a set to store the valid assignments
+    valid_assignments = set()
     
-    # Loop through each task
-    for i in range(n):
-        # Check if the task has a deadline
-        if d[i] != -1:
-            # Calculate the time left to complete the task
-            time_left = T - t[i]
-            # Check if the task can be completed within the time left
-            if time_left >= 0:
-                # Calculate the points earned from completing the task
-                points = p[i]
-                # Check if completing the task is optimal
-                if points > max_points:
-                    # Update the maximum points and the tasks to perform
-                    max_points = points
-                    tasks = [i]
-                # Check if completing the task is suboptimal but still better than the current maximum
-                elif points == max_points:
-                    # Add the task to the list of tasks to perform
-                    tasks.append(i)
-        # Check if the task does not have a deadline
-        else:
-            # Calculate the points earned from completing the task
-            points = p[i]
-            # Check if completing the task is optimal
-            if points > max_points:
-                # Update the maximum points and the tasks to perform
-                max_points = points
-                tasks = [i]
-            # Check if completing the task is suboptimal but still better than the current maximum
-            elif points == max_points:
-                # Add the task to the list of tasks to perform
-                tasks.append(i)
+    # Iterate over each grid square in the section
+    for i in range(m):
+        for j in range(m):
+            # Get the value of the current grid square
+            value = grid[i][j]
+            
+            # If the value is not already in the valid assignments set, add it
+            if value not in valid_assignments:
+                valid_assignments.add(value)
+            
+            # If the value is the target value, add it to the valid assignments set
+            if value == t:
+                valid_assignments.add(value)
     
-    # Return the maximum points and the tasks to perform
-    return max_points, tasks
+    # Return the number of valid assignments
+    return len(valid_assignments)
+
+def main():
+    n, m, t, op, grid = read_input()
+    print(get_valid_assignments(n, m, t, op, grid))
+
+if __name__ == '__main__':
+    main()
 

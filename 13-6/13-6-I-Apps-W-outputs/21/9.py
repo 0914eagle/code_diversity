@@ -1,42 +1,47 @@
 
-def solve(n, lengths, terrain, stamina):
-    # Initialize variables
-    time = 0
-    position = 0
-    current_terrain = terrain[0]
-    current_stamina = stamina
+def parse_expression(expression):
+    # Function to parse the expression and return a list of numbers and operators
+    numbers = []
+    operators = []
+    for char in expression:
+        if char.isdigit():
+            numbers.append(int(char))
+        elif char in ["+", "-"]:
+            operators.append(char)
+    return numbers, operators
 
-    # Iterate through the segments
-    for i in range(n):
-        # Check if Bob can move to the next segment
-        if current_terrain == "W" and current_stamina >= 1:
-            # Bob can walk, so reduce stamina and move forward
-            current_stamina -= 1
-            position += 1
-        elif current_terrain == "L" and current_stamina >= 2:
-            # Bob can fly, so reduce stamina and move forward
-            current_stamina -= 2
-            position += 1
-        elif current_terrain == "G" and current_stamina >= 3:
-            # Bob can swim, so reduce stamina and move forward
-            current_stamina -= 3
-            position += 1
+
+def evaluate_expression(numbers, operators):
+    # Function to evaluate the expression and return the result
+    result = numbers[0]
+    for i in range(len(operators)):
+        if operators[i] == "+":
+            result += numbers[i + 1]
         else:
-            # Bob cannot move, so break the loop
-            break
+            result -= numbers[i + 1]
+    return result
 
-        # Update the current terrain and stamina
-        current_terrain = terrain[i % n]
-        current_stamina = max(current_stamina, 0)
 
-        # Add time based on the current terrain
-        if current_terrain == "W":
-            time += 5
-        elif current_terrain == "L":
-            time += 1
-        elif current_terrain == "G":
-            time += 3
+def get_maximum_value(expression, plus_count, minus_count):
+    # Function to get the maximum value of the expression after placing the plus and minus operators
+    numbers, operators = parse_expression(expression)
+    plus_indices = [i for i in range(len(numbers)) if numbers[i] == 1]
+    minus_indices = [i for i in range(len(numbers)) if numbers[i] == -1]
+    max_value = 0
+    for plus_index in plus_indices:
+        for minus_index in minus_indices:
+            numbers[plus_index] = 0
+            numbers[minus_index] = 0
+            result = evaluate_expression(numbers, operators)
+            if result > max_value:
+                max_value = result
+            numbers[plus_index] = 1
+            numbers[minus_index] = -1
+    return max_value
 
-    # Return the minimum time needed to reach Alice's nest
-    return time
+
+if __name__ == "__main__":
+    expression = input()
+    plus_count, minus_count = map(int, input().split())
+    print(get_maximum_value(expression, plus_count, minus_count))
 

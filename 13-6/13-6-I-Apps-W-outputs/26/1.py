@@ -1,23 +1,36 @@
 
-def get_max_vegetables(lanes, capacity):
-    # Sort the lanes based on the number of vegetables in each lane
-    sorted_lanes = sorted(lanes, key=lambda x: x[1], reverse=True)
+def read_input():
+    n = int(input())
+    queue = []
+    for i in range(n):
+        a, b = map(int, input().split())
+        queue.append((a, b))
+    return queue
 
-    # Initialize variables to keep track of the number of vegetables collected and the current day
-    total_vegetables = 0
-    current_day = 1
+def restore_queue(queue):
+    # Initialize the queue with the first student
+    x = [queue[0][0]]
+    # Iterate through the rest of the students
+    for i in range(1, len(queue)):
+        # If the student has a neighbor in front of them
+        if queue[i][0] != 0:
+            # Find the index of the neighbor in the queue
+            index = next((j for j, x_j in enumerate(x) if x_j == queue[i][0]), None)
+            # Insert the current student after the neighbor
+            x.insert(index + 1, queue[i][1])
+        # If the student has a neighbor behind them
+        if queue[i][1] != 0:
+            # Find the index of the neighbor in the queue
+            index = next((j for j, x_j in enumerate(x) if x_j == queue[i][1]), None)
+            # Insert the current student before the neighbor
+            x.insert(index, queue[i][0])
+    return x
 
-    # Loop through the lanes and collect vegetables until the capacity is reached or there are no more lanes with edible vegetables
-    while total_vegetables < capacity and sorted_lanes:
-        # Find the first lane with edible vegetables and collect as many as possible
-        for lane in sorted_lanes:
-            if lane[0] <= current_day:
-                total_vegetables += min(lane[1], capacity - total_vegetables)
-                lane[1] -= min(lane[1], capacity - total_vegetables)
+def print_output(x):
+    print(*x)
 
-        # Increment the current day and remove any lanes with 0 vegetables
-        current_day += 1
-        sorted_lanes = [lane for lane in sorted_lanes if lane[1] > 0]
-
-    return total_vegetables
+if __name__ == '__main__':
+    queue = read_input()
+    x = restore_queue(queue)
+    print_output(x)
 

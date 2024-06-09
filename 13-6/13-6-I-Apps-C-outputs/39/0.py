@@ -1,28 +1,33 @@
 
-def get_min_cost(flight_connections, additional_flights):
-    # Initialize a dictionary to store the cost of each flight
-    flight_costs = {}
-    for flight in flight_connections:
-        cost = flight[2]
-        flight_costs[(flight[0], flight[1])] = cost
-        flight_costs[(flight[1], flight[0])] = cost
+def get_empty_island(statues):
+    for i, statue in enumerate(statues):
+        if statue == 0:
+            return i
+    return -1
 
-    # Initialize a set to store the cities that have been reviewed
-    reviewed_cities = set()
+def get_next_island(empty_island, desired_statues, current_statues):
+    for i in range(len(desired_statues)):
+        if desired_statues[i] == current_statues[empty_island]:
+            return i
+    return -1
 
-    # Initialize a minimum spanning tree with the cost of 0
-    mst = 0
+def can_arrange_statues(statues, desired_statues):
+    empty_island = get_empty_island(statues)
+    if empty_island == -1:
+        return False
+    current_statues = statues[:]
+    while empty_island != -1:
+        next_island = get_next_island(empty_island, desired_statues, current_statues)
+        if next_island == -1:
+            return False
+        current_statues[empty_island] = current_statues[next_island]
+        current_statues[next_island] = 0
+        empty_island = get_empty_island(current_statues)
+    return True
 
-    # Loop through the additional flights
-    for flight in additional_flights:
-        # Check if the flight has not been reviewed yet
-        if (flight[0], flight[1]) not in reviewed_cities and (flight[1], flight[0]) not in reviewed_cities:
-            # Add the cost of the flight to the minimum spanning tree
-            mst += flight_costs[(flight[0], flight[1])]
-            # Add the cities to the set of reviewed cities
-            reviewed_cities.add((flight[0], flight[1]))
-            reviewed_cities.add((flight[1], flight[0]))
-
-    # Return the minimum spanning tree cost
-    return mst
+if __name__ == '__main__':
+    n = int(input())
+    statues = list(map(int, input().split()))
+    desired_statues = list(map(int, input().split()))
+    print("YES" if can_arrange_statues(statues, desired_statues) else "NO")
 

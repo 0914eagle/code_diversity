@@ -1,19 +1,37 @@
 
-def get_max_sum(a, k, x):
-    n = len(a)
-    if n < k or x == 0:
-        return -1
-    if k == 1:
-        return sum(a)
-    if x == n:
-        return sum(a)
-    if x < k:
-        return -1
-    dp = [0] * (n + 1)
-    for i in range(1, n + 1):
-        if i < k:
-            dp[i] = a[i - 1]
-        else:
-            dp[i] = max(dp[i - 1], dp[i - k] + a[i - 1])
-    return dp[n]
+def get_operations_required(N):
+    # Initialize variables
+    operations = 0
+    current_amount = 0
+    
+    # Loop through the possible amounts
+    for amount in [1, 6, 9]:
+        # Calculate the number of times we can withdraw this amount
+        num_times = N // amount
+        
+        # Add the number of operations for this amount
+        operations += num_times
+        
+        # Subtract the total amount withdrawn from the current amount
+        current_amount -= num_times * amount
+        
+        # If we have withdrawn enough money, break the loop
+        if current_amount <= 0:
+            break
+    
+    # Return the number of operations required
+    return operations
+
+def main():
+    # Read the input
+    N = int(input())
+    
+    # Calculate the number of operations required
+    operations = get_operations_required(N)
+    
+    # Print the result
+    print(operations)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,21 +1,50 @@
 
-import sys
+def f1(n, m):
+    # function to check if the gargoyle can be rotated
+    def can_rotate(gargoyle, gargoyle_list):
+        for g in gargoyle_list:
+            if g[0] == gargoyle[1] and g[1] == gargoyle[0]:
+                return True
+        return False
 
-def solve(L, R):
-    count = 0
-    for i in range(L, R+1):
-        if '4' in str(i):
-            continue
-        sixes = eights = 0
-        for j in str(i):
-            if j == '6':
-                sixes += 1
-            elif j == '8':
-                eights += 1
-        if sixes == eights:
-            count += 1
-    return count % (10**9+7)
+    # function to rotate the gargoyle
+    def rotate(gargoyle):
+        if gargoyle[0] == "V":
+            return ("H", gargoyle[1])
+        else:
+            return ("V", gargoyle[1])
 
-L, R = map(int, input().split())
-print(solve(L, R))
+    # function to find the minimum number of gargoyles that have to be rotated
+    def find_min_rotations(gargoyle_list):
+        min_rotations = 0
+        for g in gargoyle_list:
+            if can_rotate(g, gargoyle_list):
+                min_rotations += 1
+        return min_rotations
+
+    # read the floorplan of the tomb
+    floorplan = []
+    for i in range(n):
+        line = input()
+        floorplan.append(line)
+
+    # find the gargoyles in the floorplan
+    gargoyles = []
+    for i in range(n):
+        for j in range(m):
+            if floorplan[i][j] in ["V", "H"]:
+                gargoyles.append((floorplan[i][j], (i, j)))
+
+    # find the minimum number of gargoyles that have to be rotated
+    min_rotations = find_min_rotations(gargoyles)
+
+    # return the minimum number of gargoyles that have to be rotated
+    return min_rotations
+
+def f2(...):
+    ...
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    print(f1(n, m))
 

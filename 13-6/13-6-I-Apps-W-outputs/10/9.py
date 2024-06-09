@@ -1,12 +1,25 @@
 
-def find_lipschitz_constant(f):
-    # Find the maximum and minimum values of the function over the given range
-    max_val = max(f.values())
-    min_val = min(f.values())
-    
-    # Calculate the Lipschitz constant as the difference between the maximum and minimum values
-    # divided by the number of points in the range
-    lipschitz_constant = (max_val - min_val) / len(f)
-    
-    return lipschitz_constant
+def get_unread_letters(letter_list):
+    return [letter for letter in letter_list if letter == 0]
+
+def get_read_letters(letter_list):
+    return [letter for letter in letter_list if letter == 1]
+
+def get_min_operations(letter_list):
+    unread_letters = get_unread_letters(letter_list)
+    read_letters = get_read_letters(letter_list)
+    operations = 0
+    while unread_letters:
+        operations += 1
+        current_letter = unread_letters.pop(0)
+        if current_letter in read_letters:
+            read_letters.remove(current_letter)
+    return operations
+
+def main():
+    letter_list = list(map(int, input().split()))
+    print(get_min_operations(letter_list))
+
+if __name__ == '__main__':
+    main()
 

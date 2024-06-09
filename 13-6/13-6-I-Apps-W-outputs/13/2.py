@@ -1,25 +1,41 @@
 
-def is_possible(n, a):
-    # Calculate the total number of pizzas needed
-    total_pizzas = sum(a)
+def get_largest_rectangle(matrix):
+    # Initialize variables
+    max_area = 0
+    current_area = 0
+    stack = []
+    
+    # Iterate through the matrix
+    for i in range(len(matrix)):
+        for j in range(len(matrix[0])):
+            # If the current cell is 1, push its index to the stack and update the current area
+            if matrix[i][j] == "1":
+                stack.append(j)
+                current_area += 1
+            # If the current cell is 0, pop indices from the stack and update the current area
+            elif matrix[i][j] == "0":
+                while stack and stack[-1] > j:
+                    stack.pop()
+                    current_area -= 1
+                if stack and stack[-1] == j:
+                    stack.pop()
+                    current_area -= 1
+            # Update the max area if the current area is greater than the max area
+            if current_area > max_area:
+                max_area = current_area
+    
+    # Return the max area
+    return max_area
 
-    # Initialize the number of pizzas needed for each day
-    pizzas_needed = [0] * n
+def main():
+    matrix = [
+      ["1","0","1","0","0"],
+      ["1","0","1","1","1"],
+      ["1","1","1","1","1"],
+      ["1","0","0","1","0"]
+    ]
+    print(get_largest_rectangle(matrix))
 
-    # Loop through each day
-    for i in range(n):
-        # Calculate the number of pizzas needed for the current day
-        pizzas_needed[i] = a[i]
-
-        # Check if the previous day has any pizzas left over
-        if i > 0 and pizzas_needed[i - 1] > 0:
-            # Use the coupon to buy one pizza
-            pizzas_needed[i] -= 1
-            pizzas_needed[i - 1] -= 1
-
-    # Check if all the pizzas have been ordered
-    if sum(pizzas_needed) == total_pizzas:
-        return "YES"
-    else:
-        return "NO"
+if __name__ == '__main__':
+    main()
 

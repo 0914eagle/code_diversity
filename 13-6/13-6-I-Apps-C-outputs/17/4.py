@@ -1,34 +1,39 @@
 
-def solve(n, crush):
-    # Initialize a list to store the crushes
-    crushes = [0] * n
-    # Populate the list with the given crushes
-    for i in range(n):
-        crushes[i] = crush[i]
-    # Initialize a set to store the visited nodes
-    visited = set()
-    # Initialize a queue to store the nodes to be visited
-    queue = [0]
-    # Loop until the queue is empty
-    while queue:
-        # Dequeue a node from the queue
-        node = queue.pop(0)
-        # If the node is already visited, continue
-        if node in visited:
-            continue
-        # Mark the node as visited
-        visited.add(node)
-        # If the node is the crush of another node, add it to the queue
-        if crushes[node] != node:
-            queue.append(crushes[node])
-        # If the node is the crush of another node, add it to the queue
-        if crushes[node] != node:
-            queue.append(crushes[node])
-    # If all nodes are visited, return -1
-    if len(visited) == n:
-        return -1
-    # Otherwise, return the smallest unvisited node
-    for i in range(n):
-        if i not in visited:
-            return i
+def f1(d, g, n, k):
+    # Initialize variables
+    coins_won = 0
+    coins_lost = 0
+    rounds_played = 0
+    rounds_distracted = 0
+
+    # Play the game
+    while rounds_played < n:
+        # Determine the amount of coins to bet
+        if rounds_played < k:
+            # Gladstone is distracted, bet all coins
+            bet = d
+        else:
+            # Gladstone is not distracted, bet half of coins
+            bet = d // 2
+
+        # Update variables
+        coins_won += bet
+        coins_lost += g - bet
+        rounds_played += 1
+        rounds_distracted += 1
+
+        # Check if the game has ended
+        if coins_won >= g or coins_lost >= d:
+            break
+
+    # Return the maximum amount of coins won
+    return max(coins_won, coins_lost)
+
+def f2(...):
+    # Implement function 2 here
+    pass
+
+if __name__ == '__main__':
+    d, g, n, k = map(int, input().split())
+    print(f1(d, g, n, k))
 

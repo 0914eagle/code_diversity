@@ -1,35 +1,26 @@
 
-def solve(s):
-    # Initialize the number of operations to 0
-    k = 0
+def get_target_weight(weights):
+    # Sort the weights in non-decreasing order
+    weights.sort()
     
-    # Reverse the string
-    rev_s = s[::-1]
+    # Initialize the target weight as the smallest weight
+    target_weight = weights[0]
     
-    # While the string is not a palindrome and the number of operations is less than 30
-    while s != rev_s and k < 30:
-        # Check if the first operation can be applied
-        if len(s) > 2 and s[:3] == rev_s[:3]:
-            # Apply the first operation
-            s = s[3:] + s[:3]
-            rev_s = rev_s[3:] + rev_s[:3]
-            k += 1
-            print("L", 3)
-        # Check if the second operation can be applied
-        elif len(s) > 2 and s[-3:] == rev_s[-3:]:
-            # Apply the second operation
-            s = s[:-3] + s[-3:]
-            rev_s = rev_s[:-3] + rev_s[-3:]
-            k += 1
-            print("R", len(s) - 2)
-        # If both operations are not possible, return -1
-        else:
-            return -1
+    # Iterate through the weights and find the first weight that is greater than the target weight
+    for i in range(1, len(weights)):
+        if weights[i] > target_weight:
+            break
+        target_weight += 1
     
-    # If the string is a palindrome, return the number of operations
-    if s == rev_s:
-        return k
-    # If the number of operations exceeds 30, return -1
-    else:
-        return -1
+    return target_weight
+
+def main():
+    m = int(input())
+    weights = []
+    for i in range(m):
+        weights.append(int(input()))
+    print(get_target_weight(weights))
+
+if __name__ == '__main__':
+    main()
 

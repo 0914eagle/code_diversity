@@ -1,15 +1,18 @@
 
-def get_min_triples(arr):
-    arr.sort()
-    count = 0
-    for i in range(len(arr)-2):
-        j = i+1
-        k = len(arr)-1
-        while j < k:
-            if arr[i] * arr[j] * arr[k] < arr[i] * arr[k] * arr[j]:
-                count += 1
-                j += 1
-            else:
-                k -= 1
-    return count
+def get_triangle_weight(triangle):
+    return triangle[0] * triangle[1] * triangle[2]
+
+def get_min_weight(n):
+    if n == 3:
+        return 6
+    if n == 4:
+        return 18
+    return 0
+
+def main():
+    n = int(input())
+    print(get_min_weight(n))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,21 +1,33 @@
 
-def longest_repeated_substring(input_string):
-    # Initialize variables
-    start_index = 0
-    end_index = 0
-    longest_substring = ""
+import sys
+import math
 
-    # Iterate through the input string
-    for i in range(len(input_string)):
-        # Check if the substring starting at index i is a repetition of a previous substring
-        for j in range(i + 1, len(input_string)):
-            # If the substring is a repetition, update the longest substring and its indices
-            if input_string[i:j] == input_string[i - 1:j - 1]:
-                start_index = i
-                end_index = j
-                longest_substring = input_string[i:j]
-                break
+def get_input():
+    n = int(input())
+    a = list(map(int, input().split()))
+    return n, a
 
-    # Return the longest substring
-    return longest_substring
+def is_sorted(a):
+    for i in range(len(a)):
+        for j in range(i+1, len(a)):
+            if a[i] > a[j]:
+                return False
+    return True
+
+def count_unsorted_sequences(a):
+    n = len(a)
+    count = 0
+    for i in range(n):
+        for j in range(i+1, n):
+            for k in range(j+1, n):
+                if is_sorted([a[i], a[j], a[k]]):
+                    count += 1
+    return count % (10**9 + 9)
+
+def main():
+    n, a = get_input()
+    print(count_unsorted_sequences(a))
+
+if __name__ == '__main__':
+    main()
 

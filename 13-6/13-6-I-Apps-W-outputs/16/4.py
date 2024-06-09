@@ -1,8 +1,19 @@
 
-def get_beautiful_table(n, k):
-    table = [[0 for _ in range(n)] for _ in range(n)]
-    for i in range(n):
-        for j in range(n):
-            table[i][j] = (i + 1) * (j + 1)
-    return table
+def find_pairs(n):
+    pairs = []
+    for i in range(1, n+1):
+        for j in range(i+1, n+1):
+            pairs.append((i, j))
+    return pairs
+
+def solve(n):
+    pairs = find_pairs(n)
+    q = len(pairs)
+    print(q)
+    for pair in pairs:
+        print(pair[0], pair[1])
+
+if __name__ == '__main__':
+    n = int(input())
+    solve(n)
 

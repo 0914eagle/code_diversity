@@ -1,26 +1,53 @@
 
-def get_max_free_tables(n, k, s):
-    # Initialize the number of free tables to 0
-    free_tables = 0
+def get_min_moves(n):
+    # Initialize the minimum number of moves to -1
+    min_moves = -1
+    
+    # Loop through all possible moves
+    for i in range(len(n) - 1):
+        # Get the current digit
+        curr_digit = n[i]
+        
+        # Get the next digit
+        next_digit = n[i + 1]
+        
+        # Check if the current digit is a 0
+        if curr_digit == "0":
+            # If the current digit is a 0, skip this move
+            continue
+        
+        # Check if the next digit is a 0
+        if next_digit == "0":
+            # If the next digit is a 0, skip this move
+            continue
+        
+        # Check if the current digit is a 5
+        if curr_digit == "5":
+            # If the current digit is a 5, check if the next digit is a 2 or 5
+            if next_digit == "2" or next_digit == "5":
+                # If the next digit is a 2 or 5, increment the minimum number of moves
+                min_moves += 1
+        
+        # Check if the next digit is a 5
+        if next_digit == "5":
+            # If the next digit is a 5, check if the current digit is a 2 or 5
+            if curr_digit == "2" or curr_digit == "5":
+                # If the current digit is a 2 or 5, increment the minimum number of moves
+                min_moves += 1
+    
+    # Return the minimum number of moves
+    return min_moves
 
-    # Iterate through the string
-    for i in range(n):
-        # Check if the current table is free
-        if s[i] == "0":
-            # Check if the previous table is occupied
-            if i > 0 and s[i-1] == "1":
-                # Check if the difference between the current table and the previous table is greater than k
-                if i - (i-1) > k:
-                    # Increment the number of free tables
-                    free_tables += 1
+def main():
+    # Read a single integer n from stdin
+    n = int(input())
+    
+    # Call the get_min_moves function and store the result in min_moves
+    min_moves = get_min_moves(n)
+    
+    # Print the minimum number of moves
+    print(min_moves)
 
-            # Check if the next table is occupied
-            if i < n-1 and s[i+1] == "1":
-                # Check if the difference between the current table and the next table is greater than k
-                if (i+1) - i > k:
-                    # Increment the number of free tables
-                    free_tables += 1
-
-    # Return the number of free tables
-    return free_tables
+if __name__ == '__main__':
+    main()
 

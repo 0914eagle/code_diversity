@@ -1,11 +1,27 @@
 
-def predict_temperature(n, temperatures):
-    # Check if the temperatures form an arithmetic progression
-    difference = temperatures[1] - temperatures[0]
-    for i in range(2, n):
-        if temperatures[i] - temperatures[i-1] != difference:
-            return temperatures[n-1]
-    
-    # If they form an arithmetic progression, return the next term
-    return temperatures[n-1] + difference
+def f(string, mapping):
+    result = ""
+    for char in string:
+        result += mapping[char]
+    return result
+
+def find_password(S, T, K, M, m):
+    mapping = {}
+    for i in range(len(T)):
+        mapping[chr(ord('a') + i)] = T[i]
+    password = f(S, mapping)
+    for i in range(K-1):
+        password = f(password, mapping)
+    result = []
+    for i in range(M):
+        result.append(password[m[i]-1])
+    return result
+
+if __name__ == '__main__':
+    S = input()
+    T = input().split()
+    K = int(input())
+    M = int(input())
+    m = list(map(int, input().split()))
+    print(*find_password(S, T, K, M, m))
 

@@ -1,25 +1,18 @@
 
-def antimatter_rain(droplets, sensors):
-    # Initialize an empty list to store the results
-    results = []
-    
-    # Iterate over the droplets
-    for droplet in droplets:
-        # Initialize a variable to store the y-coordinate of the sensor that the droplet will disintegrate with
-        sensor_y = 0
-        
-        # Iterate over the sensors
-        for sensor in sensors:
-            # Check if the droplet is within the range of the sensor
-            if droplet[0] >= sensor[0] and droplet[0] <= sensor[1]:
-                # Check if the droplet is at a higher y-coordinate than the sensor
-                if droplet[1] > sensor[2]:
-                    # Update the y-coordinate of the sensor that the droplet will disintegrate with
-                    sensor_y = sensor[2]
-                    break
-        
-        # Add the y-coordinate of the sensor that the droplet will disintegrate with to the results list
-        results.append(sensor_y)
-    
-    return results
+def f(b, n):
+    if n < b:
+        return n
+    else:
+        return f(b, n // b) + (n % b)
+
+def find_b(n, s):
+    for b in range(2, 10**11+1):
+        if f(b, n) == s:
+            return b
+    return -1
+
+if __name__ == '__main__':
+    n = int(input())
+    s = int(input())
+    print(find_b(n, s))
 

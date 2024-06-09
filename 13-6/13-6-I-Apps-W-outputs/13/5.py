@@ -1,28 +1,42 @@
 
-def is_possible(n, a):
-    # Initialize the number of pizzas needed and the number of discounts used
-    num_pizzas_needed = sum(a)
-    num_discounts_used = 0
+def get_largest_rectangle(matrix):
+    # Initialize variables
+    max_area = 0
+    current_area = 0
+    top_row = 0
+    bottom_row = len(matrix) - 1
+    left_col = 0
+    right_col = len(matrix[0]) - 1
+    
+    # Iterate through the matrix
+    while top_row <= bottom_row and left_col <= right_col:
+        # Check if the current cell is 1
+        if matrix[top_row][left_col] == "1":
+            # Increment the current area
+            current_area += 1
+        # Check if the current cell is 0
+        elif matrix[top_row][left_col] == "0":
+            # If the current area is greater than the max area, update the max area
+            if current_area > max_area:
+                max_area = current_area
+            # Reset the current area
+            current_area = 0
+        # Increment the top row
+        top_row += 1
+    
+    # Return the max area
+    return max_area
 
-    # Iterate through the days
-    for i in range(n):
-        # If there are no teams on this day, skip it
-        if a[i] == 0:
-            continue
+def main():
+    # Test the function with the example matrix
+    matrix = [
+      ["1","0","1","0","0"],
+      ["1","0","1","1","1"],
+      ["1","1","1","1","1"],
+      ["1","0","0","1","0"]
+    ]
+    print(get_largest_rectangle(matrix))
 
-        # If the number of pizzas needed is even, use a discount
-        if num_pizzas_needed % 2 == 0:
-            num_discounts_used += 1
-            num_pizzas_needed //= 2
-
-        # If the number of pizzas needed is odd and the next day has teams, use a coupon
-        elif i < n - 1 and a[i + 1] > 0:
-            num_pizzas_needed -= 1
-
-        # If the number of pizzas needed is still positive after using discounts and coupons, it's not possible
-        if num_pizzas_needed > 0:
-            return "NO"
-
-    # If all pizzas needed have been ordered, return "YES"
-    return "YES"
+if __name__ == '__main__':
+    main()
 

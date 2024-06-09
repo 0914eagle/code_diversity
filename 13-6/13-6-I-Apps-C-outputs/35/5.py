@@ -1,40 +1,26 @@
 
-def solve(r, c, i, j, n):
-    # Initialize the ice rink as a 2D array of characters
-    ice = [['.' for _ in range(c)] for _ in range(r)]
+def get_meow_factor(string):
+    # Initialize the meow factor as 0
+    meow_factor = 0
     
-    # Set the starting position of the Zamboni
-    x, y = i-1, j-1
+    # Loop through each character in the string
+    for i in range(len(string)):
+        # Check if the current character is 'm'
+        if string[i] == 'm':
+            # If it is, check if the next three characters are 'e', 'o', and 'w'
+            if i + 1 < len(string) and string[i + 1] == 'e' and i + 2 < len(string) and string[i + 2] == 'o' and i + 3 < len(string) and string[i + 3] == 'w':
+                # If they are, return the current meow factor
+                return meow_factor
+            # If the current character is 'm' and the next three characters are not 'e', 'o', and 'w', increment the meow factor by 1
+            meow_factor += 1
     
-    # Set the current color to A
-    color = 'A'
-    
-    # Iterate through the number of steps
-    for step in range(n):
-        # Move the Zamboni in the current direction
-        if y == c:
-            y = 0
-        if x == r:
-            x = 0
-        if x < 0:
-            x = r-1
-        if y < 0:
-            y = c-1
-        ice[x][y] = color
-        
-        # Rotate the Zamboni 90 degrees clockwise
-        x_next = x + 1 if y % 2 == 0 else x
-        y_next = y + 1 if y % 2 == 1 else y
-        x, y = x_next, y_next
-        
-        # Switch to the next color
-        color = chr(ord(color) + 1)
-        if color == '[':
-            color = 'A'
-    
-    # Set the final location of the Zamboni
-    ice[i-1][j-1] = '@'
-    
-    # Return the state of the ice rink
-    return '\n'.join(''.join(row) for row in ice)
+    # If the string does not contain 'meow' as a substring, return -1
+    return -1
+
+def main():
+    string = input("Enter a string: ")
+    print(get_meow_factor(string))
+
+if __name__ == '__main__':
+    main()
 

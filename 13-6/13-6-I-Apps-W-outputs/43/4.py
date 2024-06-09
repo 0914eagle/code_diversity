@@ -1,16 +1,55 @@
 
-def solve(n):
-    # Initialize a list to store the number of ways to fill the parking lot
-    ways = 0
+def get_mappings(maze):
+    # Initialize a list to store the mappings
+    mappings = []
+    
+    # Loop through each digit in the instructions
+    for i in range(len(maze)):
+        # Check if the current digit is a valid direction
+        if maze[i] in ["U", "D", "L", "R"]:
+            # If it is, add it to the list of mappings
+            mappings.append(maze[i])
+    
+    # Return the list of mappings
+    return mappings
 
-    # Iterate over the four car makes
-    for make in ["A", "B", "M", "Z"]:
-        # Calculate the number of cars of the current make that can be placed in the parking lot
-        num_cars = n // 4
+def get_exit_mappings(maze, instructions):
+    # Initialize a list to store the mappings that lead to the exit
+    exit_mappings = []
+    
+    # Loop through each mapping of digits to directions
+    for mapping in get_mappings(instructions):
+        # Initialize a list to store the current position of the robot
+        current_position = []
+        
+        # Loop through each digit in the instructions
+        for i in range(len(instructions)):
+            # Check if the current digit is a valid direction
+            if instructions[i] in ["U", "D", "L", "R"]:
+                # If it is, add it to the list of current position
+                current_position.append(mapping[instructions[i]])
+        
+        # Check if the current position is the exit
+        if current_position == ["E"]:
+            # If it is, add the mapping to the list of mappings that lead to the exit
+            exit_mappings.append(mapping)
+    
+    # Return the list of mappings that lead to the exit
+    return exit_mappings
 
-        # Calculate the number of ways to place the cars of the current make in the parking lot
-        ways += num_cars * (num_cars - 1) // 2
+def count_exit_mappings(maze, instructions):
+    # Return the number of mappings that lead to the exit
+    return len(get_exit_mappings(maze, instructions))
 
-    # Return the total number of ways to fill the parking lot
-    return ways
+if __name__ == '__main__':
+    maze = [
+        ["...", "...", "...", "...", "...", "..."],
+        [".S.", ".S.", ".S.", ".S.", ".S.", ".S."],
+        [".#.", ".#.", ".#.", ".#.", ".#.", ".#."],
+        [".#.", ".#.", ".#.", ".#.", ".#.", ".#."],
+        ["...", "...", "...", "...", "...", "..."],
+        ["...", "...", "...", "...", "...", "..."]
+    ]
+    instructions = "333300012"
+    print(count_exit_mappings(maze, instructions))
 

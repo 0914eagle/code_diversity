@@ -1,28 +1,30 @@
 
-def solve(n, T, p, t, d, graph):
-    # Initialize the maximum points to be 0
-    max_points = 0
-    # Initialize the list of tasks to be performed
-    tasks = []
+def f1(n, m, t, op):
+    # Initialize a list to store the possible solutions
+    solutions = []
     
-    # Loop through each task
-    for i in range(n):
-        # Check if the task has a deadline
-        if d[i] != -1:
-            # Check if the task can be completed within the deadline
-            if d[i] - t[i] <= T:
-                # Add the task to the list of tasks to be performed
-                tasks.append(i)
-                # Update the maximum points
-                max_points += p[i]
-        else:
-            # Check if the task can be completed within the time limit
-            if t[i] <= T:
-                # Add the task to the list of tasks to be performed
-                tasks.append(i)
-                # Update the maximum points
-                max_points += p[i]
+    # Iterate over all possible combinations of numbers in the section
+    for nums in itertools.combinations(range(1, n+1), m):
+        # Check if the combination satisfies the target value and arithmetic operator
+        if solve_section(nums, t, op):
+            # If it does, add it to the list of solutions
+            solutions.append(nums)
     
-    # Return the maximum points and the list of tasks
-    return max_points, tasks
+    # Return the number of solutions
+    return len(solutions)
+
+def solve_section(nums, t, op):
+    # Check if the target value is reached using the numbers and arithmetic operator
+    if op == '+':
+        return sum(nums) == t
+    elif op == '-':
+        return nums[0] - nums[1] == t
+    elif op == '*':
+        return nums[0] * nums[1] == t
+    else:
+        return nums[0] / nums[1] == t
+
+if __name__ == '__main__':
+    n, m, t, op = map(int, input().split())
+    print(f1(n, m, t, op))
 

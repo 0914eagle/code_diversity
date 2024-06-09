@@ -1,43 +1,28 @@
 
-def solve(r, c, i, j, n):
-    # Initialize the ice rink as a 2D array of white cells
-    ice = [["." for _ in range(c)] for _ in range(r)]
+def get_meow_factor(string):
+    # Initialize the meow factor to 0
+    meow_factor = 0
     
-    # Set the starting position of the Zamboni
-    x, y = i-1, j-1
+    # Loop through each character in the string
+    for i in range(len(string)):
+        # If the current character is 'm', check if the next three characters are 'e', 'o', and 'w'
+        if string[i] == 'm':
+            if i + 1 < len(string) and string[i + 1] == 'e' and i + 2 < len(string) and string[i + 2] == 'o' and i + 3 < len(string) and string[i + 3] == 'w':
+                # If they are, return the meow factor
+                return meow_factor
+            # If they are not, increment the meow factor
+            meow_factor += 1
     
-    # Set the current color to A
-    color = "A"
+    # If the string does not contain 'meow' as a substring, return -1
+    return -1
+
+def main():
+    # Read a string from stdin
+    string = input()
     
-    # Iterate through the number of steps
-    for step in range(n):
-        # Move the Zamboni in the current direction
-        if y == c:
-            y = 0
-        if x == r:
-            x = 0
-        if y == -1:
-            y = c-1
-        if x == -1:
-            x = r-1
-        ice[x][y] = color
-        
-        # Rotate the Zamboni 90 degrees clockwise
-        x_new = x + 1 if y % 2 == 0 else x - 1
-        y_new = y + 1 if y % 2 == 0 else y - 1
-        x, y = x_new, y_new
-        
-        # Switch to the next color
-        color = chr(ord(color) + 1)
-        if color == "Z":
-            color = "A"
-        
-        # Increment the step size
-        step += 1
-    
-    # Set the final location of the Zamboni
-    ice[x][y] = "@"
-    
-    # Return the ice rink as a string
-    return "\n".join("".join(row) for row in ice)
+    # Call the get_meow_factor function and print the result
+    print(get_meow_factor(string))
+
+if __name__ == '__main__':
+    main()
 

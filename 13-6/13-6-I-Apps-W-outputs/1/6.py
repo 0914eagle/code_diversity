@@ -1,20 +1,26 @@
 
-def solve(n, x, edges):
-    # Initialize a dictionary to store the distances from vertex 1 to each other vertex
-    distances = {}
-    for i in range(1, n+1):
-        distances[i] = float('inf')
-    distances[1] = 0
-    
-    # Breadth-first search to calculate the distances from vertex 1 to each other vertex
-    queue = [1]
-    while queue:
-        current = queue.pop(0)
-        for neighbor in edges[current]:
-            if distances[neighbor] == float('inf'):
-                distances[neighbor] = distances[current] + 1
-                queue.append(neighbor)
-    
-    # Return the minimum distance from vertex x to vertex 1, which is the maximum distance Bob can travel
-    return distances[x]
+def find_time(total_time, monkeys_1, monkeys_2):
+    # Find the time when the second type of monkey arrives
+    time_1 = 0
+    time_2 = 0
+    for i in range(len(monkeys_1)):
+        time_1 += monkeys_1[i][0] + (monkeys_1[i][1] - 1) * monkeys_1[i][0]
+    for i in range(len(monkeys_2)):
+        time_2 += monkeys_2[i][0] + (monkeys_2[i][1] - 1) * monkeys_2[i][0]
+    return total_time - max(time_1, time_2)
+
+def main():
+    total_time = int(input())
+    num_monkeys_1 = int(input())
+    monkeys_1 = []
+    for i in range(num_monkeys_1):
+        monkeys_1.append(list(map(int, input().split())))
+    num_monkeys_2 = int(input())
+    monkeys_2 = []
+    for i in range(num_monkeys_2):
+        monkeys_2.append(list(map(int, input().split())))
+    print(find_time(total_time, monkeys_1, monkeys_2))
+
+if __name__ == '__main__':
+    main()
 

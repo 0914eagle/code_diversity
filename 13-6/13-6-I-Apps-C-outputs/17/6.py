@@ -1,23 +1,32 @@
 
-def get_smallest_t(n, crush):
-    # Initialize a dictionary to store the number of rounds required for each person to become the Joon-Joon
-    rounds_required = {i: 0 for i in range(1, n + 1)}
+def f1(d, g, n, k):
+    # Initialize variables
+    max_coins = 0
+    distracted_rounds = 0
+    
+    # Loop through each round
+    for i in range(n):
+        # If Gladstone is distracted, Donald can look at his cards and make a decision
+        if i in range(k):
+            distracted_rounds += 1
+            # If Donald has more coins than Gladstone, he can win the round
+            if d > g:
+                max_coins += d
+            # If Gladstone has more coins than Donald, Donald can't win the round
+            else:
+                max_coins += g
+        # If Gladstone is not distracted, Donald can't see his cards and must bet all his coins
+        else:
+            max_coins += d
+    
+    # Return the maximum amount of coins Donald can be certain to have at the end of the game
+    return max_coins
 
-    # Loop through each person and their crush
-    for i in range(1, n + 1):
-        current_person = i
-        current_rounds = 0
-        while current_person != i:
-            current_rounds += 1
-            current_person = crush[current_person - 1]
-        rounds_required[i] = current_rounds
+def f2(...):
+    # Function to be called in the main function
+    ...
 
-    # Find the smallest value of t that satisfies the condition for all people
-    t = min(rounds_required.values())
-
-    # Check if t satisfies the condition for all people
-    if all(rounds_required[i] >= t for i in range(1, n + 1)):
-        return t
-    else:
-        return -1
+if __name__ == '__main__':
+    d, g, n, k = map(int, input().split())
+    print(f1(d, g, n, k))
 

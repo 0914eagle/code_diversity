@@ -1,25 +1,54 @@
 
-def get_max_vegetables(lanes, capacity):
-    # Sort the lanes by the day they become edible
-    sorted_lanes = sorted(lanes, key=lambda x: x[0])
+def get_neighbors(students):
+    # Initialize a dictionary to store the neighbors
+    neighbors = {}
+    
+    # Iterate over the students and their neighbors
+    for student, neighbor in students:
+        # If the student has a neighbor, add them to the dictionary
+        if neighbor != 0:
+            neighbors[student] = neighbor
+    
+    # Return the dictionary of neighbors
+    return neighbors
 
-    # Initialize variables to keep track of the number of vegetables collected and the current day
-    total_vegetables = 0
-    current_day = 1
+def restore_queue(neighbors):
+    # Initialize an empty list to store the queue
+    queue = []
+    
+    # Get the first student in the queue
+    current_student = min(neighbors, key=neighbors.get)
+    
+    # Loop until the queue is complete
+    while len(queue) < len(neighbors):
+        # Add the current student to the queue
+        queue.append(current_student)
+        
+        # Get the next student in the queue
+        current_student = neighbors[current_student]
+    
+    # Return the queue
+    return queue
 
-    # Loop through the lanes and collect vegetables until the capacity is reached or there are no more lanes to collect from
-    while total_vegetables < capacity and sorted_lanes:
-        # Get the next lane with vegetables that become edible on the current day
-        next_lane = next((lane for lane in sorted_lanes if lane[0] == current_day), None)
+def main():
+    # Read the number of students
+    n = int(input())
+    
+    # Read the students and their neighbors
+    students = []
+    for _ in range(n):
+        student, neighbor = map(int, input().split())
+        students.append((student, neighbor))
+    
+    # Get the neighbors of each student
+    neighbors = get_neighbors(students)
+    
+    # Restore the queue
+    queue = restore_queue(neighbors)
+    
+    # Print the queue
+    print(*queue)
 
-        # If there are no more lanes with vegetables that become edible on the current day, move on to the next day
-        if not next_lane:
-            current_day += 1
-            continue
-
-        # Remove the lane from the list of lanes and add the number of vegetables to the total
-        total_vegetables += next_lane[1]
-        sorted_lanes.remove(next_lane)
-
-    return total_vegetables
+if __name__ == '__main__':
+    main()
 

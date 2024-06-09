@@ -1,23 +1,23 @@
 
-def get_max_vegetables(m, v, di_list, ai_list):
-    # Sort the di_list and ai_list based on the day when the vegetables become edible
-    sorted_di_list = sorted(di_list)
-    sorted_ai_list = sorted(ai_list, key=lambda x: x[1], reverse=True)
-    
-    # Initialize variables to keep track of the number of vegetables collected and the current day
-    total_vegetables = 0
-    current_day = 1
-    
-    # Loop through the list of vegetables and collect them on the appropriate days
-    for di, ai in zip(sorted_di_list, sorted_ai_list):
-        # If the current day is within the range of days when the vegetables are edible, collect them
-        if current_day >= di and current_day < di+1:
-            total_vegetables += ai
-            current_day += 1
-        # If the current day is beyond the range of days when the vegetables are edible, move on to the next day
-        else:
-            current_day += 1
-    
-    # Return the total number of vegetables collected
-    return total_vegetables
+def get_queue(n, records):
+    queue = []
+    for i in range(n):
+        queue.append(i+1)
+    for record in records:
+        if record[0] != 0:
+            queue[record[0]-1] = record[1]
+        if record[1] != 0:
+            queue[record[1]-1] = record[0]
+    return queue
+
+def main():
+    n = int(input())
+    records = []
+    for i in range(n):
+        records.append(list(map(int, input().split())))
+    queue = get_queue(n, records)
+    print(*queue)
+
+if __name__ == '__main__':
+    main()
 

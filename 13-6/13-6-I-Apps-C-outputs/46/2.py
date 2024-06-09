@@ -1,33 +1,44 @@
 
-def get_color_code(n, p, palete):
-    # Create a list to store the color code
-    color_code = []
+def get_payout(values):
+    # Initialize variables
+    payout = 0
+    count = 0
+    sum_values = 0
+    stop_counting = False
 
-    # Check if the palette is valid
-    if len(set(palete)) != len(palete):
-        return "impossible"
+    # Iterate through the values
+    for value in values:
+        # If the player calls "Stop Counting!"
+        if value == "Stop Counting!":
+            stop_counting = True
+        # If the player calls "Start Counting!"
+        elif value == "Start Counting!":
+            stop_counting = False
+        # If the value is a number
+        elif isinstance(value, int):
+            # If the player is counting
+            if not stop_counting:
+                count += 1
+                sum_values += value
 
-    # Check if the palette is greater than the number of bits
-    if max(palete) > n:
-        return "impossible"
+    # Calculate the payout
+    if count > 0:
+        payout = sum_values / count
 
-    # Initialize the first string with all zeros
-    current_string = [0] * n
+    return payout
 
-    # Add the first string to the color code
-    color_code.append("".join(map(str, current_string)))
+def main():
+    # Read the input
+    num_cards = int(input())
+    values = input().split()
+    values = [int(value) for value in values]
 
-    # Iterate through the remaining strings
-    for i in range(1, 2**n):
-        # Find the index of the bit that needs to be flipped
-        bit_index = palete.index(i)
+    # Calculate the payout
+    payout = get_payout(values)
 
-        # Flip the bit at the found index
-        current_string[bit_index] = 1 - current_string[bit_index]
+    # Print the output
+    print(payout)
 
-        # Add the modified string to the color code
-        color_code.append("".join(map(str, current_string)))
-
-    # Return the color code
-    return color_code
+if __name__ == '__main__':
+    main()
 

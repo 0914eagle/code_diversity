@@ -1,30 +1,22 @@
 
-def solve(balls):
-    # Initialize variables
-    num_balls = len(balls)
-    num_operations = 0
-    white_balls = [ball for ball in balls if ball[0] == 'W']
-    black_balls = [ball for ball in balls if ball[0] == 'B']
+import math
 
-    # Sort the white balls by their indices
-    white_balls.sort(key=lambda x: x[1])
+def f1(n, t):
+    # Calculate the number of ways to choose the values of s_i
+    num_ways = math.factorial(n)
+    for i in range(n):
+        num_ways //= math.factorial(t[i] - 1)
+    return num_ways
 
-    # Sort the black balls by their indices
-    black_balls.sort(key=lambda x: x[1])
+def f2(n, t):
+    # Calculate the number of ways to choose the values of s_i modulo 10^9 + 7
+    num_ways = 1
+    for i in range(n):
+        num_ways = (num_ways * t[i]) % (10**9 + 7)
+    return num_ways
 
-    # Iterate through the white balls and black balls simultaneously
-    # and check if they are in the correct position
-    for i in range(num_balls):
-        if white_balls[i][1] != i + 1:
-            # If the white ball is not in the correct position,
-            # swap it with the previous white ball
-            white_balls[i], white_balls[i-1] = white_balls[i-1], white_balls[i]
-            num_operations += 1
-        if black_balls[i][1] != i + 1:
-            # If the black ball is not in the correct position,
-            # swap it with the previous black ball
-            black_balls[i], black_balls[i-1] = black_balls[i-1], black_balls[i]
-            num_operations += 1
-
-    return num_operations
+if __name__ == '__main__':
+    n = int(input())
+    t = list(map(int, input().split()))
+    print(f2(n, t))
 

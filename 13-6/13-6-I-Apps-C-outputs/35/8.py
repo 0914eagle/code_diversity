@@ -1,45 +1,71 @@
 
-def solve(r, c, i, j, n):
-    # Initialize the ice rink as a 2D array of whites
-    ice = [['.' for _ in range(c)] for _ in range(r)]
+def f1(s):
+    # Initialize the meow factor to 0
+    meow_factor = 0
     
-    # Set the starting position of the zamboni
-    ice[i-1][j-1] = '@'
+    # Loop through each character in the string
+    for i in range(len(s)):
+        # If the current character is 'm', check if the next two characters are 'e' and 'o'
+        if s[i] == 'm':
+            if i + 1 < len(s) and s[i + 1] == 'e' and i + 2 < len(s) and s[i + 2] == 'o':
+                # If they are, increment the meow factor by 1
+                meow_factor += 1
     
-    # Set the current color to A
-    color = 'A'
+    # Return the meow factor
+    return meow_factor
+
+def f2(s):
+    # Initialize the meow factor to 0
+    meow_factor = 0
     
-    # Loop through each step
-    for step in range(n):
-        # Move the zamboni in the current direction
-        if direction == 'up':
-            i -= 1
-        elif direction == 'down':
-            i += 1
-        elif direction == 'left':
-            j -= 1
-        elif direction == 'right':
-            j += 1
-        
-        # Wrap the zamboni around the edges of the rink
-        if i < 0:
-            i = r - 1
-        elif i == r:
-            i = 0
-        if j < 0:
-            j = c - 1
-        elif j == c:
-            j = 0
-        
-        # Set the color of the current cell to the next color in the alphabet
-        ice[i][j] = color
-        color = chr(ord(color) + 1)
-        if color == 'Z':
-            color = 'A'
-        
-        # Rotate the direction of the zamboni 90 degrees clockwise
-        direction = {'up': 'right', 'right': 'down', 'down': 'left', 'left': 'up'}[direction]
+    # Loop through each character in the string
+    for i in range(len(s)):
+        # If the current character is 'm', check if the previous two characters are 'e' and 'o'
+        if s[i] == 'm':
+            if i - 1 >= 0 and s[i - 1] == 'e' and i - 2 >= 0 and s[i - 2] == 'o':
+                # If they are, increment the meow factor by 1
+                meow_factor += 1
     
-    # Return the state of the ice rink
-    return '\n'.join(''.join(row) for row in ice)
+    # Return the meow factor
+    return meow_factor
+
+def f3(s):
+    # Initialize the meow factor to 0
+    meow_factor = 0
+    
+    # Loop through each character in the string
+    for i in range(len(s)):
+        # If the current character is 'm', check if the next character is 'e'
+        if s[i] == 'm':
+            if i + 1 < len(s) and s[i + 1] == 'e':
+                # If it is, increment the meow factor by 1
+                meow_factor += 1
+    
+    # Return the meow factor
+    return meow_factor
+
+def f4(s):
+    # Initialize the meow factor to 0
+    meow_factor = 0
+    
+    # Loop through each character in the string
+    for i in range(len(s)):
+        # If the current character is 'm', check if the previous character is 'e'
+        if s[i] == 'm':
+            if i - 1 >= 0 and s[i - 1] == 'e':
+                # If it is, increment the meow factor by 1
+                meow_factor += 1
+    
+    # Return the meow factor
+    return meow_factor
+
+def main():
+    # Read a string from stdin
+    s = input()
+    
+    # Call the four functions and print the maximum meow factor
+    print(max(f1(s), f2(s), f3(s), f4(s)))
+
+if __name__ == '__main__':
+    main()
 

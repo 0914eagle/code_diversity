@@ -1,22 +1,34 @@
 
-def solve(n, k, health):
+def get_rating(grid):
     # Initialize variables
-    attacks = 0
-    special_moves = k
-    health = sorted(health, reverse=True)
+    rating = 0
+    moves = []
 
-    # Loop through the monsters
-    for i in range(n):
-        # If the monster's health is 1, we can use a special move on it
-        if health[i] == 1:
-            special_moves -= 1
-            if special_moves == 0:
-                break
-        # Otherwise, we need to attack it
-        else:
-            attacks += 1
-            health[i] -= 1
+    # Iterate through the grid
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            # Check if the current position is a '$'
+            if grid[i][j] == '$':
+                # Check if the current move is already in the moves list
+                if moves[-1:] != [i, j]:
+                    # Add the current move to the moves list
+                    moves.append([i, j])
+                    # Increment the rating
+                    rating += 1
 
-    # Return the number of attacks needed
-    return attacks
+    # Return the rating
+    return rating
+
+def main():
+    # Read the grid from stdin
+    grid = [input() for _ in range(int(input()))]
+
+    # Get the rating of the dance
+    rating = get_rating(grid)
+
+    # Print the rating
+    print(rating)
+
+if __name__ == '__main__':
+    main()
 

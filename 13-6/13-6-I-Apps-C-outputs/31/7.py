@@ -1,27 +1,15 @@
 
-def solve(balls):
-    # Initialize variables
-    white_balls = []
-    black_balls = []
-    operations = 0
+import itertools
 
-    # Separate the white and black balls
-    for ball in balls:
-        if ball[1] == "W":
-            white_balls.append(ball)
-        else:
-            black_balls.append(ball)
+def f1(n):
+    return n * (n - 1) // 2
 
-    # Sort the white and black balls by their numbers
-    white_balls.sort(key=lambda x: x[0])
-    black_balls.sort(key=lambda x: x[0])
+def f2(n, t):
+    s = set(t)
+    return len(s)
 
-    # Check if the white and black balls are in the correct order
-    for i in range(len(white_balls) - 1):
-        if white_balls[i][0] > white_balls[i + 1][0]:
-            operations += 1
-        if black_balls[i][0] > black_balls[i + 1][0]:
-            operations += 1
-
-    return operations
+if __name__ == '__main__':
+    n = int(input())
+    t = list(map(int, input().split()))
+    print(f2(n, t) % (10**9 + 7))
 

@@ -1,26 +1,33 @@
 
-def get_max_sum(a, k, x):
-    n = len(a)
-    if n < k or x == 0:
-        return -1
-    if k == 1:
-        return sum(a[:x])
-    if x == 1:
-        return max(a)
-    if x == n:
-        return sum(a)
-    # divide and conquer
-    left = get_max_sum(a[:n//2], k, x//2)
-    right = get_max_sum(a[n//2:], k, x-x//2)
-    if left != -1 and right != -1:
-        return left + right
-    # greedy
-    max_sum = 0
-    for i in range(n-k+1):
-        sum = 0
-        for j in range(i, i+k):
-            sum += a[j]
-        if sum > max_sum:
-            max_sum = sum
-    return max_sum
+def get_withdrawal_operations(n):
+    # Initialize variables
+    operations = 0
+    current_amount = 0
+    
+    # Loop through the possible withdrawal amounts
+    for i in range(1, n + 1):
+        # Check if the current amount is a power of 6 or 9
+        if i % 6 == 0 or i % 9 == 0:
+            # Increment the number of operations
+            operations += 1
+            # Add the current amount to the total amount withdrawn
+            current_amount += i
+            
+            # Check if the total amount withdrawn is equal to the target amount
+            if current_amount == n:
+                # If it is, return the number of operations
+                return operations
+    
+    # If the target amount could not be reached, return -1
+    return -1
+
+def main():
+    # Read the target amount from standard input
+    n = int(input())
+    
+    # Call the get_withdrawal_operations function and print the result
+    print(get_withdrawal_operations(n))
+
+if __name__ == '__main__':
+    main()
 

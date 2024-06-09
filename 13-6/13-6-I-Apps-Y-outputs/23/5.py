@@ -1,26 +1,48 @@
 
-def solve(N, p, times):
-    # Sort the times in non-decreasing order
-    sorted_times = sorted(times)
+def get_largest_element(numbers):
+    return max(numbers)
 
-    # Initialize the number of AC problems and penalty time
-    num_ac = 0
-    penalty_time = 0
+def get_base_and_xor_language(largest_element):
+    if largest_element == 1:
+        return "Binary"
+    elif largest_element == 2:
+        return "Octal"
+    elif largest_element == 3:
+        return "Hexadecimal"
+    else:
+        return "Unknown"
 
-    # Loop through the problems in non-decreasing order
-    for i in range(N):
-        # If the current problem is the first problem to solve, skip it
-        if i == p:
-            continue
+def get_string(base_and_xor_language):
+    if base_and_xor_language == "Binary":
+        return "01"
+    elif base_and_xor_language == "Octal":
+        return "01234567"
+    elif base_and_xor_language == "Hexadecimal":
+        return "0123456789ABCDEF"
+    else:
+        return "Unknown"
 
-        # If the current problem cannot be solved within the remaining time, break the loop
-        if sorted_times[i] > 300 - penalty_time:
-            break
+def get_distorted_mathematics(string):
+    return string[::-1]
 
-        # Increment the number of AC problems and add the time for the current problem to the penalty time
-        num_ac += 1
-        penalty_time += sorted_times[i]
+def get_magic_word(string):
+    return "".join(reversed(string))
 
-    # Return the number of AC problems and penalty time
-    return num_ac, penalty_time
+def get_stack_rupture(magic_word):
+    return magic_word.upper()
+
+def get_output(stack_rupture):
+    return len(stack_rupture)
+
+if __name__ == '__main__':
+    n = int(input())
+    numbers = list(map(int, input().split()))
+    largest_element = get_largest_element(numbers)
+    base_and_xor_language = get_base_and_xor_language(largest_element)
+    string = get_string(base_and_xor_language)
+    distorted_mathematics = get_distorted_mathematics(string)
+    magic_word = get_magic_word(string)
+    stack_rupture = get_stack_rupture(magic_word)
+    output = get_output(stack_rupture)
+    print(output)
 

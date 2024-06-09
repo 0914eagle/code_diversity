@@ -1,25 +1,25 @@
 
-def decrypt_message(encrypted_message, key):
-    # Step 1: Define the function f(x) = (33x + 1) mod 2^20
-    def f(x):
-        return (33 * x + 1) % (2**20)
-    
-    # Step 2: Create a X by X size grid, fill the upper left corner with f^1(0), the next cell to the right with f^2(0), f^3(0) etc.
-    grid = [[f(0) for _ in range(X)] for _ in range(X)]
-    
-    # Step 3: Sum all the values in every column, and take those values mod 2^20
-    column_sums = [sum(column) % (2**20) for column in zip(*grid)]
-    
-    # Step 4: Concatenate the base-10 representations of the column sums together, to get a very long base-10 number
-    long_number = int(''.join(str(sum) for sum in column_sums))
-    
-    # Step 5: Convert the result of step 4 from base 10 to base 27
-    one_time_pad = long_number.to_bytes((long_number.bit_length() + 7) // 8, 'big').decode()
-    
-    # Step 6: For each letter l of the intercepted message, shift the letter by the amount given by the corresponding digit of step 5, base 27
-    decrypted_message = ''
-    for i, letter in enumerate(encrypted_message):
-        decrypted_message += chr((ord(letter) - ord('A') + int(one_time_pad[i])) % 27 + ord('A'))
-    
-    return decrypted_message
+def get_correct_time(format, time):
+    hours, minutes = time.split(":")
+    hours = int(hours)
+    minutes = int(minutes)
+    if format == "12":
+        if hours > 12:
+            hours = hours - 12
+        if hours == 0:
+            hours = 12
+    elif format == "24":
+        if hours > 23:
+            hours = hours - 24
+    if minutes > 59:
+        minutes = minutes - 60
+    return f"{hours:02d}:{minutes:02d}"
+
+def main():
+    format = input()
+    time = input()
+    print(get_correct_time(format, time))
+
+if __name__ == '__main__':
+    main()
 

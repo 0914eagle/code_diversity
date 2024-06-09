@@ -1,33 +1,35 @@
 
-def solve(flights, additional_flights):
-    # Initialize a dictionary to store the cost of each flight
-    costs = {}
-    for flight in flights:
-        cost = flight[2]
-        costs[flight[0], flight[1]] = cost
-        costs[flight[1], flight[0]] = cost
+def get_input():
+    n = int(input())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    return n, a, b
 
-    # Initialize a set to store the cities that have been visited
-    visited = set()
+def find_empty_island(a):
+    for i in range(len(a)):
+        if a[i] == 0:
+            return i
+    return -1
 
-    # Initialize the total cost variable
-    total_cost = 0
+def find_statue(a, b, empty_island):
+    for i in range(len(a)):
+        if a[i] != 0 and b[i] != 0 and a[i] != b[i]:
+            return i
+    return -1
 
-    # Loop through the additional flights
-    for flight in additional_flights:
-        # If the flight has not been visited yet, add it to the visited set and add the cost to the total cost
-        if flight[0] not in visited and flight[1] not in visited:
-            visited.add(flight[0])
-            visited.add(flight[1])
-            total_cost += flight[2]
+def can_rearrange(n, a, b):
+    empty_island = find_empty_island(a)
+    if empty_island == -1:
+        return "NO"
+    statue = find_statue(a, b, empty_island)
+    if statue == -1:
+        return "NO"
+    return "YES"
 
-    # Loop through the flights to review
-    for flight in flights:
-        # If the flight has not been visited yet, add it to the visited set and add the cost to the total cost
-        if flight[0] not in visited and flight[1] not in visited:
-            visited.add(flight[0])
-            visited.add(flight[1])
-            total_cost += costs[flight[0], flight[1]]
+def main():
+    n, a, b = get_input()
+    print(can_rearrange(n, a, b))
 
-    return total_cost
+if __name__ == '__main__':
+    main()
 

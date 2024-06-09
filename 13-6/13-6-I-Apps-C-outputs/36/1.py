@@ -1,33 +1,27 @@
 
-def decrypt_message(encrypted_message, fragment):
-    # Initialize a dictionary to store the number of occurrences of each letter in the fragment
-    letter_counts = {}
-    for letter in fragment:
-        if letter not in letter_counts:
-            letter_counts[letter] = 1
+def read_input():
+    n, T = map(int, input().split())
+    a = list(map(int, input().split()))
+    return n, T, a
+
+def longest_non_decreasing_sequence(a):
+    max_length = 1
+    current_length = 1
+    for i in range(1, len(a)):
+        if a[i] >= a[i-1]:
+            current_length += 1
+            max_length = max(max_length, current_length)
         else:
-            letter_counts[letter] += 1
+            current_length = 1
+    return max_length
 
-    # Initialize a variable to store the number of positions in the encrypted message where the fragment could occur
-    num_positions = 0
+def solve(n, T, a):
+    longest = 0
+    for i in range(n, len(a)):
+        longest = max(longest, longest_non_decreasing_sequence(a[i-n:i]))
+    return longest
 
-    # Iterate through the encrypted message
-    for i in range(len(encrypted_message)):
-        # Check if the letter at the current position in the encrypted message is in the fragment
-        if encrypted_message[i] in letter_counts:
-            # If the letter is in the fragment, decrement the count for that letter in the dictionary
-            letter_counts[encrypted_message[i]] -= 1
-
-            # If the count for the letter is 0, it means that the letter has been found in the fragment and can be removed from the dictionary
-            if letter_counts[encrypted_message[i]] == 0:
-                del letter_counts[encrypted_message[i]]
-
-            # Increment the number of positions in the encrypted message where the fragment could occur
-            num_positions += 1
-
-    # If the dictionary is empty, it means that all letters in the fragment have been found in the encrypted message and the fragment is a part of the encrypted message
-    if not letter_counts:
-        return encrypted_message[i-num_positions+1:i+1]
-    else:
-        return num_positions
+if __name__ == '__main__':
+    n, T, a = read_input()
+    print(solve(n, T, a))
 

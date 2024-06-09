@@ -1,23 +1,25 @@
 
-def solve(N, C, a, b, Q, requirements):
-    # Initialize a dictionary to store the number of colored paintings purchased by each client
-    colored_paintings = {i: 0 for i in range(1, N+1)}
-    # Initialize a set to store the clients who have purchased at least one colored painting
-    colored_clients = set()
-    # Initialize a variable to store the total number of different purchases
-    total_purchases = 0
-    
-    for i in range(Q):
-        # Unpack the requirement changes for the current iteration
-        P, a_P, b_P = requirements[i]
-        # Update the number of colored paintings purchased by the current client
-        colored_paintings[P] = a_P
-        # If the current client has purchased at least one colored painting, add them to the set of colored clients
-        if a_P > 0:
-            colored_clients.add(P)
-        # If the number of colored clients is less than or equal to C, add the number of different purchases
-        if len(colored_clients) <= C:
-            total_purchases += 1
-    
-    return total_purchases % 10007
+def get_total_width_of_lawns(n, s, g):
+    total_width = 0
+    for i in range(n):
+        total_width += g[i]
+    return total_width
+
+def get_new_widths_of_road(n, s, g):
+    new_widths = []
+    for i in range(n):
+        new_widths.append(s[i] + g[i])
+    return new_widths
+
+def main():
+    n = int(input())
+    s = list(map(int, input().split()))
+    g = list(map(int, input().split()))
+    total_width = get_total_width_of_lawns(n, s, g)
+    new_widths = get_new_widths_of_road(n, s, g)
+    print(total_width)
+    print(" ".join(map(str, new_widths)))
+
+if __name__ == '__main__':
+    main()
 

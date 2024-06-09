@@ -1,8 +1,23 @@
 
-def get_router_path(n, p):
-    path = [1]
-    for i in range(2, n+1):
-        if p[i-1] != path[-1]:
-            path.append(p[i-1])
-    return path
+def get_min_arrows(N, heights):
+    # Initialize variables
+    min_arrows = 0
+    current_height = 1
+
+    # Iterate through the heights of the balloons
+    for i in range(N):
+        # If the current height is less than or equal to the height of the balloon, we need to shoot an arrow
+        if current_height <= heights[i]:
+            min_arrows += 1
+            current_height = heights[i] - 1
+
+    return min_arrows
+
+def main():
+    N = int(input())
+    heights = list(map(int, input().split()))
+    print(get_min_arrows(N, heights))
+
+if __name__ == '__main__':
+    main()
 

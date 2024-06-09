@@ -1,22 +1,46 @@
 
-def solve(R, S, L, lawsuits):
-    # Initialize a dictionary to store the number of lawsuits won by each individual and corporation
-    wins = {}
-    for i in range(1, R+1):
-        wins[f"INDV {i}"] = 0
-    for i in range(1, S+1):
-        wins[f"CORP {i}"] = 0
-    
-    # Iterate through the lawsuits and update the dictionary
-    for lawsuit in lawsuits:
-        individual, corporation = lawsuit
-        wins[f"INDV {individual}"] += 1
-        wins[f"CORP {corporation}"] += 1
-    
-    # Find the individual or corporation with the minimum number of wins
-    min_wins = min(wins.values())
-    winners = [k for k, v in wins.items() if v == min_wins]
-    
-    # Return the winners
-    return winners
+def get_button_presses(current_state, desired_state):
+    # Initialize variables
+    Q = 0
+    button_presses = []
+
+    # Loop through the current state and compare it to the desired state
+    for i in range(len(current_state)):
+        for j in range(len(current_state[i])):
+            # If the current state and desired state are different, add a button press to the list
+            if current_state[i][j] != desired_state[i][j]:
+                Q += 1
+                button_presses.append((i, j))
+
+    # Return the list of button presses
+    return Q, button_presses
+
+def f1(N, M, current_state, desired_state):
+    # Get the button presses
+    Q, button_presses = get_button_presses(current_state, desired_state)
+
+    # Print the output
+    print(Q)
+    for i, j in button_presses:
+        print("R" if current_state[i][j] == 0 else "G", i)
+
+def f2(N, M, current_state, desired_state):
+    # Get the button presses
+    Q, button_presses = get_button_presses(current_state, desired_state)
+
+    # Print the output
+    print(Q)
+    for i, j in button_presses:
+        print("G" if current_state[i][j] == 0 else "R", i)
+
+if __name__ == '__main__':
+    N, M = map(int, input().split())
+    current_state = []
+    for i in range(N):
+        current_state.append(list(map(int, input().split())))
+    desired_state = []
+    for i in range(N):
+        desired_state.append(list(map(int, input().split())))
+    f1(N, M, current_state, desired_state)
+    f2(N, M, current_state, desired_state)
 

@@ -1,24 +1,81 @@
 
-def solve(s):
-    # Initialize variables
-    k = 0
-    n = len(s)
-    result = s
+def get_target_weight(weights):
+    # Sort the weights in non-decreasing order
+    weights.sort()
+    # Initialize the target weight as the smallest weight
+    target_weight = weights[0]
+    # Initialize the sum of weights as the sum of all weights
+    total_weight = sum(weights)
+    # Iterate through the weights and find the first weight that is greater than the target weight
+    for weight in weights:
+        if weight > target_weight:
+            # If the weight is greater than the target weight, break the loop
+            break
+        # Otherwise, increase the target weight by the current weight
+        target_weight += weight
+    # Return the target weight
+    return target_weight
 
-    # Loop until the string is a palindrome or the maximum number of operations is reached
-    while k < 30 and result != result[::-1]:
-        # Check if the string can be made a palindrome by appending the reverse of the substring starting at index 2
-        if s[2:] == s[2:][::-1]:
-            result = "L " + str(2) + "\n" + result
-            k += 1
-        # Check if the string can be made a palindrome by appending the reverse of the substring ending at index n-1
-        elif s[:n-1] == s[:n-1][::-1]:
-            result = "R " + str(n-1) + "\n" + result
-            k += 1
-        # If neither of the above conditions are met, return "Impossible"
+def get_grouped_weights(weights, target_weight):
+    # Initialize two lists to store the weights of the two groups
+    group1 = []
+    group2 = []
+    # Iterate through the weights and append them to the appropriate group
+    for weight in weights:
+        if weight <= target_weight:
+            group1.append(weight)
         else:
-            return "Impossible"
+            group2.append(weight)
+    # Return the two lists of grouped weights
+    return group1, group2
 
-    # Return the result
-    return str(k) + "\n" + result
+def get_even_distribution(weights):
+    # Sort the weights in non-decreasing order
+    weights.sort()
+    # Initialize the target weight as the smallest weight
+    target_weight = weights[0]
+    # Initialize the sum of weights as the sum of all weights
+    total_weight = sum(weights)
+    # Iterate through the weights and find the first weight that is greater than the target weight
+    for weight in weights:
+        if weight > target_weight:
+            # If the weight is greater than the target weight, break the loop
+            break
+        # Otherwise, increase the target weight by the current weight
+        target_weight += weight
+    # Return the target weight
+    return target_weight
+
+def get_odd_distribution(weights):
+    # Sort the weights in non-decreasing order
+    weights.sort()
+    # Initialize the target weight as the smallest weight
+    target_weight = weights[0]
+    # Initialize the sum of weights as the sum of all weights
+    total_weight = sum(weights)
+    # Iterate through the weights and find the first weight that is greater than the target weight
+    for weight in weights:
+        if weight > target_weight:
+            # If the weight is greater than the target weight, break the loop
+            break
+        # Otherwise, increase the target weight by the current weight
+        target_weight += weight
+    # Return the target weight
+    return target_weight
+
+def main():
+    # Read the number of animals from stdin
+    num_animals = int(input())
+    # Read the weights of the animals from stdin
+    weights = list(map(int, input().split()))
+    # Get the target weight
+    target_weight = get_target_weight(weights)
+    # Get the grouped weights
+    group1, group2 = get_grouped_weights(weights, target_weight)
+    # Print the grouped weights
+    print(group1)
+    print(group2)
+
+if __name__ == '__main__':
+    main()
 

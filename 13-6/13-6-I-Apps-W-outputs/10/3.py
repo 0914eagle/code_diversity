@@ -1,18 +1,26 @@
 
-def find_lipschitz_constant(points):
-    # Sort the points by their x-coordinate
-    sorted_points = sorted(points, key=lambda x: x[0])
+def get_unread_letters(letter_list):
+    return [letter for letter in letter_list if letter == 0]
 
-    # Initialize the Lipschitz constant to zero
-    lipschitz_constant = 0
+def get_read_letters(letter_list):
+    return [letter for letter in letter_list if letter == 1]
 
-    # Iterate over the points
-    for i in range(len(sorted_points) - 1):
-        # Calculate the difference between the current and next point
-        diff = sorted_points[i + 1][1] - sorted_points[i][1]
+def get_min_operations(letter_list):
+    unread_letters = get_unread_letters(letter_list)
+    read_letters = get_read_letters(letter_list)
+    operations = 0
+    for letter in unread_letters:
+        if letter == 0:
+            operations += 1
+    for letter in read_letters:
+        if letter == 1:
+            operations += 1
+    return operations
 
-        # Update the Lipschitz constant if the difference is larger than the current value
-        lipschitz_constant = max(lipschitz_constant, abs(diff))
+def main():
+    letter_list = [int(letter) for letter in input().split()]
+    print(get_min_operations(letter_list))
 
-    return lipschitz_constant
+if __name__ == '__main__':
+    main()
 

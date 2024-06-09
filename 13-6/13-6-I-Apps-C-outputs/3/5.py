@@ -1,31 +1,22 @@
 
-def solve(producer_companies, consumer_companies):
-    # Initialize variables
-    max_profit = 0
-    selected_producer = None
-    selected_consumer = None
+def get_input():
+    n = int(input())
+    numbers = list(map(int, input().split()))
+    return n, numbers
 
-    # Iterate over each producer company
-    for producer in producer_companies:
-        # Iterate over each consumer company
-        for consumer in consumer_companies:
-            # Calculate the profit for this combination of producer and consumer
-            profit = calculate_profit(producer, consumer)
+def get_first_moves(n, numbers):
+    first_moves = set()
+    for i in range(n):
+        for j in range(i+1, n):
+            if numbers[i] + numbers[j] % 2 == 1:
+                first_moves.add(i)
+                first_moves.add(j)
+    return len(first_moves)
 
-            # Check if the profit is greater than the current max profit
-            if profit > max_profit:
-                # If so, update the max profit and the selected producer and consumer
-                max_profit = profit
-                selected_producer = producer
-                selected_consumer = consumer
+def main():
+    n, numbers = get_input()
+    print(get_first_moves(n, numbers))
 
-    # Return the max profit and the selected producer and consumer
-    return max_profit, selected_producer, selected_consumer
-
-def calculate_profit(producer, consumer):
-    # Calculate the profit for this combination of producer and consumer
-    profit = producer["price"] - consumer["price"]
-
-    # Return the profit
-    return profit
+if __name__ == '__main__':
+    main()
 

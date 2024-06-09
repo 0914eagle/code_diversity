@@ -1,32 +1,96 @@
 
-def solve(R, S, L):
-    # Initialize a dictionary to store the number of lawsuits won by each individual and corporation
-    wins = {}
-    for i in range(1, R+1):
-        wins[i] = 0
-    for i in range(1, S+1):
-        wins[i] = 0
-    
-    # Iterate through the lawsuits and assign the party with the least number of wins to each lawsuit
-    for i in range(L):
-        # Get the indices of the individual and corporation involved in the lawsuit
-        individual = int(input())
-        corporation = int(input())
-        
-        # If the individual has won fewer lawsuits than the corporation, assign the individual to the lawsuit
-        if wins[individual] < wins[corporation]:
-            print("INDV", individual)
-            wins[individual] += 1
-        
-        # If the corporation has won fewer lawsuits than the individual, assign the corporation to the lawsuit
-        elif wins[corporation] < wins[individual]:
-            print("CORP", corporation)
-            wins[corporation] += 1
-        
-        # If both the individual and corporation have the same number of wins, assign the individual to the lawsuit
-        else:
-            print("INDV", individual)
-            wins[individual] += 1
-    
-    return wins
+def f1(N, M, current_state, desired_state):
+    # Initialize the sequence of button presses
+    sequence = []
+
+    # Loop through each floor
+    for i in range(N):
+        # Get the current and desired states of the staircase on floor i
+        current_staircase = current_state[i]
+        desired_staircase = desired_state[i]
+
+        # If the current and desired states are the same, continue to the next floor
+        if current_staircase == desired_staircase:
+            continue
+
+        # If the current state is not connected to any staircase, press the red button
+        if current_staircase == -1:
+            sequence.append(("R", i))
+            continue
+
+        # If the desired state is not connected to any staircase, press the green button
+        if desired_staircase == -1:
+            sequence.append(("G", i))
+            continue
+
+        # If the current state is connected to a staircase, but the desired state is not, press the green button
+        if current_staircase != -1 and desired_staircase == -1:
+            sequence.append(("G", i))
+            continue
+
+        # If the current state is not connected to the desired staircase, press the red button
+        if current_staircase != desired_staircase:
+            sequence.append(("R", i))
+            continue
+
+    # Return the sequence of button presses
+    return sequence
+
+def f2(N, M, current_state, desired_state):
+    # Initialize the sequence of button presses
+    sequence = []
+
+    # Loop through each floor
+    for i in range(N):
+        # Get the current and desired states of the staircase on floor i
+        current_staircase = current_state[i]
+        desired_staircase = desired_state[i]
+
+        # If the current and desired states are the same, continue to the next floor
+        if current_staircase == desired_staircase:
+            continue
+
+        # If the current state is not connected to any staircase, press the red button
+        if current_staircase == -1:
+            sequence.append(("R", i))
+            continue
+
+        # If the desired state is not connected to any staircase, press the green button
+        if desired_staircase == -1:
+            sequence.append(("G", i))
+            continue
+
+        # If the current state is connected to a staircase, but the desired state is not, press the green button
+        if current_staircase != -1 and desired_staircase == -1:
+            sequence.append(("G", i))
+            continue
+
+        # If the current state is not connected to the desired staircase, press the red button
+        if current_staircase != desired_staircase:
+            sequence.append(("R", i))
+            continue
+
+    # Return the sequence of button presses
+    return sequence
+
+if __name__ == '__main__':
+    # Read the input
+    N, M = map(int, input().split())
+    current_state = [-1] * N
+    desired_state = [-1] * N
+    for _ in range(M):
+        i, j = map(int, input().split())
+        current_state[i] = j
+    for _ in range(M):
+        i, j = map(int, input().split())
+        desired_state[i] = j
+
+    # Call the functions
+    sequence1 = f1(N, M, current_state, desired_state)
+    sequence2 = f2(N, M, current_state, desired_state)
+
+    # Print the output
+    print(len(sequence1))
+    for button, floor in sequence1:
+        print(button, floor)
 

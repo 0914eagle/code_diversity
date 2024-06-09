@@ -1,10 +1,10 @@
 {
     "inputs": [
-        "5 5 3 3 4\n",
-        "5 5 3 3 7\n"
+        "pastimeofwhimsy\n",
+        "yarn\n"
     ],
     "outputs": [
-        ".....\n..BBC\n..A.C\n....C\n@DDDD\n",
-        "EG...\nE@BBC\nEGA.C\nEG..C\nFGFFF\n"
+        "1\n",
+        "4\n"
     ]
 }

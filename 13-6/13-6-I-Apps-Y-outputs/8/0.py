@@ -1,7 +1,22 @@
 
-def solve_maximum_quadrilateral(s1, s2, s3, s4):
-    # Calculate the maximum area of a quadrilateral using Heron's formula
-    s = (s1 + s2 + s3 + s4) / 2
-    area = (s * (s - s1) * (s - s2) * (s - s3) * (s - s4)) ** 0.5
-    return area
+def get_missing_cards(deck):
+    suits = ["P", "K", "H", "T"]
+    cards_per_suit = 13
+    card_count = {suit: 0 for suit in suits}
+    for card in deck:
+        card_count[card[0]] += 1
+    missing_cards = []
+    for suit in suits:
+        if card_count[suit] < cards_per_suit:
+            missing_cards.append(cards_per_suit - card_count[suit])
+        elif card_count[suit] > cards_per_suit:
+            return "GRESKA"
+    return " ".join(str(card) for card in missing_cards)
+
+def main():
+    deck = input()
+    print(get_missing_cards(deck))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,45 +1,49 @@
 
-def can_reproduce_art(grid):
-    # Initialize a set to store the colors of the art piece
-    art_colors = set()
+def get_smallest_difference(A, K, Q):
+    # Sort the array in non-decreasing order
+    A.sort()
     
-    # Iterate through the grid and add the colors to the set
-    for row in grid:
-        for color in row:
-            art_colors.add(color)
+    # Initialize the smallest difference
+    smallest_difference = float('inf')
     
-    # Initialize a set to store the colors that have been used in the stamp
-    used_colors = set()
+    # Loop through each possible starting index for the contiguous subsequence
+    for i in range(len(A) - K + 1):
+        # Get the contiguous subsequence
+        subsequence = A[i:i+K]
+        
+        # Get the minimum element in the subsequence
+        minimum = min(subsequence)
+        
+        # Get the index of the minimum element in the subsequence
+        minimum_index = subsequence.index(minimum)
+        
+        # Get the largest element in the subsequence
+        largest = max(subsequence)
+        
+        # Get the index of the largest element in the subsequence
+        largest_index = subsequence.index(largest)
+        
+        # Calculate the difference between the largest and smallest elements
+        difference = largest - minimum
+        
+        # If the difference is smaller than the current smallest difference, update the smallest difference
+        if difference < smallest_difference:
+            smallest_difference = difference
     
-    # Iterate through the grid and check if the color of each cell can be covered by the stamp
-    for i in range(len(grid)):
-        for j in range(len(grid[0])):
-            # If the color of the current cell is not in the art_colors set, return "NO"
-            if grid[i][j] not in art_colors:
-                return "NO"
-            
-            # If the color of the current cell has already been used in the stamp, continue
-            if grid[i][j] in used_colors:
-                continue
-            
-            # If the color of the current cell is not in the used_colors set, add it to the set and continue
-            used_colors.add(grid[i][j])
-            
-            # If the color of the current cell is red, check if the colors of the adjacent cells are red, green, and blue
-            if grid[i][j] == "R":
-                if "R" not in used_colors and "G" not in used_colors and "B" not in used_colors:
-                    return "NO"
-            
-            # If the color of the current cell is green, check if the colors of the adjacent cells are green, blue, and red
-            if grid[i][j] == "G":
-                if "G" not in used_colors and "B" not in used_colors and "R" not in used_colors:
-                    return "NO"
-            
-            # If the color of the current cell is blue, check if the colors of the adjacent cells are blue, red, and green
-            if grid[i][j] == "B":
-                if "B" not in used_colors and "R" not in used_colors and "G" not in used_colors:
-                    return "NO"
+    # Return the smallest difference
+    return smallest_difference
+
+def main():
+    # Read the input
+    N, K, Q = map(int, input().split())
+    A = list(map(int, input().split()))
     
-    # If all the cells have been checked and no "NO" has been returned, return "YES"
-    return "YES"
+    # Get the smallest difference
+    smallest_difference = get_smallest_difference(A, K, Q)
+    
+    # Print the smallest difference
+    print(smallest_difference)
+
+if __name__ == '__main__':
+    main()
 

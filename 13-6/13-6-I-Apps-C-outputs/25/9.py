@@ -1,21 +1,40 @@
 
-def is_possible(n, t, times):
-    # Sort the times in ascending order
-    times.sort(key=lambda x: x[0])
+def is_good_graph(graph):
+    # Check if graph is good
+    for i in range(1, len(graph)):
+        for j in range(i+1, len(graph)):
+            if graph[i] in graph[j]:
+                return False
+    return True
 
-    # Initialize the current time to 0
-    current_time = 0
+def add_edge(graph, a, b):
+    # Add edge between a and b
+    graph[a].append(b)
+    graph[b].append(a)
+    return graph
 
-    # Iterate through the times and check if they can be taken within the given time frame
-    for i in range(n):
-        start_time, end_time = times[i]
-        if current_time + t <= start_time:
-            current_time = start_time + t
-        elif current_time + t > start_time and current_time + t <= end_time:
-            current_time = end_time
-        else:
-            return "no"
+def play_game(graph):
+    # Play game optimally
+    while is_good_graph(graph):
+        # Taro's turn
+        a, b = 1, 2
+        graph = add_edge(graph, a, b)
+        if not is_good_graph(graph):
+            return "First"
+        # Jiro's turn
+        a, b = 1, 3
+        graph = add_edge(graph, a, b)
+        if not is_good_graph(graph):
+            return "Second"
+    return "First"
 
-    # If all the times can be taken, return "yes"
-    return "yes"
+if __name__ == '__main__':
+    T = int(input())
+    for _ in range(T):
+        N, M = map(int, input().split())
+        graph = [[] for _ in range(N+1)]
+        for _ in range(M):
+            a, b = map(int, input().split())
+            graph = add_edge(graph, a, b)
+        print(play_game(graph))
 

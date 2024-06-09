@@ -1,29 +1,46 @@
 
-import random
-
-def solve(expression):
-    # Split the expression into a list of integers and plus symbols
-    tokens = expression.split('+')
+def get_winner(record):
+    # Initialize the score of Alice and Barbara
+    alice_score = 0
+    barbara_score = 0
     
-    # Initialize a set to store the distinct integers
-    distinct_integers = set()
-    
-    # Loop through each token in the list
-    for i in range(len(tokens)):
-        # If the token is an integer, add it to the set of distinct integers
-        if tokens[i].isdigit():
-            distinct_integers.add(int(tokens[i]))
-        # If the token is a plus symbol, choose a random integer to concatenate with the previous integer
+    # Iterate through the record
+    for i in range(0, len(record), 2):
+        # Get the current player and the number of points scored
+        player = record[i]
+        points = int(record[i+1])
+        
+        # Update the score of the current player
+        if player == "A":
+            alice_score += points
         else:
-            # Get the previous integer
-            prev_integer = int(tokens[i-1])
-            # Get a random integer to concatenate with the previous integer
-            rand_integer = random.randint(0, 9)
-            # Concatenate the previous integer with the random integer
-            concat_integer = str(prev_integer) + str(rand_integer)
-            # Add the concatenated integer to the set of distinct integers
-            distinct_integers.add(int(concat_integer))
+            barbara_score += points
+        
+        # Check if the game is over
+        if alice_score >= 11 and barbara_score >= 11:
+            # If the score is tied, the first player to lead by at least 2 points wins
+            if alice_score - barbara_score >= 2:
+                return "A"
+            elif barbara_score - alice_score >= 2:
+                return "B"
+        elif alice_score >= 11:
+            # If Alice has reached 11 points before Barbara, she wins
+            return "A"
+        elif barbara_score >= 11:
+            # If Barbara has reached 11 points before Alice, she wins
+            return "B"
     
-    # Return the number of distinct integers
-    return len(distinct_integers)
+    # If the game is not over, return None
+    return None
+
+def main():
+    record = input("Enter the record of the game: ")
+    winner = get_winner(record)
+    if winner:
+        print(f"The winner is {winner}")
+    else:
+        print("The game is not over")
+
+if __name__ == '__main__':
+    main()
 

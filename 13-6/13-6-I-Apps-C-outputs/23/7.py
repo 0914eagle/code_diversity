@@ -1,20 +1,53 @@
 
-def shortest_article_length(n, proofs):
-    # Initialize a dictionary to store the number of words for each theorem
-    num_words = {i: 0 for i in range(n)}
-    # Initialize a list to store the dependencies of each theorem
-    dependencies = [[] for _ in range(n)]
+def f1(s):
+    # Function to calculate the average value of L(C) for a given sequence S
+    # Initialize variables
+    n = len(s)
+    count = 0
+    total = 0
+    
+    # Iterate over all possible sequences C represented by S
+    for i in range(2**n):
+        # Convert the binary representation of i to a sequence of H and T
+        seq = ""
+        for j in range(n):
+            if i & (1 << j):
+                seq += "H"
+            else:
+                seq += "T"
+        
+        # Calculate the number of operations before Prof. Tuy stops
+        count += 1
+        total += f2(seq)
+    
+    # Return the average value of L(C)
+    return total / count
 
-    # Loop through each proof and update the number of words and dependencies
-    for proof in proofs:
-        length, num_dep, *dep_list = proof
-        num_words[num_dep] += length
-        dependencies[num_dep].extend(dep_list)
+def f2(seq):
+    # Function to calculate the number of operations before Prof. Tuy stops for a given sequence C
+    # Initialize variables
+    n = len(seq)
+    count = 0
+    
+    # Iterate over the sequence C
+    for i in range(n):
+        # Check if there are exactly k > 0 coins showing H
+        k = 0
+        for j in range(i, n):
+            if seq[j] == "H":
+                k += 1
+                break
+        
+        # If there are exactly k > 0 coins showing H, turn over the k-th coin from the left
+        if k > 0:
+            count += 1
+            seq = seq[:i] + seq[i+k:]
+            break
+    
+    # Return the number of operations before Prof. Tuy stops
+    return count
 
-    # Find the theorem with the fewest dependencies
-    min_dep_count = min(map(len, dependencies))
-    min_dep_theorems = [i for i, dep in enumerate(dependencies) if len(dep) == min_dep_count]
-
-    # Return the sum of the number of words for the theorems with the fewest dependencies
-    return sum(num_words[i] for i in min_dep_theorems)
+if __name__ == '__main__':
+    s = input()
+    print(f1(s))
 

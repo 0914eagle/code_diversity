@@ -1,28 +1,58 @@
 
-def find_secret_message(s):
-    # Initialize a dictionary to store the hidden strings and their indices
-    hidden_strings = {}
+def f1(N, H, v, p):
+    # Initialize the expected payout
+    expected_payout = 0
     
-    # Iterate over the characters of the string
-    for i in range(len(s)):
-        # Check if the current character is already in the dictionary
-        if s[i] in hidden_strings:
-            # If it is, add the current index to the list of indices
-            hidden_strings[s[i]].append(i)
-        else:
-            # If it's not, create a new list of indices with the current index as the only element
-            hidden_strings[s[i]] = [i]
+    # Loop through each hole
+    for i in range(H):
+        # Calculate the probability of falling into the hole
+        probability = p[i][4]
+        
+        # If the probability is not zero, calculate the expected payout
+        if probability != 0:
+            # Calculate the expected payout from the hole
+            expected_payout_from_hole = v[i] * probability
+            
+            # Add the expected payout from the hole to the total expected payout
+            expected_payout += expected_payout_from_hole
     
-    # Initialize a variable to store the number of occurrences of the secret message
-    num_occurrences = 0
+    # Return the total expected payout
+    return expected_payout
+
+def f2(N, H, v, p):
+    # Initialize the expected payout
+    expected_payout = 0
     
-    # Iterate over the hidden strings
-    for hidden_string, indices in hidden_strings.items():
-        # Check if the hidden string occurs more than once
-        if len(indices) > 1:
-            # If it does, increment the number of occurrences
-            num_occurrences += 1
+    # Loop through each hole
+    for i in range(H):
+        # Calculate the probability of falling into the hole
+        probability = p[i][4]
+        
+        # If the probability is not zero, calculate the expected payout
+        if probability != 0:
+            # Calculate the expected payout from the hole
+            expected_payout_from_hole = v[i] * probability
+            
+            # Add the expected payout from the hole to the total expected payout
+            expected_payout += expected_payout_from_hole
     
-    # Return the number of occurrences of the secret message
-    return num_occurrences
+    # Return the total expected payout
+    return expected_payout
+
+def main():
+    # Read the input
+    N, H = map(int, input().split())
+    v = list(map(int, input().split()))
+    p = []
+    for _ in range(H):
+        p.append(list(map(float, input().split())))
+    
+    # Calculate the expected payout
+    expected_payout = f1(N, H, v, p)
+    
+    # Print the expected payout
+    print(expected_payout)
+
+if __name__ == '__main__':
+    main()
 

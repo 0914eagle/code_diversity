@@ -1,33 +1,38 @@
 
-def solve(n):
-    # Check if n is valid
-    if n < 1 or n > 1000:
-        return "NO"
-    
-    # Initialize the permutation as a list of numbers from 1 to n
-    permutation = list(range(1, n + 1))
-    
-    # Initialize the number of swaps to be performed
-    num_swaps = n * (n - 1) // 2
-    
-    # Initialize the list of swaps to be performed
-    swaps = []
-    
-    # Loop through each pair of positions
-    for i in range(n - 1):
-        for j in range(i + 1, n):
-            # Check if the swap is valid
-            if permutation[i] != permutation[j]:
-                # Add the swap to the list of swaps
-                swaps.append((i, j))
-                # Perform the swap
-                permutation[i], permutation[j] = permutation[j], permutation[i]
-                # Decrement the number of swaps to be performed
-                num_swaps -= 1
-    
-    # Check if all swaps have been performed
-    if num_swaps == 0:
-        return "YES"
-    else:
-        return "NO"
+def get_railway_network(n, m):
+    # Function to get the railway network
+    railway_network = []
+    for i in range(m):
+        u, v = map(int, input().split())
+        railway_network.append((u, v))
+    return railway_network
+
+def get_road_network(n, m):
+    # Function to get the road network
+    road_network = []
+    for i in range(m):
+        u, v = map(int, input().split())
+        road_network.append((u, v))
+    return road_network
+
+def get_min_time(railway_network, road_network, n):
+    # Function to get the minimum time needed for both vehicles to reach town n
+    min_time = -1
+    for i in range(n):
+        for j in range(i+1, n):
+            if (i, j) in railway_network and (i, j) in road_network:
+                min_time = max(min_time, 2)
+            elif (i, j) in railway_network or (i, j) in road_network:
+                min_time = max(min_time, 1)
+    return min_time
+
+def main():
+    n, m = map(int, input().split())
+    railway_network = get_railway_network(n, m)
+    road_network = get_road_network(n, m)
+    min_time = get_min_time(railway_network, road_network, n)
+    print(min_time)
+
+if __name__ == '__main__':
+    main()
 
