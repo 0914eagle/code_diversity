@@ -1,28 +1,36 @@
 
-import sys
+def f1(p, s, r):
+    # Calculate the probability of Hasan scoring at least r goals
+    prob_hasan_scores_r = comb(s-1, r-1) / comb(s-1, p-1)
+    
+    # Calculate the probability of Hasan scoring more than his opponents
+    prob_hasan_scores_more = 0
+    for i in range(r, s+1):
+        prob_hasan_scores_more += comb(s-1, i-1) / comb(s-1, p-1)
+    
+    # Calculate the probability of Hasan winning
+    prob_hasan_wins = prob_hasan_scores_r + prob_hasan_scores_more
+    
+    return prob_hasan_wins
 
-def get_subsets(nums):
-    subsets = []
-    for i in range(1 << len(nums)):
-        subset = []
-        for j in range(len(nums)):
-            if i & (1 << j):
-                subset.append(nums[j])
-        subsets.append(subset)
-    return subsets
+def f2(p, s, r):
+    # Calculate the probability of Hasan scoring at least r goals
+    prob_hasan_scores_r = comb(s-1, r-1) / comb(s-1, p-1)
+    
+    # Calculate the probability of Hasan scoring more than his opponents
+    prob_hasan_scores_more = 0
+    for i in range(r, s+1):
+        prob_hasan_scores_more += comb(s-1, i-1) / comb(s-1, p-1)
+    
+    # Calculate the probability of Hasan winning
+    prob_hasan_wins = prob_hasan_scores_r + prob_hasan_scores_more
+    
+    return prob_hasan_wins
 
-def get_sum(subset, nums):
-    return sum(nums[i] for i in subset)
-
-def get_f(subset, nums, s):
-    return 1 if get_sum(subset, nums) == s else 0
-
-def solve(nums, s):
-    subsets = get_subsets(nums)
-    return sum(get_f(subset, nums, s) for subset in subsets) % 998244353
+def main():
+    p, s, r = map(int, input().split())
+    print(f1(p, s, r))
 
 if __name__ == '__main__':
-    nums = list(map(int, input().split()))
-    s = int(input())
-    print(solve(nums, s))
+    main()
 

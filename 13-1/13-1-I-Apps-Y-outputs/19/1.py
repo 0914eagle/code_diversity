@@ -1,18 +1,22 @@
 
-def solve(n, x, y, number):
-    # Convert the number to a list of digits
-    number = [int(digit) for digit in number]
+def validate_delimiters(L):
+    opening_delimiters = ["(", "[", "{"]
+    closing_delimiters = [")", "]", "}"]
+    stack = []
+    for i, char in enumerate(L):
+        if char in opening_delimiters:
+            stack.append(char)
+        elif char in closing_delimiters:
+            if not stack or stack[-1] != opening_delimiters[closing_delimiters.index(char)]:
+                return char, i
+            else:
+                stack.pop()
+    if stack:
+        return "ok so far", -1
+    else:
+        return "ok so far", -1
 
-    # Initialize the minimum number of operations to perform
-    min_operations = 0
-
-    # Iterate over the digits of the number
-    for i in range(n):
-        # If the current digit is 0 and the next digit is 1, flip the current digit
-        if number[i] == 0 and i + 1 < n and number[i + 1] == 1:
-            number[i] = 1
-            min_operations += 1
-
-    # Return the minimum number of operations to perform
-    return min_operations
+if __name__ == '__main__':
+    L = input()
+    print(validate_delimiters(L))
 

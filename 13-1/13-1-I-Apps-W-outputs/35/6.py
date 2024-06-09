@@ -1,16 +1,16 @@
 
-def get_min_distance(vehicles):
-    # Sort the vehicles by their position
-    vehicles.sort(key=lambda x: x[0])
-    
-    # Initialize the minimum distance as the distance between the first two vehicles
-    min_distance = abs(vehicles[1][0] - vehicles[0][0])
-    
-    # Loop through the vehicles and calculate the minimum distance between any two vehicles
-    for i in range(1, len(vehicles) - 1):
-        distance = abs(vehicles[i + 1][0] - vehicles[i][0])
-        if distance < min_distance:
-            min_distance = distance
-    
-    return min_distance
+def get_tea_time(n, l, r):
+    tea_time = [0] * n
+    queue = []
+    for i in range(n):
+        queue.append((l[i], r[i], i))
+    queue.sort()
+    for i in range(n):
+        if queue[0][0] == queue[i][0]:
+            tea_time[queue[i][2]] = queue[i][1]
+            queue.pop(0)
+        else:
+            tea_time[queue[i][2]] = 0
+            queue.pop(0)
+    return tea_time
 

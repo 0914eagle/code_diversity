@@ -1,74 +1,79 @@
 
-def get_min_cost(n, m, roads):
-    # Initialize the graph with the given roads
-    graph = {i: set() for i in range(1, n + 1)}
-    for a, b in roads:
-        graph[a].add(b)
-        graph[b].add(a)
+import math
 
-    # Initialize the cost of each area to 0
-    costs = [0] * (n + 1)
+def f1(N, L):
+    # Initialize variables
+    prob = 0
+    T = 0
+    
+    # Loop through each possible value of T
+    for t in range(L, L+10):
+        # Calculate the probability of being in B-ville after T days
+        prob = calculate_probability(N, t)
+        
+        # If the probability is greater than or equal to 95%, return T
+        if prob >= 0.95:
+            return t
+    
+    # If no value of T satisfies the condition, return -1
+    return -1
 
-    # Initialize the visited array to keep track of visited areas
-    visited = [False] * (n + 1)
+def calculate_probability(N, T):
+    # Initialize variables
+    prob = 1
+    current_place = 1
+    
+    # Loop through each day of the trip
+    for i in range(T):
+        # Calculate the probability of moving to the next place
+        prob *= calculate_move_probability(N, current_place)
+        
+        # Move to the next place
+        current_place = move_to_next_place(N, current_place)
+    
+    # Return the probability of being in B-ville after T days
+    return prob
 
-    # Function to check if a cycle exists in the graph
-    def has_cycle(area):
-        if visited[area]:
-            return True
-        visited[area] = True
-        for neighbor in graph[area]:
-            if has_cycle(neighbor):
-                return True
-        visited[area] = False
-        return False
+def calculate_move_probability(N, current_place):
+    # Initialize variables
+    prob = 0
+    
+    # Loop through each possible move
+    for i in range(1, N+1):
+        # If the move is possible, calculate the probability of moving to that place
+        if is_move_possible(N, current_place, i):
+            prob += 1 / N
+    
+    # Return the probability of moving to the next place
+    return prob
 
-    # Function to get the cost of decorating the graph
-    def get_cost(area):
-        if costs[area] != 0:
-            return costs[area]
-        costs[area] = 1
-        for neighbor in graph[area]:
-            costs[area] += get_cost(neighbor)
-        return costs[area]
+def move_to_next_place(N, current_place):
+    # Initialize variables
+    next_place = 0
+    
+    # Loop through each possible move
+    for i in range(1, N+1):
+        # If the move is possible, move to that place
+        if is_move_possible(N, current_place, i):
+            next_place = i
+            break
+    
+    # Return the next place
+    return next_place
 
-    # Function to check if the cost of decorating the graph is odd
-    def is_odd_cost():
-        total_cost = 0
-        for cost in costs:
-            total_cost += cost
-        return total_cost % 2 == 1
+def is_move_possible(N, current_place, next_place):
+    # Initialize variables
+    possible = False
+    
+    # Check if the move is possible
+    if next_place != current_place and next_place != 0:
+        possible = True
+    
+    # Return whether the move is possible
+    return possible
 
-    # Function to check if the cost of decorating the graph is valid
-    def is_valid_cost():
-        for i in range(1, n + 1):
-            for j in graph[i]:
-                if (costs[i] + costs[j]) % 3 == 1:
-                    return False
-        return True
-
-    # Function to get the minimum cost of decorating the graph
-    def get_min_cost():
-        min_cost = float("inf")
-        for i in range(1, n + 1):
-            if not visited[i]:
-                visited[i] = True
-                for j in graph[i]:
-                    if not visited[j]:
-                        visited[j] = True
-                        min_cost = min(min_cost, get_cost(j))
-                        visited[j] = False
-                visited[i] = False
-        return min_cost
-
-    # Main function to solve the problem
-    if has_cycle(1):
-        return -1
-    while not is_valid_cost():
-        for i in range(1, n + 1):
-            if costs[i] == 0:
-                costs[i] = 1
-        if not is_odd_cost():
-            return -1
-    return get_min_cost()
+if __name__ == '__main__':
+    N = int(input())
+    L = int(input())
+    print(f1(N, L))
 

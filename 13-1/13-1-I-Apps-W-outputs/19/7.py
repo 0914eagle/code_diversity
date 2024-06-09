@@ -1,40 +1,45 @@
 
-n, m, k, x, y = map(int, input().split())
+import itertools
 
-# Initialize variables to keep track of the maximum and minimum number of questions asked
-max_questions = 0
-min_questions = 1000000000000000000
-sergei_asked = 0
-
-# Iterate through each row
-for i in range(1, n + 1):
-    # If the current row is the same as the row where Sergei sits, then the order of asking is reversed
-    if i == x:
-        order = range(m, 0, -1)
-    else:
-        order = range(1, m + 1)
+def f1(R, G, B, Y, S):
+    # Calculate the total number of fruits
+    total_fruits = R + G + B + Y
     
-    # Iterate through each pupil in the current row
-    for j in order:
-        # If the current pupil is the same as Sergei, then increment the number of times Sergei was asked
-        if i == x and j == y:
-            sergei_asked += 1
-        
-        # Update the maximum and minimum number of questions asked
-        max_questions = max(max_questions, k)
-        min_questions = min(min_questions, k)
-        
-        # Decrement the number of questions left to ask
-        k -= 1
-        
-        # If there are no more questions left to ask, break the loop
-        if k == 0:
-            break
+    # Calculate the number of steps the raven needs to take to reach the orchard
+    raven_steps = S - 1
     
-    # If there are no more questions left to ask, break the loop
-    if k == 0:
-        break
+    # Initialize a list to store the possible outcomes of the game
+    outcomes = []
+    
+    # Iterate over all possible combinations of fruit picks and raven movements
+    for fruit_pick in itertools.product(range(total_fruits + 1), repeat=4):
+        for raven_move in range(raven_steps + 1):
+            # Calculate the number of fruits left on each tree
+            R_left = R - fruit_pick[0]
+            G_left = G - fruit_pick[1]
+            B_left = B - fruit_pick[2]
+            Y_left = Y - fruit_pick[3]
+            
+            # Check if the players have picked all fruits before the raven reaches the orchard
+            if R_left == 0 and G_left == 0 and B_left == 0 and Y_left == 0:
+                outcomes.append(True)
+                break
+            
+            # Check if the raven has reached the orchard before the players have picked all fruits
+            if raven_move == raven_steps:
+                outcomes.append(False)
+                break
+    
+    # Calculate the probability of winning
+    probability = len([outcome for outcome in outcomes if outcome]) / len(outcomes)
+    
+    return probability
 
-# Print the results
-print(max_questions, min_questions, sergei_asked)
+def f2(...):
+    # Implement function f2 here
+    pass
+
+if __name__ == '__main__':
+    # Test function f1 here
+    pass
 

@@ -1,21 +1,45 @@
 
-def solve(s):
-    # Initialize variables
-    min_length = float('inf')
-    compressed_version = ''
+def get_shortest_dominated_subarray(arr):
+    if len(arr) < 2:
+        return -1
+    
+    counts = {}
+    for num in arr:
+        if num not in counts:
+            counts[num] = 1
+        else:
+            counts[num] += 1
+    
+    max_count = max(counts.values())
+    max_num = [num for num, count in counts.items() if count == max_count][0]
+    
+    start = 0
+    end = 0
+    count = 0
+    for i in range(len(arr)):
+        if arr[i] == max_num:
+            count += 1
+            end = i
+        else:
+            if count > 0:
+                if count == 1:
+                    start = i - count + 1
+                else:
+                    start = i - count
+                break
+    
+    if count == 0:
+        return -1
+    
+    return end - start + 1
 
-    # Iterate through all possible combinations of characters and their counts
-    for i in range(1, len(s)):
-        for j in range(1, len(s) // i + 1):
-            # If the current combination results in a shorter compressed version, update the minimum length and the compressed version
-            if len(compress(s, i, j)) < min_length:
-                min_length = len(compress(s, i, j))
-                compressed_version = compress(s, i, j)
+def main():
+    tests = int(input())
+    for _ in range(tests):
+        n = int(input())
+        arr = list(map(int, input().split()))
+        print(get_shortest_dominated_subarray(arr))
 
-    # Return the minimum length
-    return min_length
-
-# Compress a string by repeating a character a certain number of times
-def compress(s, i, j):
-    return str(i) + s[0] * j
+if __name__ == '__main__':
+    main()
 

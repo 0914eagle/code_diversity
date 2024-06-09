@@ -1,43 +1,66 @@
 
-def n_queens(n, m, board):
-    # Initialize variables
-    max_queens = 0
-    num_ways = 0
+def get_min_energy(N, M, alpha, roads):
+    # Initialize a graph with N nodes and 0 edges
+    graph = [[] for _ in range(N)]
 
-    # Loop through each row of the board
-    for i in range(n):
-        # Loop through each column of the board
-        for j in range(m):
-            # Check if the current cell is broken
-            if board[i][j] == '#':
+    # Add edges to the graph
+    for u, v, c in roads:
+        graph[u - 1].append((v - 1, c))
+        graph[v - 1].append((u - 1, c))
+
+    # Initialize the minimum energy to infinity
+    min_energy = float("inf")
+
+    # Iterate over all possible starting points
+    for start in range(N):
+        # Initialize the current energy to 0
+        current_energy = 0
+
+        # Initialize a set to keep track of visited nodes
+        visited = set()
+
+        # Initialize a queue to do BFS
+        queue = [start]
+
+        # Do BFS until the queue is empty
+        while queue:
+            # Get the current node from the queue
+            node = queue.pop(0)
+
+            # If the node has already been visited, skip it
+            if node in visited:
                 continue
 
-            # Check if the current cell is safe for a queen
-            safe = True
-            for k in range(n):
-                # Check if the current cell is in the same row, column, or diagonal as any other queen
-                if board[i][k] == 'Q' or board[k][j] == 'Q' or (i - k) == abs(j - k) and board[i - k][j - k] == 'Q':
-                    safe = False
-                    break
+            # Add the current node to the visited set
+            visited.add(node)
 
-            # If the current cell is safe for a queen, place a queen on it and increment the number of queens
-            if safe:
-                board[i][j] = 'Q'
-                max_queens += 1
-                num_ways += 1
+            # Add the energy of the current node to the current energy
+            current_energy += graph[node][0][1]
 
-                # Recursively call the function to place the remaining queens
-                n_queens(n, m, board)
+            # If the current energy is greater than the minimum energy, break
+            if current_energy > min_energy:
+                break
 
-                # If the maximum number of queens has been reached, return the number of ways to place them
-                if max_queens == n:
-                    return num_ways
+            # Add the neighbors of the current node to the queue
+            for neighbor, _ in graph[node]:
+                if neighbor not in visited:
+                    queue.append(neighbor)
 
-                # If the current cell is not safe for a queen, remove the queen from the board and decrement the number of queens
-                else:
-                    board[i][j] = '.'
-                    max_queens -= 1
+        # If the current energy is less than or equal to the minimum energy, update the minimum energy
+        if current_energy <= min_energy:
+            min_energy = current_energy
 
-    # If no queens can be placed on the board, return 0
-    return 0
+    # Return the minimum energy
+    return min_energy
+
+def main():
+    N, M, alpha = map(int, input().split())
+    roads = []
+    for _ in range(M):
+        u, v, c = map(int, input().split())
+        roads.append((u, v, c))
+    print(get_min_energy(N, M, alpha, roads))
+
+if __name__ == '__main__':
+    main()
 

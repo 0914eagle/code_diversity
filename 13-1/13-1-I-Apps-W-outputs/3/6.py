@@ -1,16 +1,31 @@
 
-def is_broken(matrix, k):
-    for i in range(len(matrix) - k + 1):
-        for j in range(len(matrix[0]) - k + 1):
-            if all(matrix[i+x][j+y] == 0 for x in range(k) for y in range(k)):
-                return True
-    return False
+def f1(n, f):
+    # Base case: if f is already idempotent, return 1
+    if f(f(1)) == f(1):
+        return 1
+    
+    # Inductive step: try applying f twice and check if it is idempotent
+    k = 2
+    while True:
+        if f(f(f(1))) == f(f(1)):
+            return k
+        k += 1
 
-def solve(n, m, k, q, broken_pixels):
-    matrix = [[1] * m for _ in range(n)]
-    for x, y, t in broken_pixels:
-        matrix[x-1][y-1] = 0
-        if is_broken(matrix, k):
-            return t
-    return -1
+def f2(n, f):
+    # Base case: if f is already idempotent, return 1
+    if f(f(1)) == f(1):
+        return 1
+    
+    # Inductive step: try applying f repeatedly and check if it is idempotent
+    k = 2
+    while True:
+        if f(f(f(f(1)))) == f(f(1)):
+            return k
+        k += 1
+
+if __name__ == '__main__':
+    n = int(input())
+    f = list(map(int, input().split()))
+    print(f1(n, f))
+    print(f2(n, f))
 

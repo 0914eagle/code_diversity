@@ -1,38 +1,59 @@
 
-def get_max_objects(n, m, k, a):
-    # Initialize the number of objects that can be packed
-    max_objects = 0
-    # Initialize the number of boxes that are still empty
-    empty_boxes = m
-    # Initialize the current box number
-    current_box = 1
-    # Initialize the current box size
-    current_box_size = k
-    # Initialize the number of objects that are left to pack
-    objects_left = n
-    # Sort the objects in descending order
-    a.sort(reverse=True)
-    # Loop through the objects and try to pack them into the boxes
-    for i in range(n):
-        # Check if the current object fits in the current box
-        if current_box_size >= a[i]:
-            # If it fits, pack it and decrease the current box size
-            current_box_size -= a[i]
-            # Decrease the number of objects that are left to pack
-            objects_left -= 1
+def get_maximal_string(n, k):
+    
+    # Initialize an array to store the frequencies of each letter
+    freq = [0] * 26
+    # Initialize a string to store the result
+    result = ""
+    # Loop through each letter of the Latin alphabet
+    for i in range(0, 26):
+        # If the current letter has not been used yet
+        if freq[i] == 0:
+            # Add the current letter to the result string
+            result += chr(i + ord('a'))
+            # Increment the frequency of the current letter
+            freq[i] += 1
+            # Decrement the number of letters left to use
+            k -= 1
+        # If the current letter has already been used
         else:
-            # If it doesn't fit, move to the next box
-            current_box += 1
-            # Check if there are any empty boxes left
-            if empty_boxes > 0:
-                # If there are, move to the next box and make it the current box
-                current_box_size = k
-                empty_boxes -= 1
-            else:
-                # If there are no empty boxes left, break the loop
+            # Find the next letter that has not been used yet
+            for j in range(i + 1, 26):
+                if freq[j] == 0:
+                    # Add the next letter to the result string
+                    result += chr(j + ord('a'))
+                    # Increment the frequency of the next letter
+                    freq[j] += 1
+                    # Decrement the number of letters left to use
+                    k -= 1
+                    break
+    # If there are still letters left to use
+    if k > 0:
+        # Loop through the result string and add additional letters as needed
+        for i in range(len(result), n):
+            for j in range(0, 26):
+                if freq[j] == 0:
+                    result += chr(j + ord('a'))
+                    freq[j] += 1
+                    k -= 1
+                    if k == 0:
+                        break
+            if k == 0:
                 break
-        # Update the maximum number of objects that can be packed
-        max_objects = max(max_objects, n - objects_left)
-    # Return the maximum number of objects that can be packed
-    return max_objects
+    return result
+
+def get_maximal_strings(queries):
+    
+    results = []
+    for query in queries:
+        results.append(get_maximal_string(query[0], query[1]))
+    return results
+
+if __name__ == '__main__':
+    queries = []
+    for _ in range(int(input())):
+        queries.append(tuple(map(int, input().split())))
+    results = get_maximal_strings(queries)
+    for result in results:
+        print(result)
 

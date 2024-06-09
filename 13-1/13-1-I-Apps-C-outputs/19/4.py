@@ -1,33 +1,17 @@
 
-def solve(n, streams):
-    # Sort the streams by their start time
-    streams.sort(key=lambda x: x[0])
+def f1(c, n, a):
+    # Initialize a list to store the number of times each object is accessed
+    count = [0] * n
 
-    # Initialize the stack and the maximum total priority
-    stack = []
-    max_priority = 0
+    # Iterate through the accesses
+    for i in range(a):
+        # Get the current object being accessed
+        obj = input()
 
-    # Iterate through the streams
-    for stream in streams:
-        # If the stream is not active, skip it
-        if stream[0] + stream[1] <= 0:
-            continue
+        # If the object is not already in the cache, insert it and increment the count
+        if count[obj] == 0:
+            count[obj] += 1
 
-        # If the stack is empty, push the processor identifier onto the stack
-        if not stack:
-            stack.append(stream[2])
-
-        # If the stack is not empty, check if the processor identifier is already on the stack
-        else:
-            # If the processor identifier is already on the stack, skip the stream
-            if stream[2] in stack:
-                continue
-
-            # If the processor identifier is not on the stack, push it onto the stack
-            stack.append(stream[2])
-
-        # Update the maximum total priority
-        max_priority += stream[2]
-
-    return max_priority
+    # Return the least number of times an object must be read into the cache
+    return min(count)
 

@@ -1,37 +1,67 @@
 
-def n_queens_problem(n, m, board):
-    # Initialize variables
-    max_queens = 0
-    num_ways = 0
+def get_min_energy(N, M, alpha, roads):
+    # Initialize the minimum energy to spend as infinity
+    min_energy = float('inf')
+    
+    # Loop through all possible starting junctions
+    for start in range(1, N + 1):
+        # Initialize the current energy to spend as 0
+        current_energy = 0
+        
+        # Initialize the current junction as the starting junction
+        current_junction = start
+        
+        # Initialize the number of candies bought as 0
+        num_candies = 0
+        
+        # Loop through all possible roads
+        for _ in range(M):
+            # Find the road that connects the current junction to the next junction
+            next_junction = get_next_junction(current_junction, roads)
+            
+            # If there is no next junction, break the loop
+            if next_junction == -1:
+                break
+            
+            # Find the number of candies on the current road
+            num_candies += get_num_candies(current_junction, next_junction, roads)
+            
+            # Update the current energy to spend
+            current_energy += alpha * num_candies
+            
+            # Update the current junction
+            current_junction = next_junction
+        
+        # If the current energy to spend is less than the minimum energy, update the minimum energy
+        if current_energy < min_energy:
+            min_energy = current_energy
+    
+    # Return the minimum energy
+    return min_energy
 
-    # Loop through each row of the board
-    for i in range(n):
-        # Loop through each column of the board
-        for j in range(m):
-            # Check if the current cell is broken
-            if board[i][j] == '#':
-                continue
+def get_next_junction(current_junction, roads):
+    # Find the road that connects the current junction to the next junction
+    for road in roads:
+        if road[0] == current_junction:
+            return road[1]
+    
+    # If there is no next junction, return -1
+    return -1
 
-            # Check if the current cell is safe for a queen
-            safe = True
-            for k in range(n):
-                # Check if the current cell is in the same row, column, or diagonal as any other queen
-                if board[i][k] == 'Q' or board[k][j] == 'Q' or (i - k) == abs(j - k):
-                    safe = False
-                    break
+def get_num_candies(current_junction, next_junction, roads):
+    # Find the number of candies on the current road
+    for road in roads:
+        if road[0] == current_junction and road[1] == next_junction:
+            return road[2]
+    
+    # If there is no number of candies, return 0
+    return 0
 
-            # If the current cell is safe for a queen, place a queen on it and update the variables
-            if safe:
-                board[i][j] = 'Q'
-                max_queens += 1
-                num_ways += 1
-
-                # Recursively call the function to place the remaining queens
-                n_queens_problem(n, m, board)
-
-                # Backtrack and remove the queen from the current cell
-                board[i][j] = '.'
-                max_queens -= 1
-
-    return max_queens, num_ways
+if __name__ == '__main__':
+    N, M, alpha = map(int, input().split())
+    roads = []
+    for _ in range(M):
+        u, v, c = map(int, input().split())
+        roads.append((u, v, c))
+    print(get_min_energy(N, M, alpha, roads))
 

@@ -1,61 +1,76 @@
 
-def max_area(n, m, k):
-    if k == 0:
-        return n * m
-    
-    if k == 1:
-        return max(n, m)
-    
-    if k == 2:
-        return n * m - min(n, m)
-    
-    if k == 3:
-        if n == m:
-            return (n - 1) * m
-        else:
-            return n * m - min(n, m)
-    
-    if k == 4:
-        if n == m:
-            return (n - 2) * m
-        else:
-            return n * m - 2 * min(n, m) + 1
-    
-    if k == 5:
-        if n == m:
-            return (n - 3) * m
-        else:
-            return n * m - 3 * min(n, m) + 2
-    
-    if k == 6:
-        if n == m:
-            return (n - 4) * m
-        else:
-            return n * m - 4 * min(n, m) + 3
-    
-    if k == 7:
-        if n == m:
-            return (n - 5) * m
-        else:
-            return n * m - 5 * min(n, m) + 4
-    
-    if k == 8:
-        if n == m:
-            return (n - 6) * m
-        else:
-            return n * m - 6 * min(n, m) + 5
-    
-    if k == 9:
-        if n == m:
-            return (n - 7) * m
-        else:
-            return n * m - 7 * min(n, m) + 6
-    
-    if k == 10:
-        if n == m:
-            return (n - 8) * m
-        else:
-            return n * m - 8 * min(n, m) + 7
-    
-    return -1
+def f1(n, pebbles):
+    # Initialize a dictionary to store the number of spots on each pebble
+    pebble_spots = {}
+    for i in range(n):
+        pebble_spots[i] = pebbles[i]
+
+    # Initialize a list to store the distances between each pair of pebbles
+    distances = []
+    for i in range(n - 1):
+        for j in range(i + 1, n):
+            distances.append(abs(i - j))
+
+    # Initialize a list to store the pairs of pebbles that can be jumped between
+    jump_pairs = []
+    for i in range(n - 1):
+        for j in range(i + 1, n):
+            if pebble_spots[i] + pebble_spots[j] in distances:
+                jump_pairs.append((i, j))
+
+    # Initialize a dictionary to store the distances from each pebble to the most distant pebble that can be reached
+    distances_to_most_distant = {}
+    for i in range(n):
+        distances_to_most_distant[i] = 0
+
+    # Loop through each pair of pebbles that can be jumped between and update the distances from each pebble to the most distant pebble that can be reached
+    for i, j in jump_pairs:
+        if distances_to_most_distant[i] + 1 > distances_to_most_distant[j]:
+            distances_to_most_distant[j] = distances_to_most_distant[i] + 1
+
+    # Find the most distant pebble that can be reached
+    most_distant = 0
+    for i in range(n):
+        if distances_to_most_distant[i] > distances_to_most_distant[most_distant]:
+            most_distant = i
+
+    return most_distant
+
+def f2(n, pebbles):
+    # Initialize a list to store the distances between each pair of pebbles
+    distances = []
+    for i in range(n - 1):
+        for j in range(i + 1, n):
+            distances.append(abs(i - j))
+
+    # Initialize a list to store the pairs of pebbles that can be jumped between
+    jump_pairs = []
+    for i in range(n - 1):
+        for j in range(i + 1, n):
+            if pebbles[i] + pebbles[j] in distances:
+                jump_pairs.append((i, j))
+
+    # Initialize a dictionary to store the distances from each pebble to the most distant pebble that can be reached
+    distances_to_most_distant = {}
+    for i in range(n):
+        distances_to_most_distant[i] = 0
+
+    # Loop through each pair of pebbles that can be jumped between and update the distances from each pebble to the most distant pebble that can be reached
+    for i, j in jump_pairs:
+        if distances_to_most_distant[i] + 1 > distances_to_most_distant[j]:
+            distances_to_most_distant[j] = distances_to_most_distant[i] + 1
+
+    # Find the most distant pebble that can be reached
+    most_distant = 0
+    for i in range(n):
+        if distances_to_most_distant[i] > distances_to_most_distant[most_distant]:
+            most_distant = i
+
+    return most_distant
+
+if __name__ == '__main__':
+    n = int(input())
+    pebbles = list(map(int, input().split()))
+    print(f1(n, pebbles))
+    print(f2(n, pebbles))
 

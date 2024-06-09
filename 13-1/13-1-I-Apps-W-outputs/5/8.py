@@ -1,21 +1,34 @@
 
-def solve(N, K, A, F):
-    # Sort the members by their consumption coefficient in descending order
-    sorted_members = sorted(range(N), key=lambda i: A[i], reverse=True)
+def get_shortest_correct_bracket_sequence(S):
+    # Initialize the result string
+    result = ""
 
-    # Initialize the minimum score to 0
-    min_score = 0
+    # Iterate through the input string
+    for char in S:
+        # If the current character is a left parenthesis, append it to the result
+        if char == "(":
+            result += "("
+        # If the current character is a right parenthesis, append it to the result
+        elif char == ")":
+            result += ")"
+        # If the current character is a left parenthesis, append it to the result
+        elif char == ")":
+            result += ")"
 
-    # Loop through each member and their corresponding food
-    for i, j in enumerate(sorted_members):
-        # Calculate the time it takes for the member to finish the food
-        time = (A[j] - min(K, A[j])) * F[i]
+    # Return the result
+    return result
 
-        # Update the minimum score if the time is greater than the current minimum score
-        min_score = max(min_score, time)
+def main():
+    # Read the input from stdin
+    N = int(input())
+    S = input()
 
-        # Decrement the number of training sets available for the member
-        K -= min(K, A[j])
+    # Call the function to get the shortest correct bracket sequence
+    result = get_shortest_correct_bracket_sequence(S)
 
-    return min_score
+    # Print the result
+    print(result)
+
+if __name__ == '__main__':
+    main()
 

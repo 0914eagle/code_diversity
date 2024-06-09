@@ -1,17 +1,10 @@
 
-def solve(n, x, v):
-    # Calculate the minimum distance between two points
-    def min_distance(i, j):
-        if v[i] == v[j]:
-            return abs(x[i] - x[j])
-        else:
-            return (x[j] - x[i]) / (v[j] - v[i])
-    
-    # Calculate the sum of minimum distances over all pairs of points
-    sum_distances = 0
-    for i in range(n):
-        for j in range(i+1, n):
-            sum_distances += min_distance(i, j)
-    
-    return sum_distances
+import math
+
+def get_circumference(radius):
+    return 2 * math.pi * radius
+
+if __name__ == '__main__':
+    radius = float(input())
+    print(get_circumference(radius))
 

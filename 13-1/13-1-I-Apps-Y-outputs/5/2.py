@@ -1,31 +1,18 @@
 
-def thematic_contests(n, a):
-    # Sort the problems by topic
-    sorted_problems = sorted(enumerate(a), key=lambda x: x[1])
+def is_squarefree(n):
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
 
-    # Initialize the variables
-    current_topic = 0
-    current_count = 0
-    max_count = 0
-    result = []
+def find_m(n):
+    for m in range(2, n):
+        if is_squarefree(m * n):
+            return m
+    return -1
 
-    # Iterate through the sorted problems
-    for i, topic in sorted_problems:
-        # If the current topic is the same as the previous topic, increment the count
-        if topic == current_topic:
-            current_count += 1
-        # If the current topic is different from the previous topic, reset the count
-        else:
-            current_topic = topic
-            current_count = 1
-
-        # If the current count is greater than the maximum count, update the maximum count
-        if current_count > max_count:
-            max_count = current_count
-
-        # Add the problem to the result list
-        result.append(i)
-
-    # Return the maximum count
-    return max_count
+if __name__ == '__main__':
+    n = int(input())
+    m = find_m(n)
+    print(m)
 

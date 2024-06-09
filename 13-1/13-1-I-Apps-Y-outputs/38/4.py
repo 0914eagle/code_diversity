@@ -1,46 +1,52 @@
 
-import sys
-
-def is_possible(N, a):
-    # Initialize the visited array with False
-    visited = [False] * (N + 1)
-    # Initialize the queue with Button 1
+def f1(N, M, edges):
+    # Initialize a dictionary to store the vertices that are visited
+    visited = {1: True}
+    # Initialize a queue to store the vertices to be visited
     queue = [1]
     # Loop until the queue is empty
     while queue:
-        # Get the current button from the queue
-        current = queue.pop(0)
-        # If the current button is Button 2, return True
-        if current == 2:
-            return True
-        # If the current button is not visited, mark it as visited and add its neighbor to the queue
-        if not visited[current]:
-            visited[current] = True
-            queue.append(a[current - 1])
-    # If we reach here, it means we couldn't find Button 2, so return False
-    return False
+        # Dequeue a vertex from the queue
+        vertex = queue.pop(0)
+        # Loop through the edges of the vertex
+        for edge in edges:
+            # If the edge is not visited, mark it as visited and add it to the queue
+            if edge[0] == vertex and edge[1] not in visited:
+                visited[edge[1]] = True
+                queue.append(edge[1])
+    # If all the vertices are visited, return the number of paths
+    if len(visited) == N:
+        return 1
+    else:
+        return 0
 
-def get_min_presses(N, a):
-    # Initialize the minimum number of presses to infinity
-    min_presses = float('inf')
-    # Loop through all possible starting buttons
-    for i in range(1, N + 1):
-        # If the current button is not visited, mark it as visited and add its neighbor to the queue
-        if not visited[i]:
-            visited[i] = True
-            queue.append(a[i - 1])
-            # If the current button is Button 2, return the current number of presses
-            if current == 2:
-                return min_presses
-            # If the current button is not Button 2, increment the number of presses and continue the loop
-            min_presses += 1
-    # If we reach here, it means we couldn't find Button 2, so return -1
-    return -1
+def f2(N, M, edges):
+    # Initialize a dictionary to store the vertices that are visited
+    visited = {1: True}
+    # Initialize a queue to store the vertices to be visited
+    queue = [1]
+    # Loop until the queue is empty
+    while queue:
+        # Dequeue a vertex from the queue
+        vertex = queue.pop(0)
+        # Loop through the edges of the vertex
+        for edge in edges:
+            # If the edge is not visited, mark it as visited and add it to the queue
+            if edge[0] == vertex and edge[1] not in visited:
+                visited[edge[1]] = True
+                queue.append(edge[1])
+    # If all the vertices are visited, return the number of paths
+    if len(visited) == N:
+        return 1
+    else:
+        return 0
 
-N = int(input())
-a = list(map(int, input().split()))
-if is_possible(N, a):
-    print(get_min_presses(N, a))
-else:
-    print(-1)
+if __name__ == '__main__':
+    N, M = map(int, input().split())
+    edges = []
+    for i in range(M):
+        a, b = map(int, input().split())
+        edges.append((a, b))
+    print(f1(N, M, edges))
+    print(f2(N, M, edges))
 

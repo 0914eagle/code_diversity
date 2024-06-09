@@ -1,46 +1,44 @@
 
-def solve(arr, k, m):
-    # Initialize a dictionary to store the frequency of each number
-    freq = {}
-    for num in arr:
-        if num in freq:
-            freq[num] += 1
-        else:
-            freq[num] = 1
+def get_total_distance(adil_x, adil_y, bera_x, bera_y, recycling_bin_x, recycling_bin_y, bottles):
+    
+    # Calculate the distance from Adil's and Bera's initial positions to the recycling bin
+    adil_distance = get_distance(adil_x, adil_y, recycling_bin_x, recycling_bin_y)
+    bera_distance = get_distance(bera_x, bera_y, recycling_bin_x, recycling_bin_y)
 
-    # Initialize a variable to store the length of the shortest contiguous subarray
-    shortest_subarray = len(arr) + 1
+    # Initialize the minimum total distance to the maximum possible value
+    min_total_distance = float('inf')
 
-    # Iterate through the queries
-    for query in range(m):
-        # If the query is of the first type, update the frequency of the number
-        if arr[query][0] == 1:
-            freq[arr[query][1]] -= 1
-            freq[arr[query][2]] += 1
-        # If the query is of the second type, find the length of the shortest contiguous subarray
-        elif arr[query][0] == 2:
-            # Initialize a variable to store the current length of the subarray
-            current_subarray = 0
-            # Initialize a variable to store the start index of the subarray
-            start_index = 0
-            # Iterate through the array
-            for i in range(len(arr)):
-                # If the current number is in the frequency dictionary and its frequency is greater than 0, increment the current subarray length
-                if arr[i] in freq and freq[arr[i]] > 0:
-                    current_subarray += 1
-                # If the current subarray length is equal to the required length, update the start index
-                if current_subarray == k:
-                    start_index = i - k + 1
-                    break
-                # If the current subarray length is greater than the required length, update the start index and reset the current subarray length
-                elif current_subarray > k:
-                    start_index = i - k + 1
-                    current_subarray = 1
-            # If the required subarray doesn't exist, output -1, otherwise output the length of the subarray
-            if current_subarray == k:
-                print(start_index)
-            else:
-                print(-1)
+    # Iterate over all possible combinations of bottles that Adil and Bera can pick
+    for adil_bottles, bera_bottles in itertools.combinations(bottles, len(bottles)):
+        # Calculate the total distance that Adil and Bera need to walk to pick the bottles
+        adil_path = get_path(adil_x, adil_y, adil_bottles)
+        bera_path = get_path(bera_x, bera_y, bera_bottles)
+        total_distance = adil_distance + bera_distance + sum(adil_path) + sum(bera_path)
 
-    return shortest_subarray
+        # Update the minimum total distance if necessary
+        if total_distance < min_total_distance:
+            min_total_distance = total_distance
+
+    return min_total_distance
+
+def get_distance(x1, y1, x2, y2):
+    
+    return ((x2 - x1) ** 2 + (y2 - y1) ** 2) ** 0.5
+
+def get_path(x, y, bottles):
+    
+    path = []
+    for bottle in bottles:
+        path.append(get_distance(x, y, bottle[0], bottle[1]))
+        x, y = bottle[0], bottle[1]
+    return path
+
+if __name__ == '__main__':
+    adil_x, adil_y, bera_x, bera_y, recycling_bin_x, recycling_bin_y = map(int, input().split())
+    n = int(input())
+    bottles = []
+    for _ in range(n):
+        x, y = map(int, input().split())
+        bottles.append((x, y))
+    print(get_total_distance(adil_x, adil_y, bera_x, bera_y, recycling_bin_x, recycling_bin_y, bottles))
 

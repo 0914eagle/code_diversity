@@ -1,21 +1,24 @@
 
-def solve(s, t):
-    # Initialize a dictionary to store the number of occurrences of each substring
-    # of length |t| in s
-    occurrences = {}
+def get_common_divisors(A, B):
+    common_divisors = []
+    for i in range(1, int(A**0.5) + 1):
+        if A % i == 0 and B % i == 0:
+            common_divisors.append(i)
+    return common_divisors
 
-    # Iterate through each substring of length |t| in s
-    for i in range(len(s) - len(t) + 1):
-        substring = s[i:i+len(t)]
+def get_coprime_divisors(common_divisors):
+    coprime_divisors = []
+    for i in common_divisors:
+        if all(i % j != 0 for j in coprime_divisors):
+            coprime_divisors.append(i)
+    return coprime_divisors
 
-        # If the substring is already in the dictionary, increment its count
-        if substring in occurrences:
-            occurrences[substring] += 1
+def get_maximum_divisors(A, B):
+    common_divisors = get_common_divisors(A, B)
+    coprime_divisors = get_coprime_divisors(common_divisors)
+    return len(coprime_divisors)
 
-        # Otherwise, add the substring to the dictionary with count 1
-        else:
-            occurrences[substring] = 1
-
-    # Return the maximum number of occurrences of t in s
-    return max(occurrences.values())
+if __name__ == '__main__':
+    A, B = map(int, input().split())
+    print(get_maximum_divisors(A, B))
 

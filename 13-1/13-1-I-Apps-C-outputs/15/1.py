@@ -1,28 +1,19 @@
 
-def solve(N, K, M, edges):
-    # Initialize a graph with N nodes and M edges
-    graph = [[] for _ in range(N + 1)]
-    for edge in edges:
-        graph[edge[0]].append(edge[1])
-        graph[edge[1]].append(edge[0])
+def get_pairs(a, b, c):
+    pairs = 0
+    for i in range(len(a)):
+        for j in range(i+1, len(a)):
+            if a[i] == b[j] and a[j] == c[i]:
+                pairs += 1
+    return pairs
 
-    # Initialize a list to store the producers that can be left running
-    producers = []
+def main():
+    n = int(input())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    c = list(map(int, input().split()))
+    print(get_pairs(a, b, c))
 
-    # Iterate through each producer and check if it can be left running
-    for producer in range(1, K + 1):
-        # Initialize a set to store the conveyor belts that the producer uses
-        conveyor_belts = set()
-
-        # Iterate through each junction that the producer can reach
-        for junction in graph[producer]:
-            # If the junction is not the warehouse, add the conveyor belts that connect the junction to the warehouse
-            if junction != N:
-                conveyor_belts.update(graph[junction])
-
-        # If the producer uses only one conveyor belt, it can be left running
-        if len(conveyor_belts) == 1:
-            producers.append(producer)
-
-    return len(producers)
+if __name__ == '__main__':
+    main()
 

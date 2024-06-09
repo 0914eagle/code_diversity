@@ -1,64 +1,62 @@
 
-def get_min_cost(n, m, roads):
-    # Initialize the graph with the given roads
-    graph = {i: set() for i in range(1, n + 1)}
-    for a, b in roads:
-        graph[a].add(b)
-        graph[b].add(a)
+import math
 
-    # Initialize the cost of each area to 0
-    costs = [0] * (n + 1)
+def f1(N, L):
+    # Initialize variables
+    prob = 0
+    T = 0
+    
+    # Loop through each possible value of T
+    for t in range(L, L+10):
+        # Calculate the probability of being in B-ville after t days
+        prob = calculate_probability(N, t)
+        
+        # If the probability is greater than or equal to 95%, return T
+        if prob >= 0.95:
+            return T
+        
+        # Otherwise, increment T and continue looping
+        T += 1
+    
+    # If no value of T satisfies the condition, return -1
+    return -1
 
-    # Initialize the visited array to keep track of visited areas
-    visited = [False] * (n + 1)
+def calculate_probability(N, T):
+    # Initialize variables
+    prob = 1
+    
+    # Loop through each day of the trip
+    for i in range(1, T+1):
+        # Calculate the probability of being in B-ville on day i
+        prob *= calculate_day_probability(N, i)
+    
+    # Return the probability
+    return prob
 
-    # Function to check if a cycle exists in the graph
-    def has_cycle(start):
-        visited[start] = True
-        for neighbor in graph[start]:
-            if not visited[neighbor]:
-                if has_cycle(neighbor):
-                    return True
-            elif neighbor != start:
-                return True
-        visited[start] = False
-        return False
+def calculate_day_probability(N, i):
+    # Initialize variables
+    prob = 0
+    
+    # Loop through each possible place to visit on day i
+    for j in range(1, N+1):
+        # Calculate the probability of visiting place j on day i
+        prob += calculate_place_probability(N, i, j)
+    
+    # Return the probability
+    return prob
 
-    # Function to get the minimum cost of decorating the graph
-    def get_min_cost_util(start, cost):
-        # If the current cost is already odd, return the cost
-        if cost % 2 == 1:
-            return cost
+def calculate_place_probability(N, i, j):
+    # Initialize variables
+    prob = 0
+    
+    # If place j is not B-ville, calculate the probability of visiting it on day i
+    if j != N:
+        prob = 1 / (N-1)
+    
+    # Return the probability
+    return prob
 
-        # If the current area is already visited, return the cost
-        if visited[start]:
-            return cost
-
-        # Mark the current area as visited
-        visited[start] = True
-
-        # Recursively call the function for all the neighbors of the current area
-        for neighbor in graph[start]:
-            if not visited[neighbor]:
-                cost = get_min_cost_util(neighbor, cost)
-
-        # If a cycle exists in the graph, return -1
-        if has_cycle(start):
-            return -1
-
-        # Add the cost of the current area to the total cost
-        costs[start] = cost
-
-        # Return the updated cost
-        return cost + 1
-
-    # Call the function to get the minimum cost of decorating the graph
-    cost = get_min_cost_util(1, 0)
-
-    # If a cycle exists in the graph, return -1
-    if has_cycle(1):
-        return -1
-
-    # Return the minimum cost of decorating the graph
-    return cost
+if __name__ == '__main__':
+    N, L = map(int, input().split())
+    print(f1(N, L))
 

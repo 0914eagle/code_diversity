@@ -1,22 +1,43 @@
 
-def count_dress_patterns(n, m, fabric):
-    # Initialize a dictionary to store the number of dress patterns for each size
-    dress_patterns = {1: 0, 2: 0, 3: 0, 4: 0}
+def count_playlists(n, T, songs):
+    # Initialize a list to store the playlists
+    playlists = []
+    
+    # Iterate over each possible playlist
+    for i in range(1 << n):
+        # Convert the binary representation of i to a list of song indices
+        playlist = [j for j in range(n) if i & (1 << j)]
+        
+        # Check if the playlist is valid
+        if is_valid_playlist(playlist, T, songs):
+            playlists.append(playlist)
+    
+    # Return the number of valid playlists
+    return len(playlists)
 
-    # Loop through each row of the fabric
+def is_valid_playlist(playlist, T, songs):
+    # Check if the playlist is of the required length
+    if len(playlist) != T:
+        return False
+    
+    # Check if the playlist has no consecutive songs of the same genre
+    for i in range(len(playlist) - 1):
+        if songs[playlist[i]][1] == songs[playlist[i + 1]][1]:
+            return False
+    
+    # Check if the playlist has no repeated songs
+    for i in range(len(playlist) - 1):
+        if playlist[i] == playlist[i + 1]:
+            return False
+    
+    # If all checks pass, the playlist is valid
+    return True
+
+if __name__ == '__main__':
+    n, T = map(int, input().split())
+    songs = []
     for i in range(n):
-        # Loop through each column of the fabric
-        for j in range(m):
-            # If the current square is part of a dress pattern, increment the corresponding size
-            if fabric[i][j] == 'a':
-                dress_patterns[1] += 1
-            elif fabric[i][j] == 'b':
-                dress_patterns[2] += 1
-            elif fabric[i][j] == 'c':
-                dress_patterns[3] += 1
-            elif fabric[i][j] == 'd':
-                dress_patterns[4] += 1
-
-    # Return the sum of the number of dress patterns for each size
-    return sum(dress_patterns.values())
+        t, g = map(int, input().split())
+        songs.append([t, g])
+    print(count_playlists(n, T, songs))
 

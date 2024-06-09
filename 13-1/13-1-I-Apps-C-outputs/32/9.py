@@ -1,45 +1,32 @@
 
-def is_valid_configuration(n, a, targets):
-    # Check if the targets are valid
-    for i in range(n):
-        if len(targets[i]) > 2:
-            return False
-    
-    # Check if the targets are unique
-    for i in range(n):
-        for j in range(i+1, n):
-            if targets[i] == targets[j]:
-                return False
-    
-    # Check if the targets are in the correct rows and columns
-    for i in range(n):
-        for target in targets[i]:
-            if target[0] != i+1 and target[1] != i+1:
-                return False
-    
-    # Check if the number of targets matches the number of hits
-    for i in range(n):
-        if len(targets[i]) != a[i]:
-            return False
-    
-    return True
+def f1(N, M, K, measurements):
+    # Initialize a 2D array to store the number of up and down spins in each subgrid
+    subgrid_counts = [[[0, 0] for _ in range(N)] for _ in range(M)]
 
-def solve(n, a):
-    # Initialize the targets as empty lists
-    targets = [[] for _ in range(n)]
-    
-    # Fill in the targets for each column
-    for i in range(n):
-        for j in range(a[i]):
-            # Find the next available row and column
-            for k in range(n):
-                if len(targets[k]) < 2:
-                    targets[k].append([k+1, i+1])
-                    break
-    
-    # Check if the configuration is valid
-    if is_valid_configuration(n, a, targets):
-        return targets
-    else:
-        return []
+    # Iterate over the measurements and update the subgrid counts
+    for measurement in measurements:
+        y, x, spin = measurement
+        subgrid_counts[y - 1][x - 1][0 if spin == "+" else 1] += 1
+
+    # Initialize a set to store the valid states
+    valid_states = set()
+
+    # Iterate over the subgrids and check if they are consistent with the measurements
+    for y in range(N):
+        for x in range(M):
+            up_count, down_count = subgrid_counts[y][x]
+            if up_count == down_count:
+                valid_states.add((y, x, up_count))
+
+    # Return the number of valid states modulo 10^9 + 7
+    return len(valid_states) % (10**9 + 7)
+
+def f2(...):
+    # Implement f2 here
+    pass
+
+if __name__ == '__main__':
+    N, M, K = map(int, input().split())
+    measurements = [input().split() for _ in range(K)]
+    print(f1(N, M, K, measurements))
 

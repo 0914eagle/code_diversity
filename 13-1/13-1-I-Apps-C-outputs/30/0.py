@@ -1,32 +1,47 @@
 
-import math
+def f1(m, n, islands):
+    # Initialize a dictionary to store the number of Zax and Xaz on each island
+    zax_count = {i: 0 for i in range(1, m + 1)}
+    xaz_count = {i: 0 for i in range(1, m + 1)}
 
-def get_final_height(houses, k):
-    # Initialize the final height of each house to its initial height
-    final_heights = [house for house in houses]
+    # Iterate through the input islands and count the number of Zax and Xaz on each island
+    for island in islands:
+        for resource in island:
+            if resource != 0:
+                if resource % 2 == 0:
+                    zax_count[island[0]] += 1
+                else:
+                    xaz_count[island[0]] += 1
 
-    # Loop until all houses converge to a final height
-    while True:
-        # Check if all houses have converged to a final height
-        if all(math.isclose(final_heights[i], final_heights[i+1], rel_tol=1e-6) for i in range(len(final_heights)-1)):
-            break
+    # Check if the number of Zax and Xaz on each island is equal
+    for island in range(1, m + 1):
+        if zax_count[island] != xaz_count[island]:
+            return "NO"
 
-        # Update the final height of each house
-        for i in range(len(final_heights)):
-            if i == 0:
-                # Leftmost house: use the average height of the two neighboring houses
-                final_heights[i] = (final_heights[i+1] + final_heights[i+2]) / 2 + k
-            elif i == len(final_heights) - 1:
-                # Rightmost house: use the average height of the two neighboring houses
-                final_heights[i] = (final_heights[i-1] + final_heights[i-2]) / 2 + k
-            else:
-                # Middle houses: use the average height of the three neighboring houses
-                final_heights[i] = (final_heights[i-1] + final_heights[i+1]) / 2 + k
+    return "YES"
 
-    # Return the height of the tallest house
-    return max(final_heights)
+def f2(m, n, islands):
+    # Initialize a set to store the natural resources present on each island
+    resources = set()
 
-houses = [39, 10, 40]
-k = 1
-print(get_final_height(houses, k))
+    # Iterate through the input islands and add the natural resources to the set
+    for island in islands:
+        for resource in island:
+            if resource != 0:
+                resources.add(resource)
+
+    # Check if the set of natural resources is equal to the number of natural resources
+    if len(resources) == n:
+        return "YES"
+    else:
+        return "NO"
+
+if __name__ == '__main__':
+    m, n = map(int, input().split())
+    islands = []
+    for _ in range(m):
+        island = list(map(int, input().split()))
+        islands.append(island)
+    print(f1(m, n, islands))
+    print(f2(m, n, islands))
 

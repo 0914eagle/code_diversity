@@ -1,33 +1,54 @@
 
-def solve(n, streams):
-    # Sort the streams by their start time
-    streams.sort(key=lambda x: x[0])
+def f1(c, n, a):
+    # Initialize a dictionary to store the number of times each object is accessed
+    access_count = {}
+    for i in range(n):
+        access_count[i] = 0
+    
+    # Iterate through the accesses and increment the count for each object accessed
+    for i in range(a):
+        obj = int(input())
+        access_count[obj] += 1
+    
+    # Sort the access count in descending order
+    access_count = sorted(access_count.items(), key=lambda x: x[1], reverse=True)
+    
+    # Initialize a variable to store the number of times an object must be read into the cache
+    cache_hits = 0
+    
+    # Iterate through the access count and calculate the number of times an object must be read into the cache
+    for obj, count in access_count:
+        if count > 0:
+            cache_hits += 1
+    
+    return cache_hits
 
-    # Initialize the stack and the maximum total priority
-    stack = []
-    max_priority = 0
+def f2(c, n, a):
+    # Initialize a dictionary to store the number of times each object is accessed
+    access_count = {}
+    for i in range(n):
+        access_count[i] = 0
+    
+    # Iterate through the accesses and increment the count for each object accessed
+    for i in range(a):
+        obj = int(input())
+        access_count[obj] += 1
+    
+    # Sort the access count in descending order
+    access_count = sorted(access_count.items(), key=lambda x: x[1], reverse=True)
+    
+    # Initialize a variable to store the number of times an object must be read into the cache
+    cache_hits = 0
+    
+    # Iterate through the access count and calculate the number of times an object must be read into the cache
+    for obj, count in access_count:
+        if count > 0:
+            cache_hits += 1
+    
+    return cache_hits
 
-    # Iterate through the streams
-    for stream in streams:
-        # If the stream is not active, skip it
-        if stream[0] + stream[1] <= 0:
-            continue
-
-        # If the stack is empty, push the processor identifier onto the stack
-        if not stack:
-            stack.append(stream[2])
-
-        # If the stack is not empty, check if the processor identifier is already on the stack
-        else:
-            # If the processor identifier is already on the stack, skip the stream
-            if stream[2] in stack:
-                continue
-
-            # If the processor identifier is not on the stack, push it onto the stack
-            stack.append(stream[2])
-
-        # Update the maximum total priority
-        max_priority += stream[2]
-
-    return max_priority
+if __name__ == '__main__':
+    c, n, a = map(int, input().split())
+    print(f1(c, n, a))
+    print(f2(c, n, a))
 

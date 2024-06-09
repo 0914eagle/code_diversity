@@ -1,17 +1,26 @@
 
-def get_min_amount_to_feed_cat(awakening_time, hunger_level, hunger_increase_per_minute, bun_cost, bun_decrease_hunger):
-    # Calculate the total hunger level after awakening
-    total_hunger_level = hunger_level + (awakening_time.hour * 60 + awakening_time.minute) * hunger_increase_per_minute
-
-    # Calculate the number of buns needed to feed the cat
-    num_buns_needed = total_hunger_level // bun_decrease_hunger
-
-    # Calculate the total cost of buns needed
-    total_cost = num_buns_needed * bun_cost
-
-    # Apply discount for buns purchased after 20:00
-    if awakening_time.hour >= 20:
-        total_cost *= 0.8
-
-    return total_cost
+def solve(s):
+    # Initialize the output string
+    output = ""
+    
+    # Iterate through the input string
+    for c in s:
+        # If the current character is a letter or digit, add it to the output
+        if c.isalpha() or c.isdigit():
+            output += c
+        # If the current character is a space, add a space to the output
+        elif c == " ":
+            output += " "
+        # If the current character is a '<', do nothing
+        elif c == "<":
+            pass
+        # If the current character is a '[', move the cursor to the start of the line
+        elif c == "[":
+            output = ""
+        # If the current character is a ']', move the cursor to the end of the line
+        elif c == "]":
+            output += " "
+    
+    # Return the final output string
+    return output.strip()
 

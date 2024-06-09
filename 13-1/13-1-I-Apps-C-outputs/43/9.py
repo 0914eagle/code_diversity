@@ -1,72 +1,21 @@
 
-def solve(n, tree):
-    # Initialize variables
-    labels = {}
-    controlled_areas = {}
-    berries = {}
-    giant_birds = []
-    tiny_birds = []
-    elderberries = []
+def is_equivalent(str1, str2):
+    if str1 == str2:
+        return "YES"
+    
+    n = len(str1) // 2
+    str1_1, str1_2 = str1[:n], str1[n:]
+    str2_1, str2_2 = str2[:n], str2[n:]
+    
+    if str1_1 == str2_2 and str1_2 == str2_1:
+        return "YES"
+    elif str1_1 == str2_1 and str1_2 == str2_2:
+        return "YES"
+    else:
+        return "NO"
 
-    # Parse the input tree
-    for i in range(1, n+1):
-        if tree[i][0] != 0:
-            controlled_areas[i] = tree[i][0]
-        if tree[i][1] == 'G':
-            giant_birds.append(i)
-        elif tree[i][1] == 'T':
-            tiny_birds.append(i)
-        elif tree[i][1] == 'E':
-            elderberries.append(i)
-            labels[i] = tree[i][2]
-
-    # Determine the controlled areas of the tiny birds
-    for i in tiny_birds:
-        controlled_areas[i] = find_controlled_area(i, controlled_areas)
-
-    # Determine which bird eats which berry
-    for i in elderberries:
-        bird = find_bird(i, labels, controlled_areas)
-        berries[i] = bird
-
-    # Change the labels of the tiny birds to make them giant birds
-    for i in tiny_birds:
-        labels[i] = 'G'
-
-    # Determine the controlled areas of the giant birds
-    for i in giant_birds:
-        controlled_areas[i] = find_controlled_area(i, controlled_areas)
-
-    # Determine which bird eats which berry after the labels are changed
-    for i in elderberries:
-        bird = find_bird(i, labels, controlled_areas)
-        if bird != berries[i]:
-            return -1
-
-    return 0
-
-def find_controlled_area(i, controlled_areas):
-    # Find the parent of the current vertex
-    parent = controlled_areas[i]
-
-    # If the parent is a big branch, return the subtree rooted at the parent
-    if controlled_areas[parent] == 0:
-        return parent
-
-    # Otherwise, find the closest ancestor that is a big branch
-    while controlled_areas[parent] != 0:
-        parent = controlled_areas[parent]
-
-    return parent
-
-def find_bird(i, labels, controlled_areas):
-    # Find the bird with the same label as the current berry
-    for bird in labels:
-        if labels[bird] == labels[i]:
-            # If the bird is inside the controlled area of the current bird, return the bird
-            if controlled_areas[bird] == controlled_areas[i]:
-                return bird
-
-    # If no bird is found, return -1
-    return -1
+if __name__ == '__main__':
+    str1 = input()
+    str2 = input()
+    print(is_equivalent(str1, str2))
 

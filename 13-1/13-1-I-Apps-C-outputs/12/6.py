@@ -1,17 +1,39 @@
 
-def longest_interesting_subsequence(A, S):
-    # Initialize variables
-    N = len(A)
-    dp = [0] * (N + 1)
+def f1(n, levels):
+    # Initialize the dp table with the completion time for each level using item 0
+    dp = [levels[i][0] for i in range(n)]
 
-    # Loop through each element in the array
-    for i in range(1, N + 1):
-        # If the sum of the first K elements is less than or equal to S, update the length of the longest interesting subsequence
-        if sum(A[:i]) <= S:
-            dp[i] = max(dp[i - 1], i)
-        # If the sum of the last K elements is less than or equal to S, update the length of the longest interesting subsequence
-        if sum(A[i:]) <= S:
-            dp[i] = max(dp[i], dp[i - 1])
+    # Loop through each level
+    for i in range(1, n):
+        # Loop through each item
+        for j in range(1, n+1):
+            # If the completion time for the current level using the current item is less than the minimum completion time so far, update the minimum completion time
+            if levels[i][j] < dp[i]:
+                dp[i] = levels[i][j]
 
-    return dp
+    # Return the minimum completion time for all levels
+    return sum(dp)
+
+def f2(n, levels):
+    # Initialize the dp table with the completion time for each level using item 0
+    dp = [levels[i][0] for i in range(n)]
+
+    # Loop through each level
+    for i in range(1, n):
+        # Loop through each item
+        for j in range(1, n+1):
+            # If the completion time for the current level using the current item is less than the minimum completion time so far, update the minimum completion time
+            if levels[i][j] < dp[i]:
+                dp[i] = levels[i][j]
+
+    # Return the minimum completion time for all levels
+    return sum(dp)
+
+if __name__ == '__main__':
+    n = int(input())
+    levels = []
+    for i in range(n):
+        levels.append(list(map(int, input().split())))
+    print(f1(n, levels))
+    print(f2(n, levels))
 

@@ -1,25 +1,52 @@
 
-def is_leap_year(year):
-    if year % 4 == 0 and (year % 100 != 0 or year % 400 == 0):
-        return True
-    return False
+def f1(n, m, rap_battles):
+    # Initialize a graph with n vertices and no edges
+    graph = [[] for _ in range(n)]
 
-def days_between_dates(date1, date2):
-    years_diff = int(date2[:4]) - int(date1[:4])
-    months_diff = int(date2[5:7]) - int(date1[5:7])
-    days_diff = int(date2[8:]) - int(date1[8:])
+    # Add edges to the graph based on the rap battles
+    for u, v in rap_battles:
+        graph[u - 1].append(v - 1)
+        graph[v - 1].append(u - 1)
 
-    days_in_months = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-    days_in_months[1] = 29 if is_leap_year(int(date1[:4])) else 28
+    # Find the strongly connected components in the graph
+    scc = strongly_connected_components(graph)
 
-    total_days = days_diff
-    for i in range(months_diff):
-        total_days += days_in_months[i]
+    # If there is only one strongly connected component, then the ordering is unique
+    if len(scc) == 1:
+        return len(scc[0])
+    else:
+        return -1
 
-    for i in range(years_diff):
-        total_days += 365
-        if is_leap_year(int(date1[:4]) + i):
-            total_days += 1
+def strongly_connected_components(graph):
+    # Initialize a list to store the strongly connected components
+    scc = []
 
-    return total_days
+    # Iterate through the vertices in the graph
+    for v in range(len(graph)):
+        # If the vertex has not been visited yet, then explore it
+        if v not in visited:
+            explore(v, graph, scc)
+
+    return scc
+
+def explore(v, graph, scc):
+    # Mark the vertex as visited
+    visited.add(v)
+
+    # Add the vertex to the current strongly connected component
+    scc[-1].append(v)
+
+    # Iterate through the neighbors of the vertex
+    for u in graph[v]:
+        # If the neighbor has not been visited yet, then explore it
+        if u not in visited:
+            explore(u, graph, scc)
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    rap_battles = []
+    for _ in range(m):
+        u, v = map(int, input().split())
+        rap_battles.append((u, v))
+    print(f1(n, m, rap_battles))
 

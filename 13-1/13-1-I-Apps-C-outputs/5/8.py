@@ -1,33 +1,58 @@
 
-import sys
+def f1(n, t, a, b, d):
+    # Calculate the fair share for each species
+    fair_share = [t * d[i] / sum(d) for i in range(n)]
+    
+    # Initialize the allocation for each species
+    allocation = [0] * n
+    
+    # Loop through each species and allocate the bandwidth
+    for i in range(n):
+        # Calculate the available bandwidth for the current species
+        available_bandwidth = b[i] - a[i]
+        
+        # Calculate the maximum bandwidth that can be allocated for the current species
+        max_allocation = min(available_bandwidth, fair_share[i])
+        
+        # Allocate the maximum bandwidth to the current species
+        allocation[i] = max_allocation
+        
+        # Update the available bandwidth for the next species
+        available_bandwidth -= max_allocation
+    
+    return allocation
 
-def solve(n, ranges):
-    # Sort the ranges by their left endpoint
-    ranges.sort(key=lambda x: x[0])
+def f2(n, t, a, b, d):
+    # Calculate the fair share for each species
+    fair_share = [t * d[i] / sum(d) for i in range(n)]
+    
+    # Initialize the allocation for each species
+    allocation = [0] * n
+    
+    # Loop through each species and allocate the bandwidth
+    for i in range(n):
+        # Calculate the available bandwidth for the current species
+        available_bandwidth = b[i] - a[i]
+        
+        # Calculate the maximum bandwidth that can be allocated for the current species
+        max_allocation = min(available_bandwidth, fair_share[i])
+        
+        # Allocate the maximum bandwidth to the current species
+        allocation[i] = max_allocation
+        
+        # Update the available bandwidth for the next species
+        available_bandwidth -= max_allocation
+    
+    return allocation
 
-    # Initialize the snow level at each point to 0
-    snow_level = [0] * (max(map(lambda x: x[1], ranges)) + 1)
-
-    # Loop through each range and increment the snow level at each point in the range
-    for a, b in ranges:
-        for i in range(a, b + 1):
-            snow_level[i] += 1
-
-    # Initialize the number of ways to place the sensors to 0
-    num_ways = 0
-
-    # Loop through each point and check if it is a valid placement for a sensor
-    for i in range(1, len(snow_level)):
-        if snow_level[i] > snow_level[i - 1] and snow_level[i] > snow_level[i + 1]:
-            num_ways += 1
-
-    return num_ways % 1000000009
-
-n = int(input())
-ranges = []
-for i in range(n):
-    a, b = map(int, input().split())
-    ranges.append((a, b))
-
-print(solve(n, ranges))
+if __name__ == '__main__':
+    n = 3
+    t = 10
+    a = [0, 0, 0]
+    b = [10, 10, 10]
+    d = [1, 1, 1]
+    allocation = f1(n, t, a, b, d)
+    print(allocation)
+    allocation = f2(n, t, a, b, d)
+    print(allocation)
 

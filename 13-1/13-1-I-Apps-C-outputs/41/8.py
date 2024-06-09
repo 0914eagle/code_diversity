@@ -1,19 +1,47 @@
 
-def get_max_heap_size(n, values):
-    # Initialize a list to store the heap property for each node
-    heap_property = [False] * (n + 1)
-    # Set the root node as the largest value
-    heap_property[1] = True
-    # Iterate through the nodes in reverse order
-    for i in range(n, 0, -1):
-        # If the current node is not the root and its value is greater than its parent's value
-        if i != 1 and values[i] > values[i // 2]:
-            # Set the heap property for the current node to True
-            heap_property[i] = True
-        # If the current node is the root or its value is less than or equal to its parent's value
-        else:
-            # Set the heap property for the current node to False
-            heap_property[i] = False
-    # Return the number of nodes with the heap property set to True
-    return sum(heap_property)
+def f1(N, K, items):
+    # Initialize a dictionary to store the items available at each store
+    available_items = {}
+    for i in range(N):
+        available_items[i] = set()
+
+    # Add the items to the dictionary
+    for i, item in items:
+        available_items[i].add(item)
+
+    # Return the dictionary
+    return available_items
+
+def f2(N, K, items, bought_items):
+    # Initialize a set to store the items that have been bought
+    bought_items_set = set()
+
+    # Add the items to the set
+    for item in bought_items:
+        bought_items_set.add(item)
+
+    # Initialize a list to store the path through the stores
+    path = []
+
+    # Iterate through the items available at each store
+    for i in range(N):
+        # If the current store has an item that has not been bought, add it to the path
+        if available_items[i] - bought_items_set:
+            path.append(i)
+            bought_items_set.add(available_items[i] - bought_items_set)
+
+    # If the path is not empty, return it
+    if path:
+        return path
+    # Otherwise, return "impossible"
+    else:
+        return "impossible"
+
+if __name__ == '__main__':
+    N, K = map(int, input().split())
+    items = [input().split() for _ in range(K)]
+    bought_items = input().split()
+    available_items = f1(N, K, items)
+    path = f2(N, K, items, bought_items)
+    print(path)
 

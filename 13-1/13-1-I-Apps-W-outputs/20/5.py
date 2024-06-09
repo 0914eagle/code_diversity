@@ -1,23 +1,30 @@
 
-def solve(s, t):
-    # Initialize a dictionary to store the number of occurrences of each substring
-    # of length |t| in s
-    occurrences = {}
+def get_common_divisors(a, b):
+    common_divisors = []
+    for i in range(1, min(a, b) + 1):
+        if a % i == 0 and b % i == 0:
+            common_divisors.append(i)
+    return common_divisors
 
-    # Iterate through each substring of length |t| in s
-    for i in range(len(s) - len(t) + 1):
-        substring = s[i:i+len(t)]
+def get_coprime_divisors(a, b, common_divisors):
+    coprime_divisors = []
+    for i in common_divisors:
+        if is_coprime(i, a) and is_coprime(i, b):
+            coprime_divisors.append(i)
+    return coprime_divisors
 
-        # If the substring is not already in the dictionary, add it and initialize its count to 0
-        if substring not in occurrences:
-            occurrences[substring] = 0
+def is_coprime(a, b):
+    for i in range(2, int(a ** 0.5) + 1):
+        if a % i == 0 and b % i == 0:
+            return False
+    return True
 
-        # Increment the count of the substring
-        occurrences[substring] += 1
+def get_max_divisors(a, b):
+    common_divisors = get_common_divisors(a, b)
+    coprime_divisors = get_coprime_divisors(a, b, common_divisors)
+    return len(coprime_divisors)
 
-    # Find the maximum number of occurrences of t in s
-    max_occurrences = max(occurrences.values())
-
-    # Return the maximum number of occurrences
-    return max_occurrences
+if __name__ == '__main__':
+    a, b = map(int, input().split())
+    print(get_max_divisors(a, b))
 

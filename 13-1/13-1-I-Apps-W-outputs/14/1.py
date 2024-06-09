@@ -1,31 +1,30 @@
 
-def get_max_files(x, y):
-    n = len(x)
-    m = len(y)
-    if n != m:
-        return 0
+def get_max_bank_account(n, A, B, C, T, t):
+    # Initialize the bank account and the number of unread messages
+    bank_account = 0
+    unread_messages = 0
     
-    x_sum = sum(x)
-    y_sum = sum(y)
-    if x_sum != y_sum:
-        return 0
-    
-    files = []
+    # Loop through each message and its arrival time
     for i in range(n):
-        files.append([x[i], y[i]])
-    
-    files.sort(key=lambda x: x[0])
-    
-    max_files = 0
-    curr_file = 0
-    for i in range(n):
-        if files[i][0] + files[i][1] <= x_sum:
-            max_files += 1
-            curr_file += 1
+        # Calculate the cost of the message after T minutes
+        cost = A - B * min(T, t[i])
+        
+        # If the message is received before T minutes, add it to the bank account
+        if t[i] <= T:
+            bank_account += cost
+        
+        # If the message is received after T minutes, add it to the number of unread messages
         else:
-            if curr_file > 0:
-                max_files += 1
-            curr_file = 0
+            unread_messages += 1
     
-    return max_files
+    # Return the maximum bank account amount after T minutes
+    return bank_account + unread_messages * C * T
+
+def main():
+    n, A, B, C, T = map(int, input().split())
+    t = list(map(int, input().split()))
+    print(get_max_bank_account(n, A, B, C, T, t))
+
+if __name__ == '__main__':
+    main()
 

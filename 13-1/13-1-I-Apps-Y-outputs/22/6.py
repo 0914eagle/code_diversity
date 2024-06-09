@@ -1,10 +1,10 @@
 
-def estimate_cost(cost):
-    return len(str(cost))
-
-if __name__ == '__main__':
-    num_cases = int(input())
-    for _ in range(num_cases):
-        cost = int(input())
-        print(estimate_cost(cost))
+def f1(N, A):
+    sheet = set()
+    for i in range(N):
+        if A[i] in sheet:
+            sheet.remove(A[i])
+        else:
+            sheet.add(A[i])
+    return len(sheet)
 

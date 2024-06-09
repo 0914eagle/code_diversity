@@ -1,35 +1,60 @@
 
-def solve(n, m, k, o, c, graph):
-    # Initialize a set to store the cells with iron ore
-    iron_ore_cells = set()
-    # Initialize a set to store the cells with coal
-    coal_cells = set()
-    # Initialize a set to store the cells that are claimed
-    claimed_cells = set()
-    # Initialize a variable to store the minimum number of settlers needed
-    min_settlers = 0
+def f1(n, c):
+    # initialize the available disk space and the list of apps
+    available_space = c
+    apps = []
+    
+    # loop through the input and add the apps to the list
+    for i in range(n):
+        d, s = map(int, input().split())
+        apps.append((d, s))
+    
+    # sort the apps in descending order by their download size
+    apps.sort(key=lambda x: x[0], reverse=True)
+    
+    # initialize the number of apps that can be installed
+    num_apps = 0
+    
+    # loop through the apps and install them if there is enough space
+    for d, s in apps:
+        if available_space >= d:
+            num_apps += 1
+            available_space -= d
+        else:
+            break
+    
+    # return the number of apps that can be installed
+    return num_apps
 
-    # Loop through the cells with iron ore
-    for cell in o:
-        # Add the cell to the set of cells with iron ore
-        iron_ore_cells.add(cell)
-        # If the cell is not already claimed, claim it and add it to the set of claimed cells
-        if cell not in claimed_cells:
-            claimed_cells.add(cell)
-            min_settlers += 1
+def f2(n, c):
+    # initialize the available disk space and the list of apps
+    available_space = c
+    apps = []
+    
+    # loop through the input and add the apps to the list
+    for i in range(n):
+        d, s = map(int, input().split())
+        apps.append((d, s))
+    
+    # sort the apps in descending order by their download size
+    apps.sort(key=lambda x: x[0], reverse=True)
+    
+    # initialize the number of apps that can be installed
+    num_apps = 0
+    
+    # loop through the apps and install them if there is enough space
+    for d, s in apps:
+        if available_space >= d:
+            num_apps += 1
+            available_space -= d
+        else:
+            break
+    
+    # return the list of apps that can be installed, in the order they should be installed
+    return [i+1 for i in range(num_apps)]
 
-    # Loop through the cells with coal
-    for cell in c:
-        # Add the cell to the set of cells with coal
-        coal_cells.add(cell)
-        # If the cell is not already claimed, claim it and add it to the set of claimed cells
-        if cell not in claimed_cells:
-            claimed_cells.add(cell)
-            min_settlers += 1
-
-    # If there are no cells with both iron ore and coal, return the minimum number of settlers needed
-    if len(iron_ore_cells & coal_cells) == 0:
-        return min_settlers
-    else:
-        return "impossible"
+if __name__ == '__main__':
+    n, c = map(int, input().split())
+    print(f1(n, c))
+    print(*f2(n, c))
 

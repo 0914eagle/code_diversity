@@ -1,22 +1,38 @@
 
-def solve(N, points):
-    # Initialize the scores of both players to 0
-    score1, score2 = 0, 0
-    
-    # Iterate through each point and calculate the area of the quadrilateral formed by the point and its neighbors
-    for i in range(N):
-        for j in range(i+1, N):
-            for k in range(j+1, N):
-                for l in range(k+1, N):
-                    # Calculate the area of the quadrilateral
-                    area = abs((points[i][0] * (points[j][1] - points[k][1]) + points[j][0] * (points[k][1] - points[l][1]) + points[k][0] * (points[l][1] - points[i][1]) + points[l][0] * (points[i][1] - points[j][1])) / 2)
-                    
-                    # Add the area to the score of the current player
-                    if i % 2 == 0:
-                        score1 += area
-                    else:
-                        score2 += area
-    
-    # Return the sum of the scores modulo 1000003
-    return (score1 + score2) % 1000003
+def get_min_swaps(s):
+    n = len(s)
+    tellers = [i for i, c in enumerate(s) if c == '0']
+    votes1 = [i for i, c in enumerate(s) if c == '1']
+    votes2 = [i for i, c in enumerate(s) if c == '2']
+    points1 = 0
+    points2 = 0
+    for i in range(n):
+        if i in tellers:
+            points1 = max(points1, len(votes1))
+            points2 = max(points2, len(votes2))
+        elif s[i] == '1':
+            points1 += 1
+        else:
+            points2 += 1
+    if points1 > points2:
+        return "impossible"
+    elif points1 < points2:
+        return "impossible"
+    else:
+        swaps = 0
+        for i in range(n):
+            if s[i] == '1' and i not in tellers:
+                for j in range(i+1, n):
+                    if s[j] == '0' and j not in tellers:
+                        s[i], s[j] = s[j], s[i]
+                        swaps += 1
+                        break
+        return swaps
+
+def main():
+    s = input()
+    print(get_min_swaps(s))
+
+if __name__ == '__main__':
+    main()
 

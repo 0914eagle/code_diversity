@@ -1,11 +1,15 @@
 
-def get_min_moves(a, b):
-    moves = 0
-    while a != b:
-        if a > b:
-            a -= 1
-        else:
-            a += 1
-        moves += 1
-    return moves
+def f1(d, t, s):
+    time_to_reach = d / s
+    if time_to_reach <= t:
+        return "Yes"
+    else:
+        return "No"
+
+def f2(...):
+    ...
+
+if __name__ == '__main__':
+    d, t, s = map(int, input().split())
+    print(f1(d, t, s))
 

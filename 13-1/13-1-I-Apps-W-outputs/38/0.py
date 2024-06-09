@@ -1,89 +1,65 @@
 
-n = int(input())
-a = list(map(int, input().split()))
+def f1(n, a):
+    # Initialize a list to store the roads
+    roads = [0] * n
+    for i in range(n):
+        roads[i] = a[i]
+    
+    # Initialize a set to store the visited towns
+    visited = set()
+    
+    # Initialize a variable to store the number of ways to flip the roads
+    ways = 0
+    
+    # Iterate through each town
+    for i in range(n):
+        # If the town has not been visited before, visit it and flip the roads
+        if i not in visited:
+            ways += 1
+            visited.add(i)
+            while True:
+                # If the current town is the destination town, break the loop
+                if roads[i] == i:
+                    break
+                # Flip the road and move to the next town
+                roads[i], roads[roads[i]] = roads[roads[i]], roads[i]
+                i = roads[i]
+    
+    # Return the number of ways to flip the roads
+    return ways
 
-# Use a dictionary to count the frequency of each number in the sequence
-freq = {}
-for num in a:
-    if num in freq:
-        freq[num] += 1
-    else:
-        freq[num] = 1
+def f2(n, a):
+    # Initialize a list to store the roads
+    roads = [0] * n
+    for i in range(n):
+        roads[i] = a[i]
+    
+    # Initialize a set to store the visited towns
+    visited = set()
+    
+    # Initialize a variable to store the number of ways to flip the roads
+    ways = 0
+    
+    # Iterate through each town
+    for i in range(n):
+        # If the town has not been visited before, visit it and flip the roads
+        if i not in visited:
+            ways += 1
+            visited.add(i)
+            while True:
+                # If the current town is the destination town, break the loop
+                if roads[i] == i:
+                    break
+                # Flip the road and move to the next town
+                roads[i], roads[roads[i]] = roads[roads[i]], roads[i]
+                i = roads[i]
+    
+    # Return the number of ways to flip the roads
+    return ways
 
-# Find all x that occur exactly twice in the sequence
-twice = []
-for x in freq:
-    if freq[x] == 2:
-        twice.append(x)
-
-# Find all x that occur exactly thrice in the sequence
-thrice = []
-for x in freq:
-    if freq[x] == 3:
-        thrice.append(x)
-
-# Find all x that occur exactly four times in the sequence
-four = []
-for x in freq:
-    if freq[x] == 4:
-        four.append(x)
-
-# Find all x that occur exactly five times in the sequence
-five = []
-for x in freq:
-    if freq[x] == 5:
-        five.append(x)
-
-# Find all x that occur exactly six times in the sequence
-six = []
-for x in freq:
-    if freq[x] == 6:
-        six.append(x)
-
-# Find all x that occur exactly seven times in the sequence
-seven = []
-for x in freq:
-    if freq[x] == 7:
-        seven.append(x)
-
-# Find all x that occur exactly eight times in the sequence
-eight = []
-for x in freq:
-    if freq[x] == 8:
-        eight.append(x)
-
-# Find all x that occur exactly nine times in the sequence
-nine = []
-for x in freq:
-    if freq[x] == 9:
-        nine.append(x)
-
-# Find all x that occur exactly ten times in the sequence
-ten = []
-for x in freq:
-    if freq[x] == 10:
-        ten.append(x)
-
-# Print the number of valid x
-print(len(twice) + len(thrice) + len(four) + len(five) + len(six) + len(seven) + len(eight) + len(nine) + len(ten))
-
-# Print the valid x and their common differences
-for x in twice:
-    print(x, 0)
-for x in thrice:
-    print(x, 0)
-for x in four:
-    print(x, 0)
-for x in five:
-    print(x, 0)
-for x in six:
-    print(x, 0)
-for x in seven:
-    print(x, 0)
-for x in eight:
-    print(x, 0)
-for x in nine:
-    print(x, 0)
-for x in ten:
-    print(x, 0)
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(f1(n, a))
+    print(f2(n, a))
 

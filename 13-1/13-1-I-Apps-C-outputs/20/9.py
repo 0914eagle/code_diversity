@@ -1,18 +1,42 @@
 
-def get_max_profit(n, m, l, s, c):
-    # Initialize a two-dimensional table to store the maximum profit for each candidate and aggressiveness level
-    dp = [[0] * (m + 1) for _ in range(n + 1)]
+def f1(N, W_list, H_list, map_list):
+    # Initialize a dictionary to store the map pieces
+    map_dict = {}
+    for i in range(N):
+        map_dict[i+1] = map_list[i]
 
-    # Loop through each candidate and aggressiveness level
-    for i in range(1, n + 1):
-        for j in range(1, m + 1):
-            # If the candidate is not recruited, the maximum profit is 0
-            if i == 0:
-                dp[i][j] = 0
-            # If the candidate is recruited and has aggressiveness level j, the maximum profit is the profit from recruiting the candidate plus the profit from the events on stage
-            else:
-                dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - 1] + s[i - 1] + c[j])
+    # Initialize a list to store the reconstructed map
+    reconstructed_map = []
 
-    # Return the maximum profit for the last candidate and aggressiveness level
-    return dp[n][m]
+    # Iterate through the map pieces and add them to the reconstructed map
+    for i in range(N):
+        # Get the current map piece
+        current_map = map_dict[i+1]
+
+        # Add the current map piece to the reconstructed map
+        reconstructed_map.append(current_map)
+
+    # Return the reconstructed map
+    return reconstructed_map
+
+def f2(reconstructed_map):
+    # Initialize a dictionary to store the map pieces
+    map_dict = {}
+
+    # Iterate through the reconstructed map and add the map pieces to the dictionary
+    for i in range(len(reconstructed_map)):
+        map_dict[i+1] = reconstructed_map[i]
+
+    # Return the dictionary
+    return map_dict
+
+if __name__ == '__main__':
+    # Test the functions
+    N = 3
+    W_list = [4, 2, 2]
+    H_list = [1, 2, 2]
+    map_list = ['2123', '21', '10', '23', '12']
+    reconstructed_map = f1(N, W_list, H_list, map_list)
+    map_dict = f2(reconstructed_map)
+    print(map_dict)
 

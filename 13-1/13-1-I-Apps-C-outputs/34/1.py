@@ -1,28 +1,18 @@
 
-def solve():
-    N = int(input())
-    piles = []
-    for i in range(N):
-        A, K = map(int, input().split())
-        piles.append((A, K))
-
-    while True:
-        takahashi_move = True
-        for i in range(N):
-            A, K = piles[i]
-            if A > 0:
-                takahashi_move = False
-                if A > K:
-                    piles[i] = (A - K, K)
-                else:
-                    piles[i] = (0, K)
-
-        if takahashi_move:
-            break
-
-    for A, K in piles:
-        if A > 0:
-            return "Aoki"
-
-    return "Takahashi"
+def find_max_average(numbers, k):
+    
+    if len(numbers) < k:
+        return -1
+    
+    max_sum = 0
+    current_sum = 0
+    for i in range(k):
+        max_sum += numbers[i]
+    
+    for i in range(k, len(numbers)):
+        current_sum += numbers[i]
+        current_sum -= numbers[i - k]
+        max_sum = max(max_sum, current_sum)
+    
+    return max_sum / k
 

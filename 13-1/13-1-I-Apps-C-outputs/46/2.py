@@ -1,35 +1,36 @@
 
-def solve(n, m, k, o, c, graph):
-    # Initialize a set to store the cells with iron ore
-    iron_ore_cells = set()
-    # Initialize a set to store the cells with coal
-    coal_cells = set()
-    # Initialize a set to store the claimed cells
-    claimed_cells = set()
-    # Initialize a variable to store the minimum number of settlers needed
-    min_settlers = 0
+def f1(n, c):
+    # find the largest app that can be installed
+    largest_app = 0
+    for i in range(n):
+        if d[i] <= c:
+            largest_app = max(largest_app, s[i])
+    
+    # find the largest number of apps that can be installed
+    max_apps = 0
+    for i in range(n):
+        if s[i] <= largest_app:
+            max_apps += 1
+    
+    return max_apps
 
-    # Loop through the cells with iron ore
-    for cell in o:
-        # Add the cell to the set of cells with iron ore
-        iron_ore_cells.add(cell)
-        # If the cell is not already claimed, claim it and add it to the set of claimed cells
-        if cell not in claimed_cells:
-            claimed_cells.add(cell)
-            min_settlers += 1
+def f2(n, c):
+    # sort the apps by their storage size in descending order
+    sorted_apps = sorted(range(n), key=lambda i: s[i], reverse=True)
+    
+    # install the apps in the sorted order
+    installed_apps = []
+    for i in sorted_apps:
+        if s[i] <= c:
+            installed_apps.append(i)
+            c -= s[i]
+    
+    return installed_apps
 
-    # Loop through the cells with coal
-    for cell in c:
-        # Add the cell to the set of cells with coal
-        coal_cells.add(cell)
-        # If the cell is not already claimed, claim it and add it to the set of claimed cells
-        if cell not in claimed_cells:
-            claimed_cells.add(cell)
-            min_settlers += 1
-
-    # If both sets of cells are not empty, return the minimum number of settlers needed
-    if iron_ore_cells and coal_cells:
-        return min_settlers
-    else:
-        return "impossible"
+if __name__ == '__main__':
+    n, c = map(int, input().split())
+    d = list(map(int, input().split()))
+    s = list(map(int, input().split()))
+    print(f1(n, c))
+    print(*f2(n, c))
 

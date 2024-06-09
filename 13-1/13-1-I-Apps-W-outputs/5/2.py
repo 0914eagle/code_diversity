@@ -1,23 +1,33 @@
 
-def solve(N, K, A, F):
-    # Calculate the maximum score that can be achieved with each member doing K sets of training
-    max_scores = [0] * N
-    for i in range(N):
-        max_scores[i] = (A[i] - K) * F[i]
+def get_shortest_correct_bracket_sequence(S):
+    # Initialize the result string
+    result = ""
 
-    # Sort the members by their maximum score in descending order
-    sorted_members = sorted(range(N), key=lambda i: max_scores[i], reverse=True)
+    # Iterate through the input string
+    for char in S:
+        # If the current character is a closing bracket, append it to the result
+        if char == ")":
+            result += ")"
+        # If the current character is an opening bracket, append it to the result and check if the previous character was a closing bracket
+        elif char == "(":
+            result += "("
+            if len(result) > 1 and result[-2] == ")":
+                result = result[:-1] + "(" + result[-1]
 
-    # Initialize the minimum possible score to the maximum score of the best member
-    min_score = max_scores[sorted_members[0]]
+    # Return the result
+    return result
 
-    # Iterate through the members in descending order of their maximum score
-    for i in sorted_members:
-        # If the current member's maximum score is less than the minimum possible score, break the loop
-        if max_scores[i] < min_score:
-            break
-        # Otherwise, calculate the minimum possible score by assigning the current member to the most difficult food
-        min_score = min(min_score, (A[i] - K) * F[i])
+def main():
+    # Read the input from stdin
+    N = int(input())
+    S = input()
 
-    return min_score
+    # Call the function to get the shortest correct bracket sequence
+    result = get_shortest_correct_bracket_sequence(S)
+
+    # Print the result
+    print(result)
+
+if __name__ == '__main__':
+    main()
 

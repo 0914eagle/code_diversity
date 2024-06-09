@@ -1,11 +1,27 @@
 
-def get_cutoff_score(a, b, c, d):
-    # Calculate the total score of the participant on the 100th place
-    total_score = a + c
+def can_transform_string(a, b):
+    if a == b:
+        return True
     
-    # Calculate the minimum possible total score
-    min_total_score = b + d
+    if len(a) != len(b):
+        return False
     
-    # Return the minimum possible total score as the cutoff score
-    return min_total_score
+    for i in range(len(a)):
+        if a[i] != b[i]:
+            x = a[i]
+            y = b[i]
+            p = x ^ y
+            q = x | y
+            if p != a[i] and q != a[i] and p != b[i] and q != b[i]:
+                return False
+    
+    return True
+
+def main():
+    a = input()
+    b = input()
+    print(can_transform_string(a, b))
+
+if __name__ == '__main__':
+    main()
 

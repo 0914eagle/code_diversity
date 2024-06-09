@@ -1,36 +1,50 @@
 
-import sys
+import math
 
-def get_possible_orderings(names):
-    # Initialize the number of possible orderings to 1
-    possible_orderings = 1
+def get_regions(circles):
+    # Initialize a set to store the regions
+    regions = set()
+    
+    # Iterate over the circles
+    for circle in circles:
+        # Get the center and radius of the circle
+        x, y, r = circle
+        
+        # Get the bounding box of the circle
+        left = x - r
+        right = x + r
+        top = y + r
+        bottom = y - r
+        
+        # Get the four corners of the bounding box
+        corners = [(left, top), (right, top), (right, bottom), (left, bottom)]
+        
+        # Iterate over the corners and check if they are inside the circle
+        for corner in corners:
+            # Get the distance between the corner and the center of the circle
+            distance = math.sqrt((corner[0] - x) ** 2 + (corner[1] - y) ** 2)
+            
+            # If the distance is less than or equal to the radius, the corner is inside the circle
+            if distance <= r:
+                # Add the corner to the region
+                regions.add(corner)
+    
+    # Return the number of regions
+    return len(regions)
 
-    # Iterate over the names
-    for i in range(len(names)):
-        # Get the current name and the next name
-        current_name = names[i]
-        next_name = names[(i + 1) % len(names)]
+def main():
+    # Read the number of circles from stdin
+    n = int(input())
+    
+    # Read the circles from stdin
+    circles = []
+    for i in range(n):
+        x, y, r = map(int, input().split())
+        circles.append((x, y, r))
+    
+    # Call the get_regions function and print the result
+    print(get_regions(circles))
 
-        # Check if the current name and the next name start with the same letter sequence
-        if current_name[:len(current_name) - 1] == next_name[:len(next_name) - 1]:
-            # If they do, increment the number of possible orderings
-            possible_orderings += 1
-
-    # Return the number of possible orderings
-    return possible_orderings % 1000000007
-
-if __name__ == "__main__":
-    # Read the number of names from stdin
-    num_names = int(input())
-
-    # Read the names from stdin
-    names = []
-    for i in range(num_names):
-        names.append(input())
-
-    # Get the number of possible orderings
-    possible_orderings = get_possible_orderings(names)
-
-    # Print the number of possible orderings
-    print(possible_orderings)
+if __name__ == '__main__':
+    main()
 

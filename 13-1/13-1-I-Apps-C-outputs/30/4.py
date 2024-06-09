@@ -1,26 +1,31 @@
 
-import math
-
-def solve(N, k, heights):
-    # Calculate the average height of the houses
-    avg_height = sum(heights) / N
+def f1(m, n):
+    # Initialize a list to store the number of islands each being can occupy
+    zax_islands = [0] * (m + 1)
+    xaz_islands = [0] * (m + 1)
     
-    # Calculate the final height of each house
-    final_heights = []
-    for i in range(N):
-        if heights[i] >= avg_height + k:
-            final_heights.append(heights[i])
-        else:
-            final_heights.append((heights[i-1] + heights[i+1]) / 2 + k)
+    # Iterate through the input and update the number of islands each being can occupy
+    for i in range(m):
+        resources = list(map(int, input().split()))
+        for resource in resources:
+            if resource != 0:
+                if resource % 2 == 0:
+                    zax_islands[i + 1] += 1
+                else:
+                    xaz_islands[i + 1] += 1
     
-    # Return the height of the tallest house
-    return max(final_heights)
+    # Check if the Zax and Xaz can coexist on El-gă-rizm
+    for i in range(1, m + 1):
+        if zax_islands[i] + xaz_islands[i] != n:
+            return "NO"
+    
+    return "YES"
 
-def main():
-    N, k = map(int, input().split())
-    heights = list(map(float, input().split()))
-    print(solve(N, k, heights))
+def f2(...):
+    # Implement f2 here
+    pass
 
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    m, n = map(int, input().split())
+    print(f1(m, n))
 

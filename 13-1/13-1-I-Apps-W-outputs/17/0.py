@@ -1,27 +1,50 @@
 
-def solve(phone_books):
-    # Initialize an empty dictionary to store the phone numbers
-    phone_numbers = {}
+def is_aesthetically_pleasing(points, special_values):
+    # Sort the points by their special values in descending order
+    points = sorted(points, key=lambda x: x[1] - x[0], reverse=True)
+    # Create a dictionary to map each point to its special value
+    special_values_map = {point: special_value for point, special_value in zip(points, special_values)}
+    # Initialize the current special value to the maximum special value
+    current_special_value = special_values[0]
+    # Iterate through the points and check if the current special value is greater than or equal to the special value of the current point
+    for point in points:
+        if current_special_value < special_values_map[point]:
+            return False
+        current_special_value = special_values_map[point]
+    return True
 
-    # Iterate over the phone books
-    for phone_book in phone_books:
-        # Split the phone book into name and phone numbers
-        name, *numbers = phone_book.split()
+def find_aesthetically_pleasing_numbering(points, special_values):
+    # Sort the points by their special values in descending order
+    points = sorted(points, key=lambda x: x[1] - x[0], reverse=True)
+    # Create a dictionary to map each point to its special value
+    special_values_map = {point: special_value for point, special_value in zip(points, special_values)}
+    # Initialize the current special value to the maximum special value
+    current_special_value = special_values[0]
+    # Initialize the numbering of the points
+    numbering = [0] * len(points)
+    # Iterate through the points and check if the current special value is greater than or equal to the special value of the current point
+    for i, point in enumerate(points):
+        if current_special_value < special_values_map[point]:
+            return None
+        numbering[i] = current_special_value
+        current_special_value = special_values_map[point]
+    return numbering
 
-        # Initialize an empty list to store the phone numbers for the current name
-        if name not in phone_numbers:
-            phone_numbers[name] = []
+def main():
+    n = int(input())
+    points = []
+    for i in range(n):
+        x, y = map(int, input().split())
+        points.append((x, y))
+    special_values = list(map(int, input().split()))
+    if is_aesthetically_pleasing(points, special_values):
+        print("YES")
+        numbering = find_aesthetically_pleasing_numbering(points, special_values)
+        for point in numbering:
+            print(point)
+    else:
+        print("NO")
 
-        # Add the phone numbers to the list
-        for number in numbers:
-            phone_numbers[name].append(number)
-
-    # Sort the phone numbers for each name
-    for name in phone_numbers:
-        phone_numbers[name].sort()
-
-    # Print the organized information about the phone numbers
-    print(len(phone_numbers))
-    for name, numbers in phone_numbers.items():
-        print(f"{name} {len(numbers)} {' '.join(numbers)}")
+if __name__ == '__main__':
+    main()
 

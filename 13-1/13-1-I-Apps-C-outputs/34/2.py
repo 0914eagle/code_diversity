@@ -1,35 +1,18 @@
 
-def stone_taking_game(n, a, k):
-    # Initialize the number of stones that can be taken from each pile
-    num_stones = [a[i] for i in range(n)]
-    # Initialize the maximum number of stones that can be taken from each pile
-    max_stones = [int(a[i] / k[i]) for i in range(n)]
-    # Initialize the turn of the current player
-    turn = 0
-    # Initialize the winner of the game
-    winner = None
-    # Loop until a winner is determined
-    while winner is None:
-        # Determine the current player
-        if turn % 2 == 0:
-            player = "Takahashi"
-        else:
-            player = "Aoki"
-        # Determine the pile that the current player will take stones from
-        pile = input("{}'s turn: ".format(player))
-        pile = int(pile) - 1
-        # Determine the number of stones that the current player will take
-        num_stones_taken = input("{} takes: ".format(player))
-        num_stones_taken = int(num_stones_taken)
-        # Update the number of stones that can be taken from the selected pile
-        num_stones[pile] -= num_stones_taken
-        # Update the maximum number of stones that can be taken from the selected pile
-        max_stones[pile] = int(num_stones[pile] / k[pile])
-        # Check if the current player has won the game
-        if num_stones[pile] == 0:
-            winner = player
-        # Switch to the next turn
-        turn += 1
-    # Return the winner of the game
-    return winner
+def find_max_average(numbers, k):
+    
+    if len(numbers) < k:
+        return -1
+    
+    max_sum = 0
+    current_sum = 0
+    for i in range(k):
+        max_sum += numbers[i]
+    
+    for i in range(k, len(numbers)):
+        current_sum += numbers[i]
+        current_sum -= numbers[i - k]
+        max_sum = max(max_sum, current_sum)
+    
+    return max_sum / k
 

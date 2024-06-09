@@ -1,30 +1,33 @@
 
-n, m, k, x, y = map(int, input().split())
+import itertools
 
-# Initialize variables to keep track of the maximum and minimum number of questions asked
-max_questions = 0
-min_questions = 1000000000000000000
-sergei_asked = 0
-
-# Iterate through each row
-for i in range(1, n + 1):
-    # If the current row is the same as the row where Sergei sits, then the order of asking is reversed
-    if i == x:
-        order = range(m, 0, -1)
-    else:
-        order = range(1, m + 1)
+def f1(R, G, B, Y, S):
+    # Calculate the probability of the players winning
+    prob_win = 0
     
-    # Iterate through each pupil in the current row
-    for j in order:
-        # If the current pupil is Sergei, then increment the number of times he was asked
-        if i == x and j == y:
-            sergei_asked += 1
-        # If the current pupil was asked, then increment the maximum and minimum number of questions asked
-        if k > 0:
-            max_questions = max(max_questions, k)
-            min_questions = min(min_questions, k)
-            k -= 1
+    # Iterate over all possible combinations of fruit picks and raven moves
+    for picks in itertools.product(range(R+1), range(G+1), range(B+1), range(Y+1)):
+        # Calculate the number of fruits left in the basket after each pick
+        num_fruits = sum(picks)
+        
+        # Calculate the number of raven moves needed to reach the orchard
+        num_raven_moves = min(num_fruits, S)
+        
+        # If the players win, add the probability of this combination to the total probability
+        if num_fruits > 0 and num_raven_moves == 0:
+            prob_win += 1 / (R*G*B*Y)
+    
+    return prob_win
 
-# Print the results
-print(max_questions, min_questions, sergei_asked)
+def f2(...):
+    # Implement f2 here
+    pass
+
+if __name__ == '__main__':
+    # Test the functions with example inputs
+    R, G, B, Y, S = 1, 1, 0, 0, 3
+    print(f1(R, G, B, Y, S))
+
+    R, G, B, Y, S = 4, 4, 4, 4, 5
+    print(f1(R, G, B, Y, S))
 

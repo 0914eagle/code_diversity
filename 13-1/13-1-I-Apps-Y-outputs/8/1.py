@@ -1,26 +1,20 @@
 
-def get_max_copies(s, k):
-    n = len(s)
-    if k > n:
-        return []
-    
-    # initialize a dictionary to store the frequency of each element in s
-    freq = {}
+def find_string(n, s, t):
+    res = ""
     for i in range(n):
-        if s[i] not in freq:
-            freq[s[i]] = 1
+        if i % 3 == 0:
+            res += "a"
+        elif i % 3 == 1:
+            res += "b"
         else:
-            freq[s[i]] += 1
-    
-    # sort the dictionary by value in descending order
-    freq = sorted(freq.items(), key=lambda x: x[1], reverse=True)
-    
-    # initialize an empty array to store the result
-    result = []
-    
-    # iterate through the dictionary and add the k most frequent elements to the result
-    for i in range(k):
-        result.append(freq[i][0])
-    
-    return result
+            res += "c"
+    if s in res or t in res:
+        return "NO"
+    return "YES\n" + res
+
+if __name__ == '__main__':
+    n = int(input())
+    s = input()
+    t = input()
+    print(find_string(n, s, t))
 

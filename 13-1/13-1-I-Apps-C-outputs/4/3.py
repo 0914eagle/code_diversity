@@ -1,27 +1,64 @@
 
-n, m, k = map(int, input().split())
-p = list(map(int, input().split()))
-
-# Initialize a list to store the number of operations for each page
-operations = [0] * (n // k + 1)
-
-# Iterate through the special items to be discarded
-for i in range(m):
-    # Get the index of the special item
-    index = p[i]
+def f1(N, C, a, b):
+    # Initialize a dictionary to store the number of colored paintings purchased by each client
+    colored_paintings = {}
+    for i in range(N):
+        colored_paintings[i+1] = 0
     
-    # Get the page number of the special item
-    page = index // k
+    # Initialize a set to store the clients who have purchased at least one colored painting
+    colored_clients = set()
     
-    # Increment the number of operations for the page
-    operations[page] += 1
+    # Loop through the clients and update the number of colored paintings purchased by each client
+    for i in range(N):
+        if a[i] > 0:
+            colored_paintings[i+1] += 1
+            colored_clients.add(i+1)
+    
+    # If the number of colored clients is less than C, return 0
+    if len(colored_clients) < C:
+        return 0
+    
+    # Initialize a set to store the clients who have purchased at least one black and white painting
+    black_and_white_clients = set()
+    
+    # Loop through the clients and update the number of black and white paintings purchased by each client
+    for i in range(N):
+        if b[i] > 0:
+            black_and_white_clients.add(i+1)
+    
+    # If the number of black and white clients is equal to the number of colored clients, return 1
+    if len(black_and_white_clients) == len(colored_clients):
+        return 1
+    
+    # If the number of black and white clients is greater than the number of colored clients, return 0
+    if len(black_and_white_clients) > len(colored_clients):
+        return 0
+    
+    # If the number of black and white clients is less than the number of colored clients, return the number of different purchases
+    return len(colored_clients) - len(black_and_white_clients)
 
-# Iterate through the pages
-for i in range(n // k + 1):
-    # If the page has special items, increment the total number of operations
-    if operations[i] > 0:
-        operations[i] += 1
+def f2(N, C, a, b, Q, changes):
+    # Initialize a list to store the number of different purchases for each requirement change
+    purchases = []
+    
+    # Loop through the requirement changes and update the number of colored paintings purchased by each client
+    for i in range(Q):
+        client, a_new, b_new = changes[i]
+        a[client-1] = a_new
+        b[client-1] = b_new
+        purchases.append(f1(N, C, a, b))
+    
+    # Return the list of number of different purchases
+    return purchases
 
-# Print the total number of operations
-print(sum(operations))
+if __name__ == '__main__':
+    N, C = map(int, input().split())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    Q = int(input())
+    changes = []
+    for i in range(Q):
+        client, a_new, b_new = map(int, input().split())
+        changes.append((client, a_new, b_new))
+    print(*f2(N, C, a, b, Q, changes), sep='\n')
 

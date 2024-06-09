@@ -1,17 +1,17 @@
 
-def round_to_nearest(candy_cost, smallest_bill):
-    # Convert the candy cost to a string
-    cost_str = str(candy_cost)
-    
-    # Find the index of the first non-zero digit in the string
-    non_zero_index = 0
-    for i in range(len(cost_str)):
-        if cost_str[i] != '0':
-            non_zero_index = i
-            break
-    
-    # Round the cost to the nearest power of 10
-    rounded_cost = int(cost_str[:non_zero_index + 1] + '0' * (smallest_bill - non_zero_index))
-    
-    return rounded_cost
+def count_second_smallest(permutation):
+    n = len(permutation)
+    count = 0
+    for i in range(1, n-1):
+        if permutation[i] < permutation[i-1] and permutation[i] < permutation[i+1]:
+            count += 1
+    return count
+
+def main():
+    n = int(input())
+    permutation = list(map(int, input().split()))
+    print(count_second_smallest(permutation))
+
+if __name__ == '__main__':
+    main()
 

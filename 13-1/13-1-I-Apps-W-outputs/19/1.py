@@ -1,33 +1,63 @@
 
-n, m, k, x, y = map(int, input().split())
+import itertools
 
-# Initialize variables to keep track of the maximum and minimum number of questions asked
-max_questions = 0
-min_questions = 1000000000000000000
-sergei_asked = 0
-
-# Iterate through each row
-for i in range(1, n+1):
-    # If the current row is the same as the row where Sergei sits, then the order of asking is reversed
-    if i == x:
-        order = range(m, 0, -1)
-    else:
-        order = range(1, m+1)
+def f1(R, G, B, Y, S):
+    # Calculate the probability of the players winning
+    prob_win = 0
     
-    # Iterate through each pupil in the current row
-    for j in order:
-        # If the current pupil is Sergei, then increment the number of times he was asked
-        if i == x and j == y:
-            sergei_asked += 1
-        # If the current pupil has been asked more than the maximum number of times, then update the maximum number of times
-        if k > max_questions:
-            max_questions = k
-        # If the current pupil has been asked less than the minimum number of times, then update the minimum number of times
-        if k < min_questions:
-            min_questions = k
-        # Decrement the number of questions left to be asked
-        k -= 1
+    # Iterate over all possible combinations of fruit picks and raven moves
+    for fruit_pick, raven_move in itertools.product(range(R+1), range(G+1), range(B+1), range(Y+1)):
+        # Calculate the number of fruits left on each tree after the current turn
+        r_left = R - fruit_pick
+        g_left = G - fruit_pick
+        b_left = B - fruit_pick
+        y_left = Y - fruit_pick
+        
+        # Calculate the number of steps the raven has moved
+        raven_steps = raven_move
+        
+        # Check if the players have won
+        if r_left == 0 and g_left == 0 and b_left == 0 and y_left == 0:
+            prob_win += 1
+        # Check if the raven has reached the orchard
+        elif raven_steps == S:
+            prob_win += 0
+        else:
+            # Calculate the probability of the players winning in the next turn
+            prob_win += f1(r_left, g_left, b_left, y_left, S)
+    
+    # Return the probability of the players winning
+    return prob_win / (R+1) / (G+1) / (B+1) / (Y+1)
 
-# Print the maximum, minimum, and number of times Sergei was asked
-print(max_questions, min_questions, sergei_asked)
+def f2(...):
+    # Calculate the probability of the players winning
+    prob_win = 0
+    
+    # Iterate over all possible combinations of fruit picks and raven moves
+    for fruit_pick, raven_move in itertools.product(range(R+1), range(G+1), range(B+1), range(Y+1)):
+        # Calculate the number of fruits left on each tree after the current turn
+        r_left = R - fruit_pick
+        g_left = G - fruit_pick
+        b_left = B - fruit_pick
+        y_left = Y - fruit_pick
+        
+        # Calculate the number of steps the raven has moved
+        raven_steps = raven_move
+        
+        # Check if the players have won
+        if r_left == 0 and g_left == 0 and b_left == 0 and y_left == 0:
+            prob_win += 1
+        # Check if the raven has reached the orchard
+        elif raven_steps == S:
+            prob_win += 0
+        else:
+            # Calculate the probability of the players winning in the next turn
+            prob_win += f2(r_left, g_left, b_left, y_left, S)
+    
+    # Return the probability of the players winning
+    return prob_win / (R+1) / (G+1) / (B+1) / (Y+1)
+
+if __name__ == '__main__':
+    R, G, B, Y, S = map(int, input().split())
+    print(f1(R, G, B, Y, S))
 

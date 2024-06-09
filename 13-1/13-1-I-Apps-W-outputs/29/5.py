@@ -1,43 +1,43 @@
 
-def count_dress_patterns(n, m, fabric):
-    # Initialize a dictionary to store the number of dress patterns for each size
-    dress_patterns = {1: 0, 2: 0, 3: 0, 4: 0}
+def count_playlists(n, T, songs):
+    # Initialize a list to store the playlists
+    playlists = []
+    
+    # Iterate over each possible playlist
+    for i in range(1 << n):
+        # Convert the binary representation of i to a list of song indices
+        playlist = [j for j in range(n) if i & (1 << j)]
+        
+        # Check if the playlist is valid
+        if is_valid_playlist(playlist, songs, T):
+            playlists.append(playlist)
+    
+    # Return the number of valid playlists
+    return len(playlists)
 
-    # Loop through each row of the fabric
-    for i in range(n):
-        # Loop through each column of the fabric
-        for j in range(m):
-            # Check if the current square is part of a dress pattern
-            if is_dress_pattern(i, j, fabric):
-                # Increment the number of dress patterns for the current size
-                dress_patterns[len(get_dress_pattern(i, j, fabric))] += 1
-
-    # Return the total number of dress patterns
-    return sum(dress_patterns.values())
-
-def is_dress_pattern(i, j, fabric):
-    # Check if the current square is part of a dress pattern
-    if fabric[i][j] == 'a':
-        return True
-    else:
+def is_valid_playlist(playlist, songs, T):
+    # Check if the playlist is of the required length
+    if len(playlist) != T:
         return False
+    
+    # Check if the playlist has no consecutive songs of the same genre
+    for i in range(len(playlist) - 1):
+        if songs[playlist[i]][1] == songs[playlist[i + 1]][1]:
+            return False
+    
+    # Check if the playlist has no repeated songs
+    for i in range(len(playlist) - 1):
+        if playlist[i] == playlist[i + 1]:
+            return False
+    
+    # If all checks pass, the playlist is valid
+    return True
 
-def get_dress_pattern(i, j, fabric):
-    # Initialize a list to store the dress pattern
-    pattern = []
-
-    # Loop through the rows and columns of the fabric
-    for row in range(i, n):
-        for col in range(j, m):
-            # Check if the current square is part of the dress pattern
-            if fabric[row][col] == 'a':
-                # Add the current square to the dress pattern
-                pattern.append((row, col))
-
-    # Return the dress pattern
-    return pattern
-
-n, m = map(int, input().split())
-fabric = [input() for _ in range(n)]
-print(count_dress_patterns(n, m, fabric))
+if __name__ == '__main__':
+    n, T = map(int, input().split())
+    songs = []
+    for i in range(n):
+        t, g = map(int, input().split())
+        songs.append([t, g])
+    print(count_playlists(n, T, songs))
 

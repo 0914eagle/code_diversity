@@ -1,15 +1,37 @@
 
-def get_minimum_bags(n, k, a):
-    # Initialize the number of bags to 0
-    bags = 0
-    # Iterate through the list of garbage produced each day
-    for i in range(n):
-        # If the number of garbage produced on the current day is greater than the bag's capacity, calculate the number of full bags needed
-        if a[i] > k:
-            bags += a[i] // k
-        # If the number of garbage produced on the current day is not a multiple of the bag's capacity, calculate the number of partial bags needed
-        if a[i] % k != 0:
-            bags += 1
-    # Return the total number of bags needed
-    return bags
+def get_min_operations(cards):
+    # Initialize variables
+    min_operations = 0
+    prime_numbers = []
+    consecutive_cards = []
+
+    # Iterate through the cards and find the prime numbers
+    for card in cards:
+        if is_prime(card):
+            prime_numbers.append(card)
+
+    # Sort the prime numbers in descending order
+    prime_numbers.sort(reverse=True)
+
+    # Iterate through the prime numbers and find the consecutive cards
+    for prime in prime_numbers:
+        consecutive_cards.append(prime)
+        if len(consecutive_cards) == prime:
+            min_operations += 1
+            consecutive_cards = []
+
+    return min_operations
+
+def is_prime(n):
+    if n <= 1:
+        return False
+    for i in range(2, int(n ** 0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+if __name__ == '__main__':
+    num_cards = int(input())
+    cards = list(map(int, input().split()))
+    print(get_min_operations(cards))
 

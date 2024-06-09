@@ -1,14 +1,14 @@
 
-def get_max_cost(arr, m, k):
-    n = len(arr)
-    dp = [[0] * (n + 1) for _ in range(n + 1)]
-
-    for i in range(n):
-        for j in range(i, n + 1):
-            if i == j:
-                dp[i][j] = 0
-            else:
-                dp[i][j] = max(dp[i][j - 1], arr[j - 1] - k + (j - i + 1) // m * k)
-
-    return dp[0][n]
+def get_max_length(p):
+    # Initialize the maximum length of the array
+    max_length = 1
+    
+    # Loop through each digit in p
+    for digit in str(p):
+        # If the digit is not zero, add it to the maximum length
+        if digit != '0':
+            max_length += 1
+    
+    # Return the maximum length
+    return max_length
 

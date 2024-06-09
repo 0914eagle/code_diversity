@@ -1,15 +1,14 @@
 
-def get_min_breaks_and_bar_size(k):
-    # Find the smallest power of 2 greater than or equal to k
-    bar_size = 1
-    while bar_size < k:
-        bar_size *= 2
-    
-    # Calculate the number of breaks needed to get k squares
-    num_breaks = 0
-    while bar_size > k:
-        bar_size //= 2
-        num_breaks += 1
-    
-    return bar_size, num_breaks
+def get_distinct_modulo_42(numbers):
+    distinct_numbers = set()
+    for number in numbers:
+        distinct_numbers.add(number % 42)
+    return len(distinct_numbers)
+
+def main():
+    numbers = [int(input()) for _ in range(10)]
+    print(get_distinct_modulo_42(numbers))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,33 +1,81 @@
 
-n, m, k = map(int, input().split())
-p = list(map(int, input().split()))
-
-# Initialize a list to store the positions of the special items
-special_positions = []
-
-# Loop through the list of special items and add their positions to the list
-for i in range(m):
-    special_positions.append(p[i])
-
-# Initialize a variable to store the number of operations
-operations = 0
-
-# Loop through the list of special items and discard them one by one
-for i in range(m):
-    # Find the page that contains the special item
-    page = special_positions[i] // k
+def f1(N, C, a, b):
+    # Initialize a dictionary to store the number of colored paintings purchased by each client
+    colored_paintings = {}
+    for i in range(N):
+        colored_paintings[i+1] = 0
     
-    # Discard the special item
-    special_positions[i] = -1
+    # Initialize a set to store the clients who have purchased at least one colored painting
+    colored_clients = set()
     
-    # Update the positions of the items below the special item
-    for j in range(i+1, m):
-        if special_positions[j] > special_positions[i]:
-            special_positions[j] -= 1
+    # Loop through the clients and update the number of colored paintings purchased by each client
+    for i in range(N):
+        if a[i] > 0:
+            colored_paintings[i+1] += 1
+            colored_clients.add(i+1)
     
-    # Increment the number of operations
-    operations += 1
+    # If the number of colored clients is less than C, return 0
+    if len(colored_clients) < C:
+        return 0
+    
+    # Initialize a variable to store the number of different purchases
+    num_purchases = 0
+    
+    # Loop through the clients and update the number of different purchases
+    for i in range(N):
+        if a[i] > 0 and b[i] > 0:
+            num_purchases += 1
+    
+    return num_purchases
 
-# Print the number of operations
-print(operations)
+def f2(N, C, a, b, Q, P, a_new, b_new):
+    # Initialize a dictionary to store the number of colored paintings purchased by each client
+    colored_paintings = {}
+    for i in range(N):
+        colored_paintings[i+1] = 0
+    
+    # Initialize a set to store the clients who have purchased at least one colored painting
+    colored_clients = set()
+    
+    # Loop through the clients and update the number of colored paintings purchased by each client
+    for i in range(N):
+        if a[i] > 0:
+            colored_paintings[i+1] += 1
+            colored_clients.add(i+1)
+    
+    # If the number of colored clients is less than C, return 0
+    if len(colored_clients) < C:
+        return 0
+    
+    # Initialize a variable to store the number of different purchases
+    num_purchases = 0
+    
+    # Loop through the clients and update the number of different purchases
+    for i in range(N):
+        if a[i] > 0 and b[i] > 0:
+            num_purchases += 1
+    
+    # Update the number of colored paintings purchased by the client with label P
+    colored_paintings[P] += a_new
+    if a_new > 0:
+        colored_clients.add(P)
+    
+    # If the number of colored clients is less than C, return 0
+    if len(colored_clients) < C:
+        return 0
+    
+    # Update the number of different purchases
+    num_purchases += b_new
+    
+    return num_purchases
+
+if __name__ == '__main__':
+    N, C = map(int, input().split())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    Q = int(input())
+    
+    for i in range(Q):
+        P, a_new, b_new = map(int, input().split())
+        print(f2(N, C, a, b, Q, P, a_new, b_new))
 

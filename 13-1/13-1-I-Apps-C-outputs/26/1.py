@@ -1,42 +1,34 @@
 
-def solve(n, q, houses, requests):
-    # Initialize a dictionary to store the x and y coordinates of each house
-    house_coords = {}
-    for i in range(n):
-        house_coords[i+1] = (houses[i][0], houses[i][1])
+def f1(n, arr):
+    # Sort the array
+    arr.sort()
+    # Initialize the minimum size of the subsegment to remove
+    min_size = 0
+    # Iterate through the array
+    for i in range(n-1):
+        # If the current element is equal to the next element
+        if arr[i] == arr[i+1]:
+            # Increment the minimum size of the subsegment to remove
+            min_size += 1
+    # Return the minimum size of the subsegment to remove
+    return min_size
 
-    # Initialize a list to store the answers for each request
-    answers = []
+def f2(n, arr):
+    # Initialize the minimum size of the subsegment to remove
+    min_size = 0
+    # Iterate through the array
+    for i in range(n-1):
+        # If the current element is equal to the next element
+        if arr[i] == arr[i+1]:
+            # Increment the minimum size of the subsegment to remove
+            min_size += 1
+            # Break out of the loop
+            break
+    # Return the minimum size of the subsegment to remove
+    return min_size
 
-    # Iterate over each request
-    for request in requests:
-        # Get the start and end addresses of the request
-        start, end = request[0], request[1]
-
-        # Initialize the minimum side length to infinity
-        min_side_length = float('inf')
-
-        # Iterate over each house in the request range
-        for house in range(start, end+1):
-            # Get the coordinates of the current house
-            x, y = house_coords[house]
-
-            # Iterate over each other house in the request range
-            for other_house in range(start, end+1):
-                # If the current house is not the same as the other house
-                if house != other_house:
-                    # Get the coordinates of the other house
-                    other_x, other_y = house_coords[other_house]
-
-                    # Calculate the distance between the current house and the other house
-                    distance = abs(x - other_x) + abs(y - other_y)
-
-                    # If the distance is less than the minimum side length, update the minimum side length
-                    if distance < min_side_length:
-                        min_side_length = distance
-
-        # Add the minimum side length to the list of answers
-        answers.append(min_side_length)
-
-    return answers
+if __name__ == '__main__':
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(f1(n, arr))
 

@@ -1,27 +1,46 @@
 
-def max_beauty(matrix):
-    n = len(matrix)
-    if n == 1:
-        return matrix[0][0]
+def f1(s, t):
+    n = len(s)
+    if n != len(t):
+        return -1
+    
+    # Initialize the dp table with the number of moves needed for each prefix of s
+    dp = [0] * (n + 1)
+    for i in range(1, n + 1):
+        dp[i] = i
+    
+    # Loop through the characters of s and t and calculate the minimum number of moves needed to transform s into t
+    for i in range(n):
+        for j in range(i, -1, -1):
+            if s[i] == t[j]:
+                dp[i + 1] = min(dp[i + 1], dp[j] + 1)
+    
+    return dp[n]
 
-    # Split the matrix into 4 submatrices
-    submatrices = []
-    for i in range(0, n, n//2):
-        for j in range(0, n, n//2):
-            submatrices.append(matrix[i:i+n//2][j:j+n//2])
+def f2(s, t):
+    n = len(s)
+    if n != len(t):
+        return -1
+    
+    # Initialize the dp table with the number of moves needed for each suffix of s
+    dp = [0] * (n + 1)
+    for i in range(1, n + 1):
+        dp[i] = i
+    
+    # Loop through the characters of s and t and calculate the minimum number of moves needed to transform s into t
+    for i in range(n - 1, -1, -1):
+        for j in range(i, n):
+            if s[i] == t[j]:
+                dp[i] = min(dp[i], dp[j + 1] + 1)
+    
+    return dp[0]
 
-    # Find the maximum element in the matrix
-    max_element = max(max(row) for row in matrix)
-
-    # Calculate the beauty of each submatrix
-    submatrix_beauties = []
-    for submatrix in submatrices:
-        submatrix_beauties.append(max_beauty(submatrix))
-
-    # Return the maximum beauty of the matrix
-    return max_element + sum(submatrix_beauties)
-
-n = int(input())
-matrix = [[int(x) for x in input().split()] for _ in range(n)]
-print(max_beauty(matrix))
+if __name__ == '__main__':
+    q = int(input())
+    for _ in range(q):
+        n = int(input())
+        s = input()
+        t = input()
+        print(f1(s, t))
+        print(f2(s, t))
 

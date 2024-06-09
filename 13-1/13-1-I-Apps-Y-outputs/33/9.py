@@ -1,37 +1,41 @@
 
-def get_max_objects(n, m, k, a):
-    # Initialize the number of objects that can be packed
-    max_objects = 0
-    # Initialize the number of empty boxes
-    empty_boxes = m
-    # Initialize the current box size
-    current_box_size = k
-    # Initialize the current number of objects packed
-    current_objects = 0
-
-    # Sort the objects in descending order
-    a.sort(reverse=True)
-
-    # Iterate through the objects
-    for i in range(n):
-        # Check if the current object fits in the current box
-        if current_box_size >= a[i]:
-            # If it fits, pack it and decrease the current box size
-            current_box_size -= a[i]
-            current_objects += 1
+def get_maximal_string(n, k):
+    
+    # Initialize an array to store the frequencies of each letter
+    freq = [0] * 26
+    # Initialize a string to store the result
+    result = ""
+    # Loop through each letter of the Latin alphabet
+    for i in range(0, 26):
+        # If the current letter has not been used yet, add it to the result string
+        if freq[i] == 0:
+            result += chr(i + ord('a'))
+            # Increment the frequency of the current letter
+            freq[i] += 1
+        # If the current letter has already been used, find the next available letter
         else:
-            # If it doesn't fit, move to the next box
-            empty_boxes -= 1
-            if empty_boxes == 0:
-                # If there are no more empty boxes, return the current number of objects packed
-                return current_objects
-            current_box_size = k
+            for j in range(i + 1, 26):
+                if freq[j] == 0:
+                    result += chr(j + ord('a'))
+                    freq[j] += 1
+                    break
+    # If the result string is not long enough, add additional letters to make it length n
+    if len(result) < n:
+        for i in range(len(result), n):
+            result += chr((i % 26) + ord('a'))
+    return result
 
-    # If all the objects were packed, return the current number of objects packed
-    return current_objects
+def f1(n, k):
+    
+    return get_maximal_string(n, k)
 
+def f2(...):
+    
+    return get_maximal_string(n, k)
 
-n, m, k = map(int, input().split())
-a = list(map(int, input().split()))
-print(get_max_objects(n, m, k, a))
+if __name__ == '__main__':
+    t = int(input())
+    for i in range(t):
+        n, k = map(int, input().split())
+        print(f1(n, k))
 

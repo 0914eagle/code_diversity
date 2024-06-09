@@ -1,25 +1,59 @@
 
-import sys
+def f1(n, m, c, grid, costs):
+    # Initialize variables
+    bank_row, bank_col = -1, -1
+    barricade_costs = [0] * c
+    for i in range(c):
+        barricade_costs[i] = costs[i]
+    for i in range(n):
+        for j in range(m):
+            if grid[i][j] == 'B':
+                bank_row = i
+                bank_col = j
+                break
+        if bank_row != -1:
+            break
 
-def knight_moves(x, y):
-    # Initialize the number of ways to reach (x, y) as 0
-    ways = 0
+    # Initialize the dp table
+    dp = [[[0] * c for _ in range(n)] for _ in range(m)]
+    for i in range(n):
+        for j in range(m):
+            if grid[i][j] != '.':
+                dp[i][j][grid[i][j]] = barricade_costs[grid[i][j]]
 
-    # Base case: if we are already at (x, y), there is only 1 way to reach there
-    if x == y:
-        return 1
+    # Fill in the dp table
+    for i in range(n):
+        for j in range(m):
+            if grid[i][j] == '.':
+                continue
+            for k in range(c):
+                if k == grid[i][j]:
+                    continue
+                dp[i][j][k] = min(dp[i][j][k], dp[i][j][grid[i][j]] + barricade_costs[k])
+            for dir in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+                new_i = i + dir[0]
+                new_j = j + dir[1]
+                if 0 <= new_i < n and 0 <= new_j < m and grid[new_i][new_j] != '.':
+                    dp[i][j][grid[new_i][new_j]] = min(dp[i][j][grid[new_i][new_j]], dp[i][j][grid[i][j]] + barricade_costs[grid[new_i][new_j]])
 
-    # Recursive case: consider all possible moves for the knight
-    for i in range(x):
-        for j in range(y):
-            # If the knight can move to (i, j), add the number of ways to reach (i, j) to the total number of ways
-            if (i + 1, j + 2) == (x, y) or (i + 2, j + 1) == (x, y):
-                ways += knight_moves(i, j)
+    # Find the minimum total cost
+    min_cost = float('inf')
+    for i in range(n):
+        for j in range(m):
+            if grid[i][j] != '.':
+                min_cost = min(min_cost, dp[i][j][grid[i][j]])
 
-    # Return the total number of ways modulo 10^9 + 7
-    return ways % 1000000007
+    return -1 if min_cost == float('inf') else min_cost
+
+def f2(...):
+    # Implement f2 here
+    pass
 
 if __name__ == '__main__':
-    x, y = map(int, input().split())
-    print(knight_moves(x, y))
+    n, m, c = map(int, input().split())
+    grid = []
+    for i in range(n):
+        grid.append(list(input()))
+    costs = list(map(int, input().split()))
+    print(f1(n, m, c, grid, costs))
 

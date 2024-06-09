@@ -1,22 +1,32 @@
 
-n, k = map(int, input().split())
-difficulties = list(map(int, input().split()))
+def get_min_cost(s, k):
+    n = len(s)
+    dp = [[0] * (k+1) for _ in range(n+1)]
+    for i in range(1, n+1):
+        for j in range(1, k+1):
+            if i == 0 or j == 0:
+                dp[i][j] = 0
+            else:
+                dp[i][j] = max(dp[i-1][j-1] + 1, dp[i-1][j])
+    return dp[n][k]
 
-left = 0
-right = n - 1
-solved = 0
+def get_subsequences(s):
+    subsequences = []
+    for i in range(len(s)):
+        for j in range(i+1, len(s)+1):
+            subsequences.append(s[i:j])
+    return subsequences
 
-while left <= right:
-    if difficulties[left] <= k:
-        solved += 1
-        difficulties.pop(left)
-        n -= 1
-    elif difficulties[right] <= k:
-        solved += 1
-        difficulties.pop(right)
-        n -= 1
+def solve(s, k):
+    subsequences = get_subsequences(s)
+    min_cost = get_min_cost(s, k)
+    if min_cost == -1:
+        return -1
     else:
-        break
+        return min_cost
 
-print(solved)
+if __name__ == '__main__':
+    s = input()
+    k = int(input())
+    print(solve(s, k))
 

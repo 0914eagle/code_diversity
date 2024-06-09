@@ -1,14 +1,21 @@
 
-def get_max_cost(arr, m, k):
-    n = len(arr)
-    dp = [[0] * (n + 1) for _ in range(n + 1)]
+def f1(p):
+    # Initialize the maximum number of elements in the original array
+    max_elements = 0
+    # Iterate through all possible combinations of two numbers
+    for i in range(1, p + 1):
+        for j in range(i + 1, p + 1):
+            # Check if the concatenation of i and j is less than or equal to p
+            if str(i) + str(j) <= str(p):
+                # Increment the maximum number of elements in the original array
+                max_elements += 1
+    return max_elements
 
-    for i in range(n):
-        for j in range(i, n + 1):
-            if i == j:
-                dp[i][j] = 0
-            else:
-                dp[i][j] = max(dp[i][j - 1], arr[j - 1] - k + (j - i + 1) // m * k)
+def f2(...):
+    # Implement f2 according to the problem statement
+    ...
 
-    return dp[0][n]
+if __name__ == '__main__':
+    p = int(input())
+    print(f1(p))
 

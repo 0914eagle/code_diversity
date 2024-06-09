@@ -1,41 +1,22 @@
 
-def print_round(lines, delay):
-    # Initialize variables
-    line_count = len(lines)
-    max_syllables = 80
-    max_time = 128
-    output = []
+def meow_factor(string):
+    # Initialize the meow factor to 0
+    factor = 0
+    
+    # Loop through each character in the string
+    for i in range(len(string)):
+        # If the current character is 'm', check if the next three characters are 'e', 'o', and 'w'
+        if string[i] == 'm':
+            if i + 1 < len(string) and string[i + 1] == 'e' and i + 2 < len(string) and string[i + 2] == 'o' and i + 3 < len(string) and string[i + 3] == 'w':
+                # If they are, return the current meow factor
+                return factor
+            # If the current character is 'm' and the next three characters are not 'e', 'o', and 'w', increment the meow factor
+            factor += 1
+    
+    # If the string does not contain the word 'meow', return -1
+    return -1
 
-    # Iterate over each line of the input
-    for i in range(line_count):
-        # Get the syllables and time allocation for the first voice
-        first_voice = lines[i * 2].split()
-        first_time = [int(x) for x in lines[i * 2 + 1].split()]
-
-        # Get the syllables and time allocation for the second voice
-        second_voice = lines[i * 2 + 2].split()
-        second_time = [int(x) for x in lines[i * 2 + 3].split()]
-
-        # Initialize the output for this line
-        output_line = []
-
-        # Iterate over each syllable in the first voice
-        for j in range(len(first_voice)):
-            # Get the syllable and time allocation for this syllable
-            syllable = first_voice[j]
-            time = first_time[j]
-
-            # Add the syllable to the output
-            output_line.append(syllable)
-
-            # Check if there is a syllable in the second voice that starts at the same time
-            if j < len(second_voice) and second_time[j] == time:
-                # Add the syllable from the second voice to the output
-                output_line.append(second_voice[j])
-
-        # Add the output line to the overall output
-        output.append("_".join(output_line))
-
-    # Return the output
-    return "\n".join(output)
+if __name__ == '__main__':
+    string = input()
+    print(meow_factor(string))
 

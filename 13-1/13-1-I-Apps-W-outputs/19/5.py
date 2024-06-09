@@ -1,40 +1,32 @@
 
-n, m, k, x, y = map(int, input().split())
+import itertools
 
-# Initialize variables to keep track of the maximum and minimum number of questions asked
-max_questions = 0
-min_questions = 1000000000000000000
-sergei_asked = 0
+def f1(R, G, B, Y, S):
+    # Initialize the probability of winning as 0
+    prob = 0
 
-# Iterate through each row
-for i in range(1, n + 1):
-    # If the current row is the same as the row where Sergei sits, then the order of asking is reversed
-    if i == x:
-        order = range(m, 0, -1)
-    else:
-        order = range(1, m + 1)
-    
-    # Iterate through each pupil in the current row
-    for j in order:
-        # If the current pupil is the same as the one where Sergei sits, then increment the number of times Sergei was asked
-        if i == x and j == y:
-            sergei_asked += 1
-        
-        # Update the maximum and minimum number of questions asked
-        max_questions = max(max_questions, k)
-        min_questions = min(min_questions, k)
-        
-        # Decrement the number of questions left to ask
-        k -= 1
-        
-        # If there are no more questions left to ask, break the loop
-        if k == 0:
-            break
-    
-    # If there are no more questions left to ask, break the loop
-    if k == 0:
-        break
+    # Iterate over all possible combinations of fruit picks and raven movements
+    for picks in itertools.product(range(R+1), range(G+1), range(B+1), range(Y+1)):
+        # Calculate the number of fruits left in the basket after each pick
+        basket = sum(picks)
 
-# Print the results
-print(max_questions, min_questions, sergei_asked)
+        # Calculate the number of steps the raven needs to take to reach the orchard
+        raven = min(basket, S)
+
+        # If the raven reaches the orchard before the players have placed all fruits into the basket, the players lose
+        if raven == S:
+            continue
+
+        # Calculate the probability of winning after each pick
+        prob += (1 / (R+1)**4) * (1 / (G+1)**4) * (1 / (B+1)**4) * (1 / (Y+1)**4)
+
+    # Return the probability of winning
+    return prob
+
+def f2(...):
+    # Your code here
+
+if __name__ == '__main__':
+    R, G, B, Y, S = map(int, input().split())
+    print(f1(R, G, B, Y, S))
 

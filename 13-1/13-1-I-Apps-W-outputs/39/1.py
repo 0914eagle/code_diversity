@@ -1,20 +1,28 @@
 
-def solve(n, m, a, b, y, y_prime, l):
-    # Initialize the minimum distance and the corresponding points
-    min_dist = float('inf')
-    left_point, right_point = 0, 0
+def get_min_dollars(heights):
+    # Initialize variables
+    n = len(heights)
+    dollars = 0
+    current_height = 0
 
-    # Loop through all possible pairs of points
+    # Iterate through the heights and calculate the minimum number of dollars needed to reach each pylon
     for i in range(n):
-        for j in range(m):
-            # Calculate the distance between the two points
-            dist = abs(y[i] - y_prime[j]) + l[j]
+        # Calculate the difference between the current height and the height of the next pylon
+        diff = heights[i] - current_height
 
-            # If the distance is less than the minimum distance, update the minimum distance and the corresponding points
-            if dist < min_dist:
-                min_dist = dist
-                left_point = i + 1
-                right_point = j + 1
+        # If the difference is positive, the player can safely pass to the next pylon
+        if diff > 0:
+            current_height = heights[i]
+        # If the difference is negative, the player needs to pay money to increase the height of the current pylon
+        else:
+            dollars += -diff
+            current_height = heights[i] + 1
 
-    return left_point, right_point
+    # Return the total number of dollars needed
+    return dollars
+
+if __name__ == '__main__':
+    n = int(input())
+    heights = list(map(int, input().split()))
+    print(get_min_dollars(heights))
 

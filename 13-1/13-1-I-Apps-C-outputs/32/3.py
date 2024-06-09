@@ -1,52 +1,27 @@
 
-def is_valid_configuration(targets):
-    # Check if the targets are valid
-    for i in range(len(targets)):
-        if targets[i][0] == targets[i][1]:
-            return False
+def f1(N, M, K, measurements):
+    # Initialize a 2D array to store the number of electrons with each spin
+    num_electrons = [[0] * 2 for _ in range(N)]
+    for measurement in measurements:
+        y, x, spin = measurement
+        num_electrons[y - 1][spin == '+'] += 1
     
-    # Check if there are no more than two targets in each row and column
-    rows = [[] for _ in range(n)]
-    cols = [[] for _ in range(n)]
-    for target in targets:
-        rows[target[0] - 1].append(target[1])
-        cols[target[1] - 1].append(target[0])
+    # Check if the number of electrons with each spin is equal in each 2x2 subgrid
+    for i in range(N):
+        for j in range(M):
+            if num_electrons[i][0] != num_electrons[i][1]:
+                return 0
     
-    for row in rows:
-        if len(row) > 2:
-            return False
-    for col in cols:
-        if len(col) > 2:
-            return False
-    
-    return True
+    # If all subgrids have equal number of electrons with each spin, return the total number of valid states
+    return (num_electrons[0][0] * num_electrons[0][1]) % (10**9 + 7)
 
-def construct_targets(hits):
-    targets = []
-    for i in range(n):
-        for j in range(i + 1, n):
-            if hits[i] > 0 and hits[j] > 0:
-                targets.append([i + 1, j + 1])
-                hits[i] -= 1
-                hits[j] -= 1
-    
-    for i in range(n):
-        if hits[i] > 0:
-            targets.append([i + 1, n])
-    
-    return targets
+def f2(...):
+    ...
 
-def solve():
-    n = int(input())
-    hits = list(map(int, input().split()))
-    
-    targets = construct_targets(hits)
-    if is_valid_configuration(targets):
-        print(len(targets))
-        for target in targets:
-            print(" ".join(map(str, target)))
-    else:
-        print(-1)
-
-solve()
+if __name__ == '__main__':
+    N, M, K = map(int, input().split())
+    measurements = []
+    for _ in range(K):
+        measurements.append(list(map(int, input().split())))
+    print(f1(N, M, K, measurements))
 

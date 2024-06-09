@@ -1,31 +1,81 @@
 
-def reconstruct_text(fragments):
-    # Sort the fragments by length in descending order
-    fragments.sort(key=len, reverse=True)
+def f1(n, distances):
+    # Initialize the subsets A and B
+    A = set()
+    B = set()
     
-    # Create a dictionary to store the fragments and their suffixes
-    fragment_dict = {}
-    for fragment in fragments:
-        suffix = fragment[-5:]
-        if suffix not in fragment_dict:
-            fragment_dict[suffix] = [fragment]
+    # Initialize the disparity of subsets A and B
+    disparity_A = 0
+    disparity_B = 0
+    
+    # Loop through each shipment
+    for i in range(n):
+        # Find the closest shipment in the other subset
+        closest_shipment = find_closest_shipment(i, A if i in B else B, distances)
+        
+        # Add the current shipment to the subset with the closest shipment
+        if closest_shipment in A:
+            B.add(i)
+            disparity_B += distances[i][closest_shipment]
         else:
-            fragment_dict[suffix].append(fragment)
+            A.add(i)
+            disparity_A += distances[i][closest_shipment]
     
-    # Initialize the optimal reconstruction with the first fragment
-    reconstruction = fragments[0]
+    # Return the minimum possible sum of disparities
+    return disparity_A + disparity_B
+
+def find_closest_shipment(shipment, subset, distances):
+    # Find the closest shipment in the subset
+    closest_shipment = -1
+    min_distance = float('inf')
+    for other_shipment in subset:
+        distance = distances[shipment][other_shipment]
+        if distance < min_distance:
+            min_distance = distance
+            closest_shipment = other_shipment
+    return closest_shipment
+
+def f2(n, distances):
+    # Initialize the subsets A and B
+    A = set()
+    B = set()
     
-    # Iterate through the remaining fragments
-    for fragment in fragments[1:]:
-        # Find the suffix of the current fragment that is equal to a prefix of another fragment
-        for suffix in fragment_dict:
-            if suffix == fragment[:5]:
-                # If a matching suffix is found, add the fragment to the reconstruction
-                reconstruction += fragment[5:]
-                break
+    # Initialize the disparity of subsets A and B
+    disparity_A = 0
+    disparity_B = 0
+    
+    # Loop through each shipment
+    for i in range(n):
+        # Find the closest shipment in the other subset
+        closest_shipment = find_closest_shipment(i, A if i in B else B, distances)
+        
+        # Add the current shipment to the subset with the closest shipment
+        if closest_shipment in A:
+            B.add(i)
+            disparity_B += distances[i][closest_shipment]
         else:
-            # If no matching suffix is found, the reconstruction is ambiguous
-            return "AMBIGUOUS"
+            A.add(i)
+            disparity_A += distances[i][closest_shipment]
     
-    return reconstruction
+    # Return the minimum possible sum of disparities
+    return disparity_A + disparity_B
+
+def find_closest_shipment(shipment, subset, distances):
+    # Find the closest shipment in the subset
+    closest_shipment = -1
+    min_distance = float('inf')
+    for other_shipment in subset:
+        distance = distances[shipment][other_shipment]
+        if distance < min_distance:
+            min_distance = distance
+            closest_shipment = other_shipment
+    return closest_shipment
+
+if __name__ == '__main__':
+    n = int(input())
+    distances = []
+    for i in range(n - 1):
+        distances.append(list(map(int, input().split())))
+    print(f1(n, distances))
+    print(f2(n, distances))
 

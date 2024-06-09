@@ -1,28 +1,38 @@
 
-def get_min_area(books):
-    # Sort the books by height in descending order
-    books = sorted(books, key=lambda x: x[0], reverse=True)
+def f1(n, k):
+    # Initialize the number of ways to write the numbers on the houses' plaques
+    num_ways = 1
     
-    # Initialize the areas of the three shelves
-    shelf_1_area = 0
-    shelf_2_area = 0
-    shelf_3_area = 0
-    
-    # Loop through the books and assign them to the shelves
-    for book in books:
-        # Check if the book fits on shelf 1
-        if book[1] <= shelf_1_area:
-            shelf_1_area += book[1]
-        # Check if the book fits on shelf 2
-        elif book[1] <= shelf_2_area:
-            shelf_2_area += book[1]
-        # Check if the book fits on shelf 3
-        elif book[1] <= shelf_3_area:
-            shelf_3_area += book[1]
-        # If the book doesn't fit on any shelf, return -1
+    # Iterate over the houses
+    for i in range(1, n + 1):
+        # If the house is indexed from 1 to k, inclusive, the penguin can walk to house number 1
+        if i <= k:
+            num_ways *= 2
+        # If the house is indexed from k + 1 to n, inclusive, the penguin definitely cannot walk to house number 1
         else:
-            return -1
+            num_ways *= 1
     
-    # Return the minimum area
-    return min(shelf_1_area * shelf_2_area, shelf_2_area * shelf_3_area, shelf_3_area * shelf_1_area)
+    # Return the number of ways modulo 1000000007 (10^9 + 7)
+    return num_ways % 1000000007
+
+def f2(n, k):
+    # Initialize the number of ways to write the numbers on the houses' plaques
+    num_ways = 1
+    
+    # Iterate over the houses
+    for i in range(1, n + 1):
+        # If the house is indexed from 1 to k, inclusive, the penguin can walk to house number 1
+        if i <= k:
+            num_ways *= 2
+        # If the house is indexed from k + 1 to n, inclusive, the penguin definitely cannot walk to house number 1
+        else:
+            num_ways *= 1
+    
+    # Return the number of ways modulo 1000000007 (10^9 + 7)
+    return num_ways % 1000000007
+
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    print(f1(n, k))
+    print(f2(n, k))
 

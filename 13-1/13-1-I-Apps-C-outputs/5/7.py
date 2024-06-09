@@ -1,33 +1,31 @@
 
-import sys
+def get_fair_bandwidth_allocation(n, t, a, b, d):
+    
+    # Initialize the allocation vector
+    x = [0] * n
 
-def solve(n, ranges):
-    # Sort the ranges by their left endpoint
-    ranges.sort(key=lambda x: x[0])
+    # Loop through each species
+    for i in range(n):
+        # Calculate the 'fair share' bandwidth
+        y = t * d[i] / sum(d)
 
-    # Initialize the snow level at each point to 0
-    snow_level = [0] * (n + 1)
+        # Check if the 'fair share' bandwidth is within the constraints
+        if a[i] <= y <= b[i]:
+            x[i] = y
+        else:
+            x[i] = max(a[i], min(b[i], y))
 
-    # Loop through each range and increment the snow level at each point in the range
-    for a, b in ranges:
-        for i in range(a, b + 1):
-            snow_level[i] += 1
+    return x
 
-    # Initialize the number of ways to place the sensors to 0
-    num_ways = 0
+def main():
+    n, t = map(int, input().split())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    d = list(map(int, input().split()))
+    x = get_fair_bandwidth_allocation(n, t, a, b, d)
+    for i in range(n):
+        print(x[i])
 
-    # Loop through each point and check if it is a valid sensor placement
-    for i in range(1, n + 1):
-        if snow_level[i] > snow_level[i - 1] and snow_level[i] > snow_level[i + 1]:
-            num_ways += 1
-
-    return num_ways % 1000000009
-
-n = int(input())
-ranges = []
-for i in range(n):
-    a, b = map(int, input().split())
-    ranges.append((a, b))
-
-print(solve(n, ranges))
+if __name__ == '__main__':
+    main()
 

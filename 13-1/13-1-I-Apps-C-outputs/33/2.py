@@ -1,51 +1,31 @@
 
-def is_possible(n, k, a):
-    # Check if all elements are already equal to k
-    if all(x == k for x in a):
-        return "yes"
-    
-    # Check if the sum of all elements is less than k
-    if sum(a) < k:
-        return "no"
-    
-    # Check if the median of the array is equal to k
-    if median(a) == k:
-        return "yes"
-    
-    # Check if the median of the array is greater than k
-    if median(a) > k:
-        # Find the index of the first element that is greater than k
-        i = 0
-        while i < n and a[i] > k:
-            i += 1
-        
-        # Check if the sum of the elements before the first element that is greater than k is less than k
-        if sum(a[:i]) < k:
-            return "no"
-    
-    # Check if the median of the array is less than k
-    if median(a) < k:
-        # Find the index of the first element that is less than k
-        i = 0
-        while i < n and a[i] < k:
-            i += 1
-        
-        # Check if the sum of the elements before the first element that is less than k is greater than k
-        if sum(a[:i]) > k:
-            return "no"
-    
-    return "yes"
+def get_minimum_bags(n, k, a):
+    # Initialize variables
+    bags = 0
+    current_bag = 0
+    day = 1
 
-def median(a):
-    a.sort()
-    if len(a) % 2 == 0:
-        return (a[len(a) // 2 - 1] + a[len(a) // 2]) / 2
-    else:
-        return a[len(a) // 2]
+    # Iterate through the input array
+    for i in range(n):
+        # If the current day's garbage is less than or equal to the bag's capacity, add it to the current bag
+        if a[i] <= k:
+            current_bag += a[i]
+        # If the current day's garbage is greater than the bag's capacity, create a new bag and add the excess garbage to it
+        else:
+            bags += 1
+            current_bag = a[i] - k
 
-t = int(input())
-for i in range(t):
+        # If it's the last day, add the current bag to the total number of bags
+        if day == n:
+            bags += 1
+
+        # Increment the day
+        day += 1
+
+    return bags
+
+if __name__ == '__main__':
     n, k = map(int, input().split())
     a = list(map(int, input().split()))
-    print(is_possible(n, k, a))
+    print(get_minimum_bags(n, k, a))
 

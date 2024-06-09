@@ -1,42 +1,20 @@
 
-def is_solution_possible(n, a):
-    # Sort the input array in non-decreasing order
-    a.sort()
-    
-    # Calculate the arithmetic mean, median, and range of the input array
-    mean = sum(a) / n
-    median = a[n // 2]
-    range = a[n - 1] - a[0]
-    
-    # Check if the mean, median, and range are equal
-    if mean == median == range:
+def is_greek_number(n):
+    if n == 1:
         return True
-    else:
-        return False
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
 
-def find_missing_candies(n, a):
-    # Sort the input array in non-decreasing order
-    a.sort()
-    
-    # Calculate the arithmetic mean, median, and range of the input array
-    mean = sum(a) / n
-    median = a[n // 2]
-    range = a[n - 1] - a[0]
-    
-    # Check if the mean, median, and range are equal
-    if mean == median == range:
-        # If they are equal, return the missing candies as the difference between the mean and each element in the array
-        return [int(mean - x) for x in a]
-    else:
-        # If they are not equal, return an empty list
-        return []
+def solve(n):
+    count = 0
+    for i in range(1, n+1):
+        if is_greek_number(i):
+            count += 1
+    return count
 
-n = int(input())
-a = list(map(int, input().split()))
-
-if is_solution_possible(n, a):
-    print("YES")
-    print(*find_missing_candies(n, a))
-else:
-    print("NO")
+if __name__ == '__main__':
+    n = int(input())
+    print(solve(n))
 

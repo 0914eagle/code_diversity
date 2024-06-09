@@ -1,50 +1,79 @@
 
-def get_min_cost(n, m, roads):
-    # Initialize the graph with the given roads
-    graph = {i: set() for i in range(1, n + 1)}
-    for a, b in roads:
-        graph[a].add(b)
-        graph[b].add(a)
+import math
 
-    # Initialize the cost of each area to 0
-    costs = [0] * (n + 1)
+def f1(N, L):
+    # Initialize variables
+    prob = 0
+    T = 0
+    
+    # Loop through each possible value of T
+    for t in range(L, L+10):
+        # Calculate the probability of being in B-ville after T days
+        prob = calculate_probability(N, t)
+        
+        # If the probability is greater than or equal to 95%, return T
+        if prob >= 0.95:
+            return t
+    
+    # If no value of T satisfies the condition, return -1
+    return -1
 
-    # Initialize the visited array to keep track of visited areas
-    visited = [False] * (n + 1)
+def calculate_probability(N, T):
+    # Initialize variables
+    prob = 1
+    current_place = 1
+    
+    # Loop through each day of the trip
+    for day in range(T):
+        # Calculate the probability of moving to the next place
+        prob *= calculate_move_probability(N, current_place)
+        
+        # Move to the next place
+        current_place = move_to_next_place(N, current_place)
+    
+    # Return the probability of being in B-ville after T days
+    return prob
 
-    # Function to recursively find the minimum cost of decorating the city
-    def dfs(area, parent):
-        # Mark the current area as visited
-        visited[area] = True
+def calculate_move_probability(N, current_place):
+    # Initialize variables
+    prob = 0
+    
+    # Loop through each possible move
+    for move in range(1, N+1):
+        # Calculate the probability of moving to the next place
+        prob += calculate_move_probability_helper(N, current_place, move)
+    
+    # Return the probability of moving to the next place
+    return prob / N
 
-        # If the current area is not the starting area, check if the cost is valid
-        if area != 1:
-            # Get the cost of the parent area
-            parent_cost = costs[parent]
+def calculate_move_probability_helper(N, current_place, move):
+    # Initialize variables
+    prob = 0
+    
+    # Calculate the probability of moving to the next place
+    if current_place + move <= N:
+        prob = 1 / (N - current_place)
+    else:
+        prob = 0
+    
+    # Return the probability of moving to the next place
+    return prob
 
-            # Get the cost of the current area
-            current_cost = costs[area]
+def move_to_next_place(N, current_place):
+    # Initialize variables
+    move = 0
+    
+    # Loop through each possible move
+    for move in range(1, N+1):
+        # Calculate the probability of moving to the next place
+        if current_place + move <= N:
+            break
+    
+    # Return the next place
+    return current_place + move
 
-            # Check if the sum of the costs is odd
-            if (parent_cost + current_cost) % 3 == 1:
-                return -1
-
-        # Recursively call the function for all the adjacent areas
-        for adjacent in graph[area]:
-            if not visited[adjacent]:
-                result = dfs(adjacent, area)
-                if result == -1:
-                    return -1
-
-        return costs[area]
-
-    # Call the dfs function for the starting area
-    result = dfs(1, 0)
-
-    # If the result is -1, it means that it's not possible to decorate the city according to Peter's properties
-    if result == -1:
-        return -1
-
-    # Otherwise, return the minimum cost
-    return result
+if __name__ == '__main__':
+    N = int(input())
+    L = int(input())
+    print(f1(N, L))
 

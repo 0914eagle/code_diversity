@@ -1,23 +1,62 @@
 
-import math
+def is_schedulable(matches):
+    # Initialize a dictionary to store the number of matches played by each player
+    matches_played = {}
+    for match in matches:
+        for player in match:
+            if player not in matches_played:
+                matches_played[player] = 1
+            else:
+                matches_played[player] += 1
 
-def solve(N, edges):
-    # Initialize the probability of each vertex being black as 0.5
-    probabilities = [0.5] * (N + 1)
+    # Check if all players have played the maximum number of matches
+    for player, num_matches in matches_played.items():
+        if num_matches != len(matches):
+            return False
 
-    # Iterate over the edges and update the probability of the vertices
-    for edge in edges:
-        probabilities[edge[0]] *= probabilities[edge[1]]
-        probabilities[edge[1]] *= probabilities[edge[0]]
+    # Check if all matches are unique
+    for i in range(len(matches)):
+        for j in range(i+1, len(matches)):
+            if matches[i] == matches[j]:
+                return False
 
-    # Calculate the expected holeyness of the subtree
-    expected_holeyness = 0
-    for i in range(1, N + 1):
-        expected_holeyness += probabilities[i] * (1 - probabilities[i])
+    return True
 
-    # Calculate the modular inverse of 8
-    modular_inverse = math.pow(8, math.floor(math.log(1000000007, 8)) + 1, 1000000007)
+def schedule_matches(matches):
+    # Initialize a dictionary to store the number of matches played by each player
+    matches_played = {}
+    for match in matches:
+        for player in match:
+            if player not in matches_played:
+                matches_played[player] = 1
+            else:
+                matches_played[player] += 1
 
-    # Return the expected holeyness modulo 1000000007
-    return int(expected_holeyness * modular_inverse) % 1000000007
+    # Sort the matches by the number of matches played by the first player
+    sorted_matches = sorted(matches, key=lambda x: matches_played[x[0]])
+
+    # Schedule the matches
+    schedule = []
+    for match in sorted_matches:
+        schedule.append(match)
+        matches_played[match[0]] += 1
+        matches_played[match[1]] += 1
+
+    return schedule
+
+def main():
+    num_players = int(input())
+    matches = []
+    for _ in range(num_players):
+        match = list(map(int, input().split()))
+        matches.append(match)
+
+    if is_schedulable(matches):
+        schedule = schedule_matches(matches)
+        print(len(schedule))
+    else:
+        print(-1)
+
+if __name__ == '__main__':
+    main()
 

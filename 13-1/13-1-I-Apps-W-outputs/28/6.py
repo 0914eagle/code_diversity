@@ -1,29 +1,31 @@
 
-def is_unique_crossword(n, x, encoding):
-    # Initialize a set to store the lengths of the segments
-    lengths = set()
-    # Initialize a variable to store the total length of the crossword
-    total_length = 0
-    # Iterate through the encoding
-    for length in encoding:
-        # If the length is not already in the set, add it to the set and increment the total length
-        if length not in lengths:
-            lengths.add(length)
-            total_length += length
-    # Check if the total length of the crossword is equal to the chosen length
-    if total_length == x:
-        # If the number of segments is equal to the number of elements in the encoding, return YES
-        if len(lengths) == n:
-            return "YES"
-        # Otherwise, return NO
+def is_stack_sortable(arr):
+    s = []
+    b = []
+    for i in range(len(arr)):
+        if arr[i] != i+1:
+            s.append(arr[i])
         else:
-            return "NO"
-    # If the total length is not equal to the chosen length, return NO
-    else:
-        return "NO"
+            b.append(arr[i])
+    while s:
+        top = s.pop()
+        b.append(top)
+    return b == list(range(1, len(arr)+1))
 
-n = int(input())
-x = int(input())
-encoding = list(map(int, input().split()))
-print(is_unique_crossword(n, x, encoding))
+def restore_permutation(arr, k):
+    if k == len(arr):
+        return arr
+    for i in range(k, len(arr)):
+        if arr[i] != i+1:
+            arr[i], arr[arr[i]-1] = arr[arr[i]-1], arr[i]
+            return restore_permutation(arr, k+1)
+    return -1
+
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    arr = list(map(int, input().split()))
+    if is_stack_sortable(arr[:k]):
+        print(*restore_permutation(arr, k))
+    else:
+        print(-1)
 

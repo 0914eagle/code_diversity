@@ -1,28 +1,28 @@
 
-import math
-
-def get_final_height(N, k, heights):
-    # Initialize the final heights array
-    final_heights = [0] * N
-    # Set the final height of the first and last houses to be the initial height
-    final_heights[0] = heights[0]
-    final_heights[N-1] = heights[N-1]
+def f1(m, n):
+    # Initialize a list to store the number of islands with each resource
+    num_islands_with_resource = [0] * (n + 1)
     
-    # Iterate through the houses
-    for i in range(1, N-1):
-        # Calculate the average height of the neighbors
-        avg_height = (heights[i-1] + heights[i+1]) / 2
-        # Calculate the new height
-        new_height = avg_height + k
-        # Update the final height
-        final_heights[i] = new_height
+    # Iterate through each island
+    for i in range(m):
+        # Iterate through each resource on the current island
+        for resource in range(1, n + 1):
+            # If the resource is present on the current island, increment the count for that resource
+            if resource in input():
+                num_islands_with_resource[resource] += 1
     
-    # Return the final height of the tallest house
-    return max(final_heights)
+    # Check if there are at least 2 islands with each resource
+    for resource in range(1, n + 1):
+        if num_islands_with_resource[resource] < 2:
+            return "NO"
+    
+    return "YES"
 
-# Test the function with the sample input
-N = 3
-k = 1
-heights = [39, 10, 40]
-print(get_final_height(N, k, heights))
+def f2(...):
+    # Implement f2 here
+    pass
+
+if __name__ == '__main__':
+    m, n = map(int, input().split())
+    print(f1(m, n))
 

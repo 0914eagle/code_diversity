@@ -1,29 +1,24 @@
 
-def shuffling_game(n, s, t, shuffling_operations):
-    if s == t:
-        return 0
-    
-    # Initialize a list to keep track of the positions of the glasses
-    glasses = list(range(1, n+1))
-    
-    # Initialize a variable to keep track of the number of shuffling operations
-    num_shuffles = 0
-    
-    # Loop through each shuffling operation
-    for p in shuffling_operations:
-        # Find the index of the glass that is being moved
-        glass_index = glasses.index(s)
-        
-        # Move the glass to its new position
-        glasses[glass_index] = p
-        
-        # Increment the number of shuffling operations
-        num_shuffles += 1
-        
-        # If the marble has reached its final position, return the number of shuffling operations
-        if glasses[glass_index] == t:
-            return num_shuffles
-    
-    # If the marble has not reached its final position after all shuffling operations, return -1
-    return -1
+def get_min_matches(n):
+    # Initialize the minimum number of matches to buy as n
+    min_matches = n
+    # Iterate from 1 to n
+    for i in range(1, n + 1):
+        # Check if n - i is a valid number
+        if n - i > 0:
+            # Check if n - i is a valid number
+            if (n - i) % 2 == 0:
+                # Update the minimum number of matches to buy
+                min_matches = min(min_matches, i + (n - i) // 2)
+    # Return the minimum number of matches to buy
+    return min_matches
+
+def main():
+    q = int(input())
+    for _ in range(q):
+        n = int(input())
+        print(get_min_matches(n))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,29 +1,38 @@
 
-import math
+def f1(m, n):
+    # Initialize a list to store the natural resources present on each island
+    natural_resources = []
+    for i in range(m):
+        natural_resources.append([])
 
-def solve(N, k, heights):
-    # Calculate the average height of the houses
-    avg_height = sum(heights) / N
-    
-    # Calculate the new height for each house
-    new_heights = []
-    for i in range(N):
-        if heights[i] >= avg_height + k:
-            new_heights.append(heights[i])
-        else:
-            new_heights.append((heights[i-1] + heights[i+1]) / 2 + k)
-    
-    # Check if all houses have converged to a final height
-    if new_heights == heights:
-        return max(new_heights)
-    else:
-        return solve(N, k, new_heights)
+    # Read the input and store the natural resources present on each island
+    for i in range(m):
+        resources = list(map(int, input().split()))
+        for resource in resources:
+            if resource != 0:
+                natural_resources[i].append(resource)
 
-def main():
-    N, k = map(int, input().split())
-    heights = list(map(float, input().split()))
-    print(solve(N, k, heights))
+    # Check if each natural resource is present on at least two islands
+    for i in range(1, n + 1):
+        count = 0
+        for j in range(m):
+            if i in natural_resources[j]:
+                count += 1
+        if count < 2:
+            return "NO"
 
-if __name__ == "__main__":
-    main()
+    # Check if each island has at least one natural resource
+    for i in range(m):
+        if len(natural_resources[i]) == 0:
+            return "NO"
+
+    return "YES"
+
+def f2(...):
+    # Implement f2 here
+    pass
+
+if __name__ == '__main__':
+    m, n = map(int, input().split())
+    print(f1(m, n))
 

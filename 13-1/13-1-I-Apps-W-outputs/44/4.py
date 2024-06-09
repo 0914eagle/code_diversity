@@ -1,29 +1,75 @@
 
-def is_leap_year(year):
-    if year % 4 == 0 and (year % 100 != 0 or year % 400 == 0):
-        return True
-    return False
+def f1(n, m, rap_battles):
+    # Initialize a graph with n vertices and no edges
+    graph = [[] for _ in range(n)]
 
-def days_between_dates(date1, date2):
-    years_diff = int(date2[:4]) - int(date1[:4])
-    months_diff = int(date2[5:7]) - int(date1[5:7])
-    days_diff = int(date2[8:]) - int(date1[8:])
+    # Add edges to the graph based on the rap battles
+    for u, v in rap_battles:
+        graph[u - 1].append(v - 1)
+        graph[v - 1].append(u - 1)
 
-    days = 0
-    for year in range(int(date1[:4]), int(date2[:4]) + 1):
-        days += 365
-        if is_leap_year(year):
-            days += 1
-    for month in range(1, months_diff + 1):
-        days += 31
-        if month in [4, 6, 9, 11]:
-            days -= 1
-        elif month == 2:
-            if is_leap_year(year):
-                days += 29
-            else:
-                days += 28
-    days += days_diff
+    # Find the strongly connected components in the graph
+    scc = strongly_connected_components(graph)
 
-    return days
+    # Return the minimum number of rap battles needed to determine the ordering of the robots
+    return m - len(scc)
+
+def f2(n, m, rap_battles):
+    # Initialize a graph with n vertices and no edges
+    graph = [[] for _ in range(n)]
+
+    # Add edges to the graph based on the rap battles
+    for u, v in rap_battles:
+        graph[u - 1].append(v - 1)
+        graph[v - 1].append(u - 1)
+
+    # Find the strongly connected components in the graph
+    scc = strongly_connected_components(graph)
+
+    # Check if there is more than one ordering of the robots that satisfies all m relations
+    if len(scc) == 1:
+        return -1
+
+    # Return the minimum number of rap battles needed to determine the ordering of the robots
+    return m - len(scc) + 1
+
+def strongly_connected_components(graph):
+    # Initialize a list to store the strongly connected components
+    scc = []
+
+    # Initialize a queue to store the vertices to be processed
+    queue = []
+
+    # Initialize a visited array to keep track of the visited vertices
+    visited = [False] * len(graph)
+
+    # Enqueue the first vertex
+    queue.append(0)
+
+    # Loop until the queue is empty
+    while queue:
+        # Dequeue a vertex
+        u = queue.pop(0)
+
+        # If the vertex has not been visited, mark it as visited and add it to the current strongly connected component
+        if not visited[u]:
+            visited[u] = True
+            scc.append(u)
+
+            # Enqueue the neighbors of the vertex
+            for v in graph[u]:
+                if not visited[v]:
+                    queue.append(v)
+
+    # Return the strongly connected components
+    return scc
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    rap_battles = []
+    for _ in range(m):
+        u, v = map(int, input().split())
+        rap_battles.append((u, v))
+    print(f1(n, m, rap_battles))
+    print(f2(n, m, rap_battles))
 

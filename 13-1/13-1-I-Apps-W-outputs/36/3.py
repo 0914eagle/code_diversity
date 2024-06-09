@@ -1,44 +1,27 @@
 
-def solve(N, D, A, X_H):
-    # Sort the monsters by their coordinates
-    X_H.sort(key=lambda x: x[0])
+def check_intersection(x1, x2, k_list, b_list):
+    for i in range(len(k_list)):
+        for j in range(i+1, len(k_list)):
+            if k_list[i] != k_list[j]:
+                x = (b_list[j] - b_list[i]) / (k_list[i] - k_list[j])
+                if x_1 < x < x_2:
+                    return True
+    return False
 
-    # Initialize the number of bombs needed to 0
-    bombs_needed = 0
+def main():
+    n = int(input())
+    x_1, x_2 = map(int, input().split())
+    k_list = []
+    b_list = []
+    for i in range(n):
+        k, b = map(int, input().split())
+        k_list.append(k)
+        b_list.append(b)
+    if check_intersection(x_1, x_2, k_list, b_list):
+        print("YES")
+    else:
+        print("NO")
 
-    # Loop through the monsters
-    for i in range(N):
-        # Get the current monster's coordinate and health
-        x, h = X_H[i]
-
-        # If the monster's health is already 0 or below, skip it
-        if h <= 0:
-            continue
-
-        # Calculate the range of coordinates that the bomb can affect
-        range_low = max(x - D, 0)
-        range_high = min(x + D, 10**9)
-
-        # Loop through the monsters in the range
-        for j in range(i, N):
-            # Get the current monster's coordinate and health
-            x_j, h_j = X_H[j]
-
-            # If the monster's coordinate is outside the range, break
-            if x_j < range_low or x_j > range_high:
-                break
-
-            # Decrease the monster's health by the bomb's power
-            h_j -= A
-
-            # If the monster's health becomes 0 or below, break
-            if h_j <= 0:
-                break
-
-        # If the monster's health becomes 0 or below, increase the number of bombs needed
-        if h_j <= 0:
-            bombs_needed += 1
-
-    # Return the minimum number of bombs needed to win
-    return bombs_needed
+if __name__ == '__main__':
+    main()
 

@@ -1,16 +1,17 @@
 
-def get_maximum_total_priority(streams):
-    streams.sort(key=lambda x: x[0])
-    stack = []
-    total_priority = 0
-    for stream in streams:
-        if stream[0] >= stack[-1][0] if stack else 0:
-            stack.append(stream)
-            total_priority += stream[2]
-        else:
-            while stack and stack[-1][0] < stream[0]:
-                total_priority -= stack.pop()[2]
-            stack.append(stream)
-            total_priority += stream[2]
-    return total_priority
+def f1(c, n, a):
+    # Initialize a list to store the number of times each object is accessed
+    count = [0] * n
+
+    # Iterate through the accesses
+    for i in range(a):
+        # Get the current object being accessed
+        obj = input()
+
+        # If the object is not already in the cache, insert it and increment the count
+        if count[obj] == 0:
+            count[obj] += 1
+
+    # Return the least number of times an object must be read into the cache
+    return min(count)
 

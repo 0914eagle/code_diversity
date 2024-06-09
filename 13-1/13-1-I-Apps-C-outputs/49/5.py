@@ -1,14 +1,17 @@
 
-def solve(detectors, houses):
-    # Initialize a list to store the number of phone calls at each house
-    calls = [0] * (houses + 1)
+def get_distance(num1, num2):
+    diff = abs(num1 - num2)
+    return diff
 
-    # Loop through each detector and update the number of phone calls at each house
-    for detector in detectors:
-        position, total_calls = detector
-        calls[position] += total_calls
-        calls[position + 1] += total_calls
+def get_sum_of_distances(A, B):
+    sum_of_distances = 0
+    for i in range(A, B+1):
+        for j in range(A, B+1):
+            if i != j:
+                sum_of_distances += get_distance(i, j)
+    return sum_of_distances % 1000000007
 
-    # Return the minimum number of phone calls made
-    return min(calls)
+if __name__ == '__main__':
+    A, B = map(int, input().split())
+    print(get_sum_of_distances(A, B))
 

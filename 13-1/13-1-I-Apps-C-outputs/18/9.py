@@ -1,17 +1,11 @@
 
-def solve(L, x1, y1, x2, y2):
-    # Calculate the length of the wall
-    wall_length = abs(x1 - x2)
-    
-    # Calculate the width of the wall
-    wall_width = abs(y1 - y2)
-    
-    # Calculate the area of the lawn
-    lawn_area = L
-    
-    # Calculate the length of the chain needed to cover the lawn
-    chain_length = wall_length * lawn_area / wall_width
-    
-    # Return the result as an integer
-    return int(chain_length)
+def get_min_packets(n):
+    # Initialize the number of packets to 1
+    packets = 1
+    # Loop through the numbers from 1 to n
+    for i in range(1, n+1):
+        # If the current number is not divisible by the number of packets, increment the number of packets
+        if n % i != 0:
+            packets += 1
+    return packets
 

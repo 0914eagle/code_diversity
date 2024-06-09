@@ -1,30 +1,57 @@
 
-import sys
-input = sys.stdin.read()
-n, m = map(int, input.split())
+def can_connect_servers(n, m, k, capacities, connections):
+    # Initialize a graph with the given number of servers and connections
+    graph = {i: set() for i in range(n)}
+    for u, v in connections:
+        graph[u].add(v)
+        graph[v].add(u)
 
-matrix = [[0] * (n + 1) for _ in range(n + 1)]
+    # Initialize a set to keep track of the edited connections
+    edited_connections = set()
 
-for i in range(m):
-    x, y = map(int, input.split())
-    matrix[x][y] = 1
+    # Loop through each server and try to connect it to all other servers
+    for i in range(n):
+        for j in range(i+1, n):
+            # If the servers are not directly connected and there are available sockets, try to connect them
+            if j not in graph[i] and len(graph[i]) < capacities[i] and len(graph[j]) < capacities[j]:
+                graph[i].add(j)
+                graph[j].add(i)
+                edited_connections.add((i, j))
 
-def find_path(start, end):
-    if start == end:
-        return 0
-    
-    x, y = start
-    for i in range(x + 1, n + 1):
-        for j in range(y + 1, n + 1):
-            if matrix[i][j] == 0:
-                matrix[i][j] = matrix[x][y] + 1
-                if find_path((i, j), end) == 1:
-                    return 1
-                matrix[i][j] = 0
-    return 0
+    # If we have made too many edits, return "no"
+    if len(edited_connections) > k:
+        return "no"
 
-if find_path((1, 1), (n, n)) == 1:
-    print(matrix[n][n])
-else:
-    print(-1)
+    # If we have connected all servers, return "yes"
+    if len(edited_connections) == m:
+        return "yes"
+
+    # If we have not connected all servers, try to connect them in a different way
+    for i in range(n):
+        for j in range(i+1, n):
+            # If the servers are not directly connected and there are available sockets, try to connect them
+            if j not in graph[i] and len(graph[i]) < capacities[i] and len(graph[j]) < capacities[j]:
+                graph[i].add(j)
+                graph[j].add(i)
+                edited_connections.add((i, j))
+
+                # If we have connected all servers, return "yes"
+                if len(edited_connections) == m:
+                    return "yes"
+
+                # If we have made too many edits, return "no"
+                if len(edited_connections) > k:
+                    return "no"
+
+    # If we have not connected all servers and have not made too many edits, return "yes"
+    return "yes"
+
+if __name__ == '__main__':
+    n, m, k = map(int, input().split())
+    capacities = list(map(int, input().split()))
+    connections = []
+    for _ in range(m):
+        u, v = map(int, input().split())
+        connections.append((u, v))
+    print(can_connect_servers(n, m, k, capacities, connections))
 

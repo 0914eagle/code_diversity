@@ -1,28 +1,76 @@
 
-def get_min_cost(n, m, roads):
-    # Initialize the cost array with -1 for all areas
-    cost = [-1] * (n + 1)
-    cost[1] = 0
+import math
+
+def f1(N, L):
+    # Initialize variables
+    prob = 0
+    T = 0
     
-    # Loop through each road
-    for i in range(m):
-        # Get the two areas connected by the road
-        area1, area2 = roads[i][0], roads[i][1]
+    # Loop through each possible value of T
+    for t in range(L, L+10):
+        # Calculate the probability of being in B-ville after T days
+        prob = calculate_probability(N, t)
         
-        # If the cost of area1 is not yet known, set it to the cost of area2 + 1
-        if cost[area1] == -1:
-            cost[area1] = cost[area2] + 1
+        # If the probability is greater than or equal to 95%, return T
+        if prob >= 0.95:
+            return t
+    
+    # If no value of T satisfies the condition, return -1
+    return -1
+
+def calculate_probability(N, T):
+    # Initialize variables
+    prob = 1
+    current_place = 1
+    
+    # Loop through each day of the trip
+    for day in range(T):
+        # Calculate the probability of moving to the next place
+        prob *= calculate_move_probability(N, current_place)
         
-        # If the cost of area2 is not yet known, set it to the cost of area1 + 1
-        if cost[area2] == -1:
-            cost[area2] = cost[area1] + 1
+        # Move to the next place
+        current_place = move_to_next_place(N, current_place)
     
-    # Loop through each area and check if the cost is valid
-    for i in range(1, n + 1):
-        # If the cost is not valid, return -1
-        if (cost[i] + cost[i - 1]) % 3 == 1:
-            return -1
+    # Return the probability of being in B-ville after T days
+    return prob
+
+def calculate_move_probability(N, current_place):
+    # Initialize variables
+    prob = 0
     
-    # If all costs are valid, return the minimum cost
-    return min(cost)
+    # Loop through each possible move
+    for move in range(1, N+1):
+        # Calculate the probability of moving to the next place
+        prob += calculate_move_probability_helper(N, current_place, move)
+    
+    # Return the probability of moving to the next place
+    return prob / N
+
+def calculate_move_probability_helper(N, current_place, move):
+    # Initialize variables
+    prob = 0
+    
+    # Calculate the probability of moving to the next place
+    if current_place + move <= N:
+        prob = 1 / (N - current_place)
+    
+    # Return the probability of moving to the next place
+    return prob
+
+def move_to_next_place(N, current_place):
+    # Initialize variables
+    move = 0
+    
+    # Loop through each possible move
+    for move in range(1, N+1):
+        # Calculate the probability of moving to the next place
+        if current_place + move <= N:
+            break
+    
+    # Return the next place
+    return current_place + move
+
+if __name__ == '__main__':
+    N, L = map(int, input().split())
+    print(f1(N, L))
 

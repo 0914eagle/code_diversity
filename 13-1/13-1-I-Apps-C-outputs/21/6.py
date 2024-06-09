@@ -1,42 +1,52 @@
 
-import sys
-input = sys.stdin.read()
-n, m = map(int, input.split())
+def can_connect_servers(n, m, k, capacities, connections):
+    # Initialize a graph with the given number of servers and connections
+    graph = {i: set() for i in range(n)}
+    for u, v in connections:
+        graph[u].add(v)
+        graph[v].add(u)
 
-volcanoes = set()
-for i in range(m):
-    x, y = map(int, input.split())
-    volcanoes.add((x, y))
+    # Initialize a list to keep track of the number of sockets used by each server
+    sockets = [0] * n
 
-# Initialize the distance matrix with -1
-distance = [[-1 for _ in range(n + 1)] for _ in range(n + 1)]
+    # Initialize a set to keep track of the servers that are already connected
+    connected = set()
 
-# Initialize the queue with the starting point
-queue = [(1, 1)]
+    # Loop through the connections and try to form a single network
+    for i in range(m):
+        # Check if the current connection is valid
+        u, v = connections[i]
+        if u == v or u in connected or v in connected:
+            continue
 
-# Initialize the distance of the starting point to 0
-distance[1][1] = 0
+        # Check if the current connection would exceed the maximum number of sockets for either server
+        if sockets[u] + 1 > capacities[u] or sockets[v] + 1 > capacities[v]:
+            continue
 
-# Loop until the queue is empty
-while queue:
-    # Get the current cell from the queue
-    x, y = queue.pop(0)
-    
-    # If the current cell is the destination, return the distance
-    if x == n and y == n:
-        return distance[x][y]
-    
-    # If the current cell is not a volcano, add its neighbors to the queue
-    if (x, y) not in volcanoes:
-        # Down neighbor
-        if x + 1 <= n:
-            queue.append((x + 1, y))
-            distance[x + 1][y] = distance[x][y] + 1
-        # Right neighbor
-        if y + 1 <= n:
-            queue.append((x, y + 1))
-            distance[x][y + 1] = distance[x][y] + 1
+        # Add the current connection to the graph and update the number of sockets used by each server
+        graph[u].add(v)
+        graph[v].add(u)
+        sockets[u] += 1
+        sockets[v] += 1
+        connected.add(u)
+        connected.add(v)
 
-# If the destination is not reachable, return -1
-print(-1)
+        # Check if all servers are now connected
+        if len(connected) == n:
+            return True
+
+    # If we reach this point, it means we were unable to form a single network with the given connections
+    return False
+
+def main():
+    n, m, k = map(int, input().split())
+    capacities = list(map(int, input().split()))
+    connections = []
+    for _ in range(m):
+        u, v = map(int, input().split())
+        connections.append((u, v))
+    print("yes") if can_connect_servers(n, m, k, capacities, connections) else print("no")
+
+if __name__ == '__main__':
+    main()
 

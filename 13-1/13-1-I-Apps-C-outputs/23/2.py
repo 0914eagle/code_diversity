@@ -1,22 +1,64 @@
 
-def solve(N, points):
-    # Initialize the scores of both players to 0
-    score1, score2 = 0, 0
-    
-    # Iterate through each point and calculate the area of the quadrilateral formed by the point and its neighbors
-    for i in range(N):
-        for j in range(i+1, N):
-            for k in range(j+1, N):
-                for l in range(k+1, N):
-                    # Calculate the area of the quadrilateral
-                    area = abs((points[i][0] * (points[j][1] - points[k][1]) + points[j][0] * (points[k][1] - points[l][1]) + points[k][0] * (points[l][1] - points[i][1]) + points[l][0] * (points[i][1] - points[j][1])) / 2)
-                    
-                    # Add the area to the score of the first player
-                    score1 += area
-                    
-                    # Add the area to the score of the second player
-                    score2 += area
-    
-    # Return the sum of the scores modulo 1000003
-    return (score1 + score2) % 1000003
+def f1(n, s):
+    # Initialize variables
+    tellers = []
+    votes1 = 0
+    votes2 = 0
+    swaps = 0
+
+    # Find the tellers and their indices
+    for i in range(n):
+        if s[i] == "0":
+            tellers.append(i)
+
+    # Iterate through the citizens and count the votes
+    for i in range(n):
+        if s[i] == "1":
+            votes1 += 1
+        elif s[i] == "2":
+            votes2 += 1
+
+    # If one party has more votes than the other, return the minimum number of swaps necessary
+    if votes1 > votes2:
+        return swaps
+    elif votes2 > votes1:
+        return swaps + 1
+
+    # If both parties have the same number of votes, try swapping the tellers with their adjacent citizens
+    for i in range(len(tellers)):
+        if i % 2 == 0:
+            # Swap the teller with the citizen to its left
+            swaps += 1
+            tellers[i] = tellers[i] - 1
+        else:
+            # Swap the teller with the citizen to its right
+            swaps += 1
+            tellers[i] = tellers[i] + 1
+
+    # Count the votes again after the swaps
+    votes1 = 0
+    votes2 = 0
+    for i in range(n):
+        if s[i] == "1":
+            votes1 += 1
+        elif s[i] == "2":
+            votes2 += 1
+
+    # If one party has more votes than the other after the swaps, return the minimum number of swaps necessary
+    if votes1 > votes2:
+        return swaps
+    elif votes2 > votes1:
+        return swaps + 1
+
+    # If both parties have the same number of votes after the swaps, return "impossible"
+    return "impossible"
+
+def f2(...):
+    # Implement function f2 here
+    pass
+
+if __name__ == '__main__':
+    n = int(input())
+    s = input()
+    print(f1(n, s))
 

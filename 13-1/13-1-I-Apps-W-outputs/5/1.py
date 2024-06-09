@@ -1,20 +1,34 @@
 
-def solve(N, K, A, F):
-    # Sort the members by their consumption coefficient in descending order
-    sorted_members = sorted(range(N), key=lambda i: A[i], reverse=True)
+def get_shortest_correct_sequence(S):
+    # Initialize the result string
+    result = ""
 
-    # Initialize the minimum score to 0
-    min_score = 0
+    # Iterate through the input string
+    for char in S:
+        # If the current character is a left parenthesis, append it to the result
+        if char == "(":
+            result += "("
+        # If the current character is a right parenthesis, append it to the result
+        elif char == ")":
+            result += ")"
+        # If the current character is a left parenthesis, append it to the result
+        elif char == ")":
+            result += ")"
 
-    # Loop through each member and their corresponding food
-    for i, j in enumerate(sorted_members):
-        # Calculate the time it takes for the member to finish the food
-        time = (A[j] - i) * F[j]
+    # Return the result
+    return result
 
-        # If the time is greater than the minimum score, update the minimum score
-        if time > min_score:
-            min_score = time
+def main():
+    # Read the input from stdin
+    N = int(input())
+    S = input()
 
-    # Return the minimum score
-    return min_score
+    # Call the function to get the shortest correct sequence
+    result = get_shortest_correct_sequence(S)
+
+    # Print the result
+    print(result)
+
+if __name__ == '__main__':
+    main()
 

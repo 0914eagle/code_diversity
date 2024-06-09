@@ -1,34 +1,56 @@
 
-n = int(input())
-a = list(map(int, input().split()))
+def f1(n, a):
+    # Initialize a graph with n nodes and no edges
+    graph = [[] for _ in range(n)]
 
-# Use a dictionary to count the frequency of each number in the sequence
-freq = {}
-for num in a:
-    if num in freq:
-        freq[num] += 1
-    else:
-        freq[num] = 1
+    # Add edges to the graph based on the input
+    for i in range(n):
+        graph[i].append(a[i] - 1)
 
-# Find all numbers that occur more than once in the sequence
-valid_x = []
-for x, count in freq.items():
-    if count > 1:
-        valid_x.append(x)
+    # Count the number of strongly connected components in the graph
+    return strongly_connected_components(graph)
 
-# Sort the valid x values in increasing order
-valid_x.sort()
+def f2(n, a):
+    # Initialize a graph with n nodes and no edges
+    graph = [[] for _ in range(n)]
 
-# Print the number of valid x values
-print(len(valid_x))
+    # Add edges to the graph based on the input
+    for i in range(n):
+        graph[i].append(a[i] - 1)
 
-# Print the valid x values and their common differences
-for x in valid_x:
-    # Find the positions of x in the sequence
-    positions = [i for i, num in enumerate(a) if num == x]
-    # Sort the positions in increasing order
-    positions.sort()
-    # Calculate the common difference between the positions
-    common_diff = positions[1] - positions[0]
-    print(x, common_diff)
+    # Count the number of strongly connected components in the graph
+    return strongly_connected_components(graph)
+
+def strongly_connected_components(graph):
+    # Initialize a visited array and a component array
+    visited = [False] * len(graph)
+    component = [0] * len(graph)
+
+    # Iterate through all nodes in the graph
+    for node in range(len(graph)):
+        # If the node has not been visited, perform a DFS traversal
+        if not visited[node]:
+            dfs(graph, visited, component, node)
+
+    # Return the number of strongly connected components
+    return len(set(component))
+
+def dfs(graph, visited, component, node):
+    # Mark the current node as visited
+    visited[node] = True
+
+    # Iterate through all neighbors of the current node
+    for neighbor in graph[node]:
+        # If the neighbor has not been visited, perform a DFS traversal
+        if not visited[neighbor]:
+            dfs(graph, visited, component, neighbor)
+
+    # Add the current node to the component array
+    component[node] = 1
+
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(f1(n, a))
+    print(f2(n, a))
 

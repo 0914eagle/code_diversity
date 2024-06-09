@@ -1,12 +1,10 @@
 
-n = int(input())
-x = list(map(int, input().split()))
-v = list(map(int, input().split()))
+import math
 
-distances = []
-for i in range(n):
-    for j in range(i+1, n):
-        distances.append(abs(x[i] - x[j]) / abs(v[i] - v[j]))
+def get_circumference(radius):
+    return 2 * math.pi * radius
 
-print(sum(distances))
+if __name__ == '__main__':
+    radius = float(input())
+    print(get_circumference(radius))
 

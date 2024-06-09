@@ -1,21 +1,26 @@
 
-n, k, a, b, q = map(int, input().split())
+def get_min_capacity(log):
+    # Initialize a set to store the current visitors in the room
+    visitors = set()
+    # Initialize the minimum capacity variable
+    min_capacity = 0
+    # Iterate through the log
+    for event in log:
+        # If the event is "+ r_i", add the visitor to the set of current visitors
+        if event.startswith("+"):
+            visitors.add(int(event[2:]))
+        # If the event is "- r_i", remove the visitor from the set of current visitors
+        elif event.startswith("-"):
+            visitors.remove(int(event[2:]))
+        # Update the minimum capacity if the current number of visitors is less than the previous minimum
+        min_capacity = min(min_capacity, len(visitors))
+    # Return the minimum capacity
+    return min_capacity
 
-orders = []
+def main():
+    log = input().split()
+    print(get_min_capacity(log))
 
-for i in range(q):
-    query = input().split()
-    if query[0] == "1":
-        orders.append((int(query[1]), int(query[2])))
-    else:
-        p = int(query[1])
-        filled_orders = 0
-        for day, num_orders in orders:
-            if day <= p:
-                filled_orders += min(num_orders, b)
-            elif day <= p + k - 1:
-                filled_orders += 0
-            else:
-                filled_orders += min(num_orders, a)
-        print(filled_orders)
+if __name__ == '__main__':
+    main()
 

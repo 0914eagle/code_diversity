@@ -1,22 +1,46 @@
 
-import math
+def is_forest(graph):
+    # Check if the graph is a forest
+    # A forest is a graph with no cycles
+    # A graph is a forest if all of its vertices have degree at most 1
+    for vertex in graph:
+        if vertex.degree > 1:
+            return False
+    return True
 
-def get_probability(m, n, t, p):
-    # Calculate the probability that a single person wins the lottery
-    probability = n / m
+def construct_forest(num_vertices, degrees):
+    # Construct a graph with the given number of vertices and degrees
+    graph = []
+    for i in range(num_vertices):
+        graph.append(Vertex(i, degrees[i]))
     
-    # Calculate the probability that p people win the lottery
-    probability = probability ** p
+    # Add edges to the graph
+    for i in range(num_vertices):
+        for j in range(i+1, num_vertices):
+            if graph[i].degree > 0 and graph[j].degree > 0:
+                graph[i].add_neighbor(graph[j])
+                graph[j].add_neighbor(graph[i])
+                graph[i].degree -= 1
+                graph[j].degree -= 1
     
-    # Calculate the probability that a person wins at most t tickets
-    probability = probability * (1 - ((t - 1) / m)) ** p
-    
-    return probability
+    # Check if the graph is a forest
+    if is_forest(graph):
+        return graph
+    else:
+        return None
 
 def main():
-    m, n, t, p = map(int, input().split())
-    print(get_probability(m, n, t, p))
+    num_vertices = int(input())
+    degrees = list(map(int, input().split()))
+    graph = construct_forest(num_vertices, degrees)
+    if graph is None:
+        print("IMPOSSIBLE")
+    else:
+        print("POSSIBLE")
+        for vertex in graph:
+            for neighbor in vertex.neighbors:
+                print(vertex.label, neighbor.label)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
 

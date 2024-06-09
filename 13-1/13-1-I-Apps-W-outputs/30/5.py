@@ -1,19 +1,42 @@
 
-def solve(s):
-    # Initialize variables
-    min_length = len(s)
-    compressed_version = ""
-
-    # Iterate through the string
-    for i in range(len(s)):
-        # Check if the current character is the same as the previous character
-        if i > 0 and s[i] == s[i-1]:
-            # If it is, continue the current compressed version
-            continue
+def get_shortest_dominated_subarray(arr):
+    if len(arr) < 2:
+        return -1
+    
+    counts = {}
+    for num in arr:
+        if num not in counts:
+            counts[num] = 1
         else:
-            # If it's not, start a new compressed version
-            compressed_version += str(i+1) + s[i]
+            counts[num] += 1
+    
+    max_count = max(counts.values())
+    max_num = [num for num, count in counts.items() if count == max_count][0]
+    
+    start = 0
+    end = 0
+    count = 0
+    for i in range(len(arr)):
+        if arr[i] == max_num:
+            count += 1
+            end = i
+        else:
+            if count > 0:
+                if count == 1:
+                    start = i - count + 1
+                else:
+                    start = i - count
+                break
+    
+    if count == 0:
+        return -1
+    
+    return end - start + 1
 
-    # Return the minimum length
-    return len(compressed_version)
+if __name__ == '__main__':
+    T = int(input())
+    for _ in range(T):
+        n = int(input())
+        arr = list(map(int, input().split()))
+        print(get_shortest_dominated_subarray(arr))
 

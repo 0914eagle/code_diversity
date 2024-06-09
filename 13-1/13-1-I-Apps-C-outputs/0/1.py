@@ -1,25 +1,31 @@
 
-N, M, Q = map(int, input().split())
+def get_cube_vertices(lines):
+    vertices = []
+    for line in lines:
+        vertices.append([int(x) for x in line.split()])
+    return vertices
 
-# Initialize the class and teacher assignments
-classes = list(range(1, N+1))
-teachers = list(range(1, N+1))
+def is_cube(vertices):
+    if len(vertices) != 8:
+        return False
+    for i in range(3):
+        for j in range(i+1, 3):
+            for k in range(j+1, 3):
+                if not is_permutation(vertices[i], vertices[j], vertices[k]):
+                    return False
+    return True
 
-# Initialize the reassignment plans
-plans = []
+def is_permutation(a, b, c):
+    return sorted(a) == sorted(b) and sorted(b) == sorted(c)
 
-for _ in range(Q):
-    query = list(map(int, input().split()))
-    if query[0] == 0:
-        # Add a reassignment plan
-        plans.append((query[1], query[2], query[3:]))
+def restore_cube(lines):
+    vertices = get_cube_vertices(lines)
+    if is_cube(vertices):
+        return "YES\n" + "\n".join([" ".join(map(str, vertex)) for vertex in vertices])
     else:
-        # Find the class that teacher d teaches on Tuesday of the x-th week
-        d, x = query[1], query[2]
-        for plan in plans:
-            if plan[1] == x:
-                # Rotate the teachers
-                teachers = plan[2]
-                break
-        print(classes[teachers.index(d)])
+        return "NO"
+
+if __name__ == '__main__':
+    lines = [input() for _ in range(8)]
+    print(restore_cube(lines))
 

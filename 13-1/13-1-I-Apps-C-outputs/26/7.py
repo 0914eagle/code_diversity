@@ -1,65 +1,34 @@
 
-def solve(n, q, x, y, a, b):
-    # Convert the input coordinates into a set of points
-    points = set()
-    for i in range(n):
-        points.add((x[i], y[i]))
-    
-    # Initialize the minimum side length to infinity
-    min_side_length = float('inf')
-    
-    # Iterate over each zoning request
-    for i in range(q):
-        # Get the start and end addresses of the request
-        start, end = a[i], b[i]
-        
-        # Initialize the current side length to infinity
-        current_side_length = float('inf')
-        
-        # Iterate over each point in the request
-        for j in range(start, end + 1):
-            # Get the current point
-            point = points[j - 1]
-            
-            # Update the current side length if necessary
-            current_side_length = min(current_side_length, get_side_length(point, points))
-        
-        # Update the minimum side length if necessary
-        min_side_length = min(min_side_length, current_side_length)
-    
-    # Return the minimum side length
-    return min_side_length
+def f1(n, arr):
+    # Sort the array
+    arr.sort()
+    # Initialize the minimum size of the subsegment to remove
+    min_size = 0
+    # Iterate through the array
+    for i in range(n-1):
+        # If the current element is equal to the next element
+        if arr[i] == arr[i+1]:
+            # Increment the minimum size of the subsegment to remove
+            min_size += 1
+    # Return the minimum size of the subsegment to remove
+    return min_size
 
-def get_side_length(point, points):
-    # Initialize the side length to infinity
-    side_length = float('inf')
-    
-    # Iterate over each point
-    for other_point in points:
-        # If the point is not the same as the current point
-        if other_point != point:
-            # Update the side length if necessary
-            side_length = min(side_length, get_distance(point, other_point))
-    
-    # Return the side length
-    return side_length
+def f2(n, arr):
+    # Initialize the minimum size of the subsegment to remove
+    min_size = 0
+    # Iterate through the array
+    for i in range(n-1):
+        # If the current element is equal to the next element
+        if arr[i] == arr[i+1]:
+            # Increment the minimum size of the subsegment to remove
+            min_size += 1
+            # Break out of the loop
+            break
+    # Return the minimum size of the subsegment to remove
+    return min_size
 
-def get_distance(point1, point2):
-    # Get the x and y coordinates of the points
-    x1, y1 = point1
-    x2, y2 = point2
-    
-    # Calculate the distance between the points
-    distance = ((x2 - x1) ** 2 + (y2 - y1) ** 2) ** 0.5
-    
-    # Return the distance
-    return distance
-
-n, q = map(int, input().split())
-x = list(map(int, input().split()))
-y = list(map(int, input().split()))
-a = list(map(int, input().split()))
-b = list(map(int, input().split()))
-
-print(solve(n, q, x, y, a, b))
+if __name__ == '__main__':
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(f1(n, arr))
 

@@ -1,23 +1,31 @@
 
-def is_possible(n, k, a):
-    # Check if all elements are already equal to k
-    if all(x == k for x in a):
-        return "yes"
-    
-    # Check if the sum of all elements is less than k
-    if sum(a) < k:
-        return "no"
-    
-    # Sort the array in ascending order
-    a.sort()
-    
-    # Initialize the median as the middle element
-    median = a[n//2]
-    
-    # Loop through the array and check if the median is equal to k
+def get_minimum_bags(n, k, a):
+    # Initialize variables
+    bags = 0
+    current_bag = 0
+    day = 1
+
+    # Iterate through the input array
     for i in range(n):
-        if a[i] != median:
-            return "no"
-    
-    return "yes"
+        # If the current day's garbage is less than or equal to the bag's capacity, add it to the current bag
+        if a[i] <= k:
+            current_bag += a[i]
+        # If the current day's garbage is greater than the bag's capacity, create a new bag and add the excess garbage to it
+        else:
+            bags += 1
+            current_bag = a[i] - k
+
+        # If it's the last day, add the current bag to the total number of bags
+        if day == n:
+            bags += 1
+
+        # Increment the day
+        day += 1
+
+    return bags
+
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    a = list(map(int, input().split()))
+    print(get_minimum_bags(n, k, a))
 

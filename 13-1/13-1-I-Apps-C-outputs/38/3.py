@@ -1,32 +1,22 @@
 
-def print_round(lines, delay):
-    # Initialize variables
-    line_1 = []
-    line_2 = []
-    time_1 = 0
-    time_2 = delay
+def meow_factor(string):
+    # Initialize the meow factor to 0
+    factor = 0
+    
+    # Loop through each character in the string
+    for i in range(len(string)):
+        # If the current character is 'm', check if the next three characters are 'e', 'o', and 'w'
+        if string[i] == 'm':
+            if i + 1 < len(string) and string[i + 1] == 'e' and i + 2 < len(string) and string[i + 2] == 'o' and i + 3 < len(string) and string[i + 3] == 'w':
+                # If they are, return the current meow factor
+                return factor
+            # If the current character is 'm' and the next three characters are not 'e', 'o', and 'w', increment the meow factor
+            factor += 1
+    
+    # If the string does not contain the word "meow", return -1
+    return -1
 
-    # Iterate through each line of the input
-    for line in lines:
-        # Split the line into syllables and time allocations
-        syllables = line.split()
-        times = [int(time) for time in syllables[1:]]
-
-        # Add the syllables to the appropriate line
-        for i, syllable in enumerate(syllables[:1]):
-            if time_1 < time_2:
-                line_1.append(syllable)
-                time_1 += times[i]
-            else:
-                line_2.append(syllable)
-                time_2 += times[i]
-
-    # Print the lines
-    print("_".join(line_1))
-    print("_".join(line_2))
-
-# Test the function with the sample input
-lines = ["Hot cross buns! = Hot cross buns! =", "4 4 4 4 4 4 4 4", "One a pen- ny, Two a pen- ny, Hot cross buns! =", "2 2 2 2 2 2 2 2 4 4 4 4"]
-delay = 16
-print_round(lines, delay)
+if __name__ == '__main__':
+    string = input()
+    print(meow_factor(string))
 

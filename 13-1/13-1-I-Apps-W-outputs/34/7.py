@@ -1,29 +1,46 @@
 
-import sys
+def f1(n, m, c, grid, costs):
+    # Initialize variables
+    bank_row, bank_col = -1, -1
+    barricade_costs = [0] * c
+    for i in range(c):
+        barricade_costs[i] = costs[i]
+    for i in range(n):
+        for j in range(m):
+            if grid[i][j] == 'B':
+                bank_row = i
+                bank_col = j
+                break
+        if bank_row != -1:
+            break
 
-def knight_moves(x, y):
-    # Initialize the number of ways to reach (x, y) as 0
-    ways = 0
+    # Initialize the minimum cost to infinity
+    min_cost = float('inf')
 
-    # Base case: if we are already at (x, y), there is only 1 way to reach there
-    if x == y:
-        return 1
+    # Iterate through all possible barricade configurations
+    for configuration in range(1 << c):
+        # Calculate the cost of the current barricade configuration
+        cost = 0
+        for i in range(c):
+            if configuration & (1 << i):
+                cost += barricade_costs[i]
 
-    # Recursive case: consider all possible moves from (x-1, y-2), (x-2, y-1), (x-2, y+1), and (x-1, y+2)
-    for i in range(4):
-        # Calculate the next position based on the move
-        next_x = x - 1 + 2 * (i // 2)
-        next_y = y - 1 + 2 * (i % 2)
+        # Check if the current barricade configuration prevents the robbers from escaping
+        if not any(grid[bank_row + dr][bank_col + dc] == '.' for dr in range(-1, 2) for dc in range(-1, 2) if 0 <= bank_row + dr < n and 0 <= bank_col + dc < m):
+            min_cost = min(min_cost, cost)
 
-        # If the next position is within the bounds of the grid and has not been visited before, recurse
-        if 0 <= next_x <= x and 0 <= next_y <= y and (next_x, next_y) not in visited:
-            visited.add((next_x, next_y))
-            ways += knight_moves(next_x, next_y)
+    # Return the minimum cost
+    return min_cost if min_cost < float('inf') else -1
 
-    return ways % 1000000007
+def f2(...):
+    # Implement function f2 here
+    pass
 
 if __name__ == '__main__':
-    x, y = map(int, sys.stdin.readline().strip().split())
-    visited = set()
-    print(knight_moves(x, y))
+    n, m, c = map(int, input().split())
+    grid = []
+    for i in range(n):
+        grid.append(list(input()))
+    costs = list(map(int, input().split()))
+    print(f1(n, m, c, grid, costs))
 

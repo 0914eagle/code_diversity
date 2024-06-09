@@ -1,45 +1,23 @@
 
-def get_max_days(a, b, c):
-    # Initialize variables
-    max_days = 0
-    days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-    
-    # Iterate over each day of the week
-    for day in days:
-        # Check if the current day is a day with fish food
-        if day in ["Monday", "Thursday", "Sunday"]:
-            # If the current day is a day with fish food, check if there are enough fish food in the backpack
-            if a >= 1:
-                # If there are enough fish food in the backpack, increment the maximum number of days
-                max_days += 1
-                # Decrement the number of fish food in the backpack
-                a -= 1
-            else:
-                # If there are not enough fish food in the backpack, break the loop
-                break
-        # Check if the current day is a day with rabbit stew
-        elif day in ["Tuesday", "Saturday"]:
-            # If the current day is a day with rabbit stew, check if there are enough rabbit stew in the backpack
-            if b >= 1:
-                # If there are enough rabbit stew in the backpack, increment the maximum number of days
-                max_days += 1
-                # Decrement the number of rabbit stew in the backpack
-                b -= 1
-            else:
-                # If there are not enough rabbit stew in the backpack, break the loop
-                break
-        # Check if the current day is a day with chicken stake
-        else:
-            # If the current day is a day with chicken stake, check if there are enough chicken stake in the backpack
-            if c >= 1:
-                # If there are enough chicken stake in the backpack, increment the maximum number of days
-                max_days += 1
-                # Decrement the number of chicken stake in the backpack
-                c -= 1
-            else:
-                # If there are not enough chicken stake in the backpack, break the loop
-                break
-    
-    # Return the maximum number of days
-    return max_days
+def get_ant_order(first_row, second_row, t):
+    # Initialize the order of the ants
+    ant_order = first_row + second_row
+
+    # Iterate over the time steps
+    for i in range(t):
+        # Find the indices of the ants that need to switch places
+        switch_indices = [i for i in range(len(ant_order)) if i % 2 == 0]
+
+        # Switch the places of the ants at the corresponding indices
+        for index in switch_indices:
+            ant_order[index], ant_order[index + 1] = ant_order[index + 1], ant_order[index]
+
+    return "".join(ant_order)
+
+def main():
+    first_row, second_row, t = map(str, input().split())
+    print(get_ant_order(first_row, second_row, int(t)))
+
+if __name__ == '__main__':
+    main()
 

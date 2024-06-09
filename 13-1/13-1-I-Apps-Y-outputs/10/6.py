@@ -1,52 +1,24 @@
 
-def is_star(grid, row, col, size):
-    # Check if the star is inside the grid
-    if row < 0 or col < 0 or row + size > len(grid) or col + size > len(grid[0]):
-        return False
+def f1(n):
+    # Initialize variables
+    moves = 0
+    divisible = False
     
-    # Check if the star is completely inside the grid
-    if any(grid[row + i][col + j] != '*' for i in range(size) for j in range(size)):
-        return False
+    # Loop until the number is divisible by 25 or the maximum number of moves is reached
+    while not divisible and moves < 100:
+        # Check if the number is already divisible by 25
+        if n % 25 == 0:
+            divisible = True
+            break
+        
+        # Swap the last two digits of the number
+        n = int(str(n)[:-1] + str(n)[-1] + str(n)[-2])
+        moves += 1
     
-    # Check if the star is not overlapping with any other star
-    for i in range(size):
-        for j in range(size):
-            if grid[row + i][col + j] == '*':
-                return False
-    
-    return True
-
-def draw_grid(grid):
-    # Initialize the number of stars needed
-    num_stars = 0
-    
-    # Iterate through the grid
-    for row in range(len(grid)):
-        for col in range(len(grid[0])):
-            # If the current cell is a star, check if it is a valid star
-            if grid[row][col] == '*':
-                # Check if the star is valid
-                if is_star(grid, row, col, 1):
-                    # If the star is valid, increment the number of stars needed
-                    num_stars += 1
-    
-    # If the number of stars needed is greater than the number of cells in the grid, return -1
-    if num_stars > len(grid) * len(grid[0]):
+    # If the number is not divisible by 25 after the maximum number of moves, return -1
+    if not divisible:
         return -1
     
-    # Initialize the list of stars
-    stars = []
-    
-    # Iterate through the grid again
-    for row in range(len(grid)):
-        for col in range(len(grid[0])):
-            # If the current cell is a star, check if it is a valid star
-            if grid[row][col] == '*':
-                # Check if the star is valid
-                if is_star(grid, row, col, 1):
-                    # If the star is valid, add it to the list of stars
-                    stars.append((row, col, 1))
-    
-    # Return the list of stars
-    return stars
+    # Otherwise, return the number of moves required
+    return moves
 

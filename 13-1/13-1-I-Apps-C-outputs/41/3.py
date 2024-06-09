@@ -1,28 +1,46 @@
 
-def get_max_heap_size(n, values):
-    # Initialize a list to store the heap property for each node
-    heap_property = [False] * (n + 1)
-    # Set the root node as the largest node
-    heap_property[1] = True
-    # Iterate through the nodes in reverse order
-    for i in range(n, 0, -1):
-        # If the current node is not the root node
-        if i != 1:
-            # Get the parent node and its value
-            parent = values[i][1]
-            parent_value = values[parent][0]
-            # If the current node is larger than its parent node
-            if values[i][0] > parent_value:
-                # Set the heap property for the current node to True
-                heap_property[i] = True
-                # Set the heap property for the parent node to False
-                heap_property[parent] = False
-    # Return the number of nodes with the heap property set to True
-    return sum(heap_property)
+def f1(N, K, items):
+    # Initialize a graph with N nodes and no edges
+    graph = [[] for _ in range(N)]
 
-n = int(input())
-values = []
-for i in range(n):
-    values.append(list(map(int, input().split())))
-print(get_max_heap_size(n, values))
+    # Add edges to the graph based on the items available at each store
+    for i, item in items:
+        graph[i].append(item)
+
+    # Return the graph
+    return graph
+
+def f2(graph, items):
+    # Initialize a set to store the items that have been bought
+    bought_items = set()
+
+    # Initialize a queue to store the nodes to visit
+    queue = [0]
+
+    # Loop until the queue is empty
+    while queue:
+        # Get the current node from the queue
+        node = queue.pop(0)
+
+        # If the node is a bought item, add it to the set of bought items
+        if node in items:
+            bought_items.add(node)
+
+        # If the node has not been visited yet, mark it as visited and add its neighbors to the queue
+        if node not in graph[node]:
+            graph[node].append(node)
+            queue += graph[node]
+
+    # If all items have been bought, return "unique"
+    if len(bought_items) == len(items):
+        return "unique"
+
+    # If not all items have been bought, return "impossible"
+    return "impossible"
+
+if __name__ == '__main__':
+    N, K = map(int, input().split())
+    items = [input().split() for _ in range(K)]
+    graph = f1(N, K, items)
+    print(f2(graph, items))
 

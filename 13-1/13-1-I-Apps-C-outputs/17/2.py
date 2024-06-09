@@ -1,25 +1,34 @@
 
-def solve(n, pairs):
-    # Initialize a dictionary to store the food types for each pair
-    food_types = {}
+def get_min_cost(planets):
+    # Initialize the minimum cost to infinity
+    min_cost = float('inf')
     
-    # Iterate over the pairs and assign food types
-    for i, pair in enumerate(pairs):
-        # If the boy and girl are sitting on consecutive chairs, they cannot have the same food type
-        if pair[0] == pair[1] - 1 or pair[0] == pair[1] + 1:
-            return -1
-        
-        # If the boy has already been assigned a food type, assign the opposite type to the girl
-        if pair[0] in food_types:
-            food_types[pair[1]] = 3 - food_types[pair[0]]
-        # If the girl has already been assigned a food type, assign the same type to the boy
-        elif pair[1] in food_types:
-            food_types[pair[0]] = food_types[pair[1]]
-        # If neither the boy nor the girl has been assigned a food type, assign Kooft to the boy and Zahre-mar to the girl
-        else:
-            food_types[pair[0]] = 1
-            food_types[pair[1]] = 2
+    # Loop through all pairs of planets
+    for i in range(len(planets)):
+        for j in range(i+1, len(planets)):
+            # Calculate the cost of the tunnel between the two planets
+            cost = abs(planets[i][0] - planets[j][0]) + abs(planets[i][1] - planets[j][1]) + abs(planets[i][2] - planets[j][2])
+            
+            # Update the minimum cost if necessary
+            if cost < min_cost:
+                min_cost = cost
     
-    # Return the food types for each pair
-    return [food_types[pair[0]], food_types[pair[1]] for pair in pairs]
+    return min_cost
+
+def main():
+    # Read the number of planets and their coordinates from stdin
+    num_planets = int(input())
+    planets = []
+    for _ in range(num_planets):
+        x, y, z = map(int, input().split())
+        planets.append((x, y, z))
+    
+    # Calculate the minimum cost of forming the network of tunnels
+    min_cost = get_min_cost(planets)
+    
+    # Print the minimum cost
+    print(min_cost)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,29 +1,18 @@
 
-def solve(N, K, M, edges):
-    # Initialize a graph with N nodes and M edges
-    graph = [[] for _ in range(N + 1)]
-    for edge in edges:
-        graph[edge[0]].append(edge[1])
-        graph[edge[1]].append(edge[0])
-
-    # Initialize a list to store the producers that can be left running
-    producers = []
-
-    # Iterate through each producer and check if it can be left running
-    for producer in range(1, K + 1):
-        # Initialize a set to store the conveyor belts that the producer uses
-        conveyor_belts = set()
-
-        # Iterate through each junction that the producer can reach
-        for junction in graph[producer]:
-            # If the junction is not the warehouse, add the conveyor belts that connect the junction to the warehouse
-            if junction != N:
-                conveyor_belts.update(graph[junction])
-
-        # If the producer uses only one conveyor belt, it can be left running
-        if len(conveyor_belts) == 1:
-            producers.append(producer)
-
-    # Return the maximum number of producers that can be left running
-    return len(producers)
+def f1(n, a, b, c):
+    # Convert the input lists to sets for O(1) lookup
+    a_set = set(a)
+    b_set = set(b)
+    c_set = set(c)
+    
+    # Initialize a counter for the number of pairs
+    count = 0
+    
+    # Iterate over each camel in a_set
+    for camel in a_set:
+        # If the camel is also in b_set and c_set, increment the counter
+        if camel in b_set and camel in c_set:
+            count += 1
+    
+    return count
 

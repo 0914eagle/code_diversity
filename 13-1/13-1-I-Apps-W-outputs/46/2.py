@@ -1,9 +1,16 @@
 
-import math
+def is_regular_polygon(a):
+    return a % 180 == 0 or a % 90 == 0
 
-def solve(n, r, x):
-    y = [10**100] * n
-    for i in range(n):
-        y[i] = y[i] - math.sqrt(r**2 - (x[i] - x[i-1])**2) if i > 0 else y[i] - r
-    return y
+def fence_builder(a):
+    if is_regular_polygon(a):
+        return "YES"
+    else:
+        return "NO"
+
+if __name__ == '__main__':
+    t = int(input())
+    for _ in range(t):
+        a = int(input())
+        print(fence_builder(a))
 

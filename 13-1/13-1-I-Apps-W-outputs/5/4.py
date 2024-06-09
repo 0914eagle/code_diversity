@@ -1,25 +1,31 @@
 
-def solve(N, K, A, F):
-    # Calculate the maximum score that can be achieved with each member doing K sets of training
-    max_scores = [0] * N
+def get_shortest_correct_sequence(S):
+    # Initialize variables
+    N = len(S)
+    open_brackets = 0
+    close_brackets = 0
+    sequence = []
+
+    # Iterate through the string S
     for i in range(N):
-        max_scores[i] = (A[i] - K) * F[i]
+        # If the current character is an open bracket, increment the number of open brackets
+        if S[i] == '(':
+            open_brackets += 1
+        # If the current character is a close bracket, increment the number of close brackets
+        elif S[i] == ')':
+            close_brackets += 1
+        # If the number of open brackets is greater than the number of close brackets, insert an open bracket into the sequence
+        if open_brackets > close_brackets:
+            sequence.append('(')
+        # If the number of close brackets is greater than the number of open brackets, insert a close bracket into the sequence
+        elif close_brackets > open_brackets:
+            sequence.append(')')
+    
+    # Return the lexicographically smallest string among the shortest correct bracket sequences
+    return ''.join(sequence)
 
-    # Sort the members by their maximum score in descending order
-    sorted_members = sorted(range(N), key=lambda i: max_scores[i], reverse=True)
-
-    # Initialize the minimum possible score to the maximum score of the first member
-    min_score = max_scores[sorted_members[0]]
-
-    # Iterate through the members in descending order of their maximum score
-    for i in range(N):
-        # Calculate the minimum possible score that can be achieved by assigning the current member to each food
-        min_food_score = [0] * N
-        for j in range(N):
-            min_food_score[j] = max(min_food_score[j], (A[sorted_members[i]] - K + 1) * F[j])
-
-        # Update the minimum possible score with the minimum score that can be achieved by assigning the current member to each food
-        min_score = min(min_score, max(min_food_score))
-
-    return min_score
+if __name__ == '__main__':
+    N = int(input())
+    S = input()
+    print(get_shortest_correct_sequence(S))
 

@@ -1,50 +1,27 @@
 
-def is_star(grid, row, col, size):
-    # Check if the star is inside the grid
-    if row < 0 or col < 0 or row + size > len(grid) or col + size > len(grid[0]):
-        return False
+def get_min_moves(n):
+    # Initialize the minimum number of moves to -1
+    min_moves = -1
     
-    # Check if the star is completely inside the grid
-    if any(grid[row + i][col + j] != '*' for i in range(size) for j in range(size)):
-        return False
+    # Loop through each digit in the number
+    for i in range(len(n)):
+        # Check if the current digit is a 0
+        if n[i] == '0':
+            # If it is, continue to the next digit
+            continue
+        # Check if the current digit is a 5
+        elif n[i] == '5':
+            # If it is, return 0 as the minimum number of moves
+            return 0
+        # Otherwise, check if the next digit is a 5
+        elif i < len(n) - 1 and n[i+1] == '5':
+            # If it is, return 1 as the minimum number of moves
+            return 1
+        # Otherwise, check if the previous digit is a 5
+        elif i > 0 and n[i-1] == '5':
+            # If it is, return 1 as the minimum number of moves
+            return 1
     
-    # Check if the star is not overlapping with any other star
-    for i in range(size):
-        for j in range(size):
-            if grid[row + i][col + j] == '*':
-                return False
-    
-    return True
-
-def draw_grid(grid):
-    # Initialize the number of stars needed
-    num_stars = 0
-    
-    # Iterate through the grid
-    for row in range(len(grid)):
-        for col in range(len(grid[0])):
-            # If the current cell is a star, check if it is a valid star
-            if grid[row][col] == '*':
-                # Check if the star is valid
-                if is_star(grid, row, col, 1):
-                    num_stars += 1
-                else:
-                    return -1
-    
-    # If all stars are valid, return the number of stars needed
-    return num_stars
-
-grid = [
-    ['.', '.', '.', '.', '.', '.', '.', '.'],
-    ['.', '*', '*', '*', '*', '*', '.', '.'],
-    ['.', '*', '*', '*', '*', '*', '.', '.'],
-    ['.', '*', '*', '*', '*', '*', '.', '.'],
-    ['.', '*', '*', '*', '*', '*', '.', '.'],
-    ['.', '*', '*', '*', '*', '*', '.', '.'],
-    ['.', '.', '.', '.', '.', '.', '.', '.'],
-    ['.', '.', '.', '.', '.', '.', '.', '.']
-]
-
-result = draw_grid(grid)
-print(result)
+    # If we reach this point, it is impossible to obtain a number that is divisible by 25
+    return min_moves
 

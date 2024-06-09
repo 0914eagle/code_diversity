@@ -1,16 +1,29 @@
 
-def solve(deck):
-    # Sort the deck in descending order
-    deck.sort(reverse=True)
-    # Initialize the maximum number of remaining cards
-    max_cards = 0
-    # Loop through the deck and find the maximum number of remaining cards
-    for i in range(len(deck)):
-        # If the current card is not the largest card, eat the largest card and the current card
-        if deck[i] != deck[0]:
-            max_cards += 2
-        # If the current card is the largest card, eat the largest card and the smallest card
-        else:
-            max_cards += 1
-    return max_cards
+def f1(n, a):
+    # Calculate the sum of all angles
+    sum_angles = sum(a)
+    
+    # Initialize the minimum difference between angles
+    min_diff = sum_angles
+    
+    # Iterate over all possible combinations of pieces
+    for i in range(n):
+        for j in range(i+1, n):
+            # Calculate the difference between the angles of the two sectors
+            diff = abs(sum(a[i:j]) - sum(a[j:i]))
+            
+            # Update the minimum difference if necessary
+            if diff < min_diff:
+                min_diff = diff
+    
+    return min_diff
+
+def f2(...):
+    # Implement f2 here
+    pass
+
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(f1(n, a))
 

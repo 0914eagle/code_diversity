@@ -1,29 +1,77 @@
 
-import sys
+def f1(n, m, c, grid, costs):
+    # Initialize the minimum total cost to prevent the robbers from escaping
+    min_cost = float('inf')
+    
+    # Loop through each cell in the grid
+    for i in range(n):
+        for j in range(m):
+            # If the current cell is the bank, continue to the next cell
+            if grid[i][j] == 'B':
+                continue
+            # If the current cell is a dot, continue to the next cell
+            if grid[i][j] == '.':
+                continue
+            # If the current cell is not the bank or a dot, calculate the minimum cost to barricade the cell
+            cost = calculate_cost(i, j, grid, costs)
+            # If the minimum cost is less than the current minimum cost, update the minimum cost
+            if cost < min_cost:
+                min_cost = cost
+    
+    # Return the minimum total cost to prevent the robbers from escaping
+    return min_cost
 
-def knight_moves(x, y):
-    # Initialize the number of ways to be 0
-    ways = 0
+def f2(n, m, c, grid, costs):
+    # Initialize the minimum total cost to prevent the robbers from escaping
+    min_cost = float('inf')
+    
+    # Loop through each cell in the grid
+    for i in range(n):
+        for j in range(m):
+            # If the current cell is the bank, continue to the next cell
+            if grid[i][j] == 'B':
+                continue
+            # If the current cell is a dot, continue to the next cell
+            if grid[i][j] == '.':
+                continue
+            # If the current cell is not the bank or a dot, calculate the minimum cost to barricade the cell
+            cost = calculate_cost(i, j, grid, costs)
+            # If the minimum cost is less than the current minimum cost, update the minimum cost
+            if cost < min_cost:
+                min_cost = cost
+    
+    # Return the minimum total cost to prevent the robbers from escaping
+    return min_cost
 
-    # Base case: if the knight is already at the destination, return 1
-    if x == y == 0:
-        return 1
+def calculate_cost(i, j, grid, costs):
+    # Initialize the minimum cost to barricade the cell
+    min_cost = 0
+    
+    # If the cell is not on the border of the grid, calculate the cost to barricade the cell
+    if i > 0 and i < n-1 and j > 0 and j < m-1:
+        # Calculate the cost to barricade the cell
+        cost = costs[grid[i][j]]
+        # If the cost is less than the current minimum cost, update the minimum cost
+        if cost < min_cost:
+            min_cost = cost
+    
+    # If the cell is on the border of the grid, calculate the cost to barricade the cell
+    else:
+        # Calculate the cost to barricade the cell
+        cost = costs[grid[i][j]]
+        # If the cost is less than the current minimum cost, update the minimum cost
+        if cost < min_cost:
+            min_cost = cost
+    
+    # Return the minimum cost to barricade the cell
+    return min_cost
 
-    # Recursive case: try moving the knight to the two possible squares
-    for i in range(2):
-        for j in range(2):
-            # Calculate the new position of the knight
-            new_x = x + i
-            new_y = y + j
-
-            # If the new position is valid, recurse and add the number of ways to reach the new position
-            if 0 <= new_x <= 1000000 and 0 <= new_y <= 1000000:
-                ways += knight_moves(new_x, new_y)
-
-    # Return the number of ways modulo 10^9 + 7
-    return ways % 1000000007
-
-if __name__ == "__main__":
-    x, y = map(int, sys.stdin.readline().split())
-    print(knight_moves(x, y))
+if __name__ == '__main__':
+    n, m, c = map(int, input().split())
+    grid = []
+    for i in range(n):
+        grid.append(list(input()))
+    costs = list(map(int, input().split()))
+    print(f1(n, m, c, grid, costs))
+    print(f2(n, m, c, grid, costs))
 

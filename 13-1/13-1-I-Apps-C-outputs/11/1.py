@@ -1,17 +1,43 @@
 
-def max_area(n, m, k):
-    # Initialize the maximum area to 0
-    max_area = 0
-    # Loop through all possible horizontal cuts
-    for i in range(k+1):
-        # Get the number of vertical cuts required for this horizontal cut
-        num_vert_cuts = k - i
-        # Check if the number of vertical cuts is valid
-        if num_vert_cuts > 0 and num_vert_cuts <= k:
-            # Calculate the area of the current piece
-            area = (n // (i + 1)) * (m // (num_vert_cuts + 1))
-            # Update the maximum area if necessary
-            max_area = max(max_area, area)
-    # Return the maximum area
-    return max_area
+def f1(n, pebbles):
+    # Initialize a dictionary to store the pairs of pebbles that can be jumped between
+    jump_pairs = {}
+    for i in range(n - 1):
+        for j in range(i + 1, n):
+            if pebbles[i] + pebbles[j] == j - i:
+                jump_pairs[i, j] = True
+    
+    # Initialize a list to store the distances of the pebbles that can be reached
+    reachable_distances = []
+    for i in range(n):
+        for j in range(i + 1, n + 1):
+            if jump_pairs.get((i, j - 1), False):
+                reachable_distances.append(j)
+    
+    # Return the maximum distance
+    return max(reachable_distances)
+
+def f2(n, pebbles):
+    # Initialize a dictionary to store the pairs of pebbles that can be jumped between
+    jump_pairs = {}
+    for i in range(n - 1):
+        for j in range(i + 1, n):
+            if pebbles[i] + pebbles[j] == j - i:
+                jump_pairs[i, j] = True
+    
+    # Initialize a list to store the distances of the pebbles that can be reached
+    reachable_distances = []
+    for i in range(n):
+        for j in range(i + 1, n + 1):
+            if jump_pairs.get((i, j - 1), False):
+                reachable_distances.append(j)
+    
+    # Return the maximum distance
+    return max(reachable_distances)
+
+if __name__ == '__main__':
+    n = int(input())
+    pebbles = list(map(int, input().split()))
+    print(f1(n, pebbles))
+    print(f2(n, pebbles))
 

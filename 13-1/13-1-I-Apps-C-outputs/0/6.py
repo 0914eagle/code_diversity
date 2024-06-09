@@ -1,25 +1,32 @@
 
-N, M, Q = map(int, input().split())
+def get_cube_vertices(vertices):
+    # Sort the vertices
+    sorted_vertices = sorted(vertices)
 
-# Initialize the class and teacher assignments
-classes = list(range(1, N+1))
-teachers = list(range(1, N+1))
-
-# Initialize the reassignment plans
-plans = []
-
-for _ in range(Q):
-    query = list(map(int, input().split()))
-    if query[0] == 0:
-        # Add a reassignment plan
-        plans.append((query[1], query[2], query[3:]))
+    # Check if the vertices form a cube
+    if len(set(sorted_vertices)) == 8:
+        return sorted_vertices
     else:
-        # Find the class that teacher d teaches on Tuesday of the x-th week
-        d, x = query[1], query[2]
-        class_assignment = teachers[d-1]
-        for plan in plans:
-            if plan[1] == x:
-                # Apply the reassignment plan
-                class_assignment = plan[2][class_assignment-1]
-        print(class_assignment)
+        return None
+
+def restore_cube_vertices(vertices):
+    # Get the cube vertices
+    cube_vertices = get_cube_vertices(vertices)
+
+    # If the vertices form a cube, return them
+    if cube_vertices:
+        return cube_vertices
+
+    # If the vertices do not form a cube, return None
+    return None
+
+if __name__ == '__main__':
+    vertices = [[0, 0, 0], [0, 0, 1], [0, 1, 0], [1, 0, 0], [0, 1, 1], [1, 0, 1], [1, 1, 0], [1, 1, 1]]
+    restored_vertices = restore_cube_vertices(vertices)
+    if restored_vertices:
+        print("YES")
+        for vertex in restored_vertices:
+            print(" ".join(map(str, vertex)))
+    else:
+        print("NO")
 

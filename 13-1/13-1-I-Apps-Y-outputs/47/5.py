@@ -1,11 +1,19 @@
 
-def solve(A):
-    # Sort the tasks in non-decreasing order of their costs
-    A.sort()
-    # Initialize the minimum total cost to complete all tasks
-    min_cost = 0
-    # Loop through the tasks and calculate the minimum total cost
-    for i in range(len(A)):
-        min_cost += A[i]
-    return min_cost
+def f1(N):
+    # Initialize a list to store the positions of the cuts
+    cuts = []
+
+    # Iterate from 1 to N
+    for i in range(1, N + 1):
+        # Calculate the position of the cut
+        pos = i * (8 / N)
+
+        # Round the position to the nearest integer
+        pos = int(round(pos))
+
+        # Add the position to the list of cuts
+        cuts.append(pos)
+
+    # Return the length of the list of cuts
+    return len(cuts)
 

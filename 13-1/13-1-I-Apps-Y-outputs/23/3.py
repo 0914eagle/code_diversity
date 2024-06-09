@@ -1,24 +1,27 @@
 
-def solve(golorp_name):
-    # Convert the golorp name to a list of characters
-    golorp_name_list = list(golorp_name)
+def get_min_moves(n):
+    # Initialize a 2D array to store the number of moves required to move all figures to a cell
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
     
-    # Initialize an empty list to store the variable values
-    variable_values = []
+    # Initialize the first row and column with 1, as we need to move the figure in the top-left cell to any other cell
+    for i in range(1, n + 1):
+        dp[0][i] = 1
+        dp[i][0] = 1
     
-    # Iterate through the characters in the golorp name
-    for char in golorp_name_list:
-        # If the character is a digit, add it to the list of variable values
-        if char.isdigit():
-            variable_values.append(int(char))
+    # Fill in the rest of the 2D array using the recurrence relation
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            dp[i][j] = min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]) + 1
     
-    # If the list of variable values is empty, return "false"
-    if not variable_values:
-        return "false"
-    
-    # Sort the list of variable values in ascending order
-    variable_values.sort()
-    
-    # Return the sorted list of variable values as a string
-    return "".join(str(x) for x in variable_values)
+    # Return the answer for the bottom-right cell
+    return dp[n][n]
+
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        print(get_min_moves(n))
+
+if __name__ == '__main__':
+    main()
 

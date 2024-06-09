@@ -1,36 +1,36 @@
 
-def get_max_days(a, b, c):
-    # Initialize variables
-    max_days = 0
-    days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+def f1(N1, N2, row1, row2, T):
+    # Initialize the order of the ants after T seconds
+    order = ""
     
-    # Iterate over each day of the week
-    for day in days:
-        # Check if the current day is a day when the cat eats fish food
-        if day in ["Monday", "Thursday", "Sunday"]:
-            # If the current day is a day when the cat eats fish food, check if there are enough fish food rations in the backpack
-            if a >= 1:
-                # If there are enough fish food rations in the backpack, increment the maximum number of days the cat can eat in a trip without additional food purchases
-                max_days += 1
-                # Decrement the number of fish food rations in the backpack
-                a -= 1
-        # Check if the current day is a day when the cat eats rabbit stew
-        elif day in ["Tuesday", "Saturday"]:
-            # If the current day is a day when the cat eats rabbit stew, check if there are enough rabbit stew rations in the backpack
-            if b >= 1:
-                # If there are enough rabbit stew rations in the backpack, increment the maximum number of days the cat can eat in a trip without additional food purchases
-                max_days += 1
-                # Decrement the number of rabbit stew rations in the backpack
-                b -= 1
-        # Check if the current day is a day when the cat eats chicken stake
-        else:
-            # If the current day is a day when the cat eats chicken stake, check if there are enough chicken stake rations in the backpack
-            if c >= 1:
-                # If there are enough chicken stake rations in the backpack, increment the maximum number of days the cat can eat in a trip without additional food purchases
-                max_days += 1
-                # Decrement the number of chicken stake rations in the backpack
-                c -= 1
+    # Loop through each second
+    for i in range(T):
+        # Loop through each ant in the first row
+        for j in range(N1):
+            # If the ant is not the first ant in the first row
+            if j > 0:
+                # Get the position of the ant in the second row that is behind the current ant in the first row
+                pos = N2 - j
+                # If the ant in the second row is moving in the opposite direction
+                if row2[pos] < row1[j]:
+                    # Swap the positions of the two ants
+                    row1[j], row2[pos] = row2[pos], row1[j]
     
-    # Return the maximum number of days the cat can eat in a trip without additional food purchases
-    return max_days
+    # Concatenate the orders of the ants in the first and second row
+    order = "".join(row1 + row2)
+    
+    return order
+
+def f2(...):
+    # Implement function f2 here
+    pass
+
+if __name__ == '__main__':
+    N1 = int(input())
+    N2 = int(input())
+    row1 = input()
+    row2 = input()
+    T = int(input())
+    
+    print(f1(N1, N2, row1, row2, T))
 

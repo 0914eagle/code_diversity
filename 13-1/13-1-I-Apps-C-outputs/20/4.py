@@ -1,20 +1,42 @@
 
-def get_max_profit(n, m, l, s, c):
-    # Initialize the dp table with 0 as the base case
-    dp = [0] * (n + 1)
+def f1(N, W_list, H_list, map_list):
+    # Initialize a dictionary to store the map pieces
+    map_dict = {}
+    for i in range(N):
+        map_dict[i+1] = map_list[i]
 
-    # Loop through each candidate
-    for i in range(1, n + 1):
-        # Loop through each aggressiveness level
-        for j in range(1, m + 1):
-            # Check if the current candidate is recruited
-            if l[i - 1] == j:
-                # If the current candidate is recruited, calculate the profit
-                dp[i] = max(dp[i], dp[i - 1] + c[j - 1] - s[i - 1])
-            # If the current candidate is not recruited, calculate the profit
-            else:
-                dp[i] = max(dp[i], dp[i - 1])
+    # Initialize a list to store the reconstructed map
+    reconstructed_map = []
 
-    # Return the maximum profit
-    return dp[n]
+    # Loop through the map pieces and add them to the reconstructed map
+    for i in range(N):
+        # Get the current map piece
+        current_map = map_dict[i+1]
+
+        # Add the current map piece to the reconstructed map
+        reconstructed_map.append(current_map)
+
+    # Return the reconstructed map
+    return reconstructed_map
+
+def f2(reconstructed_map):
+    # Initialize a dictionary to store the map pieces
+    map_dict = {}
+
+    # Loop through the reconstructed map and add the map pieces to the dictionary
+    for i in range(len(reconstructed_map)):
+        map_dict[i+1] = reconstructed_map[i]
+
+    # Return the dictionary
+    return map_dict
+
+if __name__ == '__main__':
+    # Test the functions
+    N = 3
+    W_list = [4, 2, 2]
+    H_list = [1, 2, 2]
+    map_list = ['2123', '21', '10', '23', '12']
+    reconstructed_map = f1(N, W_list, H_list, map_list)
+    map_dict = f2(reconstructed_map)
+    print(map_dict)
 

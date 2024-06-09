@@ -1,22 +1,20 @@
 
-n, k = map(int, input().split())
-difficulties = list(map(int, input().split()))
+def get_min_cost(s, k):
+    n = len(s)
+    dp = [[0] * (k+1) for _ in range(n+1)]
+    for i in range(1, n+1):
+        for j in range(1, k+1):
+            if i == 0 or j == 0:
+                dp[i][j] = 0
+            else:
+                dp[i][j] = max(dp[i-1][j-1] + 1, dp[i-1][j])
+    return dp[n][k]
 
-left = 0
-right = n - 1
-solved = 0
+def main():
+    n, k = map(int, input().split())
+    s = input()
+    print(get_min_cost(s, k))
 
-while left <= right:
-    if difficulties[left] <= k:
-        solved += 1
-        difficulties.pop(left)
-        n -= 1
-    elif difficulties[right] <= k:
-        solved += 1
-        difficulties.pop(right)
-        n -= 1
-    else:
-        break
-
-print(solved)
+if __name__ == '__main__':
+    main()
 

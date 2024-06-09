@@ -1,9 +1,16 @@
 
-import math
+def is_regular_polygon_possible(angle):
+    return angle % 180 == 0 or angle % 90 == 0
 
-def solve(n, r, x):
-    y = [10**100] * n
-    for i in range(n):
-        y[i] = y[i] - math.sqrt(r**2 - (x[i] - x[i-1])**2) if i > 0 else y[i] - r
-    return y
+def main():
+    num_tests = int(input())
+    for _ in range(num_tests):
+        angle = int(input())
+        if is_regular_polygon_possible(angle):
+            print("YES")
+        else:
+            print("NO")
+
+if __name__ == '__main__':
+    main()
 

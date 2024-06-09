@@ -1,39 +1,32 @@
 
-def solve(N, K, A, F):
-    # Initialize the minimum score to a large value
-    min_score = float('inf')
-    
-    # Loop through all possible combinations of training sets
-    for i in range(1 << N):
-        # Convert the binary representation of i to a list of booleans
-        training_sets = [bool(i & (1 << j)) for j in range(N)]
-        
-        # Calculate the total number of training sets used
-        total_training_sets = sum(training_sets)
-        
-        # Check if the total number of training sets used is less than or equal to K
-        if total_training_sets <= K:
-            # Initialize the score to 0
-            score = 0
-            
-            # Loop through all foods
-            for j in range(N):
-                # Calculate the time it takes for the member to finish the food
-                time = A[j] - training_sets[j] * 1
-                
-                # Check if the time is negative
-                if time < 0:
-                    # Set the time to 0
-                    time = 0
-                
-                # Add the time to the score
-                score += time * F[j]
-                
-            # Check if the score is less than the minimum score
-            if score < min_score:
-                # Update the minimum score
-                min_score = score
-    
-    # Return the minimum score
-    return min_score
+def get_shortest_correct_bracket_sequence(S):
+    # Initialize the result string
+    result = ""
+
+    # Iterate through the input string
+    for char in S:
+        # If the current character is a closing bracket, append it to the result
+        if char == ")":
+            result += ")"
+        # If the current character is an opening bracket, append it to the result and check if the previous character was a closing bracket
+        elif char == "(":
+            result += "("
+            if len(result) > 1 and result[-2] == ")":
+                result = result[:-1] + "(" + result[-1]
+
+    # Return the result
+    return result
+
+def main():
+    # Read the input string
+    S = input()
+
+    # Get the shortest correct bracket sequence
+    result = get_shortest_correct_bracket_sequence(S)
+
+    # Print the result
+    print(result)
+
+if __name__ == '__main__':
+    main()
 

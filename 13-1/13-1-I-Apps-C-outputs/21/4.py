@@ -1,30 +1,47 @@
 
-import sys
-input = sys.stdin.read()
-n, m = map(int, input.split())
+def can_connect_servers(n, m, k, capacities, connections):
+    # Initialize a graph with the given number of servers and connections
+    graph = {i: set() for i in range(n)}
+    for u, v in connections:
+        graph[u].add(v)
+        graph[v].add(u)
 
-matrix = [[0] * (n + 1) for _ in range(n + 1)]
+    # Initialize a list to keep track of the number of sockets used by each server
+    sockets = [0] * n
 
-for i in range(m):
-    x, y = map(int, input.split())
-    matrix[x][y] = 1
+    # Initialize a set to keep track of the servers that are already connected
+    connected = set()
 
-def find_path(start, end):
-    if start == end:
-        return 0
-    
-    x, y = start
-    for i in range(x + 1, n + 1):
-        for j in range(y + 1, n + 1):
-            if matrix[i][j] == 0:
-                matrix[i][j] = matrix[x][y] + 1
-                if find_path((i, j), end) == 1:
-                    return 1
-                matrix[i][j] = 0
-    return 0
+    # Loop through the connections and try to connect the servers
+    for i in range(m):
+        u, v = connections[i]
+        if u in connected and v in connected:
+            continue
+        if sockets[u] + sockets[v] <= capacities[u] + capacities[v]:
+            connected.add(u)
+            connected.add(v)
+            sockets[u] += 1
+            sockets[v] += 1
+        elif sockets[u] + sockets[v] == capacities[u] + capacities[v]:
+            connected.add(u)
+            connected.add(v)
+            sockets[u] += 1
+            sockets[v] += 1
+        else:
+            return "no"
 
-if find_path((1, 1), (n, n)) == 1:
-    print(matrix[n][n])
-else:
-    print(-1)
+    # If all servers are connected, return "yes", otherwise return "no"
+    if len(connected) == n:
+        return "yes"
+    else:
+        return "no"
+
+if __name__ == '__main__':
+    n, m, k = map(int, input().split())
+    capacities = list(map(int, input().split()))
+    connections = []
+    for _ in range(m):
+        u, v = map(int, input().split())
+        connections.append((u, v))
+    print(can_connect_servers(n, m, k, capacities, connections))
 

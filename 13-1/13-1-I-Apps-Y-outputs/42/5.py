@@ -1,17 +1,21 @@
 
-def solve(s):
-    n = len(s)
-    k = 1
-    count = 0
-    for i in range(n):
-        if s[i] == "0":
-            left = max(0, i-k)
-            right = min(n-1, i+k)
-            for j in range(left, right+1):
-                if s[j] == "1":
-                    break
-            else:
-                count += 1
-                s = s[:i] + "1" + s[i+1:]
-    return count
+def find_min_lcm(arr):
+    # Find the least common multiple of the first two elements
+    lcm = arr[0] * arr[1] // gcd(arr[0], arr[1])
+    
+    # Iterate through the rest of the elements
+    for i in range(2, len(arr)):
+        # Find the least common multiple of the current element and the previous lcm
+        lcm = lcm * arr[i] // gcd(lcm, arr[i])
+    
+    return lcm
+
+def gcd(a, b):
+    while b != 0:
+        a, b = b, a % b
+    return a
+
+if __name__ == '__main__':
+    arr = [int(input()) for _ in range(int(input()))]
+    print(find_min_lcm(arr))
 

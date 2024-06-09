@@ -1,24 +1,35 @@
 
-def solve(students, tutors):
-    # Calculate the distance between each student and tutor
-    distances = []
-    for student in students:
-        for tutor in tutors:
-            distances.append((student, tutor, abs(student[0] - tutor[0]) + abs(student[1] - tutor[1])))
+def get_max_days(n, m, a):
+    # Initialize the variables
+    b = [0] * n
+    count = 0
+    days = 0
     
-    # Sort the distances in ascending order
-    distances.sort(key=lambda x: x[2])
-    
-    # Initialize the minimum distance traveled by the worst off student to infinity
-    min_distance = float('inf')
-    
-    # Iterate through the sorted distances and find the minimum distance traveled by the worst off student
-    for i in range(len(distances)):
-        student, tutor, distance = distances[i]
-        if distance > min_distance:
+    # Loop through each participant
+    for i in range(n):
+        # Loop through each food package
+        for j in range(m):
+            # If the current food package is not already assigned to another participant
+            if b[j] == 0:
+                # Assign the current food package to the current participant
+                b[j] = i + 1
+                count += 1
+                # If all food packages are assigned, break the loop
+                if count == m:
+                    break
+        # If all participants have been assigned a food package, break the loop
+        if count == m:
             break
-        min_distance = min(min_distance, distance)
     
-    # Return the minimum distance traveled by the worst off student
-    return min_distance
+    # Loop through each participant
+    for i in range(n):
+        # Loop through each food package
+        for j in range(m):
+            # If the current food package is assigned to the current participant
+            if b[j] == i + 1:
+                # Increment the number of days by 1
+                days += 1
+    
+    # Return the maximum number of days
+    return days
 

@@ -1,46 +1,69 @@
 
-def is_leap_year(year):
-    if year % 400 == 0:
-        return True
-    elif year % 100 == 0:
-        return False
-    elif year % 4 == 0:
-        return True
-    else:
-        return False
+def f1(n, m, rap_battles):
+    # Initialize a graph with n vertices and no edges
+    graph = [[] for _ in range(n)]
 
-def days_in_month(month, year):
-    if month in [1, 3, 5, 7, 8, 10, 12]:
-        return 31
-    elif month == 2:
-        if is_leap_year(year):
-            return 29
-        else:
-            return 28
-    else:
-        return 30
+    # Add edges to the graph based on the rap battles
+    for u, v in rap_battles:
+        graph[u - 1].append(v - 1)
+        graph[v - 1].append(u - 1)
 
-def days_between_dates(date1, date2):
-    years_diff = int(date2[:4]) - int(date1[:4])
-    months_diff = int(date2[5:7]) - int(date1[5:7])
-    days_diff = int(date2[8:]) - int(date1[8:])
+    # Find the strongly connected components in the graph
+    scc = strongly_connected_components(graph)
 
-    total_days = 0
-    current_date = date1
+    # Return the minimum number of rap battles needed to determine the ordering of the robots
+    return m - len(scc)
 
-    for i in range(years_diff):
-        total_days += 365
-        if is_leap_year(int(current_date[:4]) + i):
-            total_days += 1
+def f2(n, m, rap_battles):
+    # Initialize a graph with n vertices and no edges
+    graph = [[] for _ in range(n)]
 
-    for i in range(months_diff):
-        total_days += days_in_month(int(current_date[5:7]) + i, int(current_date[:4]))
+    # Add edges to the graph based on the rap battles
+    for u, v in rap_battles:
+        graph[u - 1].append(v - 1)
+        graph[v - 1].append(u - 1)
 
-    total_days += days_diff
+    # Find the strongly connected components in the graph
+    scc = strongly_connected_components(graph)
 
-    return total_days
+    # If there is more than one SCC, return -1
+    if len(scc) > 1:
+        return -1
 
-date1 = input()
-date2 = input()
-print(days_between_dates(date1, date2))
+    # Otherwise, return the minimum number of rap battles needed to determine the ordering of the robots
+    return m - len(scc[0])
+
+def strongly_connected_components(graph):
+    # Initialize a list to store the strongly connected components
+    scc = []
+
+    # Initialize a queue to do a breadth-first search of the graph
+    queue = [0]
+
+    # Loop until the queue is empty
+    while queue:
+        # Dequeue a vertex from the queue
+        u = queue.pop(0)
+
+        # If the vertex has not been visited yet, mark it as visited and add it to the current SCC
+        if u not in visited:
+            visited.add(u)
+            scc[-1].append(u)
+
+            # Enqueue the neighbors of the vertex
+            for v in graph[u]:
+                if v not in visited:
+                    queue.append(v)
+
+    # Return the list of strongly connected components
+    return scc
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    rap_battles = []
+    for _ in range(m):
+        u, v = map(int, input().split())
+        rap_battles.append((u, v))
+    print(f1(n, m, rap_battles))
+    print(f2(n, m, rap_battles))
 

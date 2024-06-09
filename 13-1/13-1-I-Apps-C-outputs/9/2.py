@@ -1,25 +1,55 @@
 
-def solve(n, k_1, k_2, A, B):
-    # Sort both arrays in non-decreasing order
-    A.sort()
-    B.sort()
-    
-    # Initialize the minimum error and the current error
-    min_error = float('inf')
-    current_error = 0
-    
-    # Loop through all possible combinations of moves for arrays A and B
-    for i in range(k_1 + 1):
-        for j in range(k_2 + 1):
-            # Calculate the current error
-            current_error = 0
-            for k in range(n):
-                current_error += (A[k] - B[k]) ** 2
-            
-            # If the current error is less than the minimum error, update the minimum error
-            if current_error < min_error:
-                min_error = current_error
-    
-    # Return the minimum error
-    return min_error
+def f1(n, k, watch_later_list):
+    # Initialize variables
+    types = set(watch_later_list)
+    type_counts = {type: watch_later_list.count(type) for type in types}
+    min_clicks = 0
+
+    # Iterate through the list of videos
+    for i in range(n):
+        # If the current video is of a new type, increment the minimum number of clicks
+        if watch_later_list[i] not in types:
+            types.add(watch_later_list[i])
+            type_counts[watch_later_list[i]] = 1
+            min_clicks += 1
+
+        # If the current video is of a known type, decrement the count for that type
+        else:
+            type_counts[watch_later_list[i]] -= 1
+
+            # If the count for the current type is 0, remove it from the set of types
+            if type_counts[watch_later_list[i]] == 0:
+                types.remove(watch_later_list[i])
+
+    return min_clicks
+
+def f2(n, k, watch_later_list):
+    # Initialize variables
+    types = set(watch_later_list)
+    type_counts = {type: watch_later_list.count(type) for type in types}
+    min_clicks = 0
+
+    # Iterate through the list of videos
+    for i in range(n):
+        # If the current video is of a new type, increment the minimum number of clicks
+        if watch_later_list[i] not in types:
+            types.add(watch_later_list[i])
+            type_counts[watch_later_list[i]] = 1
+            min_clicks += 1
+
+        # If the current video is of a known type, decrement the count for that type
+        else:
+            type_counts[watch_later_list[i]] -= 1
+
+            # If the count for the current type is 0, remove it from the set of types
+            if type_counts[watch_later_list[i]] == 0:
+                types.remove(watch_later_list[i])
+
+    return min_clicks
+
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    watch_later_list = input()
+    print(f1(n, k, watch_later_list))
+    print(f2(n, k, watch_later_list))
 

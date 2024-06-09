@@ -1,14 +1,9 @@
 
-N = int(input())
-dice_rolls = []
-
-for i in range(N):
-    dice_rolls.append(list(map(int, input().split())))
-
-for i in range(N-2):
-    if dice_rolls[i][0] == dice_rolls[i][1] and dice_rolls[i+1][0] == dice_rolls[i+1][1] and dice_rolls[i+2][0] == dice_rolls[i+2][1]:
-        print("Yes")
-        exit()
-
-print("No")
+def f1(s):
+    # find the index of the first occurrence of 'A' in s
+    start_index = s.find('A')
+    # find the index of the last occurrence of 'Z' in s
+    end_index = s.rfind('Z')
+    # return the length of the substring
+    return end_index - start_index + 1
 

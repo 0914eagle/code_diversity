@@ -1,27 +1,56 @@
 
-def get_min_cost(n, m, roads):
-    # Initialize the cost array with -1 for all areas
-    cost = [-1] * (n + 1)
-    cost[1] = 0
+def f1(N, L):
+    # Initialize a graph with N nodes and no edges
+    graph = [[] for _ in range(N + 1)]
 
-    # Loop through each road and update the cost for the adjacent areas
-    for i in range(m):
-        a, b = roads[i]
-        if cost[a] != -1 and cost[b] == -1:
-            cost[b] = cost[a] + 1
-        elif cost[a] == -1 and cost[b] != -1:
-            cost[a] = cost[b] + 1
-        elif cost[a] != -1 and cost[b] != -1:
-            if (cost[a] + cost[b]) % 3 != 1:
-                cost[b] = cost[a] + 1
-            else:
-                cost[a] = cost[b] + 1
+    # Add edges to the graph
+    for i in range(1, N):
+        for j in range(i + 1, N + 1):
+            if a[i][j] > 0:
+                graph[i].append(j)
 
-    # Check if it is possible to decorate the city with the given properties
-    for i in range(1, n + 1):
-        if cost[i] == -1:
-            return -1
+    # Breadth-first search from node 1 to node N
+    queue = [1]
+    visited = set()
+    while queue:
+        node = queue.pop(0)
+        if node == N:
+            return L
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                queue.append(neighbor)
+                visited.add(neighbor)
 
-    # Return the minimum cost
-    return max(cost)
+    return -1
+
+def f2(N, L):
+    # Initialize a graph with N nodes and no edges
+    graph = [[] for _ in range(N + 1)]
+
+    # Add edges to the graph
+    for i in range(1, N):
+        for j in range(i + 1, N + 1):
+            if a[i][j] > 0:
+                graph[i].append(j)
+
+    # Depth-first search from node 1 to node N
+    visited = set()
+    def dfs(node):
+        if node == N:
+            return L
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                dfs(neighbor)
+        return -1
+
+    return dfs(1)
+
+if __name__ == '__main__':
+    N, L = map(int, input().split())
+    a = []
+    for _ in range(N):
+        a.append(list(map(int, input().split())))
+    print(f1(N, L))
+    print(f2(N, L))
 

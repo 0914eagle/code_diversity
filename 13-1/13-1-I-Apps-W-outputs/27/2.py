@@ -1,18 +1,28 @@
 
-def reconstruct_permutation(n, a, b):
-    # Initialize a dictionary to store the counts of each color
-    color_count = {}
-    for i in range(n):
-        color_count[a[i]] = color_count.get(a[i], 0) + 1
-        color_count[b[i]] = color_count.get(b[i], 0) + 1
+def is_palindrome(s):
+    return s == s[::-1]
 
-    # Initialize a list to store the permutation
-    permutation = []
+def first_wins(s):
+    if len(s) % 2 == 0:
+        return is_palindrome(s[:len(s)//2])
+    else:
+        return is_palindrome(s[:len(s)//2]) or is_palindrome(s[len(s)//2+1:])
 
-    # Iterate through the dictionary and add the colors to the permutation
-    for color, count in color_count.items():
-        for i in range(count):
-            permutation.append(color)
+def second_wins(s):
+    if len(s) % 2 == 0:
+        return is_palindrome(s[len(s)//2:])
+    else:
+        return is_palindrome(s[:len(s)//2]) and is_palindrome(s[len(s)//2+1:])
 
-    return permutation
+def main():
+    s = input()
+    if first_wins(s):
+        print("First")
+    elif second_wins(s):
+        print("Second")
+    else:
+        print("Draw")
+
+if __name__ == '__main__':
+    main()
 

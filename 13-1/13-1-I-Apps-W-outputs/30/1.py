@@ -1,25 +1,33 @@
 
-def solve(s):
-    # Initialize variables
-    min_length = len(s)
-    compressed_version = ""
-
-    # Iterate through the string
-    for i in range(len(s)):
-        # Check if the current character is the same as the previous character
-        if i > 0 and s[i] == s[i-1]:
-            # If it is, increment the count
-            count += 1
+def get_dominated_subarray(arr):
+    # Initialize a dictionary to store the count of each number in the array
+    count = {}
+    for num in arr:
+        if num not in count:
+            count[num] = 1
         else:
-            # If it's not, add the count and the character to the compressed version
-            if count > 0:
-                compressed_version += str(count) + s[i-1]
-            count = 1
+            count[num] += 1
+    
+    # Find the number that occurs the most
+    max_count = max(count.values())
+    dominant_num = [num for num, count in count.items() if count == max_count][0]
+    
+    # Find the shortest subarray that contains the dominant number
+    subarray_len = len(arr)
+    for i in range(len(arr)):
+        for j in range(i+1, len(arr)):
+            if arr[i] == dominant_num and arr[j] == dominant_num:
+                subarray_len = min(subarray_len, j-i+1)
+    
+    return subarray_len
 
-    # Add the final count and character
-    if count > 0:
-        compressed_version += str(count) + s[len(s)-1]
+def main():
+    tests = int(input())
+    for _ in range(tests):
+        n = int(input())
+        arr = list(map(int, input().split()))
+        print(get_dominated_subarray(arr))
 
-    # Return the length of the compressed version
-    return len(compressed_version)
+if __name__ == '__main__':
+    main()
 

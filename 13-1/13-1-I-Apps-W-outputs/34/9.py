@@ -1,29 +1,63 @@
 
-import sys
+def f1(n, m, c, grid, costs):
+    # Initialize variables
+    bank_row, bank_col = -1, -1
+    barricade_costs = [0] * c
+    for i in range(c):
+        barricade_costs[i] = costs[i]
+    for i in range(m):
+        for j in range(n):
+            if grid[i][j] == 'B':
+                bank_row = i
+                bank_col = j
+                break
+        if bank_row != -1:
+            break
 
-def knight_moves(x, y):
-    # Initialize the number of ways to reach (x, y) as 0
-    ways = 0
+    # Initialize the dp table
+    dp = [[[0] * c for _ in range(n)] for _ in range(m)]
+    for i in range(m):
+        for j in range(n):
+            if grid[i][j] != '.':
+                dp[i][j][ord(grid[i][j]) - ord('a')] = 1
 
-    # Base case: if we are already at (x, y), there is only 1 way to reach there
-    if x == y:
-        return 1
+    # Fill in the dp table
+    for i in range(m):
+        for j in range(n):
+            if grid[i][j] == '.':
+                continue
+            for k in range(c):
+                if dp[i][j][k] == 0:
+                    continue
+                for dir in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+                    new_i = i + dir[0]
+                    new_j = j + dir[1]
+                    if 0 <= new_i < m and 0 <= new_j < n and grid[new_i][new_j] != '.':
+                        dp[new_i][new_j][ord(grid[new_i][new_j]) - ord('a')] += dp[i][j][k]
 
-    # Recursive case: consider all possible moves from (x-1, y-2), (x-2, y-1), (x-2, y+1), and (x-1, y+2)
-    for i in range(4):
-        # Calculate the next position based on the move
-        next_x = x - 1 + i % 2 * 2
-        next_y = y - 1 + i // 2 * 2
+    # Calculate the minimum cost
+    min_cost = float('inf')
+    for i in range(m):
+        for j in range(n):
+            if grid[i][j] != '.':
+                continue
+            total_cost = 0
+            for k in range(c):
+                if dp[i][j][k] > 0:
+                    total_cost += barricade_costs[k]
+            if total_cost < min_cost:
+                min_cost = total_cost
 
-        # If the next position is within the bounds of the grid and has not been visited before, mark it as visited and recurse
-        if 0 <= next_x <= x and 0 <= next_y <= y and (next_x, next_y) not in visited:
-            visited.add((next_x, next_y))
-            ways += knight_moves(next_x, next_y)
+    return min_cost
 
-    return ways
+def f2(...):
+    ...
 
 if __name__ == '__main__':
-    x, y = map(int, input().split())
-    visited = set()
-    print(knight_moves(x, y) % (10**9 + 7))
+    n, m, c = map(int, input().split())
+    grid = []
+    for i in range(m):
+        grid.append(list(input()))
+    costs = list(map(int, input().split()))
+    print(f1(n, m, c, grid, costs))
 

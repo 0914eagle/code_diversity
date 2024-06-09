@@ -1,21 +1,19 @@
 
-n, k, a, b, q = map(int, input().split())
-
-orders = []
-
-for i in range(q):
-    query = input().split()
-    if query[0] == "1":
-        orders.append((int(query[1]), int(query[2])))
-    else:
-        p = int(query[1])
-        filled_orders = 0
-        for day, num_orders in orders:
-            if day <= p:
-                filled_orders += min(num_orders, b)
-            elif day <= p + k - 1:
-                filled_orders += 0
-            else:
-                filled_orders += min(num_orders, a)
-        print(filled_orders)
+def get_min_capacity(log):
+    # Initialize a dictionary to store the number of visitors in the room
+    visitors = {}
+    
+    # Iterate through the log and update the number of visitors in the room
+    for event in log:
+        if event.startswith("+"):
+            visitor_id = int(event[1:])
+            visitors[visitor_id] = visitors.get(visitor_id, 0) + 1
+        else:
+            visitor_id = int(event[1:])
+            visitors[visitor_id] -= 1
+            if visitors[visitor_id] == 0:
+                del visitors[visitor_id]
+    
+    # Return the minimum capacity of the reading room
+    return min(visitors.values()) if visitors else 0
 

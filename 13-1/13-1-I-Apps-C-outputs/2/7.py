@@ -1,47 +1,59 @@
 
-def get_max_score(rolls):
-    # Initialize the score for each category
-    scores = [0] * 13
-    scores[0] = 5  # 1's
-    scores[1] = 2  # 2's
-    scores[2] = 3  # 3's
-    scores[3] = 4  # 4's
-    scores[4] = 5  # 5's
-    scores[5] = 6  # 6's
-    scores[6] = 25  # Full House
-    scores[7] = 30  # Small Straight
-    scores[8] = 40  # Long Straight
-    scores[9] = 50  # Yahtzee
-    scores[10] = 0  # Chance
+def f1(n, m, beacons, mountains):
+    # Initialize a list to store the beacons that are lit
+    lit_beacons = []
 
-    # Initialize the current category and roll index
-    category = 0
-    roll_index = 0
-
-    # Iterate through the rolls
-    while roll_index < len(rolls):
-        # Get the current roll
-        roll = rolls[roll_index]
-
-        # Check if the roll is valid for the current category
-        if roll in [1, 2, 3, 4, 5, 6]:
-            # Update the score for the current category
-            scores[category] += roll
-
-            # Increment the roll index
-            roll_index += 1
-
-            # Check if the category is a Yahtzee or Chance
-            if category == 9 or category == 10:
-                # Break out of the loop
+    # Loop through each beacon and check if it is within sight of any other beacon
+    for beacon in beacons:
+        for other_beacon in beacons:
+            if beacon != other_beacon and is_within_sight(beacon, other_beacon, mountains):
+                # If the beacon is within sight of another beacon, add it to the list of lit beacons
+                lit_beacons.append(beacon)
                 break
-            else:
-                # Increment the category
-                category += 1
-        else:
-            # Break out of the loop
-            break
 
-    # Return the maximum score
-    return max(scores)
+    # Return the number of lit beacons
+    return len(lit_beacons)
+
+def f2(n, m, beacons, mountains):
+    # Initialize a list to store the beacons that are lit
+    lit_beacons = []
+
+    # Loop through each beacon and check if it is within sight of any other beacon
+    for beacon in beacons:
+        for other_beacon in beacons:
+            if beacon != other_beacon and is_within_sight(beacon, other_beacon, mountains):
+                # If the beacon is within sight of another beacon, add it to the list of lit beacons
+                lit_beacons.append(beacon)
+                break
+
+    # Return the number of lit beacons
+    return len(lit_beacons)
+
+def is_within_sight(beacon1, beacon2, mountains):
+    # Check if the straight line between the two beacons intersects with any mountain peak
+    for mountain in mountains:
+        if intersects_with_circle(beacon1, beacon2, mountain):
+            return False
+    return True
+
+def intersects_with_circle(beacon1, beacon2, mountain):
+    # Calculate the distance between the two beacons
+    distance = ((beacon1[0] - beacon2[0]) ** 2 + (beacon1[1] - beacon2[1]) ** 2) ** 0.5
+
+    # Check if the distance is less than or equal to the radius of the mountain peak
+    return distance <= mountain[2]
+
+if __name__ == '__main__':
+    n = int(input())
+    m = int(input())
+    beacons = []
+    for i in range(n):
+        x, y = map(int, input().split())
+        beacons.append((x, y))
+    mountains = []
+    for i in range(m):
+        x, y, r = map(int, input().split())
+        mountains.append((x, y, r))
+    print(f1(n, m, beacons, mountains))
+    print(f2(n, m, beacons, mountains))
 

@@ -1,9 +1,12 @@
 
-def find_multiple(k):
-    count = 1
-    while True:
-        if count % k == 0:
-            return count
-        count = count * 10 + 7
-    return -1
+def count_odd_digits(n):
+    count = 0
+    for i in range(1, n+1):
+        if len(str(i)) % 2 == 1:
+            count += 1
+    return count
+
+if __name__ == '__main__':
+    n = int(input())
+    print(count_odd_digits(n))
 

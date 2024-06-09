@@ -1,37 +1,45 @@
 
-def reconstruct_text(fragments):
-    # Sort the fragments by length in descending order
-    fragments.sort(key=len, reverse=True)
+def f1(n, distances):
+    # Initialize the subsets A and B
+    A = set()
+    B = set()
     
-    # Create a dictionary to store the fragments and their suffixes
-    fragment_dict = {}
-    for fragment in fragments:
-        suffix = fragment[-5:]
-        if suffix not in fragment_dict:
-            fragment_dict[suffix] = [fragment]
+    # Initialize the disparity of both subsets to infinity
+    disparity_A = float('inf')
+    disparity_B = float('inf')
+    
+    # Loop through each shipment
+    for i in range(n):
+        # Find the closest shipment in the other subset
+        if i in A:
+            closest_j = min(B, key=lambda x: distances[i][x])
         else:
-            fragment_dict[suffix].append(fragment)
-    
-    # Initialize the optimal reconstruction with the first fragment
-    reconstruction = fragments[0]
-    
-    # Iterate through the remaining fragments
-    for i in range(1, len(fragments)):
-        # Get the current fragment and its suffix
-        fragment = fragments[i]
-        suffix = fragment[-5:]
+            closest_j = min(A, key=lambda x: distances[i][x])
         
-        # Check if the suffix is in the dictionary and if it is equal to the prefix of the previous fragment
-        if suffix in fragment_dict and fragment_dict[suffix][0][:5] == reconstruction[-5:]:
-            # If it is, add the fragment to the reconstruction and remove it from the dictionary
-            reconstruction += fragment[5:]
-            fragment_dict[suffix].pop(0)
-            if not fragment_dict[suffix]:
-                del fragment_dict[suffix]
+        # If the closest shipment is in subset A, move it to subset B
+        if closest_j in A:
+            A.remove(closest_j)
+            B.add(closest_j)
+        # If the closest shipment is in subset B, move it to subset A
         else:
-            # If it is not, the reconstruction is ambiguous
-            return "AMBIGUOUS"
+            B.remove(closest_j)
+            A.add(closest_j)
+        
+        # Update the disparity of both subsets
+        disparity_A = min(disparity_A, max(distances[i][j] for j in A))
+        disparity_B = min(disparity_B, max(distances[i][j] for j in B))
     
-    # Return the optimal reconstruction
-    return reconstruction
+    # Return the minimum possible sum of disparities
+    return disparity_A + disparity_B
+
+def f2(...):
+    # Implement f2 here
+    pass
+
+if __name__ == '__main__':
+    n = int(input())
+    distances = []
+    for i in range(n - 1):
+        distances.append(list(map(int, input().split())))
+    print(f1(n, distances))
 

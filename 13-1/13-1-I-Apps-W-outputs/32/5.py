@@ -1,17 +1,26 @@
 
-def solve(hh, mm, H, D, C, N):
-    # Calculate the total hunger level after the given time
-    total_hunger = H + (mm * D)
+def solve(s):
+    # Initialize the output string
+    output = ""
     
-    # Calculate the number of buns needed to feed the cat
-    num_buns = total_hunger // N
+    # Iterate through the input string
+    for c in s:
+        # If the current character is a letter or digit, add it to the output
+        if c.isalpha() or c.isdigit():
+            output += c
+        # If the current character is a space, add a space to the output
+        elif c == " ":
+            output += " "
+        # If the current character is a '<', do nothing
+        elif c == "<":
+            pass
+        # If the current character is a '[', move the cursor to the start of the line
+        elif c == "[":
+            output = ""
+        # If the current character is a ']', move the cursor to the end of the line
+        elif c == "]":
+            output += " "
     
-    # Calculate the cost of the buns
-    cost = num_buns * C
-    
-    # Apply the discount if the time is between 20:00 and 23:59
-    if hh >= 20 and hh < 24:
-        cost = cost * 0.8
-    
-    return cost
+    # Return the final output string
+    return output.strip()
 

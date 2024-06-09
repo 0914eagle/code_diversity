@@ -1,14 +1,43 @@
 
-def get_max_heap_size(n, values):
-    # Initialize a list to store the heap property for each node
-    heap_property = [False] * (n + 1)
-    # Set the heap property for the root node to True
-    heap_property[1] = True
-    # Iterate through the nodes in reverse order
-    for i in range(n, 0, -1):
-        # If the current node has a parent and the parent node has the heap property, set the current node's heap property to True
-        if values[i][1] != 0 and heap_property[values[i][1]]:
-            heap_property[i] = True
-    # Return the number of nodes with the heap property
-    return sum(heap_property)
+def f1(N, K, items):
+    # Initialize a graph with N nodes and 0 edges
+    graph = [[] for _ in range(N)]
+
+    # Add edges to the graph
+    for i, item in items:
+        graph[i].append(item)
+
+    # Check if there is a path from node 0 to node N-1
+    return "unique" if graph[0] == [] else "impossible"
+
+def f2(N, K, items, bought_items):
+    # Initialize a graph with N nodes and 0 edges
+    graph = [[] for _ in range(N)]
+
+    # Add edges to the graph
+    for i, item in items:
+        graph[i].append(item)
+
+    # Check if there is a path from node 0 to node N-1
+    path = []
+    for i in range(N):
+        if graph[i] == []:
+            continue
+        for item in graph[i]:
+            if item in bought_items:
+                path.append(item)
+                break
+        else:
+            return "impossible"
+
+    # Check if the path is unique
+    return "unique" if len(set(path)) == len(path) else "ambiguous"
+
+if __name__ == '__main__':
+    N, K = map(int, input().split())
+    items = [tuple(map(int, input().split())) for _ in range(K)]
+    M = int(input())
+    bought_items = [input() for _ in range(M)]
+    print(f1(N, K, items))
+    print(f2(N, K, items, bought_items))
 

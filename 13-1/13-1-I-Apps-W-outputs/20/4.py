@@ -1,23 +1,24 @@
 
-def solve(s, t):
-    # Initialize a dictionary to store the count of each letter in t
-    letter_count = {}
-    for letter in t:
-        if letter not in letter_count:
-            letter_count[letter] = 0
-        letter_count[letter] += 1
+def get_common_divisors(A, B):
+    common_divisors = []
+    for i in range(1, min(A, B) + 1):
+        if A % i == 0 and B % i == 0:
+            common_divisors.append(i)
+    return common_divisors
 
-    # Initialize the maximum number of occurrences to 0
-    max_occurrences = 0
+def get_coprime_divisors(common_divisors):
+    coprime_divisors = []
+    for i in common_divisors:
+        if all(i % j != 0 for j in coprime_divisors):
+            coprime_divisors.append(i)
+    return coprime_divisors
 
-    # Iterate through the string s and check if the letter at each index is in the dictionary
-    for i in range(len(s)):
-        if s[i] in letter_count:
-            # If the letter is in the dictionary, decrement the count for that letter
-            letter_count[s[i]] -= 1
-            if letter_count[s[i]] == 0:
-                # If the count is 0, it means we have found a match for one of the letters in t
-                max_occurrences += 1
+def get_max_divisors(A, B):
+    common_divisors = get_common_divisors(A, B)
+    coprime_divisors = get_coprime_divisors(common_divisors)
+    return len(coprime_divisors)
 
-    return max_occurrences
+if __name__ == '__main__':
+    A, B = map(int, input().split())
+    print(get_max_divisors(A, B))
 

@@ -1,73 +1,27 @@
 
-def get_max_days(a, b, c):
-    # Initialize the maximum number of days to 0
-    max_days = 0
+def f1(N1, N2, row1, row2, T):
+    # Initialize the order of ants after T seconds
+    order = ""
     
-    # Iterate over all possible days of the week
-    for day in range(1, 8):
-        # Calculate the number of days the cat can eat in a trip without additional food purchases for the current day
-        num_days = get_num_days(day, a, b, c)
-        
-        # Update the maximum number of days if necessary
-        if num_days > max_days:
-            max_days = num_days
+    # Loop through each second
+    for i in range(T):
+        # Loop through each ant in the first row
+        for j in range(N1):
+            # If the ant is not the first ant in the first row
+            if j > 0:
+                # Get the ant in front of the current ant
+                front_ant = row1[j-1]
+                
+                # If the ant in front of the current ant is in the second row and is moving in the opposite direction
+                if front_ant in row2 and row2.index(front_ant) < row2.index(row1[j]):
+                    # Swap the positions of the current ant and the ant in front of it
+                    row1[j-1], row1[j] = row1[j], row1[j-1]
     
-    # Return the maximum number of days
-    return max_days
-
-def get_num_days(day, a, b, c):
-    # Initialize the number of days to 0
-    num_days = 0
+    # Add the order of ants in the first row to the order after T seconds
+    order += "".join(row1)
     
-    # Iterate over all possible days of the week
-    for i in range(1, 8):
-        # Calculate the current day of the week
-        current_day = (day + i - 1) % 7 + 1
-        
-        # Check if the current day is a day when the cat eats fish food
-        if current_day in [1, 4, 7]:
-            # Decrement the number of fish food rations by 1
-            a -= 1
-        
-        # Check if the current day is a day when the cat eats rabbit stew
-        elif current_day in [2, 6]:
-            # Decrement the number of rabbit stew rations by 1
-            b -= 1
-        
-        # Check if the current day is a day when the cat eats chicken stake
-        else:
-            # Decrement the number of chicken stake rations by 1
-            c -= 1
-        
-        # Check if any of the rations has reached 0
-        if a == 0 or b == 0 or c == 0:
-            # Break the loop
-            break
-        
-        # Increment the number of days
-        num_days += 1
+    # Add the order of ants in the second row to the order after T seconds
+    order += "".join(row2)
     
-    # Return the number of days
-    return num_days
-
-# Test the function
-a = 2
-b = 1
-c = 1
-print(get_max_days(a, b, c)) # should print 4
-
-a = 3
-b = 2
-c = 2
-print(get_max_days(a, b, c)) # should print 7
-
-a = 1
-b = 100
-c = 1
-print(get_max_days(a, b, c)) # should print 3
-
-a = 30
-b = 20
-c = 10
-print(get_max_days(a, b, c)) # should print 39
+    return order
 

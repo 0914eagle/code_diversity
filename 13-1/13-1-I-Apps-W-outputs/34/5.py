@@ -1,29 +1,55 @@
 
-import sys
+def f1(n, m, c, grid, costs):
+    # Initialize variables
+    bank_row, bank_col = -1, -1
+    barricade_costs = [0] * c
+    for i in range(c):
+        barricade_costs[i] = costs[i]
+    for i in range(n):
+        for j in range(m):
+            if grid[i][j] == 'B':
+                bank_row, bank_col = i, j
+                break
+        if bank_row != -1:
+            break
 
-def knight_moves(x, y):
-    # Initialize the number of ways to be 0
-    ways = 0
+    # Initialize the barricade matrix
+    barricade_matrix = [[0] * c for _ in range(n)]
+    for i in range(n):
+        for j in range(m):
+            if grid[i][j] != '.':
+                barricade_matrix[i][j] = 1
 
-    # Base case: if the knight is already at the destination, return 1
-    if x == y == 0:
-        return 1
+    # Initialize the cost matrix
+    cost_matrix = [[0] * c for _ in range(n)]
+    for i in range(n):
+        for j in range(m):
+            if grid[i][j] != '.':
+                cost_matrix[i][j] = barricade_costs[ord(grid[i][j]) - ord('a')]
 
-    # Recursive case: try moving the knight to the two possible squares
-    for i in range(2):
-        for j in range(2):
-            # Calculate the new position of the knight
-            new_x = x + i
-            new_y = y + j
+    # Solve the problem using dynamic programming
+    for i in range(n):
+        for j in range(m):
+            if grid[i][j] != '.':
+                for k in range(c):
+                    if barricade_matrix[i][j] == 0:
+                        cost_matrix[i][j] = min(cost_matrix[i][j], cost_matrix[i - 1][j] + barricade_costs[k])
+                        cost_matrix[i][j] = min(cost_matrix[i][j], cost_matrix[i + 1][j] + barricade_costs[k])
+                        cost_matrix[i][j] = min(cost_matrix[i][j], cost_matrix[i][j - 1] + barricade_costs[k])
+                        cost_matrix[i][j] = min(cost_matrix[i][j], cost_matrix[i][j + 1] + barricade_costs[k])
 
-            # If the new position is valid, recursively call the function to find the number of ways to get to that position
-            if 0 <= new_x <= 1000000 and 0 <= new_y <= 1000000:
-                ways += knight_moves(new_x, new_y)
+    # Return the minimum total cost
+    return cost_matrix[bank_row][bank_col]
 
-    # Return the number of ways modulo 10^9 + 7
-    return ways % 1000000007
+def f2(...):
+    # Implement f2 here
+    pass
 
-if __name__ == "__main__":
-    x, y = map(int, input().split())
-    print(knight_moves(x, y))
+if __name__ == '__main__':
+    n, m, c = map(int, input().split())
+    grid = []
+    for i in range(n):
+        grid.append(list(input()))
+    costs = list(map(int, input().split()))
+    print(f1(n, m, c, grid, costs))
 

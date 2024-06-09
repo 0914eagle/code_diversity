@@ -1,22 +1,20 @@
 
-n, k = map(int, input().split())
-skills = list(map(int, input().split()))
+def get_min_cost(s, k):
+    n = len(s)
+    dp = [[0] * (k+1) for _ in range(n+1)]
+    for i in range(1, n+1):
+        for j in range(1, k+1):
+            if i == 0 or j == 0:
+                dp[i][j] = 0
+            else:
+                dp[i][j] = min(dp[i-1][j-1] + 1, dp[i-1][j] + 1, dp[i][j-1] + 1)
+    return dp[n][k]
 
-left = 0
-right = n - 1
-count = 0
+def main():
+    n, k = map(int, input().split())
+    s = input()
+    print(get_min_cost(s, k))
 
-while left <= right:
-    if skills[left] <= k:
-        count += 1
-        left += 1
-    if skills[right] <= k:
-        count += 1
-        right -= 1
-    if left <= right:
-        count += 1
-        left += 1
-        right -= 1
-
-print(count)
+if __name__ == '__main__':
+    main()
 

@@ -1,37 +1,58 @@
 
-def get_max_objects(n, m, k, a):
-    # Initialize the number of objects that can be packed
-    max_objects = 0
-    # Initialize the number of boxes that are still empty
-    empty_boxes = m
-    # Initialize the current box size
-    current_box_size = k
-    # Initialize the current number of objects that have been packed
-    current_objects = 0
-
-    # Sort the objects in descending order
-    a.sort(reverse=True)
-
-    # Iterate through the objects
-    for i in range(n):
-        # Check if the current object fits in the current box
-        if current_box_size >= a[i]:
-            # If it fits, pack it in the current box
-            current_box_size -= a[i]
-            current_objects += 1
+def get_maximal_string(n, k):
+    
+    # Initialize an array to store the frequencies of each letter
+    freq = [0] * 26
+    # Initialize a string to store the result
+    result = ""
+    # Loop through each letter of the Latin alphabet
+    for letter in range(0, 26):
+        # If the letter has not been used yet
+        if freq[letter] == 0:
+            # Add the letter to the result string
+            result += chr(letter + ord('a'))
+            # Increment the frequency of the letter
+            freq[letter] += 1
+            # Decrement the number of letters left to use
+            k -= 1
+        # If the letter has already been used
         else:
-            # If it doesn't fit, move to the next box
-            empty_boxes -= 1
-            current_box_size = k
-            current_objects = 0
+            # Find the letter with the minimum frequency
+            min_freq = min(freq)
+            # Find the index of the letter with the minimum frequency
+            min_index = freq.index(min_freq)
+            # Add the letter to the result string
+            result += chr(min_index + ord('a'))
+            # Increment the frequency of the letter
+            freq[min_index] += 1
+            # Decrement the number of letters left to use
+            k -= 1
+        # If all letters have been used
+        if k == 0:
+            # Break out of the loop
+            break
+    # Return the result string
+    return result
 
-        # Update the maximum number of objects that can be packed
-        max_objects = max(max_objects, current_objects)
+def get_query_result(n, k):
+    
+    # Call the get_maximal_string function to get the result string
+    result = get_maximal_string(n, k)
+    # Return the result string
+    return result
 
-        # If there are no more empty boxes and not all objects have been packed, return -1
-        if empty_boxes == 0 and current_objects < n:
-            return -1
+def main():
+    # Read the number of queries from stdin
+    t = int(input())
+    # Loop through each query
+    for _ in range(t):
+        # Read the query from stdin
+        n, k = map(int, input().split())
+        # Call the get_query_result function to get the result for this query
+        result = get_query_result(n, k)
+        # Print the result
+        print(result)
 
-    # Return the maximum number of objects that can be packed
-    return max_objects
+if __name__ == '__main__':
+    main()
 

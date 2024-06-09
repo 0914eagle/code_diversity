@@ -1,26 +1,20 @@
 
-def solve(books):
-    # Sort the books by height in descending order
-    books.sort(key=lambda x: x[0], reverse=True)
+def f1(n, k):
+    # Initialize the number of ways to write the numbers on the houses' plaques
+    num_ways = 1
     
-    # Initialize the variables for the three shelves
-    shelf1 = []
-    shelf2 = []
-    shelf3 = []
+    # Iterate over the houses
+    for i in range(1, n + 1):
+        # If the house is not the first house
+        if i != 1:
+            # If the house is indexed from 1 to k, inclusive
+            if i <= k:
+                # The penguin can walk to house number 1
+                num_ways *= 2
+            else:
+                # The penguin cannot walk to house number 1
+                num_ways *= 1
     
-    # Loop through the books and assign them to the shelves
-    for book in books:
-        if book[0] > 200:
-            shelf1.append(book)
-        elif book[0] > 150:
-            shelf2.append(book)
-        else:
-            shelf3.append(book)
-    
-    # Calculate the area of the bookcase
-    area = 0
-    for shelf in [shelf1, shelf2, shelf3]:
-        area += max([book[1] for book in shelf]) * len(shelf)
-    
-    return area
+    # Return the number of ways modulo 1000000007
+    return num_ways % 1000000007
 

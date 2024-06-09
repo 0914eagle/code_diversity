@@ -1,35 +1,43 @@
 
-n, m, k, x, y = map(int, input().split())
+import itertools
 
-# Initialize variables to keep track of the maximum and minimum number of questions asked
-max_questions = 0
-min_questions = 1000000000000000000
+def f1(R, G, B, Y, S):
+    # Calculate the probability of the players winning
+    prob_win = 0
+    
+    # Iterate over all possible combinations of fruit picks and raven movements
+    for picks in itertools.product(range(R+1), range(G+1), range(B+1), range(Y+1)):
+        # Calculate the number of fruits left in the basket after each pick
+        basket = sum(picks)
+        
+        # Calculate the number of steps the raven needs to take to reach the orchard
+        raven_steps = S - basket
+        
+        # If the raven reaches the orchard before the players have placed all fruits into the basket, the players lose
+        if raven_steps <= 0:
+            prob_win += 1 / (R*G*B*Y)
+    
+    return prob_win
 
-# Initialize a dictionary to keep track of the number of questions asked by each pupil
-pupils = {}
+def f2(...):
+    # Calculate the probability of the players winning
+    prob_win = 0
+    
+    # Iterate over all possible combinations of fruit picks and raven movements
+    for picks in itertools.product(range(R+1), range(G+1), range(B+1), range(Y+1)):
+        # Calculate the number of fruits left in the basket after each pick
+        basket = sum(picks)
+        
+        # Calculate the number of steps the raven needs to take to reach the orchard
+        raven_steps = S - basket
+        
+        # If the raven reaches the orchard before the players have placed all fruits into the basket, the players lose
+        if raven_steps <= 0:
+            prob_win += 1 / (R*G*B*Y)
+    
+    return prob_win
 
-# Iterate through the rows
-for i in range(1, n + 1):
-    # Iterate through the pupils in the current row
-    for j in range(1, m + 1):
-        # If the current pupil is Sergei, increment the number of times he is asked
-        if i == x and j == y:
-            pupils[(i, j)] = k
-        # Otherwise, initialize the number of questions asked to 0
-        else:
-            pupils[(i, j)] = 0
-
-# Iterate through the rows again
-for i in range(1, n + 1):
-    # Iterate through the pupils in the current row
-    for j in range(1, m + 1):
-        # If the current pupil is not Sergei, increment the number of questions asked
-        if (i, j) not in pupils or pupils[(i, j)] < k:
-            pupils[(i, j)] += 1
-            # Update the maximum and minimum number of questions asked
-            max_questions = max(max_questions, pupils[(i, j)])
-            min_questions = min(min_questions, pupils[(i, j)])
-
-# Print the maximum, minimum, and number of times Sergei was asked
-print(max_questions, min_questions, k)
+if __name__ == '__main__':
+    R, G, B, Y, S = map(int, input().split())
+    print(f1(R, G, B, Y, S))
 

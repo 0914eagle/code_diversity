@@ -1,27 +1,48 @@
 
-def get_max_profit(n, m, l, s, c):
-    # Initialize the dp table
-    dp = [[0] * (m + 1) for _ in range(n + 1)]
+def f1(N, W_list, H_list, map_list):
+    # Initialize a dictionary to store the map pieces
+    map_dict = {}
+    for i in range(N):
+        map_dict[i+1] = map_list[i]
 
-    # Loop through each candidate
-    for i in range(1, n + 1):
-        # Loop through each aggressiveness level
-        for j in range(1, m + 1):
-            # If the candidate is already accepted, skip
-            if dp[i - 1][j] != 0:
-                continue
-            # If the candidate is not accepted and the aggressiveness level is higher than the current level, skip
-            if l[i - 1] > j:
-                continue
-            # If the candidate is not accepted and the aggressiveness level is lower than the current level, skip
-            if l[i - 1] < j:
-                continue
-            # If the candidate is not accepted and the aggressiveness level is equal to the current level, check if it's more profitable to accept the candidate
-            if dp[i - 1][j] < dp[i - 1][j - 1] + c[l[i - 1]] - s[i - 1]:
-                dp[i][j] = dp[i - 1][j - 1] + c[l[i - 1]] - s[i - 1]
-            else:
-                dp[i][j] = dp[i - 1][j]
+    # Initialize a list to store the reconstructed map
+    reconstructed_map = []
 
-    # Return the maximum profit
-    return max(dp[n])
+    # Loop through the map pieces and add them to the reconstructed map
+    for i in range(N):
+        # Get the current map piece
+        current_map = map_dict[i+1]
+
+        # Add the current map piece to the reconstructed map
+        reconstructed_map.append(current_map)
+
+    # Return the reconstructed map
+    return reconstructed_map
+
+def f2(reconstructed_map):
+    # Initialize a list to store the map indices
+    map_indices = []
+
+    # Loop through the reconstructed map and add the map indices
+    for i in range(len(reconstructed_map)):
+        # Get the current map piece
+        current_map = reconstructed_map[i]
+
+        # Add the map indices to the list
+        map_indices.append(i+1)
+
+    # Return the map indices
+    return map_indices
+
+if __name__ == '__main__':
+    # Test the functions
+    N = 3
+    W_list = [4, 2, 2]
+    H_list = [1, 2, 2]
+    map_list = [['2', '1', '2', '3'], ['2', '1'], ['2', '3'], ['1', '0'], ['2', '2'], ['2', '3'], ['1', '2']]
+    reconstructed_map = f1(N, W_list, H_list, map_list)
+    map_indices = f2(reconstructed_map)
+    print(reconstructed_map)
+    print('-' * len(reconstructed_map[0]))
+    print(map_indices)
 

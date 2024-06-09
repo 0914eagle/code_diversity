@@ -1,63 +1,19 @@
 
-def solve(n, tree):
-    # Initialize variables
-    labels = {}
-    controlled_areas = {}
-    berries = {}
-    giant_birds = set()
-    tiny_birds = set()
-    elderberries = set()
-
-    # Parse the input tree
-    for i in range(1, n+1):
-        if tree[i][0] != 0:
-            parent = tree[i][0]
-            if tree[i][1] == 'B':
-                controlled_areas[i] = parent
-            elif tree[i][1] == 'S':
-                labels[i] = tree[i][2]
-                if tree[i][2] == 'G':
-                    giant_birds.add(i)
-                elif tree[i][2] == 'T':
-                    tiny_birds.add(i)
-                elif tree[i][2] == 'E':
-                    elderberries.add(i)
-        else:
-            controlled_areas[i] = i
-
-    # Find the smallest controlled area for each tiny bird
-    for bird in tiny_birds:
-        smallest_area = float('inf')
-        for area in controlled_areas:
-            if area in giant_birds:
-                continue
-            if controlled_areas[area] == controlled_areas[bird]:
-                smallest_area = min(smallest_area, controlled_areas[area])
-        controlled_areas[bird] = smallest_area
-
-    # Find the smallest controlled area for each elderberry
-    for berry in elderberries:
-        smallest_area = float('inf')
-        for area in controlled_areas:
-            if controlled_areas[area] == controlled_areas[berry]:
-                smallest_area = min(smallest_area, controlled_areas[area])
-        controlled_areas[berry] = smallest_area
-
-    # Find the labels for each bird and berry
-    for bird in giant_birds:
-        labels[bird] = labels[controlled_areas[bird]]
-    for berry in elderberries:
-        labels[berry] = labels[controlled_areas[berry]]
-
-    # Find the changes needed
-    changes = []
-    for bird in tiny_birds:
-        if labels[bird] != labels[controlled_areas[bird]]:
-            changes.append((bird, labels[controlled_areas[bird]]))
-    for berry in elderberries:
-        if labels[berry] != labels[controlled_areas[berry]]:
-            changes.append((berry, labels[controlled_areas[berry]]))
-
-    # Return the result
-    return len(changes), changes
+def is_equivalent(str1, str2):
+    if str1 == str2:
+        return "YES"
+    
+    n = len(str1) // 2
+    str1_1, str1_2 = str1[:n], str1[n:]
+    str2_1, str2_2 = str2[:n], str2[n:]
+    
+    if str1_1 == str2_2 and str1_2 == str2_1:
+        return "YES"
+    else:
+        return "NO"
+    
+if __name__ == '__main__':
+    str1 = input()
+    str2 = input()
+    print(is_equivalent(str1, str2))
 

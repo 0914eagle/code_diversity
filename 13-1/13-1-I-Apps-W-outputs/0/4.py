@@ -1,29 +1,51 @@
 
-def get_max_segments(segments):
-    # Sort the segments by their left endpoint
-    segments.sort(key=lambda x: x[0])
+def f1(n, hashtags):
+    # Sort the hashtags in lexicographical order
+    sorted_hashtags = sorted(hashtags)
 
-    # Initialize the maximum number of segments in the union as 0
-    max_segments = 0
+    # Initialize the result with the first hashtag
+    result = [sorted_hashtags[0]]
 
-    # Iterate through the segments
-    for i in range(len(segments)):
-        # Initialize the current segment as the first segment
-        current_segment = segments[i]
+    # Iterate over the remaining hashtags
+    for i in range(1, len(sorted_hashtags)):
+        # Get the current hashtag and its length
+        current_hashtag = sorted_hashtags[i]
+        current_length = len(current_hashtag)
 
-        # Initialize the number of segments in the union as 1
-        num_segments = 1
+        # Get the previous hashtag and its length
+        previous_hashtag = result[-1]
+        previous_length = len(previous_hashtag)
 
-        # Iterate through the remaining segments
-        for j in range(i+1, len(segments)):
-            # Check if the current segment and the next segment intersect
-            if current_segment[1] >= segments[j][0]:
-                # If they intersect, merge them into a single segment
-                current_segment = [current_segment[0], max(current_segment[1], segments[j][1])]
-                num_segments += 1
+        # If the current hashtag is not a prefix of the previous hashtag, add it to the result
+        if current_hashtag[:previous_length] != previous_hashtag:
+            result.append(current_hashtag)
 
-        # Update the maximum number of segments in the union if necessary
-        max_segments = max(max_segments, num_segments)
+    # Return the result
+    return result
 
-    return max_segments
+def f2(n, hashtags):
+    # Initialize the result with an empty list
+    result = []
+
+    # Iterate over the hashtags
+    for hashtag in hashtags:
+        # Get the length of the hashtag
+        length = len(hashtag)
+
+        # If the length is 1, add the hashtag to the result
+        if length == 1:
+            result.append(hashtag)
+
+        # Otherwise, add the first character of the hashtag to the result
+        else:
+            result.append(hashtag[0])
+
+    # Return the result
+    return result
+
+if __name__ == '__main__':
+    n = int(input())
+    hashtags = [input() for _ in range(n)]
+    result = f1(n, hashtags)
+    print(*result, sep='\n')
 

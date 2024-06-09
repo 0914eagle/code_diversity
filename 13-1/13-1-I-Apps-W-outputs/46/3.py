@@ -1,17 +1,16 @@
 
-import math
+def is_regular_polygon(a):
+    return a % 180 == 0 or a % 90 == 0
 
-def solve(n, r, x):
-    # Initialize the y-coordinates of the disks
-    y = [10**100 for i in range(n)]
+def solve(a):
+    if is_regular_polygon(a):
+        return "YES"
+    else:
+        return "NO"
 
-    # Iterate through the disks and calculate their new positions
-    for i in range(n):
-        # Calculate the distance the disk has to move
-        distance = y[i] - r
-
-        # Calculate the new position of the disk
-        y[i] = r + distance * math.cos(math.acos(r / distance))
-
-    return y
+if __name__ == '__main__':
+    t = int(input())
+    for _ in range(t):
+        a = int(input())
+        print(solve(a))
 

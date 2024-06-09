@@ -1,19 +1,27 @@
 
-def get_max_days(a, b, c):
-    # Initialize variables
-    max_days = 0
-    days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+def get_order(ants1, ants2, T):
+    # Initialize the order of the ants after T seconds
+    order = ""
     
-    # Iterate over each day of the week
-    for day in days:
-        # Calculate the number of days the cat can eat in a trip without additional food purchases
-        if day == "Monday" or day == "Thursday" or day == "Sunday":
-            num_days = a
-        elif day == "Tuesday" or day == "Saturday":
-            num_days = b
-        else:
-            num_days = c
-        max_days = max(max_days, num_days)
+    # Loop through each second
+    for second in range(T):
+        # Loop through each ant in the first row
+        for i in range(len(ants1)):
+            # If the ant is not the first ant in the row
+            if i > 0:
+                # Get the ant in front of the current ant
+                front_ant = ants1[i-1]
+                
+                # If the ant in front of the current ant is in the second row and is moving in the opposite direction
+                if front_ant in ants2 and ants2.index(front_ant) < i:
+                    # Swap the positions of the current ant and the ant in front of it
+                    ants1[i-1], ants1[i] = ants1[i], ants1[i-1]
     
-    return max_days
+    # Add the ants in the first row to the order
+    order += "".join(ants1)
+    
+    # Add the ants in the second row to the order
+    order += "".join(ants2)
+    
+    return order
 

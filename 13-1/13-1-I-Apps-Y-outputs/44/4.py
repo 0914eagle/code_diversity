@@ -1,28 +1,15 @@
 
-def is_balanced(s):
-    # Initialize variables to keep track of the number of black and white stones
-    black_stones = 0
-    white_stones = 0
-    
-    # Iterate through the string
-    for i in range(len(s)):
-        # If the current stone is black, increment the black stone count
-        if s[i] == "B":
-            black_stones += 1
-        # If the current stone is white, increment the white stone count
-        elif s[i] == "W":
-            white_stones += 1
-    
-    # If the number of black stones is equal to the number of white stones, return 1
-    if black_stones == white_stones:
-        return 1
-    # If the number of black stones is one more than the number of white stones, return 1
-    elif black_stones == white_stones + 1:
-        return 1
-    # If the number of white stones is one more than the number of black stones, return 1
-    elif white_stones == black_stones + 1:
-        return 1
-    # Otherwise, return 0
-    else:
-        return 0
+def get_number_of_machines(socks, capacity, max_color_diff):
+    number_of_machines = 1
+    current_machine_size = 0
+    for sock in socks:
+        if current_machine_size == capacity:
+            number_of_machines += 1
+            current_machine_size = 0
+        current_machine_size += 1
+        for other_sock in socks[sock + 1:]:
+            if abs(sock - other_sock) <= max_color_diff:
+                current_machine_size += 1
+                break
+    return number_of_machines
 

@@ -1,27 +1,54 @@
 
-def get_max_profit(n, m, l, s, c):
-    # Initialize the dp table
-    dp = [[0] * (m + 1) for _ in range(n + 1)]
+def f1(N, W_list, H_list, map_list):
+    # Initialize a dictionary to store the map pieces
+    map_dict = {}
+    for i in range(N):
+        map_dict[i+1] = map_list[i]
+    
+    # Initialize a list to store the reconstructed map
+    reconstructed_map = []
+    
+    # Loop through the map pieces and add them to the reconstructed map
+    for i in range(N):
+        for j in range(H_list[i]):
+            for k in range(W_list[i]):
+                reconstructed_map.append(map_dict[i+1][j][k])
+    
+    # Return the reconstructed map
+    return reconstructed_map
 
-    # Loop through each candidate
-    for i in range(1, n + 1):
-        # Loop through each aggressiveness level
-        for j in range(1, m + 1):
-            # If the candidate is already accepted, skip
-            if dp[i - 1][j] != 0:
-                continue
-            # If the candidate is not accepted and the aggressiveness level is higher than the current level, skip
-            if l[i - 1] > j:
-                continue
-            # If the candidate is not accepted and the aggressiveness level is lower than the current level, skip
-            if l[i - 1] < j:
-                continue
-            # If the candidate is not accepted and the aggressiveness level is equal to the current level, check if it's more profitable to accept or not
-            if dp[i - 1][j] < dp[i - 1][j - 1] + c[l[i - 1]] - s[i - 1]:
-                dp[i][j] = dp[i - 1][j - 1] + c[l[i - 1]] - s[i - 1]
-            else:
-                dp[i][j] = dp[i - 1][j]
+def f2(reconstructed_map):
+    # Initialize a dictionary to store the map pieces
+    map_dict = {}
+    for i in range(N):
+        map_dict[i+1] = map_list[i]
+    
+    # Initialize a list to store the indices of the map pieces
+    indices = []
+    
+    # Loop through the reconstructed map and add the indices of the map pieces
+    for i in range(len(reconstructed_map)):
+        indices.append(map_dict[reconstructed_map[i]][i])
+    
+    # Return the indices of the map pieces
+    return indices
 
-    # Return the maximum profit
-    return max(dp[n])
+if __name__ == '__main__':
+    N = int(input())
+    W_list = []
+    H_list = []
+    map_list = []
+    for i in range(N):
+        W, H = map(int, input().split())
+        W_list.append(W)
+        H_list.append(H)
+        map_list.append([input() for _ in range(H)])
+    reconstructed_map = f1(N, W_list, H_list, map_list)
+    indices = f2(reconstructed_map)
+    print(W, H)
+    for i in range(H):
+        print("".join(reconstructed_map[i*W:(i+1)*W]))
+    print("-" * W)
+    for i in range(H):
+        print("".join(indices[i*W:(i+1)*W]))
 

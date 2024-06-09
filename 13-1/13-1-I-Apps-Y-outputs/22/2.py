@@ -1,10 +1,10 @@
 
-def get_cost_magnitude(estimate):
-    return len(str(estimate))
-
-if __name__ == '__main__':
-    num_cases = int(input())
-    for _ in range(num_cases):
-        estimate = int(input())
-        print(get_cost_magnitude(estimate))
+def f1(n, a):
+    sheet = set()
+    for i in range(n):
+        if a[i] in sheet:
+            sheet.remove(a[i])
+        else:
+            sheet.add(a[i])
+    return len(sheet)
 

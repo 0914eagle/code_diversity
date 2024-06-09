@@ -1,41 +1,67 @@
 
-def n_queens(n, m, board):
-    # Initialize variables
-    max_queens = 0
-    num_ways = 0
+def get_min_energy(N, M, alpha, roads):
+    # Initialize the minimum energy to spend as infinity
+    min_energy = float('inf')
+    
+    # Loop through all possible starting junctions
+    for start in range(1, N + 1):
+        # Initialize the current energy to spend as 0
+        current_energy = 0
+        
+        # Initialize the current junction as the starting junction
+        current_junction = start
+        
+        # Initialize the number of candies bought as 0
+        num_candies = 0
+        
+        # Loop through all possible roads
+        for _ in range(M):
+            # Find the next junction based on the current junction and the road information
+            next_junction = get_next_junction(current_junction, roads)
+            
+            # If the next junction is the starting junction, break the loop
+            if next_junction == start:
+                break
+            
+            # Update the current junction to the next junction
+            current_junction = next_junction
+            
+            # Update the current energy to spend based on the road information
+            current_energy += get_energy(current_junction, roads)
+            
+            # Update the number of candies bought
+            num_candies += get_candies(current_junction, roads)
+        
+        # If the number of candies bought is equal to the total number of candies, update the minimum energy to spend
+        if num_candies == sum(roads[2] for roads in roads):
+            min_energy = min(min_energy, current_energy)
+    
+    # Return the minimum energy to spend
+    return min_energy if min_energy < float('inf') else "Poor girl"
 
-    # Loop through each row of the board
-    for i in range(n):
-        # Loop through each column of the board
-        for j in range(m):
-            # Check if the current cell is broken
-            if board[i][j] == '#':
-                continue
+def get_next_junction(current_junction, roads):
+    # Find the road that connects the current junction to the next junction
+    for road in roads:
+        if road[0] == current_junction:
+            return road[1]
+    return current_junction
 
-            # Check if the current cell is safe for a queen
-            safe = True
-            for k in range(n):
-                # Check if the current cell is in the same row, column, or diagonal as any other queen
-                if board[i][k] == 'Q' or board[k][j] == 'Q' or (i - k) == abs(j - k) and board[i - k][j - k] == 'Q':
-                    safe = False
-                    break
+def get_energy(current_junction, roads):
+    # Find the road that connects the current junction to the next junction
+    for road in roads:
+        if road[0] == current_junction:
+            return road[2] ** 2
+    return 0
 
-            # If the current cell is safe for a queen, place a queen on it and update the maximum number of queens and number of ways
-            if safe:
-                board[i][j] = 'Q'
-                max_queens += 1
-                num_ways += 1
+def get_candies(current_junction, roads):
+    # Find the road that connects the current junction to the next junction
+    for road in roads:
+        if road[0] == current_junction:
+            return road[2]
+    return 0
 
-                # Recursively call the function to place the remaining queens
-                n_queens(n, m, board)
-
-                # If the maximum number of queens has been reached, break out of the loop
-                if max_queens == n:
-                    break
-
-                # If the maximum number of queens has not been reached, remove the queen from the current cell and continue looping
-                else:
-                    board[i][j] = '.'
-
-    return max_queens, num_ways
+if __name__ == '__main__':
+    N, M, alpha = map(int, input().split())
+    roads = [list(map(int, input().split())) for _ in range(M)]
+    print(get_min_energy(N, M, alpha, roads))
 

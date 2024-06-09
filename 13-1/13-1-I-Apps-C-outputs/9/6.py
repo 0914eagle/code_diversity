@@ -1,23 +1,31 @@
 
-def solve(n, k_1, k_2, A, B):
-    # Calculate the initial error
-    error = sum((a - b) ** 2 for a, b in zip(A, B))
-    # Loop through the operations for array A
-    for i in range(k_1):
-        # Find the index of the minimum element in A
-        min_index = A.index(min(A))
-        # Increment the minimum element by 1
-        A[min_index] += 1
-        # Calculate the new error
-        error += (A[min_index] - B[min_index]) ** 2
-    # Loop through the operations for array B
-    for i in range(k_2):
-        # Find the index of the minimum element in B
-        min_index = B.index(min(B))
-        # Decrement the minimum element by 1
-        B[min_index] -= 1
-        # Calculate the new error
-        error += (A[min_index] - B[min_index]) ** 2
-    # Return the minimum possible error
-    return error
+def get_min_clicks(n, k, watch_later_list):
+    # Initialize variables
+    clicks = 0
+    current_type = watch_later_list[0]
+    types_watched = set()
+    types_watched.add(current_type)
+
+    # Iterate through the watch later list
+    for i in range(1, n):
+        # If the current video is of the same type as the previous video, play it
+        if watch_later_list[i] == current_type:
+            clicks += 1
+        # If the current video is of a different type, play the next video of the same type
+        else:
+            clicks += 1
+            current_type = watch_later_list[i]
+            types_watched.add(current_type)
+
+    # If all videos have been watched, return the minimum number of clicks
+    if len(types_watched) == k:
+        return clicks
+
+    # If not all videos have been watched, return -1
+    return -1
+
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    watch_later_list = list(input())
+    print(get_min_clicks(n, k, watch_later_list))
 

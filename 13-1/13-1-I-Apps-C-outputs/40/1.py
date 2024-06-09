@@ -1,26 +1,49 @@
 
-import sys
+import math
 
-def get_possible_orderings(names):
-    # Initialize the number of possible orderings to 1
-    possible_orderings = 1
+def get_regions(circles):
+    # Initialize a set to store the regions
+    regions = set()
+    
+    # Iterate over the circles
+    for circle in circles:
+        # Get the center and radius of the circle
+        x, y, r = circle
+        
+        # Get the bounding box of the circle
+        left = x - r
+        right = x + r
+        top = y + r
+        bottom = y - r
+        
+        # Get the four corners of the bounding box
+        top_left = (left, top)
+        top_right = (right, top)
+        bottom_left = (left, bottom)
+        bottom_right = (right, bottom)
+        
+        # Add the four corners to the set of regions
+        regions.add(top_left)
+        regions.add(top_right)
+        regions.add(bottom_left)
+        regions.add(bottom_right)
+    
+    # Return the number of regions
+    return len(regions)
 
-    # Iterate over the names
-    for i in range(len(names)):
-        # Get the current name and the next name
-        current_name = names[i]
-        next_name = names[(i + 1) % len(names)]
+def main():
+    # Read the number of circles from stdin
+    n = int(input())
+    
+    # Read the circles from stdin
+    circles = []
+    for i in range(n):
+        x, y, r = map(int, input().split())
+        circles.append((x, y, r))
+    
+    # Call the get_regions function and print the result
+    print(get_regions(circles))
 
-        # If the current name and the next name start with the same letter sequence, increment the number of possible orderings
-        if current_name[:len(next_name)] == next_name:
-            possible_orderings += 1
-
-    return possible_orderings % 1000000007
-
-if __name__ == "__main__":
-    num_names = int(input())
-    names = []
-    for i in range(num_names):
-        names.append(input())
-    print(get_possible_orderings(names))
+if __name__ == '__main__':
+    main()
 

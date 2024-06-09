@@ -1,15 +1,34 @@
 
-def solve(deck):
-    # Step 1: Sort the deck in descending order
-    deck.sort(reverse=True)
+def f1(n, a):
+    # Calculate the sum of all angles
+    sum_angles = sum(a)
+    
+    # Initialize the minimum difference between angles
+    min_diff = sum_angles
+    
+    # Iterate over all possible combinations of pieces
+    for i in range(n):
+        for j in range(i+1, n):
+            # Calculate the sum of angles for Vasya's sector
+            vasya_sum = sum(a[:i+1])
+            
+            # Calculate the sum of angles for Petya's sector
+            petya_sum = sum(a[i+1:j+1])
+            
+            # Calculate the difference between the two sectors
+            diff = abs(vasya_sum - petya_sum)
+            
+            # Update the minimum difference
+            min_diff = min(min_diff, diff)
+    
+    return min_diff
 
-    # Step 2: Eat the two cards with the largest and smallest values
-    deck.pop()
-    deck.pop(0)
+def f2(...):
+    # Implement f2 here
+    pass
 
-    # Step 3: Return the remaining card to the deck
-    deck.append(deck.pop(0))
-
-    # Step 4: Return the length of the deck
-    return len(deck)
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(f1(n, a))
 

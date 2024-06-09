@@ -1,18 +1,38 @@
 
-def is_valid_test_case(a, b):
-    n = len(a)
-    for i in range(1, int(n/2)+1):
-        if a[:i] == b[n-i:] and a[i:] == b[:n-i]:
-            return True
-    return False
+def get_max_total_significance(n, m, d, physics_cups, informatics_cups):
+    # Sort the cups by their significance in descending order
+    physics_cups.sort(key=lambda x: x[0], reverse=True)
+    informatics_cups.sort(key=lambda x: x[0], reverse=True)
 
-t = int(input())
-for i in range(t):
-    n = int(input())
-    a = list(map(int, input().split()))
-    b = list(map(int, input().split()))
-    if is_valid_test_case(a, b):
-        print("Yes")
-    else:
-        print("No")
+    # Initialize the maximum total significance and the current total width
+    max_total_significance = 0
+    current_total_width = 0
+
+    # Loop through the cups and add them to the shelf if they fit
+    for physics_cup, informatics_cup in zip(physics_cups, informatics_cups):
+        # Check if the cup fits on the shelf
+        if current_total_width + physics_cup[1] + informatics_cup[1] <= d:
+            # Add the cup to the shelf
+            current_total_width += physics_cup[1] + informatics_cup[1]
+
+            # Update the maximum total significance
+            max_total_significance += physics_cup[0] + informatics_cup[0]
+
+    # Return the maximum total significance
+    return max_total_significance
+
+def main():
+    n, m, d = map(int, input().split())
+    physics_cups = []
+    informatics_cups = []
+    for i in range(n):
+        c, w = map(int, input().split())
+        physics_cups.append((c, w))
+    for i in range(m):
+        c, w = map(int, input().split())
+        informatics_cups.append((c, w))
+    print(get_max_total_significance(n, m, d, physics_cups, informatics_cups))
+
+if __name__ == '__main__':
+    main()
 

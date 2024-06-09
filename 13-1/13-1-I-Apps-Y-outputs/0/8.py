@@ -1,22 +1,26 @@
 
-def rhyming_slang(common_word, ending_lists, phrases):
-    # Initialize an empty list to store the results
-    results = []
-    
-    # Iterate over the phrases
-    for phrase in phrases:
-        # Check if the last word of the phrase rhymes with the common word
-        if phrase.split()[-1].endswith(common_word[-1]):
-            # Check if the first word of the phrase is in any of the ending lists
-            if any(phrase.split()[0].endswith(ending) for ending in ending_lists):
-                # If both conditions are met, the phrase is a rhyming slang
-                results.append("YES")
-            else:
-                # If the first word is not in any of the ending lists, the phrase is not a rhyming slang
-                results.append("NO")
+def get_max_problems(n, a):
+    # Sort the array of topics in descending order
+    a.sort(reverse=True)
+    # Initialize variables to keep track of the current topic and the number of problems
+    curr_topic = a[0]
+    num_problems = 1
+    max_problems = 0
+    # Iterate through the array of topics
+    for i in range(1, n):
+        # If the current topic is the same as the previous topic, add the number of problems
+        if a[i] == curr_topic:
+            num_problems += 1
+        # If the current topic is different from the previous topic, update the current topic and number of problems
         else:
-            # If the last word of the phrase does not rhyme with the common word, the phrase is not a rhyming slang
-            results.append("NO")
-    
-    return results
+            curr_topic = a[i]
+            num_problems = 1
+        # Update the maximum number of problems if necessary
+        max_problems = max(max_problems, num_problems)
+    return max_problems
+
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(get_max_problems(n, a))
 

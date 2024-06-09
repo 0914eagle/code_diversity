@@ -1,23 +1,45 @@
 
-def find_min_time(n, m, volcanoes):
-    # Initialize a matrix to store the distances from the starting cell
-    distances = [[float("inf") for _ in range(n+1)] for _ in range(n+1)]
-    distances[1][1] = 0
-    
-    # Loop through each cell in the matrix
-    for i in range(1, n+1):
-        for j in range(1, n+1):
-            # If the current cell is a volcano, skip it
-            if (i, j) in volcanoes:
-                continue
-            # If the current cell is not the destination cell, check if we can reach it from the starting cell
-            if (i, j) != (n, n):
-                # Check if we can reach the current cell from the left and bottom cells
-                if i > 1 and distances[i-1][j] != float("inf"):
-                    distances[i][j] = min(distances[i][j], distances[i-1][j] + 1)
-                if j > 1 and distances[i][j-1] != float("inf"):
-                    distances[i][j] = min(distances[i][j], distances[i][j-1] + 1)
-    
-    # Return the minimum time it takes to reach the destination cell
-    return distances[n][n]
+def can_connect_servers(n, m, k, capacities, connections):
+    # Initialize a graph with the given number of servers and connections
+    graph = {i: set() for i in range(n)}
+    for u, v in connections:
+        graph[u].add(v)
+        graph[v].add(u)
+
+    # Initialize a list to keep track of the number of sockets used by each server
+    sockets = [0] * n
+
+    # Initialize a set to keep track of the servers that are already connected
+    connected = set()
+
+    # Loop through the connections and try to connect the servers
+    for i in range(m):
+        u, v = connections[i]
+        if u in connected and v in connected:
+            continue
+        if sockets[u] + sockets[v] <= capacities[u] + capacities[v]:
+            sockets[u] += sockets[v]
+            sockets[v] = 0
+            connected.add(v)
+        elif sockets[v] + sockets[u] <= capacities[v] + capacities[u]:
+            sockets[v] += sockets[u]
+            sockets[u] = 0
+            connected.add(u)
+        else:
+            return "no"
+
+    # If all servers are connected, return "yes", otherwise return "no"
+    return "yes" if len(connected) == n else "no"
+
+def main():
+    n, m, k = map(int, input().split())
+    capacities = list(map(int, input().split()))
+    connections = []
+    for _ in range(m):
+        u, v = map(int, input().split())
+        connections.append((u, v))
+    print(can_connect_servers(n, m, k, capacities, connections))
+
+if __name__ == '__main__':
+    main()
 
