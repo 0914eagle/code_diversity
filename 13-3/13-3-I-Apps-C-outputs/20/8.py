@@ -1,28 +1,21 @@
 
-def solve(boys, girls, boys_books, girls_books):
-    # Initialize variables
-    presentations = 0
-    books = {}
+def solve(n, m, subarrays):
+    # Initialize the array with all zeros
+    a = [0] * n
 
-    # Add books from boys
-    for i in range(len(boys)):
-        for book in boys_books[i]:
-            if book not in books:
-                books[book] = 1
-            else:
-                books[book] += 1
+    # Iterate over the subarrays
+    for l, r in subarrays:
+        # Find the mex of the subarray
+        mex = 0
+        while mex in a[l:r+1]:
+            mex += 1
+        # Update the array with the mex
+        for i in range(l, r+1):
+            a[i] = mex
 
-    # Add books from girls
-    for i in range(len(girls)):
-        for book in girls_books[i]:
-            if book not in books:
-                books[book] = 1
-            else:
-                books[book] += 1
+    # Find the minimum mex among all subarrays
+    min_mex = min(a)
 
-    # Calculate the minimum number of presentations needed
-    for book, count in books.items():
-        presentations += count // 2 + count % 2
-
-    return presentations
+    # Return the minimum mex and the array
+    return min_mex, a
 

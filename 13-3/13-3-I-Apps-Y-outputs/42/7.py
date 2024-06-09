@@ -1,15 +1,10 @@
 
-def solve(tasks):
-    # Sort the tasks in non-decreasing order
-    tasks.sort()
-    # Initialize the minimum total cost to 0
-    min_cost = 0
-    # Loop through the tasks
-    for i in range(len(tasks)):
-        # Calculate the cost of completing the current task
-        cost = abs(tasks[i] - tasks[(i - 1) % 3])
-        # Add the cost to the minimum total cost
-        min_cost += cost
-    # Return the minimum total cost
-    return min_cost
+x1, y1, x2, y2 = map(int, input().split())
+
+x3 = y1 - y2
+y3 = x2 - x1
+x4 = x3 + x1
+y4 = y3 + y1
+
+print(x3, y3, x4, y4)
 

@@ -1,21 +1,30 @@
 
-def untangle_wires(wire_sequence):
-    # Initialize variables to keep track of the number of crossings
-    plus_crossings = 0
-    minus_crossings = 0
+def solve(n, l, r):
+    # Initialize an empty list to store the elements
+    lst = []
 
-    # Iterate through the wire sequence
-    for i in range(len(wire_sequence)):
-        # If the current position is a plus crossing, increment the plus crossings count
-        if wire_sequence[i] == "+":
-            plus_crossings += 1
-        # If the current position is a minus crossing, increment the minus crossings count
-        elif wire_sequence[i] == "-":
-            minus_crossings += 1
+    # Add the initial element to the list
+    lst.append(n)
 
-    # If the number of plus crossings is equal to the number of minus crossings, the wires can be untangled
-    if plus_crossings == minus_crossings:
-        return "Yes"
-    else:
-        return "No"
+    # Iterate until all elements are either 0 or 1
+    while len(lst) > 0:
+        # Initialize a new list to store the updated elements
+        new_lst = []
+
+        # Iterate through the list and perform the required operations
+        for i in lst:
+            if i > 1:
+                # Remove the element and insert it at the position floor(x/2), x%2, floor(x/2)
+                new_lst.append(i//2)
+                new_lst.append(i%2)
+                new_lst.append(i//2)
+            else:
+                # If the element is 0 or 1, just append it to the new list
+                new_lst.append(i)
+
+        # Update the list with the updated elements
+        lst = new_lst
+
+    # Return the total number of 1s in the range l to r
+    return sum(lst[l-1:r])
 

@@ -1,26 +1,22 @@
 
-def solve(n, corners):
-    # Initialize an empty dictionary to store the matching between top-left and bottom-right corners
-    match = {}
-    
-    # Iterate through the list of corner pairs
-    for i in range(n):
-        # Get the top-left and bottom-right corners for the current pair
-        top_left, bottom_right = corners[i]
-        
-        # Check if the top-left corner is already matched
-        if top_left in match:
-            # If it is, check if the bottom-right corner matches the previously matched top-left corner
-            if match[top_left] == bottom_right:
-                # If it does, remove the matching from the dictionary
-                match.pop(top_left)
-            else:
-                # If it doesn't, the input is invalid and we return "syntax error"
-                return "syntax error"
-        else:
-            # If the top-left corner is not matched, add it to the dictionary with the bottom-right corner as its value
-            match[top_left] = bottom_right
-    
-    # If we reach this point, all corners have been matched, so we return the matching as a list of integers
-    return [match[i] for i in sorted(match)]
+def topologically_sort(graph):
+    # Initialize the list of source nodes
+    sources = [node for node in graph if not graph[node]]
+    # Initialize the sorted list
+    sorted_list = []
+    # Loop until there are no more sources
+    while sources:
+        # Get the current source node
+        current_source = sources.pop()
+        # Add the current source node to the sorted list
+        sorted_list.append(current_source)
+        # Remove the current source node and its outgoing edges from the graph
+        del graph[current_source]
+        for node in list(graph):
+            if current_source in graph[node]:
+                graph[node].remove(current_source)
+        # Add any new source nodes to the list of sources
+        sources.extend([node for node in graph if not graph[node]])
+    # Return the sorted list
+    return sorted_list
 

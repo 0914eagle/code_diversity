@@ -1,32 +1,18 @@
 
-def solve(n, edges):
-    # Initialize a list to store the labels
-    labels = [0] * (n - 1)
-    # Initialize a set to keep track of the used labels
-    used_labels = set()
-    # Iterate through the edges
-    for i in range(n - 1):
-        # Get the current edge
-        edge = edges[i]
-        # Find the minimum excludant of the current edge
-        mex = find_mex(edge, used_labels)
-        # Add the minimum excludant to the list of labels
-        labels[i] = mex
-        # Add the minimum excludant to the set of used labels
-        used_labels.add(mex)
-    # Return the list of labels
-    return labels
+import sys
 
-def find_mex(edge, used_labels):
-    # Initialize the minimum excludant as 0
-    mex = 0
-    # Iterate through the possible labels
-    for label in range(len(used_labels)):
-        # If the current label is not in the set of used labels, return it
-        if label not in used_labels:
-            return label
-        # Otherwise, increment the minimum excludant
-        mex += 1
-    # If all labels are used, return the minimum excludant
-    return mex
+def k_tree_paths(n, k, d):
+    mod = 1000000007
+    dp = [[0] * (n + 1) for _ in range(k + 1)]
+    dp[0][0] = 1
+    for i in range(1, k + 1):
+        for j in range(1, n + 1):
+            if j >= d:
+                dp[i][j] = (dp[i - 1][j - d] + dp[i][j - 1]) % mod
+            else:
+                dp[i][j] = dp[i][j - 1]
+    return dp[k][n]
+
+n, k, d = map(int, sys.stdin.readline().split())
+print(k_tree_paths(n, k, d))
 

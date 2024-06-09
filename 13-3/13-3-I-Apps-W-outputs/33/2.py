@@ -1,20 +1,16 @@
 
-def find_permutations(n):
-    # Initialize the permutations as empty lists
-    p = []
-    q = []
-    
-    # Iterate from 1 to N
-    for i in range(1, n+1):
-        # Check if i is not equal to its index in p
-        if i != p.index(i) + 1:
-            # Add i to p
-            p.append(i)
-        # Check if i is not equal to its index in q
-        if i != q.index(i) + 1 and q.index(i) + 1 != 0:
-            # Add i to q
-            q.append(i)
-    
-    # Return the permutations
-    return p, q
+def get_tallest_tower(n, m):
+    # Initialize a list to store the heights of the towers
+    heights = []
+
+    # Add the heights of the towers made with two-block pieces
+    for i in range(1, n + 1):
+        heights.append(i * 2)
+
+    # Add the heights of the towers made with three-block pieces
+    for i in range(1, m + 1):
+        heights.append(i * 3)
+
+    # Return the tallest tower height
+    return max(heights)
 

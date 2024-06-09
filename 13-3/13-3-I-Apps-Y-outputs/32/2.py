@@ -1,5 +1,7 @@
 
-def is_haiku(phrases):
-    A, B, C = phrases
-    return A + B + C == 17 and B - A == 2 and C - B == 2
+def get_distinct_modulo_42(numbers):
+    distinct_numbers = set()
+    for number in numbers:
+        distinct_numbers.add(number % 42)
+    return len(distinct_numbers)
 

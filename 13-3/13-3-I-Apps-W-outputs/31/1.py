@@ -1,13 +1,12 @@
 
-def silver_coins(n, s):
-    x, y = 0, 0
-    coins = 0
-    for move in s:
-        if move == 'U':
-            y += 1
-        elif move == 'R':
-            x += 1
-        if x == y:
-            coins += 1
-    return coins
+def get_initial_arrangement(n, x, a):
+    arrangement = [0] * n
+    for i in range(n):
+        if i < x:
+            arrangement[i] = a[i] - a[x]
+        elif i == x:
+            arrangement[i] = a[i]
+        else:
+            arrangement[i] = a[i] - a[x - 1]
+    return arrangement
 

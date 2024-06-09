@@ -1,26 +1,24 @@
 
-def verify_answers(s, s1, s2):
-    # Check if the length of the merged string is correct
-    if len(s) != len(s1) + len(s2):
-        return "no"
-    
-    # Check if the indices of the characters in s1 are in ascending order
-    for i in range(len(s1) - 1):
-        if s1[i] > s1[i + 1]:
-            return "no"
-    
-    # Check if the indices of the characters in s2 are in ascending order
-    for i in range(len(s2) - 1):
-        if s2[i] > s2[i + 1]:
-            return "no"
-    
-    # Check if the characters in s1 and s2 are in the correct order in s
-    for i in range(len(s1)):
-        if s[i] != s1[i]:
-            return "no"
-    for i in range(len(s2)):
-        if s[i + len(s1)] != s2[i]:
-            return "no"
-    
-    return "yes"
+def longest_common_subsequence(s1, s2, virus):
+    m = len(s1)
+    n = len(s2)
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if s1[i - 1] == s2[j - 1] and s1[i - 1] not in virus:
+                dp[i][j] = dp[i - 1][j - 1] + 1
+            else:
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+    lcs = ""
+    i, j = m, n
+    while i > 0 and j > 0:
+        if dp[i][j] == dp[i - 1][j]:
+            i -= 1
+        elif dp[i][j] == dp[i][j - 1]:
+            j -= 1
+        else:
+            lcs = s1[i - 1] + lcs
+            i -= 1
+            j -= 1
+    return lcs
 

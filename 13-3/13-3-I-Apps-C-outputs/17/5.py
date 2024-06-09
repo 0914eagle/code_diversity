@@ -1,40 +1,50 @@
 
-def solve(P, A, pine_locations, aspen_locations):
-    # Calculate the area covered by both species
-    area = 0
+def count_valid_colorings(n, a):
+    # Initialize the number of valid colorings to 0
+    num_valid_colorings = 0
     
-    # Iterate over each pine tree
-    for pine in pine_locations:
-        # Find the aspens that are within the triangle formed by the pine tree and two other aspens
-        aspens_in_triangle = []
-        for aspen in aspen_locations:
-            if is_in_triangle(pine, aspen, aspen_locations):
-                aspens_in_triangle.append(aspen)
-        
-        # Calculate the area of the triangle formed by the pine tree and the aspens in the triangle
-        area += triangle_area(pine, aspens_in_triangle)
-    
-    return area
+    # Loop through each row of the grid
+    for i in range(n):
+        # If the row is odd, there are n hexagons in the row
+        if i % 2 == 1:
+            num_hexagons = n
+        # If the row is even, there are n-1 hexagons in the row
+        else:
+            num_hexagons = n - 1
+            
+        # Loop through each hexagon in the row
+        for j in range(num_hexagons):
+            # If the current hexagon is not colored, skip it
+            if a[i][j] == -1:
+                continue
+                
+            # If the current hexagon is colored, check if it forms a loop
+            if check_loop(i, j, a):
+                num_valid_colorings += 1
+                
+    # Return the number of valid colorings
+    return num_valid_colorings
 
-def is_in_triangle(pine, aspen, aspen_locations):
-    # Find the third vertex of the triangle
-    third_vertex = None
-    for other_aspen in aspen_locations:
-        if other_aspen != aspen:
-            third_vertex = other_aspen
-            break
+def check_loop(i, j, a):
+    # Initialize the number of colored edges to 0
+    num_colored_edges = 0
     
-    # Calculate the areas of the triangles formed by the three vertices
-    area_1 = triangle_area(pine, aspen, third_vertex)
-    area_2 = triangle_area(pine, third_vertex, aspen)
-    area_3 = triangle_area(third_vertex, aspen, pine)
-    
-    # If the sum of the areas is equal to the area of the total triangle, the aspen is within the triangle
-    return area_1 + area_2 + area_3 == triangle_area(pine, third_vertex, aspen)
+    # Loop through each edge of the hexagon
+    for k in range(6):
+        # If the edge is colored, increment the number of colored edges
+        if a[i][j] == a[(i+1)%n][(j+1)%num_hexagons]:
+            num_colored_edges += 1
+            
+    # If the number of colored edges is equal to the number of edges in the hexagon, return True
+    if num_colored_edges == 6:
+        return True
+    else:
+        return False
 
-def triangle_area(a, b, c):
-    # Calculate the area of the triangle using Heron's formula
-    s = (a[0] + b[0] + c[0]) / 2
-    area = (s * (s - a[0]) * (s - b[0]) * (s - c[0])) ** 0.5
-    return area
+n = int(input())
+a = []
+for i in range(n):
+    a.append(list(map(int, input().split())))
+    
+print(count_valid_colorings(n, a))
 

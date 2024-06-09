@@ -1,21 +1,29 @@
 
-def get_points(x):
-    # Find the prime factors of x
-    prime_factors = []
-    while x % 2 == 0:
-        prime_factors.append(2)
-        x //= 2
-    for i in range(3, int(x**0.5) + 1, 2):
-        while x % i == 0:
-            prime_factors.append(i)
-            x //= i
-    if x > 1:
-        prime_factors.append(x)
+def solve(N):
+    # Initialize a list to store the numbers 1 to 2^N - 1
+    numbers = list(range(1, 2**N))
+    # Initialize an empty list to store the preorder traversal of the tree
+    preorder = []
+    # Recursively build the tree using the numbers list
+    build_tree(numbers, preorder, N)
+    # Return the preorder traversal of the tree
+    return " ".join(map(str, preorder))
 
-    # Calculate the number of points obtained
-    points = 0
-    for prime in prime_factors:
-        points += 1
+def build_tree(numbers, preorder, level):
+    # If there are no more numbers to assign, return
+    if not numbers:
+        return
+    # If we are at the last level, assign the first number and return
+    if level == 0:
+        preorder.append(numbers.pop(0))
+        return
+    # Recursively build the left subtree
+    build_tree(numbers, preorder, level - 1)
+    # Recursively build the right subtree
+    build_tree(numbers, preorder, level - 1)
+    # Assign the current number to the current node
+    preorder.append(numbers.pop(0))
 
-    return points
+N = int(input())
+print(solve(N))
 

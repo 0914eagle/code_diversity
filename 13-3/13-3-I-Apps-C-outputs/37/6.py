@@ -1,61 +1,59 @@
 
-def get_max_area(n, m, k):
-    if k == 0:
-        return n * m
+import sys
+
+def solve(N, M):
+    # Calculate the number of possible combinations of toppings
+    num_combinations = 2**N
     
-    if k == 1:
-        return max(n, m)
+    # Initialize a list to store the number of sets of bowls of ramen that satisfy the conditions
+    num_sets = []
     
-    if k == 2:
-        return n * m - min(n, m)
+    # Iterate over each combination of toppings
+    for i in range(num_combinations):
+        # Convert the binary representation of the combination to a list of booleans
+        # representing whether each topping is included or not
+        toppings = [bool(i & (1 << j)) for j in range(N)]
+        
+        # Count the number of sets of bowls of ramen that satisfy the conditions
+        num_sets.append(count_sets(toppings, M))
     
-    if k == 3:
-        if n == m:
-            return n * m - n
-        else:
-            return n * m - min(n, m)
+    # Return the sum of the number of sets of bowls of ramen that satisfy the conditions
+    # modulo M
+    return sum(num_sets) % M
+
+def count_sets(toppings, M):
+    # Initialize a list to store the number of sets of bowls of ramen that satisfy the conditions
+    num_sets = [0] * len(toppings)
     
-    if k == 4:
-        if n == m:
-            return n * m - n * 2
-        else:
-            return n * m - min(n, m) * 2
+    # Iterate over each topping
+    for i, topping in enumerate(toppings):
+        # If the topping is included, count the number of sets of bowls of ramen that satisfy the conditions
+        if topping:
+            num_sets[i] = count_sets_helper(toppings, i, M)
     
-    if k == 5:
-        if n == m:
-            return n * m - n * 3
-        else:
-            return n * m - min(n, m) * 3
+    # Return the sum of the number of sets of bowls of ramen that satisfy the conditions
+    # modulo M
+    return sum(num_sets) % M
+
+def count_sets_helper(toppings, i, M):
+    # If the topping is the last topping, return 1
+    if i == len(toppings) - 1:
+        return 1
     
-    if k == 6:
-        if n == m:
-            return n * m - n * 4
-        else:
-            return n * m - min(n, m) * 4
+    # Initialize a list to store the number of sets of bowls of ramen that satisfy the conditions
+    num_sets = [0] * len(toppings)
     
-    if k == 7:
-        if n == m:
-            return n * m - n * 5
-        else:
-            return n * m - min(n, m) * 5
+    # Iterate over each topping after the current topping
+    for j in range(i + 1, len(toppings)):
+        # If the topping is included, count the number of sets of bowls of ramen that satisfy the conditions
+        if toppings[j]:
+            num_sets[j] = count_sets_helper(toppings, j, M)
     
-    if k == 8:
-        if n == m:
-            return n * m - n * 6
-        else:
-            return n * m - min(n, m) * 6
-    
-    if k == 9:
-        if n == m:
-            return n * m - n * 7
-        else:
-            return n * m - min(n, m) * 7
-    
-    if k == 10:
-        if n == m:
-            return n * m - n * 8
-        else:
-            return n * m - min(n, m) * 8
-    
-    return -1
+    # Return the sum of the number of sets of bowls of ramen that satisfy the conditions
+    # modulo M
+    return sum(num_sets) % M
+
+if __name__ == '__main__':
+    N, M = map(int, input().split())
+    print(solve(N, M))
 

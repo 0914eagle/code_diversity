@@ -1,23 +1,28 @@
 
-def max_profit(producer_companies, consumer_companies):
-    # Initialize variables
-    max_profit = 0
-    selected_producer, selected_consumer = None, None
+def get_min_extensions(a, b, h, w, n, extensions):
+    # Initialize the minimum number of extensions needed to be 0
+    min_extensions = 0
 
-    # Iterate over each producer company
-    for producer in producer_companies:
-        # Iterate over each consumer company
-        for consumer in consumer_companies:
-            # Calculate the profit for this combination of producer and consumer
-            profit = producer["price"] - consumer["price"]
+    # Check if the rectangle can be placed on the initial field
+    if a <= h and b <= w:
+        return 0
 
-            # Check if the profit is greater than the current maximum profit
-            if profit > max_profit:
-                # Update the maximum profit and the selected producer and consumer
-                max_profit = profit
-                selected_producer = producer
-                selected_consumer = consumer
+    # Sort the extensions in descending order
+    extensions.sort(reverse=True)
 
-    # Return the maximum profit and the selected producer and consumer
-    return max_profit, selected_producer, selected_consumer
+    # Loop through the extensions
+    for extension in extensions:
+        # Check if the extension multiplies the width or the length by a factor that is greater than or equal to the ratio of the rectangle's width or length to the field's width or length
+        if extension >= max(a / h, b / w):
+            # Increment the minimum number of extensions needed
+            min_extensions += 1
+            # Update the field sizes
+            h *= extension
+            w *= extension
+
+    # Check if the rectangle can be placed on the field after using all the extensions
+    if a <= h and b <= w:
+        return min_extensions
+    else:
+        return -1
 

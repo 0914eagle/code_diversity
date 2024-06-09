@@ -1,22 +1,34 @@
 
-def untangle_wires(wire_sequence):
-    # Initialize variables to keep track of the number of crossings
-    plus_crossings = 0
-    minus_crossings = 0
+def solve(n, l, r):
+    # Initialize an empty list to store the elements
+    lst = []
 
-    # Iterate through the wire sequence
-    for i in range(len(wire_sequence)):
-        # If the current position is a plus crossing, increment the plus crossings count
-        if wire_sequence[i] == "+":
-            plus_crossings += 1
-        # If the current position is a minus crossing, increment the minus crossings count
-        elif wire_sequence[i] == "-":
-            minus_crossings += 1
+    # Add the initial element to the list
+    lst.append(n)
 
-    # If the number of plus crossings is even and the number of minus crossings is odd, the wires can be untangled
-    if plus_crossings % 2 == 0 and minus_crossings % 2 == 1:
-        return "Yes"
-    # Otherwise, the wires cannot be untangled
-    else:
-        return "No"
+    # Iterate until all elements are either 0 or 1
+    while True:
+        # Initialize a flag to check if the list is modified
+        modified = False
+
+        # Iterate through the list and remove any element that is greater than 1
+        for i in range(len(lst)):
+            if lst[i] > 1:
+                # Calculate the floor of the element divided by 2 and the modulus of the element divided by 2
+                floor = lst[i] // 2
+                mod = lst[i] % 2
+
+                # Insert the floor and mod at the same position in the list
+                lst.insert(i, floor)
+                lst.insert(i + 1, mod)
+
+                # Set the modified flag to True
+                modified = True
+
+        # If the list is not modified, break the loop
+        if not modified:
+            break
+
+    # Return the sum of the elements in the range l to r
+    return sum(lst[l - 1:r])
 

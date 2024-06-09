@@ -1,34 +1,36 @@
 
-def weight_of_words(l, w):
-    # Initialize a list of letters with their corresponding weights
-    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-               'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-    weights = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]
+import sys
 
-    # Create a dictionary to map letters to their weights
-    letter_weights = dict(zip(letters, weights))
+def get_number_of_black_squares(grid):
+    num_black_squares = 0
+    for row in grid:
+        for square in row:
+            if square == '#':
+                num_black_squares += 1
+    return num_black_squares
 
-    # Initialize a list to store the words that match the given length and weight
-    words = []
+def get_choices(grid, num_black_squares):
+    num_rows = len(grid)
+    num_cols = len(grid[0])
+    choices = 0
+    for row in range(num_rows):
+        for col in range(num_cols):
+            if grid[row][col] == '#':
+                continue
+            grid[row][col] = 'R'
+            num_black_squares_after_painting = get_number_of_black_squares(grid)
+            if num_black_squares_after_painting == num_black_squares:
+                choices += 1
+            grid[row][col] = '.'
+    return choices
 
-    # Iterate through the dictionary of letters and their weights
-    for letter, weight in letter_weights.items():
-        # Check if the current weight is less than or equal to the given weight
-        if weight <= w:
-            # If the current weight is equal to the given weight, add the current letter to the list of words
-            if weight == w:
-                words.append(letter)
-            # If the current weight is less than the given weight, recursively call the function to find the remaining weight
-            else:
-                remaining_weight = w - weight
-                remaining_words = weight_of_words(l - 1, remaining_weight)
-                for word in remaining_words:
-                    words.append(letter + word)
+def main():
+    h, w, k = map(int, input().split())
+    grid = []
+    for _ in range(h):
+        grid.append(list(input()))
+    print(get_choices(grid, k))
 
-    # If no words are found, return "impossible"
-    if not words:
-        return "impossible"
-    # Otherwise, return the first word in the list
-    else:
-        return words[0]
+if __name__ == '__main__':
+    main()
 

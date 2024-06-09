@@ -1,24 +1,16 @@
 
-def restore_numbers(divisors):
-    # Sort the divisors in ascending order
-    divisors.sort()
+import sys
 
-    # Initialize x and y to 1
-    x = 1
-    y = 1
+n, m = map(int, input().split())
+prefectures = {}
 
-    # Iterate through the divisors
-    for divisor in divisors:
-        # If the divisor is not a multiple of x, multiply x by the divisor
-        if divisor % x == 0:
-            x *= divisor
-        # If the divisor is not a multiple of y, multiply y by the divisor
-        elif divisor % y == 0:
-            y *= divisor
-        # If the divisor is not a multiple of both x and y, set y to the product of x and the divisor
-        else:
-            y = x * divisor
+for i in range(m):
+    prefecture, year = map(int, input().split())
+    if prefecture not in prefectures:
+        prefectures[prefecture] = []
+    prefectures[prefecture].append(year)
 
-    # Return the values of x and y
-    return x, y
+for prefecture, years in prefectures.items():
+    for i, year in enumerate(sorted(years), start=1):
+        print(f"{prefecture:06d}{i:06d}")
 

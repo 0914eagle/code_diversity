@@ -1,45 +1,63 @@
 
-def get_max_influence(n, spectators):
-    # Sort the spectators by influence in descending order
-    spectators.sort(key=lambda x: x[1], reverse=True)
+import itertools
 
-    # Initialize variables to keep track of the number of spectators supporting Alice and Bob
-    alice_count = 0
-    bob_count = 0
-    total_influence = 0
+def count_evolution_plans(gyms, types):
+    # Initialize a counter for the number of distinct evolution plans
+    count = 0
+    
+    # Iterate over all possible evolution plans
+    for plan in itertools.permutations(types):
+        # Check if the plan satisfies the protocol
+        if satisfies_protocol(gyms, plan):
+            # Increment the counter
+            count += 1
+    
+    # Return the counter modulo 10^9 + 7
+    return count % 1000000007
 
-    # Iterate through the sorted spectators
-    for spectator in spectators:
-        # If the current spectator supports Alice, increment the Alice count
-        if spectator[0] in ["11", "10"]:
-            alice_count += 1
-        # If the current spectator supports Bob, increment the Bob count
-        if spectator[0] in ["11", "01"]:
-            bob_count += 1
-        # Add the influence of the current spectator to the total influence
-        total_influence += spectator[1]
+def satisfies_protocol(gyms, plan):
+    # Initialize a dictionary to store the number of Pokemons of each type before evolution
+    before = {}
+    for i in range(1, len(plan) + 1):
+        before[i] = 0
+    
+    # Initialize a dictionary to store the number of Pokemons of each type after evolution
+    after = {}
+    for i in range(1, len(plan) + 1):
+        after[i] = 0
+    
+    # Iterate over all gyms
+    for gym in gyms:
+        # Iterate over all Pokemons in the gym
+        for pokemon in gym:
+            # Get the type of the Pokemon before evolution
+            before_type = pokemon[0]
+            # Get the type of the Pokemon after evolution
+            after_type = plan[before_type - 1]
+            # Increment the number of Pokemons of the before type
+            before[before_type] += 1
+            # Increment the number of Pokemons of the after type
+            after[after_type] += 1
+    
+    # Check if the number of Pokemons of each type is the same before and after evolution
+    for i in range(1, len(plan) + 1):
+        if before[i] != after[i]:
+            return False
+    
+    # If all Pokemons have the same number of types before and after evolution, return True
+    return True
 
-        # If the current spectator supports both Alice and Bob, break the loop
-        if spectator[0] == "11":
-            break
+def main():
+    # Read the input
+    n, m = map(int, input().split())
+    gyms = []
+    for i in range(n):
+        gym = list(map(int, input().split()))
+        gyms.append(gym[1:])
+    
+    # Call the count_evolution_plans function and print the result
+    print(count_evolution_plans(gyms, range(1, m + 1)))
 
-    # If at least half of the spectators support Alice and at least half of the spectators support Bob, return the total influence
-    if alice_count >= n / 2 and bob_count >= n / 2:
-        return total_influence
-    else:
-        return 0
-
-
-n = int(input())
-spectators = []
-
-# Iterate through the next n lines of input
-for i in range(n):
-    # Split the input into the political view and influence
-    political_view, influence = input().split()
-    # Add the political view and influence to the list of spectators
-    spectators.append([political_view, int(influence)])
-
-# Call the get_max_influence function and print the result
-print(get_max_influence(n, spectators))
+if __name__ == '__main__':
+    main()
 

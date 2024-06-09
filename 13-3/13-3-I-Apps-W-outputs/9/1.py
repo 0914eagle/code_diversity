@@ -1,17 +1,41 @@
 
-def get_best_ranking(current_ranking, points_distribution, points_awarded):
-    # Initialize a dictionary to store the best ranking for each astronaut
-    best_ranking = {}
+import sys
 
-    # Loop through the current ranking and points awarded
-    for i, (current_points, points_award) in enumerate(zip(current_ranking, points_distribution)):
-        # Calculate the new points for the astronaut after the race
-        new_points = current_points + points_award
+def get_input():
+    return list(map(int, sys.stdin.readline().strip().split()))
 
-        # If the astronaut has not been considered before or if their new points are better than the current best ranking, update the best ranking
-        if i not in best_ranking or new_points > best_ranking[i]:
-            best_ranking[i] = new_points
+def solve():
+    H, W, M = get_input()
+    targets = []
+    for i in range(M):
+        h, w = get_input()
+        targets.append((h, w))
+    
+    # Sort the targets by row and column
+    targets.sort(key=lambda x: (x[0], x[1]))
+    
+    # Initialize the maximum number of targets to destroy
+    max_targets = 0
+    
+    # Iterate through the targets and check if we can destroy them
+    for i in range(M):
+        # Get the current target
+        h, w = targets[i]
+        
+        # Check if the target is in the same row or column as the previous target
+        if i > 0 and targets[i-1][0] == h and targets[i-1][1] == w:
+            # If the target is in the same row or column, we can't destroy it
+            continue
+        
+        # Check if the target is in the same row or column as the next target
+        if i < M-1 and targets[i+1][0] == h and targets[i+1][1] == w:
+            # If the target is in the same row or column, we can't destroy it
+            continue
+        
+        # If we reach here, we can destroy the target
+        max_targets += 1
+    
+    return max_targets
 
-    # Return the best ranking for the given astronaut
-    return min(best_ranking, key=best_ranking.get)
+print(solve())
 

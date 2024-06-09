@@ -1,11 +1,12 @@
 
-def solve(N, b):
-    # Calculate the total number of bits in the collection
-    total_bits = N * 1000
-    
-    # Check if the total number of bits is less than or equal to b^N
-    if total_bits <= b**N:
-        return "yes"
-    else:
-        return "no"
+r, D, x_2000 = map(int, input().split())
+
+x_list = []
+x_list.append(x_2000)
+
+for i in range(10):
+    x_list.append(int(r * x_list[i] - D))
+
+for x in x_list[1:]:
+    print(x)
 

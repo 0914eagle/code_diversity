@@ -1,31 +1,43 @@
 
-def solve(x0, y0, a_x, a_y, b_x, b_y, x_s, y_s, t):
-    # Initialize a list to store the coordinates of the data nodes
-    data_nodes = []
-    
-    # Initialize the current coordinate as the starting coordinate
-    current_x, current_y = x_s, y_s
-    
-    # Initialize the time spent as 0
-    time_spent = 0
-    
-    # Initialize the number of data nodes collected as 0
-    num_data_nodes = 0
-    
-    # Loop until the time limit is reached or all data nodes are collected
-    while time_spent < t and num_data_nodes < len(data_nodes):
-        # Check if the current coordinate is a data node
-        if (current_x, current_y) in data_nodes:
-            # If it is a data node, collect it and move on to the next coordinate
-            num_data_nodes += 1
-            current_x, current_y = current_x + a_x, current_y + a_y
-        else:
-            # If it is not a data node, move to the next coordinate in the given direction
-            current_x, current_y = current_x + b_x, current_y + b_y
-        
-        # Increment the time spent
-        time_spent += 1
-    
-    # Return the number of data nodes collected
-    return num_data_nodes
+import sys
+
+def paint_squares(N, M, conditions):
+    # Initialize the number of ways to paint the squares
+    num_ways = 1
+
+    # Loop through each condition
+    for l, r, x in conditions:
+        # Calculate the number of ways to paint the current condition
+        num_ways *= count_ways(N, l, r, x)
+
+        # Modulo the result to avoid overflow
+        num_ways %= 1000000007
+
+    return num_ways
+
+def count_ways(N, l, r, x):
+    # Base case: if the range is empty, return 1
+    if l > r:
+        return 1
+
+    # Initialize the number of ways to paint the current range
+    num_ways = 0
+
+    # Loop through each possible color
+    for color in range(1, x + 1):
+        # Calculate the number of ways to paint the current color
+        num_ways += count_ways(N, l + 1, r, x - 1)
+
+        # Modulo the result to avoid overflow
+        num_ways %= 1000000007
+
+    return num_ways
+
+if __name__ == '__main__':
+    N, M = map(int, input().split())
+    conditions = []
+    for _ in range(M):
+        l, r, x = map(int, input().split())
+        conditions.append((l, r, x))
+    print(paint_squares(N, M, conditions))
 

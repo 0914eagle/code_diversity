@@ -1,22 +1,30 @@
 
-def solve(n, divisors):
-    # Initialize x and y to 1
-    x, y = 1, 1
-    
-    # Iterate through the divisors
-    for d in divisors:
-        # If d is not a divisor of both x and y, find the next divisor of x or y
-        if d not in [x, y]:
-            if d % x == 0:
-                y *= d
-            else:
-                x *= d
-        # If d is a divisor of both x and y, find the next divisor of x or y
-        else:
-            if d % x == 0:
-                y *= d
-            else:
-                x *= d
-    
-    return x, y
+def solve(N, M, prefectures):
+    # Sort the prefectures by their establishment year
+    sorted_prefectures = sorted(prefectures, key=lambda x: x[1])
+
+    # Create a dictionary to map each prefecture to its cities
+    prefecture_to_cities = {}
+    for prefecture in sorted_prefectures:
+        prefecture_id, establishment_year = prefecture
+        if prefecture_id not in prefecture_to_cities:
+            prefecture_to_cities[prefecture_id] = []
+        prefecture_to_cities[prefecture_id].append(establishment_year)
+
+    # Create a list to store the ID numbers for all the cities
+    city_ids = []
+
+    # Iterate over the prefectures and their cities
+    for prefecture_id, cities in prefecture_to_cities.items():
+        # Sort the cities by their establishment year
+        sorted_cities = sorted(cities)
+
+        # Iterate over the cities and assign an ID number to each one
+        for i, city in enumerate(sorted_cities):
+            # Format the ID number as a string with six digits for the prefecture ID and six digits for the city index
+            id_number = f"{prefecture_id:06d}{i:06d}"
+            city_ids.append(id_number)
+
+    # Return the list of ID numbers for all the cities
+    return city_ids
 

@@ -1,20 +1,23 @@
 
-def find_longest_sequence(intervals):
-    # Sort the intervals by their start time
-    intervals.sort(key=lambda x: x[0])
-    
-    # Initialize the longest sequence with the first interval
-    longest_sequence = [intervals[0]]
-    
-    # Iterate over the remaining intervals
-    for i in range(1, len(intervals)):
-        # Check if the current interval is compatible with the longest sequence
-        if intervals[i][0] <= longest_sequence[-1][1]:
-            # If it is, add it to the sequence
-            longest_sequence.append(intervals[i])
-        else:
-            # If it is not, start a new sequence
-            longest_sequence = [intervals[i]]
-    
-    return longest_sequence
+def solve(n, m, p, board):
+    # Initialize a list to store the moves
+    moves = []
+
+    # Loop through each row
+    for i in range(n):
+        # Loop through each column
+        for j in range(m):
+            # If the current square is not the prime number, skip it
+            if board[i][j] != p:
+                # Add the current square to the moves list
+                moves.append(board[i][j])
+                # Update the current square to the next number in the row and column
+                board[i][j] = (board[i][j] + 1) % p
+
+    # If all squares show the prime number, return the moves list
+    if all(board[i][j] == p for i in range(n) for j in range(m)):
+        return moves
+    else:
+        # If no winning sequence exists, return -1
+        return -1
 

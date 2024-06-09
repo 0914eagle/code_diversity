@@ -1,33 +1,17 @@
 
-def solve(names, pseudonyms):
-    # Initialize a dictionary to store the mapping of students to pseudonyms
-    mapping = {}
+def solve(s, k):
+    n = len(s)
+    if k > n:
+        return ""
     
-    # Iterate over the names and pseudonyms
-    for name, pseudonym in zip(names, pseudonyms):
-        # Find the longest common prefix between the name and pseudonym
-        lcp = 0
-        for i in range(min(len(name), len(pseudonym))):
-            if name[i] == pseudonym[i]:
-                lcp += 1
-            else:
-                break
-        
-        # Add the mapping to the dictionary
-        mapping[name] = (pseudonym, lcp)
+    # Initialize the result with the first k characters of s
+    result = s[:k]
     
-    # Sort the dictionary by the length of the longest common prefix in descending order
-    mapping = sorted(mapping.items(), key=lambda x: x[1][1], reverse=True)
+    # Iterate through the remaining characters of s
+    for i in range(k, n):
+        # If the current character is lexicographically smaller than the last character of the result, replace the last character of the result with the current character
+        if s[i] < result[-1]:
+            result = result[:-1] + s[i]
     
-    # Initialize a list to store the optimal matching
-    matching = []
-    
-    # Iterate over the sorted dictionary
-    for name, (pseudonym, lcp) in mapping:
-        # If the pseudonym is not already in the matching, add it
-        if pseudonym not in [p[0] for p in matching]:
-            matching.append((name, pseudonym))
-    
-    # Return the maximum quality of matching and the optimal matching
-    return len(matching), matching
+    return result
 

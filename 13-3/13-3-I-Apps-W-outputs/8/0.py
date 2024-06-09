@@ -1,21 +1,38 @@
 
-def is_split_possible(num_boxes, boxes):
-    # Sort the list of boxes in ascending order
-    boxes.sort()
-    # Initialize the sum of pieces of chocolate for John and Sam as 0
-    sum_john, sum_sam = 0, 0
-    # Iterate through the list of boxes
-    for i in range(num_boxes):
-        # If the current box contains an odd number of pieces, assign it to John
-        if boxes[i] % 2 == 1:
-            sum_john += boxes[i]
-        # Otherwise, assign it to Sam
-        else:
-            sum_sam += boxes[i]
-    # If the sum of pieces of chocolate for John and Sam is equal, return YES
-    if sum_john == sum_sam:
-        return "YES"
-    # Otherwise, return NO
-    else:
-        return "NO"
+n, m = map(int, input().split())
+field = [input() for _ in range(n)]
+
+# Check if the field is rectangular
+if len(set(map(len, field))) != 1:
+    print("NO")
+    exit()
+
+# Check if the field has three colors
+colors = set()
+for row in field:
+    for col in row:
+        colors.add(col)
+if len(colors) != 3:
+    print("NO")
+    exit()
+
+# Check if the field has three equal width and height stripes
+width = len(field[0])
+height = len(field)
+if width % 3 != 0 or height % 3 != 0:
+    print("NO")
+    exit()
+
+# Check if each color is used in exactly one stripe
+for color in colors:
+    count = 0
+    for i in range(0, height, width // 3):
+        for j in range(0, width, width // 3):
+            if field[i + j][j] == color:
+                count += 1
+    if count != 1:
+        print("NO")
+        exit()
+
+print("YES")
 

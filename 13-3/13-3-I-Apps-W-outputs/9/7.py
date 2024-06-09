@@ -1,25 +1,33 @@
 
-def get_best_ranking(current_ranking, points_awarded, position):
-    # Initialize a dictionary to store the ranking and points for each astronaut
-    ranking = {}
-    for i in range(len(current_ranking)):
-        ranking[i+1] = (current_ranking[i], points_awarded[i])
+import sys
+
+def get_input():
+    return list(map(int, sys.stdin.readline().strip().split()))
+
+def solve():
+    H, W, M = get_input()
+    targets = []
+    for i in range(M):
+        h, w = get_input()
+        targets.append((h, w))
     
-    # Sort the dictionary by points in descending order
-    ranking = dict(sorted(ranking.items(), key=lambda item: item[1][1], reverse=True))
+    # Sort the targets by row and column
+    targets.sort(key=lambda x: (x[0], x[1]))
     
-    # Get the points and ranking of the given astronaut
-    given_points = ranking[position][1]
-    given_ranking = ranking[position][0]
+    # Initialize the maximum number of targets to destroy as 0
+    max_targets = 0
     
-    # Initialize the best ranking to the given ranking
-    best_ranking = given_ranking
+    # Iterate through the targets and check if they are in the same row or column as the previous target
+    for i in range(M):
+        if i == 0:
+            max_targets += 1
+        else:
+            current_target = targets[i]
+            previous_target = targets[i-1]
+            if current_target[0] == previous_target[0] or current_target[1] == previous_target[1]:
+                max_targets += 1
     
-    # Iterate through the dictionary and find the best ranking for the given astronaut
-    for i in range(1, len(ranking)):
-        if ranking[i+1][1] > given_points:
-            best_ranking = i
-            break
-    
-    return best_ranking
+    return max_targets
+
+print(solve())
 

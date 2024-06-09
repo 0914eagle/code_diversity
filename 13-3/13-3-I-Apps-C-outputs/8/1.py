@@ -1,30 +1,42 @@
 
-def solve(producer_companies, consumer_companies):
-    # Initialize variables
-    max_profit = 0
-    selected_producer = None
-    selected_consumer = None
+def get_min_extensions(a, b, h, w, n, extensions):
+    # Sort the extensions in descending order
+    extensions.sort(reverse=True)
 
-    # Iterate over each producer company
-    for producer in producer_companies:
-        # Iterate over each consumer company
-        for consumer in consumer_companies:
-            # Calculate the profit for this combination of producer and consumer
-            profit = calculate_profit(producer, consumer)
+    # Initialize the minimum number of extensions needed to be 0
+    min_extensions = 0
 
-            # If the profit is greater than the current max profit, update the max profit and the selected producer and consumer
-            if profit > max_profit:
-                max_profit = profit
-                selected_producer = producer
-                selected_consumer = consumer
+    # Loop through the extensions and check if they can be used to enlarge the field
+    for extension in extensions:
+        # Check if the extension can be used to enlarge the width of the field
+        if extension <= w:
+            # Enlarge the width of the field by the extension
+            w *= extension
 
-    # Return the max profit and the selected producer and consumer
-    return max_profit, selected_producer, selected_consumer
+            # Check if the rectangle can be placed on the field after enlarging the width
+            if w >= a:
+                # Break the loop and return the minimum number of extensions needed
+                break
 
-def calculate_profit(producer, consumer):
-    # Calculate the profit for this combination of producer and consumer
-    profit = producer["price"] - consumer["price"]
+        # Check if the extension can be used to enlarge the length of the field
+        if extension <= h:
+            # Enlarge the length of the field by the extension
+            h *= extension
 
-    # Return the profit
-    return profit
+            # Check if the rectangle can be placed on the field after enlarging the length
+            if h >= b:
+                # Break the loop and return the minimum number of extensions needed
+                break
+
+    # If the rectangle can be placed on the field, return the minimum number of extensions needed
+    if w >= a and h >= b:
+        return min_extensions
+
+    # If the rectangle cannot be placed on the field, return -1
+    return -1
+
+
+a, b, h, w, n = map(int, input().split())
+extensions = list(map(int, input().split()))
+print(get_min_extensions(a, b, h, w, n, extensions))
 

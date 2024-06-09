@@ -1,9 +1,16 @@
 
-def get_available_mb(x, n, p):
-    available_mb = x
-    for i in range(n):
-        available_mb -= p[i]
-        if available_mb < 0:
-            available_mb = 0
-    return available_mb
+n = int(input())
+
+for i in range(n):
+    k = int(input())
+    menu_items = []
+    for j in range(k+1):
+        menu_item = input()
+        menu_items.append(menu_item)
+    
+    if "pea soup" in menu_items and "pancakes" in menu_items:
+        print(menu_items[0])
+        break
+else:
+    print("Anywhere is fine I guess")
 

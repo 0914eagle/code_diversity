@@ -1,15 +1,15 @@
 
-def can_visit_friend(n, m, teleports):
-    # Initialize a set to store the points that can be reached using teleports
-    reachable_points = set([0])
+def count_substring(T, N):
+    # Initialize a variable to store the count
+    count = 0
     
-    # Iterate through the teleports
-    for teleport in teleports:
-        # If the teleport's location is in the set of reachable points
-        if teleport[0] in reachable_points:
-            # Add the teleport's limit to the set of reachable points
-            reachable_points.add(teleport[1])
+    # Loop through the string S
+    for i in range(len(S) - N + 1):
+        # Check if the substring T occurs at the current position
+        if S[i:i+N] == T:
+            # Increment the count
+            count += 1
     
-    # Return True if the friend's house is in the set of reachable points, False otherwise
-    return m in reachable_points
+    # Return the count
+    return count
 

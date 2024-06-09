@@ -1,31 +1,43 @@
 
-def solve(N, M, roads):
-    # Initialize a graph with N nodes and 0 edges
-    graph = [[] for _ in range(N)]
+def black_vienna(investigations):
+    num_investigations = len(investigations)
+    num_suspects = 26
+    num_solutions = 0
+    
+    for i in range(num_investigations):
+        suspects = investigations[i][:2]
+        player = investigations[i][2]
+        reply = investigations[i][3]
+        
+        # Initialize a dictionary to store the number of each suspect in each player's hand
+        suspect_counts = {suspect: 0 for suspect in range(1, num_suspects + 1)}
+        for suspect in suspects:
+            suspect_counts[suspect] += 1
+        
+        # Update the dictionary with the reply from the current investigation
+        suspect_counts[player] -= reply
+        
+        # Check if the reply is consistent with the number of suspects in each player's hand
+        if suspect_counts[player] < 0:
+            return 0
+        
+        # Count the number of admissible solutions
+        num_solutions += count_solutions(suspect_counts)
+    
+    return num_solutions
 
-    # Add edges to the graph
-    for road in roads:
-        graph[road[0] - 1].append(road[1] - 1)
-        graph[road[1] - 1].append(road[0] - 1)
+def count_solutions(suspect_counts):
+    num_solutions = 0
+    for suspect in range(1, 27):
+        if suspect_counts[suspect] == 0:
+            continue
+        num_solutions += choose(suspect_counts[suspect], 3)
+    return num_solutions
 
-    # Check if the graph is connected
-    visited = [False] * N
-    queue = [0]
-    visited[0] = True
-    while queue:
-        node = queue.pop(0)
-        for neighbor in graph[node]:
-            if not visited[neighbor]:
-                visited[neighbor] = True
-                queue.append(neighbor)
-
-    # If the graph is not connected, return "NO"
-    if not all(visited):
-        return "NO"
-
-    # If the graph is connected, return "YES" and a possible direction assignment
-    direction = []
-    for i in range(M):
-        direction.append([i + 1, i + 2])
-    return "YES\n" + "\n".join(map(str, direction))
+def choose(n, k):
+    if k < 0 or n < k:
+        return 0
+    if k == 0 or n == k:
+        return 1
+    return choose(n - 1, k - 1) + choose(n - 1, k)
 

@@ -1,40 +1,23 @@
 
-def solve(h, w, n, pattern, commands):
-    # Initialize the board and the current position of the marker
-    board = [[0] * w for _ in range(h)]
-    x, y = 0, 0
-    
-    # Iterate through the commands and execute them one by one
-    for command in commands:
-        direction, distance = command.split()
-        distance = int(distance)
-        if direction == "up":
-            y -= distance
-        elif direction == "down":
-            y += distance
-        elif direction == "left":
-            x -= distance
-        elif direction == "right":
-            x += distance
-        
-        # Check if the marker has run dry
-        if board[y][x] == 1:
-            return [-1, -1]
-        
-        # Mark the current cell on the board
-        board[y][x] = 1
-    
-    # Check if the final pattern matches the target pattern
-    if board != pattern:
-        return [-1, -1]
-    
-    # Return the minimum and maximum time that the marker can dry out
-    min_time = max_time = 0
-    for i in range(h):
-        for j in range(w):
-            if board[i][j] == 1:
-                min_time = max(min_time, i * w + j)
-                max_time = max(max_time, i * w + j)
-    
-    return [min_time, max_time]
+def n_queens_problem(n, m, board):
+    # Initialize a list to store the positions of the queens
+    queens = []
+    # Initialize a variable to store the number of ways to place queens
+    ways = 0
+
+    # Loop through each row of the board
+    for i in range(n):
+        # Loop through each column of the board
+        for j in range(m):
+            # If the current cell is not broken and there is no queen in the current row
+            if board[i][j] == "." and i not in queens:
+                # Add the current queen to the list of queens
+                queens.append(i)
+                # Increment the number of ways to place queens
+                ways += 1
+                # Break out of the inner loop to avoid placing multiple queens in the same row
+                break
+
+    # Return the maximum number of queens and the number of ways to place them
+    return len(queens), ways
 

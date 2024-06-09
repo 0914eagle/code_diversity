@@ -1,21 +1,4 @@
 
-def get_diverse_garland(n, s):
-    # Initialize the number of recolors to 0
-    recolors = 0
-    # Initialize the diverse garland as an empty string
-    diverse_garland = ""
-    # Iterate through the input garland
-    for i in range(n):
-        # If the current lamp is not the same as the previous lamp
-        if i > 0 and s[i] != s[i-1]:
-            # Add the current lamp to the diverse garland
-            diverse_garland += s[i]
-        # If the current lamp is the same as the previous lamp
-        else:
-            # Increment the number of recolors
-            recolors += 1
-            # Add a different lamp to the diverse garland
-            diverse_garland += "R" if s[i] == "G" else "G"
-    # Return the number of recolors and the diverse garland
-    return recolors, diverse_garland
+def is_haiku(a, b, c):
+    return a + b + c == 17 and a % 5 == 0 and b % 7 == 0 and c % 5 == 0
 

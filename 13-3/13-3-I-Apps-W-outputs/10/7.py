@@ -1,19 +1,18 @@
 
-def solve(n, edges):
-    # Initialize a list to store the labels
-    labels = [0] * (n - 1)
-    # Initialize a set to keep track of the used labels
-    used_labels = set()
-    # Iterate over the edges
-    for i, (u, v) in enumerate(edges):
-        # Find the MEX of the edge
-        mex = 0
-        while mex in used_labels:
-            mex += 1
-        # Assign the MEX as the label for the edge
-        labels[i] = mex
-        # Add the label to the set of used labels
-        used_labels.add(mex)
-    # Return the labels
-    return labels
+import sys
+
+def k_tree_paths(n, k, d):
+    mod = 1000000007
+    dp = [[0] * (n + 1) for _ in range(k + 1)]
+    dp[0][0] = 1
+    for i in range(1, k + 1):
+        for j in range(1, n + 1):
+            if j >= d:
+                dp[i][j] = (dp[i - 1][j - d] + dp[i][j - 1]) % mod
+            else:
+                dp[i][j] = dp[i][j - 1]
+    return dp[k][n]
+
+n, k, d = map(int, sys.stdin.readline().split())
+print(k_tree_paths(n, k, d))
 

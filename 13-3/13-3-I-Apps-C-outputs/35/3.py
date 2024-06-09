@@ -1,52 +1,53 @@
 
-def get_maximal_influence(n, spectators):
-    # Sort the spectators by influence in descending order
-    spectators.sort(key=lambda x: x[1], reverse=True)
+import itertools
 
-    # Initialize variables to keep track of the selected spectators
-    selected_spectators = []
-    total_influence = 0
-    alice_support = 0
-    bob_support = 0
+def count_evolution_plans(gyms, types):
+    # Initialize a counter for the number of distinct evolution plans
+    count = 0
+    
+    # Iterate over all possible evolution plans
+    for plan in itertools.permutations(types):
+        # Check if the plan satisfies the protocol
+        if satisfies_protocol(gyms, plan):
+            # Increment the counter
+            count += 1
+    
+    # Return the counter modulo 10^9 + 7
+    return count % 1000000007
 
-    # Iterate through the spectators and select them based on their political views
-    for spectator in spectators:
-        if spectator[0] == "11":  # Both Alice and Bob
-            selected_spectators.append(spectator)
-            total_influence += spectator[1]
-            alice_support += 1
-            bob_support += 1
-        elif spectator[0] == "10":  # Alice but not Bob
-            selected_spectators.append(spectator)
-            total_influence += spectator[1]
-            alice_support += 1
-        elif spectator[0] == "01":  # Bob but not Alice
-            selected_spectators.append(spectator)
-            total_influence += spectator[1]
-            bob_support += 1
-        elif spectator[0] == "00":  # Neither Alice nor Bob
-            continue
+def satisfies_protocol(gyms, plan):
+    # Initialize a dictionary to store the number of Pokemons of each type
+    types = {}
+    for i in range(1, len(plan) + 1):
+        types[i] = 0
+    
+    # Iterate over all gyms
+    for gym in gyms:
+        # Iterate over all Pokemons in the gym
+        for pokemon in gym:
+            # Increment the number of Pokemons of the current type
+            types[pokemon] += 1
+    
+    # Iterate over all types
+    for type in types:
+        # Check if the number of Pokemons of the current type is equal to the number of Pokemons of the corresponding type after evolving
+        if types[type] != types[plan[type - 1]]:
+            # Return False if the protocol is not satisfied
+            return False
+    
+    # Return True if the protocol is satisfied
+    return True
 
-        # Check if we have selected at least half of the spectators who support Alice and at least half of the spectators who support Bob
-        if alice_support >= n / 2 and bob_support >= n / 2:
-            break
+def main():
+    # Read the input
+    n, m = map(int, input().split())
+    gyms = []
+    for i in range(n):
+        gyms.append(list(map(int, input().split())))
+    
+    # Call the count_evolution_plans function and print the result
+    print(count_evolution_plans(gyms, range(1, m + 1)))
 
-    # If we have selected at least half of the spectators who support Alice and at least half of the spectators who support Bob, return the total influence
-    if alice_support >= n / 2 and bob_support >= n / 2:
-        return total_influence
-    else:
-        return 0
-
-
-n = int(input())
-spectators = []
-
-# Read the input and convert it to a list of tuples (political view, influence)
-for i in range(n):
-    political_view, influence = input().split()
-    spectators.append((political_view, int(influence)))
-
-# Call the function to get the maximal influence and print the result
-result = get_maximal_influence(n, spectators)
-print(result)
+if __name__ == '__main__':
+    main()
 

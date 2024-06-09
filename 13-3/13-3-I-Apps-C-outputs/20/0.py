@@ -1,21 +1,34 @@
 
-def get_minimum_presentations(boys, girls, books):
-    # Initialize variables
-    presentations = 0
-    books_presented = 0
+def get_min_mex(subarrays):
+    mex = 0
+    for subarray in subarrays:
+        for i in range(subarray[0], subarray[1] + 1):
+            if i not in subarray:
+                mex = max(mex, i)
+    return mex
 
-    # Sort the books by title
-    books = sorted(books)
 
-    # Loop through each book
-    for book in books:
-        # Check if the book has been presented already
-        if book not in books_presented:
-            # Increment the number of presentations
-            presentations += 1
-            # Add the book to the list of presented books
-            books_presented.append(book)
+def get_optimal_array(n, m):
+    subarrays = []
+    for i in range(m):
+        l, r = map(int, input().split())
+        subarrays.append([l, r])
 
-    # Return the minimum number of presentations
-    return presentations
+    a = [0] * n
+    for i in range(n):
+        a[i] = i + 1
+
+    min_mex = get_min_mex(subarrays)
+    for i in range(n):
+        if a[i] != min_mex:
+            a[i] = min_mex
+            break
+
+    return a
+
+
+n, m = map(int, input().split())
+a = get_optimal_array(n, m)
+print(min_mex)
+print(*a)
 

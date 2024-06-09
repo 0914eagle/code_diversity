@@ -1,30 +1,40 @@
 
-def weight_of_words(l, w):
-    # Initialize a list of all lowercase English letters
-    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-    
-    # Initialize a dictionary to map each letter to its weight
-    letter_weights = {letter: i for i, letter in enumerate(letters, start=1)}
-    
-    # Initialize a list to store all possible words of length l
-    words = []
-    
-    # Iterate over all possible combinations of letters of length l
-    for combination in itertools.combinations(letters, l):
-        # Convert the combination to a string
-        word = ''.join(combination)
-        
-        # Calculate the weight of the word
-        weight = sum(letter_weights[letter] for letter in word)
-        
-        # If the weight is equal to w, add the word to the list of possible words
-        if weight == w:
-            words.append(word)
-    
-    # If no words were found, return "impossible"
-    if not words:
-        return "impossible"
-    
-    # Otherwise, return any of the possible words
-    return words[0]
+import sys
+
+def get_number_of_black_squares(grid):
+    num_black_squares = 0
+    for row in grid:
+        for square in row:
+            if square == '#':
+                num_black_squares += 1
+    return num_black_squares
+
+def get_choices(grid, num_black_squares):
+    choices = []
+    for row in range(len(grid)):
+        for col in range(len(grid[0])):
+            if grid[row][col] == '#':
+                choices.append((row, col))
+    return choices
+
+def count_valid_choices(grid, num_black_squares, choices):
+    valid_choices = 0
+    for choice in choices:
+        row, col = choice
+        if get_number_of_black_squares(grid) - num_black_squares == num_black_squares:
+            valid_choices += 1
+    return valid_choices
+
+def main():
+    h, w, k = map(int, input().split())
+    grid = []
+    for _ in range(h):
+        grid.append(list(input()))
+    num_black_squares = get_number_of_black_squares(grid)
+    choices = get_choices(grid, num_black_squares)
+    valid_choices = count_valid_choices(grid, num_black_squares, choices)
+    print(valid_choices)
+
+if __name__ == '__main__':
+    main()
 

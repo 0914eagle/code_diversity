@@ -1,21 +1,14 @@
 
-def solve(a):
-    # Convert the input string to a list of digits
-    digits = [int(digit) for digit in a]
-    # Initialize the minimum integer with the original input
-    min_int = digits
-    # Loop through each digit in the input
-    for i in range(len(digits)):
-        # Check if the digit is not the last digit in the input
-        if i < len(digits) - 1:
-            # Check if the digit and the next digit have different parity
-            if digits[i] % 2 != digits[i+1] % 2:
-                # Swap the digit with the next digit
-                digits[i], digits[i+1] = digits[i+1], digits[i]
-                # Check if the resulting integer is smaller than the current minimum
-                if int("".join(str(digit) for digit in digits)) < int("".join(str(digit) for digit in min_int)):
-                    # Update the minimum integer if necessary
-                    min_int = digits
-    # Return the minimum integer
-    return "".join(str(digit) for digit in min_int)
+def smallest_sum_of_digits(k):
+    # Initialize a variable to store the smallest sum
+    smallest_sum = float('inf')
+    # Iterate through all positive multiples of k
+    for i in range(1, 100001):
+        # Calculate the sum of the digits in the decimal notation of the multiple
+        sum_of_digits = sum(int(digit) for digit in str(i * k))
+        # If the sum is smaller than the current smallest sum, update the smallest sum
+        if sum_of_digits < smallest_sum:
+            smallest_sum = sum_of_digits
+    # Return the smallest sum
+    return smallest_sum
 

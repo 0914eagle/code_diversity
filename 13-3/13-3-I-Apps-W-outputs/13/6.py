@@ -1,49 +1,28 @@
 
-def solve(a, b, c, d, x, y, x1, y1, x2, y2):
-    # Check if the starting point is within the allowed range
-    if not (x1 <= x <= x2 and y1 <= y <= y2):
-        return "NO"
-    
-    # Initialize the number of moves left
-    moves_left = a + b + c + d
-    
-    # Initialize the current position
-    current_x = x
-    current_y = y
-    
-    # Initialize the list of visited cells
-    visited = set()
-    
-    # Loop until all moves are used up
-    while moves_left > 0:
-        # Check if the current position is within the allowed range
-        if not (x1 <= current_x <= x2 and y1 <= current_y <= y2):
-            return "NO"
-        
-        # Check if the current position has been visited before
-        if (current_x, current_y) in visited:
-            return "NO"
-        
-        # Add the current position to the list of visited cells
-        visited.add((current_x, current_y))
-        
-        # Determine the next move
-        if moves_left >= a:
-            current_x -= 1
-            moves_left -= a
-        elif moves_left >= b:
-            current_x += 1
-            moves_left -= b
-        elif moves_left >= c:
-            current_y -= 1
-            moves_left -= c
-        else:
-            current_y += 1
-            moves_left -= d
-    
-    # If all moves are used up and the current position is within the allowed range, return "YES"
-    if moves_left == 0 and x1 <= current_x <= x2 and y1 <= current_y <= y2:
-        return "YES"
-    else:
-        return "NO"
+import math
+
+def solve():
+    N = int(input())
+    A = list(map(int, input().split()))
+
+    # Sort the array A in non-decreasing order
+    A.sort()
+
+    # Initialize the array B with the values A[i] for i = 1, 2, ..., N
+    B = [A[i] for i in range(N)]
+
+    # Loop through each element of the array A and check if the condition is satisfied
+    for i in range(N):
+        for j in range(i+1, N):
+            if A[i] * A[j] != A[j] * A[i]:
+                # If the condition is not satisfied, swap the elements of the array B
+                B[i], B[j] = B[j], B[i]
+
+    # Calculate the sum of the elements of the array B
+    sum_B = sum(B)
+
+    # Return the sum modulo (10^9 + 7)
+    return sum_B % (10**9 + 7)
+
+print(solve())
 

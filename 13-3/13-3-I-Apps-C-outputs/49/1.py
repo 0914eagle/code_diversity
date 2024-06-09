@@ -1,35 +1,28 @@
 
-def solve_magic_checkerboard(n, m, board):
-    # Initialize the minimum sum to a large value
-    min_sum = 10000
-    # Loop through all possible values for the 0 cells
-    for i in range(1, 2001):
-        for j in range(1, 2001):
-            # Check if the current value is valid for the Magic Checkerboard
-            if is_valid_magic_checkerboard(n, m, board, i, j):
-                # Calculate the sum of all values in the board
-                sum = calculate_sum(n, m, board)
-                # Update the minimum sum if the current sum is smaller
-                if sum < min_sum:
-                    min_sum = sum
-    # Return the minimum sum
-    return min_sum
+n = int(input())
 
-def is_valid_magic_checkerboard(n, m, board, i, j):
-    # Check if the current value is valid for the Magic Checkerboard
-    for row in range(n):
-        for col in range(m):
-            if board[row][col] == 0:
-                board[row][col] = i
-            if board[row][col] == i and board[row][col-1] == j:
-                return False
-    return True
+# Initialize the maximum sum as 0
+max_sum = 0
 
-def calculate_sum(n, m, board):
-    # Calculate the sum of all values in the board
-    sum = 0
-    for row in range(n):
-        for col in range(m):
-            sum += board[row][col]
-    return sum
+# Loop through all possible values of a
+for a in range(n+1):
+    # Find the corresponding value of b
+    b = n - a
+    
+    # Calculate the sum of digits in a and b
+    sum_a = sum(int(digit) for digit in str(a))
+    sum_b = sum(int(digit) for digit in str(b))
+    
+    # Calculate the total sum
+    total_sum = sum_a + sum_b
+    
+    # Check if the total sum is greater than the maximum sum
+    if total_sum > max_sum:
+        # If it is, update the maximum sum and the values of a and b
+        max_sum = total_sum
+        max_a = a
+        max_b = b
+
+# Print the maximum sum
+print(max_sum)
 

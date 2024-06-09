@@ -1,34 +1,47 @@
 
-def solve(N, M, roads):
-    # Initialize a graph with N nodes and 0 edges
-    graph = [[] for _ in range(N)]
+def black_vienna(investigations):
+    num_investigations = len(investigations)
+    num_suspects = 26
+    num_circle = 3
+    num_solutions = 0
 
-    # Add edges to the graph
-    for road in roads:
-        graph[road[0] - 1].append(road[1] - 1)
-        graph[road[1] - 1].append(road[0] - 1)
+    for i in range(num_investigations):
+        suspects = investigations[i][:2]
+        player = investigations[i][2]
+        reply = investigations[i][3]
 
-    # Check if the graph is connected
-    visited = [False] * N
-    queue = [0]
-    visited[0] = True
-    while queue:
-        node = queue.pop(0)
-        for neighbor in graph[node]:
-            if not visited[neighbor]:
-                visited[neighbor] = True
-                queue.append(neighbor)
+        # Initialize a dictionary to store the number of each suspect in each player's hand
+        suspect_counts = {}
+        for j in range(num_suspects):
+            suspect_counts[chr(j + 65)] = 0
 
-    # If the graph is not connected, return "NO"
-    if not all(visited):
-        return "NO"
+        # Update the dictionary with the number of each suspect in each player's hand
+        for j in range(num_suspects):
+            if suspects[0] == chr(j + 65):
+                suspect_counts[suspects[0]] += 1
+            if suspects[1] == chr(j + 65):
+                suspect_counts[suspects[1]] += 1
 
-    # If the graph is connected, return "YES" and a possible direction assignment
-    direction = []
-    for road in roads:
-        if road[0] != 1:
-            direction.append([road[0], road[1]])
-        else:
-            direction.append([road[1], road[0]])
-    return "YES\n" + "\n".join(str(road) for road in direction)
+        # Initialize a list to store the possible solutions
+        solutions = []
+
+        # Iterate through each possible solution and check if it is admissible
+        for j in range(num_suspects - num_circle + 1):
+            solution = []
+            for k in range(num_circle):
+                solution.append(chr(j + k + 65))
+            if solution[0] not in suspect_counts or solution[1] not in suspect_counts or solution[2] not in suspect_counts:
+                continue
+            if solution[0] in suspect_counts and suspect_counts[solution[0]] < reply:
+                continue
+            if solution[1] in suspect_counts and suspect_counts[solution[1]] < reply:
+                continue
+            if solution[2] in suspect_counts and suspect_counts[solution[2]] < reply:
+                continue
+            solutions.append(solution)
+
+        # Update the number of solutions
+        num_solutions += len(solutions)
+
+    return num_solutions
 

@@ -1,14 +1,12 @@
 
-def get_tea_order(n, k, a, b):
-    if n > a + b:
-        return "NO"
-    
-    tea_order = []
-    while len(tea_order) < n:
-        if len(tea_order) - tea_order.count("G") < k:
-            tea_order.append("G")
-        else:
-            tea_order.append("B")
-    
-    return "".join(tea_order)
+def is_signature_forgable(signature):
+    n, m = len(signature), len(signature[0])
+    for i in range(n):
+        for j in range(m):
+            if signature[i][j] == '#':
+                for k in range(i, i+3):
+                    for l in range(j, j+3):
+                        if k < n and l < m and signature[k][l] == '#':
+                            return "YES"
+    return "NO"
 

@@ -1,13 +1,40 @@
 
-def solve(n):
-    for m in range(2, n):
-        if n % m == 0 and is_squarefree(m * n):
-            return m
-    return -1
+def solve(grid):
+    n, m = len(grid), len(grid[0])
+    stars = []
+    for i in range(n):
+        for j in range(m):
+            if grid[i][j] == '*':
+                stars.append((i, j))
+    for star in stars:
+        i, j = star
+        size = 1
+        while valid_star(stars, i, j, size):
+            size += 1
+        if size > n * m:
+            return -1
+        stars.append((i, j, size))
+    return stars
 
-def is_squarefree(n):
-    for i in range(2, int(n ** 0.5) + 1):
-        if n % i == 0:
+def valid_star(stars, i, j, size):
+    for star in stars:
+        x, y, s = star
+        if x == i and y == j and s == size:
             return False
+    for x in range(i - size + 1, i + size):
+        for y in range(j - size + 1, j + size):
+            if not (0 <= x < len(grid) and 0 <= y < len(grid[0]) and grid[x][y] == '*'):
+                return False
     return True
+
+grid = [
+    list("....*..."),
+    list("...**..."),
+    list("..*****."),
+    list("...**..."),
+    list("....*..."),
+    list("........"),
+]
+result = solve(grid)
+print(result)
 

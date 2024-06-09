@@ -1,47 +1,48 @@
 
-def solve(n, corners):
-    # Initialize an empty dictionary to store the matching
-    matching = {}
+def kahn_algorithm(graph):
+    # Initialize the list of source nodes and the sorted list
+    sources = [node for node in graph if not graph[node]]
+    sorted_list = []
 
-    # Iterate over the corner pairs
-    for i in range(n):
-        # Get the current top-left and bottom-right corners
-        top_left, bottom_right = corners[i]
+    # While there are sources nodes, repeat the following steps:
+    while sources:
+        # Remove a source node and all its outgoing edges from the graph
+        source = sources.pop(0)
+        graph.pop(source)
+        for node in list(graph):
+            if source in graph[node]:
+                graph[node].remove(source)
 
-        # Check if the top-left corner is already matched
-        if top_left in matching:
-            # If it is, get the matching bottom-right corner
-            matching_bottom_right = matching[top_left]
+        # If the removal of edges creates new source nodes, add them to the list of sources
+        sources.extend([node for node in graph if not graph[node]])
 
-            # Check if the bottom-right corner is already matched
-            if bottom_right in matching:
-                # If it is, check if the matching top-left corner is the same as the current top-left corner
-                if matching_bottom_right == bottom_right:
-                    # If it is, the current pair is valid and can be added to the matching
-                    matching[top_left] = bottom_right
-                else:
-                    # If it is not, the current pair is invalid and the matching is not possible
-                    return "syntax error"
-            else:
-                # If the bottom-right corner is not matched, the current pair is valid and can be added to the matching
-                matching[top_left] = bottom_right
-        else:
-            # If the top-left corner is not matched, check if the bottom-right corner is already matched
-            if bottom_right in matching:
-                # If it is, get the matching top-left corner
-                matching_top_left = matching[bottom_right]
+        # Insert the source node at the end of the sorted list
+        sorted_list.append(source)
 
-                # Check if the matching top-left corner is the same as the current top-left corner
-                if matching_top_left == top_left:
-                    # If it is, the current pair is valid and can be added to the matching
-                    matching[top_left] = bottom_right
-                else:
-                    # If it is not, the current pair is invalid and the matching is not possible
-                    return "syntax error"
-            else:
-                # If neither corner is matched, the current pair is valid and can be added to the matching
-                matching[top_left] = bottom_right
+    # Return the sorted list
+    return sorted_list
 
-    # If the matching is complete, return it
-    return matching
+def largest_s(graph):
+    # Initialize the largest size of S to 0
+    largest_size = 0
+
+    # For each possible source node, repeat the following steps:
+    for source in range(len(graph)):
+        # Create a copy of the graph with the source node removed
+        graph_copy = graph.copy()
+        graph_copy.pop(source)
+
+        # Run Kahn's algorithm on the copy of the graph
+        sorted_list = kahn_algorithm(graph_copy)
+
+        # If the sorted list is not empty, update the largest size of S
+        if sorted_list:
+            largest_size = max(largest_size, len(sorted_list))
+
+    # Return the largest size of S
+    return largest_size
+
+# Test the function with an example graph
+graph = {0: [1], 1: [2], 2: [3], 3: []}
+print(largest_s(graph)) # Output: 1
 

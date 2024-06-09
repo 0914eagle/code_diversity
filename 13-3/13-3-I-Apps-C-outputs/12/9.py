@@ -1,26 +1,46 @@
 
-def solve(x0, y0, a_x, a_y, b_x, b_y, x_s, y_s, t):
-    # Initialize a list to store the coordinates of the data nodes
-    data_nodes = [(x0, y0)]
-    # Initialize a set to store the visited nodes
-    visited = set()
-    # Initialize a variable to store the maximum number of data nodes collected
-    max_data_nodes = 0
-    # Initialize a variable to store the current node
-    current_node = (x_s, y_s)
-    # Initialize a variable to store the time remaining
-    time_remaining = t
-    # Loop until the time remaining is zero or the current node is the starting node
-    while time_remaining > 0 and current_node != (x0, y0):
-        # Get the coordinates of the next node
-        next_node = (a_x * current_node[0] + b_x, a_y * current_node[1] + b_y)
-        # If the next node is not visited, add it to the list of data nodes and mark it as visited
-        if next_node not in visited:
-            data_nodes.append(next_node)
-            visited.add(next_node)
-        # Move to the next node and decrease the time remaining
-        current_node = next_node
-        time_remaining -= 1
-    # Return the maximum number of data nodes collected
-    return len(data_nodes)
+import sys
+
+def paint_squares(N, M, conditions):
+    # Initialize the number of ways to paint the squares
+    num_ways = 1
+
+    # Loop through each condition
+    for i in range(M):
+        # Get the left and right indices, and the number of different colors required
+        l, r, x = conditions[i]
+
+        # Calculate the number of ways to paint the squares with the current condition
+        num_ways *= count_ways(N, l, r, x)
+
+        # Reduce the number of ways to paint the squares modulo 10^9+7
+        num_ways %= 1000000007
+
+    return num_ways
+
+def count_ways(N, l, r, x):
+    # Initialize the number of ways to paint the squares
+    num_ways = 1
+
+    # Loop through each square from left to right
+    for i in range(l, r+1):
+        # If the current square is not painted, add the number of ways to paint it
+        if i not in painted_squares:
+            num_ways *= x
+
+            # Reduce the number of ways to paint the squares modulo 10^9+7
+            num_ways %= 1000000007
+
+    return num_ways
+
+if __name__ == '__main__':
+    # Read the input from stdin
+    N, M = map(int, input().split())
+    conditions = []
+    for i in range(M):
+        l, r, x = map(int, input().split())
+        conditions.append((l, r, x))
+
+    # Call the paint_squares function and print the result
+    print(paint_squares(N, M, conditions))
 

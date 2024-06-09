@@ -1,28 +1,58 @@
 
-def find_sub_rectangle(n, m, x, y, a, b):
-    # Find the maximum sub-rectangle with the given length-width ratio
-    x1 = max(0, x - a)
-    y1 = max(0, y - b)
-    x2 = min(n, x + a)
-    y2 = min(m, y + b)
-    
-    # If there are multiple solutions, find the rectangle which is closest to (x, y)
-    if x1 > 0 or y1 > 0 or x2 < n or y2 < m:
-        center_x = (x1 + x2) // 2
-        center_y = (y1 + y2) // 2
-        distance = abs(center_x - x) + abs(center_y - y)
-        if distance < a or distance < b:
-            x1 = center_x - a // 2
-            y1 = center_y - b // 2
-            x2 = center_x + a // 2
-            y2 = center_y + b // 2
-    
-    # If there are still multiple solutions, find the lexicographically minimum one
-    if x1 > 0 or y1 > 0 or x2 < n or y2 < m:
-        x1 = min(x1, x2 - a)
-        y1 = min(y1, y2 - b)
-        x2 = max(x1 + a, x2)
-        y2 = max(y1 + b, y2)
-    
-    return x1, y1, x2, y2
+import sys
+
+def solve(N, c_AA, c_AB, c_BA, c_BB):
+    # Initialize the number of strings to 0
+    num_strings = 0
+
+    # Loop through all possible strings of length N
+    for i in range(2**N):
+        # Convert the binary representation of i to a string
+        s = bin(i)[2:]
+
+        # Pad the string with leading 0s to make it length N
+        s = "0" * (N - len(s)) + s
+
+        # Check if the string is valid
+        if is_valid(s, c_AA, c_AB, c_BA, c_BB):
+            # Increment the number of valid strings
+            num_strings += 1
+
+    # Return the number of valid strings
+    return num_strings % (10**9 + 7)
+
+def is_valid(s, c_AA, c_AB, c_BA, c_BB):
+    # Check if the string is length N
+    if len(s) != N:
+        return False
+
+    # Check if the string contains only A and B
+    for c in s:
+        if c not in "AB":
+            return False
+
+    # Check if the string contains the correct number of each character
+    if s.count("A") != N // 2:
+        return False
+    if s.count("B") != N // 2:
+        return False
+
+    # Check if the string contains the correct number of each pair of characters
+    if s.count("AA") != c_AA:
+        return False
+    if s.count("AB") != c_AB:
+        return False
+    if s.count("BA") != c_BA:
+        return False
+    if s.count("BB") != c_BB:
+        return False
+
+    # If all checks pass, the string is valid
+    return True
+
+# Read the input from stdin
+N, c_AA, c_AB, c_BA, c_BB = map(int, input().split())
+
+# Call the solve function and print the result
+print(solve(N, c_AA, c_AB, c_BA, c_BB))
 

@@ -1,13 +1,25 @@
 
-import math
+def get_min_rank(scores):
+    # Initialize the minimum rank for each player as 1
+    min_rank = [1] * len(scores)
 
-def get_max_pickles(s, r, n, z):
-    area_sandwich = math.pi * s ** 2
-    area_pickle = math.pi * r ** 2
-    max_pickles = 0
-    for i in range(1, n + 1):
-        area_covered = i * area_pickle
-        if area_covered / area_sandwich * 100 <= z:
-            max_pickles = i
-    return max_pickles
+    # Sort the scores in descending order
+    sorted_scores = sorted(scores, reverse=True)
+
+    # Initialize a counter for the number of players with the same score as the current player
+    same_score_count = 1
+
+    # Iterate over the sorted scores
+    for i in range(1, len(sorted_scores)):
+        # If the current score is the same as the previous score, increment the counter
+        if sorted_scores[i] == sorted_scores[i-1]:
+            same_score_count += 1
+        # Otherwise, reset the counter
+        else:
+            same_score_count = 1
+
+        # Update the minimum rank for the current player
+        min_rank[sorted_scores[i-1]] = same_score_count
+
+    return min_rank
 

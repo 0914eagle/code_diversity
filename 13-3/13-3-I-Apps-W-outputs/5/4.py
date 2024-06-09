@@ -1,12 +1,31 @@
 
-def get_problems_count(n, k):
-    total_time = 0
-    problems_count = 0
-    for i in range(1, n+1):
-        if total_time + 5*i <= k:
-            total_time += 5*i
-            problems_count += 1
-        else:
-            break
-    return problems_count
+def is_harmonious(graph):
+    n = len(graph)
+    for i in range(n):
+        for j in range(i+1, n):
+            for k in range(j+1, n):
+                if graph[i][j] and graph[j][k] and not graph[i][k]:
+                    return False
+    return True
+
+def add_edges(graph, m):
+    n = len(graph)
+    for i in range(n):
+        for j in range(i+1, n):
+            if not graph[i][j]:
+                graph[i][j] = graph[j][i] = True
+                m -= 1
+                if m == 0:
+                    return graph
+    return graph
+
+def solve(n, m, edges):
+    graph = [[False for _ in range(n+1)] for _ in range(n+1)]
+    for edge in edges:
+        u, v = edge[0], edge[1]
+        graph[u][v] = graph[v][u] = True
+    if is_harmonious(graph):
+        return 0
+    else:
+        return add_edges(graph, m)
 

@@ -1,19 +1,24 @@
 
-def solve(N, M, tunnels):
-    # Initialize the danger level of each chamber as 0
-    danger_level = [0] * (N + 1)
+import sys
 
-    # Loop through each tunnel
-    for tunnel in tunnels:
-        # Get the length of the tunnel
-        length = tunnel[2]
+def solve(N, X, A):
+    # Initialize the count of different integers not exceeding X to 0
+    count = 0
 
-        # Update the danger level of the starting chamber
-        danger_level[tunnel[0]] += length
+    # Loop through each integer A_i
+    for i in range(N):
+        # If A_i is less than or equal to X, increment the count
+        if A[i] <= X:
+            count += 1
 
-        # Update the danger level of the ending chamber
-        danger_level[tunnel[1]] += length
+    # Return the count modulo 998244353
+    return count % 998244353
 
-    # Return the danger level of each chamber
-    return danger_level
+if __name__ == '__main__':
+    # Read the input from stdin
+    N, X = map(int, input().split())
+    A = list(map(int, input().split()))
+
+    # Solve the problem
+    print(solve(N, X, A))
 

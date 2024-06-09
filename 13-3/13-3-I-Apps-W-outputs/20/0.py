@@ -1,15 +1,29 @@
 
-def solve(X, Y, Z, K, A, B, C):
-    # Calculate the deliciousness of each cake
-    cakes = []
-    for i in range(X):
-        for j in range(Y):
-            for k in range(Z):
-                cakes.append((A[i] + B[j] + C[k], i, j, k))
+def get_mex(subset):
+    mex = 0
+    for i in range(1, len(subset) + 1):
+        if i not in subset:
+            mex = i
+            break
+    return mex
 
-    # Sort the cakes in descending order of deliciousness
-    cakes.sort(reverse=True)
 
-    # Return the deliciousness of the first K cakes
-    return [cake[0] for cake in cakes[:K]]
+def get_max_mex(numbers):
+    subsets = []
+    for i in range(len(numbers)):
+        subset = numbers[:i] + numbers[i+1:]
+        subsets.append(subset)
+    return max(get_mex(subset) for subset in subsets)
+
+
+def solve(numbers):
+    return get_max_mex(numbers)
+
+
+if __name__ == "__main__":
+    num_test_cases = int(input())
+    for i in range(num_test_cases):
+        n = int(input())
+        numbers = list(map(int, input().split()))
+        print(solve(numbers))
 

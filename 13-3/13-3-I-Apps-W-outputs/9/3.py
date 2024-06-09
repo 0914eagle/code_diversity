@@ -1,17 +1,29 @@
 
-def get_best_ranking(current_ranking, points_awarded, position_to_calculate):
-    # Initialize a dictionary to store the points earned by each astronaut
-    points_earned = {}
-    for i in range(len(current_ranking)):
-        points_earned[i+1] = current_ranking[i]
+import sys
 
-    # Add the points awarded for the next race to the dictionary
-    for i in range(len(points_awarded)):
-        points_earned[i+1] += points_awarded[i]
+def get_input():
+    return list(map(int, sys.stdin.readline().strip().split()))
 
-    # Sort the dictionary by value in descending order
-    points_earned = dict(sorted(points_earned.items(), key=lambda item: item[1], reverse=True))
+def solve(H, W, M, targets):
+    # Initialize a 2D array to store the number of targets destroyed for each cell
+    destroyed = [[0] * W for _ in range(H)]
 
-    # Return the position of the astronaut with the highest points earned
-    return list(points_earned.keys()).index(position_to_calculate) + 1
+    # Loop through each target and mark the cells in the row and column as destroyed
+    for i in range(M):
+        h, w = targets[i]
+        destroyed[h-1][w-1] = 1
+        for j in range(H):
+            destroyed[j][w-1] = 1
+        for j in range(W):
+            destroyed[h-1][j] = 1
+
+    # Return the maximum number of targets destroyed
+    return max(map(max, destroyed))
+
+H, W, M = get_input()
+targets = []
+for i in range(M):
+    h, w = get_input()
+    targets.append((h, w))
+print(solve(H, W, M, targets))
 

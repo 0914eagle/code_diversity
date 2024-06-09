@@ -1,36 +1,26 @@
 
-def solve(pulses):
-    # Initialize a grid to store the activated pixels
-    grid = [[0] * 200001 for _ in range(200001)]
-
-    # Loop through each pulse
-    for pulse in pulses:
-        # Get the direction, starting time, length, and wire number of the pulse
-        direction, start, length, wire = pulse
-
-        # If the pulse is horizontal
-        if direction == "h":
-            # Loop through the length of the pulse
-            for i in range(start, start + length):
-                # Activate the pixels in the current row and the wire number
-                for j in range(1, 200001):
-                    grid[i][j] = 1
-                    grid[i][wire] = 1
-        # If the pulse is vertical
-        else:
-            # Loop through the length of the pulse
-            for i in range(start, start + length):
-                # Activate the pixels in the current column and the wire number
-                for j in range(1, 200001):
-                    grid[j][i] = 1
-                    grid[wire][i] = 1
-
-    # Count the number of activated pixels
-    count = 0
-    for i in range(1, 200001):
-        for j in range(1, 200001):
-            if grid[i][j] == 1:
-                count += 1
-
-    return count
+def solve(A, K, Q):
+    # Sort the input array
+    A.sort()
+    
+    # Initialize the smallest and largest values removed
+    smallest, largest = A[K-1], A[N-K]
+    
+    # Loop through each contiguous subsequence of length K
+    for i in range(N-K+1):
+        # Remove the smallest element in the subsequence
+        current_smallest = A[i]
+        A.remove(current_smallest)
+        
+        # Update the largest and smallest values removed
+        if current_smallest < smallest:
+            smallest = current_smallest
+        if A[i+K-1] > largest:
+            largest = A[i+K-1]
+        
+        # Add the removed element back to the array
+        A.insert(i, current_smallest)
+    
+    # Return the difference between the largest and smallest values removed
+    return largest - smallest
 

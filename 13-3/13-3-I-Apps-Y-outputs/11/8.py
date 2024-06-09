@@ -1,16 +1,13 @@
 
-def solve(N, T):
-    # Initialize a list to store the times when the hands point upward
-    upward_times = []
-    
-    # Loop through each clock
-    for i in range(N):
-        # Calculate the time when the hand of the current clock points upward
-        upward_time = (i + 1) * T
-        
-        # Add the time to the list
-        upward_times.append(upward_time)
-    
-    # Return the minimum time needed for all hands to point upward
-    return min(upward_times)
+import collections
+
+def solve(S):
+    suits = ["P", "K", "H", "T"]
+    cards = collections.defaultdict(int)
+    for card in S.split():
+        suit, num = card[0], int(card[1:])
+        cards[suit] += 1
+        if cards[suit] > 1:
+            return "GRESKA"
+    return " ".join(str(52 - cards[suit]) for suit in suits)
 

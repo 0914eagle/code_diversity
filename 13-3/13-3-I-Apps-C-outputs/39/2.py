@@ -1,25 +1,19 @@
 
-def introspective_caching_algorithm(cache_size, num_objects, accesses):
-    # Initialize a dictionary to store the number of times each object is accessed
-    object_access_counts = {}
-    for i in range(num_objects):
-        object_access_counts[i] = 0
-    
-    # Initialize a queue to store the objects that are currently in the cache
-    cache = []
-    
-    # Iterate through the accesses and update the access count for each object
-    for access in accesses:
-        object_access_counts[access] += 1
-        
-        # If the object is not already in the cache, add it to the cache
-        if access not in cache:
-            cache.append(access)
-        
-        # If the cache is full, evict the least recently used object
-        if len(cache) > cache_size:
-            cache.pop(0)
-    
-    # Return the total number of times an object must be read into the cache
-    return sum(object_access_counts.values())
+def find_number(m, n, p, q):
+    # Initialize a list to store the digits of the number
+    digits = []
+    # Loop through each digit of the number
+    for i in range(m):
+        # If the digit is not in the first n digits, add it to the list
+        if i >= n:
+            digits.append(i)
+    # Join the digits into a string
+    number = "".join(str(digit) for digit in digits)
+    # Multiply the number by q and add p
+    result = int(number) * q + p
+    # Check if the result is a valid m-digit number
+    if len(str(result)) == m:
+        return str(result)
+    else:
+        return "IMPOSSIBLE"
 

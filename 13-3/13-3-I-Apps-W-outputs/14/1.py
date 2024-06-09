@@ -1,19 +1,15 @@
 
-def solve(m, k, a, t, r):
-    # Initialize a dictionary to keep track of the number of portions of each dish
-    dishes = {i: a[i-1] for i in range(1, k+1)}
-    # Iterate through the observations of the passengers in front of Polycarp
-    for i in range(m-1):
-        # If the passenger was disappointed, it means they ran out of the dish they wanted
-        if r[i] == 1:
-            dishes[t[i]] -= 1
-    # Initialize a list to store the answer
-    answer = []
-    # Iterate through the dishes and check if they could have run out by the time the stewardess reached Polycarp
-    for i in range(1, k+1):
-        if dishes[i] == 0:
-            answer.append("Y")
-        else:
-            answer.append("N")
-    return "".join(answer)
+n = int(input())
+b = list(map(int, input().split()))
+
+# Initialize the points to be chosen
+points = [0] * (2 * n)
+
+# Choose the points in such a way that the area of the polygon is maximized
+for i in range(n):
+    # Choose the point on the ith edge that is closest to the midpoint of the edge
+    points[2 * i] = (b[i] + (n - 1) - b[i]) // 2
+
+# Print the chosen points
+print(*points)
 

@@ -1,14 +1,20 @@
 
-def solve(n, positions):
-    # Sort the positions in ascending order
-    positions.sort()
+import sys
 
-    # Initialize the minimum time to collect all prizes
-    time = 0
+def get_sum_modulo(n, k):
+    # Calculate the sum of the first n numbers
+    sum = (n * (n + 1)) // 2
+    # Calculate the sum of the first k numbers
+    sum_k = (k * (k + 1)) // 2
+    # Calculate the sum of the first n-k numbers
+    sum_n_k = (n - k) * (n - k + 1) // 2
+    # Calculate the sum of the first n numbers minus the sum of the first k numbers
+    sum_diff = sum - sum_k
+    # Calculate the sum of the first n numbers minus the sum of the first n-k numbers
+    sum_diff_n_k = sum - sum_n_k
+    # Return the number of possible values of the sum, modulo (10^9+7)
+    return (sum_diff * sum_diff_n_k) % 1000000007
 
-    # Iterate through the positions and calculate the time to collect each prize
-    for i in range(n - 1):
-        time += abs(positions[i] - positions[i + 1])
-
-    return time
+n, k = map(int, input().split())
+print(get_sum_modulo(n, k))
 

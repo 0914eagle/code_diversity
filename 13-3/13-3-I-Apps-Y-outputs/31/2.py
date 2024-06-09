@@ -1,25 +1,21 @@
 
-def get_max_intersection_length(segments):
-    # Sort the segments by their left endpoint
-    segments.sort(key=lambda x: x[0])
+import math
 
-    # Initialize the maximum length and the current length
-    max_length = 0
-    current_length = 0
+def get_min_distance(a):
+    # Sort the list of coordinates in ascending order
+    a.sort()
+    # Initialize the minimum distance to be traveled
+    min_distance = 0
+    # Loop through the list of coordinates
+    for i in range(len(a)):
+        # Calculate the distance between the current coordinate and the next coordinate
+        distance = a[i+1] - a[i]
+        # If the distance is greater than the minimum distance, update the minimum distance
+        if distance > min_distance:
+            min_distance = distance
+    return min_distance
 
-    # Iterate through the segments
-    for i in range(len(segments)):
-        # Get the current segment
-        segment = segments[i]
-
-        # If the current segment is not nested within the previous segment
-        if segment[0] >= current_length:
-            # Update the current length
-            current_length = segment[1]
-
-            # Update the maximum length
-            max_length = max(max_length, current_length)
-
-    # Return the maximum length
-    return max_length
+n = int(input())
+a = list(map(int, input().split()))
+print(get_min_distance(a))
 

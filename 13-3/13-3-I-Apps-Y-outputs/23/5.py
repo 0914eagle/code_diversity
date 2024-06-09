@@ -1,17 +1,14 @@
 
-def solve(s, t):
-    # Initialize variables
-    max_length = 0
-    s_len = len(s)
-    t_len = len(t)
+import sys
 
-    # Loop through all possible starting indices of t in s
-    for i in range(s_len - t_len + 1):
-        # Check if t is a subsequence of s starting from index i
-        if s[i:i+t_len] == t:
-            # If it is, update the maximum length
-            max_length = max(max_length, t_len)
+N = int(input())
+cards = [int(x) for x in input().split()]
 
-    # Return the maximum length
-    return max_length
+# Alice's optimal strategy is to take the highest card
+# Bob's optimal strategy is to take the lowest card
+
+alice_score = sum(sorted(cards, reverse=True))
+bob_score = sum(sorted(cards))
+
+print(alice_score - bob_score)
 

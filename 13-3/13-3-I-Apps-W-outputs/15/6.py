@@ -1,29 +1,15 @@
 
-def solve(N, A, B, healths):
-    # Sort the healths in descending order
-    healths.sort(reverse=True)
-    
-    # Initialize the number of explosions needed to vanish all monsters
-    explosions_needed = 0
-    
-    # Loop through the healths and cause explosions until all monsters are vanished
-    while sum(healths) > 0:
-        # Find the index of the monster with the highest health
-        highest_index = healths.index(max(healths))
-        
-        # Cause an explosion centered at the monster with the highest health
-        healths[highest_index] -= A
-        
-        # Decrease the healths of all other monsters by B
-        for i in range(len(healths)):
-            if i != highest_index:
-                healths[i] -= B
-        
-        # Remove any monsters with health <= 0
-        healths = [x for x in healths if x > 0]
-        
-        # Increment the number of explosions needed
-        explosions_needed += 1
-    
-    return explosions_needed
+def get_min_colors(s):
+    n = len(s)
+    dp = [0] * (n + 1)
+    for i in range(n - 1, -1, -1):
+        if s[i] == ')':
+            dp[i] = 1
+        elif s[i] == '(':
+            dp[i] = 2
+        else:
+            dp[i] = dp[i + 1]
+        if i < n - 1 and s[i] == '(' and s[i + 1] == ')':
+            dp[i] = min(dp[i], dp[i + 2] + 1)
+    return dp[0]
 

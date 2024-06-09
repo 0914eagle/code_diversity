@@ -1,31 +1,23 @@
 
-def solve(a):
-    # Convert the input to a string
-    a_str = str(a)
+def solve(walk):
+    # Initialize the value of the walk as 0
+    value = 0
     
-    # Create a list to store the digits of a
-    digits = []
+    # Iterate through each character in the walk
+    for char in walk:
+        # If the character is 'L', add 1 to the value
+        if char == 'L':
+            value += 1
+        # If the character is 'R', add 2 to the value
+        elif char == 'R':
+            value += 2
+        # If the character is 'P', add 0 to the value
+        elif char == 'P':
+            value += 0
+        # If the character is '*', add 3 to the value
+        elif char == '*':
+            value += 3
     
-    # Loop through each character in the string and append it to the list
-    for char in a_str:
-        digits.append(int(char))
-    
-    # Sort the list of digits in descending order
-    digits.sort(reverse=True)
-    
-    # Create a new string to store the rearranged digits
-    result = ""
-    
-    # Loop through the list of digits and append them to the result string
-    for digit in digits:
-        result += str(digit)
-    
-    # Convert the result string to an integer
-    result = int(result)
-    
-    # Check if the result is divisible by 7
-    if result % 7 == 0:
-        return result
-    else:
-        return 0
+    # Return the final value of the walk
+    return value
 

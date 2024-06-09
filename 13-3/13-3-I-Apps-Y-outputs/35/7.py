@@ -1,28 +1,35 @@
 
-def num_cycles(n, m, edges):
-    # Initialize a dictionary to store the connected components
-    connected_components = {}
-
-    # Iterate over the edges
-    for edge in edges:
-        # Add the vertices to the dictionary if they are not already present
-        if edge[0] not in connected_components:
-            connected_components[edge[0]] = set()
-        if edge[1] not in connected_components:
-            connected_components[edge[1]] = set()
-
-        # Add the edge to the dictionary
-        connected_components[edge[0]].add(edge[1])
-        connected_components[edge[1]].add(edge[0])
-
-    # Initialize a counter for the number of cycles
-    num_cycles = 0
-
-    # Iterate over the connected components
-    for component in connected_components.values():
-        # Check if the component is a cycle
-        if len(component) > 2 and len(component) == len(set(component)):
-            num_cycles += 1
-
-    return num_cycles
+def solve(n, m, d, c):
+    # Initialize the array a as all zeros
+    a = [0] * (n + 2)
+    
+    # Initialize the number of jumps as 0
+    jumps = 0
+    
+    # Loop through each platform
+    for i in range(m):
+        # Get the length of the current platform
+        length = c[i]
+        
+        # Loop through each cell in the platform
+        for j in range(length):
+            # Get the current cell number
+            cell = j + 1
+            
+            # If the cell is not the last cell in the platform, set the cell number in the array a
+            if j < length - 1:
+                a[cell] = i + 1
+            
+            # If the cell is the last cell in the platform, set the cell number in the array a and increment the number of jumps
+            else:
+                a[cell] = i + 1
+                jumps += 1
+    
+    # If the number of jumps is greater than or equal to d, return YES and the array a
+    if jumps >= d:
+        return "YES\n" + " ".join(map(str, a[1:]))
+    
+    # Otherwise, return NO
+    else:
+        return "NO"
 

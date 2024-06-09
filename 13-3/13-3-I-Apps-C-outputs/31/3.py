@@ -1,42 +1,26 @@
 
-def solve(N, A, B, C):
-    # Calculate the total number of cookies
-    total_cookies = A + B + C
-    
-    # Initialize a list to store the number of cookies for each friend
-    cookies_per_friend = [0] * (N + 1)
-    
-    # Initialize variables to keep track of the current cookie type and the number of cookies left
-    current_cookie_type = 1
-    cookies_left = total_cookies
-    
-    # Loop through each friend and distribute the cookies
-    for i in range(1, N + 1):
-        # If there are no more cookies left, break the loop
-        if cookies_left == 0:
-            break
-        
-        # If the current cookie type is almond, switch to the next type
-        if current_cookie_type == 1 and cookies_left >= A:
-            current_cookie_type = 2
-        # If the current cookie type is butter, switch to the next type
-        elif current_cookie_type == 2 and cookies_left >= B:
-            current_cookie_type = 3
-        # If the current cookie type is chocolate, switch to the next type
-        elif current_cookie_type == 3 and cookies_left >= C:
-            current_cookie_type = 1
-        
-        # Determine the number of cookies to give the current friend
-        if current_cookie_type == 1:
-            cookies_per_friend[i] = min(A, cookies_left)
-        elif current_cookie_type == 2:
-            cookies_per_friend[i] = min(B, cookies_left)
-        else:
-            cookies_per_friend[i] = min(C, cookies_left)
-        
-        # Subtract the number of cookies given from the total number of cookies left
-        cookies_left -= cookies_per_friend[i]
-    
-    # Return the total number of cookies distributed
-    return sum(cookies_per_friend)
+def get_minimum_panels(defective_cells):
+    # Initialize a set to store the coordinates of the defective cells
+    defective_cells_set = set(defective_cells)
+    # Initialize a dictionary to store the number of panels needed for each cell
+    panels_needed = {}
+    # Iterate over the defective cells
+    for cell in defective_cells:
+        # Get the x, y, and z coordinates of the cell
+        x, y, z = cell
+        # Initialize the number of panels needed for this cell to 0
+        panels_needed[cell] = 0
+        # Iterate over the six faces of the cell
+        for face in [(x, y, z), (x, y+1, z), (x, y, z+1), (x, y+1, z+1), (x+1, y, z), (x+1, y+1, z)]:
+            # If the face is not a defective cell, increment the number of panels needed for this cell
+            if face not in defective_cells_set:
+                panels_needed[cell] += 1
+    # Initialize the minimum number of panels needed to contain all the defective cells to 0
+    minimum_panels = 0
+    # Iterate over the defective cells
+    for cell in defective_cells:
+        # Add the number of panels needed for this cell to the minimum number of panels needed
+        minimum_panels += panels_needed[cell]
+    # Return the minimum number of panels needed to contain all the defective cells
+    return minimum_panels
 

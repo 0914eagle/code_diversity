@@ -1,21 +1,14 @@
 
-def solve(n):
-    if n == 1:
-        return "YES"
-    
-    # Initialize a list to store the positions of the swaps
-    swaps = []
-    
-    # Iterate through each pair of positions (i, j) where i < j
-    for i in range(n - 1):
-        for j in range(i + 1, n):
-            # If the positions are not already swapped, swap them
-            if i != j:
-                swaps.append([i, j])
-    
-    # If the number of swaps is equal to the number of positions, return "YES"
-    if len(swaps) == n:
-        return "YES"
-    else:
-        return "NO"
+import math
+
+def solve(n, m, p):
+    # Calculate the number of ways to place the minimum number of obstacles
+    num_obstacles = (n // 2) * (m // 2)
+    num_ways = math.factorial(num_obstacles)
+
+    # Calculate the number of ways to place the obstacles in the grid
+    num_ways *= math.factorial(n * m - num_obstacles)
+
+    # Calculate the number of ways to place the obstacles in the grid modulo p
+    return num_ways % p
 

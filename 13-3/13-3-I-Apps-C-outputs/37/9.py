@@ -1,121 +1,32 @@
 
-def max_area(n, m, k):
-    if k == 0:
-        return n * m
+import sys
+
+def solve(N, M):
+    # Calculate the number of possible combinations of toppings
+    num_combinations = 2**N
     
-    if k == 1:
-        return max(n, m)
+    # Initialize a list to store the number of bowls of ramen for each combination
+    num_bowls = [0] * num_combinations
     
-    if k == 2:
-        return n * m - min(n, m)
+    # Iterate over each combination of toppings
+    for i in range(num_combinations):
+        # Convert the binary representation of the combination to a list of booleans
+        combination = [bool(i & (1 << j)) for j in range(N)]
+        
+        # Count the number of true values in the list (i.e., the number of toppings chosen for this combination)
+        num_toppings = sum(combination)
+        
+        # If the number of toppings is at least 2, increment the number of bowls of ramen for this combination
+        if num_toppings >= 2:
+            num_bowls[i] = 1
     
-    if k == 3:
-        if n == m:
-            return (n - 1) * m
-        else:
-            return n * (m - 1)
+    # Calculate the number of sets of bowls of ramen that satisfy the conditions
+    num_sets = sum(num_bowls)
     
-    if k == 4:
-        if n == m:
-            return (n - 1) * m - 1
-        else:
-            return n * (m - 1) - 1
-    
-    if k == 5:
-        if n == m:
-            return (n - 2) * m
-        else:
-            return n * (m - 2)
-    
-    if k == 6:
-        if n == m:
-            return (n - 2) * m - 1
-        else:
-            return n * (m - 2) - 1
-    
-    if k == 7:
-        if n == m:
-            return (n - 3) * m
-        else:
-            return n * (m - 3)
-    
-    if k == 8:
-        if n == m:
-            return (n - 3) * m - 1
-        else:
-            return n * (m - 3) - 1
-    
-    if k == 9:
-        if n == m:
-            return (n - 4) * m
-        else:
-            return n * (m - 4)
-    
-    if k == 10:
-        if n == m:
-            return (n - 4) * m - 1
-        else:
-            return n * (m - 4) - 1
-    
-    if k == 11:
-        if n == m:
-            return (n - 5) * m
-        else:
-            return n * (m - 5)
-    
-    if k == 12:
-        if n == m:
-            return (n - 5) * m - 1
-        else:
-            return n * (m - 5) - 1
-    
-    if k == 13:
-        if n == m:
-            return (n - 6) * m
-        else:
-            return n * (m - 6)
-    
-    if k == 14:
-        if n == m:
-            return (n - 6) * m - 1
-        else:
-            return n * (m - 6) - 1
-    
-    if k == 15:
-        if n == m:
-            return (n - 7) * m
-        else:
-            return n * (m - 7)
-    
-    if k == 16:
-        if n == m:
-            return (n - 7) * m - 1
-        else:
-            return n * (m - 7) - 1
-    
-    if k == 17:
-        if n == m:
-            return (n - 8) * m
-        else:
-            return n * (m - 8)
-    
-    if k == 18:
-        if n == m:
-            return (n - 8) * m - 1
-        else:
-            return n * (m - 8) - 1
-    
-    if k == 19:
-        if n == m:
-            return (n - 9) * m
-        else:
-            return n * (m - 9)
-    
-    if k == 20:
-        if n == m:
-            return (n - 9) * m - 1
-        else:
-            return n * (m - 9) - 1
-    
-    return -1
+    # Return the result modulo M
+    return num_sets % M
+
+if __name__ == '__main__':
+    N, M = map(int, input().split())
+    print(solve(N, M))
 

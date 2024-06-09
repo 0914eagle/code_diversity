@@ -1,28 +1,18 @@
 
-def solve(n, edges):
-    # Initialize a dictionary to store the labels
-    labels = {}
-    # Initialize the maximum value of MEX(u, v)
-    max_mex = n - 2
-    # Loop through each edge and calculate the MEX(u, v)
-    for u, v in edges:
-        # If the edge is not already labeled, calculate the MEX(u, v)
-        if u not in labels or v not in labels:
-            # If the edge is not already labeled, calculate the MEX(u, v)
-            if u not in labels:
-                labels[u] = 0
-            if v not in labels:
-                labels[v] = 0
-            # Calculate the MEX(u, v)
-            mex = max(labels[u], labels[v]) + 1
-            # Update the maximum value of MEX(u, v)
-            max_mex = max(max_mex, mex)
-        # If the edge is already labeled, update the label dictionary
-        else:
-            labels[u] = labels[v] = max(labels[u], labels[v]) + 1
-    # Loop through the label dictionary and update the labels
-    for node in labels:
-        labels[node] = max_mex - labels[node]
-    # Return the list of labels
-    return [labels[node] for node in range(1, n + 1)]
+import sys
+
+def k_tree_paths(n, k, d):
+    mod = 1000000007
+    dp = [[0] * (n + 1) for _ in range(k + 1)]
+    dp[0][0] = 1
+    for i in range(1, k + 1):
+        for j in range(1, n + 1):
+            if j >= d:
+                dp[i][j] = (dp[i - 1][j - d] + dp[i][j - 1]) % mod
+            else:
+                dp[i][j] = dp[i][j - 1]
+    return dp[k][n]
+
+n, k, d = map(int, sys.stdin.readline().split())
+print(k_tree_paths(n, k, d))
 

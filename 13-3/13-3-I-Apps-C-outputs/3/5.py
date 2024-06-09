@@ -1,33 +1,29 @@
 
-def solve(n, streams):
-    # Sort the streams by their start time
-    streams.sort(key=lambda x: x[0])
+def speedrun(n, r, m, tricks):
+    # Initialize variables
+    expected_time = 0
+    current_time = 0
+    num_resets = 0
 
-    # Initialize the stack and the maximum total priority
-    stack = []
-    max_priority = 0
-
-    # Iterate through the streams
-    for stream in streams:
-        # If the stream is not active, skip it
-        if stream[0] + stream[1] <= 0:
-            continue
-
-        # If the stack is empty, push the processor identifier onto the stack
-        if not stack:
-            stack.append(stream[2])
-
-        # If the stack is not empty, check if the processor identifier is already on the stack
+    # Loop through the tricks
+    for trick in tricks:
+        t, p, d = trick
+        # If the trick occurs before the current time, add its duration to the current time
+        if t <= current_time:
+            current_time += d
+            num_resets += 1
+        # If the trick occurs after the current time, calculate the expected time until the trick
         else:
-            # If the processor identifier is already on the stack, skip the stream
-            if stream[2] in stack:
-                continue
+            # Calculate the probability of success and the expected time until the trick
+            prob_success = p
+            expected_time_until_trick = (t - current_time) / prob_success
+            # Add the expected time until the trick to the total expected time
+            expected_time += expected_time_until_trick
+            # Increment the current time by the duration of the trick
+            current_time = t + d
 
-            # If the processor identifier is not on the stack, push it onto the stack
-            stack.append(stream[2])
+    # Calculate the expected time to set a new record
+    expected_time_to_set_record = expected_time + num_resets * (r - n)
 
-        # Update the maximum total priority
-        max_priority += stream[2]
-
-    return max_priority
+    return expected_time_to_set_record
 

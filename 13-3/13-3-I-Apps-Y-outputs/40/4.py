@@ -1,8 +1,11 @@
 
-def solve(p):
-    n = len(p)
-    a = [0] * n
-    for i in range(n):
-        a[i] = p.index(i) + 1
-    return a
+def solve(N, A):
+    result = []
+    for i in range(N):
+        max_value = 0
+        for j in range(N):
+            if j != i and A[j] > max_value:
+                max_value = A[j]
+        result.append(max_value)
+    return result
 

@@ -1,30 +1,40 @@
 
-def solve(N, M, roads):
-    # Initialize a graph with N nodes and M edges
-    graph = [[] for _ in range(N)]
-    for x, y in roads:
-        graph[x - 1].append(y - 1)
-        graph[y - 1].append(x - 1)
-    
-    # Check if the graph is connected
-    visited = [False] * N
-    queue = [0]
-    while queue:
-        node = queue.pop(0)
-        if not visited[node]:
-            visited[node] = True
-            queue.extend(graph[node])
-    
-    # If the graph is not connected, return "NO"
-    if not all(visited):
-        return "NO"
-    
-    # If the graph is connected, return "YES" and a direction assignment for each road
-    directions = []
-    for x, y in roads:
-        if x < y:
-            directions.append([x, y])
-        else:
-            directions.append([y, x])
-    return "YES\n" + "\n".join(str(x) + " " + str(y) for x, y in directions)
+def black_vienna(investigations):
+    num_investigations = len(investigations)
+    num_suspects = 26
+    num_solutions = 0
+
+    for i in range(num_investigations):
+        suspects = investigations[i][:2]
+        player = investigations[i][2]
+        reply = investigations[i][3]
+
+        # If the player has all the suspects, there is only one solution
+        if reply == num_suspects:
+            num_solutions += 1
+            continue
+
+        # If the player has no suspects, there is no solution
+        if reply == 0:
+            return 0
+
+        # If the player has some suspects, we need to count the number of solutions
+        num_solutions += count_solutions(suspects, player, reply, num_suspects)
+
+    return num_solutions
+
+def count_solutions(suspects, player, reply, num_suspects):
+    num_solutions = 0
+
+    # If the player has only one suspect, there is only one solution
+    if reply == 1:
+        return 1
+
+    # If the player has two suspects, we need to count the number of solutions
+    for i in range(num_suspects):
+        for j in range(i+1, num_suspects):
+            if i != player and j != player:
+                num_solutions += 1
+
+    return num_solutions
 

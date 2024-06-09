@@ -1,34 +1,29 @@
 
-def solve(notes):
-    # Initialize the staff
-    staff = ["G:                                                            ",
-             "F: -------------------------------------*-------------------- ",
-             "E:       *   *          *             *   *                   ",
-             "D: ----*-------**-----*-------------*-------*---------------- ",
-             "C: * *     *      * *     **    * *           *         ** ** ",
-             "B: --------------------------**-----------------*-----*------ ",
-             "A:                                                  *         ",
-             "g: -----------------------------------------------*---------- ",
-             "f:                                                            ",
-             "e: ---------------------------------------------------------- ",
-             "d:                                                            ",
-             "c:                                                            ",
-             "b:                                                            ",
-             "a: ---------------------------------------------------------- "]
+import sys
 
-    # Iterate through the notes and print them on the staff
-    for note in notes:
-        # Get the pitch and duration of the note
-        pitch = note[0]
-        duration = note[1] if len(note) == 2 else 1
+n = int(input())
+values = list(map(int, input().split()))
+costs = list(map(int, input().split()))
 
-        # Find the line and column where the note should be printed
-        line = "GFEGC"[ord(pitch) - ord("C")]
-        column = 20 - (duration - 1) * 2
+# Initialize the maximum possible value of X-Y
+max_value = 0
 
-        # Print the note on the staff
-        staff[line] = staff[line][:column] + "*" + staff[line][column + 1:]
+# Iterate over all possible combinations of gems
+for i in range(1 << n):
+    # Calculate the value of the gems chosen in this combination
+    x = 0
+    for j in range(n):
+        if i & (1 << j):
+            x += values[j]
+    
+    # Calculate the cost of the gems chosen in this combination
+    y = 0
+    for j in range(n):
+        if i & (1 << j):
+            y += costs[j]
+    
+    # Update the maximum possible value of X-Y
+    max_value = max(max_value, x - y)
 
-    # Return the staff
-    return "\n".join(staff)
+print(max_value)
 

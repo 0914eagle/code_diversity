@@ -1,21 +1,15 @@
 
-def can_visit_friend(n, m, teleports):
-    # Initialize a set to store the points that can be reached using teleports
-    reachable_points = set([0])
+def solve(N, T):
+    # Initialize a variable to store the number of occurrences
+    occurrences = 0
     
-    # Iterate through the teleports
-    for teleport in teleports:
-        # Get the location and limit of the teleport
-        location, limit = teleport
-        
-        # Check if the teleport is within the reachable points
-        if location in reachable_points:
-            # Add the limit to the reachable points
-            reachable_points.add(limit)
+    # Loop through the concatenation of 10^10 copies of the string 110
+    for i in range(10**10):
+        # Check if the substring T occurs at the current position
+        if T == "1011"[i:i+N]:
+            # If it does, increment the number of occurrences
+            occurrences += 1
     
-    # Check if the friend's house is within the reachable points
-    if m in reachable_points:
-        return "YES"
-    else:
-        return "NO"
+    # Return the number of occurrences
+    return occurrences
 

@@ -1,31 +1,37 @@
 
-def weight_of_words(l, w):
-    # Initialize a list of letters and their corresponding weights
-    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-    weights = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]
-    
-    # Initialize a dictionary to store the weight of each letter
-    letter_weights = {}
-    for i in range(len(letters)):
-        letter_weights[letters[i]] = weights[i]
-    
-    # Initialize a list to store the possible words
-    words = []
-    
-    # Iterate through the letters and add them to the word if the weight is less than or equal to the given weight
-    for letter in letters:
-        if letter_weights[letter] <= w:
-            words.append(letter)
-    
-    # If the length of the word is less than the given length, recursively call the function to add more letters
-    if len(words) < l:
-        return weight_of_words(l, w - letter_weights[words[-1]])
-    
-    # If the length of the word is equal to the given length, return the word
-    elif len(words) == l:
-        return ''.join(words)
-    
-    # If the length of the word is greater than the given length, return impossible
-    else:
-        return 'impossible'
+import sys
+
+def get_number_of_black_squares(grid):
+    number_of_black_squares = 0
+    for row in grid:
+        for square in row:
+            if square == '#':
+                number_of_black_squares += 1
+    return number_of_black_squares
+
+def get_choices(grid, k):
+    number_of_rows = len(grid)
+    number_of_columns = len(grid[0])
+    choices = 0
+    for row in range(number_of_rows):
+        for column in range(number_of_columns):
+            current_number_of_black_squares = get_number_of_black_squares(grid)
+            if current_number_of_black_squares == k:
+                choices += 1
+            grid[row][column] = 'R'
+            current_number_of_black_squares = get_number_of_black_squares(grid)
+            if current_number_of_black_squares == k:
+                choices += 1
+            grid[row][column] = '.'
+    return choices
+
+def main():
+    h, w, k = map(int, input().split())
+    grid = []
+    for _ in range(h):
+        grid.append(list(input()))
+    print(get_choices(grid, k))
+
+if __name__ == '__main__':
+    main()
 

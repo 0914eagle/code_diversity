@@ -1,35 +1,25 @@
 
-def solve(n, m, a, w):
-    # Calculate the sum of the initial weights
-    total_weight = sum(w)
-
-    # Calculate the probability of each picture being displayed
-    probabilities = [wi / total_weight for wi in w]
-
-    # Initialize the expected weights
-    expected_weights = [0] * n
-
-    # Loop through each visit
-    for i in range(m):
-        # Choose a picture randomly based on the probabilities
-        picture_index = np.random.choice(n, p=probabilities)
-
-        # If Nauuo likes the picture, increase its weight by 1
-        if a[picture_index] == 1:
-            w[picture_index] += 1
-
-        # If Nauuo doesn't like the picture, decrease its weight by 1
+def get_max_score(notes, sp_phrases):
+    # Initialize the maximum score and the current score
+    max_score = 0
+    current_score = 0
+    
+    # Iterate through the notes and SP phrases
+    for i in range(len(notes)):
+        # Check if the current note is within an SP phrase
+        for sp in sp_phrases:
+            if notes[i] in range(sp[0], sp[1]):
+                # If it is, charge up the SP meter
+                current_score += 2
+        
+        # If the current note is not within an SP phrase, score it normally
         else:
-            w[picture_index] -= 1
-
-        # Calculate the new probability of each picture being displayed
-        probabilities = [wi / sum(w) for wi in w]
-
-        # Update the expected weights
-        expected_weights = [ei + pi * (wi - ei) for ei, pi, wi in zip(expected_weights, probabilities, w)]
-
-    # Calculate the final expected weights modulo 998244353
-    final_expected_weights = [int(ei * 998244353) % 998244353 for ei in expected_weights]
-
-    return final_expected_weights
+            current_score += 1
+        
+        # Update the maximum score if the current score is higher
+        if current_score > max_score:
+            max_score = current_score
+    
+    # Return the maximum score
+    return max_score
 

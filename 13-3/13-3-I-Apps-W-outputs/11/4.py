@@ -1,29 +1,24 @@
 
-def solve(n, x):
-    # Initialize a graph with n nodes and no edges
-    graph = [[] for _ in range(n)]
+import math
 
-    # Add edges to the graph
-    for i in range(n-1):
-        u, v = map(int, input().split())
-        graph[u-1].append(v-1)
-        graph[v-1].append(u-1)
-
-    # Initialize the winner as Ayush
-    winner = "Ayush"
-
-    # Loop through each node and check if it is a leaf node
-    for node in range(n):
-        if len(graph[node]) == 1:
-            # If the node is a leaf node, check if it is the special node
-            if node+1 == x:
-                # If the node is the special node, set the winner to Ashish
-                winner = "Ashish"
-                break
-            else:
-                # If the node is not the special node, remove it from the graph
-                graph[node].pop()
-                graph[graph[node][0]].remove(node)
-
-    return winner
+def solve(n, m, r, k):
+    # Calculate the total number of cells in the pond
+    total_cells = n * m
+    
+    # Calculate the number of possible positions for the scoop-net
+    possible_positions = (n - r + 1) * (m - r + 1)
+    
+    # Calculate the expected value of the number of caught fishes
+    expected_value = 0
+    for i in range(total_cells):
+        # Calculate the number of fishes in the current cell
+        num_fishes = min(k, total_cells - i)
+        
+        # Calculate the probability of the current cell being inside the scoop-net
+        probability = (possible_positions - i) / possible_positions
+        
+        # Add the product of the number of fishes and probability to the expected value
+        expected_value += num_fishes * probability
+    
+    return expected_value
 

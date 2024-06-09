@@ -1,10 +1,8 @@
 
-def solve(s, x):
-    n = len(s)
-    count = 0
+def solve(b, c):
+    n = len(b) + 1
+    a = [0] * n
     for i in range(n):
-        balance = s[:i].count("0") - s[:i].count("1")
-        if balance == x:
-            count += 1
-    return count
+        a[i] = b[i] + c[i]
+    return a
 

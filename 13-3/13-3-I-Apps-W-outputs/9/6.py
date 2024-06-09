@@ -1,17 +1,34 @@
 
-def calculate_best_ranking(current_ranking, points_distribution, points_awarded):
-    # Initialize a dictionary to store the best ranking for each astronaut
-    best_ranking = {}
+import sys
 
-    # Loop through the current ranking and points awarded
-    for i, (curr_points, award_points) in enumerate(zip(current_ranking, points_distribution)):
-        # Calculate the total points for the current astronaut after the race
-        total_points = curr_points + award_points
+def get_input():
+    return list(map(int, sys.stdin.readline().strip().split()))
 
-        # If the total points are higher than the current best ranking, update the best ranking
-        if total_points not in best_ranking or best_ranking[total_points] > i:
-            best_ranking[total_points] = i
+def solve():
+    H, W, M = get_input()
+    targets = []
+    for i in range(M):
+        h, w = get_input()
+        targets.append((h, w))
+    
+    # Initialize the maximum number of targets to destroy as 0
+    max_targets = 0
+    
+    # Iterate over all possible positions for the bomb
+    for h in range(1, H+1):
+        for w in range(1, W+1):
+            # Count the number of targets that can be destroyed at this position
+            targets_destroyed = 0
+            for target in targets:
+                if target[0] == h or target[1] == w:
+                    targets_destroyed += 1
+            
+            # Update the maximum number of targets to destroy if necessary
+            if targets_destroyed > max_targets:
+                max_targets = targets_destroyed
+    
+    return max_targets
 
-    # Return the best ranking for the given astronaut
-    return best_ranking[points_awarded]
+if __name__ == '__main__':
+    print(solve())
 

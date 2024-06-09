@@ -1,27 +1,39 @@
 
-def solve(x0, y0, a_x, a_y, b_x, b_y, x_s, y_s, t):
-    # Initialize a list to store the coordinates of the data nodes
-    data_nodes = [(x0, y0)]
-    
-    # Calculate the coordinates of the next data node
-    next_x = a_x * x0 + b_x
-    next_y = a_y * y0 + b_y
-    
-    # Add the next data node to the list
-    data_nodes.append((next_x, next_y))
-    
-    # Continue calculating the coordinates of the next data node until the list is empty
-    while len(data_nodes) > 0:
-        # Pop the last node from the list
-        node = data_nodes.pop()
-        
-        # Calculate the coordinates of the next node
-        next_x = a_x * node[0] + b_x
-        next_y = a_y * node[1] + b_y
-        
-        # Add the next node to the list
-        data_nodes.append((next_x, next_y))
-    
-    # Return the number of data nodes collected within t seconds
-    return len(data_nodes)
+import sys
+
+def paint_squares(N, M, conditions):
+    # Initialize the number of ways to paint the squares
+    num_ways = 1
+
+    # Loop through each condition
+    for i in range(M):
+        # Get the left and right indices, and the number of different colors
+        l, r, x = conditions[i]
+
+        # Calculate the number of ways to paint the squares with the current condition
+        num_ways *= comb(r - l + 1, x)
+
+        # Calculate the number of ways to paint the squares with the current condition and the previous conditions
+        num_ways %= 1000000007
+
+    # Return the number of ways to paint the squares
+    return num_ways
+
+def comb(n, r):
+    # Calculate the binomial coefficient (n choose r)
+    if r == 0:
+        return 1
+    else:
+        return (n * comb(n - 1, r - 1)) // r
+
+if __name__ == '__main__':
+    # Read the input data from stdin
+    N, M = map(int, input().split())
+    conditions = []
+    for i in range(M):
+        l, r, x = map(int, input().split())
+        conditions.append((l, r, x))
+
+    # Call the paint_squares function and print the result
+    print(paint_squares(N, M, conditions))
 

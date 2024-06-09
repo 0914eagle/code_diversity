@@ -1,6 +1,10 @@
 
-def solve(x):
-    while x > 9:
-        x = sum(int(i) for i in str(x) if i != '0')
-    return x
+def estimate_cost(cost):
+    return len(str(cost))
+
+if __name__ == '__main__':
+    num_cases = int(input())
+    for _ in range(num_cases):
+        cost = int(input())
+        print(estimate_cost(cost))
 

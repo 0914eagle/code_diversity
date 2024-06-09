@@ -1,8 +1,26 @@
 
-def find_lipschitz_constant(f):
-    # Find the maximum difference between f(x) and f(y) for any x and y
-    max_diff = max([abs(f(x) - f(y)) for x in f for y in f])
+def solve(n, m, a):
+    # Initialize a dictionary to store the number of ways to get each card
+    dp = {(1, 1): 1}
     
-    # Return the maximum difference divided by the minimum distance between x and y
-    return max_diff / min([abs(x - y) for x in f for y in f])
+    # Iterate through the given cards
+    for i in range(n):
+        # Get the current card
+        card = (1, a[i])
+        
+        # Iterate through the previous cards
+        for j in range(i):
+            # Get the previous card
+            prev_card = (1, a[j])
+            
+            # Check if the previous card is valid
+            if prev_card in dp:
+                # Get the number of ways to get the previous card
+                num_ways = dp[prev_card]
+                
+                # Update the number of ways to get the current card
+                dp[card] = (dp[card] if card in dp else 0) + num_ways
+    
+    # Return the number of ways to get the required cards
+    return dp[(1, m)]
 

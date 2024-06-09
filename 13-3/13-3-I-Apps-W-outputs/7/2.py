@@ -1,11 +1,16 @@
 
-def find_winner(n, s):
-    anton_wins = s.count("A")
-    danik_wins = s.count("D")
-    if anton_wins > danik_wins:
-        return "Anton"
-    elif danik_wins > anton_wins:
-        return "Danik"
-    else:
-        return "Friendship"
+n, k = map(int, input().split())
+videos = []
+for i in range(n):
+    s, m = map(int, input().split())
+    videos.append((s, m))
+
+servers = [0] * k
+for i in range(n):
+    s, m = videos[i]
+    while servers[0] != 0:
+        servers.append(servers.pop(0))
+    servers[0] = s + m * 60
+
+print(*[s + m * 60 for s, m in videos], sep='\n')
 

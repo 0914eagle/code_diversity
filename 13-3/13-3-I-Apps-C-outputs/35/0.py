@@ -1,25 +1,29 @@
 
-def get_maximum_influence(n, spectators):
-    # Sort the spectators by influence in descending order
-    spectators.sort(key=lambda x: x[1], reverse=True)
+def solve(n, m, gyms):
+    # Initialize a list to store the number of Pokemons of each type
+    types = [0] * (m + 1)
 
-    # Initialize variables to keep track of the number of spectators supporting Alice and Bob
-    alice_count = 0
-    bob_count = 0
-    total_influence = 0
+    # Iterate over the gyms and count the number of Pokemons of each type
+    for gym in gyms:
+        for pokemon in gym:
+            types[pokemon] += 1
 
-    # Iterate through the spectators and add them to the set if they support Alice or Bob
-    for spectator in spectators:
-        if spectator[0] == "11" or spectator[0] == "10":
-            alice_count += 1
-        if spectator[0] == "11" or spectator[0] == "01":
-            bob_count += 1
-        total_influence += spectator[1]
+    # Initialize a list to store the possible evolution plans
+    plans = []
 
-        # If we have at least half of the spectators supporting Alice and Bob, return the total influence
-        if alice_count >= n / 2 and bob_count >= n / 2:
-            return total_influence
+    # Iterate over the possible evolution plans
+    for f in permutations(range(1, m + 1)):
+        # Initialize a list to store the number of Pokemons of each type after evolution
+        types_after = [0] * (m + 1)
 
-    # If we reach the end of the list and haven't returned yet, it's impossible to select a set of spectators with at least half supporting Alice and Bob
-    return 0
+        # Iterate over the gyms and count the number of Pokemons of each type after evolution
+        for gym in gyms:
+            for pokemon in gym:
+                types_after[f[pokemon]] += 1
+
+        # Check if the number of Pokemons of each type is the same before and after evolution
+        if types == types_after:
+            plans.append(f)
+
+    return len(plans) % (10**9 + 7)
 

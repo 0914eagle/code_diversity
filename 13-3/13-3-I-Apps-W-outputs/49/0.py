@@ -1,16 +1,47 @@
 
-def get_min_staircases(n, s, k, closed_floors):
-    # Initialize the minimum number of staircases to walk as 0
-    min_staircases = 0
+def solve(n, log):
+    # Initialize variables
+    heap = []
+    corrected_log = []
+    min_value = None
 
-    # Loop through the closed floors and check if the current floor is one of them
-    for floor in closed_floors:
-        # If the current floor is one of the closed floors, increment the minimum number of staircases
-        if floor == s:
-            min_staircases += 1
-        # If the current floor is between the current floor and the next closed floor, increment the minimum number of staircases
-        elif floor > s and floor < closed_floors[closed_floors.index(floor) + 1]:
-            min_staircases += 1
+    # Iterate through the log
+    for record in log:
+        # Get the operation and value
+        operation, value = record.split()
 
-    return min_staircases
+        # Insert the value into the heap
+        if operation == "insert":
+            heap.append(int(value))
+
+        # Get the minimum value from the heap
+        elif operation == "getMin":
+            # If the heap is empty, add a record to insert the minimum value
+            if not heap:
+                corrected_log.append(f"insert {value}")
+                heap.append(int(value))
+            # If the heap is not empty, get the minimum value and compare it to the expected value
+            else:
+                min_value = min(heap)
+                if min_value != int(value):
+                    corrected_log.append(f"removeMin")
+                    heap.remove(min_value)
+                    corrected_log.append(f"insert {value}")
+                    heap.append(int(value))
+
+        # Remove the minimum value from the heap
+        elif operation == "removeMin":
+            # If the heap is empty, add a record to insert the minimum value
+            if not heap:
+                corrected_log.append(f"insert {value}")
+                heap.append(int(value))
+            # If the heap is not empty, remove the minimum value and compare it to the expected value
+            else:
+                min_value = min(heap)
+                if min_value != int(value):
+                    corrected_log.append(f"removeMin")
+                    heap.remove(min_value)
+
+    # Return the corrected log
+    return corrected_log
 

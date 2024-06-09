@@ -1,19 +1,30 @@
 
-def solve(N, towns):
-    # Sort the towns by their x-coordinates
-    towns.sort(key=lambda town: town[0])
+import math
 
-    # Create a graph with an edge between each pair of towns
-    graph = [[] for _ in range(N)]
-    for i in range(N-1):
-        for j in range(i+1, N):
-            graph[i].append(j)
+def get_tape_length(n, papers):
+    # Calculate the area of an A1 paper
+    a1_area = 1
+    for i in range(n, 1, -1):
+        a1_area *= 0.5
+    
+    # Calculate the total area of all papers
+    total_area = 0
+    for i in range(n, 0, -1):
+        total_area += papers[i-1] * a1_area / (2**((i-1)/2))
+    
+    # Calculate the total length of tape needed
+    tape_length = total_area / a1_area
+    
+    return tape_length
 
-    # Calculate the minimum cost of connecting each pair of towns
-    min_cost = 0
-    for i in range(N-1):
-        for j in range(i+1, N):
-            min_cost += min(abs(towns[i][0] - towns[j][0]), abs(towns[i][1] - towns[j][1]))
+def main():
+    n = int(input())
+    papers = list(map(int, input().split()))
+    
+    tape_length = get_tape_length(n, papers)
+    
+    print(tape_length)
 
-    return min_cost
+if __name__ == "__main__":
+    main()
 

@@ -1,11 +1,23 @@
 
-def get_max_sum(arr):
-    n = len(arr)
-    if n == 1:
-        return arr[0]
-    if n == 2:
-        return max(arr[0], arr[1])
-    if n % 2 == 0:
-        return max(arr[0] + arr[2], arr[1] + arr[3])
-    return max(arr[0] + arr[2] + arr[4], arr[1] + arr[3] + arr[5])
+def find_lexicographically_smallest_cycle(n, l, r):
+    # Initialize a list to store the cycle
+    cycle = []
+    
+    # Start at vertex 1 and iterate through the vertices
+    for i in range(1, n + 1):
+        # If the current vertex is in the range [l, r], add it to the cycle
+        if l <= i <= r:
+            cycle.append(i)
+        # If the current vertex is the last vertex in the cycle, break
+        if i == n:
+            break
+        # If the current vertex is not in the range [l, r], find the next vertex in the cycle
+        else:
+            # Find the next vertex in the cycle
+            next_vertex = (i % n) + 1
+            # If the next vertex is in the range [l, r], add it to the cycle
+            if l <= next_vertex <= r:
+                cycle.append(next_vertex)
+    
+    return cycle
 

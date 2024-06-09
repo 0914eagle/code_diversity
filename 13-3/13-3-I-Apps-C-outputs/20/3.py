@@ -1,26 +1,20 @@
 
-def solve(boys, girls, boy_books, girl_books):
-    # Initialize variables
-    presentations = 0
-    books = {}
+def solve(n, m, subarrays):
+    # Initialize the array a with all zeros
+    a = [0] * n
 
-    # Add books to dictionary
-    for i in range(len(boys)):
-        books[boys[i]] = boy_books[i]
-    for i in range(len(girls)):
-        books[girls[i]] = girl_books[i]
+    # Iterate over the subarrays chosen by Alyona
+    for l, r in subarrays:
+        # Find the mex of the subarray
+        mex = 0
+        while mex in a[l:r+1]:
+            mex += 1
+        # Update the array a with the mex
+        for i in range(l, r+1):
+            a[i] = max(a[i], mex)
 
-    # Sort books by number of books read
-    sorted_books = sorted(books.items(), key=lambda x: len(x[1]), reverse=True)
+    # Find the maximum possible minimum mex among all subarrays
+    mex = max(a)
 
-    # Iterate through sorted books and assign presentations
-    for student, book_list in sorted_books:
-        presentations += 1
-        for book in book_list:
-            if book in books:
-                books[student].remove(book)
-                if len(books[student]) == 0:
-                    del books[student]
-
-    return presentations
+    return [mex, a]
 

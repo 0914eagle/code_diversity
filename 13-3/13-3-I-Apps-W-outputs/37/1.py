@@ -1,10 +1,12 @@
 
-def solve(n, a):
-    result = []
-    for i in range(n):
-        if i % 2 == 0:
-            result.append(1)
-        else:
-            result.append(2)
-    return result
+def can_grasshopper_eat_insect(n, k, line):
+    start, end = line.index("G"), line.index("T")
+    if abs(start - end) > k:
+        return "NO"
+    
+    for i in range(start, end, k):
+        if line[i] == "#":
+            return "NO"
+    
+    return "YES"
 

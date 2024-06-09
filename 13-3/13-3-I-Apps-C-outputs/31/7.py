@@ -1,19 +1,27 @@
 
-def solve(n, a, b, c):
-    # Calculate the total number of cookies
-    total_cookies = a + b + c
-    
-    # Initialize the maximum number of cookies that can be distributed
-    max_cookies = 0
-    
-    # Loop through all possible combinations of cookies
-    for i in range(total_cookies + 1):
-        for j in range(total_cookies - i + 1):
-            k = total_cookies - i - j
-            
-            # Check if the combination satisfies the conditions
-            if i % n == 0 and j % n == 0 and k % n == 0:
-                max_cookies = max(max_cookies, i + j + k)
-    
-    return max_cookies
+def get_minimum_panels(defective_cells):
+    # Initialize a set to store the coordinates of the defective cells
+    defective_cells_set = set(defective_cells)
+    # Initialize a dictionary to store the number of panels required for each cell
+    panels_required = {}
+    # Iterate over the defective cells
+    for cell in defective_cells:
+        # Get the x, y, and z coordinates of the cell
+        x, y, z = cell
+        # Initialize the number of panels required for this cell to 0
+        panels_required[cell] = 0
+        # Check if the cell is on the edge of the grid
+        if x == 0 or x == 9 or y == 0 or y == 9 or z == 0 or z == 9:
+            # If the cell is on the edge of the grid, it requires 3 panels to be contained
+            panels_required[cell] += 3
+        else:
+            # If the cell is not on the edge of the grid, it requires 2 panels to be contained
+            panels_required[cell] += 2
+        # Check if the cell has any adjacent defective cells
+        for adjacent_cell in [(x-1, y, z), (x+1, y, z), (x, y-1, z), (x, y+1, z), (x, y, z-1), (x, y, z+1)]:
+            # If the adjacent cell is defective, add 1 panel to the number of panels required for this cell
+            if adjacent_cell in defective_cells_set:
+                panels_required[cell] += 1
+    # Return the minimum number of panels required to contain all the defective cells
+    return min(panels_required.values())
 

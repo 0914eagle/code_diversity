@@ -1,47 +1,55 @@
 
-def solve(n, corners):
-    # Initialize an empty dictionary to store the matching
-    matching = {}
+def kahn_algorithm(graph):
+    
+    # Initialize the list of source nodes (nodes with no incoming edges)
+    source_nodes = [node for node in graph if not graph[node]]
+    sorted_nodes = []
+    while source_nodes:
+        # Select an arbitrary source node and remove it from the graph
+        node = source_nodes.pop()
+        graph.pop(node)
+        # Remove the outgoing edges of the selected node and add the new source nodes to the list of source nodes
+        for neighbor in graph[node]:
+            graph[neighbor].remove(node)
+            if not graph[neighbor]:
+                source_nodes.append(neighbor)
+        # Add the selected node to the sorted list
+        sorted_nodes.append(node)
+    return sorted_nodes
 
-    # Iterate over the corner pairs
-    for i in range(n):
-        # Get the top-left and bottom-right corners for the current pair
-        top_left, bottom_right = corners[i]
+def largest_source_nodes(graph):
+    
+    # Initialize the list of source nodes (nodes with no incoming edges)
+    source_nodes = [node for node in graph if not graph[node]]
+    largest_size = 0
+    while source_nodes:
+        # Select an arbitrary source node and remove it from the graph
+        node = source_nodes.pop()
+        graph.pop(node)
+        # Remove the outgoing edges of the selected node and add the new source nodes to the list of source nodes
+        for neighbor in graph[node]:
+            graph[neighbor].remove(node)
+            if not graph[neighbor]:
+                source_nodes.append(neighbor)
+        # Update the largest size of S
+        largest_size = max(largest_size, len(source_nodes))
+    return largest_size
 
-        # Check if the top-left corner is already matched
-        if top_left in matching:
-            # If it is, get the matching bottom-right corner
-            matching_bottom_right = matching[top_left]
+def main():
+    # Read the input data
+    n, m = map(int, input().split())
+    graph = {}
+    for _ in range(m):
+        x, y = map(int, input().split())
+        if x not in graph:
+            graph[x] = []
+        if y not in graph:
+            graph[y] = []
+        graph[x].append(y)
+    # Find the largest possible size of S at the beginning of any iteration of Step 1 in the execution of Kahn's Algorithm
+    largest_size = largest_source_nodes(graph)
+    print(largest_size)
 
-            # Check if the bottom-right corner is already matched
-            if bottom_right in matching:
-                # If it is, check if the matching top-left corner is the same as the current top-left corner
-                if matching_bottom_right == bottom_right:
-                    # If it is, the current pair is valid and can be added to the matching
-                    matching[top_left] = bottom_right
-                else:
-                    # If it is not, the current pair is invalid and the matching is not possible
-                    return "syntax error"
-            else:
-                # If the bottom-right corner is not matched, the current pair is valid and can be added to the matching
-                matching[top_left] = bottom_right
-        else:
-            # If the top-left corner is not matched, check if the bottom-right corner is already matched
-            if bottom_right in matching:
-                # If it is, get the matching top-left corner
-                matching_top_left = matching[bottom_right]
-
-                # Check if the matching top-left corner is the same as the current top-left corner
-                if matching_top_left == top_left:
-                    # If it is, the current pair is valid and can be added to the matching
-                    matching[top_left] = bottom_right
-                else:
-                    # If it is not, the current pair is invalid and the matching is not possible
-                    return "syntax error"
-            else:
-                # If neither corner is matched, the current pair is valid and can be added to the matching
-                matching[top_left] = bottom_right
-
-    # If the matching is complete, return it
-    return matching
+if __name__ == "__main__":
+    main()
 

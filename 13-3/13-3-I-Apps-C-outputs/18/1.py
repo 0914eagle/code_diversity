@@ -1,20 +1,25 @@
 
-import math
-
-def get_sunlight_hours(buildings):
-    # Calculate the total width of the avenue
-    total_width = sum([building[1] for building in buildings])
+def solve(n, m, pegs, plan):
+    # Initialize a set to store the pegs that are safe to remove
+    safe_pegs = set()
     
-    # Calculate the angle of sunlight for each building
-    angles = []
-    for building in buildings:
-        angle = building[1] / total_width * 180
-        angles.append(angle)
+    # Iterate through the plan
+    for i in range(len(plan)):
+        # If the current step is to remove a peg, check if it is safe to remove
+        if plan[i] < 0:
+            # If the peg is not in the safe pegs set, return -1
+            if -plan[i] not in safe_pegs:
+                return -1
+            # Otherwise, add the peg to the safe pegs set
+            safe_pegs.add(-plan[i])
+        # If the current step is to place a peg, check if it is safe to place
+        else:
+            # If the peg is already in the safe pegs set, return -1
+            if plan[i] in safe_pegs:
+                return -1
+            # Otherwise, add the peg to the safe pegs set
+            safe_pegs.add(plan[i])
     
-    # Calculate the sunlight hours for each building
-    hours = []
-    for i in range(len(buildings)):
-        hours.append(angles[i] / 360 * 24)
-    
-    return hours
+    # If we reach this point, all pegs are safe to remove, so return the plan
+    return plan
 

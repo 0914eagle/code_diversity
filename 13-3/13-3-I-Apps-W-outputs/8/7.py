@@ -1,24 +1,35 @@
 
-def is_possible(n, boxes):
-    # Sort the boxes in non-decreasing order
-    boxes.sort()
+n, m = map(int, input().split())
+field = [input() for _ in range(n)]
 
-    # Initialize the sum of pieces for John and Sam as 0
-    sum_john, sum_sam = 0, 0
+# Check if the field is rectangular
+if len(set(len(row) for row in field)) != 1:
+    print("NO")
+    exit()
 
-    # Loop through the boxes
-    for i in range(n):
-        # If the current box contains an odd number of pieces, assign it to John
-        if boxes[i] % 2 == 1:
-            sum_john += boxes[i]
-        # Otherwise, assign it to Sam
-        else:
-            sum_sam += boxes[i]
+# Check if the field has three colors
+colors = set()
+for row in field:
+    for col in row:
+        colors.add(col)
+if len(colors) != 3:
+    print("NO")
+    exit()
 
-    # If the sums of pieces for John and Sam are equal, return YES
-    if sum_john == sum_sam:
-        return "YES"
-    # Otherwise, return NO
-    else:
-        return "NO"
+# Check if the field has three equal width and height stripes
+if n % 3 != 0 or m % 3 != 0:
+    print("NO")
+    exit()
+
+# Check if each color is used exactly once in each stripe
+for i in range(0, n, 3):
+    for j in range(0, m, 3):
+        color = field[i][j]
+        for k in range(i, i+3):
+            for l in range(j, j+3):
+                if field[k][l] != color:
+                    print("NO")
+                    exit()
+
+print("YES")
 

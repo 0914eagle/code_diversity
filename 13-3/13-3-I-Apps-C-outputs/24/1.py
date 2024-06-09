@@ -1,28 +1,12 @@
 
-def solve(arr):
-    n = len(arr)
-    if n == 1:
-        return 0
-    
-    # Sort the array
-    arr.sort()
-    
-    # Initialize variables
-    min_size = 0
-    i = 1
-    
-    # Iterate through the array
-    while i < n:
-        # If the current element is the same as the previous element, update the minimum size
-        if arr[i] == arr[i-1]:
-            min_size = max(min_size, i-1)
-        # If the current element is different from the previous element, update the minimum size
-        else:
-            min_size = max(min_size, i-2)
-        
-        # Increment the index
-        i += 1
-    
-    # Return the minimum size
-    return min_size
+import math
+
+def number_of_special_numbers(n, k):
+    count = 0
+    for i in range(1, n+1):
+        binary = bin(i)[2:]
+        num_set_bits = binary.count('1')
+        if num_set_bits >= k:
+            count += 1
+    return count % (10**9 + 7)
 

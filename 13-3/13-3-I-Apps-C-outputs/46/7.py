@@ -1,29 +1,32 @@
 
-def solve(s):
-    n = len(s)
-    if n % 2 == 1 or n > 10000:
-        return "-1"
-    
-    # create a dictionary to store the frequency of each substring
-    freq = {}
-    for i in range(n // 2):
-        substring = s[i:i + n // 2]
-        if substring not in freq:
-            freq[substring] = 1
-        else:
-            freq[substring] += 1
-    
-    # check if all substrings are unique
-    if len(freq) == n // 2 + 1:
-        return s
-    
-    # if not, find the substring with the highest frequency and move it to the end of the string
-    max_freq = max(freq.values())
-    for substring in freq:
-        if freq[substring] == max_freq:
-            s = s.replace(substring, "")
-            s += substring
-            break
-    
-    return s
+def get_badge_numbers(N, L, B, S, D, locks):
+    # Initialize a set to store the badge numbers that can pass from S to D
+    badge_numbers = set()
+
+    # Iterate through each lock
+    for lock in locks:
+        # Extract the information from the lock
+        a, b, x, y = lock
+
+        # Check if the lock is between the starting and destination rooms
+        if a == S and b == D:
+            # Add the badge numbers to the set
+            badge_numbers |= set(range(x, y + 1))
+
+    # Return the number of badge numbers in the set
+    return len(badge_numbers)
+
+# Main function
+if __name__ == "__main__":
+    # Read the input
+    N, L, B, S, D = map(int, input().split())
+    locks = []
+    for _ in range(L):
+        locks.append(list(map(int, input().split())))
+
+    # Call the function to get the number of badge numbers that can pass from S to D
+    result = get_badge_numbers(N, L, B, S, D, locks)
+
+    # Print the result
+    print(result)
 

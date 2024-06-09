@@ -1,20 +1,15 @@
 
-def get_min_unlikeliness_tree(samples):
-    # Initialize the tree with a single node for each sample
-    tree = {i: [i] for i in range(len(samples))}
+def solve(N, D):
+    # Initialize the minimum number of inspectors to deploy
+    min_inspectors = 0
 
-    # Iterate through the samples and find the most likely edge between them
-    for i in range(len(samples)):
-        for j in range(i+1, len(samples)):
-            # Compute the weight of the edge between the two samples
-            weight = len(set(samples[i]) ^ set(samples[j]))
+    # Loop through each tree and check if it is within the range of the inspector's inspection
+    for i in range(1, N + 1):
+        # Check if the tree is within the range of the inspector's inspection
+        if i - D <= 0 or i + D >= N:
+            # Increment the minimum number of inspectors if the tree is not within the range
+            min_inspectors += 1
 
-            # If the weight is less than the current minimum, update the tree
-            if weight < min_weight:
-                min_weight = weight
-                tree[i].append(j)
-                tree[j].append(i)
-
-    # Return the tree with the minimum unlikeliness
-    return tree
+    # Return the minimum number of inspectors needed to deploy
+    return min_inspectors
 

@@ -1,17 +1,12 @@
 
-def get_tea_order(n, k, a, b):
-    if n > a + b:
-        return "NO"
-    
-    green_tea = "G" * a
-    black_tea = "B" * b
-    
-    tea_order = ""
+def is_signature_forgable(grid):
+    n, m = len(grid), len(grid[0])
     for i in range(n):
-        if i % 2 == 0:
-            tea_order += green_tea[i % a]
-        else:
-            tea_order += black_tea[i % b]
-    
-    return tea_order
+        for j in range(m):
+            if grid[i][j] == '#':
+                for k in range(i, min(i + 3, n)):
+                    for l in range(j, min(j + 3, m)):
+                        if grid[k][l] == '#':
+                            return "YES"
+    return "NO"
 

@@ -1,27 +1,16 @@
 
-def get_max_length(tube_lengths, L1, L2):
-    # Sort the tube lengths in descending order
-    tube_lengths.sort(reverse=True)
+def solve(n, levels):
+    # Initialize the dp table with the completion time for each level using item 0
+    dp = [levels[i][0] for i in range(n)]
 
-    # Initialize the maximum total length to 0
-    max_length = 0
+    # Loop through each level
+    for i in range(n):
+        # Loop through each item
+        for j in range(1, n+1):
+            # If the completion time for the current level using the current item is less than the minimum completion time so far, update the minimum completion time
+            if levels[i][j] < dp[i]:
+                dp[i] = levels[i][j]
 
-    # Loop through all possible pairs of tubes
-    for i in range(len(tube_lengths)):
-        for j in range(i+1, len(tube_lengths)):
-            # Check if the sum of the lengths of the first two tubes is less than or equal to L1
-            if tube_lengths[i] + tube_lengths[j] <= L1:
-                # Check if the sum of the lengths of the last two tubes is less than or equal to L2
-                if tube_lengths[i+1] + tube_lengths[j+1] <= L2:
-                    # Calculate the total length of the four tubes
-                    total_length = tube_lengths[i] + tube_lengths[j] + tube_lengths[i+1] + tube_lengths[j+1]
-                    # Update the maximum total length if necessary
-                    if total_length > max_length:
-                        max_length = total_length
-
-    # Return the maximum total length or the word "Impossible" if no pairs of tubes fit the setup
-    if max_length == 0:
-        return "Impossible"
-    else:
-        return max_length
+    # Return the minimum completion time for all levels
+    return sum(dp)
 

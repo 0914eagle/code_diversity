@@ -1,14 +1,11 @@
 
-def solve(p):
-    n = len(p)
-    a = [0] * n
-    for i in range(n):
-        a[i] = 1
-        for j in range(i+1, n):
-            if p[i] == p[j]:
-                a[i] += 1
-            elif p[i] > p[j]:
-                a[i] += a[j]
-        a[i] %= 2
-    return a
+def get_max_values(sequence):
+    max_values = []
+    for i in range(len(sequence)):
+        max_value = 0
+        for j in range(len(sequence)):
+            if j != i and sequence[j] > max_value:
+                max_value = sequence[j]
+        max_values.append(max_value)
+    return max_values
 

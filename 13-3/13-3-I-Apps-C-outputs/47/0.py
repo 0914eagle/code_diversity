@@ -1,28 +1,28 @@
 
-def get_max_length(tube_lengths, L1, L2):
-    # Sort the tube lengths in descending order
-    tube_lengths.sort(reverse=True)
-
-    # Initialize the maximum total length and the pairs of tubes
-    max_length = 0
-    pairs = []
-
-    # Iterate over the tube lengths
-    for i in range(len(tube_lengths)):
-        for j in range(i+1, len(tube_lengths)):
-            # Check if the sum of the lengths of the two tubes is less than or equal to L1 and L2
-            if tube_lengths[i] + tube_lengths[j] <= L1 and tube_lengths[i] + tube_lengths[j] <= L2:
-                # Add the pair of tubes to the list of pairs
-                pairs.append([tube_lengths[i], tube_lengths[j]])
-
-                # Check if the sum of the lengths of the four tubes is greater than the current maximum total length
-                if tube_lengths[i] + tube_lengths[j] > max_length:
-                    max_length = tube_lengths[i] + tube_lengths[j]
-
-    # Check if at least two pairs of tubes can be found
-    if len(pairs) < 2:
-        return "Impossible"
-
-    # Return the maximum total length
-    return max_length
+def solve(n, levels):
+    # Initialize the minimum time to beat all levels as infinity
+    min_time = float('inf')
+    # Loop through each level
+    for level in levels:
+        # Get the shortcut item and completion time for the current level
+        shortcut_item, shortcut_time = level[0], level[1]
+        # Get the completion times for each item for the current level
+        item_times = level[2:]
+        # Initialize the minimum time to beat the current level as infinity
+        min_time_level = float('inf')
+        # Loop through each item for the current level
+        for item in range(n+1):
+            # If the item is the shortcut item, set the completion time to the shortcut time
+            if item == shortcut_item:
+                time = shortcut_time
+            # Otherwise, set the completion time to the completion time for the item
+            else:
+                time = item_times[item]
+            # If the completion time for the current item is less than the minimum time to beat the current level, update the minimum time
+            if time < min_time_level:
+                min_time_level = time
+        # Add the minimum time to beat the current level to the total minimum time
+        min_time += min_time_level
+    # Return the total minimum time to beat all levels
+    return min_time
 

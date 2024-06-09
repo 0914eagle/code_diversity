@@ -1,25 +1,19 @@
 
-import math
+n, s = map(int, input().split())
+volumes = list(map(int, input().split()))
 
-def solve(n, m, mod, matrix):
-    # Initialize variables
-    rows, cols = [], []
-    total_ones = 0
-    num_matrices = 0
+# Sort the volumes in descending order
+volumes.sort(reverse=True)
 
-    # Convert the input matrix into a list of lists
-    matrix = [list(row) for row in matrix]
+# Initialize the sum of the volumes
+sum_volumes = 0
 
-    # Count the number of ones in each row and column
-    for i in range(n):
-        rows.append(matrix[i].count("1"))
-        cols.append(matrix[i].count("1"))
-        total_ones += matrix[i].count("1")
-
-    # Check if the number of ones in each row and column is equal to 2
-    if all(row == 2 for row in rows) and all(col == 2 for col in cols):
-        num_matrices += 1
-
-    # Return the remainder after dividing the number of matrices by the given modulus
-    return num_matrices % mod
+# Iterate through the volumes and check if the sum is greater than or equal to s
+for i in range(n):
+    sum_volumes += volumes[i]
+    if sum_volumes >= s:
+        print(volumes[i])
+        break
+else:
+    print(-1)
 

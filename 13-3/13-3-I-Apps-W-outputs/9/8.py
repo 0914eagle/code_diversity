@@ -1,16 +1,27 @@
 
-def get_best_ranking(current_ranking, points_distribution, points_before_race):
-    # Initialize variables
-    best_ranking = 1
-    current_points = points_before_race
-    for i in range(len(current_ranking)):
-        # Calculate the points the astronaut will have after the race
-        points_after_race = current_points + points_distribution[i]
-        # Check if the astronaut will have the best ranking after the race
-        if points_after_race > current_ranking[best_ranking-1]:
-            best_ranking = i+1
-        # Break if the astronaut cannot overtake the current ranking
-        if points_after_race < current_ranking[best_ranking-1]:
-            break
-    return best_ranking
+import sys
+
+def get_input():
+    return list(map(int, sys.stdin.readline().strip().split()))
+
+def solve(h, w, m, targets):
+    # Initialize a 2D array to store the number of targets destroyed for each position
+    destroyed = [[0] * w for _ in range(h)]
+
+    # Loop through each target and update the number of targets destroyed for each position
+    for target in targets:
+        h_target, w_target = target
+        destroyed[h_target - 1][w_target - 1] += 1
+        destroyed[h_target - 1][:] = [max(destroyed[h_target - 1][i], destroyed[h_target - 1][i] + 1) for i in range(w)]
+        destroyed[:][w_target - 1] = [max(destroyed[i][w_target - 1], destroyed[i][w_target - 1] + 1) for i in range(h)]
+
+    # Return the maximum number of targets destroyed
+    return max(max(row) for row in destroyed)
+
+h, w, m = get_input()
+targets = []
+for _ in range(m):
+    targets.append(get_input())
+
+print(solve(h, w, m, targets))
 

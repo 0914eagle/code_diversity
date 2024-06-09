@@ -1,28 +1,29 @@
 
-def is_ladder(arr, l, r):
-    if l == r:
-        return True
-    if l + 1 == r and arr[l] == arr[r]:
-        return True
-    if arr[l] <= arr[l + 1] and arr[l + 1] <= arr[l + 2]:
-        return is_ladder(arr, l + 1, r)
-    if arr[l] >= arr[l + 1] and arr[l + 1] >= arr[l + 2]:
-        return is_ladder(arr, l + 1, r)
-    return False
+import math
 
-def solve(arr, queries):
-    for l, r in queries:
-        if is_ladder(arr, l, r):
-            print("Yes")
-        else:
-            print("No")
+def get_min_angle(vectors):
+    min_angle = math.pi
+    min_angle_indices = []
+    for i in range(len(vectors)):
+        for j in range(i+1, len(vectors)):
+            angle = get_angle(vectors[i], vectors[j])
+            if angle < min_angle:
+                min_angle = angle
+                min_angle_indices = [i, j]
+    return min_angle_indices
 
-if __name__ == "__main__":
-    n, m = map(int, input().split())
-    arr = list(map(int, input().split()))
-    queries = []
-    for _ in range(m):
-        l, r = map(int, input().split())
-        queries.append((l, r))
-    solve(arr, queries)
+def get_angle(v1, v2):
+    dot_product = v1[0]*v2[0] + v1[1]*v2[1]
+    magnitude_product = math.sqrt(v1[0]**2 + v1[1]**2) * math.sqrt(v2[0]**2 + v2[1]**2)
+    angle = math.acos(dot_product / magnitude_product)
+    return angle
+
+n = int(input())
+vectors = []
+for i in range(n):
+    x, y = map(int, input().split())
+    vectors.append([x, y])
+
+indices = get_min_angle(vectors)
+print(indices[0] + 1, indices[1] + 1)
 

@@ -1,12 +1,28 @@
 
-def solve(n, m, b, mod, a):
-    dp = [[0] * (b + 1) for _ in range(n + 1)]
-    dp[0][0] = 1
-    for i in range(1, n + 1):
-        for j in range(b + 1):
-            for k in range(i):
-                if j - a[k] >= 0:
-                    dp[i][j] += dp[i - 1][j - a[k]]
-            dp[i][j] %= mod
-    return dp[n][b]
+def solve(a, b, l, r):
+    # Initialize the string with the first a letters of the alphabet
+    s = "".join(chr(i + ord('a')) for i in range(a))
+
+    # Mister B's opponent's algorithm
+    def opponent_algorithm(suffix):
+        # Create a set of all letters in the suffix
+        letter_set = set(suffix)
+        # Generate a string of length a with distinct letters not in the suffix
+        t = "".join(chr(i + ord('a')) for i in range(a) if chr(i + ord('a')) not in letter_set)
+        return t
+
+    # Mister B's strategy
+    while l <= r:
+        # Get the suffix of length a from position l to position r
+        suffix = s[l-1:r]
+        # Get the next letter to append from the opponent's algorithm
+        next_letter = opponent_algorithm(suffix)
+        # Append the next letter to the end of the string
+        s += next_letter
+        # Increment l and r by b
+        l += b
+        r += b
+
+    # Return the number of different letters in the segment from position l to position r, inclusive
+    return len(set(s[l-1:r]))
 

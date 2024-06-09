@@ -1,27 +1,32 @@
 
-def solve(a):
-    # Convert the input to a string
-    a_str = str(a)
-    
-    # Create a list to store the digits of a
-    a_list = []
-    
-    # Iterate through the string and append the digits to the list
-    for char in a_str:
-        if char.isdigit():
-            a_list.append(int(char))
-    
-    # Sort the list in descending order
-    a_list.sort(reverse=True)
-    
-    # Create a new string from the sorted list
-    result = ""
-    for digit in a_list:
-        result += str(digit)
-    
-    # Check if the result is divisible by 7
-    if int(result) % 7 == 0:
-        return result
-    else:
-        return "0"
+def solve(walk):
+    # Initialize a dictionary to store the values of each walk
+    values = {}
+
+    # Initialize the root node with value 1
+    values[""] = 1
+
+    # Iterate through the walk string
+    for move in walk:
+        # If the move is 'L', update the values of the left child
+        if move == "L":
+            for key in values:
+                values[key + "L"] = values[key] * 2
+        # If the move is 'R', update the values of the right child
+        elif move == "R":
+            for key in values:
+                values[key + "R"] = values[key] * 2 + 1
+        # If the move is 'P', update the values of the current node
+        elif move == "P":
+            for key in values:
+                values[key + "P"] = values[key]
+        # If the move is '*', update the values of all possible walks
+        elif move == "*":
+            for key in values:
+                values[key + "L"] = values[key] * 2
+                values[key + "R"] = values[key] * 2 + 1
+                values[key + "P"] = values[key]
+
+    # Return the sum of all values in the dictionary
+    return sum(values.values())
 

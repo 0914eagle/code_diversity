@@ -1,13 +1,10 @@
 
-def solve(n, s):
-    x, y = 0, 0
-    coins = 0
-    for move in s:
-        if move == 'U':
-            y += 1
+def get_initial_arrangement(n, x, a):
+    arrangement = [0] * n
+    for i in range(n):
+        if i + 1 == x:
+            arrangement[i] = a[i] - 1
         else:
-            x += 1
-        if x == y:
-            coins += 1
-    return coins
+            arrangement[i] = a[i]
+    return arrangement
 

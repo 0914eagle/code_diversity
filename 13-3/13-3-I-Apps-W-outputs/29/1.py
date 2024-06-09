@@ -1,14 +1,17 @@
 
-def solve(n, positions):
-    # Sort the positions in ascending order
-    positions.sort()
+import sys
 
-    # Initialize the minimum time to collect all prizes
-    time = 0
+def get_possible_sums(N, K):
+    # Calculate the possible sums
+    possible_sums = []
+    for i in range(N+1):
+        for j in range(i+1, N+1):
+            possible_sums.append(i+j)
+    
+    # Return the number of possible sums
+    return len(set(possible_sums))
 
-    # Iterate through the positions and calculate the time to collect each prize
-    for i in range(n - 1):
-        time += abs(positions[i] - positions[i + 1])
-
-    return time
+if __name__ == '__main__':
+    N, K = map(int, input().split())
+    print(get_possible_sums(N, K))
 

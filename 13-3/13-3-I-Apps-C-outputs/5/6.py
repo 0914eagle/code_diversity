@@ -1,53 +1,41 @@
 
-def longest_balanced_string(pieces):
-    # Initialize a dictionary to store the length of the longest balanced string formed by concatenating each piece
-    piece_lengths = {}
-    # Initialize the longest balanced string as the empty string
-    longest_string = ""
+def solve(n, q, houses, requests):
+    # Initialize a dictionary to store the x and y coordinates of each house
+    house_coords = {}
+    for i in range(n):
+        house_coords[i+1] = (houses[i][0], houses[i][1])
 
-    for piece in pieces:
-        # Check if the piece is already in the dictionary
-        if piece not in piece_lengths:
-            # If not, calculate the length of the longest balanced string formed by concatenating the piece with each of the other pieces
-            for other_piece in pieces:
-                if piece != other_piece:
-                    # Concatenate the piece with the other piece and check if the result is a balanced string
-                    concatenated_piece = piece + other_piece
-                    if is_balanced(concatenated_piece):
-                        # If it is, store the length of the concatenated string in the dictionary
-                        piece_lengths[piece] = len(concatenated_piece)
-        # If the piece is already in the dictionary, skip it
+    # Initialize a list to store the answers for each request
+    answers = []
 
-    # Find the piece with the longest length in the dictionary
-    for piece, length in piece_lengths.items():
-        if length > len(longest_string):
-            longest_string = piece * length
+    # Iterate over each request
+    for request in requests:
+        # Get the start and end addresses of the request
+        start, end = request[0], request[1]
 
-    return len(longest_string)
+        # Initialize the minimum side length to infinity
+        min_side_length = float('inf')
 
-def is_balanced(string):
-    # Initialize a stack to keep track of the parentheses
-    stack = []
-    # Iterate through the string
-    for char in string:
-        # If the character is an opening parenthesis, push it onto the stack
-        if char == "(":
-            stack.append(char)
-        # If the character is a closing parenthesis, pop an opening parenthesis from the stack
-        elif char == ")":
-            if len(stack) == 0:
-                return False
-            stack.pop()
-    # If the stack is empty, the string is balanced
-    return len(stack) == 0
+        # Iterate over each house in the request
+        for house in range(start, end+1):
+            # Get the coordinates of the current house
+            x, y = house_coords[house]
 
-def main():
-    num_pieces = int(input())
-    pieces = []
-    for i in range(num_pieces):
-        pieces.append(input())
-    print(longest_balanced_string(pieces))
+            # Iterate over each other house in the request
+            for other_house in range(start, end+1):
+                # If the current house is not the same as the other house
+                if house != other_house:
+                    # Get the coordinates of the other house
+                    other_x, other_y = house_coords[other_house]
 
-if __name__ == "__main__":
-    main()
+                    # Calculate the distance between the current house and the other house
+                    distance = abs(x - other_x) + abs(y - other_y)
+
+                    # Update the minimum side length if necessary
+                    min_side_length = min(min_side_length, distance)
+
+        # Add the minimum side length to the list of answers
+        answers.append(min_side_length)
+
+    return answers
 

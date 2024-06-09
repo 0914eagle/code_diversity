@@ -1,18 +1,17 @@
 
-def solve(n, divisors):
-    # Initialize x and y to 1
-    x = 1
-    y = 1
-    
-    # Iterate through the list of divisors
-    for divisor in divisors:
-        # If the divisor is not a multiple of x, multiply x by the divisor
-        if divisor % x != 0:
-            x *= divisor
-        # If the divisor is not a multiple of y, multiply y by the divisor
-        if divisor % y != 0:
-            y *= divisor
-    
-    # Return the values of x and y
-    return x, y
+import sys
+
+n, m = map(int, input().split())
+prefectures = [[] for _ in range(n + 1)]
+
+for i in range(m):
+    p, y = map(int, input().split())
+    prefectures[p].append((y, i))
+
+for prefecture in prefectures:
+    prefecture.sort()
+
+for prefecture in prefectures:
+    for city in prefecture:
+        print(f"{str(prefecture[0][0]).zfill(6)}{str(city[1]).zfill(6)}")
 

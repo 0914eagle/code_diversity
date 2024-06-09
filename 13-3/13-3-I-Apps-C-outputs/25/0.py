@@ -1,19 +1,17 @@
 
-def is_permutation_possible(n):
-    # Initialize a list to store the positions of the swaps
-    swaps = []
+import math
 
-    # Iterate through each pair of positions (i, j) where i < j
-    for i in range(n):
-        for j in range(i+1, n):
-            # If the swap (i, j) has not been performed yet, perform it
-            if (i, j) not in swaps:
-                swaps.append((i, j))
+def count_ways(n, m, p):
+    # Calculate the number of ways to place the minimum number of obstacles
+    num_obstacles = (n // 2) * (m // 2)
+    num_ways = math.factorial(num_obstacles)
 
-    # If the number of swaps is equal to the number of positions, return "YES" and the swaps
-    if len(swaps) == n:
-        return "YES\n" + "\n".join([f"{i} {j}" for i, j in swaps])
+    # Calculate the number of ways to place the obstacles in the grid
+    num_ways *= math.factorial(n * m - num_obstacles)
 
-    # Otherwise, return "NO"
-    return "NO"
+    # Calculate the number of ways to place the obstacles in the grid with at least one obstacle in each 2x2 subgrid
+    num_ways //= math.factorial(n * m - (n // 2) * (m // 2))
+
+    # Return the result modulo p
+    return num_ways % p
 

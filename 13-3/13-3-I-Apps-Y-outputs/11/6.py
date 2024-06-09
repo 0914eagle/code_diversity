@@ -1,25 +1,22 @@
 
-def solve(N, T):
-    # Find the least common multiple (LCM) of all the times
-    lcm = T[0]
-    for i in range(1, N):
-        lcm = lcm_of_two_numbers(lcm, T[i])
+import re
 
-    # Return the LCM as the required answer
-    return lcm
+def get_missing_cards(deck):
+    suits = ["P", "K", "H", "T"]
+    numbers = [str(i) for i in range(1, 14)]
+    card_count = {suit: 0 for suit in suits}
+    for card in deck:
+        match = re.match(r"([PKHT])0?(\d)", card)
+        if match:
+            suit, number = match.groups()
+            card_count[suit] += 1
+            if card_count[suit] > 1 and card_count[suit] > card_count["P"]:
+                return "GRESKA"
+    for suit in suits:
+        if card_count[suit] < 13:
+            card_count[suit] = 13 - card_count[suit]
+    return " ".join(str(card_count[suit]) for suit in suits)
 
-# Function to find the least common multiple of two numbers
-def lcm_of_two_numbers(x, y):
-    if x > y:
-        greater = x
-    else:
-        greater = y
-
-    while(True):
-        if(greater % x == 0 and greater % y == 0):
-            lcm = greater
-            break
-        greater += 1
-
-    return lcm
+deck = input()
+print(get_missing_cards(deck))
 

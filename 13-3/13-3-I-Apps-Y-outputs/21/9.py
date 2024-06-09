@@ -1,26 +1,24 @@
 
-def create_staff(notes):
-    staff = ["G:                                                            ",
-             "F: -------------------------------------*-------------------- ",
-             "E:       *   *          *             *   *                   ",
-             "D: ----*-------**-----*-------------*-------*---------------- ",
-             "C: * *     *      * *     **    * *           *         ** **",
-             "B: --------------------------**-----------------*-----*------",
-             "A:                                                  *         ",
-             "g: -----------------------------------------------*----------",
-             "f:                                                            ",
-             "e: ----------------------------------------------------------",
-             "d:                                                            ",
-             "c:                                                            ",
-             "b:                                                            ",
-             "a: ----------------------------------------------------------"]
+import sys
 
-    for note in notes:
-        pitch = note[0]
-        duration = note[1] if len(note) == 2 else 1
-        staff_line = staff[ord(pitch) - ord("C")]
-        staff_line = staff_line[:staff_line.index("*")] + "*" * duration + staff_line[staff_line.index("*") + 1:]
-        staff[ord(pitch) - ord("C")] = staff_line
+n = int(input())
+values = list(map(int, input().split()))
+costs = list(map(int, input().split()))
 
-    return "\n".join(staff)
+# Initialize the maximum possible value of X-Y
+max_value = 0
+
+# Iterate over all possible combinations of gems
+for i in range(2**n):
+    # Convert the binary representation of i to a list of booleans
+    choices = [bool(i & (1 << j)) for j in range(n)]
+    
+    # Calculate the sum of values and costs for the current combination of gems
+    x = sum(values[j] for j in range(n) if choices[j])
+    y = sum(costs[j] for j in range(n) if choices[j])
+    
+    # Update the maximum possible value of X-Y
+    max_value = max(max_value, x - y)
+
+print(max_value)
 

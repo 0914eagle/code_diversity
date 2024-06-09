@@ -1,20 +1,33 @@
 
-def solve(N, towns):
-    # Sort the towns by their x-coordinates
-    sorted_towns = sorted(towns, key=lambda town: town[0])
+import math
 
-    # Create a graph with an edge between each pair of towns
-    graph = {}
-    for i in range(N):
-        graph[i] = []
-        for j in range(i+1, N):
-            graph[i].append(j)
+def get_tape_length(n, papers):
+    # Calculate the area of an A1 paper
+    a1_area = 1
+    for i in range(n, 0, -1):
+        a1_area *= 2 ** (1 - i / 4)
 
-    # Calculate the minimum cost of building a road between each pair of towns
-    min_cost = 0
-    for i in range(N):
-        for j in graph[i]:
-            min_cost += min(abs(sorted_towns[i][0] - sorted_towns[j][0]), abs(sorted_towns[i][1] - sorted_towns[j][1]))
+    # Calculate the total area of all papers
+    total_area = 0
+    for i in range(n, 0, -1):
+        total_area += papers[i - 2] * 2 ** (1 - i / 4)
 
-    return min_cost
+    # Calculate the length of tape needed
+    tape_length = total_area / a1_area
+
+    return tape_length
+
+def main():
+    n = int(input())
+    papers = [int(x) for x in input().split()]
+
+    tape_length = get_tape_length(n, papers)
+
+    if tape_length > 10 ** 9:
+        print("impossible")
+    else:
+        print(round(tape_length, 5))
+
+if __name__ == "__main__":
+    main()
 

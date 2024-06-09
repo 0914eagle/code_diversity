@@ -1,16 +1,41 @@
 
-def get_min_staircases(n, s, k, closed_floors):
-    # Initialize the minimum number of staircases to walk as 0
-    min_staircases = 0
+def solve(n, log):
+    # Initialize variables
+    heap = []
+    result = []
+    min_value = None
 
-    # Loop through the closed floors and check if the current floor is one of them
-    for floor in closed_floors:
-        # If the current floor is one of the closed floors, increment the minimum number of staircases
-        if floor == s:
-            min_staircases += 1
-        # If the current floor is between the current floor and the floor with an open restaurant, increment the minimum number of staircases
-        elif floor > s and floor < n:
-            min_staircases += 1
+    # Iterate through the log
+    for record in log:
+        # Split the record into operation and value
+        operation, value = record.split()
 
-    return min_staircases
+        # Insert operation
+        if operation == "insert":
+            heap.append(int(value))
+
+        # Get minimum operation
+        elif operation == "getMin":
+            # If the heap is empty, add a removeMin operation to the result
+            if not heap:
+                result.append("removeMin")
+            # If the heap is not empty, add a getMin operation to the result
+            else:
+                result.append(record)
+                min_value = int(value)
+
+        # Remove minimum operation
+        elif operation == "removeMin":
+            # If the heap is empty, do nothing
+            if not heap:
+                continue
+            # If the heap is not empty, remove the minimum value from the heap
+            else:
+                removed_value = heap.pop(0)
+                # If the removed value is not equal to the minimum value, add an insert operation to the result
+                if removed_value != min_value:
+                    result.append(f"insert {min_value}")
+
+    # Return the result
+    return result
 

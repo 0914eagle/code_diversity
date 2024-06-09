@@ -1,49 +1,44 @@
 
-def find_cycles(n, m, edges):
-    # Initialize a dictionary to store the graph
-    graph = {}
-    for i in range(1, n+1):
-        graph[i] = []
+def solve(n, m, d, c):
+    # Initialize the array a with 0s
+    a = [0] * (n + 2)
     
-    # Add edges to the graph
-    for edge in edges:
-        u, v = edge[0], edge[1]
-        graph[u].append(v)
-        graph[v].append(u)
+    # Initialize the number of jumps made
+    jumps_made = 0
     
-    # Initialize a set to store the visited nodes
-    visited = set()
-    
-    # Initialize a counter for the number of cycles
-    num_cycles = 0
-    
-    # Iterate through each node in the graph
-    for node in graph:
-        # If the node has not been visited, explore its connected component
-        if node not in visited:
-            # Initialize a stack to store the nodes to be visited
-            stack = [node]
+    # Loop through each platform
+    for i in range(m):
+        # Get the length of the current platform
+        platform_length = c[i]
+        
+        # Loop through each cell in the platform
+        for j in range(platform_length):
+            # Get the current cell number
+            cell_number = j + 1
             
-            # Initialize a set to store the nodes in the current cycle
-            cycle = set()
-            
-            # Explore the connected component
-            while stack:
-                # Pop a node from the stack
-                node = stack.pop()
+            # Check if the cell is not already occupied by a platform
+            if a[cell_number] == 0:
+                # Mark the cell as occupied by the current platform
+                a[cell_number] = i + 1
                 
-                # If the node has not been visited, mark it as visited and add it to the cycle
-                if node not in visited:
-                    visited.add(node)
-                    cycle.add(node)
+                # Check if the cell is the last cell in the platform
+                if j == platform_length - 1:
+                    # Increment the number of jumps made
+                    jumps_made += 1
                     
-                    # Add the node's neighbors to the stack
-                    for neighbor in graph[node]:
-                        stack.append(neighbor)
-            
-            # If the cycle has at least three nodes, it is a cycle
-            if len(cycle) >= 3:
-                num_cycles += 1
+                    # Check if the number of jumps made is equal to the maximum distance of the jump
+                    if jumps_made == d:
+                        # Reset the number of jumps made
+                        jumps_made = 0
+                        
+                        # Break out of the inner loop
+                        break
     
-    return num_cycles
+    # Check if the last cell is occupied by a platform
+    if a[n + 1] == 0:
+        # Return NO
+        return "NO"
+    
+    # Return YES and the array a
+    return "YES\n" + " ".join(map(str, a[1:]))
 

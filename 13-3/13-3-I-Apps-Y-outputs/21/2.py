@@ -1,26 +1,25 @@
 
-def create_staff(notes):
-    staff = ["G:                                                            ",
-             "F: -------------------------------------*-------------------- ",
-             "E:       *   *          *             *   *                   ",
-             "D: ----*-------**-----*-------------*-------*---------------- ",
-             "C: * *     *      * *     **    * *           *         ** **",
-             "B: --------------------------**-----------------*-----*------",
-             "A:                                                  *         ",
-             "g: -----------------------------------------------*----------",
-             "f:                                                            ",
-             "e: ----------------------------------------------------------",
-             "d:                                                            ",
-             "c:                                                            ",
-             "b:                                                            ",
-             "a: ----------------------------------------------------------"]
+import sys
 
-    for note in notes:
-        pitch = note[0]
-        duration = note[1] if len(note) == 2 else 1
-        staff_line = staff[ord(pitch) - ord('A')]
-        staff_line = staff_line[:staff_line.index('*') + duration] + '*' + staff_line[staff_line.index('*') + duration + 1:]
-        staff[ord(pitch) - ord('A')] = staff_line
+n = int(input())
+values = list(map(int, input().split()))
+costs = list(map(int, input().split()))
 
-    return '\n'.join(staff)
+# Initialize the maximum possible value of X-Y
+max_value = 0
+
+# Iterate over all possible combinations of gems
+for i in range(1 << n):
+    # Calculate the sum of values and costs for the current combination
+    current_values = 0
+    current_costs = 0
+    for j in range(n):
+        if i & (1 << j):
+            current_values += values[j]
+            current_costs += costs[j]
+    
+    # Update the maximum possible value of X-Y
+    max_value = max(max_value, current_values - current_costs)
+
+print(max_value)
 

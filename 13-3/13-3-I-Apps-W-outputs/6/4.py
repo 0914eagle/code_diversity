@@ -1,18 +1,16 @@
 
-def solve(v, a):
-    # Initialize the maximum number to be written on the fence
-    max_num = -1
-    
-    # Iterate through the given numbers
-    for i in range(1, 10):
-        # Check if the current number requires more paint than what Igor has
-        if a[i] > v:
-            continue
-        
-        # If the current number is not a zero, update the maximum number
-        if i != 0:
-            max_num = max(max_num, i)
-    
-    # Return the maximum number that can be written on the fence
-    return max_num
+def solve(strings, operations):
+    # Initialize an empty dictionary to store the concatenated strings
+    concatenated_strings = {}
+
+    # Iterate through the operations
+    for a, b in operations:
+        # Concatenate the strings and store the result in the dictionary
+        concatenated_strings[a] = concatenated_strings.get(a, "") + strings[b]
+
+        # Empty the string at index b
+        strings[b] = ""
+
+    # Return the last string that remains
+    return concatenated_strings[len(concatenated_strings)]
 

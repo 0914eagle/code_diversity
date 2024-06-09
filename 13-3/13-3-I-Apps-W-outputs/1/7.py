@@ -1,38 +1,20 @@
 
-def solve(n, a):
-    # Initialize variables
-    processes = {}
-    free_cells = []
-    occupied_cells = []
-    moves = 0
+n, k = map(int, input().split())
+tabs = list(map(int, input().split()))
 
-    # Separate the cells into free and occupied lists
-    for i in range(n):
-        if a[i] == 0:
-            free_cells.append(i)
-        else:
-            if a[i] not in processes:
-                processes[a[i]] = [i]
-            else:
-                processes[a[i]].append(i)
+# Initialize the variables to keep track of the number of test and social network tabs
+test_tabs = 0
+social_tabs = 0
 
-    # Sort the occupied cells by process number
-    for process in processes:
-        processes[process].sort()
+# Iterate through the tabs and keep track of the number of test and social network tabs
+for i in range(n):
+    if tabs[i] == 1:
+        test_tabs += 1
+    else:
+        social_tabs += 1
 
-    # Move the occupied cells to the beginning of the memory
-    for process in processes:
-        for cell in processes[process]:
-            if cell not in free_cells:
-                moves += 1
-                free_cells.append(cell)
-                occupied_cells.append(cell)
+# Find the maximum absolute difference between the number of test and social network tabs
+abs_diff = max(abs(test_tabs - social_tabs), abs(test_tabs - (social_tabs - 1)))
 
-    # Move the remaining free cells to the end of the memory
-    for cell in free_cells:
-        if cell not in occupied_cells:
-            moves += 1
-            free_cells.append(cell)
-
-    return moves
+print(abs_diff)
 

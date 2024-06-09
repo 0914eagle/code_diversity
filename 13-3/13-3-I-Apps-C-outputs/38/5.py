@@ -1,33 +1,52 @@
 
-def solve(n, g, d, e, links):
-    # Initialize variables
-    human_system = None
-    alien_system = None
-    min_uw_distance = float('inf')
+def count_binary_relations(n):
+    # Initialize the number of binary relations to 0
+    num_relations = 0
+    
+    # Iterate over all possible combinations of elements in the set
+    for i in range(1 << n):
+        # Convert the binary representation of i to a list of indices
+        indices = [j for j in range(n) if i & (1 << j)]
+        
+        # Check if the relation is symmetric and transitive
+        if is_symmetric_and_transitive(indices):
+            # Increment the number of binary relations
+            num_relations += 1
+    
+    # Return the number of binary relations modulo 10^9 + 7
+    return num_relations % (10**9 + 7)
 
-    # Loop through each system
-    for i in range(n):
-        # If the system is human, set it as the human system
-        if d[i] == 'h':
-            human_system = i
-        # If the system is alien, set it as the alien system
-        elif d[i] == 'a':
-            alien_system = i
+def is_symmetric_and_transitive(indices):
+    # Check if the relation is symmetric
+    if not is_symmetric(indices):
+        return False
+    
+    # Check if the relation is transitive
+    if not is_transitive(indices):
+        return False
+    
+    # The relation is symmetric and transitive
+    return True
 
-    # If both the human and alien systems have been found, calculate the UW distance
-    if human_system is not None and alien_system is not None:
-        # Calculate the capacitance, potential, and inductance of the gravity values
-        capacitance = g[human_system] + g[alien_system]
-        potential = g[human_system] - g[alien_system]
-        inductance = g[human_system] * g[alien_system]
+def is_symmetric(indices):
+    # Check if the relation is symmetric
+    for i in range(len(indices)):
+        for j in range(i+1, len(indices)):
+            if indices[i] != indices[j] and (indices[i], indices[j]) not in relations:
+                return False
+    return True
 
-        # Calculate the UW distance
-        uw_distance = abs(potential * (capacitance * capacitance - inductance))
+def is_transitive(indices):
+    # Check if the relation is transitive
+    for i in range(len(indices)):
+        for j in range(i+1, len(indices)):
+            for k in range(j+1, len(indices)):
+                if (indices[i], indices[j]) in relations and (indices[j], indices[k]) in relations and (indices[i], indices[k]) not in relations:
+                    return False
+    return True
 
-        # If the UW distance is less than the minimum, update the minimum
-        if uw_distance < min_uw_distance:
-            min_uw_distance = uw_distance
-
-    # Return the minimum UW distance
-    return min_uw_distance
+# Test the function with the given examples
+assert count_binary_relations(1) == 1
+assert count_binary_relations(2) == 3
+assert count_binary_relations(3) == 10
 

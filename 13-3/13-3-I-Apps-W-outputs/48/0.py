@@ -1,16 +1,25 @@
 
-def count_paths(grid):
-    m, n = len(grid), len(grid[0])
-    dp = [[0] * n for _ in range(m)]
-    dp[m-1][n-1] = 1
+def is_ladder(arr):
+    # Check if the array is non-decreasing
+    for i in range(len(arr) - 1):
+        if arr[i] > arr[i+1]:
+            return False
+    
+    # Check if the array is non-increasing
+    for i in range(len(arr) - 1):
+        if arr[i] < arr[i+1]:
+            return False
+    
+    return True
 
-    for i in range(m-1, -1, -1):
-        for j in range(n-1, -1, -1):
-            if grid[i][j] == '#':
-                continue
-            dp[i][j] += dp[i+1][j]
-            if j < n-1:
-                dp[i][j] += dp[i+1][j+1]
+n, m = map(int, input().split())
+arr = list(map(int, input().split()))
 
-    return dp[0][0]
+for i in range(m):
+    l, r = map(int, input().split())
+    subarr = arr[l-1:r]
+    if is_ladder(subarr):
+        print("Yes")
+    else:
+        print("No")
 

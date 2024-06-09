@@ -1,23 +1,14 @@
 
-def plush_toys(x, y):
-    # Initialize variables
-    original_toys = 1
-    copied_toys = 0
-
-    # Loop until the desired configuration is reached
-    while original_toys + copied_toys < x + y:
-        # If the number of original toys is odd, apply the machine to an original toy
-        if original_toys % 2 == 1:
-            original_toys += 1
-            copied_toys += 2
-        # If the number of original toys is even, apply the machine to a copy
-        else:
-            copied_toys += 1
-            original_toys += 2
-
-    # Return "Yes" if the desired configuration is possible, and "No" otherwise
-    if original_toys == x and copied_toys == y:
-        return "Yes"
+def compare_bases(x_base, x_digits, y_base, y_digits):
+    x_num = 0
+    y_num = 0
+    for i in range(len(x_digits)):
+        x_num += x_digits[i] * x_base ** (len(x_digits) - i - 1)
+        y_num += y_digits[i] * y_base ** (len(y_digits) - i - 1)
+    if x_num < y_num:
+        return '<'
+    elif x_num > y_num:
+        return '>'
     else:
-        return "No"
+        return '='
 

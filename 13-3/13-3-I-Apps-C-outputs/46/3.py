@@ -1,29 +1,15 @@
 
-def solve(s):
-    n = len(s)
-    if n % 2 == 1 or n > 10000:
-        return "-1"
-    
-    # create a dictionary to store the frequency of each substring
-    freq = {}
-    for i in range(n // 2):
-        substring = s[i:i + n // 2]
-        if substring not in freq:
-            freq[substring] = 1
-        else:
-            freq[substring] += 1
-    
-    # check if all substrings are different
-    if len(freq) == n // 2 + 1:
-        return s
-    
-    # if not, find a permutation of the letters that produces all different substrings
-    permutation = []
-    for i in range(n // 2):
-        for j in range(n // 2):
-            if s[i + j] not in permutation:
-                permutation.append(s[i + j])
-                break
-    
-    return "".join(permutation)
+def get_badge_numbers(start, end, locks):
+    # Initialize a set to store the badge numbers
+    badge_numbers = set()
+
+    # Iterate through the locks
+    for lock in locks:
+        # Check if the lock is between the start and end rooms
+        if lock[0] == start and lock[1] == end:
+            # Add the badge numbers to the set
+            badge_numbers.update(range(lock[2], lock[3] + 1))
+
+    # Return the length of the set
+    return len(badge_numbers)
 

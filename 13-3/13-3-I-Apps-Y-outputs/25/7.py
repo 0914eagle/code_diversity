@@ -1,10 +1,11 @@
 
-def solve(N, A):
-    sheet = set()
-    for i in range(N):
-        if A[i] in sheet:
-            sheet.remove(A[i])
-        else:
-            sheet.add(A[i])
-    return len(sheet)
+def simplicity(string):
+    return len(set(string))
+
+def min_erase(string):
+    simp = simplicity(string)
+    if simp <= 2:
+        return 0
+    else:
+        return simp - 2
 

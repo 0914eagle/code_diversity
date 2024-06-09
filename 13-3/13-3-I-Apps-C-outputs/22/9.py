@@ -1,16 +1,24 @@
 
-def solve(n, k, p):
-    # Calculate the number of permutations of length n with runs of length at most k
-    num_permutations = 1
-    for i in range(1, n+1):
-        # Calculate the number of permutations with a run of length i
-        num_permutations_with_run = (i * (i+1)) // 2
-        # If the run length is greater than k, break the loop
-        if i > k:
+import sys
+
+def get_boss_and_subordinates(employees, employee_id):
+    boss_id = 0
+    subordinates = 0
+    for employee in employees:
+        if employee[0] == employee_id:
+            boss_id = employee[1]
+            subordinates = employee[2]
             break
-        # Add the number of permutations with a run of length i to the total
-        num_permutations += num_permutations_with_run
-    
-    # Return the result modulo p
-    return num_permutations % p
+    return boss_id, subordinates
+
+employees = []
+m, q = map(int, input().split())
+for i in range(m):
+    employee_id, salary, height = map(int, input().split())
+    employees.append([employee_id, salary, height])
+
+for i in range(q):
+    employee_id = int(input())
+    boss_id, subordinates = get_boss_and_subordinates(employees, employee_id)
+    print(boss_id, subordinates)
 

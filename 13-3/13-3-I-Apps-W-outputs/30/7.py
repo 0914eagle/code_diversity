@@ -1,16 +1,13 @@
 
-def solve(n, b):
-    # Check if the sequence is strictly increasing
-    for i in range(1, n):
-        if b[i] <= b[i-1]:
-            return "No"
-    
-    # Check if the sequence is a permutation of the original sequence
-    b = sorted(b)
-    for i in range(n):
-        if b[i] != i+1:
-            return "No"
-    
-    # If the sequence is valid, return it
-    return "Yes\n" + " ".join(str(x) for x in b)
+def get_kth_smallest_divisor(n, k):
+    divisors = []
+    for i in range(1, int(n**0.5) + 1):
+        if n % i == 0:
+            divisors.append(i)
+            if n // i != i:
+                divisors.append(n // i)
+    if len(divisors) < k:
+        return -1
+    else:
+        return sorted(divisors)[k - 1]
 

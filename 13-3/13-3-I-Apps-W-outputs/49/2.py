@@ -1,34 +1,37 @@
 
-def get_min_staircases(n, s, k, closed_floors):
-    # Initialize the minimum number of staircases to walk as 0
-    min_staircases = 0
+def solve(n, log):
+    # Initialize variables
+    heap = []
+    corrected_log = []
+    min_value = None
 
-    # If all restaurants are closed, return -1
-    if k == n:
-        return -1
+    # Iterate through the log
+    for record in log:
+        # Split the record into operation and value
+        operation, value = record.split()
 
-    # If ConneR's office has an open restaurant, return 0
-    if s in closed_floors:
-        return 0
+        # Check if the operation is insert
+        if operation == "insert":
+            # Insert the value into the heap
+            heap.append(int(value))
 
-    # Initialize the current floor as ConneR's office floor
-    current_floor = s
+        # Check if the operation is getMin
+        elif operation == "getMin":
+            # Get the minimum value from the heap
+            min_value = heap[0]
 
-    # Loop through the closed floors
-    for floor in closed_floors:
-        # If the current floor is higher than the closed floor, increase the minimum number of staircases
-        if current_floor > floor:
-            min_staircases += 1
-        # If the current floor is lower than the closed floor, decrease the minimum number of staircases
-        elif current_floor < floor:
-            min_staircases -= 1
-        # If the current floor is equal to the closed floor, do nothing
-        else:
-            pass
+            # Check if the minimum value is equal to the expected value
+            if min_value != int(value):
+                # Add the correct record to the corrected log
+                corrected_log.append(f"removeMin")
+                corrected_log.append(f"insert {value}")
+                corrected_log.append(f"getMin {value}")
 
-        # Update the current floor to the next floor
-        current_floor += 1
+        # Check if the operation is removeMin
+        elif operation == "removeMin":
+            # Remove the minimum value from the heap
+            heap.pop(0)
 
-    # Return the minimum number of staircases
-    return min_staircases
+    # Return the corrected log
+    return corrected_log
 

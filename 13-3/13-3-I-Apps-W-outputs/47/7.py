@@ -1,22 +1,30 @@
 
-def solve(N, towns):
-    # Sort the towns by their x-coordinates
-    sorted_towns = sorted(towns, key=lambda town: town[0])
+import math
 
-    # Initialize the minimum cost to 0
-    min_cost = 0
+def get_tape_length(n, papers):
+    # Calculate the area of an A1 paper
+    area_a1 = 1
+    for i in range(n, 1, -1):
+        area_a1 *= 2
+    
+    # Calculate the total area of all papers
+    total_area = 0
+    for i in range(n, 0, -1):
+        total_area += papers[i-1] * area_a1 / (2**((i-1)/2))
+    
+    # Calculate the total length of tape needed
+    tape_length = 0
+    for i in range(n, 0, -1):
+        tape_length += papers[i-1] * area_a1 / (2**((i-1)/2))
+    
+    return tape_length
 
-    # Loop through the towns and build roads between them
-    for i in range(N-1):
-        # Get the current and next town
-        current_town = sorted_towns[i]
-        next_town = sorted_towns[i+1]
+def main():
+    n = int(input())
+    papers = list(map(int, input().split()))
+    tape_length = get_tape_length(n, papers)
+    print(tape_length)
 
-        # Calculate the cost of the road between the current and next town
-        cost = abs(current_town[0] - next_town[0])
-
-        # Add the cost to the minimum cost
-        min_cost += cost
-
-    return min_cost
+if __name__ == "__main__":
+    main()
 

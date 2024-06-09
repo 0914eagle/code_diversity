@@ -1,30 +1,20 @@
 
-def defragment(memory, processes):
-    # Initialize variables
-    free_cells = []
-    occupied_cells = []
-    operations = 0
+n, k = map(int, input().split())
+tabs = list(map(int, input().split()))
 
-    # Separate free and occupied cells
-    for cell in memory:
-        if cell == 0:
-            free_cells.append(cell)
-        else:
-            occupied_cells.append(cell)
+# Initialize the variables to keep track of the number of test and social network tabs
+test_tabs = 0
+social_tabs = 0
 
-    # Sort occupied cells in increasing order
-    occupied_cells.sort()
+# Iterate through the tabs and count the number of test and social network tabs
+for i in range(n):
+    if tabs[i] == 1:
+        test_tabs += 1
+    else:
+        social_tabs += 1
 
-    # Iterate through occupied cells and move them to the left
-    for i in range(len(occupied_cells)):
-        current_cell = occupied_cells[i]
-        if i == 0:
-            continue
-        previous_cell = occupied_cells[i - 1]
-        if current_cell != previous_cell + 1:
-            operations += 1
-            free_cells.append(current_cell)
-            occupied_cells[i] = 0
+# Find the maximum absolute difference between the number of test and social network tabs
+abs_diff = max(abs(test_tabs - social_tabs), abs(test_tabs + social_tabs))
 
-    return operations
+print(abs_diff)
 

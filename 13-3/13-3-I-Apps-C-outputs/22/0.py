@@ -1,9 +1,36 @@
 
-def solve(n, k, p):
-    # Calculate the number of permutations of length n with runs of length at most k
-    num_permutations = 1
-    for i in range(1, n+1):
-        num_permutations *= k+1-i
-        num_permutations %= p
-    return num_permutations
+def get_boss_and_subordinates(employees, query):
+    # Find the employee with the given ID
+    employee = next((e for e in employees if e["id"] == query), None)
+    if employee is None:
+        return (0, 0)
+
+    # Find the employee's boss
+    boss = next((e for e in employees if e["height"] >= employee["height"] and e["salary"] > employee["salary"]), None)
+    if boss is None:
+        return (0, 0)
+
+    # Find the employee's subordinates
+    subordinates = [e for e in employees if e["height"] >= employee["height"] and e["salary"] < employee["salary"] and e["boss"] == employee["id"]]
+
+    return (boss["id"], len(subordinates))
+
+employees = []
+while True:
+    try:
+        id, salary, height = input().split()
+        employees.append({"id": int(id), "salary": int(salary), "height": int(height)})
+    except EOFError:
+        break
+
+queries = []
+while True:
+    try:
+        queries.append(int(input()))
+    except EOFError:
+        break
+
+for query in queries:
+    boss, subordinates = get_boss_and_subordinates(employees, query)
+    print(boss, subordinates)
 

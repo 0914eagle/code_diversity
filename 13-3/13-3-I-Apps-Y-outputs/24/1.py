@@ -1,10 +1,18 @@
 
-def get_remaining_apple_pie_flavor(n, ls):
-    # Sort the list of apples in ascending order of their flavors
-    sorted_ls = sorted(ls)
-    # Find the median of the sorted list
-    median = sorted_ls[n//2]
-    # Find the sum of the flavors of the remaining apples
-    remaining_sum = sum(ls) - median
-    return remaining_sum
+def convert_to_celsius(fahrenheit):
+    numerator, denominator = fahrenheit.split("/")
+    numerator = int(numerator)
+    denominator = int(denominator)
+    celsius = (numerator - 32) * 5 // 9
+    gcd = find_gcd(celsius, denominator)
+    return f"{celsius // gcd}/{denominator // gcd}"
+
+def find_gcd(a, b):
+    if b == 0:
+        return a
+    else:
+        return find_gcd(b, a % b)
+
+fahrenheit = input()
+print(convert_to_celsius(fahrenheit))
 

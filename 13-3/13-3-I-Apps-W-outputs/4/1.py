@@ -1,24 +1,27 @@
 
-def solve(n, arr):
-    # Calculate the sum of all pairs of numbers
-    sum = 0
-    for i in range(n):
-        for j in range(i+1, n):
-            sum += f(arr[i], arr[j])
-    # Return the result modulo 998244353
-    return sum % 998244353
+def give_candies(n, k, a):
+    # Initialize variables
+    days = 0
+    given_candies = 0
 
-# Function to alternate the digits of two numbers
-def f(x, y):
-    # Initialize the result
-    result = ""
-    # Loop through the digits of x and y
-    for i in range(len(str(x))):
-        # Add the digit of x to the result
-        result += str(x)[i]
-        # If there are still digits left in y, add the next digit of y to the result
-        if i < len(str(y)):
-            result += str(y)[i]
-    # Return the result
-    return int(result)
+    # Loop through the days
+    for i in range(n):
+        # Check if Arya has enough candies to give Bran
+        if given_candies + a[i] <= k:
+            # Give all the candies Arya has
+            given_candies += a[i]
+        else:
+            # Give Bran the maximum number of candies she can give (8)
+            given_candies += 8
+
+        # Check if Arya has given Bran all the candies he needs
+        if given_candies == k:
+            # Return the number of days it took to give Bran all the candies
+            return days
+
+        # Increment the number of days
+        days += 1
+
+    # If Arya couldn't give Bran all the candies, return -1
+    return -1
 

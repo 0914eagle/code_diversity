@@ -1,26 +1,22 @@
 
-def solve(n, vertices):
-    # Sort the vertices by their x-coordinate
-    sorted_vertices = sorted(vertices, key=lambda x: x[0])
-
-    # Get the leftmost and rightmost vertices
-    leftmost = sorted_vertices[0]
-    rightmost = sorted_vertices[-1]
-
-    # Get the topmost and bottommost vertices
-    topmost = min(sorted_vertices, key=lambda x: x[1])
-    bottommost = max(sorted_vertices, key=lambda x: x[1])
-
-    # Calculate the width and height of the rectangle
-    width = rightmost[0] - leftmost[0]
-    height = topmost[1] - bottommost[1]
-
-    # Calculate the area of the rectangle
-    area = width * height
-
-    # Check if the area is positive
-    if area > 0:
-        return area
-    else:
-        return -1
+def climb_stairs(n, m):
+    # Initialize a list to store the number of moves for each step
+    moves = [0] * (n + 1)
+    # Initialize a list to store the number of moves for each step that is a multiple of m
+    multiples = [0] * (n + 1)
+    
+    # Base case: when we reach the top of the stairs
+    moves[n] = 1
+    multiples[n] = 1
+    
+    # Iterate through the stairs
+    for step in range(n - 1, 0, -1):
+        # There are two ways to climb each step: 1 step and 2 steps
+        moves[step] = moves[step + 1] + moves[step + 2]
+        # If the number of moves is a multiple of m, add it to the list of multiples
+        if moves[step] % m == 0:
+            multiples[step] = 1
+    
+    # Return the minimum number of moves that is a multiple of m
+    return min(moves[1::m])
 

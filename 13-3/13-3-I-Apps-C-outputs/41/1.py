@@ -1,10 +1,19 @@
 
-def count_scary_subarrays(arr):
-    n = len(arr)
-    count = 0
-    for i in range(n):
-        for j in range(i, n):
-            if arr[i] == sorted(arr[i:j+1])[len(arr[i:j+1])//2]:
-                count += 1
-    return count
+def is_possible(frequencies):
+    # Initialize a list to store the positions of the read/write heads
+    positions = [0] * len(frequencies)
+    # Initialize a list to store the intervals for each frequency
+    intervals = [[0, 0] for _ in range(len(frequencies))]
+    # Loop through each frequency and its intervals
+    for i, (t_i, n_i) in enumerate(frequencies):
+        for j in range(n_i):
+            t_ij, t_i_j_plus_1 = map(int, input().split())
+            intervals[i].append((t_ij, t_i_j_plus_1))
+    # Loop through each interval and check if the read/write head can reach the end point
+    for i, (t_i, n_i) in enumerate(frequencies):
+        for j in range(n_i):
+            t_ij, t_i_j_plus_1 = intervals[i][j]
+            if t_i_j_plus_1 - t_ij != t_i:
+                return "impossible"
+    return "possible"
 

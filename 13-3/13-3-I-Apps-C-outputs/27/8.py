@@ -1,15 +1,28 @@
 
-def hash_function(word, mod):
-    if word == "":
-        return 0
-    else:
-        return (hash_function(word[:-1], mod) * 33) ^ ord(word[-1]) % mod
+import sys
 
-def count_words(N, K, M):
+def solve(N, K):
+    # Initialize the deque and the count of sequences
+    deque = []
     count = 0
-    for i in range(26**N):
-        word = chr(i + 97) * N
-        if hash_function(word, 2**M) == K:
+    
+    # Insert the cards at the beginning or end of the deque
+    for i in range(1, N+1):
+        deque.append(i)
+    
+    # Perform the action N times
+    for i in range(N):
+        # Take out the card from the beginning or end of the deque and eat it
+        card = deque.pop(0)
+        
+        # If the card is 1, increment the count
+        if card == 1:
             count += 1
-    return count
+    
+    # Return the count modulo 10^9 + 7
+    return count % 1000000007
+
+if __name__ == '__main__':
+    N, K = map(int, input().split())
+    print(solve(N, K))
 

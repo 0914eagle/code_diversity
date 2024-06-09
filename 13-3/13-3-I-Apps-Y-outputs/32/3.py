@@ -1,5 +1,7 @@
 
-def is_haiku(phrases):
-    A, B, C = phrases
-    return A + B + C == 15 and B - A == 2 and C - B == 2
+def solve(numbers):
+    modulo_42 = set()
+    for num in numbers:
+        modulo_42.add(num % 42)
+    return len(modulo_42)
 

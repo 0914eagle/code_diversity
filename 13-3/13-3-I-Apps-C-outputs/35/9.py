@@ -1,25 +1,30 @@
 
-def get_maximum_influence(n, spectators):
-    # Sort the spectators by their influence in descending order
-    spectators.sort(key=lambda x: x[1], reverse=True)
-
-    # Initialize variables to keep track of the number of spectators supporting Alice and Bob
-    alice_count = 0
-    bob_count = 0
-    total_influence = 0
-
-    # Iterate through the spectators and add them to the set if they support Alice or Bob
-    for spectator in spectators:
-        if spectator[0] == "11" or spectator[0] == "10":
-            alice_count += 1
-        if spectator[0] == "11" or spectator[0] == "01":
-            bob_count += 1
-        total_influence += spectator[1]
-
-        # If we have selected at least half of the spectators supporting Alice and at least half of the spectators supporting Bob, return the total influence
-        if alice_count >= n / 2 and bob_count >= n / 2:
-            return total_influence
-
-    # If we reach this point, it is not possible to select a non-empty set of spectators that satisfies the conditions, so return 0
-    return 0
+def count_evolution_plans(n, m, gyms):
+    # Initialize a list to store the number of Pokemons of each type
+    num_pokemons = [0] * (m + 1)
+    
+    # Iterate over the gyms and count the number of Pokemons of each type
+    for gym in gyms:
+        for pokemon in gym:
+            num_pokemons[pokemon] += 1
+    
+    # Initialize a list to store the number of evolution plans for each type
+    num_plans = [0] * (m + 1)
+    
+    # Iterate over the types and count the number of evolution plans for each type
+    for i in range(1, m + 1):
+        # If the number of Pokemons of this type is 0, then there are no evolution plans for this type
+        if num_pokemons[i] == 0:
+            continue
+        
+        # If the number of Pokemons of this type is 1, then there is only one evolution plan for this type
+        if num_pokemons[i] == 1:
+            num_plans[i] = 1
+            continue
+        
+        # If the number of Pokemons of this type is greater than 1, then there are num_pokemons[i]! evolution plans for this type
+        num_plans[i] = math.factorial(num_pokemons[i])
+    
+    # Return the product of the number of evolution plans for each type
+    return math.prod(num_plans) % (10**9 + 7)
 

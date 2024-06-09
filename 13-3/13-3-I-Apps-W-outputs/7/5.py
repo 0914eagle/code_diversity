@@ -1,17 +1,22 @@
 
-def find_winner(n, s):
-    anton_wins = 0
-    danik_wins = 0
-    for game in s:
-        if game == "A":
-            anton_wins += 1
-        else:
-            danik_wins += 1
-    
-    if anton_wins > danik_wins:
-        return "Anton"
-    elif danik_wins > anton_wins:
-        return "Danik"
-    else:
-        return "Friendship"
+n, k = map(int, input().split())
+videos = []
+for i in range(n):
+    s, m = map(int, input().split())
+    videos.append((s, m))
+
+servers = [0] * k
+current_time = 0
+result = []
+
+for video in videos:
+    while servers.count(0) == 0:
+        current_time += 1
+        for i in range(k):
+            if servers[i] > 0:
+                servers[i] -= 1
+    servers[servers.index(0)] = video[1]
+    result.append(current_time + video[1])
+
+print(*result, sep='\n')
 

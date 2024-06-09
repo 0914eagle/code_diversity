@@ -1,6 +1,10 @@
 
-def solve(x):
-    while x > 9:
-        x = sum(int(i) for i in str(x) if i != '0')
-    return x
+def get_estimate_magnitude(estimate):
+    return len(str(estimate))
+
+if __name__ == '__main__':
+    num_cases = int(input())
+    for _ in range(num_cases):
+        estimate = int(input())
+        print(get_estimate_magnitude(estimate))
 

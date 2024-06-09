@@ -1,15 +1,20 @@
 
-import itertools
-
-def get_entirely_unsorted_sequences(numbers):
-    num_sequences = 0
-    for perm in itertools.permutations(numbers):
-        is_sorted = True
-        for i in range(len(perm) - 1):
-            if perm[i] > perm[i + 1]:
-                is_sorted = False
+def solve(n, k, p, a, b):
+    # Sort the positions of the people and keys
+    a = sorted(a)
+    b = sorted(b)
+    
+    # Initialize the time needed for each person to reach the office
+    time_needed = [0] * n
+    
+    # Iterate through the people and keys
+    for i in range(n):
+        for j in range(k):
+            # If the person is located before the key, they can take the key and go to the office
+            if a[i] < b[j]:
+                time_needed[i] += b[j] - a[i]
                 break
-        if not is_sorted:
-            num_sequences += 1
-    return num_sequences % (10**9 + 9)
+    
+    # Return the maximum time needed for all people to reach the office
+    return max(time_needed)
 

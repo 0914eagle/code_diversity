@@ -1,30 +1,19 @@
 
-def solve(s, k):
-    # Initialize a dictionary to map each digit to its repeated version
-    digit_map = {
-        "1": "1",
-        "2": "22",
-        "3": "333",
-        "4": "4444",
-        "5": "55555",
-        "6": "666666",
-        "7": "7777777",
-        "8": "88888888",
-        "9": "999999999"
-    }
-    
-    # Initialize an empty string to store the result
-    result = ""
-    
-    # Loop through each character in the input string
-    for char in s:
-        # If the character is a digit, look up its repeated version in the dictionary
-        if char in digit_map:
-            result += digit_map[char]
-        # If the character is not a digit, add it to the result as is
-        else:
-            result += char
-    
-    # Return the K-th character from the left in the result string
-    return result[k-1]
+def is_triangle(a, b, c):
+    return a**2 + b**2 > c**2
+
+def count_triangles(sticks):
+    n = len(sticks)
+    count = 0
+    for i in range(n-2):
+        for j in range(i+1, n-1):
+            for k in range(j+1, n):
+                if sticks[i] != sticks[j] and sticks[j] != sticks[k] and sticks[i] != sticks[k]:
+                    if is_triangle(sticks[i], sticks[j], sticks[k]):
+                        count += 1
+    return count
+
+n = int(input())
+sticks = list(map(int, input().split()))
+print(count_triangles(sticks))
 

@@ -1,25 +1,27 @@
 
-def solve(N, T):
-    # Find the least common multiple (LCM) of all the times
-    lcm = T[0]
-    for i in range(1, N):
-        lcm = lcm_of_two_numbers(lcm, T[i])
+import re
 
-    # Return the LCM as the required answer
-    return lcm
-
-# Function to find the least common multiple of two numbers
-def lcm_of_two_numbers(x, y):
-    if x > y:
-        greater = x
-    else:
-        greater = y
-
-    while(True):
-        if(greater % x == 0 and greater % y == 0):
-            lcm = greater
-            break
-        greater += 1
-
-    return lcm
+def solve(S):
+    # Initialize a dictionary to store the count of each suit
+    suit_count = {"P": 0, "K": 0, "H": 0, "T": 0}
+    
+    # Initialize a set to store the labels of the cards
+    card_labels = set()
+    
+    # Iterate through the string S and extract the labels of the cards
+    for label in re.findall(r"[A-Z][0-9]{2}", S):
+        card_labels.add(label)
+    
+    # Iterate through the dictionary of suits and increment the count for each suit
+    for suit in suit_count:
+        for label in card_labels:
+            if suit in label:
+                suit_count[suit] += 1
+    
+    # Check if there are two exact same cards in the deck
+    if len(card_labels) != 52:
+        return "GRESKA"
+    
+    # Return the count of each suit
+    return " ".join(str(suit_count[suit]) for suit in suit_count)
 

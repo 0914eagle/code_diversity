@@ -1,64 +1,49 @@
 
-def longest_balanced_string(pieces):
-    # Initialize a dictionary to store the length of the longest balanced string formed by concatenating each piece
-    piece_lengths = {}
-    for piece in pieces:
-        # Check if the piece is already in the dictionary
-        if piece in piece_lengths:
-            # If it is, skip this piece
-            continue
-        # If it's not, find the length of the longest balanced string that can be formed by concatenating this piece with some other piece
-        longest_length = 0
-        for other_piece in pieces:
-            if piece == other_piece:
-                # Skip this piece if it's the same as the current piece
-                continue
-            # Concatenate the two pieces and check if the result is a balanced string
-            concatenated_piece = piece + other_piece
-            if is_balanced(concatenated_piece):
-                # If it is, update the length of the longest balanced string formed by concatenating this piece
-                longest_length = max(longest_length, len(concatenated_piece))
-        # Add the length of the longest balanced string formed by concatenating this piece to the dictionary
-        piece_lengths[piece] = longest_length
-    
-    # Find the maximum length of all the pieces
-    max_length = max(piece_lengths.values())
-    
-    # Return the maximum length
-    return max_length
+def get_min_square_side(points):
+    # Sort the points by their x-coordinate
+    points.sort(key=lambda x: x[0])
 
-def is_balanced(string):
-    # Initialize a stack to keep track of the parentheses
-    stack = []
-    for char in string:
-        # If the character is an opening parenthesis, push it onto the stack
-        if char == '(':
-            stack.append(char)
-        # If the character is a closing parenthesis, pop an opening parenthesis from the stack
-        elif char == ')':
-            if len(stack) == 0:
-                # If the stack is empty, the string is not balanced
-                return False
-            stack.pop()
-    
-    # If the stack is empty, the string is balanced
-    return len(stack) == 0
+    # Initialize the minimum side length to the x-coordinate of the last point
+    min_side = points[-1][0]
 
-def main():
-    # Read the number of pieces from stdin
-    n = int(input())
-    
-    # Read the pieces from stdin
-    pieces = []
-    for i in range(n):
-        pieces.append(input())
-    
-    # Find the longest balanced string
-    longest_string = longest_balanced_string(pieces)
-    
-    # Print the length of the longest balanced string
-    print(longest_string)
+    # Iterate through the points and calculate the minimum side length
+    for i in range(len(points) - 1):
+        # Calculate the distance between the current point and the next point
+        dist = points[i + 1][0] - points[i][0]
 
-if __name__ == "__main__":
-    main()
+        # If the distance is less than the current minimum side length, update the minimum side length
+        if dist < min_side:
+            min_side = dist
+
+    return min_side
+
+def solve(n, q, points, requests):
+    # Initialize an empty list to store the answers
+    answers = []
+
+    # Iterate through the requests
+    for a, b in requests:
+        # Extract the points for the current request
+        request_points = points[a - 1:b]
+
+        # Calculate the minimum side length of the smallest axis-aligned square that contains all of the points
+        min_side = get_min_square_side(request_points)
+
+        # Add the answer to the list of answers
+        answers.append(min_side)
+
+    return answers
+
+n, q = map(int, input().split())
+points = []
+for i in range(n):
+    x, y = map(int, input().split())
+    points.append((x, y))
+requests = []
+for i in range(q):
+    a, b = map(int, input().split())
+    requests.append((a, b))
+answers = solve(n, q, points, requests)
+for answer in answers:
+    print(answer)
 

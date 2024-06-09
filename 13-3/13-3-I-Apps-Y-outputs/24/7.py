@@ -1,9 +1,18 @@
 
-def get_remaining_apple_pie_flavor(n, l):
-    # Calculate the sum of the flavors of all apples
-    total_flavor = sum(range(l, l + n))
-    # Calculate the sum of the flavors of the remaining apples after eating one apple
-    remaining_flavor = sum(range(l + 1, l + n))
-    # Return the difference between the two sums
-    return abs(total_flavor - remaining_flavor)
+def convert_to_celsius(fahrenheit):
+    numerator, denominator = fahrenheit.split("/")
+    numerator = int(numerator)
+    denominator = int(denominator)
+    celsius = (numerator - 32) * 5 // 9
+    gcd = find_gcd(celsius, denominator)
+    return f"{celsius // gcd}/{denominator // gcd}"
+
+def find_gcd(a, b):
+    if b == 0:
+        return a
+    else:
+        return find_gcd(b, a % b)
+
+fahrenheit = input()
+print(convert_to_celsius(fahrenheit))
 

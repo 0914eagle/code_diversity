@@ -1,18 +1,17 @@
 
-def solve(n, prizes):
-    # Sort the prizes in ascending order
-    prizes.sort()
+import sys
+
+def get_possible_sums(n, k):
+    # Calculate the possible sums
+    possible_sums = []
+    for i in range(n+1):
+        for j in range(i+1, n+1):
+            possible_sums.append(i+j)
     
-    # Initialize the minimum time to collect all prizes
-    min_time = 0
-    
-    # Iterate through the prizes
-    for i in range(n):
-        # Calculate the time it takes to reach the current prize
-        time = abs(prizes[i] - (i + 1))
-        
-        # Add the time to the minimum time
-        min_time += time
-    
-    return min_time
+    # Return the number of possible sums
+    return len(set(possible_sums))
+
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    print(get_possible_sums(n, k))
 

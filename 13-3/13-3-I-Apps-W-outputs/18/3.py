@@ -1,23 +1,55 @@
 
-def solve(n, k, a):
-    # Calculate the total power Inna tells Dima off with for each task
-    total_power = [0] * (n + 1)
-    for i in range(1, n):
-        total_power[i] = total_power[i - 1] + a[i - 1]
-    
-    # Initialize the minimum power and the corresponding first task
-    min_power = total_power[n]
-    first_task = 1
-    
-    # Iterate through all possible first tasks
-    for i in range(1, n - k + 2):
-        # Calculate the total power Inna tells Dima off with for the current first task
-        current_power = total_power[i + k - 1] - total_power[i - 1]
-        
-        # Update the minimum power and the corresponding first task if necessary
-        if current_power < min_power:
-            min_power = current_power
-            first_task = i
-    
-    return first_task
+from sys import stdin, stdout
+from math import gcd
+
+def modular_exponentiation(base, exponent, modulus):
+    result = 1
+    base = base % modulus
+    while exponent > 0:
+        if exponent % 2 == 1:
+            result = (result * base) % modulus
+        exponent = exponent // 2
+        base = (base * base) % modulus
+    return result
+
+def extended_euclidean(a, b):
+    if a == 0:
+        return (b, 0, 1)
+    else:
+        g, y, x = extended_euclidean(b % a, a)
+        return (g, x - (b // a) * y, y)
+
+def modular_inverse(a, m):
+    g, x, y = extended_euclidean(a, m)
+    if g != 1:
+        return None
+    return x % m
+
+def modular_multiplicative_inverse(n, modulus):
+    return modular_inverse(n, modulus)
+
+def modular_additive_inverse(n, modulus):
+    return (-n) % modulus
+
+def modular_subtractive_inverse(n, modulus):
+    return modular_additive_inverse(-n, modulus)
+
+def modular_division(dividend, divisor, modulus):
+    return (dividend * modular_multiplicative_inverse(divisor, modulus)) % modulus
+
+def modular_fraction(numerator, denominator, modulus):
+    return (numerator * modular_multiplicative_inverse(denominator, modulus)) % modulus
+
+def solve(a, b, n, x):
+    result = 0
+    for i in range(n):
+        result = (result + modular_fraction(a, b, 1000000007)) % 1000000007
+    return result
+
+def main():
+    a, b, n, x = map(int, stdin.readline().strip().split())
+    stdout.write(str(solve(a, b, n, x)))
+
+if __name__ == '__main__':
+    main()
 

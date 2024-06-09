@@ -1,28 +1,34 @@
 
-def solve(boys, girls, boys_books, girls_books):
-    # Initialize variables
-    presentations = 0
-    books = {}
+def get_min_mex(subarrays):
+    mex = 0
+    for subarray in subarrays:
+        for i in range(subarray[0], subarray[1] + 1):
+            if i not in subarray:
+                mex = max(mex, i)
+    return mex
 
-    # Add books from boys
-    for i in range(len(boys)):
-        for book in boys_books[i]:
-            if book not in books:
-                books[book] = 1
-            else:
-                books[book] += 1
 
-    # Add books from girls
-    for i in range(len(girls)):
-        for book in girls_books[i]:
-            if book not in books:
-                books[book] = 1
-            else:
-                books[book] += 1
+def get_optimal_array(n, m):
+    subarrays = []
+    for i in range(m):
+        l, r = map(int, input().split())
+        subarrays.append([l, r])
 
-    # Calculate the minimum number of presentations needed
-    for book, count in books.items():
-        presentations += count // 2 + count % 2
+    a = [0] * n
+    for i in range(n):
+        a[i] = i + 1
 
-    return presentations
+    min_mex = get_min_mex(subarrays)
+    for i in range(n):
+        if a[i] != min_mex:
+            a[i] = min_mex
+            break
+
+    return a
+
+
+n, m = map(int, input().split())
+a = get_optimal_array(n, m)
+print(min_mex)
+print(*a)
 

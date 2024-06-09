@@ -1,12 +1,9 @@
 
-def solve(n, m, b, mod, a):
-    dp = [[0] * (b + 1) for _ in range(n + 1)]
-    dp[0][0] = 1
-    for i in range(1, n + 1):
-        for j in range(b + 1):
-            for k in range(i):
-                if j - a[k] >= 0:
-                    dp[i][j] += dp[i - 1][j - a[k]]
-            dp[i][j] %= mod
-    return dp[n][b]
+def solve(s, l, r):
+    n = len(s)
+    count = 0
+    for i in range(l-1, r):
+        if s[i] != s[i-1] and s[i] != s[i-2]:
+            count += 1
+    return count
 

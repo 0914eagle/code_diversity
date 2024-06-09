@@ -1,20 +1,20 @@
 
-def solve(books):
-    # Initialize variables
-    presentations = 0
-    books_presented = 0
+def solve(n, m, subarrays):
+    # Initialize the array a with all zeros
+    a = [0] * n
 
-    # Sort the books by title
-    books = sorted(books)
+    # Iterate over the subarrays chosen by Alyona
+    for l, r in subarrays:
+        # Find the mex of the current subarray
+        mex = 0
+        while mex in a[l:r+1]:
+            mex += 1
+        # Update the array a with the mex of the current subarray
+        for i in range(l, r+1):
+            a[i] = mex
 
-    # Loop through the books
-    for book in books:
-        # If the book has not been presented yet
-        if book not in books_presented:
-            # Present the book
-            books_presented.append(book)
-            presentations += 1
+    # Find the maximum possible minimum mex among all subarrays
+    max_mex = max(a)
 
-    # Return the minimum number of presentations needed
-    return presentations
+    return max_mex, a
 

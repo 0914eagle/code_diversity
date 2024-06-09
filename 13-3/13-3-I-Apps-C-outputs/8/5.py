@@ -1,30 +1,31 @@
 
-def solve(producer_companies, consumer_companies):
-    # Initialize variables
-    max_profit = 0
-    selected_producer = None
-    selected_consumer = None
+def get_min_extensions(a, b, h, w, n, extensions):
+    # Initialize the minimum number of extensions needed to be 0
+    min_extensions = 0
 
-    # Iterate over each producer company
-    for producer in producer_companies:
-        # Iterate over each consumer company
-        for consumer in consumer_companies:
-            # Calculate the profit for this combination of producer and consumer
-            profit = calculate_profit(producer, consumer)
+    # Check if the rectangle can be placed on the initial field
+    if a <= h and b <= w:
+        return min_extensions
 
-            # If the profit is greater than the current maximum profit, update the maximum profit and the selected producer and consumer
-            if profit > max_profit:
-                max_profit = profit
-                selected_producer = producer
-                selected_consumer = consumer
+    # Sort the extensions in descending order
+    extensions.sort(reverse=True)
 
-    # Return the maximum profit and the selected producer and consumer
-    return max_profit, selected_producer, selected_consumer
+    # Loop through the extensions and check if they can be used to enlarge the field
+    for extension in extensions:
+        # Check if the extension can be used to enlarge the width of the field
+        if extension <= h:
+            h *= extension
+            min_extensions += 1
 
-def calculate_profit(producer, consumer):
-    # Calculate the profit for this combination of producer and consumer
-    profit = producer["price"] - consumer["price"]
+        # Check if the extension can be used to enlarge the length of the field
+        if extension <= w:
+            w *= extension
+            min_extensions += 1
 
-    # Return the profit
-    return profit
+        # Check if the rectangle can be placed on the enlarged field
+        if a <= h and b <= w:
+            return min_extensions
+
+    # If the rectangle can't be placed on the field with all extensions, return -1
+    return -1
 

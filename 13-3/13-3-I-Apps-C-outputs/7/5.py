@@ -1,18 +1,21 @@
 
-def longest_consecutive_subarray(arr):
-    # Sort the array
-    arr.sort()
-    # Initialize variables to keep track of the longest subarray length and the current subarray length
-    longest, current = 0, 0
-    # Iterate through the array
-    for i in range(len(arr)):
-        # If the current element is the same as the previous element, increment the current subarray length
-        if i > 0 and arr[i] == arr[i-1]:
-            current += 1
-        # If the current element is different from the previous element, reset the current subarray length
-        else:
-            current = 1
-        # Update the longest subarray length if the current subarray length is greater than the longest subarray length
-        longest = max(longest, current)
-    return longest
+def get_reconstructions(pre_output, in_output, post_output):
+    # Initialize a list to store the reconstructions
+    reconstructions = []
+    
+    # Iterate over all possible combinations of Pre, In, and Post calls
+    for pre_calls in range(2):
+        for in_calls in range(2):
+            for post_calls in range(2):
+                # Check if the number of calls to each routine is correct
+                if pre_calls + in_calls + post_calls == 6:
+                    # Check if the calls to each routine are in the correct order
+                    if (pre_calls == 0 or pre_calls == 2) and (in_calls == 1 or in_calls == 3) and (post_calls == 4 or post_calls == 5):
+                        # Check if the outputs match the given outputs
+                        if (pre_output == "".join(reversed(pre_output)) and in_output == "".join(reversed(in_output)) and post_output == "".join(reversed(post_output))):
+                            # Add the reconstruction to the list
+                            reconstructions.append([pre_calls, in_calls, post_calls])
+    
+    # Return the list of reconstructions
+    return reconstructions
 

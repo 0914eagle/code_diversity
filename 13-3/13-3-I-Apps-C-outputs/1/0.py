@@ -1,29 +1,32 @@
 
-def solve(N, M, roads):
-    # Initialize a graph with N nodes and M edges
-    graph = [[] for _ in range(N)]
-    for road in roads:
-        graph[road[0] - 1].append(road[1] - 1)
-        graph[road[1] - 1].append(road[0] - 1)
-    
-    # Check if the graph is connected
-    visited = [False] * N
-    queue = [0]
-    visited[0] = True
-    while queue:
-        node = queue.pop(0)
-        for neighbor in graph[node]:
-            if not visited[neighbor]:
-                visited[neighbor] = True
-                queue.append(neighbor)
-    
-    # If the graph is not connected, return "NO"
-    if not all(visited):
-        return "NO"
-    
-    # If the graph is connected, return "YES" and a possible direction assignment
-    direction = []
-    for i in range(M):
-        direction.append([i + 1, i + 2])
-    return "YES\n" + "\n".join(map(str, direction))
+def black_vienna(investigations):
+    num_investigations = int(investigations[0])
+    investigations = investigations[1:]
+
+    # Initialize a dictionary to store the number of times each suspect is mentioned in the investigations
+    suspect_counts = {}
+    for i in range(1, 27):
+        suspect_counts[chr(i + 64)] = 0
+
+    # Iterate through the investigations and update the suspect counts
+    for investigation in investigations:
+        suspects, player, reply = investigation.split()
+        suspect1, suspect2 = suspects
+        if player == "1":
+            suspect_counts[suspect1] += 1
+            suspect_counts[suspect2] += 1
+        else:
+            suspect_counts[suspect1] -= 1
+            suspect_counts[suspect2] -= 1
+
+    # Initialize a list to store the admissible solutions
+    solutions = []
+
+    # Iterate through the suspect counts and check if each suspect is in the Black Vienna circle
+    for suspect, count in suspect_counts.items():
+        if count == 0:
+            solutions.append(suspect)
+
+    # Return the number of admissible solutions
+    return len(solutions)
 

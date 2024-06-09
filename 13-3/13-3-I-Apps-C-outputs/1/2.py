@@ -1,28 +1,29 @@
 
-def solve(N, M, roads):
-    # Initialize a graph with N nodes and 0 edges
-    graph = [[] for _ in range(N)]
+def black_vienna(investigations):
+    num_investigations = len(investigations)
+    num_suspects = 26
+    num_solutions = 0
 
-    # Add edges to the graph
-    for road in roads:
-        graph[road[0] - 1].append(road[1] - 1)
-        graph[road[1] - 1].append(road[0] - 1)
+    for i in range(num_investigations):
+        suspects = investigations[i][:2]
+        player = investigations[i][2]
+        reply = investigations[i][3]
 
-    # Check if the graph is connected
-    visited = [False] * N
-    queue = [0]
-    visited[0] = True
-    while queue:
-        node = queue.pop(0)
-        for neighbor in graph[node]:
-            if not visited[neighbor]:
-                visited[neighbor] = True
-                queue.append(neighbor)
+        # Initialize a dictionary to store the number of each suspect in each player's hand
+        suspect_counts = {}
+        for j in range(num_suspects):
+            suspect_counts[chr(j + 65)] = 0
 
-    # If the graph is connected, return YES and a possible direction assignment
-    if all(visited):
-        return "YES\n" + "\n".join(str(i + 1) + " " + str(j + 1) for i, j in enumerate(roads))
+        # Update the dictionary with the number of each suspect in each player's hand
+        for j in range(num_suspects):
+            if suspects[0] == chr(j + 65):
+                suspect_counts[suspects[0]] += 1
+            if suspects[1] == chr(j + 65):
+                suspect_counts[suspects[1]] += 1
 
-    # Otherwise, return NO
-    return "NO"
+        # Check if the reply is consistent with the number of each suspect in each player's hand
+        if reply == suspect_counts[suspects[0]] + suspect_counts[suspects[1]]:
+            num_solutions += 1
+
+    return num_solutions
 

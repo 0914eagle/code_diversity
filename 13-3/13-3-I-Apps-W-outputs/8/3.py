@@ -1,22 +1,38 @@
 
-def is_split_possible(number_of_boxes, boxes_of_chocolate):
-    # Sort the list of boxes of chocolate in descending order
-    sorted_boxes = sorted(boxes_of_chocolate, reverse=True)
-    # Initialize variables to keep track of the number of pieces of chocolate for John and Sam
-    john_pieces = 0
-    sam_pieces = 0
-    # Loop through the sorted list of boxes of chocolate
-    for box in sorted_boxes:
-        # If the number of pieces of chocolate in the current box is odd, assign it to John
-        if box % 2 == 1:
-            john_pieces += box
-        # Otherwise, assign it to Sam
-        else:
-            sam_pieces += box
-    # If the number of pieces of chocolate for John and Sam is the same, return YES
-    if john_pieces == sam_pieces:
-        return "YES"
-    # Otherwise, return NO
-    else:
-        return "NO"
+n, m = map(int, input().split())
+field = [input() for _ in range(n)]
+
+# Check if the field is rectangular
+if len(set(map(len, field))) != 1:
+    print("NO")
+    exit()
+
+# Check if the field has three colors
+colors = set()
+for row in field:
+    for col in row:
+        colors.add(col)
+if len(colors) != 3:
+    print("NO")
+    exit()
+
+# Check if the field has three equal width and height stripes
+width = len(field[0])
+height = len(field)
+if width % 3 != 0 or height % 3 != 0:
+    print("NO")
+    exit()
+
+# Check if each color is used in exactly one stripe
+for color in colors:
+    count = 0
+    for i in range(0, height, int(height/3)):
+        for j in range(0, width, int(width/3)):
+            if field[i][j] == color:
+                count += 1
+    if count != 1:
+        print("NO")
+        exit()
+
+print("YES")
 

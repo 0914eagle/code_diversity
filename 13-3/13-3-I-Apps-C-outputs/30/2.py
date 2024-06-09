@@ -1,35 +1,29 @@
 
-def solve(n, corners):
-    # Initialize an empty dictionary to store the matching
-    matching = {}
+def topologically_sorted_nodes(n, m, edges):
+    # Initialize a graph with n nodes and m edges
+    graph = [[] for _ in range(n)]
+    for edge in edges:
+        graph[edge[0]].append(edge[1])
 
-    # Iterate over the corner pairs
-    for i in range(n):
-        # Get the current top-left and bottom-right corners
-        top_left, bottom_right = corners[i]
+    # Initialize a list to store the topologically sorted nodes
+    topologically_sorted = []
 
-        # Check if the top-left corner is already matched
-        if top_left in matching:
-            # If it is, get the matching bottom-right corner
-            matching_bottom_right = matching[top_left]
+    # Iterate through the graph until there are no more nodes to visit
+    while graph:
+        # Find all source nodes (nodes with no incoming edges)
+        source_nodes = [node for node, edges in enumerate(graph) if not edges]
 
-            # Check if the bottom-right corner is already matched
-            if matching_bottom_right in matching:
-                # If it is, check if the matching top-left corner is the current top-left corner
-                if matching[matching_bottom_right] == top_left:
-                    # If it is, the current pair is valid and can be added to the matching
-                    matching[top_left] = bottom_right
-                    matching[bottom_right] = top_left
-                else:
-                    # If it is not, the current pair is invalid and the matching is not possible
-                    return "syntax error"
-            else:
-                # If the bottom-right corner is not matched, the current pair is invalid and the matching is not possible
-                return "syntax error"
-        else:
-            # If the top-left corner is not matched, add it to the matching with the current bottom-right corner
-            matching[top_left] = bottom_right
+        # If there are no source nodes, the graph has at least one cycle
+        if not source_nodes:
+            return -1
 
-    # If all corner pairs are matched, return the matching
-    return matching
+        # Remove the source nodes and their outgoing edges from the graph
+        for source_node in source_nodes:
+            topologically_sorted.append(source_node)
+            graph.pop(source_node)
+            for edge in graph:
+                if source_node in edge:
+                    edge.remove(source_node)
+
+    return len(topologically_sorted)
 

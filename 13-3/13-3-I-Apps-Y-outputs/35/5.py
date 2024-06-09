@@ -1,52 +1,18 @@
 
-def find_cycles(n, m, edges):
-    # Initialize a dictionary to store the graph
-    graph = {}
-    for i in range(1, n+1):
-        graph[i] = []
+def solve(n, m, d, c):
+    # Initialize the array a with 0s
+    a = [0] * (n + 2)
     
-    # Add edges to the graph
-    for edge in edges:
-        u, v = edge[0], edge[1]
-        graph[u].append(v)
-        graph[v].append(u)
+    # Loop through each platform
+    for i in range(m):
+        # Get the length of the current platform
+        length = c[i]
+        
+        # Loop through each cell in the platform
+        for j in range(length):
+            # Set the cell to the current platform number
+            a[j + 1] = i + 1
     
-    # Initialize a set to store the visited nodes
-    visited = set()
-    
-    # Initialize a counter for the number of cycles
-    num_cycles = 0
-    
-    # Iterate over the graph
-    for node in graph:
-        if node not in visited:
-            # If the node is not visited, start a DFS from it
-            if dfs(graph, node, visited):
-                num_cycles += 1
-    
-    return num_cycles
-
-def dfs(graph, node, visited):
-    # Mark the current node as visited
-    visited.add(node)
-    
-    # If the node has no neighbors, it is a cycle
-    if not graph[node]:
-        return True
-    
-    # Recursively call DFS for all the neighbors
-    for neighbor in graph[node]:
-        if neighbor not in visited:
-            if dfs(graph, neighbor, visited):
-                return True
-    
-    return False
-
-n, m = map(int, input().split())
-edges = []
-for i in range(m):
-    u, v = map(int, input().split())
-    edges.append((u, v))
-    
-print(find_cycles(n, m, edges))
+    # Return the array a
+    return a
 

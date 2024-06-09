@@ -1,32 +1,14 @@
 
-def solve(n, a):
-    # Initialize a list to store the vertices
-    vertices = []
+def solve(n, s):
+    # Initialize variables
+    count = 0
+    other = 'B' if s[0] == 'A' else 'A'
 
-    # Iterate from 1 to n
-    for i in range(1, n + 1):
-        # Calculate the angle between the current vertex and the previous vertex
-        if i == 1:
-            angle = 360 - a
-        else:
-            angle = (360 / n) - a
+    # Iterate through the string and count the number of mutations needed
+    for i in range(n):
+        if s[i] != other:
+            count += 1
+        other = 'B' if other == 'A' else 'A'
 
-        # If the angle is less than or equal to a, add the current vertex to the list
-        if angle <= a:
-            vertices.append(i)
-
-    # If the list has three elements, return the vertices
-    if len(vertices) == 3:
-        return " ".join(map(str, vertices))
-
-    # If the list has two elements, return the vertices in reverse order
-    if len(vertices) == 2:
-        return " ".join(map(str, vertices[::-1]))
-
-    # If the list has one element, return the vertex and the next vertex
-    if len(vertices) == 1:
-        return " ".join(map(str, [vertices[0], vertices[0] + 1]))
-
-    # If the list is empty, return -1
-    return -1
+    return count
 

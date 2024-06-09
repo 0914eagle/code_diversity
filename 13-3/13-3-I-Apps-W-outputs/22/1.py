@@ -1,18 +1,28 @@
 
-def solve(H, W, K, S):
-    # Initialize the number of cuts to 0
-    cuts = 0
+def crafting_system(materials, recipes):
+    # Initialize a dictionary to store the required materials
+    required_materials = {}
 
-    # Loop through each row
-    for i in range(H):
-        # Get the number of white squares in the current row
-        num_white = S[i].count(0)
+    # Loop through each recipe
+    for recipe in recipes:
+        # Get the input and output materials
+        input_material, output_material, quantity = recipe
 
-        # If the number of white squares is greater than K, we need to cut
-        if num_white > K:
-            # Increment the number of cuts
-            cuts += 1
+        # Check if the output material is in the required materials dictionary
+        if output_material not in required_materials:
+            # If not, set the required quantity to zero
+            required_materials[output_material] = 0
 
-    # Return the number of cuts
-    return cuts
+        # Increment the required quantity by the recipe quantity
+        required_materials[output_material] += quantity
+
+    # Loop through each material in the required materials dictionary
+    for material, quantity in required_materials.items():
+        # Check if the material is in the materials list
+        if material in materials:
+            # If it is, subtract the required quantity from the available quantity
+            materials[material] -= quantity
+
+    # Return the updated materials list
+    return materials
 

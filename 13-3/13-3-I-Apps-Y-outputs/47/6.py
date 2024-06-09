@@ -1,26 +1,16 @@
 
-def solve(n, m):
-    # Initialize the array with all elements as 0
-    arr = [0] * n
-    
-    # Initialize the sum of the array as 0
-    sum = 0
-    
-    # Loop through the array and assign values to it
-    for i in range(n):
-        # Calculate the difference between the current sum and the target sum
-        diff = m - sum
-        
-        # If the difference is 0, break the loop
-        if diff == 0:
-            break
-        
-        # Assign the maximum value possible for the current element
-        arr[i] = diff
-        
-        # Update the sum of the array
-        sum += diff
-    
-    # Return the sum of absolute differences between adjacent elements
-    return sum(abs(arr[i] - arr[i+1]) for i in range(n-1))
+n, k = map(int, input().split())
+d, s = map(int, input().split())
+
+# Calculate the average difficulty of the solved problems
+avg_solved = s * k / n
+
+# Calculate the average difficulty of the unsolved problems
+avg_unsolved = (d - avg_solved) * (n - k) / k
+
+# Check if the average difficulty of the unsolved problems is possible
+if avg_unsolved < 0 or avg_unsolved > 100:
+    print("impossible")
+else:
+    print(f"{avg_unsolved:.6f}")
 

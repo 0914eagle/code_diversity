@@ -1,23 +1,16 @@
 
-def max_air_replacement(L1, L2, N, tubes):
-    # Sort the tubes in non-decreasing order
-    tubes.sort()
-    # Initialize the maximum total length to 0
-    max_length = 0
-    # Loop through all possible pairs of tubes
-    for i in range(N-1):
-        for j in range(i+1, N):
-            # Check if the sum of the lengths of the two tubes is less than or equal to L1
-            if tubes[i] + tubes[j] <= L1:
-                # Check if the sum of the lengths of the two tubes is less than or equal to L2
-                if tubes[i] + tubes[j] <= L2:
-                    # Calculate the total length of the four tubes
-                    total_length = tubes[i] + tubes[j] + tubes[N-1] + tubes[N-2]
-                    # Update the maximum total length if necessary
-                    max_length = max(max_length, total_length)
-    # Return the maximum total length or the word "Impossible" if no pair of tubes fits the setup
-    if max_length == 0:
-        return "Impossible"
-    else:
-        return max_length
+def solve(n, levels):
+    # Initialize the dp table with the completion time for each level when using item 0
+    dp = [levels[i][0] for i in range(n)]
+
+    # Loop through each level
+    for i in range(n):
+        # Loop through each item
+        for j in range(1, n+1):
+            # If the completion time for the current level using item j is less than the current minimum time, update the minimum time
+            if levels[i][j] < dp[i]:
+                dp[i] = levels[i][j]
+
+    # Return the minimum time to beat all levels
+    return sum(dp)
 

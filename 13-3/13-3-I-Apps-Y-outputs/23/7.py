@@ -1,17 +1,18 @@
 
-def solve(s, t):
-    # Initialize variables
-    max_length = 0
-    s_len = len(s)
-    t_len = len(t)
+def solve(N, cards):
+    # Initialize the scores of Alice and Bob to 0
+    alice_score, bob_score = 0, 0
 
-    # Iterate over the length of the substring
-    for i in range(s_len - t_len + 1):
-        # Check if the substring is a subsequence of s
-        if s[i:i+t_len] == t:
-            # If it is, update the maximum length
-            max_length = max(max_length, t_len)
+    # Sort the cards in descending order
+    cards.sort(reverse=True)
 
-    # Return the maximum length
-    return max_length
+    # Loop through the cards and assign them to Alice and Bob alternately
+    for i in range(N):
+        if i % 2 == 0:
+            alice_score += cards[i]
+        else:
+            bob_score += cards[i]
+
+    # Return the difference between Alice's score and Bob's score
+    return alice_score - bob_score
 

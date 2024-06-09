@@ -1,25 +1,30 @@
 
-def solve(n, streams):
-    # Sort the streams by their start time
-    streams.sort(key=lambda x: x[0])
+def speedrun(n, r, m, tricks):
+    # Initialize variables
+    expected_time = 0
+    current_time = 0
+    num_resets = 0
 
-    # Initialize the stack and the maximum total priority
-    stack = []
-    max_priority = 0
+    # Loop through the tricks
+    for trick in tricks:
+        t, p, d = trick
+        # If the trick occurs before the current time, reset the game
+        if t < current_time:
+            num_resets += 1
+            current_time = 0
+        # If the trick occurs after the current time, update the current time
+        elif t > current_time:
+            current_time = t
+        # If the trick occurs at the current time, check if it succeeds
+        else:
+            if p >= 0.5:
+                current_time += d
+            else:
+                num_resets += 1
+                current_time = 0
 
-    # Iterate through the streams
-    for stream in streams:
-        # If the stream starts at the current time, push its processor identifier to the stack
-        if stream[0] == len(stack):
-            stack.append(stream[2])
+    # Calculate the expected time to set a new record
+    expected_time = (n - current_time) / (1 - (num_resets * (1 - p)))
 
-        # If the stream ends at the current time, pop its processor identifier from the stack
-        if stream[0] + stream[1] == len(stack):
-            stack.pop()
-
-        # If the stack is not empty and the top processor identifier is the same as the current stream's processor identifier, add the stream's priority to the maximum total priority
-        if stack and stack[-1] == stream[2]:
-            max_priority += stream[2]
-
-    return max_priority
+    return expected_time
 

@@ -1,33 +1,15 @@
 
-import math
-
-def solve(n, m, mod, matrix):
-    # Initialize variables
-    rows, cols = [], []
-    total_ones = 0
-    num_matrices = 0
-
-    # Convert the input matrix into a list of lists
-    matrix = [list(row) for row in matrix]
-
-    # Count the number of ones in each row and column
-    for i in range(n):
-        rows.append(matrix[i].count("1"))
-        cols.append(matrix[i].count("1"))
-        total_ones += matrix[i].count("1")
-
-    # Check if the matrix is special
-    if total_ones != n:
-        return 0
-
-    # Count the number of special matrices
-    for i in range(m):
-        for j in range(i+1, m):
-            if rows[i] == rows[j] and cols[i] == cols[j]:
-                num_matrices += 1
-
-    # Calculate the remainder
-    remainder = num_matrices % mod
-
-    return remainder
+def solve(n, s, volumes):
+    # Sort the volumes in descending order
+    volumes.sort(reverse=True)
+    # Initialize the sum of volumes to 0
+    total = 0
+    # Iterate through the volumes and add them to the sum
+    for v in volumes:
+        total += v
+        # If the sum is greater than or equal to the desired volume, return the current volume
+        if total >= s:
+            return v
+    # If we reach this point, it means we couldn't find a combination that adds up to the desired volume, so return -1
+    return -1
 

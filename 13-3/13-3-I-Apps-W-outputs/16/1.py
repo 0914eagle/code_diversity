@@ -1,30 +1,17 @@
 
-def get_max_quality_matching(student_names, pseudonyms):
-    # Initialize a dictionary to store the relevance of each pseudonym to each student
-    relevance = {}
-    for i, student in enumerate(student_names):
-        relevance[i] = {}
-        for j, pseudonym in enumerate(pseudonyms):
-            # Calculate the length of the largest common prefix between the student name and the pseudonym
-            lcp = 0
-            for k in range(min(len(student), len(pseudonym))):
-                if student[k] == pseudonym[k]:
-                    lcp += 1
-                else:
-                    break
-            relevance[i][j] = lcp
+def solve(s, k):
+    n = len(s)
+    if k > n:
+        return ""
     
-    # Initialize a dictionary to store the matching between students and pseudonyms
-    matching = {}
+    # Initialize the result with the first k characters of s
+    result = s[:k]
     
-    # Loop through the students and pseudonyms and find the maximum quality matching
-    for i in range(len(student_names)):
-        # Find the pseudonym with the maximum relevance to the current student
-        max_relevance = 0
-        for j in range(len(pseudonyms)):
-            if relevance[i][j] > max_relevance:
-                max_relevance = relevance[i][j]
-                matching[i] = j
+    # Iterate over the remaining characters of s
+    for i in range(k, n):
+        # If the current character is lexicographically smaller than the last character of the result, replace the last character of the result with the current character
+        if s[i] < result[-1]:
+            result = result[:-1] + s[i]
     
-    return matching
+    return result
 

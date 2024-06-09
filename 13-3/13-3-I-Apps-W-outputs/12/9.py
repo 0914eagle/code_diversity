@@ -1,39 +1,23 @@
 
-def get_max_fruits(n, v, a, b):
-    # Sort the trees by the day they ripen
-    sorted_trees = sorted(zip(a, b), key=lambda x: x[0])
-
-    # Initialize the variables
-    total_fruits = 0
-    current_day = 1
-
-    # Loop through the trees and collect fruits
-    for tree in sorted_trees:
-        # Check if the tree ripens today
-        if tree[0] == current_day:
-            # Check if Valera can collect all the fruits from this tree
-            if tree[1] <= v:
-                # Add the fruits to the total and move on to the next tree
-                total_fruits += tree[1]
-            else:
-                # Add the maximum number of fruits Valera can collect and move on to the next tree
-                total_fruits += v
-        # Check if the tree ripens tomorrow
-        elif tree[0] == current_day + 1:
-            # Check if Valera can collect all the fruits from this tree
-            if tree[1] <= v:
-                # Add the fruits to the total and move on to the next tree
-                total_fruits += tree[1]
-            else:
-                # Add the maximum number of fruits Valera can collect and move on to the next tree
-                total_fruits += v
-        # The tree does not ripen today or tomorrow, skip it
-        else:
-            continue
-
-        # Increment the current day
-        current_day += 1
-
-    # Return the total number of fruits collected
-    return total_fruits
+def solve(s):
+    n = len(s)
+    # Initialize the longest non-decreasing subsequence array
+    lis = [1] * n
+    for i in range(1, n):
+        for j in range(i):
+            if s[i] >= s[j] and lis[i] < lis[j] + 1:
+                lis[i] = lis[j] + 1
+    # Find the maximum length of the longest non-decreasing subsequence
+    max_len = max(lis)
+    # Find the starting index of the longest non-decreasing subsequence
+    start_index = lis.index(max_len)
+    # Find the ending index of the longest non-decreasing subsequence
+    end_index = start_index + max_len - 1
+    # Create a new string with the maximum number of zeroes
+    t = "0" * max_len
+    # Fill in the non-zero elements of the string
+    for i in range(start_index, end_index + 1):
+        if s[i] == "1":
+            t = t[:i - start_index] + "1" + t[i - start_index + 1:]
+    return t
 

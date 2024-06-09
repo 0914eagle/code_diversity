@@ -1,11 +1,14 @@
 
-def is_postal_code(s):
-    A, B = map(int, input().split())
-    if len(s) != A + B + 1:
-        return "No"
-    if s[A] != "-":
-        return "No"
-    if not s[A+1:].isdigit():
-        return "No"
-    return "Yes"
+import random
+
+def solve(expression):
+    integers = expression.split('+')
+    num_integers = len(integers)
+    num_distinct = 1
+    for i in range(num_integers - 1):
+        if random.randint(0, 1) == 0:
+            num_distinct *= len(integers[i])
+        else:
+            num_distinct *= len(integers[i + 1])
+    return num_distinct
 

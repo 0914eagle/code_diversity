@@ -1,22 +1,22 @@
 
-def restore_queue(records):
-    # Initialize a dictionary to map each student ID to its neighbor IDs
-    neighbors = {}
-    for record in records:
-        front, back = record
-        if front != 0:
-            neighbors[back] = front
-        if back != 0:
-            neighbors[front] = back
-    
-    # Initialize a list to store the sequence of student IDs
-    queue = []
-    
-    # Start from the student at the front of the queue
-    current = neighbors[0]
-    while current != 0:
-        queue.append(current)
-        current = neighbors[current]
-    
-    return queue
+def get_max_side_length(planks):
+    # Sort the planks in descending order
+    planks.sort(reverse=True)
+    # Initialize the maximum side length as 0
+    max_side_length = 0
+    # Iterate through the planks
+    for i in range(len(planks)):
+        # Check if the current plank is greater than the maximum side length
+        if planks[i] > max_side_length:
+            # If it is, set the maximum side length to the current plank
+            max_side_length = planks[i]
+    return max_side_length
+
+
+if __name__ == "__main__":
+    num_test_cases = int(input())
+    for i in range(num_test_cases):
+        num_planks = int(input())
+        planks = list(map(int, input().split()))
+        print(get_max_side_length(planks))
 

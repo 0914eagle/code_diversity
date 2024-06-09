@@ -1,28 +1,18 @@
 
-def solve(s):
-    n = len(s)
-    if n % 2 == 1 or n > 10000:
-        return "-1"
-    
-    # create a dictionary to store the frequency of each substring
-    freq = {}
-    for i in range(n // 2):
-        substring = s[i:i + n // 2]
-        if substring not in freq:
-            freq[substring] = 1
-        else:
-            freq[substring] += 1
-    
-    # check if all substrings are unique
-    if len(freq) == n // 2 + 1:
-        return s
-    
-    # if not, find a substring that appears more than once and move it to the end
-    for substring in freq:
-        if freq[substring] > 1:
-            s = s.replace(substring, "")
-            s += substring
-            break
-    
-    return s
+def get_badge_numbers(n, l, b, s, d, locks):
+    # Initialize a set to store the badge numbers that can pass from room s to room d
+    badge_numbers = set()
+
+    # Iterate through each lock
+    for lock in locks:
+        # Extract the information from the lock
+        a, b, x, y = lock
+
+        # Check if the lock is between the starting and destination rooms
+        if a == s and b == d:
+            # Add the badge numbers that can pass through the lock to the set
+            badge_numbers |= set(range(x, y + 1))
+
+    # Return the number of badge numbers that can pass from room s to room d
+    return len(badge_numbers)
 

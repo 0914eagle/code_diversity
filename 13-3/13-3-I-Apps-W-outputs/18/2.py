@@ -1,23 +1,42 @@
 
-def solve(n, k, a):
-    # Calculate the total power Inna tells Dima off with for each task
-    total_power = [0] * (n + 1)
-    for i in range(1, n):
-        total_power[i] = total_power[i - 1] + a[i - 1]
-    
-    # Initialize the minimum power and the corresponding first task
-    min_power = total_power[n]
-    first_task = 1
-    
-    # Iterate through all possible first tasks
-    for i in range(1, n - k + 2):
-        # Calculate the total power Inna tells Dima off with for the current first task
-        current_power = total_power[i + k - 1] - total_power[i - 1]
-        
-        # Update the minimum power and the corresponding first task if necessary
-        if current_power < min_power:
-            min_power = current_power
-            first_task = i
-    
-    return first_task
+from sys import stdin, stdout
+from math import gcd
+
+def extended_euclid(a, b):
+    if b == 0:
+        return 1, 0, a
+    else:
+        x, y, gcd = extended_euclid(b, a % b)
+        return y, x - (a // b) * y, gcd
+
+def modular_inverse(a, m):
+    x, y, gcd = extended_euclid(a, m)
+    if gcd != 1:
+        return None
+    else:
+        return x % m
+
+def modular_exponentiation(base, exponent, modulus):
+    if modulus == 1:
+        return 0
+    result = 1
+    while exponent > 0:
+        if exponent % 2 == 1:
+            result = (result * base) % modulus
+        exponent = exponent // 2
+        base = (base * base) % modulus
+    return result
+
+def solve(A, B, n, x):
+    modulus = 1000000007
+    gcd, x, y = extended_euclid(A, modulus)
+    if gcd != 1:
+        return -1
+    else:
+        return (modular_exponentiation(A, n, modulus) * x + modular_exponentiation(B, n, modulus) * y) % modulus
+
+t = int(input())
+for _ in range(t):
+    A, B, n, x = map(int, input().split())
+    print(solve(A, B, n, x))
 

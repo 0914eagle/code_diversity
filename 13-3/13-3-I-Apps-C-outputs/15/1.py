@@ -1,13 +1,20 @@
 
-def solve(a):
-    str_a = str(a)
-    digits = [int(digit) for digit in str_a if digit in "1689"]
-    if len(digits) < 4:
-        return 0
-    digits.sort()
-    result = int("".join(str(digit) for digit in digits))
-    if result % 7 == 0:
-        return result
-    else:
-        return 0
+def solve(walk):
+    # Initialize a dictionary to store the values of the walks
+    values = {}
+    
+    # Initialize the root node with value 1
+    values[1] = 1
+    
+    # Iterate through the walk string
+    for char in walk:
+        # If the current character is 'L', 'R' or 'P', update the value of the current node
+        if char in 'LRP':
+            values[values[1]] = 2 * values[1] if char == 'L' else 2 * values[1] + 1
+        # If the current character is '*', update the value of the current node and its children
+        elif char == '*':
+            values[values[1]] = values[2 * values[1]] + values[2 * values[1] + 1]
+    
+    # Return the value of the walk
+    return values[1]
 

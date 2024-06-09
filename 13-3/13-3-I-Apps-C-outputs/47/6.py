@@ -1,24 +1,16 @@
 
-def solve(L1, L2, N, tubes):
-    # Sort the tubes in descending order
-    tubes.sort(reverse=True)
+def solve(n, levels):
+    # Initialize the dp table with the completion time for each level when using item 0
+    dp = [levels[i][0] for i in range(n)]
 
-    # Initialize the maximum total length of air that can be avoided
-    max_length = 0
+    # Loop through each level
+    for i in range(n):
+        # Loop through each item
+        for j in range(1, n+1):
+            # If the completion time for the level when using item j is less than the current minimum time, update the minimum time
+            if levels[i][j] < dp[i]:
+                dp[i] = levels[i][j]
 
-    # Iterate over all possible pairs of tubes
-    for i in range(N):
-        for j in range(i+1, N):
-            # Check if the sum of the lengths of the first two tubes is less than or equal to L1
-            if tubes[i] + tubes[j] <= L1:
-                # Check if the sum of the lengths of the last two tubes is less than or equal to L2
-                if tubes[i+1] + tubes[j+1] <= L2:
-                    # Calculate the total length of air that can be avoided
-                    length = tubes[i] + tubes[j] + tubes[i+1] + tubes[j+1]
-
-                    # Update the maximum total length of air that can be avoided
-                    max_length = max(max_length, length)
-
-    # Return the maximum total length of air that can be avoided
-    return max_length
+    # Return the minimum time to beat all levels
+    return sum(dp)
 

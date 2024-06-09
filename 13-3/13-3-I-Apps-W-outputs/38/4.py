@@ -1,23 +1,20 @@
 
-def solve(n, vertices):
-    # Sort the vertices by their x-coordinates
-    sorted_vertices = sorted(vertices, key=lambda x: x[0])
+n, m = map(int, input().split())
 
-    # Get the first two vertices
-    v1 = sorted_vertices[0]
-    v2 = sorted_vertices[1]
+# Initialize the number of moves to 0
+moves = 0
 
-    # Calculate the area of the initial rectangle
-    area = (v1[0] - v2[0]) * (v1[1] - v2[1])
+# Loop through the possible number of moves
+for i in range(1, n + 1):
+    # Check if the current number of moves is a multiple of m
+    if i % m == 0:
+        # If it is, break the loop and print the number of moves
+        moves = i
+        break
 
-    # If the area is negative, return -1
-    if area < 0:
-        return -1
-
-    # If the area is 0, return 0
-    if area == 0:
-        return 0
-
-    # If the area is positive, return the area
-    return area
+# If no multiple of m was found, print -1
+if moves == 0:
+    print(-1)
+else:
+    print(moves)
 

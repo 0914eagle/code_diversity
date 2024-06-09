@@ -1,26 +1,25 @@
 
-def create_staff(notes):
-    staff = ["G:                                                            ",
-             "F: -------------------------------------*-------------------- ",
-             "E:       *   *          *             *   *                   ",
-             "D: ----*-------**-----*-------------*-------*---------------- ",
-             "C: * *     *      * *     **    * *           *         ** **",
-             "B: --------------------------**-----------------*-----*------",
-             "A:                                                  *         ",
-             "g: -----------------------------------------------*----------",
-             "f:                                                            ",
-             "e: ----------------------------------------------------------",
-             "d:                                                            ",
-             "c:                                                            ",
-             "b:                                                            ",
-             "a: ----------------------------------------------------------"]
+import sys
 
-    for note in notes:
-        pitch = note[0]
-        duration = note[1] if len(note) == 2 else 1
-        line = staff[ord(pitch) - ord("C")]
-        line = line[:line.index("*")] + "*" * duration + line[line.index("*") + 1:]
-        staff[ord(pitch) - ord("C")] = line
+n = int(input())
+values = list(map(int, input().split()))
+costs = list(map(int, input().split()))
 
-    return "\n".join(staff)
+# Initialize the maximum value of X-Y
+max_value = 0
+
+# Iterate over all possible combinations of gems
+for i in range(1 << n):
+    # Calculate the value and cost of the current combination
+    value = 0
+    cost = 0
+    for j in range(n):
+        if i & (1 << j):
+            value += values[j]
+            cost += costs[j]
+    
+    # Update the maximum value of X-Y
+    max_value = max(max_value, value - cost)
+
+print(max_value)
 

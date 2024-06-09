@@ -1,38 +1,41 @@
 
-def longest_balanced_string(pieces):
-    # Initialize a dictionary to store the lengths of the balanced strings for each piece
-    piece_lengths = {}
-    # Iterate over the pieces and calculate the length of the balanced string for each piece
-    for piece in pieces:
-        piece_lengths[piece] = len(balanced_string(piece))
-    # Initialize a variable to store the longest balanced string length
-    longest_length = 0
-    # Iterate over the pieces and try to form the longest balanced string by concatenating them
-    for i in range(len(pieces)):
-        for j in range(i, len(pieces)):
-            piece1 = pieces[i]
-            piece2 = pieces[j]
-            concatenated_pieces = piece1 + piece2
-            if balanced_string(concatenated_pieces) and len(concatenated_pieces) > longest_length:
-                longest_length = len(concatenated_pieces)
-    return longest_length
+def solve(n, q, houses, requests):
+    # Initialize a dictionary to store the x and y coordinates of each house
+    house_coords = {}
+    for i in range(n):
+        house_coords[i+1] = (houses[i][0], houses[i][1])
 
-def balanced_string(s):
-    # Initialize a stack to store the opening parentheses
-    stack = []
-    # Iterate over the characters in the string
-    for char in s:
-        # If the character is an opening parentheses, push it to the stack
-        if char == '(':
-            stack.append(char)
-        # If the character is a closing parentheses, pop an opening parentheses from the stack
-        elif char == ')':
-            if not stack:
-                return False
-            stack.pop()
-    # If the stack is empty, the string is balanced
-    return not stack
+    # Initialize a list to store the answers for each request
+    answers = []
 
-pieces = ["())", "((()))", "()()"]
-print(longest_balanced_string(pieces))
+    # Iterate over each request
+    for request in requests:
+        # Get the start and end addresses of the request
+        start, end = request[0], request[1]
+
+        # Initialize the minimum side length to infinity
+        min_side_length = float('inf')
+
+        # Iterate over each house in the request
+        for house in range(start, end+1):
+            # Get the x and y coordinates of the current house
+            x, y = house_coords[house]
+
+            # Iterate over each other house in the request
+            for other_house in range(start, end+1):
+                # If the current house is not the same as the other house
+                if house != other_house:
+                    # Get the x and y coordinates of the other house
+                    other_x, other_y = house_coords[other_house]
+
+                    # Calculate the distance between the current house and the other house
+                    distance = abs(x - other_x) + abs(y - other_y)
+
+                    # Update the minimum side length if necessary
+                    min_side_length = min(min_side_length, distance)
+
+        # Add the minimum side length to the list of answers
+        answers.append(min_side_length)
+
+    return answers
 

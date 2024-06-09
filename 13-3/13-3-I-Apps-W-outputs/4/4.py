@@ -1,35 +1,27 @@
 
-def solve(n, arr):
-    # Calculate the sum of all pairs of numbers
-    sum = 0
-    for i in range(n):
-        for j in range(i, n):
-            sum += f(arr[i], arr[j])
-    # Return the result modulo 998244353
-    return sum % 998244353
-
-# Function to alternate digits of two numbers
-def f(x, y):
+def give_candies(n, k, a):
     # Initialize variables
-    x_digits = []
-    y_digits = []
-    result = []
-    # Split the digits of x and y into two lists
-    while x > 0:
-        x_digits.append(x % 10)
-        x //= 10
-    while y > 0:
-        y_digits.append(y % 10)
-        y //= 10
-    # Alternate the digits of x and y
-    while len(x_digits) > 0 and len(y_digits) > 0:
-        result.append(x_digits.pop())
-        result.append(y_digits.pop())
-    # If one number has more digits than the other, add the remaining digits
-    while len(x_digits) > 0:
-        result.append(x_digits.pop())
-    while len(y_digits) > 0:
-        result.append(y_digits.pop())
-    # Return the result as an integer
-    return int("".join(map(str, result)))
+    days = 0
+    given_candies = 0
+
+    # Loop through the days
+    for i in range(n):
+        # Check if Arya has enough candies to give Bran
+        if given_candies + a[i] <= k:
+            # Give all the candies Arya has
+            given_candies += a[i]
+        else:
+            # Give Bran the maximum number of candies Arya can give (8)
+            given_candies += 8
+
+        # Check if Arya has given Bran all the candies needed
+        if given_candies == k:
+            # Return the number of days needed
+            return days
+
+        # Increment the number of days
+        days += 1
+
+    # If Arya can't give Bran all the candies, return -1
+    return -1
 

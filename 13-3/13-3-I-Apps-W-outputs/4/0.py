@@ -1,33 +1,21 @@
 
-def solve(n, arr):
-    # Calculate the sum of all pairs of numbers
-    sum = 0
-    for i in range(n):
-        for j in range(i+1, n):
-            sum += f(arr[i], arr[j])
-    # Return the result modulo 998244353
-    return sum % 998244353
+n, k = map(int, input().split())
+a = list(map(int, input().split()))
 
-# Function to alternate digits of two numbers
-def f(x, y):
-    # Initialize variables
-    x_digits = []
-    y_digits = []
-    result = []
-    # Split the digits of x and y into separate lists
-    while x > 0:
-        x_digits.append(x % 10)
-        x //= 10
-    while y > 0:
-        y_digits.append(y % 10)
-        y //= 10
-    # Alternate the digits of x and y
-    while len(x_digits) > 0 and len(y_digits) > 0:
-        result.append(x_digits.pop())
-        result.append(y_digits.pop())
-    # If one number has more digits than the other, append the remaining digits
-    result += x_digits[::-1]
-    result += y_digits[::-1]
-    # Return the result as an integer
-    return int("".join(map(str, result)))
+days = 0
+candies = 0
+
+for i in range(n):
+    candies += a[i]
+    days += 1
+    if candies >= k:
+        break
+    if days == n and candies < k:
+        print(-1)
+        break
+    if candies >= 8:
+        candies -= 8
+        days += 1
+
+print(days)
 

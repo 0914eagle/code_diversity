@@ -1,9 +1,17 @@
 
-def get_optimal_flavor(N, L):
-    # Calculate the sum of the flavors of all apples
-    total_flavor = sum(range(L, L + N))
-    # Calculate the sum of the flavors of the remaining apples after eating one
-    remaining_flavor = sum(range(L + 1, L + N))
-    # Return the difference between the two sums
-    return abs(total_flavor - remaining_flavor)
+def convert_to_celsius(fahrenheit):
+    a, b = fahrenheit.split("/")
+    a, b = int(a), int(b)
+    c = (9 * a + 32 * b) // (5 * b)
+    d = b
+    g = gcd(c, d)
+    return f"{c//g}/{d//g}"
+
+def gcd(a, b):
+    if b == 0:
+        return a
+    return gcd(b, a % b)
+
+fahrenheit = input()
+print(convert_to_celsius(fahrenheit))
 

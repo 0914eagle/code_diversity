@@ -1,22 +1,35 @@
 
-def longest_consecutive_subarray(arr):
-    # Sort the array
-    arr.sort()
+def get_reconstruction(pre_output, in_output, post_output):
+    # Initialize a list to store the reconstruction
+    reconstruction = []
     
-    # Initialize variables to keep track of the longest subarray length and the current subarray length
-    longest_subarray_length = 0
-    current_subarray_length = 0
+    # Iterate through the pre_output and find the corresponding calls in the prePrint routine
+    for char in pre_output:
+        if char in pre_output:
+            reconstruction.append("Pre")
+        elif char in in_output:
+            reconstruction.append("In")
+        elif char in post_output:
+            reconstruction.append("Post")
     
-    # Iterate through the array
-    for i in range(len(arr)):
-        # If the current element is the same as the previous element, increment the current subarray length
-        if i > 0 and arr[i] == arr[i-1]:
-            current_subarray_length += 1
-        # If the current element is different from the previous element, check if the current subarray length is greater than the longest subarray length
-        else:
-            longest_subarray_length = max(longest_subarray_length, current_subarray_length)
-            current_subarray_length = 1
+    # Iterate through the in_output and find the corresponding calls in the inPrint routine
+    for char in in_output:
+        if char in pre_output:
+            reconstruction.append("Pre")
+        elif char in in_output:
+            reconstruction.append("In")
+        elif char in post_output:
+            reconstruction.append("Post")
     
-    # Return the longest subarray length
-    return longest_subarray_length
+    # Iterate through the post_output and find the corresponding calls in the postPrint routine
+    for char in post_output:
+        if char in pre_output:
+            reconstruction.append("Pre")
+        elif char in in_output:
+            reconstruction.append("In")
+        elif char in post_output:
+            reconstruction.append("Post")
+    
+    # Return the reconstruction
+    return reconstruction
 

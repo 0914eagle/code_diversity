@@ -1,30 +1,32 @@
 
-def weight_of_words(l, w):
-    # Initialize a list of all lowercase English letters
-    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-    
-    # Initialize a dictionary to map each letter to its weight
-    letter_weights = {letter: i for i, letter in enumerate(letters, start=1)}
-    
-    # Initialize a list to store all possible words of length l
-    words = []
-    
-    # Iterate over all possible combinations of letters of length l
-    for combination in itertools.combinations(letters, l):
-        # Convert the combination to a string
-        word = ''.join(combination)
-        
-        # Calculate the weight of the word
-        weight = sum(letter_weights[letter] for letter in word)
-        
-        # If the weight is equal to w, add the word to the list of possible words
-        if weight == w:
-            words.append(word)
-    
-    # If no words were found, return "impossible"
-    if not words:
-        return "impossible"
-    
-    # Otherwise, return any of the possible words
-    return words[0]
+import sys
+
+def get_black_squares(grid):
+    black_squares = 0
+    for row in grid:
+        for square in row:
+            if square == '#':
+                black_squares += 1
+    return black_squares
+
+def get_choices(grid, k):
+    num_rows = len(grid)
+    num_cols = len(grid[0])
+    choices = 0
+    for rows in range(num_rows+1):
+        for cols in range(num_cols+1):
+            black_squares = get_black_squares(grid)
+            if black_squares == k:
+                choices += 1
+    return choices
+
+def main():
+    h, w, k = map(int, input().split())
+    grid = []
+    for _ in range(h):
+        grid.append(input())
+    print(get_choices(grid, k))
+
+if __name__ == "__main__":
+    main()
 

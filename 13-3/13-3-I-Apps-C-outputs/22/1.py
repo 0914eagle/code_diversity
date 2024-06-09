@@ -1,16 +1,21 @@
 
-def solve(n, k, p):
-    # Calculate the number of permutations of length n
-    num_permutations = 1
-    for i in range(n):
-        num_permutations *= n - i
-    
-    # Calculate the number of permutations with runs of length k
-    num_runs = 0
-    for i in range(n - k + 1):
-        # Calculate the number of permutations with a run of length k starting at position i
-        num_runs += (n - i - k + 1) * (n - i)
-    
-    # Return the result modulo p
-    return num_permutations - num_runs % p
+import sys
+
+def get_boss_and_subordinates(employees, query):
+    boss = None
+    subordinates = 0
+    for employee in employees:
+        if employee[0] == query:
+            boss = employee[1]
+            subordinates = employee[2]
+            break
+    return boss, subordinates
+
+employees = []
+for _ in range(int(input())):
+    employees.append(list(map(int, input().split())))
+
+for query in map(int, input().split()):
+    boss, subordinates = get_boss_and_subordinates(employees, query)
+    print(boss, subordinates)
 

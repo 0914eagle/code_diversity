@@ -1,1 +1,12 @@
-{"inputs": ["oder atc\n", "humu humu\n", "c a\n", "oekdkfjdjgjknbfkwnfnhaoekdkfjdjgjknbfkwnfnhahjekkengkfoekdkfjdjgjknbfkwnfnhaoekdkfjdjgjknbfkwnfnhahj yowkymbmhkkgjjeokdlakbndkkworqotkfnblgpnkkrogjrfnvmbjisnbkzvmbnrrrigeoibgpefjobvmovpqosqoqrgrkengrlk\n", "dttd dttddttddttddttddttddttddttddttddttddttddttddttddttddttddttddttddttddttddttddttddttddttddttddttddttd\n", "mmkmkmkmkkkmkkkmmmkkkmkmkmmkkkmmkkkkmmmkkkmmkmmkmkmkmmkmkkmkmkmmmmkkkmkkkmmmkkkkkkmkmmmkmmmk zk\n"], "outputs": ["atcoder\n", "humuhumu\n", "ac\n", "yowkymbmhkkgjjeokdlakbndkkworqotkfnblgpnkkrogjrfnvmbjisnbkzvmbnrrrigeoibgpefjobvmovpqosqoqrgrkengrlkoekdkfjdjgjknbfkwnfnhaoekdkfjdjgjknbfkwnfnhahjekkengkfoekdkfjdjgjknbfkwnfnhaoekdkfjdjgjknbfkwnfnhahj\n", "dttddttddttddttddttddttddttddttddttddttddttddttddttddttddttddttddttddttddttddttddttddttddttddttddttddttd\n", "zkmmkmkmkmkkkmkkkmmmkkkmkmkmmkkkmmkkkkmmmkkkmmkmmkmkmkmmkmkkmkmkmmmmkkkmkkkmmmkkkkkkmkmmmkmmmk\n"]}
+{
+    "inputs": [
+        "WNEENWEENEENE\n",
+        "NSEW\n",
+        "EEEEEEEEE\n"
+    ],
+    "outputs": [
+        "10\n",
+        "4\n",
+        "6\n"
+    ]
+}

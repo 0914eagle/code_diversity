@@ -1,10 +1,10 @@
 
-def solve(N, b):
-    if N == 0:
-        return "yes"
-    if b == 0:
-        return "no"
-    if N > 10**15 or b > 50:
-        return "no"
-    return "yes"
+x = []
+r, D, x_2000 = map(int, input().split())
+
+for i in range(2000, 2011):
+    x.append(int(r * x[-1] - D))
+
+for i in x:
+    print(i)
 

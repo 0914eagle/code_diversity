@@ -1,24 +1,15 @@
 
-def get_bridges(n, m, edges):
-    # Initialize a dictionary to store the degree of each vertex
-    degrees = {}
-    for i in range(1, n+1):
-        degrees[i] = 0
-    
-    # Initialize a list to store the bridges
-    bridges = []
-    
-    # Iterate over the edges and update the degree of each vertex
-    for edge in edges:
-        a, b = edge
-        degrees[a] += 1
-        degrees[b] += 1
-    
-    # Iterate over the edges again and check if they are bridges
-    for edge in edges:
-        a, b = edge
-        if degrees[a] == 1 or degrees[b] == 1:
-            bridges.append(edge)
-    
-    return len(bridges)
+def is_possible(a, b, c, n):
+    if a + b + c != n:
+        return "NO"
+    if a == b == c:
+        return "YES"
+    if a == b or b == c or c == a:
+        return "NO"
+    return "YES"
+
+t = int(input())
+for i in range(t):
+    a, b, c, n = map(int, input().split())
+    print(is_possible(a, b, c, n))
 

@@ -1,7 +1,9 @@
 
-def get_next_contest_type(last_contest_type):
-    if last_contest_type == "ABC":
-        return "ARC"
+def one_card_poker(A, B):
+    if A > B:
+        return "Alice"
+    elif A < B:
+        return "Bob"
     else:
-        return "ABC"
+        return "Draw"
 

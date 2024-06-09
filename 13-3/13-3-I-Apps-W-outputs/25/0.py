@@ -1,15 +1,21 @@
 
-def can_visit_friend(n, m, teleports):
-    # Initialize a set to store the points that can be reached using teleports
-    reachable_points = set([0])
-    
-    # Iterate through the teleports
-    for teleport in teleports:
-        # If the teleport's location is in the set of reachable points
-        if teleport[0] in reachable_points:
-            # Add the teleport's limit to the set of reachable points
-            reachable_points.add(teleport[1])
-    
-    # Return "YES" if the friend's house is in the set of reachable points, otherwise return "NO"
-    return "YES" if m in reachable_points else "NO"
+import sys
+
+def count_substring(string, substring):
+    count = 0
+    for i in range(len(string)):
+        if string[i:i+len(substring)] == substring:
+            count += 1
+    return count
+
+N = int(input())
+T = input()
+
+# Concatenate 10^10 copies of the string 110
+S = "110" * (10**10)
+
+# Count the number of times T occurs in S as a contiguous substring
+count = count_substring(S, T)
+
+print(count)
 

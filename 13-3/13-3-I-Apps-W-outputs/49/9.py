@@ -1,16 +1,46 @@
 
-def get_min_staircases(n, s, k, closed_floors):
-    # Initialize the minimum number of staircases to walk as 0
-    min_staircases = 0
+def solve(n, logs):
+    # Initialize variables
+    min_heap = []
+    corrected_logs = []
+    min_value = 0
 
-    # Loop through the closed floors and check if the current floor is one of them
-    for floor in closed_floors:
-        # If the current floor is one of the closed floors, increment the minimum number of staircases
-        if floor == s:
-            min_staircases += 1
-        # If the current floor is between the current floor and the next closed floor, increment the minimum number of staircases
-        elif floor > s and floor < closed_floors[closed_floors.index(floor) + 1]:
-            min_staircases += 1
+    # Iterate through the logs
+    for log in logs:
+        # Split the log into operation and value
+        operation, value = log.split()
 
-    return min_staircases
+        # Check if the operation is insert
+        if operation == "insert":
+            # Insert the value into the min heap
+            min_heap.append(int(value))
+            min_heap.sort()
+
+        # Check if the operation is getMin
+        elif operation == "getMin":
+            # Get the minimum value from the min heap
+            min_value = min_heap[0]
+
+            # Check if the minimum value is equal to the expected value
+            if min_value != int(value):
+                # Add the correct getMin operation to the corrected logs
+                corrected_logs.append(f"getMin {min_value}")
+
+                # Remove the minimum value from the min heap
+                min_heap.pop(0)
+
+                # Add the correct removeMin operation to the corrected logs
+                corrected_logs.append("removeMin")
+
+                # Add the expected value to the min heap
+                min_heap.append(int(value))
+                min_heap.sort()
+
+        # Check if the operation is removeMin
+        elif operation == "removeMin":
+            # Remove the minimum value from the min heap
+            min_heap.pop(0)
+
+    # Return the corrected logs
+    return corrected_logs
 

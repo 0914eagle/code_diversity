@@ -1,17 +1,19 @@
 
-def solve(n, divisors):
-    # Initialize x and y to 1
-    x = 1
-    y = 1
+def solve(n, m, prefectures):
+    # Initialize a list to store the ID numbers for all the cities
+    id_numbers = []
     
-    # Iterate through the list of divisors
-    for divisor in divisors:
-        # If the divisor is not already a factor of x or y, add it to the appropriate number
-        if divisor not in str(x):
-            x *= divisor
-        if divisor not in str(y):
-            y *= divisor
+    # Iterate over the prefectures and their cities
+    for prefecture, cities in enumerate(prefectures, start=1):
+        # Sort the cities by their establishment year
+        sorted_cities = sorted(cities, key=lambda x: x[1])
+        
+        # Iterate over the sorted cities and assign ID numbers to them
+        for i, (city, year) in enumerate(sorted_cities, start=1):
+            # Format the ID number as a string with six digits for the prefecture and six digits for the city index
+            id_number = f"{prefecture:06d}{i:06d}"
+            id_numbers.append(id_number)
     
-    # Return the final values of x and y
-    return x, y
+    # Return the list of ID numbers for all the cities
+    return id_numbers
 

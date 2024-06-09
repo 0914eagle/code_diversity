@@ -1,23 +1,11 @@
 
-def solve(m, k, a, t, r):
-    # Initialize a dictionary to keep track of the available dishes
-    available_dishes = {i: True for i in range(1, k+1)}
-
-    # Iterate over the observations of the passengers in front of Polycarp
-    for i in range(m-1):
-        # If the passenger was disappointed, it means they couldn't have the dish they wanted
-        if r[i] == 1:
-            available_dishes[t[i]] = False
-
-    # Initialize the result string
-    result = ""
-
-    # Iterate over the dishes and check if they are available
-    for i in range(1, k+1):
-        if available_dishes[i]:
-            result += "Y"
-        else:
-            result += "N"
-
-    return result
+def max_area(n, points):
+    # Initialize an empty list to store the chosen points
+    chosen_points = []
+    # Loop through the points and choose the point that is not adjacent to any of the chosen points
+    for i in range(n):
+        if i not in chosen_points and i-1 not in chosen_points and i+1 not in chosen_points:
+            chosen_points.append(i)
+    # Return the chosen points in the desired format
+    return " ".join(str(point) for point in chosen_points)
 

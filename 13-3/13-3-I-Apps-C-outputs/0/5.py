@@ -1,26 +1,65 @@
 
-def find_sub_rectangle(n, m, x, y, a, b):
-    # Initialize the minimum distance as a large value
-    min_distance = 1000000000
-    # Initialize the minimum rectangle as (0, 0, 0, 0)
-    min_rectangle = (0, 0, 0, 0)
-    
-    # Iterate over all possible left-bottom points (x1, y1)
-    for x1 in range(n):
-        for y1 in range(m):
-            # Calculate the right-up point (x2, y2) based on the given ratio
-            x2 = x1 + a * (y2 - y1) // b
-            y2 = y1 + b * (x2 - x1) // a
-            
-            # Check if the right-up point is within the grid
-            if x2 <= n and y2 <= m:
-                # Calculate the distance between (x, y) and the center of the rectangle
-                distance = ((x - (x1 + x2) // 2) ** 2 + (y - (y1 + y2) // 2) ** 2) ** 0.5
-                
-                # If the distance is smaller than the minimum distance, update the minimum distance and rectangle
-                if distance < min_distance:
-                    min_distance = distance
-                    min_rectangle = (x1, y1, x2, y2)
-    
-    return min_rectangle
+import sys
+
+def solve(N, c_AA, c_AB, c_BA, c_BB):
+    # Initialize the number of strings to 0
+    num_strings = 0
+
+    # Loop through all possible strings of length N
+    for i in range(1 << N):
+        # Convert the binary representation of i to a string
+        s = bin(i)[2:]
+
+        # Pad the string with zeros on the left to make it length N
+        s = '0' * (N - len(s)) + s
+
+        # Check if the string is valid
+        if is_valid(s, c_AA, c_AB, c_BA, c_BB):
+            # Increment the number of valid strings
+            num_strings += 1
+
+    # Return the number of valid strings modulo (10^9+7)
+    return num_strings % 1000000007
+
+def is_valid(s, c_AA, c_AB, c_BA, c_BB):
+    # Check if the string is length N
+    if len(s) != N:
+        return False
+
+    # Check if the string contains only A and B
+    for c in s:
+        if c not in 'AB':
+            return False
+
+    # Check if the string is valid according to the rules
+    for i in range(N - 1):
+        if s[i] == 'A' and s[i + 1] == 'A' and c_AA not in s:
+            return False
+        if s[i] == 'A' and s[i + 1] == 'B' and c_AB not in s:
+            return False
+        if s[i] == 'B' and s[i + 1] == 'A' and c_BA not in s:
+            return False
+        if s[i] == 'B' and s[i + 1] == 'B' and c_BB not in s:
+            return False
+
+    # If all checks pass, the string is valid
+    return True
+
+# Read the input from stdin
+N, c_AA, c_AB, c_BA, c_BB = input().split()
+
+# Convert the input to integers
+N = int(N)
+
+# Convert the input to characters
+c_AA = chr(int(c_AA))
+c_AB = chr(int(c_AB))
+c_BA = chr(int(c_BA))
+c_BB = chr(int(c_BB))
+
+# Solve the problem
+result = solve(N, c_AA, c_AB, c_BA, c_BB)
+
+# Print the result
+print(result)
 

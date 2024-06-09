@@ -1,26 +1,35 @@
 
-def solve(H, W, K, S):
-    # Initialize the number of cuts to 0
-    cuts = 0
+def crafting_system(materials, recipes):
+    # Initialize a dictionary to store the required materials
+    required_materials = {}
 
-    # Loop through each row
-    for i in range(H):
-        # Initialize the number of white squares in the current row to 0
-        num_white = 0
+    # Loop through each recipe
+    for recipe in recipes:
+        # Extract the input and output materials and the quantity of output materials
+        input_material, output_material, quantity = recipe
 
-        # Loop through each column in the current row
-        for j in range(W):
-            # If the current square is white, increment the number of white squares
-            if S[i][j] == "0":
-                num_white += 1
+        # Check if the output material is in the required materials dictionary
+        if output_material in required_materials:
+            # If it is, add the quantity to the existing value
+            required_materials[output_material] += quantity
+        else:
+            # If it's not, set the quantity as the new value
+            required_materials[output_material] = quantity
 
-            # If the number of white squares is greater than or equal to K, we need to cut
-            if num_white >= K:
-                # Increment the number of cuts
-                cuts += 1
-                # Break out of the inner loop
-                break
+        # Check if the input material is in the required materials dictionary
+        if input_material in required_materials:
+            # If it is, subtract the quantity from the existing value
+            required_materials[input_material] -= quantity
+        else:
+            # If it's not, set the negative quantity as the new value
+            required_materials[input_material] = -quantity
 
-    # Return the number of cuts
-    return cuts
+    # Loop through each material and its required quantity
+    for material, quantity in required_materials.items():
+        # If the quantity is positive, add it to the total required materials
+        if quantity > 0:
+            materials[material] += quantity
+
+    # Return the total required materials
+    return materials
 

@@ -1,27 +1,26 @@
 
-def get_maximum_length(tube_lengths, L1, L2):
-    # Sort the tube lengths in descending order
-    tube_lengths.sort(reverse=True)
-
-    # Initialize the maximum length as 0
-    max_length = 0
-
-    # Loop through all possible pairs of tubes
-    for i in range(len(tube_lengths)):
-        for j in range(i+1, len(tube_lengths)):
-            # Check if the sum of the lengths of the first two tubes is less than or equal to L1
-            if tube_lengths[i] + tube_lengths[j] <= L1:
-                # Check if the sum of the lengths of the last two tubes is less than or equal to L2
-                if tube_lengths[i+1] + tube_lengths[j+1] <= L2:
-                    # Calculate the total length of the four tubes
-                    total_length = tube_lengths[i] + tube_lengths[j] + tube_lengths[i+1] + tube_lengths[j+1]
-                    # Update the maximum length if necessary
-                    if total_length > max_length:
-                        max_length = total_length
-
-    # Return the maximum length or the string "Impossible" if no pair of tubes fits the criteria
-    if max_length == 0:
-        return "Impossible"
-    else:
-        return max_length
+def solve(n, levels):
+    # Initialize the dp table with the completion time for level 1 using item 0
+    dp = [levels[0][0]]
+    
+    # Loop through the remaining levels
+    for i in range(1, n):
+        # Initialize the minimum completion time for the current level
+        min_time = float('inf')
+        
+        # Loop through the available items
+        for j in range(n+1):
+            # Check if the current item is the shortcut item for the current level
+            if j == levels[i][0]:
+                # If it is, the minimum completion time is the shortcut completion time
+                min_time = min(min_time, levels[i][1])
+            else:
+                # If it's not, the minimum completion time is the completion time for the current level using the current item
+                min_time = min(min_time, dp[j-1] + levels[i][j+1])
+        
+        # Add the minimum completion time for the current level to the dp table
+        dp.append(min_time)
+    
+    # Return the minimum completion time for all levels
+    return dp[-1]
 

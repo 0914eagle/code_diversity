@@ -1,35 +1,20 @@
 
-def solve(n, m, s, edges):
-    # Initialize the graph as an adjacency list
-    graph = [[] for _ in range(n + 1)]
-    for edge in edges:
-        u, v = edge[1], edge[2]
-        graph[u].append(v)
-        graph[v].append(u)
+import sys
 
-    # Find all reachable vertices from vertex s
-    reachable = set([s])
-    queue = [s]
-    while queue:
-        vertex = queue.pop(0)
-        for neighbor in graph[vertex]:
-            if neighbor not in reachable:
-                reachable.add(neighbor)
-                queue.append(neighbor)
+def solve(N, A, B):
+    mod = 1000000007
+    dp = [0] * (N+1)
+    dp[0] = 1
+    for i in range(1, N+1):
+        dp[i] = (dp[i-1] + A[i-1]) % mod
+        if i > 1:
+            dp[i] = (dp[i] + dp[i-2]) % mod
+        if i < N:
+            dp[i] = (dp[i] + B[i-1]) % mod
+    return dp[N]
 
-    # Find the maximum number of reachable vertices by orienting all undirected edges in one direction
-    max_reachable = len(reachable)
-    max_edges = []
-    for edge in edges:
-        if edge[0] == 2 and edge[1] != edge[2]:
-            max_edges.append(edge)
-
-    # Find the minimum number of reachable vertices by orienting all undirected edges in the opposite direction
-    min_reachable = 0
-    min_edges = []
-    for edge in edges:
-        if edge[0] == 2 and edge[1] != edge[2]:
-            min_edges.append(edge)
-
-    return max_reachable, max_edges, min_reachable, min_edges
+N = int(input())
+A = list(map(int, input().split()))
+B = list(map(int, input().split()))
+print(solve(N, A, B))
 

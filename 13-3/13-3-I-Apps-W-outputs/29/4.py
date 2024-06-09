@@ -1,18 +1,19 @@
 
-def run_for_your_prize(n, prizes):
-    # Sort the prizes in ascending order
-    prizes.sort()
-    
-    # Initialize the minimum time to collect all prizes
-    min_time = 0
-    
-    # Iterate through the prizes
-    for i in range(n):
-        # Calculate the distance between the current prize and the previous prize
-        distance = abs(prizes[i] - prizes[i-1]) if i > 0 else prizes[i]
-        
-        # Add the distance to the minimum time
-        min_time += distance
-    
-    return min_time
+import sys
+
+def get_sum_count(n, k):
+    # Calculate the sum of the first n numbers
+    sum = (n * (n + 1)) // 2
+    # Calculate the sum of the last k numbers
+    last_sum = (k * (k + 1)) // 2
+    # Calculate the sum of the first n - k numbers
+    first_sum = (n - k) * (n - k + 1) // 2
+    # Calculate the sum of the middle k numbers
+    middle_sum = last_sum - first_sum
+    # Calculate the total number of possible values
+    count = (sum - middle_sum) % (10**9 + 7)
+    return count
+
+n, k = map(int, input().split())
+print(get_sum_count(n, k))
 

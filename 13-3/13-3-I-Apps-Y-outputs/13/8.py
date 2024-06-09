@@ -1,8 +1,10 @@
 
-def solve(a, b):
-    n = len(a)
-    c = [0] * n
-    for i in range(n):
-        c[i] = (a[i] + b[i]) % n
-    return c
+A, P = map(int, input().split())
+
+max_pies = 0
+while A >= 2:
+    max_pies += A // 2
+    A = A % 2 + A // 2
+
+print(max_pies + P)
 

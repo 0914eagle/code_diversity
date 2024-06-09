@@ -1,27 +1,25 @@
 
-def solve(n, m, mod, matrix):
-    # Initialize a dictionary to store the number of ones in each row and column
-    rows = [0] * n
-    cols = [0] * n
-    
-    # Iterate through the given matrix
-    for i in range(m):
-        for j in range(n):
-            # If the current cell is one, increment the number of ones in the corresponding row and column
-            if matrix[i][j] == "1":
-                rows[i] += 1
-                cols[j] += 1
-    
-    # Initialize a variable to store the number of special matrices
-    count = 0
-    
-    # Iterate through the rows and columns
+def solve(n, s, volumes):
+    # Sort the volumes in descending order
+    volumes.sort(reverse=True)
+    # Initialize the sum of the volumes
+    total = 0
+    # Iterate through the volumes
     for i in range(n):
-        for j in range(n):
-            # If the current cell is one and the number of ones in the corresponding row and column is 2, increment the count
-            if matrix[i][j] == "1" and rows[i] == 2 and cols[j] == 2:
-                count += 1
-    
-    # Return the remainder after dividing the count by the given modulus
-    return count % mod
+        # Check if the current volume is less than or equal to the target volume
+        if volumes[i] <= s:
+            # Add the current volume to the total
+            total += volumes[i]
+            # Subtract the current volume from the target volume
+            s -= volumes[i]
+        else:
+            # If the current volume is greater than the target volume, break the loop
+            break
+    # Check if the total is greater than or equal to the target volume
+    if total < s:
+        # If not, return -1
+        return -1
+    else:
+        # If so, return the least amount of kvass in the least keg
+        return total - s
 

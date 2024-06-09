@@ -1,25 +1,31 @@
 
-def is_safe_bending(wire_length, points):
-    # Initialize a list to store the bends
-    bends = []
+import sys
 
-    # Iterate through the points and append the bends to the list
-    for point, direction in points:
-        if direction == "C":
-            bends.append((point, "C"))
-        else:
-            bends.append((point, "W"))
+def get_distinct_routes(n, m, roads):
+    # Initialize a graph with n nodes and m edges
+    graph = [[] for _ in range(n)]
+    for a, b in roads:
+        graph[a-1].append(b-1)
+    
+    # Use depth-first search to count the number of distinct routes
+    visited = [False] * n
+    count = 0
+    def dfs(curr):
+        nonlocal count
+        visited[curr] = True
+        for neighbor in graph[curr]:
+            if not visited[neighbor]:
+                dfs(neighbor)
+        count += 1
+    
+    dfs(0)
+    return count
 
-    # Sort the bends by their position on the wire
-    bends.sort(key=lambda x: x[0])
+n, m = map(int, input().split())
+roads = []
+for _ in range(m):
+    a, b = map(int, input().split())
+    roads.append((a, b))
 
-    # Iterate through the bends and check if they form a loop
-    for i in range(len(bends)):
-        for j in range(i+1, len(bends)):
-            if bends[i][0] == bends[j][0]:
-                return "GHOST"
-            if bends[i][1] == bends[j][1] and abs(bends[i][0] - bends[j][0]) == wire_length - 1:
-                return "GHOST"
-
-    return "SAFE"
+print(get_distinct_routes(n, m, roads))
 

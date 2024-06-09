@@ -1,10 +1,14 @@
 
-def solve(a):
-    str_a = str(a)
-    digits = [int(digit) for digit in str_a if digit in "1689"]
-    for i in range(len(digits)):
-        for j in range(i+1, len(digits)):
-            if (digits[i] * 10 + digits[j]) % 7 == 0:
-                return int("".join(str(digit) for digit in [digits[i], digits[j]]))
-    return 0
+def calculate_value(walk):
+    value = 0
+    for char in walk:
+        if char == 'L':
+            value = value * 2
+        elif char == 'R':
+            value = value * 2 + 1
+        elif char == 'P':
+            pass
+        elif char == '*':
+            value = value * 2 + 1
+    return value
 

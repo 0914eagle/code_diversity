@@ -1,17 +1,20 @@
 
-def get_max_beauty(n, k, x, a):
-    # Calculate the maximum sum of beauty values of reposted pictures
-    max_beauty = 0
-    for i in range(n - k + 1):
-        # Sum the beauty values of the current segment
-        segment_beauty = sum(a[i:i+k])
-        # Check if reposting the current segment would exceed the maximum number of reposts allowed
-        if segment_beauty > max_beauty and x - 1 >= 0:
-            max_beauty = segment_beauty
-            x -= 1
-    # If all segments have been processed and there are still reposts left, it is not possible to satisfy all conditions
-    if x > 0:
-        return -1
-    else:
-        return max_beauty
+def solve(n, divisors):
+    # Sort the divisors in ascending order
+    divisors.sort()
+
+    # Initialize the minimum possible value of x as the smallest divisor
+    x = divisors[0]
+
+    # Iterate through the divisors and find the smallest value of x that is greater than or equal to the divisor
+    for divisor in divisors:
+        while x < divisor:
+            x += 1
+
+        # If the current value of x is not a divisor, it is not possible to find such number
+        if x % divisor != 0:
+            return -1
+
+    # If all divisors are valid, return the minimum possible value of x
+    return x
 

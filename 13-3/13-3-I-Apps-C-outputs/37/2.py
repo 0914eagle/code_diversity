@@ -1,61 +1,32 @@
 
-def max_area(n, m, k):
-    if k == 0:
-        return n * m
+import sys
+
+def solve(N, M):
+    # Calculate the number of possible combinations of toppings
+    num_combinations = 2**N
     
-    if k == 1:
-        return max(n, m)
+    # Initialize a list to store the number of bowls of ramen for each combination
+    num_bowls = [0] * num_combinations
     
-    if k == 2:
-        return n * m - min(n, m)
+    # Iterate over each combination of toppings
+    for i in range(num_combinations):
+        # Convert the binary representation of the combination to a list of booleans
+        combination = [bool(i & (1 << j)) for j in range(N)]
+        
+        # Count the number of toppings in the combination
+        num_toppings = sum(combination)
+        
+        # If the number of toppings is at least 2, increment the number of bowls for this combination
+        if num_toppings >= 2:
+            num_bowls[i] += 1
     
-    if k == 3:
-        if n == m:
-            return n * m - n
-        else:
-            return n * m - min(n, m)
+    # Calculate the number of unique combinations of bowls of ramen
+    num_unique_combinations = len(set(num_bowls))
     
-    if k == 4:
-        if n == m:
-            return n * m - n * 2
-        else:
-            return n * m - min(n, m) * 2
-    
-    if k == 5:
-        if n == m:
-            return n * m - n * 3
-        else:
-            return n * m - min(n, m) * 3
-    
-    if k == 6:
-        if n == m:
-            return n * m - n * 4
-        else:
-            return n * m - min(n, m) * 4
-    
-    if k == 7:
-        if n == m:
-            return n * m - n * 5
-        else:
-            return n * m - min(n, m) * 5
-    
-    if k == 8:
-        if n == m:
-            return n * m - n * 6
-        else:
-            return n * m - min(n, m) * 6
-    
-    if k == 9:
-        if n == m:
-            return n * m - n * 7
-        else:
-            return n * m - min(n, m) * 7
-    
-    if k == 10:
-        if n == m:
-            return n * m - n * 8
-        else:
-            return n * m - min(n, m) * 8
-    
-    return -1
+    # Return the number of unique combinations modulo M
+    return num_unique_combinations % M
+
+if __name__ == '__main__':
+    N, M = map(int, input().split())
+    print(solve(N, M))
 

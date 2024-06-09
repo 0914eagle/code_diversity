@@ -1,22 +1,24 @@
 
-def solve(n, divisors):
-    # Initialize x and y to 1
-    x, y = 1, 1
-    
-    # Iterate through the divisors
-    for d in divisors:
-        # If d is not a divisor of both x and y, find the next divisor of x or y
-        if d not in [x, y]:
-            if d % x == 0:
-                y *= d
-            else:
-                x *= d
-        # If d is a divisor of both x and y, find the next divisor of x or y
-        else:
-            if d % x == 0:
-                y *= d
-            else:
-                x *= d
-    
-    return x, y
+import sys
+
+def solve():
+    N, M = map(int, input().split())
+    cities = []
+    for _ in range(M):
+        P, Y = map(int, input().split())
+        cities.append((P, Y))
+
+    cities.sort(key=lambda x: (x[0], x[1]))
+
+    id_numbers = []
+    for i in range(M):
+        P, Y = cities[i]
+        x = i + 1
+        id_number = str(P).zfill(6) + str(x).zfill(6)
+        id_numbers.append(id_number)
+
+    return "\n".join(id_numbers)
+
+if __name__ == "__main__":
+    print(solve())
 

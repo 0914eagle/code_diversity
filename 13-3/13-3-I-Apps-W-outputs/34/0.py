@@ -1,23 +1,31 @@
 
-def solve(n, a):
-    # Initialize a dictionary to store the number of occurrences of each letter
-    letter_counts = {}
-    for i in range(n):
-        letter_counts[i] = 0
-    
-    # Initialize a variable to store the maximum length of the string
-    max_length = 0
-    
-    # Iterate through the letters of the alphabet
-    for letter in range(n):
-        # If the letter has not been used yet, use it in the string
-        if letter_counts[letter] == 0:
-            max_length += 1
-            letter_counts[letter] += 1
-        # If the letter has already been used, check if it can be used again
-        elif letter_counts[letter] < a[letter]:
-            max_length += 1
-            letter_counts[letter] += 1
-    
-    return max_length
+import sys
+
+def solve(H, W, c, A):
+    # Initialize the dp table with the cost of turning the current digit into 1
+    dp = [[c[A[i][j]] for j in range(W)] for i in range(H)]
+
+    # Loop through each row and column
+    for i in range(H):
+        for j in range(W):
+            # If the current cell is not a digit, skip it
+            if A[i][j] == -1:
+                continue
+
+            # If the current cell is the last row or column, set the cost to 0
+            if i == H-1 or j == W-1:
+                dp[i][j] = 0
+                continue
+
+            # Find the minimum cost of turning the current digit into 1
+            dp[i][j] = min(dp[i+1][j], dp[i][j+1]) + c[A[i][j]]
+
+    # Return the minimum total cost to turn every digit on the wall into 1
+    return min(dp[0][j] for j in range(W))
+
+if __name__ == '__main__':
+    H, W = map(int, input().split())
+    c = [int(x) for x in input().split()]
+    A = [list(map(int, input().split())) for _ in range(H)]
+    print(solve(H, W, c, A))
 

@@ -1,28 +1,18 @@
 
-def solve(N, M, roads):
-    # Initialize a graph with N nodes and 0 edges
-    graph = [[] for _ in range(N)]
+def black_vienna(investigations):
+    num_investigations = len(investigations)
+    num_suspects = 26
+    num_solutions = 0
 
-    # Add edges to the graph
-    for road in roads:
-        graph[road[0] - 1].append(road[1] - 1)
-        graph[road[1] - 1].append(road[0] - 1)
+    for i in range(num_investigations):
+        suspects = investigations[i][0]
+        player = investigations[i][1]
+        reply = investigations[i][2]
 
-    # Check if the graph is connected
-    visited = [False] * N
-    queue = [0]
-    visited[0] = True
-    while queue:
-        node = queue.pop(0)
-        for neighbor in graph[node]:
-            if not visited[neighbor]:
-                visited[neighbor] = True
-                queue.append(neighbor)
+        if player == 1:
+            num_solutions += num_suspects - reply
+        else:
+            num_solutions += reply
 
-    # If the graph is connected, return YES and a possible direction assignment
-    if all(visited):
-        return "YES\n" + "\n".join(str(i + 1) + " " + str(j + 1) for i, row in enumerate(graph) for j in row if i < j)
-
-    # Otherwise, return NO
-    return "NO"
+    return num_solutions
 

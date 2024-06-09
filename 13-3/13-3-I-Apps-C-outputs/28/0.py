@@ -1,28 +1,29 @@
 
-def solve(n, m, a, w):
-    # Calculate the total weight of all pictures
-    total_weight = sum(w)
-
-    # Initialize the expected weights
-    expected_weights = [0] * n
-
-    # Loop through each visit
-    for i in range(m):
-        # Calculate the probability of each picture being displayed
-        probabilities = [w[i] / total_weight for i in range(n)]
-
-        # If Nauuo likes the picture, add 1 to its weight
-        # Otherwise, subtract 1 from its weight
-        for j in range(n):
-            if a[j] == 1:
-                expected_weights[j] += probabilities[j]
-            else:
-                expected_weights[j] -= probabilities[j]
-
-    # Calculate the final expected weights modulo 998244353
-    final_expected_weights = [0] * n
+def solve(n, p, t, s, e):
+    # Initialize the maximum score and the current score
+    max_score = 0
+    curr_score = 0
+    
+    # Iterate through each note and check if it is within an SP phrase
     for i in range(n):
-        final_expected_weights[i] = expected_weights[i] % 998244353
-
-    return final_expected_weights
+        # Check if the note is within an SP phrase
+        within_sp = False
+        for j in range(p):
+            if s[j] <= t[i] <= e[j]:
+                within_sp = True
+                break
+        
+        # If the note is within an SP phrase, add two points to the current score
+        if within_sp:
+            curr_score += 2
+        # Otherwise, add one point to the current score
+        else:
+            curr_score += 1
+        
+        # Update the maximum score if the current score is higher
+        if curr_score > max_score:
+            max_score = curr_score
+    
+    # Return the maximum score
+    return max_score
 

@@ -1,13 +1,19 @@
 
-def solve(s):
-    a = [s]
-    i = 1
-    while True:
-        if a[i] in a:
-            return i
-        if a[i] % 2 == 0:
-            a.append(a[i] // 2)
-        else:
-            a.append(3 * a[i] + 1)
-        i += 1
+import sys
+
+n, m = map(int, input().split())
+votes = list(map(int, input().split()))
+
+total_votes = sum(votes)
+min_votes = total_votes // 4 * m
+
+selected_items = []
+for vote in votes:
+    if vote >= min_votes:
+        selected_items.append(vote)
+
+if len(selected_items) == m:
+    print("Yes")
+else:
+    print("No")
 

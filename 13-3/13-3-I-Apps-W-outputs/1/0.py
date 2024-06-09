@@ -1,21 +1,20 @@
 
-def solve(n, a):
-    # Initialize the number of operations to 0
-    operations = 0
+n, k = map(int, input().split())
+tabs = list(map(int, input().split()))
 
-    # Iterate through the array of cells
-    for i in range(n):
-        # If the current cell is occupied by a process
-        if a[i] != 0:
-            # Find the first free cell before the current cell
-            for j in range(i):
-                if a[j] == 0:
-                    # Swap the data between the current cell and the free cell
-                    a[j] = a[i]
-                    a[i] = 0
-                    operations += 1
-                    break
+# Initialize the variables to keep track of the number of test and social network tabs
+test_tabs = 0
+social_tabs = 0
 
-    # Return the number of operations
-    return operations
+# Iterate through the tabs and count the number of test and social network tabs
+for i in range(n):
+    if tabs[i] == 1:
+        test_tabs += 1
+    else:
+        social_tabs += 1
+
+# Find the maximum absolute difference between the number of test and social network tabs
+abs_diff = max(abs(test_tabs - social_tabs), abs(test_tabs - (n - social_tabs)))
+
+print(abs_diff)
 

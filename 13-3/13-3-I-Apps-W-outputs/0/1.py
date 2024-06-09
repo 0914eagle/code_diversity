@@ -1,12 +1,20 @@
 
-def get_max_sum(A):
-    n = len(A)
-    if n == 1:
-        return A[0]
-    if n == 2:
-        return max(A[0], A[1])
-    if n % 2 == 0:
-        return max(A[0] + A[2], A[1] + A[3])
-    else:
-        return max(A[0] + A[2] + A[4], A[1] + A[3] + A[5])
+def find_lexicographically_smallest_cycle(n, l, r):
+    # Initialize a list to store the cycle
+    cycle = []
+    
+    # Start at vertex 1 and visit each vertex exactly once
+    current_vertex = 1
+    for i in range(n):
+        # Add the current vertex to the cycle
+        cycle.append(current_vertex)
+        
+        # Find the next vertex to visit by looking for the unvisited neighbor of the current vertex
+        for neighbor in range(1, n + 1):
+            if neighbor != current_vertex and neighbor not in cycle:
+                current_vertex = neighbor
+                break
+    
+    # Return the segment of the cycle specified by the input
+    return cycle[l:r+1]
 

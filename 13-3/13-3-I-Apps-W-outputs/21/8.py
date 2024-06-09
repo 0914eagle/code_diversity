@@ -1,22 +1,22 @@
 
-def restore_queue(students):
-    # Initialize a dictionary to map student IDs to their indices in the queue
-    student_indices = {}
-    for i, student in enumerate(students):
-        student_indices[student] = i
+def get_max_square_side_length(plank_lengths):
+    # Sort the plank lengths in descending order
+    plank_lengths.sort(reverse=True)
     
-    # Initialize a list to store the final order of the queue
-    queue = [0] * len(students)
+    # Initialize the maximum side length of the square as 0
+    max_side_length = 0
     
-    # Iterate through the students and their neighbors
-    for student, ahead, behind in students:
-        # If the student has a neighbor ahead of them, insert them into the queue after the neighbor
-        if ahead != 0:
-            queue[student_indices[ahead] + 1] = student
-        # If the student has a neighbor behind them, insert them into the queue before the neighbor
-        if behind != 0:
-            queue[student_indices[behind]] = student
+    # Iterate over the plank lengths
+    for i in range(len(plank_lengths)):
+        # Check if the current plank length is equal to the maximum side length
+        if plank_lengths[i] == max_side_length:
+            # If it is, return the maximum side length
+            return max_side_length
+        # Check if the current plank length is greater than the maximum side length
+        elif plank_lengths[i] > max_side_length:
+            # If it is, set the maximum side length to the current plank length
+            max_side_length = plank_lengths[i]
     
-    # Return the final order of the queue
-    return queue
+    # If no plank length is equal to the maximum side length, return the maximum side length
+    return max_side_length
 

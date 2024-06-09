@@ -1,26 +1,40 @@
 
-def solve(X, Y, Z, K, A, B, C):
-    # Calculate the total number of ways to choose three cakes
-    total_ways = X * Y * Z
-    
-    # Create a list to store the deliciousness of each cake
-    cake_list = []
-    
-    # Add the deliciousness of the cakes with 1-shaped candles to the list
-    for i in range(X):
-        cake_list.append(A[i])
-    
-    # Add the deliciousness of the cakes with 2-shaped candles to the list
-    for i in range(Y):
-        cake_list.append(B[i])
-    
-    # Add the deliciousness of the cakes with 3-shaped candles to the list
-    for i in range(Z):
-        cake_list.append(C[i])
-    
-    # Sort the list in descending order
-    cake_list.sort(reverse=True)
-    
-    # Return the first K elements of the list
-    return cake_list[:K]
+def get_mex(subset):
+    mex = 0
+    for i in range(1, len(subset) + 1):
+        if i not in subset:
+            mex = i
+            break
+    return mex
+
+
+def get_max_mex(numbers):
+    numbers = list(set(numbers))
+    n = len(numbers)
+    if n == 0:
+        return 0
+    if n == 1:
+        return numbers[0]
+
+    mid = n // 2
+    left = numbers[:mid]
+    right = numbers[mid:]
+
+    left_mex = get_mex(left)
+    right_mex = get_mex(right)
+
+    left_max = get_max_mex(left)
+    right_max = get_max_mex(right)
+
+    if left_mex + right_mex > left_max + right_max:
+        return left_mex + right_mex
+    else:
+        return left_max + right_max
+
+
+t = int(input())
+for i in range(t):
+    n = int(input())
+    numbers = list(map(int, input().split()))
+    print(get_max_mex(numbers))
 

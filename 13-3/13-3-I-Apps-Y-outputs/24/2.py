@@ -1,12 +1,17 @@
 
-def get_remaining_apple_pie_flavor(n, ls):
-    # Sort the list of apple flavors in ascending order
-    ls.sort()
-    # Initialize the sum of the flavors of the remaining apples to 0
-    remaining_sum = 0
-    # Loop through the list of apple flavors and calculate the sum of the flavors of the remaining apples
-    for i in range(1, n):
-        remaining_sum += ls[i]
-    # Return the sum of the flavors of the remaining apples
-    return remaining_sum
+def convert_to_celsius(fahrenheit):
+    a, b = fahrenheit.split('/')
+    a, b = int(a), int(b)
+    c = (9 * a + 32 * b) // (5 * b)
+    d = b
+    g = gcd(c, d)
+    return f"{c//g}/{d//g}"
+
+def gcd(a, b):
+    if b == 0:
+        return a
+    return gcd(b, a % b)
+
+fahrenheit = input()
+print(convert_to_celsius(fahrenheit))
 

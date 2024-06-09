@@ -1,28 +1,57 @@
 
-def solve(n, m, x, y, a, b):
-    # Find the maximum sub-rectangle with the given length-width ratio
-    x1 = max(0, x - a*b)
-    y1 = max(0, y - b*a)
-    x2 = min(n, x + a*b)
-    y2 = min(m, y + b*a)
-    
-    # If there are multiple solutions, find the rectangle which is closest to (x, y)
-    if x1 > 0 or y1 > 0 or x2 < n or y2 < m:
-        center_x = (x1 + x2) // 2
-        center_y = (y1 + y2) // 2
-        distance = abs(center_x - x) + abs(center_y - y)
-        if distance < a*b:
-            x1 = center_x - a*b
-            y1 = center_y - b*a
-            x2 = center_x + a*b
-            y2 = center_y + b*a
-    
-    # If there are still multiple solutions, find the lexicographically minimum one
-    if x1 > 0 or y1 > 0 or x2 < n or y2 < m:
-        x1 = min(x1, x2)
-        y1 = min(y1, y2)
-        x2 = max(x1, x2)
-        y2 = max(y1, y2)
-    
-    return x1, y1, x2, y2
+import sys
+
+def solve(N, c_AA, c_AB, c_BA, c_BB):
+    # Initialize the number of strings to 0
+    num_strings = 0
+
+    # Loop through all possible strings of length N
+    for i in range(2**N):
+        # Convert the binary representation of i to a string
+        s = bin(i)[2:]
+
+        # Pad the string with zeros if it is not long enough
+        s = s.zfill(N)
+
+        # Initialize a flag to indicate if the string is valid
+        valid = True
+
+        # Loop through each character in the string
+        for j in range(N-1):
+            # If the characters at position j and j+1 are both A, check if c_AA is allowed
+            if s[j] == "A" and s[j+1] == "A":
+                if c_AA == "A":
+                    valid = False
+                    break
+            # If the characters at position j and j+1 are both B, check if c_BB is allowed
+            elif s[j] == "B" and s[j+1] == "B":
+                if c_BB == "B":
+                    valid = False
+                    break
+            # If the characters at position j and j+1 are A and B, check if c_AB is allowed
+            elif s[j] == "A" and s[j+1] == "B":
+                if c_AB == "A":
+                    valid = False
+                    break
+            # If the characters at position j and j+1 are B and A, check if c_BA is allowed
+            elif s[j] == "B" and s[j+1] == "A":
+                if c_BA == "B":
+                    valid = False
+                    break
+
+        # If the string is valid, increment the number of strings
+        if valid:
+            num_strings += 1
+
+    # Return the number of strings modulo 10^9+7
+    return num_strings % 1000000007
+
+# Read the input from stdin
+N, c_AA, c_AB, c_BA, c_BB = input().split()
+
+# Solve the problem
+result = solve(int(N), c_AA, c_AB, c_BA, c_BB)
+
+# Print the result
+print(result)
 

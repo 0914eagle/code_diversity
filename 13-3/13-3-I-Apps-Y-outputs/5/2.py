@@ -1,19 +1,24 @@
 
-def solve(N, K, x_coordinates):
-    # Sort the x_coordinates in ascending order
-    x_coordinates.sort()
-    
-    # Initialize the total distance covered by robots to 0
-    total_distance = 0
-    
-    # Loop through each x_coordinate and calculate the distance covered by the robots
-    for i in range(N):
-        # Calculate the distance from the robot to the ball
-        distance = abs(x_coordinates[i] - i)
-        
-        # Add the distance to the total distance covered by robots
-        total_distance += distance
-    
-    # Return the minimum possible total distance covered by robots
-    return total_distance
+def is_sorted(s):
+    return s == ''.join(sorted(s))
+
+def get_coloring(s):
+    n = len(s)
+    coloring = ['0'] * n
+    for i in range(n):
+        if s[i] in s[:i] or s[i] in s[i+1:]:
+            coloring[i] = '1'
+    return ''.join(coloring)
+
+def main():
+    n = int(input())
+    s = input()
+    if is_sorted(s):
+        print("YES")
+        print(get_coloring(s))
+    else:
+        print("NO")
+
+if __name__ == "__main__":
+    main()
 

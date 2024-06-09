@@ -1,18 +1,12 @@
 
-def solve(n, b):
-    # Convert the list of integers to a set to remove duplicates
-    b_set = set(b)
-    # Initialize a list to store the permutation
-    permutation = []
-    # Iterate through the set of integers
-    for i in b_set:
-        # Check if the current integer is already in the permutation
-        if i not in permutation:
-            # If not, add it to the permutation
-            permutation.append(i)
-    # Check if the permutation is valid
-    if len(permutation) == len(b_set):
-        return "Yes\n" + " ".join(str(i) for i in permutation)
-    else:
-        return "No"
+def get_kth_smallest_divisor(n, k):
+    divisors = []
+    for i in range(1, int(n**0.5) + 1):
+        if n % i == 0:
+            divisors.append(i)
+            if n // i != i:
+                divisors.append(n // i)
+    if k > len(divisors):
+        return -1
+    return sorted(divisors)[k - 1]
 

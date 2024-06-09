@@ -1,27 +1,29 @@
 
-def solve(x0, y0, a_x, a_y, b_x, b_y, x_s, y_s, t):
-    # Initialize a list to store the coordinates of the data nodes
-    data_nodes = [(x0, y0)]
-    
-    # Calculate the coordinates of the next data node
-    x_next = a_x * x0 + b_x
-    y_next = a_y * y0 + b_y
-    
-    # Add the next data node to the list
-    data_nodes.append((x_next, y_next))
-    
-    # Continue calculating the coordinates of the next data node until the list is empty
-    while len(data_nodes) > 0:
-        # Pop the last node from the list
-        x, y = data_nodes.pop()
-        
-        # Calculate the coordinates of the next data node
-        x_next = a_x * x + b_x
-        y_next = a_y * y + b_y
-        
-        # Add the next data node to the list
-        data_nodes.append((x_next, y_next))
-    
-    # Return the number of data nodes collected within t seconds
-    return len(data_nodes)
+import sys
+
+def paint_squares(N, M, conditions):
+    # Initialize the number of ways to paint the squares
+    num_ways = 1
+
+    # Loop through each condition
+    for i in range(M):
+        # Get the left and right indices, and the number of different colors required
+        l, r, x = conditions[i]
+
+        # Calculate the number of ways to paint the squares with the current condition
+        num_ways *= (r - l + 1) - (x - 1)
+
+        # Modulo the result to avoid overflow
+        num_ways %= 1000000007
+
+    # Return the number of ways to paint the squares
+    return num_ways
+
+if __name__ == '__main__':
+    N, M = map(int, input().split())
+    conditions = []
+    for i in range(M):
+        l, r, x = map(int, input().split())
+        conditions.append((l, r, x))
+    print(paint_squares(N, M, conditions))
 

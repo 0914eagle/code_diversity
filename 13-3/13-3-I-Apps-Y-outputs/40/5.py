@@ -1,8 +1,10 @@
 
-def solve(p):
-    n = len(p)
-    a = [0] * n
+def get_max_value(sequence, index):
+    return max(sequence[:index] + sequence[index+1:])
+
+if __name__ == '__main__':
+    n = int(input())
+    sequence = list(map(int, input().split()))
     for i in range(n):
-        a[i] = p.index(i) + 1
-    return a
+        print(get_max_value(sequence, i))
 

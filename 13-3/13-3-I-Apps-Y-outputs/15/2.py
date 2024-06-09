@@ -1,9 +1,15 @@
 
-def get_available_megabytes(x, n, months_used):
-    available_megabytes = x
-    for month in months_used:
-        available_megabytes -= month
-        if available_megabytes < 0:
-            available_megabytes = 0
-    return available_megabytes
+n = int(input())
+
+for i in range(n):
+    k = int(input())
+    menu_items = []
+    for j in range(k):
+        menu_item = input()
+        menu_items.append(menu_item)
+    if "pea soup" in menu_items and "pancakes" in menu_items:
+        print(menu_items[0])
+        break
+else:
+    print("Anywhere is fine I guess")
 

@@ -1,26 +1,16 @@
 
-def solve(n, m):
-    # Initialize the array with all elements as 0
-    arr = [0] * n
-    
-    # Base case: if n is 1, the only possible array is [m]
-    if n == 1:
-        return 0
-    
-    # Initialize the maximum possible sum of absolute differences
-    max_sum = 0
-    
-    # Iterate over all possible values that the first element can take
-    for i in range(m + 1):
-        # Recursively call the function for the remaining elements
-        # and calculate the sum of absolute differences
-        sum_abs_diff = abs(i - arr[1:])
-        sum_abs_diff = sum(sum_abs_diff)
-        
-        # If the current sum is greater than the maximum possible sum,
-        # update the maximum possible sum
-        if sum_abs_diff > max_sum:
-            max_sum = sum_abs_diff
-    
-    return max_sum
+n, k = map(int, input().split())
+d, s = map(int, input().split())
+
+# Calculate the average difficulty of the solved problems
+avg_diff_solved = s * k / n
+
+# Calculate the average difficulty of the unsolved problems
+avg_diff_unsolved = (d - avg_diff_solved) * (n - k) / k
+
+# Check if the average difficulty of the unsolved problems is possible
+if avg_diff_unsolved < 0 or avg_diff_unsolved > 100:
+    print("impossible")
+else:
+    print(f"{avg_diff_unsolved:.6f}")
 

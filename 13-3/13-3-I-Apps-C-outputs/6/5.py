@@ -1,23 +1,35 @@
 
-def is_safe_bending(wire_length, points):
-    # Initialize the current position as the middle of the wire
-    current_position = wire_length // 2
-    
-    # Iterate through the points and check if the wire touches itself
-    for point, direction in points:
-        # Check if the point is to the left or right of the current position
-        if point < current_position:
-            # If the point is to the left, move left
-            current_position = point
-        else:
-            # If the point is to the right, move right
-            current_position = point + 1
-        
-        # Check if the current position is the same as the point
-        if current_position == point:
-            # If the current position is the same as the point, the wire touches itself
-            return "GHOST"
-    
-    # If the wire does not touch itself, return SAFE
-    return "SAFE"
+def num_routes(N, M, roads):
+    # Initialize a graph with the given number of nodes
+    graph = [[] for _ in range(N + 1)]
+
+    # Add edges to the graph
+    for road in roads:
+        graph[road[0]].append(road[1])
+        graph[road[1]].append(road[0])
+
+    # Find all possible routes using a depth-first search
+    routes = []
+    for i in range(1, N + 1):
+        for route in dfs(graph, i, []):
+            routes.append(route)
+
+    # Return the number of distinct routes
+    return len(set(routes))
+
+def dfs(graph, node, route):
+    # Add the current node to the route
+    route.append(node)
+
+    # If we have reached the end of the route, yield the route
+    if node == N:
+        yield route
+
+    # Recursively search for routes from the current node
+    for neighbor in graph[node]:
+        if neighbor not in route:
+            yield from dfs(graph, neighbor, route)
+
+    # Backtrack and remove the current node from the route
+    route.pop()
 

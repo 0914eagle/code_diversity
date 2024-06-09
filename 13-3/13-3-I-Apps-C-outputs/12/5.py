@@ -1,34 +1,45 @@
 
-def solve(x0, y0, a_x, a_y, b_x, b_y, x_s, y_s, t):
-    # Initialize a list to store the coordinates of the data nodes
-    data_nodes = []
-    
-    # Initialize the current coordinate as the starting coordinate
-    current_x, current_y = x_s, y_s
-    
-    # Initialize the time spent as 0
-    time_spent = 0
-    
-    # Initialize the number of data nodes collected as 0
-    data_nodes_collected = 0
-    
-    # Loop until the time limit is reached or there are no more data nodes to collect
-    while time_spent < t and data_nodes:
-        # Find the closest data node to the current coordinate
-        closest_node = min(data_nodes, key=lambda node: abs(node[0] - current_x) + abs(node[1] - current_y))
-        
-        # Remove the closest node from the list of data nodes
-        data_nodes.remove(closest_node)
-        
-        # Update the current coordinate to the coordinate of the closest node
-        current_x, current_y = closest_node
-        
-        # Update the time spent
-        time_spent += 1
-        
-        # Increment the number of data nodes collected
-        data_nodes_collected += 1
-    
-    # Return the number of data nodes collected
-    return data_nodes_collected
+import sys
+
+def paint_squares(N, M, conditions):
+    # Initialize the number of ways to paint the squares
+    num_ways = 1
+
+    # Loop through each condition
+    for i in range(M):
+        # Get the left and right indices, and the number of different colors required
+        l, r, x = conditions[i]
+
+        # Calculate the number of ways to paint the squares with the current condition
+        num_ways *= comb(r - l + 1, x)
+
+        # Modulo the result to avoid overflow
+        num_ways %= 1000000007
+
+    # Return the number of ways to paint the squares
+    return num_ways
+
+def comb(n, r):
+    # Calculate the binomial coefficient (n choose r)
+    if r > n - r:
+        r = n - r
+    if r == 0:
+        return 1
+    else:
+        num = 1
+        for i in range(r):
+            num *= n - i
+            num //= i + 1
+        return num
+
+if __name__ == '__main__':
+    # Read the input data from stdin
+    N, M = map(int, input().split())
+    conditions = []
+    for i in range(M):
+        l, r, x = map(int, input().split())
+        conditions.append((l, r, x))
+
+    # Call the paint_squares function and print the result
+    print(paint_squares(N, M, conditions))
 

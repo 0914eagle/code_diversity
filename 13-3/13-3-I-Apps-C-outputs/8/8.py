@@ -1,30 +1,29 @@
 
-def solve(producer_companies, consumer_companies):
-    # Initialize variables
-    max_profit = 0
-    selected_producer = None
-    selected_consumer = None
+def get_min_extensions(a, b, h, w, n, extensions):
+    # Initialize the minimum number of extensions needed to be 0
+    min_extensions = 0
 
-    # Iterate over each producer company
-    for producer in producer_companies:
-        # Iterate over each consumer company
-        for consumer in consumer_companies:
-            # Calculate the profit for this combination of producer and consumer
-            profit = calculate_profit(producer, consumer)
+    # Check if the rectangle can be placed on the initial field
+    if a <= h and b <= w:
+        return 0
 
-            # If the profit is greater than the current max profit, update the max profit and the selected producer and consumer
-            if profit > max_profit:
-                max_profit = profit
-                selected_producer = producer
-                selected_consumer = consumer
+    # Sort the extensions in descending order
+    extensions.sort(reverse=True)
 
-    # Return the max profit and the selected producer and consumer
-    return max_profit, selected_producer, selected_consumer
+    # Iterate through the extensions
+    for extension in extensions:
+        # Check if the extension multiplies the width or the length by a factor that is greater than or equal to the ratio of the rectangle's width or length to the field's width or length
+        if extension >= max(a / h, b / w):
+            # Increment the minimum number of extensions needed
+            min_extensions += 1
+            # Update the field sizes
+            h *= extension
+            w *= extension
 
-def calculate_profit(producer, consumer):
-    # Calculate the profit for this combination of producer and consumer
-    profit = producer["price"] - consumer["price"]
+            # Check if the rectangle can be placed on the field
+            if a <= h and b <= w:
+                return min_extensions
 
-    # Return the profit
-    return profit
+    # If the rectangle can't be placed on the field with all extensions, return -1
+    return -1
 

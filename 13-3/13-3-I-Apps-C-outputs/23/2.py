@@ -1,31 +1,38 @@
 
-def get_max_executives(briefcases):
-    # Sort the briefcases by the number of bananas in each briefcase
-    sorted_briefcases = sorted(briefcases, key=lambda x: x[1])
+def is_correct_sequence(sequence):
+    stack = []
+    for char in sequence:
+        if char == "(":
+            stack.append(char)
+        elif char == ")":
+            if not stack:
+                return False
+            stack.pop()
+    return not stack
 
-    # Initialize the maximum number of executives to be rewarded
-    max_executives = 0
+def reorder_sequence(sequence, start, end):
+    subsequence = sequence[start:end+1]
+    subsequence = subsequence[::-1]
+    sequence = sequence[:start] + subsequence + sequence[end+1:]
+    return sequence
 
-    # Initialize the number of executives to be rewarded
-    num_executives = 0
+def make_sequence_correct(sequence):
+    if is_correct_sequence(sequence):
+        return 0
+    
+    n = len(sequence)
+    for i in range(n):
+        for j in range(i+1, n+1):
+            subsequence = sequence[i:j]
+            if len(subsequence) % 2 == 0:
+                continue
+            reordered_sequence = reorder_sequence(sequence, i, j-1)
+            if is_correct_sequence(reordered_sequence):
+                return j - i
+    
+    return -1
 
-    # Initialize the total number of bananas to be rewarded
-    total_bananas = 0
-
-    # Loop through the sorted briefcases
-    for briefcase in sorted_briefcases:
-        # If the total number of bananas to be rewarded plus the number of bananas in the current briefcase is less than or equal to the number of bananas in the previous briefcase,
-        # then the current executive is not the most evil executive
-        if total_bananas + briefcase[1] <= sorted_briefcases[num_executives - 1][1]:
-            # Increment the number of executives to be rewarded
-            num_executives += 1
-            # Add the number of bananas in the current briefcase to the total number of bananas to be rewarded
-            total_bananas += briefcase[1]
-        # Otherwise, the current executive is the most evil executive
-        else:
-            # Break out of the loop
-            break
-
-    # Return the maximum number of executives to be rewarded
-    return num_executives
+n = int(input())
+sequence = input()
+print(make_sequence_correct(sequence))
 

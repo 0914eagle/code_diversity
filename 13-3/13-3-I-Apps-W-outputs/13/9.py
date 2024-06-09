@@ -1,67 +1,25 @@
 
-def solve(a, b, c, d, x, y, x1, y1, x2, y2):
-    # Check if the starting point is within the allowed area
-    if not (x1 <= x <= x2 and y1 <= y <= y2):
-        return "NO"
-    
-    # Initialize the number of moves left
-    moves_left = a + b + c + d
-    
-    # Initialize the current position
-    current_x = x
-    current_y = y
-    
-    # Initialize the list of visited cells
-    visited_cells = set()
-    
-    # Loop until all moves are used up
-    while moves_left > 0:
-        # Check if the current position is within the allowed area
-        if not (x1 <= current_x <= x2 and y1 <= current_y <= y2):
-            return "NO"
-        
-        # Check if the current position has been visited before
-        if (current_x, current_y) in visited_cells:
-            return "NO"
-        
-        # Add the current position to the list of visited cells
-        visited_cells.add((current_x, current_y))
-        
-        # Determine the next move
-        if moves_left == a + b + c + d:
-            # First move: go left or right
-            if a > 0:
-                current_x -= 1
-                moves_left -= 1
-            elif b > 0:
-                current_x += 1
-                moves_left -= 1
-            else:
-                return "NO"
-        elif moves_left == a + b + c:
-            # Second move: go down or up
-            if c > 0:
-                current_y -= 1
-                moves_left -= 1
-            elif d > 0:
-                current_y += 1
-                moves_left -= 1
-            else:
-                return "NO"
-        else:
-            # Third move: go left or right
-            if a > 0:
-                current_x -= 1
-                moves_left -= 1
-            elif b > 0:
-                current_x += 1
-                moves_left -= 1
-            else:
-                return "NO"
-    
-    # If all moves are used up and the current position is within the allowed area, return "YES"
-    if moves_left == 0 and x1 <= current_x <= x2 and y1 <= current_y <= y2:
-        return "YES"
-    else:
-        return "NO"
+import math
+
+def solve():
+    N = int(input())
+    A = list(map(int, input().split()))
+
+    # Sort the array A in non-decreasing order
+    A.sort()
+
+    # Initialize the array B with the values of A
+    B = A[:]
+
+    # Calculate the minimum possible value of B_1 + ... + B_N for B_1,...,B_N that satisfy the condition
+    min_sum = math.inf
+    for i in range(N):
+        for j in range(i+1, N):
+            if A[i] * A[j] == A[j] * A[i]:
+                min_sum = min(min_sum, B[i] + B[j])
+
+    # Print the minimum possible value of B_1 + ... + B_N modulo (10^9 + 7)
+    print(min_sum % (10**9 + 7))
+
+solve()
 

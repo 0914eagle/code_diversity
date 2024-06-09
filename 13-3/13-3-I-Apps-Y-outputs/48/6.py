@@ -1,33 +1,27 @@
 
-def get_spanning_tree(n, m, edges):
-    # Initialize a graph with n vertices and m edges
-    graph = [[] for _ in range(n)]
-    for edge in edges:
-        graph[edge[0] - 1].append(edge[1] - 1)
-        graph[edge[1] - 1].append(edge[0] - 1)
-
-    # Find a vertex with the maximum degree
-    max_degree = -1
-    max_vertex = -1
+def solve(n, b, a, s):
+    # Initialize the maximum number of segments as 0
+    max_segments = 0
+    # Initialize the current battery and accumulator charges as the given values
+    battery, accumulator = b, a
+    # Iterate through the segments
     for i in range(n):
-        degree = len(graph[i])
-        if degree > max_degree:
-            max_degree = degree
-            max_vertex = i
-
-    # Create a spanning tree with the maximum degree vertex as the root
-    tree = []
-    visited = [False] * n
-    queue = [max_vertex]
-    visited[max_vertex] = True
-    while queue:
-        vertex = queue.pop(0)
-        tree.append([vertex + 1, graph[vertex].pop(0) + 1])
-        visited[graph[vertex].pop(0)] = True
-        for neighbor in graph[vertex]:
-            if not visited[neighbor]:
-                queue.append(neighbor)
-                visited[neighbor] = True
-
-    return tree
+        # If the current segment is exposed to sunlight and the robot can use the battery
+        if s[i] == 1 and battery > 0:
+            # Decrease the battery charge by 1
+            battery -= 1
+            # Increase the accumulator charge by 1
+            accumulator += 1
+        # If the robot can use the accumulator
+        if accumulator > 0:
+            # Decrease the accumulator charge by 1
+            accumulator -= 1
+        # If the robot can use the battery
+        if battery > 0:
+            # Decrease the battery charge by 1
+            battery -= 1
+        # Update the maximum number of segments if the current number of segments is greater than the previous maximum
+        max_segments = max(max_segments, i+1)
+    # Return the maximum number of segments
+    return max_segments
 

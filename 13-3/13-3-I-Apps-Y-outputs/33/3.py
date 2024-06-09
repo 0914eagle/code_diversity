@@ -1,22 +1,18 @@
 
-def get_max_beauty(n, k, x, a):
-    # Calculate the maximum sum of beauty values of reposted pictures
-    max_beauty = 0
-    for i in range(n - k + 1):
-        # Calculate the sum of beauty values of the current segment
-        segment_beauty = sum(a[i:i+k])
-        # Check if the current segment has at least one repost
-        if segment_beauty > 0:
-            # Add the current segment to the total beauty
-            max_beauty += segment_beauty
-            # Decrement the number of pictures Vova is ready to repost
-            x -= 1
-            # If Vova has reposted all the pictures, return the maximum beauty
-            if x == 0:
-                return max_beauty
-    # If there is no way to repost some pictures to satisfy all conditions, return -1
-    if x > 0:
-        return -1
-    else:
-        return max_beauty
+def solve(n, divisors):
+    # Sort the divisors in ascending order
+    divisors.sort()
+
+    # Initialize the minimum possible value of x as the smallest divisor
+    x = divisors[0]
+
+    # Iterate through the divisors and check if they are valid
+    for i in range(1, n):
+        # Check if the current divisor is equal to the previous divisor multiplied by 2
+        if divisors[i] != divisors[i-1] * 2:
+            # If it is not, then the input data is contradictory and it is impossible to find such number
+            return -1
+
+    # If all divisors are valid, return the minimum possible value of x
+    return x
 

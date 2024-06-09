@@ -1,7 +1,13 @@
 
-def solve(a):
-    if a >= 10 and a <= 99:
-        return 1
-    if a >= 100 and a <= 999:
-        return 0
+def frame_crossword(puzzle, frame_size):
+    u, l, r, d = frame_size
+    m, n = len(puzzle), len(puzzle[0])
+    framed_puzzle = [['#' for _ in range(l + u + r)] for _ in range(d + u + d)]
+    for i in range(d):
+        framed_puzzle[i][l:l + n] = puzzle[i]
+    for i in range(d, d + m):
+        framed_puzzle[i][l:l + n] = puzzle[i - d]
+    for i in range(d + m, d + m + d):
+        framed_puzzle[i][l:l + n] = puzzle[i - d - m]
+    return [''.join(row) for row in framed_puzzle]
 

@@ -1,21 +1,17 @@
 
-def solve(N, T):
-    # Initialize a list to store the times when the hands point upward
-    upward_times = []
-    
-    # Iterate through each clock
-    for i in range(N):
-        # Calculate the time when the hand of the current clock points upward
-        upward_time = (360 * (i + 1)) // N
-        
-        # Add the time to the list
-        upward_times.append(upward_time)
-    
-    # Sort the list in ascending order
-    upward_times.sort()
-    
-    # Calculate the minimum time needed for all hands to point upward
-    min_time = sum(upward_times)
-    
-    return min_time
+import re
+
+def get_missing_cards(deck):
+    suits = ["P", "K", "H", "T"]
+    numbers = [str(i) for i in range(1, 14)]
+    missing_cards = [0, 0, 0, 0]
+    for suit in suits:
+        for number in numbers:
+            pattern = suit + "0" + number if len(number) == 1 else suit + number
+            if pattern not in deck:
+                missing_cards[suits.index(suit)] += 1
+    return "GRESKA" if len(set(deck)) != len(deck) else " ".join(str(missing) for missing in missing_cards)
+
+deck = input()
+print(get_missing_cards(deck))
 

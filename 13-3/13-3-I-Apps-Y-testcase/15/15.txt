@@ -1,12 +1,10 @@
 {
     "inputs": [
-        "10\n3\n4\n6\n2\n",
-        "10\n3\n10\n2\n12\n",
-        "15\n3\n15\n10\n20\n"
+        "2\n2\nq\npotatoes\nsalad\n3\nnymble\npancakes\npea soup\npunsch\n",
+        "4\n2\nasian wok house\npaa soup\npancakes\n2\nkebab kitchen\npea  soup\npancakes\n2\nla campus\ntasty pea soup\npancakes\n3\nslime stand\nslime\npea soup and pancakes\nslime\n"
     ],
     "outputs": [
-        "28\n",
-        "16\n",
-        "15\n"
+        "nymble\n",
+        "Anywhere is fine I guess\n"
     ]
 }

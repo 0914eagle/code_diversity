@@ -1,18 +1,21 @@
 
-import math
+def get_ranks(scores):
+    # Initialize the ranks for each player to 1
+    ranks = [1] * len(scores)
 
-def max_pickles(s, r, n, z):
-    area_sandwich = math.pi * s ** 2
-    area_pickle = math.pi * r ** 2
-    max_area_covered = area_sandwich * z / 100
-    max_pickles = 0
-    for i in range(n + 1):
-        area_covered = 0
-        for j in range(i):
-            area_covered += area_pickle
-            if area_covered > max_area_covered:
-                break
-        if area_covered <= max_area_covered:
-            max_pickles = i
-    return max_pickles
+    # Loop through each player's scores
+    for i in range(len(scores)):
+        # Get the current player's score
+        current_score = scores[i]
+
+        # Loop through each other player's scores
+        for j in range(i+1, len(scores)):
+            # Get the other player's score
+            other_score = scores[j]
+
+            # If the other player's score is lower than or equal to the current player's score, increment their rank
+            if other_score <= current_score:
+                ranks[j] += 1
+
+    return ranks
 

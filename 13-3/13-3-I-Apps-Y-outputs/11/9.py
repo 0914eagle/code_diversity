@@ -1,21 +1,26 @@
 
-def solve(N, T):
-    # Initialize a list to store the times when the hands point upward
-    upward_times = []
+import re
+
+def solve(s):
+    # Initialize a dictionary to store the count of each suit
+    suit_count = {"P": 0, "K": 0, "H": 0, "T": 0}
     
-    # Loop through each clock
-    for i in range(N):
-        # Calculate the time when the hand of the current clock points upward
-        upward_time = (360 // T[i]) * T[i]
-        
-        # Add the time to the list
-        upward_times.append(upward_time)
+    # Initialize a set to store the labels of the cards
+    card_labels = set()
     
-    # Find the least common multiple (LCM) of all the upward times
-    lcm = upward_times[0]
-    for i in range(1, N):
-        lcm = lcm(lcm, upward_times[i])
+    # Iterate through the string and extract the labels of the cards
+    for label in re.findall(r"[A-Z0-9]{3}", s):
+        card_labels.add(label)
     
-    # Return the LCM as the answer
-    return lcm
+    # Iterate through the labels of the cards and increment the count of each suit
+    for label in card_labels:
+        suit = label[0]
+        suit_count[suit] += 1
+    
+    # Check if there are two exact same cards in the deck
+    if len(card_labels) != 52:
+        return "GRESKA"
+    
+    # Return the count of each suit
+    return " ".join(str(suit_count[suit]) for suit in ["P", "K", "H", "T"])
 

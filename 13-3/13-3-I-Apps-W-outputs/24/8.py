@@ -1,34 +1,11 @@
 
-def solve(x, y):
-    if x + y == 1:
-        return "Yes"
-    if x + y == 0:
-        return "No"
-    if x == 0:
-        return "Yes"
-    if y == 0:
-        return "No"
-    if x < 0 or y < 0:
-        return "No"
-    if x == 1 and y == 1:
-        return "No"
-    if x == 2 and y == 2:
-        return "Yes"
-    if x == 3 and y == 3:
-        return "No"
-    if x == 4 and y == 4:
-        return "Yes"
-    if x == 5 and y == 5:
-        return "No"
-    if x == 6 and y == 6:
-        return "Yes"
-    if x == 7 and y == 7:
-        return "No"
-    if x == 8 and y == 8:
-        return "Yes"
-    if x == 9 and y == 9:
-        return "No"
-    if x == 10 and y == 10:
-        return "Yes"
-    return "No"
+def compare_numbers(x, y):
+    x_str = "".join(str(i) for i in x)
+    y_str = "".join(str(i) for i in y)
+    if x_str == y_str:
+        return "="
+    elif x_str < y_str:
+        return "<"
+    else:
+        return ">"
 

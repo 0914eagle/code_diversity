@@ -1,38 +1,27 @@
 
-def solve(producer_companies, consumer_companies):
-    # Initialize variables
-    max_profit = 0
-    selected_producer = None
-    selected_consumer = None
+def get_min_extensions(a, b, h, w, n, extensions):
+    # Initialize the minimum number of extensions needed to be 0
+    min_extensions = 0
 
-    # Iterate over each producer company
-    for producer in producer_companies:
-        # Iterate over each consumer company
-        for consumer in consumer_companies:
-            # Calculate the profit for this pair of producer and consumer companies
-            profit = calculate_profit(producer, consumer)
+    # If the rectangle can be placed on the initial field, return 0
+    if a <= h and b <= w:
+        return 0
 
-            # Check if the profit is greater than the current maximum profit
-            if profit > max_profit:
-                # Update the maximum profit and the selected producer and consumer companies
-                max_profit = profit
-                selected_producer = producer
-                selected_consumer = consumer
+    # Iterate through the available extensions
+    for i in range(n):
+        # If the extension multiplies the width, multiply h by a_i
+        # If the extension multiplies the length, multiply w by a_i
+        h, w = h * extensions[i], w * extensions[i]
 
-    # Return the maximum profit and the selected producer and consumer companies
-    return max_profit, selected_producer, selected_consumer
+        # If the rectangle can be placed on the field after applying the extension, increment the minimum number of extensions needed
+        if a <= h and b <= w:
+            min_extensions += 1
 
-def calculate_profit(producer, consumer):
-    # Calculate the profit for this pair of producer and consumer companies
-    profit = 0
+    # Return the minimum number of extensions needed
+    return min_extensions
 
-    # Iterate over each day
-    for day in range(producer["start_day"], consumer["end_day"] + 1):
-        # Check if the producer is delivering widgets on this day
-        if day >= producer["start_day"] and day <= producer["end_day"]:
-            # Calculate the profit for this day
-            profit += producer["price"] - consumer["price"]
 
-    # Return the profit
-    return profit
+a, b, h, w, n = map(int, input().split())
+extensions = list(map(int, input().split()))
+print(get_min_extensions(a, b, h, w, n, extensions))
 

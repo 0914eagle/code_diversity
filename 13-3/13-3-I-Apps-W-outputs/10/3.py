@@ -1,18 +1,18 @@
 
-def solve(n, edges):
-    # Initialize a dictionary to store the labels for each edge
-    labels = {}
-    # Initialize a set to store the used labels
-    used_labels = set()
-    # Iterate over the edges and assign labels
-    for u, v in edges:
-        # If the edge has not been labeled yet, assign a label that is not used yet
-        if (u, v) not in labels:
-            labels[(u, v)] = next(x for x in range(n-1) if x not in used_labels)
-            used_labels.add(labels[(u, v)])
-        # If the edge has already been labeled, use the same label
-        else:
-            labels[(u, v)] = labels[(v, u)]
-    # Return the labels for each edge
-    return [labels[(u, v)] for u, v in edges]
+import sys
+
+def k_tree_paths(n, k, d):
+    mod = 1000000007
+    dp = [[0] * (n + 1) for _ in range(k + 1)]
+    dp[0][0] = 1
+    for i in range(1, k + 1):
+        for j in range(1, n + 1):
+            if j >= d:
+                dp[i][j] = (dp[i - 1][j - d] + dp[i][j - 1]) % mod
+            else:
+                dp[i][j] = dp[i][j - 1]
+    return dp[k][n]
+
+n, k, d = map(int, sys.stdin.readline().split())
+print(k_tree_paths(n, k, d))
 

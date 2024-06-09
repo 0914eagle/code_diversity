@@ -1,9 +1,15 @@
 
-def is_valid_solution(queens):
-    # Check if there are any two queens in the same row, column or diagonal
-    for i in range(len(queens)):
-        for j in range(i+1, len(queens)):
-            if queens[i][0] == queens[j][0] or queens[i][1] == queens[j][1] or abs(queens[i][0] - queens[j][0]) == abs(queens[i][1] - queens[j][1]):
-                return "INCORRECT"
-    return "CORRECT"
+def solve(a, k):
+    n = len(a)
+    x = 0
+    count = 0
+    while True:
+        for i in range(n):
+            if a[i] % k != 0:
+                a[i] += x
+                count += 1
+        x += 1
+        if all(a[i] % k == 0 for i in range(n)):
+            break
+    return count
 

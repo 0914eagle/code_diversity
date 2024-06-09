@@ -1,25 +1,43 @@
 
-def get_max_influence(n, spectators):
-    # Sort the spectators by their influence in descending order
-    spectators.sort(key=lambda x: x[1], reverse=True)
+import itertools
 
-    # Initialize variables to keep track of the number of spectators supporting Alice and Bob
-    alice_count = 0
-    bob_count = 0
-    total_influence = 0
+def count_evolution_plans(gyms, types):
+    # Initialize a list to store the number of Pokemons of each type
+    type_counts = [0] * (types + 1)
+    
+    # Iterate over the gyms and count the number of Pokemons of each type
+    for gym in gyms:
+        for pokemon in gym:
+            type_counts[pokemon] += 1
+    
+    # Use itertools.permutations to generate all possible evolution plans
+    evolution_plans = itertools.permutations(range(1, types + 1))
+    
+    # Initialize a set to store the distinct evolution plans
+    distinct_plans = set()
+    
+    # Iterate over the evolution plans and check if they satisfy the protocol
+    for plan in evolution_plans:
+        # Initialize a list to store the number of Pokemons of each type after evolving
+        evolved_type_counts = [0] * (types + 1)
+        
+        # Iterate over the gyms and evolve the Pokemons according to the plan
+        for gym in gyms:
+            for pokemon in gym:
+                evolved_type_counts[plan[pokemon]] += 1
+        
+        # Check if the number of Pokemons of each type is the same before and after evolving
+        if evolved_type_counts == type_counts:
+            distinct_plans.add(plan)
+    
+    # Return the number of distinct evolution plans
+    return len(distinct_plans)
 
-    # Iterate through the spectators and add them to the set if they support Alice or Bob
-    for spectator in spectators:
-        if spectator[0] == "11" or spectator[0] == "10":
-            alice_count += 1
-        if spectator[0] == "11" or spectator[0] == "01":
-            bob_count += 1
-        total_influence += spectator[1]
+def main():
+    gyms, types = map(int, input().split())
+    gyms = [list(map(int, input().split())) for _ in range(gyms)]
+    print(count_evolution_plans(gyms, types))
 
-        # If we have selected at least half of the spectators supporting Alice and at least half of the spectators supporting Bob, return the total influence
-        if alice_count >= n/2 and bob_count >= n/2:
-            return total_influence
-
-    # If we reach this point, it is impossible to select a non-empty set of spectators that satisfies the conditions, so return 0
-    return 0
+if __name__ == "__main__":
+    main()
 

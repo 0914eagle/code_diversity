@@ -1,37 +1,19 @@
 
-def solve(nazis, castles):
-    # Step 1: Sort the Nazi points by x-coordinate
-    nazis = sorted(nazis, key=lambda x: x[0])
-    
-    # Step 2: Find the convex hull of the Nazi points
-    hull = []
-    for p in nazis:
-        while len(hull) > 1 and cross_product(hull[-2], hull[-1], p) <= 0:
-            hull.pop()
-        hull.append(p)
-    
-    # Step 3: Count the number of castles in danger
-    count = 0
-    for c in castles:
-        if is_inside_convex_polygon(c, hull):
-            count += 1
-    
-    return count
+def longest_sequence(s, i, j):
+    # Initialize the longest sequence length to 0
+    longest = 0
 
-def cross_product(o, a, b):
-    # Cross product of two vectors
-    return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0])
+    # Loop through the string from i to j
+    for k in range(i, j):
+        # If the current character is the same as the previous character
+        if s[k] == s[k-1]:
+            # Increment the longest sequence length
+            longest += 1
+        # If the current character is not the same as the previous character
+        else:
+            # Break out of the loop
+            break
 
-def is_inside_convex_polygon(p, polygon):
-    # Check if a point is inside a convex polygon
-    c = 0
-    for i in range(len(polygon) - 1):
-        if polygon[i][1] <= p[1]:
-            if polygon[i + 1][1] > p[1]:
-                if cross_product(polygon[i], polygon[i + 1], p) > 0:
-                    c += 1
-        elif polygon[i + 1][1] <= p[1]:
-            if cross_product(polygon[i], polygon[i + 1], p) < 0:
-                c -= 1
-    return c != 0
+    # Return the longest sequence length
+    return longest
 

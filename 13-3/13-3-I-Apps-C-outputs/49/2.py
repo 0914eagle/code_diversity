@@ -1,30 +1,27 @@
 
-def solve_checkerboard(checkerboard):
-    # Initialize variables
-    n, m = len(checkerboard), len(checkerboard[0])
-    rows, cols = [[] for _ in range(n)], [[] for _ in range(m)]
-    for i in range(n):
-        for j in range(m):
-            rows[i].append(checkerboard[i][j])
-            cols[j].append(checkerboard[i][j])
+n = int(input())
+
+# Initialize the maximum sum as 0
+max_sum = 0
+
+# Iterate from 1 to n
+for a in range(1, n + 1):
+    # Find the sum of digits in a
+    sum_a = sum(int(digit) for digit in str(a))
     
-    # Check if the checkerboard is valid
-    for i in range(n):
-        for j in range(m-1):
-            if rows[i][j] >= rows[i][j+1] or cols[j][i] >= cols[j+1][i]:
-                return -1
+    # Find the difference between n and a
+    diff = n - a
     
-    # Fill in the remaining cells
-    for i in range(n):
-        for j in range(m):
-            if checkerboard[i][j] == 0:
-                checkerboard[i][j] = 1
+    # Find the sum of digits in diff
+    sum_diff = sum(int(digit) for digit in str(diff))
     
-    # Calculate the sum of all values
-    sum = 0
-    for i in range(n):
-        for j in range(m):
-            sum += checkerboard[i][j]
+    # Calculate the total sum
+    total_sum = sum_a + sum_diff
     
-    return sum
+    # If the total sum is greater than the maximum sum, update the maximum sum
+    if total_sum > max_sum:
+        max_sum = total_sum
+
+# Print the maximum sum
+print(max_sum)
 

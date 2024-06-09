@@ -1,13 +1,32 @@
 
-def best_ranking(current_ranking, points_awarded, position_of_interest):
-    # Initialize a dictionary to store the best ranking for each position
-    best_ranking_dict = {}
+import sys
 
-    # Loop through the current ranking and points awarded
-    for i, (current_position, current_points) in enumerate(zip(current_ranking, points_awarded)):
-        # Get the best ranking for the current position
-        best_ranking_dict[current_position] = i + 1
+def get_input():
+    return list(map(int, sys.stdin.readline().strip().split()))
 
-    # Return the best ranking for the position of interest
-    return best_ranking_dict[position_of_interest]
+def solve(H, W, M, targets):
+    # Initialize a 2D array to store the number of targets destroyed in each row and column
+    destroyed = [[0] * W for _ in range(H)]
+
+    # Loop through the targets and update the number of targets destroyed in each row and column
+    for target in targets:
+        h, w = target
+        destroyed[h-1][w-1] += 1
+        destroyed[h-1][w-1] += 1
+
+    # Find the maximum number of targets destroyed by placing the bomb in a row or column with the most targets destroyed
+    max_destroyed = 0
+    for row in destroyed:
+        max_destroyed = max(max_destroyed, max(row))
+
+    return max_destroyed
+
+if __name__ == '__main__':
+    H, W, M = get_input()
+    targets = []
+    for _ in range(M):
+        h, w = get_input()
+        targets.append((h, w))
+
+    print(solve(H, W, M, targets))
 

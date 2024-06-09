@@ -1,36 +1,23 @@
 
-def solve(pulses):
-    # Initialize a grid to store the activation state of each pixel
-    grid = [[0] * 200001 for _ in range(200001)]
-
-    # Iterate over each pulse
-    for pulse in pulses:
-        # Get the direction, starting time, length, and wire number of the pulse
-        direction, start, length, wire = pulse
-
-        # Determine the end time of the pulse
-        end = start + length
-
-        # Iterate over the time period when the pulse is active
-        for time in range(start, end):
-            # Get the row and column of the pixel that is activated by the pulse
-            if direction == "h":
-                row = wire
-                col = time
-            else:
-                row = time
-                col = wire
-
-            # Activate the pixel if it is not already activated
-            if not grid[row][col]:
-                grid[row][col] = 1
-
-    # Count the number of activated pixels
-    count = 0
-    for row in grid:
-        for pixel in row:
-            if pixel:
-                count += 1
-
-    return count
+def solve(A, K, Q):
+    # Sort the array in ascending order
+    A.sort()
+    
+    # Initialize the smallest and largest values removed
+    smallest, largest = float('inf'), -float('inf')
+    
+    # Loop through each operation
+    for i in range(Q):
+        # Find the smallest element in the current subsequence
+        smallest_element = A[i]
+        for j in range(1, K):
+            if A[i+j] < smallest_element:
+                smallest_element = A[i+j]
+                
+        # Update the smallest and largest values removed
+        smallest = min(smallest, smallest_element)
+        largest = max(largest, A[i+K-1])
+        
+    # Return the difference between the smallest and largest values removed
+    return largest - smallest
 

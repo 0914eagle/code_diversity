@@ -1,21 +1,67 @@
 
-def get_max_fruits(n, v, a, b):
-    # Sort the trees by the day they ripen
-    sorted_trees = sorted(zip(a, b), key=lambda x: x[0])
-
-    # Initialize the variables
-    total_fruits = 0
-    current_day = 1
-
-    # Loop through the trees
+def solve(s):
+    n = len(s)
+    # Initialize the maximum length of the longest non-decreasing subsequence as 1
+    max_len = 1
+    # Initialize the length of the longest non-decreasing subsequence as 1
+    length = 1
+    # Initialize the previous element as -1
+    prev = -1
+    # Initialize the count of zeroes as 0
+    count = 0
+    # Initialize the result string as an empty string
+    result = ""
+    # Iterate over the characters of the input string
     for i in range(n):
-        # Check if the current day is before or equal to the day the tree ripens
-        if current_day <= sorted_trees[i][0]:
-            # Add the number of fruits that can be collected on the current day
-            total_fruits += min(v, sorted_trees[i][1])
-            # Increment the current day
-            current_day += 1
-
-    # Return the total number of fruits collected
-    return total_fruits
+        # If the current character is 0
+        if s[i] == "0":
+            # Increment the count of zeroes
+            count += 1
+            # If the current character is not equal to the previous character
+            if s[i] != prev:
+                # Update the length of the longest non-decreasing subsequence
+                length = max(length, count)
+                # Update the maximum length of the longest non-decreasing subsequence
+                max_len = max(max_len, length)
+                # Reset the count of zeroes
+                count = 0
+            # Update the previous element
+            prev = s[i]
+        # If the current character is 1
+        else:
+            # Update the count of zeroes
+            count += 1
+            # If the current character is not equal to the previous character
+            if s[i] != prev:
+                # Update the length of the longest non-decreasing subsequence
+                length = max(length, count)
+                # Update the maximum length of the longest non-decreasing subsequence
+                max_len = max(max_len, length)
+                # Reset the count of zeroes
+                count = 0
+            # Update the previous element
+            prev = s[i]
+    
+    # If the last character is 0
+    if s[n-1] == "0":
+        # Increment the count of zeroes
+        count += 1
+        # Update the length of the longest non-decreasing subsequence
+        length = max(length, count)
+        # Update the maximum length of the longest non-decreasing subsequence
+        max_len = max(max_len, length)
+    
+    # Iterate over the characters of the input string
+    for i in range(n):
+        # If the current character is 0
+        if s[i] == "0":
+            # Add the current character to the result string
+            result += "0"
+        # If the current character is 1
+        else:
+            # Add the current character to the result string
+            result += "1"
+    
+    # Return the result string
+    return result
 

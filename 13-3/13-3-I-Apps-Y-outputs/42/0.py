@@ -1,11 +1,17 @@
 
-def solve(A):
-    # Sort the tasks in non-decreasing order of cost
-    A.sort()
-    # Initialize the minimum total cost to 0
-    min_cost = 0
-    # Loop through the tasks and calculate the minimum total cost
-    for i in range(len(A)):
-        min_cost += A[i]
-    return min_cost
+x1, y1, x2, y2 = map(int, input().split())
+
+# Calculate the slope of the line passing through (x1, y1) and (x2, y2)
+m = (y2 - y1) / (x2 - x1)
+
+# Calculate the coordinates of the third vertex
+x3 = x1 + (y2 - y1) / m
+y3 = y1 + (x2 - x1) * m
+
+# Calculate the coordinates of the fourth vertex
+x4 = x2 + (y2 - y1) / m
+y4 = y2 + (x2 - x1) * m
+
+# Print the coordinates of the third and fourth vertices
+print(int(x3), int(y3), int(x4), int(y4))
 

@@ -1,7 +1,9 @@
 
-def get_this_week_contest_type(last_week_contest_type):
-    if last_week_contest_type == "ABC":
-        return "ARC"
+def one_card_poker(a, b):
+    if a > b:
+        return "Alice"
+    elif a < b:
+        return "Bob"
     else:
-        return "ABC"
+        return "Draw"
 

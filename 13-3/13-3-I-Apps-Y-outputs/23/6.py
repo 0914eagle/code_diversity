@@ -1,11 +1,14 @@
 
-def solve(s, t):
-    n = len(s)
-    m = len(t)
-    dp = [0] * (n + 1)
-    for i in range(n):
-        for j in range(m):
-            if s[i] == t[j]:
-                dp[i + 1] = max(dp[i + 1], dp[i] + 1)
-    return n - dp[n]
+import sys
+
+n = int(input())
+cards = list(map(int, input().split()))
+
+# Alice's optimal strategy is to take the card with the highest value
+alice_score = max(cards)
+
+# Bob's optimal strategy is to take the card with the second highest value
+bob_score = sorted(cards)[-2]
+
+print(alice_score - bob_score)
 

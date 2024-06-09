@@ -1,67 +1,27 @@
 
-def max_area_of_smallest_piece(n, m, k):
-    if k == 0:
-        return n * m
+import sys
+
+def solve(N, M):
+    # Calculate the number of possible toppings combinations
+    num_combinations = 2**N
     
-    if k == 1:
-        return min(n, m)
+    # Calculate the number of sets of bowls of ramen that satisfy the conditions
+    num_sets = 0
+    for i in range(num_combinations):
+        # Convert the binary representation of i to a list of 0s and 1s
+        binary_rep = list(map(int, list(bin(i)[2:])))
+        
+        # Count the number of 1s in the binary representation
+        num_ones = binary_rep.count(1)
+        
+        # If the number of 1s is greater than or equal to 2, increment the number of sets
+        if num_ones >= 2:
+            num_sets += 1
     
-    if k == 2:
-        return n + m - 2
-    
-    if k == 3:
-        return n * m - 2 * min(n, m) + 2
-    
-    if k == 4:
-        return (n - 1) * (m - 1)
-    
-    if k == 5:
-        return n * m - 2 * min(n, m) + 4
-    
-    if k == 6:
-        return (n - 2) * (m - 2) + 4
-    
-    if k == 7:
-        return n * m - 2 * min(n, m) + 6
-    
-    if k == 8:
-        return (n - 2) * (m - 2) + 6
-    
-    if k == 9:
-        return n * m - 2 * min(n, m) + 8
-    
-    if k == 10:
-        return (n - 2) * (m - 2) + 8
-    
-    if k == 11:
-        return n * m - 2 * min(n, m) + 10
-    
-    if k == 12:
-        return (n - 2) * (m - 2) + 10
-    
-    if k == 13:
-        return n * m - 2 * min(n, m) + 12
-    
-    if k == 14:
-        return (n - 2) * (m - 2) + 12
-    
-    if k == 15:
-        return n * m - 2 * min(n, m) + 14
-    
-    if k == 16:
-        return (n - 2) * (m - 2) + 14
-    
-    if k == 17:
-        return n * m - 2 * min(n, m) + 16
-    
-    if k == 18:
-        return (n - 2) * (m - 2) + 16
-    
-    if k == 19:
-        return n * m - 2 * min(n, m) + 18
-    
-    if k == 20:
-        return (n - 2) * (m - 2) + 18
-    
-    return -1
+    # Return the number of sets modulo M
+    return num_sets % M
+
+if __name__ == '__main__':
+    N, M = map(int, input().split())
+    print(solve(N, M))
 

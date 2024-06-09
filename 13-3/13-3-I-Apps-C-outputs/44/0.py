@@ -1,16 +1,25 @@
 
-def meow_factor(s):
-    # Initialize the meow factor to 0
-    meow_factor = 0
-    
-    # Loop through each character in the string
-    for i in range(len(s)):
-        # If the current character is 'm', check if the next three characters are 'e', 'o', and 'w'
-        if s[i] == 'm':
-            if i + 1 < len(s) and s[i + 1] == 'e' and i + 2 < len(s) and s[i + 2] == 'o' and i + 3 < len(s) and s[i + 3] == 'w':
-                # If they are, increment the meow factor by 1
-                meow_factor += 1
-    
-    # Return the meow factor
-    return meow_factor
+def get_alternative_bracket_notation(s):
+    # Initialize variables
+    notation = ""
+    start = 0
+    end = 0
+
+    # Iterate through the string
+    for i, char in enumerate(s):
+        # If the character is an opening bracket, set the start index
+        if char == "(":
+            start = i
+        # If the character is a closing bracket, set the end index
+        elif char == ")":
+            end = i
+            # If the start and end indices are not the same, add the header to the notation
+            if start != end:
+                notation += f"{start},{end}:{start},{end}:"
+            # If the start and end indices are the same, add the header to the notation
+            else:
+                notation += f"{start},{end}:{start},{end}:"
+
+    # Return the notation
+    return notation
 

@@ -1,20 +1,26 @@
 
-def get_maximum_spanning_tree(n, m, edges):
-    # Sort the edges by their weight in non-decreasing order
-    edges.sort(key=lambda x: x[2])
-
-    # Create a disjoint set data structure to store the vertices and their parents
-    dsu = DisjointSetUnion(n)
-
-    # Initialize the maximum spanning tree with the first edge
-    tree = [edges[0]]
-
-    # Iterate through the remaining edges
-    for edge in edges[1:]:
-        # If the edge is not part of the same connected component as the previous edge, add it to the tree
-        if not dsu.find_set(edge[0]):
-            tree.append(edge)
-            dsu.union_set(edge[0], edge[1])
-
-    return tree
+def get_max_segments(n, b, a, s):
+    # Initialize the maximum number of segments to 0
+    max_segments = 0
+    # Initialize the current battery and accumulator charges
+    battery, accumulator = b, a
+    # Iterate through the segments
+    for i in range(n):
+        # If the segment is exposed to sunlight and the battery is not empty
+        if s[i] == 1 and battery > 0:
+            # Use the battery and decrease its charge by 1
+            battery -= 1
+            # Increase the accumulator charge by 1
+            accumulator += 1
+        # If the accumulator is not empty
+        elif accumulator > 0:
+            # Use the accumulator and decrease its charge by 1
+            accumulator -= 1
+        # If the battery is empty and the accumulator is empty, break the loop
+        else:
+            break
+        # Increment the maximum number of segments
+        max_segments += 1
+    # Return the maximum number of segments
+    return max_segments
 

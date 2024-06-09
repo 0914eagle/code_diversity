@@ -1,20 +1,26 @@
 
-def longest_sequence(intervals):
-    # Sort the intervals by their start time
-    intervals.sort(key=lambda x: x[0])
+def solve(n, m, p, board):
+    # Initialize a list to store the moves
+    moves = []
     
-    # Initialize the longest sequence with the first interval
-    longest_seq = [intervals[0]]
+    # Loop through each row
+    for i in range(n):
+        # Loop through each column
+        for j in range(m):
+            # If the current square is not filled, skip it
+            if board[i][j] == 0:
+                continue
+            # If the current square is filled, add it to the moves list
+            moves.append(board[i][j])
+            # Update the board by adding 1 to all squares in the same row and column as the current square
+            for k in range(n):
+                for l in range(m):
+                    if k == i or l == j:
+                        board[k][l] = (board[k][l] + 1) % p
     
-    # Iterate over the remaining intervals
-    for i in range(1, len(intervals)):
-        # Check if the current interval is compatible with the longest sequence
-        if intervals[i][0] <= longest_seq[-1][1]:
-            # If it is, add it to the sequence
-            longest_seq.append(intervals[i])
-        else:
-            # If it is not, start a new sequence
-            longest_seq = [intervals[i]]
-    
-    return longest_seq
+    # If all squares are filled with the prime number p, return the moves list
+    if all(all(board[i][j] == p for j in range(m)) for i in range(n)):
+        return moves
+    # Otherwise, return -1 to indicate that no winning sequence exists
+    return -1
 

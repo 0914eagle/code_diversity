@@ -1,17 +1,22 @@
 
-def solve(n, magnets):
-    # Initialize the cheapest price as the current price
-    cheapest_price = int("".join(magnets))
-    
-    # Iterate through all possible permutations of the magnets
-    for permutation in permutations(magnets):
-        # Convert the permutation to an integer
-        price = int("".join(permutation))
-        
-        # If the price is cheaper than the current cheapest price, update the cheapest price
-        if price < cheapest_price:
-            cheapest_price = price
-    
-    # Return the cheapest price
-    return cheapest_price
+n, m = map(int, input().split())
+
+users = set()
+leaders = set()
+
+for i in range(m):
+    user, status = input().split()
+    user = int(user[1:])
+    if status == "+":
+        users.add(user)
+        if len(users) == 1:
+            leaders.add(user)
+    else:
+        users.remove(user)
+        if len(users) == 0:
+            leaders.remove(user)
+
+print(len(leaders))
+if leaders:
+    print(*sorted(leaders))
 

@@ -1,11 +1,11 @@
 
-import math
+A = int(input())
+B = int(input())
 
-def solve(n):
-    factorial = math.factorial(n)
-    divisors = 0
-    for i in range(1, n+1):
-        if factorial % i == 0:
-            divisors += 1
-    return divisors % (10**9+7)
+if A > B:
+    print("GREATER")
+elif A < B:
+    print("LESS")
+else:
+    print("EQUAL")
 

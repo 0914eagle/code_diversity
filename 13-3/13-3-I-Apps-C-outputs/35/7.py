@@ -1,42 +1,42 @@
 
-def get_max_influence(n, spectators):
-    # Sort the spectators by influence in descending order
-    spectators.sort(key=lambda x: x[1], reverse=True)
+import itertools
 
-    # Initialize variables to keep track of the number of spectators supporting Alice and Bob
-    alice_count = 0
-    bob_count = 0
-    total_influence = 0
+def count_evolution_plans(n, m, gyms):
+    # Initialize a list to store the number of Pokemons of each type
+    types = [0] * (m + 1)
+    
+    # Iterate over the gyms and count the number of Pokemons of each type
+    for gym in gyms:
+        for pokemon in gym:
+            types[pokemon] += 1
+    
+    # Initialize a list to store the evolution plans
+    plans = []
+    
+    # Iterate over the permutations of the Pokemon types
+    for perm in itertools.permutations(range(1, m + 1)):
+        # Initialize a list to store the number of Pokemons of each type after evolving
+        evolved_types = [0] * (m + 1)
+        
+        # Iterate over the gyms and evolve the Pokemons according to the current plan
+        for gym in gyms:
+            for pokemon in gym:
+                evolved_types[perm[pokemon]] += 1
+        
+        # Check if the number of Pokemons of each type is the same before and after evolving
+        if types == evolved_types:
+            plans.append(perm)
+    
+    return len(plans)
 
-    # Iterate through the sorted list of spectators
-    for spectator in spectators:
-        # Check if the current spectator supports Alice
-        if spectator[0] in ["11", "10"]:
-            alice_count += 1
+def main():
+    n, m = map(int, input().split())
+    gyms = []
+    for i in range(n):
+        gym = list(map(int, input().split()))
+        gyms.append(gym[1:])
+    print(count_evolution_plans(n, m, gyms))
 
-        # Check if the current spectator supports Bob
-        if spectator[0] in ["11", "01"]:
-            bob_count += 1
-
-        # Add the influence of the current spectator to the total influence
-        total_influence += spectator[1]
-
-        # Check if we have reached the condition that at least half of the spectators support Alice and at least half of them support Bob
-        if alice_count >= n / 2 and bob_count >= n / 2:
-            return total_influence
-
-    # If we reach the end of the list and the conditions are not met, return 0
-    return 0
-
-
-n = int(input())
-spectators = []
-
-# Read the input and create a list of tuples containing the political views and influence of each spectator
-for i in range(n):
-    views, influence = input().split()
-    spectators.append((views, int(influence)))
-
-# Call the get_max_influence function and print the result
-print(get_max_influence(n, spectators))
+if __name__ == "__main__":
+    main()
 

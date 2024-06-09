@@ -1,24 +1,52 @@
 
-def solve(n, corners):
-    # Initialize an empty dictionary to store the mapping of top-left corners to bottom-right corners
-    corner_map = {}
+def kahn_algorithm(graph):
+    # Initialize the list of source nodes and the sorted list
+    sources = [node for node in graph if not graph[node]]
+    sorted_list = []
 
-    # Iterate over the list of corner pairs
-    for i in range(0, len(corners), 2):
-        # Get the top-left and bottom-right corners for the current pair
-        top_left, bottom_right = corners[i], corners[i+1]
+    # While there are sources to consider
+    while sources:
+        # Get the source node with the minimum index
+        source = min(sources, key=lambda x: x[0])
+        sources.remove(source)
 
-        # Check if the top-left corner is already in the dictionary
-        if top_left in corner_map:
-            # If it is, check if the current bottom-right corner is compatible with the existing mapping
-            if corner_map[top_left] != bottom_right:
-                # If it's not, return "syntax error"
-                return "syntax error"
-        else:
-            # If the top-left corner is not in the dictionary, add it to the dictionary with the current bottom-right corner
-            corner_map[top_left] = bottom_right
+        # Remove the source node and its outgoing edges
+        graph.pop(source)
+        for node in list(graph):
+            if source in graph[node]:
+                graph[node].remove(source)
 
-    # If we reach this point, all corners have been processed and the dictionary contains a valid mapping
-    # Return the mapping as a list of pairs
-    return [top_left, bottom_right for top_left, bottom_right in corner_map.items()]
+        # If the removal of edges creates new sources, add them to the list
+        sources.extend([node for node in graph if not graph[node]])
+
+        # Insert the source node at the end of the sorted list
+        sorted_list.append(source)
+
+    # Return the sorted list
+    return sorted_list
+
+def largest_s(graph):
+    # Initialize the largest size of S
+    largest_s = 0
+
+    # Iterate over all possible choices of alpha
+    for alpha in range(len(graph)):
+        # Clone the graph and remove the edges from alpha
+        graph_clone = graph.copy()
+        for node in graph_clone:
+            if alpha in graph_clone[node]:
+                graph_clone[node].remove(alpha)
+
+        # Run Kahn's algorithm on the cloned graph
+        sorted_list = kahn_algorithm(graph_clone)
+
+        # Update the largest size of S
+        largest_s = max(largest_s, len(sorted_list))
+
+    # Return the largest size of S
+    return largest_s
+
+# Test the function with an example graph
+graph = {0: [1], 1: [2], 2: [3], 3: []}
+print(largest_s(graph))
 

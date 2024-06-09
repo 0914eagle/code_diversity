@@ -1,20 +1,26 @@
 
-def solve(N, towns):
-    # Sort the towns by their x-coordinates
-    sorted_towns = sorted(towns, key=lambda town: town[0])
+import math
 
-    # Create a graph with an edge between each pair of towns
-    graph = {}
-    for i in range(N):
-        graph[i] = []
-        for j in range(i+1, N):
-            graph[i].append(j)
+def get_tape_length(n, papers):
+    # Calculate the total area of all papers
+    total_area = 0
+    for i in range(n-1, 0, -1):
+        total_area += papers[i-1] * (2**((i-1)/4)) * (2**((i-1)/4))
 
-    # Calculate the minimum cost of building a road between each pair of towns
-    min_cost = 0
-    for i in range(N):
-        for j in graph[i]:
-            min_cost += min(abs(sorted_towns[i][0] - sorted_towns[j][0]), abs(sorted_towns[i][1] - sorted_towns[j][1]))
+    # Calculate the length of tape needed to join two papers together
+    tape_length = 2 * (2**((n-1)/4))
 
-    return min_cost
+    # Calculate the total length of tape needed
+    total_tape_length = tape_length * math.ceil(total_area / (2**((n-1)/4)))
+
+    return total_tape_length
+
+n = int(input())
+papers = list(map(int, input().split()))
+
+if n < 2 or n > 30:
+    print("impossible")
+else:
+    total_tape_length = get_tape_length(n, papers)
+    print(f"{total_tape_length:.5f}")
 

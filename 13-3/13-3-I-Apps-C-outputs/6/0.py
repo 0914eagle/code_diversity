@@ -1,23 +1,45 @@
 
-def is_safe_bending(wire_length, points):
-    # Initialize the current position as the middle of the wire
-    current_position = wire_length // 2
-    
-    # Iterate through the points and check if the wire will touch itself
-    for point, direction in points:
-        # Calculate the new position based on the direction and point
-        if direction == "C":
-            new_position = current_position - (point - current_position)
-        else:
-            new_position = current_position + (point - current_position)
-        
-        # Check if the new position is valid (i.e., not negative and not greater than the length of the wire)
-        if new_position < 0 or new_position >= wire_length:
-            return "GHOST"
-        
-        # Update the current position to the new position
-        current_position = new_position
-    
-    # If the wire does not touch itself, return "SAFE"
-    return "SAFE"
+import sys
+
+def get_distinct_routes(n, m, roads):
+    # Initialize a graph with the given number of nodes
+    graph = [[] for _ in range(n + 1)]
+
+    # Add edges to the graph
+    for road in roads:
+        graph[road[0]].append(road[1])
+        graph[road[1]].append(road[0])
+
+    # Initialize a set to store the visited nodes
+    visited = set()
+
+    # Initialize a list to store the routes
+    routes = []
+
+    # Recursive function to find all distinct routes
+    def find_routes(curr_node, curr_route):
+        # If the current node is the destination node, add the current route to the list of routes
+        if curr_node == 2:
+            routes.append(curr_route)
+            return
+
+        # If the current node has not been visited, mark it as visited and recurse on all its neighbors
+        if curr_node not in visited:
+            visited.add(curr_node)
+            for neighbor in graph[curr_node]:
+                find_routes(neighbor, curr_route + [neighbor])
+
+    # Start the recursion from the starting node
+    find_routes(1, [1])
+
+    # Return the number of distinct routes
+    return len(routes)
+
+n, m = map(int, input().split())
+roads = []
+for _ in range(m):
+    a, b = map(int, input().split())
+    roads.append([a, b])
+
+print(get_distinct_routes(n, m, roads))
 

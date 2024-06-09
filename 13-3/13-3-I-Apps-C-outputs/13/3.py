@@ -1,29 +1,21 @@
 
-def solve(n, m, pegs, dry_plan, wet_plan):
-    # Initialize a dictionary to store the pegs and their positions
-    peg_dict = {}
-    for i in range(n):
-        peg_dict[i] = []
+def find_m(numbers):
+    # Initialize a set to store the remainders
+    remainders = set()
     
-    # Add the pegs from the dry plan to the dictionary
-    for i in dry_plan:
-        peg_dict[i].append(i)
+    # Iterate through the numbers
+    for num in numbers:
+        # Calculate the remainder of the number when divided by each integer greater than 1
+        for i in range(2, num):
+            remainder = num % i
+            # If the remainder is not already in the set, add it
+            if remainder not in remainders:
+                remainders.add(remainder)
     
-    # Remove the pegs from the wet plan that are not in the dry plan
-    for i in wet_plan:
-        if i not in dry_plan:
-            peg_dict[i].remove(i)
+    # If the set is empty, return 1
+    if not remainders:
+        return [1]
     
-    # Add the pegs from the wet plan that are not in the dry plan
-    for i in wet_plan:
-        if i not in dry_plan:
-            peg_dict[i].append(i)
-    
-    # Check if the pegs in the wet plan are safe
-    for i in wet_plan:
-        if len(peg_dict[i]) == 0:
-            return -1
-    
-    # Return the wet plan
-    return wet_plan
+    # Otherwise, return all integers in the set
+    return list(remainders)
 

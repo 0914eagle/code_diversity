@@ -1,1 +1,10 @@
-{"inputs": ["3 2\n1 2\n2 3\n", "4 3\n1 2\n2 3\n3 4\n", "100000 1\n1 99999\n", "5 5\n1 3\n4 5\n2 3\n2 4\n1 4\n"], "outputs": ["POSSIBLE\n", "IMPOSSIBLE\n", "IMPOSSIBLE\n", "POSSIBLE\n"]}
+{
+    "inputs": [
+        "10\nC D F D C D F F F C \n",
+        "6\nA B A F# G# C \n"
+    ],
+    "outputs": [
+        "A# C D# F\n",
+        "none\n"
+    ]
+}

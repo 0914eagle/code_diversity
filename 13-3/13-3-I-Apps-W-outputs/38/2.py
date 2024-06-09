@@ -1,22 +1,16 @@
 
-def swimming_pool_area(n, vertices):
-    # Sort the vertices by their x-coordinate
-    sorted_vertices = sorted(vertices, key=lambda x: x[0])
+n, m = map(int, input().split())
 
-    # Find the leftmost and rightmost vertices
-    leftmost = sorted_vertices[0]
-    rightmost = sorted_vertices[-1]
+# Initialize the minimum number of moves to -1
+min_moves = -1
 
-    # Find the topmost and bottommost vertices
-    topmost = min(sorted_vertices, key=lambda x: x[1])
-    bottommost = max(sorted_vertices, key=lambda x: x[1])
+# Iterate through all possible sequences of steps
+for i in range(1, n + 1):
+    # Check if the current sequence of steps is a multiple of m
+    if i % m == 0:
+        # If it is, update the minimum number of moves
+        min_moves = i
+        break
 
-    # Calculate the area of the rectangle
-    area = (rightmost[0] - leftmost[0]) * (topmost[1] - bottommost[1])
-
-    # Check if the area is positive
-    if area > 0:
-        return area
-    else:
-        return -1
+print(min_moves)
 

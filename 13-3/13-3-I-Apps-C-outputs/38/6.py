@@ -1,32 +1,40 @@
 
-def solve(n, g, d, e, links):
-    # Initialize variables
-    human_system, alien_system = None, None
-    min_uw_distance = float('inf')
+def count_relations(n):
+    # Base case: if n is 1, there is only one relation (the empty relation)
+    if n == 1:
+        return 1
 
-    # Loop through each system
+    # Initialize the number of relations to 0
+    num_relations = 0
+
+    # Iterate over all possible relations
+    for i in range(2**n):
+        # Convert the binary representation of i to a list of bits
+        bits = [int(bit) for bit in bin(i)[2:]]
+
+        # Check if the relation is symmetric and transitive
+        if is_symmetric_and_transitive(bits, n):
+            num_relations += 1
+
+    # Return the number of relations modulo 10^9 + 7
+    return num_relations % (10**9 + 7)
+
+def is_symmetric_and_transitive(bits, n):
+    # Check if the relation is symmetric
     for i in range(n):
-        # If the system is human, set it as the human system
-        if d[i] == 'h':
-            human_system = i
-        # If the system is alien, set it as the alien system
-        elif d[i] == 'a':
-            alien_system = i
+        for j in range(i+1, n):
+            if bits[i] != bits[j] and bits[j] == 1:
+                return False
 
-    # If both the human and alien systems have been found, calculate the UW distance
-    if human_system is not None and alien_system is not None:
-        # Calculate the capacitance, potential, and inductance of the link between the human and alien systems
-        capacitance = g[human_system] + g[alien_system]
-        potential = g[human_system] - g[alien_system]
-        inductance = g[human_system] * g[alien_system]
+    # Check if the relation is transitive
+    for i in range(n):
+        for j in range(n):
+            for k in range(n):
+                if bits[i] == 1 and bits[j] == 1 and bits[k] == 1 and i != j != k:
+                    return False
 
-        # Calculate the UW distance
-        uw_distance = abs(potential * (capacitance * capacitance - inductance))
+    # If the relation is symmetric and transitive, return True
+    return True
 
-        # If the UW distance is less than the minimum distance, update the minimum distance
-        if uw_distance < min_uw_distance:
-            min_uw_distance = uw_distance
-
-    # Return the minimum UW distance
-    return min_uw_distance
+print(count_relations(int(input())))
 

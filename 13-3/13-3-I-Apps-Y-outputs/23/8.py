@@ -1,25 +1,29 @@
 
-def solve(s, t):
-    # Initialize variables
-    max_length = 0
-    current_length = 0
-    s_index = 0
-    t_index = 0
+def solve(N, cards):
+    # Calculate the sum of the cards
+    sum_cards = sum(cards)
 
-    # Loop through s and t simultaneously
-    while s_index < len(s) and t_index < len(t):
-        # If the current character in s is the same as the current character in t, increment the current length
-        if s[s_index] == t[t_index]:
-            current_length += 1
-            t_index += 1
-        # If the current character in s is not the same as the current character in t, reset the current length
-        else:
-            current_length = 0
-        # Update the maximum length if the current length is greater than the maximum length
-        if current_length > max_length:
-            max_length = current_length
-        s_index += 1
+    # Calculate the minimum sum that Alice can get
+    min_sum = sum_cards // 2
 
-    # Return the maximum length
-    return max_length
+    # Calculate the maximum sum that Alice can get
+    max_sum = sum_cards
+
+    # Initialize the optimal score for Alice and Bob
+    opt_score_alice, opt_score_bob = 0, 0
+
+    # Loop through all possible scores for Alice
+    for alice_score in range(min_sum, max_sum + 1):
+        # Calculate the score for Bob
+        bob_score = sum_cards - alice_score
+
+        # Check if the current score is optimal
+        if alice_score + bob_score == sum_cards:
+            # Update the optimal score for Alice and Bob
+            opt_score_alice = alice_score
+            opt_score_bob = bob_score
+            break
+
+    # Return the difference between the optimal score for Alice and Bob
+    return opt_score_alice - opt_score_bob
 

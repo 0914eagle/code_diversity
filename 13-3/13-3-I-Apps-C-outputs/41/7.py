@@ -1,15 +1,20 @@
 
-def count_scary_subarrays(arr):
-    n = len(arr)
-    # Sort the array in non-decreasing order
-    arr.sort()
-    # Initialize a variable to store the count of scary subarrays
-    count = 0
-    # Loop through each subarray of length 1 to n
-    for i in range(n):
-        for j in range(i, n):
-            # Check if the leftmost element of the subarray is the median of the subarray
-            if arr[i] == arr[(i+j)//2]:
-                count += 1
-    return count
+def is_possible(frequencies):
+    # Initialize a list to store the positions of the read/write heads
+    positions = [0] * len(frequencies)
+    # Initialize a list to store the intervals for each frequency
+    intervals = [[0, 0] for _ in range(len(frequencies))]
+    # Loop through each frequency and its intervals
+    for i, (t_i, n_i) in enumerate(frequencies):
+        for j in range(n_i):
+            # Update the positions of the read/write heads
+            positions[i] = (positions[i] + t_i) % 1000000
+            # Update the intervals for each frequency
+            intervals[i][j] = positions[i]
+    # Check if all frequencies can be played as intended
+    for i, (t_i, n_i) in enumerate(frequencies):
+        for j in range(n_i):
+            if intervals[i][j] != intervals[i][j+1]:
+                return "impossible"
+    return "possible"
 

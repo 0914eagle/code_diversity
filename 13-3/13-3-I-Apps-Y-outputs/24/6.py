@@ -1,13 +1,18 @@
 
-def get_flavor(N, L):
-    apples = [int(input()) for _ in range(N)]
-    total_flavor = sum(apples)
-    min_diff = total_flavor
-    for i in range(N):
-        flavor = total_flavor - apples[i]
-        diff = abs(flavor - total_flavor)
-        if diff < min_diff:
-            min_diff = diff
-            optimal_flavor = flavor
-    return optimal_flavor
+def convert_to_celsius(fahrenheit):
+    numerator, denominator = fahrenheit.split("/")
+    numerator = int(numerator)
+    denominator = int(denominator)
+    celsius = (numerator - 32) * 5 // 9
+    gcd = find_gcd(celsius, denominator)
+    return f"{celsius // gcd}/{denominator // gcd}"
+
+def find_gcd(a, b):
+    if b == 0:
+        return a
+    else:
+        return find_gcd(b, a % b)
+
+fahrenheit = input()
+print(convert_to_celsius(fahrenheit))
 

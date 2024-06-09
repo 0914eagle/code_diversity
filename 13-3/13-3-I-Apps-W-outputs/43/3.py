@@ -1,19 +1,15 @@
 
-def solve(a):
-    n = len(a)
-    if n == 1:
-        return a
-    
-    # Initialize the minimum integer as the initial integer
-    min_int = a
-    
-    # Iterate over each pair of adjacent digits
-    for i in range(n-1):
-        # If the digits have different parity, swap them and check if the result is smaller than the current minimum
-        if a[i] % 2 != a[i+1] % 2:
-            swapped_int = a[:i] + a[i+1] + a[i] + a[i+2:]
-            if swapped_int < min_int:
-                min_int = swapped_int
-    
-    return min_int
+def smallest_sum_of_digits(k):
+    # Initialize a variable to store the smallest sum
+    smallest_sum = float('inf')
+    # Loop through all positive multiples of k
+    for i in range(1, 100001):
+        # Calculate the sum of the digits in the decimal notation of the multiple
+        sum_of_digits = sum([int(digit) for digit in str(i * k)])
+        # Check if the sum is smaller than the current smallest sum
+        if sum_of_digits < smallest_sum:
+            # If so, update the smallest sum
+            smallest_sum = sum_of_digits
+    # Return the smallest sum
+    return smallest_sum
 

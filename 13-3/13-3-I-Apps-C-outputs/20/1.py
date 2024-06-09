@@ -1,32 +1,34 @@
 
-def get_minimum_presentations(boys, girls, books):
-    # Initialize a dictionary to store the books read by each student
-    books_read = {}
+def get_min_mex(subarrays):
+    mex = 0
+    for subarray in subarrays:
+        for i in range(subarray[0], subarray[1] + 1):
+            if i not in subarray:
+                mex = max(mex, i)
+    return mex
 
-    # Add the books read by each boy to the dictionary
-    for boy in boys:
-        books_read[boy] = set(books[boy])
 
-    # Add the books read by each girl to the dictionary
-    for girl in girls:
-        books_read[girl] = set(books[girl])
+def get_optimal_array(n, m):
+    subarrays = []
+    for i in range(m):
+        l, r = map(int, input().split())
+        subarrays.append([l, r])
 
-    # Initialize a set to store the books that have been presented
-    presented_books = set()
+    a = [0] * n
+    for i in range(n):
+        a[i] = i + 1
 
-    # Initialize a counter for the number of presentations
-    presentations = 0
+    min_mex = get_min_mex(subarrays)
+    for i in range(n):
+        if a[i] != min_mex:
+            a[i] = min_mex
+            break
 
-    # Loop through each student and their books
-    for student in boys + girls:
-        # Check if the student has any books to present
-        if len(books_read[student]) > 0:
-            # Add the presented books to the presented_books set
-            presented_books |= books_read[student]
+    return a
 
-            # Increment the number of presentations
-            presentations += 1
 
-    # Return the minimum number of presentations needed
-    return presentations
+n, m = map(int, input().split())
+a = get_optimal_array(n, m)
+print(min_mex)
+print(*a)
 

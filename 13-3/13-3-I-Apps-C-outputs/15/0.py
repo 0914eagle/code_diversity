@@ -1,21 +1,24 @@
 
-def solve(a):
-    # Convert the input string to a list of digits
-    digits = [int(digit) for digit in str(a)]
-    
-    # Create a list to store the permutations
-    permutations = []
-    
-    # Iterate over the digits and create all possible permutations
-    for i in range(len(digits)):
-        for j in range(i+1, len(digits)):
-            permutations.append(digits[i] * 1000 + digits[j] * 100 + digits[i] * 10 + digits[j])
-    
-    # Iterate over the permutations and check if they are divisible by 7
-    for permutation in permutations:
-        if permutation % 7 == 0:
-            return str(permutation)
-    
-    # If no permutation is divisible by 7, return 0
-    return "0"
+def solve(walk):
+    # Initialize the value of the walk as 1
+    value = 1
+
+    # Iterate through the walk string
+    for char in walk:
+        # If the character is 'L', multiply the value by 2
+        if char == 'L':
+            value *= 2
+        # If the character is 'R', add 1 to the value
+        elif char == 'R':
+            value += 1
+        # If the character is 'P', do nothing
+        elif char == 'P':
+            pass
+        # If the character is '*', multiply the value by 2 and add 1
+        elif char == '*':
+            value *= 2
+            value += 1
+
+    # Return the final value of the walk
+    return value
 

@@ -1,19 +1,11 @@
 
-def is_possible(x, y):
-    if x + y == 1:
-        return "Yes"
-    if x + y == 0:
-        return "No"
-    if x == 0:
-        return "Yes"
-    if y == 0:
-        return "No"
-    if x % 2 == 0 and y % 2 == 0:
-        return "Yes"
-    if x % 2 == 1 and y % 2 == 1:
-        return "No"
-    if x % 2 == 0 and y % 2 == 1:
-        return "Yes"
-    if x % 2 == 1 and y % 2 == 0:
-        return "No"
+def compare_numbers(x_digits, x_base, y_digits, y_base):
+    x_num = int(x_digits, x_base)
+    y_num = int(y_digits, y_base)
+    if x_num < y_num:
+        return '<'
+    elif x_num > y_num:
+        return '>'
+    else:
+        return '='
 

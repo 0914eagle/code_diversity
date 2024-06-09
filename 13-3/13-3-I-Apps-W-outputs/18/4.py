@@ -1,23 +1,52 @@
 
-def solve(n, k, a):
-    # Calculate the total power Inna tells Dima off with for each task
-    total_power = [0] * (n + 1)
-    for i in range(1, n):
-        total_power[i] = total_power[i - 1] + a[i - 1]
-    
-    # Initialize the minimum power and the corresponding first task
-    min_power = total_power[n]
-    first_task = 1
-    
-    # Iterate through all possible first tasks
-    for i in range(1, n - k + 2):
-        # Calculate the total power Inna tells Dima off with for the current first task
-        current_power = total_power[i + k - 1] - total_power[i - 1]
-        
-        # If the current total power is less than the minimum power, update the minimum power and the corresponding first task
-        if current_power < min_power:
-            min_power = current_power
-            first_task = i
-    
-    return first_task
+from sys import stdin, stdout
+from math import gcd
+
+def mod_pow(base, exponent, modulus):
+    result = 1
+    base = base % modulus
+    while exponent > 0:
+        if exponent % 2 == 1:
+            result = (result * base) % modulus
+        exponent = exponent // 2
+        base = (base * base) % modulus
+    return result
+
+def extended_euclidean(a, b):
+    if a == 0:
+        return (b, 0, 1)
+    else:
+        g, y, x = extended_euclidean(b % a, a)
+        return (g, x - (b // a) * y, y)
+
+def mod_inverse(a, m):
+    g, x, y = extended_euclidean(a, m)
+    if g != 1:
+        raise ValueError
+    return x % m
+
+def mod_mul_inverse(a, m):
+    return mod_pow(a, m - 2, m)
+
+def mod_div(a, b, m):
+    return mod_mul(a, mod_inverse(b, m), m)
+
+def mod_add(a, b, m):
+    return (a + b) % m
+
+def mod_sub(a, b, m):
+    return (a - b) % m
+
+def mod_mul(a, b, m):
+    return (a * b) % m
+
+def solve(A, B, n, x):
+    result = 0
+    for i in range(n):
+        result = mod_add(result, mod_mul(A, x, 1000000007), 1000000007)
+        x = mod_add(x, B, 1000000007)
+    return result % 1000000007
+
+A, B, n, x = map(int, stdin.readline().split())
+print(solve(A, B, n, x))
 

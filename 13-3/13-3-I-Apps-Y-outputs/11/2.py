@@ -1,36 +1,18 @@
 
-def solve(N, T):
-    # Initialize a list to store the time it takes for each clock to point upward
-    times = []
-    
-    # Loop through each clock
-    for i in range(N):
-        # Calculate the time it takes for the clock to point upward
-        time = (360 * (i + 1)) // N
-        
-        # Add the time to the list
-        times.append(time)
-    
-    # Find the least common multiple (LCM) of all the times
-    lcm = 1
-    for time in times:
-        lcm = lcm_of_two_numbers(lcm, time)
-    
-    # Return the LCM
-    return lcm
+import re
 
-# Function to find the least common multiple (LCM) of two numbers
-def lcm_of_two_numbers(x, y):
-    if x > y:
-        greater = x
-    else:
-        greater = y
-    
-    while(True):
-        if(greater % x == 0 and greater % y == 0):
-            lcm = greater
-            break
-        greater += 1
-    
-    return lcm
+def get_missing_cards(deck):
+    suits = ["P", "K", "H", "T"]
+    numbers = [str(i) for i in range(1, 14)]
+    card_count = {suit: 0 for suit in suits}
+    for card in deck:
+        suit, number = card[0], card[2:]
+        if suit in card_count and number in numbers:
+            card_count[suit] += 1
+        else:
+            return "GRESKA"
+    return " ".join(str(card_count[suit] - 1) for suit in suits)
+
+deck = input()
+print(get_missing_cards(deck))
 

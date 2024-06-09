@@ -1,23 +1,28 @@
 
-def max_string_length(n, a):
-    # Initialize a dictionary to store the number of occurrences of each letter
-    letter_counts = {}
-    for i in range(n):
-        letter_counts[i] = 0
-    
-    # Initialize a variable to store the maximum length of the string
-    max_length = 0
-    
-    # Iterate through the letters of the alphabet
-    for letter in range(n):
-        # If the letter has not been used yet, use it in the string
-        if letter_counts[letter] == 0:
-            max_length += 1
-            letter_counts[letter] += 1
-        # If the letter has already been used, check if it can be used again
-        elif letter_counts[letter] < a[letter]:
-            max_length += 1
-            letter_counts[letter] += 1
-    
-    return max_length
+import sys
+
+def solve(H, W, c, A):
+    # Initialize the dp table with the cost of turning the current digit into 1
+    dp = [[float('inf') for _ in range(10)] for _ in range(H)]
+    for i in range(H):
+        for j in range(W):
+            if A[i][j] != -1:
+                dp[i][A[i][j]] = c[A[i][j]]
+
+    # Fill in the dp table using the recurrence relation
+    for i in range(H):
+        for j in range(W):
+            if A[i][j] != -1:
+                for k in range(10):
+                    if k != A[i][j]:
+                        dp[i][k] = min(dp[i][k], dp[i][A[i][j]] + c[A[i][j]])
+
+    # Return the minimum total cost to turn all digits into 1
+    return min(dp[i][1] for i in range(H))
+
+if __name__ == '__main__':
+    H, W = map(int, input().split())
+    c = [list(map(int, input().split())) for _ in range(10)]
+    A = [list(map(int, input().split())) for _ in range(H)]
+    print(solve(H, W, c, A))
 
