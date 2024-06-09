@@ -1,0 +1,13 @@
+
+def solve(x, y):
+    # Initialize the first two rows of the array
+    F = [[0, 1], [1, 1]]
+    
+    # Fill in the remaining rows of the array
+    for i in range(2, x+1):
+        for j in range(1, y+1):
+            F[i][j] = (F[i-1][j] + F[i][j-1]) % 1000000007
+    
+    # Return the value of F[x, y]
+    return F[x][y]
+
