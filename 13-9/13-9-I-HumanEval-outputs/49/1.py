@@ -1,0 +1,17 @@
+
+from typing import List
+
+def find_max(words: List[str]) -> str:
+    
+    max_word = ""
+    max_count = 0
+    for word in words:
+        unique_chars = set(word)
+        count = len(unique_chars)
+        if count > max_count:
+            max_count = count
+            max_word = word
+        elif count == max_count and word < max_word:
+            max_word = word
+    return max_word
+
