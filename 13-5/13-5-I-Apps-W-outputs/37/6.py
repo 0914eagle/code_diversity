@@ -1,31 +1,27 @@
 
-def get_min_time(n, a, b):
-    # Initialize the minimum time to wait at each crossing
-    min_time = [0] * n
-
-    # Loop through each row
+def get_network_stations(n, a, b):
+    # Initialize the number of connections for each station
+    connections = [0] * n
+    # Iterate through each city and station
     for i in range(n):
-        # Loop through each crossing in the current row
-        for j in range(n - 1):
-            # Get the waiting time for the current crossing
-            waiting_time = a[i][j]
+        # Find the station with the least number of connections
+        min_index = connections.index(min(connections))
+        # If the current city requires more connections than the station can provide, return False
+        if a[i] > b[min_index]:
+            return False
+        # Add the number of connections required by the current city to the station
+        connections[min_index] += a[i]
+    # If all cities have been assigned a station, return True
+    return True
 
-            # Check if the current crossing is in the first or second row
-            if i == 0 or i == n - 1:
-                # Add the waiting time to the minimum time at the current crossing
-                min_time[j] += waiting_time
-            else:
-                # Get the waiting time for the opposite crossing
-                opposite_crossing = n - 1 - j
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        a = list(map(int, input().split()))
+        b = list(map(int, input().split()))
+        print("YES") if get_network_stations(n, a, b) else print("NO")
 
-                # Check if the minimum time at the opposite crossing has already been set
-                if min_time[opposite_crossing] == 0:
-                    # Set the minimum time at the opposite crossing to the waiting time
-                    min_time[opposite_crossing] = waiting_time
-                else:
-                    # Add the waiting time to the minimum time at the opposite crossing
-                    min_time[opposite_crossing] += waiting_time
-
-    # Return the sum of the minimum times at all crossings
-    return sum(min_time)
+if __name__ == '__main__':
+    main()
 

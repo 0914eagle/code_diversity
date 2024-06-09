@@ -1,20 +1,37 @@
 
-def solve(n, permutation, sequence):
-    # Initialize a set to store the visited positions
-    visited = set()
-    # Initialize a variable to store the number of changes needed
-    changes_needed = 0
-    # Iterate through the permutation and sequence
-    for i in range(n):
-        # If the current position is not visited, mark it as visited and add it to the set
-        if permutation[i] not in visited:
-            visited.add(permutation[i])
-        # If the current position is reversed, mark it as visited and add it to the set
-        if sequence[i] == 1:
-            visited.add(n - permutation[i] + 1)
-        # If the number of visited positions is less than 2n, increment the number of changes needed
-        if len(visited) < 2*n:
-            changes_needed += 1
-    # Return the number of changes needed
-    return changes_needed
+def get_common_string(strings):
+    common_string = ""
+    for i in range(len(strings[0])):
+        count = 0
+        for string in strings:
+            if string[i] == common_string[i]:
+                count += 1
+        if count == len(strings):
+            common_string += strings[0][i]
+    return common_string
+
+def get_swapped_strings(common_string, strings):
+    swapped_strings = []
+    for string in strings:
+        swapped_strings.append("".join(common_string))
+    return swapped_strings
+
+def is_valid_string(string):
+    for i in range(len(string)):
+        if string[i] != string[(i+1)%len(string)]:
+            return False
+    return True
+
+def main():
+    k, n = map(int, input().split())
+    strings = [input() for _ in range(k)]
+    common_string = get_common_string(strings)
+    swapped_strings = get_swapped_strings(common_string, strings)
+    if is_valid_string(common_string):
+        print(common_string)
+    else:
+        print(-1)
+
+if __name__ == '__main__':
+    main()
 

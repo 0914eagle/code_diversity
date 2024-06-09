@@ -1,28 +1,44 @@
 
-def get_max_zeroes(a, b):
-    # Find the maximum and minimum values in both arrays
-    max_a = max(a)
-    max_b = max(b)
-    min_a = min(a)
-    min_b = min(b)
+def get_shortest_path(packages):
+    # Initialize the shortest path as empty string
+    shortest_path = ""
     
-    # Calculate the range of possible values for d
-    d_range = [max_a * min_b, min_a * max_b]
+    # Loop through the packages and add the appropriate move to the path
+    for package in packages:
+        # If the package is above the current position, add a 'U' to the path
+        if package[1] > 0:
+            shortest_path += "U"
+        # If the package is to the right of the current position, add an 'R' to the path
+        elif package[0] > 0:
+            shortest_path += "R"
     
-    # Initialize the maximum number of zeroes to 0
-    max_zeroes = 0
+    # Return the shortest path
+    return shortest_path
+
+def main():
+    # Read the number of test cases
+    num_test_cases = int(input())
     
-    # Iterate over the range of possible values for d
-    for d in range(d_range[0], d_range[1] + 1):
-        # Calculate the number of zeroes in the current array
-        zeroes = 0
-        for i in range(len(a)):
-            if d * a[i] + b[i] == 0:
-                zeroes += 1
+    # Loop through the test cases
+    for _ in range(num_test_cases):
+        # Read the number of packages
+        num_packages = int(input())
         
-        # Update the maximum number of zeroes if necessary
-        if zeroes > max_zeroes:
-            max_zeroes = zeroes
-    
-    return max_zeroes
+        # Initialize the packages list
+        packages = []
+        
+        # Loop through the packages and read their coordinates
+        for _ in range(num_packages):
+            x, y = map(int, input().split())
+            packages.append((x, y))
+        
+        # Get the shortest path for the packages
+        shortest_path = get_shortest_path(packages)
+        
+        # Print the output
+        print("YES")
+        print(shortest_path)
+
+if __name__ == '__main__':
+    main()
 

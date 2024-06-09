@@ -1,16 +1,22 @@
 
-def solve(N, L, drawers):
-    items = {}
-    for i in range(N):
-        item = i + 1
-        drawer_a, drawer_b = drawers[i]
-        if drawer_a not in items and drawer_b not in items:
-            items[drawer_a] = item
-        elif drawer_a in items and drawer_b not in items:
-            items[drawer_b] = item
-        elif drawer_a not in items and drawer_b in items:
-            items[drawer_a] = item
-        else:
-            items[drawer_b] = item
-    return ["LADICA" if item in items else "SMECE" for item in range(1, N + 1)]
+def get_mentors(n, k, skills, pairs):
+    mentors = [0] * n
+    for i in range(n):
+        for j in range(i+1, n):
+            if skills[i] > skills[j] and (i, j) not in pairs and (j, i) not in pairs:
+                mentors[i] += 1
+    return mentors
+
+def main():
+    n, k = map(int, input().split())
+    skills = list(map(int, input().split()))
+    pairs = []
+    for _ in range(k):
+        x, y = map(int, input().split())
+        pairs.append((x, y))
+    mentors = get_mentors(n, k, skills, pairs)
+    print(*mentors, sep='\n')
+
+if __name__ == '__main__':
+    main()
 

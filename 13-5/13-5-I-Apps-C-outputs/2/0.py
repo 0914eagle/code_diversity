@@ -1,18 +1,48 @@
 
-def solve(N, A, B):
-    # Calculate the total amount of meat eaten by all participants
-    total_meat = sum(A)
+def get_candy_distribution(a, b):
+    # Initialize the distribution dictionary
+    distribution = {}
     
-    # Calculate the ratio of ham to be distributed to each participant
-    ham_ratio = [ham / total_meat for ham in B if ham != 0]
+    # Loop through the candies and assign them to the sibling with the highest value
+    for i in range(len(a)):
+        if a[i] >= b[i]:
+            distribution[i] = "A"
+        else:
+            distribution[i] = "B"
     
-    # Calculate the total amount of ham to be distributed
-    total_ham = sum(ham_ratio) * total_meat
+    # Return the distribution dictionary
+    return distribution
+
+def get_candy_distribution_lexicographically_smallest(a, b):
+    # Initialize the distribution dictionary
+    distribution = {}
     
-    # Check if the required order can be achieved
-    if len(ham_ratio) != N or len(set(ham_ratio)) != N:
-        return -1
+    # Loop through the candies and assign them to the sibling with the highest value
+    for i in range(len(a)):
+        if a[i] >= b[i]:
+            distribution[i] = "A"
+        else:
+            distribution[i] = "B"
     
-    # Return the total amount of ham to be distributed
-    return total_ham
+    # Sort the distribution dictionary by key
+    sorted_distribution = sorted(distribution.items(), key=lambda x: x[0])
+    
+    # Return the distribution dictionary as a string
+    return "".join([item[1] for item in sorted_distribution])
+
+def main():
+    # Read the input
+    n = int(input())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    
+    # Call the functions
+    distribution = get_candy_distribution(a, b)
+    lexicographically_smallest_distribution = get_candy_distribution_lexicographically_smallest(a, b)
+    
+    # Print the output
+    print(lexicographically_smallest_distribution)
+
+if __name__ == '__main__':
+    main()
 

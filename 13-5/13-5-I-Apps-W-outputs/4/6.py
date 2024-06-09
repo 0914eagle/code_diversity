@@ -1,36 +1,42 @@
 
-def get_min_weight(n, k, stages):
-    # Initialize a dictionary to store the weight of each stage
-    weights = {}
-    for i in range(n):
-        weights[stages[i]] = i + 1
+def get_score(graph, start, end):
     
-    # Initialize a list to store the stages in the correct order
-    ordered_stages = []
+    if start == end:
+        return 0
     
-    # Loop through the stages and add them to the list in the correct order
-    for i in range(n):
-        stage = stages[i]
-        if len(ordered_stages) == 0:
-            ordered_stages.append(stage)
-        else:
-            # Check if the stage can be added to the list
-            can_add = True
-            for j in range(len(ordered_stages)):
-                if ord(stage) - ord(ordered_stages[j]) <= 2:
-                    can_add = False
-                    break
-            if can_add:
-                ordered_stages.append(stage)
+    # Initialize the maximum score to 0
+    max_score = 0
     
-    # If the list of stages is not equal to k, it is impossible to build the rocket
-    if len(ordered_stages) != k:
-        return -1
+    # Iterate over all edges connected to the start vertex
+    for edge in graph[start]:
+        # Get the neighbor and weight of the edge
+        neighbor, weight = edge
+        
+        # Recursively call the function to get the maximum score from the neighbor vertex to the end vertex
+        score = get_score(graph, neighbor, end)
+        
+        # If the score is non-negative, add the weight of the edge to the score and update the maximum score
+        if score >= 0:
+            max_score = max(max_score, score + weight)
     
-    # Calculate the total weight of the rocket
-    total_weight = 0
-    for stage in ordered_stages:
-        total_weight += weights[stage]
+    return max_score
+
+def main():
+    # Read the input from stdin
+    num_vertices, num_edges = map(int, input().split())
+    graph = {}
+    for _ in range(num_edges):
+        edge = tuple(map(int, input().split()))
+        if edge[0] not in graph:
+            graph[edge[0]] = []
+        graph[edge[0]].append((edge[1], edge[2]))
     
-    return total_weight
+    # Get the maximum score from vertex 1 to vertex N
+    max_score = get_score(graph, 1, num_vertices)
+    
+    # Print the maximum score
+    print(max_score)
+
+if __name__ == '__main__':
+    main()
 

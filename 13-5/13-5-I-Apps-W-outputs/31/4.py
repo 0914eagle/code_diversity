@@ -1,20 +1,23 @@
 
-def solve(n, m, cities, towers):
-    # Sort the cities and towers in non-decreasing order
-    cities = sorted(cities)
-    towers = sorted(towers)
-    
-    # Initialize the minimum distance as 0
-    min_dist = 0
-    
-    # Iterate through the cities and find the first city that is not covered by any tower
+def get_min_jury_size(n, olympiads):
+    # Initialize a set to store the dates of the olympiads
+    dates = set()
+    # Iterate over the list of olympiads
+    for olympiade in olympiads:
+        # Add the dates of the olympiad to the set
+        dates.update(range(olympiade[0], olympiade[0] + olympiade[3]))
+    # Return the length of the set, which is the minimum number of people needed for the jury
+    return len(dates)
+
+def main():
+    # Read the number of olympiads and the list of olympiads from stdin
+    n = int(input())
+    olympiads = []
     for i in range(n):
-        if cities[i] - towers[0] > min_dist:
-            # If the city is not covered by any tower, find the closest tower and update the minimum distance
-            for j in range(m):
-                if cities[i] - towers[j] <= min_dist:
-                    min_dist = cities[i] - towers[j]
-                    break
-    
-    return min_dist
+        olympiads.append(list(map(int, input().split())))
+    # Call the function to get the minimum jury size and print the result
+    print(get_min_jury_size(n, olympiads))
+
+if __name__ == '__main__':
+    main()
 

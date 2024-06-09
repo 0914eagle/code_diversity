@@ -1,46 +1,27 @@
 
-import math
-
-def get_min_radius(n, lairs):
-    # Sort the lairs by their x-coordinates
-    lairs.sort(key=lambda x: x[0])
+def f1(n, a):
+    # calculate the bitwise OR of all mountains between l and r (inclusive)
+    def bitwise_or(l, r):
+        result = 0
+        for i in range(l, r+1):
+            result |= a[i]
+        return result
     
-    # Initialize the minimum radius and center as infinity and (0, 0) respectively
-    min_radius = float('inf')
-    center = (0, 0)
-    
-    # Loop through each lair and check if it is possible to build a reserve
-    for i in range(n):
-        # Get the current lair and its x-coordinate
-        lair = lairs[i]
-        x = lair[0]
-        
-        # Find the left and right lairs that are closest to the current lair
-        left_lair = lairs[i-1] if i > 0 else lairs[n-1]
-        right_lair = lairs[i+1] if i < n-1 else lairs[0]
-        
-        # Calculate the distance between the current lair and the left and right lairs
-        left_distance = math.sqrt((lair[0] - left_lair[0])**2 + (lair[1] - left_lair[1])**2)
-        right_distance = math.sqrt((lair[0] - right_lair[0])**2 + (lair[1] - right_lair[1])**2)
-        
-        # Calculate the radius and center of the reserve
-        radius = (left_distance + right_distance) / 2
-        center = (x, (left_lair[1] + right_lair[1]) / 2)
-        
-        # Check if the reserve contains all lairs
-        if all(math.sqrt((lair[0] - center[0])**2 + (lair[1] - center[1])**2) <= radius for lair in lairs):
-            # If the reserve contains all lairs, check if it is the minimum radius
-            if radius < min_radius:
-                min_radius = radius
-    
-    # Return the minimum radius or -1 if it is not possible to build a reserve
-    return -1 if min_radius == float('inf') else min_radius
+    # count the number of pairs l and r such that the bitwise OR is larger than the height of any mountain at this interval
+    count = 0
+    for l in range(1, n):
+        for r in range(l+1, n+1):
+            if bitwise_or(l, r) > max(a[l:r]):
+                count += 1
+    return count
 
-n = int(input())
-lairs = []
-for i in range(n):
-    x, y = map(int, input().split())
-    lairs.append((x, y))
+def f2(...):
+    # implement f2 here
+    pass
 
-print(get_min_radius(n, lairs))
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    result = f1(n, a)
+    print(result)
 

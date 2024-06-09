@@ -1,43 +1,45 @@
 
-def solve(V, P, edges, pigs):
-    # Initialize a graph with V vertices and V-1 edges
-    graph = [[] for _ in range(V)]
-    for u, v in edges:
-        graph[u].append(v)
-        graph[v].append(u)
+def get_cube_colors(tile_colors):
+    # Initialize a set to store the colors of the cube
+    cube_colors = set()
     
-    # Initialize a set to store the vertices occupied by pigs
-    pig_vertices = set(pigs)
+    # Iterate over the tile colors
+    for tile_color in tile_colors:
+        # Add the colors of the tile to the set
+        cube_colors.add(tile_color[0])
+        cube_colors.add(tile_color[1])
+        cube_colors.add(tile_color[2])
+        cube_colors.add(tile_color[3])
     
-    # Initialize a set to store the vertices occupied by wolves
-    wolf_vertices = set(range(V)) - pig_vertices
+    return cube_colors
+
+def get_unique_cubes(tile_colors):
+    # Initialize a set to store the unique cubes
+    unique_cubes = set()
     
-    # Initialize a queue to store the vertices to be visited
-    queue = []
+    # Iterate over the tile colors
+    for tile_color in tile_colors:
+        # Add the colors of the tile to the set
+        unique_cubes.add(frozenset(tile_color))
     
-    # Enqueue the vertices occupied by pigs
-    for pig in pig_vertices:
-        queue.append(pig)
+    return len(unique_cubes)
+
+def main():
+    # Read the input from stdin
+    num_tiles = int(input())
+    tile_colors = []
+    for _ in range(num_tiles):
+        tile_colors.append(list(map(int, input().split())))
     
-    # Initialize a variable to store the minimum number of wolves to remove
-    min_wolves = 0
+    # Get the colors of the cube
+    cube_colors = get_cube_colors(tile_colors)
     
-    while queue:
-        # Dequeue a vertex
-        vertex = queue.pop(0)
-        
-        # If the vertex is a leaf vertex, it can be removed
-        if len(graph[vertex]) == 1:
-            min_wolves += 1
-            continue
-        
-        # If the vertex is occupied by a wolf, it cannot be removed
-        if vertex in wolf_vertices:
-            continue
-        
-        # Enqueue the neighbors of the vertex
-        for neighbor in graph[vertex]:
-            queue.append(neighbor)
+    # Get the number of unique cubes
+    num_unique_cubes = get_unique_cubes(cube_colors)
     
-    return min_wolves
+    # Print the number of unique cubes
+    print(num_unique_cubes)
+
+if __name__ == '__main__':
+    main()
 

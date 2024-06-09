@@ -1,26 +1,45 @@
 
-def get_min_time(n, c, a, b):
-    # Initialize the minimum time array
-    min_time = [0] * (n + 1)
+def get_extra_bricks(H, N, M):
+    # Initialize variables
+    extra_2x2_bricks = 0
+    extra_4x2_bricks = 0
+    
+    # Iterate through each layer of the pyramid
+    for layer in range(1, H+1):
+        # Calculate the width of the layer
+        width = 2*layer
+        
+        # Calculate the number of bricks needed for the layer
+        num_bricks = width * (width + 1) // 2
+        
+        # Check if the layer can be completed with the given bricks
+        if num_bricks <= N:
+            # Subtract the number of bricks used from the total number of bricks
+            N -= num_bricks
+        else:
+            # Calculate the number of extra bricks needed for the layer
+            extra_bricks = num_bricks - N
+            
+            # Add the extra bricks to the total number of extra bricks
+            extra_2x2_bricks += extra_bricks // 2
+            extra_4x2_bricks += extra_bricks % 2
+            
+            # Set the number of bricks to 0 for the next layer
+            N = 0
+    
+    # Return the total number of extra bricks needed
+    return extra_2x2_bricks, extra_4x2_bricks
 
-    # Loop through each floor
-    for i in range(1, n + 1):
-        # Initialize the minimum time to reach the current floor
-        min_time_i = float('inf')
+def main():
+    # Read the input
+    H, N, M = map(int, input().split())
+    
+    # Calculate the extra bricks needed
+    extra_2x2_bricks, extra_4x2_bricks = get_extra_bricks(H, N, M)
+    
+    # Print the output
+    print(extra_2x2_bricks, extra_4x2_bricks)
 
-        # Loop through each possible previous floor
-        for j in range(i):
-            # Calculate the time to reach the current floor using the stairs
-            time_stairs = min_time[j] + a[j]
-
-            # Calculate the time to reach the current floor using the elevator
-            time_elevator = min_time[j] + c + b[j]
-
-            # Update the minimum time to reach the current floor
-            min_time_i = min(min_time_i, time_stairs, time_elevator)
-
-        # Update the minimum time array
-        min_time[i] = min_time_i
-
-    return min_time
+if __name__ == '__main__':
+    main()
 

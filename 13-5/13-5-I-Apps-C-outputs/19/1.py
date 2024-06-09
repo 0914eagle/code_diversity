@@ -1,21 +1,25 @@
 
-def solve(n, m, a):
-    # Initialize a list to store the number of burgers ordered on each day
-    burgers = [0] * m
+def read_points():
+    N = int(input())
+    points = []
+    for i in range(N):
+        x, y = map(int, input().split())
+        points.append((x, y))
+    return points
 
-    # Loop through each day and update the number of burgers ordered
-    for i in range(m):
-        burgers[i] = a[i]
+def is_right_triangle(p1, p2, p3):
+    return (p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2 == (p2[0] - p3[0]) ** 2 + (p2[1] - p3[1]) ** 2
 
-    # Initialize a set to store the names of the colleagues who have been identified
-    identified = set()
+def count_right_triangles(points):
+    count = 0
+    for i in range(len(points)):
+        for j in range(i+1, len(points)):
+            for k in range(j+1, len(points)):
+                if is_right_triangle(points[i], points[j], points[k]):
+                    count += 1
+    return count
 
-    # Loop through each day and identify the colleagues who have been identified
-    for i in range(m):
-        # If the number of burgers ordered is greater than 0, identify the colleague who ordered a burger
-        if burgers[i] > 0:
-            identified.add(i)
-
-    # Return the maximum number of colleagues who can be uniquely identified
-    return len(identified)
+if __name__ == '__main__':
+    points = read_points()
+    print(count_right_triangles(points))
 

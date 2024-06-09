@@ -1,20 +1,27 @@
 
-def get_min_time(n, a, b):
-    # Initialize the minimum total time to wait at the crossroads
-    min_time = 0
-
-    # Loop through each row
+def get_network_stations(n, a, b):
+    # Initialize the number of connections for each station
+    connections = [0] * n
+    # Iterate through each city and station
     for i in range(n):
-        # Loop through each crossing in the row
-        for j in range(n - 1):
-            # Add the waiting time for the current crossing to the minimum total time
-            min_time += a[i][j]
+        # Find the station with the least number of connections
+        min_index = connections.index(min(connections))
+        # If the current city requires more connections than the station can provide, return False
+        if a[i] > b[min_index]:
+            return False
+        # Otherwise, update the number of connections for the station
+        connections[min_index] += a[i]
+    # If all cities have been assigned a station, return True
+    return True
 
-    # Loop through each crossing in the first row
-    for j in range(n):
-        # Add the waiting time for the current crossing to the minimum total time
-        min_time += b[j]
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        a = list(map(int, input().split()))
+        b = list(map(int, input().split()))
+        print("YES") if get_network_stations(n, a, b) else print("NO")
 
-    # Return the minimum total time
-    return min_time
+if __name__ == '__main__':
+    main()
 

@@ -1,23 +1,49 @@
 
-def get_energy_conversion_efficiency(n, U, energies):
-    # Sort the energies in increasing order
-    energies.sort()
+def f1(turn_sequence):
+    # Convert the turn sequence to a list of characters
+    turn_sequence = list(turn_sequence)
+    
+    # Initialize a list to store the possible unlock patterns
+    unlock_patterns = []
+    
+    # Iterate through the turn sequence
+    for i in range(len(turn_sequence)):
+        # If the current pivot is a question mark, add all four possible directions to the unlock pattern
+        if turn_sequence[i] == '?':
+            unlock_patterns.append('L')
+            unlock_patterns.append('R')
+            unlock_patterns.append('S')
+            unlock_patterns.append('A')
+        # Otherwise, add the current direction to the unlock pattern
+        else:
+            unlock_patterns.append(turn_sequence[i])
+    
+    # Return the number of possible unlock patterns
+    return len(unlock_patterns)
 
-    # Initialize the maximum energy conversion efficiency
-    max_eta = 0
+def f2(turn_sequence):
+    # Convert the turn sequence to a list of characters
+    turn_sequence = list(turn_sequence)
+    
+    # Initialize a list to store the possible unlock patterns
+    unlock_patterns = []
+    
+    # Iterate through the turn sequence
+    for i in range(len(turn_sequence)):
+        # If the current pivot is a question mark, add all four possible directions to the unlock pattern
+        if turn_sequence[i] == '?':
+            unlock_patterns.append('L')
+            unlock_patterns.append('R')
+            unlock_patterns.append('S')
+            unlock_patterns.append('A')
+        # Otherwise, add the current direction to the unlock pattern
+        else:
+            unlock_patterns.append(turn_sequence[i])
+    
+    # Return the number of possible unlock patterns
+    return len(unlock_patterns)
 
-    # Iterate over all possible states i, j, and k
-    for i in range(n - 2):
-        for j in range(i + 1, n - 1):
-            for k in range(j + 1, n):
-                # Check if the energy difference between states i and k is less than or equal to U
-                if energies[k] - energies[i] <= U:
-                    # Calculate the energy conversion efficiency
-                    eta = (energies[k] - energies[j]) / (energies[k] - energies[i])
-
-                    # Update the maximum energy conversion efficiency
-                    max_eta = max(max_eta, eta)
-
-    # Return the maximum energy conversion efficiency
-    return max_eta
+if __name__ == '__main__':
+    turn_sequence = input("Enter the turn sequence: ")
+    print(f"The number of possible unlock patterns is {f1(turn_sequence)}")
 

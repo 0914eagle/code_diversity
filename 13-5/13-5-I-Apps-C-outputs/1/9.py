@@ -1,17 +1,20 @@
 
-def solve(n, k, initial_strings, test_string):
-    # concatenate the initial strings to form composite strings
-    composite_strings = []
-    for i in range(n):
-        for j in range(i+1, n):
-            composite_strings.append(initial_strings[i] + initial_strings[j])
-    
-    # sort the composite strings in alphabetical order
-    composite_strings.sort()
-    
-    # find the position of the test string in the sorted list
-    position = composite_strings.index(test_string) + 1
-    
-    # return the position modulo 10^9 + 7
-    return position % (10**9 + 7)
+def convert_to_base(n, b):
+    if n == 0:
+        return "0"
+    digits = ""
+    while n > 0:
+        digits = str(n % b) + digits
+        n //= b
+    return digits
+
+def find_largest_base(y, ell):
+    for b in range(y, 10):
+        if convert_to_base(y, b).isdigit() and int(convert_to_base(y, b)) >= ell:
+            return b
+    return -1
+
+if __name__ == '__main__':
+    y, ell = map(int, input().split())
+    print(find_largest_base(y, ell))
 

@@ -1,43 +1,50 @@
 
-def solve(n, m, e, roads, exits, start_brothers, start_police):
-    # Initialize the minimum speed required to escape as infinite
-    min_speed = float('inf')
+def get_max_score(notes, sp_phrases):
+    # Initialize the maximum score and the current score
+    max_score = 0
+    current_score = 0
     
-    # Loop through all possible routes from the brothers' starting point to the highway exits
-    for exit in exits:
-        # Calculate the distance from the brothers' starting point to the exit
-        distance = get_distance(roads, start_brothers, exit)
-        
-        # Calculate the time it takes for the brothers to reach the exit at the minimum speed
-        time = distance / min_speed
-        
-        # Calculate the time it takes for the police car to reach the exit assuming it starts moving immediately
-        police_time = distance / 160
-        
-        # If the brothers reach the exit before the police car, update the minimum speed required to escape
-        if time < police_time:
-            min_speed = min(min_speed, get_speed(distance, time))
+    # Initialize the SP meter and the SP activation flag
+    sp_meter = 0
+    sp_activated = False
     
-    # If the minimum speed is still infinite, it is impossible to escape
-    if min_speed == float('inf'):
-        return "IMPOSSIBLE"
-    else:
-        return min_speed
+    # Iterate through the notes and SP phrases
+    for i in range(len(notes)):
+        # Check if the current note is within an SP phrase
+        if any(notes[i] in range(sp_phrases[j][0], sp_phrases[j][1]) for j in range(len(sp_phrases))):
+            # If the SP meter is not activated, activate it and add the SP bonus
+            if not sp_activated:
+                sp_activated = True
+                current_score += 2
+            
+            # Add the SP bonus for the current note
+            current_score += 2
+        
+        # If the current note is not within an SP phrase, add the regular note score
+        else:
+            current_score += 1
+        
+        # If the current note is the last note of an SP phrase, deactivate the SP meter
+        if sp_activated and i == sp_phrases[-1][1] - 1:
+            sp_activated = False
+        
+        # Update the maximum score if the current score is higher
+        max_score = max(max_score, current_score)
+    
+    # Return the maximum score
+    return max_score
 
-def get_distance(roads, start, end):
-    # Initialize the total distance as 0
-    distance = 0
+def main():
+    # Read the input notes and SP phrases
+    notes = [int(x) for x in input().split()]
+    sp_phrases = [[int(x) for x in input().split()] for _ in range(int(input()))]
     
-    # Loop through all roads from the starting point to the ending point
-    for road in roads:
-        # If the current road connects the starting point to the ending point, update the total distance
-        if road[0] == start and road[1] == end:
-            distance += road[2]
+    # Get the maximum score
+    max_score = get_max_score(notes, sp_phrases)
     
-    # Return the total distance
-    return distance
+    # Print the maximum score
+    print(max_score)
 
-def get_speed(distance, time):
-    # Calculate and return the speed
-    return distance / time
+if __name__ == '__main__':
+    main()
 

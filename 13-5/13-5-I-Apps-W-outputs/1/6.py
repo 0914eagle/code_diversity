@@ -1,19 +1,35 @@
 
-def get_max_deliciousness(x, y, a, b, c, p, q, r):
-    # Initialize a 2D array to store the maximum deliciousness for each combination of red and green apples
-    dp = [[0] * (b + 1) for _ in range(a + 1)]
+def convert_to_exponential(x):
+    # Convert the input to a string
+    x_str = str(x)
+    
+    # Find the index of the decimal point
+    decimal_index = x_str.find(".")
+    
+    # If the decimal point is not found, the number is an integer
+    if decimal_index == -1:
+        return x_str + "E0"
+    
+    # Extract the integer part of the number
+    integer_part = x_str[:decimal_index]
+    
+    # Extract the fractional part of the number
+    fractional_part = x_str[decimal_index+1:]
+    
+    # Check if the fractional part is all zeroes
+    if fractional_part.strip("0") == "":
+        return integer_part + "E0"
+    
+    # Find the exponent
+    exponent = len(fractional_part) - 1
+    
+    # Return the exponential notation
+    return integer_part + "." + fractional_part + "E" + str(exponent)
 
-    # Initialize the first row and column of the array with the deliciousness of the apples
-    for i in range(a + 1):
-        dp[i][0] = p[i - 1]
-    for j in range(b + 1):
-        dp[0][j] = q[j - 1]
+def main():
+    x = input("Enter a positive decimal number: ")
+    print(convert_to_exponential(x))
 
-    # Fill in the rest of the array using the recurrence relation
-    for i in range(1, a + 1):
-        for j in range(1, b + 1):
-            dp[i][j] = max(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1] + r[i + j - 2])
-
-    # Return the maximum deliciousness for the given combination of red and green apples
-    return dp[x][y]
+if __name__ == '__main__':
+    main()
 

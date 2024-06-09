@@ -1,45 +1,42 @@
 
-def get_min_speed(n, m, e, roads, exits, start_brothers, start_police):
-    # Initialize the graph with the given roads
-    graph = {i: set() for i in range(1, n + 1)}
-    for road in roads:
-        graph[road[0]].add((road[1], road[2]))
+def get_max_score(notes, sp_phrases):
+    # Initialize the maximum score and the current score
+    max_score = 0
+    current_score = 0
     
-    # Find the shortest path from the police car start to any exit
-    shortest_path = []
-    queue = [(start_police, 0)]
-    visited = set()
-    while queue:
-        current, distance = queue.pop(0)
-        if current not in visited:
-            visited.add(current)
-            if current in exits:
-                shortest_path = [current]
+    # Iterate through the notes and SP phrases
+    for i in range(len(notes)):
+        # Check if the current note is within an SP phrase
+        for j in range(len(sp_phrases)):
+            if notes[i] >= sp_phrases[j][0] and notes[i] <= sp_phrases[j][1]:
+                # If it is, add the score for the SP phrase
+                current_score += sp_phrases[j][1] - sp_phrases[j][0] + 1
                 break
-            for neighbor, weight in graph[current]:
-                queue.append((neighbor, distance + weight))
+        # Add the score for the current note
+        current_score += 1
+        
+        # Update the maximum score if necessary
+        if current_score > max_score:
+            max_score = current_score
     
-    # Find the shortest path from the brothers' start to the police car start
-    brothers_path = []
-    queue = [(start_brothers, 0)]
-    visited = set()
-    while queue:
-        current, distance = queue.pop(0)
-        if current not in visited:
-            visited.add(current)
-            if current == start_police:
-                brothers_path = [current]
-                break
-            for neighbor, weight in graph[current]:
-                queue.append((neighbor, distance + weight))
+    # Return the maximum score
+    return max_score
+
+def main():
+    # Read the input
+    n, p = map(int, input().split())
+    notes = list(map(int, input().split()))
+    sp_phrases = []
+    for i in range(p):
+        s, e = map(int, input().split())
+        sp_phrases.append([s, e])
     
-    # Check if the brothers can reach the police car start before it reaches them
-    if len(brothers_path) > len(shortest_path):
-        return "IMPOSSIBLE"
+    # Call the function to get the maximum score
+    max_score = get_max_score(notes, sp_phrases)
     
-    # Calculate the minimum speed required to escape
-    min_speed = 0
-    for i in range(len(brothers_path) - 1):
-        min_speed += graph[brothers_path[i]][brothers_path[i + 1]][1]
-    return min_speed
+    # Print the result
+    print(max_score)
+
+if __name__ == '__main__':
+    main()
 

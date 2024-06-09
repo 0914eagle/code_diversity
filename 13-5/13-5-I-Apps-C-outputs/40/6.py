@@ -1,22 +1,77 @@
 
-def solve(n, firings, hirings):
-    # Initialize the number of HR people as 1
-    k = 1
-    # Initialize the HR person in charge of the firing and hiring on day 1
-    hr_person = 1
-    # Loop through the remaining days
-    for i in range(2, n+1):
-        # If the number of firings on the current day is greater than the number of hirings, update the number of HR people
-        if firings[i-1] > hirings[i-1]:
-            k += 1
-        # If the number of firings on the current day is equal to the number of hirings, do not update the number of HR people
-        elif firings[i-1] == hirings[i-1]:
-            pass
-        # If the number of firings on the current day is less than the number of hirings, decrease the number of HR people
+def f1(N, K, circle):
+    # Initialize a dictionary to store the number of occurrences of each starting circle
+    circle_count = {}
+
+    # Iterate over the possible starting circles
+    for i in range(N):
+        # Initialize a list to store the current circle
+        current_circle = []
+
+        # Iterate over the possible positions of the starting circle
+        for j in range(N):
+            # Add the current pebble to the current circle
+            current_circle.append(circle[(i + j) % N])
+
+        # Convert the current circle to a string
+        current_circle = "".join(current_circle)
+
+        # Increment the number of occurrences of the current circle
+        if current_circle in circle_count:
+            circle_count[current_circle] += 1
         else:
-            k -= 1
-        # Update the HR person in charge of the firing and hiring on the current day
-        hr_person = (hr_person % k) + 1
-    # Return the smallest number of HR people needed and the HR person in charge of the firing and hiring on each day
-    return k, [hr_person for _ in range(n)]
+            circle_count[current_circle] = 1
+
+    # Initialize a set to store the distinct starting circles
+    distinct_circles = set()
+
+    # Iterate over the possible starting circles
+    for circle in circle_count:
+        # If the number of occurrences of the current circle is equal to K, add it to the set of distinct starting circles
+        if circle_count[circle] == K:
+            distinct_circles.add(circle)
+
+    # Return the number of distinct starting circles
+    return len(distinct_circles)
+
+def f2(N, K, circle):
+    # Initialize a dictionary to store the number of occurrences of each starting circle
+    circle_count = {}
+
+    # Iterate over the possible starting circles
+    for i in range(N):
+        # Initialize a list to store the current circle
+        current_circle = []
+
+        # Iterate over the possible positions of the starting circle
+        for j in range(N):
+            # Add the current pebble to the current circle
+            current_circle.append(circle[(i + j) % N])
+
+        # Convert the current circle to a string
+        current_circle = "".join(current_circle)
+
+        # Increment the number of occurrences of the current circle
+        if current_circle in circle_count:
+            circle_count[current_circle] += 1
+        else:
+            circle_count[current_circle] = 1
+
+    # Initialize a set to store the distinct starting circles
+    distinct_circles = set()
+
+    # Iterate over the possible starting circles
+    for circle in circle_count:
+        # If the number of occurrences of the current circle is equal to K, add it to the set of distinct starting circles
+        if circle_count[circle] == K:
+            distinct_circles.add(circle)
+
+    # Return the number of distinct starting circles
+    return len(distinct_circles)
+
+if __name__ == '__main__':
+    N, K = map(int, input().split())
+    circle = input()
+    print(f1(N, K, circle))
+    print(f2(N, K, circle))
 

@@ -1,23 +1,17 @@
 
-def get_max_deliciousness(x, y, a, b, c, p, q, r):
-    # Initialize the maximum possible sum of deliciousness as 0
-    max_sum = 0
+def convert_to_exp_notation(x):
+    a, b = str(x).split('.')
+    a = int(a)
+    b = len(b)
+    if b == 0:
+        return str(a)
+    else:
+        return f"{a}.{b}E{b}"
 
-    # Loop through all possible combinations of eating red and green apples
-    for i in range(x + 1):
-        for j in range(y + 1):
-            # Calculate the sum of deliciousness for the current combination
-            sum = 0
-            for k in range(i):
-                sum += p[k]
-            for k in range(j):
-                sum += q[k]
-            for k in range(c):
-                sum += r[k]
+def main():
+    x = input()
+    print(convert_to_exp_notation(x))
 
-            # Update the maximum possible sum if the current combination is better
-            if sum > max_sum:
-                max_sum = sum
-
-    return max_sum
+if __name__ == '__main__':
+    main()
 

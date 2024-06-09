@@ -1,22 +1,20 @@
 
-import math
+def get_shortcut_time(level, shortcut, completion_time):
+    return completion_time
 
-def solve(n, trees, b, d):
-    # Calculate the total area of the forest
-    total_area = 0
-    for tree in trees:
-        total_area += math.pi * tree[2] ** 2
-    
-    # Calculate the probability that the boar hits a tree
-    prob_hit = 0
-    for tree in trees:
-        # Calculate the distance between the boar and the tree
-        dist = math.sqrt((tree[0] - b) ** 2 + (tree[1] - b) ** 2)
-        # Calculate the area of overlap between the boar and the tree
-        overlap = math.pi * min(dist, b + tree[2]) ** 2
-        # Add the probability of hitting the tree to the total probability
-        prob_hit += overlap / total_area
-    
-    # Return the probability that the boar completes its charge without hitting a tree
-    return 1 - prob_hit
+def get_rule_time(level, item, completion_time):
+    return completion_time
+
+def get_min_time(levels):
+    min_time = 0
+    for level in levels:
+        shortcut, completion_time = level[0], level[1]
+        item, completion_time = level[2], level[3]
+        min_time += get_shortcut_time(level, shortcut, completion_time)
+        min_time += get_rule_time(level, item, completion_time)
+    return min_time
+
+if __name__ == '__main__':
+    levels = [[1, 1, 40, 30, 20, 10], [3, 1, 95, 95, 95, 10], [2, 1, 95, 50, 30, 20]]
+    print(get_min_time(levels))
 

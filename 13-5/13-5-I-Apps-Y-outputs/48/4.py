@@ -1,15 +1,24 @@
 
-def solve(n, k, d, a):
-    # Initialize a set to store the snukes who have no snacks
-    no_snacks = set()
+def get_min_x(divisors):
+    # Sort the divisors in ascending order
+    divisors.sort()
+    # Initialize the minimum possible x as the product of the divisors
+    x = 1
+    for d in divisors:
+        x *= d
+    # Iterate through the divisors and check if they are actually divisors of x
+    for d in divisors:
+        if x % d != 0:
+            return -1
+    return x
 
-    # Iterate over each kind of snack
-    for i in range(k):
-        # Iterate over each snuke who has this snack
-        for j in range(d[i]):
-            # Add the snuke to the set of no snacks
-            no_snacks.add(a[i][j])
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        divisors = [int(x) for x in input().split()]
+        print(get_min_x(divisors))
 
-    # Return the length of the set of no snacks
-    return len(no_snacks)
+if __name__ == '__main__':
+    main()
 

@@ -1,31 +1,25 @@
 
-def get_maximum_identified_colleagues(n, m, a_list):
-    # Initialize a list to store the number of burgers ordered on each day
-    burger_list = [0] * m
+def read_points():
+    n = int(input())
+    points = []
+    for i in range(n):
+        x, y = map(int, input().split())
+        points.append((x, y))
+    return points
 
-    # Iterate over the list of numbers of burgers ordered on each day
-    for i, a in enumerate(a_list):
-        # If the number of burgers ordered is greater than the number of salads available, set the number of burgers to the number of salads available
-        if a > n - i:
-            burger_list[i] = n - i
-        # Otherwise, set the number of burgers to the given number
-        else:
-            burger_list[i] = a
+def is_right_triangle(p1, p2, p3):
+    return (p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2 == (p2[0] - p3[0]) ** 2 + (p2[1] - p3[1]) ** 2
 
-    # Initialize a variable to store the maximum number of colleagues identified
-    max_identified = 0
+def count_right_triangles(points):
+    count = 0
+    for i in range(len(points)):
+        for j in range(i+1, len(points)):
+            for k in range(j+1, len(points)):
+                if is_right_triangle(points[i], points[j], points[k]):
+                    count += 1
+    return count
 
-    # Iterate over the list of numbers of burgers ordered on each day
-    for i, a in enumerate(burger_list):
-        # If the number of burgers ordered is greater than the number of salads available, set the number of salads to the number of salads available
-        if a > n - i:
-            salad_list = n - i
-        # Otherwise, set the number of salads to the number of burgers ordered
-        else:
-            salad_list = a
-
-        # Update the maximum number of colleagues identified
-        max_identified = max(max_identified, salad_list + i)
-
-    return max_identified
+if __name__ == '__main__':
+    points = read_points()
+    print(count_right_triangles(points))
 

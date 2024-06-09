@@ -1,23 +1,20 @@
 
-def solve(routines):
-    # Initialize a dictionary to keep track of the dancers and their quick change status
-    dancers = {}
-    for routine in routines:
-        for dancer in routine:
-            if dancer not in dancers:
-                dancers[dancer] = "normal"
-            elif dancers[dancer] == "quick":
-                dancers[dancer] = "normal"
-    
-    # Count the number of quick changes required
-    quick_changes = 0
-    for i in range(len(routines) - 1):
-        routine1 = routines[i]
-        routine2 = routines[i + 1]
-        for dancer in routine1:
-            if dancer in routine2 and dancers[dancer] == "normal":
-                quick_changes += 1
-                dancers[dancer] = "quick"
-    
-    return quick_changes
+def get_beautiful_table(n, k):
+    table = [[0 for _ in range(n)] for _ in range(n)]
+    for i in range(n):
+        for j in range(n):
+            table[i][j] = (i + 1) * (j + 1)
+    return table
+
+def print_table(table):
+    for row in table:
+        print(row)
+
+def main():
+    n, k = map(int, input().split())
+    table = get_beautiful_table(n, k)
+    print_table(table)
+
+if __name__ == '__main__':
+    main()
 

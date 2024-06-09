@@ -1,24 +1,27 @@
 
-def solve(B, k, companies):
-    # Initialize a dictionary to store the minimum number of bolts required to buy a pack
-    # from each company, and the corresponding company and pack size
-    min_bolts_required = {}
-    for i in range(k):
-        min_bolts_required[i] = (float('inf'), 0, 0)
+def get_max_earnings(a):
+    # Initialize the maximum earnings to 0
+    max_earnings = 0
+    # Loop through each element in the array
+    for i in range(len(a)):
+        # Check if the current element is positive
+        if a[i] > 0:
+            # Add the current element to the maximum earnings
+            max_earnings += a[i]
+        # Check if the current element is negative
+        elif a[i] < 0:
+            # Subtract the current element from the maximum earnings
+            max_earnings += a[i]
+    # Return the maximum earnings
+    return max_earnings
 
-    # Loop through each company and its packs
-    for i, company in enumerate(companies):
-        for j, pack in enumerate(company):
-            # If the pack size is greater than or equal to the number of bolts needed,
-            # and the number of bolts required is less than the current minimum,
-            # update the minimum number of bolts required and the corresponding company and pack size
-            if pack >= B and pack < min_bolts_required[i][0]:
-                min_bolts_required[i] = (pack, i, j)
+def main():
+    # Read the number of gems and the values of the gems from stdin
+    n = int(input())
+    a = list(map(int, input().split()))
+    # Call the get_max_earnings function and print the result
+    print(get_max_earnings(a))
 
-    # If the minimum number of bolts required is infinite, it means it's impossible to buy a pack with the given number of bolts
-    if min_bolts_required[k-1][0] == float('inf'):
-        return "impossible"
-
-    # Otherwise, return the smallest pack size that satisfies the minimum number of bolts required
-    return min_bolts_required[k-1][1]
+if __name__ == '__main__':
+    main()
 

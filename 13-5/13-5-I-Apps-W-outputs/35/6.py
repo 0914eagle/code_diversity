@@ -1,31 +1,53 @@
 
-def solve(m, n, p):
-    # Initialize a dictionary to store the counts of each xor value
-    xor_counts = {}
+def f1(n, m, S_x, S_y):
+    # Initialize a list to store the visited cells
+    visited = []
+    # Initialize the current cell as the starting cell
+    current_cell = (S_x, S_y)
+    # Add the starting cell to the visited list
+    visited.append(current_cell)
+    # Loop until all cells have been visited
+    while len(visited) < n * m:
+        # Generate a list of all possible moves from the current cell
+        possible_moves = [(current_cell[0], current_cell[1] + 1), (current_cell[0], current_cell[1] - 1), (current_cell[0] + 1, current_cell[1]), (current_cell[0] - 1, current_cell[1])]
+        # Filter out moves that are not valid (i.e. they are not on the grid or have already been visited)
+        possible_moves = [move for move in possible_moves if 1 <= move[0] <= n and 1 <= move[1] <= m and move not in visited]
+        # If there are no valid moves, return False
+        if not possible_moves:
+            return False
+        # Choose a random move from the list of possible moves
+        current_cell = possible_moves[0]
+        # Add the current cell to the visited list
+        visited.append(current_cell)
+    # If all cells have been visited, return the list of visited cells
+    return visited
 
-    # Iterate over the p sequence
-    for i in range(len(p)):
-        # Get the current xor value
-        xor_value = p[i]
+def f2(n, m, S_x, S_y):
+    # Initialize a list to store the visited cells
+    visited = []
+    # Initialize the current cell as the starting cell
+    current_cell = (S_x, S_y)
+    # Add the starting cell to the visited list
+    visited.append(current_cell)
+    # Loop until all cells have been visited
+    while len(visited) < n * m:
+        # Generate a list of all possible moves from the current cell
+        possible_moves = [(current_cell[0], current_cell[1] + 1), (current_cell[0], current_cell[1] - 1), (current_cell[0] + 1, current_cell[1]), (current_cell[0] - 1, current_cell[1])]
+        # Filter out moves that are not valid (i.e. they are not on the grid or have already been visited)
+        possible_moves = [move for move in possible_moves if 1 <= move[0] <= n and 1 <= move[1] <= m and move not in visited]
+        # If there are no valid moves, return False
+        if not possible_moves:
+            return False
+        # Choose a random move from the list of possible moves
+        current_cell = possible_moves[0]
+        # Add the current cell to the visited list
+        visited.append(current_cell)
+    # If all cells have been visited, return the list of visited cells
+    return visited
 
-        # If the xor value is not in the dictionary, add it to the dictionary with a count of 1
-        if xor_value not in xor_counts:
-            xor_counts[xor_value] = 1
-        # Otherwise, increment the count of the xor value
-        else:
-            xor_counts[xor_value] += 1
-
-    # Initialize a variable to store the total number of sequences
-    total_sequences = 1
-
-    # Iterate over the xor values and their counts
-    for xor_value, count in xor_counts.items():
-        # Calculate the number of sequences for this xor value
-        num_sequences = count * (total_sequences ** (m - 1))
-
-        # Add the number of sequences for this xor value to the total
-        total_sequences += num_sequences
-
-    # Return the total number of sequences modulo 10^9 + 7
-    return total_sequences % 1000000007
+if __name__ == '__main__':
+    n, m, S_x, S_y = map(int, input().split())
+    visited = f1(n, m, S_x, S_y)
+    for cell in visited:
+        print(cell[0], cell[1])
 

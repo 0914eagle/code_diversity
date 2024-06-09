@@ -1,8 +1,33 @@
 
-def is_valid_test_case(a, b):
-    n = len(a)
-    for i in range(1, int(n/2)+1):
-        if a[:i] == b[n-i:] and a[i:] == b[:n-i]:
-            return True
-    return False
+def f1(n, roads):
+    # Initialize a list to store the flipped roads
+    flipped_roads = []
+    
+    # Iterate through each road
+    for i in range(n):
+        # If the road is not already flipped, flip it
+        if i not in flipped_roads:
+            flipped_roads.append(i)
+    
+    # Return the number of flipped roads
+    return len(flipped_roads)
+
+def f2(n, roads):
+    # Initialize a list to store the flipped roads
+    flipped_roads = []
+    
+    # Iterate through each road
+    for i in range(n):
+        # If the road is not already flipped, flip it
+        if i not in flipped_roads:
+            flipped_roads.append(i)
+    
+    # Return the number of flipped roads
+    return len(flipped_roads)
+
+if __name__ == '__main__':
+    n = int(input())
+    roads = list(map(int, input().split()))
+    print(f1(n, roads))
+    print(f2(n, roads))
 

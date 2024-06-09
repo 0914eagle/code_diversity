@@ -1,25 +1,46 @@
 
-import sys
+def get_min_cost(n, m, k, roads, storages):
+    # Initialize minimum cost to infinity
+    min_cost = float('inf')
+    
+    # Loop over all possible cities to open the bakery
+    for b in range(1, n+1):
+        # If the city has a storage, skip it
+        if b in storages:
+            continue
+        
+        # Loop over all possible storages
+        for s in storages:
+            # Calculate the cost of delivering flour from the storage to the bakery
+            cost = get_cost(roads, s, b)
+            
+            # If the cost is less than the minimum cost, update the minimum cost
+            if cost < min_cost:
+                min_cost = cost
+    
+    return min_cost
 
-def solve(n, m, p, subsequence):
-    # Initialize the answer
-    answer = 0
+def get_cost(roads, s, b):
+    # Initialize the cost to 0
+    cost = 0
+    
+    # Loop over all roads between the storage and the bakery
+    for road in roads:
+        # If the road connects the storage and the bakery, add the length of the road to the cost
+        if road[0] == s and road[1] == b:
+            cost += road[2]
+    
+    return cost
 
-    # Iterate over all possible strings of length n
-    for i in range(1, n + 1):
-        for j in range(i + 1, n + 1):
-            # Check if the current string matches the given subsequence
-            if subsequence[0] == i and subsequence[-1] == j:
-                # Check if the current string matches the given pattern
-                if "".join(sorted(p)) == "".join(sorted(s[i:j])):
-                    answer += 1
-
-    # Return the answer modulo 10^9 + 7
-    return answer % 1000000007
+def main():
+    n, m, k = map(int, input().split())
+    roads = []
+    for _ in range(m):
+        u, v, l = map(int, input().split())
+        roads.append((u, v, l))
+    storages = list(map(int, input().split()))
+    print(get_min_cost(n, m, k, roads, storages))
 
 if __name__ == '__main__':
-    n, m = map(int, input().split())
-    p = input()
-    subsequence = list(map(int, input().split()))
-    print(solve(n, m, p, subsequence))
+    main()
 

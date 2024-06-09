@@ -1,19 +1,41 @@
 
-def get_max_score(numbers):
-    # Sort the numbers in non-decreasing order
-    numbers.sort()
-    # Initialize the score and the number of numbers
-    score = 0
-    num_numbers = len(numbers)
-    # Loop through the numbers and calculate the score
-    for i in range(num_numbers):
-        # If there is only one number left, add it to the score and break the loop
-        if i == num_numbers - 1:
-            score += numbers[i]
-            break
-        # If there are more than one number left, split the group in half and add the sum of the two groups to the score
-        else:
-            score += numbers[i] + numbers[i + 1]
-            i += 1
-    return score
+def f1(N):
+    # Convert the binary string to an integer
+    N = int(N, 2)
+    
+    # Initialize a set to store the different representations
+    representations = set()
+    
+    # Iterate through all possible values of the most significant bit
+    for i in range(3):
+        # Calculate the current representation
+        representation = N - i * 2**(len(N.bit_length()) - 1)
+        
+        # Add the representation to the set
+        representations.add(representation)
+    
+    # Return the number of different representations
+    return len(representations) % 1000000009
+
+def f2(N):
+    # Convert the binary string to an integer
+    N = int(N, 2)
+    
+    # Initialize a set to store the different representations
+    representations = set()
+    
+    # Iterate through all possible values of the most significant bit
+    for i in range(3):
+        # Calculate the current representation
+        representation = N - i * 2**(len(N.bit_length()) - 1)
+        
+        # Add the representation to the set
+        representations.add(representation)
+    
+    # Return the number of different representations
+    return len(representations) % 1000000009
+
+if __name__ == '__main__':
+    N = input()
+    print(f1(N))
 

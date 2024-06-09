@@ -1,26 +1,28 @@
 
-def max_unique_identification(n, m, a):
-    # Initialize a list to store the number of burgers ordered on each day
-    burgers = [0] * m
+def get_input():
+    N = int(input())
+    points = []
+    for i in range(N):
+        x, y = map(int, input().split())
+        points.append((x, y))
+    return N, points
 
-    # Set the number of burgers ordered on the first day
-    burgers[0] = a[0]
+def is_right_triangle(p1, p2, p3):
+    x1, y1 = p1
+    x2, y2 = p2
+    x3, y3 = p3
+    return (x1-x2)**2 + (y1-y2)**2 == (x3-x2)**2 + (y3-y2)**2
 
-    # Initialize a variable to store the maximum number of unique identifications
-    max_unique = 0
+def count_right_triangles(points):
+    count = 0
+    for i in range(len(points)):
+        for j in range(i+1, len(points)):
+            for k in range(j+1, len(points)):
+                if is_right_triangle(points[i], points[j], points[k]):
+                    count += 1
+    return count
 
-    # Iterate over the remaining days
-    for i in range(1, m):
-        # Set the number of burgers ordered on the current day
-        burgers[i] = a[i]
-
-        # Iterate over the previous days
-        for j in range(i):
-            # If the number of burgers ordered on the current day is equal to the number of burgers ordered on the previous day
-            if burgers[i] == burgers[j]:
-                # Increment the maximum number of unique identifications
-                max_unique += 1
-
-    # Return the maximum number of unique identifications
-    return max_unique
+if __name__ == '__main__':
+    N, points = get_input()
+    print(count_right_triangles(points))
 

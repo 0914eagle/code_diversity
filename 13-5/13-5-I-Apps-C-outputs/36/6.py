@@ -1,36 +1,47 @@
 
-def solve(V, P, edges, initial_vertices):
-    # Initialize a graph with V vertices and V-1 edges
-    graph = [[] for _ in range(V)]
-    for edge in edges:
-        u, v = edge[0], edge[1]
-        graph[u].append(v)
-        graph[v].append(u)
+def get_cube_colors(tile_colors):
+    # Initialize a set to store the colors of the cube
+    cube_colors = set()
     
-    # Initialize a dictionary to keep track of the number of pigs on each vertex
-    pig_count = {vertex: 0 for vertex in range(V)}
-    for vertex in initial_vertices:
-        pig_count[vertex] += 1
+    # Iterate over the tiles and their colors
+    for tile_color in tile_colors:
+        # Add the colors of the current tile to the set
+        cube_colors.add(tile_color[0])
+        cube_colors.add(tile_color[1])
+        cube_colors.add(tile_color[2])
+        cube_colors.add(tile_color[3])
     
-    # Initialize a set to keep track of the vertices that are safe for the pigs to escape to
-    safe_vertices = set()
+    # Return the set of colors
+    return cube_colors
+
+def get_unique_cubes(tile_colors):
+    # Initialize a set to store the unique cubes
+    unique_cubes = set()
     
-    # Iterate through each vertex in the graph
-    for vertex in range(V):
-        # If the vertex is not occupied by a wolf and has at least one edge, it is a safe vertex
-        if pig_count[vertex] == 0 and len(graph[vertex]) > 0:
-            safe_vertices.add(vertex)
+    # Iterate over the tile colors
+    for tile_color in tile_colors:
+        # Add the current tile color to the set of unique cubes
+        unique_cubes.add(frozenset(tile_color))
     
-    # Initialize a variable to keep track of the minimum number of wolves to remove
-    min_wolves = 0
+    # Return the set of unique cubes
+    return unique_cubes
+
+def main():
+    # Read the input from stdin
+    N = int(input())
+    tile_colors = []
+    for _ in range(N):
+        tile_colors.append(list(map(int, input().split())))
     
-    # Iterate through each vertex in the graph
-    for vertex in range(V):
-        # If the vertex is occupied by a pig and there is at least one safe vertex that the pig can escape to, remove the wolf on that vertex
-        if pig_count[vertex] > 0 and len(safe_vertices) > 0:
-            min_wolves += 1
-            pig_count[vertex] -= 1
-            safe_vertices.remove(vertex)
+    # Get the colors of the cube
+    cube_colors = get_cube_colors(tile_colors)
     
-    return min_wolves
+    # Get the unique cubes
+    unique_cubes = get_unique_cubes(tile_colors)
+    
+    # Print the number of unique cubes
+    print(len(unique_cubes))
+
+if __name__ == '__main__':
+    main()
 

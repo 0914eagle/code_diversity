@@ -1,27 +1,40 @@
 
-def is_handsome(n):
-    n_str = str(n)
-    for i in range(len(n_str) - 1):
-        if n_str[i] == n_str[i + 1]:
-            return False
-    return True
+def read_input():
+    N = int(input())
+    rows = []
+    for i in range(3):
+        row = list(map(int, input().split()))
+        rows.append(row)
+    return N, rows
 
-def find_closest_handsome(n):
-    n_str = str(n)
-    for i in range(len(n_str) - 1):
-        if n_str[i] == n_str[i + 1]:
-            break
-    else:
-        return n
+def delete_columns(N, rows):
+    # Initialize the number of columns to delete
+    num_cols_to_delete = 0
+    
+    # Loop through each column
+    for col in range(N):
+        # Check if the column is unique in all rows
+        is_unique = True
+        for row in rows:
+            if row[col] != row[0]:
+                is_unique = False
+                break
+        
+        # If the column is unique in all rows, increment the number of columns to delete
+        if is_unique:
+            num_cols_to_delete += 1
+    
+    return num_cols_to_delete
 
-    left = int(n_str[:i] + n_str[i + 1])
-    right = int(n_str[:i] + n_str[i] + n_str[i + 2:])
-    if is_handsome(left):
-        return left, right
-    else:
-        return right, left
+def sort_rows(rows):
+    return [sorted(row) for row in rows]
 
-n = int(input())
-closest_handsome = find_closest_handsome(n)
-print(*closest_handsome)
+def main():
+    N, rows = read_input()
+    num_cols_to_delete = delete_columns(N, rows)
+    sorted_rows = sort_rows(rows)
+    print(num_cols_to_delete)
+
+if __name__ == '__main__':
+    main()
 

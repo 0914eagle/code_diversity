@@ -1,28 +1,50 @@
 
-def is_possible(n, a, b):
-    # Initialize a dictionary to map each statue to its current and desired position
-    statue_map = {i: (a[i], b[i]) for i in range(n)}
-    
-    # Initialize a set to keep track of the empty pedestals
-    empty_pedestals = set([i for i in range(n) if a[i] == 0])
-    
-    # Loop until all the statues are in their desired position
-    while True:
-        # Find the statue that is closest to its desired position
-        closest_statue = min(statue_map, key=lambda i: abs(statue_map[i][0] - statue_map[i][1]))
-        
-        # If the closest statue is already in its desired position, we are done
-        if statue_map[closest_statue][0] == statue_map[closest_statue][1]:
-            break
-        
-        # Find the empty pedestal that is closest to the closest statue
-        closest_empty_pedestal = min(empty_pedestals, key=lambda i: abs(i - closest_statue))
-        
-        # Move the closest statue to the empty pedestal
-        statue_map[closest_statue] = (closest_empty_pedestal, statue_map[closest_statue][1])
-        empty_pedestals.remove(closest_empty_pedestal)
-        empty_pedestals.add(closest_statue)
-    
-    # If all the statues are in their desired position, return "YES", otherwise return "NO"
-    return "YES" if all(statue_map[i][0] == statue_map[i][1] for i in range(n)) else "NO"
+import math
+import random
+
+def get_input():
+    n = int(input())
+    trees = []
+    for i in range(n):
+        x, y, r = map(int, input().split())
+        trees.append((x, y, r))
+    b, d = map(int, input().split())
+    return n, trees, b, d
+
+def intersects(x1, y1, r1, x2, y2, r2):
+    return math.sqrt((x1-x2)**2 + (y1-y2)**2) <= r1 + r2
+
+def charge(x, y, b, d, trees):
+    while d > 0:
+        theta = random.uniform(0, 2*math.pi)
+        dx = math.cos(theta) * d
+        dy = math.sin(theta) * d
+        x += dx
+        y += dy
+        d -= dx
+        for tree in trees:
+            if intersects(x, y, b, tree[0], tree[1], tree[2]):
+                return False
+    return True
+
+def f1(n, trees, b, d):
+    count = 0
+    for i in range(10000):
+        x, y = 0, 0
+        if charge(x, y, b, d, trees):
+            count += 1
+    return count / 10000
+
+def f2(n, trees, b, d):
+    count = 0
+    for i in range(10000):
+        x, y = random.uniform(-10**6, 10**6), random.uniform(-10**6, 10**6)
+        if charge(x, y, b, d, trees):
+            count += 1
+    return count / 10000
+
+if __name__ == '__main__':
+    n, trees, b, d = get_input()
+    print(f1(n, trees, b, d))
+    print(f2(n, trees, b, d))
 

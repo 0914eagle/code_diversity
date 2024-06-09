@@ -1,23 +1,31 @@
 
-def get_smallest_pack(bolts_needed, companies):
-    # Initialize a dictionary to store the number of bolts in each pack
-    packs = {}
+def get_max_earnings(a):
+    # Initialize variables
+    n = len(a)
+    smashed = [False] * n
+    earnings = 0
+    
+    # Iterate through the gems
+    for i in range(n):
+        # If the gem is not smashed and its value is positive, smash it
+        if not smashed[i] and a[i] > 0:
+            smashed[i] = True
+            earnings += a[i]
+    
+    # Return the maximum earnings
+    return earnings
 
-    # Loop through each company
-    for company in companies:
-        # Loop through each pack size offered by the company
-        for pack_size in company:
-            # If the pack size is not already in the dictionary, add it
-            if pack_size not in packs:
-                packs[pack_size] = 0
-            # Increment the number of bolts in the pack
-            packs[pack_size] += pack_size
+def main():
+    # Read the input
+    n = int(input())
+    a = list(map(int, input().split()))
+    
+    # Call the function to get the maximum earnings
+    max_earnings = get_max_earnings(a)
+    
+    # Print the result
+    print(max_earnings)
 
-    # Loop through the dictionary of packs and find the smallest pack that contains at least the number of bolts needed
-    for pack_size, num_bolts in packs.items():
-        if num_bolts >= bolts_needed:
-            return pack_size
-
-    # If no pack contains at least the number of bolts needed, return "impossible"
-    return "impossible"
+if __name__ == '__main__':
+    main()
 

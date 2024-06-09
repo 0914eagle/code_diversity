@@ -1,31 +1,62 @@
 
-def solve(a, b, h, w, n, extensions):
-    # Initialize the minimum number of extensions needed to be 0
-    min_extensions = 0
+def f1(n, s):
+    # Initialize variables
+    lights = [int(i) for i in s]
+    time = 0
+    button_presses = []
 
-    # If the rectangle can be placed on the initial field, return 0
-    if a <= h and b <= w:
-        return 0
+    # Loop through each timestep
+    while any(lights):
+        # Check if any buttons need to be pressed
+        for i in range(n):
+            if lights[i] == 0 and i + 1 < n and lights[i + 1] == 1:
+                button_presses.append(i)
+                break
 
-    # Sort the extensions in descending order
-    extensions.sort(reverse=True)
+        # Update the lights
+        for i in range(n):
+            if lights[i] == 1 and i + 1 < n and lights[i + 1] == 0:
+                lights[i] = 0
+                lights[i + 1] = 1
+            elif lights[i] == 0 and i + 1 < n and lights[i + 1] == 1:
+                lights[i] = 1
+                lights[i + 1] = 0
 
-    # Iterate through the extensions
-    for extension in extensions:
-        # If the extension multiplies the width, multiply h by the extension
-        if extension <= h:
-            h *= extension
-        # If the extension multiplies the length, multiply w by the extension
-        elif extension <= w:
-            w *= extension
-        # If the extension is greater than both h and w, increase the minimum number of extensions needed
-        else:
-            min_extensions += 1
+        # Update the time
+        time += 1
 
-        # If the rectangle can be placed on the field, return the minimum number of extensions needed
-        if a <= h and b <= w:
-            return min_extensions
+    return time
 
-    # If the rectangle can't be placed on the field, return -1
-    return -1
+def f2(n, s):
+    # Initialize variables
+    lights = [int(i) for i in s]
+    time = 0
+    button_presses = []
+
+    # Loop through each timestep
+    while any(lights):
+        # Check if any buttons need to be pressed
+        for i in range(n):
+            if lights[i] == 0 and i + 1 < n and lights[i + 1] == 1:
+                button_presses.append(i)
+                break
+
+        # Update the lights
+        for i in range(n):
+            if lights[i] == 1 and i + 1 < n and lights[i + 1] == 0:
+                lights[i] = 0
+                lights[i + 1] = 1
+            elif lights[i] == 0 and i + 1 < n and lights[i + 1] == 1:
+                lights[i] = 1
+                lights[i + 1] = 0
+
+        # Update the time
+        time += 1
+
+    return time
+
+if __name__ == '__main__':
+    n = int(input())
+    s = input()
+    print(f1(n, s))
 

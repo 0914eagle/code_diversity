@@ -1,16 +1,26 @@
 
-def is_multigram(word):
-    if len(word) <= 2:
-        return -1
-    
-    words = []
-    for i in range(1, len(word) // 2 + 1):
-        if len(word) % i == 0:
-            words.append(word[:i])
-    
-    for word1 in words:
-        if all(word1 == word[i:i+len(word1)] for i in range(len(word) - len(word1) + 1)):
-            return word1
-    
-    return -1
+def get_max_problems(difficulties):
+    # Sort the difficulties in increasing order
+    difficulties.sort()
+    # Initialize the maximum number of problems to 1
+    max_problems = 1
+    # Iterate over the difficulties
+    for i in range(len(difficulties)):
+        # Check if the difficulty is greater than twice the previous difficulty
+        if i > 0 and difficulties[i] > difficulties[i-1]*2:
+            # Increment the maximum number of problems
+            max_problems += 1
+    return max_problems
+
+def main():
+    # Read the number of problems and their difficulties from stdin
+    num_problems = int(input())
+    difficulties = list(map(int, input().split()))
+    # Get the maximum number of problems
+    max_problems = get_max_problems(difficulties)
+    # Print the maximum number of problems
+    print(max_problems)
+
+if __name__ == '__main__':
+    main()
 

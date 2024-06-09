@@ -1,28 +1,17 @@
 
-def solve(n, lairs):
-    # Sort the lairs by their x-coordinates
-    lairs.sort(key=lambda x: x[0])
-    
-    # Initialize the minimum radius and center of the reserve
-    min_radius = float('inf')
-    center = (0, 0)
-    
-    # Iterate over the lairs
+def get_bitwise_or(a, b):
+    return int(str(bin(a | b))[2:], 2)
+
+def get_number_of_ways(n, heights):
+    ways = 0
     for i in range(n):
-        # Calculate the distance between the current lair and the previous lair
-        if i > 0:
-            dist = (lairs[i][0] - lairs[i-1][0]) ** 2
-        else:
-            dist = 0
-        
-        # Calculate the radius of the circle containing the current lair and the previous lair
-        radius = (dist + (lairs[i][1] - lairs[i-1][1]) ** 2) ** 0.5
-        
-        # Update the minimum radius and center of the reserve if necessary
-        if radius < min_radius:
-            min_radius = radius
-            center = ((lairs[i][0] + lairs[i-1][0]) / 2, (lairs[i][1] + lairs[i-1][1]) / 2)
-    
-    # Return the minimum radius and center of the reserve
-    return min_radius, center
+        for j in range(i+1, n):
+            if get_bitwise_or(heights[i], heights[j]) > max(heights[i:j+1]):
+                ways += 1
+    return ways
+
+if __name__ == '__main__':
+    n = int(input())
+    heights = list(map(int, input().split()))
+    print(get_number_of_ways(n, heights))
 

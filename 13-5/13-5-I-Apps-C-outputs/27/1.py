@@ -1,25 +1,22 @@
 
-def get_maximum_score(numbers):
-    # Sort the numbers in non-decreasing order
-    numbers.sort()
-    # Initialize the score and the number of numbers
-    score = 0
-    num_numbers = len(numbers)
-    # Loop through the numbers and perform the tasks
-    while num_numbers > 0:
-        # If there is only one number left, throw it out
-        if num_numbers == 1:
-            num_numbers -= 1
-        # Otherwise, split the group into two non-empty groups and give them to Toastman
-        else:
-            # Find the middle index of the numbers
-            mid = num_numbers // 2
-            # Add the sum of the numbers to the score
-            score += sum(numbers[:mid])
-            # Give the first group to Toastman
-            numbers = numbers[mid:]
-            # Update the number of numbers
-            num_numbers = len(numbers)
-    # Return the maximum possible score
-    return score
+def get_binary_representations(n):
+    representations = 0
+    for i in range(n+1):
+        representations += bin(i).count("1")
+    return representations
+
+def get_number_of_representations(n):
+    binary_representations = get_binary_representations(n)
+    number_of_representations = 0
+    for i in range(binary_representations+1):
+        if bin(i).count("1") == n:
+            number_of_representations += 1
+    return number_of_representations
+
+def main():
+    n = int(input())
+    print(get_number_of_representations(n))
+
+if __name__ == '__main__':
+    main()
 

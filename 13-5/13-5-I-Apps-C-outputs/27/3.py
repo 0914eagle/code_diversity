@@ -1,25 +1,37 @@
 
-def get_max_score(numbers):
-    # Sort the numbers in non-decreasing order
-    numbers.sort()
-    # Initialize the score and the number of numbers
-    score = 0
-    num_numbers = len(numbers)
-    # Loop through the numbers and process them
-    while num_numbers > 0:
-        # If there is only one number left, throw it out
-        if num_numbers == 1:
-            num_numbers -= 1
-        # If there are more than one number, split them into two non-empty groups
-        else:
-            # Find the middle index
-            mid = num_numbers // 2
-            # Add the sum of the numbers to the score
-            score += sum(numbers[:mid])
-            # Remove the numbers from the list
-            numbers = numbers[mid:]
-            # Decrement the number of numbers
-            num_numbers -= mid
-    # Return the score
-    return score
+def get_binary_representations(binary_string):
+    # Initialize a list to store the binary representations
+    representations = []
+    
+    # Iterate through the binary string
+    for i in range(len(binary_string)):
+        # Get the current digit
+        digit = binary_string[i]
+        
+        # If the digit is 2, add it to the representations list
+        if digit == "2":
+            representations.append(digit)
+    
+    # Return the number of representations
+    return len(representations)
+
+def get_binary_representations_modulo(binary_string):
+    # Get the number of binary representations
+    representations = get_binary_representations(binary_string)
+    
+    # Return the number of representations modulo 1000000009
+    return representations % 1000000009
+
+if __name__ == '__main__':
+    # Read a line of input from stdin and convert it to an integer
+    n = int(input().strip())
+    
+    # Convert the integer to a binary string
+    binary_string = bin(n)[2:]
+    
+    # Call the function to get the number of binary representations modulo 1000000009
+    result = get_binary_representations_modulo(binary_string)
+    
+    # Print the result
+    print(result)
 

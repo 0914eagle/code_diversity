@@ -1,12 +1,12 @@
 
-def solve(S):
-    price = 700
-    toppings = [0, 0, 0]
-    for i, char in enumerate(S):
-        if char == "o":
-            toppings[i] = 1
-    for i in range(len(toppings)):
-        if toppings[i] == 1:
-            price += 100
-    return price
+def convert_string(s):
+    return s.replace(",", " ")
+
+def main():
+    s = input("Enter a string: ")
+    converted_string = convert_string(s)
+    print(converted_string)
+
+if __name__ == '__main__':
+    main()
 

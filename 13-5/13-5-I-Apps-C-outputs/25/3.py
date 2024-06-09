@@ -1,18 +1,21 @@
 
-def solve(N, numbers):
-    # Initialize a set to store the first moves
-    first_moves = set()
+def f1(N, dictionary):
+    # your code here
+    return dictionary
 
-    # Iterate through the numbers
+def f2(Q, queries):
+    # your code here
+    return queries
+
+if __name__ == '__main__':
+    N = int(input())
+    dictionary = []
     for i in range(N):
-        # Get the current number
-        current_number = numbers[i]
-
-        # Check if the current number is odd
-        if current_number % 2 == 1:
-            # If the current number is odd, add it to the set of first moves
-            first_moves.add(current_number)
-
-    # Return the length of the set of first moves
-    return len(first_moves)
+        dictionary.append(input())
+    Q = int(input())
+    queries = []
+    for i in range(Q):
+        queries.append(input())
+    print(f1(N, dictionary))
+    print(f2(Q, queries))
 

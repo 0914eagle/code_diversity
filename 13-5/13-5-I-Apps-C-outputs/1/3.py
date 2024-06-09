@@ -1,18 +1,19 @@
 
-def solve(n, k, initial_strings, test_string):
-    # create a list of all possible composite strings
-    composite_strings = []
-    for i in range(n):
-        for j in range(i+1, n):
-            for k in range(j+1, n):
-                composite_strings.append(initial_strings[i] + initial_strings[j] + initial_strings[k])
-    
-    # sort the list of composite strings in alphabetical order
-    composite_strings.sort()
-    
-    # find the position of the test composite string in the sorted list
-    position = composite_strings.index(test_string) + 1
-    
-    # return the result modulo 10^9 + 7
-    return position % 1000000007
+def f1(y, l):
+    # find the largest base b such that y written in base b contains only decimal digits
+    for b in range(y, 10):
+        if all(int(i) in range(10) for i in str(y)):
+            return b
+    return 10
+
+def f2(y, l):
+    # find the largest base b such that y written in base b is at least l when interpreted as a number in base 10
+    for b in range(y, 10):
+        if int(str(y), b) >= l:
+            return b
+    return 10
+
+if __name__ == '__main__':
+    y, l = map(int, input().split())
+    print(f2(y, l))
 

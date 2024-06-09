@@ -1,40 +1,39 @@
 
-def get_minimum_steps(n, edges, colors):
-    # Create a graph with n vertices and m edges
-    graph = [[] for _ in range(n)]
-    for i in range(n - 1):
-        graph[edges[i] - 1].append(i + 1)
+def get_input():
+    N = int(input())
+    stones = input()
+    return N, stones
 
-    # Initialize the color of the root vertex as 0
-    color = [0] * n
-    color[0] = 1
+def f1(N, stones):
+    # Initialize the number of operations to 0
+    operations = 0
+    
+    # Iterate through the stones from left to right
+    for i in range(N):
+        # If the current stone is white and the next stone is red, swap them
+        if stones[i] == "W" and stones[i+1] == "R":
+            operations += 1
+            stones = stones[:i] + "R" + stones[i+1:]
+    
+    return operations
 
-    # Queue to store the vertices to be colored
-    queue = [0]
+def f2(N, stones):
+    # Initialize the number of operations to 0
+    operations = 0
+    
+    # Iterate through the stones from left to right
+    for i in range(N):
+        # If the current stone is white, change its color to red
+        if stones[i] == "W":
+            operations += 1
+            stones = stones[:i] + "R" + stones[i+1:]
+    
+    return operations
 
-    # Loop until the queue is empty
-    while queue:
-        # Dequeue a vertex from the queue
-        vertex = queue.pop(0)
+def main():
+    N, stones = get_input()
+    print(min(f1(N, stones), f2(N, stones)))
 
-        # Get the color of the current vertex
-        current_color = color[vertex]
-
-        # Loop through the neighbors of the current vertex
-        for neighbor in graph[vertex]:
-            # If the neighbor has not been colored, color it with the current color
-            if color[neighbor] == 0:
-                color[neighbor] = current_color
-                queue.append(neighbor)
-            # If the neighbor has been colored with a different color, return -1
-            elif color[neighbor] != current_color:
-                return -1
-
-    # Loop through the colors and count the number of vertices with each color
-    count = [0] * (max(colors) + 1)
-    for c in colors:
-        count[c] += 1
-
-    # Return the minimum number of steps required to color the tree
-    return min(count)
+if __name__ == '__main__':
+    main()
 

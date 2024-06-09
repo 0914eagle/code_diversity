@@ -1,35 +1,55 @@
 
-def get_min_extensions(a, b, h, w, n, extensions):
-    # Initialize the minimum number of extensions needed to be 0
-    min_extensions = 0
+def f1(S):
+    # Initialize variables
+    n = len(S)
+    lights = [int(s) for s in S]
+    time = 0
+    pressed = [-1] * n
 
-    # If the rectangle can be placed on the initial field, return 0
-    if a <= h and b <= w:
-        return 0
+    # Loop until all lights are on
+    while any(lights):
+        # Find the first light that is off
+        i = lights.index(0)
 
-    # Sort the extensions in descending order
-    extensions.sort(reverse=True)
+        # Press the button for that light
+        pressed[i] = time
 
-    # Iterate through the extensions
-    for extension in extensions:
-        # If the extension multiplies the width, multiply h by the extension
-        if extension <= h:
-            h *= extension
-        # If the extension multiplies the length, multiply w by the extension
-        elif extension <= w:
-            w *= extension
-        # If the extension multiplies both the width and the length, multiply both h and w by the extension
-        else:
-            h *= extension
-            w *= extension
+        # Toggle the state of the light and all subsequent lights
+        for j in range(i, n):
+            lights[j] = 1 - lights[j]
 
-        # If the rectangle can be placed on the field after applying the extension, increment the minimum number of extensions needed
-        if a <= h and b <= w:
-            min_extensions += 1
-        # If the rectangle can't be placed on the field after applying the extension, break the loop
-        else:
-            break
+        # Increment the time
+        time += 1
 
-    # Return the minimum number of extensions needed
-    return min_extensions
+    # Return the earliest time all lights are on
+    return time
+
+def f2(S):
+    # Initialize variables
+    n = len(S)
+    lights = [int(s) for s in S]
+    time = 0
+    pressed = [-1] * n
+
+    # Loop until all lights are on
+    while any(lights):
+        # Find the first light that is off
+        i = lights.index(0)
+
+        # Press the button for that light
+        pressed[i] = time
+
+        # Toggle the state of the light and all subsequent lights
+        for j in range(i, n):
+            lights[j] = 1 - lights[j]
+
+        # Increment the time
+        time += 1
+
+    # Return the earliest time all lights are on
+    return time
+
+if __name__ == '__main__':
+    S = input()
+    print(f1(S))
 

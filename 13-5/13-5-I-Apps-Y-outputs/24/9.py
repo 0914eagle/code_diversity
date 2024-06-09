@@ -1,21 +1,19 @@
 
-def is_good_number(n):
+def is_odd(n):
+    return n % 2 == 1
+
+def play_game(n):
     if n == 1:
-        return True
-    if n % 3 == 0:
-        return False
-    while n % 3 == 1:
-        n //= 3
-    return n % 3 == 1
+        return "Alice"
+    elif n == 2:
+        return "Bob"
+    else:
+        if is_odd(n):
+            return "Alice"
+        else:
+            return "Bob"
 
-def find_next_good_number(n):
-    while not is_good_number(n):
-        n += 1
-    return n
-
-def solve(queries):
-    for query in queries:
-        print(find_next_good_number(query))
-
-solve([1, 2, 6, 13, 14, 3620, 10000, 1000000000000000000])
+if __name__ == '__main__':
+    n = int(input())
+    print(play_game(n))
 

@@ -1,11 +1,27 @@
 
-def get_max_independent_set_size(n, m, edges):
-    # Initialize a set to store the vertices in the independent set
-    independent_set = set()
-    # Iterate through the edges and add the vertices to the independent set
+def get_controls(n, a, edges):
+    # Initialize a dictionary to store the controls for each vertex
+    controls = {i: 0 for i in range(1, n + 1)}
+    
+    # Iterate over the edges and update the controls for each vertex
     for edge in edges:
-        independent_set.add(edge[0])
-        independent_set.add(edge[1])
-    # Return the size of the independent set
-    return len(independent_set)
+        parent, child, weight = edge
+        if weight <= a[child]:
+            controls[parent] += 1
+    
+    return controls
+
+def main():
+    n = int(input())
+    a = list(map(int, input().split()))
+    edges = []
+    for i in range(n - 1):
+        parent, weight = map(int, input().split())
+        edges.append((parent, i + 2, weight))
+    
+    controls = get_controls(n, a, edges)
+    print(*controls.values())
+
+if __name__ == '__main__':
+    main()
 

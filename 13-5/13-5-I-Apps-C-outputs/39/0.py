@@ -1,22 +1,29 @@
 
 import sys
 
-def solve(L, R):
+def f1(n, s):
+    # Calculate the number of palindromic strings of length 2n that contain s as a subsequence
     count = 0
-    for num in range(L, R+1):
-        num_str = str(num)
-        if '4' in num_str:
-            continue
-        sixes = eightes = 0
-        for digit in num_str:
-            if digit == '6':
-                sixes += 1
-            elif digit == '8':
-                eightes += 1
-        if sixes == eightes:
+    for i in range(len(s)):
+        # Check if the substring s[i:i+n] is a palindrome
+        if s[i:i+n] == s[i:i+n][::-1]:
             count += 1
-    return count % (10**9+7)
+    return count
 
-L, R = map(int, input().split())
-print(solve(L, R))
+def f2(n, s):
+    # Calculate the number of palindromic strings of length 2n that contain s as a subsequence and are not contiguous
+    count = 0
+    for i in range(len(s)):
+        # Check if the substring s[i:i+n] is a palindrome
+        if s[i:i+n] == s[i:i+n][::-1]:
+            # Check if the substring s[i:i+n] is contiguous in s
+            if s.find(s[i:i+n], i+1) == -1:
+                count += 1
+    return count
+
+if __name__ == '__main__':
+    n = int(input())
+    s = input()
+    print(f1(n, s))
+    print(f2(n, s))
 

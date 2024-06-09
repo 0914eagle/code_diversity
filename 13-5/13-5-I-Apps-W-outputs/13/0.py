@@ -1,35 +1,34 @@
 
-def solve(n, cards):
-    # Sort the cards in increasing order
-    cards.sort()
+def get_subrectangles(grid):
+    # Initialize a dictionary to store the number of subrectangles for each number of black cells
+    subrectangles = {i: 0 for i in range(10)}
+    
+    # Loop through the grid and count the number of subrectangles for each number of black cells
+    for i in range(len(grid) - 2):
+        for j in range(len(grid[0]) - 2):
+            black_cells = 0
+            for k in range(i, i + 3):
+                for l in range(j, j + 3):
+                    if grid[k][l] == 1:
+                        black_cells += 1
+            subrectangles[black_cells] += 1
+    
+    return subrectangles
 
-    # Initialize the result
-    result = []
+def main():
+    # Read the input grid
+    H, W, N = map(int, input().split())
+    grid = []
+    for _ in range(H):
+        grid.append(list(map(int, input().split())))
+    
+    # Get the number of subrectangles for each number of black cells
+    subrectangles = get_subrectangles(grid)
+    
+    # Print the number of subrectangles for each number of black cells
+    for i in range(10):
+        print(subrectangles[i])
 
-    # Check if the cards can form an arithmetic progression
-    if n == 1:
-        return [-1]
-    elif n == 2:
-        if cards[1] - cards[0] == 1:
-            return [-1]
-        else:
-            return [cards[1] - cards[0] - 1]
-    else:
-        # Calculate the common difference of the arithmetic progression
-        common_diff = cards[1] - cards[0]
-        for i in range(2, n):
-            if cards[i] - cards[i - 1] != common_diff:
-                return [-1]
-
-        # Calculate the first term of the arithmetic progression
-        first_term = cards[0]
-
-        # Calculate the last term of the arithmetic progression
-        last_term = cards[n - 1] + common_diff
-
-        # Generate all integers between the first and last term
-        for i in range(first_term, last_term + 1):
-            result.append(i)
-
-        return result
+if __name__ == '__main__':
+    main()
 

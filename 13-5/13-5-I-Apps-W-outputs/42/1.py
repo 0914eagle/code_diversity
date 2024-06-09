@@ -1,55 +1,49 @@
 
-def get_critical_cpus(n, m, k, blocks):
-    critical_cpus = 0
+def f1(n, m, similar):
+    # Initialize the number of ways to split problems as 0
+    ways = 0
     
-    # Iterate through each block
-    for block in blocks:
-        # Iterate through each row in the block
-        for i in range(m):
-            # Iterate through each column in the row
-            for j in range(k):
-                # Check if the current CPU is working
-                if block[i][j] == "1":
-                    # Check if the current CPU controls any other CPUs
-                    if controls_any_other_cpus(n, m, k, blocks, i, j):
-                        critical_cpus += 1
+    # Loop through each pair of similar problems
+    for i in range(m):
+        # Get the indices of the two similar problems
+        u, v = similar[i]
+        
+        # If problem u is not already used in division 1, increase the number of ways to split problems
+        if u not in division_1:
+            ways += 1
+        
+        # If problem v is not already used in division 2, increase the number of ways to split problems
+        if v not in division_2:
+            ways += 1
     
-    return critical_cpus
+    # Return the number of ways to split problems
+    return ways
 
-def controls_any_other_cpus(n, m, k, blocks, i, j):
-    # Check if the current CPU controls any other CPUs in the same layer
-    if controls_any_other_cpus_in_same_layer(n, m, k, blocks, i, j):
-        return True
-    # Check if the current CPU controls any other CPUs in the next layer
-    if controls_any_other_cpus_in_next_layer(n, m, k, blocks, i, j):
-        return True
-    # Check if the current CPU controls any other CPUs in the previous layer
-    if controls_any_other_cpus_in_previous_layer(n, m, k, blocks, i, j):
-        return True
+def f2(n, m, similar):
+    # Initialize the number of ways to split problems as 0
+    ways = 0
     
-    return False
+    # Loop through each pair of similar problems
+    for i in range(m):
+        # Get the indices of the two similar problems
+        u, v = similar[i]
+        
+        # If problem u is not already used in division 1, increase the number of ways to split problems
+        if u not in division_1:
+            ways += 1
+        
+        # If problem v is not already used in division 2, increase the number of ways to split problems
+        if v not in division_2:
+            ways += 1
+    
+    # Return the number of ways to split problems
+    return ways
 
-def controls_any_other_cpus_in_same_layer(n, m, k, blocks, i, j):
-    # Check if the current CPU controls any other CPUs in the same layer
-    for x in range(i-1, i+2):
-        for y in range(j-1, j+2):
-            if x >= 0 and x < m and y >= 0 and y < k and blocks[i][j] == "1" and blocks[x][y] == "1" and (x != i or y != j):
-                return True
-    return False
-
-def controls_any_other_cpus_in_next_layer(n, m, k, blocks, i, j):
-    # Check if the current CPU controls any other CPUs in the next layer
-    for x in range(i-1, i+2):
-        for y in range(j-1, j+2):
-            if x >= 0 and x < m and y >= 0 and y < k and blocks[i][j] == "1" and blocks[x+1][y] == "1" and (x != i or y != j):
-                return True
-    return False
-
-def controls_any_other_cpus_in_previous_layer(n, m, k, blocks, i, j):
-    # Check if the current CPU controls any other CPUs in the previous layer
-    for x in range(i-1, i+2):
-        for y in range(j-1, j+2):
-            if x >= 0 and x < m and y >= 0 and y < k and blocks[i][j] == "1" and blocks[x-1][y] == "1" and (x != i or y != j):
-                return True
-    return False
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    similar = []
+    for _ in range(m):
+        similar.append(list(map(int, input().split())))
+    print(f1(n, m, similar))
+    print(f2(n, m, similar))
 

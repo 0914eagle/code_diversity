@@ -1,34 +1,30 @@
 
-def get_bridges(graph):
-    # Initialize a visited array and a parent array
-    visited = [False] * len(graph)
-    parent = [-1] * len(graph)
-    
-    # Initialize the number of bridges
-    bridges = 0
-    
-    # Iterate over the vertices
-    for vertex in range(len(graph)):
-        # Check if the vertex has been visited
-        if not visited[vertex]:
-            # Recursively search the graph
-            bridges += recursive_search(graph, visited, parent, vertex)
-    
-    return bridges
+import math
 
-def recursive_search(graph, visited, parent, vertex):
-    # Mark the current vertex as visited
-    visited[vertex] = True
-    
-    # Iterate over the neighbors of the current vertex
-    for neighbor in graph[vertex]:
-        # Check if the neighbor has not been visited
-        if not visited[neighbor]:
-            # Recursively search the graph
-            recursive_search(graph, visited, parent, neighbor)
-            # Update the parent array
-            parent[neighbor] = vertex
-    
-    # Return the number of bridges
-    return len([neighbor for neighbor in graph[vertex] if parent[neighbor] != vertex])
+def get_angle(a, b, c, d):
+    ab = [b[0] - a[0], b[1] - a[1], b[2] - a[2]]
+    bc = [c[0] - b[0], c[1] - b[1], c[2] - b[2]]
+    cd = [d[0] - c[0], d[1] - c[1], d[2] - c[2]]
+    x = [0, 0, 0]
+    y = [0, 0, 0]
+    for i in range(3):
+        x[i] = ab[i] * bc[i]
+        y[i] = bc[i] * cd[i]
+    x_dot_y = x[0] * y[0] + x[1] * y[1] + x[2] * y[2]
+    x_magnitude = math.sqrt(x[0] ** 2 + x[1] ** 2 + x[2] ** 2)
+    y_magnitude = math.sqrt(y[0] ** 2 + y[1] ** 2 + y[2] ** 2)
+    cos_phi = x_dot_y / (x_magnitude * y_magnitude)
+    phi = math.acos(cos_phi)
+    return math.degrees(phi)
+
+def main():
+    a = list(map(float, input().split()))
+    b = list(map(float, input().split()))
+    c = list(map(float, input().split()))
+    d = list(map(float, input().split()))
+    angle = get_angle(a, b, c, d)
+    print(angle)
+
+if __name__ == '__main__':
+    main()
 

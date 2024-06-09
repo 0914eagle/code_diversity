@@ -1,25 +1,53 @@
 
-def count_critical_cpus(n, m, k, blocks):
-    # Initialize a 3D array to represent the state of the CPUs
-    cpu_state = [[[False] * k for _ in range(m)] for _ in range(n)]
+def f1(n, m, similarities):
+    # Initialize the number of ways to split problems as 0
+    ways = 0
+    
+    # Loop through each pair of similar problems
+    for i in range(m):
+        # Get the indices of the two similar problems
+        u, v = similarities[i]
+        
+        # If problem u is not yet used in division 1, increment the number of ways to split problems
+        if u not in division_1:
+            ways += 1
+    
+    # Return the number of ways to split problems
+    return ways
 
-    # Parse the blocks and set the state of the CPUs
-    for i, block in enumerate(blocks):
-        for j, line in enumerate(block.splitlines()):
-            for k, char in enumerate(line):
-                if char == "1":
-                    cpu_state[i][j][k] = True
+def f2(n, m, similarities):
+    # Initialize the number of ways to split problems as 0
+    ways = 0
+    
+    # Loop through each pair of similar problems
+    for i in range(m):
+        # Get the indices of the two similar problems
+        u, v = similarities[i]
+        
+        # If problem v is not yet used in division 2, increment the number of ways to split problems
+        if v not in division_2:
+            ways += 1
+    
+    # Return the number of ways to split problems
+    return ways
 
-    # Initialize a set to store the critical CPUs
-    critical_cpus = set()
+def main():
+    # Read the input data
+    n, m = map(int, input().split())
+    similarities = []
+    for _ in range(m):
+        u, v = map(int, input().split())
+        similarities.append((u, v))
+    
+    # Call the first function to get the number of ways to split problems in division 1
+    ways_1 = f1(n, m, similarities)
+    
+    # Call the second function to get the number of ways to split problems in division 2
+    ways_2 = f2(n, m, similarities)
+    
+    # Print the total number of ways to split problems
+    print(ways_1 + ways_2)
 
-    # Iterate over each CPU and check if it is critical
-    for i in range(n):
-        for j in range(m):
-            for k in range(k):
-                # If the CPU is working and has at least one neighbor that is not working, it is critical
-                if cpu_state[i][j][k] and any(not cpu_state[x][y][z] for x in [i-1, i, i+1] for y in [j-1, j, j+1] for z in [k-1, k, k+1] if x in range(n) and y in range(m) and z in range(k)):
-                    critical_cpus.add((i, j, k))
-
-    return len(critical_cpus)
+if __name__ == '__main__':
+    main()
 

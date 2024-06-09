@@ -1,20 +1,11 @@
 
-def find_speed(photos):
-    # Initialize variables
-    speed = 0
-    distance = 0
+def get_input():
+    return list(map(int, input().split()))
 
-    # Iterate through the photos
-    for i in range(1, len(photos)):
-        # Calculate the time and distance between the current and previous photo
-        time_diff = photos[i][0] - photos[i-1][0]
-        distance_diff = photos[i][1] - photos[i-1][1]
+def largest_number(a, b):
+    return max(a + b, a - b, a * b)
 
-        # Calculate the speed between the current and previous photo
-        speed_diff = distance_diff / time_diff
-
-        # Update the maximum speed
-        speed = max(speed, speed_diff)
-
-    return speed
+if __name__ == '__main__':
+    a, b = get_input()
+    print(largest_number(a, b))
 

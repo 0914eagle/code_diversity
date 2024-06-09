@@ -1,25 +1,34 @@
 
-def solve(n, m, cities, towers):
-    # Sort the cities and towers in non-decreasing order
-    cities = sorted(cities)
-    towers = sorted(towers)
-    
-    # Initialize the minimum distance as 0
-    min_dist = 0
-    
-    # Iterate through the cities and find the first city that is not covered by any tower
-    for i in range(n):
-        # If the city is not covered by any tower, find the closest tower and update the minimum distance
-        if cities[i] > towers[-1]:
-            min_dist = max(min_dist, cities[i] - towers[-1])
-        elif cities[i] < towers[0]:
-            min_dist = max(min_dist, towers[0] - cities[i])
-        else:
-            # If the city is covered by some tower, find the closest tower and update the minimum distance
-            for j in range(m):
-                if cities[i] <= towers[j]:
-                    min_dist = max(min_dist, cities[i] - towers[j])
-                    break
-    
-    return min_dist
+def get_min_jury_size(olympiads):
+    # Initialize a set to store the dates when the jury is working
+    jury_dates = set()
+    # Iterate over the olympiads
+    for month, day, people, time in olympiads:
+        # Get the start and end dates for the current olympiad
+        start_date = f"{month}/{day}"
+        end_date = f"{month}/{day + time - 1}"
+        # Check if the jury is already working on some other olympiad during this period
+        if any(date in jury_dates for date in [start_date, end_date]):
+            # If the jury is already working, increase the minimum jury size by 1
+            people += 1
+        # Add the dates when the jury is working to the set
+        jury_dates.update([start_date, end_date])
+    # Return the minimum jury size
+    return people
+
+def main():
+    # Read the number of olympiads
+    n = int(input())
+    # Read the olympiads
+    olympiads = []
+    for _ in range(n):
+        month, day, people, time = map(int, input().split())
+        olympiads.append((month, day, people, time))
+    # Get the minimum jury size
+    min_jury_size = get_min_jury_size(olympiads)
+    # Print the minimum jury size
+    print(min_jury_size)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,20 +1,31 @@
 
-def solve(n, m, a, b, roads):
-    # Initialize a graph with n nodes and m edges
-    graph = [[] for _ in range(n)]
-    for i in range(m):
-        graph[roads[i][0] - 1].append(roads[i][1] - 1)
-        graph[roads[i][1] - 1].append(roads[i][0] - 1)
-    
-    # Check if the conditions can be met
-    for i in range(n):
-        if a[i] != b[i]:
-            return "NO"
-    
-    # If the conditions can be met, return a solution
-    solution = [[0] * n for _ in range(n)]
-    for i in range(n):
-        solution[i][i] = a[i]
-    
-    return "YES\n" + "\n".join([" ".join(map(str, row)) for row in solution])
+def get_server_name(ip, servers):
+    for server in servers:
+        if server[1] == ip:
+            return server[0]
+    return None
+
+def add_comments(commands, servers):
+    result = []
+    for command in commands:
+        ip = command.split(" ")[1]
+        name = get_server_name(ip, servers)
+        result.append(f"{command} # {name}")
+    return result
+
+def main():
+    n, m = map(int, input().split())
+    servers = []
+    for _ in range(n):
+        name, ip = input().split()
+        servers.append((name, ip))
+    commands = []
+    for _ in range(m):
+        commands.append(input())
+    result = add_comments(commands, servers)
+    for command in result:
+        print(command)
+
+if __name__ == '__main__':
+    main()
 

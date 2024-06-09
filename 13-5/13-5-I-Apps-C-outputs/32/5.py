@@ -1,31 +1,37 @@
 
-def longest_path(n, m, roads):
-    # Initialize a dictionary to store the lengths of the paths
-    paths = {}
-    
-    # Iterate over each road
-    for road in roads:
-        # Get the two cities connected by the road
-        city1, city2 = road
-        
-        # If the path starting from city1 and ending in city2 is not in the dictionary, add it to the dictionary with length 1
-        if (city1, city2) not in paths:
-            paths[(city1, city2)] = 1
-        
-        # If the path starting from city2 and ending in city1 is not in the dictionary, add it to the dictionary with length 1
-        if (city2, city1) not in paths:
-            paths[(city2, city1)] = 1
-        
-        # If the path starting from city1 and ending in city2 is already in the dictionary, increase its length by 1
-        if (city1, city2) in paths:
-            paths[(city1, city2)] += 1
-        
-        # If the path starting from city2 and ending in city1 is already in the dictionary, increase its length by 1
-        if (city2, city1) in paths:
-            paths[(city2, city1)] += 1
-    
-    # Find the longest path in the dictionary
-    longest_path = max(paths.values())
-    
-    return longest_path
+def f1(n, m, s, a, b, c):
+    # sort the bugs by complexity in descending order
+    a.sort(reverse=True)
+    # sort the students by their ability level in descending order
+    b.sort(reverse=True)
+    # initialize the number of passes given to each student to 0
+    passes = [0] * n
+    # initialize the number of days needed to fix all bugs to 0
+    days = 0
+    # loop through each bug and try to assign it to a student
+    for i in range(m):
+        # find the student with the highest ability level who can fix the current bug
+        for j in range(n):
+            if b[j] >= a[i]:
+                # give the student one pass for their help
+                passes[j] += 1
+                # increment the number of days needed to fix all bugs
+                days += 1
+                break
+        # if the university has reached the maximum number of passes, return "NO"
+        if sum(passes) > s:
+            return "NO"
+    # if the university has fixed all bugs, return "YES" and the schedule of work
+    return "YES\n" + " ".join(str(i + 1) for i in range(m) if passes[i] > 0)
+
+def f2(...):
+    # implement f2 here
+    pass
+
+if __name__ == '__main__':
+    n, m, s = map(int, input().split())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    c = list(map(int, input().split()))
+    print(f1(n, m, s, a, b, c))
 

@@ -1,20 +1,35 @@
 
-def solve(s, t):
-    # Initialize a dictionary to store the number of operations required for each character
-    char_ops = {}
-    for char in s:
-        char_ops[char] = 0
+def get_max_hangout_days(n, m, assignments):
+    # Sort the assignments in ascending order
+    assignments.sort()
     
-    # Iterate through the characters of both strings and update the dictionary
-    for i in range(len(s)):
-        if s[i] != t[i]:
-            char_ops[s[i]] += 1
+    # Initialize the maximum number of days Takahashi can hang out
+    max_hangout_days = 0
     
-    # Find the minimum number of operations required to change S to T
-    min_ops = float('inf')
-    for char, ops in char_ops.items():
-        if ops < min_ops:
-            min_ops = ops
+    # Iterate over the assignments
+    for i in range(m):
+        # Calculate the number of days Takahashi can hang out before doing the current assignment
+        hangout_days = n - assignments[i]
+        
+        # Check if Takahashi can hang out for at least one day
+        if hangout_days >= 1:
+            # Update the maximum number of days Takahashi can hang out
+            max_hangout_days = max(max_hangout_days, hangout_days)
     
-    return min_ops
+    # Return the maximum number of days Takahashi can hang out
+    return max_hangout_days
+
+def main():
+    # Read the input data
+    n, m = map(int, input().split())
+    assignments = list(map(int, input().split()))
+    
+    # Calculate the maximum number of days Takahashi can hang out
+    max_hangout_days = get_max_hangout_days(n, m, assignments)
+    
+    # Print the result
+    print(max_hangout_days)
+
+if __name__ == '__main__':
+    main()
 

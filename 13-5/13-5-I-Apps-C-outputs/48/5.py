@@ -1,32 +1,43 @@
 
-def solve(strings):
-    # Initialize a dictionary to store the longest subsequence for each string
-    longest_subsequence = {}
+def f1(n, c, encounters):
+    # f1(n, c, encounters) should return the smallest year Y such that it is possible to divide the participants in two parts, neither of which contains more than 2n/3 people, such that all people in the first part first met before year Y, and all people in the second part first met in or after year Y.
+    # If there is no such year, f1(n, c, encounters) should return the string 'Impossible'.
 
-    # Iterate over the strings
-    for string in strings:
-        # Initialize the longest subsequence for the current string as an empty list
-        longest_subsequence[string] = []
+    # Initialize a dictionary to keep track of the first encounters
+    first_encounters = {}
+    for a, b, y in encounters:
+        first_encounters[(a, b)] = y
 
-        # Iterate over the characters in the string
-        for i in range(len(string)):
-            # Check if the current character is the same as the first character of the string
-            if string[i] == string[0]:
-                # Check if the current character is also the last character of the string
-                if string[i] == string[-1]:
-                    # If both conditions are true, add the current character to the longest subsequence
-                    longest_subsequence[string].append(string[i])
+    # Sort the encounters by year in ascending order
+    sorted_encounters = sorted(encounters, key=lambda x: x[2])
 
-    # Initialize a set to store the unique substrings
-    unique_substrings = set()
+    # Initialize the minimum year Y and the number of people in each part
+    Y = 1948
+    num_people_part1 = 0
+    num_people_part2 = 0
 
-    # Iterate over the longest subsequence for each string
-    for subsequence in longest_subsequence.values():
-        # Iterate over the characters in the subsequence
-        for i in range(len(subsequence)):
-            # Add the current substring to the set of unique substrings
-            unique_substrings.add("".join(subsequence[i:]))
+    # Loop through the encounters and check if it is possible to divide the participants in two parts
+    for a, b, y in sorted_encounters:
+        if y <= Y:
+            num_people_part1 += 1
+        else:
+            num_people_part2 += 1
+        if num_people_part1 > 2 * n / 3 or num_people_part2 > 2 * n / 3:
+            return 'Impossible'
 
-    # Return the length of the set of unique substrings
-    return len(unique_substrings)
+    return Y
+
+def f2(...):
+    # f2(...) should return ...
+    ...
+
+if __name__ == '__main__':
+    n = int(input())
+    c = int(input())
+    encounters = []
+    for _ in range(c):
+        a, b, y = map(int, input().split())
+        encounters.append((a, b, y))
+    result = f1(n, c, encounters)
+    print(result)
 

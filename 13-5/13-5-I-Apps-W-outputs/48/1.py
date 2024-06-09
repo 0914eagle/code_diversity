@@ -1,18 +1,25 @@
 
-def reconstruct_permutation(n, a, b):
-    # Initialize a dictionary to store the counts of each color
-    color_count = {}
+def is_lucky_ticket(ticket):
+    n = len(ticket)
+    if n < 2:
+        return "NO"
+    
+    sums = [0] * n
     for i in range(n):
-        color_count[a[i]] = color_count.get(a[i], 0) + 1
-        color_count[b[i]] = color_count.get(b[i], 0) + 1
+        sums[i] = sums[i-1] + int(ticket[i])
+    
+    for i in range(n):
+        for j in range(i+1, n):
+            if sums[j] - sums[i] == sums[n-1] - sums[j-1]:
+                return "YES"
+    
+    return "NO"
 
-    # Initialize a list to store the permutation
-    permutation = []
+def main():
+    n = int(input())
+    ticket = input()
+    print(is_lucky_ticket(ticket))
 
-    # Iterate through the dictionary and add the colors to the permutation
-    for color, count in color_count.items():
-        for i in range(count):
-            permutation.append(color)
-
-    return permutation
+if __name__ == '__main__':
+    main()
 

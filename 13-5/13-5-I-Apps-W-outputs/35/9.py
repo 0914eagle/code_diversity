@@ -1,23 +1,53 @@
 
-def solve(m, n, p):
-    # Initialize a dictionary to store the counts of each x value
-    x_counts = {}
+def f1(n, m, S_x, S_y):
+    # Initialize the visited matrix
+    visited = [[False for _ in range(m)] for _ in range(n)]
+    # Mark the starting cell as visited
+    visited[S_x-1][S_y-1] = True
+    # Initialize the queue with the starting cell
+    queue = [(S_x, S_y)]
+    # Loop through the queue
+    while queue:
+        # Get the current cell
+        x, y = queue.pop(0)
+        # If we have visited all cells, return the solution
+        if all(all(row) for row in visited):
+            return visited
+        # Add the unvisited neighbors to the queue
+        for i, j in [(x, y-1), (x, y+1), (x-1, y), (x+1, y)]:
+            if 1 <= i <= n and 1 <= j <= m and not visited[i-1][j-1]:
+                visited[i-1][j-1] = True
+                queue.append((i, j))
+    # If we reach this point, there is no solution
+    return []
 
-    # Iterate through the p sequence and increment the count of each x value
-    for x in p:
-        if x in x_counts:
-            x_counts[x] += 1
-        else:
-            x_counts[x] = 1
+def f2(n, m, S_x, S_y):
+    # Initialize the visited matrix
+    visited = [[False for _ in range(m)] for _ in range(n)]
+    # Mark the starting cell as visited
+    visited[S_x-1][S_y-1] = True
+    # Initialize the queue with the starting cell
+    queue = [(S_x, S_y)]
+    # Loop through the queue
+    while queue:
+        # Get the current cell
+        x, y = queue.pop(0)
+        # If we have visited all cells, return the solution
+        if all(all(row) for row in visited):
+            return visited
+        # Add the unvisited neighbors to the queue
+        for i, j in [(x-1, y), (x+1, y), (x, y-1), (x, y+1)]:
+            if 1 <= i <= n and 1 <= j <= m and not visited[i-1][j-1]:
+                visited[i-1][j-1] = True
+                queue.append((i, j))
+    # If we reach this point, there is no solution
+    return []
 
-    # Initialize a set to store the unique x values
-    unique_x = set()
-
-    # Iterate through the x values and add them to the set if their count is 1
-    for x, count in x_counts.items():
-        if count == 1:
-            unique_x.add(x)
-
-    # Return the number of unique x values modulo 10^9+7
-    return len(unique_x) % (10**9+7)
+if __name__ == '__main__':
+    n, m, S_x, S_y = map(int, input().split())
+    visited = f1(n, m, S_x, S_y)
+    for i in range(n):
+        for j in range(m):
+            if visited[i][j]:
+                print(i+1, j+1)
 

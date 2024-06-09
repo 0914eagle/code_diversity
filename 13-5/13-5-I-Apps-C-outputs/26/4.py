@@ -1,34 +1,52 @@
 
-def solve(x, y):
-    # Check if x and y are valid inputs
-    if x < 1 or y < 1 or x * y < 2:
-        return "Impossible"
+import math
+
+def f1(w, h, u, d, l, r):
+    # Calculate the probability of the ball bouncing up, down, left, or right from any open space
+    p_up = u / 100
+    p_down = d / 100
+    p_left = l / 100
+    p_right = r / 100
     
-    # Initialize variables
-    oranges = x
-    apples = y
-    cards = []
+    # Initialize the probability of each target being hit
+    probabilities = [0] * h
     
-    # Game loop
-    while oranges > 0 and apples > 0:
-        # Add card to the sequence
-        cards.append("A")
-        oranges -= 1
-        apples -= 1
-        
-        # Check if the game is over
-        if oranges == 0 or apples == 0:
-            break
-        
-        # Add card to the sequence
-        cards.append("B")
-        oranges -= 1
-        apples -= 1
+    # Loop through each row of the grid
+    for i in range(h):
+        # Loop through each column of the grid
+        for j in range(w):
+            # If the current space is a target, update the probability of it being hit
+            if grid[i][j] == 'T':
+                probabilities[i] += p_up * (1 - p_up) * (1 - p_down) * (1 - p_left) * (1 - p_right)
     
-    # Check if the game is over
-    if oranges == 0 and apples == 0:
-        return "".join(cards)
+    # Return the probability of each target being hit
+    return probabilities
+
+def f2(w, h, u, d, l, r):
+    # Calculate the probability of the ball bouncing up, down, left, or right from any open space
+    p_up = u / 100
+    p_down = d / 100
+    p_left = l / 100
+    p_right = r / 100
     
-    # If the game is not over, return Impossible
-    return "Impossible"
+    # Initialize the probability of each target being hit
+    probabilities = [0] * h
+    
+    # Loop through each row of the grid
+    for i in range(h):
+        # Loop through each column of the grid
+        for j in range(w):
+            # If the current space is a target, update the probability of it being hit
+            if grid[i][j] == 'T':
+                probabilities[i] += p_up * (1 - p_up) * (1 - p_down) * (1 - p_left) * (1 - p_right)
+    
+    # Return the probability of each target being hit
+    return probabilities
+
+if __name__ == '__main__':
+    w, h, u, d, l, r = map(int, input().split())
+    grid = [input() for _ in range(h)]
+    probabilities = f1(w, h, u, d, l, r)
+    for i in range(h):
+        print(f"{probabilities[i]:.6f}")
 

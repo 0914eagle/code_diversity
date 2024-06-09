@@ -1,19 +1,17 @@
 
-def solve(s):
-    # Check if the string is already a palindrome
-    if s == s[::-1]:
-        return "First"
+def f(n):
+    result = 0
+    for i in range(1, n+1):
+        if i % 2 == 0:
+            result += i
+        else:
+            result -= i
+    return result
 
-    # Check if the first player can make a palindrome by removing a letter
-    for i in range(len(s)):
-        if s[:i] + s[i+1:] == s[i] + s[i+1:] + s[i]:
-            return "First"
+def main():
+    n = int(input())
+    print(f(n))
 
-    # Check if the second player can make a palindrome by removing a letter
-    for i in range(len(s)):
-        if s[:i] + s[i+1:] == s[i] + s[i+1:] + s[i]:
-            return "Second"
-
-    # If no player can make a palindrome, the first player wins
-    return "First"
+if __name__ == '__main__':
+    main()
 

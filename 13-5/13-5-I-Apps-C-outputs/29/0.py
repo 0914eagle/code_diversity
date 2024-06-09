@@ -1,27 +1,29 @@
 
-def solve(N, adversaries, dwarves, elves):
-    # Sort the dwarves and elves by strength in descending order
-    dwarves = sorted(dwarves, reverse=True)
-    elves = sorted(elves, reverse=True)
-    
-    # Create a dictionary to map each dwarf to its strength
-    dwarf_strength = {dwarf: strength for dwarf, strength in zip(range(1, N+1), dwarves)}
-    
-    # Create a dictionary to map each elf to its strength and its chosen adversary
-    elf_strength = {elf: (strength, adversary) for elf, strength, adversary in zip(range(1, N+1), elves, adversaries)}
-    
-    # Initialize the number of victories to 0
-    victories = 0
-    
-    # Iterate through the elves and their chosen adversaries
-    for elf, (strength, adversary) in elf_strength.items():
-        # If the elf's strength is greater than the adversary's strength, the elf wins
-        if strength > dwarf_strength[adversary]:
-            victories += 1
-        # Otherwise, the adversary wins
+def get_disintegrated_droplets(droplets, sensors):
+    disintegrated_droplets = []
+    for droplet in droplets:
+        for sensor in sensors:
+            if sensor[0] <= droplet[0] <= sensor[1] and sensor[2] == droplet[1]:
+                disintegrated_droplets.append(droplet[1])
+                break
         else:
-            victories -= 1
-    
-    # Return the number of victories
-    return victories
+            disintegrated_droplets.append(0)
+    return disintegrated_droplets
+
+def main():
+    num_droplets, num_sensors = map(int, input().split())
+    droplets = []
+    for _ in range(num_droplets):
+        x, y = map(int, input().split())
+        droplets.append((x, y))
+    sensors = []
+    for _ in range(num_sensors):
+        x1, x2, y = map(int, input().split())
+        sensors.append((x1, x2, y))
+    disintegrated_droplets = get_disintegrated_droplets(droplets, sensors)
+    for droplet in disintegrated_droplets:
+        print(droplet)
+
+if __name__ == '__main__':
+    main()
 

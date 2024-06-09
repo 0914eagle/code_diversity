@@ -1,21 +1,25 @@
 
-def solve(n, t, a):
-    # Initialize a variable to store the minimum number of days
-    min_days = n
+def count_ways(n):
+    # Initialize a 2D array to store the results
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
     
-    # Iterate over the days
-    for i in range(n):
-        # Calculate the total time available for work and reading
-        total_time = a[i] + t
-        
-        # Check if the total time is greater than the number of seconds in a day
-        if total_time > 86400:
-            # If it is, subtract the number of seconds in a day from the total time
-            total_time -= 86400
-        
-        # Update the minimum number of days if necessary
-        min_days = min(min_days, total_time // t)
+    # Initialize the first row and column with 1
+    for i in range(n + 1):
+        dp[i][0] = 1
+        dp[0][i] = 1
     
-    # Return the minimum number of days
-    return min_days
+    # Fill the 2D array using the recurrence relation
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
+    
+    # Return the result for the last cell
+    return dp[n][n]
+
+def main():
+    n = int(input())
+    print(count_ways(n))
+
+if __name__ == '__main__':
+    main()
 

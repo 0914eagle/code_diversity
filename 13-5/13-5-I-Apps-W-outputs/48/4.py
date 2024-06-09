@@ -1,29 +1,34 @@
 
-def reconstruct_permutation(n, a, b):
-    # Initialize a dictionary to store the counts of each color
-    color_count = {}
-    for i in range(n):
-        color_count[i+1] = 0
+def is_lucky_ticket(ticket):
+    n = len(ticket)
+    if n < 2:
+        return "NO"
     
-    # Increment the count of each color in the first meteor outburst
-    for i in range(n):
-        color_count[a[i]] += 1
+    # convert the ticket to a list of integers
+    ticket = [int(x) for x in ticket]
     
-    # Decrement the count of each color in the second meteor outburst
-    for i in range(n):
-        color_count[b[i]] -= 1
+    # sum of the digits in the ticket
+    total = sum(ticket)
     
-    # Initialize the permutation with the first color
-    permutation = [1]
+    # find all possible segments
+    segments = []
+    for i in range(1, n):
+        for j in range(i, n):
+            segments.append(ticket[i:j+1])
     
-    # Add the remaining colors to the permutation
-    for i in range(2, n+1):
-        # Find the color with the highest count that is not already in the permutation
-        for j in range(1, n+1):
-            if color_count[j] > 0 and j not in permutation:
-                permutation.append(j)
-                color_count[j] -= 1
-                break
+    # check if any two segments have the same sum
+    for i in range(len(segments)):
+        for j in range(i+1, len(segments)):
+            if sum(segments[i]) == sum(segments[j]):
+                return "YES"
     
-    return permutation
+    return "NO"
+
+def main():
+    n = int(input())
+    ticket = input()
+    print(is_lucky_ticket(ticket))
+
+if __name__ == '__main__':
+    main()
 

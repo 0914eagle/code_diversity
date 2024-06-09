@@ -1,22 +1,29 @@
 
-def get_min_weight(stages, k):
-    # Initialize the minimum weight to a large value
-    min_weight = float('inf')
-    # Loop through all possible combinations of stages
-    for combination in combinations(stages, k):
-        # Check if the combination satisfies the condition
-        if is_valid_combination(combination):
-            # Calculate the weight of the combination
-            weight = sum([ord(stage) for stage in combination])
-            # Update the minimum weight if necessary
-            min_weight = min(min_weight, weight)
-    # Return the minimum weight
-    return -1 if min_weight == float('inf') else min_weight
+def get_score(graph, start, end):
+    
+    if start == end:
+        return 0
+    
+    neighbors = graph[start]
+    if end in neighbors:
+        return neighbors[end]
+    
+    max_score = -float('inf')
+    for neighbor, weight in neighbors.items():
+        max_score = max(max_score, weight + get_score(graph, neighbor, end))
+    
+    return max_score
 
-def is_valid_combination(combination):
-    # Check if the combination is valid
-    for i in range(len(combination) - 1):
-        if ord(combination[i + 1]) - ord(combination[i]) != 2:
-            return False
-    return True
+def main():
+    num_vertices, num_edges = map(int, input().split())
+    graph = {i: {} for i in range(1, num_vertices + 1)}
+    
+    for _ in range(num_edges):
+        a, b, c = map(int, input().split())
+        graph[a][b] = c
+    
+    print(get_score(graph, 1, num_vertices))
+
+if __name__ == '__main__':
+    main()
 

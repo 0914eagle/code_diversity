@@ -1,20 +1,20 @@
 
-def solve(routines):
-    # Initialize a dictionary to keep track of the dancers and their costume changes
-    dancers = {}
-    for routine in routines:
-        for dancer in routine:
-            if dancer not in dancers:
-                dancers[dancer] = 0
-            dancers[dancer] += 1
+def get_beautiful_table(n, k):
+    # Initialize a matrix with zeros
+    matrix = [[0] * n for _ in range(n)]
+    
+    # Fill in the matrix with values
+    for i in range(n):
+        for j in range(n):
+            matrix[i][j] = (i + j) % k + 1
+    
+    return matrix
 
-    # Initialize a variable to keep track of the total number of quick changes
-    quick_changes = 0
+def main():
+    n, k = map(int, input().split())
+    matrix = get_beautiful_table(n, k)
+    print(matrix)
 
-    # Iterate through the dancers and their costume changes
-    for dancer, changes in dancers.items():
-        if changes > 1:
-            quick_changes += changes - 1
-
-    return quick_changes
+if __name__ == '__main__':
+    main()
 

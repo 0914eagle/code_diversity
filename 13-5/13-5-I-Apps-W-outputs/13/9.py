@@ -1,32 +1,28 @@
 
-def solve(n, cards):
-    # Sort the cards in increasing order
-    cards.sort()
+def get_grid_size(grid):
+    return len(grid), len(grid[0])
 
-    # Initialize the number of integers that can be written on the card
-    num_ints = 0
+def get_subrectangles(grid):
+    subrectangles = []
+    for i in range(len(grid) - 2):
+        for j in range(len(grid[0]) - 2):
+            subrectangles.append(grid[i:i+3, j:j+3])
+    return subrectangles
 
-    # Check if the cards form an arithmetic progression
-    if n == 1:
-        return [-1]
-    elif n == 2:
-        if cards[1] - cards[0] == 1:
-            return [-1]
-        else:
-            return [cards[1] - cards[0] - 1]
-    else:
-        # Calculate the difference between consecutive cards
-        diff = cards[1] - cards[0]
-        for i in range(2, n):
-            if cards[i] - cards[i - 1] != diff:
-                break
-        else:
-            # All cards form an arithmetic progression, so there is only one integer that can be written on the card
-            return [-1]
+def count_black_cells(subrectangle):
+    return np.count_nonzero(subrectangle == 1)
 
-        # Calculate the number of integers that can be written on the card
-        num_ints = (cards[n - 1] - cards[0]) // diff
+def count_subrectangles(grid, num_black_cells):
+    subrectangles = get_subrectangles(grid)
+    return len([subrectangle for subrectangle in subrectangles if count_black_cells(subrectangle) == num_black_cells])
 
-        # Return the numbers in increasing order
-        return list(range(cards[0], cards[0] + num_ints * diff, diff))
+def main():
+    grid_size = get_grid_size(grid)
+    num_subrectangles = [count_subrectangles(grid, num_black_cells) for num_black_cells in range(10)]
+    for num_black_cells in num_subrectangles:
+        print(num_black_cells)
+
+if __name__ == '__main__':
+    grid = [[0] * 5 for _ in range(4)]
+    main()
 

@@ -1,39 +1,48 @@
 
-import math
-import random
+def get_shortcut_time(level, shortcut_item, shortcut_time, item_times):
+    # Find the index of the shortcut item in the item_times list
+    shortcut_index = item_times.index(shortcut_item)
+    
+    # Get the completion time for the level using the shortcut
+    shortcut_completion_time = item_times[shortcut_index]
+    
+    # Return the minimum of the shortcut completion time and the completion time for the level using any other item
+    return min(shortcut_completion_time, shortcut_time)
 
-def solve(n, trees, b, d):
-    # Calculate the area of the boar's body
-    boar_area = math.pi * b ** 2
+def get_min_time(levels, item_times):
+    # Initialize the minimum time to 0
+    min_time = 0
+    
+    # Loop through the levels
+    for level in levels:
+        # Get the shortcut item and completion time for the level
+        shortcut_item, shortcut_time = level[0], level[1]
+        
+        # Get the completion time for the level using the shortcut
+        shortcut_completion_time = get_shortcut_time(level, shortcut_item, shortcut_time, item_times)
+        
+        # Add the completion time for the level to the minimum time
+        min_time += shortcut_completion_time
+    
+    # Return the minimum time
+    return min_time
 
-    # Initialize the probability to 1
-    probability = 1
-
-    # Loop through each tree
+def main():
+    # Read the number of levels and the levels from stdin
+    n = int(input())
+    levels = []
     for i in range(n):
-        # Calculate the distance between the boar and the tree
-        distance = math.sqrt((trees[i][0] - b) ** 2 + (trees[i][1] - b) ** 2)
+        levels.append(list(map(int, input().split())))
+    
+    # Get the item times from stdin
+    item_times = list(map(int, input().split()))
+    
+    # Get the minimum time to beat all the levels
+    min_time = get_min_time(levels, item_times)
+    
+    # Print the minimum time
+    print(min_time)
 
-        # Calculate the probability of the boar hitting the tree
-        hit_probability = math.exp(-(distance ** 2) / (2 * d ** 2))
-
-        # Calculate the probability of the boar missing the tree
-        miss_probability = 1 - hit_probability
-
-        # Calculate the probability of the boar hitting a smaller tree first
-        smaller_tree_probability = 0
-        for j in range(n):
-            if i != j and trees[j][2] < trees[i][2]:
-                smaller_tree_probability += miss_probability * (trees[j][2] ** 2) / boar_area
-
-        # Calculate the probability of the boar missing a smaller tree first
-        larger_tree_probability = miss_probability * (trees[i][2] ** 2) / boar_area
-
-        # Calculate the total probability of the boar missing the tree
-        total_probability = smaller_tree_probability + larger_tree_probability
-
-        # Update the probability
-        probability *= total_probability
-
-    return probability
+if __name__ == '__main__':
+    main()
 

@@ -1,52 +1,43 @@
 
-def get_critical_cpus(n, m, k, blocks):
-    critical_cpus = 0
+def f1(n, m, similar):
+    # Initialize the number of ways to split the problems as 0
+    ways = 0
     
-    # Iterate over each block (layer)
-    for block in blocks:
-        # Iterate over each row (line) in the block
-        for i in range(m):
-            # Iterate over each column (character) in the row
-            for j in range(k):
-                # Check if the current CPU is working
-                if block[i][j] == "1":
-                    # Check if the current CPU controls any other CPUs
-                    if controls_any_cpu(block, i, j):
-                        critical_cpus += 1
+    # Loop through each pair of similar problems
+    for i in range(m):
+        # Get the indices of the two similar problems
+        u, v = similar[i]
+        
+        # If problem u is used in division 1 and problem v is used in division 2, or vice versa
+        if (u in division_1 and v in division_2) or (v in division_1 and u in division_2):
+            # Increment the number of ways to split the problems
+            ways += 1
     
-    return critical_cpus
+    # Return the number of ways to split the problems
+    return ways
 
-def controls_any_cpu(block, i, j):
-    # Check if the current CPU controls any other CPUs in the same row
-    if controls_cpu_in_row(block, i, j):
-        return True
-    # Check if the current CPU controls any other CPUs in the same column
-    if controls_cpu_in_column(block, i, j):
-        return True
-    # Check if the current CPU controls any other CPUs in the same block (layer)
-    if controls_cpu_in_block(block, i, j):
-        return True
-    return False
+def f2(n, m, similar):
+    # Initialize the number of ways to split the problems as 0
+    ways = 0
+    
+    # Loop through each pair of similar problems
+    for i in range(m):
+        # Get the indices of the two similar problems
+        u, v = similar[i]
+        
+        # If problem u is used in division 1 and problem v is used in division 2, or vice versa
+        if (u in division_1 and v in division_2) or (v in division_1 and u in division_2):
+            # Increment the number of ways to split the problems
+            ways += 1
+    
+    # Return the number of ways to split the problems
+    return ways
 
-def controls_cpu_in_row(block, i, j):
-    # Check if the current CPU controls any other CPUs in the same row
-    for k in range(k):
-        if block[i][k] == "1" and k != j:
-            return True
-    return False
-
-def controls_cpu_in_column(block, i, j):
-    # Check if the current CPU controls any other CPUs in the same column
-    for k in range(m):
-        if block[k][j] == "1" and k != i:
-            return True
-    return False
-
-def controls_cpu_in_block(block, i, j):
-    # Check if the current CPU controls any other CPUs in the same block (layer)
-    for k in range(m):
-        for l in range(k):
-            if block[k][l] == "1" and (k != i or l != j):
-                return True
-    return False
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    similar = []
+    for _ in range(m):
+        similar.append(tuple(map(int, input().split())))
+    print(f1(n, m, similar))
+    print(f2(n, m, similar))
 

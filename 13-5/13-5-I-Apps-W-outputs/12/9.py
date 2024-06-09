@@ -1,10 +1,31 @@
 
-def count_triangles(a, b, c, d):
-    count = 0
-    for x in range(a, b+1):
-        for y in range(x, b+1):
-            for z in range(y, c+1):
-                if x <= y <= z <= d:
-                    count += 1
-    return count
+def f1(s, t):
+    if len(s) == 0:
+        return False
+    if s == t:
+        return True
+    for i in range(1, len(s)):
+        if f1(s[i:], t):
+            return True
+    return False
+
+def f2(s, t):
+    if len(s) == 0:
+        return False
+    if s == t:
+        return True
+    for i in range(1, len(s)):
+        if f2(s[:i], t):
+            return True
+    return False
+
+if __name__ == '__main__':
+    T = int(input())
+    for i in range(T):
+        s = input()
+        t = input()
+        if f1(s, t) or f2(s, t):
+            print("YES")
+        else:
+            print("NO")
 

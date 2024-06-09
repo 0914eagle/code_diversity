@@ -1,21 +1,49 @@
 
-def get_minimal_weight(n, k, stages):
-    # Initialize the weight of the rocket as 0
-    weight = 0
-    # Create a list to store the stages of the rocket
-    rocket = []
-    # Loop through the stages
-    for i in range(n):
-        # Check if the stage is already in the rocket
-        if stages[i] not in rocket:
-            # Add the stage to the rocket
-            rocket.append(stages[i])
-            # Increment the weight of the rocket by the weight of the stage
-            weight += ord(stages[i]) - ord('a') + 1
-            # Check if the rocket has k stages
-            if len(rocket) == k:
-                # Return the weight of the rocket
-                return weight
-    # If the rocket cannot be built with k stages, return -1
-    return -1
+def f1(N, M, edges):
+    # Initialize the graph with N vertices and M edges
+    graph = [[] for _ in range(N)]
+    for i in range(M):
+        graph[edges[i][0] - 1].append((edges[i][1], edges[i][2]))
+    
+    # Initialize the score and the current vertex
+    score = 0
+    current_vertex = 0
+    
+    # Loop through the edges and update the score and the current vertex
+    for i in range(M):
+        for j in range(len(graph[current_vertex])):
+            if graph[current_vertex][j][0] == edges[i][1]:
+                score += graph[current_vertex][j][1]
+                current_vertex = edges[i][1] - 1
+                break
+    
+    return score
+
+def f2(N, M, edges):
+    # Initialize the graph with N vertices and M edges
+    graph = [[] for _ in range(N)]
+    for i in range(M):
+        graph[edges[i][0] - 1].append((edges[i][1], edges[i][2]))
+    
+    # Initialize the score and the current vertex
+    score = 0
+    current_vertex = 0
+    
+    # Loop through the edges and update the score and the current vertex
+    for i in range(M):
+        for j in range(len(graph[current_vertex])):
+            if graph[current_vertex][j][0] == edges[i][1]:
+                score += graph[current_vertex][j][1]
+                current_vertex = edges[i][1] - 1
+                break
+    
+    return score
+
+if __name__ == '__main__':
+    N, M = map(int, input().split())
+    edges = []
+    for i in range(M):
+        a, b, c = map(int, input().split())
+        edges.append((a, b, c))
+    print(f1(N, M, edges))
 

@@ -1,8 +1,12 @@
 
-def solve(s):
-    price = 700
-    toppings = {'o': 100, 'x': 0}
-    for char in s:
-        price += toppings[char]
-    return price
+def convert_string(s):
+    return s.replace(",", " ")
+
+def main():
+    s = input("Enter a string: ")
+    converted_string = convert_string(s)
+    print(converted_string)
+
+if __name__ == '__main__':
+    main()
 

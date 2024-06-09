@@ -1,21 +1,17 @@
 
-def get_min_height_difference(trees, k):
-    # Sort the trees by height in descending order
-    trees.sort(reverse=True)
-    # Initialize the minimum height difference
-    min_height_diff = float('inf')
-    # Loop through the first k trees
-    for i in range(k):
-        # Get the height of the current tree
-        curr_height = trees[i]
-        # Loop through the remaining trees
-        for j in range(i+1, k):
-            # Get the height of the current tree
-            next_height = trees[j]
-            # Calculate the height difference
-            height_diff = abs(curr_height - next_height)
-            # Update the minimum height difference
-            min_height_diff = min(min_height_diff, height_diff)
-    # Return the minimum height difference
-    return min_height_diff
+def get_triples(n, k):
+    count = 0
+    for a in range(1, n+1):
+        for b in range(1, n+1):
+            for c in range(1, n+1):
+                if (a+b)%k == 0 and (b+c)%k == 0 and (c+a)%k == 0:
+                    count += 1
+    return count
+
+def main():
+    n, k = map(int, input().split())
+    print(get_triples(n, k))
+
+if __name__ == '__main__':
+    main()
 

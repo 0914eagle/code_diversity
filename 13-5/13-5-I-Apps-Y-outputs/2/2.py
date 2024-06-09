@@ -1,37 +1,27 @@
 
-def is_bridge(graph, edge):
-    # Check if the edge is a bridge by removing it and checking if the graph is still connected
-    graph.remove_edge(edge)
-    connected = is_connected(graph)
-    graph.add_edge(edge)
-    return not connected
+import math
 
-def count_bridges(graph):
-    bridges = 0
-    for edge in graph.edges:
-        if is_bridge(graph, edge):
-            bridges += 1
-    return bridges
+def get_points():
+    return [tuple(map(float, input().split())) for _ in range(4)]
 
-def is_connected(graph):
-    # Check if the graph is connected by checking if all vertices are reachable from the first vertex
-    queue = [0]
-    visited = set()
-    while queue:
-        vertex = queue.pop(0)
-        if vertex not in visited:
-            visited.add(vertex)
-            queue.extend(graph.neighbors(vertex))
-    return len(visited) == graph.v
+def get_angle(points):
+    ab, bc, cd = [points[i] - points[i-1] for i in range(1, 4)]
+    x = get_cross_product(ab, bc)
+    y = get_cross_product(bc, cd)
+    return math.degrees(math.acos(get_dot_product(x, y) / (get_magnitude(x) * get_magnitude(y))))
 
-def main():
-    n, m = map(int, input().split())
-    graph = UndirectedGraph(n)
-    for _ in range(m):
-        a, b = map(int, input().split())
-        graph.add_edge(a, b)
-    print(count_bridges(graph))
+def get_dot_product(v1, v2):
+    return sum(a * b for a, b in zip(v1, v2))
+
+def get_cross_product(v1, v2):
+    return (v1[1] * v2[2] - v1[2] * v2[1],
+            v1[2] * v2[0] - v1[0] * v2[2],
+            v1[0] * v2[1] - v1[1] * v2[0])
+
+def get_magnitude(v):
+    return math.sqrt(sum(a * a for a in v))
 
 if __name__ == '__main__':
-    main()
+    points = get_points()
+    print(get_angle(points))
 

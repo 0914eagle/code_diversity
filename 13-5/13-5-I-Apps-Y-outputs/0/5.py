@@ -1,27 +1,45 @@
 
-def get_sugar_water(A, B, C, D, E, F):
+def get_min_attacks(N, K, healths):
     # Initialize variables
-    sugar_water = 0
-    sugar_dissolved = 0
+    min_attacks = float('inf')
+    special_move_count = 0
+    healths = sorted(healths, reverse=True)
 
-    # Loop through all possible combinations of operations
-    for a in range(A, B + 1):
-        for c in range(C, D + 1):
-            # Calculate the mass of sugar water that can be made with the current combination of operations
-            sugar_water_temp = a + c
+    # Base case: if all monsters are already dead, return 0
+    if sum(healths) == 0:
+        return 0
 
-            # Check if the mass of sugar water is within the allowed range
-            if sugar_water_temp <= F:
-                # Calculate the mass of sugar dissolved in the sugar water
-                sugar_dissolved_temp = (c * E) // 100
+    # Recursive case: try all possible combinations of attacks and special moves
+    for i in range(N):
+        # Skip if monster is already dead
+        if healths[i] == 0:
+            continue
 
-                # Check if the mass of sugar dissolved is within the allowed range
-                if sugar_dissolved_temp <= sugar_water_temp:
-                    # Check if the current combination of operations results in the highest density sugar water
-                    if sugar_water_temp > sugar_water:
-                        sugar_water = sugar_water_temp
-                        sugar_dissolved = sugar_dissolved_temp
+        # Try attacking the current monster
+        healths[i] -= 1
+        attcks = get_min_attacks(N, K, healths)
 
-    # Return the mass of the desired sugar water and the mass of sugar dissolved in it
-    return sugar_water, sugar_dissolved
+        # Undo the attack and try special move if possible
+        if special_move_count < K:
+            healths[i] = 0
+            special_move_count += 1
+            attcks = min(attcks, get_min_attacks(N, K, healths))
+
+        # Update minimum number of attacks
+        min_attacks = min(min_attacks, attcks)
+
+        # Undo the special move if it was tried
+        if special_move_count > 0:
+            special_move_count -= 1
+            healths[i] = 1
+
+    return min_attacks
+
+def main():
+    N, K = map(int, input().split())
+    healths = list(map(int, input().split()))
+    print(get_min_attacks(N, K, healths))
+
+if __name__ == '__main__':
+    main()
 

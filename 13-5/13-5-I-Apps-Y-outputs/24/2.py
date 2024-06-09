@@ -1,24 +1,14 @@
 
-def is_good_number(n):
-    if n == 1:
-        return True
-    
-    while n > 1:
-        if n % 3 != 0:
-            return False
-        n //= 3
-    
-    return True
+def is_even(n):
+    return n % 2 == 0
 
-def find_next_good_number(n):
-    while not is_good_number(n):
-        n += 1
-    
-    return n
+def find_winner(n):
+    if is_even(n):
+        return "Bob"
+    else:
+        return "Alice"
 
-query_count = int(input())
-
-for _ in range(query_count):
+if __name__ == '__main__':
     n = int(input())
-    print(find_next_good_number(n))
+    print(find_winner(n))
 

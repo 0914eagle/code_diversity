@@ -1,46 +1,51 @@
 
-def solve(n, k, stages):
-    # Initialize the minimum weight to a large value
-    min_weight = float('inf')
-    # Loop through all possible combinations of stages
-    for combination in itertools.combinations(stages, k):
-        # Check if the combination satisfies the condition
-        if is_valid_combination(combination):
-            # Calculate the weight of the combination
-            weight = sum([stages.index(stage) for stage in combination])
-            # Update the minimum weight if necessary
-            min_weight = min(min_weight, weight)
-    # Return the minimum weight or -1 if it is impossible to build the rocket
-    return min_weight if min_weight < float('inf') else -1
+def f1(N, M, edges):
+    # Initialize the graph with N vertices and M edges
+    graph = [[] for _ in range(N)]
+    for edge in edges:
+        graph[edge[0] - 1].append((edge[1], edge[2]))
 
-# Check if a combination of stages satisfies the condition
-def is_valid_combination(combination):
-    for i in range(len(combination)):
-        # Check if the current stage is not the last stage in the combination
-        if i < len(combination) - 1:
-            # Check if the next stage is not adjacent in the alphabet
-            if stages.index(combination[i + 1]) - stages.index(combination[i]) != 2:
-                return False
-    return True
+    # Initialize the maximum score to 0
+    max_score = 0
 
-# Test the function with example inputs
-n = 5
-k = 3
-stages = "xyabd"
-print(solve(n, k, stages))
+    # Recursive function to find the maximum score
+    def find_max_score(vertex, score):
+        nonlocal max_score
+        if vertex == N - 1:
+            max_score = max(max_score, score)
+            return
+        for neighbor, weight in graph[vertex]:
+            find_max_score(neighbor, score + weight)
 
-n = 7
-k = 4
-stages = "problem"
-print(solve(n, k, stages))
+    # Start the recursive function at vertex 0 with a score of 0
+    find_max_score(0, 0)
 
-n = 2
-k = 2
-stages = "ab"
-print(solve(n, k, stages))
+    return max_score
 
-n = 12
-k = 1
-stages = "abaabbaaabbb"
-print(solve(n, k, stages))
+def f2(N, M, edges):
+    # Initialize the graph with N vertices and M edges
+    graph = [[] for _ in range(N)]
+    for edge in edges:
+        graph[edge[0] - 1].append((edge[1], edge[2]))
+
+    # Initialize the maximum score to 0
+    max_score = 0
+
+    # Iterative function to find the maximum score
+    queue = [(0, 0)]
+    while queue:
+        vertex, score = queue.pop(0)
+        if vertex == N - 1:
+            max_score = max(max_score, score)
+            continue
+        for neighbor, weight in graph[vertex]:
+            queue.append((neighbor, score + weight))
+
+    return max_score
+
+if __name__ == '__main__':
+    N, M = map(int, input().split())
+    edges = [list(map(int, input().split())) for _ in range(M)]
+    print(f1(N, M, edges))
+    print(f2(N, M, edges))
 

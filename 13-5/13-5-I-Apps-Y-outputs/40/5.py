@@ -1,18 +1,14 @@
 
-def sock_washer(socks, capacity, max_color_diff):
-    # Sort the socks by color
-    socks.sort()
-    # Initialize the number of machines to 0
-    num_machines = 0
-    # Loop through the socks
-    for i in range(len(socks)):
-        # Check if the current sock is within the maximum color difference of the previous sock
-        if i == 0 or abs(socks[i] - socks[i-1]) <= max_color_diff:
-            # If it is, continue using the current machine
-            continue
-        else:
-            # If it's not, start a new machine
-            num_machines += 1
-    # Return the number of machines needed
-    return num_machines + 1
+def get_next_larger_number(x):
+    x_list = list(str(x))
+    x_list.sort(reverse=True)
+    next_larger_number = int("".join(map(str, x_list)))
+    return next_larger_number
+
+def main():
+    x = int(input())
+    print(get_next_larger_number(x))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,24 +1,40 @@
 
-def solve(bombs, cords):
-    # Sort the bombs by their coordinates
-    bombs.sort(key=lambda x: x[0])
+def f1(w, h):
+    # Calculate the number of possible tilings
+    num_tilings = 0
+    for i in range(1, w+1):
+        for j in range(1, h+1):
+            if i == j:
+                num_tilings += 1
+            elif i == w-j+1:
+                num_tilings += 1
+            else:
+                num_tilings += 2
     
-    # Initialize the set of cords to cut
-    cords_to_cut = set()
+    # Calculate the remainder
+    remainder = num_tilings % 998244353
     
-    # Iterate through the cords
-    for cord in cords:
-        # Find the range of bombs that are affected by this cord
-        affected_bombs = [bomb for bomb in bombs if cord[0] <= bomb[0] <= cord[1]]
-        
-        # If all the affected bombs are deactivated, we can cut this cord
-        if all(not bomb[1] for bomb in affected_bombs):
-            cords_to_cut.add(cord[2])
+    return remainder
+
+def f2(w, h):
+    # Calculate the number of possible tilings
+    num_tilings = 0
+    for i in range(1, w+1):
+        for j in range(1, h+1):
+            if i == j:
+                num_tilings += 1
+            elif i == w-j+1:
+                num_tilings += 1
+            else:
+                num_tilings += 2
     
-    # If all the bombs are deactivated, return the set of cords to cut
-    if not any(bomb[1] for bomb in bombs):
-        return cords_to_cut
+    # Calculate the remainder
+    remainder = num_tilings % 998244353
     
-    # Otherwise, it is not possible to deactivate all the bombs
-    return -1
+    return remainder
+
+if __name__ == '__main__':
+    w, h = map(int, input().split())
+    print(f1(w, h))
+    print(f2(w, h))
 

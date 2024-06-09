@@ -1,22 +1,45 @@
 
-def solve(n, c, a, b):
-    # Initialize the minimum time to reach each floor as infinity
-    min_time = [float('inf')] * (n + 1)
-    # The minimum time to reach the first floor is 0
-    min_time[1] = 0
+def get_extra_bricks(h, n, m):
+    # Initialize variables
+    extra_2x2_bricks = 0
+    extra_4x2_bricks = 0
+    
+    # Iterate through each layer of the pyramid
+    for i in range(1, h + 1):
+        # Calculate the width of the layer
+        width = 2 * i
+        
+        # Calculate the number of bricks needed for the layer
+        num_bricks = width * i
+        
+        # Check if the layer can be completed with the given bricks
+        if num_bricks <= n:
+            # Subtract the number of bricks used from the total number of bricks
+            n -= num_bricks
+        else:
+            # Calculate the number of extra bricks needed for the layer
+            extra_bricks = num_bricks - n
+            
+            # Add the extra bricks to the total number of extra bricks
+            extra_2x2_bricks += extra_bricks // 2
+            extra_4x2_bricks += extra_bricks % 2
+            
+            # Subtract the number of bricks used from the total number of bricks
+            n = 0
+    
+    # Return the total number of extra bricks needed
+    return extra_2x2_bricks, extra_4x2_bricks
 
-    # Loop through each floor
-    for i in range(1, n + 1):
-        # Loop through each possible move
-        for j in range(1, n + 1):
-            # If the move is from the current floor to a higher floor
-            if j > i:
-                # Calculate the time to reach the higher floor using the stairs
-                stairs_time = min_time[i] + sum(a[k - 1] for k in range(i + 1, j + 1))
-                # Calculate the time to reach the higher floor using the elevator
-                elevator_time = min_time[i] + c + sum(b[k - 1] for k in range(i + 1, j + 1))
-                # Update the minimum time to reach the higher floor
-                min_time[j] = min(min_time[j], stairs_time, elevator_time)
+def main():
+    # Read the input
+    h, n, m = map(int, input().split())
+    
+    # Call the function to get the extra bricks needed
+    extra_2x2_bricks, extra_4x2_bricks = get_extra_bricks(h, n, m)
+    
+    # Print the output
+    print(extra_2x2_bricks, extra_4x2_bricks)
 
-    return min_time[1:]
+if __name__ == '__main__':
+    main()
 

@@ -1,14 +1,31 @@
 
-def solve(s, t):
-    if s == t:
-        return "automaton"
-    if len(s) != len(t):
-        return "tree"
-    for i in range(len(s)):
-        if s[i] != t[i]:
-            if s[i+1:] == t[i+1:]:
-                return "array"
-            if s[:i] == t[:i] and s[i+1:] == t[i+1:]:
-                return "automaton"
-    return "both"
+def get_mex(S):
+    mex = 0
+    for i in range(1, max(S) + 1):
+        if i not in S:
+            mex = i
+            break
+    return mex
+
+def get_max_strength(n, m, p, c, d, k):
+    clubs = [[] for _ in range(m)]
+    for i in range(n):
+        clubs[c[i] - 1].append(p[i])
+
+    max_strength = 0
+    for i in range(d):
+        if k[i] != 0:
+            clubs[c[k[i] - 1] - 1].remove(p[k[i] - 1])
+        mex = get_mex(clubs[i])
+        max_strength = max(max_strength, mex)
+
+    return max_strength
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    p = list(map(int, input().split()))
+    c = list(map(int, input().split()))
+    d = int(input())
+    k = list(map(int, input().split()))
+    print(get_max_strength(n, m, p, c, d, k))
 

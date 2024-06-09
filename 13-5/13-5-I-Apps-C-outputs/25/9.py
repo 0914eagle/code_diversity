@@ -1,15 +1,28 @@
 
-def find_possible_moves(numbers):
-    # Initialize a set to store the possible moves
-    possible_moves = set()
+def get_key_presses(word, dictionary):
+    key_presses = []
+    for char in word:
+        if char in dictionary:
+            key_presses.append(dictionary[char])
+        else:
+            key_presses.append("R")
+    return key_presses
 
-    # Iterate over the numbers
-    for i in range(len(numbers)):
-        # Check if the current number is odd
-        if numbers[i] % 2 == 1:
-            # If the current number is odd, add it to the set of possible moves
-            possible_moves.add(i)
+def get_optimal_key_presses(word, dictionary):
+    key_presses = get_key_presses(word, dictionary)
+    return "".join(key_presses)
 
-    # Return the length of the set of possible moves
-    return len(possible_moves)
+def main():
+    dictionary = {}
+    N = int(input())
+    for i in range(N):
+        word = input()
+        dictionary[word] = i + 1
+    Q = int(input())
+    for i in range(Q):
+        word = input()
+        print(get_optimal_key_presses(word, dictionary))
+
+if __name__ == '__main__':
+    main()
 

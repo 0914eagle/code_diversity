@@ -1,23 +1,76 @@
 
-def solve(n, k):
-    # Initialize a list to store the colors of the costumes
-    colors = [0] * n
-    
-    # Loop through each pair
-    for i in range(n):
-        # If this is an even pair, the man's color is the previous woman's color plus 1
-        if i % 2 == 0:
-            colors[i] = (colors[i-1] + 1) % k
-        # If this is an odd pair, the man's color is the previous man's color plus 1
-        else:
-            colors[i] = (colors[i-1] + 1) % k
-    
-    # Loop through each pair again to check for conflicts
-    for i in range(n):
-        # If the man's color is the same as the previous woman's color, or the woman's color is the same as the previous man's color, it's a conflict
-        if (colors[i] == colors[i-1] and i % 2 == 0) or (colors[i] == colors[(i-1)] and i % 2 == 1):
-            return "NO"
-    
-    # If we reach this point, there are no conflicts, so we can return the colors
-    return "YES\n" + "\n".join([str(colors[i]) + " " + str(colors[(i+1) % n]) for i in range(n)])
+def f1(n, m, edges, queries):
+    # Initialize a graph with n vertices and no edges
+    graph = [[] for _ in range(n + 1)]
+
+    # Add edges to the graph
+    for u, v, w in edges:
+        graph[u].append((v, w))
+        graph[v].append((u, w))
+
+    # DFS to find the shortest path between every pair of vertices
+    dist = [[float('inf')] * (n + 1) for _ in range(n + 1)]
+    for i in range(1, n + 1):
+        dist[i][i] = 0
+        for j in graph[i]:
+            dist[i][j[0]] = j[1]
+
+    # DP to find the maximum weight of an edge on a simple path between every pair of vertices
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            if i == j:
+                dp[i][j] = 0
+            else:
+                dp[i][j] = max(dp[i][k] + dp[k][j] for k in range(1, n + 1) if dist[i][k] + dist[k][j] <= queries[i - 1])
+
+    # Count the number of pairs of vertices with maximum weight less than or equal to the query
+    count = 0
+    for i in range(1, n + 1):
+        for j in range(i + 1, n + 1):
+            if dp[i][j] <= queries[i - 1]:
+                count += 1
+
+    return count
+
+def f2(n, m, edges, queries):
+    # Initialize a graph with n vertices and no edges
+    graph = [[] for _ in range(n + 1)]
+
+    # Add edges to the graph
+    for u, v, w in edges:
+        graph[u].append((v, w))
+        graph[v].append((u, w))
+
+    # DFS to find the shortest path between every pair of vertices
+    dist = [[float('inf')] * (n + 1) for _ in range(n + 1)]
+    for i in range(1, n + 1):
+        dist[i][i] = 0
+        for j in graph[i]:
+            dist[i][j[0]] = j[1]
+
+    # DP to find the maximum weight of an edge on a simple path between every pair of vertices
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            if i == j:
+                dp[i][j] = 0
+            else:
+                dp[i][j] = max(dp[i][k] + dp[k][j] for k in range(1, n + 1) if dist[i][k] + dist[k][j] <= queries[i - 1])
+
+    # Count the number of pairs of vertices with maximum weight less than or equal to the query
+    count = 0
+    for i in range(1, n + 1):
+        for j in range(i + 1, n + 1):
+            if dp[i][j] <= queries[i - 1]:
+                count += 1
+
+    return count
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    edges = [list(map(int, input().split())) for _ in range(n - 1)]
+    queries = list(map(int, input().split()))
+    print(f1(n, m, edges, queries))
+    print(f2(n, m, edges, queries))
 

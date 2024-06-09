@@ -1,18 +1,19 @@
 
-import math
+def get_phone_numbers(cards):
+    phone_numbers = []
+    for card in cards:
+        if len(card) == 11 and card.startswith("8"):
+            phone_numbers.append(card)
+    return phone_numbers
 
-def hopscotch(N, X, Y):
-    mod = 1000000007
-    dp = [[0] * (N + 1) for _ in range(N + 1)]
-    dp[0][0] = 1
-    for i in range(1, N + 1):
-        for j in range(1, N + 1):
-            for k in range(1, X + 1):
-                if i - k >= 0 and dp[i - k][j] > 0:
-                    dp[i][j] += dp[i - k][j]
-            for l in range(1, Y + 1):
-                if j - l >= 0 and dp[i][j - l] > 0:
-                    dp[i][j] += dp[i][j - l]
-            dp[i][j] %= mod
-    return dp[N][N]
+def get_maximum_phone_numbers(cards):
+    phone_numbers = get_phone_numbers(cards)
+    return len(phone_numbers)
+
+def main():
+    cards = input("Enter the cards with digits: ")
+    print(get_maximum_phone_numbers(cards))
+
+if __name__ == '__main__':
+    main()
 

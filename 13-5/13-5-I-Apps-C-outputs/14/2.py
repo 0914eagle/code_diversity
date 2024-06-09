@@ -1,41 +1,32 @@
 
-def solve(N, A, B):
-    # Initialize a dictionary to store the debts
-    debts = {}
-
-    # Iterate over the input and add the debts to the dictionary
-    for i in range(N):
-        debts[i + 1] = -B[i]
-
-    # Initialize a set to store the visited nodes
-    visited = set()
-
-    # Initialize a variable to store the total amount of money to be given
-    total_amount = 0
-
-    # Iterate until all debts are paid
-    while debts:
-        # Find the person with the maximum debt
-        max_debt = max(debts.items(), key=lambda x: x[1])
-
-        # If the person has a negative debt, they have enough money to pay back
-        if max_debt[1] < 0:
-            # Add the amount they have to the total amount
-            total_amount += -max_debt[1]
-
-            # Remove the person from the dictionary
-            del debts[max_debt[0]]
-
-            # Add the person to the visited set
-            visited.add(max_debt[0])
-
-            # Iterate over the dictionary and update the debts
-            for person, debt in debts.items():
-                if person not in visited:
-                    debts[person] += debt
+def is_ghost_appeared(wire_length, bend_points):
+    # Initialize the wire as a list of zeros and ones, with zeros representing the straight part of the wire and ones representing the curved part
+    wire = [0] * (wire_length + 1)
+    
+    # Iterate through the bend points and mark the corresponding part of the wire as curved
+    for point, direction in bend_points:
+        if direction == "C":
+            wire[point] = 1
+            wire[point + 1] = 1
         else:
-            # If the person does not have enough money to pay back, break the loop
-            break
+            wire[point] = 1
+            wire[point - 1] = 1
+    
+    # Check if the wire has touched itself at any point
+    for i in range(wire_length):
+        if wire[i] == 1 and wire[i + 1] == 1:
+            return "GHOST"
+    
+    return "SAFE"
 
-    return total_amount
+def main():
+    wire_length, num_bend_points = map(int, input().split())
+    bend_points = []
+    for _ in range(num_bend_points):
+        point, direction = map(int, input().split())
+        bend_points.append((point, direction))
+    print(is_ghost_appeared(wire_length, bend_points))
+
+if __name__ == "__main__":
+    main()
 

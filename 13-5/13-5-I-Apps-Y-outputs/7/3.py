@@ -1,22 +1,14 @@
 
-def is_wall_completed(a):
-    # Check if all parts of the wall have the same height
-    if len(set(a)) == 1:
-        return True
+def get_input():
+    return list(map(int, input().split()))
 
-    # Check if the wall has no empty spaces inside it
-    for i in range(len(a) - 1):
-        if a[i] != a[i + 1]:
-            return False
+def solve(X, Y, Z):
+    return (X - Y) // (Y + 2 * Z)
 
-    return True
+def main():
+    X, Y, Z = get_input()
+    print(solve(X, Y, Z))
 
-
-n = int(input())
-a = list(map(int, input().split()))
-
-if is_wall_completed(a):
-    print("YES")
-else:
-    print("NO")
+if __name__ == '__main__':
+    main()
 

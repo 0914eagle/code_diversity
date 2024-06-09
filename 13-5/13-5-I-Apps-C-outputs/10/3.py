@@ -1,49 +1,57 @@
 
-def get_cheapest_network(n, m, p, insecure_buildings, direct_lines):
-    # Initialize a graph with n buildings as nodes
-    graph = [[] for _ in range(n)]
+import math
 
-    # Add edges to the graph based on the direct lines
-    for x, y, cost in direct_lines:
-        graph[x - 1].append((y - 1, cost))
-        graph[y - 1].append((x - 1, cost))
+def get_candle_locations(n):
+    candle_locations = []
+    for i in range(n):
+        x, y = map(int, input().split())
+        candle_locations.append((x, y))
+    return candle_locations
 
-    # Initialize the cost of the network to 0
-    cost = 0
+def get_cut_lines(m):
+    cut_lines = []
+    for i in range(m):
+        a, b, c = map(int, input().split())
+        cut_lines.append((a, b, c))
+    return cut_lines
 
-    # Iterate through each insecure building
-    for building in insecure_buildings:
-        # Find the shortest path to all other buildings from the current insecure building
-        distances = dijkstra(graph, building - 1)
+def is_cut_valid(cut_line, candle_location):
+    a, b, c = cut_line
+    x, y = candle_location
+    return a*x + b*y + c == 0
 
-        # Add the cost of the shortest path to the total cost of the network
-        cost += min(distances)
+def is_piece_valid(piece, candle_locations):
+    for candle_location in candle_locations:
+        if not is_cut_valid(piece, candle_location):
+            return False
+    return True
 
-    return "impossible" if cost == float("inf") else cost
+def f1(n, m, r):
+    candle_locations = get_candle_locations(n)
+    cut_lines = get_cut_lines(m)
+    for candle_location in candle_locations:
+        piece = []
+        for cut_line in cut_lines:
+            if is_cut_valid(cut_line, candle_location):
+                piece.append(cut_line)
+        if not is_piece_valid(piece, candle_locations):
+            return "no"
+    return "yes"
 
-def dijkstra(graph, start):
-    # Initialize the distances from the start node to all other nodes as infinity
-    distances = [float("inf") for _ in range(len(graph))]
-    distances[start] = 0
+def f2(n, m, r):
+    candle_locations = get_candle_locations(n)
+    cut_lines = get_cut_lines(m)
+    for cut_line in cut_lines:
+        piece = []
+        for candle_location in candle_locations:
+            if is_cut_valid(cut_line, candle_location):
+                piece.append(candle_location)
+        if not is_piece_valid(piece, candle_locations):
+            return "no"
+    return "yes"
 
-    # Initialize a priority queue with the start node and its distance from the start node
-    queue = [(0, start)]
-
-    # Loop until the priority queue is empty
-    while queue:
-        # Get the node with the minimum distance from the start node
-        distance, node = heapq.heappop(queue)
-
-        # If the node has already been visited, skip it
-        if distance > distances[node]:
-            continue
-
-        # Update the distances of the node's neighbors
-        for neighbor, cost in graph[node]:
-            distance = distances[node] + cost
-            if distance < distances[neighbor]:
-                distances[neighbor] = distance
-                heapq.heappush(queue, (distance, neighbor))
-
-    return distances
+if __name__ == '__main__':
+    n, m, r = map(int, input().split())
+    print(f1(n, m, r))
+    print(f2(n, m, r))
 

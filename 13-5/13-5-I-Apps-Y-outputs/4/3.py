@@ -1,26 +1,23 @@
 
-def solve(N, L, pairs):
-    # Initialize a dictionary to store the items and their corresponding drawers
-    items = {}
-    for i in range(N):
-        items[i+1] = pairs[i]
-    
-    # Initialize a list to store the items that will be stored
-    stored_items = []
-    
-    # Iterate through the items and apply the rules to determine where they will be stored
-    for i in range(N):
-        item = items[i+1]
-        drawer_a, drawer_b = item
-        if drawer_a not in stored_items:
-            stored_items.append(drawer_a)
-            items[i+1] = (drawer_a, drawer_b)
-        elif drawer_b not in stored_items:
-            stored_items.append(drawer_b)
-            items[i+1] = (drawer_a, drawer_b)
-        else:
-            stored_items.append(item)
-    
-    # Return the list of items that will be stored
-    return stored_items
+def get_mentors(n, k, skills, pairs):
+    mentors = [0] * n
+    for i in range(n):
+        for j in range(i+1, n):
+            if skills[i] > skills[j] and (i, j) not in pairs and (j, i) not in pairs:
+                mentors[i] += 1
+                mentors[j] += 1
+    return mentors
+
+def main():
+    n, k = map(int, input().split())
+    skills = list(map(int, input().split()))
+    pairs = []
+    for _ in range(k):
+        x, y = map(int, input().split())
+        pairs.append((x, y))
+    mentors = get_mentors(n, k, skills, pairs)
+    print(*mentors, sep='\n')
+
+if __name__ == '__main__':
+    main()
 

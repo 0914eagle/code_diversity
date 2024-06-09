@@ -1,39 +1,29 @@
 
-def max_unique_identification(n, m, a):
-    # Initialize a list to store the number of burgers ordered on each day
-    burgers = [0] * m
+def read_points():
+    n = int(input())
+    points = []
+    for i in range(n):
+        x, y = map(int, input().split())
+        points.append((x, y))
+    return points
 
-    # Loop through the number of days
-    for i in range(m):
-        # If the number of burgers ordered is greater than the number of colleagues, return 0
-        if a[i] > n:
-            return 0
+def is_right_triangle(p1, p2, p3):
+    x1, y1 = p1
+    x2, y2 = p2
+    x3, y3 = p3
+    return (x1-x2)**2 + (y1-y2)**2 == (x2-x3)**2 + (y2-y3)**2
 
-        # If the number of burgers ordered is equal to the number of colleagues, return the number of colleagues
-        if a[i] == n:
-            return n
+def count_right_triangles(points):
+    n = len(points)
+    count = 0
+    for i in range(n-2):
+        for j in range(i+1, n-1):
+            for k in range(j+1, n):
+                if is_right_triangle(points[i], points[j], points[k]):
+                    count += 1
+    return count
 
-        # If the number of burgers ordered is less than the number of colleagues, update the list of burgers ordered
-        else:
-            burgers[i] = a[i]
-
-    # Initialize a variable to store the maximum number of unique identifications
-    max_identifications = 0
-
-    # Loop through the number of days
-    for i in range(m):
-        # If the number of burgers ordered is greater than the number of colleagues, return 0
-        if burgers[i] > n:
-            return 0
-
-        # If the number of burgers ordered is equal to the number of colleagues, return the number of colleagues
-        if burgers[i] == n:
-            return n
-
-        # If the number of burgers ordered is less than the number of colleagues, update the maximum number of unique identifications
-        else:
-            max_identifications = max(max_identifications, burgers[i])
-
-    # Return the maximum number of unique identifications
-    return max_identifications
+if __name__ == '__main__':
+    points = read_points()
+    print(count_right_triangles(points))
 

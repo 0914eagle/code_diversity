@@ -1,20 +1,43 @@
 
-def equalize_prices(a, k):
-    # Sort the prices in non-decreasing order
-    a.sort()
-    # Initialize the minimum difference between prices to infinity
-    min_diff = float('inf')
-    # Initialize the equal price to be returned
-    equal_price = -1
-    # Loop through the prices and find the minimum difference between them
-    for i in range(len(a) - 1):
-        diff = a[i + 1] - a[i]
-        if diff <= k:
-            min_diff = min(min_diff, diff)
-        else:
-            break
-    # If the minimum difference is less than or equal to k, return the average of the two closest prices
-    if min_diff <= k:
-        equal_price = (a[0] + a[-1]) // 2
-    return equal_price
+def is_valid_color_choosing(n, k, pairs):
+    # Check if there are any two completely identical pairs
+    for i in range(n):
+        for j in range(i+1, n):
+            if pairs[i] == pairs[j]:
+                return False
+    
+    # Check if there is a pair with costumes of the same color
+    for i in range(n):
+        if pairs[i][0] == pairs[i][1]:
+            return False
+    
+    # Check if for every two consecutive (adjacent) pairs, both man's costume colors and woman's costume colors differ
+    for i in range(n-1):
+        if pairs[i][0] == pairs[i+1][0] or pairs[i][1] == pairs[i+1][1]:
+            return False
+    
+    return True
+
+def get_color_choosing(n, k):
+    pairs = []
+    for i in range(n):
+        pair = []
+        for j in range(2):
+            pair.append(j+1)
+        pairs.append(pair)
+    
+    return pairs
+
+def main():
+    n, k = map(int, input().split())
+    pairs = get_color_choosing(n, k)
+    if is_valid_color_choosing(n, k, pairs):
+        print("YES")
+        for pair in pairs:
+            print(pair[0], pair[1])
+    else:
+        print("NO")
+
+if __name__ == '__main__':
+    main()
 

@@ -1,10 +1,10 @@
 {
     "inputs": [
-        "5 3\na\nb\nc\nd\ne\ncad\n",
-        "8 8\nfont\nlewin\ndarko\ndeon\nvanb\njohnb\nchuckr\ntgr\ndeonjohnbdarkotgrvanbchuckrfontlewin\n"
+        "32 20\n",
+        "2016 100\n"
     ],
     "outputs": [
-        "26\n",
-        "12451\n"
+        "16\n",
+        "42\n"
     ]
 }

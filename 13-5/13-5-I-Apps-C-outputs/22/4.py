@@ -1,57 +1,52 @@
 
-def solve(n, m, e, roads, exits, start_brothers, start_police):
-    # Initialize the minimum speed required to escape as infinity
-    min_speed = float('inf')
+def get_max_score(notes, sp_phrases):
+    
+    # Initialize variables
+    score = 0
+    sp_meter = 0
+    sp_activated = False
 
-    # Loop through all possible routes the brothers can take
-    for route in permutations(range(1, n + 1)):
-        # Initialize the current speed of the brothers' car as 0
-        curr_speed = 0
+    # Iterate through the notes and SP phrases
+    for i in range(len(notes)):
+        # Check if the current note is within an SP phrase
+        for sp_phrase in sp_phrases:
+            if notes[i] in range(sp_phrase[0], sp_phrase[1]):
+                # If the SP meter is not activated, activate it and add the SP phrase to the score
+                if not sp_activated:
+                    sp_meter += sp_phrase[1] - sp_phrase[0]
+                    score += sp_phrase[1] - sp_phrase[0]
+                    sp_activated = True
+                # If the SP meter is already activated, check if the current note is the first or last note of the SP phrase
+                else:
+                    if notes[i] == sp_phrase[0] or notes[i] == sp_phrase[1] - 1:
+                        score += 1
+                    else:
+                        score += 2
 
-        # Loop through each road in the route
-        for i in range(m):
-            # Get the current intersection and the next intersection
-            curr_intersection = route[i]
-            next_intersection = route[i + 1]
+        # If the current note is not within an SP phrase, add it to the score
+        if not sp_activated:
+            score += 1
 
-            # Get the length of the current road
-            length = roads[i][2]
+        # Decrement the SP meter by 1 if it is activated
+        if sp_activated:
+            sp_meter -= 1
+            if sp_meter == 0:
+                sp_activated = False
 
-            # Calculate the time it takes to travel the current road at the current speed
-            time = length / curr_speed
+    return score
 
-            # Calculate the distance the brothers' car will travel while the police car is traveling the current road
-            dist_brothers = curr_speed * time
+def main():
+    # Read input
+    n, p = map(int, input().split())
+    notes = list(map(int, input().split()))
+    sp_phrases = [list(map(int, input().split())) for _ in range(p)]
 
-            # Calculate the distance the police car will travel while the brothers' car is traveling the current road
-            dist_police = roads[i][2] / roads[i][1]
+    # Calculate maximum score
+    score = get_max_score(notes, sp_phrases)
 
-            # If the brothers' car will reach the next intersection before the police car, then the brothers can continue on their route
-            if dist_brothers <= dist_police:
-                # Update the current speed of the brothers' car
-                curr_speed = max(curr_speed, roads[i][1])
-            else:
-                # If the brothers' car will not reach the next intersection before the police car, then the brothers will be caught
-                break
+    # Print output
+    print(score)
 
-        # If the brothers were able to reach the end of their route, then calculate the minimum speed required to escape
-        if i == m - 1:
-            # Calculate the time it takes for the brothers' car to reach the highway exit
-            time = length / curr_speed
-
-            # Calculate the distance the brothers' car will travel while the police car is traveling the current road
-            dist_brothers = curr_speed * time
-
-            # Calculate the distance the police car will travel while the brothers' car is traveling the current road
-            dist_police = roads[i][2] / roads[i][1]
-
-            # If the brothers' car will reach the highway exit before the police car, then calculate the minimum speed required to escape
-            if dist_brothers <= dist_police:
-                min_speed = min(min_speed, curr_speed)
-
-    # If the minimum speed is infinity, then it is impossible to escape
-    if min_speed == float('inf'):
-        return "IMPOSSIBLE"
-    else:
-        return min_speed
+if __name__ == '__main__':
+    main()
 

@@ -1,18 +1,36 @@
 
-def is_bus_service_available(s):
-    # Check if the length of the string is 3
-    if len(s) != 3:
-        return "No"
-    
-    # Check if the string contains only A and B
-    if not s.isalpha():
-        return "No"
-    
-    # Check if there is a pair of stations that will be connected by a bus service
-    if s[0] == "A" and s[2] == "B":
-        return "Yes"
-    elif s[0] == "B" and s[1] == "A":
-        return "Yes"
-    else:
-        return "No"
+def get_diverse_garland(s):
+    n = len(s)
+    recolored_lamp = 0
+    for i in range(n-1):
+        if s[i] == s[i+1]:
+            recolored_lamp += 1
+            if s[i] == 'R':
+                s = s[:i] + 'G' + s[i+1:]
+            elif s[i] == 'G':
+                s = s[:i] + 'B' + s[i+1:]
+            else:
+                s = s[:i] + 'R' + s[i+1:]
+    return recolored_lamp, s
+
+def solve(s):
+    n = len(s)
+    recolored_lamp = 0
+    for i in range(n-1):
+        if s[i] == s[i+1]:
+            recolored_lamp += 1
+            if s[i] == 'R':
+                s = s[:i] + 'G' + s[i+1:]
+            elif s[i] == 'G':
+                s = s[:i] + 'B' + s[i+1:]
+            else:
+                s = s[:i] + 'R' + s[i+1:]
+    return recolored_lamp, s
+
+if __name__ == '__main__':
+    n = int(input())
+    s = input()
+    recolored_lamp, diverse_garland = solve(s)
+    print(recolored_lamp)
+    print(diverse_garland)
 

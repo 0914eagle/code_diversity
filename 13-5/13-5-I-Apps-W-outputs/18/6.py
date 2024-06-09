@@ -1,27 +1,30 @@
 
-def solve_coin_problem(grid):
+def get_max_emeralds(a, b):
     # Initialize variables
-    max_even_cells = 0
-    operations = []
+    emeralds = 0
+    sticks = a
+    diamonds = b
+    
+    # Craft as many shovels as possible
+    while sticks >= 2 and diamonds >= 1:
+        sticks -= 2
+        diamonds -= 1
+        emeralds += 1
+    
+    # Craft as many swords as possible
+    while diamonds >= 2 and sticks >= 1:
+        diamonds -= 2
+        sticks -= 1
+        emeralds += 1
+    
+    return emeralds
 
-    # Loop through each cell in the grid
-    for i in range(len(grid)):
-        for j in range(len(grid[0])):
-            # Check if the cell contains an even number of coins
-            if grid[i][j] % 2 == 0:
-                # Add the cell to the list of cells with an even number of coins
-                max_even_cells += 1
-                operations.append([i, j])
-            # Check if the cell contains an odd number of coins
-            elif grid[i][j] % 2 == 1:
-                # Check if the cell has a vertically or horizontally adjacent cell with an even number of coins
-                for k in range(len(grid)):
-                    for l in range(len(grid[0])):
-                        if grid[k][l] % 2 == 0 and (k == i or l == j):
-                            # Add the cell to the list of cells with an even number of coins
-                            max_even_cells += 1
-                            operations.append([i, j])
+def main():
+    tests = int(input())
+    for _ in range(tests):
+        a, b = map(int, input().split())
+        print(get_max_emeralds(a, b))
 
-    # Return the list of operations that maximizes the number of cells with an even number of coins
-    return operations
+if __name__ == '__main__':
+    main()
 

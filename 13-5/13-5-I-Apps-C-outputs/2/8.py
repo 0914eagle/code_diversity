@@ -1,21 +1,25 @@
 
-def solve(N, A, B):
-    # Calculate the total amount of meat eaten by all participants
-    total_meat = sum(A)
-    
-    # Calculate the ratio of ham to be distributed to each participant
-    ham_ratio = [ham / total_meat for ham in B]
-    
-    # Calculate the total amount of ham to be distributed
-    total_ham = sum(ham_ratio)
-    
-    # Check if the required order can be achieved
-    if total_ham % 1 != 0:
-        return -1
-    
-    # Calculate the amount of ham to be distributed to each participant
-    ham_per_participant = [int(total_ham * ratio) for ratio in ham_ratio]
-    
-    # Return the total amount of ham to be distributed
-    return sum(ham_per_participant)
+def get_input():
+    N = int(input())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    return N, a, b
+
+def solve(N, a, b):
+    # Initialize the solution with all A's
+    solution = ['A'] * N
+
+    # Loop through each candy and check if it should be given to Beata instead
+    for i in range(N):
+        if b[i] > a[i]:
+            solution[i] = 'B'
+
+    return ''.join(solution)
+
+def main():
+    N, a, b = get_input()
+    print(solve(N, a, b))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,27 +1,42 @@
 
-def solve(N, L, drawers):
-    items = {}
-    for i in range(N):
-        item = i + 1
-        drawer_a, drawer_b = drawers[i]
-        if drawer_a not in items:
-            items[drawer_a] = item
-        elif drawer_b not in items:
-            items[drawer_b] = item
-        else:
-            items[drawer_a] = item
-            items[drawer_b] = None
+def get_mentor_counts(skills, pairs_in_quarrel):
+    # Initialize a dictionary to store the count of mentors for each programmer
+    mentor_counts = {}
+    for i in range(len(skills)):
+        mentor_counts[i] = 0
     
-    result = []
-    for i in range(N):
-        item = i + 1
-        drawer_a, drawer_b = drawers[i]
-        if items[drawer_a] == item:
-            result.append("LADICA")
-        elif items[drawer_b] == item:
-            result.append("LADICA")
-        else:
-            result.append("SMECE")
+    # Iterate over the pairs of programmers in quarrel
+    for pair in pairs_in_quarrel:
+        # Get the indices of the programmers in the pair
+        i, j = pair
+        
+        # If the skill of the first programmer is greater than the skill of the second programmer
+        if skills[i] > skills[j]:
+            # Increment the count of mentors for the second programmer
+            mentor_counts[j] += 1
     
-    return result
+    return mentor_counts
+
+def main():
+    # Read the number of programmers and the number of pairs of programmers in quarrel
+    n, k = map(int, input().split())
+    
+    # Read the skills of each programmer
+    skills = list(map(int, input().split()))
+    
+    # Read the pairs of programmers in quarrel
+    pairs_in_quarrel = []
+    for _ in range(k):
+        pair = list(map(int, input().split()))
+        pairs_in_quarrel.append(pair)
+    
+    # Get the count of mentors for each programmer
+    mentor_counts = get_mentor_counts(skills, pairs_in_quarrel)
+    
+    # Print the count of mentors for each programmer
+    for i in range(n):
+        print(mentor_counts[i], end=" ")
+
+if __name__ == '__main__':
+    main()
 

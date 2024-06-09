@@ -1,24 +1,26 @@
 
-def solve(bombs, cords):
-    # Sort the bombs by their coordinates
-    bombs.sort(key=lambda x: x[0])
+def get_tilings(w, h):
+    # Initialize a 2D array to store the number of tilings for each cell
+    dp = [[0] * (h + 1) for _ in range(w + 1)]
     
-    # Initialize the set of cords to cut
-    cords_to_cut = set()
+    # Initialize the first row and column with 1, since they can only be filled with white tiles
+    for i in range(w + 1):
+        dp[i][0] = 1
+    for j in range(h + 1):
+        dp[0][j] = 1
     
-    # Iterate through the cords
-    for cord in cords:
-        # Check if the cord intersects with any bomb
-        for bomb in bombs:
-            # If the cord intersects with the bomb, add the cord to the set of cords to cut
-            if cord[0] <= bomb[0] <= cord[1] or cord[0] <= bomb[1] <= cord[1]:
-                cords_to_cut.add(cord[2])
-                break
+    # Fill in the rest of the 2D array using the recurrence relation
+    for i in range(1, w + 1):
+        for j in range(1, h + 1):
+            dp[i][j] = (dp[i - 1][j] + dp[i][j - 1]) % 998244353
     
-    # If all the bombs are deactivated, return the set of cords to cut
-    if all(bomb[1] == 0 for bomb in bombs):
-        return cords_to_cut
-    
-    # If not all the bombs are deactivated, return -1
-    return -1
+    # Return the number of tilings for the last cell
+    return dp[w][h]
+
+def main():
+    w, h = map(int, input().split())
+    print(get_tilings(w, h))
+
+if __name__ == '__main__':
+    main()
 

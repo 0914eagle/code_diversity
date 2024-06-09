@@ -1,48 +1,33 @@
 
-def solve(n, a, b):
-    # Initialize a list to store the current position of the statues
-    current_pos = [0] * n
+import math
+import random
+
+def is_overlapping(x1, y1, r1, x2, y2, r2):
+    return math.sqrt((x1-x2)**2 + (y1-y2)**2) <= r1 + r2
+
+def simulate_charge(trees, boar_radius, distance):
+    boar_x, boar_y = 0, 0
+    direction = random.uniform(0, 2*math.pi)
+    step_size = distance / 100
+    for i in range(100):
+        boar_x += step_size * math.cos(direction)
+        boar_y += step_size * math.sin(direction)
+        for tree in trees:
+            if is_overlapping(boar_x, boar_y, boar_radius, tree[0], tree[1], tree[2]):
+                return False
+    return True
+
+def f1(n, *args):
+    trees = []
     for i in range(n):
-        # If the current island has a statue, add it to the list
-        if a[i] != 0:
-            current_pos[i] = a[i]
-    
-    # Initialize a list to store the desired position of the statues
-    desired_pos = [0] * n
-    for i in range(n):
-        # If the current island has a statue, add it to the list
-        if b[i] != 0:
-            desired_pos[i] = b[i]
-    
-    # Check if the current position and desired position are the same
-    if current_pos == desired_pos:
-        return "YES"
-    
-    # Initialize a set to store the visited islands
-    visited = set()
-    # Initialize a queue to store the next islands to visit
-    queue = [0]
-    # Loop until the queue is empty
-    while queue:
-        # Get the current island from the queue
-        current_island = queue.pop(0)
-        # If the current island has a statue and it is not in the desired position, move it
-        if current_pos[current_island] != 0 and current_pos[current_island] != desired_pos[current_island]:
-            # Get the adjacent island with an empty pedestal
-            adjacent_island = (current_island + 1) % n
-            while current_pos[adjacent_island] != 0:
-                adjacent_island = (adjacent_island + 1) % n
-            # Move the statue from the current island to the adjacent island
-            current_pos[current_island] = 0
-            current_pos[adjacent_island] = current_pos[current_island]
-            # Add the current island to the visited set
-            visited.add(current_island)
-            # Add the adjacent island to the queue
-            queue.append(adjacent_island)
-    
-    # Check if all the statues are in the desired position
-    if current_pos == desired_pos:
-        return "YES"
-    else:
-        return "NO"
+        x, y, r = map(float, input().split())
+        trees.append((x, y, r))
+    b, d = map(float, input().split())
+    return simulate_charge(trees, b, d)
+
+def f2(...):
+    ...
+
+if __name__ == '__main__':
+    f1(...)
 

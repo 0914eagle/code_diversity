@@ -1,21 +1,32 @@
 
-def longest_monotone_subsequence(N, K):
-    # Initialize a list to store the required sequence
-    seq = []
-    
-    # Iterate from 1 to N
-    for i in range(1, N+1):
-        # If the length of the current sequence is less than K, add the current number to the sequence
-        if len(seq) < K:
-            seq.append(i)
-        # If the length of the current sequence is equal to K, remove the first number from the sequence and add the current number to the end
-        elif len(seq) == K:
-            seq.pop(0)
-            seq.append(i)
-    
-    # If the length of the sequence is not equal to N, it means that a valid sequence does not exist
-    if len(seq) != N:
-        return -1
-    
-    return " ".join(str(x) for x in seq)
+def get_lis_length(sequence):
+    # Implement your solution here
+    return len(sequence)
+
+def get_critical_elements(sequence):
+    # Find the longest increasing subsequence (LIS) of the sequence
+    lis = []
+    for i in range(len(sequence)):
+        if not lis or sequence[i] > lis[-1]:
+            lis.append(sequence[i])
+
+    # Find the critical elements in the LIS
+    critical_elements = []
+    for i in range(len(lis)):
+        if lis[i] != sequence[i]:
+            critical_elements.append(sequence[i])
+
+    return critical_elements
+
+def main():
+    n = int(input())
+    sequence = list(map(int, input().split()))
+    critical_elements = get_critical_elements(sequence)
+    if critical_elements:
+        print(*critical_elements)
+    else:
+        print(-1)
+
+if __name__ == '__main__':
+    main()
 

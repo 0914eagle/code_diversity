@@ -1,23 +1,14 @@
 
-def solve(C, N, M, cows, days):
-    # Initialize a dictionary to store the number of farms visited on each day
-    farms_visited = {}
-    
-    # Loop through each day
-    for d in days:
-        # Initialize the number of farms visited on this day to 0
-        farms_visited[d] = 0
-        
-        # Loop through each farm with at least one cow
-        for i in range(N):
-            # If the farm has more than C cows, move half of them to a new farm
-            if cows[i] > C:
-                cows[i] = int(cows[i] / 2)
-                cows.append(int(cows[i] / 2))
-            
-            # Increment the number of farms visited on this day
-            farms_visited[d] += 1
-    
-    # Return the number of farms visited on each day
-    return [farms_visited[d] for d in days]
+def get_number_of_digits(n):
+    return len(str(n))
+
+def get_label_for_book(n):
+    return get_number_of_digits(n)
+
+def get_total_number_of_digits(n):
+    return sum(get_label_for_book(i) for i in range(1, n + 1))
+
+if __name__ == '__main__':
+    n = int(input())
+    print(get_total_number_of_digits(n))
 

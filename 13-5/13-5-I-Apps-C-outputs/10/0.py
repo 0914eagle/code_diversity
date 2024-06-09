@@ -1,41 +1,50 @@
 
-def get_cheapest_network(n, m, p, insecure_buildings, connections):
-    # Initialize a graph with n buildings as nodes
-    graph = [[] for _ in range(n)]
+import math
 
-    # Add edges to the graph based on the connections
-    for x, y, cost in connections:
-        graph[x - 1].append((y - 1, cost))
-        graph[y - 1].append((x - 1, cost))
+def get_candle_locations(n):
+    candle_locations = []
+    for i in range(n):
+        x, y = map(float, input().split())
+        candle_locations.append((x, y))
+    return candle_locations
 
-    # Initialize the minimum spanning tree with the first building as the root
-    mst = [0]
-    visited = [False] * n
-    visited[0] = True
+def get_cut_lines(m):
+    cut_lines = []
+    for i in range(m):
+        a, b, c = map(float, input().split())
+        cut_lines.append((a, b, c))
+    return cut_lines
 
-    # Loop through the remaining buildings and add them to the MST
-    for i in range(1, n):
-        # Find the building with the minimum cost to connect to the MST
-        min_cost = float("inf")
-        min_index = 0
-        for j in range(n):
-            if not visited[j] and graph[j][0][1] < min_cost:
-                min_cost = graph[j][0][1]
-                min_index = j
+def is_valid_cut(cut, candle_locations):
+    for candle in candle_locations:
+        if cut[0] * candle[0] + cut[1] * candle[1] + cut[2] == 0:
+            return False
+    return True
 
-        # Add the building to the MST and mark it as visited
-        mst.append(min_index)
-        visited[min_index] = True
+def is_valid_candle(candle, cut_lines):
+    for cut in cut_lines:
+        if cut[0] * candle[0] + cut[1] * candle[1] + cut[2] == 0:
+            return False
+    return True
 
-    # Check if all insecure buildings are connected to the MST
-    for building in insecure_buildings:
-        if not visited[building - 1]:
-            return "impossible"
+def is_valid_partition(candle_locations, cut_lines):
+    for candle in candle_locations:
+        if not is_valid_candle(candle, cut_lines):
+            return False
+    for cut in cut_lines:
+        if not is_valid_cut(cut, candle_locations):
+            return False
+    return True
 
-    # Calculate the total cost of the MST
-    total_cost = 0
-    for i in range(1, n):
-        total_cost += graph[mst[i]][0][1]
+def main():
+    n, m, r = map(int, input().split())
+    candle_locations = get_candle_locations(n)
+    cut_lines = get_cut_lines(m)
+    if is_valid_partition(candle_locations, cut_lines):
+        print("yes")
+    else:
+        print("no")
 
-    return total_cost
+if __name__ == '__main__':
+    main()
 

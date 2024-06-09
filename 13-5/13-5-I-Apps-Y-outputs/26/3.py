@@ -1,31 +1,48 @@
 
-def get_max_zeroes(a, b):
-    # Calculate the sum of the absolute values of a and b
-    sum_abs = sum(map(abs, a)) + sum(map(abs, b))
+def get_shortest_path(packages):
+    # Initialize the shortest path as an empty string
+    shortest_path = ""
     
-    # Initialize the maximum number of zeroes to 0
-    max_zeroes = 0
-    
-    # Iterate over all possible values of d
-    for d in range(-sum_abs, sum_abs + 1):
-        # Initialize the number of zeroes to 0
-        zeroes = 0
+    # Loop through the packages and find the package that is farthest from the starting point (0, 0)
+    for package in packages:
+        # Calculate the distance between the package and the starting point
+        distance = abs(package[0]) + abs(package[1])
         
-        # Iterate over all elements of a and b
-        for i in range(len(a)):
-            # Calculate the value of c_i
-            c_i = d * a[i] + b[i]
-            
-            # Check if c_i is zero
-            if c_i == 0:
-                # Increment the number of zeroes
-                zeroes += 1
-        
-        # Check if the number of zeroes is greater than the maximum number of zeroes
-        if zeroes > max_zeroes:
-            # Update the maximum number of zeroes
-            max_zeroes = zeroes
+        # If the distance is greater than the current shortest distance, update the shortest distance and the shortest path
+        if distance > shortest_distance:
+            shortest_distance = distance
+            shortest_path = "U" * package[1] + "R" * package[0]
     
-    # Return the maximum number of zeroes
-    return max_zeroes
+    # Return the shortest path
+    return shortest_path
+
+def main():
+    # Read the number of test cases
+    num_test_cases = int(input())
+    
+    # Loop through the test cases
+    for _ in range(num_test_cases):
+        # Read the number of packages
+        num_packages = int(input())
+        
+        # Initialize the packages as a list of tuples (x, y)
+        packages = [(0, 0)]
+        
+        # Loop through the packages and read their coordinates
+        for _ in range(num_packages):
+            x, y = map(int, input().split())
+            packages.append((x, y))
+        
+        # Get the shortest path to collect all packages
+        shortest_path = get_shortest_path(packages)
+        
+        # Print "YES" if the shortest path is not empty, otherwise print "NO"
+        if shortest_path:
+            print("YES")
+            print(shortest_path)
+        else:
+            print("NO")
+
+if __name__ == '__main__':
+    main()
 

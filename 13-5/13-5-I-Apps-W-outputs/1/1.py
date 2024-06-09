@@ -1,18 +1,70 @@
 
-def get_max_deliciousness(x, y, a, b, c, p, q, r):
-    # Initialize a 2D array to store the maximum deliciousness for each possible combination of red and green apples
-    dp = [[0] * (b + 1) for _ in range(a + 1)]
+def f1(x):
+    # convert x to a string
+    x_str = str(x)
+    
+    # find the decimal point in the string
+    decimal_point_index = x_str.find(".")
+    
+    # if the decimal point is not found, return the input number
+    if decimal_point_index == -1:
+        return x
+    
+    # get the integer part of the number
+    integer_part = x_str[:decimal_point_index]
+    
+    # get the fractional part of the number
+    fractional_part = x_str[decimal_point_index+1:]
+    
+    # convert the fractional part to an integer
+    fractional_part_int = int(fractional_part)
+    
+    # calculate the exponent
+    exponent = len(fractional_part) - 1
+    
+    # convert the integer part to a float
+    float_part = float(integer_part)
+    
+    # calculate the final result
+    result = float_part * (10 ** exponent)
+    
+    # return the result
+    return result
 
-    # Initialize the first row and column of the array with the deliciousness of the colorless apples
-    for i in range(c + 1):
-        dp[0][i] = r[i]
-        dp[i][0] = 0
+def f2(x):
+    # convert x to a string
+    x_str = str(x)
+    
+    # find the decimal point in the string
+    decimal_point_index = x_str.find(".")
+    
+    # if the decimal point is not found, return the input number
+    if decimal_point_index == -1:
+        return x
+    
+    # get the integer part of the number
+    integer_part = x_str[:decimal_point_index]
+    
+    # get the fractional part of the number
+    fractional_part = x_str[decimal_point_index+1:]
+    
+    # convert the fractional part to an integer
+    fractional_part_int = int(fractional_part)
+    
+    # calculate the exponent
+    exponent = len(fractional_part) - 1
+    
+    # convert the integer part to a float
+    float_part = float(integer_part)
+    
+    # calculate the final result
+    result = float_part * (10 ** exponent)
+    
+    # return the result
+    return result
 
-    # Fill in the rest of the array using the recurrence relation
-    for i in range(1, a + 1):
-        for j in range(1, b + 1):
-            dp[i][j] = max(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1] + p[i - 1] + q[j - 1])
-
-    # Return the maximum deliciousness for the given combination of red and green apples
-    return dp[x][y]
+if __name__ == '__main__':
+    x = float(input())
+    print(f1(x))
+    print(f2(x))
 

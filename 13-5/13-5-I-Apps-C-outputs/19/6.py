@@ -1,28 +1,28 @@
 
-def get_max_unique_identifications(n, m, a_list):
-    # Initialize a list to store the number of burgers ordered on each day
-    burgers_ordered = [0] * (m + 1)
+def get_input():
+    N = int(input())
+    points = []
+    for i in range(N):
+        x, y = map(int, input().split())
+        points.append((x, y))
+    return points
 
-    # Iterate over the list of burgers ordered on each day
-    for i in range(m):
-        # Increment the number of burgers ordered on the current day
-        burgers_ordered[i] += a_list[i]
+def is_right_triangle(p1, p2, p3):
+    x1, y1 = p1
+    x2, y2 = p2
+    x3, y3 = p3
+    return (x1*x1 + y1*y1 == x2*x2 + y2*y2 + x3*x3 + y3*y3) and (x1*x1 + y1*y1 == x3*x3 + y3*y3 + x2*x2 + y2*y2) and (x2*x2 + y2*y2 == x3*x3 + y3*y3 + x1*x1 + y1*y1)
 
-        # If the current day is not the last day, increment the number of burgers ordered on the next day by the number of burgers ordered on the current day
-        if i != m - 1:
-            burgers_ordered[i + 1] += burgers_ordered[i]
+def count_right_triangles(points):
+    count = 0
+    for i in range(len(points)):
+        for j in range(i+1, len(points)):
+            for k in range(j+1, len(points)):
+                if is_right_triangle(points[i], points[j], points[k]):
+                    count += 1
+    return count
 
-    # Initialize a variable to store the maximum number of unique identifications
-    max_unique_identifications = 0
-
-    # Iterate over the list of burgers ordered on each day
-    for i in range(m):
-        # Calculate the number of unique identifications on the current day
-        unique_identifications = n - burgers_ordered[i]
-
-        # Update the maximum number of unique identifications if necessary
-        max_unique_identifications = max(max_unique_identifications, unique_identifications)
-
-    # Return the maximum number of unique identifications
-    return max_unique_identifications
+if __name__ == '__main__':
+    points = get_input()
+    print(count_right_triangles(points))
 

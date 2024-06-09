@@ -1,22 +1,31 @@
 
-def solve(n, permutation, sequence):
-    # Initialize a count of the number of elements to change
-    count = 0
-    
-    # Convert the permutation and sequence to lists
-    permutation = list(permutation)
-    sequence = list(sequence)
-    
-    # Iterate over each element in the permutation
-    for i in range(n):
-        # If the element is not in its correct position, increase the count
-        if permutation[i] != i + 1:
-            count += 1
-        
-        # If the element is in its correct position and the sequence is not 0, increase the count
-        if permutation[i] == i + 1 and sequence[i] == 1:
-            count += 1
-    
-    # Return the count
-    return count
+def get_common_substring(strings):
+    common_substring = ""
+    for i in range(len(strings[0])):
+        for j in range(len(strings[0]) - i):
+            if all(strings[0][i:i+j] in s for s in strings):
+                common_substring = strings[0][i:i+j]
+                break
+        if common_substring:
+            break
+    return common_substring
+
+def get_original_string(strings):
+    common_substring = get_common_substring(strings)
+    original_string = ""
+    for string in strings:
+        original_string += string.replace(common_substring, "")
+    return original_string
+
+def main():
+    k, n = map(int, input().split())
+    strings = [input() for _ in range(k)]
+    original_string = get_original_string(strings)
+    if len(original_string) == n:
+        print(original_string)
+    else:
+        print(-1)
+
+if __name__ == '__main__':
+    main()
 

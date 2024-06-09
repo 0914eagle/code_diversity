@@ -1,19 +1,31 @@
 
-def get_max_deliciousness(x, y, a, b, c, p, q, r):
-    # Initialize a 2D array to store the maximum deliciousness for each possible combination of eaten apples
-    dp = [[0] * (x + 1) for _ in range(y + 1)]
+def get_exponential_notation(x):
+    # Convert x to a string
+    x_str = str(x)
+    
+    # Find the index of the decimal point
+    decimal_index = x_str.find(".")
+    
+    # If the decimal point is not found, return the input number
+    if decimal_index == -1:
+        return x_str
+    
+    # Extract the digits before and after the decimal point
+    before_decimal = x_str[:decimal_index]
+    after_decimal = x_str[decimal_index+1:]
+    
+    # If the number is an integer, remove the decimal point
+    if after_decimal == "0":
+        return before_decimal
+    
+    # If the number is not an integer, add the decimal point back
+    else:
+        return before_decimal + "." + after_decimal
 
-    # Initialize the first row and column of the array with the deliciousness of the apples
-    for i in range(x + 1):
-        dp[0][i] = p[i]
-    for j in range(y + 1):
-        dp[j][0] = q[j]
+def main():
+    x = input()
+    print(get_exponential_notation(x))
 
-    # Fill in the rest of the array using the recurrence relation
-    for i in range(1, x + 1):
-        for j in range(1, y + 1):
-            dp[i][j] = max(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1] + r[i - 1] + q[j - 1])
-
-    # Return the maximum deliciousness for the given combination of eaten apples
-    return dp[x][y]
+if __name__ == '__main__':
+    main()
 

@@ -1,47 +1,82 @@
 
-def get_cheapest_network(n, m, p, insecure_buildings, connections):
-    # Initialize a graph with n nodes and 0 edges
-    graph = [[] for _ in range(n)]
+import math
 
-    # Add edges to the graph
-    for connection in connections:
-        x, y, cost = connection
-        graph[x - 1].append((y - 1, cost))
-        graph[y - 1].append((x - 1, cost))
-
-    # Find the minimum cost flow from source (0) to sink (n - 1) in the graph
-    flow = float("inf")
+def get_input():
+    n, m, r = map(int, input().split())
+    candles = []
     for i in range(n):
-        if i + 1 not in insecure_buildings:
-            continue
-        for j in range(n):
-            if j + 1 in insecure_buildings:
-                continue
-            flow = min(flow, find_min_cost_flow(graph, i, j))
+        x, y = map(int, input().split())
+        candles.append((x, y))
+    lines = []
+    for i in range(m):
+        a, b, c = map(int, input().split())
+        lines.append((a, b, c))
+    return n, m, r, candles, lines
 
-    return flow if flow < float("inf") else "impossible"
+def is_candle_on_line(candle, line):
+    a, b, c = line
+    x, y = candle
+    return a*x + b*y + c == 0
 
-def find_min_cost_flow(graph, source, sink):
-    # Initialize a queue and a visited array
-    queue = [source]
-    visited = [False] * len(graph)
+def is_candle_on_cut(candle, cuts):
+    for cut in cuts:
+        if is_candle_on_line(candle, cut):
+            return True
+    return False
 
-    # Loop until the queue is empty
-    while queue:
-        # Dequeue a node from the queue
-        node = queue.pop(0)
+def get_pieces(candles, cuts):
+    pieces = []
+    for candle in candles:
+        if not is_candle_on_cut(candle, cuts):
+            pieces.append(candle)
+    return pieces
 
-        # If the node is the sink, return the minimum cost flow
-        if node == sink:
-            return 0
+def is_valid_cut(cut, r):
+    a, b, c = cut
+    return a*a + b*b <= 100*100 and c >= 0 and c <= 20000 and math.sqrt(a*a + b*b) <= r
 
-        # If the node has not been visited, mark it as visited and add its neighbors to the queue
-        if not visited[node]:
-            visited[node] = True
-            for neighbor, cost in graph[node]:
-                if not visited[neighbor]:
-                    queue.append(neighbor)
+def is_valid_cuts(cuts, r):
+    for cut in cuts:
+        if not is_valid_cut(cut, r):
+            return False
+    return True
 
-    # If the sink is not reachable from the source, return infinity
-    return float("inf")
+def is_valid_candles(candles, r):
+    for candle in candles:
+        if not 0 <= math.sqrt(candle[0]*candle[0] + candle[1]*candle[1]) < r:
+            return False
+    return True
+
+def is_valid_input(n, m, r, candles, lines):
+    if not 1 <= n <= 50 or not 1 <= m <= 15 or not 1 <= r <= 100:
+        return False
+    if not is_valid_candles(candles, r) or not is_valid_cuts(lines, r):
+        return False
+    return True
+
+def f1(n, m, r, candles, lines):
+    if not is_valid_input(n, m, r, candles, lines):
+        return "no"
+    pieces = get_pieces(candles, lines)
+    if len(pieces) != n:
+        return "no"
+    for piece in pieces:
+        if not is_candle_on_cut(piece, lines):
+            return "no"
+    return "yes"
+
+def f2(n, m, r, candles, lines):
+    if not is_valid_input(n, m, r, candles, lines):
+        return "no"
+    pieces = get_pieces(candles, lines)
+    if len(pieces) != n:
+        return "no"
+    for piece in pieces:
+        if not is_candle_on_cut(piece, lines):
+            return "no"
+    return "yes"
+
+if __name__ == '__main__':
+    n, m, r, candles, lines = get_input()
+    print(f1(n, m, r, candles, lines))
 

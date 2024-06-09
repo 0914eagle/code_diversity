@@ -1,29 +1,47 @@
 
-def solve(N, u, p):
-    # Initialize variables
-    L = 1
-    M = 0
-    visited = [False] * (N + 1)
-    stack = []
+def is_valid_solution(grid):
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j] != 0 and grid[i][j] != i + 1:
+                return False
+    return True
 
-    # Start from the root
-    stack.append(1)
-    visited[1] = True
+def solve_sudoku(grid):
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j] == 0:
+                for num in range(1, len(grid) + 1):
+                    grid[i][j] = num
+                    if is_valid_solution(grid):
+                        if solve_sudoku(grid):
+                            return True
+                    grid[i][j] = 0
+    return False
 
-    while stack:
-        # Pop a vertex from the stack
-        vertex = stack.pop()
+def solve_superdoku(grid, k):
+    for i in range(k):
+        for j in range(len(grid[0])):
+            if grid[i][j] == 0:
+                for num in range(1, len(grid) + 1):
+                    grid[i][j] = num
+                    if is_valid_solution(grid):
+                        if solve_sudoku(grid):
+                            return True
+                    grid[i][j] = 0
+    return False
 
-        # Check if the vertex has a non-decreasing label
-        if u[vertex] >= u[p[vertex]]:
-            L = max(L, visited.count(True))
-            M += 1
+def main():
+    n, k = map(int, input().split())
+    grid = [[0] * n for _ in range(n)]
+    for i in range(k):
+        grid[i] = list(map(int, input().split()))
+    if solve_superdoku(grid, k):
+        print("yes")
+        for row in grid:
+            print(*row)
+    else:
+        print("no")
 
-        # Add the vertex's children to the stack
-        for i in range(N + 1):
-            if p[i] == vertex and not visited[i]:
-                stack.append(i)
-                visited[i] = True
-
-    return L, M % 11092019
+if __name__ == '__main__':
+    main()
 

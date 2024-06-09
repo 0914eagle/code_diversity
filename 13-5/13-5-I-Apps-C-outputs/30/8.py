@@ -1,27 +1,23 @@
 
-def reconstruct_painting(N, K, commands):
-    # Initialize the canvas with a 2D list of white cells
-    canvas = [[1] * N for _ in range(N)]
+def f1(n, m, roads, k, orders):
+    # Your code here
+    return max_wait_time
 
-    # Iterate through the commands and apply them to the canvas
-    for command in commands:
-        if command.startswith("PAINT"):
-            # Extract the colour and coordinates of the rectangle from the command
-            colour, x1, y1, x2, y2 = map(int, command.split()[1:])
+def f2(n, m, roads, k, orders):
+    # Your code here
+    return delivery_schedule
 
-            # Iterate over the cells in the rectangle and paint them with the chosen colour
-            for x in range(x1, x2 + 1):
-                for y in range(y1, y2 + 1):
-                    canvas[x][y] = colour
-
-        elif command.startswith("SAVE"):
-            # Save the current state of the canvas
-            pass
-
-        elif command.startswith("LOAD"):
-            # Load the saved state of the canvas
-            pass
-
-    # Return the final state of the canvas
-    return canvas
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    roads = []
+    for _ in range(m):
+        u, v, d = map(int, input().split())
+        roads.append((u, v, d))
+    k = int(input())
+    orders = []
+    for _ in range(k):
+        s, u, t = map(int, input().split())
+        orders.append((s, u, t))
+    print(f1(n, m, roads, k, orders))
+    print(f2(n, m, roads, k, orders))
 

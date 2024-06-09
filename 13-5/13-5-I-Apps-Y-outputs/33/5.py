@@ -1,14 +1,12 @@
 
-def get_visually_appealing_flag_patterns(S):
-    patterns = []
-    
-    for i in range(2, S+1):
-        for j in range(i, S+1):
-            if i % 2 == 0 and j % 2 == 1:
-                continue
-            if i + j > S:
-                break
-            patterns.append(f"{i},{j}")
-    
-    return patterns
+def can_buy_toy(coins, cost):
+    return sum(coins) >= cost
+
+def main():
+    coins = list(map(int, input().split()))
+    cost = int(input())
+    print("Yes") if can_buy_toy(coins, cost) else print("No")
+
+if __name__ == '__main__':
+    main()
 

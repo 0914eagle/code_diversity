@@ -1,20 +1,46 @@
 
-def solve(N, A, B):
-    # Calculate the total amount of meat eaten by all participants
-    total_meat = sum(A)
+def f1(N, a, b):
+    # Calculate the sum of the values of the candies for each sibling
+    sum_a = sum(a)
+    sum_b = sum(b)
     
-    # Calculate the ratio of meat eaten by each participant
-    ratio = [a / total_meat for a in A]
+    # Initialize the output string
+    output = ""
     
-    # Calculate the amount of ham needed to distribute
-    ham_needed = sum(b for b in B if b != 0)
+    # Loop through each candy and assign it to the sibling with the highest value
+    for i in range(N):
+        if a[i] >= b[i]:
+            output += "A"
+        else:
+            output += "B"
     
-    # Calculate the amount of ham each participant will receive
-    ham_each = [int(ham_needed * r) for r in ratio]
+    # Return the output string
+    return output
+
+def f2(N, a, b):
+    # Calculate the sum of the values of the candies for each sibling
+    sum_a = sum(a)
+    sum_b = sum(b)
     
-    # Check if the order can be achieved
-    if all(b == 0 or b == ham_each[i-1] for i, b in enumerate(B, 1)):
-        return ham_needed
-    else:
-        return -1
+    # Initialize the output string
+    output = ""
+    
+    # Loop through each candy and assign it to the sibling with the highest value
+    for i in range(N):
+        if a[i] > b[i]:
+            output += "A"
+        elif a[i] < b[i]:
+            output += "B"
+        else:
+            output += "A" if sum_a > sum_b else "B"
+    
+    # Return the output string
+    return output
+
+if __name__ == '__main__':
+    N = int(input())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    print(f1(N, a, b))
+    print(f2(N, a, b))
 

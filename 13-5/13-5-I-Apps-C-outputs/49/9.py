@@ -1,21 +1,45 @@
 
-def get_sphere_center(point1, point2, point3, point4):
-    x1, y1, z1 = point1
-    x2, y2, z2 = point2
-    x3, y3, z3 = point3
-    x4, y4, z4 = point4
+def get_minimum_path_length(n, m, roads):
+    # Initialize a dictionary to store the length of the path from each station to the endpoint
+    station_to_endpoint_length = {}
+    for road in roads:
+        u, v = road
+        if u not in station_to_endpoint_length:
+            station_to_endpoint_length[u] = 1
+        if v not in station_to_endpoint_length:
+            station_to_endpoint_length[v] = 1
+        station_to_endpoint_length[u] = max(station_to_endpoint_length[u], station_to_endpoint_length[v] + 1)
+    
+    # Initialize a dictionary to store the length of the path from each station to the starting station
+    station_to_starting_length = {}
+    for road in roads:
+        u, v = road
+        if v not in station_to_starting_length:
+            station_to_starting_length[v] = 1
+        if u not in station_to_starting_length:
+            station_to_starting_length[u] = 1
+        station_to_starting_length[v] = max(station_to_starting_length[v], station_to_starting_length[u] + 1)
+    
+    # Find the maximum length path
+    max_length = max(station_to_endpoint_length.values())
+    
+    # Find the minimum length path that a racer can achieve if at most one of the roads is blocked off
+    min_length = float('inf')
+    for road in roads:
+        u, v = road
+        if station_to_endpoint_length[u] + station_to_starting_length[v] - 1 < min_length:
+            min_length = station_to_endpoint_length[u] + station_to_starting_length[v] - 1
+    
+    return min_length
 
-    a1 = (x2 - x1) ** 2 + (y2 - y1) ** 2 + (z2 - z1) ** 2
-    b1 = 2 * ((x2 - x1) * (x3 - x1) + (y2 - y1) * (y3 - y1) + (z2 - z1) * (z3 - z1))
-    c1 = (x3 - x1) ** 2 + (y3 - y1) ** 2 + (z3 - z1) ** 2
+def main():
+    n, m = map(int, input().split())
+    roads = []
+    for _ in range(m):
+        u, v = map(int, input().split())
+        roads.append((u, v))
+    print(get_minimum_path_length(n, m, roads))
 
-    a2 = (x3 - x1) ** 2 + (y3 - y1) ** 2 + (z3 - z1) ** 2
-    b2 = 2 * ((x3 - x1) * (x4 - x1) + (y3 - y1) * (y4 - y1) + (z3 - z1) * (z4 - z1))
-    c2 = (x4 - x1) ** 2 + (y4 - y1) ** 2 + (z4 - z1) ** 2
-
-    xc = (b1 * c2 - b2 * c1) / (a1 * c2 - a2 * c1)
-    yc = (b1 * c2 - b2 * c1) / (b1 * a2 - b2 * a1)
-    zc = 0
-
-    return xc, yc, zc
+if __name__ == '__main__':
+    main()
 

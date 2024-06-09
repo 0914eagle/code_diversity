@@ -1,31 +1,33 @@
 
-def solve(n, cards):
-    # Sort the cards in increasing order
-    cards.sort()
+def get_subrectangles(grid):
+    # Initialize a dictionary to store the number of subrectangles for each number of black cells
+    subrectangles = {i: 0 for i in range(10)}
+    
+    # Loop through each row of the grid
+    for i in range(len(grid)):
+        # Loop through each column of the grid
+        for j in range(len(grid[0])):
+            # If the current cell is black, increment the number of subrectangles for each number of black cells
+            if grid[i][j] == 1:
+                for k in range(1, 10):
+                    subrectangles[k] += 1
+    
+    return subrectangles
 
-    # Initialize the number of integers that can be written on the card
-    num_integers = 0
+def main():
+    # Read the input grid
+    H, W, N = map(int, input().split())
+    grid = []
+    for _ in range(H):
+        grid.append(list(map(int, input().split())))
+    
+    # Get the number of subrectangles for each number of black cells
+    subrectangles = get_subrectangles(grid)
+    
+    # Print the number of subrectangles for each number of black cells
+    for i in range(10):
+        print(subrectangles[i])
 
-    # Initialize the list of integers that can be written on the card
-    integers = []
-
-    # Check if the cards form an arithmetic progression
-    if n == 1:
-        # If there is only one card, we can write any integer on it
-        num_integers = -1
-    elif n == 2:
-        # If there are two cards, we can write any two distinct integers on them
-        num_integers = -1
-    else:
-        # If there are three or more cards, we need to check if the difference between the first two cards is equal to the difference between the second and third cards, and so on
-        for i in range(1, n):
-            if cards[i] - cards[i-1] != cards[1] - cards[0]:
-                # If the differences are not equal, we cannot form an arithmetic progression
-                break
-        else:
-            # If the differences are equal for all pairs of consecutive cards, we can form an arithmetic progression
-            num_integers = 1
-            integers.append(cards[1] - cards[0])
-
-    return num_integers, integers
+if __name__ == '__main__':
+    main()
 

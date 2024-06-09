@@ -1,34 +1,35 @@
 
-def get_longest_path(N, M, roads):
-    # Initialize a dictionary to store the lengths of simple paths
-    path_lengths = {}
+def get_optimal_solution(n, m, s, a, b, c):
+    # Sort the bugs by complexity in descending order
+    sorted_bugs = sorted(range(m), key=lambda i: a[i], reverse=True)
 
-    # Iterate over each road
-    for road in roads:
-        # Get the length of the simple path starting from the first city and ending at the second city
-        path_length = get_simple_path_length(N, road[0], road[1], path_lengths)
+    # Initialize the students' passes and the number of days needed to fix the bugs
+    passes = [0] * n
+    days = 0
 
-        # If the path length is greater than the current longest path length, update the longest path length
-        if path_length > longest_path_length:
-            longest_path_length = path_length
+    # Iterate through the bugs and assign them to the students
+    for i in sorted_bugs:
+        # Find the student with the highest level of ability who can fix the current bug
+        student = max(range(n), key=lambda j: b[j] - a[i])
 
-    # Return the longest path length
-    return longest_path_length
+        # Increment the student's passes and the number of days needed to fix the bug
+        passes[student] += 1
+        days += 1
 
-def get_simple_path_length(N, city1, city2, path_lengths):
-    # If the path has already been calculated, return the stored length
-    if (city1, city2) in path_lengths:
-        return path_lengths[(city1, city2)]
+        # If the total number of passes exceeds the maximum allowed by the university, return "NO"
+        if sum(passes) > s:
+            return "NO"
 
-    # If the path has not been calculated, calculate the length
-    path_length = 0
-    if city1 != city2:
-        # Get the length of the simple path starting from the first city and ending at the second city
-        path_length = get_simple_path_length(N, city1, city2, path_lengths)
+    # If all bugs are fixed, return "YES" and the schedule of work
+    return "YES\n" + " ".join(map(str, passes))
 
-    # Store the length of the simple path in the dictionary
-    path_lengths[(city1, city2)] = path_length
+def main():
+    n, m, s = map(int, input().split())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    c = list(map(int, input().split()))
+    print(get_optimal_solution(n, m, s, a, b, c))
 
-    # Return the length of the simple path
-    return path_length
+if __name__ == '__main__':
+    main()
 

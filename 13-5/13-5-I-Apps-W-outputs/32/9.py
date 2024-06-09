@@ -1,34 +1,24 @@
 
-def solve(n, s, q, l_r):
-    # Initialize a set to store the unique pitches
-    unique_pitches = set()
+def is_good_table(table):
+    for i in range(len(table) - 1):
+        if table[i] > table[i + 1]:
+            return False
+    return True
 
-    # Iterate over each question
-    for l, r in l_r:
-        # Iterate over each string
-        for i in range(n):
-            # Add the pitches between l and r (inclusive) to the set
-            unique_pitches.update(s[i] + j for j in range(l, r + 1))
+def remove_column(table, col):
+    return [row[:col] + row[col + 1:] for row in table]
 
-        # Return the length of the set
-        yield len(unique_pitches)
+def min_columns_to_make_good(table):
+    if is_good_table(table):
+        return 0
+    min_columns = len(table[0])
+    for col in range(len(table[0])):
+        new_table = remove_column(table, col)
+        min_columns = min(min_columns, 1 + min_columns_to_make_good(new_table))
+    return min_columns
 
-    # Close the input stream
-    input_stream.close()
-
-if __name__ == "__main__":
-    # Read the input
-    n = int(input())
-    s = list(map(int, input().split()))
-    q = int(input())
-    l_r = []
-    for _ in range(q):
-        l, r = map(int, input().split())
-        l_r.append((l, r))
-
-    # Solve the problem
-    result = solve(n, s, q, l_r)
-
-    # Print the result
-    print(*result, sep="\n")
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    table = [input() for _ in range(n)]
+    print(min_columns_to_make_good(table))
 

@@ -1,35 +1,39 @@
 
-def is_handsome(n):
-    n_str = str(n)
-    for i in range(len(n_str) - 1):
-        if n_str[i] == n_str[i + 1]:
-            return False
-    return True
+def get_smallest_number_of_columns_to_delete(table):
+    # Initialize variables
+    num_columns = len(table[0])
+    num_rows = len(table)
+    columns_to_delete = []
 
-def get_closest_handsome_number(n):
-    n_str = str(n)
-    for i in range(len(n_str) - 1):
-        if n_str[i] == n_str[i + 1]:
-            break
-    else:
-        return n
+    # Iterate through each column
+    for column in range(num_columns):
+        # Check if the column is identical in all rows
+        identical = True
+        for row in range(num_rows):
+            if table[row][column] != table[0][column]:
+                identical = False
+                break
 
-    left_digit = n_str[i]
-    right_digit = n_str[i + 1]
-    if left_digit == "9" and right_digit == "9":
-        return int(n_str[:i] + "8" + n_str[i + 2:])
-    elif left_digit == "9":
-        return int(n_str[:i] + "8" + n_str[i + 1:])
-    elif right_digit == "9":
-        return int(n_str[:i + 1] + "8" + n_str[i + 2:])
-    else:
-        return int(n_str[:i] + "9" + n_str[i + 1:])
+        # If the column is not identical in all rows, add it to the list of columns to delete
+        if not identical:
+            columns_to_delete.append(column)
+
+    # Return the smallest number of columns to delete
+    return len(columns_to_delete)
 
 def main():
-    n = int(input())
-    handsome_number = get_closest_handsome_number(n)
-    print(handsome_number)
+    # Read input from stdin
+    num_columns = int(input())
+    table = []
+    for _ in range(3):
+        table.append(list(map(int, input().split())))
 
-if __name__ == "__main__":
+    # Call the function to get the smallest number of columns to delete
+    result = get_smallest_number_of_columns_to_delete(table)
+
+    # Print the result
+    print(result)
+
+if __name__ == '__main__':
     main()
 

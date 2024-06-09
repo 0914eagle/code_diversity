@@ -1,30 +1,48 @@
 
-def solve(N, labels, tree):
-    # Initialize variables
-    L = 0
-    M = 0
-    
-    # Iterate through the tree and find the longest jumping path
-    for i in range(1, N+1):
-        # If the current vertex is the root, skip it
-        if i == 1:
-            continue
-        
-        # Find the parent of the current vertex
-        parent = tree[i-1]
-        
-        # If the parent has a lower label, skip the current vertex
-        if labels[parent-1] > labels[i-1]:
-            continue
-        
-        # If the current vertex has a higher label than the root, update L
-        if labels[i-1] > labels[0]:
-            L = max(L, i)
-        
-        # If the current vertex has a higher label than the parent, update M
-        if labels[i-1] > labels[parent-1]:
-            M += 1
-    
-    # Return the length of the longest jumping path and the number of jumping paths modulo 11092019
-    return L, M % 11092019
+def is_solvable(grid):
+    n = len(grid)
+    for i in range(n):
+        for j in range(n):
+            if grid[i][j] == 0:
+                return True
+    return False
+
+def solve(grid):
+    n = len(grid)
+    for i in range(n):
+        for j in range(n):
+            if grid[i][j] == 0:
+                for k in range(1, n+1):
+                    if is_safe(grid, i, j, k):
+                        grid[i][j] = k
+                        if solve(grid):
+                            return True
+                        grid[i][j] = 0
+                return False
+    return True
+
+def is_safe(grid, row, col, num):
+    for i in range(len(grid)):
+        if grid[row][i] == num or grid[i][col] == num:
+            return False
+    for i in range(row//3*3, row//3*3+3):
+        for j in range(col//3*3, col//3*3+3):
+            if grid[i][j] == num:
+                return False
+    return True
+
+def main():
+    n, k = map(int, input().split())
+    grid = [[0] * n for _ in range(n)]
+    for i in range(k):
+        grid[i] = list(map(int, input().split()))
+    if is_solvable(grid):
+        solve(grid)
+        for row in grid:
+            print(*row)
+    else:
+        print("No solution exists")
+
+if __name__ == '__main__':
+    main()
 

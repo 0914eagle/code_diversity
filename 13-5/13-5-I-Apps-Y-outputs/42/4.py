@@ -1,33 +1,41 @@
 
-def solve(n, q, p, queries):
-    # Initialize a list to store the order in which officers receive the command
-    order = []
+def f1(n, k, d):
+    # find all possible pairs of boxes that can be given as gifts
+    pairs = []
+    for i in range(n):
+        for j in range(i+1, n):
+            if (d[i] + d[j]) % k == 0:
+                pairs.append((i, j))
     
-    # Iterate over each query
-    for query in queries:
-        # Initialize a set to store the indices of the officers who have received the command
-        received = set()
-        
-        # Initialize the current officer as the query officer
-        current = query[0]
-        
-        # Iterate until the command is spread to all officers
-        while len(received) < n:
-            # Add the current officer to the set of received officers
-            received.add(current)
-            
-            # If the current officer has direct subordinates, choose the subordinate with the minimum index
-            if current in p:
-                current = min(p[current], key=lambda x: x not in received)
-            # Otherwise, the command has been spread to all officers
-            else:
-                break
-            
-            # Add the current officer to the order list
-            order.append(current)
-        
-        # Print the required officer in the order list or -1 if there are fewer than k officers
-        print(order[query[1] - 1] if query[1] <= len(order) else -1)
+    # find the maximum number of pairs that can be given as gifts
+    max_pairs = 0
+    for i in range(len(pairs)):
+        for j in range(i+1, len(pairs)):
+            if pairs[i][0] != pairs[j][0] and pairs[i][1] != pairs[j][1]:
+                max_pairs += 1
     
-    return order
+    return max_pairs
+
+def f2(n, k, d):
+    # find all possible pairs of boxes that can be given as gifts
+    pairs = []
+    for i in range(n):
+        for j in range(i+1, n):
+            if (d[i] + d[j]) % k == 0:
+                pairs.append((i, j))
+    
+    # find the maximum number of pairs that can be given as gifts
+    max_pairs = 0
+    for i in range(len(pairs)):
+        for j in range(i+1, len(pairs)):
+            if pairs[i][0] != pairs[j][0] and pairs[i][1] != pairs[j][1]:
+                max_pairs += 1
+    
+    return max_pairs
+
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    d = list(map(int, input().split()))
+    print(f1(n, k, d))
+    print(f2(n, k, d))
 

@@ -1,37 +1,56 @@
 
-def get_min_extensions(a, b, h, w, n, extensions):
-    # Sort the extensions in descending order
-    extensions.sort(reverse=True)
+def f1(S):
+    # Initialize variables
+    n = len(S)
+    lights = [int(i) for i in S]
+    time = 0
+    pressed = 0
 
-    # Initialize the minimum number of extensions needed to be 0
-    min_extensions = 0
+    # Loop through each timestep
+    while pressed < n:
+        # Check if any light is off
+        if any(lights):
+            # Find the first off light and press its button
+            for i in range(n):
+                if not lights[i]:
+                    lights[i] = 1
+                    pressed += 1
+                    break
+        # Update the lights based on the propagation
+        for i in range(n):
+            if lights[i]:
+                lights[(i+1)%n] = 1 - lights[(i+1)%n]
+        time += 1
 
-    # Loop through the extensions and check if they can be used to enlarge the field
-    for extension in extensions:
-        # Check if the extension can be used to enlarge the width of the field
-        if extension <= w:
-            # Enlarge the width of the field by the extension
-            w *= extension
+    return time
 
-            # Check if the rectangle can be placed on the field after enlarging the width
-            if w >= a:
-                # Break the loop and return the minimum number of extensions needed
-                break
+def f2(S):
+    # Initialize variables
+    n = len(S)
+    lights = [int(i) for i in S]
+    time = 0
+    pressed = 0
 
-        # Check if the extension can be used to enlarge the length of the field
-        if extension <= h:
-            # Enlarge the length of the field by the extension
-            h *= extension
+    # Loop through each timestep
+    while pressed < n:
+        # Check if any light is off
+        if any(lights):
+            # Find the first off light and press its button
+            for i in range(n):
+                if not lights[i]:
+                    lights[i] = 1
+                    pressed += 1
+                    break
+        # Update the lights based on the propagation
+        for i in range(n):
+            if lights[i]:
+                lights[(i+1)%n] = 1 - lights[(i+1)%n]
+        time += 1
 
-            # Check if the rectangle can be placed on the field after enlarging the length
-            if h >= b:
-                # Break the loop and return the minimum number of extensions needed
-                break
+    return time
 
-    # If the rectangle can be placed on the field, return the minimum number of extensions needed
-    if w >= a and h >= b:
-        return min_extensions
-
-    # If the rectangle can't be placed on the field, return -1
-    return -1
+if __name__ == '__main__':
+    S = input()
+    print(f1(S))
+    print(f2(S))
 

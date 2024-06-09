@@ -1,27 +1,31 @@
 
-def create_bit_string(a, b, c, d):
-    # Initialize an empty bit string
-    bit_string = ""
+def get_min_rest_days(n, activities):
+    # Initialize variables
+    rest_days = 0
+    last_activity = None
 
-    # Check if the given conditions are valid
-    if a + b + c + d > 10**9:
-        return "impossible"
+    # Iterate through the list of activities
+    for activity in activities:
+        # Check if the current activity is the same as the last activity
+        if activity == last_activity:
+            # If it is, increase the number of rest days
+            rest_days += 1
+        # Check if the current activity is different from the last activity
+        elif activity != last_activity:
+            # If it is, set the last activity to the current activity
+            last_activity = activity
 
-    # Add 0s to the bit string to satisfy the first condition
-    for i in range(a):
-        bit_string += "0"
+    # Return the minimum number of rest days
+    return rest_days
 
-    # Add 1s to the bit string to satisfy the second condition
-    for i in range(b):
-        bit_string += "1"
+def main():
+    # Read the number of days and the list of activities from stdin
+    n = int(input())
+    activities = list(map(int, input().split()))
 
-    # Add 0s to the bit string to satisfy the third condition
-    for i in range(c):
-        bit_string += "0"
+    # Call the get_min_rest_days function and print the result
+    print(get_min_rest_days(n, activities))
 
-    # Add 1s to the bit string to satisfy the fourth condition
-    for i in range(d):
-        bit_string += "1"
-
-    return bit_string
+if __name__ == '__main__':
+    main()
 

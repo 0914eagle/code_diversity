@@ -1,29 +1,34 @@
 
-def solve(n, edges, colors):
-    # Create a graph with n vertices and m edges
-    graph = [[] for _ in range(n)]
-    for i in range(n - 1):
-        graph[edges[i] - 1].append(edges[i + 1] - 1)
+def f1(N, colors):
+    # Initialize the number of operations to 0
+    operations = 0
+    
+    # Loop through the colors from left to right
+    for i in range(N):
+        # If the current color is white and the next color is red, swap them
+        if colors[i] == "W" and colors[i+1] == "R":
+            operations += 1
+            colors[i], colors[i+1] = colors[i+1], colors[i]
+    
+    # Return the number of operations needed
+    return operations
 
-    # Initialize the color of the root vertex as 1
-    color = 1
-    visited = [False] * n
-    queue = [0]
-    visited[0] = True
+def f2(N, colors):
+    # Initialize the number of operations to 0
+    operations = 0
+    
+    # Loop through the colors from left to right
+    for i in range(N):
+        # If the current color is white and the previous color is red, change the color to red
+        if colors[i] == "W" and colors[i-1] == "R":
+            operations += 1
+            colors[i] = "R"
+    
+    # Return the number of operations needed
+    return operations
 
-    # Breadth-first search to color the tree
-    while queue:
-        vertex = queue.pop(0)
-        for neighbor in graph[vertex]:
-            if not visited[neighbor]:
-                visited[neighbor] = True
-                queue.append(neighbor)
-                color = colors[neighbor]
-        for i in range(n):
-            if graph[vertex][i] == neighbor:
-                colors[neighbor] = color
-                break
-
-    # Return the number of steps
-    return color
+if __name__ == '__main__':
+    N = int(input())
+    colors = input()
+    print(min(f1(N, colors), f2(N, colors)))
 

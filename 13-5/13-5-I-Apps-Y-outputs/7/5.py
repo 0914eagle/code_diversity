@@ -1,13 +1,14 @@
 
-def is_vova_wall_complete(wall_heights):
-    # Check if the wall is already complete
-    if all(wall_heights[0] == height for height in wall_heights):
-        return True
+def get_input():
+    return list(map(int, input().split()))
 
-    # Check if the wall can be completed using any amount of bricks
-    for i in range(len(wall_heights) - 1):
-        if wall_heights[i] == wall_heights[i + 1]:
-            return True
+def get_max_people(seat_width, person_width, min_gap):
+    return (seat_width - person_width) // (person_width + min_gap)
 
-    return False
+def main():
+    seat_width, person_width, min_gap = get_input()
+    print(get_max_people(seat_width, person_width, min_gap))
+
+if __name__ == '__main__':
+    main()
 

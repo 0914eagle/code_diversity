@@ -1,27 +1,36 @@
 
-def count_intersections(lines):
-    # Initialize a set to store the unique points
-    points = set()
+def get_character_type(statement):
+    if statement == "truther":
+        return "truther"
+    elif statement == "fabulist":
+        return "fabulist"
+    elif statement == "charlatan":
+        return "charlatan"
+    elif statement.startswith("not "):
+        return "not " + get_character_type(statement[4:])
+    elif statement.startswith("and "):
+        return "and " + get_character_type(statement[4:])
+    elif statement.startswith("xor "):
+        return "xor " + get_character_type(statement[4:])
+    else:
+        raise ValueError("Invalid statement")
 
-    # Iterate over the lines
-    for line in lines:
-        # Get the endpoints of the line
-        x1, y1, x2, y2 = line
+def get_candidate_types(transcript):
+    candidate_types = {}
+    for line in transcript.splitlines():
+        speaker, statement = line.split(" ", maxsplit=1)
+        speaker = int(speaker)
+        character_type = get_character_type(statement)
+        candidate_types[speaker] = character_type
+    return candidate_types
 
-        # Check if the line is horizontal, vertical, or diagonal
-        if x1 == x2:
-            # Line is horizontal, add the y-coordinate of the endpoints to the set
-            points.add(y1)
-            points.add(y2)
-        elif y1 == y2:
-            # Line is vertical, add the x-coordinate of the endpoints to the set
-            points.add(x1)
-            points.add(x2)
-        else:
-            # Line is diagonal, add the x-coordinate of the endpoints to the set
-            points.add(x1)
-            points.add(x2)
+def main():
+    N, K = map(int, input().split())
+    transcript = input()
+    candidate_types = get_candidate_types(transcript)
+    for i in range(1, N+1):
+        print(candidate_types[i])
 
-    # Return the number of unique points
-    return len(points)
+if __name__ == '__main__':
+    main()
 

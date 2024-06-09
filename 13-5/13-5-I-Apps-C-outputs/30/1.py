@@ -1,33 +1,71 @@
 
-def reconstruct_painting(N, K, M, commands):
-    # Initialize the painting with a white canvas
-    painting = [[1] * N for _ in range(N)]
+def f1(n, m, roads, orders):
+    # Initialize a graph with n nodes and 0 edges
+    graph = [[] for _ in range(n)]
 
-    # Iterate through the commands
-    for command in commands:
-        # If the command is PAINT, paint the rectangle
-        if command.startswith("PAINT"):
-            # Parse the command
-            color, x1, y1, x2, y2 = map(int, command.split())
+    # Add edges to the graph
+    for u, v, d in roads:
+        graph[u-1].append((v-1, d))
+        graph[v-1].append((u-1, d))
 
-            # Paint the rectangle
-            for x in range(x1, x2 + 1):
-                for y in range(y1, y2 + 1):
-                    painting[x][y] = color
+    # Find the shortest path from node 0 (pizzeria) to all other nodes
+    dist = [float('inf') for _ in range(n)]
+    dist[0] = 0
+    queue = [(0, 0)]
+    while queue:
+        node, cost = queue.pop(0)
+        for neighbor, weight in graph[node]:
+            if dist[neighbor] > dist[node] + weight:
+                dist[neighbor] = dist[node] + weight
+                queue.append((neighbor, dist[neighbor]))
 
-        # If the command is SAVE, save the painting
-        elif command.startswith("SAVE"):
-            # Save the painting
-            saved_painting = painting.copy()
+    # Find the maximum delivery time
+    max_delivery_time = 0
+    for s, u, t in orders:
+        delivery_time = dist[u-1] + t - s
+        max_delivery_time = max(max_delivery_time, delivery_time)
 
-        # If the command is LOAD, load the saved painting
-        elif command.startswith("LOAD"):
-            # Parse the command
-            save_id = int(command.split()[1])
+    return max_delivery_time
 
-            # Load the saved painting
-            painting = saved_painting[save_id]
+def f2(n, m, roads, orders):
+    # Initialize a graph with n nodes and 0 edges
+    graph = [[] for _ in range(n)]
 
-    # Return the painting
-    return painting
+    # Add edges to the graph
+    for u, v, d in roads:
+        graph[u-1].append((v-1, d))
+        graph[v-1].append((u-1, d))
+
+    # Find the shortest path from node 0 (pizzeria) to all other nodes
+    dist = [float('inf') for _ in range(n)]
+    dist[0] = 0
+    queue = [(0, 0)]
+    while queue:
+        node, cost = queue.pop(0)
+        for neighbor, weight in graph[node]:
+            if dist[neighbor] > dist[node] + weight:
+                dist[neighbor] = dist[node] + weight
+                queue.append((neighbor, dist[neighbor]))
+
+    # Find the maximum delivery time
+    max_delivery_time = 0
+    for s, u, t in orders:
+        delivery_time = dist[u-1] + t - s
+        max_delivery_time = max(max_delivery_time, delivery_time)
+
+    return max_delivery_time
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    roads = []
+    for _ in range(m):
+        u, v, d = map(int, input().split())
+        roads.append((u, v, d))
+    k = int(input())
+    orders = []
+    for _ in range(k):
+        s, u, t = map(int, input().split())
+        orders.append((s, u, t))
+    print(f1(n, m, roads, orders))
+    print(f2(n, m, roads, orders))
 

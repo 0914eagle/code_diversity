@@ -1,26 +1,41 @@
 
-def get_sugar_water(A, B, C, D, E, F):
+def get_min_attacks(healths, k):
     # Initialize variables
-    sugar_water = 0
-    sugar_dissolved = 0
+    attacks = 0
+    special_moves = k
+    total_health = sum(healths)
+    
+    # Loop through the healths and check if any monster is defeated
+    while total_health > 0:
+        # Check if any monster is defeated and update the total health
+        for i in range(len(healths)):
+            if healths[i] <= 0:
+                total_health -= healths[i]
+                healths[i] = 0
+        
+        # If all monsters are defeated, return the number of attacks
+        if total_health == 0:
+            return attacks
+        
+        # If special move is available, use it on the weakest monster
+        if special_moves > 0:
+            special_moves -= 1
+            healths[healths.index(min(healths))] = 0
+            total_health -= min(healths)
+        
+        # Otherwise, attack the strongest monster
+        else:
+            attacks += 1
+            healths[healths.index(max(healths))] -= 1
+    
+    # If all monsters are not defeated, return -1
+    return -1
 
-    # Loop through all possible combinations of operations
-    for a in range(A, B + 1):
-        for c in range(C, D + 1):
-            # Calculate the mass of sugar water that can be made with the current combination of operations
-            mass_sugar_water = a + c
+def main():
+    n, k = map(int, input().split())
+    healths = list(map(int, input().split()))
+    print(get_min_attacks(healths, k))
 
-            # Check if the mass of sugar water is within the maximum capacity of the beaker
-            if mass_sugar_water <= F:
-                # Calculate the mass of sugar dissolved in the sugar water
-                mass_sugar_dissolved = (c * 100) // (a + c)
-
-                # Check if the mass of sugar dissolved is within the maximum amount that can dissolve in the water
-                if mass_sugar_dissolved <= E:
-                    # Check if the current combination of operations results in a higher density than the previous ones
-                    if mass_sugar_dissolved > sugar_dissolved:
-                        sugar_water = mass_sugar_water
-                        sugar_dissolved = mass_sugar_dissolved
-
-    return sugar_water, sugar_dissolved
+if __name__ == '__main__':
+    main()
 

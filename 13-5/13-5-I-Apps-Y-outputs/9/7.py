@@ -1,17 +1,18 @@
 
-def is_multigram(word):
-    if len(word) <= 2:
-        return -1
-    
-    words = []
-    for i in range(1, len(word) // 2 + 1):
-        if len(word) % i == 0:
-            words.append(word[:i])
-    
-    for word1 in words:
-        for word2 in words:
-            if word1 != word2 and sorted(word1) == sorted(word2):
-                return word1
-    
-    return -1
+def get_max_problems(a):
+    n = len(a)
+    dp = [0] * (n + 1)
+    for i in range(1, n + 1):
+        for j in range(i):
+            if a[i - 1] >= 2 * a[j]:
+                dp[i] = max(dp[i], dp[j] + 1)
+    return dp[n]
+
+def main():
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(get_max_problems(a))
+
+if __name__ == '__main__':
+    main()
 

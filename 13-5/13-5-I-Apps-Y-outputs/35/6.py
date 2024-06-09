@@ -1,15 +1,17 @@
 
-def solve(N, K, heights):
-    # Sort the heights in non-decreasing order
-    heights.sort()
-    # Initialize the minimum difference to a large value
-    min_diff = float('inf')
-    # Loop through all possible combinations of K trees
-    for i in range(N - K + 1):
-        # Calculate the difference between the height of the tallest and shortest tree in this combination
-        diff = heights[i + K - 1] - heights[i]
-        # Update the minimum difference if necessary
-        min_diff = min(min_diff, diff)
-    # Return the minimum difference
-    return min_diff
+def get_triples(N, K):
+    count = 0
+    for a in range(1, N+1):
+        for b in range(a, N+1):
+            for c in range(b, N+1):
+                if (a+b)%K == 0 and (b+c)%K == 0 and (c+a)%K == 0:
+                    count += 1
+    return count
+
+def main():
+    N, K = map(int, input().split())
+    print(get_triples(N, K))
+
+if __name__ == '__main__':
+    main()
 

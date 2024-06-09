@@ -1,27 +1,34 @@
 
-def solve(n, permutation, sequence):
-    # Initialize a dictionary to store the number of visits for each position
-    visits = {i: 0 for i in range(1, n + 1)}
+def get_original_string(k, n, strings):
+    # Initialize a dictionary to store the frequency of each character in the strings
+    char_freq = {}
+    for string in strings:
+        for char in string:
+            if char not in char_freq:
+                char_freq[char] = 1
+            else:
+                char_freq[char] += 1
+    
+    # Check if the frequency of each character is divisible by k
+    for char, freq in char_freq.items():
+        if freq % k != 0:
+            return "-1"
+    
+    # Initialize an array to store the original string
+    original_string = [""] * n
+    
+    # Fill in the array with the characters from the strings
+    for i in range(k):
+        for j in range(n):
+            original_string[j] += strings[i][j]
+    
+    return "".join(original_string)
 
-    # Iterate through the permutation and sequence
-    for i in range(n):
-        # Get the current position and the next position
-        curr_pos = permutation[i]
-        next_pos = permutation[(i + 1) % n]
+def main():
+    k, n = map(int, input().split())
+    strings = [input() for _ in range(k)]
+    print(get_original_string(k, n, strings))
 
-        # If the current position is not the same as the next position, visit the current position
-        if curr_pos != next_pos:
-            visits[curr_pos] += 1
-
-        # If the sequence is 1, visit the current position in the reversed direction
-        if sequence[i] == 1:
-            visits[next_pos] += 1
-
-    # Calculate the minimum number of elements to change
-    min_elements = 0
-    for pos, count in visits.items():
-        if count < 2:
-            min_elements += 2 - count
-
-    return min_elements
+if __name__ == '__main__':
+    main()
 

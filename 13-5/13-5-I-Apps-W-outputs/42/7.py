@@ -1,26 +1,56 @@
 
-def count_critical_cpus(n, m, k, blocks):
-    # Initialize a dictionary to store the critical CPUs
-    critical_cpus = {}
+def count_ways(n, m, similar_pairs):
+    # Initialize a graph with n nodes
+    graph = [[] for _ in range(n + 1)]
 
-    # Iterate over each block (layer)
-    for block in blocks:
-        # Iterate over each row (line) in the block
-        for i, row in enumerate(block):
-            # Iterate over each column (character) in the row
-            for j, char in enumerate(row):
-                # If the current CPU is malfunctioning, skip it
-                if char == "0":
-                    continue
-                # If the current CPU is not malfunctioning, check if it controls any other CPUs
-                for x in range(i-1, i+2):
-                    for y in range(j-1, j+2):
-                        # If the controlled CPU is also malfunctioning, skip it
-                        if blocks[x][y] == "0":
-                            continue
-                        # If the controlled CPU is not malfunctioning, add it to the critical CPUs dictionary
-                        critical_cpus[(i, j)] = True
+    # Add edges between similar problems
+    for u, v in similar_pairs:
+        graph[u].append(v)
+        graph[v].append(u)
 
-    # Return the number of critical CPUs
-    return len(critical_cpus)
+    # Initialize the count of ways to split problems
+    ways = 0
+
+    # Iterate over all possible divisions
+    for i in range(1, n + 1):
+        # Initialize the division 1 with problem i
+        division_1 = [i]
+
+        # Initialize the division 2 as an empty set
+        division_2 = set()
+
+        # Iterate over all problems in division 1
+        for j in division_1:
+            # Add all problems that are similar to j to division 2
+            for k in graph[j]:
+                if k not in division_2:
+                    division_2.add(k)
+
+        # Check if division 2 is non-empty
+        if len(division_2) == 0:
+            continue
+
+        # Check if all problems are used in exactly one division
+        if len(division_1 | division_2) != n:
+            continue
+
+        # Check if all problems in division 1 are harder than any problem in division 2
+        if any(division_1[j] <= division_2[k] for j in range(len(division_1)) for k in range(len(division_2))):
+            continue
+
+        # Increment the count of ways to split problems
+        ways += 1
+
+    return ways
+
+def main():
+    n, m = map(int, input().split())
+    similar_pairs = []
+    for _ in range(m):
+        u, v = map(int, input().split())
+        similar_pairs.append((u, v))
+    print(count_ways(n, m, similar_pairs))
+
+if __name__ == '__main__':
+    main()
 

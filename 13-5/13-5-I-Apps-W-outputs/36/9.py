@@ -1,28 +1,37 @@
 
-def solve(n, lairs):
-    # Sort the lairs by their x-coordinate
-    lairs.sort(key=lambda x: x[0])
-    
-    # Initialize the minimum radius and center as infinite and (0, 0) respectively
-    min_radius = float('inf')
-    center = (0, 0)
-    
-    # Loop through each lair
+def f1(n, a):
+    # Calculate the bitwise OR of all the heights
+    or_heights = 0
     for i in range(n):
-        # Calculate the distance between the current lair and the previous lair
-        if i > 0:
-            dist = lairs[i][0] - lairs[i-1][0]
-        else:
-            dist = 0
-        
-        # Calculate the radius of the circle that passes through the current lair and the previous lair
-        radius = dist / 2
-        
-        # If the radius is less than the minimum radius, update the minimum radius and center
-        if radius < min_radius:
-            min_radius = radius
-            center = (lairs[i][0] + lairs[i-1][0], lairs[i][1] + lairs[i-1][1])
+        or_heights |= a[i]
     
-    # Return the minimum radius and center
-    return min_radius, center
+    # Calculate the number of ways to choose two mountains
+    num_ways = 0
+    for i in range(n):
+        for j in range(i+1, n):
+            if or_heights | a[i] | a[j] > a[i] | a[j]:
+                num_ways += 1
+    
+    return num_ways
+
+def f2(n, a):
+    # Calculate the bitwise OR of all the heights
+    or_heights = 0
+    for i in range(n):
+        or_heights |= a[i]
+    
+    # Calculate the number of ways to choose two mountains
+    num_ways = 0
+    for i in range(n):
+        for j in range(i+1, n):
+            if or_heights | a[i] | a[j] > a[i] | a[j]:
+                num_ways += 1
+    
+    return num_ways
+
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(f1(n, a))
+    print(f2(n, a))
 

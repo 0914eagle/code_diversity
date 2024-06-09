@@ -1,18 +1,32 @@
 
-def solve(N, numbers):
-    # Initialize a set to store the first moves
-    first_moves = set()
+def get_key_presses(word):
+    key_presses = []
+    for char in word:
+        key_presses.append(char)
+    return key_presses
 
-    # Iterate over the numbers
+def get_optimal_key_presses(word, dictionary):
+    optimal_key_presses = []
+    for char in word:
+        if char in dictionary:
+            optimal_key_presses.append(char)
+        else:
+            optimal_key_presses.append("R")
+    return optimal_key_presses
+
+def main():
+    N = int(input())
+    dictionary = set()
     for i in range(N):
-        # Get the current number
-        current_number = numbers[i]
+        word = input()
+        dictionary.add(word)
+    Q = int(input())
+    for i in range(Q):
+        word = input()
+        key_presses = get_key_presses(word)
+        optimal_key_presses = get_optimal_key_presses(word, dictionary)
+        print("".join(optimal_key_presses))
 
-        # Check if the current number is odd
-        if current_number % 2 != 0:
-            # Add the current number to the set of first moves
-            first_moves.add(current_number)
-
-    # Return the length of the set of first moves
-    return len(first_moves)
+if __name__ == '__main__':
+    main()
 

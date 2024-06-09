@@ -1,16 +1,28 @@
 
-def solve(a, b, n, m, roads):
-    # Initialize a dictionary to store the shortest distance from each intersection to Janet's house
-    distances = {1: 0}
-    for i in range(2, n+1):
-        distances[i] = float('inf')
+def f1(N, K, disagreements):
+    # Initialize a set to store the members of the committee
+    committee = set()
+    # Iterate through the disagreements and add the members to the committee
+    for disagreement in disagreements:
+        committee.update(disagreement)
+    # Return the size of the committee
+    return len(committee)
 
-    # Loop through each road
-    for u, v, t in roads:
-        # If the distance from the starting intersection to the ending intersection is shorter than the current shortest distance, update the distance
-        if distances[u] + t < distances[v]:
-            distances[v] = distances[u] + t
+def f2(N, K, disagreements):
+    # Initialize a set to store the members of the committee
+    committee = set()
+    # Iterate through the disagreements and add the members to the committee
+    for disagreement in disagreements:
+        committee.update(disagreement)
+    # Return the size of the committee
+    return len(committee)
 
-    # Return the maximum distance from any intersection to Janet's house
-    return max(distances.values())
+if __name__ == '__main__':
+    N, K = map(int, input().split())
+    disagreements = []
+    for i in range(N):
+        D_i = int(input())
+        disagreements.append(set(map(int, input().split())))
+    print(f1(N, K, disagreements))
+    print(f2(N, K, disagreements))
 

@@ -1,9 +1,15 @@
 
-def count_ways_to_not_clean(n, friends_fingers):
-    total_fingers = sum(friends_fingers)
-    ways_to_not_clean = 0
-    for i in range(1, 6):
-        if i != total_fingers:
-            ways_to_not_clean += 1
-    return ways_to_not_clean
+def get_students_who_did_not_pass(a, b, c, n):
+    if a + b + c != n:
+        return -1
+    if a + b < c or b + c < a or a + c < b:
+        return -1
+    return n - a - b - c
+
+def main():
+    a, b, c, n = map(int, input().split())
+    print(get_students_who_did_not_pass(a, b, c, n))
+
+if __name__ == '__main__':
+    main()
 

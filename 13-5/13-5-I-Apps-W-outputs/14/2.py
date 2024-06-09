@@ -1,23 +1,23 @@
 
-def solve(n, grid):
-    # Initialize the maximum number of clean rows to 0
-    max_clean_rows = 0
+def get_tallest_tower(n, m):
+    # Initialize a list to store the heights of the towers
+    heights = []
     
-    # Loop through each column of the grid
-    for col in range(n):
-        # Initialize the number of clean rows in this column to 0
-        clean_rows = 0
-        
-        # Loop through each row of the grid
-        for row in range(n):
-            # Check if the current square is clean
-            if grid[row][col] == "1":
-                # Increment the number of clean rows in this column
-                clean_rows += 1
-        
-        # Update the maximum number of clean rows if necessary
-        max_clean_rows = max(max_clean_rows, clean_rows)
+    # Add the heights of the towers made with two-block pieces
+    for i in range(1, n + 1):
+        heights.append(i * 2)
     
-    # Return the maximum number of clean rows
-    return max_clean_rows
+    # Add the heights of the towers made with three-block pieces
+    for i in range(1, m + 1):
+        heights.append(i * 3)
+    
+    # Return the tallest tower height
+    return max(heights)
+
+def main():
+    n, m = map(int, input().split())
+    print(get_tallest_tower(n, m))
+
+if __name__ == '__main__':
+    main()
 

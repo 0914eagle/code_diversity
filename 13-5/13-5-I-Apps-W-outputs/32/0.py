@@ -1,28 +1,29 @@
 
-def solve(n, s, q, l_r):
-    # Initialize a set to store the unique pitches
-    unique_pitches = set()
+def is_good_table(table):
+    for i in range(len(table) - 1):
+        if table[i] > table[i + 1]:
+            return False
+    return True
 
-    # Loop through each question
-    for l, r in l_r:
-        # Loop through each string
-        for i in range(n):
-            # Add the pitches between l and r (inclusive) to the set
-            unique_pitches.update(s[i] + j for j in range(l, r + 1))
+def remove_column(table, column):
+    return [row[:column] + row[column + 1:] for row in table]
 
-        # Return the length of the set
-        yield len(unique_pitches)
+def make_table_good(table):
+    if is_good_table(table):
+        return table
+    
+    for column in range(len(table[0])):
+        new_table = remove_column(table, column)
+        if is_good_table(new_table):
+            return new_table
+    
+    return table
 
-# Test the function with some examples
-n = 6
-s = [3, 1, 4, 1, 5, 9]
-q = 3
-l_r = [(7, 7), (0, 2), (8, 17)]
-print(list(solve(n, s, q, l_r))) # should print [5, 10, 18]
+def main():
+    n, m = map(int, input().split())
+    table = [input() for _ in range(n)]
+    print(len(make_table_good(table)) - 1)
 
-n = 2
-s = [1, 500000000000000000]
-q = 2
-l_r = [(1000000000000000000, 1000000000000000000), (0, 1000000000000000000)]
-print(list(solve(n, s, q, l_r))) # should print [2, 1500000000000000000]
+if __name__ == '__main__':
+    main()
 

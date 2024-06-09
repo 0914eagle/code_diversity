@@ -1,15 +1,30 @@
 
-def solve(s, t):
-    # Initialize a dictionary to store the number of operations required for each character
-    d = {}
-    for i in range(len(s)):
-        d[s[i]] = d.get(s[i], 0) + 1
-        d[t[i]] = d.get(t[i], 0) - 1
+def get_input():
+    N, M = map(int, input().split())
+    A = list(map(int, input().split()))
+    return N, M, A
+
+def get_max_hangout_days(N, M, A):
+    # Sort the assignments by their deadlines
+    A.sort()
     
-    # Calculate the total number of operations required
-    total = 0
-    for key in d:
-        total += abs(d[key])
+    # Initialize the maximum number of hangout days
+    max_hangout_days = 0
     
-    return total
+    # Iterate over the assignments
+    for i in range(M):
+        # Calculate the number of days Takahashi can hang out before the current assignment
+        hangout_days = N - sum(A[:i])
+        
+        # Update the maximum number of hangout days
+        max_hangout_days = max(max_hangout_days, hangout_days)
+    
+    return max_hangout_days
+
+def main():
+    N, M, A = get_input()
+    print(get_max_hangout_days(N, M, A))
+
+if __name__ == '__main__':
+    main()
 

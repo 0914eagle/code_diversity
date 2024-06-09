@@ -1,23 +1,37 @@
 
-def solve(a, b):
-    # Initialize a dictionary to store the number of ways for each dice roll
-    d = {}
+def is_human_winner(n, k, coefficients):
+    # Initialize the polynomial with the given coefficients
+    polynomial = 0
+    for i in range(n):
+        polynomial += coefficients[i] * x**i
 
-    # Iterate over all possible dice rolls
-    for i in range(1, 7):
-        # Calculate the absolute difference between the dice roll and the numbers written by the players
-        abs_diff_a = abs(i - a)
-        abs_diff_b = abs(i - b)
+    # Check if the polynomial is already divisible by x - k
+    if polynomial % (x - k) == 0:
+        return True
 
-        # If the absolute difference is the same, it's a draw
-        if abs_diff_a == abs_diff_b:
-            d[i] = 0
-        # Otherwise, the player with the smaller absolute difference wins
-        elif abs_diff_a < abs_diff_b:
-            d[i] = 1
-        else:
-            d[i] = 2
+    # Check if the human can set a coefficient to any value and win
+    for i in range(n):
+        if coefficients[i] == '?':
+            # Set the coefficient to any value and check if the polynomial is divisible by x - k
+            coefficients[i] = 1
+            if polynomial % (x - k) == 0:
+                return True
+            coefficients[i] = -1
+            if polynomial % (x - k) == 0:
+                return True
+            coefficients[i] = 0
+            if polynomial % (x - k) == 0:
+                return True
+            coefficients[i] = '?'
 
-    # Return the number of ways for each outcome
-    return (d[1], d[2], d[3], d[4], d[5], d[6])
+    # If the human cannot set a coefficient to any value and win, return False
+    return False
+
+def main():
+    n, k = map(int, input().split())
+    coefficients = [int(input()) for _ in range(n + 1)]
+    print("Yes") if is_human_winner(n, k, coefficients) else print("No")
+
+if __name__ == '__main__':
+    main()
 

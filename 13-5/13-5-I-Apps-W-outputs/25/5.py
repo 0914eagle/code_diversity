@@ -1,31 +1,25 @@
 
-def spiral_order(matrix):
-    if not matrix or not matrix[0]:
-        return []
-    m, n = len(matrix), len(matrix[0])
-    top, bottom, left, right = 0, m - 1, 0, n - 1
-    direction = 0
-    res = []
-    while res := range(m * n):
-        if direction == 0:
-            for i in range(left, right + 1):
-                res.append(matrix[top][i])
-            top += 1
-            direction += 1
-        elif direction == 1:
-            for i in range(top, bottom + 1):
-                res.append(matrix[i][right])
-            right -= 1
-            direction += 1
-        elif direction == 2:
-            for i in range(right, left - 1, -1):
-                res.append(matrix[bottom][i])
-            bottom -= 1
-            direction += 1
-        elif direction == 3:
-            for i in range(bottom, top - 1, -1):
-                res.append(matrix[i][left])
-            left += 1
-            direction = 0
-    return res
+def get_min_ones(n):
+    # Initialize a list to store the addends
+    addends = []
+    # Initialize a variable to store the current addend
+    current_addend = 1
+    # Iterate until the number is greater than 1
+    while n > 1:
+        # If the current addend is a factor of the number, add it to the list and divide the number by the addend
+        if n % current_addend == 0:
+            addends.append(current_addend)
+            n //= current_addend
+        # Otherwise, increment the current addend by 1
+        else:
+            current_addend += 1
+    # Return the sum of the addends
+    return sum(addends)
+
+def main():
+    n = int(input())
+    print(get_min_ones(n))
+
+if __name__ == '__main__':
+    main()
 

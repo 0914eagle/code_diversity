@@ -1,8 +1,14 @@
 
-def solve(x):
-    x = str(x)
-    a, b = x.split('.')
-    a = int(a)
-    b = int(b)
-    return a, b
+def is_ac(n, m):
+    if m == n:
+        return "Yes"
+    else:
+        return "No"
+
+def main():
+    n, m = map(int, input().split())
+    print(is_ac(n, m))
+
+if __name__ == '__main__':
+    main()
 

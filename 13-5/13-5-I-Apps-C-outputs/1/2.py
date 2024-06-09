@@ -1,18 +1,21 @@
 
-def get_position(n, k, initial_strings, test_string):
-    # create a list of all possible composite strings
-    composite_strings = []
-    for i in range(n):
-        for j in range(i+1, n):
-            for k in range(j+1, n):
-                composite_strings.append(initial_strings[i] + initial_strings[j] + initial_strings[k])
+def f1(y, l):
+    # Convert y to a string in all possible bases from 2 to 16
+    bases = [str(y) for b in range(2, 17) for y in [format(y, 'b'), format(y, 'o'), format(y, 'd'), format(y, 'x')]]
     
-    # sort the list of composite strings in alphabetical order
-    composite_strings.sort()
+    # Find the largest base such that the converted number contains only decimal digits and is at least l
+    for b in range(len(bases)-1, -1, -1):
+        if all(c in '0123456789' for c in bases[b]) and int(bases[b]) >= l:
+            return b
     
-    # find the position of the test string in the sorted list
-    position = composite_strings.index(test_string) + 1
-    
-    # return the position modulo 10^9 + 7
-    return position % (10**9 + 7)
+    # If no suitable base is found, return 0
+    return 0
+
+def f2(...):
+    # Your code here
+    pass
+
+if __name__ == '__main__':
+    y, l = map(int, input().split())
+    print(f1(y, l))
 

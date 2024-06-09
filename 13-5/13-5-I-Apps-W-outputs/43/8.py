@@ -1,26 +1,43 @@
 
-def solve(n, edges, colors):
-    # Create a graph with n vertices and m edges
-    graph = [[] for _ in range(n)]
-    for i in range(n - 1):
-        graph[edges[i] - 1].append(edges[i + 1] - 1)
+def get_input():
+    N = int(input())
+    stones = input()
+    return N, stones
 
-    # Initialize the color of the root vertex as 1
-    color = 1
-    visited = [False] * n
-    queue = [0]
-    visited[0] = True
+def is_disaster(stones):
+    for i in range(len(stones) - 1):
+        if stones[i] == 'W' and stones[i + 1] == 'R':
+            return True
+    return False
 
-    # Breadth-first search to color the tree
-    while queue:
-        vertex = queue.pop(0)
-        for neighbor in graph[vertex]:
-            if not visited[neighbor]:
-                visited[neighbor] = True
-                queue.append(neighbor)
-                color = colors[neighbor]
-        colors[vertex] = color
+def swap_stones(stones, i, j):
+    stones[i], stones[j] = stones[j], stones[i]
+    return stones
 
-    # Return the minimum number of steps required to color the tree
-    return len(set(colors))
+def change_color(stones, i):
+    if stones[i] == 'R':
+        stones[i] = 'W'
+    else:
+        stones[i] = 'R'
+    return stones
+
+def solve(N, stones):
+    operations = 0
+    while is_disaster(stones):
+        for i in range(N - 1):
+            if stones[i] == 'W' and stones[i + 1] == 'R':
+                stones = swap_stones(stones, i, i + 1)
+                operations += 1
+                break
+        else:
+            for i in range(N):
+                if stones[i] == 'W':
+                    stones = change_color(stones, i)
+                    operations += 1
+                    break
+    return operations
+
+if __name__ == '__main__':
+    N, stones = get_input()
+    print(solve(N, stones))
 

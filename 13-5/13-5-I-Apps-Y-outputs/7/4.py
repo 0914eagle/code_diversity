@@ -1,18 +1,11 @@
 
-def solve(n, a):
-    # Check if the wall is already complete
-    if all(x == a[0] for x in a):
-        return "YES"
+def f1(X, Y, Z):
+    return (X - Z) // (Y + Z)
 
-    # Check if the wall can be completed using bricks
-    for i in range(n - 1):
-        if a[i] == a[i + 1]:
-            return "YES"
+def f2(X, Y, Z):
+    return (X - Y) // Y
 
-    # Check if the wall can be completed using zero bricks
-    if all(x == 1 for x in a):
-        return "YES"
-
-    # The wall cannot be completed
-    return "NO"
+if __name__ == '__main__':
+    X, Y, Z = map(int, input().split())
+    print(f1(X, Y, Z))
 

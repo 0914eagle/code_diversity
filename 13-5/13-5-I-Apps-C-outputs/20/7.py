@@ -1,34 +1,44 @@
 
-def solve(x0, y0, a_x, a_y, b_x, b_y, x_s, y_s, t):
-    # Initialize a list to store the coordinates of the data nodes
-    data_nodes = []
+def get_best_friend_pairs(n):
+    # Initialize a list to store the best friend pairs
+    best_friend_pairs = []
     
-    # Initialize the current coordinate as the starting point
-    current_x, current_y = x_s, y_s
-    
-    # Initialize the time spent as 0
-    time_spent = 0
-    
-    # Initialize the number of data nodes collected as 0
-    num_data_nodes = 0
-    
-    # Loop through the coordinates until the time limit is reached
-    while time_spent < t:
-        # Check if the current coordinate is a data node
-        if (current_x, current_y) in data_nodes:
-            # If it is a data node, increment the number of data nodes collected
-            num_data_nodes += 1
-        else:
-            # If it is not a data node, add it to the list of data nodes
-            data_nodes.append((current_x, current_y))
+    # Iterate from 10^n-1 to 10^n
+    for i in range(10**n-1, 10**n):
+        # Initialize a list to store the digits of i
+        digits = [int(d) for d in str(i)]
         
-        # Move to the next coordinate
-        current_x += a_x
-        current_y += a_y
+        # Initialize a list to store the digits of the best friend pair
+        best_friend_pair = []
         
-        # Increment the time spent
-        time_spent += 1
+        # Iterate through the digits of i
+        for j in range(n):
+            # If the digit is 0 or 9, add 1 to it
+            if digits[j] in [0, 9]:
+                best_friend_pair.append(digits[j] + 1)
+            # If the digit is 1, subtract 1 from it
+            elif digits[j] == 1:
+                best_friend_pair.append(digits[j] - 1)
+            # If the digit is between 2 and 8, add or subtract 1 from it
+            else:
+                best_friend_pair.append(digits[j] + 1 if j % 2 == 0 else digits[j] - 1)
+        
+        # Add the best friend pair to the list of best friend pairs
+        best_friend_pairs.append(int("".join(map(str, best_friend_pair))))
     
-    # Return the number of data nodes collected
-    return num_data_nodes
+    # Return the number of best friend pairs
+    return len(set(best_friend_pairs))
+
+def main():
+    # Read the input n
+    n = int(input())
+    
+    # Call the function to get the number of best friend pairs
+    result = get_best_friend_pairs(n)
+    
+    # Print the result
+    print(result)
+
+if __name__ == '__main__':
+    main()
 

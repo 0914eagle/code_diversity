@@ -1,18 +1,32 @@
 {
   "inputs": [
-    "4 4\n1 2 6 3\n3 5 3 1\n1 2\n2 3\n3 4\n4 2\n",
-    "2 0\n1 2\n2 1\n",
-    "10 20\n22 3 4 48 12 12 14 37 15 37\n57 29 35 88 6 54 100 32 91 59\n10 1\n4 3\n4 7\n2 4\n7 6\n1 3\n2 5\n5 10\n1 6\n4 9\n6 10\n8 5\n3 6\n6 5\n8 9\n3 10\n2 6\n9 10\n8 4\n8 10\n",
-    "10 20\n39 65 24 71 86 59 80 35 53 13\n32 41 32 97 83 67 57 26 39 51\n8 10\n5 9\n5 7\n10 2\n4 7\n10 7\n5 4\n2 3\n6 8\n5 10\n3 8\n4 2\n1 6\n5 6\n4 9\n10 4\n4 6\n5 1\n3 4\n1 10\n",
-    "10 20\n62 50 24 61 7 79 10 12 76 97\n61 45 68 22 44 67 22 45 45 59\n3 2\n5 3\n9 3\n9 5\n1 8\n10 5\n9 2\n5 7\n4 3\n1 2\n6 1\n7 4\n8 9\n5 6\n10 3\n10 1\n2 8\n6 10\n6 3\n8 6\n",
-    "1 0\n2\n1\n"
+    "2 2\nmain 192.168.0.2\nreplica 192.168.0.1\nblock 192.168.0.1;\nproxy 192.168.0.2;\n",
+    "3 5\ngoogle 8.8.8.8\ncodeforces 212.193.33.27\nserver 138.197.64.57\nredirect 138.197.64.57;\nblock 8.8.8.8;\ncf 212.193.33.27;\nunblock 8.8.8.8;\ncheck 138.197.64.57;\n",
+    "10 10\nittmcs 112.147.123.173\njkt 228.40.73.178\nfwckqtz 88.28.31.198\nkal 224.226.34.213\nnacuyokm 49.57.13.44\nfouynv 243.18.250.17\ns 45.248.83.247\ne 75.69.23.169\nauwoqlch 100.44.219.187\nlkldjq 46.123.169.140\ngjcylatwzi 46.123.169.140;\ndxfi 88.28.31.198;\ngv 46.123.169.140;\nety 88.28.31.198;\notbmgcrn 46.123.169.140;\nw 112.147.123.173;\np 75.69.23.169;\nvdsnigk 46.123.169.140;\nmmc 46.123.169.140;\ngtc 49.57.13.44;\n",
+    "1 1\nervbfot 185.32.99.2\nzygoumbmx 185.32.99.2;\n",
+    "1 2\ny 245.182.246.189\nlllq 245.182.246.189;\nxds 245.182.246.189;\n",
+    "2 1\ntdwmshz 203.115.124.110\neksckjya 201.80.191.212\nzbtjzzue 203.115.124.110;\n",
+    "8 5\nfhgkq 5.19.189.178\nphftablcr 75.18.177.178\nxnpcg 158.231.167.176\ncfahrkq 26.165.124.191\nfkgtnqtfoh 230.13.13.129\nt 101.24.94.85\nvjoirslx 59.6.179.72\ntwktmskb 38.194.117.184\nrvzzlygosc 26.165.124.191;\ndcsgxrkgv 101.24.94.85;\nyvmyppn 59.6.179.72;\ngpdjjuq 75.18.177.178;\nvdviz 101.24.94.85;\n",
+    "2 1\nmain 1.1.1.1\nget 11.1.1.1\ncommand 11.1.1.1;\n",
+    "2 2\nmain 0.0.0.255\nmainn 0.0.2.55\nblock 0.0.0.255;\nblock 0.0.2.55;\n",
+    "2 2\nmain 0.0.63.0\nreplica 0.38.0.56\nblock 0.0.63.0;\nproxy 0.38.0.56;\n",
+    "2 2\nmain 192.168.10.12\nreplica 192.167.10.12\nblock 192.168.10.12;\nproxy 192.167.10.12;\n",
+    "2 1\nneserver 185.218.47.91\nserver 255.255.255.255\nblock 255.255.255.255;\n",
+    "2 1\nalp 22.222.30.10\nbet 222.22.30.10\nblock 22.222.30.10;\n"
   ],
   "outputs": [
-    "YES\n1 0 0 0 \n2 0 0 0 \n0 5 1 0 \n0 0 2 1 \n",
-    "NO",
-    "NO",
-    "YES\n32 0 0 0 0 7 0 0 0 0 \n0 27 0 0 0 0 0 0 0 38 \n0 0 24 0 0 0 0 0 0 0 \n0 14 0 57 0 0 0 0 0 0 \n0 0 0 0 69 0 17 0 0 0 \n0 0 0 0 0 59 0 0 0 0 \n0 0 0 40 0 0 40 0 0 0 \n0 0 8 0 0 1 0 26 0 0 \n0 0 0 0 14 0 0 0 39 0 \n0 0 0 0 0 0 0 0 0 13 \n",
-    "YES\n23 0 0 0 0 0 0 39 0 0 \n26 24 0 0 0 0 0 0 0 0 \n0 13 11 0 0 0 0 0 0 0 \n0 0 34 22 0 0 5 0 0 0 \n0 0 0 0 0 0 7 0 0 0 \n12 0 0 0 6 61 0 0 0 0 \n0 0 0 0 0 0 10 0 0 0 \n0 0 0 0 0 6 0 6 0 0 \n0 8 23 0 0 0 0 0 45 0 \n0 0 0 0 38 0 0 0 0 59 \n",
-    "NO"
+    "block 192.168.0.1; #replica\nproxy 192.168.0.2; #main\n",
+    "redirect 138.197.64.57; #server\nblock 8.8.8.8; #google\ncf 212.193.33.27; #codeforces\nunblock 8.8.8.8; #google\ncheck 138.197.64.57; #server\n",
+    "gjcylatwzi 46.123.169.140; #lkldjq\ndxfi 88.28.31.198; #fwckqtz\ngv 46.123.169.140; #lkldjq\nety 88.28.31.198; #fwckqtz\notbmgcrn 46.123.169.140; #lkldjq\nw 112.147.123.173; #ittmcs\np 75.69.23.169; #e\nvdsnigk 46.123.169.140; #lkldjq\nmmc 46.123.169.140; #lkldjq\ngtc 49.57.13.44; #nacuyokm\n",
+    "zygoumbmx 185.32.99.2; #ervbfot\n",
+    "lllq 245.182.246.189; #y\nxds 245.182.246.189; #y\n",
+    "zbtjzzue 203.115.124.110; #tdwmshz\n",
+    "rvzzlygosc 26.165.124.191; #cfahrkq\ndcsgxrkgv 101.24.94.85; #t\nyvmyppn 59.6.179.72; #vjoirslx\ngpdjjuq 75.18.177.178; #phftablcr\nvdviz 101.24.94.85; #t\n",
+    "command 11.1.1.1; #get\n",
+    "block 0.0.0.255; #main\nblock 0.0.2.55; #mainn\n",
+    "block 0.0.63.0; #main\nproxy 0.38.0.56; #replica\n",
+    "block 192.168.10.12; #main\nproxy 192.167.10.12; #replica\n",
+    "block 255.255.255.255; #server\n",
+    "block 22.222.30.10; #alp\n"
   ]
 }

@@ -1,40 +1,48 @@
 
-def solve(r, c, i, j, n):
-    # Initialize the ice rink as a 2D array of white cells
-    ice = [['.' for _ in range(c)] for _ in range(r)]
+import itertools
+
+def get_valid_ids(n, pattern):
     
-    # Set the starting location of the Zamboni
-    ice[i-1][j-1] = '@'
+    # Initialize an empty list to store the valid IDs
+    valid_ids = []
     
-    # Set the step size and direction of the Zamboni
-    step_size = 1
-    direction = 'U'
+    # Iterate over all possible binary strings of length n
+    for binary_string in itertools.product([0, 1], repeat=n):
+        # Check if the current binary string satisfies the pattern
+        if satisfies_pattern(binary_string, pattern):
+            # If it does, add it to the list of valid IDs
+            valid_ids.append("".join(map(str, binary_string)))
     
-    # Loop through each step of the Zamboni's run
-    for _ in range(n):
-        # Move the Zamboni in the current direction
-        if direction == 'U':
-            i -= step_size
-        elif direction == 'D':
-            i += step_size
-        elif direction == 'L':
-            j -= step_size
-        else:
-            j += step_size
-        
-        # Wrap the Zamboni around the edges of the rink
-        i = i % r
-        j = j % c
-        
-        # Overwrite the color on the current cell
-        ice[i][j] = chr(ord('A') + (step_size - 1) % 26)
-        
-        # Rotate the direction of the Zamboni 90 degrees clockwise
-        direction = chr((ord(direction) + 1) % 4)
-        
-        # Increment the step size
-        step_size += 1
+    return valid_ids
+
+def satisfies_pattern(binary_string, pattern):
     
-    # Return the final state of the ice rink
-    return '\n'.join(''.join(row) for row in ice)
+    # If the binary string and the pattern have different lengths, return False
+    if len(binary_string) != len(pattern):
+        return False
+    
+    # Initialize a counter to keep track of the number of 1s in the binary string
+    count = 0
+    
+    # Iterate over the binary string and the pattern simultaneously
+    for b, p in zip(binary_string, pattern):
+        # If the current element of the binary string is 1 and the current element of the pattern is *, increment the counter
+        if b == 1 and p == "*":
+            count += 1
+    
+    # If the counter is greater than or equal to half the length of the binary string, return True
+    return count >= len(binary_string) // 2
+
+def get_max_spies(n, pattern):
+    
+    # Get all valid IDs of length n that satisfy the pattern
+    valid_ids = get_valid_ids(n, pattern)
+    
+    # Return the number of valid IDs
+    return len(valid_ids)
+
+if __name__ == '__main__':
+    n = int(input())
+    pattern = input()
+    print(get_max_spies(n, pattern))
 

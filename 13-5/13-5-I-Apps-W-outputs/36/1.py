@@ -1,22 +1,39 @@
 
-def get_min_radius(n, lairs):
-    # Sort the lairs by their x-coordinates
-    lairs.sort(key=lambda x: x[0])
+def f1(n, heights):
+    # Calculate the bitwise OR of all pairs of mountains
+    bitwise_or = [0] * (n + 1)
+    for i in range(1, n + 1):
+        for j in range(i, n + 1):
+            bitwise_or[i] |= heights[j - 1]
     
-    # Initialize the minimum radius and center of the reserve
-    min_radius = float("inf")
-    center = (0, 0)
+    # Count the number of pairs of mountains with bitwise OR greater than the height of any mountain between them
+    count = 0
+    for i in range(1, n + 1):
+        for j in range(i, n + 1):
+            if bitwise_or[i] > heights[j - 1]:
+                count += 1
     
-    # Iterate over the lairs
-    for i in range(n):
-        # Calculate the distance between the current lair and the center of the reserve
-        distance = abs(lairs[i][0] - center[0])
-        
-        # If the distance is less than the minimum radius, update the minimum radius and center
-        if distance < min_radius:
-            min_radius = distance
-            center = lairs[i]
+    return count
+
+def f2(n, heights):
+    # Calculate the bitwise OR of all pairs of mountains
+    bitwise_or = [0] * (n + 1)
+    for i in range(1, n + 1):
+        for j in range(i, n + 1):
+            bitwise_or[i] |= heights[j - 1]
     
-    # Return the minimum radius and center of the reserve
-    return min_radius
+    # Count the number of pairs of mountains with bitwise OR greater than the height of any mountain between them
+    count = 0
+    for i in range(1, n + 1):
+        for j in range(i, n + 1):
+            if bitwise_or[i] > heights[j - 1]:
+                count += 1
+    
+    return count
+
+if __name__ == '__main__':
+    n = int(input())
+    heights = list(map(int, input().split()))
+    print(f1(n, heights))
+    print(f2(n, heights))
 

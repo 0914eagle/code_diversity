@@ -1,13 +1,32 @@
 
-def get_good_sequences(a):
-    n = len(a)
-    count = 0
+def get_max_product(arr):
+    n = len(arr)
+    if n == 1:
+        return arr
+    
+    # sort the array in non-decreasing order
+    arr.sort()
+    
+    # initialize the maximum product
+    max_product = 1
+    
+    # iterate over the array
     for i in range(n):
-        for j in range(i, n):
-            x = a[i]
-            for k in range(i+1, j+1):
-                x ^= a[k]
-            if x == 0:
-                count += 1
-    return count
+        # calculate the product of the elements from index 0 to i
+        product = 1
+        for j in range(i+1):
+            product *= arr[j]
+        
+        # update the maximum product
+        max_product = max(max_product, product)
+    
+    return max_product
+
+def main():
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(get_max_product(arr))
+
+if __name__ == '__main__':
+    main()
 

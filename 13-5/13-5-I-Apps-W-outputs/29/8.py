@@ -1,26 +1,31 @@
 
-def solve(n, m, a, b, roads):
-    # Initialize a matrix to store the number of soldiers that should stay or move from one city to another
-    dp = [[0] * n for _ in range(n)]
+def get_server_name(ip, servers):
+    for server in servers:
+        if server[1] == ip:
+            return server[0]
+    return None
 
-    # Loop through each city and its neighbors
-    for i in range(n):
-        for j in range(n):
-            # If the city is not connected to its neighbor, continue to the next neighbor
-            if i == j or (i, j) not in roads:
-                continue
+def add_comments(commands, servers):
+    result = []
+    for command in commands:
+        ip = command.split(" ")[1]
+        name = get_server_name(ip, servers)
+        result.append(f"{command} # {name}")
+    return result
 
-            # Calculate the number of soldiers that should move from city i to city j
-            dp[i][j] = max(0, dp[i][j] + dp[i][i] - a[i])
+def main():
+    n, m = map(int, input().split())
+    servers = []
+    for _ in range(n):
+        name, ip = input().split()
+        servers.append((name, ip))
+    commands = []
+    for _ in range(m):
+        commands.append(input())
+    result = add_comments(commands, servers)
+    for line in result:
+        print(line)
 
-            # Calculate the number of soldiers that should stay in city i
-            dp[i][i] = max(0, dp[i][i] - a[i])
-
-    # Check if the conditions can be met
-    for i in range(n):
-        if dp[i][i] != b[i]:
-            return "NO"
-
-    # If the conditions can be met, return the solution
-    return "YES" + "\n" + "\n".join(" ".join(map(str, row)) for row in dp)
+if __name__ == '__main__':
+    main()
 

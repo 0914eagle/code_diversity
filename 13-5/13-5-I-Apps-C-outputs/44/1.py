@@ -1,34 +1,25 @@
 
-def get_min_cost(distances, costs, tank_capacity):
-    # Sort the gas stations by distance
-    sorted_gas_stations = sorted(zip(distances, costs), key=lambda x: x[0])
+def get_good_sequences(good_integers):
+    good_sequences = []
+    for i in range(len(good_integers)):
+        sequence = [good_integers[i]]
+        for j in range(i+1, len(good_integers)):
+            if good_integers[j] > sequence[-1] and gcd(sequence[-1], good_integers[j]) == 1:
+                sequence.append(good_integers[j])
+        if len(sequence) > 1:
+            good_sequences.append(sequence)
+    return good_sequences
 
-    # Initialize the current distance, fuel, and cost
-    current_distance = 0
-    fuel = tank_capacity
-    cost = 0
+def get_longest_sequence(good_sequences):
+    return max(good_sequences, key=len)
 
-    # Loop through the gas stations
-    for distance, cost_per_gallon in sorted_gas_stations:
-        # Calculate the fuel needed for this gas station
-        fuel_needed = distance - current_distance
+def main():
+    n = int(input())
+    good_integers = [int(x) for x in input().split()]
+    good_sequences = get_good_sequences(good_integers)
+    longest_sequence = get_longest_sequence(good_sequences)
+    print(len(longest_sequence))
 
-        # Check if the fuel needed is greater than the fuel in the tank
-        if fuel_needed > fuel:
-            return "cancel road trip"
-
-        # Calculate the fuel available after refueling
-        fuel_available = tank_capacity - fuel
-
-        # Calculate the number of gallons needed for this gas station
-        num_gallons = fuel_needed // fuel_available
-
-        # Calculate the cost for this gas station
-        cost += num_gallons * cost_per_gallon
-
-        # Update the current distance and fuel
-        current_distance = distance
-        fuel = tank_capacity - (fuel_needed % fuel_available)
-
-    return cost
+if __name__ == '__main__':
+    main()
 

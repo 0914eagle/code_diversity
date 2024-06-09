@@ -1,31 +1,45 @@
 
-def get_center(points):
-    point1, point2, point3, point4 = points
-    x1, y1, z1 = point1
-    x2, y2, z2 = point2
-    x3, y3, z3 = point3
-    x4, y4, z4 = point4
+def get_min_path_length(n, m, roads):
+    # Initialize a graph with n nodes and m edges
+    graph = [[] for _ in range(n)]
+    for u, v in roads:
+        graph[u - 1].append(v - 1)
+    
+    # Find all maximum length paths in the graph
+    max_paths = []
+    for i in range(n):
+        visited = [False] * n
+        max_paths.extend(find_max_paths(graph, i, visited))
+    
+    # Find the minimum length path that a racer can take if at most one road is blocked off
+    min_path_length = float('inf')
+    for path in max_paths:
+        path_length = len(path)
+        for i in range(n):
+            for j in range(i + 1, n):
+                if [i, j] in roads:
+                    path_length -= 1
+        min_path_length = min(min_path_length, path_length)
+    
+    return min_path_length
 
-    # Find the equation of the plane that passes through point1, point2 and point3
-    a1, b1, c1 = point1
-    a2, b2, c2 = point2
-    a3, b3, c3 = point3
+def find_max_paths(graph, start, visited):
+    visited[start] = True
+    paths = []
+    for neighbor in graph[start]:
+        if not visited[neighbor]:
+            paths.extend(find_max_paths(graph, neighbor, visited))
+    if not paths:
+        paths.append([start])
+    for path in paths:
+        path.append(start)
+    return paths
 
-    d1 = a1 * b2 + b1 * c2 + c1 * a2
-    d2 = a2 * b3 + b2 * c3 + c2 * a3
-    d3 = a3 * b1 + b3 * c1 + c3 * a1
-
-    # Find the equation of the plane that passes through point1, point2 and point4
-    a1, b1, c1 = point1
-    a4, b4, c4 = point4
-
-    d4 = a1 * b4 + b1 * c4 + c1 * a4
-    d5 = a4 * b1 + b4 * c1 + c4 * a1
-
-    # Find the intersection of the two planes
-    x = (d1 * c2 - c1 * d2) / (b1 * c2 - b2 * c1)
-    y = (a1 * d2 - a2 * d1) / (a1 * b2 - a2 * b1)
-    z = (d3 * b1 - b3 * d1) / (b3 * c1 - b1 * c3)
-
-    return x, y, z
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    roads = []
+    for _ in range(m):
+        u, v = map(int, input().split())
+        roads.append([u, v])
+    print(get_min_path_length(n, m, roads))
 

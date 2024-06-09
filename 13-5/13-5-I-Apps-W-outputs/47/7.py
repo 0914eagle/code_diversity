@@ -1,15 +1,19 @@
 
-def get_min_quick_changes(routines):
-    # Initialize a set to store the dancers who require a quick change
-    quick_change_dancers = set()
-    # Iterate through the routines
-    for i in range(len(routines)):
-        # Get the dancers for the current routine
-        dancers = routines[i]
-        # Check if the dancers require a quick change
-        if i > 0 and set(dancers) & quick_change_dancers:
-            # If they do, add them to the set of dancers who require a quick change
-            quick_change_dancers |= set(dancers)
-    # Return the number of quick changes required
-    return len(quick_change_dancers)
+def get_beautiful_table(n, k):
+    for i in range(1, n+1):
+        for j in range(1, n+1):
+            if i + j == k:
+                return [i, j]
+    return []
+
+def main():
+    n, k = map(int, input().split())
+    table = get_beautiful_table(n, k)
+    if table:
+        print(table)
+    else:
+        print(-1)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,52 +1,29 @@
 
-def get_bridges(n, m, edges):
-    # Initialize a dictionary to store the graph
-    graph = {}
-    for i in range(1, n+1):
-        graph[i] = []
+def get_input():
+    return map(float, input().split())
 
-    # Add edges to the graph
-    for edge in edges:
-        graph[edge[0]].append(edge[1])
-        graph[edge[1]].append(edge[0])
+def cross_product(v1, v2):
+    return [v1[1]*v2[2] - v1[2]*v2[1], v1[2]*v2[0] - v1[0]*v2[2], v1[0]*v2[1] - v1[1]*v2[0]]
 
-    # Initialize a variable to store the number of bridges
-    bridges = 0
+def dot_product(v1, v2):
+    return v1[0]*v2[0] + v1[1]*v2[1] + v1[2]*v2[2]
 
-    # Iterate over the edges and check if they are bridges
-    for edge in edges:
-        # Remove the edge from the graph
-        graph[edge[0]].remove(edge[1])
-        graph[edge[1]].remove(edge[0])
+def get_angle(v1, v2):
+    x = cross_product(v1, v2)
+    y = cross_product(v2, v1)
+    return math.degrees(math.acos(dot_product(x, y)/(math.sqrt(dot_product(x, x))*math.sqrt(dot_product(y, y)))))
 
-        # Check if the graph is still connected
-        if not is_connected(graph):
-            bridges += 1
+def main():
+    a = get_input()
+    b = get_input()
+    c = get_input()
+    d = get_input()
+    ab = [b[0]-a[0], b[1]-a[1], b[2]-a[2]]
+    bc = [c[0]-b[0], c[1]-b[1], c[2]-b[2]]
+    cd = [d[0]-c[0], d[1]-c[1], d[2]-c[2]]
+    print(get_angle(ab, bc))
+    print(get_angle(bc, cd))
 
-        # Add the edge back to the graph
-        graph[edge[0]].append(edge[1])
-        graph[edge[1]].append(edge[0])
-
-    return bridges
-
-def is_connected(graph):
-    # Initialize a queue to do BFS
-    queue = [1]
-
-    # Keep track of the visited vertices
-    visited = set()
-
-    # Do BFS until the queue is empty
-    while queue:
-        vertex = queue.pop(0)
-        if vertex not in visited:
-            visited.add(vertex)
-            queue.extend(graph[vertex])
-
-    # If all vertices are visited, the graph is connected
-    return len(visited) == len(graph)
-
-edges = [[1, 3], [2, 7], [3, 4], [4, 5], [4, 6], [5, 6], [6, 7]]
-n, m = 7, 7
-print(get_bridges(n, m, edges))
+if __name__ == '__main__':
+    main()
 

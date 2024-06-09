@@ -1,15 +1,24 @@
 
-def solve(snukes, snacks):
-    # Initialize a set to store the victims
-    victims = set()
+def get_min_x(divisors):
+    # Sort the divisors in ascending order
+    divisors.sort()
+    # Initialize the minimum possible value of x as the product of the divisors
+    x = 1
+    for d in divisors:
+        x *= d
+    # Loop through the divisors and check if they are actually divisors of x
+    for d in divisors:
+        if x % d != 0:
+            return -1
+    return x
 
-    # Iterate over each snack and its associated snukes
-    for snack, snukes in enumerate(snacks, start=1):
-        # Check if any snukes have this snack
-        if snukes:
-            # Add the snukes with this snack to the victims set
-            victims |= set(snukes)
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        divisors = [int(x) for x in input().split()]
+        print(get_min_x(divisors))
 
-    # Return the number of victims
-    return len(victims)
+if __name__ == '__main__':
+    main()
 

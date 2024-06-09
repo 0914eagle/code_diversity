@@ -1,20 +1,31 @@
 
-def solve(n, firings, hirings):
-    # Initialize the HR people as a list of tuples (id, days_handled)
-    hr_people = [(i, 0) for i in range(1, n+1)]
+def get_starting_circles(circle, k):
+    # Initialize a set to store the starting circles
+    starting_circles = set()
     
-    # Iterate through each day
-    for i in range(n):
-        # Get the number of firings and hirings for the current day
-        f = firings[i]
-        h = hirings[i]
+    # Loop through each possible starting circle
+    for i in range(len(circle)):
+        # Get the starting circle by rotating the input circle i positions
+        starting_circle = circle[i:] + circle[:i]
         
-        # Find the HR person with the least number of days handled
-        min_days_handled = min(hr_people, key=lambda x: x[1])[1]
-        
-        # Assign the HR person to handle the firings and hirings for the current day
-        hr_people[min_days_handled][1] += f + h
-        
-    # Return the smallest number of HR people needed
-    return min(hr_people, key=lambda x: x[1])[0]
+        # Add the starting circle to the set if it is not already present
+        if starting_circle not in starting_circles:
+            starting_circles.add(starting_circle)
+    
+    # Return the number of distinct starting circles
+    return len(starting_circles)
+
+def main():
+    # Read the input
+    n, k = map(int, input().split())
+    circle = input()
+    
+    # Call the function to get the number of distinct starting circles
+    result = get_starting_circles(circle, k)
+    
+    # Print the result
+    print(result)
+
+if __name__ == '__main__':
+    main()
 

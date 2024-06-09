@@ -1,31 +1,36 @@
 
-def solve(a, b, x):
-    # Calculate the dot product of a and b to get the matrix c
-    c = [[a[i] * b[j] for j in range(len(b))] for i in range(len(a))]
-    
-    # Initialize the maximum area and the corresponding subrectangle
-    max_area = 0
-    subrectangle = []
-    
-    # Iterate over each possible subrectangle
-    for i in range(len(a)):
-        for j in range(len(b)):
-            for k in range(i, len(a)):
-                for l in range(j, len(b)):
-                    # Calculate the area of the current subrectangle
-                    area = (k - i + 1) * (l - j + 1)
-                    
-                    # Calculate the sum of the elements in the current subrectangle
-                    sum_elements = sum(sum(c[i:k+1], []))
-                    
-                    # If the sum of the elements is less than or equal to x and the area is greater than the current maximum area, update the maximum area and the corresponding subrectangle
-                    if sum_elements <= x and area > max_area:
-                        max_area = area
-                        subrectangle = [i, k, j, l]
-    
-    # If a subrectangle with the maximum area was found, return its dimensions, otherwise return 0
-    if max_area != 0:
-        return subrectangle
-    else:
-        return 0
+def get_longest_common_subsequence(s1, s2):
+    m = len(s1)
+    n = len(s2)
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if s1[i - 1] == s2[j - 1]:
+                dp[i][j] = dp[i - 1][j - 1] + 1
+            else:
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+    lcs = ""
+    i, j = m, n
+    while i > 0 and j > 0:
+        if s1[i - 1] == s2[j - 1]:
+            lcs = s1[i - 1] + lcs
+            i -= 1
+            j -= 1
+        elif dp[i - 1][j] > dp[i][j - 1]:
+            i -= 1
+        else:
+            j -= 1
+    return lcs
+
+def get_valid_subsequence(s1, s2, virus):
+    lcs = get_longest_common_subsequence(s1, s2)
+    if virus in lcs:
+        return "0"
+    return lcs
+
+if __name__ == '__main__':
+    s1 = input()
+    s2 = input()
+    virus = input()
+    print(get_valid_subsequence(s1, s2, virus))
 

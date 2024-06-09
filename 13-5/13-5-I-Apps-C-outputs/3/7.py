@@ -1,64 +1,37 @@
 
-def get_max_flow(n, m, s, t, edges):
-    # Initialize the graph with the given nodes and edges
-    graph = {i: [] for i in range(n)}
-    for u, v, c in edges:
-        graph[u].append((v, c))
-    
-    # Initialize the residual graph with the given edges
-    residual = {i: [] for i in range(n)}
-    for u, v, c in edges:
-        residual[u].append((v, c))
-    
-    # Initialize the flow to be 0
-    flow = {i: 0 for i in range(n)}
-    
-    # Initialize the parent array to keep track of the BFS
-    parent = [-1] * n
-    
-    # Find the maximum flow using the Edmonds-Karp algorithm
-    while bfs(residual, s, t, parent):
-        flow_through_edge = float('inf')
-        u = t
-        while u != s:
-            v = parent[u]
-            flow_through_edge = min(flow_through_edge, residual[v][parent[v]][1] - flow[v])
-            u = v
-        u = t
-        while u != s:
-            v = parent[u]
-            residual[v][parent[v]][1] -= flow_through_edge
-            residual[v][parent[v]][0] += flow_through_edge
-            flow[v] += flow_through_edge
-            u = v
-    
-    # Return the maximum flow and the edges used in the solution
-    return flow[t], [(u, v, flow[v]) for u, v, c in edges if flow[v] > 0]
+def get_pattern(filenames, m):
+    # Initialize a set to store the indices of the files to be deleted
+    indices = set(m)
+    # Initialize a list to store the characters of the pattern
+    pattern = []
+    # Loop through the filenames
+    for i, filename in enumerate(filenames):
+        # If the current filename is in the set of indices, add a '?' to the pattern
+        if i in indices:
+            pattern.append('?')
+        # Otherwise, add the current character of the filename to the pattern
+        else:
+            pattern.append(filename[0])
+    # Return the pattern as a string
+    return ''.join(pattern)
 
-def bfs(graph, s, t, parent):
-    # Initialize the queue with the source node
-    queue = [s]
-    
-    # Initialize the visited array
-    visited = [False] * len(graph)
-    
-    # Loop until the queue is empty
-    while queue:
-        # Dequeue a node from the queue
-        u = queue.pop(0)
-        
-        # If the node is the sink, return True
-        if u == t:
-            return True
-        
-        # If the node has not been visited, mark it as visited and add its neighbors to the queue
-        if not visited[u]:
-            visited[u] = True
-            for v, c in graph[u]:
-                if c > 0:
-                    queue.append(v)
-                    parent[v] = u
-    
-    # If the queue is empty and the sink has not been reached, return False
-    return False
+def main():
+    # Read the number of files and the number of files to be deleted
+    n, m = map(int, input().split())
+    # Read the filenames
+    filenames = [input() for _ in range(n)]
+    # Read the indices of the files to be deleted
+    indices = set(map(int, input().split()))
+    # Check if a pattern exists
+    if len(indices) == m:
+        # If a pattern exists, find it and print it
+        pattern = get_pattern(filenames, indices)
+        print("Yes")
+        print(pattern)
+    else:
+        # If no pattern exists, print "No"
+        print("No")
+
+if __name__ == '__main__':
+    main()
 

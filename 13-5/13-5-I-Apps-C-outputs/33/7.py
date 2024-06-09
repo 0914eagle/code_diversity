@@ -1,11 +1,37 @@
 
-def is_possible(s):
-    a_count = s.count('a')
-    b_count = s.count('b')
-    c_count = s.count('c')
-    if a_count == 0 or b_count == 0:
-        return "NO"
-    if c_count == a_count or c_count == b_count:
-        return "YES"
-    return "NO"
+def f1(n, k, vertices):
+    # Calculate the area of the polygon
+    area = 0
+    for i in range(n):
+        area += (vertices[i][0] * vertices[i-1][1]) - (vertices[i][1] * vertices[i-1][0])
+    area = abs(area) / 2
+
+    # Calculate the side length of the square maps
+    side_length = (area / k) ** 0.5
+
+    return round(side_length, 2)
+
+def f2(n, k, vertices):
+    # Calculate the area of the polygon
+    area = 0
+    for i in range(n):
+        area += (vertices[i][0] * vertices[i-1][1]) - (vertices[i][1] * vertices[i-1][0])
+    area = abs(area) / 2
+
+    # Calculate the side length of the square maps
+    side_length = (area / k) ** 0.5
+
+    # Calculate the number of maps that cover the entire canyon
+    num_maps = int(area / (side_length ** 2))
+
+    return round(side_length, 2)
+
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    vertices = []
+    for i in range(n):
+        x, y = map(int, input().split())
+        vertices.append([x, y])
+    print(f1(n, k, vertices))
+    print(f2(n, k, vertices))
 

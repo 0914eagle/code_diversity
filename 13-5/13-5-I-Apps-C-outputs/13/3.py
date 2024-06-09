@@ -1,19 +1,29 @@
 
-import math
+def is_phone_number(s):
+    if len(s) != 11:
+        return False
+    if s[0] != "8":
+        return False
+    for i in range(1, 11):
+        if not s[i].isdigit():
+            return False
+    return True
 
-def num_paths(N, X, Y):
-    mod = 1000000007
-    dp = [[0] * (N + 1) for _ in range(N + 1)]
-    dp[0][0] = 1
+def make_phone_numbers(s):
+    phone_numbers = []
+    for i in range(len(s) - 10):
+        if is_phone_number(s[i:i+11]):
+            phone_numbers.append(s[i:i+11])
+    return phone_numbers
 
-    for i in range(1, N + 1):
-        for j in range(1, N + 1):
-            for k in range(1, X + 1):
-                if i - k >= 0:
-                    dp[i][j] = (dp[i][j] + dp[i - k][j]) % mod
-            for l in range(1, Y + 1):
-                if j - l >= 0:
-                    dp[i][j] = (dp[i][j] + dp[i][j - l]) % mod
+def f1(n, s):
+    return len(make_phone_numbers(s))
 
-    return dp[N][N]
+def f2(n, s):
+    return 0
+
+if __name__ == '__main__':
+    n = int(input())
+    s = input()
+    print(f1(n, s))
 

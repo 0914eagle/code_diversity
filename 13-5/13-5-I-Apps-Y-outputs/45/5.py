@@ -1,12 +1,20 @@
 
-def solve(W, H, x, y):
-    area_1 = x * y
-    area_2 = (W-x) * (H-y)
-    area_3 = W * H - area_1 - area_2
-    if area_1 >= area_2 and area_1 >= area_3:
-        return area_1, 0
-    elif area_2 >= area_1 and area_2 >= area_3:
-        return area_2, 0
-    else:
-        return area_3, 1
+def f1(C, K):
+    # Calculate the nearest amount that Mirko can pay
+    nearest_amount = int(C / (10 ** K)) * (10 ** K)
+    if C % (10 ** K) >= (10 ** K) / 2:
+        nearest_amount += 10 ** K
+    return nearest_amount
+
+def f2(C, K):
+    # Calculate the nearest amount that Mirko can pay using a loop
+    nearest_amount = 0
+    for i in range(K):
+        nearest_amount += 10 ** i
+    return nearest_amount * int(C / nearest_amount)
+
+if __name__ == '__main__':
+    C, K = map(int, input().split())
+    print(f1(C, K))
+    print(f2(C, K))
 

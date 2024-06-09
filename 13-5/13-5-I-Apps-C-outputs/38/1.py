@@ -1,46 +1,23 @@
 
-def get_min_days(grid, stamina):
-    # Initialize variables
-    rows, cols = len(grid), len(grid[0])
-    start_row, start_col = None, None
-    goal_row, goal_col = None, None
-    days = 0
-    stamina_left = stamina
+def f1(n, m, a, b):
+    # Calculate the minimum mass of fuel to load into the rocket
+    fuel = 0
+    for i in range(n):
+        fuel += max(a[i], b[i])
+    return fuel
 
-    # Find the starting and goal positions
-    for row in range(rows):
-        for col in range(cols):
-            if grid[row][col] == "S":
-                start_row, start_col = row, col
-            elif grid[row][col] == "G":
-                goal_row, goal_col = row, col
+def f2(n, m, a, b):
+    # Calculate the minimum mass of fuel to load into the rocket, while considering the mass of the rocket and the payload
+    fuel = 0
+    for i in range(n):
+        fuel += max(a[i], b[i])
+    return fuel + m
 
-    # Breadth-first search to find the shortest path
-    queue = [(start_row, start_col)]
-    visited = set()
-    while queue:
-        row, col = queue.pop(0)
-        visited.add((row, col))
-        if (row, col) == (goal_row, goal_col):
-            break
-        for r, c in [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]:
-            if 0 <= r < rows and 0 <= c < cols and grid[r][c] != "#" and (r, c) not in visited:
-                queue.append((r, c))
-                stamina_left -= 1
-                if grid[r][c] == ".":
-                    stamina_left -= 1
-                elif grid[r][c] == "F":
-                    stamina_left -= 2
-                elif grid[r][c] == "M":
-                    stamina_left -= 3
-                if stamina_left <= 0:
-                    days += 1
-                    stamina_left = stamina
-
-    # Check if the goal is reachable
-    if (goal_row, goal_col) not in visited:
-        return -1
-
-    # Return the minimum number of days
-    return days
+if __name__ == '__main__':
+    n = int(input())
+    m = int(input())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    print(f1(n, m, a, b))
+    print(f2(n, m, a, b))
 

@@ -1,67 +1,59 @@
 
-def solve(n, m, beacons, mountains):
-    # Initialize a set to store the lit beacons
-    lit_beacons = set()
-    # Initialize a queue to store the beacons to be lit in the next iteration
-    queue = []
-    # Add the first beacon to the queue
-    queue.append(beacons[0])
-    # Loop until the queue is empty
-    while queue:
-        # Get the current beacon from the queue
-        current_beacon = queue.pop(0)
-        # Add the current beacon to the lit beacons set
-        lit_beacons.add(current_beacon)
-        # Find all beacons that are within sight of the current beacon
-        visible_beacons = find_visible_beacons(current_beacon, beacons, mountains)
-        # Add these beacons to the queue
-        queue.extend(visible_beacons)
-    # Return the number of messages needed (which is the number of lit beacons)
-    return len(lit_beacons)
+import math
 
-def find_visible_beacons(beacon, beacons, mountains):
-    # Initialize an empty list to store the visible beacons
-    visible_beacons = []
-    # Loop through all beacons
+def distance(x1, y1, x2, y2):
+    return math.sqrt((x2-x1)**2 + (y2-y1)**2)
+
+def beacons_in_sight(beacons, beacon, mountain_peaks):
+    beacons_in_sight = []
     for other_beacon in beacons:
-        # If the other beacon is not the current beacon and it is within sight of the current beacon
-        if other_beacon != beacon and is_within_sight(beacon, other_beacon, mountains):
-            # Add the other beacon to the list of visible beacons
-            visible_beacons.append(other_beacon)
-    # Return the list of visible beacons
-    return visible_beacons
+        if not any(mountain_peak_blocks_line(mountain_peaks, beacon, other_beacon)):
+            beacons_in_sight.append(other_beacon)
+    return beacons_in_sight
 
-def is_within_sight(beacon1, beacon2, mountains):
-    # Initialize a flag to indicate if the two beacons are within sight
-    within_sight = True
-    # Loop through all mountains
-    for mountain in mountains:
-        # If the line between the two beacons intersects the circumference of the mountain
-        if intersects_circle(beacon1, beacon2, mountain):
-            # Set the flag to False and break out of the loop
-            within_sight = False
-            break
-    # Return the flag
-    return within_sight
-
-def intersects_circle(beacon1, beacon2, mountain):
-    # Calculate the distance between the two beacons
-    distance = distance_between_points(beacon1, beacon2)
-    # Calculate the radius of the mountain
-    radius = mountain[2]
-    # If the distance between the two beacons is less than or equal to the radius of the mountain, return True
-    if distance <= radius:
-        return True
-    # Otherwise, return False
+def mountain_peak_blocks_line(mountain_peaks, beacon1, beacon2):
+    for mountain_peak in mountain_peaks:
+        if line_intersects_circle(beacon1, beacon2, mountain_peak):
+            return True
     return False
 
-def distance_between_points(point1, point2):
-    # Calculate the difference between the x coordinates
-    x_diff = point1[0] - point2[0]
-    # Calculate the difference between the y coordinates
-    y_diff = point1[1] - point2[1]
-    # Calculate the distance
-    distance = (x_diff ** 2 + y_diff ** 2) ** 0.5
-    # Return the distance
-    return distance
+def line_intersects_circle(beacon1, beacon2, mountain_peak):
+    x1, y1 = beacon1
+    x2, y2 = beacon2
+    xc, yc, r = mountain_peak
+    d = distance(x1, y1, x2, y2)
+    return d <= r + distance(xc, yc, x1, y1)
+
+def f1(n, m, beacons, mountain_peaks):
+    beacons_to_light = set(beacons)
+    messages_sent = 0
+    while beacons_to_light:
+        beacon = beacons_to_light.pop()
+        beacons_in_sight = beacons_in_sight(beacons, beacon, mountain_peaks)
+        beacons_to_light.update(beacons_in_sight)
+        messages_sent += 1
+    return messages_sent
+
+def f2(n, m, beacons, mountain_peaks):
+    beacons_to_light = set(beacons)
+    messages_sent = 0
+    while beacons_to_light:
+        beacon = beacons_to_light.pop()
+        beacons_in_sight = beacons_in_sight(beacons, beacon, mountain_peaks)
+        beacons_to_light.update(beacons_in_sight)
+        messages_sent += 1
+    return messages_sent
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    beacons = []
+    for _ in range(n):
+        x, y = map(int, input().split())
+        beacons.append((x, y))
+    mountain_peaks = []
+    for _ in range(m):
+        x, y, r = map(int, input().split())
+        mountain_peaks.append((x, y, r))
+    print(f1(n, m, beacons, mountain_peaks))
+    print(f2(n, m, beacons, mountain_peaks))
 

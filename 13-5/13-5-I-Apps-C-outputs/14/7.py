@@ -1,34 +1,53 @@
 
-def solve(N, debts):
-    # Initialize a dictionary to store the debts
-    debt_dict = {}
-    for i in range(N):
-        debt_dict[i+1] = debts[i]
+def f1(L, n):
+    # function to check if the wire will touch itself
+    def check_touch(point, direction):
+        if direction == "C":
+            return point >= L - point
+        else:
+            return point <= L - point
     
-    # Initialize a set to store the people who have paid back their debts
-    paid_back = set()
+    # function to check if the wire ghost will appear
+    def check_ghost(points, directions):
+        for i in range(n):
+            if check_touch(points[i], directions[i]):
+                return "GHOST"
+        return "SAFE"
     
-    # Initialize a variable to store the total amount of money needed
-    total_amount = 0
+    # main function
+    points = []
+    directions = []
+    for i in range(n):
+        point, direction = map(int, input().split())
+        points.append(point)
+        directions.append(direction)
+    return check_ghost(points, directions)
+
+def f2(L, n):
+    # function to check if the wire will touch itself
+    def check_touch(point, direction):
+        if direction == "C":
+            return point >= L - point
+        else:
+            return point <= L - point
     
-    # Loop until all debts are paid back
-    while len(paid_back) < N:
-        # Find the person with the highest debt who has not paid back their debt
-        highest_debt = -1
-        person = -1
-        for i in range(1, N+1):
-            if i not in paid_back and debt_dict[i] > highest_debt:
-                highest_debt = debt_dict[i]
-                person = i
-        
-        # Pay back the debt of the person with the highest debt
-        total_amount += highest_debt
-        paid_back.add(person)
-        
-        # Update the debts of the people who owe money to the person who just paid back their debt
-        for i in range(1, N+1):
-            if i not in paid_back and debt_dict[i] > 0:
-                debt_dict[i] -= highest_debt
+    # function to check if the wire ghost will appear
+    def check_ghost(points, directions):
+        for i in range(n):
+            if check_touch(points[i], directions[i]):
+                return "GHOST"
+        return "SAFE"
     
-    return total_amount
+    # main function
+    points = []
+    directions = []
+    for i in range(n):
+        point, direction = map(int, input().split())
+        points.append(point)
+        directions.append(direction)
+    return check_ghost(points, directions)
+
+if __name__ == '__main__':
+    L, n = map(int, input().split())
+    print(f1(L, n))
 

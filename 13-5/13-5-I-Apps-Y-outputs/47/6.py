@@ -1,15 +1,22 @@
 
-def get_min_distance(n, p, distances):
-    # Sort the distances in non-decreasing order
-    distances.sort()
-    # Initialize the minimum distance to the car in front
-    min_distance = 1
-    # Iterate through the distances
-    for i in range(n):
-        # Calculate the distance needed to maintain the minimum speed
-        distance_needed = (i + 1) * p
-        # If the current distance is less than the distance needed, update the minimum distance
-        if distances[i] < distance_needed:
-            min_distance = distance_needed
-    return min_distance
+def get_matches(N, W, H):
+    matches = []
+    for _ in range(N):
+        matches.append(int(input()))
+    return matches
+
+def fit_in_box(match, W, H):
+    if match <= W:
+        return "DA"
+    else:
+        return "NE"
+
+def main():
+    N, W, H = map(int, input().split())
+    matches = get_matches(N, W, H)
+    for match in matches:
+        print(fit_in_box(match, W, H))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,35 +1,61 @@
 
-def solve(trips):
-    # Initialize variables to keep track of the total cost and the current time
-    total_cost = 0
-    current_time = 0
+def read_input():
+    n, m, s = map(int, input().split())
+    people = list(map(int, input().split()))
+    roads = []
+    for _ in range(m):
+        u, v, w = map(int, input().split())
+        roads.append((u, v, w))
+    shelters = []
+    for _ in range(s):
+        s_i, c_i = map(int, input().split())
+        shelters.append((s_i, c_i))
+    return n, m, s, people, roads, shelters
+
+def optimize_shelters(n, m, s, people, roads, shelters):
+    # Initialize a graph with n locations and m roads
+    graph = [[] for _ in range(n)]
+    for u, v, w in roads:
+        graph[u-1].append((v-1, w))
+        graph[v-1].append((u-1, w))
     
-    # Iterate through each trip
-    for trip in trips:
-        # Calculate the duration of the trip in minutes
-        duration = trip - current_time
-        
-        # Check if the trip can be covered by a one-trip ticket
-        if duration <= 90:
-            # Add the cost of the one-trip ticket to the total cost
-            total_cost += 20
-            
-        # Check if the trip can be covered by a 90-minute ticket
-        elif duration <= 1440:
-            # Calculate the number of 90-minute tickets needed to cover the trip
-            num_tickets = duration // 90
-            
-            # Add the cost of the 90-minute tickets to the total cost
-            total_cost += num_tickets * 50
-            
-        # Check if the trip can be covered by a one-day ticket
-        else:
-            # Add the cost of the one-day ticket to the total cost
-            total_cost += 120
-            
-        # Update the current time to the end of the trip
-        current_time = trip
+    # Initialize a dictionary to keep track of the people at each location
+    people_at_location = {i: people[i] for i in range(n)}
     
-    # Return the total cost
-    return total_cost
+    # Initialize a dictionary to keep track of the people at each shelter
+    people_at_shelter = {i: 0 for i, _ in shelters}
+    
+    # Initialize a dictionary to keep track of the time it takes to reach each shelter from each location
+    time_to_reach_shelter = {i: float('inf') for i in range(n)}
+    
+    # Initialize a priority queue to keep track of the locations to visit
+    queue = [(0, 0)]
+    
+    while queue:
+        time, location = heapq.heappop(queue)
+        if location in people_at_shelter:
+            continue
+        people_at_shelter[location] += people_at_location[location]
+        for neighbor, weight in graph[location]:
+            if time_to_reach_shelter[neighbor] > time + weight:
+                time_to_reach_shelter[neighbor] = time + weight
+                heapq.heappush(queue, (time + weight, neighbor))
+    
+    # Find the shelter with the minimum time to reach
+    min_time = float('inf')
+    min_shelter = None
+    for shelter, time in time_to_reach_shelter.items():
+        if time < min_time:
+            min_time = time
+            min_shelter = shelter
+    
+    # Return the minimum time to reach the shelter
+    return min_time
+
+def main():
+    n, m, s, people, roads, shelters = read_input()
+    print(optimize_shelters(n, m, s, people, roads, shelters))
+
+if __name__ == '__main__':
+    main()
 

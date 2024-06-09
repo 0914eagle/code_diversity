@@ -1,46 +1,47 @@
 
-def solve(N, u, p):
-    # Initialize variables
-    L = 0
-    M = 0
-    parents = [-1] + p
-    depth = [0] * (N + 1)
-    nondecreasing = [True] * (N + 1)
+def is_valid_solution(grid):
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j] != 0 and grid[i][j] != i + 1:
+                return False
+    return True
 
-    # Compute the depth of each vertex and check if the labels are nondecreasing
-    for i in range(1, N + 1):
-        depth[i] = depth[parents[i]] + 1
-        nondecreasing[i] = nondecreasing[parents[i]] and u[i] >= u[parents[i]]
+def solve_sudoku(grid):
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j] == 0:
+                for num in range(1, len(grid) + 1):
+                    grid[i][j] = num
+                    if is_valid_solution(grid):
+                        if solve_sudoku(grid):
+                            return True
+                    grid[i][j] = 0
+    return False
 
-    # Iterate over all vertices and check if they are part of a jumping path
-    for i in range(1, N + 1):
-        # If the vertex is not part of a jumping path, skip it
-        if nondecreasing[i]:
-            continue
+def solve_superdoku(grid, k):
+    for i in range(k):
+        for j in range(len(grid[0])):
+            if grid[i][j] == 0:
+                for num in range(1, len(grid) + 1):
+                    grid[i][j] = num
+                    if is_valid_solution(grid):
+                        if solve_sudoku(grid):
+                            return True
+                    grid[i][j] = 0
+    return False
 
-        # Initialize the length of the jumping path and the current vertex
-        length = 1
-        curr = i
+def main():
+    n, k = map(int, input().split())
+    grid = []
+    for i in range(k):
+        grid.append(list(map(int, input().split())))
+    if solve_superdoku(grid, k):
+        print("yes")
+        for i in range(len(grid)):
+            print(*grid[i])
+    else:
+        print("no")
 
-        # Iterate over the ancestors of the current vertex
-        while parents[curr] != -1:
-            # If the ancestor is not part of a jumping path, break
-            if not nondecreasing[parents[curr]]:
-                break
-
-            # Update the length of the jumping path and the current vertex
-            length += 1
-            curr = parents[curr]
-
-        # If the length of the jumping path is greater than the current maximum, update the maximum
-        if length > L:
-            L = length
-            M = 1
-
-        # If the length of the jumping path is equal to the current maximum, increment the number of jumping paths
-        elif length == L:
-            M += 1
-
-    # Return the maximum length and the number of jumping paths modulo the prime
-    return L, M % 11092019
+if __name__ == '__main__':
+    main()
 

@@ -1,18 +1,18 @@
 
-def is_respectable(points):
-    x_coords = [point[0] for point in points]
-    y_coords = [point[1] for point in points]
+def find_regular_polygon(angle):
+    for n in range(3, 998244354):
+        if n*(n-3) % 2 == 0 and n % 2 == 1:
+            if (n-3)*(n-2)*(n-1) % (n*n) == 0:
+                if (n-3)*(n-2)*(n-1) // (n*n) == angle:
+                    return n
+    return -1
 
-    x_coords.sort()
-    y_coords.sort()
+def main():
+    T = int(input())
+    for i in range(T):
+        angle = int(input())
+        print(find_regular_polygon(angle))
 
-    if len(set(x_coords)) != 3 or len(set(y_coords)) != 3:
-        return "ugly"
-
-    for i in range(3):
-        for j in range(3):
-            if (x_coords[i], y_coords[j]) not in points:
-                return "ugly"
-
-    return "respectable"
+if __name__ == '__main__':
+    main()
 

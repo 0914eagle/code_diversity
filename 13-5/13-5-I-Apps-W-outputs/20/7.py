@@ -1,11 +1,19 @@
 
-def get_max_value(A, B, N):
-    max_value = 0
-    for x in range(N+1):
-        floor_Ax_B = int(A*x/B)
-        A_floor_x_B = A*int(x/B)
-        value = floor_Ax_B - A_floor_x_B
-        if value > max_value:
-            max_value = value
-    return max_value
+def is_good_lab(lab):
+    n = len(lab)
+    for i in range(n):
+        for j in range(n):
+            if lab[i][j] != 1 and not any(lab[i][k] + lab[k][j] == lab[i][j] for k in range(n)):
+                return False
+    return True
+
+def main():
+    n = int(input())
+    lab = []
+    for i in range(n):
+        lab.append([int(x) for x in input().split()])
+    print("Yes") if is_good_lab(lab) else print("No")
+
+if __name__ == '__main__':
+    main()
 

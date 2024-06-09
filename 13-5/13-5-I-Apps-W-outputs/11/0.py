@@ -1,21 +1,30 @@
 
-def solve(a, b):
-    # Initialize a dictionary to store the number of ways for each dice roll
-    ways = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0}
+def is_human_winner(n, k, coefficients):
+    # Initialize the polynomial as a string
+    polynomial = "".join(str(c) for c in coefficients)
+    
+    # Check if the polynomial is already divisible by x - k
+    if polynomial.endswith(f"x - {k}"):
+        return True
+    
+    # Check if the polynomial has any undefined coefficients
+    if "?" in polynomial:
+        return False
+    
+    # Check if the polynomial is divisible by x - k after setting the last coefficient to any value
+    for i in range(n):
+        polynomial = polynomial[:-1] + str(i)
+        if polynomial.endswith(f"x - {k}"):
+            return True
+    
+    # If none of the above conditions are met, the human has no winning strategy
+    return False
 
-    # Iterate over each dice roll from 1 to 6
-    for roll in range(1, 7):
-        # Calculate the absolute difference between the roll and both numbers
-        diff_a = abs(roll - a)
-        diff_b = abs(roll - b)
+def main():
+    n, k = map(int, input().split())
+    coefficients = list(map(int, input().split()))
+    print("Yes") if is_human_winner(n, k, coefficients) else print("No")
 
-        # If the first player wins, increment the number of ways for that dice roll
-        if diff_a < diff_b:
-            ways[roll] += 1
-        # If the game ends in a draw, increment the number of ways for that dice roll
-        elif diff_a == diff_b:
-            ways[roll] += 1
-
-    # Return the number of ways for each outcome
-    return ways[1], ways[2], ways[3], ways[4], ways[5], ways[6]
+if __name__ == '__main__':
+    main()
 

@@ -1,26 +1,33 @@
 
-def solve(k, n, questions):
-    # Initialize the player with the box and the time elapsed
-    player = k
-    time_elapsed = 0
-    
-    # Iterate through the questions
-    for i in range(n):
-        # Unpack the question data
-        time, answer = questions[i]
-        
-        # Update the time elapsed
-        time_elapsed += time
-        
-        # If the answer is incorrect or skipped, pass the box to the next player
-        if answer in ["N", "P"]:
-            player = (player + 1) % 8
-        
-        # If the answer is correct, pass the box to the next player and update the time elapsed
-        else:
-            player = (player + 1) % 8
-            time_elapsed += 30
-    
-    # Return the player with the box when it exploded
-    return player
+def get_cost(shares, cost):
+    return shares * cost
+
+def get_average_cost(shares, cost):
+    return cost
+
+def get_profit(shares, cost, sell_price):
+    return (sell_price - cost) * shares
+
+def get_tax(profit, tax_rate):
+    return profit * tax_rate
+
+def get_net_profit(profit, tax):
+    return profit - tax
+
+def get_final_sale_price(shares, cost, sell_price, tax_rate):
+    profit = get_profit(shares, cost, sell_price)
+    tax = get_tax(profit, tax_rate)
+    net_profit = get_net_profit(profit, tax)
+    return net_profit
+
+def main():
+    shares = 10
+    cost = 10
+    sell_price = 42
+    tax_rate = 0.3
+    final_sale_price = get_final_sale_price(shares, cost, sell_price, tax_rate)
+    print(final_sale_price)
+
+if __name__ == '__main__':
+    main()
 

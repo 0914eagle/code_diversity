@@ -1,14 +1,36 @@
 
-def get_closest_handsome_number(N):
-    N_str = str(N)
-    N_len = len(N_str)
-    for i in range(N_len):
-        if N_str[i] == N_str[i-1]:
-            continue
+def get_smallest_number_of_columns_to_delete(table):
+    # Initialize variables
+    num_columns = len(table[0])
+    num_rows = len(table)
+    rows_equal = False
+    columns_to_delete = 0
+
+    # Loop through each column and check if all rows are equal
+    while not rows_equal:
+        for i in range(num_columns):
+            column = [row[i] for row in table]
+            if len(set(column)) != 1:
+                break
         else:
-            if N_str[i] == "1" and N_str[i-1] == "0":
-                return int(N_str[:i] + "1" + N_str[i+1:])
-            elif N_str[i] == "0" and N_str[i-1] == "1":
-                return int(N_str[:i] + "0" + N_str[i+1:])
-    return -1
+            rows_equal = True
+            break
+
+        # If all rows are not equal, delete the current column and sort the rows
+        columns_to_delete += 1
+        for row in table:
+            row.pop(i)
+        table = [sorted(row) for row in table]
+
+    return columns_to_delete
+
+def main():
+    num_columns = int(input())
+    table = []
+    for i in range(3):
+        table.append(list(map(int, input().split())))
+    print(get_smallest_number_of_columns_to_delete(table))
+
+if __name__ == '__main__':
+    main()
 

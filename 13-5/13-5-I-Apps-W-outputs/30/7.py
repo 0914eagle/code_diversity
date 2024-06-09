@@ -1,41 +1,24 @@
 
-def solve(n, m, k, x, s, a, b, c, d):
-    # Initialize the minimum time to prepare n potions as infinity
-    min_time = float('inf')
+import math
 
-    # Loop through all possible combinations of spells
-    for i in range(1 << m):
-        # Initialize the number of potions prepared and the total mana spent
-        num_potions = 0
-        total_mana = 0
+def get_distance(t):
+    # Calculate the distance between Agneta and Beata at time t
+    distance = 1 - math.cos(t)
+    return distance
 
-        # Loop through all spells
-        for j in range(m):
-            # Check if the j-th spell is used in the current combination
-            if i & (1 << j):
-                # Add the number of potions created by the j-th spell to the total
-                num_potions += c[j]
+def get_min_distance(W):
+    # Find the minimum distance between Agneta and Beata during their trip
+    min_distance = float('inf')
+    for t in range(0, 1001):
+        distance = get_distance(t)
+        if distance < min_distance:
+            min_distance = distance
+    return min_distance
 
-                # Check if the j-th spell is of the first type
-                if b[j] != 0:
-                    # Add the mana cost of the j-th spell to the total
-                    total_mana += b[j]
+def main():
+    W = float(input())
+    print(get_min_distance(W))
 
-        # Check if the total mana spent is less than or equal to the maximum allowed
-        if total_mana <= s:
-            # Calculate the total time to prepare the potions
-            total_time = x * (n - num_potions)
-
-            # Loop through all spells
-            for j in range(m):
-                # Check if the j-th spell is used in the current combination
-                if i & (1 << j):
-                    # Add the time saved by the j-th spell to the total
-                    total_time += a[j] * c[j]
-
-            # Update the minimum time if the current combination is faster
-            min_time = min(min_time, total_time)
-
-    # Return the minimum time to prepare n potions
-    return min_time
+if __name__ == '__main__':
+    main()
 

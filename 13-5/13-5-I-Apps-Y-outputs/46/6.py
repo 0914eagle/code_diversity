@@ -1,8 +1,20 @@
 
-def check_security_code(S):
-    if len(S) != 4:
-        return "Bad"
-    if S[1] == S[2] or S[2] == S[3]:
-        return "Bad"
-    return "Good"
+def get_max_consecutive_rainy_days(weather_records):
+    max_consecutive_rainy_days = 0
+    current_consecutive_rainy_days = 0
+    for i in range(len(weather_records)):
+        if weather_records[i] == "R":
+            current_consecutive_rainy_days += 1
+        else:
+            max_consecutive_rainy_days = max(max_consecutive_rainy_days, current_consecutive_rainy_days)
+            current_consecutive_rainy_days = 0
+    
+    return max(max_consecutive_rainy_days, current_consecutive_rainy_days)
+
+def main():
+    weather_records = input()
+    print(get_max_consecutive_rainy_days(weather_records))
+
+if __name__ == '__main__':
+    main()
 

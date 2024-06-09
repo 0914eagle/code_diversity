@@ -1,13 +1,17 @@
 
-import itertools
+def f1(y, l):
+    # Convert y to a string in all possible bases from 2 to 16
+    bases = [str(y) for b in range(2, 17) for y in [format(y, f"b")]
+    # Find the largest base such that the converted string contains only decimal digits and is at least l
+    for b in range(16, 2, -1):
+        if all(c in "0123456789" for c in bases[b-2]) and int(bases[b-2]) >= l:
+            return b
+    return 0
 
-def get_composite_strings(initial_strings, k):
-    return [''.join(i) for i in itertools.combinations(initial_strings, k)]
+def f2(...):
+    # Your code here
 
-def get_sorted_composite_strings(initial_strings, k):
-    return sorted(get_composite_strings(initial_strings, k))
-
-def get_position_in_sorted_list(test_composite_string, initial_strings, k):
-    sorted_composite_strings = get_sorted_composite_strings(initial_strings, k)
-    return sorted_composite_strings.index(test_composite_string) % (10**9 + 7)
+if __name__ == '__main__':
+    y, l = map(int, input().split())
+    print(f1(y, l))
 

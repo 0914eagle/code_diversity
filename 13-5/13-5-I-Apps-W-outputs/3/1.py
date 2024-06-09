@@ -1,28 +1,32 @@
 
-def max_rectangle_area(sticks):
-    
-    # Sort the sticks in non-decreasing order
-    sticks.sort()
-    # Initialize the maximum area to 0
-    max_area = 0
-    # Iterate over the sticks
-    for i in range(len(sticks)):
-        # Get the length of the current stick
-        length = sticks[i]
-        # Iterate over the remaining sticks
-        for j in range(i+1, len(sticks)):
-            # Get the length of the next stick
-            next_length = sticks[j]
-            # Check if the current stick is equal to the next stick
-            if length == next_length:
-                # If so, calculate the area of the rectangle and update the maximum area
-                area = length * next_length
-                max_area = max(max_area, area)
-            # Check if the current stick is less than the next stick
-            elif length < next_length:
-                # If so, calculate the area of the rectangle and update the maximum area
-                area = length * next_length
-                max_area = max(max_area, area)
-    # Return the maximum area
-    return max_area
+def gcd(a, b):
+    if b == 0:
+        return a
+    else:
+        return gcd(b, a % b)
+
+def lcm(a, b):
+    return a * b // gcd(a, b)
+
+def f1(a1, b1, a2, b2, L, R):
+    lcm_ab = lcm(a1, a2)
+    gcd_ab = gcd(a1, a2)
+    count = 0
+    for x in range(L, R + 1):
+        if x % gcd_ab == 0 and (x - b1) % a1 == 0 and (x - b2) % a2 == 0:
+            count += 1
+    return count
+
+def f2(a1, b1, a2, b2, L, R):
+    lcm_ab = lcm(a1, a2)
+    gcd_ab = gcd(a1, a2)
+    count = 0
+    for x in range(L, R + 1):
+        if x % gcd_ab == 0 and (x - b1) % a1 == 0 and (x - b2) % a2 == 0:
+            count += 1
+    return count
+
+if __name__ == '__main__':
+    a1, b1, a2, b2, L, R = map(int, input().split())
+    print(f1(a1, b1, a2, b2, L, R))
 

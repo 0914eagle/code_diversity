@@ -1,39 +1,36 @@
 
-def get_min_extensions(a, b, h, w, n, extensions):
-    # Sort the extensions in descending order
-    extensions.sort(reverse=True)
+def f1(S):
+    # Initialize variables
+    n = len(S)
+    lights = [int(i) for i in S]
+    time = 0
+    button_presses = []
 
-    # Initialize the minimum number of extensions needed to be 0
-    min_extensions = 0
+    # Loop until all lights are on
+    while any(lights):
+        # Check if any button presses are scheduled
+        if button_presses:
+            # If so, process the next button press
+            button_press = button_presses.pop(0)
+            lights[button_press - 1] = 1 - lights[button_press - 1]
+            time += 1
+        else:
+            # If not, press the first button
+            button_presses.append(1)
+            lights[0] = 1 - lights[0]
+            time += 1
 
-    # Loop through the extensions and check if they can be used to enlarge the field
-    for extension in extensions:
-        # Check if the extension can be used to enlarge the width of the field
-        if extension <= w:
-            # Enlarge the width of the field by the extension
-            w *= extension
+        # Schedule button presses for the next timestep
+        for i in range(1, n):
+            if lights[i - 1] != lights[i]:
+                button_presses.append(i + 1)
 
-            # Check if the rectangle can be placed on the field after enlarging the width
-            if w >= a:
-                # Increment the minimum number of extensions needed
-                min_extensions += 1
+    return time
 
-                # Break out of the loop since the rectangle can be placed on the field
-                break
+def f2(...):
+    ...
 
-        # Check if the extension can be used to enlarge the length of the field
-        if extension <= h:
-            # Enlarge the length of the field by the extension
-            h *= extension
-
-            # Check if the rectangle can be placed on the field after enlarging the length
-            if h >= b:
-                # Increment the minimum number of extensions needed
-                min_extensions += 1
-
-                # Break out of the loop since the rectangle can be placed on the field
-                break
-
-    # Return the minimum number of extensions needed to reach Arkady's goal
-    return min_extensions
+if __name__ == '__main__':
+    S = "1101"
+    print(f1(S))
 

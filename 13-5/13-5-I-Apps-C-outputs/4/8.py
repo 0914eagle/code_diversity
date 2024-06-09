@@ -1,44 +1,68 @@
 
-def get_min_extensions(a, b, h, w, n, extensions):
-    # Sort the extensions in descending order
-    extensions.sort(reverse=True)
+def f1(S):
+    # Initialize variables
+    n = len(S)
+    lights = [int(s) for s in S]
+    time = 0
+    button_presses = []
 
-    # Initialize the minimum number of extensions needed to be 0
-    min_extensions = 0
+    # Loop until all lights are on
+    while not all(lights):
+        # Check if any button presses are scheduled to occur at the current time
+        if time in button_presses:
+            # Cancel out the propagation of the button press
+            button_presses.remove(time)
+        else:
+            # Press the first button that is not on
+            for i in range(n):
+                if not lights[i]:
+                    button_presses.append(time + i + 1)
+                    break
 
-    # Loop through the extensions and check if they can be used to enlarge the field
-    for extension in extensions:
-        # Check if the extension can be used to enlarge the width of the field
-        if extension <= w:
-            # Enlarge the width of the field by the extension
-            w *= extension
+        # Update the lights based on the button presses
+        for i in range(n):
+            if time + i + 1 in button_presses:
+                lights[i] = 1 - lights[i]
 
-            # Check if the rectangle can be placed on the field
-            if w >= a:
-                # Increment the minimum number of extensions needed
-                min_extensions += 1
+        # Increment the time
+        time += 1
 
-                # Break out of the loop since we have found a solution
-                break
+    # Return the earliest time all lights are on
+    return time
 
-        # Check if the extension can be used to enlarge the length of the field
-        if extension <= h:
-            # Enlarge the length of the field by the extension
-            h *= extension
+def f2(S):
+    # Initialize variables
+    n = len(S)
+    lights = [int(s) for s in S]
+    time = 0
+    button_presses = []
 
-            # Check if the rectangle can be placed on the field
-            if h >= b:
-                # Increment the minimum number of extensions needed
-                min_extensions += 1
+    # Loop until all lights are on
+    while not all(lights):
+        # Check if any button presses are scheduled to occur at the current time
+        if time in button_presses:
+            # Cancel out the propagation of the button press
+            button_presses.remove(time)
+        else:
+            # Press the first button that is not on
+            for i in range(n):
+                if not lights[i]:
+                    button_presses.append(time + i + 1)
+                    break
 
-                # Break out of the loop since we have found a solution
-                break
+        # Update the lights based on the button presses
+        for i in range(n):
+            if time + i + 1 in button_presses:
+                lights[i] = 1 - lights[i]
 
-    # Check if the rectangle can be placed on the initial field
-    if a <= w and b <= h:
-        # Return 0 since no extensions are needed
-        return 0
+        # Increment the time
+        time += 1
 
-    # Return the minimum number of extensions needed
-    return min_extensions
+    # Return the earliest time all lights are on
+    return time
+
+if __name__ == '__main__':
+    S = "1101"
+    print(f1(S))
+    print(f2(S))
 

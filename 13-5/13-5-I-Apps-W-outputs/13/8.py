@@ -1,36 +1,43 @@
 
-def solve(n, cards):
-    # Sort the cards in increasing order
-    cards.sort()
+def count_subrectangles(grid, j):
+    # Initialize a counter for the number of subrectangles with j black cells
+    count = 0
+    
+    # Loop through each subrectangle of size 3x3
+    for i in range(len(grid) - 2):
+        for j in range(len(grid[0]) - 2):
+            # Count the number of black cells in the current subrectangle
+            black_cells = 0
+            for k in range(i, i + 3):
+                for l in range(j, j + 3):
+                    if grid[k][l] == 1:
+                        black_cells += 1
+            
+            # If the current subrectangle has j black cells, increment the counter
+            if black_cells == j:
+                count += 1
+    
+    return count
 
-    # Initialize the result list
-    result = []
+def main():
+    # Read the input grid
+    H, W, N = map(int, input().split())
+    grid = []
+    for _ in range(H):
+        grid.append([int(x) for x in input().split()])
+    
+    # Initialize the counter for each number of black cells
+    counts = [0] * 10
+    
+    # Loop through each number of black cells
+    for j in range(10):
+        # Count the number of subrectangles with j black cells
+        counts[j] = count_subrectangles(grid, j)
+    
+    # Print the number of subrectangles with each number of black cells
+    for j in range(10):
+        print(counts[j])
 
-    # Check if the cards can form an arithmetic progression
-    if n == 1:
-        return [-1]
-    if n == 2:
-        if cards[1] - cards[0] == 1:
-            return [-1]
-        else:
-            return [cards[1] - cards[0] - 1]
-
-    # Calculate the common difference of the arithmetic progression
-    common_diff = cards[1] - cards[0]
-    for i in range(2, n):
-        if cards[i] - cards[i - 1] != common_diff:
-            return [-1]
-
-    # Calculate the first term of the arithmetic progression
-    first_term = cards[0]
-
-    # Calculate the last term of the arithmetic progression
-    last_term = cards[n - 1] + common_diff
-
-    # Generate all possible values of the additional card
-    for i in range(first_term, last_term + 1):
-        if i not in cards:
-            result.append(i)
-
-    return result
+if __name__ == '__main__':
+    main()
 

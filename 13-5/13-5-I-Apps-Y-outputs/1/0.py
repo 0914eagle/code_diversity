@@ -1,26 +1,37 @@
 
-def solve_ball_problem(n, k):
-    # Initialize a list to store the colors of the costumes
-    costumes = [[0, 0] for _ in range(n)]
+def read_data():
+    n, m = map(int, input().split())
+    edges = []
+    for _ in range(n - 1):
+        u, v, w = map(int, input().split())
+        edges.append((u, v, w))
+    queries = list(map(int, input().split()))
+    return n, m, edges, queries
 
-    # Iterate through the pairs
-    for i in range(n):
-        # If this is not the first pair, make sure the colors are different
-        if i > 0:
-            # Check if the colors of the previous pair are the same
-            if costumes[i - 1][0] == costumes[i - 1][1]:
-                return "NO"
+def find_pairs(edges, queries):
+    pairs = []
+    for u, v, w in edges:
+        for q in queries:
+            if w <= q:
+                pairs.append((u, v))
+    return pairs
 
-        # Choose a color for the man's costume
-        costumes[i][0] = (i % k) + 1
+def count_pairs(pairs, queries):
+    counts = []
+    for q in queries:
+        count = 0
+        for u, v in pairs:
+            if u < v and v <= q:
+                count += 1
+        counts.append(count)
+    return counts
 
-        # Choose a color for the woman's costume that is different from the man's color
-        costumes[i][1] = (costumes[i][0] % k) + 1
+def main():
+    n, m, edges, queries = read_data()
+    pairs = find_pairs(edges, queries)
+    counts = count_pairs(pairs, queries)
+    print(*counts, sep='\n')
 
-    # Print the colors of the costumes
-    print("YES")
-    for pair in costumes:
-        print(pair[0], pair[1])
-
-    return "YES"
+if __name__ == '__main__':
+    main()
 

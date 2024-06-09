@@ -1,53 +1,48 @@
 
-def get_cheapest_network(n, m, p, insecure_buildings, connections):
-    # Initialize a graph with n nodes and 0 edges
-    graph = [[] for _ in range(n)]
+import math
 
-    # Add edges to the graph
-    for x, y, cost in connections:
-        graph[x - 1].append((y - 1, cost))
-        graph[y - 1].append((x - 1, cost))
-
-    # Find the minimum cost of connecting all insecure buildings
-    min_cost = float("inf")
+def get_candle_locations(n, r):
+    candle_locations = []
     for i in range(n):
-        if i + 1 in insecure_buildings:
-            for j in range(n):
-                if j + 1 in insecure_buildings:
-                    continue
-                cost = get_path_cost(graph, i, j)
-                if cost < min_cost:
-                    min_cost = cost
+        x, y = map(float, input().split())
+        if math.sqrt(x**2 + y**2) < r:
+            candle_locations.append((x, y))
+    return candle_locations
 
-    # Return the minimum cost of connecting all buildings if possible, otherwise return "impossible"
-    return min_cost if min_cost != float("inf") else "impossible"
+def get_cut_lines(m):
+    cut_lines = []
+    for i in range(m):
+        a, b, c = map(float, input().split())
+        if a != 0 and b != 0:
+            cut_lines.append((a, b, c))
+    return cut_lines
 
-def get_path_cost(graph, start, end):
-    # Initialize a set to keep track of visited nodes
-    visited = set()
+def is_candle_on_cut_line(candle_location, cut_line):
+    a, b, c = cut_line
+    x, y = candle_location
+    return a*x + b*y + c == 0
 
-    # Initialize a queue to do BFS
-    queue = [(start, 0)]
+def is_cut_line_valid(cut_line, candle_locations):
+    for candle_location in candle_locations:
+        if is_candle_on_cut_line(candle_location, cut_line):
+            return True
+    return False
 
-    # Do BFS until the end node is reached
-    while queue:
-        node, cost = queue.pop(0)
-        if node == end:
-            return cost
-        if node in visited:
-            continue
-        visited.add(node)
-        for neighbor, weight in graph[node]:
-            queue.append((neighbor, cost + weight))
+def is_cut_valid(cut_lines, candle_locations):
+    for cut_line in cut_lines:
+        if not is_cut_line_valid(cut_line, candle_locations):
+            return False
+    return True
 
-    # If the end node is not reached, return infinity
-    return float("inf")
+def solve(n, m, r):
+    candle_locations = get_candle_locations(n, r)
+    cut_lines = get_cut_lines(m)
+    if is_cut_valid(cut_lines, candle_locations):
+        return "yes"
+    else:
+        return "no"
 
-n, m, p = map(int, input().split())
-insecure_buildings = set(map(int, input().split()))
-connections = []
-for _ in range(m):
-    x, y, cost = map(int, input().split())
-    connections.append((x, y, cost))
-print(get_cheapest_network(n, m, p, insecure_buildings, connections))
+if __name__ == '__main__':
+    n, m, r = map(int, input().split())
+    print(solve(n, m, r))
 

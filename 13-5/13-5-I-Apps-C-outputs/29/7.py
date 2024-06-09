@@ -1,32 +1,29 @@
 
-def solve(N, A, P, V):
-    # Sort the dwarves and elves by strength in descending order
-    P = sorted(P, reverse=True)
-    V = sorted(V, reverse=True)
-    
-    # Initialize the variables
-    victories = 0
-    elves = []
-    dwarves = []
-    
-    # Loop through each elf and dwarf
-    for i in range(N):
-        # Add the elf to the list of elves
-        elves.append(V[i])
-        # Add the dwarf to the list of dwarves
-        dwarves.append(P[A[i]-1])
-    
-    # Sort the elves and dwarves by strength in descending order
-    elves = sorted(elves, reverse=True)
-    dwarves = sorted(dwarves, reverse=True)
-    
-    # Loop through each elf and dwarf
-    for i in range(N):
-        # Check if the elf is stronger than the dwarf
-        if elves[i] > dwarves[i]:
-            # Increment the number of victories
-            victories += 1
-    
-    # Return the number of victories
-    return victories
+def find_disintegration_points(droplets, sensors):
+    disintegration_points = []
+    for droplet in droplets:
+        for sensor in sensors:
+            if sensor[0] <= droplet[0] <= sensor[1] and sensor[2] == droplet[1]:
+                disintegration_points.append(sensor[2])
+                break
+        else:
+            disintegration_points.append(0)
+    return disintegration_points
+
+def main():
+    num_droplets, num_sensors = map(int, input().split())
+    droplets = []
+    for _ in range(num_droplets):
+        x, y = map(int, input().split())
+        droplets.append((x, y))
+    sensors = []
+    for _ in range(num_sensors):
+        x1, x2, y = map(int, input().split())
+        sensors.append((x1, x2, y))
+    disintegration_points = find_disintegration_points(droplets, sensors)
+    for point in disintegration_points:
+        print(point)
+
+if __name__ == '__main__':
+    main()
 

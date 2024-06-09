@@ -1,23 +1,28 @@
 
-def solve(n, m, a, b, roads):
-    # Initialize a matrix to store the number of soldiers to move
-    moves = [[0] * n for _ in range(n)]
-    
-    # Loop through each road and update the number of soldiers to move
-    for p, q in roads:
-        moves[p - 1][q - 1] += 1
-        moves[q - 1][p - 1] += 1
-    
-    # Check if the number of soldiers to move is valid
+def get_server_names(n):
+    server_names = {}
     for i in range(n):
-        if moves[i][i] != 0:
-            return "NO"
-        for j in range(n):
-            if moves[i][j] > a[i] or moves[j][i] > a[j]:
-                return "NO"
-    
-    # If all conditions are met, return the moves
-    return "YES"
-    for move in moves:
-        print(*move)
+        name, ip = input().split()
+        server_names[ip] = name
+    return server_names
+
+def add_comments(server_names, commands):
+    for command in commands:
+        ip = command.split()[1]
+        name = server_names[ip]
+        command += " #" + name
+    return commands
+
+def main():
+    n, m = map(int, input().split())
+    server_names = get_server_names(n)
+    commands = []
+    for i in range(m):
+        commands.append(input())
+    commands = add_comments(server_names, commands)
+    for command in commands:
+        print(command)
+
+if __name__ == '__main__':
+    main()
 

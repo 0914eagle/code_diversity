@@ -1,28 +1,49 @@
 
-def solve(n, permutation, sequence):
-    # Initialize variables
-    total_changes = 0
-    visited_positions = set()
-    visited_reversed_positions = set()
+def get_common_substring(strings):
+    common_substring = ""
+    for i in range(len(strings[0])):
+        for j in range(len(strings[0]) - i):
+            if all(strings[0][i:i+j] in s for s in strings):
+                common_substring = strings[0][i:i+j]
+                break
+        if common_substring:
+            break
+    return common_substring
 
-    # Iterate through the permutation and sequence
-    for i in range(n):
-        # Get the current position and reversed position
-        position = permutation[i]
-        reversed_position = n - position + 1
+def get_swapped_strings(common_substring, strings):
+    swapped_strings = []
+    for string in strings:
+        swapped_strings.append(common_substring + string[len(common_substring):])
+    return swapped_strings
 
-        # Check if the current position has been visited
-        if position not in visited_positions:
-            visited_positions.add(position)
-        else:
-            total_changes += 1
+def f1(k, n):
+    strings = []
+    for _ in range(k):
+        strings.append(input())
+    common_substring = get_common_substring(strings)
+    if not common_substring:
+        return "-1"
+    swapped_strings = get_swapped_strings(common_substring, strings)
+    if swapped_strings == strings:
+        return common_substring
+    else:
+        return "-1"
 
-        # Check if the reversed position has been visited
-        if reversed_position not in visited_reversed_positions:
-            visited_reversed_positions.add(reversed_position)
-        else:
-            total_changes += 1
+def f2(k, n):
+    strings = []
+    for _ in range(k):
+        strings.append(input())
+    common_substring = get_common_substring(strings)
+    if not common_substring:
+        return "-1"
+    swapped_strings = get_swapped_strings(common_substring, strings)
+    if swapped_strings == strings:
+        return common_substring
+    else:
+        return "-1"
 
-    # Return the total number of changes needed
-    return total_changes
+if __name__ == '__main__':
+    k, n = map(int, input().split())
+    print(f1(k, n))
+    print(f2(k, n))
 

@@ -1,14 +1,46 @@
 
-def is_equivalent(str1, str2):
-    if str1 == str2:
-        return "YES"
+def get_smallest_pack(bolts_needed, companies):
+    # Initialize a dictionary to store the information about the companies and their packs
+    company_packs = {}
+    for company in companies:
+        company_packs[company] = {}
+        for pack in companies[company]:
+            company_packs[company][pack] = companies[company][pack]
     
-    n = len(str1) // 2
-    str1_1, str1_2 = str1[:n], str1[n:]
-    str2_1, str2_2 = str2[:n], str2[n:]
+    # Initialize a list to store the smallest pack found so far
+    smallest_pack = []
     
-    if str1_1 == str2_2 and str1_2 == str2_1:
-        return "YES"
+    # Iterate through the companies and their packs
+    for company in company_packs:
+        for pack in company_packs[company]:
+            # Check if the pack contains at least the number of bolts needed
+            if company_packs[company][pack] >= bolts_needed:
+                # If the pack is smaller than the smallest pack found so far, update the smallest pack
+                if len(smallest_pack) == 0 or len(smallest_pack) > len(pack):
+                    smallest_pack = pack
+    
+    # Return the smallest pack found
+    return smallest_pack
+
+def main():
+    # Read the input
+    bolts_needed = int(input())
+    companies = int(input())
+    for i in range(companies):
+        company, packs = input().split()
+        companies[company] = {}
+        for pack in packs.split(","):
+            companies[company][pack] = int(pack)
+    
+    # Call the function to get the smallest pack
+    smallest_pack = get_smallest_pack(bolts_needed, companies)
+    
+    # Print the output
+    if len(smallest_pack) == 0:
+        print("impossible")
     else:
-        return "NO"
+        print(smallest_pack)
+
+if __name__ == '__main__':
+    main()
 

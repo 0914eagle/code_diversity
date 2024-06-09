@@ -1,19 +1,28 @@
 
-def get_energy_conversion_efficiency(n, U, energies):
-    # Sort the energies in increasing order
-    energies.sort()
-    # Initialize the maximum energy conversion efficiency
-    max_eta = 0
-    # Iterate over all possible states i, j, and k
-    for i in range(n - 2):
-        for j in range(i + 1, n - 1):
-            for k in range(j + 1, n):
-                # Check if the difference between E_k and E_i is less than or equal to U
-                if energies[k] - energies[i] <= U:
-                    # Calculate the energy conversion efficiency
-                    eta = (energies[k] - energies[j]) / (energies[k] - energies[i])
-                    # Update the maximum energy conversion efficiency
-                    max_eta = max(max_eta, eta)
-    # Return the maximum energy conversion efficiency
-    return max_eta
+def get_unlock_patterns(turn_sequence):
+    # Initialize a list to store the unlock patterns
+    unlock_patterns = []
+    
+    # Iterate through the turn sequence
+    for i in range(len(turn_sequence)):
+        # If the current pivot is a question mark, add all four directional changes to the unlock pattern
+        if turn_sequence[i] == '?':
+            unlock_patterns.append('L')
+            unlock_patterns.append('R')
+            unlock_patterns.append('S')
+            unlock_patterns.append('A')
+        # Otherwise, add the current directional change to the unlock pattern
+        else:
+            unlock_patterns.append(turn_sequence[i])
+    
+    # Return the number of unlock patterns
+    return len(unlock_patterns)
+
+def main():
+    # Test the function with the sample input
+    turn_sequence = 'LRRRSRL'
+    print(get_unlock_patterns(turn_sequence))
+
+if __name__ == '__main__':
+    main()
 

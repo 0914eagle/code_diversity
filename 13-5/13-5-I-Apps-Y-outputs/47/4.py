@@ -1,12 +1,22 @@
 
-def get_min_distance(n, p, distances):
-    # Sort the distances in ascending order
-    distances.sort()
-    # Initialize the minimum distance to the car in front
-    min_distance = 0
-    # Loop through each distance and calculate the minimum distance needed
-    for i in range(n):
-        min_distance += p * (i + 1)
-        min_distance = max(min_distance, distances[i])
-    return min_distance
+def get_box_dimensions():
+    return map(int, input().split())
+
+def get_match_lengths():
+    return [int(input()) for _ in range(int(input()))]
+
+def fits_in_box(match_length, box_width, box_height):
+    return match_length <= box_width and match_length <= box_height
+
+def main():
+    box_width, box_height = get_box_dimensions()
+    match_lengths = get_match_lengths()
+    for match_length in match_lengths:
+        if fits_in_box(match_length, box_width, box_height):
+            print("DA")
+        else:
+            print("NE")
+
+if __name__ == '__main__':
+    main()
 

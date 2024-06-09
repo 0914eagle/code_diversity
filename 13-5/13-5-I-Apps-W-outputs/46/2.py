@@ -1,19 +1,28 @@
 
-def get_energy_conversion_efficiency(n, U, energies):
-    # Sort the energies in increasing order
-    energies.sort()
-    # Initialize the maximum energy conversion efficiency
-    max_eta = 0
-    # Iterate over all possible states i, j, and k
-    for i in range(n - 2):
-        for j in range(i + 1, n - 1):
-            for k in range(j + 1, n):
-                # Check if the difference between E_k and E_i is less than or equal to U
-                if energies[k] - energies[i] <= U:
-                    # Calculate the energy conversion efficiency
-                    eta = (energies[k] - energies[j]) / (energies[k] - energies[i])
-                    # Update the maximum energy conversion efficiency
-                    max_eta = max(max_eta, eta)
-    # Return the maximum energy conversion efficiency
-    return max_eta
+def f1(turn_sequence):
+    # Replace '?' with 'L', 'R', 'S', or 'A' to form a valid turn sequence
+    valid_turn_sequence = turn_sequence.replace("?", "L")
+    return len(set(valid_turn_sequence))
+
+def f2(turn_sequence):
+    # Replace '?' with 'L', 'R', 'S', or 'A' to form a valid turn sequence
+    valid_turn_sequence = turn_sequence.replace("?", "R")
+    return len(set(valid_turn_sequence))
+
+def f3(turn_sequence):
+    # Replace '?' with 'L', 'R', 'S', or 'A' to form a valid turn sequence
+    valid_turn_sequence = turn_sequence.replace("?", "S")
+    return len(set(valid_turn_sequence))
+
+def f4(turn_sequence):
+    # Replace '?' with 'L', 'R', 'S', or 'A' to form a valid turn sequence
+    valid_turn_sequence = turn_sequence.replace("?", "A")
+    return len(set(valid_turn_sequence))
+
+if __name__ == '__main__':
+    turn_sequence = input("Enter a turn sequence with '?' replaced by 'L', 'R', 'S', or 'A': ")
+    print(f1(turn_sequence))
+    print(f2(turn_sequence))
+    print(f3(turn_sequence))
+    print(f4(turn_sequence))
 

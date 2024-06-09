@@ -1,32 +1,40 @@
 
-def get_min_time(n, a, b):
-    # Initialize the minimum time to wait at each crossing
-    min_time = [0] * n
+def get_network_coverage(n, a, b):
+    # Initialize variables
+    total_coverage = 0
+    current_city = 1
+    current_station = 1
 
-    # Loop through each row
+    # Iterate through each city
     for i in range(n):
-        # Loop through each crossing in the current row
-        for j in range(n - 1):
-            # Get the waiting time for the current crossing
-            waiting_time = a[i][j]
+        # Calculate the coverage for the current city
+        coverage = min(b[current_station - 1], a[current_city - 1])
 
-            # If the current crossing is not the last crossing in the row
-            if j != n - 2:
-                # Add the waiting time to the minimum time at the next crossing
-                min_time[j + 1] += waiting_time
+        # Update the total coverage
+        total_coverage += coverage
 
-    # Loop through each row
-    for i in range(n):
-        # Loop through each crossing in the current row
-        for j in range(n - 1):
-            # Get the waiting time for the current crossing
-            waiting_time = b[j]
+        # Update the current city and station
+        current_city += 1
+        if current_city > n:
+            current_city = 1
+        current_station += 1
+        if current_station > n:
+            current_station = 1
 
-            # If the current crossing is not the last crossing in the row
-            if j != n - 2:
-                # Add the waiting time to the minimum time at the next crossing
-                min_time[j + 1] += waiting_time
+    # Check if the total coverage is greater than or equal to the total number of households
+    if total_coverage >= sum(a):
+        return "YES"
+    else:
+        return "NO"
 
-    # Return the minimum total time
-    return sum(min_time)
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        a = list(map(int, input().split()))
+        b = list(map(int, input().split()))
+        print(get_network_coverage(n, a, b))
+
+if __name__ == '__main__':
+    main()
 

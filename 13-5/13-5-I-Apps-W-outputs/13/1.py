@@ -1,17 +1,43 @@
 
-def find_missing_number(n, arr):
-    # Sort the array
-    arr.sort()
+def count_subrectangles(grid, j):
+    # Initialize a counter for the number of subrectangles with j black cells
+    count = 0
+    
+    # Loop through each subrectangle of size 3x3
+    for i in range(len(grid) - 2):
+        for j in range(len(grid[0]) - 2):
+            # Count the number of black cells in the current subrectangle
+            black_cells = 0
+            for k in range(i, i + 3):
+                for l in range(j, j + 3):
+                    if grid[k][l] == 1:
+                        black_cells += 1
+            
+            # If the current subrectangle has j black cells, increment the counter
+            if black_cells == j:
+                count += 1
+    
+    return count
 
-    # Check if the array is already an arithmetic progression
-    if arr[0] + (n - 1) * 2 == arr[n - 1]:
-        return -1
+def main():
+    # Read the input grid from stdin
+    H, W, N = map(int, input().split())
+    grid = []
+    for _ in range(H):
+        grid.append(list(map(int, input().split())))
+    
+    # Initialize an array to store the number of subrectangles with each number of black cells
+    counts = [0] * 10
+    
+    # Loop through each possible number of black cells (0 to 9)
+    for j in range(10):
+        # Count the number of subrectangles with j black cells
+        counts[j] = count_subrectangles(grid, j)
+    
+    # Print the number of subrectangles with each number of black cells
+    for j in range(10):
+        print(counts[j])
 
-    # Find the common difference between the numbers
-    common_diff = (arr[n - 1] - arr[0]) // (n - 1)
-
-    # Find the missing number
-    missing_number = arr[0] + common_diff * (n - 1)
-
-    return missing_number
+if __name__ == '__main__':
+    main()
 

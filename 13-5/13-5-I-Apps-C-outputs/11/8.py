@@ -1,44 +1,42 @@
 
-def is_rearrangement_possible(num_islands, current_statues, desired_statues):
-    # Initialize a dictionary to map each statue to its current and desired island
-    statue_map = {}
-    for i in range(num_islands):
-        if current_statues[i] != 0:
-            statue_map[current_statues[i]] = (i, desired_statues[i])
+import math
+import random
+
+def get_tree_overlap(boar_center, tree_center, boar_radius, tree_radius):
     
-    # Initialize a set to keep track of visited islands
-    visited_islands = set()
+    dx = tree_center[0] - boar_center[0]
+    dy = tree_center[1] - boar_center[1]
+    distance = math.sqrt(dx**2 + dy**2)
+    if distance > boar_radius + tree_radius:
+        return 0
+    if distance <= abs(boar_radius - tree_radius):
+        return math.pi * min(boar_radius, tree_radius)**2
+    angle = math.acos(min(boar_radius, distance) / boar_radius)
+    sector_area = 0.5 * (angle - math.sin(angle)) * boar_radius**2
+    remaining_area = math.pi * tree_radius**2 - sector_area
+    return remaining_area
+
+def get_probability(boar_center, boar_radius, tree_centers, tree_radii):
     
-    # Start from the island with the empty pedestal
-    empty_pedestal_island = current_statues.index(0)
-    visited_islands.add(empty_pedestal_island)
-    
-    # Loop until all statues are in the desired position
-    while len(visited_islands) < num_islands:
-        # Get the current statue on the empty pedestal island
-        current_statue = current_statues[empty_pedestal_island]
-        
-        # If the current statue is not in the desired position, move it to the next island
-        if current_statue != desired_statues[empty_pedestal_island]:
-            # Get the next island in the cycle
-            next_island = (empty_pedestal_island + 1) % num_islands
-            
-            # If the next island has not been visited, move the statue to the next island
-            if next_island not in visited_islands:
-                visited_islands.add(next_island)
-                empty_pedestal_island = next_island
-            
-            # If the next island has been visited, move the statue to the desired position
-            else:
-                empty_pedestal_island = statue_map[current_statue][1]
-        
-        # If the current statue is in the desired position, move to the next island
-        else:
-            empty_pedestal_island = (empty_pedestal_island + 1) % num_islands
-    
-    # If all statues are in the desired position, return "YES", otherwise return "NO"
-    if all(current_statues[i] == desired_statues[i] for i in range(num_islands)):
-        return "YES"
-    else:
-        return "NO"
+    total_area = 0
+    for tree_center, tree_radius in zip(tree_centers, tree_radii):
+        total_area += get_tree_overlap(boar_center, tree_center, boar_radius, tree_radius)
+    return 1 - total_area / (math.pi * boar_radius**2)
+
+def main():
+    n = int(input())
+    tree_centers = []
+    tree_radii = []
+    for _ in range(n):
+        x, y, r = map(int, input().split())
+        tree_centers.append((x, y))
+        tree_radii.append(r)
+    b, d = map(int, input().split())
+    boar_center = (0, 0)
+    boar_radius = b
+    probability = get_probability(boar_center, boar_radius, tree_centers, tree_radii)
+    print(probability)
+
+if __name__ == '__main__':
+    main()
 

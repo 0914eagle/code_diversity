@@ -1,36 +1,30 @@
 
-def get_smallest_pack(bolts, companies):
-    # Initialize a dictionary to store the minimum number of bolts required to buy a pack from each company
-    min_bolts = {}
-    for company in companies:
-        min_bolts[company] = float('inf')
+def get_max_earned(a):
+    # Initialize variables
+    n = len(a)
+    multiples = []
+    earnings = 0
 
-    # Initialize a dictionary to store the number of bolts in each pack from each company
-    pack_bolts = {}
-    for company in companies:
-        pack_bolts[company] = {}
+    # Find all multiples of x
+    for i in range(1, n + 1):
+        if i in multiples:
+            continue
+        for j in range(i, n + 1, i):
+            if j not in multiples:
+                multiples.append(j)
 
-    # Loop through each company and calculate the minimum number of bolts required to buy a pack from that company
-    for company in companies:
-        for pack_size in companies[company]:
-            min_bolts[company] = min(min_bolts[company], pack_size)
+    # Calculate earnings
+    for i in range(1, n + 1):
+        if i not in multiples:
+            earnings += a[i - 1]
 
-    # Loop through each company and calculate the number of bolts in each pack from that company
-    for company in companies:
-        for pack_size in companies[company]:
-            pack_bolts[company][pack_size] = pack_size
+    return earnings
 
-    # Loop through each company and calculate the number of bolts in each pack from that company, considering the packs from the previous company
-    for i in range(1, len(companies)):
-        for company in companies[i:]:
-            for pack_size in companies[company]:
-                pack_bolts[company][pack_size] = pack_bolts[company][pack_size] + pack_bolts[i-1][pack_size]
+def main():
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(get_max_earned(a))
 
-    # Find the smallest pack that contains at least the required number of bolts
-    for company in companies:
-        for pack_size in companies[company]:
-            if pack_bolts[company][pack_size] >= bolts:
-                return pack_size
-
-    return "impossible"
+if __name__ == '__main__':
+    main()
 

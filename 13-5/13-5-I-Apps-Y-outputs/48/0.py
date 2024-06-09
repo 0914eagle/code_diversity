@@ -1,14 +1,24 @@
 
-def solve(snakes, snacks):
-    # Initialize a set to store the indices of snakes with no snacks
-    no_snacks = set()
+def get_min_x(divisors):
+    # Sort the divisors in ascending order
+    divisors.sort()
+    # Initialize the minimum possible x as the product of the divisors
+    x = 1
+    for d in divisors:
+        x *= d
+    # If the number of divisors is odd, we can remove the last divisor and still have a valid list of almost all divisors
+    if len(divisors) % 2 == 1:
+        x //= divisors[-1]
+    return x
 
-    # Iterate over the snakes and their snacks
-    for snake, snack in snakes:
-        # If the snake has no snacks, add its index to the set
-        if snack == 0:
-            no_snacks.add(snake)
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        divisors = [int(x) for x in input().split()]
+        x = get_min_x(divisors)
+        print(x)
 
-    # Return the number of snakes with no snacks
-    return len(no_snacks)
+if __name__ == '__main__':
+    main()
 

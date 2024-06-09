@@ -1,39 +1,48 @@
 
-def solve(x0, y0, a_x, a_y, b_x, b_y, x_s, y_s, t):
-    # Initialize a list to store the coordinates of the data nodes
-    data_nodes = [(x0, y0)]
+import math
+
+def get_best_friend_pairs(n):
+    # Initialize a list to store the best friend pairs
+    best_friend_pairs = []
     
-    # Calculate the coordinates of the remaining data nodes
-    for i in range(1, 1000000):
-        x = a_x * data_nodes[i-1][0] + b_x
-        y = a_y * data_nodes[i-1][1] + b_y
-        data_nodes.append((x, y))
-    
-    # Initialize a set to store the collected data nodes
-    collected_nodes = set()
-    
-    # Initialize variables to store the current coordinate and time
-    current_x = x_s
-    current_y = y_s
-    time = 0
-    
-    # Loop through the data nodes and calculate the maximum number of nodes that can be collected within t seconds
-    max_nodes = 0
-    for node in data_nodes:
-        # Calculate the distance between the current coordinate and the current data node
-        distance = abs(current_x - node[0]) + abs(current_y - node[1])
+    # Iterate from 10^n-1 to 10^n
+    for i in range(int(math.pow(10, n)), int(math.pow(10, n+1))):
+        # Initialize a list to store the numbers that are best friends with i
+        best_friends = []
         
-        # If the distance is less than or equal to t, add the data node to the collected nodes set and update the current coordinate and time
-        if distance <= t:
-            collected_nodes.add(node)
-            current_x = node[0]
-            current_y = node[1]
-            time += distance
+        # Iterate from 1 to 9
+        for j in range(1, 10):
+            # Calculate the new number by applying the friendly operation on i and j
+            new_number = apply_friendly_operation(i, j)
+            
+            # If the new number is valid and not already in the list of best friends, add it to the list
+            if new_number > 0 and new_number not in best_friends:
+                best_friends.append(new_number)
         
-        # If the time exceeds t, break the loop
-        if time > t:
-            break
+        # Add the list of best friends to the list of best friend pairs
+        best_friend_pairs.append(best_friends)
     
-    # Return the maximum number of collected nodes
-    return len(collected_nodes)
+    # Return the number of pairs of best friend numbers with exactly n digits
+    return len(best_friend_pairs)
+
+def apply_friendly_operation(x, y):
+    # Calculate the sum of the two adjacent digits of x
+    sum_of_adjacent_digits = int(str(x)[y-1] + str(x)[y])
+    
+    # Calculate the difference of the two adjacent digits of x
+    difference_of_adjacent_digits = int(str(x)[y-1]) - int(str(x)[y])
+    
+    # If the sum of the two adjacent digits is equal to y, return the new number
+    if sum_of_adjacent_digits == y:
+        return x + 1
+    # If the difference of the two adjacent digits is equal to y, return the new number
+    elif difference_of_adjacent_digits == y:
+        return x - 1
+    # Otherwise, return 0
+    else:
+        return 0
+
+if __name__ == '__main__':
+    n = int(input())
+    print(get_best_friend_pairs(n))
 

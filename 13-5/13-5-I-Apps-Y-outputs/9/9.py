@@ -1,21 +1,43 @@
 
-def is_multigram(word):
-    if len(word) <= 2:
-        return -1
+def f1(n, a):
+    # find the maximum difficulty
+    max_diff = max(a)
     
-    # Check if the word is a palindrome
-    if word == word[::-1]:
-        return -1
+    # find the index of the maximum difficulty
+    max_index = a.index(max_diff)
     
-    # Check if the word can be divided into two halves with equal length
-    if len(word) % 2 == 1:
-        return -1
+    # initialize the number of problems to be included in the contest as the maximum index
+    num_problems = max_index
     
-    # Check if the first half is an anagram of the second half
-    first_half = word[:len(word)//2]
-    second_half = word[len(word)//2:]
-    if sorted(first_half) == sorted(second_half):
-        return first_half
+    # loop through the difficulties in reverse order
+    for i in range(max_index - 1, -1, -1):
+        # if the current difficulty is greater than twice the previous difficulty, include it in the contest
+        if a[i] > a[i + 1] * 2:
+            num_problems += 1
     
-    return -1
+    return num_problems
+
+def f2(n, a):
+    # find the maximum difficulty
+    max_diff = max(a)
+    
+    # find the index of the maximum difficulty
+    max_index = a.index(max_diff)
+    
+    # initialize the number of problems to be included in the contest as the maximum index
+    num_problems = max_index
+    
+    # loop through the difficulties in reverse order
+    for i in range(max_index - 1, -1, -1):
+        # if the current difficulty is greater than twice the previous difficulty, include it in the contest
+        if a[i] > a[i + 1] * 2:
+            num_problems += 1
+    
+    return num_problems
+
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(f1(n, a))
+    print(f2(n, a))
 

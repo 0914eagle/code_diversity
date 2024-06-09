@@ -1,27 +1,44 @@
 
-def solve(a, b, c, d):
-    # Check if the given conditions are valid
-    if a + b + c + d > 10:
-        return "impossible"
+def get_min_rest_days(days):
+    # Initialize variables
+    rest_days = 0
+    last_day_sport = -1
+    last_day_contest = -1
     
-    # Initialize the bit string with all 0s
-    bit_string = "0" * (a + b + c + d)
+    # Iterate through the days
+    for day in days:
+        # Check if the gym is open and a contest is carried out
+        if day == 3 or day == 2:
+            # If the gym is open and a contest is carried out, increment the rest days
+            rest_days += 1
+            # Update the last day of sport and contest
+            last_day_sport = day
+            last_day_contest = day
+        # Check if the gym is closed and a contest is carried out
+        elif day == 1:
+            # If the gym is closed and a contest is carried out, increment the rest days
+            rest_days += 1
+            # Update the last day of contest
+            last_day_contest = day
+        # Check if the gym is open and no contest is carried out
+        elif day == 0:
+            # If the gym is open and no contest is carried out, do sport on this day
+            if last_day_sport != day - 1:
+                rest_days += 1
+                last_day_sport = day
     
-    # Add 0s to the bit string to make the subsequence 00 occur a times
-    for i in range(a):
-        bit_string += "00"
-    
-    # Add 1s to the bit string to make the subsequence 01 occur b times
-    for i in range(b):
-        bit_string += "01"
-    
-    # Add 1s to the bit string to make the subsequence 10 occur c times
-    for i in range(c):
-        bit_string += "10"
-    
-    # Add 1s to the bit string to make the subsequence 11 occur d times
-    for i in range(d):
-        bit_string += "11"
-    
-    return bit_string
+    return rest_days
+
+def main():
+    # Read the number of days
+    days = int(input())
+    # Read the sequence of days
+    days_sequence = list(map(int, input().split()))
+    # Get the minimum number of rest days
+    rest_days = get_min_rest_days(days_sequence)
+    # Print the minimum number of rest days
+    print(rest_days)
+
+if __name__ == '__main__':
+    main()
 

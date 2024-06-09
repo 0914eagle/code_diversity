@@ -1,14 +1,21 @@
 
-def solve(n, polyhedrons):
-    faces = {
-        "Tetrahedron": 4,
-        "Cube": 6,
-        "Octahedron": 8,
-        "Dodecahedron": 12,
-        "Icosahedron": 20
-    }
-    total_faces = 0
-    for polyhedron in polyhedrons:
-        total_faces += faces[polyhedron]
-    return total_faces
+def get_total_money(n, p, buyers):
+    total_money = 0
+    for i in range(n):
+        if buyers[i] == "half":
+            total_money += p
+        elif buyers[i] == "halfplus":
+            total_money += p + p//2
+    return total_money
+
+def main():
+    n, p = map(int, input().split())
+    buyers = []
+    for i in range(n):
+        buyers.append(input())
+    total_money = get_total_money(n, p, buyers)
+    print(total_money)
+
+if __name__ == '__main__':
+    main()
 

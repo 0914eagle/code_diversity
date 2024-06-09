@@ -1,32 +1,38 @@
 
-def solve(n, lairs):
-    # Sort the lairs by their x-coordinate
-    lairs.sort(key=lambda x: x[0])
-    
-    # Initialize the minimum radius and center as infinity and (0, 0) respectively
-    min_radius = float('inf')
-    center = (0, 0)
-    
-    # Loop through each lair
+def f1(n, heights):
+    # Calculate the bitwise OR of all pairs of mountains
+    pairs = [(i, j) for i in range(n) for j in range(i+1, n)]
+    or_heights = [heights[i] | heights[j] for i, j in pairs]
+
+    # Count the number of pairs with bitwise OR height greater than any mountain height
+    count = 0
     for i in range(n):
-        # Calculate the distance between the current lair and the previous lair
-        if i > 0:
-            dist = lairs[i][0] - lairs[i-1][0]
-        else:
-            dist = 0
-        
-        # Calculate the radius of the circle containing the current lair and the previous lair
-        radius = dist / 2
-        
-        # If the radius is less than the minimum radius, update the minimum radius and center
-        if radius < min_radius:
-            min_radius = radius
-            center = ((lairs[i][0] + lairs[i-1][0]) / 2, (lairs[i][1] + lairs[i-1][1]) / 2)
-    
-    # If the minimum radius is infinity, it is not possible to build a reserve
-    if min_radius == float('inf'):
-        return -1
-    
-    # Otherwise, return the minimum radius
-    return min_radius
+        for j in range(i+1, n):
+            if or_heights[i*n + j] > max(heights[i], heights[j]):
+                count += 1
+
+    return count
+
+def f2(n, heights):
+    # Calculate the bitwise OR of all pairs of mountains
+    pairs = [(i, j) for i in range(n) for j in range(i+1, n)]
+    or_heights = [heights[i] | heights[j] for i, j in pairs]
+
+    # Find the maximum bitwise OR height
+    max_height = max(or_heights)
+
+    # Count the number of pairs with bitwise OR height equal to the maximum height
+    count = 0
+    for i in range(n):
+        for j in range(i+1, n):
+            if or_heights[i*n + j] == max_height:
+                count += 1
+
+    return count
+
+if __name__ == '__main__':
+    n = int(input())
+    heights = list(map(int, input().split()))
+    print(f1(n, heights))
+    print(f2(n, heights))
 

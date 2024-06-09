@@ -1,27 +1,48 @@
 
-def reconstruct_painting(N, K, M, commands):
-    # Initialize the canvas with all cells set to white (color 1)
-    canvas = [[1] * N for _ in range(N)]
+def get_longest_wait_time(orders, roads, n):
+    # Initialize a graph with n vertices and 0 edges
+    graph = [[] for _ in range(n + 1)]
 
-    # Iterate through the commands and apply them to the canvas
-    for command in commands:
-        if command.startswith("PAINT"):
-            # Extract the color and coordinates of the rectangle from the command
-            color, x1, y1, x2, y2 = map(int, command.split()[1:])
+    # Add edges to the graph based on the roads
+    for u, v, d in roads:
+        graph[u].append((v, d))
+        graph[v].append((u, d))
 
-            # Paint the rectangle with the given color
-            for x in range(x1, x2 + 1):
-                for y in range(y1, y2 + 1):
-                    canvas[x][y] = color
+    # Dijkstra's algorithm to find the shortest path from the pizzeria to each customer
+    dist = [float('inf')] * (n + 1)
+    dist[1] = 0
+    q = [(0, 1)]
+    while q:
+        d, u = heappop(q)
+        if d > dist[u]:
+            continue
+        for v, w in graph[u]:
+            if dist[v] > d + w:
+                dist[v] = d + w
+                heappush(q, (dist[v], v))
 
-        elif command.startswith("SAVE"):
-            # Save the current state of the canvas
-            pass
+    # Find the longest wait time by subtracting the delivery time from the order time
+    longest_wait_time = 0
+    for s, u, t in orders:
+        wait_time = t - dist[u]
+        if wait_time > longest_wait_time:
+            longest_wait_time = wait_time
 
-        elif command.startswith("LOAD"):
-            # Load the saved state of the canvas
-            pass
+    return longest_wait_time
 
-    # Return the canvas with the reconstructed painting
-    return canvas
+def main():
+    n, m = map(int, input().split())
+    roads = []
+    for _ in range(m):
+        u, v, d = map(int, input().split())
+        roads.append((u, v, d))
+    k = int(input())
+    orders = []
+    for _ in range(k):
+        s, u, t = map(int, input().split())
+        orders.append((s, u, t))
+    print(get_longest_wait_time(orders, roads, n))
+
+if __name__ == '__main__':
+    main()
 

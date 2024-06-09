@@ -1,19 +1,30 @@
 
-def get_energy_conversion_efficiency(n, U, energies):
-    # Sort the energies in increasing order
-    energies.sort()
-    # Initialize the maximum energy conversion efficiency
-    max_eta = 0
-    # Iterate over all possible states i, j, and k
-    for i in range(n - 2):
-        for j in range(i + 1, n - 1):
-            for k in range(j + 1, n):
-                # Check if the energy difference between states i and k is less than or equal to U
-                if energies[k] - energies[i] <= U:
-                    # Calculate the energy conversion efficiency
-                    eta = (energies[k] - energies[j]) / (energies[k] - energies[i])
-                    # Update the maximum energy conversion efficiency
-                    max_eta = max(max_eta, eta)
-    # Return the maximum energy conversion efficiency
-    return max_eta
+def get_unlock_patterns(turn_sequence):
+    # Initialize a list to store the unlock patterns
+    unlock_patterns = []
+    
+    # Iterate through each pivot in the turn sequence
+    for i in range(len(turn_sequence)):
+        # If the current pivot is a question mark, add all four possible directions to the unlock pattern
+        if turn_sequence[i] == '?':
+            unlock_patterns.append(turn_sequence[:i] + 'L' + turn_sequence[i+1:])
+            unlock_patterns.append(turn_sequence[:i] + 'R' + turn_sequence[i+1:])
+            unlock_patterns.append(turn_sequence[:i] + 'S' + turn_sequence[i+1:])
+            unlock_patterns.append(turn_sequence[:i] + 'A' + turn_sequence[i+1:])
+        # If the current pivot is not a question mark, add the current direction to the unlock pattern
+        else:
+            unlock_patterns.append(turn_sequence[:i] + turn_sequence[i] + turn_sequence[i+1:])
+    
+    # Return the number of unlock patterns
+    return len(unlock_patterns)
+
+def main():
+    # Take input from the user
+    turn_sequence = input("Enter a turn sequence with question marks for any directional changes: ")
+    
+    # Call the get_unlock_patterns function and print the result
+    print(get_unlock_patterns(turn_sequence))
+
+if __name__ == '__main__':
+    main()
 

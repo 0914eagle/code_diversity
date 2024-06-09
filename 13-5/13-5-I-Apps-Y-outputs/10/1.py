@@ -1,37 +1,51 @@
 
-def solve(N, M, A, B, K, G, streets):
-    # Initialize a dictionary to store the times at which each intersection is blocked
-    blocked_times = {}
+def get_edges(n):
+    edges = []
+    for i in range(n - 1):
+        a, b = map(int, input().split())
+        edges.append((a, b))
+    return edges
 
-    # Loop through the list of streets
-    for street in streets:
-        # Get the start and end intersections of the street
-        start, end = street[0], street[1]
+def get_paths(edges, a, b, c):
+    paths = []
+    for edge in edges:
+        if edge[0] == a and edge[1] == b:
+            paths.append(edge)
+        elif edge[0] == b and edge[1] == c:
+            paths.append(edge)
+        elif edge[0] == a and edge[1] == c:
+            paths.append(edge)
+    return paths
 
-        # If the start intersection is not already blocked, block it for the duration of the street
-        if start not in blocked_times:
-            blocked_times[start] = street[2]
+def get_max_edges(edges, a, b, c):
+    paths = get_paths(edges, a, b, c)
+    max_edges = len(set(paths))
+    return max_edges
 
-        # If the end intersection is not already blocked, block it for the duration of the street
-        if end not in blocked_times:
-            blocked_times[end] = street[2]
+def get_best_answer(edges):
+    n = len(edges) + 1
+    max_edges = 0
+    best_answer = []
+    for a in range(1, n):
+        for b in range(1, n):
+            if a == b:
+                continue
+            for c in range(1, n):
+                if a == c or b == c:
+                    continue
+                edges_count = get_max_edges(edges, a, b, c)
+                if edges_count > max_edges:
+                    max_edges = edges_count
+                    best_answer = [a, b, c]
+    return best_answer
 
-    # Initialize a variable to store the least time needed to make the delivery
-    least_time = 0
+def main():
+    n = int(input())
+    edges = get_edges(n)
+    best_answer = get_best_answer(edges)
+    print(max_edges)
+    print(" ".join(map(str, best_answer)))
 
-    # Loop through the list of intersections in Mister George's route
-    for i in range(G):
-        # Get the current intersection and the next intersection
-        current, next = streets[i], streets[(i + 1) % G]
-
-        # If the current intersection is blocked, add the blocked time to the least time needed to make the delivery
-        if current in blocked_times:
-            least_time += blocked_times[current]
-
-        # If the next intersection is blocked, add the blocked time to the least time needed to make the delivery
-        if next in blocked_times:
-            least_time += blocked_times[next]
-
-    # Return the least time needed to make the delivery
-    return least_time
+if __name__ == '__main__':
+    main()
 

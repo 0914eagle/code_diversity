@@ -1,40 +1,22 @@
 
-def find_treasure(grid, stamina):
-    # Initialize variables
-    rows, cols = len(grid), len(grid[0])
-    start_row, start_col = None, None
-    end_row, end_col = None, None
-    days = 0
-    stamina_used = 0
+def get_min_fuel(n, m, a, b):
+    # Initialize the fuel required for each planet
+    fuel_required = [0] * (n + 1)
+    fuel_required[1] = m
     
-    # Find the starting and ending positions
-    for row in range(rows):
-        for col in range(cols):
-            if grid[row][col] == "S":
-                start_row, start_col = row, col
-            elif grid[row][col] == "G":
-                end_row, end_col = row, col
+    # Loop through each planet and calculate the fuel required for takeoff and landing
+    for i in range(1, n):
+        fuel_required[i + 1] = fuel_required[i] - a[i] * fuel_required[i] + b[i] * fuel_required[i]
     
-    # Breadth-first search to find the shortest path
-    queue = [(start_row, start_col)]
-    visited = set()
-    while queue:
-        row, col = queue.pop(0)
-        visited.add((row, col))
-        if (row, col) == (end_row, end_col):
-            break
-        for r, c in [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]:
-            if 0 <= r < rows and 0 <= c < cols and grid[r][c] != "#" and (r, c) not in visited:
-                queue.append((r, c))
-                stamina_used += 1
-                if stamina_used > stamina:
-                    days += 1
-                    stamina_used = 0
-    
-    # Check if the path is possible with the given stamina
-    if (end_row, end_col) not in visited:
-        return -1
-    
-    # Return the number of days needed to reach the treasure
-    return days + 1
+    # Return the minimum fuel required
+    return min(fuel_required)
+
+def main():
+    n, m = map(int, input().split())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    print(get_min_fuel(n, m, a, b))
+
+if __name__ == '__main__':
+    main()
 

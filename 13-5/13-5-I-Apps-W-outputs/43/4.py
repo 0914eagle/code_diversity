@@ -1,26 +1,28 @@
 
-def solve(n, edges, colors):
-    # Create a graph with n vertices and m edges
-    graph = [[] for _ in range(n)]
-    for i in range(n - 1):
-        graph[edges[i] - 1].append(edges[i + 1] - 1)
+def f1(N, stones):
+    # Initialize the number of operations to 0
+    operations = 0
+    # Loop through the stones from left to right
+    for i in range(N):
+        # If the current stone is white and the next stone is red, swap them
+        if stones[i] == "W" and stones[i+1] == "R":
+            operations += 1
+            stones[i], stones[i+1] = stones[i+1], stones[i]
+    return operations
 
-    # Initialize the color of the root vertex as 1
-    color = 1
-    visited = [False] * n
-    queue = [0]
-    visited[0] = True
+def f2(N, stones):
+    # Initialize the number of operations to 0
+    operations = 0
+    # Loop through the stones from left to right
+    for i in range(N):
+        # If the current stone is white, change its color to red
+        if stones[i] == "W":
+            operations += 1
+            stones[i] = "R"
+    return operations
 
-    # Breadth-first search to color the tree
-    while queue:
-        vertex = queue.pop(0)
-        for neighbor in graph[vertex]:
-            if not visited[neighbor]:
-                visited[neighbor] = True
-                queue.append(neighbor)
-                color = colors[neighbor]
-        colors[vertex] = color
-
-    # Return the minimum number of steps required to color the tree
-    return len(set(colors))
+if __name__ == '__main__':
+    N = int(input())
+    stones = list(input())
+    print(min(f1(N, stones), f2(N, stones)))
 

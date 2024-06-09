@@ -1,17 +1,22 @@
 
-def solve(n, x):
-    # Calculate the maximum distance between any two points
-    max_distance = max([abs(x[i] - x[j]) for i in range(n) for j in range(i+1, n)])
-    
-    # Calculate the sum of the maximum distance for all non-empty subsets
-    sum = 0
-    for i in range(1, 2**n):
-        subset = []
-        for j in range(n):
-            if i & (1 << j):
-                subset.append(j)
-        if len(subset) > 1:
-            sum += max_distance
-    
-    return sum % 1000000007
+def get_most_beautiful_word(sequence):
+    return "".join(sorted(sequence))
+
+def is_winning_move(sequence, word):
+    return len(sequence) == 0 or get_most_beautiful_word(sequence) > word
+
+def get_winning_move(sequence):
+    if len(sequence) == 0:
+        return "NE"
+    word = ""
+    while len(sequence) > 0:
+        word += sequence.pop()
+        if is_winning_move(sequence, word):
+            return "DA", word
+    return "NE", word
+
+if __name__ == '__main__':
+    n = int(input())
+    sequence = input()
+    print(*get_winning_move(sequence))
 

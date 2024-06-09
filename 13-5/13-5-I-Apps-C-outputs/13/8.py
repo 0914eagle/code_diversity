@@ -1,23 +1,20 @@
 
-import sys
+def get_phone_numbers(s):
+    phone_numbers = []
+    for i in range(len(s) - 10):
+        if s[i] == "8" and s[i + 1:i + 11].isdigit():
+            phone_numbers.append(s[i:i + 11])
+    return phone_numbers
 
-def hopscotch(N, X, Y):
-    mod = 1000000007
-    dp = [[0] * (N+1) for _ in range(N+1)]
-    dp[0][0] = 1
-    for i in range(1, N+1):
-        for j in range(1, N+1):
-            if i >= X and j >= Y:
-                dp[i][j] = (dp[i-X][j-Y] + dp[i-X][j] + dp[i][j-Y]) % mod
-            elif i >= X:
-                dp[i][j] = dp[i-X][j] % mod
-            elif j >= Y:
-                dp[i][j] = dp[i][j-Y] % mod
-            else:
-                dp[i][j] = 0
-    return dp[N][N]
+def get_max_phone_numbers(s):
+    phone_numbers = get_phone_numbers(s)
+    return len(phone_numbers)
 
-if __name__ == "__main__":
-    N, X, Y = map(int, sys.stdin.readline().split())
-    print(hopscotch(N, X, Y))
+def main():
+    n = int(input())
+    s = input()
+    print(get_max_phone_numbers(s))
+
+if __name__ == '__main__':
+    main()
 

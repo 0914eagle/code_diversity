@@ -1,15 +1,25 @@
 
-def solve(n, s, q, lr):
-    # Initialize a set to store the unique pitches
-    pitches = set()
+def get_good_table(table):
+    n, m = len(table), len(table[0])
+    for i in range(m):
+        for j in range(n-1):
+            if table[j][i] > table[j+1][i]:
+                return False
+    return True
 
-    # Iterate over each question
-    for l, r in lr:
-        # Iterate over each string
-        for i in range(n):
-            # Add the pitches for the current string between the given range to the set
-            pitches.update(s[i] + j for j in range(l, r + 1))
+def remove_column(table, col):
+    return [row[:col] + row[col+1:] for row in table]
 
-        # Return the length of the set, which is the number of unique pitches
-        return len(pitches)
+def get_min_columns_to_remove(table):
+    n, m = len(table), len(table[0])
+    min_columns = m
+    for i in range(m):
+        if get_good_table(remove_column(table, i)):
+            min_columns = min(min_columns, i)
+    return min_columns
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    table = [input() for _ in range(n)]
+    print(get_min_columns_to_remove(table))
 

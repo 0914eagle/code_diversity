@@ -1,20 +1,29 @@
 
-def max_unique_identification(n, m, a):
-    # Initialize a list to store the number of burgers ordered on each day
-    burgers = [0] * m
+def read_input():
+    N = int(input())
+    points = []
+    for i in range(N):
+        x, y = map(int, input().split())
+        points.append((x, y))
+    return N, points
 
-    # Loop through the days and update the list of burgers ordered
-    for i in range(m):
-        burgers[i] = a[i]
+def is_right_triangle(p1, p2, p3):
+    a, b, c = p1[0] - p2[0], p2[0] - p3[0], p3[0] - p1[0]
+    return a**2 + b**2 == c**2
 
-    # Initialize a set to store the names of the colleagues who have been identified
-    identified = set()
+def count_right_triangles(points):
+    count = 0
+    for i in range(len(points)):
+        for j in range(i+1, len(points)):
+            for k in range(j+1, len(points)):
+                if is_right_triangle(points[i], points[j], points[k]):
+                    count += 1
+    return count
 
-    # Loop through the days and identify the colleagues who have eaten burgers
-    for i in range(m):
-        for j in range(burgers[i]):
-            identified.add(i % n)
+def main():
+    N, points = read_input()
+    print(count_right_triangles(points))
 
-    # Return the maximum number of colleagues that can be uniquely identified
-    return len(identified)
+if __name__ == '__main__':
+    main()
 

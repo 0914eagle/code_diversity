@@ -1,22 +1,33 @@
 
-def get_max_zeroes(a, b):
-    # Calculate the sum of the absolute values of a and b
-    sum_abs = sum(map(abs, a)) + sum(map(abs, b))
+def get_shortest_path(packages):
+    # Initialize the shortest path as empty string
+    shortest_path = ""
     
-    # Initialize the maximum number of zeroes to 0
-    max_zeroes = 0
+    # Sort the packages by their x-coordinate in ascending order
+    sorted_packages = sorted(packages, key=lambda x: x[0])
     
-    # Iterate over all possible values of d
-    for d in range(-sum_abs, sum_abs + 1):
-        # Calculate the number of zeroes in the array c
-        zeroes = 0
-        for i in range(len(a)):
-            if d * a[i] + b[i] == 0:
-                zeroes += 1
-        
-        # Update the maximum number of zeroes if necessary
-        max_zeroes = max(max_zeroes, zeroes)
+    # Iterate through the packages and add "R" to the shortest path for each package on the right side
+    for package in sorted_packages:
+        shortest_path += "R"
     
-    # Return the maximum number of zeroes
-    return max_zeroes
+    # Add "U" to the shortest path for each package on the upper side
+    for package in sorted_packages:
+        shortest_path += "U"
+    
+    return shortest_path
+
+def main():
+    test_cases = int(input())
+    for _ in range(test_cases):
+        n = int(input())
+        packages = []
+        for _ in range(n):
+            x, y = map(int, input().split())
+            packages.append((x, y))
+        shortest_path = get_shortest_path(packages)
+        print("YES")
+        print(shortest_path)
+
+if __name__ == '__main__':
+    main()
 

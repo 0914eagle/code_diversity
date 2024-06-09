@@ -1,34 +1,28 @@
 
-def is_handsome(n):
-    n_str = str(n)
-    for i in range(len(n_str) - 1):
-        if n_str[i] == n_str[i + 1]:
-            return False
-    return True
+def read_input():
+    N = int(input())
+    row1 = list(map(int, input().split()))
+    row2 = list(map(int, input().split()))
+    row3 = list(map(int, input().split()))
+    return N, row1, row2, row3
 
-def get_closest_handsome_number(n):
-    n_str = str(n)
-    for i in range(len(n_str) - 1):
-        if n_str[i] == n_str[i + 1]:
-            break
-    else:
-        return n
+def delete_columns(N, row1, row2, row3):
+    # Initialize the number of columns to delete
+    num_columns_to_delete = 0
+    
+    # Loop through each column
+    for i in range(N):
+        # Check if the columns are identical
+        if row1[i] == row2[i] == row3[i]:
+            # If they are, increment the number of columns to delete
+            num_columns_to_delete += 1
+    
+    return num_columns_to_delete
 
-    left_digit = n_str[i]
-    right_digit = n_str[i + 1]
-    if left_digit == '9' and right_digit == '9':
-        return int(n_str[:i] + '8' + n_str[i + 2:])
-    elif left_digit == '9':
-        return int(n_str[:i] + '8' + n_str[i + 1:])
-    elif right_digit == '9':
-        return int(n_str[:i + 1] + '8' + n_str[i + 2:])
-    else:
-        return int(n_str[:i] + '9' + n_str[i + 1:])
+def main():
+    N, row1, row2, row3 = read_input()
+    print(delete_columns(N, row1, row2, row3))
 
-def solve(n):
-    handsome_number = get_closest_handsome_number(n)
-    if handsome_number == n:
-        return str(handsome_number)
-    else:
-        return ' '.join(str(handsome_number), str(handsome_number + 1))
+if __name__ == '__main__':
+    main()
 

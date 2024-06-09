@@ -1,92 +1,97 @@
 
-def get_cheapest_network(n, m, p, insecure_buildings, connections):
-    # Initialize a graph with n nodes and 0 edges
-    graph = [[] for _ in range(n)]
+import math
 
-    # Add edges to the graph
-    for connection in connections:
-        x, y, cost = connection
-        graph[x - 1].append((y - 1, cost))
-        graph[y - 1].append((x - 1, cost))
+def get_input():
+    n, m, r = map(int, input().split())
+    candles = []
+    for i in range(n):
+        x, y = map(int, input().split())
+        candles.append((x, y))
+    lines = []
+    for i in range(m):
+        a, b, c = map(int, input().split())
+        lines.append((a, b, c))
+    return n, m, r, candles, lines
 
-    # Find the minimum spanning tree of the graph
-    tree = prim(graph, 0)
+def is_candle_on_line(candle, line):
+    a, b, c = line
+    x, y = candle
+    return a*x + b*y + c == 0
 
-    # Initialize the total cost of the network to 0
-    total_cost = 0
+def is_candle_on_cut(candle, cuts):
+    for cut in cuts:
+        if is_candle_on_line(candle, cut):
+            return True
+    return False
 
-    # Iterate through the insecure buildings
-    for building in insecure_buildings:
-        # Find the shortest path from the building to the starting building (0)
-        path = dijkstra(graph, building - 1)
+def is_candle_in_piece(candle, piece):
+    x, y = candle
+    x1, y1, x2, y2 = piece
+    return (x1 <= x <= x2) and (y1 <= y <= y2)
 
-        # Add the cost of the path to the total cost of the network
-        total_cost += path[0]
-
-    # Return the total cost of the network if it is possible, otherwise return "impossible"
-    return total_cost if total_cost != float("inf") else "impossible"
-
-# Prim's algorithm for finding the minimum spanning tree of a graph
-def prim(graph, start):
-    # Initialize the priority queue with the start node and its distance from the starting node
-    queue = [(0, start)]
-
-    # Initialize the parent array with -1 for all nodes
-    parents = [-1] * len(graph)
-
-    # Initialize the distance array with infinity for all nodes
-    distances = [float("inf")] * len(graph)
-
-    # Set the distance of the start node to 0
-    distances[start] = 0
-
-    # Loop until the priority queue is empty
-    while queue:
-        # Get the node with the minimum distance from the priority queue
-        distance, node = heapq.heappop(queue)
-
-        # If the node has already been visited, skip it
-        if distances[node] < distance:
+def get_pieces(candles, cuts):
+    pieces = []
+    for candle in candles:
+        if not is_candle_on_cut(candle, cuts):
             continue
+        for piece in pieces:
+            if is_candle_in_piece(candle, piece):
+                break
+        else:
+            pieces.append((candle[0], candle[1], candle[0], candle[1]))
+    return pieces
 
-        # Update the parent array and the distance array
-        parents[node] = distance
-        distances[node] = distance
+def is_valid_piece(piece, cuts):
+    x1, y1, x2, y2 = piece
+    for cut in cuts:
+        a, b, c = cut
+        if a == 0:
+            if b > 0:
+                if x1 <= 0 <= x2 and y1 <= 0 <= y2:
+                    return False
+            elif b < 0:
+                if x1 <= 0 <= x2 and y1 >= 0 >= y2:
+                    return False
+            else:
+                continue
+        elif a > 0:
+            if x1 <= 0 <= x2 and y1 <= c/a <= y2:
+                return False
+        elif a < 0:
+            if x1 <= 0 <= x2 and y1 >= c/a >= y2:
+                return False
+    return True
 
-        # Add the node's neighbors to the priority queue
-        for neighbor, cost in graph[node]:
-            heapq.heappush(queue, (distance + cost, neighbor))
+def is_valid_pieces(pieces, cuts):
+    for piece in pieces:
+        if not is_valid_piece(piece, cuts):
+            return False
+    return True
 
-    # Return the parent array
-    return parents
+def is_valid_cuts(cuts, n):
+    for cut in cuts:
+        if not is_valid_line(cut):
+            return False
+    return len(cuts) == n
 
-# Dijkstra's algorithm for finding the shortest path between two nodes in a graph
-def dijkstra(graph, start):
-    # Initialize the priority queue with the start node and its distance from the starting node
-    queue = [(0, start)]
+def is_valid_line(line):
+    a, b, c = line
+    if a == 0 and b == 0:
+        return False
+    return True
 
-    # Initialize the distance array with infinity for all nodes
-    distances = [float("inf")] * len(graph)
+def solve(n, m, r, candles, lines):
+    cuts = []
+    for line in lines:
+        cuts.append(line)
+    pieces = get_pieces(candles, cuts)
+    if not is_valid_pieces(pieces, cuts):
+        return "no"
+    if not is_valid_cuts(cuts, n):
+        return "no"
+    return "yes"
 
-    # Set the distance of the start node to 0
-    distances[start] = 0
-
-    # Loop until the priority queue is empty
-    while queue:
-        # Get the node with the minimum distance from the priority queue
-        distance, node = heapq.heappop(queue)
-
-        # If the node has already been visited, skip it
-        if distances[node] < distance:
-            continue
-
-        # Update the distance array
-        distances[node] = distance
-
-        # Add the node's neighbors to the priority queue
-        for neighbor, cost in graph[node]:
-            heapq.heappush(queue, (distance + cost, neighbor))
-
-    # Return the distance array
-    return distances
+if __name__ == '__main__':
+    n, m, r, candles, lines = get_input()
+    print(solve(n, m, r, candles, lines))
 

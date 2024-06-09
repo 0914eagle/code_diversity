@@ -1,23 +1,19 @@
 
-def is_good_number(n):
-    if n == 1:
-        return True
-    
-    while n > 1:
-        if n % 3 != 0:
-            return False
-        n //= 3
-    
-    return True
+def f1(N):
+    if N % 2 == 0:
+        return "Bob"
+    else:
+        return "Alice"
 
-def find_next_good_number(n):
-    while not is_good_number(n):
-        n += 1
-    
-    return n
+def f2(N):
+    if N == 1:
+        return "Alice"
+    elif N == 2:
+        return "Bob"
+    else:
+        return f2(N-2)
 
-q = int(input())
-for _ in range(q):
-    n = int(input())
-    print(find_next_good_number(n))
+if __name__ == '__main__':
+    N = int(input())
+    print(f2(N))
 

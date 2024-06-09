@@ -1,22 +1,25 @@
 
-def solve(n, m, a, b, roads):
-    # Initialize a matrix to store the number of soldiers moving from one city to another
-    moves = [[0] * n for _ in range(n)]
+def get_server_names(n, servers):
+    server_names = {}
+    for server in servers:
+        server_names[server[1]] = server[0]
+    return server_names
 
-    # Loop through each road and update the number of soldiers moving from one city to another
-    for road in roads:
-        moves[road[0] - 1][road[1] - 1] += 1
-        moves[road[1] - 1][road[0] - 1] += 1
+def add_comments(m, commands, server_names):
+    result = []
+    for command in commands:
+        ip = command.split(" ")[1]
+        result.append(f"{command} # {server_names[ip]}")
+    return result
 
-    # Loop through each city and check if the number of soldiers after roaming is equal to b_i
-    for i in range(n):
-        total = a[i]
-        for j in range(n):
-            if i != j:
-                total += moves[i][j]
-        if total != b[i]:
-            return "NO"
+def main():
+    n, m = map(int, input().split())
+    servers = [input().split() for _ in range(n)]
+    server_names = get_server_names(n, servers)
+    commands = [input() for _ in range(m)]
+    result = add_comments(m, commands, server_names)
+    print("\n".join(result))
 
-    # If all cities have the correct number of soldiers after roaming, return the moves matrix
-    return "YES\n" + "\n".join([" ".join(map(str, row)) for row in moves])
+if __name__ == '__main__':
+    main()
 

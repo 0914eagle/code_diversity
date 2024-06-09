@@ -1,44 +1,30 @@
 
-def solve(grid, stamina):
-    # Initialize variables
-    rows, cols = len(grid), len(grid[0])
-    start_row, start_col = None, None
-    goal_row, goal_col = None, None
-    days = 0
-    stamina_spent = 0
+def get_minimum_fuel(n, m, a, b):
+    # Initialize the fuel amount to 0
+    fuel = 0
+    # Loop through each planet
+    for i in range(n):
+        # Calculate the fuel needed for takeoff from the current planet
+        takeoff_fuel = m // a[i]
+        # Calculate the fuel needed for landing on the current planet
+        landing_fuel = m // b[i]
+        # Add the fuel needed for takeoff and landing to the total fuel amount
+        fuel += takeoff_fuel + landing_fuel
+        # Update the mass of the rocket after takeoff and landing
+        m -= takeoff_fuel * a[i] + landing_fuel * b[i]
+    # Return the minimum fuel amount needed
+    return fuel
 
-    # Find the starting and goal positions
-    for row in range(rows):
-        for col in range(cols):
-            if grid[row][col] == "S":
-                start_row, start_col = row, col
-            elif grid[row][col] == "G":
-                goal_row, goal_col = row, col
+def main():
+    # Read the input data
+    n, m = map(int, input().split())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    # Calculate the minimum fuel amount
+    fuel = get_minimum_fuel(n, m, a, b)
+    # Print the result
+    print(fuel)
 
-    # Breadth-first search to find the shortest path to the goal
-    queue = [(start_row, start_col)]
-    visited = set()
-    while queue:
-        row, col = queue.pop(0)
-        visited.add((row, col))
-        if row == goal_row and col == goal_col:
-            break
-        for r, c in [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]:
-            if 0 <= r < rows and 0 <= c < cols and grid[r][c] != "#" and (r, c) not in visited:
-                queue.append((r, c))
-                stamina_spent += 1
-                if stamina_spent > stamina:
-                    days += 1
-                    stamina_spent = 0
-
-    # Check if a path exists
-    if row != goal_row or col != goal_col:
-        return -1
-
-    # Calculate the number of days needed to reach the goal
-    while stamina_spent > 0:
-        days += 1
-        stamina_spent -= stamina
-
-    return days
+if __name__ == '__main__':
+    main()
 

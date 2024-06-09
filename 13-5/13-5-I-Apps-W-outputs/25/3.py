@@ -1,28 +1,27 @@
 
-def spiral_order(matrix):
-    if not matrix or not matrix[0]:
-        return []
-    m, n = len(matrix), len(matrix[0])
-    top, bottom, left, right = 0, m - 1, 0, n - 1
-    direction = 0
-    res = []
-    while top <= bottom and left <= right:
-        if direction == 0:
-            for i in range(left, right + 1):
-                res.append(matrix[top][i])
-            top += 1
-        elif direction == 1:
-            for i in range(top, bottom + 1):
-                res.append(matrix[i][right])
-            right -= 1
-        elif direction == 2:
-            for i in range(right, left - 1, -1):
-                res.append(matrix[bottom][i])
-            bottom -= 1
+def get_least_number_of_digits(n):
+    # Initialize a list to store the addends
+    addends = []
+    # Initialize a variable to store the current addend
+    current_addend = 1
+    # Loop through the digits of n
+    for digit in str(n):
+        # If the current digit is 1, add it to the current addend
+        if digit == "1":
+            current_addend *= 10
+        # If the current digit is not 1, add the current addend to the list and reset the current addend to 1
         else:
-            for i in range(bottom, top - 1, -1):
-                res.append(matrix[i][left])
-            left += 1
-        direction = (direction + 1) % 4
-    return res
+            addends.append(current_addend)
+            current_addend = 1
+    # Add the last addend to the list
+    addends.append(current_addend)
+    # Return the sum of the addends
+    return sum(addends)
+
+def main():
+    n = int(input("Enter a positive integer: "))
+    print(get_least_number_of_digits(n))
+
+if __name__ == '__main__':
+    main()
 

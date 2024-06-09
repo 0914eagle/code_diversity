@@ -1,86 +1,44 @@
 
-def solve(n, a):
-    # Initialize a dictionary to store the graph
-    graph = {}
-
-    # Iterate over the input array
-    for i in range(n):
-        # Get the current number
-        curr_num = a[i]
-
-        # Iterate over the remaining numbers
-        for j in range(i+1, n):
-            # Get the next number
-            next_num = a[j]
-
-            # Check if the current and next numbers are connected
-            if curr_num & next_num != 0:
-                # Add the connection to the graph
-                if i not in graph:
-                    graph[i] = [j]
-                else:
-                    graph[i].append(j)
-
-                if j not in graph:
-                    graph[j] = [i]
-                else:
-                    graph[j].append(i)
-
-    # Initialize a queue to perform BFS
-    queue = []
-
-    # Initialize a set to keep track of visited nodes
-    visited = set()
-
-    # Initialize a variable to store the shortest cycle length
-    shortest_cycle_length = float("inf")
-
-    # Iterate over the graph
-    for node in graph:
-        # Check if the node has been visited before
-        if node not in visited:
-            # Mark the node as visited
-            visited.add(node)
-
-            # Enqueue the node
-            queue.append(node)
-
-            # Initialize a variable to store the current path length
-            path_length = 0
-
-            # Initialize a variable to store the current node
-            current_node = node
-
-            # Loop until the queue is empty
-            while queue:
-                # Dequeue a node from the queue
-                current_node = queue.pop(0)
-
-                # Increment the path length
-                path_length += 1
-
-                # Check if the current node is the starting node
-                if current_node == node:
-                    # Update the shortest cycle length
-                    shortest_cycle_length = min(shortest_cycle_length, path_length)
+def get_most_distant_pebble(pebble_spots):
+    # Initialize variables
+    most_distant_pebble = 0
+    current_pebble = 0
+    visited_pebbles = set()
+    
+    # Iterate through the pebbles
+    for i in range(len(pebble_spots)):
+        # Check if the current pebble has been visited before
+        if current_pebble in visited_pebbles:
+            continue
+        
+        # Check if the current pebble is the most distant pebble so far
+        if i > most_distant_pebble:
+            most_distant_pebble = i
+        
+        # Add the current pebble to the visited pebbles set
+        visited_pebbles.add(current_pebble)
+        
+        # Check if the current pebble has any spots
+        if pebble_spots[current_pebble] > 0:
+            # Find the next pebble with the same number of spots
+            for j in range(current_pebble + 1, len(pebble_spots)):
+                if pebble_spots[current_pebble] == pebble_spots[j]:
+                    current_pebble = j
                     break
+        
+    return most_distant_pebble
 
-                # Get the neighbors of the current node
-                neighbors = graph[current_node]
+def main():
+    # Read the input
+    num_pebbles = int(input())
+    pebble_spots = list(map(int, input().split()))
+    
+    # Find the most distant pebble
+    most_distant_pebble = get_most_distant_pebble(pebble_spots)
+    
+    # Print the result
+    print(most_distant_pebble)
 
-                # Iterate over the neighbors
-                for neighbor in neighbors:
-                    # Check if the neighbor has been visited before
-                    if neighbor not in visited:
-                        # Mark the neighbor as visited
-                        visited.add(neighbor)
-
-                        # Enqueue the neighbor
-                        queue.append(neighbor)
-
-    # Check if the graph has any cycles
-    if shortest_cycle_length == float("inf"):
-        return -1
-
-    return shortest_cycle_length
+if __name__ == '__main__':
+    main()
 

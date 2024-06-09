@@ -1,19 +1,22 @@
 
-def get_min_remainder(n, m):
-    # Convert the integer to a string
-    n_str = str(n)
-    
-    # Initialize the minimum remainder to the remainder of the first good shift
-    min_rem = int(n_str) % m
-    
-    # Iterate over the good shifts of the integer
-    for i in range(len(n_str)):
-        # Calculate the remainder of the current good shift
-        rem = int(n_str[i:] + n_str[:i]) % m
-        
-        # Update the minimum remainder if necessary
-        if rem < min_rem:
-            min_rem = rem
-    
-    return min_rem
+def is_valid_test_case(a, b):
+    n = len(a)
+    for i in range(1, int(n/2)+1):
+        if a[:i] == b[n-i:] and a[i:] == b[:n-i]:
+            return True
+    return False
+
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        a = list(map(int, input().split()))
+        b = list(map(int, input().split()))
+        if is_valid_test_case(a, b):
+            print("Yes")
+        else:
+            print("No")
+
+if __name__ == '__main__':
+    main()
 

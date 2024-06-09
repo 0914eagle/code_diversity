@@ -1,25 +1,48 @@
 
-def solve(n, firings, hirings):
-    # Initialize the number of HR people needed
-    k = 1
-    # Initialize the HR person in charge of the firing and hiring on day 1
-    hr_person = 1
-    # Loop through the remaining days
-    for i in range(2, n+1):
-        # Calculate the number of workers fired on day i
-        firing = firings[i-1]
-        # Calculate the number of workers hired on day i
-        hiring = hirings[i-1]
-        # If the number of workers fired is greater than the number of workers hired,
-        if firing > hiring:
-            # Increment the number of HR people needed
-            k += 1
-            # Assign a new HR person to the firing and hiring on day i
-            hr_person = k
-        # Otherwise, if the number of workers fired is less than or equal to the number of workers hired,
-        else:
-            # Assign the same HR person to the firing and hiring on day i
-            hr_person = (hr_person % k) + 1
-    # Return the number of HR people needed and the HR person in charge of the firing and hiring on each day
-    return k, [hr_person for _ in range(n)]
+def get_distinct_starting_circles(circle, k):
+    # Initialize a set to store the distinct starting circles
+    distinct_circles = set()
+    
+    # Iterate over the possible starting circles
+    for i in range(len(circle)):
+        # Get the starting circle by rotating the input circle by i positions
+        starting_circle = circle[i:] + circle[:i]
+        
+        # Initialize a set to store the distinct transformed circles
+        transformed_circles = set()
+        
+        # Iterate over the possible transformations
+        for j in range(k):
+            # Get the transformed circle by inserting a black pebble between two neighbouring pebbles of the same color, and a white pebble between two neighbouring pebbles of different colors
+            transformed_circle = ""
+            for i in range(len(starting_circle) - 1):
+                if starting_circle[i] == starting_circle[i + 1]:
+                    transformed_circle += "B"
+                else:
+                    transformed_circle += "W"
+            transformed_circle += starting_circle[-1]
+            
+            # Add the transformed circle to the set of distinct transformed circles
+            transformed_circles.add(transformed_circle)
+        
+        # If the set of distinct transformed circles is equal to the set of distinct starting circles, add the starting circle to the set of distinct starting circles
+        if transformed_circles == distinct_circles:
+            distinct_circles.add(starting_circle)
+    
+    # Return the number of distinct starting circles
+    return len(distinct_circles)
+
+def main():
+    # Read the input
+    n, k = map(int, input().split())
+    circle = input()
+    
+    # Call the function to get the number of distinct starting circles
+    result = get_distinct_starting_circles(circle, k)
+    
+    # Print the result
+    print(result)
+
+if __name__ == '__main__':
+    main()
 

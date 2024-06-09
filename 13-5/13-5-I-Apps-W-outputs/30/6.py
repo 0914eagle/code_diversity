@@ -1,33 +1,44 @@
 
-def solve(n, m, k, x, s, a, b, c, d):
-    # Initialize the minimum time to prepare n potions as the initial time
-    min_time = x
-    # Loop through all possible combinations of spells
-    for i in range(1 << m):
-        # Initialize the number of mana points spent as 0
-        mana_spent = 0
-        # Initialize the number of potions prepared as 0
-        potions_prepared = 0
-        # Loop through all bits in the current combination
-        for j in range(m):
-            # Check if the j-th bit is set in the current combination
-            if i & (1 << j):
-                # If the j-th bit is set, use the j-th spell of the first type
-                mana_spent += b[j]
-                x = a[j]
-        # Loop through all bits in the current combination
-        for j in range(k):
-            # Check if the j-th bit is set in the current combination
-            if i & (1 << (m + j)):
-                # If the j-th bit is set, use the j-th spell of the second type
-                mana_spent += d[j]
-                potions_prepared += c[j]
-        # Check if the total number of mana points spent is less than or equal to the maximum allowed
-        if mana_spent <= s:
-            # Calculate the total time to prepare the required number of potions
-            total_time = x * (n - potions_prepared) + potions_prepared * x
-            # Update the minimum time if necessary
-            min_time = min(min_time, total_time)
-    # Return the minimum time
-    return min_time
+import math
+
+def f1(W):
+    # Calculate the distance between Agneta and Beata at time t
+    def distance(t):
+        Agneta_x = math.sin(t)
+        Agneta_y = math.cos(t)
+        Beata_x = math.sin(t + W)
+        Beata_y = math.cos(t + W)
+        return math.sqrt((Agneta_x - Beata_x)**2 + (Agneta_y - Beata_y)**2)
+
+    # Find the minimum distance by calculating the distance at multiple points
+    min_distance = float('inf')
+    for t in range(0, 1001):
+        distance_at_t = distance(t / 1000)
+        if distance_at_t < min_distance:
+            min_distance = distance_at_t
+
+    return min_distance
+
+def f2(W):
+    # Calculate the distance between Agneta and Beata at time t
+    def distance(t):
+        Agneta_x = math.sin(t)
+        Agneta_y = math.cos(t)
+        Beata_x = math.sin(t + W)
+        Beata_y = math.cos(t + W)
+        return math.sqrt((Agneta_x - Beata_x)**2 + (Agneta_y - Beata_y)**2)
+
+    # Find the minimum distance by calculating the distance at multiple points
+    min_distance = float('inf')
+    for t in range(0, 1001):
+        distance_at_t = distance(t / 1000)
+        if distance_at_t < min_distance:
+            min_distance = distance_at_t
+
+    return min_distance
+
+if __name__ == '__main__':
+    W = float(input())
+    print(f1(W))
+    print(f2(W))
 

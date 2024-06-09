@@ -1,37 +1,34 @@
 
-def solve_problem(grid):
-    # Initialize the number of even cells to 0
-    num_even_cells = 0
-    # Initialize the number of operations to 0
-    num_operations = 0
-    # Initialize the list of operations to be performed
-    operations = []
+def get_max_emeralds(sticks, diamonds):
+    # Initialize variables
+    shovels = 0
+    swords = 0
+    emeralds = 0
 
-    # Loop through each row of the grid
-    for i in range(len(grid)):
-        # Loop through each column of the current row
-        for j in range(len(grid[i])):
-            # Check if the current cell contains an even number of coins
-            if grid[i][j] % 2 == 0:
-                # Increment the number of even cells
-                num_even_cells += 1
-            # Check if the current cell is not the last cell in the row
-            if j < len(grid[i]) - 1:
-                # Check if the cell to the right contains an odd number of coins
-                if grid[i][j+1] % 2 == 1:
-                    # Increment the number of operations
-                    num_operations += 1
-                    # Add the current cell and the cell to the right to the list of operations
-                    operations.append([i, j, i, j+1])
-            # Check if the current cell is not the last cell in the column
-            if i < len(grid) - 1:
-                # Check if the cell below contains an odd number of coins
-                if grid[i+1][j] % 2 == 1:
-                    # Increment the number of operations
-                    num_operations += 1
-                    # Add the current cell and the cell below to the list of operations
-                    operations.append([i, j, i+1, j])
+    # Craft shovels
+    while sticks >= 2 and diamonds >= 1:
+        sticks -= 2
+        diamonds -= 1
+        shovels += 1
 
-    # Return the number of even cells and the list of operations
-    return num_even_cells, operations
+    # Craft swords
+    while diamonds >= 2 and sticks >= 1:
+        diamonds -= 2
+        sticks -= 1
+        swords += 1
+
+    # Calculate emeralds
+    emeralds = shovels + swords
+
+    return emeralds
+
+def main():
+    num_test_cases = int(input())
+    for _ in range(num_test_cases):
+        sticks, diamonds = map(int, input().split())
+        emeralds = get_max_emeralds(sticks, diamonds)
+        print(emeralds)
+
+if __name__ == '__main__':
+    main()
 

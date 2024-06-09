@@ -1,31 +1,36 @@
 
-def solve(n, q, p, queries):
-    # Initialize a list to store the command spreading sequence
-    sequence = []
+def get_max_gifts(n, k, d):
+    # Initialize a list to store the pairs of boxes that can be given as gifts
+    gift_pairs = []
+    
+    # Iterate over the boxes
+    for i in range(n):
+        # Check if the current box is divisible by k
+        if d[i] % k == 0:
+            # If it is, add it to the list of gift pairs
+            gift_pairs.append((i,))
+        else:
+            # If it is not, check if it can be combined with any other box to form a pair that is divisible by k
+            for j in range(i+1, n):
+                if (d[i] + d[j]) % k == 0:
+                    # If it can, add the pair to the list of gift pairs
+                    gift_pairs.append((i, j))
+                    break
+    
+    # Return the length of the list of gift pairs, which is the maximum number of boxes that can be given as gifts
+    return len(gift_pairs)
 
-    # Iterate over each query
-    for query in queries:
-        # Initialize a set to store the officers who have received the command
-        received = set()
+def main():
+    # Read the input data
+    n, k = map(int, input().split())
+    d = list(map(int, input().split()))
+    
+    # Call the function to get the maximum number of gifts that can be given
+    max_gifts = get_max_gifts(n, k, d)
+    
+    # Print the result
+    print(max_gifts)
 
-        # Initialize the current officer as the query officer
-        current = query[0]
-
-        # Iterate until the command has been spread to all subordinates
-        while current not in received:
-            # Add the current officer to the set of received officers
-            received.add(current)
-
-            # If the current officer has any direct subordinates, choose the one with the minimum index
-            if current in p and p[current] not in received:
-                current = p[current]
-            # Otherwise, the command has been spread to all subordinates, so break the loop
-            else:
-                break
-
-        # Add the current officer to the command spreading sequence
-        sequence.append(current)
-
-    # Return the k-th element of the command spreading sequence for the i-th query
-    return sequence[query[1] - 1] if query[1] <= len(sequence) else -1
+if __name__ == '__main__':
+    main()
 

@@ -1,21 +1,33 @@
 
-def get_minimal_weight(n, k, stages):
-    # Initialize the weight of the rocket as 0
-    weight = 0
-    # Create a list to store the stages of the rocket
-    rocket = []
-    # Loop through the stages
-    for i in range(n):
-        # Check if the stage is already in the rocket
-        if stages[i] not in rocket:
-            # Add the stage to the rocket
-            rocket.append(stages[i])
-            # Update the weight of the rocket
-            weight += ord(stages[i]) - ord('a') + 1
-            # Check if the rocket has the required number of stages
-            if len(rocket) == k:
-                # Return the weight of the rocket
-                return weight
-    # If the rocket cannot be built with the given stages, return -1
+def read_input():
+    N, M = map(int, input().split())
+    edges = []
+    for _ in range(M):
+        a, b, c = map(int, input().split())
+        edges.append((a, b, c))
+    return N, M, edges
+
+def find_path(N, edges):
+    visited = [False] * (N + 1)
+    queue = [(1, 0)]
+    while queue:
+        vertex, score = queue.pop(0)
+        if vertex == N:
+            return score
+        for edge in edges:
+            if edge[0] == vertex and not visited[edge[1]]:
+                visited[edge[1]] = True
+                queue.append((edge[1], score + edge[2]))
     return -1
+
+def solve():
+    N, M, edges = read_input()
+    score = find_path(N, edges)
+    if score == -1:
+        print("inf")
+    else:
+        print(score)
+
+if __name__ == '__main__':
+    solve()
 

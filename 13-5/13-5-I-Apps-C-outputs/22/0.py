@@ -1,25 +1,37 @@
 
-def solve(n, m, e, roads, exits, start_brothers, start_police):
-    # Initialize the graph with the given roads
-    graph = {i: set() for i in range(1, n + 1)}
-    for a, b, l in roads:
-        graph[a].add((b, l))
-        graph[b].add((a, l))
-
-    # Find the shortest path from the police car start to any exit
-    import heapq
-    queue = [(0, start_police, [])]
-    visited = set()
-    while queue:
-        dist, curr, path = heapq.heappop(queue)
-        if curr in visited:
-            continue
-        visited.add(curr)
-        if curr in exits:
-            return dist
-        for neighbor, weight in graph[curr]:
-            heapq.heappush(queue, (dist + weight, neighbor, path + [neighbor]))
-
-    # If no path to any exit is found, return IMPOSSIBLE
-    return "IMPOSSIBLE"
+def get_max_score(notes, sp_phrases):
+    # Initialize the maximum score and the current score
+    max_score = 0
+    curr_score = 0
+    
+    # Initialize the SP meter and the SP activation flag
+    sp_meter = 0
+    sp_activated = False
+    
+    # Iterate through the notes and SP phrases
+    for i in range(len(notes)):
+        # Check if the current note is within an SP phrase
+        for j in range(len(sp_phrases)):
+            if notes[i] >= sp_phrases[j][0] and notes[i] <= sp_phrases[j][1]:
+                # If the current note is within an SP phrase, activate the SP meter
+                sp_meter += 1
+                sp_activated = True
+                break
+        
+        # If the SP meter is positive and the current note is within the activation time, score double points
+        if sp_meter > 0 and sp_activated:
+            curr_score += 2
+        else:
+            # If the SP meter is not positive or the current note is not within the activation time, score single points
+            curr_score += 1
+        
+        # If the current note is the last note of an SP phrase, deactivate the SP meter
+        if i == len(notes) - 1 and sp_activated:
+            sp_meter = 0
+            sp_activated = False
+        
+        # Update the maximum score if the current score is higher
+        max_score = max(max_score, curr_score)
+    
+    return max_score
 

@@ -1,18 +1,34 @@
 
-def get_good_sequences(n, a):
-    def bitwise_xor(a, b):
-        return a ^ b
+def get_max_product(arr):
+    n = len(arr)
+    if n == 1:
+        return arr
+    
+    # sort the array in non-decreasing order
+    arr.sort()
+    
+    # initialize the maximum product
+    max_product = 1
+    
+    # loop through the array and calculate the product
+    # of all positive numbers
+    product = 1
+    for i in range(n):
+        if arr[i] > 0:
+            product *= arr[i]
+            max_product = max(max_product, product)
+        else:
+            product *= -1
+    
+    # return the array with the maximum product
+    return [int(x) for x in str(max_product)]
 
-    def get_good_sequence(sequence):
-        return all(bitwise_xor(a, b) == 0 for a, b in zip(sequence, sequence[1:]))
+def main():
+    n = int(input())
+    arr = list(map(int, input().split()))
+    result = get_max_product(arr)
+    print(*result)
 
-    def count_good_sequences(n, a):
-        count = 0
-        for l in range(n):
-            for r in range(l, n):
-                if get_good_sequence(a[l:r+1]):
-                    count += 1
-        return count
-
-    return count_good_sequences(n, a)
+if __name__ == '__main__':
+    main()
 

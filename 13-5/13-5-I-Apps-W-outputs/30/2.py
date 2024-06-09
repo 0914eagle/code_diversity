@@ -1,33 +1,45 @@
 
-def solve(n, m, k, x, s, a, b, c, d):
-    # Initialize the minimum time to prepare n potions as the initial preparation time
-    min_time = x
-    # Loop through all possible combinations of spells
-    for i in range(1 << m):
-        # Initialize the number of manapoints spent as 0
-        mana_spent = 0
-        # Initialize the number of potions prepared as 0
-        potions_prepared = 0
-        # Loop through all spells
-        for j in range(m):
-            # Check if the j-th spell is used in the current combination
-            if i & (1 << j):
-                # Add the cost of the spell to the total manapoints spent
-                mana_spent += b[j]
-                # Update the preparation time to the new value
-                x = a[j]
-        # Loop through all spells of the second type
-        for j in range(k):
-            # Check if the j-th spell is used in the current combination
-            if i & (1 << (m + j)):
-                # Add the cost of the spell to the total manapoints spent
-                mana_spent += d[j]
-                # Update the number of potions prepared with the number of potions created by the spell
-                potions_prepared += c[j]
-        # Check if the total number of manapoints spent is less than or equal to the maximum allowed
-        if mana_spent <= s:
-            # Update the minimum time to prepare n potions if the current combination is better
-            min_time = min(min_time, x * (n - potions_prepared) + potions_prepared * x)
-    # Return the minimum time to prepare n potions
-    return min_time
+import math
+
+def calculate_distance(t):
+    # Calculate the distance between Agneta and Beata at time t
+    distance = math.sqrt((agneta_x(t) - beata_x(t))**2 + (agneta_y(t) - beata_y(t))**2)
+    return distance
+
+def agneta_x(t):
+    # Calculate Agneta's x-coordinate at time t
+    x = 1 + t * math.cos(agneta_angular_speed * t)
+    return x
+
+def agneta_y(t):
+    # Calculate Agneta's y-coordinate at time t
+    y = t * math.sin(agneta_angular_speed * t)
+    return y
+
+def beata_x(t):
+    # Calculate Beata's x-coordinate at time t
+    x = 1 + t * math.cos(beata_angular_speed * t)
+    return x
+
+def beata_y(t):
+    # Calculate Beata's y-coordinate at time t
+    y = t * math.sin(beata_angular_speed * t)
+    return y
+
+def main():
+    # Read input
+    W = float(input())
+
+    # Calculate the minimum distance between Agneta and Beata
+    min_distance = float('inf')
+    for t in range(1000):
+        distance = calculate_distance(t)
+        if distance < min_distance:
+            min_distance = distance
+
+    # Print output
+    print(min_distance)
+
+if __name__ == '__main__':
+    main()
 

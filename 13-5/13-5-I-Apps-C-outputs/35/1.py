@@ -1,16 +1,32 @@
 
-def count_intersections(lines):
-    points = set()
-    for line in lines:
-        x0, y0, x1, y1 = line
-        if x0 == x1:
-            for y in range(min(y0, y1), max(y0, y1) + 1):
-                points.add((x0, y))
-        elif y0 == y1:
-            for x in range(min(x0, x1), max(x0, x1) + 1):
-                points.add((x, y0))
-        else:
-            points.add((x0, y0))
-            points.add((x1, y1))
-    return len(points)
+def get_character_type(transcript):
+    # Initialize a dictionary to store the character types of each candidate
+    character_types = {}
+
+    # Iterate through the transcript and parse the statements
+    for statement in transcript:
+        # Split the statement into the name of the speaker and the statement itself
+        speaker, statement = statement.split(" ", 1)
+
+        # If the statement is a character type claim, update the character type of the speaker
+        if statement.startswith("truther") or statement.startswith("fabulist") or statement.startswith("charlatan"):
+            character_types[speaker] = statement.split(" ")[0]
+
+    # Return the character types of all candidates
+    return character_types
+
+def main():
+    # Read the input data from stdin
+    N, K = map(int, input().split())
+    transcript = [input() for _ in range(K)]
+
+    # Get the character types of all candidates
+    character_types = get_character_type(transcript)
+
+    # Print the character types of all candidates
+    for i in range(1, N+1):
+        print(character_types[str(i)])
+
+if __name__ == '__main__':
+    main()
 

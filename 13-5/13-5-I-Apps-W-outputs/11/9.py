@@ -1,24 +1,50 @@
 
-def solve(a, b):
-    # Initialize a dictionary to store the number of ways for each dice roll
-    ways = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0}
+def is_human_winner(n, k, coefficients):
+    # Initialize the polynomial with the given coefficients
+    polynomial = 0
+    for i in range(n):
+        polynomial += coefficients[i] * x**i
+    
+    # Check if the polynomial is already divisible by x - k
+    if polynomial % (x - k) == 0:
+        return True
+    
+    # Check if the human can set a coefficient to any value and win
+    for i in range(n):
+        if coefficients[i] == '?':
+            # Set the coefficient to any value and check if the resulting polynomial is divisible by x - k
+            coefficients[i] = 1
+            polynomial = 0
+            for j in range(n):
+                polynomial += coefficients[j] * x**j
+            if polynomial % (x - k) == 0:
+                return True
+    
+    # Check if the human can set a coefficient to 0 and win
+    for i in range(n):
+        if coefficients[i] == '?':
+            # Set the coefficient to 0 and check if the resulting polynomial is divisible by x - k
+            coefficients[i] = 0
+            polynomial = 0
+            for j in range(n):
+                polynomial += coefficients[j] * x**j
+            if polynomial % (x - k) == 0:
+                return True
+    
+    # If none of the above conditions are met, the human cannot win
+    return False
 
-    # Iterate over each dice roll from 1 to 6
-    for i in range(1, 7):
-        # Calculate the absolute difference between the dice roll and both numbers
-        diff_a = abs(i - a)
-        diff_b = abs(i - b)
-
-        # If the first player's number is closer to the dice roll, add 1 to their way count
-        if diff_a < diff_b:
-            ways[i] += 1
-        # If the second player's number is closer to the dice roll, add 1 to their way count
-        elif diff_b < diff_a:
-            ways[i] -= 1
-        # If both numbers are equal, it's a draw, so add 1 to the draw count
+def main():
+    n, k = map(int, input().split())
+    coefficients = []
+    for i in range(n + 1):
+        coefficient = input()
+        if coefficient == '?':
+            coefficients.append('?')
         else:
-            ways[i] += 1
+            coefficients.append(int(coefficient))
+    print("Yes") if is_human_winner(n, k, coefficients) else print("No")
 
-    # Return the number of ways for each outcome
-    return (ways[1], ways[2], ways[3], ways[4], ways[5], ways[6])
+if __name__ == '__main__':
+    main()
 

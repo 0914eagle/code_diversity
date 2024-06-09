@@ -1,28 +1,40 @@
 
-def max_independent_set(n, m, edges):
-    # Initialize a dictionary to store the neighbors of each vertex
-    neighbors = {i: set() for i in range(1, n + 1)}
-
-    # Add the edges to the dictionary
+def f1(n, a, edges):
+    # Create a dictionary to store the number of vertices controlled by each vertex
+    controlled_vertices = {}
+    for i in range(n):
+        controlled_vertices[i] = 0
+    
+    # Iterate through the edges and update the number of controlled vertices for each vertex
     for edge in edges:
-        neighbors[edge[0]].add(edge[1])
-        neighbors[edge[1]].add(edge[0])
+        parent, child, weight = edge
+        if weight <= a[child]:
+            controlled_vertices[parent] += 1
+    
+    return controlled_vertices
 
-    # Initialize a set to store the vertices in the maximum independent set
-    max_independent_set = set()
+def f2(n, a, edges):
+    # Create a dictionary to store the number of vertices controlled by each vertex
+    controlled_vertices = {}
+    for i in range(n):
+        controlled_vertices[i] = 0
+    
+    # Iterate through the edges and update the number of controlled vertices for each vertex
+    for edge in edges:
+        parent, child, weight = edge
+        if weight <= a[child]:
+            controlled_vertices[parent] += 1
+    
+    return controlled_vertices
 
-    # Iterate through the vertices and try to add them to the independent set
-    for vertex in range(1, n + 1):
-        if vertex not in max_independent_set:
-            # If the vertex is not already in the independent set, try to add it
-            if all(neighbor not in max_independent_set for neighbor in neighbors[vertex]):
-                # If the vertex has no neighbors in the independent set, add it
-                max_independent_set.add(vertex)
-            else:
-                # If the vertex has neighbors in the independent set, try to add its neighbors instead
-                for neighbor in neighbors[vertex]:
-                    if neighbor not in max_independent_set:
-                        max_independent_set.add(neighbor)
-
-    return len(max_independent_set)
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    edges = []
+    for i in range(n - 1):
+        parent, weight = map(int, input().split())
+        edges.append((parent, i + 1, weight))
+    
+    controlled_vertices = f1(n, a, edges)
+    print(*controlled_vertices.values())
 

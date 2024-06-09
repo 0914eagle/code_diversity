@@ -1,22 +1,29 @@
 
-def longest_monotone_subsequence(N, K):
-    # Initialize a list to store the required sequence
-    seq = []
-    
-    # Iterate from 1 to N
-    for i in range(1, N+1):
-        # If the length of the current sequence is less than K, append the current number to the sequence
-        if len(seq) < K:
-            seq.append(i)
-        # If the length of the current sequence is equal to K, check if the current number is adjacent to the last number in the sequence
-        elif len(seq) == K:
-            # If the current number is adjacent to the last number in the sequence, append the current number to the sequence
-            if abs(seq[-1] - i) == 1:
-                seq.append(i)
-            # If the current number is not adjacent to the last number in the sequence, return -1 as the required sequence does not exist
-            else:
-                return -1
-    
-    # If the required sequence exists, return it
-    return seq
+def get_lis_length(sequence):
+    # Implement your solution here
+    return len(sequence)
+
+def get_critical_elements(sequence):
+    # Find all critical elements in the sequence
+    critical_elements = []
+    for i in range(len(sequence)):
+        # Check if removing the current element will decrease the LIS length
+        current_element = sequence[i]
+        remaining_sequence = sequence[:i] + sequence[i+1:]
+        lis_length = get_lis_length(remaining_sequence)
+        if lis_length < get_lis_length(sequence):
+            critical_elements.append(current_element)
+    return critical_elements
+
+def main():
+    n = int(input())
+    sequence = list(map(int, input().split()))
+    critical_elements = get_critical_elements(sequence)
+    if len(critical_elements) == 0:
+        print(-1)
+    else:
+        print(*critical_elements)
+
+if __name__ == '__main__':
+    main()
 

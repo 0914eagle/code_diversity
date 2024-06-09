@@ -1,12 +1,17 @@
 
-def solve(s):
-    # Check if the string is already a palindrome
-    if s == s[::-1]:
-        return "First"
-    
-    # Check if the string can be reordered to form a palindrome
-    for i in range(len(s)):
-        if s[i] != s[-i-1]:
-            return "Second"
-    return "First"
+def f(n):
+    result = 0
+    for i in range(1, n+1):
+        if i % 2 == 0:
+            result += i
+        else:
+            result -= i
+    return result
+
+def main():
+    n = int(input())
+    print(f(n))
+
+if __name__ == '__main__':
+    main()
 

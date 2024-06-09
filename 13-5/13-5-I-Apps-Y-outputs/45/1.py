@@ -1,20 +1,26 @@
 
-def get_max_area(W, H, x, y):
-    # Calculate the area of the rectangle
-    area = W * H
-    
-    # Calculate the area of the two parts
-    part1_area = (W - x) * min(H, y)
-    part2_area = x * min(H, y)
-    
-    # Find the maximum possible area
-    max_area = max(part1_area, part2_area)
-    
-    # Check if there are multiple ways to cut the rectangle and achieve the maximum area
-    if part1_area == part2_area:
-        multiple_ways = 1
+def get_nearest_amount(candy_price, smallest_bill):
+    # Convert the candy price to a string
+    candy_price_str = str(candy_price)
+    # Get the length of the smallest bill
+    smallest_bill_len = len(str(smallest_bill))
+    # Get the last few digits of the candy price
+    last_digits = candy_price_str[-smallest_bill_len:]
+    # Convert the last digits to an integer
+    last_digits_int = int(last_digits)
+    # Check if the last digits are less than half of the smallest bill
+    if last_digits_int < smallest_bill / 2:
+        # Round down to the nearest amount Mirko can pay
+        nearest_amount = candy_price - last_digits_int
     else:
-        multiple_ways = 0
-    
-    return max_area, multiple_ways
+        # Round up to the nearest amount Mirko can pay
+        nearest_amount = candy_price + (smallest_bill - last_digits_int)
+    return nearest_amount
+
+def main():
+    candy_price, smallest_bill = map(int, input().split())
+    print(get_nearest_amount(candy_price, smallest_bill))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,18 +1,16 @@
 
-def spiral_order(matrix):
-    if not matrix or not matrix[0]:
-        return []
-    m, n = len(matrix), len(matrix[0])
-    top, bottom, left, right = 0, m - 1, 0, n - 1
-    directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
-    direction = directions[0]
-    res = []
-    for i in range(m * n):
-        res.append(matrix[top][left])
-        matrix[top][left] = 0
-        if left == right or top == bottom:
-            direction = directions[(directions.index(direction) + 1) % 4]
-        top += direction[0]
-        left += direction[1]
-    return res
+def f1(n):
+    return len(bin(n)[2:])
+
+def f2(n):
+    count = 0
+    while n > 0:
+        count += 1
+        n &= n - 1
+    return count
+
+if __name__ == '__main__':
+    n = int(input())
+    print(f1(n))
+    print(f2(n))
 

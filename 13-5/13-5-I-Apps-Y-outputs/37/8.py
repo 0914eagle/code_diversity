@@ -1,20 +1,21 @@
 
-def solve(s, t):
-    # Initialize variables
-    n = len(s)
-    count = 0
-    diff = 0
+def get_input():
+    n, m = map(int, input().split())
+    assignments = list(map(int, input().split()))
+    return n, m, assignments
 
-    # Loop through each character of both strings
-    for i in range(n):
-        # If characters are not equal, increment count and find difference
-        if s[i] != t[i]:
-            count += 1
-            if diff == 0:
-                diff = ord(t[i]) - ord(s[i])
-            elif ord(t[i]) - ord(s[i]) != diff:
-                return -1
+def solve(n, m, assignments):
+    days_spent = 0
+    for assignment in assignments:
+        days_spent += assignment
+        if days_spent > n:
+            return -1
+    return n - days_spent
 
-    # Return count
-    return count
+def main():
+    n, m, assignments = get_input()
+    print(solve(n, m, assignments))
+
+if __name__ == '__main__':
+    main()
 

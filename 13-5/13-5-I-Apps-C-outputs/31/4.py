@@ -1,23 +1,34 @@
 
-def get_smallest_pack_size(bolts_needed, companies):
-    # Initialize a dictionary to store the minimum advertised amount and real amount of bolts for each company
-    company_info = {}
-    for company in companies:
-        company_info[company] = {}
-        company_info[company]["min_advertised_amount"] = float("inf")
-        company_info[company]["real_amount"] = 0
-    
-    # Loop through the companies and calculate the minimum advertised amount and real amount of bolts for each company
-    for company in companies:
-        for package in companies[company]:
-            company_info[company]["min_advertised_amount"] = min(company_info[company]["min_advertised_amount"], package)
-            company_info[company]["real_amount"] += package
-    
-    # Find the company with the smallest advertised amount that contains at least the number of bolts needed
-    for company in companies:
-        if company_info[company]["min_advertised_amount"] <= bolts_needed:
-            return company_info[company]["min_advertised_amount"]
-    
-    # If no company has a package with the number of bolts needed, return "impossible"
-    return "impossible"
+def get_input():
+    N = int(input())
+    a = list(map(int, input().split()))
+    return N, a
+
+def smash_multiples(N, a, x):
+    smashed = set()
+    for i in range(x, N+1, x):
+        if i in smashed:
+            continue
+        smashed.add(i)
+        a[i-1] = 0
+    return a
+
+def get_earned(a):
+    earned = 0
+    for i in range(len(a)):
+        if a[i] > 0:
+            earned += a[i]
+    return earned
+
+def solve(N, a):
+    max_earned = 0
+    for x in range(1, N+1):
+        earned = get_earned(smash_multiples(N, a, x))
+        if earned > max_earned:
+            max_earned = earned
+    return max_earned
+
+if __name__ == '__main__':
+    N, a = get_input()
+    print(solve(N, a))
 

@@ -1,17 +1,31 @@
 
-def solve(s):
-    ones = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
-    teens = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen']
-    tens = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety']
-    
-    if s < 10:
-        return ones[s]
-    elif s < 20:
-        return teens[s - 10]
-    elif s < 100:
-        return tens[s // 10] + ('-' + ones[s % 10] if s % 10 != 0 else '')
-    elif s < 1000:
-        return ones[s // 100] + ' hundred' + ('-' + solve(s % 100) if s % 100 != 0 else '')
-    else:
-        return solve(s // 100) + '-' + solve(s % 100)
+def max_score(cards):
+    n = len(cards)
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            if i == j:
+                dp[i][j] = 0
+            else:
+                dp[i][j] = max(dp[i][j - 1], dp[i - 1][j - 1] + cards[j - 1])
+    return dp[n][n]
+
+def min_score(cards):
+    n = len(cards)
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            if i == j:
+                dp[i][j] = 0
+            else:
+                dp[i][j] = min(dp[i][j - 1], dp[i - 1][j - 1] - cards[j - 1])
+    return dp[n][n]
+
+def solve(cards):
+    return max_score(cards), min_score(cards)
+
+if __name__ == '__main__':
+    n = int(input())
+    cards = list(map(int, input().split()))
+    print(solve(cards))
 

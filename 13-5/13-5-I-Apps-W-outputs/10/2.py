@@ -1,18 +1,22 @@
 
-def get_min_key_presses(n, lines, r_1, c_1, r_2, c_2):
-    # Initialize the minimum number of key presses to infinity
-    min_presses = float('inf')
+def is_solution(a, b, x):
+    return a % x == b
 
-    # Loop through all possible positions of the cursor in the text editor
-    for i in range(n):
-        for j in range(1, lines[i] + 1):
-            # Calculate the number of key presses needed to move the cursor from (r_1, c_1) to (i, j)
-            presses = abs(r_1 - i) + abs(c_1 - j)
+def count_solutions(a, b):
+    solutions = 0
+    for x in range(1, b + 1):
+        if is_solution(a, b, x):
+            solutions += 1
+    return solutions
 
-            # If the number of key presses is less than the minimum, update the minimum
-            if presses < min_presses:
-                min_presses = presses
+def main():
+    a, b = map(int, input().split())
+    solutions = count_solutions(a, b)
+    if solutions == 0:
+        print("infinity")
+    else:
+        print(solutions)
 
-    # Return the minimum number of key presses
-    return min_presses
+if __name__ == '__main__':
+    main()
 

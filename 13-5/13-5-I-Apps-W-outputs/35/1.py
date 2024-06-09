@@ -1,35 +1,34 @@
 
-def solve(m, n, p):
-    # Initialize a dictionary to store the counts of each x value
-    x_counts = {}
+def get_solution(n, m, S_x, S_y):
+    # Initialize the solution matrix
+    solution = [[0] * m for _ in range(n)]
+    
+    # Mark the starting cell as visited
+    solution[S_x - 1][S_y - 1] = 1
+    
+    # Iterate through the rows
+    for i in range(n):
+        # Iterate through the columns
+        for j in range(m):
+            # If the current cell is not visited, mark it as visited and add it to the solution
+            if solution[i][j] == 0:
+                solution[i][j] = 1
+                yield i + 1, j + 1
+    
+    # Return the solution
+    return solution
 
-    # Iterate over the p sequence
-    for i in range(len(p)):
-        # Get the current x value
-        x = p[i]
+def main():
+    # Read the input
+    n, m, S_x, S_y = map(int, input().split())
+    
+    # Get the solution
+    solution = get_solution(n, m, S_x, S_y)
+    
+    # Print the solution
+    for i, j in solution:
+        print(i, j)
 
-        # If the x value is not in the dictionary, add it with a count of 1
-        if x not in x_counts:
-            x_counts[x] = 1
-
-        # Otherwise, increment the count of the x value
-        else:
-            x_counts[x] += 1
-
-    # Initialize a variable to store the total number of sequences
-    total_sequences = 1
-
-    # Iterate over the x values and their counts
-    for x, count in x_counts.items():
-        # Calculate the number of sequences for this x value
-        num_sequences = count ** n
-
-        # Multiply the total number of sequences by the number of sequences for this x value
-        total_sequences *= num_sequences
-
-        # Take the modulo of the total number of sequences to avoid overflow
-        total_sequences %= 1000000007
-
-    # Return the total number of sequences
-    return total_sequences
+if __name__ == '__main__':
+    main()
 

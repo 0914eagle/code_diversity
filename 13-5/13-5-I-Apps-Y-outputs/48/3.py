@@ -1,18 +1,22 @@
 
-def solve(N, K, d, A):
-    # Initialize a set to store the indices of the Snukes who have no snacks
-    no_snacks = set()
+def get_min_x(divisors):
+    # Sort the divisors in ascending order
+    divisors.sort()
+    # Initialize the minimum possible value of x as the smallest divisor
+    x = divisors[0]
+    # Iterate through the divisors and find the smallest value of x that is greater than or equal to the product of all the divisors
+    for i in range(1, len(divisors)):
+        x = max(x, divisors[i] // x)
+    return x
 
-    # Iterate over the input data
-    for i in range(K):
-        # Check if the current Snack has any Snukes who have not eaten it yet
-        if len(set(A[i]) - no_snacks) > 0:
-            # If so, add the indices of the Snukes who have not eaten it yet to the set
-            no_snacks |= set(A[i])
-        else:
-            # If not, add the indices of the Snukes who have eaten it to the set
-            no_snacks |= set(A[i])
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        divisors = list(map(int, input().split()))
+        x = get_min_x(divisors)
+        print(x)
 
-    # Return the number of Snukes who have no snacks
-    return len(no_snacks)
+if __name__ == '__main__':
+    main()
 

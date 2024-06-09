@@ -1,33 +1,26 @@
 
-def solve(n, q, p, queries):
-    # Initialize a list to store the order of officers receiving the command
-    order = []
-    
-    # Iterate over each query
-    for query in queries:
-        # Initialize a set to store the officers who have received the command
-        received = set()
-        
-        # Initialize the current officer as the query officer
-        current = query[0]
-        
-        # While the current officer has not received the command
-        while current not in received:
-            # Add the current officer to the set of received officers
-            received.add(current)
-            
-            # If the current officer has direct subordinates
-            if current != 1 and p[current] in received:
-                # Set the current officer to their direct superior
-                current = p[current]
-            # If the current officer does not have direct subordinates or all their direct subordinates have received the command
-            else:
-                # Set the current officer to the next officer in the order
-                current = order.pop(0)
-        
-        # Add the current officer to the order
-        order.append(current)
-    
-    # Return the k-th element of the order or -1 if there are fewer than k elements
-    return order[query[1] - 1] if query[1] <= len(order) else -1
+def get_max_gifts(d, k):
+    # Sort the boxes by the number of candies in each box
+    d.sort()
+    # Initialize the maximum number of gifts as 0
+    max_gifts = 0
+    # Iterate over the boxes
+    for i in range(len(d)):
+        # Check if the current box is divisible by k
+        if d[i] % k == 0:
+            # If the current box is divisible by k, add it to the maximum number of gifts
+            max_gifts += 1
+        # Check if the current box is not divisible by k but the next box is divisible by k
+        elif i < len(d) - 1 and d[i + 1] % k == 0:
+            # If the current box is not divisible by k but the next box is divisible by k, add the current box and the next box to the maximum number of gifts
+            max_gifts += 2
+    return max_gifts
+
+def main():
+    n, k = map(int, input().split())
+    d = list(map(int, input().split()))
+    print(get_max_gifts(d, k))
+
+if __name__ == '__main__':
+    main()
 

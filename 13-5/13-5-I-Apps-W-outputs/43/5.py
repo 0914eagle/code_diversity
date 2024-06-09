@@ -1,33 +1,25 @@
 
-def solve(n, edges, colors):
-    # Create a graph with n vertices and m edges
-    graph = [[] for _ in range(n)]
-    for i in range(n - 1):
-        graph[edges[i] - 1].append(edges[i + 1] - 1)
+def get_min_operations(stones):
+    # Initialize the minimum number of operations to 0
+    min_operations = 0
+    
+    # Loop through the stones and check if there is a white stone next to a red stone
+    for i in range(len(stones) - 1):
+        if stones[i] == "W" and stones[i + 1] == "R":
+            # If there is, increment the minimum number of operations
+            min_operations += 1
+    
+    # Return the minimum number of operations
+    return min_operations
 
-    # Initialize the color of the root vertex as 1
-    color = 1
-    visited = [False] * n
-    visited[0] = True
+def main():
+    # Read the number of stones and the colors of the stones from stdin
+    num_stones = int(input())
+    stones = input()
+    
+    # Call the get_min_operations function and print the result
+    print(get_min_operations(stones))
 
-    # BFS to color the tree
-    queue = [0]
-    while queue:
-        vertex = queue.pop(0)
-        for neighbor in graph[vertex]:
-            if not visited[neighbor]:
-                visited[neighbor] = True
-                queue.append(neighbor)
-                color = colors[neighbor]
-        for neighbor in graph[vertex]:
-            if colors[neighbor] == 0:
-                colors[neighbor] = color
-
-    # Count the number of steps needed to color the tree
-    steps = 0
-    for i in range(n):
-        if colors[i] != 0:
-            steps += 1
-
-    return steps
+if __name__ == "__main__":
+    main()
 

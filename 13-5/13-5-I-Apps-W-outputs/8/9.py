@@ -1,9 +1,34 @@
 
-def solve(n, m):
-    count = 0
-    for i in range(1, n+1):
-        for j in range(1, n+1):
-            if (i**2 + j**2) % m == 0:
-                count += 1
-    return count
+def read_matrix(N, M):
+    matrix = []
+    for i in range(N):
+        matrix.append(list(map(int, input().split())))
+    return matrix
+
+def get_sum(matrix, i, j):
+    if i < len(matrix) and j < len(matrix[0]):
+        return matrix[i][j]
+    else:
+        return -1
+
+def get_max_sum(matrix, pairs):
+    max_sum = -1
+    for pair in pairs:
+        sum1 = get_sum(matrix, pair[0], pair[1])
+        sum2 = get_sum(matrix, pair[1], pair[0])
+        if sum1 != -1 and sum2 != -1:
+            max_sum = max(max_sum, sum1 + sum2)
+    return max_sum
+
+def main():
+    N, M = map(int, input().split())
+    matrix = read_matrix(N, M)
+    L = int(input())
+    pairs = []
+    for i in range(L):
+        pairs.append(list(map(int, input().split())))
+    print(get_max_sum(matrix, pairs))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,12 +1,14 @@
 
-import math
+def get_input():
+    return list(map(int, input().split()))
 
-def get_angle(A, B, C, D):
-    AB = B - A
-    BC = C - B
-    CD = D - C
-    X = AB.cross(BC)
-    Y = BC.cross(CD)
-    cos_phi = X.dot(Y) / (X.length() * Y.length())
-    return math.degrees(math.acos(cos_phi))
+def largest_value(a, b):
+    return max(a+b, a-b, a*b)
+
+def main():
+    a, b = get_input()
+    print(largest_value(a, b))
+
+if __name__ == '__main__':
+    main()
 

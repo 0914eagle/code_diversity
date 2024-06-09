@@ -1,41 +1,39 @@
 
-def solve(r, c, i, j, n):
-    # Initialize the ice rink as a 2D array of whites
-    ice = [['.' for _ in range(c)] for _ in range(r)]
+import itertools
+
+def get_valid_ids(n, pattern):
+    # Generate all possible binary strings of length n
+    all_ids = [''.join(id) for id in itertools.product('01', repeat=n)]
     
-    # Set the starting position of the zamboni
-    x, y = i-1, j-1
+    # Filter out ids that do not satisfy the pattern
+    valid_ids = []
+    for id in all_ids:
+        if satisfies_pattern(id, pattern):
+            valid_ids.append(id)
     
-    # Set the current color to A
-    color = 'A'
+    return valid_ids
+
+def satisfies_pattern(id, pattern):
+    # If the length of the id is not equal to the length of the pattern, return False
+    if len(id) != len(pattern):
+        return False
     
-    # Loop through each step
-    for step in range(n):
-        # Move the zamboni in the current direction
-        if y == c:
-            y = 0
-        if x == r:
-            x = 0
-        if y == -1:
-            y = c-1
-        if x == -1:
-            x = r-1
-        ice[x][y] = color
-        
-        # Rotate the zamboni 90 degrees clockwise
-        x, y = y, c-1-x
-        
-        # Switch to the next color
-        color = chr(ord(color) + 1)
-        if color == '[':
-            color = 'A'
-        
-        # Increment the step size
-        step += 1
-    
-    # Set the final location of the zamboni
-    ice[x][y] = '@'
-    
-    # Return the ice rink as a string
-    return '\n'.join(''.join(row) for row in ice)
+    # If the length of the id is equal to the length of the pattern, return True if any of the following conditions is met:
+    # 1. The id contains at least half 1s and the pattern contains at least half 1s.
+    # 2. The id contains at least one substring that satisfies the pattern.
+    if id.count('1') >= len(id) // 2 and pattern.count('1') >= len(pattern) // 2:
+        return True
+    elif any(id[i:i+len(pattern)] == pattern for i in range(len(id) - len(pattern) + 1)):
+        return True
+    else:
+        return False
+
+def get_max_members(n, pattern):
+    valid_ids = get_valid_ids(n, pattern)
+    return len(valid_ids)
+
+if __name__ == '__main__':
+    n = int(input())
+    pattern = input()
+    print(get_max_members(n, pattern))
 

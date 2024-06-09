@@ -1,14 +1,15 @@
 
-def check_string(s):
-    a_count = s.count('a')
-    b_count = s.count('b')
-    c_count = s.count('c')
+def get_side_length(n, k):
+    # Find the minimum side length for each square map
+    side_length = (n * 2) / k
+    
+    # Return the minimum side length for each square map
+    return side_length
 
-    if a_count == 0 or b_count == 0:
-        return "NO"
+def main():
+    n, k = map(int, input().split())
+    print(f"{get_side_length(n, k):.2f}")
 
-    if c_count == a_count or c_count == b_count:
-        return "YES"
-
-    return "NO"
+if __name__ == '__main__':
+    main()
 

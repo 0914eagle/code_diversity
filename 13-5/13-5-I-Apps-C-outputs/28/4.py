@@ -1,13 +1,22 @@
 
-import math
+def get_input():
+    n, m = map(int, input().split())
+    y1 = list(map(int, input().split()))
+    y2 = list(map(int, input().split()))
+    return n, m, y1, y2
 
-def solve(N, M, K):
-    # Calculate the binomial coefficient (N choose K)
-    choose = math.factorial(N) // math.factorial(K) // math.factorial(N - K)
+def get_max_destroyed_spaceships(n, m, y1, y2):
+    destroyed_spaceships = 0
+    for i in range(n):
+        for j in range(m):
+            if abs(y1[i] - y2[j]) <= 10000:
+                destroyed_spaceships += 1
+    return destroyed_spaceships
 
-    # Calculate the number of ways to take K objects from M copies of each object
-    ways = choose * math.factorial(M) ** K
+def main():
+    n, m, y1, y2 = get_input()
+    print(get_max_destroyed_spaceships(n, m, y1, y2))
 
-    # Return the result modulo 10^6 + 7
-    return ways % (10**6 + 7)
+if __name__ == '__main__':
+    main()
 

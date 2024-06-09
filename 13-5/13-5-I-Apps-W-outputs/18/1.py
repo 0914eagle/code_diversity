@@ -1,26 +1,30 @@
 
-def solve(grid):
-    # Initialize the number of even and odd cells
-    num_even = 0
-    num_odd = 0
-    
-    # Iterate through the grid and count the number of even and odd cells
-    for row in grid:
-        for cell in row:
-            if cell % 2 == 0:
-                num_even += 1
-            else:
-                num_odd += 1
-    
-    # If the number of even cells is greater than the number of odd cells, return the sequence of operations to maximize the number of even cells
-    if num_even > num_odd:
-        return "0"
-    
-    # If the number of odd cells is greater than the number of even cells, return the sequence of operations to maximize the number of odd cells
-    elif num_odd > num_even:
-        return "1"
-    
-    # If the number of even cells is equal to the number of odd cells, return the sequence of operations to maximize the number of even cells
-    else:
-        return "2"
+def get_max_emeralds(a, b):
+    # Initialize variables
+    emeralds = 0
+    sticks = a
+    diamonds = b
+
+    # Craft shovels
+    while sticks >= 2 and diamonds >= 1:
+        sticks -= 2
+        diamonds -= 1
+        emeralds += 1
+
+    # Craft swords
+    while diamonds >= 2 and sticks >= 1:
+        diamonds -= 2
+        sticks -= 1
+        emeralds += 1
+
+    return emeralds
+
+def main():
+    num_test_cases = int(input())
+    for _ in range(num_test_cases):
+        a, b = map(int, input().split())
+        print(get_max_emeralds(a, b))
+
+if __name__ == '__main__':
+    main()
 

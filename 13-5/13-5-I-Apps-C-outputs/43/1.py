@@ -1,51 +1,26 @@
 
-import sys
+def f1(n, k):
+    # find the kth valid sequence
+    valid_sequences = []
+    for i in range(1, n):
+        for j in range(1, n):
+            if i*j % n != 0:
+                valid_sequences.append([i, j])
+    return valid_sequences[k-1]
 
-sys.setrecursionlimit(10000)
-
-def dijkstra(graph, src):
-    dist = [float('inf') for _ in range(len(graph))]
-    dist[src] = 0
-    visited = [False for _ in range(len(graph))]
-
-    pq = [(0, src)]
-    while pq:
-        dist_u, u = heapq.heappop(pq)
-        if visited[u]:
-            continue
-        visited[u] = True
-
-        for v, w in graph[u]:
-            if dist[v] > dist_u + w:
-                dist[v] = dist_u + w
-                heapq.heappush(pq, (dist[v], v))
-
-    return dist
-
-def number_of_shortest_paths(graph, src, dest):
-    dist = dijkstra(graph, src)
-    return dist[dest]
-
-def count_shortest_paths(graph):
-    result = []
-    for u in range(len(graph)):
-        count = 0
-        for v in range(len(graph)):
-            if number_of_shortest_paths(graph, u, v) == 1:
-                count += 1
-        result.append(count)
-    return result
-
-def main():
-    num_cities, num_roads = map(int, input().split())
-    graph = [[] for _ in range(num_cities)]
-    for _ in range(num_roads):
-        origin, destination, length = map(int, input().split())
-        graph[origin].append((destination, length))
-
-    result = count_shortest_paths(graph)
-    print(*result, sep='\n')
+def f2(n, k):
+    # find the kth valid sequence using lexicographic ordering
+    valid_sequences = []
+    for i in range(1, n):
+        for j in range(1, n):
+            if i*j % n != 0:
+                valid_sequences.append([i, j])
+    valid_sequences.sort()
+    return valid_sequences[k-1]
 
 if __name__ == '__main__':
-    main()
+    n = int(input())
+    k = int(input())
+    print(f1(n, k))
+    print(f2(n, k))
 

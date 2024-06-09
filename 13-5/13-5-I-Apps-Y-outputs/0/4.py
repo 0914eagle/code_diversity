@@ -1,31 +1,41 @@
 
-def get_sugar_water(A, B, C, D, E, F):
+def get_min_attacks(healths, k):
     # Initialize variables
-    sugar_water = 0
-    sugar_dissolved = 0
+    attacks = 0
+    special_moves = k
+    monsters_alive = len(healths)
 
-    # Calculate the maximum amount of sugar that can be dissolved in water
-    max_sugar = E * 100 // A
+    # Sort the healths in descending order
+    healths.sort(reverse=True)
 
-    # Loop through all possible combinations of operations
-    for i in range(A + 1):
-        for j in range(B + 1):
-            for k in range(C + 1):
-                for l in range(D + 1):
-                    # Calculate the total mass of water and sugar in the beaker
-                    total_water = i * A + j * B
-                    total_sugar = k * C + l * D
+    # Loop through the healths and attack the monsters
+    for i in range(len(healths)):
+        # If the current monster's health is 1, use a special move to kill it
+        if healths[i] == 1:
+            special_moves -= 1
+            monsters_alive -= 1
+        # Otherwise, attack the monster and decrease its health by 1
+        else:
+            healths[i] -= 1
+            attacks += 1
+            monsters_alive -= 1
 
-                    # Check if the total mass of substances in the beaker is within the given limit
-                    if total_water + total_sugar <= F:
-                        # Calculate the density of the sugar water
-                        density = total_sugar * 100 / (total_water + total_sugar)
+        # If all monsters are killed, return the number of attacks
+        if monsters_alive == 0:
+            return attacks
 
-                        # Check if the density is higher than the current best density
-                        if density > sugar_water:
-                            sugar_water = density
-                            sugar_dissolved = total_sugar
+    # If all special moves are used, return -1 to indicate that Fennec cannot win
+    if special_moves == 0:
+        return -1
 
-    # Return the mass of the desired sugar water and the mass of sugar dissolved in it
-    return sugar_water, sugar_dissolved
+    # If there are still monsters alive and special moves left, continue attacking
+    return get_min_attacks(healths, special_moves)
+
+def main():
+    n, k = map(int, input().split())
+    healths = list(map(int, input().split()))
+    print(get_min_attacks(healths, k))
+
+if __name__ == '__main__':
+    main()
 

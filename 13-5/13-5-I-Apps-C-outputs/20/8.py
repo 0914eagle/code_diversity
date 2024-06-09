@@ -1,50 +1,62 @@
 
-def solve(x0, y0, a_x, a_y, b_x, b_y, x_s, y_s, t):
-    # Initialize a list to store the coordinates of the data nodes
-    data_nodes = [(x0, y0)]
-    
-    # Calculate the coordinates of the next data node
-    next_x = a_x * x0 + b_x
-    next_y = a_y * y0 + b_y
-    
-    # Add the next data node to the list
-    data_nodes.append((next_x, next_y))
-    
-    # Continue calculating the coordinates of the next data node until the list is empty
-    while len(data_nodes) > 0:
-        # Pop the last node from the list
-        node = data_nodes.pop()
-        
-        # Calculate the coordinates of the next data node
-        next_x = a_x * node[0] + b_x
-        next_y = a_y * node[1] + b_y
-        
-        # Add the next data node to the list
-        data_nodes.append((next_x, next_y))
-    
-    # Initialize a variable to store the maximum number of data nodes collected
-    max_nodes = 0
-    
-    # Initialize a variable to store the current number of data nodes collected
-    current_nodes = 0
-    
-    # Initialize a variable to store the current time
-    current_time = 0
-    
-    # Iterate through the data nodes
-    for node in data_nodes:
-        # Calculate the distance between the current node and the starting point
-        distance = abs(node[0] - x_s) + abs(node[1] - y_s)
-        
-        # If the current node is within the time limit, add it to the list of collected nodes
-        if current_time + distance <= t:
-            current_nodes += 1
-            current_time += distance
-        
-        # If the current number of collected nodes is greater than the maximum number of collected nodes, update the maximum number of collected nodes
-        if current_nodes > max_nodes:
-            max_nodes = current_nodes
-    
-    # Return the maximum number of collected nodes
-    return max_nodes
+def get_best_friend_pairs(n):
+    def is_valid_number(num):
+        if num == 0:
+            return False
+        while num > 0:
+            if num % 10 == 0:
+                return False
+            num //= 10
+        return True
+
+    def get_friendly_operations(num):
+        operations = []
+        while num > 0:
+            digit1 = num % 10
+            num //= 10
+            digit2 = num % 10
+            num //= 10
+            if digit1 == 0 or digit2 == 0:
+                break
+            if digit1 == 1 or digit2 == 9:
+                break
+            if digit1 == digit2:
+                break
+            operations.append((digit1, digit2))
+        return operations
+
+    def get_friendly_numbers(num):
+        numbers = set()
+        operations = get_friendly_operations(num)
+        for operation in operations:
+            digit1, digit2 = operation
+            if digit1 == 1:
+                numbers.add(num - 10**(n-1))
+            else:
+                numbers.add(num + 10**(n-1))
+            if digit2 == 9:
+                numbers.add(num + 10**(n-1))
+            else:
+                numbers.add(num - 10**(n-1))
+        return numbers
+
+    def get_best_friend_pairs_helper(num, pairs):
+        if num == 0:
+            return pairs
+        friendly_numbers = get_friendly_numbers(num)
+        for friendly_number in friendly_numbers:
+            if friendly_number not in pairs:
+                pairs.add((num, friendly_number))
+                pairs = get_best_friend_pairs_helper(friendly_number, pairs)
+        return pairs
+
+    pairs = set()
+    for i in range(10**n):
+        if is_valid_number(i):
+            pairs = get_best_friend_pairs_helper(i, pairs)
+    return len(pairs)
+
+if __name__ == '__main__':
+    n = int(input())
+    print(get_best_friend_pairs(n))
 

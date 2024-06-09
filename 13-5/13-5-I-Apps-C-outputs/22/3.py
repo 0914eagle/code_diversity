@@ -1,68 +1,48 @@
 
-def escape_speed(n, m, e, roads, exits, start_brothers, start_police):
-    # Initialize the minimum speed required to escape as infinity
-    min_speed = float('inf')
+def get_max_score(notes, sp_phrases):
+    # Initialize the maximum score and the current score
+    max_score = 0
+    current_score = 0
     
-    # Loop through all possible routes from the brothers' starting point to the highway exit
-    for route in all_routes(n, m, e, roads, exits, start_brothers):
-        # Calculate the speed required to take this route
-        speed = calculate_speed(route, start_police)
-        
-        # If the speed is less than the minimum speed, update the minimum speed
-        if speed < min_speed:
-            min_speed = speed
+    # Initialize the SP meter and the SP activation flag
+    sp_meter = 0
+    sp_activated = False
     
-    # If the minimum speed is infinity, return "IMPOSSIBLE"
-    if min_speed == float('inf'):
-        return "IMPOSSIBLE"
-    else:
-        return min_speed
+    # Iterate through the notes and SP phrases
+    for i in range(len(notes)):
+        # Check if the current note is within an SP phrase
+        if sp_phrases and notes[i] in range(sp_phrases[0][0], sp_phrases[0][1]):
+            # If the SP meter is positive, activate Star Power
+            if sp_meter > 0:
+                sp_activated = True
+                current_score += 2
+            # Add the note to the current score
+            current_score += 1
+            # Decrement the SP meter
+            sp_meter -= 1
+        # If the current note is not within an SP phrase, add it to the current score
+        else:
+            current_score += 1
+    
+    # If Star Power is activated, add the current score to the maximum score
+    if sp_activated:
+        max_score += current_score
+    
+    # Return the maximum score
+    return max_score
 
-def all_routes(n, m, e, roads, exits, start):
-    # Initialize an empty list to store all possible routes
-    routes = []
+def main():
+    # Read the input
+    n, p = map(int, input().split())
+    notes = list(map(int, input().split()))
+    sp_phrases = [list(map(int, input().split())) for _ in range(p)]
     
-    # Loop through all possible roads from the starting point
-    for road in roads:
-        # If the road is not blocked and leads to a highway exit, add it to the list of routes
-        if not blocked(road, exits) and road[1] in exits:
-            routes.append(road)
+    # Get the maximum score
+    max_score = get_max_score(notes, sp_phrases)
     
-    return routes
+    # Print the maximum score
+    print(max_score)
 
-def calculate_speed(route, start_police):
-    # Initialize the speed as zero
-    speed = 0
-    
-    # Loop through all roads in the route
-    for i in range(len(route) - 1):
-        # Calculate the distance between the current road and the next road
-        distance = distance_between(route[i], route[i + 1])
-        
-        # Calculate the time it takes to travel this distance at the maximum speed
-        time = distance / max_speed
-        
-        # If the police car is ahead of the brothers and will reach the current road before they do, add the time it takes the police car to travel this distance to the total time
-        if start_police < route[i][0] and start_police + time > route[i][0]:
-            time += (start_police + time - route[i][0]) / max_speed
-        
-        # Update the speed based on the total time and distance
-        speed = max(speed, distance / time)
-    
-    return speed
-
-def blocked(road, exits):
-    # If the road is blocked by the police car, return True
-    if road[1] in exits:
-        return True
-    else:
-        return False
-
-def distance_between(road1, road2):
-    # Calculate the distance between the two roads
-    return abs(road1[1] - road2[1])
-
-def max_speed():
-    # Return the maximum speed of the police car
-    return 160
+if __name__ == '__main__':
+    main()
 

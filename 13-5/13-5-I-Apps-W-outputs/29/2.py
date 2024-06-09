@@ -1,25 +1,26 @@
 
-def solve(n, m, a, b, roads):
-    # Initialize a matrix to store the number of soldiers moving from one city to another
-    matrix = [[0] * n for _ in range(n)]
+def get_server_info(n, m):
+    servers = {}
+    for _ in range(n):
+        name, ip = input().split()
+        servers[ip] = name
+    return servers
 
-    # Populate the matrix with the number of soldiers moving from one city to another
-    for p, q in roads:
-        matrix[p - 1][q - 1] = 1
-        matrix[q - 1][p - 1] = 1
+def add_server_names(servers, commands):
+    for command in commands:
+        ip = command.split()[1]
+        name = servers[ip]
+        command += f" # {name}"
+    return commands
 
-    # Check if the conditions can be met
-    for i in range(n):
-        # Calculate the total number of soldiers moving into city i
-        total_moving_in = sum(matrix[i])
+def main():
+    n, m = map(int, input().split())
+    servers = get_server_info(n, m)
+    commands = [input() for _ in range(m)]
+    commands = add_server_names(servers, commands)
+    for command in commands:
+        print(command)
 
-        # Calculate the total number of soldiers moving out of city i
-        total_moving_out = sum(matrix[i][j] for j in range(n) if j != i)
-
-        # Check if the number of soldiers in city i after roaming is correct
-        if total_moving_in - total_moving_out != b[i]:
-            return "NO"
-
-    # If all conditions are met, return the matrix
-    return "YES\n" + "\n".join(" ".join(str(x) for x in row) for row in matrix)
+if __name__ == '__main__':
+    main()
 

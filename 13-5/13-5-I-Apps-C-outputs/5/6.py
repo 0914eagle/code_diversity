@@ -1,33 +1,57 @@
 
-import math
-import random
-
-def solve(n, b, d, trees):
-    # Calculate the total area of the forest
-    total_area = 0
-    for tree in trees:
-        total_area += math.pi * tree[2] ** 2
+def f1(n, levels):
+    # Initialize the dp table
+    dp = [0] * (n + 1)
+    dp[0] = 0
     
-    # Calculate the probability of the boar hitting a tree
-    prob_hit = 0
-    for tree in trees:
-        # Calculate the distance between the boar and the tree
-        dist = math.sqrt((tree[0] - b) ** 2 + (tree[1] - b) ** 2)
-        # Calculate the area of overlap between the boar and the tree
-        overlap = math.pi * min(dist, b + tree[2]) ** 2
-        # Add the probability of hitting the tree to the total probability
-        prob_hit += overlap / total_area
+    # Loop through each level
+    for i in range(1, n + 1):
+        # Get the completion time for the current level
+        completion_time = levels[i - 1][0]
+        
+        # Loop through each item
+        for j in range(1, n + 1):
+            # Get the completion time for the current level using the current item
+            current_time = levels[i - 1][j]
+            
+            # Check if the current time is less than the previous time
+            if current_time < dp[j]:
+                # Update the dp table
+                dp[j] = current_time
     
-    # Return the probability of the boar completing its charge without hitting a tree
-    return 1 - prob_hit
+    # Return the minimum time to beat all the levels
+    return min(dp)
 
-n = int(input())
-b = int(input())
-d = int(input())
-trees = []
-for i in range(n):
-    x, y, r = map(int, input().split())
-    trees.append([x, y, r])
+def f2(n, levels):
+    # Initialize the dp table
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
+    
+    # Loop through each level
+    for i in range(1, n + 1):
+        # Get the completion time for the current level
+        completion_time = levels[i - 1][0]
+        
+        # Loop through each item
+        for j in range(1, n + 1):
+            # Get the completion time for the current level using the current item
+            current_time = levels[i - 1][j]
+            
+            # Check if the current time is less than the previous time
+            if current_time < dp[i - 1][j]:
+                # Update the dp table
+                dp[i][j] = current_time
+            else:
+                # Update the dp table
+                dp[i][j] = dp[i - 1][j]
+    
+    # Return the minimum time to beat all the levels
+    return min(dp[n])
 
-print(solve(n, b, d, trees))
+if __name__ == '__main__':
+    n = int(input())
+    levels = []
+    for i in range(n):
+        levels.append(list(map(int, input().split())))
+    print(f1(n, levels))
+    print(f2(n, levels))
 

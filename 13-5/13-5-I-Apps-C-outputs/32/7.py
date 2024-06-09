@@ -1,29 +1,45 @@
 
-def longest_race_path(N, M, roads):
-    # Initialize a dictionary to store the longest path from each city
-    longest_paths = {}
-    for i in range(1, N+1):
-        longest_paths[i] = 0
+def get_optimal_schedule(students, bugs, passes):
+    # Sort the students by their ability level in descending order
+    students.sort(key=lambda x: x[1], reverse=True)
     
-    # Initialize a dictionary to store the previous city in the path for each city
-    previous_cities = {}
-    for i in range(1, N+1):
-        previous_cities[i] = -1
+    # Initialize the schedule as a list of tuples (student_id, bug_id)
+    schedule = []
     
-    # Loop through each road
-    for road in roads:
-        # Get the two cities connected by the road
-        city1, city2 = road
-        
-        # If the longest path from city1 is greater than the longest path from city2 to city1 plus the length of the road, update the longest path and previous city
-        if longest_paths[city1] > longest_paths[city2] + 1:
-            longest_paths[city2] = longest_paths[city1] + 1
-            previous_cities[city2] = city1
-        # If the longest path from city2 is greater than the longest path from city1 to city2 plus the length of the road, update the longest path and previous city
-        elif longest_paths[city2] > longest_paths[city1] + 1:
-            longest_paths[city1] = longest_paths[city2] + 1
-            previous_cities[city1] = city2
+    # Iterate through the bugs and assign them to the students
+    for bug in bugs:
+        # Find the student with the highest ability level that can fix the current bug
+        for student in students:
+            if student[1] >= bug:
+                schedule.append((student[0], bug))
+                break
     
-    # Return the longest path from city 1 to city N
-    return longest_paths[N]
+    # Calculate the total number of passes required by the students
+    total_passes = sum([students[schedule[i][0]][2] for i in range(len(schedule))])
+    
+    # Check if the total number of passes does not exceed the maximum allowed by the university
+    if total_passes <= passes:
+        return schedule
+    else:
+        return None
+
+def main():
+    n, m, s = map(int, input().split())
+    bugs = list(map(int, input().split()))
+    students = []
+    for i in range(n):
+        students.append(list(map(int, input().split())))
+    
+    schedule = get_optimal_schedule(students, bugs, s)
+    
+    if schedule is None:
+        print("NO")
+    else:
+        print("YES")
+        for student, bug in schedule:
+            print(student, end=" ")
+        print()
+
+if __name__ == '__main__':
+    main()
 

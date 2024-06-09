@@ -1,19 +1,32 @@
 
-def closest_weight(weights, target):
-    # Sort the weights in non-decreasing order
-    weights.sort()
-    # Initialize the closest distance as the difference between the target and the smallest weight
-    closest_distance = abs(target - weights[0])
-    # Initialize the closest weight as the smallest weight
-    closest_weight = weights[0]
-    # Iterate through the weights
-    for weight in weights:
-        # Calculate the distance between the target and the current weight
-        distance = abs(target - weight)
-        # If the distance is smaller than the closest distance, update the closest distance and weight
-        if distance < closest_distance:
-            closest_distance = distance
-            closest_weight = weight
-    # Return the closest weight
-    return closest_weight
+def f1(b, c):
+    # Function to reconstruct array a and permutation p from arrays b and c
+    # b and c are arrays of length n-1
+    n = len(b) + 1
+    a = [0] * n
+    p = [0] * n
+    for i in range(n-1):
+        a[i] = min(b[i], c[i])
+        a[i+1] = max(b[i], c[i])
+        p[i] = i + 1
+    return a, p
+
+def f2(b, c):
+    # Function to check if arrays b and c are valid
+    # b and c are arrays of length n-1
+    n = len(b) + 1
+    for i in range(n-1):
+        if b[i] > c[i]:
+            return False
+    return True
+
+if __name__ == '__main__':
+    n = int(input())
+    b = list(map(int, input().split()))
+    c = list(map(int, input().split()))
+    if f2(b, c):
+        a, p = f1(b, c)
+        print(*a)
+    else:
+        print(-1)
 

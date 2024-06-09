@@ -1,23 +1,16 @@
 
-def solve(n, x, y, number):
-    # Convert the number to a list of digits
-    number = [int(digit) for digit in number]
+def get_unique_outcome(outcomes):
+    unique_outcomes = set(outcomes)
+    if len(unique_outcomes) == 1:
+        return "none"
+    else:
+        return str(outcomes.index(max(unique_outcomes)) + 1)
 
-    # Initialize the minimum number of operations to perform
-    min_operations = 0
+def main():
+    n = int(input())
+    outcomes = list(map(int, input().split()))
+    print(get_unique_outcome(outcomes))
 
-    # Iterate over the digits of the number
-    for i in range(n):
-        # If the current digit is 0, flip it to 1
-        if number[i] == 0:
-            number[i] = 1
-            min_operations += 1
-
-        # If the current digit is 1 and it is not the first digit, flip it to 0
-        elif number[i] == 1 and i != 0:
-            number[i] = 0
-            min_operations += 1
-
-    # Return the minimum number of operations to perform
-    return min_operations
+if __name__ == '__main__':
+    main()
 

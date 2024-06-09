@@ -1,28 +1,22 @@
 
-def solve(a, b, x):
-    # Calculate the dot product of a and b to get the matrix c
-    c = [[a[i] * b[j] for j in range(len(b))] for i in range(len(a))]
-    
-    # Initialize the maximum area and the corresponding subrectangle
-    max_area = 0
-    subrectangle = []
-    
-    # Iterate over each possible subrectangle
-    for i in range(len(a)):
-        for j in range(len(b)):
-            for k in range(i, len(a)):
-                for l in range(j, len(b)):
-                    # Calculate the area of the current subrectangle
-                    area = (k - i + 1) * (l - j + 1)
-                    
-                    # Check if the area is valid and the sum of the elements is less than or equal to x
-                    if area > max_area and sum(c[i][j:l+1]) <= x:
-                        max_area = area
-                        subrectangle = [i, k, j, l]
-    
-    # Return the maximum area if a valid subrectangle was found, otherwise return 0
-    if subrectangle:
-        return max_area
-    else:
-        return 0
+def get_longest_common_subsequence(s1, s2, virus):
+    m = len(s1)
+    n = len(s2)
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+    for i in range(m):
+        for j in range(n):
+            if s1[i] == s2[j] and s1[i] not in virus:
+                dp[i + 1][j + 1] = dp[i][j] + 1
+            else:
+                dp[i + 1][j + 1] = max(dp[i][j + 1], dp[i + 1][j])
+    return "".join(s1[i - 1] for i in range(m, 0, -1) if dp[i][n] > 0)
+
+def main():
+    s1 = input()
+    s2 = input()
+    virus = input()
+    print(get_longest_common_subsequence(s1, s2, virus))
+
+if __name__ == '__main__':
+    main()
 

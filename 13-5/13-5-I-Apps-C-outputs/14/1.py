@@ -1,27 +1,31 @@
 
-def solve(N, debts):
-    # Initialize a dictionary to store the debts
-    debt_dict = {}
-    for i in range(N):
-        debt_dict[i+1] = 0
-    
-    # Add the debts to the dictionary
-    for debt in debts:
-        debt_dict[debt[0]] += debt[1]
-        debt_dict[debt[1]] -= debt[1]
-    
-    # Initialize a set to store the people who have paid back their debts
-    paid_back = set()
-    
-    # Initialize a variable to store the total amount of money given to the town
-    total_amount = 0
-    
-    # Loop through the dictionary and calculate the minimum amount of money needed to pay back all debts
-    while len(paid_back) < N:
-        for person, debt in debt_dict.items():
-            if debt == 0 and person not in paid_back:
-                paid_back.add(person)
-                total_amount += debt_dict[person]
-    
-    return total_amount
+def f1(L, n, points):
+    # Initialize a list to store the positions of the wire
+    positions = [0]
+    # Iterate through the points and directions
+    for point, direction in points:
+        # Check if the wire will touch itself
+        if direction == "C" and point in positions:
+            return "GHOST"
+        # Add the position of the wire to the list
+        positions.append(point)
+    return "SAFE"
+
+def f2(L, n, points):
+    # Initialize a set to store the positions of the wire
+    positions = set([0])
+    # Iterate through the points and directions
+    for point, direction in points:
+        # Check if the wire will touch itself
+        if direction == "C" and point in positions:
+            return "GHOST"
+        # Add the position of the wire to the set
+        positions.add(point)
+    return "SAFE"
+
+if __name__ == '__main__':
+    L, n = map(int, input().split())
+    points = [tuple(map(int, input().split())) for _ in range(n)]
+    print(f1(L, n, points))
+    print(f2(L, n, points))
 

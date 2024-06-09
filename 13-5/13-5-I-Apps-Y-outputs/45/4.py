@@ -1,18 +1,21 @@
 
-def get_max_area(W, H, x, y):
-    # Calculate the area of the rectangle
-    area = W * H
-    
-    # Calculate the area of the two parts
-    area1 = (W - x) * min(H, y)
-    area2 = x * min(H, y)
-    
-    # Find the maximum area
-    max_area = max(area1, area2)
-    
-    # Check if there are multiple ways to cut the rectangle and achieve the maximum area
-    if area1 == area2:
-        return max_area, 1
-    else:
-        return max_area, 0
+def f1(C, K):
+    # Calculate the nearest amount that Mirko can pay
+    nearest_amount = int(C / (10 ** K)) * (10 ** K)
+    if C % (10 ** K) >= (10 ** K) / 2:
+        nearest_amount += (10 ** K)
+    return nearest_amount
+
+def f2(C, K):
+    # Calculate the nearest amount that Mirko can pay using a loop
+    nearest_amount = 0
+    for i in range(K):
+        nearest_amount += (10 ** i) * (C // (10 ** i))
+        C %= (10 ** i)
+    return nearest_amount
+
+if __name__ == '__main__':
+    C, K = map(int, input().split())
+    print(f1(C, K))
+    print(f2(C, K))
 

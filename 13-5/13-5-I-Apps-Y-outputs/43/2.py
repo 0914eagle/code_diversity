@@ -1,22 +1,20 @@
 
-def solve(n, x, y, number):
-    # Convert the number to a list of digits
-    number = [int(digit) for digit in number]
-    
-    # Initialize the minimum number of operations to perform
-    min_operations = 0
-    
-    # Iterate over the digits of the number
-    for i in range(n):
-        # If the current digit is 0, flip it to 1
-        if number[i] == 0:
-            number[i] = 1
-            min_operations += 1
-        # If the current digit is 1 and it is not the last digit, flip it to 0
-        elif number[i] == 1 and i < n-1:
-            number[i] = 0
-            min_operations += 1
-    
-    # Return the minimum number of operations to perform
-    return min_operations
+def get_unique_outcome(rolls):
+    unique_rolls = set(rolls)
+    if len(unique_rolls) == 1:
+        return "none"
+    else:
+        return str(max(rolls))
+
+def get_winner_index(rolls):
+    unique_rolls = set(rolls)
+    if len(unique_rolls) == 1:
+        return "none"
+    else:
+        return str(rolls.index(max(unique_rolls)) + 1)
+
+if __name__ == '__main__':
+    n = int(input())
+    rolls = list(map(int, input().split()))
+    print(get_winner_index(rolls))
 

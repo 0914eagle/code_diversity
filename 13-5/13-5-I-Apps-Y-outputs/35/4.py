@@ -1,19 +1,17 @@
 
-def get_min_height_diff(heights, k):
-    # Sort the heights in non-decreasing order
-    heights.sort()
-    # Initialize the minimum height difference
-    min_diff = float('inf')
-    # Loop through the heights and choose k trees
-    for i in range(len(heights) - k + 1):
-        # Get the height of the ith tree
-        curr_height = heights[i]
-        # Get the height of the (i+k)th tree
-        next_height = heights[i + k - 1]
-        # Calculate the height difference
-        diff = next_height - curr_height
-        # Update the minimum height difference
-        min_diff = min(min_diff, diff)
-    # Return the minimum height difference
-    return min_diff
+def get_triplets(n, k):
+    count = 0
+    for a in range(1, n+1):
+        for b in range(a, n+1):
+            for c in range(b, n+1):
+                if (a+b)%k == 0 and (b+c)%k == 0 and (c+a)%k == 0:
+                    count += 1
+    return count
+
+def main():
+    n, k = map(int, input().split())
+    print(get_triplets(n, k))
+
+if __name__ == '__main__':
+    main()
 

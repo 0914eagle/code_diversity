@@ -1,40 +1,33 @@
 
-def solve(a, b, n, m, roads):
-    # Initialize a dictionary to store the shortest distance from each intersection to Janet's house
-    distances = {1: 0}
-    # Initialize a dictionary to store the previous intersection for each intersection
-    previous = {1: None}
-    # Loop through each road
-    for u, v, t in roads:
-        # If the destination intersection is not in the dictionary, add it
-        if v not in distances:
-            distances[v] = float('inf')
-            previous[v] = u
-        # If the distance through this road is less than the current shortest distance, update the shortest distance and previous intersection
-        if distances[u] + t < distances[v]:
-            distances[v] = distances[u] + t
-            previous[v] = u
-    
-    # Loop through each intersection
-    for i in range(2, n+1):
-        # If the intersection is not in the dictionary, add it
-        if i not in distances:
-            distances[i] = float('inf')
-            previous[i] = None
-        # If the distance through this road is less than the current shortest distance, update the shortest distance and previous intersection
-        for u, v, t in roads:
-            if i == u and distances[u] + t < distances[v]:
-                distances[v] = distances[u] + t
-                previous[v] = u
-    
-    # Find the shortest distance from the starting intersection to Janet's house
-    shortest_distance = float('inf')
-    for i in range(1, n+1):
-        if distances[i] < shortest_distance:
-            shortest_distance = distances[i]
-    
-    # Find the worst case waiting time
-    worst_case = shortest_distance + b
-    
-    return worst_case
+def get_largest_committee(N, K, book_of_great_achievements):
+    # Initialize a set to store the committee members
+    committee = set()
+    # Loop through each member of the party
+    for member in range(N):
+        # If the member is not in the committee yet, add them and find their disagreements
+        if member not in committee:
+            disagreements = find_disagreements(member, committee, book_of_great_achievements)
+            # If the number of disagreements is less than or equal to K, add the member to the committee
+            if len(disagreements) <= K:
+                committee.add(member)
+    # Return the size of the largest committee
+    return len(committee)
+
+def find_disagreements(member, committee, book_of_great_achievements):
+    # Initialize a set to store the disagreements
+    disagreements = set()
+    # Loop through each member of the party
+    for other_member in range(len(book_of_great_achievements)):
+        # If the other member is not in the committee yet and they disagree with the member, add them to the disagreements set
+        if other_member not in committee and member in book_of_great_achievements[other_member]:
+            disagreements.add(other_member)
+    # Return the set of disagreements
+    return disagreements
+
+if __name__ == '__main__':
+    N, K = map(int, input().split())
+    book_of_great_achievements = []
+    for _ in range(N):
+        book_of_great_achievements.append(set(map(int, input().split())))
+    print(get_largest_committee(N, K, book_of_great_achievements))
 

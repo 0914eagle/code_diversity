@@ -1,13 +1,11 @@
 
-def get_flag_patterns(S):
-    patterns = []
-    for i in range(1, S // 2 + 1):
-        for j in range(i, S - i + 1):
-            if i == j:
-                patterns.append(f"{i},{j}")
-            elif i + 1 == j:
-                patterns.append(f"{i},{j}")
-            elif i == j + 1:
-                patterns.append(f"{i},{j}")
-    return patterns
+def can_buy_toy(A, B, C):
+    return A + B >= C
+
+def main():
+    A, B, C = map(int, input().split())
+    print("Yes") if can_buy_toy(A, B, C) else print("No")
+
+if __name__ == '__main__':
+    main()
 

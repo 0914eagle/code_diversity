@@ -1,36 +1,31 @@
 
-def get_min_extensions(a, b, h, w, n, extensions):
-    # Sort the extensions in descending order
-    extensions.sort(reverse=True)
+def f1(S):
+    # Initialize variables
+    n = len(S)
+    lights = [int(i) for i in S]
+    time = 0
+    propagation = 0
 
-    # Initialize the minimum number of extensions needed to be 0
-    min_extensions = 0
+    # Loop through each light and check if it is on
+    for i in range(n):
+        # If the light is on, check if it will be turned off by propagation
+        if lights[i] == 1:
+            # If the light will be turned off by propagation, update the propagation variable
+            if i + propagation < n and lights[i + propagation] == 0:
+                propagation += 1
+        # If the light is off, check if it will be turned on by propagation
+        else:
+            # If the light will be turned on by propagation, update the propagation variable
+            if i + propagation < n and lights[i + propagation] == 1:
+                propagation -= 1
 
-    # Loop through the extensions and check if they can be used to enlarge the field
-    for extension in extensions:
-        # Check if the extension can be used to enlarge the width of the field
-        if extension <= w:
-            # Enlarge the width of the field by the extension
-            w *= extension
+    # Return the earliest time all lights are on
+    return time + propagation
 
-            # Check if the rectangle can now be placed on the field
-            if w >= a:
-                # Return the minimum number of extensions needed
-                return min_extensions
+def f2(...):
+    # Function to handle input and output
+    ...
 
-        # Check if the extension can be used to enlarge the length of the field
-        if extension <= h:
-            # Enlarge the length of the field by the extension
-            h *= extension
-
-            # Check if the rectangle can now be placed on the field
-            if h >= b:
-                # Return the minimum number of extensions needed
-                return min_extensions
-
-        # Increment the minimum number of extensions needed
-        min_extensions += 1
-
-    # If the rectangle cannot be placed on the field with all extensions, return -1
-    return -1
+if __name__ == '__main__':
+    f2(...)
 

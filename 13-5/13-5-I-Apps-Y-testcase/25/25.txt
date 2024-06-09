@@ -1,12 +1,10 @@
 {
     "inputs": [
-        "1\n5\n20 T\n50 T\n80 T\n50 T\n30 T\n",
-        "3\n5\n100 T\n100 N\n100 T\n100 T\n100 N\n",
-        "5\n6\n70 T\n50 P\n30 N\n50 T\n30 P\n80 T\n"
+        "buy 1 15\nsplit 3\nsell 1 5\ndie 4\n",
+        "buy 10 10\nbuy 30 5\nsell 31 8\nsplit 2\nmerge 8\ndie 42\n"
     ],
     "outputs": [
-        "5\n",
-        "4\n",
-        "7\n"
+        "8.00000000\n",
+        "73.8\n"
     ]
 }

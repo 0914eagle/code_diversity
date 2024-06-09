@@ -1,17 +1,30 @@
 
-def max_rectangle_area(sticks):
-    # Sort the sticks by length in non-decreasing order
-    sticks.sort()
-    # Initialize the maximum area to 0
-    max_area = 0
-    # Loop through each stick and try to form rectangles with it
-    for i in range(len(sticks)):
-        for j in range(i, len(sticks)):
-            # Check if the lengths of the two sticks form a valid rectangle
-            if sticks[i] == sticks[j] and sticks[i] != 0:
-                # Calculate the area of the rectangle
-                area = sticks[i] * sticks[j]
-                # Update the maximum area if necessary
-                max_area = max(max_area, area)
-    return max_area
+def get_input():
+    return list(map(int, input().split()))
+
+def gcd(a, b):
+    if b == 0:
+        return a
+    return gcd(b, a % b)
+
+def solve(a1, b1, a2, b2, L, R):
+    g = gcd(a1, a2)
+    a1 //= g
+    a2 //= g
+    b1 //= g
+    b2 //= g
+    count = 0
+    for k in range((R - L) // a1 + 1):
+        x = a1 * k + b1
+        if L <= x <= R:
+            count += 1
+    for l in range((R - L) // a2 + 1):
+        x = a2 * l + b2
+        if L <= x <= R and x % a1 == 0:
+            count -= 1
+    return count
+
+if __name__ == '__main__':
+    a1, b1, a2, b2, L, R = get_input()
+    print(solve(a1, b1, a2, b2, L, R))
 

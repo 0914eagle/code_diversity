@@ -1,25 +1,21 @@
 
-def is_good_number(n):
-    while n > 3:
-        if n % 3 != 0:
-            return False
-        n //= 3
-    return True
+def f1(n):
+    if n % 2 == 0:
+        return "Bob"
+    else:
+        return "Alice"
 
-
-def find_smallest_good_number(n):
-    while not is_good_number(n):
-        n += 1
-    return n
-
-
-def main():
-    q = int(input())
-    for _ in range(q):
-        n = int(input())
-        print(find_smallest_good_number(n))
-
+def f2(n):
+    if n == 1:
+        return "Alice"
+    if n == 2:
+        return "Bob"
+    if n % 2 == 0:
+        return f2(n - 2)
+    else:
+        return f2(n - 1)
 
 if __name__ == '__main__':
-    main()
+    n = int(input())
+    print(f2(n))
 

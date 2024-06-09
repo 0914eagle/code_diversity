@@ -1,24 +1,23 @@
 
-def solve(N, A, P, V):
-    # Sort the dwarves and elves by strength in descending order
-    P = sorted(P, reverse=True)
-    V = sorted(V, reverse=True)
-    
-    # Initialize the number of victories to 0
-    victories = 0
-    
-    # Loop through each elf
-    for i in range(N):
-        # Find the index of the dwarf that the elf will fight against
-        j = A[i] - 1
-        
-        # If the elf is stronger than the dwarf, they will win the duel
-        if V[i] > P[j]:
-            victories += 1
-        
-        # Remove the dwarf from the list of dwarves
-        P.pop(j)
-    
-    # Return the number of victories
-    return victories
+def get_disintegrated_y_coordinate(droplet, sensors):
+    for sensor in sensors:
+        if sensor[0] <= droplet[0] <= sensor[1] and sensor[2] <= droplet[1] <= sensor[2]:
+            return sensor[2]
+    return 0
+
+def main():
+    num_droplets, num_sensors = map(int, input().split())
+    droplets = []
+    for _ in range(num_droplets):
+        x, y = map(int, input().split())
+        droplets.append((x, y))
+    sensors = []
+    for _ in range(num_sensors):
+        x1, x2, y = map(int, input().split())
+        sensors.append((x1, x2, y))
+    for droplet in droplets:
+        print(get_disintegrated_y_coordinate(droplet, sensors))
+
+if __name__ == '__main__':
+    main()
 

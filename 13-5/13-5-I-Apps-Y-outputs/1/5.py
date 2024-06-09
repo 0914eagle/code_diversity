@@ -1,37 +1,40 @@
 
-def is_valid_color_choosing(n, k, b_list, g_list):
-    # Check if there are any two completely identical pairs
-    for i in range(n):
-        for j in range(i+1, n):
-            if b_list[i] == b_list[j] and g_list[i] == g_list[j]:
-                return False
-    
-    # Check if there is a pair with costumes of the same color
-    for i in range(n):
-        if b_list[i] == g_list[i]:
-            return False
-    
-    # Check if there are any two consecutive pairs with the same color
-    for i in range(n-1):
-        if b_list[i] == b_list[i+1] or g_list[i] == g_list[i+1]:
-            return False
-    
-    return True
+def read_data():
+    n, m = map(int, input().split())
+    edges = []
+    for i in range(n - 1):
+        u, v, w = map(int, input().split())
+        edges.append((u, v, w))
+    queries = list(map(int, input().split()))
+    return n, m, edges, queries
 
-def solve(n, k):
-    b_list = []
-    g_list = []
-    for i in range(n):
-        b_list.append(i%k+1)
-        g_list.append((i+1)%k+1)
+def find_paths(edges, q):
+    # Initialize a dictionary to store the paths
+    paths = {}
     
-    if is_valid_color_choosing(n, k, b_list, g_list):
-        print("YES")
-        for i in range(n):
-            print(b_list[i], g_list[i])
-    else:
-        print("NO")
+    # Iterate over the edges and add them to the dictionary
+    for edge in edges:
+        u, v, w = edge
+        if u not in paths:
+            paths[u] = {}
+        if v not in paths[u]:
+            paths[u][v] = w
+    
+    # Iterate over the queries and find the number of pairs of vertices
+    # with a maximum weight of an edge on a simple path between them
+    count = 0
+    for q in queries:
+        for u in paths:
+            for v in paths[u]:
+                if paths[u][v] <= q:
+                    count += 1
+    
+    return count
 
-n, k = map(int, input().split())
-solve(n, k)
+def main():
+    n, m, edges, queries = read_data()
+    print(find_paths(edges, queries))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,25 +1,34 @@
 
-def get_sugar_water(A, B, C, D, E, F):
+def get_min_attacks(healths, k):
     # Initialize variables
-    sugar_water = 0
-    sugar_dissolved = 0
+    attacks = 0
+    special_moves = k
+    monsters_alive = len(healths)
+    healths = sorted(healths, reverse=True)
+    
+    # Loop through the monsters and attack or use special move
+    while monsters_alive > 0:
+        if special_moves > 0:
+            # Use special move on the current monster
+            healths[0] = 0
+            special_moves -= 1
+        else:
+            # Attack the current monster
+            healths[0] -= 1
+            attacks += 1
+        
+        # Remove the current monster if its health is 0
+        if healths[0] == 0:
+            healths.pop(0)
+            monsters_alive -= 1
+    
+    return attacks
 
-    # Loop through all possible combinations of operations
-    for a in range(A, B + 1):
-        for c in range(C, D + 1):
-            # Calculate the mass of sugar water and sugar dissolved
-            sugar_water_temp = a + c
-            sugar_dissolved_temp = c * 100 / (a + c)
+def main():
+    n, k = map(int, input().split())
+    healths = list(map(int, input().split()))
+    print(get_min_attacks(healths, k))
 
-            # Check if the sugar water is within the desired density range
-            if sugar_dissolved_temp >= E:
-                # Check if the mass of substances in the beaker is within the desired range
-                if sugar_water_temp <= F:
-                    # Update the maximum mass of sugar water and sugar dissolved if necessary
-                    if sugar_water_temp > sugar_water:
-                        sugar_water = sugar_water_temp
-                        sugar_dissolved = sugar_dissolved_temp
-
-    # Return the maximum mass of sugar water and sugar dissolved
-    return sugar_water, sugar_dissolved
+if __name__ == '__main__':
+    main()
 

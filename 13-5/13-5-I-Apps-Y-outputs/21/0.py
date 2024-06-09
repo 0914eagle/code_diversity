@@ -1,22 +1,37 @@
 
-def get_permits(num_permits, desk_numbers):
-    # Sort the desk numbers in ascending order
-    desk_numbers.sort()
+def is_increasing(seq):
+    return all(seq[i] < seq[i+1] for i in range(len(seq)-1))
 
-    # Initialize variables to keep track of the number of passes and current desk number
-    num_passes = 0
-    current_desk = 1
+def is_decreasing(seq):
+    return all(seq[i] > seq[i+1] for i in range(len(seq)-1))
 
-    # Loop through each desk number and check if it is the current desk number
-    for desk in desk_numbers:
-        if desk == current_desk:
-            # If the desk number matches the current desk number, increment the current desk number and number of passes
-            current_desk += 1
-            num_passes += 1
-        else:
-            # If the desk number does not match the current desk number, increment the number of passes only
-            num_passes += 1
+def find_increasing_and_decreasing(seq):
+    n = len(seq)
+    if n == 0:
+        return []
+    if n == 1:
+        return [0]
+    if is_increasing(seq):
+        return [0] * n
+    if is_decreasing(seq):
+        return [1] * n
+    for i in range(1, n-1):
+        if seq[i] < seq[i-1] and seq[i] < seq[i+1]:
+            return [0] * i + [1] + [0] * (n-i-1)
+        if seq[i] > seq[i-1] and seq[i] > seq[i+1]:
+            return [1] * i + [0] + [1] * (n-i-1)
+    return []
 
-    # Return the number of passes
-    return num_passes
+def main():
+    n = int(input())
+    seq = list(map(int, input().split()))
+    res = find_increasing_and_decreasing(seq)
+    if not res:
+        print("NO")
+    else:
+        print("YES")
+        print(" ".join(map(str, res)))
+
+if __name__ == '__main__':
+    main()
 

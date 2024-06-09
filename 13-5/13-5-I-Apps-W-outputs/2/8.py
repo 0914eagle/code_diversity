@@ -1,24 +1,31 @@
 
-def solve(bombs, cords):
-    # Sort the bombs by their coordinates
-    bombs.sort(key=lambda x: x[0])
+def get_tilings(w, h):
+    # Initialize a 2D array to store the number of tilings for each sub-problem
+    dp = [[0] * (h + 1) for _ in range(w + 1)]
     
-    # Initialize the set of cords to cut
-    cords_to_cut = set()
+    # Base case: only one way to tile a 1x1 square
+    dp[1][1] = 1
     
-    # Iterate through the cords
-    for cord in cords:
-        # Find the range of bombs that are affected by this cord
-        affected_bombs = [bomb for bomb in bombs if cord[0] <= bomb[0] <= cord[1]]
-        
-        # If all the affected bombs are deactivated, add this cord to the set of cords to cut
-        if all(bomb[1] == 0 for bomb in affected_bombs):
-            cords_to_cut.add(cord[2])
+    # Iterate over the width and height of the kitchen
+    for i in range(1, w + 1):
+        for j in range(1, h + 1):
+            # Iterate over the four possible orientations of the tile
+            for k in range(4):
+                # Get the coordinates of the top-left corner of the tile
+                x = i - 1 + (k // 2) % 2
+                y = j - 1 + (k % 2)
+                
+                # If the tile fits in the kitchen, add the number of tilings for the sub-problem
+                if x >= 0 and y >= 0:
+                    dp[i][j] += dp[x][y]
     
-    # If all the bombs are deactivated, return the set of cords to cut
-    if all(bomb[1] == 0 for bomb in bombs):
-        return cords_to_cut
-    
-    # Otherwise, return -1
-    return -1
+    # Return the number of tilings modulo 998244353
+    return dp[w][h] % 998244353
+
+def main():
+    w, h = map(int, input().split())
+    print(get_tilings(w, h))
+
+if __name__ == '__main__':
+    main()
 

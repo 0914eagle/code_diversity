@@ -1,32 +1,86 @@
 
-def get_teleportations(strings):
-    # Initialize a dictionary to store the longest subsequence for each string
-    longest_subsequence = {}
+def f1(n, c, encounters):
+    # Initialize a graph with n nodes
+    graph = [[] for _ in range(n + 1)]
 
-    # Iterate over the strings
-    for string in strings:
-        # Initialize the longest subsequence for the current string as an empty list
-        longest_subsequence[string] = []
+    # Add edges to the graph based on the encounters
+    for a, b, y in encounters:
+        graph[a].append((b, y))
+        graph[b].append((a, y))
 
-        # Iterate over the characters in the string
-        for i in range(len(string)):
-            # Check if the current character is the starting character of any other string
-            for other_string in strings:
-                # Check if the current character is the starting character of the other string
-                if string[i] == other_string[0]:
-                    # Check if the current character is also the ending character of the other string
-                    if string[i] == other_string[-1]:
-                        # If both conditions are true, add the other string to the longest subsequence
-                        longest_subsequence[string].append(other_string)
+    # Find the earliest year in which all participants met
+    years = [float('inf')] * (n + 1)
+    for a in range(1, n + 1):
+        for b, y in graph[a]:
+            years[a] = min(years[a], y)
 
-    # Initialize a set to store the unique longest subsequence strings
-    unique_subsequence_strings = set()
+    # Check if it is possible to divide the participants into two groups
+    # such that no group has more than 2/3 of the participants
+    for a in range(1, n + 1):
+        if years[a] >= 2008:
+            return 'Impossible'
 
-    # Iterate over the longest subsequence lists
-    for subsequence in longest_subsequence.values():
-        # Add the unique subsequence strings to the set
-        unique_subsequence_strings.update(subsequence)
+    # Find the earliest year in which it is possible to divide the participants
+    year = 2008
+    while True:
+        first_group = []
+        second_group = []
+        for a in range(1, n + 1):
+            if years[a] < year:
+                first_group.append(a)
+            else:
+                second_group.append(a)
+        if len(first_group) > 2 * n / 3 or len(second_group) > 2 * n / 3:
+            year += 1
+        else:
+            break
 
-    # Return the length of the unique subsequence strings set
-    return len(unique_subsequence_strings)
+    return year
+
+def f2(n, c, encounters):
+    # Initialize a graph with n nodes
+    graph = [[] for _ in range(n + 1)]
+
+    # Add edges to the graph based on the encounters
+    for a, b, y in encounters:
+        graph[a].append((b, y))
+        graph[b].append((a, y))
+
+    # Find the earliest year in which all participants met
+    years = [float('inf')] * (n + 1)
+    for a in range(1, n + 1):
+        for b, y in graph[a]:
+            years[a] = min(years[a], y)
+
+    # Check if it is possible to divide the participants into two groups
+    # such that no group has more than 2/3 of the participants
+    for a in range(1, n + 1):
+        if years[a] >= 2008:
+            return 'Impossible'
+
+    # Find the earliest year in which it is possible to divide the participants
+    year = 2008
+    while True:
+        first_group = []
+        second_group = []
+        for a in range(1, n + 1):
+            if years[a] < year:
+                first_group.append(a)
+            else:
+                second_group.append(a)
+        if len(first_group) > 2 * n / 3 or len(second_group) > 2 * n / 3:
+            year += 1
+        else:
+            break
+
+    return year
+
+if __name__ == '__main__':
+    n, c = map(int, input().split())
+    encounters = []
+    for _ in range(c):
+        a, b, y = map(int, input().split())
+        encounters.append((a, b, y))
+    print(f1(n, c, encounters))
+    print(f2(n, c, encounters))
 

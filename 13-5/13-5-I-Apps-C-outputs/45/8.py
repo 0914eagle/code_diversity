@@ -1,18 +1,56 @@
 
-def get_largest_committee(N, K, book_of_achievements):
-    # Initialize a set to store the members of the committee
-    committee = set()
-    # Loop through each member and their disagreements
-    for member, disagreements in book_of_achievements:
-        # If the member is not in the committee, add them and their disagreements to the committee
-        if member not in committee:
-            committee.add(member)
-            committee.update(disagreements)
-        # If the member is already in the committee, check if they have any new disagreements
+import sys
+
+def get_input():
+    t, r = map(int, input().split())
+    tasks = []
+    for i in range(t):
+        start_time, base_priority, a = map(int, input().split())
+        instructions = []
+        for j in range(a):
+            instructions.append(input())
+        tasks.append((start_time, base_priority, instructions))
+    return tasks
+
+def priority_ceiling_protocol(tasks):
+    clock = 0
+    while True:
+        running_tasks = [task for task in tasks if task[0] <= clock]
+        if not running_tasks:
+            break
+        running_tasks.sort(key=lambda x: x[1])
+        blocked_tasks = []
+        for task in running_tasks:
+            if task[2][0][0] == 'L':
+                resource = int(task[2][0][1])
+                if resource in [task[2][i][1] for i in range(1, len(task[2])) if task[2][i][0] == 'L']:
+                    blocked_tasks.append(task)
+                elif any([task[2][i][1] for i in range(1, len(task[2])) if task[2][i][0] == 'L']):
+                    blocked_tasks.append(task)
+        if not blocked_tasks:
+            task = running_tasks[0]
+            instruction = task[2][0]
+            if instruction[0] == 'C':
+                clock += 1
+            elif instruction[0] == 'L':
+                clock += 1
+            elif instruction[0] == 'U':
+                clock += 1
+            task[2].pop(0)
         else:
-            # If the member has any new disagreements, add them to the committee
-            if len(committee.intersection(disagreements)) < K:
-                committee.update(disagreements)
-    # Return the size of the largest possible committee
-    return len(committee)
+            blocked_tasks.sort(key=lambda x: x[1])
+            task = blocked_tasks[-1]
+            instruction = task[2][0]
+            if instruction[0] == 'C':
+                clock += 1
+            elif instruction[0] == 'L':
+                clock += 1
+            elif instruction[0] == 'U':
+                clock += 1
+            task[2].pop(0)
+    return clock
+
+if __name__ == '__main__':
+    tasks = get_input()
+    print(priority_ceiling_protocol(tasks))
 

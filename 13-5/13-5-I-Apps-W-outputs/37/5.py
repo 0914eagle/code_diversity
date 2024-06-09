@@ -1,50 +1,33 @@
 
-def get_min_time(n, a, b):
-    # Initialize the minimum time to wait at each crossing
-    min_time = [0] * n
+def get_network_coverage(a, b):
+    # Calculate the total number of households that need coverage
+    total_households = sum(a)
+    
+    # Initialize the number of households that have been covered
+    covered_households = 0
+    
+    # Iterate through the cities and stations
+    for i in range(len(a)):
+        # Calculate the number of households that can be covered by the current station
+        covered_households += min(b[i], a[i])
+        
+        # If the number of covered households is greater than the total number of households, return False
+        if covered_households > total_households:
+            return False
+    
+    # If all households have been covered, return True
+    return True
 
-    # Loop through each row
-    for i in range(n):
-        # Loop through each crossing in the current row
-        for j in range(n - 1):
-            # Get the waiting time for the current crossing
-            waiting_time = a[i - 1][j]
+def main():
+    t = int(input())
+    
+    for _ in range(t):
+        n = int(input())
+        a = list(map(int, input().split()))
+        b = list(map(int, input().split()))
+        
+        print("YES") if get_network_coverage(a, b) else print("NO")
 
-            # Check if the current crossing is in the same row as the store
-            if i == 0:
-                # If the current crossing is in the same row as the store, add the waiting time to the minimum time
-                min_time[j] += waiting_time
-            else:
-                # If the current crossing is in a different row, find the previous crossing in the same row
-                prev_crossing = j
-                while prev_crossing >= 0 and a[i - 1][prev_crossing] == 0:
-                    prev_crossing -= 1
-
-                # If there is a previous crossing in the same row, add the waiting time to the minimum time
-                if prev_crossing >= 0:
-                    min_time[prev_crossing] += waiting_time
-
-    # Loop through each row
-    for i in range(n):
-        # Loop through each crossing in the current row
-        for j in range(n - 1):
-            # Get the waiting time for the current crossing
-            waiting_time = b[j]
-
-            # Check if the current crossing is in the same row as the store
-            if i == 0:
-                # If the current crossing is in the same row as the store, add the waiting time to the minimum time
-                min_time[j] += waiting_time
-            else:
-                # If the current crossing is in a different row, find the previous crossing in the same row
-                prev_crossing = j
-                while prev_crossing >= 0 and a[i - 1][prev_crossing] == 0:
-                    prev_crossing -= 1
-
-                # If there is a previous crossing in the same row, add the waiting time to the minimum time
-                if prev_crossing >= 0:
-                    min_time[prev_crossing] += waiting_time
-
-    # Return the minimum total time
-    return sum(min_time)
+if __name__ == '__main__':
+    main()
 

@@ -1,35 +1,50 @@
 
-def solve(m, n, p):
-    # Initialize a dictionary to store the counts for each xor value
-    counts = {}
+def f1(n, m, S_x, S_y):
+    # Initialize the visited matrix
+    visited = [[False for _ in range(m)] for _ in range(n)]
+    # Mark the starting cell as visited
+    visited[S_x-1][S_y-1] = True
+    # Initialize the queue with the starting cell
+    queue = [(S_x, S_y)]
+    # Loop through the queue
+    while queue:
+        # Get the current cell
+        x, y = queue.pop(0)
+        # If we have visited all cells, return the solution
+        if all(all(row) for row in visited):
+            return [[(i+1, j+1) for j, visited in enumerate(row) if visited] for i, row in enumerate(visited)]
+        # Add the unvisited neighbors to the queue
+        for i, j in [(x, y-1), (x, y+1), (x-1, y), (x+1, y)]:
+            if 1 <= i <= n and 1 <= j <= m and not visited[i-1][j-1]:
+                visited[i-1][j-1] = True
+                queue.append((i, j))
+    # If there is no solution, return an empty list
+    return []
 
-    # Iterate over the p sequence
-    for i in range(len(p)):
-        # Get the current xor value
-        xor_value = p[i]
+def f2(n, m, S_x, S_y):
+    # Initialize the visited matrix
+    visited = [[False for _ in range(m)] for _ in range(n)]
+    # Mark the starting cell as visited
+    visited[S_x-1][S_y-1] = True
+    # Initialize the queue with the starting cell
+    queue = [(S_x, S_y)]
+    # Loop through the queue
+    while queue:
+        # Get the current cell
+        x, y = queue.pop(0)
+        # If we have visited all cells, return the solution
+        if all(all(row) for row in visited):
+            return [[(i+1, j+1) for j, visited in enumerate(row) if visited] for i, row in enumerate(visited)]
+        # Add the unvisited neighbors to the queue
+        for i, j in [(x-1, y), (x+1, y), (x, y-1), (x, y+1)]:
+            if 1 <= i <= n and 1 <= j <= m and not visited[i-1][j-1]:
+                visited[i-1][j-1] = True
+                queue.append((i, j))
+    # If there is no solution, return an empty list
+    return []
 
-        # If the xor value is not in the dictionary, add it with a count of 1
-        if xor_value not in counts:
-            counts[xor_value] = 1
-
-        # If the xor value is already in the dictionary, increment its count
-        else:
-            counts[xor_value] += 1
-
-    # Initialize a variable to store the total number of sequences
-    total_sequences = 1
-
-    # Iterate over the dictionary
-    for xor_value, count in counts.items():
-        # Calculate the number of sequences for the current xor value
-        num_sequences = count * (count - 1) // 2
-
-        # Add the number of sequences to the total
-        total_sequences *= num_sequences
-
-        # Mod the total by 1000000007 to avoid overflow
-        total_sequences %= 1000000007
-
-    # Return the total number of sequences
-    return total_sequences
+if __name__ == '__main__':
+    n, m, S_x, S_y = map(int, input().split())
+    print(f1(n, m, S_x, S_y))
+    print(f2(n, m, S_x, S_y))
 

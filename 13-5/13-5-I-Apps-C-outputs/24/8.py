@@ -1,29 +1,28 @@
 
-def solve(n, x):
-    # Calculate the maximum distance between any two computers
-    max_distance = max(x[i] - x[i-1] for i in range(1, n))
-    
-    # Initialize the sum
-    sum = 0
-    
-    # Iterate over all non-empty subsets of the set of hacked computers
-    for subset in range(1, 2**n):
-        # Initialize the maximum distance within the subset
-        max_distance_subset = 0
-        
-        # Iterate over all pairs of computers in the subset
-        for i in range(n):
-            for j in range(i+1, n):
-                # If both computers are in the subset, calculate the distance between them
-                if subset & (1 << i) and subset & (1 << j):
-                    distance = abs(x[i] - x[j])
-                    
-                    # Update the maximum distance within the subset
-                    max_distance_subset = max(max_distance_subset, distance)
-        
-        # Add the maximum distance within the subset to the total sum
-        sum += max_distance_subset
-    
-    # Return the sum modulo 10^9 + 7
-    return sum % 1000000007
+def get_input():
+    N = int(input())
+    sequence = input()
+    return N, sequence
+
+def is_possible_to_win(sequence):
+    if len(sequence) == 0:
+        return False
+    return True
+
+def get_most_beautiful_word(sequence):
+    if len(sequence) == 0:
+        return ""
+    return sequence
+
+def main():
+    N, sequence = get_input()
+    if is_possible_to_win(sequence):
+        print("DA")
+        print(get_most_beautiful_word(sequence))
+    else:
+        print("NE")
+        print("")
+
+if __name__ == '__main__':
+    main()
 

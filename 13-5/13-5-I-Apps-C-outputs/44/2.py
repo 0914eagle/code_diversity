@@ -1,26 +1,25 @@
 
-def solve(n, g, dist, cost):
-    # Sort the gas stations by distance in ascending order
-    sorted_gas_stations = sorted(zip(dist, cost), key=lambda x: x[0])
+def is_good_sequence(sequence):
+    if len(sequence) < 2:
+        return False
+    if sequence[0] != 1:
+        return False
+    for i in range(1, len(sequence)):
+        if sequence[i] != sequence[i-1] + 1:
+            return False
+    return True
 
-    # Initialize the current distance and cost
-    current_distance = 0
-    current_cost = 0
+def longest_good_sequence(good_integers):
+    max_length = 0
+    for i in range(len(good_integers)):
+        for j in range(i+1, len(good_integers)):
+            sequence = good_integers[i:j+1]
+            if is_good_sequence(sequence):
+                max_length = max(max_length, len(sequence))
+    return max_length
 
-    # Loop through each gas station
-    for i in range(n):
-        # Calculate the distance to the next gas station
-        next_distance = sorted_gas_stations[i][0] - current_distance
-
-        # Check if the next gas station is within reach
-        if next_distance <= g:
-            # Fuel up at the next gas station
-            current_cost += sorted_gas_stations[i][1]
-            current_distance = sorted_gas_stations[i][0]
-        else:
-            # Cancel the road trip
-            return "cancel road trip"
-
-    # Return the total cost of the trip
-    return current_cost
+if __name__ == '__main__':
+    n = int(input())
+    good_integers = list(map(int, input().split()))
+    print(longest_good_sequence(good_integers))
 

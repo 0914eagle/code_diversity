@@ -1,17 +1,35 @@
 
-def solve(box_number, questions):
-    # Initialize a list to store the player numbers
-    player_numbers = list(range(1, 9))
-    # Remove the player with the box from the list
-    player_numbers.remove(box_number)
-    # Iterate through the questions
-    for question in questions:
-        # If the answer is correct, move the box to the next player
-        if question[1] == "T":
-            box_number = player_numbers[player_numbers.index(box_number) - 1]
-        # If the answer is incorrect or skipped, move the box to the next player
-        else:
-            box_number = player_numbers[player_numbers.index(box_number) + 1]
-    # Return the player number with the box
-    return box_number
+def get_final_sale_price(events):
+    # Initialize variables
+    total_shares = 0
+    total_cost = 0
+    total_profit = 0
+    taxes = 0.3
+
+    # Iterate through the events
+    for event in events:
+        # Buy event
+        if event[0] == "buy":
+            total_shares += event[1]
+            total_cost += event[2] * event[1]
+        # Sell event
+        elif event[0] == "sell":
+            total_profit += (event[2] - (total_cost / total_shares)) * event[1]
+        # Split event
+        elif event[0] == "split":
+            total_shares *= event[1]
+            total_cost = total_cost / event[1]
+        # Merge event
+        elif event[0] == "merge":
+            total_shares = (total_shares // event[1]) * event[1] + (total_shares % event[1])
+            total_cost = total_cost * event[1]
+        # Die event
+        elif event[0] == "die":
+            total_profit += (event[1] - (total_cost / total_shares)) * total_shares
+            break
+
+    # Calculate the final sale price
+    final_sale_price = total_profit * (1 - taxes)
+
+    return final_sale_price
 

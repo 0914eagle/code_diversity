@@ -1,33 +1,41 @@
 
-def solve(x0, y0, a_x, a_y, b_x, b_y, x_s, y_s, t):
-    # Initialize a list to store the coordinates of the data nodes
-    data_nodes = [(x0, y0)]
-    # Initialize a set to store the collected data nodes
-    collected_nodes = set()
-    # Initialize the current coordinate as (x_s, y_s)
-    current_coord = (x_s, y_s)
-    # Initialize the time spent as 0
-    time_spent = 0
+def get_best_friend_pairs(n):
+    # Initialize a set to store the best friend pairs
+    best_friend_pairs = set()
+    
+    # Iterate over all possible numbers with n digits
+    for x in range(10**n):
+        # Convert the number to a string
+        x_str = str(x)
+        
+        # Iterate over all possible positions to apply the friendly operation
+        for i in range(n-1):
+            # Get the two adjacent digits
+            d1 = int(x_str[i])
+            d2 = int(x_str[i+1])
+            
+            # Apply the friendly operation
+            if d1 + d2 <= 9:
+                d1 += 1
+                d2 += 1
+            elif d1 - d2 >= 1:
+                d1 -= 1
+                d2 -= 1
+            
+            # Convert the digits back to a number
+            y = int(x_str[:i] + str(d1) + str(d2) + x_str[i+2:])
+            
+            # If the new number is valid and not already in the set, add it to the set
+            if y >= 10**(n-1) and y < 10**n and y not in best_friend_pairs:
+                best_friend_pairs.add(y)
+    
+    # Return the number of pairs in the set
+    return len(best_friend_pairs)
 
-    while time_spent < t:
-        # Generate all possible next coordinates
-        next_coords = [(current_coord[0] - 1, current_coord[1]),
-                       (current_coord[0] + 1, current_coord[1]),
-                       (current_coord[0], current_coord[1] - 1),
-                       (current_coord[0], current_coord[1] + 1)]
-        # Filter out the coordinates that are not in the data nodes list
-        next_coords = [coord for coord in next_coords if coord in data_nodes]
-        # If there are no next coordinates, break the loop
-        if not next_coords:
-            break
-        # Choose the coordinate with the minimum Manhattan distance from the current coordinate
-        next_coord = min(next_coords, key=lambda coord: abs(coord[0] - current_coord[0]) + abs(coord[1] - current_coord[1]))
-        # Add the next coordinate to the collected nodes set
-        collected_nodes.add(next_coord)
-        # Update the current coordinate and time spent
-        current_coord = next_coord
-        time_spent += 1
+def main():
+    n = int(input())
+    print(get_best_friend_pairs(n))
 
-    # Return the size of the collected nodes set
-    return len(collected_nodes)
+if __name__ == '__main__':
+    main()
 

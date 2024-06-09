@@ -1,32 +1,51 @@
 
-def solve(r, c, i, j, n):
-    # Initialize the ice rink as a 2D array of whites
-    ice = [['.' for _ in range(c)] for _ in range(r)]
+def get_valid_ids(n, pattern):
+    # Initialize a list to store the valid IDs
+    valid_ids = []
     
-    # Set the starting position of the Zamboni
-    x, y = i-1, j-1
+    # Iterate through all possible binary strings of length n
+    for i in range(2**n):
+        # Convert the current integer to a binary string
+        binary_string = bin(i)[2:]
+        # Pad the binary string with zeros if it is shorter than n
+        binary_string = binary_string.zfill(n)
+        # Check if the binary string satisfies the pattern
+        if satisfies_pattern(binary_string, pattern):
+            # If it does, add it to the list of valid IDs
+            valid_ids.append(binary_string)
     
-    # Set the current color to A
-    color = 'A'
+    # Return the list of valid IDs
+    return valid_ids
+
+def satisfies_pattern(binary_string, pattern):
+    # If the length of the binary string is not equal to the length of the pattern, return False
+    if len(binary_string) != len(pattern):
+        return False
     
-    # Loop through each step
-    for step in range(n):
-        # Move the Zamboni in the current direction
-        if direction == 'U':
-            y = (y - 1) % c
-        elif direction == 'D':
-            y = (y + 1) % c
-        elif direction == 'L':
-            x = (x - 1) % r
-        elif direction == 'R':
-            x = (x + 1) % r
-        
-        # Set the current color to the next letter in the alphabet
-        color = chr((ord(color) + 1) % 26 + ord('A'))
-        
-        # Update the ice rink with the current color
-        ice[x][y] = color
+    # Initialize a counter to keep track of the number of 1s in the binary string
+    count = 0
     
-    # Return the final state of the ice rink
-    return '\n'.join(''.join(row) for row in ice)
+    # Iterate through the characters of the binary string and the pattern
+    for i in range(len(binary_string)):
+        # If the current character of the binary string is 1 and the current character of the pattern is *, increase the counter
+        if binary_string[i] == "1" and pattern[i] == "*":
+            count += 1
+    
+    # If the counter is at least half the length of the binary string, return True
+    if count >= len(binary_string) // 2:
+        return True
+    
+    # Otherwise, return False
+    return False
+
+def get_maximum_number_of_members(n, pattern):
+    # Get the list of valid IDs
+    valid_ids = get_valid_ids(n, pattern)
+    # Return the number of valid IDs
+    return len(valid_ids)
+
+if __name__ == '__main__':
+    n = int(input())
+    pattern = input()
+    print(get_maximum_number_of_members(n, pattern))
 

@@ -1,72 +1,58 @@
 
-def get_cheapest_network(n, m, p, insecure_buildings, direct_connections):
-    # Initialize a graph with n nodes and 0 edges
-    graph = [[] for _ in range(n)]
+import math
 
-    # Add edges to the graph based on the direct connections
-    for x, y, cost in direct_connections:
-        graph[x - 1].append((y - 1, cost))
-        graph[y - 1].append((x - 1, cost))
+def get_candle_locations(n, r):
+    candle_locations = []
+    for i in range(n):
+        x, y = map(float, input().split())
+        candle_locations.append((x, y))
+    return candle_locations
 
-    # Create a set to store the insecure buildings
-    insecure_set = set(insecure_buildings)
+def get_cut_lines(m):
+    cut_lines = []
+    for i in range(m):
+        a, b, c = map(float, input().split())
+        cut_lines.append((a, b, c))
+    return cut_lines
 
-    # Function to check if a path contains an insecure building
-    def contains_insecure(path):
-        return any(node in insecure_set for node in path)
+def is_cut_valid(cut_line, candle_locations):
+    for candle in candle_locations:
+        if cut_line[0] * candle[0] + cut_line[1] * candle[1] + cut_line[2] == 0:
+            return False
+    return True
 
-    # Function to find the cheapest path between two nodes
-    def find_cheapest_path(start, end):
-        # Initialize a priority queue to store the nodes to visit
-        queue = [(0, start, [start])]
+def is_piece_valid(piece, candle_locations):
+    for candle in candle_locations:
+        if piece[0] * candle[0] + piece[1] * candle[1] + piece[2] == 0:
+            return False
+    return True
 
-        # Loop until the queue is empty
-        while queue:
-            # Get the node with the smallest cost from the queue
-            cost, node, path = heapq.heappop(queue)
+def get_pieces(cut_lines, candle_locations):
+    pieces = []
+    for cut_line in cut_lines:
+        piece = []
+        for candle in candle_locations:
+            if cut_line[0] * candle[0] + cut_line[1] * candle[1] + cut_line[2] < 0:
+                piece.append(candle)
+        pieces.append(piece)
+    return pieces
 
-            # If the node is the end node, return the path
-            if node == end:
-                return path
+def is_division_valid(pieces, candle_locations):
+    for piece in pieces:
+        if len(piece) != 1:
+            return False
+    return True
 
-            # If the node is insecure, skip it
-            if node in insecure_set:
-                continue
+def main():
+    n, m, r = map(int, input().split())
+    candle_locations = get_candle_locations(n, r)
+    cut_lines = get_cut_lines(m)
+    pieces = get_pieces(cut_lines, candle_locations)
+    if is_division_valid(pieces, candle_locations):
+        print("yes")
+    else:
+        print("no")
 
-            # Add the neighbors of the node to the queue
-            for neighbor, neighbor_cost in graph[node]:
-                heapq.heappush(queue, (cost + neighbor_cost, neighbor, path + [neighbor]))
-
-        # If no path is found, return None
-        return None
-
-    # Function to find the cheapest network
-    def find_cheapest_network():
-        # Initialize the cost of the network to 0
-        cost = 0
-
-        # Loop through each insecure building
-        for insecure_building in insecure_set:
-            # Find the cheapest path from the insecure building to any other building
-            path = find_cheapest_path(insecure_building, 0)
-
-            # If no path is found, return None
-            if path is None:
-                return None
-
-            # Add the cost of the path to the total cost of the network
-            cost += sum(graph[node][1] for node in path)
-
-        # Return the total cost of the network
-        return cost
-
-    # Find the cheapest network
-    cost = find_cheapest_network()
-
-    # If no network is found, return "impossible"
-    if cost is None:
-        return "impossible"
-
-    # Otherwise, return the cost of the network
-    return cost
+if __name__ == '__main__':
+    main()
 

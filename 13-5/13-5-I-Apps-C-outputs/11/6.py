@@ -1,56 +1,41 @@
 
-def solve(n, a, b):
-    # Initialize a list to store the current position of the statues
-    current_pos = [0] * n
+import math
+import random
+
+def get_input():
+    n = int(input())
+    trees = []
     for i in range(n):
-        # If the current island has a statue, add it to the list
-        if a[i] != 0:
-            current_pos[i] = a[i]
-    
-    # Initialize a list to store the desired position of the statues
-    desired_pos = [0] * n
-    for i in range(n):
-        # If the current island has a statue, add it to the list
-        if b[i] != 0:
-            desired_pos[i] = b[i]
-    
-    # Initialize a set to store the visited islands
-    visited = set()
-    
-    # Initialize a variable to store the number of steps
-    steps = 0
-    
-    # Loop until the statues are in the desired position
-    while current_pos != desired_pos:
-        # Find the first island with a statue that is not in the desired position
-        for i in range(n):
-            if current_pos[i] != 0 and current_pos[i] != desired_pos[i]:
-                break
-        
-        # If no such island is found, return "NO"
-        if i == n:
-            return "NO"
-        
-        # Find the adjacent island with an empty pedestal
-        for j in range(i+1, n):
-            if current_pos[j] == 0:
-                break
-        
-        # If no such island is found, return "NO"
-        if j == n:
-            return "NO"
-        
-        # Move the statue from the current island to the adjacent island
-        current_pos[i] = 0
-        current_pos[j] = current_pos[i]
-        visited.add(i)
-        visited.add(j)
-        steps += 1
-    
-    # If all the statues are in the desired position, return "YES"
-    if steps == n - 1:
-        return "YES"
-    
-    # If not all the statues are in the desired position, return "NO"
-    return "NO"
+        x, y, r = map(int, input().split())
+        trees.append((x, y, r))
+    b, d = map(int, input().split())
+    return n, trees, b, d
+
+def circle_overlap(x1, y1, r1, x2, y2, r2):
+    d = math.sqrt((x1-x2)**2 + (y1-y2)**2)
+    return d < r1 + r2
+
+def boar_charge(b, d, trees):
+    x, y, r = 0, 0, b
+    while d > 0:
+        theta = random.uniform(0, 2*math.pi)
+        dx = math.cos(theta) * d
+        dy = math.sin(theta) * d
+        x += dx
+        y += dy
+        d -= dx
+        for tree in trees:
+            if circle_overlap(x, y, r, tree[0], tree[1], tree[2]):
+                return False
+    return True
+
+def f1(n, trees, b, d):
+    return boar_charge(b, d, trees)
+
+def f2(n, trees, b, d):
+    return 1 - f1(n, trees, b, d)
+
+if __name__ == '__main__':
+    n, trees, b, d = get_input()
+    print(f2(n, trees, b, d))
 

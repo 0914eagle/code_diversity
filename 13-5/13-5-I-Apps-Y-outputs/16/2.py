@@ -1,18 +1,35 @@
 
-def is_bus_service_available(s):
-    # Check if the length of the string is 3
-    if len(s) != 3:
-        return "No"
+def get_diverse_garland(n, s):
+    # Initialize variables
+    recolors = 0
+    diverse_garland = []
+    current_color = s[0]
+    diverse_garland.append(current_color)
     
-    # Check if the string contains only A and B
-    if not set(s).issubset("AB"):
-        return "No"
+    # Iterate through the garland
+    for i in range(1, n):
+        # If the current color is different from the previous color, recolor it
+        if s[i] != current_color:
+            recolors += 1
+            current_color = s[i]
+        # Add the current color to the diverse garland
+        diverse_garland.append(current_color)
     
-    # Check if there is a pair of stations that will be connected by a bus service
-    if s[0] == "A" and s[2] == "B":
-        return "Yes"
-    elif s[0] == "B" and s[1] == "A":
-        return "Yes"
-    else:
-        return "No"
+    # Return the number of recolors and the diverse garland
+    return recolors, "".join(diverse_garland)
+
+def main():
+    # Read the input
+    n = int(input())
+    s = input()
+    
+    # Call the function to get the diverse garland
+    recolors, diverse_garland = get_diverse_garland(n, s)
+    
+    # Print the output
+    print(recolors)
+    print(diverse_garland)
+
+if __name__ == '__main__':
+    main()
 

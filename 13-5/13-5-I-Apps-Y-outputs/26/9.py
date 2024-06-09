@@ -1,29 +1,42 @@
 
-def get_max_zeroes(a, b):
-    # Calculate the sum of the absolute values of a and b
-    sum_abs = sum(map(abs, a)) + sum(map(abs, b))
+def get_shortest_path(packages):
+    # Initialize the shortest path as an empty string
+    shortest_path = ""
     
-    # Initialize the maximum number of zeroes to 0
-    max_zeroes = 0
+    # Loop through the packages and add the appropriate move to the shortest path
+    for package in packages:
+        # If the package is above the current position, add a 'U' move
+        if package[1] > 0:
+            shortest_path += "U"
+        # If the package is to the right of the current position, add a 'R' move
+        elif package[0] > 0:
+            shortest_path += "R"
     
-    # Iterate over all possible values of d
-    for d in range(-sum_abs, sum_abs + 1):
-        # Initialize the number of zeroes to 0
-        zeroes = 0
+    # Return the shortest path
+    return shortest_path
+
+def main():
+    # Read the number of test cases
+    num_test_cases = int(input())
+    
+    # Loop through the test cases
+    for _ in range(num_test_cases):
+        # Read the number of packages
+        num_packages = int(input())
         
-        # Iterate over all elements of a and b
-        for i in range(len(a)):
-            # Calculate the value of c_i
-            c_i = d * a[i] + b[i]
-            
-            # If c_i is 0, increment the number of zeroes
-            if c_i == 0:
-                zeroes += 1
+        # Initialize the packages as a list of (x, y) coordinates
+        packages = []
+        for _ in range(num_packages):
+            x, y = map(int, input().split())
+            packages.append((x, y))
         
-        # If the number of zeroes is greater than the maximum number of zeroes, update the maximum number of zeroes
-        if zeroes > max_zeroes:
-            max_zeroes = zeroes
-    
-    # Return the maximum number of zeroes
-    return max_zeroes
+        # Get the shortest path for the packages
+        shortest_path = get_shortest_path(packages)
+        
+        # Print the output
+        print("YES")
+        print(shortest_path)
+
+if __name__ == '__main__':
+    main()
 

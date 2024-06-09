@@ -1,18 +1,22 @@
 
-def solve(n, m):
-    # convert the integer to a string
-    n = str(n)
-    
-    # initialize the minimum remainder to a large value
-    min_remainder = 10**8
-    
-    # loop through all cyclic shifts of the integer
-    for i in range(len(n)):
-        # calculate the remainder of the current shift when divided by m
-        remainder = int(n[i:]) % m
-        
-        # update the minimum remainder if necessary
-        min_remainder = min(min_remainder, remainder)
-    
-    return min_remainder
+def is_valid_test_case(a, b):
+    n = len(a)
+    for i in range(1, int(n/2)+1):
+        if a[:i] == b[n-i:] and a[i:] == b[:n-i]:
+            return True
+    return False
+
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        a = list(map(int, input().split()))
+        b = list(map(int, input().split()))
+        if is_valid_test_case(a, b):
+            print("Yes")
+        else:
+            print("No")
+
+if __name__ == '__main__':
+    main()
 

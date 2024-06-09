@@ -1,14 +1,20 @@
 
-def solve(n, p, distances):
-    # Sort the distances in ascending order
-    distances.sort()
-    # Initialize the minimum distance to the car in front
-    min_distance = 0
-    # Loop through each distance and calculate the minimum distance required
-    for i in range(n):
-        min_distance += p * (i + 1)
-        if distances[i] < min_distance:
-            return distances[i]
-    # If all distances are greater than the minimum distance, return the minimum distance
-    return min_distance
+def get_input():
+    N, W, H = map(int, input().split())
+    matches = [int(input()) for _ in range(N)]
+    return N, W, H, matches
+
+def fit_in_box(match, box_width, box_height):
+    return match <= box_width and match <= box_height
+
+def main():
+    N, W, H, matches = get_input()
+    for match in matches:
+        if fit_in_box(match, W, H):
+            print("DA")
+        else:
+            print("NE")
+
+if __name__ == '__main__':
+    main()
 

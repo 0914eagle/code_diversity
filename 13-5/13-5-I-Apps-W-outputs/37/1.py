@@ -1,33 +1,74 @@
 
-def get_min_time(n, a, b):
-    # Initialize the minimum time to wait at each crossing
-    min_time = [0] * n
-
-    # Loop through each crossing
+def get_network_stations(n, a, b):
+    
+    # Initialize the list of network stations
+    stations = []
+    
+    # Loop through each city and its neighboring city
     for i in range(n):
-        # Get the waiting time for the current crossing
-        waiting_time = a[i]
+        # Get the number of households in the current city and its neighbor
+        city_households = a[i]
+        neighbor_households = a[(i+1)%n]
+        
+        # Check if the current city has more households than the capacity of the current network station
+        if city_households > b[i]:
+            # Add a new network station with the capacity of the current city
+            stations.append(city_households)
+        else:
+            # Add the capacity of the current network station to the total number of households in the current city
+            stations[-1] += b[i]
+        
+        # Check if the neighboring city has more households than the capacity of the current network station
+        if neighbor_households > b[i]:
+            # Add a new network station with the capacity of the neighboring city
+            stations.append(neighbor_households)
+        else:
+            # Add the capacity of the current network station to the total number of households in the neighboring city
+            stations[-1] += b[i]
+    
+    # Return the list of network stations
+    return stations
 
-        # If the current crossing is not the last crossing
-        if i != n - 1:
-            # Get the waiting time for the next crossing
-            next_waiting_time = a[i + 1]
+def can_meet_needs(n, a, b):
+    
+    # Get the list of network stations
+    stations = get_network_stations(n, a, b)
+    
+    # Initialize the total number of households to 0
+    total_households = 0
+    
+    # Loop through each network station
+    for station in stations:
+        # Add the capacity of the current network station to the total number of households
+        total_households += station
+        
+        # Check if the total number of households exceeds the total number of households in all cities
+        if total_households > sum(a):
+            # Return False
+            return False
+    
+    # Return True
+    return True
 
-            # If the waiting time for the next crossing is greater than the current waiting time
-            if next_waiting_time > waiting_time:
-                # Update the minimum time to wait at the current crossing
-                min_time[i] = next_waiting_time
+def main():
+    # Read the number of test cases
+    t = int(input())
+    
+    # Loop through each test case
+    for _ in range(t):
+        # Read the number of cities and their capacities
+        n = int(input())
+        a = list(map(int, input().split()))
+        b = list(map(int, input().split()))
+        
+        # Check if the designed network stations can meet the needs of all cities
+        if can_meet_needs(n, a, b):
+            # Print YES
+            print("YES")
+        else:
+            # Print NO
+            print("NO")
 
-        # If the current crossing is not the first crossing
-        if i != 0:
-            # Get the waiting time for the previous crossing
-            prev_waiting_time = a[i - 1]
-
-            # If the waiting time for the previous crossing is greater than the current waiting time
-            if prev_waiting_time > waiting_time:
-                # Update the minimum time to wait at the current crossing
-                min_time[i] = prev_waiting_time
-
-    # Return the sum of the minimum time to wait at each crossing
-    return sum(min_time)
+if __name__ == '__main__':
+    main()
 

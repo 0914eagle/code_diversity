@@ -1,22 +1,31 @@
 
-def solve(a, b, c, d):
-    # Check if the given integers satisfy the required conditions
-    if a + b + c + d != 4:
-        return "impossible"
-    
-    # Initialize an empty string
-    string = ""
-    
-    # Add characters to the string to satisfy the required subsequence occurrences
-    for i in range(a):
-        string += "00"
-    for i in range(b):
-        string += "01"
-    for i in range(c):
-        string += "10"
-    for i in range(d):
-        string += "11"
-    
-    # Return the final string
-    return string
+def get_min_rest_days(n, activities):
+    # Initialize variables
+    rest_days = 0
+    last_activity = 0
+
+    # Iterate through the list of activities
+    for activity in activities:
+        # If the current activity is the same as the last activity, increase the rest days
+        if activity == last_activity:
+            rest_days += 1
+        # If the current activity is different from the last activity, reset the rest days
+        else:
+            rest_days = 0
+        # Update the last activity
+        last_activity = activity
+
+    # Return the minimum number of rest days
+    return rest_days
+
+def main():
+    # Read the number of days and the list of activities from stdin
+    n = int(input())
+    activities = list(map(int, input().split()))
+
+    # Call the get_min_rest_days function and print the result
+    print(get_min_rest_days(n, activities))
+
+if __name__ == '__main__':
+    main()
 

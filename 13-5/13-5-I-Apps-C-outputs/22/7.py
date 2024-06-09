@@ -1,33 +1,54 @@
 
-def escape_speed(intersections, roads, exits, brothers_start, police_start):
-    # Initialize the minimum speed required to escape as infinity
-    min_speed = float('inf')
+def read_input():
+    n, p = map(int, input().split())
+    t = list(map(int, input().split()))
+    s = []
+    e = []
+    for i in range(p):
+        s_i, e_i = map(int, input().split())
+        s.append(s_i)
+        e.append(e_i)
+    return n, p, t, s, e
+
+def find_max_score(n, p, t, s, e):
+    # Initialize the maximum score and the current score
+    max_score = 0
+    curr_score = 0
     
-    # Loop through all possible routes from the brothers' starting intersection to the highway exits
-    for exit in exits:
-        # Find the shortest path from the brothers' starting intersection to the highway exit using Dijkstra's algorithm
-        path = dijkstra(intersections, roads, brothers_start, exit)
+    # Initialize the SP meter and the current SP phrase
+    sp_meter = 0
+    curr_sp_phrase = 0
+    
+    # Iterate through the notes and update the score and SP meter
+    for i in range(n):
+        # If the current note is within the current SP phrase, update the SP meter
+        if s[curr_sp_phrase] <= t[i] <= e[curr_sp_phrase]:
+            sp_meter += 1
         
-        # If a path exists, calculate the speed required to escape
-        if path:
-            # Calculate the distance from the brothers' starting intersection to the highway exit
-            distance = 0
-            for i in range(len(path) - 1):
-                distance += roads[path[i]][path[i+1]]['length']
-            
-            # Calculate the time required to travel the distance at the maximum speed of the police car
-            time = distance / 160
-            
-            # Calculate the speed required to escape by subtracting the time required to travel the distance from the maximum speed of the police car
-            speed = 160 - time
-            
-            # Update the minimum speed required to escape if the current speed is lower
-            min_speed = min(min_speed, speed)
+        # If the current note is the first note of the current SP phrase, update the SP meter and the current SP phrase
+        if t[i] == s[curr_sp_phrase]:
+            sp_meter += 1
+            curr_sp_phrase += 1
+        
+        # If the current note is the last note of the current SP phrase, update the SP meter and the current SP phrase
+        if t[i] == e[curr_sp_phrase]:
+            sp_meter -= 1
+            curr_sp_phrase += 1
+        
+        # If the SP meter is positive, update the current score
+        if sp_meter > 0:
+            curr_score += 2
+        
+        # If the current score is higher than the maximum score, update the maximum score
+        if curr_score > max_score:
+            max_score = curr_score
     
-    # If a route exists, return the minimum speed required to escape
-    if min_speed < float('inf'):
-        return min_speed
-    # Otherwise, return the word "IMPOSSIBLE"
-    else:
-        return "IMPOSSIBLE"
+    return max_score
+
+def main():
+    n, p, t, s, e = read_input()
+    print(find_max_score(n, p, t, s, e))
+
+if __name__ == '__main__':
+    main()
 

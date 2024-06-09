@@ -1,43 +1,69 @@
 
-def solve(x0, y0, a_x, a_y, b_x, b_y, x_s, y_s, t):
-    # Initialize a list to store the coordinates of the data nodes
-    data_nodes = [(x0, y0)]
+def get_best_friend_pairs(n):
+    # Initialize a list to store the best friend pairs
+    best_friend_pairs = []
     
-    # Create a set to keep track of the visited nodes
+    # Iterate from 10^n-1 to 10^n
+    for i in range(10**n-1, 10**n):
+        # Check if the number is a best friend pair with itself
+        if is_best_friend_pair(i, i):
+            best_friend_pairs.append(i)
+    
+    # Return the number of best friend pairs
+    return len(best_friend_pairs)
+
+def is_best_friend_pair(x, y):
+    # Check if x and y have the same length
+    if len(str(x)) != len(str(y)):
+        return False
+    
+    # Initialize a set to store the visited numbers
     visited = set()
     
-    # Add the initial node to the visited set
-    visited.add((x0, y0))
+    # Initialize a queue to store the numbers to be processed
+    queue = [x]
     
-    # Iterate until the time limit is reached
-    while t > 0:
-        # Find the next node to visit
-        next_node = find_next_node(data_nodes, visited, a_x, a_y, b_x, b_y)
+    # Loop until the queue is empty
+    while queue:
+        # Dequeue a number from the queue
+        num = queue.pop(0)
         
-        # If there are no more nodes to visit, break the loop
-        if next_node is None:
-            break
+        # Check if the number is already visited
+        if num in visited:
+            continue
         
-        # Add the next node to the visited set
-        visited.add(next_node)
+        # Add the number to the visited set
+        visited.add(num)
         
-        # Update the time limit
-        t -= 1
+        # Check if the number is equal to y
+        if num == y:
+            return True
         
-        # If the time limit is reached, break the loop
-        if t == 0:
-            break
+        # Enqueue the friendly numbers of the number
+        queue.extend(get_friendly_numbers(num))
     
-    # Return the number of visited nodes
-    return len(visited)
+    # If the queue is empty and y is not in the visited set, then x and y are not a best friend pair
+    return False
 
-def find_next_node(data_nodes, visited, a_x, a_y, b_x, b_y):
-    # Find the next node to visit by iterating through the data nodes
-    for node in data_nodes:
-        # If the node has not been visited, return it
-        if node not in visited:
-            return node
+def get_friendly_numbers(num):
+    # Initialize a list to store the friendly numbers
+    friendly_numbers = []
     
-    # If all nodes have been visited, return None
-    return None
+    # Iterate over the digits of the number
+    for i in range(len(str(num))):
+        # Get the digit at position i
+        digit = int(str(num)[i])
+        
+        # Check if the digit is not 0 or 9
+        if digit != 0 and digit != 9:
+            # Add the friendly numbers to the list
+            friendly_numbers.append(num + 10**i)
+            friendly_numbers.append(num - 10**i)
+    
+    # Return the list of friendly numbers
+    return friendly_numbers
+
+if __name__ == '__main__':
+    n = int(input())
+    print(get_best_friend_pairs(n))
 

@@ -1,31 +1,41 @@
 
-def solve(beacons, mountains):
-    # Initialize a set to store the lit beacons
-    lit_beacons = set()
-    # Loop through each beacon and check if it is lit
+import math
+
+def get_visible_beacons(beacons, beacon_locations, mountain_peaks):
+    visible_beacons = set()
     for beacon in beacons:
-        # Check if the beacon is within sight of any other beacon that has already been lit
-        if any(is_within_sight(beacon, lit_beacon, mountains) for lit_beacon in lit_beacons):
-            # If it is, add it to the set of lit beacons
-            lit_beacons.add(beacon)
-    # Return the number of lit beacons, which is the number of messages that must be sent
-    return len(lit_beacons)
+        for mountain_peak in mountain_peaks:
+            if not is_blocked(beacon_locations[beacon], mountain_peak):
+                visible_beacons.add(beacon)
+                break
+    return visible_beacons
 
-# Check if two beacons are within sight of each other
-def is_within_sight(beacon1, beacon2, mountains):
-    # Check if the straight line between the two beacons is not blocked by any mountain peaks
-    if all(not is_blocked(beacon1, beacon2, mountain) for mountain in mountains):
-        return True
-    else:
-        return False
+def is_blocked(beacon_location, mountain_peak):
+    x1, y1 = beacon_location
+    x2, y2, r = mountain_peak
+    return math.sqrt((x1-x2)**2 + (y1-y2)**2) <= r
 
-# Check if a straight line between two beacons is blocked by a mountain peak
-def is_blocked(beacon1, beacon2, mountain):
-    # Calculate the distance between the two beacons and the center of the mountain peak
-    distance = ((beacon1[0] - mountain[0]) ** 2 + (beacon1[1] - mountain[1]) ** 2) ** 0.5
-    # Check if the distance is less than or equal to the radius of the mountain peak
-    if distance <= mountain[2]:
-        return True
-    else:
-        return False
+def get_message_count(beacon_locations, mountain_peaks):
+    beacons = set(range(len(beacon_locations)))
+    message_count = 0
+    while beacons:
+        visible_beacons = get_visible_beacons(beacons, beacon_locations, mountain_peaks)
+        message_count += len(visible_beacons)
+        beacons -= visible_beacons
+    return message_count
+
+def main():
+    n, m = map(int, input().split())
+    beacon_locations = []
+    for _ in range(n):
+        x, y = map(int, input().split())
+        beacon_locations.append((x, y))
+    mountain_peaks = []
+    for _ in range(m):
+        x, y, r = map(int, input().split())
+        mountain_peaks.append((x, y, r))
+    print(get_message_count(beacon_locations, mountain_peaks))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,39 +1,67 @@
 
-import itertools
-import math
+def f1(n, m, k, roads, storages):
+    # Initialize the graph with the given roads
+    graph = [[] for _ in range(n + 1)]
+    for u, v, l in roads:
+        graph[u].append((v, l))
+        graph[v].append((u, l))
+    
+    # Initialize the distances from each city to each storage
+    distances = [[float('inf')] * k for _ in range(n + 1)]
+    for i in range(k):
+        distances[storages[i]][i] = 0
+    
+    # Relax the distances iteratively
+    for _ in range(n):
+        for u in range(1, n + 1):
+            for v, l in graph[u]:
+                for i in range(k):
+                    distances[u][i] = min(distances[u][i], distances[v][i] + l)
+    
+    # Find the minimum distance from each city to a storage
+    min_distances = [float('inf')] * n
+    for i in range(k):
+        for u in range(1, n + 1):
+            min_distances[u - 1] = min(min_distances[u - 1], distances[u][i])
+    
+    return min_distances
 
-def solve(s, p, subsequence):
-    n = len(s)
-    m = len(subsequence)
-    if m == 0:
-        return 1
-    if m == 1:
-        return 1 if s[subsequence[0] - 1] == p[0] else 0
-    if m == n:
-        return 1 if s == p else 0
+def f2(n, m, k, roads, storages):
+    # Initialize the graph with the given roads
+    graph = [[] for _ in range(n + 1)]
+    for u, v, l in roads:
+        graph[u].append((v, l))
+        graph[v].append((u, l))
     
-    # Generate all possible substrings of length m in s
-    substrings = [s[i:i+m] for i in range(n-m+1)]
+    # Initialize the distances from each city to each storage
+    distances = [[float('inf')] * k for _ in range(n + 1)]
+    for i in range(k):
+        distances[storages[i]][i] = 0
     
-    # Filter substrings that match the given subsequence
-    matching_substrings = []
-    for substring in substrings:
-        if substring == p:
-            matching_substrings.append(substring)
+    # Relax the distances iteratively
+    for _ in range(n):
+        for u in range(1, n + 1):
+            for v, l in graph[u]:
+                for i in range(k):
+                    distances[u][i] = min(distances[u][i], distances[v][i] + l)
     
-    # If there are no matching substrings, return 0
-    if not matching_substrings:
-        return 0
+    # Find the minimum distance from each city to a storage
+    min_distances = [float('inf')] * n
+    for i in range(k):
+        for u in range(1, n + 1):
+            min_distances[u - 1] = min(min_distances[u - 1], distances[u][i])
     
-    # If there is only one matching substring, return 1
-    if len(matching_substrings) == 1:
-        return 1
+    # Find the city with the minimum distance to a storage
+    min_city = min(range(n), key=lambda i: min_distances[i])
     
-    # If there are multiple matching substrings, return the number of possible values of s
-    num_possible_values = 0
-    for i in range(len(matching_substrings)):
-        for j in range(i+1, len(matching_substrings)):
-            num_possible_values += 1
+    # Find the storage with the minimum distance from the minimum city
+    min_storage = min(range(k), key=lambda i: distances[min_city + 1][i])
     
-    return num_possible_values
+    return min_city + 1, min_storage + 1
+
+if __name__ == '__main__':
+    n, m, k = map(int, input().split())
+    roads = [list(map(int, input().split())) for _ in range(m)]
+    storages = list(map(int, input().split())) if k > 0 else []
+    print(*f2(n, m, k, roads, storages))
 

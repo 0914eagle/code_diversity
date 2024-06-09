@@ -1,14 +1,25 @@
 
-def solve(n, t, a):
-    # Initialize a variable to store the minimum number of days
-    min_days = n
-    # Iterate through the list of work times
-    for i in range(n):
-        # Check if the total time spent on work is greater than the time required to read the book
-        if sum(a[:i]) > t:
-            # If it is, return the current day as the minimum
-            return i
-        # If the total time spent on work is less than the time required to read the book, continue to the next day
-    # If the loop completes and no day is found, return the initial minimum of n days
-    return min_days
+def f1(n):
+    # Initialize a list to store the number of ways to fill
+    ways = [0] * (n + 1)
+    ways[0] = 1
+    for i in range(1, n + 1):
+        # Iterate over the previous ways and add the number of ways to fill the current row
+        for j in range(i):
+            ways[i] += ways[j]
+    return ways[n]
+
+def f2(n):
+    # Initialize a list to store the number of ways to fill
+    ways = [0] * (n + 1)
+    ways[0] = 1
+    for i in range(1, n + 1):
+        # Iterate over the previous ways and add the number of ways to fill the current row
+        for j in range(i):
+            ways[i] += ways[j]
+    return ways[n]
+
+if __name__ == '__main__':
+    n = int(input())
+    print(f1(n))
 

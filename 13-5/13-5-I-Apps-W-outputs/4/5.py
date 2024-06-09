@@ -1,32 +1,35 @@
 
-def solve(n, k, stages):
-    # Initialize a list to store the weights of the stages
-    weights = [0] * 26
-    for i in range(n):
-        # Convert the character to its index in the alphabet
-        index = ord(stages[i]) - ord('a')
-        # Calculate the weight of the stage
-        weights[index] += i + 1
+def get_score(graph, start, end):
+    if start == end:
+        return 0
     
-    # Initialize a list to store the selected stages
-    selected = [False] * 26
-    # Initialize the total weight of the rocket to 0
-    total_weight = 0
+    neighbors = graph[start]
+    if end not in neighbors:
+        return -1
     
-    for i in range(k):
-        # Find the stage with the minimum weight that has not been selected yet
-        min_index = 0
-        for j in range(26):
-            if not selected[j] and weights[j] < weights[min_index]:
-                min_index = j
-        # If there is no stage that has not been selected yet, return -1
-        if min_index == 0:
-            return -1
-        # Select the stage with the minimum weight
-        selected[min_index] = True
-        # Add the weight of the selected stage to the total weight of the rocket
-        total_weight += weights[min_index]
+    return neighbors[end] + get_score(graph, start, end - 1)
+
+def solve(graph, start, end):
+    if start == end:
+        return 0
     
-    # Return the total weight of the rocket
-    return total_weight
+    max_score = -1
+    for neighbor in graph[start]:
+        score = get_score(graph, start, neighbor)
+        if score != -1:
+            max_score = max(max_score, score + solve(graph, neighbor, end))
+    
+    return max_score
+
+def main():
+    num_vertices, num_edges = map(int, input().split())
+    graph = {i: {} for i in range(1, num_vertices + 1)}
+    for _ in range(num_edges):
+        a, b, c = map(int, input().split())
+        graph[a][b] = c
+    
+    print(solve(graph, 1, num_vertices))
+
+if __name__ == '__main__':
+    main()
 

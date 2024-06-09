@@ -1,33 +1,29 @@
 
-def solve(n, cards):
-    # Sort the cards in increasing order
-    cards.sort()
+def get_grid_size(grid_str):
+    return tuple(map(int, grid_str.split()))
 
-    # Initialize the result
-    result = []
+def get_painted_cells(painted_cells_str):
+    return [tuple(map(int, cell.split())) for cell in painted_cells_str.split()]
 
-    # Check if the cards can form an arithmetic progression
-    if n == 1:
-        return [-1]
-    if n == 2:
-        if cards[1] - cards[0] == 1:
-            return [-1]
-        else:
-            return [cards[1] - cards[0] - 1]
+def count_subrectangles(grid_size, painted_cells):
+    grid = [[0] * grid_size[1] for _ in range(grid_size[0])]
+    for row, col in painted_cells:
+        grid[row-1][col-1] = 1
+    
+    count = [0] * 10
+    for i in range(grid_size[0]-2):
+        for j in range(grid_size[1]-2):
+            count[sum(grid[i][j:j+3]) + sum(grid[i+1][j:j+3]) + sum(grid[i+2][j:j+3])] += 1
+    
+    return count
 
-    # Check if the cards can form an arithmetic progression with a common difference of 1
-    if all(cards[i+1] - cards[i] == 1 for i in range(n-1)):
-        return [-1]
+def main():
+    grid_size = get_grid_size(input())
+    painted_cells = get_painted_cells(input())
+    count = count_subrectangles(grid_size, painted_cells)
+    for i in range(10):
+        print(count[i])
 
-    # Check if the cards can form an arithmetic progression with a common difference of 2
-    if all(cards[i+1] - cards[i] == 2 for i in range(n-1)):
-        return [1]
-
-    # Check if the cards can form an arithmetic progression with a common difference of k
-    for k in range(2, n):
-        if all(cards[i+1] - cards[i] == k for i in range(n-1)):
-            return [k]
-
-    # If no common difference can form an arithmetic progression, return 0
-    return [0]
+if __name__ == '__main__':
+    main()
 

@@ -1,20 +1,19 @@
 
-def solve(n, t, a):
-    # Initialize the minimum number of days to finish reading the book as n
-    min_days = n
+def number_of_ways_to_fill_tiles(n):
+    # Initialize a list to store the number of ways to fill each row
+    ways = [0] * (n + 1)
+    ways[0] = 1
     
-    # Iterate through each day
-    for i in range(n):
-        # Calculate the total time available for work and reading on the current day
-        total_time = a[i] + t
-        
-        # If the total time is greater than the number of seconds in a day, subtract the number of seconds in a day
-        if total_time > 86400:
-            total_time -= 86400
-        
-        # Update the minimum number of days to finish reading the book if the current day has the minimum number of days
-        if total_time < min_days:
-            min_days = total_time
+    for i in range(1, n + 1):
+        # The number of ways to fill the ith row is the sum of the number of ways to fill the (i-1)th row and the (i-2)th row
+        ways[i] = ways[i - 1] + ways[i - 2]
     
-    return min_days
+    return ways[n]
+
+def main():
+    n = int(input())
+    print(number_of_ways_to_fill_tiles(n))
+
+if __name__ == '__main__':
+    main()
 

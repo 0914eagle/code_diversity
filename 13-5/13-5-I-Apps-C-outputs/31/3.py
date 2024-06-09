@@ -1,23 +1,33 @@
 
-def get_smallest_pack_size(B, k, companies):
-    # Initialize a dictionary to store the minimum number of bolts required to buy a pack of size i
-    min_bolts_required = {}
-    for i in range(1, B+1):
-        min_bolts_required[i] = i
+def get_input():
+    N = int(input())
+    a = list(map(int, input().split()))
+    return N, a
 
-    # Iterate over the companies and their packages
-    for company in companies:
-        for package in company:
-            # Check if the package size is less than or equal to the minimum number of bolts required
-            if package <= min_bolts_required[package]:
-                # If it is, update the minimum number of bolts required for this package size
-                min_bolts_required[package] = package
-            else:
-                # If it's not, check if the package size is less than the minimum number of bolts required but greater than the next smallest package size
-                if package < min_bolts_required[package+1]:
-                    # If it is, update the minimum number of bolts required for this package size
-                    min_bolts_required[package] = package
+def smash_gems(a, x):
+    smashed_gems = set()
+    for i in range(len(a)):
+        if i % x == 0:
+            smashed_gems.add(i)
+    return smashed_gems
 
-    # Return the smallest package size that contains at least the number of bolts required
-    return min(min_bolts_required, key=min_bolts_required.get)
+def get_earned_money(a, smashed_gems):
+    earned_money = 0
+    for i in range(len(a)):
+        if i not in smashed_gems:
+            earned_money += a[i]
+    return earned_money
+
+def get_max_earned_money(a):
+    max_earned_money = 0
+    for x in range(1, len(a)):
+        smashed_gems = smash_gems(a, x)
+        earned_money = get_earned_money(a, smashed_gems)
+        if earned_money > max_earned_money:
+            max_earned_money = earned_money
+    return max_earned_money
+
+if __name__ == '__main__':
+    N, a = get_input()
+    print(get_max_earned_money(a))
 

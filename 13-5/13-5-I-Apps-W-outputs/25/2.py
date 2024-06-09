@@ -1,26 +1,27 @@
 
-def spiral_order(matrix):
-    if not matrix or not matrix[0]:
-        return []
-    m, n = len(matrix), len(matrix[0])
-    top, bottom, left, right = 0, m - 1, 0, n - 1
-    dirs = [(0, 1), (1, 0), (0, -1), (-1, 0)]
-    dir_idx, res = 0, []
-    while top <= bottom and left <= right:
-        for _ in range(4):
-            for i in range(left, right + 1):
-                res.append(matrix[top][i])
-            for i in range(top + 1, bottom + 1):
-                res.append(matrix[i][right])
-            if top < bottom and left < right:
-                for i in range(right - 1, left - 1, -1):
-                    res.append(matrix[bottom][i])
-                for i in range(bottom - 1, top, -1):
-                    res.append(matrix[i][left])
-        top += 1
-        bottom -= 1
-        left += 1
-        right -= 1
-        dir_idx = (dir_idx + 1) % 4
-    return res
+def get_least_number_of_ones(n):
+    # Initialize a list to store the addends
+    addends = []
+    # Initialize a variable to store the current addend
+    current_addend = 1
+    # Loop until the current addend is greater than the given number
+    while current_addend <= n:
+        # If the current addend is a multiple of 10, add it to the list of addends
+        if current_addend % 10 == 0:
+            addends.append(current_addend)
+        # Add 1 to the current addend
+        current_addend += 1
+    # Return the length of the list of addends
+    return len(addends)
+
+def main():
+    # Read a line of input from stdin and convert it to an integer
+    n = int(input().strip())
+    # Call the get_least_number_of_ones function and store the result in a variable
+    result = get_least_number_of_ones(n)
+    # Print the result
+    print(result)
+
+if __name__ == '__main__':
+    main()
 

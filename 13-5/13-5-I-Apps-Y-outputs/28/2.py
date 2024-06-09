@@ -1,8 +1,11 @@
 
-def solve(S):
-    price = 700
-    for c in S:
-        if c == 'o':
-            price += 100
-    return price
+def convert_string(s):
+    return s.replace(",", " ")
+
+def main():
+    s = input("Enter a string: ")
+    print(convert_string(s))
+
+if __name__ == '__main__':
+    main()
 

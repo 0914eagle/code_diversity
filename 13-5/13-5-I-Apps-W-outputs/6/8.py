@@ -1,19 +1,40 @@
 
-def get_min_remainder(n, m):
-    # Convert the integer to a string
-    n_str = str(n)
-    
-    # Initialize the minimum remainder to the remainder of the first good shift
-    min_remainder = int(n_str) % m
-    
-    # Iterate over the good shifts of the integer
-    for i in range(len(n_str)):
-        # Calculate the remainder of the current good shift
-        remainder = int(n_str[i:] + n_str[:i]) % m
-        
-        # Update the minimum remainder if necessary
-        if remainder < min_remainder:
-            min_remainder = remainder
-    
-    return min_remainder
+def is_valid_input(n, a, b):
+    if n == 1:
+        return a == b
+    if n == 2:
+        return a[0] == b[1] and a[1] == b[0]
+    if n == 3:
+        return False
+    if n == 4:
+        if a[0] == b[3] and a[1] == b[2] and a[2] == b[1] and a[3] == b[0]:
+            return True
+        if a[0] == b[2] and a[1] == b[3] and a[2] == b[0] and a[3] == b[1]:
+            return True
+        return False
+    if n == 5:
+        if a[0] == b[4] and a[1] == b[3] and a[2] == b[2] and a[3] == b[1] and a[4] == b[0]:
+            return True
+        if a[0] == b[3] and a[1] == b[4] and a[2] == b[0] and a[3] == b[1] and a[4] == b[2]:
+            return True
+        if a[0] == b[2] and a[1] == b[3] and a[2] == b[4] and a[3] == b[0] and a[4] == b[1]:
+            return True
+        if a[0] == b[1] and a[1] == b[2] and a[2] == b[3] and a[3] == b[4] and a[4] == b[0]:
+            return True
+        return False
+    return False
+
+def main():
+    t = int(input())
+    for i in range(t):
+        n = int(input())
+        a = list(map(int, input().split()))
+        b = list(map(int, input().split()))
+        if is_valid_input(n, a, b):
+            print("Yes")
+        else:
+            print("No")
+
+if __name__ == '__main__':
+    main()
 

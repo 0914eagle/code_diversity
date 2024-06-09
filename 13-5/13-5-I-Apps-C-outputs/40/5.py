@@ -1,19 +1,61 @@
 
-def solve(n, firings, hirings):
-    # Initialize the number of HR people needed
-    k = 1
-    # Initialize the HR person in charge of the firing and hiring on each day
-    hiring_hr = [1] * n
-    # Loop through each day
-    for i in range(1, n):
-        # If the number of firings on the current day is greater than the number of hirings, increase the number of HR people needed
-        if firings[i] > hirings[i]:
-            k += 1
-        # If the number of firings on the current day is equal to the number of hirings, assign the same HR person to both the firing and hiring
-        elif firings[i] == hirings[i]:
-            hiring_hr[i] = hiring_hr[i-1]
-        # If the number of firings on the current day is less than the number of hirings, decrease the number of HR people needed
-        else:
-            k -= 1
-    return k, hiring_hr
+def f1(n, k, circle):
+    # Initialize a dictionary to store the number of occurrences of each starting circle
+    starting_circles = {}
+
+    # Iterate through all possible starting circles
+    for i in range(2**n):
+        # Convert the binary representation of i to a binary string with n digits
+        binary_string = bin(i)[2:].zfill(n)
+
+        # Initialize a list to store the current circle
+        current_circle = []
+
+        # Iterate through each digit of the binary string
+        for j in range(n):
+            # If the digit is 0, add a black pebble to the current circle
+            if binary_string[j] == "0":
+                current_circle.append("B")
+            # If the digit is 1, add a white pebble to the current circle
+            else:
+                current_circle.append("W")
+
+        # Add the current circle to the starting circles dictionary
+        starting_circles[tuple(current_circle)] = starting_circles.get(tuple(current_circle), 0) + 1
+
+    # Return the number of distinct starting circles
+    return len(starting_circles)
+
+def f2(n, k, circle):
+    # Initialize a dictionary to store the number of occurrences of each starting circle
+    starting_circles = {}
+
+    # Iterate through all possible starting circles
+    for i in range(2**n):
+        # Convert the binary representation of i to a binary string with n digits
+        binary_string = bin(i)[2:].zfill(n)
+
+        # Initialize a list to store the current circle
+        current_circle = []
+
+        # Iterate through each digit of the binary string
+        for j in range(n):
+            # If the digit is 0, add a black pebble to the current circle
+            if binary_string[j] == "0":
+                current_circle.append("B")
+            # If the digit is 1, add a white pebble to the current circle
+            else:
+                current_circle.append("W")
+
+        # Add the current circle to the starting circles dictionary
+        starting_circles[tuple(current_circle)] = starting_circles.get(tuple(current_circle), 0) + 1
+
+    # Return the number of distinct starting circles
+    return len(starting_circles)
+
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    circle = list(input())
+    print(f1(n, k, circle))
+    print(f2(n, k, circle))
 

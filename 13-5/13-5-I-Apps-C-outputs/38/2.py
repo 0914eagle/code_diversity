@@ -1,37 +1,23 @@
 
-def get_min_days(grid, stamina):
-    # Initialize variables
-    rows, cols = len(grid), len(grid[0])
-    start_row, start_col = None, None
-    end_row, end_col = None, None
-    days = 0
-    stamina_left = stamina
+def get_minimum_fuel(n, m, a, b):
+    # Initialize the fuel required for each planet
+    fuel_required = [0] * (n + 1)
+    fuel_required[1] = m
+    
+    # Loop through each planet and calculate the fuel required for take-off and landing
+    for i in range(1, n):
+        fuel_required[i + 1] += fuel_required[i] // a[i] * b[i]
+        fuel_required[i + 1] += fuel_required[i] % a[i]
+    
+    # Return the minimum fuel required
+    return min(fuel_required)
 
-    # Find the starting and ending positions
-    for row in range(rows):
-        for col in range(cols):
-            if grid[row][col] == "S":
-                start_row, start_col = row, col
-            elif grid[row][col] == "G":
-                end_row, end_col = row, col
+def main():
+    n, m = map(int, input().split())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    print(get_minimum_fuel(n, m, a, b))
 
-    # Breadth-first search to find the shortest path
-    queue = [(start_row, start_col, stamina_left)]
-    visited = set()
-    while queue:
-        row, col, stamina = queue.pop(0)
-        if (row, col) in visited:
-            continue
-        visited.add((row, col))
-        if (row, col) == (end_row, end_col):
-            return days
-        for r, c in [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]:
-            if 0 <= r < rows and 0 <= c < cols and grid[r][c] != "#":
-                cost = 1 if grid[r][c] == "." else 2 if grid[r][c] == "F" else 3
-                if stamina - cost >= 0:
-                    queue.append((r, c, stamina - cost))
-        stamina_left = stamina
-        days += 1
-
-    return -1
+if __name__ == '__main__':
+    main()
 

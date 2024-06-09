@@ -1,18 +1,16 @@
 
-def is_respectable_set(points):
-    x_coords = [point[0] for point in points]
-    y_coords = [point[1] for point in points]
+def is_regular_polygon(ang):
+    for n in range(3, 998244354):
+        if n * (n - 3) % 2 == 0:
+            continue
+        if ang % (180 / n) == 0:
+            return n
+    return -1
 
-    x_coords.sort()
-    y_coords.sort()
+def solve(ang):
+    return is_regular_polygon(ang)
 
-    if len(set(x_coords)) != 3 or len(set(y_coords)) != 3:
-        return "ugly"
-
-    for i in range(3):
-        for j in range(3):
-            if (x_coords[i], y_coords[j]) not in points:
-                return "ugly"
-
-    return "respectable"
+if __name__ == '__main__':
+    ang = int(input())
+    print(solve(ang))
 

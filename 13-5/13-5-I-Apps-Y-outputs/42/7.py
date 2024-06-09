@@ -1,61 +1,43 @@
 
-def solve(n, q, p, queries):
-    # Initialize a list to store the order of officers receiving the command
-    order = []
+def f1(n, k, d):
+    # find all pairs of boxes that can be combined to form a gift
+    pairs = []
+    for i in range(n):
+        for j in range(i+1, n):
+            if (d[i] + d[j]) % k == 0:
+                pairs.append((i, j))
     
-    # Loop through each query
-    for query in queries:
-        # Initialize a set to store the indices of officers who have received the command
-        received = set()
-        
-        # Initialize the current officer as the query officer
-        current = query[0]
-        
-        # Loop until the command has been spread to all officers
-        while len(order) < n:
-            # If the current officer has not received the command yet, add them to the order
-            if current not in received:
-                order.append(current)
-                received.add(current)
-            
-            # Find the next officer to spread the command to
-            next_officer = find_next_officer(current, p, received)
-            
-            # If there is no next officer, break out of the loop
-            if next_officer == -1:
-                break
-            
-            # Set the current officer as the next officer
-            current = next_officer
-        
-        # If the command has been spread to all officers, add the query officer to the order
-        if len(order) == n:
-            order.append(query[0])
-        
-        # Print the officer at the required position in the order
-        print(order[query[1] - 1] if query[1] <= len(order) else -1)
+    # find the maximum number of pairs that can be formed
+    max_pairs = 0
+    for i in range(1, len(pairs)+1):
+        pairs_combinations = itertools.combinations(pairs, i)
+        for combination in pairs_combinations:
+            if len(set(combination)) == i:
+                max_pairs = max(max_pairs, i)
     
-    return order
+    return max_pairs
 
-def find_next_officer(current, p, received):
-    # Find the direct subordinates of the current officer
-    subordinates = [i for i in range(1, len(p)) if p[i] == current]
+def f2(n, k, d):
+    # find all pairs of boxes that can be combined to form a gift
+    pairs = []
+    for i in range(n):
+        for j in range(i+1, n):
+            if (d[i] + d[j]) % k == 0:
+                pairs.append((i, j))
     
-    # If there are no direct subordinates, return -1
-    if not subordinates:
-        return -1
+    # find the maximum number of pairs that can be formed
+    max_pairs = 0
+    for i in range(1, len(pairs)+1):
+        pairs_combinations = itertools.combinations(pairs, i)
+        for combination in pairs_combinations:
+            if len(set(combination)) == i:
+                max_pairs = max(max_pairs, i)
     
-    # Find the minimum index of the direct subordinates who have not received the command yet
-    min_index = min([i for i in subordinates if i not in received])
-    
-    # Return the minimum index
-    return min_index
+    return max_pairs
 
-n, q = map(int, input().split())
-p = list(map(int, input().split()))
-queries = []
-for i in range(q):
-    queries.append(list(map(int, input().split())))
-
-order = solve(n, q, p, queries)
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    d = list(map(int, input().split()))
+    print(f1(n, k, d))
+    print(f2(n, k, d))
 

@@ -1,27 +1,32 @@
 
-def solve(N, u, parent):
-    # Initialize the longest jumping path length and number of jumping paths
-    L, M = 0, 0
-    
-    # Iterate over the vertices in the tree
-    for i in range(1, N+1):
-        # If the current vertex is the root, skip it
-        if i == 1:
-            continue
-        
-        # Get the parent of the current vertex
-        p = parent[i]
-        
-        # If the parent is not the root, check if the current vertex is an ancestor of the parent
-        if p != 1:
-            # If the current vertex is an ancestor of the parent, increment the longest jumping path length
-            if u[i] >= u[p]:
-                L += 1
-                
-                # If the current vertex is the root, increment the number of jumping paths
-                if i == N:
-                    M += 1
-    
-    # Return the longest jumping path length and the number of jumping paths modulo the prime 11092019
-    return L, M % 11092019
+def is_valid_solution(grid):
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j] != 0 and grid[i][j] != i + 1:
+                return False
+    return True
+
+def solve_superdoku(n, k, grid):
+    for i in range(k, n):
+        for j in range(n):
+            if grid[i][j] == 0:
+                for num in range(1, n + 1):
+                    grid[i][j] = num
+                    if is_valid_solution(grid):
+                        if solve_superdoku(n, k, grid):
+                            return True
+                    grid[i][j] = 0
+    return is_valid_solution(grid)
+
+def main():
+    n, k = map(int, input().split())
+    grid = []
+    for i in range(k):
+        grid.append(list(map(int, input().split())))
+    if solve_superdoku(n, k, grid):
+        for i in range(k):
+            print(*grid[i])
+
+if __name__ == '__main__':
+    main()
 

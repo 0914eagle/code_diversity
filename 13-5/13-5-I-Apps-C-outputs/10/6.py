@@ -1,47 +1,76 @@
 
-def get_cheapest_network(n, m, p, insecure_buildings, connections):
-    # Initialize a graph with n buildings as nodes
-    graph = [[] for _ in range(n)]
+def f1(n, m, r):
+    # Function to check if the candles are on the same piece of cake
+    def check_candles(candles, cuts):
+        pieces = []
+        for candle in candles:
+            piece = None
+            for cut in cuts:
+                if cut.intersects(candle):
+                    piece = cut
+                    break
+            if piece is None:
+                return False
+            pieces.append(piece)
+        return len(set(pieces)) == len(pieces)
 
-    # Add edges between buildings based on the connections
-    for x, y, cost in connections:
-        graph[x - 1].append((y - 1, cost))
-        graph[y - 1].append((x - 1, cost))
+    # Function to check if the cuts are valid
+    def check_cuts(cuts, r):
+        for cut in cuts:
+            if cut.distance_to_origin() > r:
+                return False
+        return True
 
-    # Initialize the minimum spanning tree with the first building as the root
-    mst = [0]
-    visited = [False] * n
-    visited[0] = True
+    # Function to check if the cuts successfully divide the cake
+    def check_cake(candles, cuts, r):
+        if not check_cuts(cuts, r):
+            return False
+        if not check_candles(candles, cuts):
+            return False
+        return True
 
-    # Loop through the remaining buildings and add them to the MST
-    for i in range(1, n):
-        # Find the unvisited building with the minimum cost
-        min_cost = float("inf")
-        min_index = 0
-        for j in range(n):
-            if not visited[j] and graph[mst[-1]][j][1] < min_cost:
-                min_cost = graph[mst[-1]][j][1]
-                min_index = j
+    # Function to read the input
+    def read_input():
+        n, m, r = map(int, input().split())
+        candles = []
+        for i in range(n):
+            x, y = map(int, input().split())
+            candles.append(Candle(x, y))
+        cuts = []
+        for i in range(m):
+            a, b, c = map(int, input().split())
+            cuts.append(Cut(a, b, c))
+        return n, m, r, candles, cuts
 
-        # Add the building to the MST and mark it as visited
-        mst.append(min_index)
-        visited[min_index] = True
+    # Function to write the output
+    def write_output(result):
+        if result:
+            print("yes")
+        else:
+            print("no")
 
-    # Check if the MST satisfies the security measure
-    for i in range(n):
-        for j in range(n):
-            if i != j and graph[i][j][1] < float("inf"):
-                path = [i]
-                current = j
-                while current != i:
-                    for neighbor in graph[current]:
-                        if neighbor[0] not in path and neighbor[1] < float("inf"):
-                            current = neighbor[0]
-                            path.append(current)
-                            break
-                if any(path[i] in insecure_buildings for i in range(1, len(path))):
-                    return "impossible"
+    # Main function
+    n, m, r, candles, cuts = read_input()
+    result = check_cake(candles, cuts, r)
+    write_output(result)
 
-    # Return the total cost of the MST
-    return sum(graph[mst[i - 1]][mst[i]][1] for i in range(1, len(mst)))
+class Candle:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def intersects(self, other):
+        return self.x == other.x and self.y == other.y
+
+class Cut:
+    def __init__(self, a, b, c):
+        self.a = a
+        self.b = b
+        self.c = c
+
+    def distance_to_origin(self):
+        return abs(self.a * 0 + self.b * 0 + self.c) / math.sqrt(self.a ** 2 + self.b ** 2)
+
+if __name__ == '__main__':
+    f1()
 

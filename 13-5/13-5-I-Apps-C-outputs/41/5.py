@@ -1,29 +1,51 @@
 
-def solve(a, b, c, d):
-    # Convert the input to a list of lists
-    input_list = [[a, 0], [b, 1], [c, 2], [d, 3]]
+def get_min_days_rest(n, a):
+    # Initialize variables
+    rest_days = 0
+    last_day_sport = -1
+    last_day_contest = -1
     
-    # Sort the list by the first element of each sublist (i.e., the frequency) in descending order
-    input_list.sort(key=lambda x: x[0], reverse=True)
+    # Iterate through the days
+    for i in range(n):
+        # Check if the gym is open and a contest is carried out
+        if a[i] in [2, 3]:
+            # Check if the last day was a sport day
+            if last_day_sport == i-1:
+                # Increment the number of rest days
+                rest_days += 1
+            # Update the last day information
+            last_day_contest = i
+        # Check if the gym is closed and a contest is carried out
+        elif a[i] == 1:
+            # Check if the last day was a contest day
+            if last_day_contest == i-1:
+                # Increment the number of rest days
+                rest_days += 1
+            # Update the last day information
+            last_day_contest = i
+        # Check if the gym is open and no contest is carried out
+        elif a[i] == 2:
+            # Check if the last day was a contest day
+            if last_day_contest == i-1:
+                # Increment the number of rest days
+                rest_days += 1
+            # Update the last day information
+            last_day_sport = i
     
-    # Initialize the output string
-    output_string = ""
-    
-    # Loop through the input list and append the corresponding binary digit to the output string
-    for freq, digit in input_list:
-        output_string += str(digit)
-    
-    # Return the output string if it has the required properties, otherwise return "impossible"
-    if is_valid_string(output_string, a, b, c, d):
-        return output_string
-    else:
-        return "impossible"
+    # Return the minimum number of rest days
+    return rest_days
 
-# Check if the output string has the required properties
-def is_valid_string(output_string, a, b, c, d):
-    # Count the number of occurrences of each subsequence in the output string
-    subsequence_counts = [output_string.count(str(i)) for i in range(4)]
+def main():
+    # Read the input
+    n = int(input())
+    a = list(map(int, input().split()))
     
-    # Check if the subsequence counts match the input frequencies
-    return subsequence_counts == [a, b, c, d]
+    # Call the function to get the minimum number of rest days
+    rest_days = get_min_days_rest(n, a)
+    
+    # Print the result
+    print(rest_days)
+
+if __name__ == '__main__':
+    main()
 

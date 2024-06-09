@@ -1,33 +1,23 @@
 
-def solve(grid, stamina):
-    # Initialize variables
-    rows, cols = len(grid), len(grid[0])
-    start_row, start_col = None, None
-    goal_row, goal_col = None, None
-    days = 0
-    stamina_spent = 0
-    queue = []
+def f1(n, m, a, b):
+    # Calculate the minimum mass of fuel to load into the rocket
+    fuel = 0
+    for i in range(n):
+        fuel += max(a[i] * m, b[i] * m)
+    return fuel
 
-    # Find the starting and goal positions
-    for row in range(rows):
-        for col in range(cols):
-            if grid[row][col] == "S":
-                start_row, start_col = row, col
-            elif grid[row][col] == "G":
-                goal_row, goal_col = row, col
+def f2(n, m, a, b):
+    # Calculate the minimum mass of fuel to load into the rocket, allowing for non-integral amounts of fuel
+    fuel = 0
+    for i in range(n):
+        fuel += max(a[i] * m, b[i] * m)
+    return fuel
 
-    # Breadth-first search to find the shortest path
-    queue.append((start_row, start_col, 0))
-    visited = set()
-    while queue:
-        row, col, day = queue.pop(0)
-        if (row, col) == (goal_row, goal_col):
-            return day
-        visited.add((row, col))
-        for r, c in [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]:
-            if 0 <= r < rows and 0 <= c < cols and grid[r][c] != "#" and (r, c) not in visited:
-                queue.append((r, c, day+1))
-
-    # If the goal is not reachable, return -1
-    return -1
+if __name__ == '__main__':
+    n = int(input())
+    m = int(input())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    print(f1(n, m, a, b))
+    print(f2(n, m, a, b))
 

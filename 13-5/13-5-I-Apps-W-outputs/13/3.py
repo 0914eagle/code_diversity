@@ -1,20 +1,34 @@
 
-def solve(n, cards):
-    # Sort the cards in increasing order
-    cards.sort()
+def get_subrectangles(grid):
+    # Initialize a dictionary to count the number of subrectangles for each number of black cells
+    subrectangles = {i: 0 for i in range(10)}
     
-    # Initialize a set to store the possible values of the additional card
-    values = set()
+    # Loop through the grid and count the number of subrectangles for each number of black cells
+    for i in range(len(grid) - 2):
+        for j in range(len(grid[0]) - 2):
+            black_cells = 0
+            for k in range(i, i + 3):
+                for l in range(j, j + 3):
+                    if grid[k][l] == 1:
+                        black_cells += 1
+            subrectangles[black_cells] += 1
     
-    # Iterate over the cards and calculate the difference between consecutive cards
-    for i in range(n - 1):
-        diff = cards[i + 1] - cards[i]
-        values.add(diff)
+    return subrectangles
+
+def main():
+    # Read the input grid
+    H, W, N = map(int, input().split())
+    grid = []
+    for _ in range(H):
+        grid.append(list(map(int, input().split())))
     
-    # If the set of values has only one element, then it is impossible to find an additional card with a suitable value
-    if len(values) == 1:
-        return -1
+    # Call the function to count the number of subrectangles for each number of black cells
+    subrectangles = get_subrectangles(grid)
     
-    # If the set of values has more than one element, then return the set of values
-    return list(values)
+    # Print the number of subrectangles for each number of black cells
+    for i in range(10):
+        print(subrectangles[i])
+
+if __name__ == '__main__':
+    main()
 

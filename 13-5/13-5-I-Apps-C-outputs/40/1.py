@@ -1,17 +1,59 @@
 
-def solve(n, firings, hirings):
-    # Initialize the number of HR people needed
-    k = 1
-    # Initialize the HR person in charge of the firing and hiring on day 1
-    hr_person = 1
-    # Loop through the remaining days
-    for i in range(2, n+1):
-        # If the number of firings on the current day is greater than the number of hirings, update the number of HR people needed
-        if firings[i-1] > hirings[i-1]:
-            k += 1
-        # If the number of hirings on the current day is greater than the number of firings, update the HR person in charge
-        elif hirings[i-1] > firings[i-1]:
-            hr_person = (hr_person % k) + 1
-    # Return the number of HR people needed and the HR person in charge for each day
-    return k, [hr_person for _ in range(n)]
+def f1(N, K, circle):
+    # Initialize a dictionary to store the number of occurrences of each starting circle
+    circle_count = {}
+
+    # Iterate over the possible starting circles
+    for i in range(N):
+        # Initialize a list to store the current circle
+        current_circle = []
+
+        # Iterate over the possible colors
+        for j in range(2):
+            # Add the current color to the current circle
+            current_circle.append(circle[i % N])
+
+            # Update the number of occurrences of the current circle
+            if tuple(current_circle) not in circle_count:
+                circle_count[tuple(current_circle)] = 1
+            else:
+                circle_count[tuple(current_circle)] += 1
+
+            # Rotate the current circle
+            current_circle = current_circle[1:] + current_circle[:1]
+
+    # Return the number of possible distinct starting circles
+    return len(circle_count)
+
+def f2(N, K, circle):
+    # Initialize a dictionary to store the number of occurrences of each starting circle
+    circle_count = {}
+
+    # Iterate over the possible starting circles
+    for i in range(N):
+        # Initialize a list to store the current circle
+        current_circle = []
+
+        # Iterate over the possible colors
+        for j in range(2):
+            # Add the current color to the current circle
+            current_circle.append(circle[i % N])
+
+            # Update the number of occurrences of the current circle
+            if tuple(current_circle) not in circle_count:
+                circle_count[tuple(current_circle)] = 1
+            else:
+                circle_count[tuple(current_circle)] += 1
+
+            # Rotate the current circle
+            current_circle = current_circle[1:] + current_circle[:1]
+
+    # Return the number of possible distinct starting circles
+    return len(circle_count)
+
+if __name__ == '__main__':
+    N, K = map(int, input().split())
+    circle = list(input())
+    print(f1(N, K, circle))
+    print(f2(N, K, circle))
 

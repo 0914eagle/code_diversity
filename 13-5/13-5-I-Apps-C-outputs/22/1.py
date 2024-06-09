@@ -1,47 +1,40 @@
 
-def solve(n, m, e, roads, exits, start_brothers, start_police):
-    # Initialize the minimum speed required to escape as infinity
-    min_speed = float('inf')
+def get_max_score(notes, sp_phrases):
     
-    # Loop through all possible routes from the brothers' starting point to the highway exit
-    for route in permutations(range(1, n+1)):
-        # If the route does not include the police car's starting point, skip it
-        if start_police not in route:
-            continue
-        
-        # Initialize the current speed as 0 km/h
-        current_speed = 0
-        
-        # Loop through each section of the route
-        for i in range(len(route)-1):
-            # Find the road between the current and next intersection
-            road = next((r for r in roads if r[0] == route[i] and r[1] == route[i+1]), None)
-            
-            # If the road is not found, the route is not possible
-            if road is None:
+    # Initialize the maximum score and the current score
+    max_score = 0
+    current_score = 0
+
+    # Iterate through the notes and Star Power phrases
+    for i, note in enumerate(notes):
+        # Check if the current note is within a Star Power phrase
+        for sp_phrase in sp_phrases:
+            if sp_phrase[0] <= note <= sp_phrase[1]:
+                # If the note is within a Star Power phrase, charge up the SP meter
+                current_score += 2
                 break
-            
-            # Calculate the time it takes to travel the length of the road at the current speed
-            time = road[2] / current_speed
-            
-            # Calculate the acceleration needed to reach the maximum speed in the time available
-            acceleration = (road[3] - current_speed) / time
-            
-            # Update the current speed based on the acceleration and time
-            current_speed += acceleration * time
-            
-            # If the current speed exceeds the maximum speed, the route is not possible
-            if current_speed > road[3]:
-                break
-        
-        # If the route is possible and the current speed is less than the minimum speed required to escape, update the minimum speed
-        if current_speed < min_speed:
-            min_speed = current_speed
-    
-    # If the minimum speed is infinity, it is impossible to escape
-    if min_speed == float('inf'):
-        return "IMPOSSIBLE"
-    
-    # Otherwise, return the minimum speed required to escape
-    return min_speed
+        else:
+            # If the note is not within a Star Power phrase, score a regular note
+            current_score += 1
+
+        # If the current score is greater than the maximum score, update the maximum score
+        if current_score > max_score:
+            max_score = current_score
+
+    return max_score
+
+def main():
+    # Read the input
+    n, p = map(int, input().split())
+    notes = list(map(int, input().split()))
+    sp_phrases = [tuple(map(int, input().split())) for _ in range(p)]
+
+    # Find the maximum score
+    max_score = get_max_score(notes, sp_phrases)
+
+    # Print the maximum score
+    print(max_score)
+
+if __name__ == '__main__':
+    main()
 

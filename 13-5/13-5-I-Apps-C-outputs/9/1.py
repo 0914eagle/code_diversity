@@ -1,44 +1,50 @@
 
-def solve(r, c, i, j, n):
-    # Initialize the ice rink as a 2D array of white cells
-    ice = [['.' for _ in range(c)] for _ in range(r)]
+def get_valid_ids(n, pattern):
+    # Initialize a list to store the valid IDs
+    valid_ids = []
     
-    # Set the starting location of the Zamboni
-    ice[i-1][j-1] = '@'
+    # Iterate through all possible binary strings of length n
+    for i in range(2**n):
+        # Convert the integer to a binary string
+        binary_string = bin(i)[2:]
+        # Pad the string with zeros if it is less than n digits long
+        binary_string = binary_string.zfill(n)
+        # Check if the string satisfies the pattern
+        if satisfies_pattern(binary_string, pattern):
+            # If it does, add it to the list of valid IDs
+            valid_ids.append(binary_string)
     
-    # Define the directions of movement
-    directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+    # Return the list of valid IDs
+    return valid_ids
+
+def satisfies_pattern(string, pattern):
+    # Check if the string and pattern have the same length
+    if len(string) != len(pattern):
+        return False
     
-    # Define the colors of the Zamboni
-    colors = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    # Initialize a counter for the number of 1s in the string
+    num_ones = 0
     
-    # Set the current color and step size
-    color = 0
-    step_size = 1
+    # Iterate through the characters of the string and pattern simultaneously
+    for c1, c2 in zip(string, pattern):
+        # If the current character of the string is 1 and the current character of the pattern is 1, increment the counter
+        if c1 == "1" and c2 == "1":
+            num_ones += 1
     
-    # Loop through the number of steps
-    for _ in range(n):
-        # Move the Zamboni in the current direction
-        i += directions[color][0]
-        j += directions[color][1]
-        
-        # Check if the Zamboni has gone off the edge of the rink
-        if i < 0:
-            i = r - 1
-        elif i == r:
-            i = 0
-        if j < 0:
-            j = c - 1
-        elif j == c:
-            j = 0
-        
-        # Set the current cell to the current color
-        ice[i][j] = colors[color]
-        
-        # Increment the color and step size
-        color = (color + 1) % len(colors)
-        step_size += 1
-    
-    # Return the final state of the ice rink
-    return '\n'.join(''.join(row) for row in ice)
+    # If the counter is greater than or equal to half the length of the string, return True
+    if num_ones >= len(string) // 2:
+        return True
+    else:
+        return False
+
+def get_max_spies(n, pattern):
+    # Get the list of valid IDs
+    valid_ids = get_valid_ids(n, pattern)
+    # Return the number of valid IDs
+    return len(valid_ids)
+
+if __name__ == '__main__':
+    n = int(input())
+    pattern = input()
+    print(get_max_spies(n, pattern))
 

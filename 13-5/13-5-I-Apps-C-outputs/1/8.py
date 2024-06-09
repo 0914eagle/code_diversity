@@ -1,18 +1,26 @@
 
-def get_position(composite_string, n, k):
-    # find all possible composite strings
-    composite_strings = []
-    for i in range(n):
-        for j in range(i+1, n):
-            for k in range(j+1, n):
-                composite_strings.append(initial_strings[i] + initial_strings[j] + initial_strings[k])
+def get_largest_base(y, ell):
+    # Initialize the largest base to be 10
+    largest_base = 10
     
-    # sort the composite strings
-    composite_strings.sort()
+    # Iterate through the possible bases from 2 to 16
+    for base in range(2, 17):
+        # Convert the age to the current base
+        converted_age = int(str(y), base)
+        
+        # Check if the converted age contains only decimal digits
+        if all(int(i) >= 0 and int(i) <= 9 for i in str(converted_age)):
+            # Check if the converted age is at least the lower bound
+            if converted_age >= ell:
+                # Update the largest base if necessary
+                largest_base = max(largest_base, base)
     
-    # find the position of the test composite string in the sorted list
-    position = composite_strings.index(composite_string) + 1
-    
-    # return the position modulo 10^9 + 7
-    return position % (10**9 + 7)
+    return largest_base
+
+def main():
+    y, ell = map(int, input().split())
+    print(get_largest_base(y, ell))
+
+if __name__ == '__main__':
+    main()
 

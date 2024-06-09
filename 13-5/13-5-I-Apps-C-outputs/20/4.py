@@ -1,31 +1,50 @@
 
-def solve(x0, y0, a_x, a_y, b_x, b_y, x_s, y_s, t):
-    # Initialize a list to store the coordinates of the data nodes
-    data_nodes = []
+def get_best_friend_pairs(n):
+    def is_valid_number(num):
+        if num < 10 ** (n - 1):
+            return False
+        if num % 10 == 0:
+            return False
+        if num % 100 == 0:
+            return False
+        return True
     
-    # Initialize the current coordinate as the starting coordinate
-    current_x, current_y = x_s, y_s
+    def get_friendly_operations(num):
+        operations = []
+        while num > 0:
+            if num % 10 == 9:
+                operations.append(1)
+            elif num % 10 == 0:
+                operations.append(2)
+            else:
+                operations.append(0)
+            num //= 10
+        return operations
     
-    # Initialize the time spent as 0
-    time_spent = 0
+    def get_friendly_pair(num):
+        operations = get_friendly_operations(num)
+        new_num = 0
+        for i in range(n):
+            if operations[i] == 0:
+                new_num += (num % 10) * 10 ** i
+            elif operations[i] == 1:
+                new_num += ((num % 10) + 1) * 10 ** i
+            else:
+                new_num += ((num % 10) - 1) * 10 ** i
+        return new_num
     
-    # Initialize the number of data nodes collected as 0
-    num_data_nodes = 0
+    def get_best_friend_pairs_helper(num, pairs):
+        if num == 0:
+            return pairs
+        new_num = get_friendly_pair(num)
+        if is_valid_number(new_num) and new_num not in pairs:
+            pairs.add(new_num)
+            return get_best_friend_pairs_helper(new_num, pairs)
+        return pairs
     
-    # Loop until the time limit is reached
-    while time_spent < t:
-        # Check if the current coordinate is a data node
-        if (current_x, current_y) in data_nodes:
-            # If it is a data node, collect it and move on to the next node
-            num_data_nodes += 1
-            current_x, current_y = current_x + a_x, current_y + a_y
-        else:
-            # If it is not a data node, move to the next coordinate
-            current_x, current_y = current_x + b_x, current_y + b_y
-        
-        # Update the time spent
-        time_spent += 1
-    
-    # Return the number of data nodes collected
-    return num_data_nodes
+    return len(get_best_friend_pairs_helper(10 ** n - 1, set()))
+
+if __name__ == '__main__':
+    n = int(input())
+    print(get_best_friend_pairs(n))
 

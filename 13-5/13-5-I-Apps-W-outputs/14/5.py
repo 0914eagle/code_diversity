@@ -1,19 +1,21 @@
 
-def solve(n, grid):
-    # Initialize the maximum number of clean rows to 0
-    max_clean_rows = 0
-    # Loop through each column of the grid
-    for col in range(n):
-        # Initialize the number of clean rows in this column to 0
-        clean_rows = 0
-        # Loop through each row in the column
-        for row in range(n):
-            # If the current square is clean, increment the number of clean rows
-            if grid[row][col] == "1":
-                clean_rows += 1
-        # If the number of clean rows in this column is greater than the maximum number of clean rows, update the maximum number of clean rows
-        if clean_rows > max_clean_rows:
-            max_clean_rows = clean_rows
-    # Return the maximum number of clean rows
-    return max_clean_rows
+def f1(n, m):
+    # find the maximum height of towers made with two-block pieces
+    max_height_two = (n * 2) + 1
+    # find the maximum height of towers made with three-block pieces
+    max_height_three = (m * 3) + 1
+    # return the maximum of the two maximum heights
+    return max(max_height_two, max_height_three)
+
+def f2(n, m):
+    # find the minimum height of towers made with two-block pieces
+    min_height_two = n + 1
+    # find the minimum height of towers made with three-block pieces
+    min_height_three = m + 1
+    # return the minimum of the two minimum heights
+    return min(min_height_two, min_height_three)
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    print(f1(n, m))
 

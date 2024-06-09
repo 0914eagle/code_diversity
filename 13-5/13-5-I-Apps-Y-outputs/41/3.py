@@ -1,19 +1,36 @@
 
-def equalize_prices(prices, k):
-    # Sort the prices in non-decreasing order
-    sorted_prices = sorted(prices)
-    # Initialize the minimum difference between prices as k
-    min_diff = k
-    # Initialize the equal price as the first price
-    equal_price = sorted_prices[0]
-    # Iterate through the prices
-    for i in range(1, len(sorted_prices)):
-        # Calculate the difference between the current price and the equal price
-        diff = sorted_prices[i] - equal_price
-        # If the difference is less than the minimum difference, update the minimum difference and the equal price
-        if diff < min_diff:
-            min_diff = diff
-            equal_price = sorted_prices[i]
-    # Return the equal price
-    return equal_price
+def is_valid_color_choosing(n, k, b_list, g_list):
+    # Check if there are any duplicate pairs
+    for i in range(n):
+        for j in range(i+1, n):
+            if b_list[i] == b_list[j] and g_list[i] == g_list[j]:
+                return False
+    
+    # Check if there are any pairs with the same color
+    for i in range(n):
+        if b_list[i] == g_list[i]:
+            return False
+    
+    # Check if there are any consecutive pairs with the same color
+    for i in range(n-1):
+        if b_list[i] == b_list[i+1] or g_list[i] == g_list[i+1]:
+            return False
+    
+    return True
+
+def get_color_choosing(n, k):
+    b_list = []
+    g_list = []
+    for i in range(n):
+        b_list.append(i%k+1)
+        g_list.append((i+1)%k+1)
+    
+    if is_valid_color_choosing(n, k, b_list, g_list):
+        return "YES\n" + "\n".join([str(b) + " " + str(g) for b, g in zip(b_list, g_list)])
+    else:
+        return "NO"
+
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    print(get_color_choosing(n, k))
 

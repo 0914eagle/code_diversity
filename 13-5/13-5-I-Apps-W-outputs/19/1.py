@@ -1,35 +1,53 @@
 
-def get_good_sequences(n, a):
-    # Initialize a set to store the good sequences
-    good_sequences = set()
+def get_max_product(arr):
+    n = len(arr)
+    if n == 1:
+        return arr
     
-    # Iterate over each possible length of the sequence
-    for length in range(1, n + 1):
-        # Iterate over each possible starting index of the sequence
-        for start in range(n - length + 1):
-            # Get the sequence of numbers
-            sequence = a[start:start + length]
-            # Check if the sequence is good
-            if is_good_sequence(sequence):
-                # Add the sequence to the set of good sequences
-                good_sequences.add(tuple(sequence))
+    # sort the array in non-decreasing order
+    arr.sort()
     
-    # Return the number of good sequences
-    return len(good_sequences)
+    # find the index of the first negative number
+    neg_idx = 0
+    while arr[neg_idx] < 0:
+        neg_idx += 1
+    
+    # if all numbers are positive, return the array as is
+    if neg_idx == n:
+        return arr
+    
+    # find the index of the first positive number
+    pos_idx = neg_idx
+    while arr[pos_idx] > 0:
+        pos_idx += 1
+    
+    # if there are no positive numbers, return the array with all negative numbers
+    if pos_idx == n:
+        return [-x for x in arr]
+    
+    # find the maximum product of positive numbers
+    max_prod = 1
+    for i in range(pos_idx, n):
+        max_prod *= arr[i]
+    
+    # find the minimum product of negative numbers
+    min_prod = 1
+    for i in range(neg_idx):
+        min_prod *= arr[i]
+    
+    # if the product of positive numbers is greater than the product of negative numbers, return the array as is
+    if max_prod > abs(min_prod):
+        return arr
+    
+    # otherwise, return the array with all negative numbers
+    return [-x for x in arr]
 
-def is_good_sequence(sequence):
-    # Initialize a variable to store the result
-    result = True
-    
-    # Iterate over each number in the sequence
-    for i in range(len(sequence) - 1):
-        # Get the bitwise exclusive or of the current number and the next number
-        xor = sequence[i] ^ sequence[i + 1]
-        # Check if the result is not zero
-        if xor != 0:
-            # The sequence is not good, return False
-            return False
-    
-    # The sequence is good, return True
-    return True
+def main():
+    n = int(input())
+    arr = list(map(int, input().split()))
+    result = get_max_product(arr)
+    print(*result)
+
+if __name__ == '__main__':
+    main()
 

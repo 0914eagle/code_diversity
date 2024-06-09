@@ -1,19 +1,32 @@
 
-def get_min_remainder(n, m):
-    # Convert the integer to a string
-    n_str = str(n)
+def is_valid_test_case(n, a, b):
+    if a == b:
+        return True
     
-    # Initialize the minimum remainder to the remainder of the first good shift
-    min_remainder = int(n_str[-1]) % m
+    for k in range(1, n // 2 + 1):
+        a_prefix = a[:k]
+        a_suffix = a[k:]
+        if a_prefix == a_suffix:
+            continue
+        a_prefix.reverse()
+        a_suffix.reverse()
+        a = a_prefix + a_suffix
+        if a == b:
+            return True
     
-    # Iterate over the good shifts of the integer
-    for i in range(len(n_str)):
-        # Calculate the remainder of the current good shift
-        remainder = int(n_str[i:] + n_str[:i]) % m
-        
-        # Update the minimum remainder if necessary
-        if remainder < min_remainder:
-            min_remainder = remainder
-    
-    return min_remainder
+    return False
+
+def main():
+    num_test_cases = int(input())
+    for _ in range(num_test_cases):
+        n = int(input())
+        a = list(map(int, input().split()))
+        b = list(map(int, input().split()))
+        if is_valid_test_case(n, a, b):
+            print("Yes")
+        else:
+            print("No")
+
+if __name__ == '__main__':
+    main()
 

@@ -1,10 +1,24 @@
 
-def count_triangles(a, b, c, d):
-    count = 0
-    for x in range(a, b+1):
-        for y in range(x, b+1):
-            for z in range(y, c+1):
-                if x + y > z and x + z > y and y + z > x:
-                    count += 1
-    return count
+def can_build_string(s, t):
+    if len(s) < len(t):
+        return False
+    if s == t:
+        return True
+    for i in range(len(s) - len(t) + 1):
+        if s[i:i+len(t)] == t:
+            return True
+    return False
+
+def main():
+    num_test_cases = int(input())
+    for i in range(num_test_cases):
+        s = input()
+        t = input()
+        if can_build_string(s, t):
+            print("YES")
+        else:
+            print("NO")
+
+if __name__ == '__main__':
+    main()
 

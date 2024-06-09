@@ -1,37 +1,26 @@
 
-def solve(N, A, B):
-    # Initialize a dictionary to store the debts
-    debts = {}
+def f1(L, n):
+    # f1 function to read the input data
+    points = []
+    for i in range(n):
+        point, direction = map(int, input().split())
+        points.append((point, direction))
+    return L, n, points
 
-    # Iterate over the input and populate the dictionary
-    for i in range(N):
-        debts[i+1] = -B[i]
+def f2(L, n, points):
+    # f2 function to check if the wire will touch itself
+    wire = [0] * (L + 1)
+    for point, direction in points:
+        if direction == 0:
+            wire[point] = 1
+        else:
+            wire[point] = -1
+        for i in range(point, L + 1):
+            if wire[i] != 0 and wire[i - 1] != 0 and wire[i] + wire[i - 1] != 0:
+                return "GHOST"
+    return "SAFE"
 
-    # Initialize a set to store the people who have paid back their debts
-    paid_back = set()
-
-    # Initialize a variable to store the total amount of money given by the town
-    total_amount = 0
-
-    # Iterate until all debts are paid back
-    while len(paid_back) < N:
-        # Find the person who owes the most money
-        max_debt = max(debts.values())
-
-        # Find the person who owes the most money and has not paid back their debt yet
-        for person in debts:
-            if debts[person] == max_debt and person not in paid_back:
-                break
-
-        # Pay back the debt of the person who owes the most money
-        debts[person] = 0
-        paid_back.add(person)
-
-        # Check if the person who paid back their debt has enough money to pay back the debts of others
-        if person in debts and debts[person] < 0:
-            # Give the person enough money to pay back their debts
-            total_amount += -debts[person]
-            debts[person] = 0
-
-    return total_amount
+if __name__ == '__main__':
+    L, n, points = f1(int(input()), int(input()))
+    print(f2(L, n, points))
 

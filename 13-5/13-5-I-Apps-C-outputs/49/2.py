@@ -1,36 +1,43 @@
 
-import math
+def get_min_path_length(n, m, roads):
+    # Initialize a graph with the given roads
+    graph = {i: set() for i in range(1, n + 1)}
+    for u, v in roads:
+        graph[u].add(v)
+    
+    # Find all maximum length paths in the graph
+    paths = []
+    for i in range(1, n + 1):
+        path = []
+        visited = set()
+        queue = [i]
+        while queue:
+            node = queue.pop(0)
+            if node not in visited:
+                visited.add(node)
+                path.append(node)
+                queue.extend(graph[node] - visited)
+        paths.append(path)
+    
+    # Find the minimum length path that competitors can achieve if at most one of the roads is blocked off
+    min_length = float('inf')
+    for path in paths:
+        length = len(path)
+        for i in range(1, n):
+            if path[i] != path[i - 1] + 1:
+                length -= 1
+        min_length = min(min_length, length)
+    
+    return min_length
 
-def get_center(points):
-    point1, point2, point3, point4 = points
-    x1, y1, z1 = point1
-    x2, y2, z2 = point2
-    x3, y3, z3 = point3
-    x4, y4, z4 = point4
+def main():
+    n, m = map(int, input().split())
+    roads = []
+    for _ in range(m):
+        u, v = map(int, input().split())
+        roads.append((u, v))
+    print(get_min_path_length(n, m, roads))
 
-    # Calculate the distances between the points and the origin
-    d1 = math.sqrt(x1**2 + y1**2 + z1**2)
-    d2 = math.sqrt(x2**2 + y2**2 + z2**2)
-    d3 = math.sqrt(x3**2 + y3**2 + z3**2)
-    d4 = math.sqrt(x4**2 + y4**2 + z4**2)
-
-    # Calculate the dot products of the points and the origin
-    dot1 = x1*x2 + y1*y2 + z1*z2
-    dot2 = x2*x3 + y2*y3 + z2*z3
-    dot3 = x3*x4 + y3*y4 + z3*z4
-    dot4 = x4*x1 + y4*y1 + z4*z1
-
-    # Calculate the denominator of the formula
-    denom = d1*d2*d3*d4 + dot1*dot2*dot3*dot4
-
-    # Calculate the x coordinate of the center
-    x_center = (dot1*dot2 + dot2*dot3 + dot3*dot4 + dot4*dot1)/denom
-
-    # Calculate the y coordinate of the center
-    y_center = (dot1*dot3 + dot2*dot4 + dot3*dot1 + dot4*dot2)/denom
-
-    # Calculate the z coordinate of the center
-    z_center = (dot1*dot4 + dot2*dot1 + dot3*dot2 + dot4*dot3)/denom
-
-    return x_center, y_center, z_center
+if __name__ == '__main__':
+    main()
 

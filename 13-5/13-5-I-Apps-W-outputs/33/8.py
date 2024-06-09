@@ -1,66 +1,42 @@
 
-def solve(score):
-    if score == 0:
-        return "zero"
-    elif score == 1:
-        return "one"
-    elif score == 2:
-        return "two"
-    elif score == 3:
-        return "three"
-    elif score == 4:
-        return "four"
-    elif score == 5:
-        return "five"
-    elif score == 6:
-        return "six"
-    elif score == 7:
-        return "seven"
-    elif score == 8:
-        return "eight"
-    elif score == 9:
-        return "nine"
-    elif score == 10:
-        return "ten"
-    elif score == 11:
-        return "eleven"
-    elif score == 12:
-        return "twelve"
-    elif score == 13:
-        return "thirteen"
-    elif score == 14:
-        return "fourteen"
-    elif score == 15:
-        return "fifteen"
-    elif score == 16:
-        return "sixteen"
-    elif score == 17:
-        return "seventeen"
-    elif score == 18:
-        return "eighteen"
-    elif score == 19:
-        return "nineteen"
-    elif score == 20:
-        return "twenty"
-    elif score == 30:
-        return "thirty"
-    elif score == 40:
-        return "forty"
-    elif score == 50:
-        return "fifty"
-    elif score == 60:
-        return "sixty"
-    elif score == 70:
-        return "seventy"
-    elif score == 80:
-        return "eighty"
-    elif score == 90:
-        return "ninety"
-    elif score == 100:
-        return "hundred"
-    else:
-        if score % 10 == 0:
-            return solve(score - score % 10)
+def get_max_score(cards):
+    n = len(cards)
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
+    for i in range(n):
+        for j in range(i, n + 1):
+            if j == i:
+                dp[i][j] = cards[i - 1]
+            else:
+                dp[i][j] = max(dp[i][j - 1] + cards[j - 1], dp[i][j - 2] + cards[j - 2])
+    return dp[0][n]
+
+def get_optimal_segment(cards):
+    n = len(cards)
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
+    for i in range(n):
+        for j in range(i, n + 1):
+            if j == i:
+                dp[i][j] = cards[i - 1]
+            else:
+                dp[i][j] = max(dp[i][j - 1] + cards[j - 1], dp[i][j - 2] + cards[j - 2])
+    optimal_segment = []
+    i = 0
+    j = n
+    while i < j:
+        if dp[i][j] == dp[i][j - 1] + cards[j - 1]:
+            optimal_segment.append(j)
+            j -= 1
         else:
-            return solve(score - score % 10) + "-" + solve(score % 10)
+            optimal_segment.append(i)
+            i += 1
+    return optimal_segment
+
+def main():
+    n = int(input())
+    cards = [int(x) for x in input().split()]
+    print(get_max_score(cards))
+    print(get_optimal_segment(cards))
+
+if __name__ == '__main__':
+    main()
 

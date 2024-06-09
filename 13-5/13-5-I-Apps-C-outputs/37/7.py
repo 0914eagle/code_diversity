@@ -1,27 +1,22 @@
 
-def solve(a, b, x):
-    # Calculate the dot product of a and b to get the matrix c
-    c = [[a[i] * b[j] for j in range(len(b))] for i in range(len(a))]
-    
-    # Initialize the maximum area to 0
-    max_area = 0
-    
-    # Iterate over each possible starting point (x1, y1)
-    for x1 in range(len(a)):
-        for y1 in range(len(b)):
-            # Initialize the current sum to 0
-            current_sum = 0
-            
-            # Iterate over each possible ending point (x2, y2)
-            for x2 in range(x1, len(a)):
-                for y2 in range(y1, len(b)):
-                    # Calculate the current sum
-                    current_sum += sum(c[x2][y1:y2+1])
-                    
-                    # If the current sum is less than or equal to x, update the maximum area
-                    if current_sum <= x:
-                        max_area = max(max_area, (x2-x1+1) * (y2-y1+1))
-    
-    # Return the maximum area
-    return max_area
+def get_longest_common_subsequence(s1, s2, virus):
+    m = len(s1)
+    n = len(s2)
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+    for i in range(m):
+        for j in range(n):
+            if s1[i] == s2[j] and s1[i] not in virus:
+                dp[i + 1][j + 1] = dp[i][j] + 1
+            else:
+                dp[i + 1][j + 1] = max(dp[i][j + 1], dp[i + 1][j])
+    return "".join(s1[i - dp[i][-1]:i])
+
+def main():
+    s1 = input()
+    s2 = input()
+    virus = input()
+    print(get_longest_common_subsequence(s1, s2, virus))
+
+if __name__ == '__main__':
+    main()
 

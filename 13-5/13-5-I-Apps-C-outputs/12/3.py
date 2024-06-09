@@ -1,41 +1,68 @@
 
-def solve(a, b, n, m, roads):
-    # Initialize a dictionary to store the shortest distance from each intersection to Janet's house
-    distances = {i: float('inf') for i in range(1, n + 1)}
-    distances[n] = 0
+def f1(N, K):
+    # Initialize a graph with N vertices
+    graph = [[] for _ in range(N)]
 
-    # Initialize a dictionary to store the previous intersection for each intersection
-    previous = {i: None for i in range(1, n + 1)}
+    # Add edges to the graph based on the input data
+    for i in range(N):
+        for j in range(i+1, N):
+            if i != j:
+                graph[i].append(j)
 
-    # Loop through each road
-    for u, v, t in roads:
-        # If the current distance from intersection u to Janet's house is less than the current known distance, update the distance and previous intersection
-        if distances[u] + t < distances[v]:
-            distances[v] = distances[u] + t
-            previous[v] = u
+    # Find the largest clique in the graph
+    max_clique = find_largest_clique(graph, K)
 
-    # Initialize a set to store the intersections that have been visited
-    visited = set()
+    # Return the size of the largest clique
+    return len(max_clique)
 
-    # Initialize a queue to store the intersections to visit
-    queue = [n]
+def f2(graph, K):
+    # Initialize a list to store the maximum clique
+    max_clique = []
 
-    # Loop through each intersection in the queue
-    while queue:
-        # Dequeue an intersection
-        intersection = queue.pop(0)
+    # Iterate over all possible subsets of the graph
+    for subset in powerset(graph):
+        # Check if the subset is a clique
+        if is_clique(subset, K):
+            # If it is a clique, add it to the list of maximum cliques
+            max_clique.append(subset)
 
-        # If the intersection has been visited, skip it
-        if intersection in visited:
-            continue
+    # Return the largest clique
+    return max(max_clique, key=len)
 
-        # Mark the intersection as visited
-        visited.add(intersection)
+def powerset(iterable):
+    "powerset([1,2,3]) --> () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)"
+    s = list(iterable)
+    return chain.from_iterable(combinations(s, r) for r in range(len(s)+1))
 
-        # If the intersection is not Janet's house, enqueue the previous intersection
-        if intersection != 1:
-            queue.append(previous[intersection])
+def is_clique(subset, K):
+    # Check if the subset is a clique
+    for i in range(len(subset)):
+        for j in range(i+1, len(subset)):
+            if not (i, j) in K:
+                return False
+    return True
 
-    # Return the worst case waiting time
-    return distances[1]
+def find_largest_clique(graph, K):
+    # Initialize a list to store the maximum clique
+    max_clique = []
+
+    # Iterate over all possible subsets of the graph
+    for subset in powerset(graph):
+        # Check if the subset is a clique
+        if is_clique(subset, K):
+            # If it is a clique, add it to the list of maximum cliques
+            max_clique.append(subset)
+
+    # Return the largest clique
+    return max(max_clique, key=len)
+
+if __name__ == '__main__':
+    N, K = map(int, input().split())
+    graph = [[] for _ in range(N)]
+    for i in range(N):
+        D = int(input())
+        for _ in range(D):
+            j = int(input())
+            graph[i].append(j)
+    print(f1(N, K))
 

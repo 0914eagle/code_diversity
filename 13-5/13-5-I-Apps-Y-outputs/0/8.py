@@ -1,26 +1,41 @@
 
-def get_sugar_water(A, B, C, D, E, F):
+def get_min_attacks(N, K, healths):
     # Initialize variables
-    sugar_water = 0
-    sugar_dissolved = 0
+    min_attacks = float('inf')
+    special_move_count = 0
+    attack_count = 0
 
-    # Calculate the maximum amount of sugar that can be dissolved in water
-    max_sugar = E * 100 / F
+    # Sort the healths in descending order
+    healths.sort(reverse=True)
 
-    # Loop through all possible combinations of operations
-    for a in range(A, B + 1):
-        for c in range(C, D + 1):
-            # Calculate the mass of sugar water that can be made with the current combination of operations
-            sugar_water = a + c
+    # Loop through the healths and calculate the minimum number of attacks
+    for i in range(N):
+        # If the current health is greater than or equal to the previous health,
+        # then we can use the special move
+        if healths[i] >= healths[i-1]:
+            special_move_count += 1
+            healths[i] = 0
+        # Otherwise, we need to do an attack
+        else:
+            attack_count += 1
+            healths[i] -= 1
 
-            # Check if the mass of sugar water is within the allowed range
-            if sugar_water <= F:
-                # Calculate the mass of sugar that can be dissolved in the current combination of operations
-                sugar_dissolved = min(c, max_sugar)
+        # If we have used up all our special moves,
+        # then we need to do an attack on the next monster
+        if special_move_count == K:
+            special_move_count = 0
+            attack_count += 1
 
-                # Check if the mass of sugar water is the highest possible density
-                if sugar_water * 100 / (a + sugar_dissolved) > sugar_water * 100 / (sugar_water - sugar_dissolved):
-                    return [sugar_water, sugar_dissolved]
+        # Update the minimum number of attacks
+        min_attacks = min(min_attacks, attack_count)
 
-    return [0, 0]
+    return min_attacks
+
+def main():
+    N, K = map(int, input().split())
+    healths = list(map(int, input().split()))
+    print(get_min_attacks(N, K, healths))
+
+if __name__ == '__main__':
+    main()
 

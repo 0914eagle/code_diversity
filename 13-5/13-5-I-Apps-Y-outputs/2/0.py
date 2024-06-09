@@ -1,40 +1,18 @@
 
-def get_bridges(n, m, edges):
-    # Initialize a dictionary to store the graph
-    graph = {}
-    for i in range(1, n+1):
-        graph[i] = []
+def get_input():
+    return [float(x) for x in input().split()]
 
-    # Add edges to the graph
-    for edge in edges:
-        graph[edge[0]].append(edge[1])
-        graph[edge[1]].append(edge[0])
+def get_angle(A, B, C):
+    AB = [B[0] - A[0], B[1] - A[1], B[2] - A[2]]
+    BC = [C[0] - B[0], C[1] - B[1], C[2] - B[2]]
+    X = [AB[1] * BC[2] - AB[2] * BC[1], AB[2] * BC[0] - AB[0] * BC[2], AB[0] * BC[1] - AB[1] * BC[0]]
+    Y = [BC[1] * X[2] - BC[2] * X[1], BC[2] * X[0] - BC[0] * X[2], BC[0] * X[1] - BC[1] * X[0]]
+    return math.degrees(math.acos((X[0] * Y[0] + X[1] * Y[1] + X[2] * Y[2]) / (math.sqrt(X[0]**2 + X[1]**2 + X[2]**2) * math.sqrt(Y[0]**2 + Y[1]**2 + Y[2]**2))))
 
-    # Initialize a queue to do BFS
-    queue = []
+def main():
+    A, B, C, D = get_input()
+    print(get_angle(A, B, C))
 
-    # Initialize a dictionary to keep track of the number of edges to each vertex
-    edges_to_vertex = {}
-    for i in range(1, n+1):
-        edges_to_vertex[i] = 0
-
-    # Initialize a dictionary to keep track of the bridges
-    bridges = {}
-    for i in range(1, m+1):
-        bridges[i] = False
-
-    # Do BFS starting from vertex 1
-    queue.append(1)
-    while queue:
-        vertex = queue.pop(0)
-        for neighbor in graph[vertex]:
-            if neighbor not in edges_to_vertex:
-                queue.append(neighbor)
-                edges_to_vertex[neighbor] = edges_to_vertex[vertex] + 1
-            elif edges_to_vertex[neighbor] == edges_to_vertex[vertex] + 1:
-                # If we find a vertex that is connected to the current vertex through a bridge, mark it as a bridge
-                bridges[edges_to_vertex[neighbor]] = True
-
-    # Return the number of bridges
-    return sum(bridges.values())
+if __name__ == '__main__':
+    main()
 

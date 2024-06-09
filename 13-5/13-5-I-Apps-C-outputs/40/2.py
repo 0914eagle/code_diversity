@@ -1,28 +1,31 @@
 
-def solve(n, foreseeable_future):
-    # Initialize variables
-    hired = []
-    fired = []
-    hr_people = []
-    hr_id = 1
+def get_distinct_starting_circles(circle, k):
+    # Initialize a set to store the distinct starting circles
+    starting_circles = set()
+    
+    # Iterate over the possible starting circles
+    for i in range(len(circle)):
+        # Get the starting circle by rotating the input circle by i positions
+        starting_circle = circle[i:] + circle[:i]
+        
+        # Add the starting circle to the set if it is not already present
+        if starting_circle not in starting_circles:
+            starting_circles.add(starting_circle)
+    
+    # Return the number of distinct starting circles
+    return len(starting_circles)
 
-    # Loop through the foreseeable future
-    for day in range(n):
-        # Get the number of workers fired and hired on this day
-        f, h = foreseeable_future[day]
+def main():
+    # Read the input from stdin
+    n, k = map(int, input().split())
+    circle = input()
+    
+    # Call the function to get the number of distinct starting circles
+    result = get_distinct_starting_circles(circle, k)
+    
+    # Print the result to stdout
+    print(result)
 
-        # Fire the required number of workers
-        for _ in range(f):
-            fired.append(hired.pop())
-
-        # Hire the required number of workers
-        for _ in range(h):
-            hired.append(hr_id)
-            hr_id += 1
-
-        # Assign an HR person to the firing and hiring on this day
-        hr_people.append(hired.pop(0))
-
-    # Return the smallest number of HR people needed and the HR person assignments
-    return len(set(hr_people)), hr_people
+if __name__ == '__main__':
+    main()
 

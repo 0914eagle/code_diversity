@@ -1,31 +1,46 @@
 
-def solve(n, a, b):
-    # Initialize a dictionary to map each statue to its current and desired island
-    statue_map = {i: (a[i], b[i]) for i in range(n)}
+import math
+import random
 
-    # Initialize a set to keep track of the empty islands
-    empty_islands = set(i for i in range(n) if a[i] == 0)
+def f1(n, x, y, r, b, d):
+    # Calculate the probability that the boar hits a tree
+    p_hit = 0
+    for i in range(n):
+        dist = math.sqrt((x - x[i])**2 + (y - y[i])**2)
+        if dist < r[i] + b:
+            p_hit += 1
+    p_hit /= n
 
-    # Loop until all the statues are in the desired position
-    while any(statue_map[i][0] != statue_map[i][1] for i in range(n)):
-        # Find the first statue that needs to be moved
-        statue_to_move = next((i for i in range(n) if statue_map[i][0] != statue_map[i][1]), None)
+    # Calculate the probability that the boar completes its charge without hitting a tree
+    p_complete = 1 - p_hit
 
-        # If no statue needs to be moved, return "NO"
-        if statue_to_move is None:
-            return "NO"
+    return p_complete
 
-        # Find the empty island that the statue can be moved to
-        empty_island = next(iter(empty_islands))
+def f2(n, x, y, r, b, d):
+    # Calculate the probability that the boar hits a tree
+    p_hit = 0
+    for i in range(n):
+        dist = math.sqrt((x - x[i])**2 + (y - y[i])**2)
+        if dist < r[i] + b:
+            p_hit += 1
+    p_hit /= n
 
-        # Move the statue to the empty island
-        statue_map[empty_island] = (statue_map[statue_to_move][0], statue_map[statue_to_move][1])
-        statue_map[statue_to_move] = (0, 0)
+    # Calculate the probability that the boar completes its charge without hitting a tree
+    p_complete = 1 - p_hit
 
-        # Update the set of empty islands
-        empty_islands.remove(empty_island)
-        empty_islands.add(statue_to_move)
+    return p_complete
 
-    # If all the statues are in the desired position, return "YES"
-    return "YES"
+if __name__ == '__main__':
+    n = int(input())
+    x = []
+    y = []
+    r = []
+    for i in range(n):
+        xi, yi, ri = map(int, input().split())
+        x.append(xi)
+        y.append(yi)
+        r.append(ri)
+    b, d = map(int, input().split())
+    print(f1(n, x, y, r, b, d))
+    print(f2(n, x, y, r, b, d))
 

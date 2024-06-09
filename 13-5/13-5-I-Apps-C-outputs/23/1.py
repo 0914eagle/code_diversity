@@ -1,34 +1,21 @@
 
-def find_sequence(n, k):
-    if k > n or k < 1:
-        return -1
-    
-    sequence = list(range(1, n+1))
-    while True:
-        longest_monotone_subsequence = 0
-        for i in range(n):
-            current_subsequence = 1
-            for j in range(i+1, n):
-                if sequence[i] < sequence[j]:
-                    current_subsequence += 1
-                else:
-                    break
-            longest_monotone_subsequence = max(longest_monotone_subsequence, current_subsequence)
-        
-        if longest_monotone_subsequence == k:
-            return sequence
-        
-        # If the longest monotone subsequence is not equal to k,
-        # then we need to modify the sequence to create a longer monotone subsequence.
-        # We can do this by swapping two elements in the sequence.
-        # Find the two elements that are farthest from each other and swap them.
-        farthest_index_1 = 0
-        farthest_index_2 = 0
-        for i in range(n-1):
-            for j in range(i+1, n):
-                if sequence[j] - sequence[i] > sequence[farthest_index_2] - sequence[farthest_index_1]:
-                    farthest_index_1 = i
-                    farthest_index_2 = j
-        
-        sequence[farthest_index_1], sequence[farthest_index_2] = sequence[farthest_index_2], sequence[farthest_index_1]
+def get_lis_length(sequence):
+    # Implement your LIS algorithm here
+    # You can use a dynamic programming approach or any other method you prefer
+    pass
+
+def get_critical_elements(sequence):
+    lis_length = get_lis_length(sequence)
+    critical_elements = []
+    for i in range(len(sequence)):
+        if get_lis_length(sequence[:i] + sequence[i+1:]) < lis_length:
+            critical_elements.append(sequence[i])
+    if not critical_elements:
+        critical_elements = [-1]
+    return critical_elements
+
+if __name__ == '__main__':
+    n = int(input())
+    sequence = list(map(int, input().split()))
+    print(*get_critical_elements(sequence), sep='\n')
 

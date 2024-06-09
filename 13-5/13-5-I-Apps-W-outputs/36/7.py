@@ -1,33 +1,20 @@
 
-def solve(n, lairs):
-    # Sort the lairs by their x-coordinates
-    lairs.sort(key=lambda x: x[0])
-    
-    # Initialize the minimum radius and center of the reserve
-    min_radius = float('inf')
-    center = (0, 0)
-    
-    # Iterate over the lairs
+def get_bitwise_or(x, y):
+    return x | y
+
+def get_number_of_ways(n, heights):
+    number_of_ways = 0
     for i in range(n):
-        # Calculate the distance between the current lair and the previous lair
-        if i > 0:
-            distance = (lairs[i][0] - lairs[i-1][0]) ** 2
-        # If it is the first lair, set the distance to infinity
-        else:
-            distance = float('inf')
-        
-        # Calculate the radius of the circle containing the current lair and the previous lair
-        radius = distance + (lairs[i][1] - lairs[i-1][1]) ** 2
-        
-        # If the radius is less than the minimum radius, update the minimum radius and center
-        if radius < min_radius:
-            min_radius = radius
-            center = ((lairs[i][0] + lairs[i-1][0]) / 2, (lairs[i][1] + lairs[i-1][1]) / 2)
-    
-    # If the minimum radius is infinite, it is not possible to build a reserve
-    if min_radius == float('inf'):
-        return -1
-    
-    # Return the minimum radius
-    return min_radius
+        for j in range(i+1, n):
+            height_between_mountains = 0
+            for k in range(i, j+1):
+                height_between_mountains |= heights[k]
+            if height_between_mountains > heights[i] and height_between_mountains > heights[j]:
+                number_of_ways += 1
+    return number_of_ways
+
+if __name__ == '__main__':
+    n = int(input())
+    heights = list(map(int, input().split()))
+    print(get_number_of_ways(n, heights))
 

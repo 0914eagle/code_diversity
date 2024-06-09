@@ -1,50 +1,43 @@
 
-def solve(N, A, B):
-    # Initialize a dictionary to store the debts
-    debts = {}
+def f1(L, n):
+    # function to check if the wire will touch itself
+    def check_touch(point, direction):
+        if direction == "C":
+            return point >= L - point
+        else:
+            return point <= L - point
+    
+    # function to check if the wire will touch itself at any point
+    def check_touch_any(points, directions):
+        for point, direction in zip(points, directions):
+            if check_touch(point, direction):
+                return True
+        return False
+    
+    # function to check if the wire will touch itself at any point during the bending process
+    def check_touch_bending(points, directions):
+        for i in range(1, len(points)):
+            if check_touch(points[i] - points[i - 1], directions[i - 1]):
+                return True
+        return False
+    
+    # main function
+    return "GHOST" if check_touch_bending(points, directions) else "SAFE"
 
-    # Loop through the input and add the debts to the dictionary
-    for i in range(N):
-        debts[i + 1] = -B[i]
+def f2(L, n):
+    # function to get the points and directions from the input
+    points = []
+    directions = []
+    for i in range(n):
+        point, direction = map(int, input().split())
+        points.append(point)
+        directions.append(direction)
+    
+    # function to call f1 and print the output
+    output = f1(L, n, points, directions)
+    print(output)
 
-    # Loop through the input and add the debts to the dictionary
-    for i in range(N):
-        debts[A[i]] += B[i]
-
-    # Initialize a set to store the visited nodes
-    visited = set()
-
-    # Initialize a queue to store the nodes to visit
-    queue = []
-
-    # Add the node with the maximum debt to the queue
-    queue.append(max(debts, key=debts.get))
-
-    # Loop until the queue is empty
-    while queue:
-        # Get the current node from the queue
-        node = queue.pop(0)
-
-        # If the node has already been visited, skip it
-        if node in visited:
-            continue
-
-        # Mark the node as visited
-        visited.add(node)
-
-        # Get the debt of the current node
-        debt = debts[node]
-
-        # If the debt is positive, add it to the total amount of money the town has to give
-        if debt > 0:
-            total_amount += debt
-
-        # Loop through the neighbors of the current node
-        for neighbor in debts:
-            # If the neighbor has not been visited and has a positive debt, add it to the queue
-            if neighbor not in visited and debts[neighbor] > 0:
-                queue.append(neighbor)
-
-    # Return the total amount of money the town has to give
-    return total_amount
+if __name__ == '__main__':
+    L, n = map(int, input().split())
+    f2(L, n)
 

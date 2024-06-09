@@ -1,15 +1,22 @@
 
-def solve(a, b, x):
-    n = len(a)
-    m = len(b)
-    c = [[a[i] * b[j] for j in range(m)] for i in range(n)]
-    max_area = 0
-    for i in range(n):
-        for j in range(m):
-            for k in range(i, n):
-                for l in range(j, m):
-                    area = (k - i + 1) * (l - j + 1)
-                    if area > max_area and sum(sum(c[i:k+1], [])) <= x:
-                        max_area = area
-    return max_area
+def get_longest_common_subsequence(s1, s2, virus):
+    m = len(s1)
+    n = len(s2)
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+    for i in range(m):
+        for j in range(n):
+            if s1[i] == s2[j] and s1[i] not in virus:
+                dp[i + 1][j + 1] = dp[i][j] + 1
+            else:
+                dp[i + 1][j + 1] = max(dp[i][j + 1], dp[i + 1][j])
+    return "".join(s1[i - 1] for i in range(m, 0, -1) if dp[i][n] > 0)
+
+def main():
+    s1 = input()
+    s2 = input()
+    virus = input()
+    print(get_longest_common_subsequence(s1, s2, virus))
+
+if __name__ == '__main__':
+    main()
 

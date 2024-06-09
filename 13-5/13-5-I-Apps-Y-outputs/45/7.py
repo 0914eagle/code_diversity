@@ -1,13 +1,24 @@
 
-def get_max_area(W, H, x, y):
-    area_1 = x * y
-    area_2 = (W-x) * (H-y)
-    area_3 = W * H - area_1 - area_2
-    max_area = max(area_1, area_2, area_3)
-    if area_1 == max_area:
-        return area_1, 1
-    elif area_2 == max_area:
-        return area_2, 1
+def get_nearest_amount(candy_price, smallest_bill):
+    # Convert the candy price to a string
+    candy_price_str = str(candy_price)
+    # Get the length of the smallest bill
+    smallest_bill_len = len(str(smallest_bill))
+    # Get the last few digits of the candy price
+    last_digits = candy_price_str[-smallest_bill_len:]
+    # Convert the last few digits to an integer
+    last_digits_int = int(last_digits)
+    # Get the nearest amount that Mirko can pay
+    if last_digits_int >= 5:
+        nearest_amount = int(candy_price_str[:-smallest_bill_len]) + smallest_bill
     else:
-        return area_3, 0
+        nearest_amount = int(candy_price_str[:-smallest_bill_len])
+    return nearest_amount
+
+def main():
+    candy_price, smallest_bill = map(int, input().split())
+    print(get_nearest_amount(candy_price, smallest_bill))
+
+if __name__ == '__main__':
+    main()
 

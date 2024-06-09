@@ -1,18 +1,21 @@
 
-def solve(s, t):
-    # Initialize a dictionary to store the number of operations required for each character
-    char_ops = {}
-    for char in s:
-        char_ops[char] = 0
-    
-    # Iterate through the characters of both strings and calculate the number of operations required for each character
-    for i in range(len(s)):
-        if s[i] != t[i]:
-            char_ops[s[i]] += 1
-    
-    # Find the character with the minimum number of operations required and return it
-    min_ops = min(char_ops.values())
-    for char, ops in char_ops.items():
-        if ops == min_ops:
-            return min_ops
+def get_input():
+    N, M = map(int, input().split())
+    A = list(map(int, input().split()))
+    return N, M, A
+
+def solve(N, M, A):
+    days_spent = 0
+    for i in range(M):
+        days_spent += A[i]
+        if days_spent > N:
+            return -1
+    return N - days_spent
+
+def main():
+    N, M, A = get_input()
+    print(solve(N, M, A))
+
+if __name__ == '__main__':
+    main()
 

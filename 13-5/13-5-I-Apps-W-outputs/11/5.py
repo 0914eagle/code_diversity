@@ -1,26 +1,33 @@
 
-def solve(a, b):
-    # Initialize the count of ways for each scenario
-    first_player_wins = 0
-    draw = 0
-    second_player_wins = 0
-    
-    # Iterate over all possible values of the dice
-    for i in range(1, 7):
-        # Calculate the absolute difference between the written numbers and the dice value
-        abs_diff_a = abs(a - i)
-        abs_diff_b = abs(b - i)
-        
-        # Check if the first player wins
-        if abs_diff_a < abs_diff_b:
-            first_player_wins += 1
-        # Check if the game ends in a draw
-        elif abs_diff_a == abs_diff_b:
-            draw += 1
-        # Check if the second player wins
-        else:
-            second_player_wins += 1
-    
-    # Return the count of ways for each scenario
-    return first_player_wins, draw, second_player_wins
+def is_human_winner(n, k, coefficients):
+    # Initialize the polynomial and the remaining undefined coefficients
+    polynomial = 0
+    undefined_coefficients = set(range(1, n + 1))
+
+    # Iterate through the coefficients and set the undefined coefficients
+    for i, coefficient in enumerate(coefficients, start=1):
+        if coefficient != "?":
+            polynomial += int(coefficient) * x**(i - 1)
+            undefined_coefficients.remove(i)
+
+    # Check if the polynomial is divisible by x - k
+    if polynomial % (x - k) == 0:
+        return True
+
+    # Check if the human can set an undefined coefficient to make the polynomial divisible by x - k
+    for i in undefined_coefficients:
+        polynomial += x**(i - 1)
+        if polynomial % (x - k) == 0:
+            return True
+        polynomial -= x**(i - 1)
+
+    return False
+
+def main():
+    n, k = map(int, input().split())
+    coefficients = input().split()
+    print("Yes") if is_human_winner(n, k, coefficients) else print("No")
+
+if __name__ == '__main__':
+    main()
 

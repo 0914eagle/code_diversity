@@ -1,13 +1,16 @@
 
-def solve(n, x):
-    # Calculate the maximum distance between any two computers
-    max_distance = max([abs(x[i] - x[j]) for i in range(n) for j in range(i+1, n)])
-    
-    # Calculate the sum of the maximum distances for all non-empty subsets
-    sum = 0
-    for i in range(1, n+1):
-        for subset in combinations(range(n), i):
-            sum += max_distance
-    
-    return sum % 1000000007
+def is_possible_to_win(word):
+    return "DA" if word[0] == "k" else "NE"
+
+def get_most_beautiful_word(word):
+    if word[0] == "k":
+        return "ak"
+    else:
+        return word
+
+if __name__ == '__main__':
+    N = int(input())
+    word = input()
+    print(is_possible_to_win(word))
+    print(get_most_beautiful_word(word))
 

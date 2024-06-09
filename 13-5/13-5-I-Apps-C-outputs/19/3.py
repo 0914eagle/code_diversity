@@ -1,18 +1,25 @@
 
-def solve(n, m, a):
-    # Initialize a list to store the number of burgers ordered on each day
-    burgers = [0] * m
+def get_input():
+    N = int(input())
+    points = []
+    for i in range(N):
+        x, y = map(int, input().split())
+        points.append((x, y))
+    return N, points
 
-    # Initialize a set to store the names of the colleagues who have been identified
-    identified = set()
+def is_right_triangle(p1, p2, p3):
+    return (p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2 == (p2[0] - p3[0]) ** 2 + (p2[1] - p3[1]) ** 2
 
-    # Loop through each day
-    for i in range(m):
-        # If the number of burgers ordered is greater than the number of identified colleagues
-        if a[i] > len(identified):
-            # Identify the next colleague who has not been identified
-            identified.add(i % n)
+def count_right_triangles(points):
+    count = 0
+    for i in range(len(points)):
+        for j in range(i+1, len(points)):
+            for k in range(j+1, len(points)):
+                if is_right_triangle(points[i], points[j], points[k]):
+                    count += 1
+    return count
 
-    # Return the maximum number of identified colleagues
-    return len(identified)
+if __name__ == '__main__':
+    N, points = get_input()
+    print(count_right_triangles(points))
 

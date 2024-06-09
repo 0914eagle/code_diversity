@@ -1,25 +1,14 @@
 
-def get_speed(photos):
-    # Initialize variables
-    speed = 0
-    time = 0
-    distance = 0
+def get_input():
+    return list(map(int, input().split()))
 
-    # Loop through the photos
-    for photo in photos:
-        # Calculate the time and distance between the current and previous photo
-        current_time = photo[0]
-        current_distance = photo[1]
-        time_diff = current_time - time
-        distance_diff = current_distance - distance
+def largest_number(a, b):
+    return max(a + b, a - b, a * b)
 
-        # Calculate the speed using the time and distance differences
-        speed = distance_diff / time_diff
+def main():
+    a, b = get_input()
+    print(largest_number(a, b))
 
-        # Update the time and distance for the next iteration
-        time = current_time
-        distance = current_distance
-
-    # Return the greatest integral speed
-    return int(speed)
+if __name__ == '__main__':
+    main()
 

@@ -1,14 +1,41 @@
 
-def solve(snakes, snacks):
-    # Initialize a set to store the snakes with no snacks
-    no_snacks = set()
+def get_min_x(divisors):
+    # Sort the divisors in ascending order
+    divisors.sort()
+    
+    # Initialize the minimum possible x as the product of the first two divisors
+    x = divisors[0] * divisors[1]
+    
+    # Iterate through the remaining divisors
+    for i in range(2, len(divisors)):
+        # Check if the current divisor is a factor of x
+        if x % divisors[i] != 0:
+            # If it is not, return -1 as the minimum possible x does not exist
+            return -1
+        # Otherwise, update x to be the product of the current divisor and the previous x
+        x *= divisors[i]
+    
+    # Return the minimum possible x
+    return x
 
-    # Iterate over the snakes and their snacks
-    for snake, snack_list in zip(snakes, snacks):
-        # If the snake has no snacks, add it to the set
-        if not snack_list:
-            no_snacks.add(snake)
+def main():
+    # Read the number of queries
+    t = int(input())
+    
+    # Iterate through each query
+    for _ in range(t):
+        # Read the number of divisors
+        n = int(input())
+        
+        # Read the list of divisors
+        divisors = [int(x) for x in input().split()]
+        
+        # Call the get_min_x function to find the minimum possible x
+        x = get_min_x(divisors)
+        
+        # Print the answer
+        print(x)
 
-    # Return the number of snakes with no snacks
-    return len(no_snacks)
+if __name__ == '__main__':
+    main()
 

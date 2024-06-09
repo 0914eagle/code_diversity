@@ -1,28 +1,43 @@
 
-def solve(beacons, mountains):
-    # Initialize a set to store the lit beacons
-    lit_beacons = set()
-    # Loop through each beacon and check if it is within sight of any other beacon
-    for beacon in beacons:
-        for other_beacon in beacons:
-            if beacon != other_beacon and is_within_sight(beacon, other_beacon, mountains):
-                lit_beacons.add(beacon)
-                break
-    # Return the number of messages required to light all beacons
-    return len(beacons) - len(lit_beacons)
+import math
 
-# Check if two beacons are within sight of each other
-def is_within_sight(beacon1, beacon2, mountains):
-    # Check if the straight line between the two beacons is blocked by a mountain peak
-    for mountain in mountains:
-        if is_blocked_by_mountain(beacon1, beacon2, mountain):
+def distance(x1, y1, x2, y2):
+    return math.sqrt((x2-x1)**2 + (y2-y1)**2)
+
+def is_visible(beacon1, beacon2, mountain_peaks):
+    for mountain_peak in mountain_peaks:
+        if distance(beacon1[0], beacon1[1], mountain_peak[0], mountain_peak[1]) <= mountain_peak[2]:
             return False
     return True
 
-# Check if the straight line between two beacons is blocked by a mountain peak
-def is_blocked_by_mountain(beacon1, beacon2, mountain):
-    # Calculate the distance between the two beacons
-    distance = ((beacon1[0] - beacon2[0]) ** 2 + (beacon1[1] - beacon2[1]) ** 2) ** 0.5
-    # Check if the distance is less than or equal to the radius of the mountain peak
-    return distance <= mountain[2]
+def f1(n, m):
+    beacons = []
+    mountain_peaks = []
+    for i in range(n):
+        x, y = map(int, input().split())
+        beacons.append((x, y))
+    for i in range(m):
+        x, y, r = map(int, input().split())
+        mountain_peaks.append((x, y, r))
+    return beacons, mountain_peaks
+
+def f2(beacons, mountain_peaks):
+    visible_beacons = set()
+    for beacon in beacons:
+        if is_visible(beacon, beacon, mountain_peaks):
+            visible_beacons.add(beacon)
+    messages = 0
+    while len(visible_beacons) < len(beacons):
+        new_visible_beacons = set()
+        for beacon in beacons:
+            if is_visible(beacon, beacon, mountain_peaks):
+                new_visible_beacons.add(beacon)
+        messages += 1
+        visible_beacons = new_visible_beacons
+    return messages
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    beacons, mountain_peaks = f1(n, m)
+    print(f2(beacons, mountain_peaks))
 

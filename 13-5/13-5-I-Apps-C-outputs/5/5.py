@@ -1,36 +1,71 @@
 
-import math
-import random
+def f1(n, levels):
+    # Initialize the dp array with the completion time for level 1
+    dp = [levels[0][-1]]
+    
+    # Loop through the remaining levels
+    for i in range(1, n):
+        # Get the shortcut item and completion time for the current level
+        shortcut_item, completion_time = levels[i][:2]
+        
+        # Initialize the minimum completion time to infinity
+        min_completion_time = float('inf')
+        
+        # Loop through the items available for the current level
+        for j in range(n+1):
+            # If the current item is the shortcut item, set the completion time to the shortcut completion time
+            if j == shortcut_item:
+                completion_time = levels[i][-1]
+            
+            # Get the completion time for the current level using the current item
+            current_completion_time = levels[i][j]
+            
+            # If the current completion time is less than the minimum completion time, update the minimum completion time
+            if current_completion_time < min_completion_time:
+                min_completion_time = current_completion_time
+        
+        # Add the minimum completion time for the current level to the dp array
+        dp.append(dp[i-1] + min_completion_time)
+    
+    # Return the minimum completion time for all levels
+    return dp[-1]
 
-def solve(n, trees, b, d):
-    # Calculate the area of the boar's disk
-    boar_area = math.pi * b ** 2
+def f2(n, levels):
+    # Initialize the dp array with the completion time for level 1
+    dp = [levels[0][-1]]
+    
+    # Loop through the remaining levels
+    for i in range(1, n):
+        # Get the shortcut item and completion time for the current level
+        shortcut_item, completion_time = levels[i][:2]
+        
+        # Initialize the minimum completion time to infinity
+        min_completion_time = float('inf')
+        
+        # Loop through the items available for the current level
+        for j in range(n+1):
+            # If the current item is the shortcut item, set the completion time to the shortcut completion time
+            if j == shortcut_item:
+                completion_time = levels[i][-1]
+            
+            # Get the completion time for the current level using the current item
+            current_completion_time = levels[i][j]
+            
+            # If the current completion time is less than the minimum completion time, update the minimum completion time
+            if current_completion_time < min_completion_time:
+                min_completion_time = current_completion_time
+        
+        # Add the minimum completion time for the current level to the dp array
+        dp.append(dp[i-1] + min_completion_time)
+    
+    # Return the minimum completion time for all levels
+    return dp[-1]
 
-    # Initialize the probability to 1
-    probability = 1
-
-    # Loop through each tree
-    for i in range(n):
-        # Calculate the distance between the boar and the tree
-        distance = math.sqrt((trees[i][0] - b) ** 2 + (trees[i][1] - b) ** 2)
-
-        # Check if the boar will hit the tree before it charges the full distance
-        if distance <= d:
-            # Calculate the area of overlap between the boar and the tree
-            overlap_area = math.pi * min(b, trees[i][2]) ** 2
-
-            # Subtract the probability of hitting the tree from the total probability
-            probability -= overlap_area / boar_area
-
-    # Return the probability of completing the charge without hitting a tree
-    return probability
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     n = int(input())
-    trees = []
+    levels = []
     for i in range(n):
-        x, y, r = map(int, input().split())
-        trees.append([x, y, r])
-    b, d = map(int, input().split())
-    print(solve(n, trees, b, d))
+        levels.append(list(map(int, input().split())))
+    print(f1(n, levels))
+    print(f2(n, levels))
 

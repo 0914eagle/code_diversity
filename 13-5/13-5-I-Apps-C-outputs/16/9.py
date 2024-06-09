@@ -1,39 +1,42 @@
 
-def solve(N, u, parent):
-    # Initialize variables
-    L = 0
-    M = 0
-    visited = [False] * (N + 1)
-    path = []
+def is_valid_solution(grid):
+    n = len(grid)
+    for i in range(n):
+        for j in range(n):
+            if grid[i][j] == 0:
+                return False
+    for i in range(n):
+        for j in range(n):
+            for k in range(n):
+                if grid[i][j] == grid[i][k] and k != j:
+                    return False
+    for i in range(n):
+        for j in range(n):
+            for k in range(n):
+                if grid[j][i] == grid[k][i] and k != j:
+                    return False
+    return True
 
-    # Function to check if the path is nondecreasing and has the correct length
-    def is_valid_path(path):
-        nonlocal L
-        nonlocal M
-        if len(path) > L:
-            L = len(path)
-            M = 1
-        elif len(path) == L:
-            M += 1
-        return L == len(path) and all(u[path[i]] <= u[path[i + 1]] for i in range(len(path) - 1))
+def solve_sudoku(grid):
+    n = len(grid)
+    for i in range(n):
+        for j in range(n):
+            if grid[i][j] == 0:
+                for num in range(1, n+1):
+                    grid[i][j] = num
+                    if is_valid_solution(grid):
+                        solve_sudoku(grid)
+                    grid[i][j] = 0
+                return
+    print(grid)
 
-    # Function to find all jumping paths in the tree
-    def find_paths(node):
-        nonlocal visited
-        nonlocal path
-        visited[node] = True
-        path.append(node)
-        if is_valid_path(path):
-            return
-        for child in parent[node]:
-            if not visited[child]:
-                find_paths(child)
-        path.pop()
-        visited[node] = False
+def main():
+    n, k = map(int, input().split())
+    grid = [[0] * n for _ in range(n)]
+    for i in range(k):
+        grid[i] = list(map(int, input().split()))
+    solve_sudoku(grid)
 
-    # Find all jumping paths in the tree
-    find_paths(1)
-
-    # Return the length of the longest jumping path and the number of jumping paths modulo 11092019
-    return L, M % 11092019
+if __name__ == '__main__':
+    main()
 

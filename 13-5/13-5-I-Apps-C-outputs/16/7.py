@@ -1,27 +1,37 @@
 
-def solve(N, labels, tree):
-    # Initialize variables
-    L = 0
-    M = 0
-    
-    # Iterate through each vertex in the tree
-    for i in range(1, N+1):
-        # If the vertex is the root, skip it
-        if i == 1:
-            continue
-        
-        # Get the parent of the current vertex
-        parent = tree[i-1]
-        
-        # If the parent has a higher label, it's not a valid jumping path
-        if labels[parent-1] > labels[i-1]:
-            continue
-        
-        # If the parent has a lower label, it's a valid jumping path
-        if labels[parent-1] < labels[i-1]:
-            L = max(L, i-parent)
-            M += 1
-    
-    # Return the length of the longest jumping path and the number of jumping paths modulo 11092019
-    return L, M % 11092019
+def is_solvable(n, k, rows):
+    # Initialize a set to store the numbers that are already filled in
+    filled_nums = set()
+    for row in rows:
+        for num in row:
+            filled_nums.add(num)
+    # Check if all numbers from 1 to n are filled in
+    for num in range(1, n + 1):
+        if num not in filled_nums:
+            return False
+    return True
+
+def solve_superdoku(n, k, rows):
+    # Initialize a set to store the numbers that are already filled in
+    filled_nums = set()
+    for row in rows:
+        for num in row:
+            filled_nums.add(num)
+    # Check if all numbers from 1 to n are filled in
+    for num in range(1, n + 1):
+        if num not in filled_nums:
+            return False
+    return True
+
+def main():
+    n, k = map(int, input().split())
+    rows = [list(map(int, input().split())) for _ in range(k)]
+    if is_solvable(n, k, rows):
+        print("yes")
+        print(*solve_superdoku(n, k, rows))
+    else:
+        print("no")
+
+if __name__ == '__main__':
+    main()
 

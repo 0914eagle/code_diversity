@@ -1,17 +1,17 @@
 
-def solve(socks, capacity, k):
-    # Sort the socks by color
-    socks.sort()
-    # Initialize the number of machines to 0
-    machines = 0
-    # Iterate over the socks
-    for i in range(len(socks)):
-        # Check if the current sock is within the range of the previous sock
-        if i > 0 and abs(socks[i] - socks[i-1]) <= k:
-            # If it is, continue using the same machine
-            continue
-        # If it's not, start a new machine
-        machines += 1
-    # Return the number of machines needed
-    return machines
+def get_next_larger_number(x):
+    x_list = [int(i) for i in str(x)]
+    x_list.sort(reverse=True)
+    next_larger_number = int("".join(map(str, x_list)))
+    return next_larger_number
+
+def main():
+    x = int(input())
+    if x == 0:
+        print(0)
+    else:
+        print(get_next_larger_number(x))
+
+if __name__ == '__main__':
+    main()
 

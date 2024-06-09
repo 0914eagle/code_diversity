@@ -1,31 +1,25 @@
 
-def solve(n, g, dist, cost):
-    # Sort the gas stations by distance in ascending order
-    sorted_gas_stations = sorted(zip(dist, cost), key=lambda x: x[0])
-
-    # Initialize the current distance and cost variables
-    current_distance = 0
-    current_cost = 0
-
-    # Loop through each gas station
+def f1(n, a):
+    # find the longest good sequence
+    max_length = 0
     for i in range(n):
-        # Calculate the distance to the next gas station
-        next_distance = sorted_gas_stations[i][0] - current_distance
+        for j in range(i+1, n):
+            if a[j] - a[i] > 1 and all(gcd(a[j] - a[i], a[k] - a[i]) > 1 for k in range(i+1, j)):
+                max_length = max(max_length, j - i + 1)
+    return max_length
 
-        # Calculate the cost to reach the next gas station
-        next_cost = sorted_gas_stations[i][1] * (next_distance // 1000)
+def f2(n, a):
+    # find all good sequences
+    sequences = []
+    for i in range(n):
+        for j in range(i+1, n):
+            if a[j] - a[i] > 1 and all(gcd(a[j] - a[i], a[k] - a[i]) > 1 for k in range(i+1, j)):
+                sequences.append(a[i:j+1])
+    return sequences
 
-        # Check if the next gas station is within the fuel tank capacity
-        if next_distance + current_distance <= g:
-            # Add the cost to reach the next gas station to the total cost
-            current_cost += next_cost
-
-            # Update the current distance
-            current_distance = sorted_gas_stations[i][0]
-        else:
-            # If the next gas station is not within the fuel tank capacity, cancel the road trip
-            return "cancel road trip"
-
-    # If the trip is possible, return the minimum cost
-    return current_cost
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(f1(n, a))
+    print(f2(n, a))
 

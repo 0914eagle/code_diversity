@@ -1,31 +1,32 @@
 
-def solve(s):
-    n = len(s)
-    if n == 1:
-        return "(:("
-    
-    # Replace ? with (
-    s = s.replace("?", "(")
-    
-    # Check if the resulting sequence is a correct parenthesis sequence
-    if is_correct_parenthesis_sequence(s):
-        return s
-    
-    # If not, try replacing ? with )
-    s = s.replace("?", ")")
-    if is_correct_parenthesis_sequence(s):
-        return s
-    
-    return ":("
+def get_min_cost(costs, next_rooms):
+    # Initialize the minimum cost and the set of rooms with traps
+    min_cost = 0
+    rooms_with_traps = set()
 
-def is_correct_parenthesis_sequence(s):
-    stack = []
-    for c in s:
-        if c == "(":
-            stack.append(c)
-        elif c == ")":
-            if not stack:
-                return False
-            stack.pop()
-    return not stack
+    # Loop through the costs and next rooms
+    for i, (cost, next_room) in enumerate(zip(costs, next_rooms)):
+        # If the current room is not in the set of rooms with traps, add it and update the minimum cost
+        if i not in rooms_with_traps:
+            min_cost += cost
+            rooms_with_traps.add(i)
+
+        # If the next room is in the set of rooms with traps, add it and update the minimum cost
+        if next_room in rooms_with_traps:
+            min_cost += cost
+            rooms_with_traps.add(next_room)
+
+    return min_cost
+
+def main():
+    # Read the number of rooms and the costs and next rooms from stdin
+    n = int(input())
+    costs = list(map(int, input().split()))
+    next_rooms = list(map(int, input().split()))
+
+    # Call the get_min_cost function and print the result
+    print(get_min_cost(costs, next_rooms))
+
+if __name__ == '__main__':
+    main()
 

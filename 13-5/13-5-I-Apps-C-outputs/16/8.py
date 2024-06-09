@@ -1,38 +1,54 @@
 
-def solve(N, labels, tree):
-    # Initialize the longest jumping path length and the number of jumping paths
-    L = 0
-    M = 0
+def is_solvable(n, k, rows):
+    # Initialize a set to store the numbers that have been used
+    used_numbers = set()
     
-    # Iterate over the vertices in the tree
-    for v in range(1, N+1):
-        # If the vertex is the root, skip it
-        if v == 1:
-            continue
-        
-        # Get the parent of the vertex
-        parent = tree[v-1]
-        
-        # If the parent is the root, skip it
-        if parent == 1:
-            continue
-        
-        # Get the label of the vertex and its parent
-        label = labels[v-1]
-        parent_label = labels[parent-1]
-        
-        # If the label of the vertex is greater than the label of its parent, skip it
-        if label > parent_label:
-            continue
-        
-        # If the label of the vertex is equal to the label of its parent, increment the longest jumping path length
-        if label == parent_label:
-            L += 1
-        
-        # If the label of the vertex is less than the label of its parent, increment the number of jumping paths
-        if label < parent_label:
-            M += 1
+    # Iterate through the given rows
+    for row in rows:
+        # Add the numbers in the row to the set of used numbers
+        used_numbers |= set(row)
     
-    # Return the longest jumping path length and the number of jumping paths modulo the prime 11092019
-    return L, M % 11092019
+    # Check if all numbers from 1 to n have been used
+    return len(used_numbers) == n
+
+def solve(n, k, rows):
+    # Initialize a list to store the solution
+    solution = []
+    
+    # Iterate through the remaining rows
+    for i in range(k, n):
+        # Initialize a list to store the numbers in the current row
+        current_row = []
+        
+        # Iterate through the numbers from 1 to n
+        for j in range(1, n + 1):
+            # If the number has not been used, add it to the current row
+            if j not in used_numbers:
+                current_row.append(j)
+        
+        # Add the current row to the solution
+        solution.append(current_row)
+    
+    # Return the solution
+    return solution
+
+def main():
+    # Read the input
+    n, k = map(int, input().split())
+    rows = [list(map(int, input().split())) for _ in range(k)]
+    
+    # Check if the problem is solvable
+    if is_solvable(n, k, rows):
+        # Solve the problem
+        solution = solve(n, k, rows)
+        
+        # Print the solution
+        for row in solution:
+            print(*row)
+    else:
+        # Print that there is no solution
+        print("no")
+
+if __name__ == '__main__':
+    main()
 

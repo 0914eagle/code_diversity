@@ -1,34 +1,17 @@
 
-import sys
+def get_valid_sequences(n, k):
+    valid_sequences = []
+    for i in range(1, n):
+        for j in range(1, n):
+            if i * j % n != 0:
+                valid_sequences.append([i, j])
+    return valid_sequences[k - 1]
 
-sys.setrecursionlimit(10**6)
-
-MOD = 1000000007
-
-def shortest_paths(n, roads):
-    graph = [[] for _ in range(n + 1)]
-    for o, d, l in roads:
-        graph[o].append((d, l))
-    
-    dp = [0] * (n + 1)
-    dp[1] = 1
-    
-    for i in range(2, n + 1):
-        for j in graph[i]:
-            dp[i] += dp[j[0]]
-            dp[i] %= MOD
-    
-    return dp[n]
-
-def main():
-    n, m = map(int, input().split())
-    roads = []
-    for _ in range(m):
-        o, d, l = map(int, input().split())
-        roads.append((o, d, l))
-    
-    print(shortest_paths(n, roads))
+def get_kth_sequence(n, k):
+    valid_sequences = get_valid_sequences(n, k)
+    return " ".join(str(x) for x in valid_sequences)
 
 if __name__ == '__main__':
-    main()
+    n, k = map(int, input().split())
+    print(get_kth_sequence(n, k))
 

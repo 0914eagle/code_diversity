@@ -1,23 +1,43 @@
 
-def solve(a, b):
-    # Initialize a dictionary to store the number of ways for each dice roll
-    ways = {i: 0 for i in range(1, 7)}
+def is_human_winner(n, k, coefficients):
+    # Initialize the polynomial with the given coefficients
+    polynomial = 0
+    for i in range(n):
+        polynomial += coefficients[i] * x**i
 
-    # Loop through each dice roll and calculate the difference between the written numbers and the dice roll
-    for i in range(1, 7):
-        diff_a = abs(a - i)
-        diff_b = abs(b - i)
+    # Check if the polynomial is already divisible by x - k
+    if polynomial % (x - k) == 0:
+        return True
 
-        # If the difference between the written numbers is the same, it's a draw
-        if diff_a == diff_b:
-            ways[i] += 1
-        # If the first player's written number is closer to the dice roll, they win
-        elif diff_a < diff_b:
-            ways[i] += 1
-        # If the second player's written number is closer to the dice roll, they win
+    # Check if the human can set a coefficient to any value and still win
+    for i in range(n):
+        if coefficients[i] == '?':
+            # Set the coefficient to any value and check if the polynomial is still divisible by x - k
+            coefficients[i] = 1
+            if polynomial % (x - k) == 0:
+                return True
+            coefficients[i] = -1
+            if polynomial % (x - k) == 0:
+                return True
+            coefficients[i] = 0
+            if polynomial % (x - k) == 0:
+                return True
+            coefficients[i] = '?'
+
+    # If the human cannot set a coefficient to any value and still win, return False
+    return False
+
+def main():
+    n, k = map(int, input().split())
+    coefficients = []
+    for i in range(n + 1):
+        coefficient = input()
+        if coefficient == '?':
+            coefficients.append('?')
         else:
-            ways[i] += 0
+            coefficients.append(int(coefficient))
+    print("Yes") if is_human_winner(n, k, coefficients) else print("No")
 
-    # Return the number of ways for each outcome
-    return (ways[1], ways[2], ways[3], ways[4], ways[5], ways[6])
+if __name__ == '__main__':
+    main()
 

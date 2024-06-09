@@ -1,33 +1,35 @@
 
-def solve(a, b, n, m, roads):
-    # Initialize a dictionary to store the shortest distance from each intersection to Janet's house
-    distances = {1: 0}
-    # Initialize a dictionary to store the previous intersection for each intersection
-    previous = {1: None}
-    # Loop through each road
-    for u, v, t in roads:
-        # If the destination intersection is not in the dictionary, add it
-        if v not in distances:
-            distances[v] = float('inf')
-            previous[v] = u
-        # If the shortest distance to the destination intersection is greater than the distance through this road, update the shortest distance and the previous intersection
-        if distances[v] > distances[u] + t:
-            distances[v] = distances[u] + t
-            previous[v] = u
-    
-    # Find the shortest distance from Richard's house to Janet's house
-    shortest_distance = min(distances.values())
-    # Initialize a variable to store the worst case waiting time
-    worst_case = float('inf')
-    # Loop through each possible time that Janet could be ready
-    for t in range(a, b + 1):
-        # If the shortest distance to Janet's house is less than or equal to the time it takes to travel to the nearest intersection, the worst case waiting time is 0
-        if shortest_distance <= t:
-            worst_case = 0
-            break
-        # If the shortest distance to Janet's house is greater than the time it takes to travel to the nearest intersection, the worst case waiting time is the time it takes to travel to the nearest intersection
+def get_largest_committee(N, K, disagreements):
+    # Initialize a set to store the committee members
+    committee = set()
+    # Loop through each politician and their disagreements
+    for i in range(N):
+        # If the politician has no disagreements, they are automatically added to the committee
+        if not disagreements[i]:
+            committee.add(i)
+        # If the politician has at least one disagreement, check if they can be added to the committee
         else:
-            worst_case = t - shortest_distance
+            # Loop through the politician's disagreements
+            for j in disagreements[i]:
+                # If the politician's disagreement is not already in the committee, they can be added
+                if j not in committee:
+                    committee.add(i)
+                    break
     
-    return worst_case
+    # Return the size of the largest possible committee
+    return len(committee)
+
+def main():
+    # Read the input data
+    N, K = map(int, input().split())
+    disagreements = [set(map(int, input().split())) for _ in range(N)]
+    
+    # Call the function to get the largest possible committee
+    largest_committee = get_largest_committee(N, K, disagreements)
+    
+    # Print the result
+    print(largest_committee)
+
+if __name__ == '__main__':
+    main()
 

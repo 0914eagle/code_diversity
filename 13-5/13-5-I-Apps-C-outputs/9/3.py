@@ -1,44 +1,38 @@
 
-def solve(r, c, i, j, n):
-    # Initialize the ice rink as a 2D array of white cells
-    ice_rink = [["." for _ in range(c)] for _ in range(r)]
+import itertools
+
+def get_valid_ids(n, pattern):
+    # Generate all possible binary strings of length n
+    all_ids = [''.join(id) for id in itertools.product('01', repeat=n)]
     
-    # Set the starting position of the zamboni
-    ice_rink[i-1][j-1] = "@"
+    # Filter out IDs that do not satisfy the pattern
+    valid_ids = []
+    for id in all_ids:
+        if satisfies_pattern(id, pattern):
+            valid_ids.append(id)
     
-    # Set the step size and direction
-    step_size = 1
-    direction = "up"
+    return valid_ids
+
+def satisfies_pattern(id, pattern):
+    # If the ID is the same length as the pattern, check if it satisfies the pattern
+    if len(id) == len(pattern):
+        for i in range(len(id)):
+            if id[i] != '1' and pattern[i] != '*':
+                return False
+        return True
     
-    # Loop through the number of steps
-    for _ in range(n):
-        # Move the zamboni in the current direction
-        if direction == "up":
-            i -= step_size
-        elif direction == "down":
-            i += step_size
-        elif direction == "left":
-            j -= step_size
-        else:
-            j += step_size
-        
-        # Wrap the zamboni around the edges of the rink
-        if i < 0:
-            i = r - 1
-        elif i == r:
-            i = 0
-        if j < 0:
-            j = c - 1
-        elif j == c:
-            j = 0
-        
-        # Set the color of the current cell
-        ice_rink[i][j] = chr(ord('A') + (step_size - 1) % 26)
-        
-        # Update the step size and direction
-        step_size += 1
-        direction = "up" if direction == "left" else "left" if direction == "down" else "down"
-    
-    # Return the final state of the ice rink
-    return "\n".join("".join(row) for row in ice_rink)
+    # If the ID is shorter than the pattern, check if any substring of the ID satisfies the pattern
+    for i in range(len(id)):
+        if satisfies_pattern(id[i:], pattern):
+            return True
+    return False
+
+def main():
+    n = int(input())
+    pattern = input()
+    valid_ids = get_valid_ids(n, pattern)
+    print(len(valid_ids))
+
+if __name__ == '__main__':
+    main()
 

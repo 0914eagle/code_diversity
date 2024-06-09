@@ -1,36 +1,27 @@
 
-def get_bridges(n, m, edges):
-    # Initialize a dictionary to store the edges and their weights
-    edge_weights = {}
-    for edge in edges:
-        edge_weights[edge] = 1
+import math
 
-    # Initialize a dictionary to store the vertices and their neighbors
-    vertex_neighbors = {}
-    for edge in edges:
-        vertex1, vertex2 = edge
-        if vertex1 not in vertex_neighbors:
-            vertex_neighbors[vertex1] = set()
-        vertex_neighbors[vertex1].add(vertex2)
-        if vertex2 not in vertex_neighbors:
-            vertex_neighbors[vertex2] = set()
-        vertex_neighbors[vertex2].add(vertex1)
+def get_angle(A, B, C, D):
+    AB = [B[0] - A[0], B[1] - A[1], B[2] - A[2]]
+    BC = [C[0] - B[0], C[1] - B[1], C[2] - B[2]]
+    CD = [D[0] - C[0], D[1] - C[1], D[2] - C[2]]
+    X = [AB[1] * BC[2] - AB[2] * BC[1], AB[2] * BC[0] - AB[0] * BC[2], AB[0] * BC[1] - AB[1] * BC[0]]
+    Y = [BC[1] * CD[2] - BC[2] * CD[1], BC[2] * CD[0] - BC[0] * CD[2], BC[0] * CD[1] - BC[1] * CD[0]]
+    dot_product = X[0] * Y[0] + X[1] * Y[1] + X[2] * Y[2]
+    magnitude_X = math.sqrt(X[0] ** 2 + X[1] ** 2 + X[2] ** 2)
+    magnitude_Y = math.sqrt(Y[0] ** 2 + Y[1] ** 2 + Y[2] ** 2)
+    cosine_angle = dot_product / (magnitude_X * magnitude_Y)
+    angle = math.degrees(math.acos(cosine_angle))
+    return angle
 
-    # Initialize a set to store the bridges
-    bridges = set()
+def main():
+    A = list(map(float, input().split()))
+    B = list(map(float, input().split()))
+    C = list(map(float, input().split()))
+    D = list(map(float, input().split()))
+    angle = get_angle(A, B, C, D)
+    print(f"{angle:.2f}")
 
-    # Iterate over the edges and check if they are bridges
-    for edge in edges:
-        vertex1, vertex2 = edge
-        if len(vertex_neighbors[vertex1]) == 1 and len(vertex_neighbors[vertex2]) == 1:
-            # If both vertices have only one neighbor, then the edge is a bridge
-            bridges.add(edge)
-        elif vertex1 in vertex_neighbors[vertex2] and vertex2 in vertex_neighbors[vertex1]:
-            # If both vertices are neighbors, then the edge is not a bridge
-            continue
-        else:
-            # If one vertex is a neighbor of the other, then the edge is a bridge
-            bridges.add(edge)
-
-    return len(bridges)
+if __name__ == '__main__':
+    main()
 

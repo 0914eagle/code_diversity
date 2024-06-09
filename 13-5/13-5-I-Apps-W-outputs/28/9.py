@@ -1,15 +1,23 @@
 
-def solve(n, t, a):
-    # Initialize a variable to store the minimum number of days
-    min_days = n
-    # Iterate through the list of free time for each day
-    for i in range(n):
-        # Check if the free time for the current day is greater than or equal to the time required to read the book
-        if a[i] >= t:
-            # If so, return the current day as the minimum number of days
-            return i + 1
-        # If the free time for the current day is less than the time required to read the book, update the minimum number of days
-        min_days = min(min_days, i + 1 + (t - a[i]) // 86400)
-    # Return the minimum number of days
-    return min_days
+def count_ways(n):
+    # Initialize a 2D array to store the results
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
+    
+    # Base case: when n = 1, there is only one way to fill the 3x1 tile
+    dp[1][1] = 1
+    
+    # Fill the table
+    for i in range(2, n + 1):
+        for j in range(1, i + 1):
+            dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j]
+    
+    # Return the result for the given n
+    return dp[n][n]
+
+def main():
+    n = int(input())
+    print(count_ways(n))
+
+if __name__ == '__main__':
+    main()
 

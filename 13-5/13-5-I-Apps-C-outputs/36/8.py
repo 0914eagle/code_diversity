@@ -1,43 +1,38 @@
 
-def solve(V, P, edges, pigs):
-    # Initialize a graph with V vertices and V-1 edges
-    graph = [[] for _ in range(V)]
-    for u, v in edges:
-        graph[u].append(v)
-        graph[v].append(u)
+def get_cubes(tiles):
+    # Initialize a set to store the unique cubes
+    unique_cubes = set()
     
-    # Initialize a dictionary to keep track of the number of pigs on each vertex
-    pig_count = [0] * V
-    for pig in pigs:
-        pig_count[pig] += 1
+    # Iterate over the tiles
+    for tile in tiles:
+        # Get the colors of the current tile
+        colors = tile[1:]
+        
+        # Iterate over the four directions of the tile
+        for direction in range(4):
+            # Rotate the tile to the current direction
+            rotated_colors = [colors[i] for i in range(4) if i != direction]
+            rotated_colors.append(colors[direction])
+            
+            # Add the rotated tile to the set of unique cubes
+            unique_cubes.add(tuple(rotated_colors))
     
-    # Initialize a set to keep track of the vertices with at least one pig
-    pig_vertices = set()
-    for pig in pigs:
-        pig_vertices.add(pig)
+    # Return the number of unique cubes
+    return len(unique_cubes)
+
+def main():
+    # Read the input from stdin
+    N = int(input())
+    tiles = []
+    for _ in range(N):
+        tiles.append(list(map(int, input().split())))
     
-    # Initialize a set to keep track of the vertices with at least one wolf
-    wolf_vertices = set()
+    # Call the function to get the number of unique cubes
+    result = get_cubes(tiles)
     
-    # Loop through each vertex and check if it is a leaf vertex
-    for vertex in range(V):
-        if len(graph[vertex]) == 1 and vertex not in pig_vertices:
-            # If the vertex is a leaf vertex and there is no pig on it, it is a wolf vertex
-            wolf_vertices.add(vertex)
-    
-    # Initialize a variable to keep track of the minimum number of wolves to remove
-    min_wolves = 0
-    
-    # Loop through each vertex and check if it is a pig vertex
-    for vertex in range(V):
-        if vertex in pig_vertices:
-            # If the vertex is a pig vertex, check if it is connected to a wolf vertex
-            for neighbor in graph[vertex]:
-                if neighbor in wolf_vertices:
-                    # If the vertex is connected to a wolf vertex, remove the wolf vertex and update the minimum number of wolves to remove
-                    wolf_vertices.remove(neighbor)
-                    min_wolves += 1
-                    break
-    
-    return min_wolves
+    # Print the result
+    print(result)
+
+if __name__ == '__main__':
+    main()
 

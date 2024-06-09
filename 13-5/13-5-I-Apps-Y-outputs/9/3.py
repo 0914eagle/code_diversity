@@ -1,22 +1,35 @@
 
-def is_multigram(word):
-    if len(word) < 3:
-        return -1
+def f1(n, a):
+    # find the maximum difficulty
+    max_diff = max(a)
     
-    # Check if the word is a palindrome
-    if word == word[::-1]:
-        return word
+    # count the number of problems with difficulty greater than twice the maximum difficulty
+    count = 0
+    for i in range(n-2, -1, -1):
+        if a[i] > max_diff * 2:
+            count += 1
+        else:
+            break
     
-    # Check if the word can be divided into two halves
-    half = len(word) // 2
-    if word[:half] == word[half:][::-1]:
-        return word[:half]
+    return count + 1
+
+def f2(n, a):
+    # find the maximum difficulty
+    max_diff = max(a)
     
-    # Check if the word can be divided into three parts
-    third = len(word) // 3
-    if word[:third] == word[third:2*third][::-1] == word[2*third:][::-1]:
-        return word[:third]
+    # count the number of problems with difficulty greater than twice the maximum difficulty
+    count = 0
+    for i in range(n-2, -1, -1):
+        if a[i] > max_diff * 2:
+            count += 1
+        else:
+            break
     
-    # If none of the above conditions are met, the word is not a multigram
-    return -1
+    return count + 1
+
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(f1(n, a))
+    print(f2(n, a))
 

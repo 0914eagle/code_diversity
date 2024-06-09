@@ -1,22 +1,33 @@
 
-def get_permits(num_permits, desk_numbers):
-    # Sort the desk numbers in ascending order
-    desk_numbers.sort()
-    
-    # Initialize the current desk number to 1
-    current_desk = 1
-    
-    # Initialize the number of passes to 0
-    num_passes = 0
-    
-    # Loop through each desk number
-    for desk in desk_numbers:
-        # If the current desk number is less than the desk number, increment the number of passes
-        if current_desk < desk:
-            num_passes += 1
-        # Increment the current desk number
-        current_desk += 1
-    
-    # Return the number of passes
-    return num_passes
+def f1(a):
+    # find the longest increasing subsequence
+    longest_inc_subseq = []
+    for i in range(len(a)):
+        if not longest_inc_subseq or longest_inc_subseq[-1] < a[i]:
+            longest_inc_subseq.append(a[i])
+    return longest_inc_subseq
+
+def f2(a):
+    # find the longest decreasing subsequence
+    longest_dec_subseq = []
+    for i in range(len(a)-1, -1, -1):
+        if not longest_dec_subseq or longest_dec_subseq[-1] > a[i]:
+            longest_dec_subseq.append(a[i])
+    return longest_dec_subseq
+
+def solve(a):
+    inc_subseq = f1(a)
+    dec_subseq = f2(a)
+    if len(inc_subseq) + len(dec_subseq) != len(a):
+        return "NO"
+    res = [0] * len(a)
+    for i in range(len(inc_subseq)):
+        res[i] = 0
+    for i in range(len(dec_subseq)):
+        res[len(a)-i-1] = 1
+    return "YES\n" + " ".join(map(str, res))
+
+if __name__ == '__main__':
+    a = list(map(int, input().split()))
+    print(solve(a))
 

@@ -1,40 +1,23 @@
 
-def get_min_days(grid, stamina):
-    # Initialize variables
-    rows, cols = len(grid), len(grid[0])
-    start_row, start_col = None, None
-    goal_row, goal_col = None, None
-    days = 0
-    stamina_used = 0
-    
-    # Find the starting and goal positions
-    for row in range(rows):
-        for col in range(cols):
-            if grid[row][col] == "S":
-                start_row, start_col = row, col
-            elif grid[row][col] == "G":
-                goal_row, goal_col = row, col
-    
-    # Breadth-first search to find the shortest path
-    queue = [(start_row, start_col)]
-    visited = set()
-    while queue:
-        row, col = queue.pop(0)
-        visited.add((row, col))
-        if (row, col) == (goal_row, goal_col):
-            break
-        for r, c in [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]:
-            if 0 <= r < rows and 0 <= c < cols and grid[r][c] != "#" and (r, c) not in visited:
-                queue.append((r, c))
-                stamina_used += 1
-                if stamina_used > stamina:
-                    days += 1
-                    stamina_used = 0
-    
-    # Check if the path is possible with the given stamina
-    if stamina_used > stamina:
-        return -1
-    
-    # Return the number of days needed to reach the goal
-    return days + 1
+def f1(n, m, a, b):
+    # Calculate the minimum mass of fuel to load into the rocket
+    fuel = 0
+    for i in range(n):
+        fuel += max(a[i], b[i])
+    return fuel
+
+def f2(n, m, a, b):
+    # Calculate the minimum mass of fuel to load into the rocket, taking into account the weight of the rocket and the payload
+    fuel = 0
+    for i in range(n):
+        fuel += max(a[i], b[i]) + m
+    return fuel
+
+if __name__ == '__main__':
+    n = int(input())
+    m = int(input())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    print(f1(n, m, a, b))
+    print(f2(n, m, a, b))
 

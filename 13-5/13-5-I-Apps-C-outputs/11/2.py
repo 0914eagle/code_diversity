@@ -1,45 +1,50 @@
 
-def solve(n, a, b):
-    # Initialize a dictionary to map each statue to its current and desired island
-    statue_map = {i: (a[i], b[i]) for i in range(n)}
-    
-    # Initialize a set to keep track of the islands that have been visited
-    visited_islands = set()
-    
-    # Initialize a variable to keep track of the current island
-    current_island = 0
-    
-    # Loop until all the islands have been visited
-    while len(visited_islands) < n:
-        # Get the statue and its desired island for the current island
-        statue, desired_island = statue_map[current_island]
-        
-        # If the current island has a statue and it is not on the desired island, move the statue
-        if statue and current_island != desired_island:
-            # Get the statue and its current island for the desired island
-            desired_statue, desired_current_island = statue_map[desired_island]
-            
-            # If the desired island has no statue or the statue on the desired island is not the current statue, move the statue
-            if not desired_statue or desired_statue != statue:
-                # Update the dictionary to reflect the movement
-                statue_map[current_island] = (0, desired_island)
-                statue_map[desired_island] = (statue, current_island)
-                
-                # Add the current island to the set of visited islands
-                visited_islands.add(current_island)
-                
-                # Set the current island to the desired island
-                current_island = desired_island
-            else:
-                # If the desired island has the current statue, move on to the next island
-                current_island = desired_current_island
-        else:
-            # If the current island has no statue or it is on the desired island, move on to the next island
-            current_island = desired_island
-    
-    # If all the islands have been visited, return "YES"
-    if len(visited_islands) == n:
-        return "YES"
-    else:
-        return "NO"
+import math
+import random
+
+def get_input():
+    n = int(input())
+    trees = []
+    for i in range(n):
+        x, y, r = map(int, input().split())
+        trees.append((x, y, r))
+    b, d = map(int, input().split())
+    return n, trees, b, d
+
+def overlaps(tree, boar):
+    x, y, r = tree
+    bx, by, br = boar
+    return (x - bx) ** 2 + (y - by) ** 2 <= (r + br) ** 2
+
+def charge(boar, trees, d):
+    x, y, r = boar
+    dx, dy = random.uniform(-1, 1), random.uniform(-1, 1)
+    while d > 0:
+        x += dx
+        y += dy
+        d -= 1
+        if any(overlaps(tree, (x, y, r)) for tree in trees):
+            return False
+    return True
+
+def f1(n, trees, b, d):
+    total = 0
+    for i in range(10000):
+        boar = (0, 0, b)
+        if charge(boar, trees, d):
+            total += 1
+    return total / 10000
+
+def f2(n, trees, b, d):
+    total = 0
+    for i in range(10000):
+        boar = (0, 0, b)
+        if charge(boar, trees, d):
+            total += 1
+    return total / 10000
+
+if __name__ == '__main__':
+    n, trees, b, d = get_input()
+    print(f1(n, trees, b, d))
+    print(f2(n, trees, b, d))
 

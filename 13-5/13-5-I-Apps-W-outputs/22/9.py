@@ -1,30 +1,41 @@
 
-def solve(n, permutation, sequence):
-    # Initialize a list to store the number of visits for each position
-    visits = [0] * (2 * n)
-
-    # Iterate through the permutation and sequence
+def get_original_string(k, n, strings):
+    # Initialize a dictionary to store the frequencies of each character
+    char_freq = {}
     for i in range(n):
-        # Get the current position and the next position
-        current = permutation[i]
-        next = permutation[(i + 1) % n]
+        char_freq[i] = 0
+    
+    # Iterate over the strings and increment the frequency of each character
+    for string in strings:
+        for i in range(n):
+            char_freq[i] += string[i]
+    
+    # Check if the frequency of each character is divisible by k
+    for i in range(n):
+        if char_freq[i] % k != 0:
+            return "-1"
+    
+    # Initialize the original string
+    original_string = ""
+    
+    # Iterate over the characters and add the most frequent character to the original string
+    for i in range(n):
+        max_freq = 0
+        max_char = ""
+        for char in range(n):
+            if char_freq[char] > max_freq:
+                max_freq = char_freq[char]
+                max_char = chr(ord('a') + char)
+        original_string += max_char
+        char_freq[ord(max_char) - ord('a')] = 0
+    
+    return original_string
 
-        # If the current position is not visited, visit it
-        if visits[current] == 0:
-            visits[current] = 1
+def main():
+    k, n = map(int, input().split())
+    strings = [input() for _ in range(k)]
+    print(get_original_string(k, n, strings))
 
-        # If the next position is not visited, visit it
-        if visits[next] == 0:
-            visits[next] = 1
-
-        # If the sequence is 1, reverse the current position
-        if sequence[i] == 1:
-            current = n - current + 1
-
-        # If the current position is not visited, visit it
-        if visits[current] == 0:
-            visits[current] = 1
-
-    # Return the number of unvisited positions
-    return sum(visits)
+if __name__ == '__main__':
+    main()
 

@@ -1,13 +1,24 @@
 
-def plus_one(digits):
-    
-    digits[-1] += 1
-    for i in range(len(digits)-1, -1, -1):
-        if digits[i] == 10:
-            digits[i] = 0
-            if i == 0:
-                digits.insert(0, 1)
-        else:
+def get_binary_string(a, b, x):
+    n = a + b
+    s = ["0"] * n
+    for i in range(n):
+        if s[i] == "0":
+            s[i] = "1"
+            a -= 1
+        if a == 0 and b == 0:
             break
-    return digits
+    for i in range(n - 1):
+        if s[i] != s[i + 1]:
+            x -= 1
+        if x == 0:
+            break
+    return "".join(s)
+
+def main():
+    a, b, x = map(int, input().split())
+    print(get_binary_string(a, b, x))
+
+if __name__ == '__main__':
+    main()
 

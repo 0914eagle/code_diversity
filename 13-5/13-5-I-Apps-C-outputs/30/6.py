@@ -1,27 +1,22 @@
 
-def reconstruct_painting(N, K, M, commands):
-    # Initialize the canvas with a 2D array of zeros
-    canvas = [[0] * N for _ in range(N)]
+def f1(n, m, roads, k, orders):
+    # f1 should return the longest time a customer has to wait from the time they place their order until the order is delivered, assuming that Holly uses a delivery schedule minimizing this value.
+    return 0
 
-    # Iterate through the commands
-    for command in commands:
-        # If the command is PAINT, update the canvas with the checkerboard pattern
-        if command.startswith("PAINT"):
-            color, x1, y1, x2, y2 = map(int, command.split())
-            for x in range(x1, x2 + 1):
-                for y in range(y1, y2 + 1):
-                    if (x + y) % 2 == 0:
-                        canvas[x][y] = color
+def f2(...):
+    # f2 should be a helper function for f1
+    return ...
 
-        # If the command is SAVE, save the current state of the canvas
-        elif command == "SAVE":
-            saved_canvas = canvas.copy()
-
-        # If the command is LOAD, load the saved state of the canvas
-        elif command.startswith("LOAD"):
-            x = int(command.split()[1])
-            canvas = saved_canvas[x]
-
-    # Return the final state of the canvas
-    return canvas
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    roads = []
+    for _ in range(m):
+        u, v, d = map(int, input().split())
+        roads.append((u, v, d))
+    k = int(input())
+    orders = []
+    for _ in range(k):
+        s, u, t = map(int, input().split())
+        orders.append((s, u, t))
+    print(f1(n, m, roads, k, orders))
 

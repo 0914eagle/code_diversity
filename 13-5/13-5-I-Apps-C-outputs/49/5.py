@@ -1,37 +1,43 @@
 
-import math
+def get_min_path_length(n, m, roads):
+    # Initialize a graph with n nodes and m edges
+    graph = [[] for _ in range(n)]
+    for u, v in roads:
+        graph[u - 1].append(v - 1)
+    
+    # Find all maximum length paths in the graph
+    max_paths = []
+    for i in range(n):
+        visited = [False] * n
+        max_paths.extend(dfs(graph, i, visited))
+    
+    # Find the minimum length path that can be taken if at most one road is blocked
+    min_path_length = float('inf')
+    for path in max_paths:
+        path_length = len(path)
+        for i in range(n):
+            for j in range(i + 1, n):
+                if [path[i], path[j]] in roads:
+                    path_length -= 1
+        min_path_length = min(min_path_length, path_length)
+    
+    return min_path_length
 
-def get_center(points):
-    point_1, point_2, point_3, point_4 = points
-    x1, y1, z1 = point_1
-    x2, y2, z2 = point_2
-    x3, y3, z3 = point_3
-    x4, y4, z4 = point_4
+def dfs(graph, start, visited):
+    visited[start] = True
+    paths = []
+    for neighbor in graph[start]:
+        if not visited[neighbor]:
+            paths.extend(dfs(graph, neighbor, visited))
+    if not paths:
+        paths.append([start])
+    return paths
 
-    # Create two vectors from the points
-    v1 = [x2 - x1, y2 - y1, z2 - z1]
-    v2 = [x3 - x1, y3 - y1, z3 - z1]
-    v3 = [x4 - x1, y4 - y1, z4 - z1]
-
-    # Calculate the cross product of the vectors
-    cross_product = [v1[1] * v2[2] - v1[2] * v2[1], v1[2] * v2[0] - v1[0] * v2[2], v1[0] * v2[1] - v1[1] * v2[0]]
-
-    # Calculate the dot product of the vectors
-    dot_product = v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2]
-
-    # Calculate the angle between the vectors
-    angle = math.acos(dot_product / (math.sqrt(dot_product ** 2) * math.sqrt(cross_product[0] ** 2 + cross_product[1] ** 2 + cross_product[2] ** 2)))
-
-    # Calculate the length of the vectors
-    length_v1 = math.sqrt(v1[0] ** 2 + v1[1] ** 2 + v1[2] ** 2)
-    length_v2 = math.sqrt(v2[0] ** 2 + v2[1] ** 2 + v2[2] ** 2)
-    length_v3 = math.sqrt(v3[0] ** 2 + v3[1] ** 2 + v3[2] ** 2)
-
-    # Calculate the radius of the sphere
-    radius = (length_v1 * length_v2 * length_v3) / (2 * math.sin(angle))
-
-    # Calculate the center of the sphere
-    center = [(point_1[0] + point_2[0] + point_3[0] + point_4[0]) / 4, (point_1[1] + point_2[1] + point_3[1] + point_4[1]) / 4, (point_1[2] + point_2[2] + point_3[2] + point_4[2]) / 4]
-
-    return center, radius
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    roads = []
+    for _ in range(m):
+        u, v = map(int, input().split())
+        roads.append([u, v])
+    print(get_min_path_length(n, m, roads))
 

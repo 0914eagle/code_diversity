@@ -1,18 +1,43 @@
 
-def solve(n, c, a, b):
-    # Initialize the minimum time to reach each floor
-    min_time = [0] * (n + 1)
+def get_extra_bricks(H, N, M):
+    # Initialize variables
+    extra_2x2_bricks = 0
+    extra_4x2_bricks = 0
+    
+    # Loop through each layer of the pyramid
+    for layer in range(1, H+1):
+        # Calculate the width of the layer
+        width = 2*layer
+        
+        # Calculate the number of bricks needed for the layer
+        num_bricks = width * layer
+        
+        # Check if the number of bricks needed is more than the number of bricks Kim has
+        if num_bricks > N + M:
+            # Calculate the number of extra bricks needed for the layer
+            extra_bricks = num_bricks - (N + M)
+            
+            # Check if the extra bricks are 2x2 or 4x2
+            if extra_bricks % 2 == 0:
+                # Add the extra bricks to the total number of extra 2x2 bricks
+                extra_2x2_bricks += extra_bricks // 2
+            else:
+                # Add the extra bricks to the total number of extra 4x2 bricks
+                extra_4x2_bricks += extra_bricks // 2
+    
+    # Return the total number of extra bricks needed
+    return extra_2x2_bricks, extra_4x2_bricks
 
-    # Loop through each floor
-    for i in range(1, n + 1):
-        # Loop through each possible move
-        for j in range(1, n + 1):
-            # Calculate the time to move from the current floor to the destination floor
-            time = c + sum(b[j - 1:i]) if j < i else sum(a[j - 1:i])
+def main():
+    # Read the input
+    H, N, M = map(int, input().split())
+    
+    # Call the function to get the extra bricks needed
+    extra_2x2_bricks, extra_4x2_bricks = get_extra_bricks(H, N, M)
+    
+    # Print the output
+    print(extra_2x2_bricks, extra_4x2_bricks)
 
-            # Update the minimum time if the current time is less than the previous minimum time
-            if min_time[i] > min_time[j] + time:
-                min_time[i] = min_time[j] + time
-
-    return min_time
+if __name__ == '__main__':
+    main()
 

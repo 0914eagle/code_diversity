@@ -1,22 +1,29 @@
 
-def solve(n, m, l_r):
-    # Initialize the array a with all zeros
-    a = [0] * n
+def is_winnable(a):
+    # Check if all piles are empty
+    if all(a == 0):
+        return False
+    
+    # Check if there are two piles with the same number of stones
+    if len(set(a)) == 1:
+        return False
+    
+    # Check if Tokitsukaze can make a valid move
+    for i in range(len(a)):
+        if a[i] > 0:
+            return True
+    
+    # If Tokitsukaze cannot make a valid move, CSL will win
+    return False
 
-    # Loop through each subarray
-    for l, r in l_r:
-        # Find the mex of the subarray
-        mex = 0
-        while mex in a[l:r+1]:
-            mex += 1
-        # Update the array a with the mex
-        for i in range(l, r+1):
-            a[i] = max(a[i], mex)
+def main():
+    n = int(input())
+    a = list(map(int, input().split()))
+    if is_winnable(a):
+        print("sjfnb")
+    else:
+        print("cslnb")
 
-    # Find the maximum possible minimum mex
-    mex = 0
-    while mex in a:
-        mex += 1
-
-    return [mex, a]
+if __name__ == '__main__':
+    main()
 

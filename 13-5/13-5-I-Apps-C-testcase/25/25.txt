@@ -1,12 +1,10 @@
 {
     "inputs": [
-        "3\n3 1 5\n",
-        "4\n1 2 3 4\n",
-        "8\n4 10 5 2 9 8 1 7\n"
+        "1\necho\n1\nechoecho\n",
+        "4\non\nm\nn\no\n2\nno\nmoon\n"
     ],
     "outputs": [
-        "3\n",
-        "2\n",
-        "5\n"
+        "3246R3246\n",
+        "6U(1)R6D(1)\n6R6D(1)R66\n"
     ]
 }

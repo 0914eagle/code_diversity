@@ -1,39 +1,33 @@
 
-def solve(n, q, p, queries):
-    # Initialize a list to store the order of officers receiving the command
-    order = []
+def get_maximum_gifts(n, k, d):
+    # Initialize a list to store the pairs of boxes that can be given as gifts
+    gift_pairs = []
     
-    # Iterate over each query
-    for query in queries:
-        # Initialize a set to store the officers who have received the command
-        received = set()
-        
-        # Initialize the current officer as the query officer
-        current = query[0]
-        
-        # Iterate until the command is spread to all officers
-        while len(order) < n:
-            # If the current officer has not received the command, add it to the order
-            if current not in received:
-                order.append(current)
-                received.add(current)
-            
-            # Find the next officer to spread the command to
-            next_officer = p[current]
-            
-            # If the next officer has not received the command, set it as the current officer
-            if next_officer not in received:
-                current = next_officer
-            # If all officers have received the command, break the loop
-            else:
-                break
-        
-        # If the order is shorter than the required index, return -1
-        if len(order) < query[1]:
-            print(-1)
-        # Otherwise, return the officer at the required index
+    # Iterate over the boxes
+    for i in range(n):
+        # Check if the current box is divisible by k
+        if d[i] % k == 0:
+            # If the current box is divisible by k, add it to the list of gift pairs
+            gift_pairs.append([i])
         else:
-            print(order[query[1] - 1])
+            # If the current box is not divisible by k, check if it can be combined with any other box to form a gift
+            for j in range(i+1, n):
+                if d[i] + d[j] % k == 0:
+                    # If the current box can be combined with another box to form a gift, add both boxes to the list of gift pairs
+                    gift_pairs.append([i, j])
+                    break
     
-    return order
+    # Return the length of the list of gift pairs, which is the maximum number of boxes that can be given as gifts
+    return len(gift_pairs)
+
+def main():
+    # Read the input data
+    n, k = map(int, input().split())
+    d = list(map(int, input().split()))
+    
+    # Call the get_maximum_gifts function and print the result
+    print(get_maximum_gifts(n, k, d))
+
+if __name__ == '__main__':
+    main()
 

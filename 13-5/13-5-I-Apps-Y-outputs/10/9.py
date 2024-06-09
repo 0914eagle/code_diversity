@@ -1,34 +1,69 @@
 
-def solve(N, M, A, B, K, G, route, streets):
-    # Initialize a dictionary to store the times at which each intersection is blocked
-    blocked_times = {}
+def f1(n, edges):
+    # create a graph object
+    graph = {}
+    for i in range(1, n+1):
+        graph[i] = []
+    for edge in edges:
+        graph[edge[0]].append(edge[1])
+        graph[edge[1]].append(edge[0])
+    
+    # find the maximum number of edges in a simple path between any two vertices
+    max_edges = 0
+    for i in range(1, n+1):
+        for j in range(1, n+1):
+            if i != j:
+                path = []
+                dfs(graph, i, j, path)
+                max_edges = max(max_edges, len(path))
+    
+    return max_edges
 
-    # Loop through the streets that Mister George will visit
-    for i in range(G):
-        # Get the current and next intersection
-        current_intersection = route[i]
-        next_intersection = route[(i + 1) % G]
+def f2(n, edges):
+    # create a graph object
+    graph = {}
+    for i in range(1, n+1):
+        graph[i] = []
+    for edge in edges:
+        graph[edge[0]].append(edge[1])
+        graph[edge[1]].append(edge[0])
+    
+    # find the maximum number of edges in a simple path between any two vertices
+    max_edges = 0
+    for i in range(1, n+1):
+        for j in range(1, n+1):
+            if i != j:
+                path = []
+                dfs(graph, i, j, path)
+                max_edges = max(max_edges, len(path))
+    
+    # find the vertices that form the maximum number of edges in a simple path
+    max_vertices = []
+    for i in range(1, n+1):
+        for j in range(1, n+1):
+            if i != j:
+                path = []
+                dfs(graph, i, j, path)
+                if len(path) == max_edges:
+                    max_vertices.append(i)
+                    max_vertices.append(j)
+    
+    return list(set(max_vertices))
 
-        # Get the time it takes to traverse the current street
-        current_street = streets[current_intersection - 1][next_intersection - 1]
+def dfs(graph, start, end, path):
+    if start == end:
+        path.append(start)
+        return
+    for neighbor in graph[start]:
+        if neighbor not in path:
+            path.append(start)
+            dfs(graph, neighbor, end, path)
 
-        # Add the current street to the blocked times dictionary
-        blocked_times[current_intersection] = current_street
-
-        # If the next intersection is not the last intersection, add the next street to the blocked times dictionary
-        if i != G - 1:
-            next_street = streets[next_intersection - 1][route[(i + 2) % G] - 1]
-            blocked_times[next_intersection] = next_street
-
-    # Initialize the least time needed to make the delivery
-    least_time = 0
-
-    # Loop through the streets between the starting intersection and the destination intersection
-    for i in range(A - 1, B - 1):
-        # If the current intersection is not blocked, add the time it takes to traverse the current street to the least time needed to make the delivery
-        if i not in blocked_times or blocked_times[i] <= K:
-            least_time += streets[i][i + 1]
-
-    # Return the least time needed to make the delivery
-    return least_time
+if __name__ == '__main__':
+    n = int(input())
+    edges = []
+    for i in range(n-1):
+        edges.append(list(map(int, input().split())))
+    print(f1(n, edges))
+    print(*f2(n, edges))
 

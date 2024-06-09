@@ -1,16 +1,35 @@
 
-def solve(N, queries):
-    students = []
-    for query in queries:
-        if query.startswith("D"):
-            A, B = map(int, query.split()[1:])
-            students.append((A, B))
-        else:
-            i = int(query.split()[1]) - 1
-            for j, student in enumerate(students):
-                if student[0] >= students[i][0] and student[1] >= students[i][1]:
-                    print(j + 1)
-                    break
-            else:
-                print("NE")
+def is_hill_number(n):
+    if n < 10:
+        return True
+    
+    prev_digit = n % 10
+    n //= 10
+    
+    while n > 0:
+        curr_digit = n % 10
+        if prev_digit > curr_digit:
+            return False
+        prev_digit = curr_digit
+        n //= 10
+    
+    return True
+
+def count_hill_numbers(n):
+    count = 0
+    for i in range(1, n+1):
+        if is_hill_number(i):
+            count += 1
+    
+    return count
+
+def main():
+    n = int(input())
+    if is_hill_number(n):
+        print(count_hill_numbers(n))
+    else:
+        print(-1)
+
+if __name__ == '__main__':
+    main()
 

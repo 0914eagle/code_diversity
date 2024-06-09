@@ -1,7 +1,18 @@
 
-def solve(N, dice):
-    for i in range(N-2):
-        if dice[i] == dice[i+1] and dice[i+1] == dice[i+2]:
-            return "Yes"
-    return "No"
+def get_final_score(n, answers):
+    score = 0
+    for i in range(n):
+        if answers[i] == "A":
+            score += 1
+    return score
+
+def main():
+    n = int(input())
+    answers = []
+    for i in range(n):
+        answers.append(input())
+    print(get_final_score(n, answers))
+
+if __name__ == '__main__':
+    main()
 

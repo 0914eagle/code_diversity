@@ -1,23 +1,40 @@
 
-def get_sugar_water(A, B, C, D, E, F):
+def get_min_attacks(N, K, healths):
     # Initialize variables
-    sugar_water = 0
-    sugar_dissolved = 0
+    min_attacks = float('inf')
+    special_moves = K
+    attack_count = 0
 
-    # Loop through all possible combinations of operations
-    for a in range(A, B + 1):
-        for c in range(C, D + 1):
-            # Calculate the mass of sugar water and sugar dissolved
-            sugar_water_temp = a + c
-            sugar_dissolved_temp = a * E // 100
+    # Sort the healths in descending order
+    healths.sort(reverse=True)
 
-            # Check if the mass of sugar water and sugar dissolved is within the constraints
-            if sugar_water_temp <= F and sugar_dissolved_temp <= c:
-                # Check if the density of the sugar water is higher than the current best solution
-                if sugar_water_temp * 100 / (sugar_dissolved_temp + sugar_water_temp) > sugar_water * 100 / (sugar_dissolved + sugar_water):
-                    sugar_water = sugar_water_temp
-                    sugar_dissolved = sugar_dissolved_temp
+    # Loop through each monster and attack it
+    for i in range(N):
+        # If the monster's health is 0, skip it
+        if healths[i] == 0:
+            continue
 
-    # Return the mass of sugar water and sugar dissolved
-    return sugar_water, sugar_dissolved
+        # If the special moves are exhausted, attack the monster
+        if special_moves == 0:
+            healths[i] -= 1
+            attack_count += 1
+        # Else, use the special move on the monster
+        else:
+            special_moves -= 1
+            healths[i] = 0
+
+        # If all the monsters are dead, break the loop
+        if sum(healths) == 0:
+            break
+
+    # Return the minimum number of attacks needed to win
+    return attack_count
+
+def main():
+    N, K = map(int, input().split())
+    healths = list(map(int, input().split()))
+    print(get_min_attacks(N, K, healths))
+
+if __name__ == '__main__':
+    main()
 

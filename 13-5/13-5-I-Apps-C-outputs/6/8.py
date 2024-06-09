@@ -1,20 +1,31 @@
 
-def get_free_desserts(price):
-    # Initialize variables
-    max_free_desserts = 0
-    possible_bills = []
+def is_beautiful_sequence(sequence):
+    for i in range(len(sequence) - 1):
+        if abs(sequence[i] - sequence[i+1]) != 1:
+            return False
+    return True
 
-    # Iterate over all possible beverage prices
-    for beverage_price in range(1, price):
-        # Iterate over all possible main dish prices
-        for main_dish_price in range(beverage_price + 1, price + 1):
-            # Check if the prices are mutually different
-            if all(str(beverage_price) != str(main_dish_price)[i] for i in range(len(str(main_dish_price)))):
-                # Check if the bill is not identical to any of Quido's previous bills
-                if (beverage_price, main_dish_price) not in possible_bills:
-                    possible_bills.append((beverage_price, main_dish_price))
-                    max_free_desserts += 1
+def construct_beautiful_sequence(a, b, c, d):
+    sequence = []
+    for i in range(a):
+        sequence.append(0)
+    for i in range(b):
+        sequence.append(1)
+    for i in range(c):
+        sequence.append(2)
+    for i in range(d):
+        sequence.append(3)
+    return sequence
 
-    # Return the maximum number of free desserts and the possible bills
-    return max_free_desserts, possible_bills[:5000]
+def main():
+    a, b, c, d = map(int, input().split())
+    sequence = construct_beautiful_sequence(a, b, c, d)
+    if is_beautiful_sequence(sequence):
+        print("YES")
+        print(" ".join(map(str, sequence)))
+    else:
+        print("NO")
+
+if __name__ == '__main__':
+    main()
 

@@ -1,21 +1,23 @@
 
-def solve(n, t, a):
-    # Initialize variables
-    days = 0
-    total_time = 0
+def count_ways(n):
+    # Initialize a 2D array to store the results
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
+    
+    # Base case: when n = 1, there is only one way to fill the 3x1 tiles
+    dp[1][1] = 1
+    
+    # Fill the table
+    for i in range(2, n + 1):
+        for j in range(1, i + 1):
+            dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j]
+    
+    # Return the result for the given n
+    return dp[n][n]
 
-    # Iterate through the list of work times
-    for i in range(n):
-        # Check if there is enough time to read the book on this day
-        if total_time + a[i] <= t:
-            # Add the work time to the total time
-            total_time += a[i]
-        else:
-            # Increment the number of days
-            days += 1
-            # Reset the total time
-            total_time = a[i]
+def main():
+    n = int(input())
+    print(count_ways(n))
 
-    # Return the minimum number of days
-    return days
+if __name__ == '__main__':
+    main()
 

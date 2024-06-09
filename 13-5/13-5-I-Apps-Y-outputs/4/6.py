@@ -1,43 +1,50 @@
 
-def solve(N, L, pairs):
-    # Initialize a dictionary to store the items and their corresponding drawers
-    items = {}
-    for i in range(N):
-        items[i+1] = pairs[i]
+def f1(n, k, r, pairs):
+    # Initialize a dictionary to store the mentor count for each programmer
+    mentor_count = {}
+    for i in range(n):
+        mentor_count[i] = 0
     
-    # Initialize a list to store the items that will be stored
-    stored_items = []
+    # Iterate over the pairs of programmers in a quarrel
+    for pair in pairs:
+        # Get the indices of the programmers in the pair
+        x, y = pair
+        
+        # Increment the mentor count for the programmer with the higher skill
+        if r[x] > r[y]:
+            mentor_count[x] += 1
+        else:
+            mentor_count[y] += 1
     
-    # Iterate through the items and apply the rules to store them
-    for i in range(N):
-        item = items[i+1]
-        drawer1, drawer2 = item[0], item[1]
-        
-        # If the first drawer is empty, store the item in that drawer
-        if drawer1 not in stored_items:
-            stored_items.append(drawer1)
-            continue
-        
-        # If the second drawer is empty, store the item in that drawer
-        if drawer2 not in stored_items:
-            stored_items.append(drawer2)
-            continue
-        
-        # Try to move the item from the first drawer to its other drawer
-        other_drawer = 3 - drawer1
-        if other_drawer not in stored_items:
-            stored_items.append(other_drawer)
-            continue
-        
-        # Try to move the item from the second drawer to its other drawer
-        other_drawer = 3 - drawer2
-        if other_drawer not in stored_items:
-            stored_items.append(other_drawer)
-            continue
-        
-        # If all else fails, throw away the item
-        stored_items.append("SMECE")
+    return [mentor_count[i] for i in range(n)]
+
+def f2(n, k, r, pairs):
+    # Initialize a dictionary to store the mentor count for each programmer
+    mentor_count = {}
+    for i in range(n):
+        mentor_count[i] = 0
     
-    # Return the list of stored items
-    return stored_items
+    # Iterate over the pairs of programmers in a quarrel
+    for pair in pairs:
+        # Get the indices of the programmers in the pair
+        x, y = pair
+        
+        # Increment the mentor count for the programmer with the higher skill
+        if r[x] > r[y]:
+            mentor_count[x] += 1
+        else:
+            mentor_count[y] += 1
+    
+    return [mentor_count[i] for i in range(n)]
+
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    r = list(map(int, input().split()))
+    pairs = []
+    for _ in range(k):
+        x, y = map(int, input().split())
+        pairs.append((x, y))
+    
+    print(f1(n, k, r, pairs))
+    print(f2(n, k, r, pairs))
 

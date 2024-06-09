@@ -1,45 +1,32 @@
 
-def solve(n, m, bombs, cords):
-    # Initialize a set to store the coordinates of the bombs
-    bomb_coords = set()
-    for bomb in bombs:
-        bomb_coords.add(bomb[0])
+def get_tiling_count(w, h):
+    # Initialize a 2D array to store the number of tilings for each cell
+    dp = [[0] * (h + 1) for _ in range(w + 1)]
     
-    # Initialize a set to store the coordinates of the cords
-    cord_coords = set()
-    for cord in cords:
-        cord_coords.add(cord[0])
-        cord_coords.add(cord[1])
+    # Base case: only one way to tile a 1x1 cell
+    dp[1][1] = 1
     
-    # Check if all the bombs are deactivated
-    if all(bomb[1] == 0 for bomb in bombs):
-        return -1
+    # Iterate over the width and height of the kitchen
+    for i in range(1, w + 1):
+        for j in range(1, h + 1):
+            # Iterate over the four possible orientations of the tile
+            for k in range(4):
+                # Get the coordinates of the neighboring cell
+                x = i + (k // 2) - 1
+                y = j + (k % 2) - 1
+                
+                # If the neighboring cell is within the bounds of the kitchen,
+                # add the number of tilings for that cell to the current cell
+                if 0 <= x <= w and 0 <= y <= h:
+                    dp[i][j] += dp[x][y]
     
-    # Initialize a set to store the cords that should be cut
-    cut_cords = set()
-    
-    # Iterate over the bombs
-    for bomb in bombs:
-        # If the bomb is activated, find the cords that can be cut to deactivate it
-        if bomb[1] == 1:
-            # Find the left and right coordinates of the bomb
-            left = bomb[0]
-            right = bomb[0]
-            while left in bomb_coords and left > 1:
-                left -= 1
-            while right in bomb_coords and right < 10**9:
-                right += 1
-            
-            # Find the cords that intersect with the range of the bomb
-            intersecting_cords = cord_coords.intersection(range(left, right + 1))
-            
-            # Add the intersecting cords to the set of cords to be cut
-            cut_cords.update(intersecting_cords)
-    
-    # If all the bombs are deactivated, return the set of cords to be cut
-    if all(bomb[1] == 0 for bomb in bombs):
-        return len(cut_cords), *cut_cords
-    
-    # Otherwise, return -1
-    return -1
+    # Return the number of tilings for the entire kitchen
+    return dp[w][h]
+
+def main():
+    w, h = map(int, input().split())
+    print(get_tiling_count(w, h) % 998244353)
+
+if __name__ == '__main__':
+    main()
 

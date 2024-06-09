@@ -1,25 +1,17 @@
 
-def solve(n, permutation, sequence):
-    # Convert the permutation and sequence to sets for faster lookups
-    permutation_set = set(permutation)
-    sequence_set = set(sequence)
-    
-    # Initialize a counter for the number of elements to change
-    num_changes = 0
-    
-    # Iterate over each position in the permutation
+def get_original_string(strings):
+    n = len(strings[0])
     for i in range(n):
-        # If the current position is not in the permutation, add it to the sequence
-        if i not in permutation_set:
-            sequence_set.add(i)
-            num_changes += 1
-    
-    # If the sequence is not complete, add the missing elements to the sequence
-    if len(sequence_set) < 2*n:
-        for i in range(2*n):
-            if i not in sequence_set:
-                sequence_set.add(i)
-                num_changes += 1
-    
-    return num_changes
+        for j in range(i+1, n):
+            if all(string[i] != string[j] for string in strings):
+                return "".join(sorted(set(strings[0])))
+    return -1
+
+def main():
+    k, n = map(int, input().split())
+    strings = [input() for _ in range(k)]
+    print(get_original_string(strings))
+
+if __name__ == '__main__':
+    main()
 

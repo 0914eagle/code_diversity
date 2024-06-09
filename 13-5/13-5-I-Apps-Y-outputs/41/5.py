@@ -1,21 +1,37 @@
 
-def solve(n, k, a):
-    # Sort the prices in ascending order
-    a.sort()
-    # Initialize the minimum difference between prices
-    min_diff = k + 1
-    # Initialize the maximum equal price
-    max_price = -1
-    # Iterate over the prices
+def get_color_choices(n, k):
+    # Initialize a list to store the color choices
+    color_choices = []
+    
+    # Iterate through each pair
     for i in range(n):
-        # Calculate the difference between the current price and the previous price
-        diff = a[i] - a[i - 1] if i > 0 else k + 1
-        # If the difference is less than the minimum difference, update the minimum difference
-        if diff < min_diff:
-            min_diff = diff
-        # If the difference is equal to the minimum difference, update the maximum equal price
-        if diff == min_diff:
-            max_price = a[i]
-    # Return the maximum equal price
-    return max_price
+        # Get the color choices for the current pair
+        b, g = get_color_choice(k)
+        
+        # Add the color choices to the list
+        color_choices.append((b, g))
+    
+    # Return the list of color choices
+    return color_choices
+
+def get_color_choice(k):
+    # Initialize a list to store the color choices
+    color_choices = []
+    
+    # Iterate through each color
+    for i in range(1, k+1):
+        # Check if the color is already in the list
+        if i not in color_choices:
+            # Add the color to the list
+            color_choices.append(i)
+    
+    # Return the color choices
+    return color_choices
+
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    color_choices = get_color_choices(n, k)
+    print("YES")
+    for b, g in color_choices:
+        print(b, g)
 

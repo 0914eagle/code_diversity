@@ -1,49 +1,38 @@
 
-def solve(intersections, streets, start_time, end_time, mister_george_route):
-    # Initialize a dictionary to store the time it takes to travel between intersections
-    time_dict = {}
-    for street in streets:
-        time_dict[street[0]] = street[2]
+def get_input():
+    n = int(input())
+    edges = []
+    for i in range(n - 1):
+        edges.append(tuple(map(int, input().split())))
+    return n, edges
 
-    # Initialize a list to store the intersections on Mister George's route
-    mister_george_route = [int(x) for x in mister_george_route.split()]
+def find_max_edges(n, edges):
+    # Initialize a dictionary to store the number of edges for each vertex
+    num_edges = {i: 0 for i in range(1, n + 1)}
+    
+    # Iterate over the edges and increment the number of edges for each vertex
+    for edge in edges:
+        num_edges[edge[0]] += 1
+        num_edges[edge[1]] += 1
+    
+    # Find the vertex with the maximum number of edges
+    max_vertex = max(num_edges, key=num_edges.get)
+    
+    # Find the two vertices that are not adjacent to the maximum vertex
+    non_adjacent_vertices = [i for i in range(1, n + 1) if i != max_vertex and (max_vertex, i) not in edges]
+    
+    # Find the vertex that is adjacent to both the maximum vertex and one of the non-adjacent vertices
+    third_vertex = [i for i in non_adjacent_vertices if (max_vertex, i) in edges][0]
+    
+    # Return the maximum number of edges and the three vertices
+    return num_edges[max_vertex], [max_vertex, non_adjacent_vertices[0], third_vertex]
 
-    # Initialize a set to store the intersections that are blocked by Mister George
-    blocked_intersections = set()
+def main():
+    n, edges = get_input()
+    max_edges, vertices = find_max_edges(n, edges)
+    print(max_edges)
+    print(" ".join(map(str, vertices)))
 
-    # Loop through Mister George's route and block the intersections
-    for i in range(len(mister_george_route) - 1):
-        intersection1 = mister_george_route[i]
-        intersection2 = mister_george_route[i + 1]
-        blocked_intersections.add(intersection1)
-        blocked_intersections.add(intersection2)
-
-    # Initialize a queue to store the intersections to visit
-    queue = []
-
-    # Enqueue the starting intersection
-    queue.append(start_time)
-
-    # Initialize a dictionary to store the shortest time to reach each intersection
-    shortest_time = {start_time: 0}
-
-    # Loop until the queue is empty
-    while queue:
-        # Dequeue the first intersection
-        intersection = queue.pop(0)
-
-        # If the intersection is not blocked by Mister George, calculate the shortest time to reach it
-        if intersection not in blocked_intersections:
-            # Get the time it takes to travel to the intersection
-            time_to_intersection = time_dict[intersection]
-
-            # If the intersection is not the end intersection, enqueue the next intersection
-            if intersection != end_time:
-                queue.append(intersection + 1)
-
-            # Update the shortest time to reach the intersection
-            shortest_time[intersection + 1] = shortest_time.get(intersection, 0) + time_to_intersection
-
-    # Return the shortest time to reach the end intersection
-    return shortest_time[end_time]
+if __name__ == '__main__':
+    main()
 

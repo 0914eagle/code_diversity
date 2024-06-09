@@ -1,39 +1,33 @@
 
-import math
-import random
+def get_shortcut_time(level, shortcut, items):
+    # Find the index of the shortcut item in the items list
+    shortcut_index = items.index(shortcut)
+    # Return the minimum time to complete the level using the shortcut item or any of the other items
+    return min(items[shortcut_index], *[items[i] for i in range(shortcut_index)])
 
-def solve(n, b, d, trees):
-    # Calculate the area of the boar's body
-    boar_area = math.pi * b ** 2
+def get_min_time(levels, items):
+    # Initialize the minimum time to complete all levels to 0
+    min_time = 0
+    # Loop through each level
+    for level in levels:
+        # Get the shortcut time for the current level
+        shortcut_time = get_shortcut_time(level, level[0], level[1:])
+        # Add the shortcut time to the minimum time
+        min_time += shortcut_time
+    # Return the minimum time to complete all levels
+    return min_time
 
-    # Initialize the probability to 1
-    prob = 1
-
-    # Loop through each tree
-    for tree in trees:
-        # Calculate the distance between the boar and the tree
-        dist = math.sqrt((tree[0] - b) ** 2 + (tree[1] - b) ** 2)
-
-        # Check if the boar will hit the tree before it charges the full distance
-        if dist < d:
-            # Calculate the area of overlap between the boar and the tree
-            overlap_area = math.pi * min(dist, b) ** 2
-
-            # Subtract the probability of hitting the tree from the total probability
-            prob -= overlap_area / boar_area
-
-    # Return the probability of completing the charge without hitting a tree
-    return prob
-
-# Main function
-if __name__ == "__main__":
-    # Read the input
-    n, b, d = map(int, input().split())
-    trees = []
+def main():
+    # Read the number of levels and the levels from stdin
+    n = int(input())
+    levels = []
     for _ in range(n):
-        x, y, r = map(int, input().split())
-        trees.append((x, y, r))
+        levels.append(list(map(int, input().split())))
+    # Get the minimum time to complete all levels
+    min_time = get_min_time(levels, range(n+1))
+    # Print the minimum time
+    print(min_time)
 
-    # Solve the problem
-    print(solve(n, b, d, trees))
+if __name__ == '__main__':
+    main()
 

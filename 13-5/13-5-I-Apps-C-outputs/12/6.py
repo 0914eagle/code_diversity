@@ -1,26 +1,31 @@
 
-def solve(a, b, n, m, roads):
-    # Initialize a dictionary to store the shortest distance from each intersection to Janet's house
-    distances = {1: 0}
-    # Initialize a dictionary to store the previous intersection for each intersection
-    previous = {1: None}
-    # Loop through each road
-    for u, v, t in roads:
-        # If the destination intersection is not in the dictionary, add it
-        if v not in distances:
-            distances[v] = float('inf')
-            previous[v] = u
-        # If the distance through this road is less than the current shortest distance, update the shortest distance and previous intersection
-        if distances[u] + t < distances[v]:
-            distances[v] = distances[u] + t
-            previous[v] = u
-    
-    # Loop through each intersection and find the shortest distance to Janet's house
-    for i in range(2, n+1):
-        if distances[i] < distances[1]:
-            distances[1] = distances[i]
-            previous[1] = i
-    
-    # Return the worst-case waiting time, which is the shortest distance from Richard's house to Janet's house plus the time it takes to travel from Janet's house to Richard's house
-    return distances[1] + distances[n]
+def get_largest_committee(N, K, book_of_great_achievements):
+    # Initialize a set to store the committee members
+    committee = set()
+    # Loop through each politician and their disagreements
+    for politician, disagreements in book_of_great_achievements.items():
+        # If the politician is not in the committee yet, add them
+        if politician not in committee:
+            committee.add(politician)
+            # Loop through the politician's disagreements
+            for disagreement in disagreements:
+                # If the disagreement is not in the committee yet, add them
+                if disagreement not in committee:
+                    committee.add(disagreement)
+                    # If the size of the committee is greater than or equal to K, return the committee
+                    if len(committee) >= K:
+                        return len(committee)
+    # If no committee of size K or greater is possible, return 0
+    return 0
+
+def main():
+    N, K = map(int, input().split())
+    book_of_great_achievements = {}
+    for i in range(N):
+        politician, num_disagreements = map(int, input().split())
+        book_of_great_achievements[politician] = set(map(int, input().split()))
+    print(get_largest_committee(N, K, book_of_great_achievements))
+
+if __name__ == '__main__':
+    main()
 

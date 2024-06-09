@@ -1,78 +1,55 @@
 
-def solve(n, a):
-    # Initialize a dictionary to store the graph
-    graph = {}
-
-    # Iterate over the input array
+def f1(n, pebbles):
+    # f1 function to find the most distant pebble that can be reached by a sequence of jumps
+    # n: number of pebbles
+    # pebbles: list of numbers of spots on each pebble
+    
+    # Initialize variables
+    max_distance = 0
+    current_pebble = 0
+    
+    # Iterate through each pebble
     for i in range(n):
-        # Get the current number
-        num = a[i]
+        # Check if the current pebble can be reached by a jump from the previous pebble
+        if pebbles[current_pebble] + pebbles[i] == i - current_pebble:
+            # Update the maximum distance and the current pebble
+            max_distance = max(max_distance, i - current_pebble)
+            current_pebble = i
+    
+    # Return the maximum distance
+    return max_distance
 
-        # Iterate over the remaining numbers
+def f2(n, pebbles):
+    # f2 function to find all possible pairs of pebbles where Yoshi can perform a jump
+    # n: number of pebbles
+    # pebbles: list of numbers of spots on each pebble
+    
+    # Initialize a list to store the pairs of pebbles
+    pairs = []
+    
+    # Iterate through each pebble
+    for i in range(n):
+        # Iterate through each pebble after the current pebble
         for j in range(i+1, n):
-            # Get the current number
-            num2 = a[j]
+            # Check if the current pebble can be reached by a jump from the previous pebble
+            if pebbles[i] + pebbles[j] == j - i:
+                # Add the pair of pebbles to the list
+                pairs.append((i, j))
+    
+    # Return the list of pairs
+    return pairs
 
-            # Check if the current number is connected to the previous number
-            if num & num2 != 0:
-                # Add the connection to the graph
-                if i not in graph:
-                    graph[i] = [j]
-                else:
-                    graph[i].append(j)
-
-    # Initialize a queue to perform BFS
-    queue = []
-
-    # Initialize a set to keep track of visited nodes
-    visited = set()
-
-    # Initialize a variable to store the shortest cycle length
-    shortest_cycle_length = float('inf')
-
-    # Iterate over the graph
-    for node in graph:
-        # Check if the node has been visited before
-        if node not in visited:
-            # Mark the node as visited
-            visited.add(node)
-
-            # Enqueue the node
-            queue.append(node)
-
-            # Initialize a variable to store the current path length
-            path_length = 0
-
-            # Perform BFS until the queue is empty
-            while queue:
-                # Dequeue a node from the queue
-                node = queue.pop(0)
-
-                # Check if the node is connected to any other node
-                if node in graph:
-                    # Iterate over the connected nodes
-                    for neighbor in graph[node]:
-                        # Check if the neighbor has been visited before
-                        if neighbor not in visited:
-                            # Mark the neighbor as visited
-                            visited.add(neighbor)
-
-                            # Enqueue the neighbor
-                            queue.append(neighbor)
-
-                # Increment the path length
-                path_length += 1
-
-            # Check if the path length is shorter than the shortest cycle length
-            if path_length < shortest_cycle_length:
-                # Update the shortest cycle length
-                shortest_cycle_length = path_length
-
-    # Check if the graph has any cycles
-    if shortest_cycle_length == float('inf'):
-        # Return -1 if the graph has no cycles
-        return -1
-    else:
-        # Return the shortest cycle length
-        return shortest_cycle_length
+if __name__ == '__main__':
+    # Read the input
+    n = int(input())
+    pebbles = list(map(int, input().split()))
+    
+    # Find the most distant pebble that can be reached by a sequence of jumps
+    max_distance = f1(n, pebbles)
+    
+    # Find all possible pairs of pebbles where Yoshi can perform a jump
+    pairs = f2(n, pebbles)
+    
+    # Print the output
+    print(max_distance)
 

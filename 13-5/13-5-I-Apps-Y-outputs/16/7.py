@@ -1,20 +1,37 @@
 
-def is_bus_service_available(s):
-    # Check if the length of the string is 3
-    if len(s) != 3:
-        return "No"
+def get_diverse_garland(n, s):
+    # Initialize variables
+    recolored_lamp_count = 0
+    diverse_garland = []
+    current_color = s[0]
+    diverse_garland.append(current_color)
     
-    # Check if the string contains only A and B
-    if not set(s).issubset("AB"):
-        return "No"
+    # Iterate through the garland
+    for i in range(1, n):
+        # If the current lamp is not the same color as the previous lamp, add it to the diverse garland
+        if s[i] != current_color:
+            diverse_garland.append(s[i])
+            current_color = s[i]
+            recolored_lamp_count += 1
+        # If the current lamp is the same color as the previous lamp, recolor it and add it to the diverse garland
+        else:
+            diverse_garland.append(get_new_color(current_color))
+            recolored_lamp_count += 1
     
-    # Check if there is a pair of stations that will be connected by a bus service
-    if s[0] == "A" and s[2] == "B":
-        return "Yes"
-    elif s[0] == "B" and s[1] == "A":
-        return "Yes"
-    elif s[1] == "B" and s[2] == "A":
-        return "Yes"
+    return recolored_lamp_count, "".join(diverse_garland)
+
+def get_new_color(color):
+    if color == "R":
+        return "G"
+    elif color == "G":
+        return "B"
     else:
-        return "No"
+        return "R"
+
+if __name__ == '__main__':
+    n = int(input())
+    s = input()
+    recolored_lamp_count, diverse_garland = get_diverse_garland(n, s)
+    print(recolored_lamp_count)
+    print(diverse_garland)
 

@@ -1,23 +1,40 @@
 
-def longest_monotone_subsequence(N, K):
-    # Initialize a list to store the required sequence
-    seq = []
-    
-    # Iterate from 1 to N
-    for i in range(1, N+1):
-        # If the length of the current sequence is less than K, append the current number to the sequence
-        if len(seq) < K:
-            seq.append(i)
-        # If the length of the current sequence is equal to K, check if the current number is the opposite of the last number in the sequence
-        elif len(seq) == K:
-            # If the current number is the opposite of the last number in the sequence, replace the last number with the current number
-            if seq[-1] != i:
-                seq.append(i)
-                seq.pop(0)
-            # If the current number is not the opposite of the last number in the sequence, return -1 as the required sequence does not exist
-            else:
-                return -1
-    
-    # If the required sequence exists, return it
-    return seq
+def read_sequence():
+    n = int(input())
+    sequence = list(map(int, input().split()))
+    return n, sequence
+
+def longest_increasing_subsequence(sequence):
+    n = len(sequence)
+    dp = [1] * n
+    for i in range(1, n):
+        for j in range(i):
+            if sequence[i] > sequence[j] and dp[i] < dp[j] + 1:
+                dp[i] = dp[j] + 1
+    return max(dp)
+
+def find_critical_elements(sequence, lis_length):
+    n = len(sequence)
+    dp = [False] * n
+    for i in range(n):
+        if lis_length == 1:
+            break
+        for j in range(i):
+            if sequence[i] > sequence[j] and dp[j] == False and lis_length == dp[j] + 1:
+                dp[i] = True
+                lis_length -= 1
+                break
+    return [sequence[i] for i in range(n) if dp[i]]
+
+def main():
+    n, sequence = read_sequence()
+    lis_length = longest_increasing_subsequence(sequence)
+    critical_elements = find_critical_elements(sequence, lis_length)
+    if len(critical_elements) == 0:
+        print(-1)
+    else:
+        print(*critical_elements)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,39 +1,68 @@
 
-def solve(N, strings):
-    # Initialize a dictionary to store the longest subsequence for each string
-    longest_subsequence = {}
+def f1(n, c, encounters):
+    # Initialize a graph with n nodes
+    graph = [[] for _ in range(n + 1)]
 
-    # Iterate over each string
-    for string in strings:
-        # Initialize the longest subsequence for the current string as an empty list
-        longest_subsequence[string] = []
+    # Add edges to the graph based on the encounters
+    for a, b, y in encounters:
+        graph[a].append((b, y))
+        graph[b].append((a, y))
 
-        # Iterate over each character in the string
-        for i in range(len(string)):
-            # If the current character is not already in the longest subsequence, add it
-            if string[i] not in longest_subsequence[string]:
-                longest_subsequence[string].append(string[i])
+    # Find the earliest year where all participants met at least once
+    years = set()
+    for node in graph:
+        for neighbor, year in node:
+            years.add(year)
+    earliest_year = min(years)
 
-            # If the current character is already in the longest subsequence, check if it is the start and end of a subsequence
-            else:
-                # Get the index of the current character in the longest subsequence
-                index = longest_subsequence[string].index(string[i])
+    # Check if it is possible to divide the participants into two groups
+    # such that no group has more than 2/3 of the participants and
+    # all participants in the first group first met before the earliest year
+    # and all participants in the second group first met in or after the earliest year
+    for group_size in range(1, n // 2 + 1):
+        if n % group_size == 0:
+            first_group = set(range(1, group_size + 1))
+            second_group = set(range(group_size + 1, n + 1))
+            if all(year <= earliest_year for node in first_group for neighbor, year in graph[node] if neighbor in second_group):
+                return earliest_year
 
-                # If the current character is the start and end of a subsequence, add it to the longest subsequence
-                if index == 0 or index == len(longest_subsequence[string]) - 1:
-                    longest_subsequence[string].append(string[i])
+    return "Impossible"
 
-    # Initialize a set to store the unique substrings
-    unique_substrings = set()
+def f2(n, c, encounters):
+    # Initialize a graph with n nodes
+    graph = [[] for _ in range(n + 1)]
 
-    # Iterate over each string
-    for string in strings:
-        # Iterate over each character in the longest subsequence of the current string
-        for substring in longest_subsequence[string]:
-            # If the substring is not already in the set of unique substrings, add it
-            if substring not in unique_substrings:
-                unique_substrings.add(substring)
+    # Add edges to the graph based on the encounters
+    for a, b, y in encounters:
+        graph[a].append((b, y))
+        graph[b].append((a, y))
 
-    # Return the length of the set of unique substrings
-    return len(unique_substrings)
+    # Find the earliest year where all participants met at least once
+    years = set()
+    for node in graph:
+        for neighbor, year in node:
+            years.add(year)
+    earliest_year = min(years)
+
+    # Check if it is possible to divide the participants into two groups
+    # such that no group has more than 2/3 of the participants and
+    # all participants in the first group first met before the earliest year
+    # and all participants in the second group first met in or after the earliest year
+    for group_size in range(1, n // 2 + 1):
+        if n % group_size == 0:
+            first_group = set(range(1, group_size + 1))
+            second_group = set(range(group_size + 1, n + 1))
+            if all(year <= earliest_year for node in first_group for neighbor, year in graph[node] if neighbor in second_group):
+                return earliest_year
+
+    return "Impossible"
+
+if __name__ == '__main__':
+    n, c = map(int, input().split())
+    encounters = []
+    for _ in range(c):
+        a, b, y = map(int, input().split())
+        encounters.append((a, b, y))
+    print(f1(n, c, encounters))
+    print(f2(n, c, encounters))
 

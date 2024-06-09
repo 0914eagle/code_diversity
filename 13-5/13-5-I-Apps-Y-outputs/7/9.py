@@ -1,13 +1,14 @@
 
-def is_wall_complete(heights):
-    # Check if all parts of the wall have the same height
-    if len(set(heights)) == 1:
-        return True
+def get_input():
+    return list(map(int, input().split()))
 
-    # Check if the wall has no empty spaces inside it
-    for i in range(len(heights) - 1):
-        if heights[i] != heights[i+1]:
-            return False
+def get_max_people(seat_width, person_width, gap_width):
+    return (seat_width - person_width) // (person_width + gap_width)
 
-    return True
+def main():
+    seat_width, person_width, gap_width = get_input()
+    print(get_max_people(seat_width, person_width, gap_width))
+
+if __name__ == '__main__':
+    main()
 

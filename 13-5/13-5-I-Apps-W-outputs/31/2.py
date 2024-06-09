@@ -1,44 +1,30 @@
 
-def solve(n, m, cities, towers):
-    # Sort the cities and towers in non-decreasing order
-    cities = sorted(cities)
-    towers = sorted(towers)
-    
-    # Initialize the minimum distance as 0
-    min_dist = 0
-    
-    # Iterate through the cities and find the closest tower
-    for i in range(n):
-        # Find the closest tower to the current city
-        closest_tower = binary_search(towers, cities[i])
-        
-        # If the closest tower is not found, return -1
-        if closest_tower == -1:
-            return -1
-        
-        # Update the minimum distance if necessary
-        min_dist = max(min_dist, abs(cities[i] - towers[closest_tower]))
-    
-    return min_dist
+def get_min_jury_size(olympiads):
+    # Initialize a set to store the dates when the jury is working
+    jury_dates = set()
+    # Iterate over the olympiads
+    for month, day, people, time in olympiads:
+        # Get the start and end dates for the olympiad
+        start_date = f"{month}/{day}"
+        end_date = (datetime.strptime(start_date, "%m/%d") + timedelta(days=time-1)).strftime("%m/%d")
+        # Add the dates to the set
+        jury_dates.update([start_date, end_date])
+    # Return the size of the jury
+    return len(jury_dates)
 
-# Binary search function to find the closest tower to a city
-def binary_search(towers, city):
-    left = 0
-    right = len(towers) - 1
-    
-    while left <= right:
-        mid = (left + right) // 2
-        if towers[mid] == city:
-            return mid
-        elif towers[mid] < city:
-            left = mid + 1
-        else:
-            right = mid - 1
-    
-    # If the tower is not found, return -1
-    if left > right:
-        return -1
-    
-    # If the tower is found, return its index
-    return left
+def main():
+    # Read the number of olympiads
+    n = int(input())
+    # Read the olympiads
+    olympiads = []
+    for _ in range(n):
+        month, day, people, time = map(int, input().split())
+        olympiads.append((month, day, people, time))
+    # Call the function to get the minimum jury size
+    min_jury_size = get_min_jury_size(olympiads)
+    # Print the result
+    print(min_jury_size)
+
+if __name__ == '__main__':
+    main()
 

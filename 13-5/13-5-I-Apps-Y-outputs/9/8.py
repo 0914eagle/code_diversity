@@ -1,16 +1,40 @@
 
-def is_multigram(word):
-    if len(word) <= 2:
-        return -1
+def f1(n, a):
+    # find the maximum difficulty
+    max_diff = max(a)
     
-    words = []
-    for i in range(1, len(word) // 2 + 1):
-        if len(word) % i == 0:
-            words.append(word[:i])
+    # initialize the number of problems to be included in the contest
+    num_problems = 1
     
-    for word1 in words:
-        if all(word1 == word[i:i+len(word1)] for i in range(len(word) - len(word1) + 1)):
-            return word1
+    # loop through the difficulties starting from the second-hardest problem
+    for i in range(n-2, -1, -1):
+        # if the difficulty is greater than twice the maximum difficulty, break the loop
+        if a[i] > 2*max_diff:
+            break
+        # otherwise, increment the number of problems to be included in the contest
+        num_problems += 1
     
-    return -1
+    return num_problems
+
+def f2(n, a):
+    # find the maximum difficulty
+    max_diff = max(a)
+    
+    # initialize the number of problems to be included in the contest
+    num_problems = 1
+    
+    # loop through the difficulties starting from the second-hardest problem
+    for i in range(n-2, -1, -1):
+        # if the difficulty is greater than twice the maximum difficulty, break the loop
+        if a[i] > 2*max_diff:
+            break
+        # otherwise, increment the number of problems to be included in the contest
+        num_problems += 1
+    
+    return num_problems
+
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(f1(n, a))
 

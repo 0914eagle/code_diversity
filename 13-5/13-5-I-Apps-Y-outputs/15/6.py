@@ -1,20 +1,26 @@
 
-def solve(n, c, a, b):
-    # Initialize the minimum time to reach each floor as infinity
-    min_time = [float('inf')] * (n + 1)
-    # The minimum time to reach the first floor is 0
-    min_time[1] = 0
+def get_input():
+    H, N, M = map(int, input().split())
+    return H, N, M
 
-    # Loop through each floor
-    for i in range(1, n + 1):
-        # Loop through each possible next floor
-        for j in range(1, n + 1):
-            # Calculate the time to reach the next floor using the stairs
-            stairs_time = min_time[i] + a[j - 1]
-            # Calculate the time to reach the next floor using the elevator
-            elevator_time = min_time[i] + c + b[j - 1]
-            # Update the minimum time to reach the next floor
-            min_time[j] = min(stairs_time, elevator_time)
+def get_extra_bricks(H, N, M):
+    extra_2x2 = 0
+    extra_4x2 = 0
+    for i in range(1, H+1):
+        width = 2*i
+        if width % 2 == 0:
+            extra_2x2 += width//2
+        else:
+            extra_2x2 += width//2 + 1
+        extra_4x2 += width
+    return extra_2x2 - N, extra_4x2 - M
 
-    return min_time[1:]
+def solve(H, N, M):
+    extra_2x2, extra_4x2 = get_extra_bricks(H, N, M)
+    return extra_2x2, extra_4x2
+
+if __name__ == '__main__':
+    H, N, M = get_input()
+    extra_2x2, extra_4x2 = solve(H, N, M)
+    print(extra_2x2, extra_4x2)
 

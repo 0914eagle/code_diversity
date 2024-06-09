@@ -1,39 +1,68 @@
 
-def solve(intersections, streets, start_intersection, end_intersection, mister_george_route, k):
-    # Initialize a dictionary to store the time it takes to travel between each intersection
-    time_to_travel = {}
-    for street in streets:
-        time_to_travel[street[0]] = street[2]
-        time_to_travel[street[1]] = street[2]
+def get_input():
+    n = int(input())
+    edges = []
+    for i in range(n - 1):
+        edges.append(tuple(map(int, input().split())))
+    return n, edges
 
-    # Initialize a queue to store the intersections to visit
-    queue = [start_intersection]
+def find_maximum_spanning_tree(n, edges):
+    # Create a graph with n vertices and 0 edges
+    graph = [[] for _ in range(n)]
+    
+    # Add edges to the graph
+    for edge in edges:
+        graph[edge[0] - 1].append(edge[1] - 1)
+        graph[edge[1] - 1].append(edge[0] - 1)
+    
+    # Find the maximum spanning tree using Kruskal's algorithm
+    mst = []
+    visited = [False] * n
+    def dfs(node, parent):
+        nonlocal mst
+        visited[node] = True
+        for neighbor in graph[node]:
+            if neighbor != parent and not visited[neighbor]:
+                dfs(neighbor, node)
+                mst.append((node, neighbor))
+    
+    dfs(0, -1)
+    return mst
 
-    # Initialize a set to store the visited intersections
-    visited = set()
+def find_maximum_number_of_edges(n, edges):
+    # Find the maximum spanning tree
+    mst = find_maximum_spanning_tree(n, edges)
+    
+    # Count the number of edges in the MST
+    num_edges = 0
+    for edge in mst:
+        num_edges += 1
+    
+    return num_edges
 
-    # Initialize the minimum time it takes to make the delivery
-    min_time = float('inf')
+def find_vertices(n, edges, num_edges):
+    # Find the maximum spanning tree
+    mst = find_maximum_spanning_tree(n, edges)
+    
+    # Find the three vertices with the maximum number of edges
+    vertices = []
+    for i in range(n):
+        if len(mst) == num_edges:
+            break
+        vertices.append(i)
+        for edge in mst:
+            if edge[0] == i or edge[1] == i:
+                mst.remove(edge)
+    
+    return vertices
 
-    # Loop until the queue is empty
-    while queue:
-        # Get the current intersection from the queue
-        current_intersection = queue.pop(0)
+def main():
+    n, edges = get_input()
+    num_edges = find_maximum_number_of_edges(n, edges)
+    vertices = find_vertices(n, edges, num_edges)
+    print(num_edges)
+    print(" ".join(map(str, vertices)))
 
-        # If the current intersection is the end intersection, calculate the total time it takes to make the delivery and compare it with the minimum time
-        if current_intersection == end_intersection:
-            total_time = 0
-            for intersection in visited:
-                total_time += time_to_travel[intersection]
-            min_time = min(min_time, total_time)
-
-        # If the current intersection is not the end intersection, mark it as visited and add its neighbors to the queue
-        else:
-            visited.add(current_intersection)
-            for neighbor in intersections[current_intersection]:
-                if neighbor not in visited:
-                    queue.append(neighbor)
-
-    # Return the minimum time it takes to make the delivery
-    return min_time
+if __name__ == '__main__':
+    main()
 

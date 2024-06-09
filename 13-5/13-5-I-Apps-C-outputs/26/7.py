@@ -1,60 +1,79 @@
 
-def solve(x, y):
-    # Check if x and y are positive
-    if x <= 0 or y <= 0:
-        return "Impossible"
+import math
+
+def f1(w, h, u, d, l, r):
+    # Calculate the probability of the ball bouncing up, down, left, or right
+    p_up = u / 100
+    p_down = d / 100
+    p_left = l / 100
+    p_right = r / 100
     
-    # Initialize the number of oranges and apples Alice and Bob have
-    alice_oranges = x
-    alice_apples = 0
-    bob_oranges = 0
-    bob_apples = y
+    # Initialize the probability of hitting each target
+    prob = [0] * h
     
-    # Initialize the number of cards left to play
-    cards_left = x + y - 1
+    # Loop through each target
+    for i in range(h):
+        # Calculate the probability of hitting the target
+        prob[i] = calculate_probability(w, h, i, p_up, p_down, p_left, p_right)
     
-    # Initialize the sequence of cards
-    sequence = []
+    # Return the probability of hitting each target
+    return prob
+
+def f2(w, h, u, d, l, r):
+    # Calculate the probability of the ball bouncing up, down, left, or right
+    p_up = u / 100
+    p_down = d / 100
+    p_left = l / 100
+    p_right = r / 100
     
-    # While there are still cards left to play
-    while cards_left > 0:
-        # Check if Alice has more oranges than apples
-        if alice_oranges > alice_apples:
-            # Add a card with letter 'A' to the sequence
-            sequence.append("A")
-            # Give all the oranges to Bob
-            bob_oranges += alice_oranges
-            # Set Alice's oranges to 0
-            alice_oranges = 0
-        # Check if Alice has more apples than oranges
-        elif alice_apples > alice_oranges:
-            # Add a card with letter 'B' to the sequence
-            sequence.append("B")
-            # Give all the apples to Alice
-            alice_apples += bob_apples
-            # Set Bob's apples to 0
-            bob_apples = 0
-        # Check if Alice and Bob have the same number of oranges and apples
-        else:
-            # Add a card with letter 'A' to the sequence
-            sequence.append("A")
-            # Give all the oranges to Bob
-            bob_oranges += alice_oranges
-            # Set Alice's oranges to 0
-            alice_oranges = 0
-            # Give all the apples to Alice
-            alice_apples += bob_apples
-            # Set Bob's apples to 0
-            bob_apples = 0
-        
-        # Decrement the number of cards left to play
-        cards_left -= 1
+    # Initialize the probability of hitting each target
+    prob = [0] * h
     
-    # Check if the number of oranges and apples is the same for Alice and Bob
-    if alice_oranges == bob_oranges and alice_apples == bob_apples:
-        # Return the sequence of cards
-        return "".join(sequence)
-    else:
-        # Return "Impossible" if the sequence of cards does not exist
-        return "Impossible"
+    # Loop through each target
+    for i in range(h):
+        # Calculate the probability of hitting the target
+        prob[i] = calculate_probability(w, h, i, p_up, p_down, p_left, p_right)
+    
+    # Return the probability of hitting each target
+    return prob
+
+def calculate_probability(w, h, i, p_up, p_down, p_left, p_right):
+    # Calculate the probability of hitting the target
+    prob = 0
+    
+    # Loop through each space in the grid
+    for j in range(w):
+        # Calculate the probability of hitting the target from this space
+        prob += calculate_space_probability(w, h, i, j, p_up, p_down, p_left, p_right)
+    
+    # Return the probability of hitting the target
+    return prob
+
+def calculate_space_probability(w, h, i, j, p_up, p_down, p_left, p_right):
+    # Calculate the probability of hitting the target from this space
+    prob = 0
+    
+    # If the space is an obstacle, return 0
+    if grid[i][j] == 'X':
+        return 0
+    
+    # If the space is a target, return 1
+    if grid[i][j] == 'T':
+        return 1
+    
+    # If the space is not an obstacle or a target, calculate the probability of hitting the target
+    prob = (p_up * calculate_probability(w, h, i - 1, j, p_up, p_down, p_left, p_right) +
+            p_down * calculate_probability(w, h, i + 1, j, p_up, p_down, p_left, p_right) +
+            p_left * calculate_probability(w, h, i, j - 1, p_up, p_down, p_left, p_right) +
+            p_right * calculate_probability(w, h, i, j + 1, p_up, p_down, p_left, p_right))
+    
+    # Return the probability of hitting the target
+    return prob
+
+if __name__ == '__main__':
+    w, h, u, d, l, r = map(int, input().split())
+    grid = [input() for _ in range(h)]
+    prob = f1(w, h, u, d, l, r)
+    for i in range(h):
+        print(f"{prob[i]:.6f}")
 

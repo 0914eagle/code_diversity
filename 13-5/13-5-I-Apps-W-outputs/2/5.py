@@ -1,37 +1,26 @@
 
-def solve(n, m, bombs, cords):
-    # Initialize a set to store the indices of the bombs that are activated
-    activated_bombs = set()
+def get_tiling_count(w, h):
+    # Initialize a 2D array to store the number of tilings for each cell
+    dp = [[0] * (h + 1) for _ in range(w + 1)]
+    
+    # Initialize the first row and column with 1
+    for i in range(w + 1):
+        dp[i][0] = 1
+    for j in range(h + 1):
+        dp[0][j] = 1
+    
+    # Fill in the rest of the 2D array using the recurrence relation
+    for i in range(1, w + 1):
+        for j in range(1, h + 1):
+            dp[i][j] = (dp[i - 1][j] + dp[i][j - 1]) % 998244353
+    
+    # Return the number of tilings for the last cell
+    return dp[w][h]
 
-    # Iterate over the bombs and add the indices of the activated bombs to the set
-    for i in range(n):
-        if bombs[i][1] == 1:
-            activated_bombs.add(i)
+def main():
+    w, h = map(int, input().split())
+    print(get_tiling_count(w, h))
 
-    # Initialize a list to store the cords that should be cut
-    cords_to_cut = []
-
-    # Iterate over the cords and check if cutting the cord will deactivate all the bombs
-    for i in range(m):
-        # Get the coordinates of the cord
-        left, right = cords[i]
-
-        # Initialize a set to store the indices of the bombs that will be switched by cutting the cord
-        switched_bombs = set()
-
-        # Iterate over the bombs and check if they are between the coordinates of the cord
-        for j in range(n):
-            if left <= bombs[j][0] <= right:
-                switched_bombs.add(j)
-
-        # Check if the set of switched bombs is a subset of the set of activated bombs
-        if switched_bombs.issubset(activated_bombs):
-            cords_to_cut.append(i + 1)
-
-    # If all the bombs are deactivated, return the list of cords to cut
-    if len(activated_bombs) == 0:
-        return cords_to_cut
-
-    # Otherwise, return -1
-    return -1
+if __name__ == '__main__':
+    main()
 

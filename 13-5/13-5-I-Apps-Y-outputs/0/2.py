@@ -1,25 +1,34 @@
 
-def solve(A, B, C, D, E, F):
+def get_min_attacks(healths, k):
     # Initialize variables
-    sugar_water = 0
-    sugar_dissolved = 0
+    attacks = 0
+    special_moves = k
+    monsters_alive = len(healths)
+    healths = sorted(healths, reverse=True)
+    
+    # Loop through the monsters and attack or use special move
+    while monsters_alive > 0:
+        if special_moves > 0:
+            # Use special move on the monster with the lowest health
+            healths[0] = 0
+            special_moves -= 1
+        else:
+            # Attack the monster with the lowest health
+            healths[0] -= 1
+            attacks += 1
+        
+        # Remove the monster if its health is 0 or less
+        if healths[0] <= 0:
+            healths.pop(0)
+            monsters_alive -= 1
+    
+    return attacks
 
-    # Loop through all possible combinations of operations
-    for a in range(A, B + 1):
-        for c in range(C, D + 1):
-            # Calculate the mass of sugar water that can be made with the current combination of operations
-            sugar_water = a + c
+def main():
+    n, k = map(int, input().split())
+    healths = list(map(int, input().split()))
+    print(get_min_attacks(healths, k))
 
-            # Check if the mass of sugar water is within the allowed range
-            if sugar_water <= F:
-                # Calculate the mass of sugar that can be dissolved in the current combination of operations
-                sugar_dissolved = (E * sugar_water) // 100
-
-                # Check if the mass of sugar dissolved is within the allowed range
-                if sugar_dissolved <= c:
-                    # Return the mass of sugar water and the mass of sugar dissolved if a higher density sugar water is found
-                    return [sugar_water, sugar_dissolved]
-
-    # If no higher density sugar water is found, return -1 for both masses
-    return [-1, -1]
+if __name__ == '__main__':
+    main()
 

@@ -1,8 +1,11 @@
 
-def solve(x):
-    x = str(x)
-    a, b = x.split('.')
-    a = int(a)
-    b = int(b)
-    return a, b
+def f1(n, m):
+    return m == n
+
+def f2(n, m):
+    return "Yes" if m == n else "No"
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    print(f2(n, m))
 

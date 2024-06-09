@@ -1,48 +1,38 @@
 
-def solve(n, a):
-    # Initialize a set to store the nodes that are already visited
-    visited = set()
-    # Initialize a list to store the nodes in the current path
-    path = []
-    # Initialize a variable to store the shortest cycle length
-    shortest_cycle_length = float('inf')
-    # Loop through each node
-    for node in range(n):
-        # If the node is not visited before, start a depth-first search from that node
-        if node not in visited:
-            # Add the node to the visited set
-            visited.add(node)
-            # Add the node to the path
-            path.append(node)
-            # Recursively search for cycles starting from the current node
-            find_cycle(node, visited, path, shortest_cycle_length, a)
-            # If a cycle is found, return the length of the cycle
-            if shortest_cycle_length != float('inf'):
-                return shortest_cycle_length
-            # If no cycle is found, remove the node from the path and visited set
-            path.pop()
-            visited.remove(node)
-    # If no cycle is found in the entire graph, return -1
-    return -1
+def f1(n, pebbles):
+    # f1(n, pebbles) should return the most distant pebble that can be reached by a sequence of jumps
+    # according to the given rules
+    
+    # Initialize the most distant pebble as the first pebble
+    most_distant_pebble = 0
+    
+    # Iterate through the list of pebbles
+    for i in range(1, n):
+        # If the sum of the number of spots on the current pebble and the previous pebble is equal to the distance between them,
+        # update the most distant pebble
+        if pebbles[i] + pebbles[i-1] == i:
+            most_distant_pebble = i
+    
+    return most_distant_pebble
 
-def find_cycle(node, visited, path, shortest_cycle_length, a):
-    # If the node is not the starting node and the node is already visited, it means a cycle is found
-    if node != path[0] and node in visited:
-        # Update the shortest cycle length
-        shortest_cycle_length = min(shortest_cycle_length, len(path))
-        return
-    # Loop through the neighbors of the current node
-    for neighbor in range(len(a)):
-        # If the neighbor is not visited before and the bitwise AND of the current node and the neighbor is not zero, add the neighbor to the path and visited set
-        if neighbor not in visited and a[node] & a[neighbor] != 0:
-            visited.add(neighbor)
-            path.append(neighbor)
-            # Recursively search for cycles starting from the neighbor
-            find_cycle(neighbor, visited, path, shortest_cycle_length, a)
-            # If a cycle is found, return the length of the cycle
-            if shortest_cycle_length != float('inf'):
-                return shortest_cycle_length
-            # If no cycle is found, remove the neighbor from the path and visited set
-            path.pop()
-            visited.remove(neighbor)
+def f2(n, pebbles):
+    # f2(n, pebbles) should return the number of pairs of pebbles where Yoshi can perform a jump from one pebble to another one during his sequence of jumps
+    # according to the given rules
+    
+    # Initialize the number of pairs as 0
+    num_pairs = 0
+    
+    # Iterate through the list of pebbles
+    for i in range(n-1):
+        # If the sum of the number of spots on the current pebble and the next pebble is equal to the distance between them,
+        # increment the number of pairs
+        if pebbles[i] + pebbles[i+1] == i+1:
+            num_pairs += 1
+    
+    return num_pairs
+
+if __name__ == '__main__':
+    n = int(input())
+    pebbles = list(map(int, input().split()))
+    print(f1(n, pebbles))
 

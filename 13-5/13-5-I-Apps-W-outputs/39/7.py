@@ -1,17 +1,36 @@
 
-def is_valid_test_case(n, a, b):
-    if a == b:
-        return "Yes"
+def f1(n, a):
+    # Calculate the number of ways to flip some set of the roads
+    # such that the resulting whole set of all roads is not confusing
+    num_ways = 0
     
-    for k in range(1, n // 2 + 1):
-        prefix = a[:k]
-        suffix = a[n - k:]
-        if prefix == suffix:
+    # Iterate over all possible subsets of roads
+    for subset in range(2**n):
+        # Convert the binary representation of the subset to a list of road indices
+        subset_list = [i for i in range(n) if subset & (1 << i)]
+        
+        # Check if the subset forms a directed cycle
+        if is_confusing(n, a, subset_list):
             continue
-        if prefix == suffix[::-1]:
-            a = a[:k] + suffix + a[k:]
-            if a == b:
-                return "Yes"
+        
+        # If the subset does not form a directed cycle, increment the number of ways
+        num_ways += 1
     
-    return "No"
+    return num_ways % (10**9 + 7)
+
+def f2(...):
+    # Implement function f2 here
+    pass
+
+def is_confusing(n, a, subset):
+    # Check if the subset forms a directed cycle
+    for i in range(n):
+        if i in subset and a[i] in subset:
+            return True
+    return False
+
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(f1(n, a))
 

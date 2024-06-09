@@ -1,29 +1,35 @@
 
-def solve(N, queries):
-    # Initialize a dictionary to store the students and their knowledge
-    students = {}
+def is_hill_number(n):
+    if n < 10:
+        return True
+    
+    prev_digit = n % 10
+    n //= 10
+    
+    while n > 0:
+        curr_digit = n % 10
+        if prev_digit > curr_digit:
+            return False
+        prev_digit = curr_digit
+        n //= 10
+    
+    return True
 
-    # Iterate over the queries
-    for query in queries:
-        # If the query is a student moving in, add them to the dictionary
-        if query.startswith("D"):
-            A, B = map(int, query.split()[1:])
-            students[len(students) + 1] = (A, B)
-        # If the query is a student asking for help, find the best student to ask
-        elif query.startswith("P"):
-            i = int(query.split()[1])
-            # Find the student with the highest understanding who is better than the current student
-            best_student = None
-            for j, (A, B) in students.items():
-                if A > students[i][0] and B > students[i][1]:
-                    best_student = j
-                    break
-            # If no student is better, output "NE"
-            if best_student is None:
-                print("NE")
-            # Otherwise, output the best student's ID
-            else:
-                print(best_student)
+def count_hill_numbers(n):
+    count = 0
+    for i in range(1, n+1):
+        if is_hill_number(i):
+            count += 1
+    
+    return count
 
-    return students
+def main():
+    n = int(input())
+    if is_hill_number(n):
+        print(count_hill_numbers(n))
+    else:
+        print(-1)
+
+if __name__ == '__main__':
+    main()
 

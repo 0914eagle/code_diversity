@@ -1,8 +1,11 @@
 
-def ramen_price(S):
-    price = 700
-    toppings = {"o": 100, "x": 0}
-    for char in S:
-        price += toppings[char]
-    return price
+def convert_to_space_separated_string(s):
+    return s.replace(",", " ")
+
+def main():
+    s = input("Enter a string with commas: ")
+    print(convert_to_space_separated_string(s))
+
+if __name__ == '__main__':
+    main()
 

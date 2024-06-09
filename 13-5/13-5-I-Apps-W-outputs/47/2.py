@@ -1,19 +1,42 @@
 
-def min_quick_changes(routines):
-    # Initialize a dictionary to keep track of the dancers and their quick change status
-    dancers = {}
-    for routine in routines:
-        for dancer in routine:
-            if dancer not in dancers:
-                dancers[dancer] = False
-            if routine[0] != dancer:
-                dancers[dancer] = True
+def get_beautiful_table(n, k):
+    # Initialize a table with n rows and n columns
+    table = [[0] * n for _ in range(n)]
     
-    # Count the number of quick changes needed
-    quick_changes = 0
-    for dancer, needs_quick_change in dancers.items():
-        if needs_quick_change:
-            quick_changes += 1
+    # Fill the table with numbers from 1 to n^2
+    nums = list(range(1, n**2 + 1))
+    for i in range(n):
+        for j in range(n):
+            table[i][j] = nums[i * n + j]
     
-    return quick_changes
+    # Check if the table is beautiful
+    if is_beautiful(table, k):
+        return table
+    else:
+        return []
+
+def is_beautiful(table, k):
+    # Check if the sum of elements in each row equals k
+    for i in range(len(table)):
+        if sum(table[i]) != k:
+            return False
+    
+    # Check if the sum of elements in each column equals k
+    for j in range(len(table[0])):
+        col_sum = 0
+        for i in range(len(table)):
+            col_sum += table[i][j]
+        if col_sum != k:
+            return False
+    
+    return True
+
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    table = get_beautiful_table(n, k)
+    if table:
+        for row in table:
+            print(*row)
+    else:
+        print(-1)
 

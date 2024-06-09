@@ -1,47 +1,24 @@
 
-import math
-import random
+def get_shortcut_time(level, shortcut_item, completion_time):
+    return completion_time
 
-def solve(n, trees, b, d):
-    # Calculate the area of the boar's body
-    boar_area = math.pi * b ** 2
+def get_regular_time(level, item, completion_times):
+    return completion_times[item]
 
-    # Initialize the probability of not hitting a tree to 1
-    probability = 1
+def get_min_time(levels, shortcut_item, completion_times):
+    min_time = 0
+    for level in levels:
+        if level == shortcut_item:
+            min_time += get_shortcut_time(level, shortcut_item, completion_times[level])
+        else:
+            min_time += get_regular_time(level, shortcut_item, completion_times)
+    return min_time
 
-    # Iterate over the trees
-    for tree in trees:
-        # Calculate the distance between the boar and the tree
-        distance = math.sqrt((tree[0] - b) ** 2 + (tree[1] - b) ** 2)
-
-        # Calculate the angle between the boar and the tree
-        angle = math.atan2(tree[1] - b, tree[0] - b)
-
-        # Calculate the area of overlap between the boar and the tree
-        overlap_area = math.pi * min(distance, b + tree[2]) ** 2 - math.pi * max(distance - b - tree[2], 0) ** 2
-
-        # Calculate the probability of not hitting the tree
-        tree_probability = math.exp(-overlap_area / boar_area)
-
-        # Update the probability of not hitting a tree
-        probability *= tree_probability
-
-    # Return the probability of not hitting a tree
-    return probability
-
-# Main function
-if __name__ == "__main__":
-    # Read the input
+if __name__ == '__main__':
     n = int(input())
-    trees = []
-    for _ in range(n):
-        x, y, r = map(int, input().split())
-        trees.append((x, y, r))
-    b, d = map(int, input().split())
-
-    # Solve the problem
-    probability = solve(n, trees, b, d)
-
-    # Print the output
-    print(probability)
+    levels = [int(input()) for _ in range(n)]
+    shortcut_item, completion_times = {}, {}
+    for level in levels:
+        shortcut_item[level], completion_times[level] = map(int, input().split())
+    print(get_min_time(levels, shortcut_item, completion_times))
 

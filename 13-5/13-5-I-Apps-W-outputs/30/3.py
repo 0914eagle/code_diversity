@@ -1,35 +1,25 @@
 
-def solve(n, m, k, x, s, a, b, c, d):
-    # Initialize the minimum time to prepare n potions as infinity
-    min_time = float('inf')
-    # Loop through all possible combinations of spells
-    for i in range(1 << m):
-        # Initialize the number of manapoints spent as 0
-        mana_spent = 0
-        # Initialize the number of potions prepared as 0
-        potions_prepared = 0
-        # Loop through all bits in the current combination
-        for j in range(m):
-            # Check if the j-th bit is set in the current combination
-            if i & (1 << j):
-                # Add the cost of the j-th spell to the total mana spent
-                mana_spent += b[j]
-                # Add the number of potions created by the j-th spell to the total number of potions prepared
-                potions_prepared += c[j]
-        # Check if the total number of mana spent is less than or equal to the maximum allowed
-        if mana_spent <= s:
-            # Calculate the total time to prepare the potions
-            total_time = potions_prepared * x
-            # Loop through all bits in the current combination
-            for j in range(m):
-                # Check if the j-th bit is set in the current combination
-                if i & (1 << j):
-                    # Add the time saved by the j-th spell to the total time
-                    total_time -= a[j] * (potions_prepared - c[j])
-            # Check if the total time is less than or equal to the minimum time
-            if total_time <= min_time:
-                # Update the minimum time
-                min_time = total_time
-    # Return the minimum time
-    return min_time
+import math
+
+def calculate_distance(time):
+    # Calculate the distance between Agneta and Beata at time t
+    distance = math.sqrt(2) * math.sin(time)
+    return distance
+
+def calculate_min_distance(wait_time):
+    # Calculate the minimum distance between Agneta and Beata over the entire ride
+    min_distance = float('inf')
+    for t in range(0, 1001):
+        distance = calculate_distance(t)
+        if distance < min_distance:
+            min_distance = distance
+    return min_distance
+
+def main():
+    wait_time = float(input())
+    min_distance = calculate_min_distance(wait_time)
+    print(min_distance)
+
+if __name__ == '__main__':
+    main()
 

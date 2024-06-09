@@ -1,26 +1,28 @@
 
-def get_max_victories(N, adversaries, dwarves, elves):
-    # Sort the dwarves and elves by strength in descending order
-    dwarves = sorted(dwarves, reverse=True)
-    elves = sorted(elves, reverse=True)
-    
-    # Create a dictionary to map each elf to their adversary
-    elf_adversary = {i: adversaries[i-1] for i in range(1, N+1)}
-    
-    # Initialize the number of victories to 0
-    victories = 0
-    
-    # Loop through each elf and their adversary
-    for i in range(1, N+1):
-        # Find the index of the elf's adversary in the sorted dwarf list
-        adj_index = dwarves.index(elf_adversary[i])
-        
-        # If the elf is stronger than their adversary, they win
-        if elves[i-1] > dwarves[adj_index]:
-            victories += 1
-        
-        # Remove the elf's adversary from the list of dwarves
-        dwarves.pop(adj_index)
-    
-    return victories
+def get_disintegration_points(droplets, sensors):
+    disintegration_points = []
+    for droplet in droplets:
+        for sensor in sensors:
+            if sensor[0] <= droplet[0] <= sensor[1] and sensor[2] == droplet[1]:
+                disintegration_points.append(sensor[2])
+                break
+        else:
+            disintegration_points.append(0)
+    return disintegration_points
+
+def main():
+    droplets, sensors = [], []
+    num_droplets, num_sensors = map(int, input().split())
+    for _ in range(num_droplets):
+        x, y = map(int, input().split())
+        droplets.append((x, y))
+    for _ in range(num_sensors):
+        x1, x2, y = map(int, input().split())
+        sensors.append((x1, x2, y))
+    disintegration_points = get_disintegration_points(droplets, sensors)
+    for point in disintegration_points:
+        print(point)
+
+if __name__ == '__main__':
+    main()
 

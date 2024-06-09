@@ -1,23 +1,60 @@
 
-def solve(n, m, subarrays):
-    # Initialize the array with all 0s
-    a = [0] * n
-
-    # Iterate over the subarrays
-    for l, r in subarrays:
-        # Find the maximum element in the subarray
-        max_element = max(a[l:r+1])
-
-        # If the maximum element is 0, then the mex is 1
-        if max_element == 0:
-            a[l:r+1] = [1] * (r-l+1)
-        # Otherwise, find the next available number and assign it to the subarray
+def f1(n, a):
+    # find the pile with the maximum number of stones
+    max_pile = 0
+    for i in range(n):
+        if a[i] > a[max_pile]:
+            max_pile = i
+    
+    # check if the maximum pile has only one stone
+    if a[max_pile] == 1:
+        return "sjfnb"
+    
+    # check if the maximum pile has two or more stones
+    else:
+        # find the pile with the second maximum number of stones
+        sec_max_pile = 0
+        for i in range(n):
+            if i != max_pile and a[i] > a[sec_max_pile]:
+                sec_max_pile = i
+        
+        # check if the second maximum pile has only one stone
+        if a[sec_max_pile] == 1:
+            return "cslnb"
+        
+        # check if the second maximum pile has two or more stones
         else:
-            for i in range(max_element+1, 10**9+1):
-                if i not in a[l:r+1]:
-                    a[l:r+1] = [i] * (r-l+1)
-                    break
+            return "sjfnb"
 
-    # Return the maximum possible minimum mex and the array a
-    return max(a), a
+def f2(n, a):
+    # find the pile with the minimum number of stones
+    min_pile = 0
+    for i in range(n):
+        if a[i] < a[min_pile]:
+            min_pile = i
+    
+    # check if the minimum pile has only one stone
+    if a[min_pile] == 1:
+        return "cslnb"
+    
+    # check if the minimum pile has two or more stones
+    else:
+        # find the pile with the second minimum number of stones
+        sec_min_pile = 0
+        for i in range(n):
+            if i != min_pile and a[i] < a[sec_min_pile]:
+                sec_min_pile = i
+        
+        # check if the second minimum pile has only one stone
+        if a[sec_min_pile] == 1:
+            return "sjfnb"
+        
+        # check if the second minimum pile has two or more stones
+        else:
+            return "cslnb"
+
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(f1(n, a))
 
