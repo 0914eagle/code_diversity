@@ -1,25 +1,18 @@
 
 from typing import List
 
-def is_balanced_parentheses(s: str) -> bool:
-    stack = []
-    for char in s:
-        if char == '(':
-            stack.append(char)
-        elif char == ')':
-            if not stack:
-                return False
-            stack.pop()
-    return not stack
+def median(l: List[int]) -> float:
+    def find_median(sorted_list):
+        n = len(sorted_list)
+        if n % 2 == 0:
+            return (sorted_list[n // 2 - 1] + sorted_list[n // 2]) / 2
+        else:
+            return sorted_list[n // 2]
 
-def match_parens(lst: List[str]) -> str:
-    concatenated = lst[0] + lst[1]
-    if is_balanced_parentheses(concatenated):
-        return 'Yes'
-    else:
-        return 'No'
+    sorted_list = sorted(l)
+    result = find_median(sorted_list)
+    return result
 
-if __name__ == "__main__":
-    input_strings = input().strip().split()
-    result = match_parens(input_strings)
-    print(result)
+# Test the function with example cases
+print(median([3, 1, 2, 4, 5]))
+print(median([-10, 4, 6, 1000, 10, 20]))

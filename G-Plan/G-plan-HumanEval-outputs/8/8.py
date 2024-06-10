@@ -1,17 +1,11 @@
 
-import re
+def fib(n: int) -> int:
+    if n == 0:
+        return 0
+    elif n == 1:
+        return 1
+    else:
+        return fib(n - 1) + fib(n - 2)
 
-def count_boredoms(sentences):
-    count = 0
-    for sentence in sentences:
-        if sentence.startswith("I"):
-            count += 1
-    return count
-
-def is_bored(S: str) -> int:
-    sentences = re.split(r'[.!?]', S)
-    return count_boredoms(sentences)
-
-if __name__ == "__main__":
-    input_string = input().strip()
-    print(is_bored(input_string))
+n = int(input())
+print(fib(n))

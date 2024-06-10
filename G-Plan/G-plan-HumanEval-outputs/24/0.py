@@ -1,18 +1,26 @@
 
-import math
+from typing import Tuple
 
-def is_prime(n: int) -> bool:
-    if n < 2:
-        return False
-    if n == 2:
-        return True
-    if n % 2 == 0:
-        return False
-    for i in range(3, int(math.sqrt(n)) + 1, 2):
-        if n % i == 0:
-            return False
-    return True
+def get_ordered_planets() -> Tuple[str, ...]:
+    return ('Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune')
 
-if __name__ == "__main__":
-    n = int(input())
-    print(is_prime(n))
+def bf(planet1: str, planet2: str) -> Tuple[str, ...]:
+    planets = get_ordered_planets()
+    
+    if planet1 not in planets or planet2 not in planets:
+        return ()
+    
+    start_idx = planets.index(planet1)
+    end_idx = planets.index(planet2)
+    
+    if start_idx > end_idx:
+        start_idx, end_idx = end_idx, start_idx
+    
+    result = planets[start_idx+1:end_idx]
+    
+    return tuple(result)
+
+# Test the function with the provided examples
+print(bf('Jupiter', 'Neptune'))
+print(bf('Earth', 'Mercury'))
+print(bf('Mercury', 'Uranus'))

@@ -1,27 +1,31 @@
 
 from typing import List
-from collections import deque
 
-def rolling_max(numbers: List[int]) -> List[int]:
-    if not numbers:
-        return []
+def is_sorted(lst: List[int]) -> bool:
+    def has_more_than_one_duplicate(lst: List[int]) -> bool:
+        counts = {}
+        for num in lst:
+            counts[num] = counts.get(num, 0) + 1
+            if counts[num] > 1:
+                return True
+        return False
 
-    result = []
-    window = deque()
+    def is_sorted_ascending(lst: List[int]) -> bool:
+        for i in range(len(lst) - 1):
+            if lst[i] > lst[i + 1]:
+                return False
+        return True
 
-    for i, num in enumerate(numbers):
-        while window and numbers[window[-1]] < num:
-            window.pop()
-        window.append(i)
+    if has_more_than_one_duplicate(lst):
+        return False
 
-        if window[0] == i - len(window):
-            window.popleft()
+    if is_sorted_ascending(lst):
+        return True
+    else:
+        return False
 
-        result.append(numbers[window[0]])
+# Read input
+input_list = list(map(int, input().strip()[1:-1].split(', '))
 
-    return result
-
-if __name__ == "__main__":
-    numbers = list(map(int, input().split()))
-    result = rolling_max(numbers)
-    print(*result)
+# Output result
+print(is_sorted(input_list))

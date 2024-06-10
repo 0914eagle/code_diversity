@@ -1,27 +1,21 @@
 
-from collections import Counter
+from typing import List
 
-def histogram(test: str):
-    def parse_input(test):
-        return test.split()
+def factorize(n: int) -> List[int]:
+    def trial_division(n: int) -> List[int]:
+        factors = []
+        divisor = 2
+        while n > 1:
+            if n % divisor == 0:
+                factors.append(divisor)
+                n //= divisor
+            else:
+                divisor += 1
+        return factors
 
-    def count_occurrences(words):
-        return Counter(words)
+    prime_factors = trial_division(n)
+    return prime_factors
 
-    def find_max_count(occurrences):
-        max_count = max(occurrences.values())
-        return max_count
-
-    def filter_letters_with_max_count(occurrences, max_count):
-        return {letter: count for letter, count in occurrences.items() if count == max_count}
-
-    words = parse_input(test)
-    occurrences = count_occurrences(words)
-    max_count = find_max_count(occurrences)
-    result = filter_letters_with_max_count(occurrences, max_count)
-    return result
-
-if __name__ == "__main__":
-    test = input().strip()
-    result = histogram(test)
-    print(result)
+n = int(input())
+result = factorize(n)
+print(result)

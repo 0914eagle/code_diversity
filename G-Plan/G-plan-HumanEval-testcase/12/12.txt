@@ -1,14 +1,14 @@
 def check(candidate):
-    assert candidate('Hello world!') == ['Hello', 'world!']
-    assert candidate('Hello,world!') == ['Hello', 'world!']
-    assert candidate('Hello world,!') == ['Hello', 'world,!']
-    assert candidate('Hello,Hello,world !') == ['Hello,Hello,world', '!']
-    assert candidate('abcdef') == 3
-    assert candidate('aaabb') == 2
-    assert candidate('aaaBb') == 1
-    assert candidate('') == 0
+    assert candidate('a') == False
+    assert candidate('aa') == False
+    assert candidate('abcd') == True
+    assert candidate('aabb') == False
+    assert candidate('adb') == True
+    assert candidate('xyy') == False
+    assert candidate('iopaxpoi') == True
+    assert candidate('iopaxioi') == False
 
 def test_check():
-    check(split_words)
+    check(is_happy)
 
 test_check()

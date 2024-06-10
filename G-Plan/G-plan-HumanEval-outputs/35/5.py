@@ -1,23 +1,15 @@
 
-from typing import List
+def vowels_count(s: str) -> int:
+    vowels = set(['a', 'e', 'i', 'o', 'u'])
+    count = 0
 
-def make_a_pile(n: int) -> List[int]:
-    def is_odd(num):
-        return num % 2 != 0
+    for i in range(len(s)):
+        if s[i].lower() in vowels:
+            count += 1
+        elif i == len(s) - 1 and s[i].lower() == 'y':
+            count += 1
 
-    def calculate_stones(level, current_stones):
-        if is_odd(level):
-            return current_stones + 2
-        else:
-            return current_stones + 1
+    return count
 
-    stones = [n]
-    for i in range(1, n):
-        stones.append(calculate_stones(i, stones[-1]))
-
-    return stones
-
-if __name__ == "__main__":
-    n = int(input().strip())
-    result = make_a_pile(n)
-    print(result)
+word = input().strip()
+print(vowels_count(word))

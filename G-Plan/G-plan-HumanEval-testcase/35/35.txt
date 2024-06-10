@@ -1,11 +1,13 @@
 def check(candidate):
-    assert candidate(3) == [3, 5, 7]
-    assert candidate(4) == [4, 6, 8, 10]
-    assert candidate(5) == [5, 7, 9, 11, 13]
-    assert candidate(6) == [6, 8, 10, 12, 14, 16]
-    assert candidate(8) == [8, 10, 12, 14, 16, 18, 20, 22]
+    assert candidate('abcde') == 2
+    assert candidate('Alone') == 3
+    assert candidate('key') == 2
+    assert candidate('bye') == 1
+    assert candidate('keY') == 2
+    assert candidate('bYe') == 1
+    assert candidate('ACEDY') == 3
 
 def test_check():
-    check(make_a_pile)
+    check(vowels_count)
 
 test_check()

@@ -1,14 +1,10 @@
 def check(candidate):
-    assert candidate([1, 2, 4, 10]) == True
-    assert candidate([1, 2, 4, 20]) == True
-    assert candidate([1, 20, 4, 10]) == False
-    assert candidate([4, 1, 0, -10]) == True
-    assert candidate([4, 1, 1, 0]) == True
-    assert candidate([1, 2, 3, 2, 5, 60]) == False
-    assert candidate([1, 2, 3, 4, 5, 60]) == True
-    assert candidate([9, 9, 9, 9]) == True
+    assert candidate([15, 33, 1422, 1]) == [1, 15, 33]
+    assert candidate([152, 323, 1422, 10]) == []
+    assert candidate([12345, 2033, 111, 151]) == [111, 151]
+    assert candidate([135, 103, 31]) == [31, 135]
 
 def test_check():
-    check(monotonic)
+    check(unique_digits)
 
 test_check()

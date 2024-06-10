@@ -1,24 +1,15 @@
 
-import math
+from typing import List, Any
 
-def largest_divisor(n: int) -> int:
-    def iterative_largest_divisor(n: int) -> int:
-        for i in range(n - 1, 0, -1):
-            if n % i == 0:
-                return i
-        return 1
+def filter_integers(values: List[Any]) -> List[int]:
+    return [value for value in values if isinstance(value, int)]
 
-    def optimized_largest_divisor(n: int) -> int:
-        for i in range(int(math.sqrt(n)), 0, -1):
-            if n % i == 0:
-                return max(i, n // i)
-        return 1
-
-    if n <= 0:
-        return 1
-
-    return optimized_largest_divisor(n)
+# Main function to read input and call filter_integers function
+def main():
+    values = input().strip().split(',')
+    values = [eval(val) for val in values]
+    result = filter_integers(values)
+    print(result)
 
 if __name__ == "__main__":
-    n = int(input().strip())
-    print(largest_divisor(n))
+    main()

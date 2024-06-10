@@ -1,13 +1,24 @@
 
-def string_sequence(n: int) -> str:
-    def generate_sequence(n: int) -> str:
-        sequence = ""
-        for i in range(n + 1):
-            sequence += str(i) + " "
-        return sequence.strip()
+from typing import Tuple
 
-    return generate_sequence(n)
+def is_palindrome(num: int) -> bool:
+    return str(num) == str(num)[::-1]
 
-if __name__ == "__main__":
-    n = int(input())
-    print(string_sequence(n))
+def count_even_odd_palindromes(n: int) -> Tuple[int, int]:
+    even_count = 0
+    odd_count = 0
+
+    for i in range(1, n+1):
+        if is_palindrome(i):
+            if i % 2 == 0:
+                even_count += 1
+            else:
+                odd_count += 1
+
+    return even_count, odd_count
+
+def even_odd_palindrome(n: int) -> Tuple[int, int]:
+    return count_even_odd_palindromes(n)
+
+n = int(input())
+print(even_odd_palindrome(n))

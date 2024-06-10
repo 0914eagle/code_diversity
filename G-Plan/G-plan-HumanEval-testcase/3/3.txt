@@ -1,10 +1,12 @@
 def check(candidate):
-    assert candidate([], 'john') == []
-    assert candidate(['xxx', 'asd', 'xxy', 'john doe', 'xxxAAA', 'xxx'], 'xxx') == ['xxx', 'xxxAAA', 'xxx']
-    assert candidate(['xxx', 'asd', 'aaaxxy', 'john doe', 'xxxAAA', 'xxx'], 'xx') == ['xxx', 'aaaxxy', 'xxxAAA', 'xxx']
-    assert candidate(['grunt', 'trumpet', 'prune', 'gruesome'], 'run') == ['grunt', 'prune']
+    assert candidate([3, 2, 3], 9) == True
+    assert candidate([1, 2], 5) == False
+    assert candidate([3], 5) == True
+    assert candidate([3, 2, 3], 1) == False
+    assert candidate([1, 2, 3], 6) == False
+    assert candidate([5], 5) == True
 
 def test_check():
-    check(filter_by_substring)
+    check(will_it_fly)
 
 test_check()

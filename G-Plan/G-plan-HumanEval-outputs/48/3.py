@@ -1,17 +1,22 @@
 
 from typing import List
 
-def has_close_elements(numbers: List[float], threshold: float) -> bool:
-    def are_close(num1: float, num2: float, threshold: float) -> bool:
-        return abs(num1 - num2) < threshold
+def smallest_change(arr: List[int]) -> int:
+    def is_palindromic(array):
+        return array == array[::-1]
 
-    for i in range(len(numbers)):
-        for j in range(i + 1, len(numbers)):
-            if are_close(numbers[i], numbers[j], threshold):
-                return True
-    return False
+    changes = 0
+    left, right = 0, len(arr) - 1
 
-if __name__ == "__main__":
-    numbers = list(map(float, input().split()))
-    threshold = float(input())
-    print(has_close_elements(numbers, threshold))
+    while left < right:
+        if arr[left] != arr[right]:
+            changes += 1
+        left += 1
+        right -= 1
+
+    return changes
+
+# Test the function with examples
+print(smallest_change([1, 2, 3, 5, 4, 7, 9, 6]))
+print(smallest_change([1, 2, 3, 4, 3, 2, 2]))
+print(smallest_change([1, 2, 3, 2, 1]))

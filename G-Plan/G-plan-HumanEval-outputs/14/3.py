@@ -1,33 +1,32 @@
 
 from typing import List
 
-def separate_paren_groups(paren_string: str) -> List[str]:
-    def find_balanced_group(s: str, start: int) -> str:
-        count = 0
-        end = start
-        while end < len(s):
-            if s[end] == '(':
-                count += 1
-            elif s[end] == ')':
-                count -= 1
-                if count == 0:
-                    return s[start:end + 1]
-            end += 1
-        return ''
+def pairs_sum_to_zero(l: List[int]) -> bool:
+    def using_set(l: List[int]) -> bool:
+        seen = set()
+        for num in l:
+            if -num in seen:
+                return True
+            seen.add(num)
+        return False
 
-    result = []
-    i = 0
-    while i < len(paren_string):
-        if paren_string[i] == '(':
-            group = find_balanced_group(paren_string, i)
-            result.append(group)
-            i += len(group)
-        else:
-            i += 1
+    def sorting_and_two_pointers(l: List[int]) -> bool:
+        l.sort()
+        left, right = 0, len(l) - 1
+        while left < right:
+            current_sum = l[left] + l[right]
+            if current_sum == 0:
+                return True
+            elif current_sum > 0:
+                right -= 1
+            else:
+                left += 1
+        return False
 
-    return result
+    return using_set(l) or sorting_and_two_pointers(l)
 
-if __name__ == "__main__":
-    input_string = input().replace(" ", "")
-    result = separate_paren_groups(input_string)
-    print(result)
+# Read input
+input_list = list(map(int, input().split()))
+
+# Output
+print(pairs_sum_to_zero(input_list))

@@ -1,17 +1,19 @@
 
-def extract_fruit_counts(s):
-    counts = s.split()
-    apples = int(counts[0]) if counts[0].isdigit() else 0
-    oranges = int(counts[-2]) if counts[-2].isdigit() else 0
-    return apples, oranges
+from typing import List, Optional
 
-def fruit_distribution(s: str, n: int) -> int:
-    apples, oranges = extract_fruit_counts(s)
-    mangoes = n - apples - oranges
-    return mangoes
+def longest(strings: List[str]) -> Optional[str]:
+    if not strings:
+        return None
 
+    longest_str = strings[0]
+    for string in strings[1:]:
+        if len(string) > len(longest_str):
+            longest_str = string
+
+    return longest_str
+
+# Test cases
 if __name__ == "__main__":
-    s, n = input().split(', ')
-    n = int(n)
-    result = fruit_distribution(s, n)
+    input_strings = input().strip().split()
+    result = longest(input_strings)
     print(result)

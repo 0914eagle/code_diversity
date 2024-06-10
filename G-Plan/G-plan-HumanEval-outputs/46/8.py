@@ -1,16 +1,9 @@
 
-from typing import List
+def string_sequence(n: int) -> str:
+    result = ""
+    for i in range(n + 1):
+        result += str(i) + " "
+    return result.strip()
 
-def digit_sum(num: int) -> int:
-    return sum(int(digit) for digit in str(abs(num)))
-
-def order_by_points(nums: List[int]) -> List[int]:
-    def custom_comparison(x):
-        return (digit_sum(x), nums.index(x))
-
-    return sorted(nums, key=custom_comparison)
-
-if __name__ == "__main__":
-    nums = list(map(int, input().split()))
-    result = order_by_points(nums)
-    print(result)
+n = int(input())
+print(string_sequence(n))

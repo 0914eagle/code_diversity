@@ -12,7 +12,11 @@ def remove_duplicates(numbers: List[int]) -> List[int]:
     
     return result
 
-if __name__ == "__main__":
-    numbers = list(map(int, input().split()))
+# Main function to read input and call the remove_duplicates function
+def main():
+    numbers = list(map(int, input().strip().split()))
     result = remove_duplicates(numbers)
     print(result)
+
+if __name__ == "__main__":
+    main()

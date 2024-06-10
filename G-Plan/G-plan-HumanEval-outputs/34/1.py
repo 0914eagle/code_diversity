@@ -1,17 +1,15 @@
 
-import math
+from typing import List, Any
 
-def largest_divisor(n: int) -> int:
-    def is_divisor(x, n):
-        return n % x == 0
+def filter_integers(values: List[Any]) -> List[int]:
+    return [value for value in values if isinstance(value, int)]
 
-    def find_largest_divisor(n):
-        for i in range(n - 1, 0, -1):
-            if is_divisor(i, n):
-                return i
-
-    return find_largest_divisor(n)
+# Main function to read input and call filter_integers
+def main():
+    values = input().strip().split(',')
+    values = [eval(value) for value in values]  # Evaluate input strings to Python objects
+    result = filter_integers(values)
+    print(result)
 
 if __name__ == "__main__":
-    n = int(input())
-    print(largest_divisor(n))
+    main()

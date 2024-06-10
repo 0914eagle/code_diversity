@@ -1,16 +1,13 @@
 
-from typing import List
+def vowels_count(s: str) -> int:
+    vowels = set(['a', 'e', 'i', 'o', 'u'])
+    count = 0
+    for i in range(len(s)):
+        if s[i].lower() in vowels:
+            count += 1
+        elif i == len(s) - 1 and s[i].lower() == 'y':
+            count += 1
+    return count
 
-def make_a_pile(n: int) -> List[int]:
-    stones = [n]
-    for i in range(1, n):
-        if i % 2 == 1:
-            stones.append(n + 2 * i)
-        else:
-            stones.append(n + i)
-    return stones
-
-if __name__ == "__main__":
-    n = int(input())
-    result = make_a_pile(n)
-    print(result)
+word = input().strip()
+print(vowels_count(word))

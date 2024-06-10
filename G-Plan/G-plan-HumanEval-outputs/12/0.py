@@ -1,15 +1,13 @@
 
-from typing import Union, List
+def is_happy(s: str) -> bool:
+    if len(s) < 3:
+        return False
+    
+    for i in range(len(s) - 2):
+        if len(set(s[i:i+3])) < 3:
+            return False
+    
+    return True
 
-def split_words(txt: str) -> Union[List[str], int]:
-    if ' ' in txt:
-        return txt.split()
-    elif ',' in txt:
-        return txt.split(',')
-    else:
-        return sum(1 for char in txt if char.islower() and ord(char) % 2 == 1)
-
-if __name__ == "__main__":
-    txt = input().strip()
-    result = split_words(txt)
-    print(result)
+s = input()
+print(is_happy(s))

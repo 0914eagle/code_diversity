@@ -1,12 +1,12 @@
 def check(candidate):
-    assert candidate(5, 6, 10) == [11, 4]
-    assert candidate(4, 8, 9) == [12, 1]
-    assert candidate(1, 10, 10) == [11, 0]
-    assert candidate(2, 11, 5) == [7, 0]
-    assert candidate(4, 5, 7) == [9, 2]
-    assert candidate(4, 5, 1) == [5, 0]
+    assert candidate('Hello world') == 0
+    assert candidate('Is the sky blue?') == 0
+    assert candidate('I love It !') == 1
+    assert candidate('bIt') == 0
+    assert candidate('I feel good today. I will be productive. will kill It') == 2
+    assert candidate('You and I are going for a walk') == 0
 
 def test_check():
-    check(eat)
+    check(is_bored)
 
 test_check()

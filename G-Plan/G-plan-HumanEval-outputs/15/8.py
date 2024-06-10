@@ -1,38 +1,19 @@
 
 from typing import List
+import re
 
-def numerical_letter_grade(grades: List[float]) -> List[str]:
-    def get_letter_grade(gpa: float) -> str:
-        if gpa == 4.0:
-            return 'A+'
-        elif gpa > 3.7:
-            return 'A'
-        elif gpa > 3.3:
-            return 'A-'
-        elif gpa > 3.0:
-            return 'B+'
-        elif gpa > 2.7:
-            return 'B'
-        elif gpa > 2.3:
-            return 'B-'
-        elif gpa > 2.0:
-            return 'C+'
-        elif gpa > 1.7:
-            return 'C'
-        elif gpa > 1.3:
-            return 'C-'
-        elif gpa > 1.0:
-            return 'D+'
-        elif gpa > 0.7:
-            return 'D'
-        elif gpa > 0.0:
-            return 'D-'
-        else:
-            return 'E'
+def count_consonants(word: str) -> int:
+    return sum(1 for letter in word if letter.lower() not in 'aeiou' and letter.isalpha())
 
-    return [get_letter_grade(gpa) for gpa in grades]
+def select_words(s: str, n: int) -> List[str]:
+    if not s:
+        return []
 
-if __name__ == "__main__":
-    grades = list(map(float, input().split()))
-    result = numerical_letter_grade(grades)
-    print(result)
+    words = s.split()
+    pattern = r"\b(?:[a-zA-Z]*[^aeiou]){%d}[a-zA-Z]*\b" % n
+    return [word for word in words if re.match(pattern, word)]
+
+s, n = input().split(', ')
+n = int(n)
+result = select_words(s, n)
+print(result)

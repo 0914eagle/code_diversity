@@ -1,29 +1,36 @@
 
 from typing import List
 
-def sort_array(array: List[int]) -> List[int]:
-    def is_odd(num: int) -> bool:
-        return num % 2 != 0
+def minPath(grid: List[List[int]], k: int) -> List[int]:
+    def is_valid_move(row, col):
+        return 0 <= row < len(grid) and 0 <= col < len(grid[0])
 
-    def sort_ascending(arr: List[int]) -> List[int]:
-        return sorted(arr)
+    def backtrack(row, col, path, visited):
+        if len(path) == k:
+            nonlocal min_path
+            if not min_path or path < min_path:
+                min_path = path[:]
+            return
 
-    def sort_descending(arr: List[int]) -> List[int]:
-        return sorted(arr, reverse=True)
+        for dr, dc in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
+            new_row, new_col = row + dr, col + dc
+            if is_valid_move(new_row, new_col) and (new_row, new_col) not in visited:
+                visited.add((new_row, new_col))
+                backtrack(new_row, new_col, path + [grid[new_row][new_col]], visited)
+                visited.remove((new_row, new_col))
 
-    if not array:
-        return []
+    min_path = []
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            visited = set()
+            visited.add((i, j))
+            backtrack(i, j, [grid[i][j]], visited)
 
-    first = array[0]
-    last = array[-1]
-    total_sum = first + last
+    return min_path
 
-    if is_odd(total_sum):
-        return sort_ascending(array.copy())
-    else:
-        return sort_descending(array.copy())
+# Read input
+grid = eval(input())
+k = int(input())
 
-if __name__ == "__main__":
-    input_array = list(map(int, input().strip().split(',')))
-    result = sort_array(input_array)
-    print(result)
+# Call the function and print the result
+print(minPath(grid, k))

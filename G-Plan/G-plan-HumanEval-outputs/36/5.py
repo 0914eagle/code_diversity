@@ -1,24 +1,18 @@
 
-import math
+def encrypt(s: str) -> str:
+    def shift_char(char, shift):
+        if char.isalpha():
+            base = ord('a') if char.islower() else ord('A')
+            return chr((ord(char) - base + shift) % 26 + base)
+        return char
 
-def is_prime(n: int) -> bool:
-    if n <= 1:
-        return False
-    if n <= 3:
-        return True
-    if n % 2 == 0 or n % 3 == 0:
-        return False
-    i = 5
-    while i * i <= n:
-        if n % i == 0 or n % (i + 2) == 0:
-            return False
-        i += 6
-    return True
+    def encrypt_string(input_str):
+        return ''.join(shift_char(char, 2 * 2) for char in input_str)
 
-def prime_length(string: str) -> bool:
-    length = len(string)
-    return is_prime(length)
+    return encrypt_string(s)
 
-if __name__ == "__main__":
-    string = input().strip()
-    print(prime_length(string))
+# Test cases
+print(encrypt('hi'))
+print(encrypt('asdfghjkl'))
+print(encrypt('gf'))
+print(encrypt('et'))

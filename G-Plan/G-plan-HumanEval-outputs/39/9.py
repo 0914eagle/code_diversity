@@ -1,16 +1,12 @@
 
-from typing import List
+def is_consonant(char: str) -> bool:
+    return char.isalpha() and char.lower() not in 'aeiou'
 
-def sum_digits(num: int) -> int:
-    return sum(int(d) for d in str(abs(num)))
+def get_closest_vowel(word: str) -> str:
+    for i in range(len(word) - 2, 0, -1):
+        if is_consonant(word[i]) and not is_consonant(word[i - 1]) and is_consonant(word[i - 2]):
+            return word[i - 1] if word[i - 1].lower() in 'aeiou' else ''
+    return ''
 
-def count_nums(arr: List[int]) -> int:
-    count = 0
-    for num in arr:
-        if sum_digits(num) > 0:
-            count += 1
-    return count
-
-if __name__ == "__main__":
-    arr = list(map(int, input().split()))
-    print(count_nums(arr))
+word = input().strip()
+print(get_closest_vowel(word))

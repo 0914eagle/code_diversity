@@ -1,12 +1,27 @@
 
-from typing import List
+def is_bored(S: str) -> int:
+    def count_boredoms(sentence: str) -> int:
+        return 1 if sentence.strip().startswith('I') else 0
 
-def eat(number: int, need: int, remaining: int) -> List[int]:
-    total_eaten = number + need
-    carrots_left = remaining - need if remaining >= need else 0
-    return [total_eaten, carrots_left]
+    def split_sentences(input_string: str) -> list:
+        delimiters = ['.', '?', '!']
+        sentences = []
+        current_sentence = ''
+        for char in input_string:
+            current_sentence += char
+            if char in delimiters:
+                sentences.append(current_sentence.strip())
+                current_sentence = ''
+        if current_sentence:
+            sentences.append(current_sentence.strip())
+        return sentences
 
-if __name__ == "__main__":
-    number, need, remaining = map(int, input().split())
-    result = eat(number, need, remaining)
-    print(result[0], result[1])
+    total_boredoms = 0
+    sentences = split_sentences(S)
+    for sentence in sentences:
+        total_boredoms += count_boredoms(sentence)
+    
+    return total_boredoms
+
+input_string = input()
+print(is_bored(input_string))

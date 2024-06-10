@@ -1,24 +1,16 @@
 
-from typing import Union, List
+def is_happy(s: str) -> bool:
+    if len(s) < 3:
+        return False
+    
+    for i in range(len(s) - 2):
+        if s[i] == s[i + 1] or s[i] == s[i + 2] or s[i + 1] == s[i + 2]:
+            return False
+    
+    return True
 
-def split_words(txt: str) -> Union[List[str], int]:
-    def split_on_whitespace(txt: str) -> List[str]:
-        return txt.split()
-
-    def split_on_commas(txt: str) -> List[str]:
-        return txt.split(',')
-
-    def count_odd_lowercase(txt: str) -> int:
-        return sum(1 for char in txt if char.islower() and ord(char) % 2 == 1)
-
-    if ' ' in txt:
-        return split_on_whitespace(txt)
-    elif ',' in txt:
-        return split_on_commas(txt)
-    else:
-        return count_odd_lowercase(txt)
-
+# Test cases
 if __name__ == "__main__":
-    txt = input().strip()
-    result = split_words(txt)
-    print(result)
+    test_cases = ['a', 'aa', 'abcd', 'aabb', 'adb', 'xyy']
+    for test in test_cases:
+        print(is_happy(test))

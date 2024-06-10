@@ -1,13 +1,29 @@
 
 from typing import List
 
-def unique(l: List[int]) -> List[int]:
-    unique_dict = {}
-    for num in l:
-        unique_dict[num] = True
-    return sorted(list(unique_dict.keys()))
+def separate_paren_groups(paren_string: str) -> List[str]:
+    def is_balanced(group: str) -> bool:
+        stack = []
+        for char in group:
+            if char == '(':
+                stack.append(char)
+            elif char == ')':
+                if not stack or stack.pop() != '(':
+                    return False
+        return not stack
 
-if __name__ == "__main__":
-    input_list = list(map(int, input().split()))
-    result = unique(input_list)
-    print(result)
+    result = []
+    current_group = ''
+    for char in paren_string:
+        if char == ' ':
+            continue
+        current_group += char
+        if is_balanced(current_group):
+            result.append(current_group)
+            current_group = ''
+
+    return result
+
+# Input parsing and function call
+paren_string = input().strip()
+print(separate_paren_groups(paren_string))

@@ -1,11 +1,12 @@
 def check(candidate):
-    assert candidate('10') == 10
-    assert candidate('14.5') == 15
-    assert candidate('-15.5') == -16
-    assert candidate('15.3') == 15
-    assert candidate('0') == 0
+    assert candidate([]) == False
+    assert candidate([1, 2, -3, 1, 2, -3]) == False
+    assert candidate([1, 2, -4, 5, 6]) == True
+    assert candidate([1, -1, 2, -2, 5, -5, 4, -4]) == False
+    assert candidate([1, -1, 2, -2, 5, -5, 4, -5]) == True
+    assert candidate([1, -2, 2, -2, 5, -5, 4, -4]) == True
 
 def test_check():
-    check(closest_integer)
+    check(below_zero)
 
 test_check()

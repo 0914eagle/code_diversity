@@ -1,10 +1,10 @@
 
-from typing import List
+def starts_one_ends(n: int) -> int:
+    count = 0
+    for i in range(10**(n-1), 10**n):
+        if str(i)[0] == '1' or str(i)[-1] == '1':
+            count += 1
+    return count
 
-def get_positive(l: List[int]) -> List[int]:
-    return [num for num in l if num > 0]
-
-if __name__ == "__main__":
-    input_list = list(map(int, input().split()))
-    result = get_positive(input_list)
-    print(result)
+n = int(input())
+print(starts_one_ends(n))

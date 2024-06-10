@@ -1,23 +1,14 @@
 
-from typing import List
-import math
-
-def is_prime(num: int) -> bool:
-    if num < 2:
+def cycpattern_check(a: str, b: str) -> bool:
+    if len(a) != len(b):
         return False
-    for i in range(2, int(math.sqrt(num)) + 1):
-        if num % i == 0:
-            return False
-    return True
+    double_a = a + a
+    return b in double_a
 
-def count_up_to(n: int) -> List[int]:
-    primes = []
-    for i in range(2, n):
-        if is_prime(i):
-            primes.append(i)
-    return primes
-
-if __name__ == "__main__":
-    n = int(input())
-    result = count_up_to(n)
-    print(result)
+# Test cases
+print(cycpattern_check('abcd', 'abd'))
+print(cycpattern_check('hello', 'ell'))
+print(cycpattern_check('whassup', 'psus'))
+print(cycpattern_check('abab', 'baa'))
+print(cycpattern_check('efef', 'eeff'))
+print(cycpattern_check('himenss', 'simen'))

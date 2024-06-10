@@ -1,17 +1,36 @@
 
 from typing import List
 
-def add(lst: List[int]) -> int:
-    def is_even(num: int) -> bool:
-        return num % 2 == 0
+def numerical_letter_grade(grades: List[float]) -> List[str]:
+    def get_letter_grade(gpa: float) -> str:
+        if gpa == 4.0:
+            return 'A+'
+        elif gpa > 3.7:
+            return 'A'
+        elif gpa > 3.3:
+            return 'A-'
+        elif gpa > 3.0:
+            return 'B+'
+        elif gpa > 2.7:
+            return 'B'
+        elif gpa > 2.3:
+            return 'B-'
+        elif gpa > 2.0:
+            return 'C+'
+        elif gpa > 1.7:
+            return 'C'
+        elif gpa > 1.3:
+            return 'C-'
+        elif gpa > 1.0:
+            return 'D+'
+        elif gpa > 0.7:
+            return 'D'
+        elif gpa >= 0.0:
+            return 'D-'
+        else:
+            return 'E'
 
-    def at_odd_index(index: int) -> bool:
-        return index % 2 == 1
+    return [get_letter_grade(gpa) for gpa in grades]
 
-    sum_even_odd_indices = sum(num for index, num in enumerate(lst) if is_even(num) and at_odd_index(index))
-    return sum_even_odd_indices
-
-if __name__ == "__main__":
-    input_list = list(map(int, input().split()))
-    result = add(input_list)
-    print(result)
+grades = list(map(float, input().split()))
+print(numerical_letter_grade(grades))

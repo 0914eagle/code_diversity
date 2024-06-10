@@ -1,21 +1,18 @@
 
-import math
+def encrypt(s: str) -> str:
+    def shift_letter(letter, shift):
+        alphabet = 'abcdefghijklmnopqrstuvwxyz'
+        new_index = (alphabet.index(letter) + shift) % 26
+        return alphabet[new_index]
 
-def is_prime(n: int) -> bool:
-    if n <= 1:
-        return False
-    if n == 2:
-        return True
-    if n % 2 == 0:
-        return False
-    for i in range(3, int(math.sqrt(n)) + 1, 2):
-        if n % i == 0:
-            return False
-    return True
+    def encrypt_letter(letter):
+        return shift_letter(letter, 2 * 2)
 
-def prime_length(string: str) -> bool:
-    return is_prime(len(string))
+    encrypted_string = ''.join([encrypt_letter(char) for char in s])
+    return encrypted_string
 
-if __name__ == "__main__":
-    string = input().strip()
-    print(prime_length(string))
+# Test cases
+print(encrypt('hi'))
+print(encrypt('asdfghjkl'))
+print(encrypt('gf'))
+print(encrypt('et'))

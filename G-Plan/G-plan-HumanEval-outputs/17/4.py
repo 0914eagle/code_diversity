@@ -1,20 +1,18 @@
 
-from typing import Tuple
+def digitSum(s: str) -> int:
+    def is_uppercase(char):
+        return 'A' <= char <= 'Z'
 
-def reverse_delete(s: str, c: str) -> Tuple[str, bool]:
-    def is_palindrome(s: str) -> bool:
-        return s == s[::-1]
+    def calculate_ascii(char):
+        return ord(char)
 
-    def delete_chars(s: str, chars: set) -> str:
-        return ''.join(char for char in s if char not in chars)
+    def filter_and_sum(s):
+        total_sum = 0
+        for char in s:
+            if is_uppercase(char):
+                total_sum += calculate_ascii(char)
+        return total_sum
 
-    chars_set = set(c)
-    result_str = delete_chars(s, chars_set)
-    is_palindrome_result = is_palindrome(result_str)
+    print(filter_and_sum(s))
 
-    return result_str, is_palindrome_result
-
-if __name__ == "__main__":
-    s, c = input().strip().split()
-    result, is_palindrome_result = reverse_delete(s, c)
-    print(result, is_palindrome_result)
+digitSum(input())

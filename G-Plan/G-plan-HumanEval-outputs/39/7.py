@@ -1,16 +1,17 @@
 
-from typing import List
+def is_vowel(char):
+    return char.lower() in 'aeiou'
 
-def sum_of_digits(num: int) -> int:
-    return sum(int(digit) for digit in str(abs(num)))
+def is_consonant(char):
+    return char.isalpha() and not is_vowel(char)
 
-def count_nums(arr: List[int]) -> int:
-    count = 0
-    for num in arr:
-        if sum_of_digits(num) > 0:
-            count += 1
-    return count
+def get_closest_vowel(word: str) -> str:
+    closest_vowel = ''
+    for i in range(len(word) - 2, 0, -1):
+        if is_consonant(word[i]) and is_vowel(word[i - 1]) and is_consonant(word[i - 2]):
+            closest_vowel = word[i - 1]
+            break
+    return closest_vowel
 
-if __name__ == "__main__":
-    arr = list(map(int, input().split()))
-    print(count_nums(arr))
+word = input().strip()
+print(get_closest_vowel(word))

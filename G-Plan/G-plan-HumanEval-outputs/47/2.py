@@ -1,19 +1,21 @@
 
-def is_alphabet(char):
-    return char.isalpha()
+def how_many_times(string: str, substring: str) -> int:
+    def count_overlapping_substrings(string: str, substring: str) -> int:
+        count = 0
+        start = 0
+        while start <= len(string) - len(substring):
+            if string[start:start + len(substring)] == substring:
+                count += 1
+                start += 1
+            else:
+                start += 1
+        return count
 
-def check_if_last_char_is_a_letter(txt: str) -> bool:
-    i = len(txt) - 1
-    while i >= 0 and txt[i] == ' ':
-        i -= 1
-    if i < 0:
-        return False
-    if not is_alphabet(txt[i]):
-        return False
-    while i >= 0 and txt[i] != ' ':
-        i -= 1
-    return i < 0 or txt[i] == ' '
+    if not string or not substring:
+        return 0
+    return count_overlapping_substrings(string, substring)
 
-if __name__ == "__main__":
-    txt = input().strip()
-    print(check_if_last_char_is_a_letter(txt))
+# Test cases
+print(how_many_times('', 'a'))  # Output: 0
+print(how_many_times('aaa', 'a'))  # Output: 3
+print(how_many_times('aaaa', 'aa'))  # Output: 3

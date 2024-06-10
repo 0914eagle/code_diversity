@@ -1,8 +1,19 @@
 
-def triangle_area(a: int, h: int) -> float:
-    return 0.5 * a * h
+def is_simple_power(x: int, n: int) -> bool:
+    if x == 1:
+        return True
+    if x < 1:
+        return False
+    
+    while x % n == 0:
+        x //= n
+        
+    return x == 1
 
-if __name__ == "__main__":
-    side_length, height = map(int, input().split())
-    result = triangle_area(side_length, height)
-    print(result)
+# Test cases
+print(is_simple_power(1, 4))
+print(is_simple_power(2, 2))
+print(is_simple_power(8, 2))
+print(is_simple_power(3, 2))
+print(is_simple_power(3, 1))
+print(is_simple_power(5, 3))

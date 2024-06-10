@@ -1,12 +1,13 @@
 def check(candidate):
-    assert candidate([4.0, 3, 1.7, 2, 3.5]) == ['A+', 'B', 'C-', 'C', 'A-']
-    assert candidate([1.2]) == ['D+']
-    assert candidate([0.5]) == ['D-']
-    assert candidate([0.0]) == ['E']
-    assert candidate([1.0, 0.3, 1.5, 2.8, 3.3]) == ['D', 'D-', 'C-', 'B', 'B+']
-    assert candidate([0.0, 0.7]) == ['E', 'D-']
+    assert candidate('Mary had a little lamb', 4) == ['little']
+    assert candidate('Mary had a little lamb', 3) == ['Mary', 'lamb']
+    assert candidate('simple white space', 2) == []
+    assert candidate('Hello world', 4) == ['world']
+    assert candidate('Uncle sam', 3) == ['Uncle']
+    assert candidate('', 4) == []
+    assert candidate('a b c d e f', 1) == ['b', 'c', 'd', 'f']
 
 def test_check():
-    check(numerical_letter_grade)
+    check(select_words)
 
 test_check()

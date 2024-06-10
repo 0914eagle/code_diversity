@@ -1,14 +1,15 @@
 
-from typing import List
+from typing import Tuple
 
-def count_water_units(grid: List[List[int]]) -> int:
-    return sum(sum(row) for row in grid)
+def is_palindrome(s: str) -> bool:
+    return s == s[::-1]
 
-def max_fill(grid: List[List[int]], capacity: int) -> int:
-    total_water = count_water_units(grid)
-    return total_water // capacity + (total_water % capacity > 0)
+def reverse_delete(s: str, c: str) -> Tuple[str, bool]:
+    char_set = set(c)
+    result = ''.join(char for char in s if char not in char_set)
+    is_pal = is_palindrome(result)
+    return result, is_pal
 
-if __name__ == "__main__":
-    grid = eval(input())
-    capacity = int(input())
-    print(max_fill(grid, capacity))
+s, c = input().strip().split()
+result, is_palindrome = reverse_delete(s, c)
+print(result, is_palindrome)

@@ -1,32 +1,16 @@
 
-def is_prime(num: int) -> bool:
-    if num < 2:
-        return False
-    for i in range(2, int(num ** 0.5) + 1):
-        if num % i == 0:
-            return False
-    return True
+def count_char_frequency(s: str) -> dict:
+    char_freq = {}
+    for char in s:
+        char_freq[char] = char_freq.get(char, 0) + 1
+    return char_freq
 
-def generate_fibonacci():
-    a, b = 0, 1
-    while True:
-        yield a
-        a, b = b, a + b
+def same_chars(s0: str, s1: str) -> bool:
+    freq_s0 = count_char_frequency(s0)
+    freq_s1 = count_char_frequency(s1)
 
-def prime_fib(n: int) -> int:
-    if n == 1:
-        return 2
-    if n == 2:
-        return 3
-    prime_gen = generate_primes()
-    fib_gen = generate_fibonacci()
-    count = 0
-    while count < n:
-        num = next(fib_gen)
-        if is_prime(num):
-            count += 1
-    return num
+    return freq_s0 == freq_s1
 
-if __name__ == "__main__":
-    n = int(input())
-    print(prime_fib(n))
+s0 = input()
+s1 = input()
+print(same_chars(s0, s1))

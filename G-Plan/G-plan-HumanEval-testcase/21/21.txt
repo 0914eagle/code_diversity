@@ -1,11 +1,15 @@
 def check(candidate):
-    assert candidate([[0, 0, 1, 0], [0, 1, 0, 0], [1, 1, 1, 1]], 1) == 6
-    assert candidate([[0, 0, 1, 1], [0, 0, 0, 0], [1, 1, 1, 1], [0, 1, 1, 1]], 2) == 5
-    assert candidate([[0, 0, 0], [0, 0, 0]], 5) == 0
-    assert candidate([[1, 1, 1, 1], [1, 1, 1, 1]], 2) == 4
-    assert candidate([[1, 1, 1, 1], [1, 1, 1, 1]], 9) == 2
+    assert candidate('abcde', 'ae') == ('bcd', False)
+    assert candidate('abcdef', 'b') == ('acdef', False)
+    assert candidate('abcdedcba', 'ab') == ('cdedc', True)
+    assert candidate('dwik', 'w') == ('dik', False)
+    assert candidate('a', 'a') == ('', True)
+    assert candidate('abcdedcba', '') == ('abcdedcba', True)
+    assert candidate('abcdedcba', 'v') == ('abcdedcba', True)
+    assert candidate('vabba', 'v') == ('abba', True)
+    assert candidate('mamma', 'mia') == ('', True)
 
 def test_check():
-    check(max_fill)
+    check(reverse_delete)
 
 test_check()

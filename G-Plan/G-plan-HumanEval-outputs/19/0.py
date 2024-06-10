@@ -1,14 +1,23 @@
 
-def anti_shuffle(s: str) -> str:
-    def sort_word(word):
-        return ''.join(sorted(word))
+from typing import List, Tuple
 
-    result = []
-    for word in s.split():
-        result.append(sort_word(word))
+def find_coordinates(lst: List[List[int]], x: int) -> List[Tuple[int, int]]:
+    coordinates = []
+    for row_idx, row in enumerate(lst):
+        for col_idx, val in enumerate(row):
+            if val == x:
+                coordinates.append((row_idx, col_idx))
+    
+    return sorted(coordinates, key=lambda coord: (coord[0], -coord[1]))
 
-    return ' '.join(result)
+def get_row(lst: List[List[int]], x: int) -> List[Tuple[int, int]]:
+    return find_coordinates(lst, x)
 
-if __name__ == "__main__":
-    input_str = input().strip()
-    print(anti_shuffle(input_str))
+# Input parsing
+data = input().strip()
+lst = eval(data)
+x = int(input().strip())
+
+# Output
+result = get_row(lst, x)
+print(result)

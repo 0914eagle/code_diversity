@@ -1,28 +1,32 @@
 
 from typing import List
 
-def separate_paren_groups(paren_string: str) -> List[str]:
-    def is_open_paren(char):
-        return char == '('
+def pairs_sum_to_zero(l: List[int]) -> bool:
+    def using_set(l: List[int]) -> bool:
+        seen = set()
+        for num in l:
+            if -num in seen:
+                return True
+            seen.add(num)
+        return False
 
-    def is_close_paren(char):
-        return char == ')'
+    def sorting_and_two_pointers(l: List[int]) -> bool:
+        l.sort()
+        left, right = 0, len(l) - 1
+        while left < right:
+            current_sum = l[left] + l[right]
+            if current_sum == 0:
+                return True
+            elif current_sum > 0:
+                right -= 1
+            else:
+                left += 1
+        return False
 
-    result = []
-    stack = []
-    start = 0
+    if len(l) < 2:
+        return False
 
-    for i, char in enumerate(paren_string):
-        if is_open_paren(char):
-            stack.append(i)
-        elif is_close_paren(char):
-            open_index = stack.pop()
-            group = paren_string[open_index:i+1]
-            result.append(group)
+    return using_set(l) or sorting_and_two_pointers(l)
 
-    return result
-
-if __name__ == "__main__":
-    paren_string = input().replace(" ", "")
-    groups = separate_paren_groups(paren_string)
-    print(groups)
+l = list(map(int, input().split()))
+print(pairs_sum_to_zero(l))

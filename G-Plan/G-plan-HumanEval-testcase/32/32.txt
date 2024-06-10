@@ -1,10 +1,13 @@
 def check(candidate):
-    assert candidate([15, 33, 1422, 1]) == [1, 15, 33]
-    assert candidate([152, 323, 1422, 10]) == []
-    assert candidate([12345, 2033, 111, 151]) == [111, 151]
-    assert candidate([135, 103, 31]) == [31, 135]
+    assert candidate(['aa', 'a', 'aaa']) == ['aa']
+    assert candidate(['school', 'AI', 'asdf', 'b']) == ['AI', 'asdf', 'school']
+    assert candidate(['d', 'b', 'c', 'a']) == []
+    assert candidate(['d', 'dcba', 'abcd', 'a']) == ['abcd', 'dcba']
+    assert candidate(['AI', 'ai', 'au']) == ['AI', 'ai', 'au']
+    assert candidate(['a', 'b', 'b', 'c', 'c', 'a']) == []
+    assert candidate(['aaaa', 'bbbb', 'dd', 'cc']) == ['cc', 'dd', 'aaaa', 'bbbb']
 
 def test_check():
-    check(unique_digits)
+    check(sorted_list_sum)
 
 test_check()

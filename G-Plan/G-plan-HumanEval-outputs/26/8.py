@@ -1,18 +1,21 @@
 
-import re
+from typing import List
 
-def how_many_times(string: str, substring: str) -> int:
-    count = 0
-    if not string or not substring:
-        return count
+def search(lst: List[int]) -> int:
+    def count_frequency(input_list):
+        freq_dict = {}
+        for num in input_list:
+            freq_dict[num] = freq_dict.get(num, 0) + 1
+        return freq_dict
 
-    pattern = re.compile(f'(?={re.escape(substring)})')
-    matches = pattern.finditer(string)
-    for _ in matches:
-        count += 1
+    freq_map = count_frequency(lst)
+    result = -1
+    for num, freq in freq_map.items():
+        if freq >= num and num > result:
+            result = num
+    return result
 
-    return count
-
-if __name__ == "__main__":
-    string, substring = input().strip().split()
-    print(how_many_times(string, substring))
+# Test cases
+print(search([4, 1, 2, 2, 3, 1]))
+print(search([1, 2, 2, 3, 3, 3, 4, 4, 4]))
+print(search([5, 5, 4, 4, 4]))

@@ -1,27 +1,19 @@
 
-from typing import Dict
-from collections import Counter
+from typing import List
 
-def histogram(test: str) -> Dict[str, int]:
-    def parse_input(input_str: str) -> List[str]:
-        return input_str.split()
+def factorize(n: int) -> List[int]:
+    def trial_division(n: int) -> List[int]:
+        factors = []
+        divisor = 2
+        while n > 1:
+            if n % divisor == 0:
+                factors.append(divisor)
+                n //= divisor
+            else:
+                divisor += 1
+        return factors
 
-    def count_occurrences(words: List[str]) -> Dict[str, int]:
-        return dict(Counter(words))
+    return trial_division(n)
 
-    def find_max_count(occurrences: Dict[str, int]) -> int:
-        return max(occurrences.values())
-
-    def filter_max_occurrences(occurrences: Dict[str, int], max_count: int) -> Dict[str, int]:
-        return {k: v for k, v in occurrences.items() if v == max_count}
-
-    input_str = input()
-    words = parse_input(input_str)
-    occurrences = count_occurrences(words)
-    max_count = find_max_count(occurrences)
-    result = filter_max_occurrences(occurrences, max_count)
-    
-    return result
-
-if __name__ == "__main__":
-    print(histogram(""))
+n = int(input())
+print(factorize(n))

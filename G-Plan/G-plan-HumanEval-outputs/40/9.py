@@ -1,20 +1,18 @@
 
 from typing import List
+import re
 
-def remove_duplicates(l: List[int]) -> List[int]:
-    unique_dict = {}
-    for num in l:
-        unique_dict[num] = True
-    return list(unique_dict.keys())
+def separate_paren_groups(paren_string: str) -> List[str]:
+    def extract_paren_groups(paren_string: str) -> List[str]:
+        return re.findall(r'\([^()]*\)', paren_string)
 
-def sort_list(l: List[int]) -> List[int]:
-    return sorted(l)
+    def remove_spaces(paren_string: str) -> str:
+        return paren_string.replace(" ", "")
 
-def unique(l: List[int]) -> List[int]:
-    unique_elements = remove_duplicates(l)
-    return sort_list(unique_elements)
+    paren_string = remove_spaces(paren_string)
+    return extract_paren_groups(paren_string)
 
-if __name__ == "__main__":
-    input_list = list(map(int, input().split()))
-    result = unique(input_list)
-    print(result)
+# Test the function
+input_string = input().strip()
+result = separate_paren_groups(input_string)
+print(result)

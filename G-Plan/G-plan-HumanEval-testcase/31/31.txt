@@ -1,11 +1,16 @@
 def check(candidate):
-    assert candidate(1000) == '1'
-    assert candidate(150) == '110'
-    assert candidate(147) == '1100'
-    assert candidate(333) == '1001'
-    assert candidate(963) == '10010'
+    assert candidate(5) == False
+    assert candidate(30) == True
+    assert candidate(8) == True
+    assert candidate(10) == False
+    assert candidate(125) == True
+    assert candidate(105) == True
+    assert candidate(126) == False
+    assert candidate(729) == False
+    assert candidate(891) == False
+    assert candidate(1001) == True
 
 def test_check():
-    check(solve)
+    check(is_multiply_prime)
 
 test_check()

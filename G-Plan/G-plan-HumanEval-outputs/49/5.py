@@ -1,22 +1,17 @@
 
-from typing import List
+def int_to_mini_roman(number: int) -> str:
+    roman_mapping = {
+        1000: 'm', 900: 'cm', 500: 'd', 400: 'cd', 100: 'c', 90: 'xc',
+        50: 'l', 40: 'xl', 10: 'x', 9: 'ix', 5: 'v', 4: 'iv', 1: 'i'
+    }
+    result = ""
+    for value, symbol in roman_mapping.items():
+        while number >= value:
+            result += symbol
+            number -= value
+    return result
 
-def median(l: List[int]) -> float:
-    def find_median_odd(sorted_list):
-        return sorted_list[len(sorted_list) // 2]
-
-    def find_median_even(sorted_list):
-        mid = len(sorted_list) // 2
-        return (sorted_list[mid - 1] + sorted_list[mid]) / 2
-
-    def calculate_median(input_list):
-        sorted_list = sorted(input_list)
-        if len(sorted_list) % 2 == 0:
-            return find_median_even(sorted_list)
-        else:
-            return find_median_odd(sorted_list)
-
-    if __name__ == "__main__":
-        input_list = list(map(int, input().strip().split()))
-        print(calculate_median(input_list))
-
+# Test cases
+print(int_to_mini_roman(19))  # Output: xix
+print(int_to_mini_roman(152))  # Output: clii
+print(int_to_mini_roman(426))  # Output: cdxxvi

@@ -1,14 +1,19 @@
 
-from typing import Dict
-from collections import Counter
+from typing import List
 
-def histogram(test: str) -> Dict[str, int]:
-    counts = Counter(test.split())
-    max_count = max(counts.values(), default=0)
-    result = {char: count for char, count in counts.items() if count == max_count}
-    return result
+def factorize(n: int) -> List[int]:
+    def trial_division(n: int) -> List[int]:
+        factors = []
+        divisor = 2
+        while n > 1:
+            if n % divisor == 0:
+                factors.append(divisor)
+                n //= divisor
+            else:
+                divisor += 1
+        return factors
 
-if __name__ == "__main__":
-    test_input = input().strip()
-    result = histogram(test_input)
-    print(result)
+    return trial_division(n)
+
+n = int(input())
+print(factorize(n))

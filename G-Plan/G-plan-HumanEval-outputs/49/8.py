@@ -1,15 +1,19 @@
 
-from typing import List
+def int_to_mini_roman(number: int) -> str:
+    roman_mapping = {
+        1000: 'm', 900: 'cm', 500: 'd', 400: 'cd', 100: 'c', 90: 'xc',
+        50: 'l', 40: 'xl', 10: 'x', 9: 'ix', 5: 'v', 4: 'iv', 1: 'i'
+    }
 
-def find_median(lst: List[int]) -> float:
-    n = len(lst)
-    lst.sort()
-    if n % 2 == 0:
-        return (lst[n//2 - 1] + lst[n//2]) / 2
-    else:
-        return lst[n//2]
+    result = ''
+    for value, numeral in roman_mapping.items():
+        while number >= value:
+            result += numeral
+            number -= value
 
-if __name__ == "__main__":
-    l = list(map(int, input().split()))
-    result = find_median(l)
-    print(result)
+    return result
+
+# Test cases
+print(int_to_mini_roman(19))  # Output: xix
+print(int_to_mini_roman(152))  # Output: clii
+print(int_to_mini_roman(426))  # Output: cdxxvi

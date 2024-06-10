@@ -1,27 +1,35 @@
 
 from typing import List
 
-def separate_paren_groups(paren_string: str) -> List[str]:
-    def is_open_paren(c):
-        return c == '('
+def pairs_sum_to_zero(l: List[int]) -> bool:
+    def find_pairs_using_set(nums):
+        seen = set()
+        for num in nums:
+            if -num in seen:
+                return True
+            seen.add(num)
+        return False
 
-    def is_close_paren(c):
-        return c == ')'
+    def find_pairs_using_sorting(nums):
+        nums.sort()
+        left, right = 0, len(nums) - 1
+        while left < right:
+            total = nums[left] + nums[right]
+            if total == 0:
+                return True
+            elif total > 0:
+                right -= 1
+            else:
+                left += 1
+        return False
 
-    result = []
-    stack = []
-    start = 0
+    if len(l) < 2:
+        return False
 
-    for i, char in enumerate(paren_string):
-        if is_open_paren(char):
-            stack.append(i)
-        elif is_close_paren(char):
-            start = stack.pop()
-            result.append(paren_string[start:i + 1])
+    return find_pairs_using_set(l)  # Choose the desired approach here
 
-    return result
+# Read input
+input_list = list(map(int, input().split()))
 
-if __name__ == "__main__":
-    paren_string = input().replace(" ", "")
-    groups = separate_paren_groups(paren_string)
-    print(groups)
+# Output
+print(pairs_sum_to_zero(input_list))

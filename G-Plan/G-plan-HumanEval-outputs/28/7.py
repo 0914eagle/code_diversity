@@ -1,22 +1,17 @@
 
 from typing import List
 
-def is_balanced_parentheses(lst: List[str]) -> str:
-    def is_balanced(s: str) -> bool:
-        stack = []
-        for char in s:
-            if char == '(':
-                stack.append(char)
-            elif char == ')':
-                if not stack:
-                    return False
-                stack.pop()
-        return not stack
+def median(l: List[int]) -> float:
+    def find_median(sorted_list: List[int]) -> float:
+        n = len(sorted_list)
+        if n % 2 == 0:
+            return (sorted_list[n // 2 - 1] + sorted_list[n // 2]) / 2
+        else:
+            return sorted_list[n // 2]
 
-    concatenated = lst[0] + lst[1]
-    return 'Yes' if is_balanced(concatenated) else 'No'
+    sorted_list = sorted(l)
+    result = find_median(sorted_list)
+    return result
 
-if __name__ == "__main__":
-    input_strings = input().strip().split()
-    result = is_balanced_parentheses(input_strings)
-    print(result)
+l = list(map(int, input().split()))
+print(median(l))

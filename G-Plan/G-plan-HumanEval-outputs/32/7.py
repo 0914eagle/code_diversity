@@ -1,13 +1,18 @@
 
 from typing import List
 
-def has_even_digit(num: int) -> bool:
-    return any(int(digit) % 2 == 0 for digit in str(num))
+def sorted_list_sum(lst: List[str]) -> List[str]:
+    def custom_sort(s):
+        return (len(s), s)
 
-def unique_digits(x: List[int]) -> List[int]:
-    return sorted([num for num in x if not has_even_digit(num)])
+    sorted_lst = sorted(lst, key=custom_sort)
+    filtered_lst = [word for word in sorted_lst if len(word) % 2 == 0]
+    
+    return filtered_lst
 
-if __name__ == "__main__":
-    x = list(map(int, input().split()))
-    result = unique_digits(x)
-    print(result)
+# Read input
+input_list = input().strip().split()
+result = sorted_list_sum(input_list)
+
+# Print output
+print(result)

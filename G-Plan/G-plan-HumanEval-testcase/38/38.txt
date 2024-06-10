@@ -1,9 +1,13 @@
 def check(candidate):
-    assert candidate('') == 0
-    assert candidate('x') == 1
-    assert candidate('asdasnakj') == 9
+    assert candidate('') == ''
+    assert candidate('abcdef\nghijklm') == 'bcdf\nghjklm'
+    assert candidate('fedcba') == 'fdcb'
+    assert candidate('eeeee') == ''
+    assert candidate('acBAA') == 'cB'
+    assert candidate('EcBOO') == 'cB'
+    assert candidate('ybcd') == 'ybcd'
 
 def test_check():
-    check(strlen)
+    check(remove_vowels)
 
 test_check()

@@ -1,16 +1,24 @@
 
-def extract_fruit_counts(s):
-    parts = s.split()
-    apples = int(parts[0])
-    oranges = int(parts[3])
-    return apples, oranges
+from typing import List, Optional
 
-def fruit_distribution(s: str, n: int) -> int:
-    apples, oranges = extract_fruit_counts(s)
-    mangoes = n - apples - oranges
-    return mangoes
+def longest(strings: List[str]) -> Optional[str]:
+    if not strings:
+        return None
+    
+    longest_str = strings[0]
+    for s in strings[1:]:
+        if len(s) > len(longest_str):
+            longest_str = s
+    
+    return longest_str
 
+# Test cases
 if __name__ == "__main__":
-    s, n = input().split(', ')
-    result = fruit_distribution(s, int(n))
-    print(result)
+    test_cases = [
+        [],
+        ['a', 'b', 'c'],
+        ['a', 'bb', 'ccc']
+    ]
+    
+    for test in test_cases:
+        print(longest(test))

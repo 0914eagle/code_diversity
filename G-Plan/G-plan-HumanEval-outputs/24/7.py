@@ -1,14 +1,23 @@
 
-import math
+from typing import Tuple
 
-def is_prime(n: int) -> bool:
-    if n < 2:
-        return False
-    for i in range(2, int(math.sqrt(n)) + 1):
-        if n % i == 0:
-            return False
-    return True
+def get_planets_between(planet1: str, planet2: str) -> Tuple[str, ...]:
+    planets_order = ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune']
+    if planet1 not in planets_order or planet2 not in planets_order:
+        return ()
 
-if __name__ == "__main__":
-    num = int(input())
-    print(is_prime(num))
+    start_idx = planets_order.index(planet1)
+    end_idx = planets_order.index(planet2)
+
+    if start_idx > end_idx:
+        start_idx, end_idx = end_idx, start_idx
+
+    result = [planet for planet in planets_order[start_idx + 1:end_idx] if planet != planet1 and planet != planet2]
+    return tuple(result)
+
+def bf(planet1: str, planet2: str) -> Tuple[str, ...]:
+    planets_between = get_planets_between(planet1, planet2)
+    return tuple(sorted(planets_between, key=lambda x: planets_order.index(x)))
+
+planet1, planet2 = input().split()
+print(bf(planet1, planet2))

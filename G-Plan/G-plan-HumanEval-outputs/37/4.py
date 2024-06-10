@@ -1,15 +1,11 @@
 
-def correct_bracketing(brackets: str) -> bool:
-    stack = []
-    for bracket in brackets:
-        if bracket == '<':
-            stack.append(bracket)
-        elif bracket == '>':
-            if not stack:
-                return False
-            stack.pop()
-    return len(stack) == 0
+from typing import List
 
+def below_threshold(l: List[int], t: int) -> bool:
+    return all(num < t for num in l)
+
+# Test cases
 if __name__ == "__main__":
-    brackets = input().strip()
-    print(correct_bracketing(brackets))
+    l = list(map(int, input().split()))
+    t = int(input())
+    print(below_threshold(l, t))

@@ -1,14 +1,19 @@
 def check(candidate):
-    assert candidate([]) == 0
-    assert candidate([-1, -2, 0]) == 0
-    assert candidate([1, 1, 2, -2, 3, 4, 5]) == 6
-    assert candidate([1, 6, 9, -6, 0, 1, 5]) == 5
-    assert candidate([1, 100, 98, -7, 1, -1]) == 4
-    assert candidate([12, 23, 34, -45, -56, 0]) == 5
-    assert candidate([0, 1]) == 1
-    assert candidate([1]) == 1
+    assert candidate('yogurt') == 'u'
+    assert candidate('full') == 'u'
+    assert candidate('easy') == ''
+    assert candidate('eAsy') == ''
+    assert candidate('ali') == ''
+    assert candidate('bad') == 'a'
+    assert candidate('most') == 'o'
+    assert candidate('ab') == ''
+    assert candidate('ba') == ''
+    assert candidate('quick') == ''
+    assert candidate('anime') == 'i'
+    assert candidate('Asia') == ''
+    assert candidate('Above') == 'o'
 
 def test_check():
-    check(count_nums)
+    check(get_closest_vowel)
 
 test_check()

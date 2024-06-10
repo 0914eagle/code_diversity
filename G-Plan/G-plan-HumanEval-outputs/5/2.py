@@ -1,16 +1,24 @@
 
-def correct_bracketing(brackets: str) -> bool:
-    stack = []
-    for bracket in brackets:
-        if bracket == '(':
-            stack.append(bracket)
-        elif bracket == ')':
-            if not stack:
-                return False
-            stack.pop()
-    
-    return len(stack) == 0
+def is_prime(n: int) -> bool:
+    if n <= 1:
+        return False
+    if n <= 3:
+        return True
+    if n % 2 == 0 or n % 3 == 0:
+        return False
+    i = 5
+    while i * i <= n:
+        if n % i == 0 or n % (i + 2) == 0:
+            return False
+        i += 6
+    return True
 
-if __name__ == "__main__":
-    brackets = input().strip()
-    print(correct_bracketing(brackets))
+def prime_length(string: str) -> bool:
+    length = len(string)
+    return is_prime(length)
+
+# Test the function with provided examples
+print(prime_length('Hello'))
+print(prime_length('abcdcba'))
+print(prime_length('kittens'))
+print(prime_length('orange'))

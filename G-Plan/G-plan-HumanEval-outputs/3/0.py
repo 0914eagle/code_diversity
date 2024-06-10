@@ -1,15 +1,16 @@
 
 from typing import List
 
-def filter_by_substring(strings: List[str], substring: str) -> List[str]:
-    result = []
-    for s in strings:
-        if substring in s:
-            result.append(s)
-    return result
+def is_palindrome(lst: List[int]) -> bool:
+    return lst == lst[::-1]
 
+def will_it_fly(q: List[int], w: int) -> bool:
+    if is_palindrome(q) and sum(q) <= w:
+        return True
+    return False
+
+# Test the function
 if __name__ == "__main__":
-    strings = input().strip().split()
-    substring = input().strip()
-    result = filter_by_substring(strings, substring)
-    print(result)
+    q = list(map(int, input().split()))
+    w = int(input())
+    print(will_it_fly(q, w))

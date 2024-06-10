@@ -1,19 +1,13 @@
 
-import math
+from typing import List, Any
 
-def largest_divisor(n: int) -> int:
-    def iterative_largest_divisor(n: int) -> int:
-        for i in range(n - 1, 0, -1):
-            if n % i == 0:
-                return i
+def filter_integers(values: List[Any]) -> List[int]:
+    return [value for value in values if isinstance(value, int)]
 
-    def optimized_largest_divisor(n: int) -> int:
-        for i in range(int(math.sqrt(n)), 0, -1):
-            if n % i == 0:
-                return max(i, n // i)
+# Read input values as a list of any Python values
+input_values = input().strip().split(',')
+values = [eval(val.strip()) for val in input_values]
 
-    return optimized_largest_divisor(n)
-
-if __name__ == "__main__":
-    n = int(input().strip())
-    print(largest_divisor(n))
+# Call the filter_integers function and print the result
+result = filter_integers(values)
+print(result)

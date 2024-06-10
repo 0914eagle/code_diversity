@@ -1,29 +1,35 @@
 
 from typing import List
 
-def sort_array(array: List[int]) -> List[int]:
-    if not array:
-        return []
+def minPath(grid: List[List[int]], k: int) -> List[int:
+    def is_valid_move(x, y, visited):
+        return 0 <= x < len(grid) and 0 <= y < len(grid[0]) and (x, y) not in visited
 
-    def is_odd(num):
-        return num % 2 != 0
+    def backtrack(x, y, path, visited):
+        if len(path) == k:
+            nonlocal min_path
+            if not min_path or path < min_path:
+                min_path = path[:]
+            return
 
-    def sort_ascending(arr):
-        return sorted(arr)
+        visited.add((x, y))
+        for dx, dy in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
+            new_x, new_y = x + dx, y + dy
+            if is_valid_move(new_x, new_y, visited):
+                backtrack(new_x, new_y, path + [grid[new_x][new_y]], visited)
+        visited.remove((x, y))
 
-    def sort_descending(arr):
-        return sorted(arr, reverse=True)
+    min_path = []
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            visited = set()
+            backtrack(i, j, [grid[i][j]], visited)
 
-    first = array[0]
-    last = array[-1]
-    total = first + last
+    return min_path
 
-    if is_odd(total):
-        return sort_ascending(array.copy())
-    else:
-        return sort_descending(array.copy())
+# Read input
+grid = [[int(num) for num in row.split()] for row in input().strip().split(',')]
+k = int(input().strip())
 
-if __name__ == "__main__":
-    input_array = list(map(int, input().split()))
-    result = sort_array(input_array)
-    print(result)
+# Call the function and print the result
+print(minPath(grid, k))

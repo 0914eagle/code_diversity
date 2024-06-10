@@ -1,16 +1,19 @@
 
-def is_nested(string: str) -> bool:
-    stack = []
-    for bracket in string:
-        if bracket == '[':
-            stack.append(bracket)
-        elif bracket == ']':
-            if stack and stack[-1] == '[':
-                stack.pop()
-            else:
-                return False
-    return len(stack) != 0
+def get_max_triples(n: int) -> int:
+    def calculate_remainder(num):
+        return num % 3
 
-if __name__ == "__main__":
-    input_string = input().strip()
-    print(is_nested(input_string))
+    def count_valid_triples(remainder_count):
+        total_count = 0
+        for i in range(3):
+            total_count += remainder_count[i] * (remainder_count[i] - 1) * (remainder_count[i] - 2) // 6
+        return total_count
+
+    a = [i * i - i + 1 for i in range(1, n + 1)]
+    remainder_count = [0, 0, 0]
+    for num in a:
+        remainder_count[calculate_remainder(num)] += 1
+
+    print(count_valid_triples(remainder_count))
+
+get_max_triples(int(input()))

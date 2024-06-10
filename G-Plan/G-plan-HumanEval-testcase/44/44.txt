@@ -1,14 +1,14 @@
 def check(candidate):
-    assert candidate('a b b a') == { 'a': 2, 'b': 2 }
-    assert candidate('a b c a b') == { 'a': 2, 'b': 2 }
-    assert candidate('a b c d g') == { 'a': 1, 'b': 1, 'c': 1, 'd': 1, 'g': 1 }
-    assert candidate('r t g') == { 'r': 1, 't': 1, 'g': 1 }
-    assert candidate('b b b b a') == { 'b': 4 }
-    assert candidate('r t g') == { 'r': 1, 't': 1, 'g': 1 }
-    assert candidate('') == {  }
-    assert candidate('a') == { 'a': 1 }
+    assert candidate(2) == [2]
+    assert candidate(4) == [2, 2]
+    assert candidate(8) == [2, 2, 2]
+    assert candidate(57) == [3, 19]
+    assert candidate(3249) == [3, 3, 19, 19]
+    assert candidate(185193) == [3, 3, 3, 19, 19, 19]
+    assert candidate(20577) == [3, 19, 19, 19]
+    assert candidate(18) == [2, 3, 3]
 
 def test_check():
-    check(histogram)
+    check(factorize)
 
 test_check()

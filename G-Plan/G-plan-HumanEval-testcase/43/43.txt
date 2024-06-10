@@ -1,10 +1,11 @@
 def check(candidate):
-    assert candidate([-1, -2, 4, 5, 6]) == [4, 5, 6]
-    assert candidate([5, 3, -5, 2, 3, 3, 9, 0, 123, 1, -10]) == [5, 3, 2, 3, 3, 9, 123, 1]
-    assert candidate([-1, -2]) == []
-    assert candidate([]) == []
+    assert candidate(1) == 1
+    assert candidate(2) == 18
+    assert candidate(3) == 180
+    assert candidate(4) == 1800
+    assert candidate(5) == 18000
 
 def test_check():
-    check(get_positive)
+    check(starts_one_ends)
 
 test_check()

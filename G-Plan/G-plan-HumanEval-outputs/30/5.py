@@ -1,21 +1,14 @@
 
 from typing import List
 
-def is_monotonic_increasing(l: List[int]) -> bool:
-    for i in range(1, len(l)):
-        if l[i] < l[i - 1]:
-            return False
-    return True
+def has_even_digit(num: int) -> bool:
+    return any(int(digit) % 2 == 0 for digit in str(num))
 
-def is_monotonic_decreasing(l: List[int]) -> bool:
-    for i in range(1, len(l)):
-        if l[i] > l[i - 1]:
-            return False
-    return True
+def unique_digits(x: List[int]) -> List[int]:
+    return sorted([num for num in x if not has_even_digit(num)])
 
-def monotonic(l: List[int]) -> bool:
-    return is_monotonic_increasing(l) or is_monotonic_decreasing(l)
+# Read input
+input_list = list(map(int, input().split()))
 
-if __name__ == "__main__":
-    l = list(map(int, input().strip().split()))
-    print(monotonic(l))
+# Call the function and print the result
+print(unique_digits(input_list))

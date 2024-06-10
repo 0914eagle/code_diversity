@@ -1,11 +1,16 @@
 
-def sum_binary_digits(N: int) -> str:
-    binary = bin(N)[2:]
-    total_sum = 0
-    for digit in binary:
-        total_sum += int(digit)
-    return bin(total_sum)[2:]
+from itertools import combinations
+from sympy import isprime
 
-if __name__ == "__main__":
-    N = int(input())
-    print(sum_binary_digits(N))
+def get_primes_less_than_100():
+    return [num for num in range(2, 100) if isprime(num)]
+
+def is_multiply_prime(a: int) -> bool:
+    primes = get_primes_less_than_100()
+    for prime_combination in combinations(primes, 3):
+        if prime_combination[0] * prime_combination[1] * prime_combination[2] == a:
+            return True
+    return False
+
+a = int(input())
+print(is_multiply_prime(a))

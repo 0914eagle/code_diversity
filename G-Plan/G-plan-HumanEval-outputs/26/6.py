@@ -1,17 +1,23 @@
 
-import re
+from typing import List
 
-def how_many_times(string: str, substring: str) -> int:
-    count = 0
-    if not string or not substring:
-        return count
+def search(lst: List[int]) -> int:
+    def count_frequency(input_list):
+        freq_dict = {}
+        for num in input_list:
+            freq_dict[num] = freq_dict.get(num, 0) + 1
+        return freq_dict
 
-    for i in range(len(string) - len(substring) + 1):
-        if string[i:i + len(substring)] == substring:
-            count += 1
+    def find_greatest_integer_with_condition(freq_dict):
+        max_val = -1
+        for num, freq in freq_dict.items():
+            if num > freq and freq > max_val:
+                max_val = freq
+        return max_val
 
-    return count
+    frequencies = count_frequency(lst)
+    result = find_greatest_integer_with_condition(frequencies)
+    return result
 
-if __name__ == "__main__":
-    string, substring = input().strip().split()
-    print(how_many_times(string, substring))
+input_list = list(map(int, input().strip().split()))
+print(search(input_list))

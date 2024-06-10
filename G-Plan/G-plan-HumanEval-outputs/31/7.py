@@ -1,11 +1,21 @@
 
-def sum_binary_digits(N: int) -> str:
-    total_sum = 0
-    while N > 0:
-        total_sum += N & 1
-        N >>= 1
-    return bin(total_sum)[2:]
+from itertools import combinations
+from sympy import primerange
 
-if __name__ == "__main__":
-    N = int(input())
-    print(sum_binary_digits(N))
+def is_prime(num):
+    if num < 2:
+        return False
+    for i in range(2, int(num ** 0.5) + 1):
+        if num % i == 0:
+            return False
+    return True
+
+def is_multiply_prime(a: int) -> bool:
+    primes = list(primerange(2, 100))
+    for comb in combinations(primes, 3):
+        if comb[0] * comb[1] * comb[2] == a:
+            return True
+    return False
+
+a = int(input())
+print(is_multiply_prime(a))

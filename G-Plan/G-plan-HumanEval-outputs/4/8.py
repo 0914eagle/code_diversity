@@ -1,26 +1,43 @@
 
 from typing import List
+from queue import PriorityQueue
 
-def sort_array(array: List[int]) -> List[int]:
-    if not array:
-        return []
+def minPath(grid: List[List[int]], k: int) -> List[int]:
+    def is_valid_move(row, col, visited):
+        return 0 <= row < len(grid) and 0 <= col < len(grid[0]) and (row, col) not in visited
 
-    def get_sum_first_last(arr: List[int]) -> int:
-        return arr[0] + arr[-1]
+    def backtrack(row, col, path, visited):
+        if len(path) == k:
+            nonlocal min_path
+            if not min_path or path < min_path:
+                min_path = path[:]
+            return
 
-    def sort_ascending(arr: List[int]) -> List[int]:
-        return sorted(arr)
+        visited.add((row, col))
+        for dr, dc in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
+            new_row, new_col = row + dr, col + dc
+            if is_valid_move(new_row, new_col, visited):
+                backtrack(new_row, new_col, path + [grid[new_row][new_col]], visited)
+        visited.remove((row, col))
 
-    def sort_descending(arr: List[int]) -> List[int]:
-        return sorted(arr, reverse=True)
+    min_path = []
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            visited = set()
+            backtrack(i, j, [grid[i][j]], visited)
 
-    sum_first_last = get_sum_first_last(array)
-    if sum_first_last % 2 == 0:
-        return sort_descending(array)
-    else:
-        return sort_ascending(array)
+    return min_path
 
-if __name__ == "__main__":
-    input_array = list(map(int, input().strip().split()))
-    result = sort_array(input_array)
-    print(result)
+# Read input
+grid = []
+while True:
+    try:
+        row = list(map(int, input().split()))
+        grid.append(row)
+    except EOFError:
+        break
+
+k = int(input())
+
+# Call the function and print the result
+print(minPath(grid, k))

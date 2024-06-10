@@ -1,11 +1,20 @@
 def check(candidate):
-    assert candidate([3, 1, 2, 4, 5]) == 3
-    assert candidate([-10, 4, 6, 1000, 10, 20]) == 8.0
-    assert candidate([5]) == 5
-    assert candidate([6, 5]) == 5.5
-    assert candidate([8, 1, 3, 9, 9, 2, 7]) == 7
+    assert candidate(19) == 'xix'
+    assert candidate(152) == 'clii'
+    assert candidate(251) == 'ccli'
+    assert candidate(426) == 'cdxxvi'
+    assert candidate(500) == 'd'
+    assert candidate(1) == 'i'
+    assert candidate(4) == 'iv'
+    assert candidate(43) == 'xliii'
+    assert candidate(90) == 'xc'
+    assert candidate(94) == 'xciv'
+    assert candidate(532) == 'dxxxii'
+    assert candidate(900) == 'cm'
+    assert candidate(994) == 'cmxciv'
+    assert candidate(1000) == 'm'
 
 def test_check():
-    check(median)
+    check(int_to_mini_roman)
 
 test_check()

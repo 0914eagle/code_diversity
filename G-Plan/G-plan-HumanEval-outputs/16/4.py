@@ -1,18 +1,14 @@
 
-def closest_integer(value: str) -> int:
-    def round_away_from_zero(num: float) -> int:
-        return int(num + 0.5) if num > 0 else int(num - 0.5)
+from typing import List
 
-    def closest_integer_rounding(value: float) -> int:
-        floor_value = int(value)
-        ceil_value = floor_value + 1
-        if abs(value - floor_value) == abs(value - ceil_value):
-            return ceil_value if value > 0 else floor_value
-        return ceil_value if abs(value - ceil_value) < abs(value - floor_value) else floor_value
+def below_zero(operations: List[int]) -> bool:
+    balance = 0
+    for operation in operations:
+        balance += operation
+        if balance < 0:
+            return True
+    return False
 
-    float_value = float(value)
-    return closest_integer_rounding(float_value) if '.' in value else int(value)
-
-if __name__ == "__main__":
-    value = input().strip()
-    print(closest_integer(value))
+# Test the function with example inputs
+print(below_zero([1, 2, 3]))
+print(below_zero([1, 2, -4, 5]))

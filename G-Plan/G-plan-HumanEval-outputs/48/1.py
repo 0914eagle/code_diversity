@@ -1,20 +1,21 @@
 
 from typing import List
 
-def has_close_elements(numbers: List[float], threshold: float) -> bool:
-    def is_close(a: float, b: float, threshold: float) -> bool:
-        return abs(a - b) < threshold
+def smallest_change(arr: List[int]) -> int:
+    def is_palindromic(array):
+        return array == array[::-1]
 
-    def has_close_pair(numbers: List[float], threshold: float) -> bool:
-        for i in range(len(numbers)):
-            for j in range(i + 1, len(numbers)):
-                if is_close(numbers[i], numbers[j], threshold):
-                    return True
-        return False
+    changes = 0
+    left, right = 0, len(arr) - 1
 
-    return has_close_pair(numbers, threshold)
+    while left < right:
+        if arr[left] != arr[right]:
+            changes += 1
+        left += 1
+        right -= 1
 
-if __name__ == "__main__":
-    numbers = list(map(float, input().split()))
-    threshold = float(input())
-    print(has_close_elements(numbers, threshold))
+    return changes
+
+# Test the function
+arr = list(map(int, input().strip().split()))
+print(smallest_change(arr))

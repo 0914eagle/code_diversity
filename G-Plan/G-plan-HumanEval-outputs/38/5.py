@@ -1,7 +1,7 @@
 
-def strlen(string: str) -> int:
-    return len(string)
+def remove_vowels(text: str) -> str:
+    vowels = set('aeiouAEIOU')
+    return ''.join([char for char in text if char not in vowels])
 
-if __name__ == "__main__":
-    string = input()
-    print(strlen(string))
+text = input()
+print(remove_vowels(text))
