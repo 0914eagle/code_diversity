@@ -1,26 +1,50 @@
 
-def solve(n, a):
-    # Calculate the total number of votes
-    total_votes = sum(a)
-
-    # Initialize the minimum number of bribes as 0
-    min_bribes = 0
-
-    # Iterate through the array of votes
-    for i in range(n):
-        # Calculate the number of votes needed to win
-        votes_needed = total_votes - a[i]
-
-        # If Limak has enough votes to win, break the loop
-        if votes_needed <= 0:
+def can_reach_insect(line, k):
+    # Initialize variables
+    empty_cells = []
+    obstacle_cells = []
+    grasshopper_cell = None
+    insect_cell = None
+    
+    # Parse the line
+    for i, char in enumerate(line):
+        if char == '.':
+            empty_cells.append(i)
+        elif char == '#':
+            obstacle_cells.append(i)
+        elif char == 'G':
+            grasshopper_cell = i
+        elif char == 'T':
+            insect_cell = i
+    
+    # Check if the grasshopper can reach the insect
+    if grasshopper_cell is None or insect_cell is None:
+        return "NO"
+    if abs(grasshopper_cell - insect_cell) > k:
+        return "NO"
+    
+    # Check if the grasshopper can make a jump to the insect
+    jump_possible = False
+    for cell in empty_cells:
+        if abs(cell - grasshopper_cell) == k:
+            jump_possible = True
             break
+    
+    if not jump_possible:
+        return "NO"
+    
+    # Check if the grasshopper can make it through the obstacles
+    for cell in obstacle_cells:
+        if abs(cell - grasshopper_cell) <= k:
+            return "NO"
+    
+    return "YES"
 
-        # Calculate the number of bribes needed
-        bribes_needed = votes_needed // (n - i)
+def main():
+    n, k = map(int, input().split())
+    line = input()
+    print(can_reach_insect(line, k))
 
-        # Update the minimum number of bribes
-        min_bribes = max(min_bribes, bribes_needed)
-
-    # Return the minimum number of bribes
-    return min_bribes
+if __name__ == '__main__':
+    main()
 

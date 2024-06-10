@@ -1,35 +1,36 @@
 
-def min_cost_to_travel_to_rightmost_gas_station(n, g, distances, costs):
-    # Sort the gas stations by distance in ascending order
-    sorted_gas_stations = sorted(zip(distances, costs), key=lambda x: x[0])
+def get_binary_representation(n):
+    return bin(n)[2:]
 
-    # Initialize the current gas station and the total distance traveled
-    current_gas_station = 0
-    total_distance = 0
+def get_signed_binary_representation(n):
+    binary_representation = get_binary_representation(n)
+    signed_binary_representation = []
+    for digit in binary_representation:
+        if digit == '0':
+            signed_binary_representation.append('0')
+        elif digit == '1':
+            signed_binary_representation.append('+')
+        else:
+            signed_binary_representation.append('-')
+    return ''.join(signed_binary_representation)
 
-    # Initialize the minimum cost to travel to the rightmost gas station
-    min_cost = 0
+def get_minimal_signed_binary_representation(n):
+    binary_representation = get_binary_representation(n)
+    minimal_signed_binary_representation = []
+    for digit in binary_representation:
+        if digit == '0':
+            minimal_signed_binary_representation.append('0')
+            break
+        elif digit == '1':
+            minimal_signed_binary_representation.append('+')
+        else:
+            minimal_signed_binary_representation.append('-')
+    return ''.join(minimal_signed_binary_representation)
 
-    # Loop through each gas station and calculate the minimum cost to travel to it
-    for i in range(n):
-        # Calculate the distance from the current gas station to the next gas station
-        distance = sorted_gas_stations[i][0] - total_distance
+def main():
+    n = int(input())
+    print(get_minimal_signed_binary_representation(n))
 
-        # Calculate the cost to travel to the next gas station
-        cost = sorted_gas_stations[i][1] * (distance // 1000)
-
-        # Check if the total cost plus the cost to travel to the next gas station exceeds the car's fuel tank capacity
-        if total_distance + cost > g:
-            # If it does, cancel the road trip
-            return "cancel road trip"
-
-        # Update the current gas station and the total distance traveled
-        current_gas_station = i
-        total_distance += distance
-
-        # Update the minimum cost to travel to the rightmost gas station
-        min_cost += cost
-
-    # If the loop completes successfully, return the minimum cost to travel to the rightmost gas station
-    return min_cost
+if __name__ == '__main__':
+    main()
 

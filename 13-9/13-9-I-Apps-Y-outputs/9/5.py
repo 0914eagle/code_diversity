@@ -1,14 +1,13 @@
 
-def solve(n, T, tasks):
-    completed_tasks = 0
-    time_taken = 0
+def get_number_of_digits(estimate):
+    return len(str(estimate))
 
-    for task in tasks:
-        if time_taken + task <= T:
-            completed_tasks += 1
-            time_taken += task
-        else:
-            break
+def main():
+    num_estimates = int(input())
+    for i in range(num_estimates):
+        estimate = int(input())
+        print(get_number_of_digits(estimate))
 
-    return completed_tasks
+if __name__ == '__main__':
+    main()
 

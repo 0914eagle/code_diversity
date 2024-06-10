@@ -1,25 +1,35 @@
 
-def solve(n, friends):
-    # Initialize a dictionary to map each friend to their gift recipient
-    gift_map = {}
+def get_number_of_paths(grid, k):
+    # Initialize the number of paths to 0
+    number_of_paths = 0
     
-    # Iterate through the list of friends and their gift preferences
-    for i, friend in enumerate(friends):
-        # If the friend has a gift preference, add them to the dictionary
-        if friend != 0:
-            gift_map[i] = friend
+    # Loop through each cell in the grid
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            # If the current cell is the bottom-right cell, check if the xor sum is equal to k
+            if i == len(grid) - 1 and j == len(grid[0]) - 1:
+                if grid[i][j] ^ k == 0:
+                    number_of_paths += 1
+            # If the current cell is not the bottom-right cell, recursively call the function with the next cell
+            else:
+                if j < len(grid[0]) - 1:
+                    number_of_paths += get_number_of_paths(grid, k ^ grid[i][j])
+                if i < len(grid) - 1:
+                    number_of_paths += get_number_of_paths(grid, k ^ grid[i][j])
     
-    # While there are still unknown gift preferences
-    while 0 in gift_map.values():
-        # Find the first friend who doesn't have a gift preference
-        unknown_friend = [k for k, v in gift_map.items() if v == 0][0]
-        
-        # Find all friends who have gift preferences and are not their own gift recipient
-        available_friends = [k for k, v in gift_map.items() if v != 0 and k != unknown_friend]
-        
-        # Assign the first available friend as the gift recipient for the unknown friend
-        gift_map[unknown_friend] = available_friends[0]
+    # Return the number of paths
+    return number_of_paths
+
+def main():
+    # Read the input grid and k
+    n, m, k = map(int, input().split())
+    grid = []
+    for i in range(n):
+        grid.append(list(map(int, input().split())))
     
-    # Return the final gift map
-    return gift_map
+    # Call the get_number_of_paths function and print the result
+    print(get_number_of_paths(grid, k))
+
+if __name__ == '__main__':
+    main()
 

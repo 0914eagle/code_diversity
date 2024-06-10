@@ -1,25 +1,56 @@
 
-def can_deploy_services(n, x1, x2, c):
-    # Sort the servers by the amount of resource units they provide
-    sorted_servers = sorted(c, reverse=True)
+def get_good_strings(s):
+    # Initialize variables
+    good_strings = []
+    current_string = ""
+    
+    # Iterate through the input string
+    for char in s:
+        # If the current character is different from the previous character, add the current string to the list of good strings
+        if current_string and current_string[-1] != char:
+            good_strings.append(current_string)
+            current_string = ""
+        # Add the current character to the current string
+        current_string += char
+    
+    # Add the last string to the list of good strings
+    if current_string:
+        good_strings.append(current_string)
+    
+    return good_strings
 
-    # Initialize the variables to keep track of the servers used for each service
-    k1, k2 = 0, 0
-    servers1, servers2 = [], []
+def get_minimal_cut(s):
+    # Get all good substrings of the input string
+    good_strings = get_good_strings(s)
+    
+    # Initialize variables
+    minimal_cut = len(good_strings)
+    minimal_cut_strings = []
+    
+    # Iterate through all possible combinations of good substrings
+    for i in range(len(good_strings)):
+        for combination in itertools.combinations(good_strings, i + 1):
+            # Check if the concatenation of the current combination is equal to the input string
+            if "".join(combination) == s:
+                # If it is, check if the current combination has a smaller number of substrings than the previous minimum
+                if len(combination) < minimal_cut:
+                    minimal_cut = len(combination)
+                    minimal_cut_strings = list(combination)
+    
+    return minimal_cut, minimal_cut_strings
 
-    # Loop through the servers and assign them to either service 1 or service 2
-    for i, server in enumerate(sorted_servers, 1):
-        if x1 // i <= server:
-            k1 += 1
-            servers1.append(i)
-        elif x2 // i <= server:
-            k2 += 1
-            servers2.append(i)
+def main():
+    # Read the input string
+    n = int(input())
+    s = input()
+    
+    # Get the minimal cut
+    minimal_cut, minimal_cut_strings = get_minimal_cut(s)
+    
+    # Print the result
+    print(minimal_cut)
+    print(" ".join(minimal_cut_strings))
 
-    # If both services can be deployed, return the answers
-    if k1 > 0 and k2 > 0:
-        return "Yes", k1, k2, servers1, servers2
-
-    # Otherwise, return that it is not possible to deploy both services
-    return "No", 0, 0, [], []
+if __name__ == '__main__':
+    main()
 

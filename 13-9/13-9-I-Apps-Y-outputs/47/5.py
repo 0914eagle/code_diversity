@@ -1,17 +1,20 @@
 
-def solve(n, a, edges):
-    # Initialize a dictionary to store the distances from each vertex to the root
-    distances = {i: 0 for i in range(1, n + 1)}
-    
-    # Iterate over the edges and update the distances
-    for u, v in edges:
-        distances[u] = max(distances[u], distances[v] + 1)
-        distances[v] = max(distances[v], distances[u] + 1)
-    
-    # Calculate the maximum cost of the tree
-    cost = 0
-    for i in range(1, n + 1):
-        cost += distances[i] * a[i - 1]
-    
-    return cost
+def get_input():
+    M = int(input())
+    m_set = set(map(int, input().split()))
+    N = int(input())
+    n_set = set(map(int, input().split()))
+    return M, m_set, N, n_set
+
+def symmetric_difference(M, m_set, N, n_set):
+    return sorted(m_set ^ n_set)
+
+def main():
+    M, m_set, N, n_set = get_input()
+    result = symmetric_difference(M, m_set, N, n_set)
+    for num in result:
+        print(num)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,32 +1,20 @@
 
-def get_safe_operations(registers):
-    # Convert the input list to a dictionary for easier access
-    registers = dict(enumerate(registers))
-    
-    # Initialize the number of safe operations to the maximum value
-    safe_operations = float('inf')
-    
-    # Iterate through the registers starting from the smallest prime
-    for p in [2, 3, 5, 7, 11, 13, 17, 19]:
-        # Get the current value of the register and the maximum value it can hold
-        value = registers[p]
-        max_value = p - 1
-        
-        # If the current value is equal to the maximum value, the register will overflow
-        if value == max_value:
-            # Decrement the number of safe operations by 1
-            safe_operations -= 1
-            
-            # If the number of safe operations becomes negative, return 0
-            if safe_operations < 0:
-                return 0
-            
-            # Reset the register to 0 and continue with the next register
-            registers[p] = 0
-        else:
-            # The register did not overflow, so continue with the next register
-            break
-    
-    # Return the number of safe operations
-    return safe_operations
+def get_input():
+    return list(map(int, input().split()))
+
+def is_possible(A, B, C):
+    for i in range(A, 101):
+        if i % A == C:
+            return True
+    return False
+
+def main():
+    A, B, C = get_input()
+    if is_possible(A, B, C):
+        print("YES")
+    else:
+        print("NO")
+
+if __name__ == '__main__':
+    main()
 

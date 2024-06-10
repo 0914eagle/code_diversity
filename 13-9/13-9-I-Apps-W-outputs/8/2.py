@@ -1,20 +1,31 @@
 
-def get_max_messiness(n, k):
-    # Initialize an array to store the cows
-    cows = [i for i in range(1, n + 1)]
-    # Initialize a variable to store the maximum messiness
-    max_messiness = 0
-    # Loop through each minute
-    for minute in range(k):
-        # Swap the cows in the first and last stalls
-        cows[0], cows[-1] = cows[-1], cows[0]
-        # Calculate the messiness for this minute
-        messiness = 0
-        for i in range(n - 1):
-            if cows[i] > cows[i + 1]:
-                messiness += 1
-        # Update the maximum messiness
-        max_messiness = max(max_messiness, messiness)
-    # Return the maximum messiness
-    return max_messiness
+import sys
+
+def get_input():
+    n, q = map(int, input().split())
+    tree = [[] for _ in range(n + 1)]
+    for _ in range(n - 1):
+        a, b = map(int, input().split())
+        tree[a].append(b)
+        tree[b].append(a)
+    return n, q, tree
+
+def dfs(tree, vertex, parent, counter):
+    counter[vertex] += 1
+    for child in tree[vertex]:
+        if child != parent:
+            dfs(tree, child, vertex, counter)
+
+def solve(n, q, tree):
+    counter = [0] * (n + 1)
+    for _ in range(q):
+        p, x = map(int, input().split())
+        dfs(tree, p, 0, counter)
+        counter[p] += x
+    return counter
+
+if __name__ == '__main__':
+    n, q, tree = get_input()
+    counter = solve(n, q, tree)
+    print(*counter[1:], sep=' ')
 

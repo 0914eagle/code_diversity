@@ -1,21 +1,28 @@
 
-def solve(s, p):
-    # Initialize the answer array
-    answer = [0] * (len(s) + 1)
+def check_2x2_square(board):
+    for i in range(len(board) - 1):
+        for j in range(len(board[i]) - 1):
+            if board[i][j] == 1 and board[i + 1][j] == 1 and board[i][j + 1] == 1 and board[i + 1][j + 1] == 1:
+                return True
+    return False
 
-    # Loop through each possible number of removed characters
-    for x in range(len(s)):
-        # Get the substring of s after removing x characters
-        s_prime = s[:len(s) - x]
+def check_moves(board, moves):
+    for move in moves:
+        row, col = move
+        board[row - 1][col - 1] = 1
+        if check_2x2_square(board):
+            return move
+    return 0
 
-        # Find the maximum number of non-overlapping substrings of p in s_prime
-        max_occurrences = 0
-        for i in range(len(s_prime) - len(p) + 1):
-            if s_prime[i:i+len(p)] == p:
-                max_occurrences += 1
+def main():
+    n, m, k = map(int, input().split())
+    board = [[0] * m for _ in range(n)]
+    moves = []
+    for _ in range(k):
+        moves.append(list(map(int, input().split())))
+    result = check_moves(board, moves)
+    print(result)
 
-        # Update the answer array for this x
-        answer[x] = max_occurrences
-
-    return answer
+if __name__ == '__main__':
+    main()
 

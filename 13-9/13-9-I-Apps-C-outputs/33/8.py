@@ -1,30 +1,42 @@
 
-def solve(n, m):
-    # Initialize a set to store all distinct pairs
-    pairs = set()
+def get_maximum_tastiness(n, k, a, b, tastiness, complementary_pairs):
+    # Initialize the dp table with 0 for all indices
+    dp = [[0] * (k + 1) for _ in range(n + 1)]
     
-    # Loop through all possible hours
-    for hour in range(n):
-        # Loop through all possible minutes
-        for minute in range(m):
-            # Convert hour and minute to base 7
-            hour_base7 = convert_to_base7(hour)
-            minute_base7 = convert_to_base7(minute)
+    # Loop through all possible number of scoops
+    for i in range(1, n + 1):
+        # Loop through all possible flavors
+        for j in range(1, k + 1):
+            # Get the tastiness of the current scoop
+            tastiness_j = tastiness[j - 1]
             
-            # If both hour and minute have distinct digits, add them to the set
-            if has_distinct_digits(hour_base7) and has_distinct_digits(minute_base7):
-                pairs.add((hour, minute))
+            # Loop through all possible flavors that can be on top of the current scoop
+            for l in range(1, k + 1):
+                # If the flavors are complementary, add the tastiness of the complementary pair
+                if [j, l] in complementary_pairs:
+                    tastiness_j += tastiness[l - 1]
+                
+                # Get the maximum tastiness by trying all possible number of scoops of flavor l
+                dp[i][j] = max(dp[i][j], dp[i - 1][l] + tastiness_j)
     
-    return len(pairs)
+    # Return the maximum tastiness
+    return dp[n][1]
 
-def convert_to_base7(num):
-    # Convert the number to a string in base 7
-    return str(num)
+def get_maximum_tastiness_ratio(n, k, a, b, tastiness, complementary_pairs):
+    # Get the maximum tastiness
+    maximum_tastiness = get_maximum_tastiness(n, k, a, b, tastiness, complementary_pairs)
+    
+    # Calculate the cost of the ice cream
+    cost = a * n + b
+    
+    # Return the maximum tastiness ratio
+    return maximum_tastiness / cost
 
-def has_distinct_digits(num_str):
-    # Check if all digits in the number are distinct
-    return len(set(num_str)) == len(num_str)
-
-n, m = map(int, input().split())
-print(solve(n, m))
+if __name__ == '__main__':
+    n, k, a, b = map(int, input().split())
+    tastiness = list(map(int, input().split()))
+    complementary_pairs = []
+    for i in range(k):
+        complementary_pairs.extend(list(map(int, input().split())))
+    print(get_maximum_tastiness_ratio(n, k, a, b, tastiness, complementary_pairs))
 

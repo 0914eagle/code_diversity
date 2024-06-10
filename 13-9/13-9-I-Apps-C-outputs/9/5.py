@@ -1,20 +1,59 @@
 
-def camel_pairs(n, jaap_bet, jan_bet, thijs_bet):
-    # Initialize a dictionary to store the pairs of camels
-    pairs = {}
+def get_grid_size(grid):
+    return len(grid), len(grid[0])
 
-    # Iterate over the bets
-    for bet in [jaap_bet, jan_bet, thijs_bet]:
-        # Iterate over the pairs of camels in the bet
-        for i in range(n - 1):
-            for j in range(i + 1, n):
-                # If the pair of camels is not in the dictionary, add it
-                if (bet[i], bet[j]) not in pairs:
-                    pairs[(bet[i], bet[j])] = 1
-                # If the pair of camels is already in the dictionary, increment its count
-                else:
-                    pairs[(bet[i], bet[j])] += 1
+def get_obstacles(grid):
+    obstacles = []
+    for row in grid:
+        for col in row:
+            if col == 'X':
+                obstacles.append((row, col))
+    return obstacles
 
-    # Return the number of pairs of camels that appear in all 3 bets
-    return len([pair for pair, count in pairs.items() if count == 3])
+def get_conveyor_belts(grid):
+    conveyor_belts = []
+    for row in grid:
+        for col in row:
+            if col in ['R', 'L']:
+                conveyor_belts.append((row, col))
+    return conveyor_belts
+
+def get_points(grid):
+    points = []
+    for row in grid:
+        for col in row:
+            if col.isdigit():
+                points.append(int(col))
+    return points
+
+def set_conveyor_belts(grid, conveyor_belts):
+    for row, col in conveyor_belts:
+        if grid[row][col] == '?':
+            grid[row][col] = 'R'
+    return grid
+
+def get_max_score(grid, points):
+    max_score = 0
+    for point in points:
+        max_score += point
+    return max_score
+
+def solve(grid):
+    grid_size, grid_cols = get_grid_size(grid)
+    obstacles = get_obstacles(grid)
+    conveyor_belts = get_conveyor_belts(grid)
+    points = get_points(grid)
+    grid = set_conveyor_belts(grid, conveyor_belts)
+    max_score = get_max_score(grid, points)
+    return max_score
+
+if __name__ == '__main__':
+    grid = [
+        ['R', '.', '?', '?', '.'],
+        ['.', 'X', '.', '.', '.'],
+        ['.', '.', '.', '.', '.'],
+        ['.', '.', '.', '.', '.'],
+        ['.', '.', '.', '.', '.']
+    ]
+    print(solve(grid))
 

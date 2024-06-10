@@ -1,22 +1,21 @@
 
-def solve(s, p):
-    # Initialize the answer array
-    ans = [0] * (len(s) + 1)
+def get_black_squares(n, m, k, moves):
+    board = [[0] * m for _ in range(n)]
+    for i, j in moves:
+        board[i - 1][j - 1] = 1
+    for i in range(n - 1):
+        for j in range(m - 1):
+            if board[i][j] == 1 and board[i][j + 1] == 1 and board[i + 1][j] == 1 and board[i + 1][j + 1] == 1:
+                return k
+    return 0
 
-    # Loop through each substring of s
-    for i in range(len(s)):
-        # Check if the substring is equal to p
-        if s[i:i+len(p)] == p:
-            # If it is, increment the answer by 1
-            ans[i+1] = 1
+def main():
+    n, m, k = map(int, input().split())
+    moves = []
+    for _ in range(k):
+        moves.append(list(map(int, input().split())))
+    print(get_black_squares(n, m, k, moves))
 
-    # Loop through each substring of s
-    for i in range(len(s)):
-        # Check if the substring is not equal to p
-        if s[i:i+len(p)] != p:
-            # If it is not, set the answer to the maximum of the previous answer and the current answer
-            ans[i+1] = max(ans[i], ans[i+1])
-
-    # Return the answer array
-    return ans
+if __name__ == '__main__':
+    main()
 

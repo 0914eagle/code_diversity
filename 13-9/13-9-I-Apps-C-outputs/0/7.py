@@ -1,28 +1,30 @@
 
-def get_max_influence(n, spectators):
-    # Sort the spectators by influence in descending order
-    spectators.sort(key=lambda x: x[1], reverse=True)
+def get_optimal_allocation(n, k, batteries):
+    # Sort the batteries in non-decreasing order
+    batteries.sort()
+    # Initialize the optimal allocation with the first k batteries
+    optimal_allocation = batteries[:k]
+    # Initialize the minimum difference between the power outputs of the two chips
+    min_diff = 0
+    for i in range(k, len(batteries)):
+        # Add the ith battery to the optimal allocation
+        optimal_allocation.append(batteries[i])
+        # Calculate the power output of the first chip
+        power_output_1 = sum(optimal_allocation[:k])
+        # Calculate the power output of the second chip
+        power_output_2 = sum(optimal_allocation[k:])
+        # Calculate the difference between the power outputs of the two chips
+        diff = abs(power_output_1 - power_output_2)
+        # Update the minimum difference if necessary
+        if diff < min_diff or min_diff == 0:
+            min_diff = diff
+    return min_diff
 
-    # Initialize variables to keep track of the number of spectators supporting Alice and Bob
-    alice_count = 0
-    bob_count = 0
-    total_influence = 0
+def main():
+    n, k = map(int, input().split())
+    batteries = list(map(int, input().split()))
+    print(get_optimal_allocation(n, k, batteries))
 
-    # Iterate through the spectators and add them to the set if they support Alice or Bob
-    for spectator in spectators:
-        if spectator[0] == "11" or spectator[0] == "10":
-            alice_count += 1
-        if spectator[0] == "11" or spectator[0] == "01":
-            bob_count += 1
-        total_influence += spectator[1]
-
-        # If we have selected at least half of the spectators supporting Alice and at least half of the spectators supporting Bob, break the loop
-        if alice_count >= n / 2 and bob_count >= n / 2:
-            break
-
-    # Return the total influence if we have selected at least half of the spectators supporting Alice and at least half of the spectators supporting Bob, otherwise return 0
-    if alice_count >= n / 2 and bob_count >= n / 2:
-        return total_influence
-    else:
-        return 0
+if __name__ == '__main__':
+    main()
 

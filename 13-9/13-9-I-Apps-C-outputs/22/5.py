@@ -1,39 +1,28 @@
 
-def is_loop_possible(points):
-    # Sort the points by their x-coordinates
-    sorted_points = sorted(points, key=lambda point: point[0])
+def get_possible_strings(a00, a01, a10, a11):
+    possible_strings = []
+    for i in range(a00 + 1):
+        for j in range(a01 + 1):
+            for k in range(a10 + 1):
+                for l in range(a11 + 1):
+                    if i + j + k + l == a00 + a01 + a10 + a11:
+                        possible_strings.append("0" * i + "1" * j + "0" * k + "1" * l)
+    return possible_strings
 
-    # Create a graph with an edge between each pair of points
-    graph = {}
-    for i in range(len(sorted_points)):
-        graph[i] = []
-        for j in range(i + 1, len(sorted_points)):
-            graph[i].append(j)
+def find_matching_string(a00, a01, a10, a11):
+    possible_strings = get_possible_strings(a00, a01, a10, a11)
+    for string in possible_strings:
+        substring_count = {}
+        for i in range(len(string) - 1):
+            substring = string[i:i+2]
+            if substring not in substring_count:
+                substring_count[substring] = 0
+            substring_count[substring] += 1
+        if substring_count.get("00", 0) == a00 and substring_count.get("01", 0) == a01 and substring_count.get("10", 0) == a10 and substring_count.get("11", 0) == a11:
+            return string
+    return "Impossible"
 
-    # Check if the graph is connected
-    visited = set()
-    queue = [0]
-    while queue:
-        vertex = queue.pop(0)
-        if vertex not in visited:
-            visited.add(vertex)
-            queue.extend(graph[vertex])
-
-    # Check if the graph has exactly n edges
-    if len(visited) != len(points):
-        return False
-
-    # Check if the graph is a tree
-    if len(graph[0]) != 1:
-        return False
-
-    # Check if the graph is a path
-    if any(len(graph[i]) != 2 for i in visited):
-        return False
-
-    # Check if the graph is a loop
-    if graph[0][0] != 0:
-        return False
-
-    return True
+if __name__ == '__main__':
+    a00, a01, a10, a11 = map(int, input().split())
+    print(find_matching_string(a00, a01, a10, a11))
 

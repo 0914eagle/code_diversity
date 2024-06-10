@@ -1,40 +1,31 @@
 
-def get_maximum_total_influence(spectators):
-    # Sort the spectators by their influence in descending order
-    spectators.sort(key=lambda x: x[1], reverse=True)
+def get_min_diff(n, k, batteries):
+    # Sort the batteries in non-decreasing order
+    batteries.sort()
+    # Initialize the minimum difference to infinity
+    min_diff = float('inf')
+    # Iterate over all possible combinations of batteries
+    for i in range(len(batteries) - k + 1):
+        # Get the first k batteries for the first chip
+        chip1 = batteries[i:i + k]
+        # Get the remaining batteries for the second chip
+        chip2 = batteries[i + k:]
+        # Calculate the difference in power outputs
+        diff = max(chip1) - min(chip2)
+        # Update the minimum difference if necessary
+        min_diff = min(min_diff, diff)
+    # Return the minimum difference
+    return min_diff
 
-    # Initialize variables to keep track of the number of spectators supporting Alice and Bob
-    alice_count = 0
-    bob_count = 0
+def main():
+    # Read the input data
+    n, k = map(int, input().split())
+    batteries = list(map(int, input().split()))
+    # Find the minimum difference
+    min_diff = get_min_diff(n, k, batteries)
+    # Print the result
+    print(min_diff)
 
-    # Initialize a variable to keep track of the total influence
-    total_influence = 0
-
-    # Iterate through the spectators
-    for spectator in spectators:
-        # Get the political view and influence of the current spectator
-        view, influence = spectator[0], spectator[1]
-
-        # Check if the current spectator supports Alice
-        if view == "11" or view == "10":
-            # Increment the count of spectators supporting Alice
-            alice_count += 1
-
-        # Check if the current spectator supports Bob
-        if view == "11" or view == "01":
-            # Increment the count of spectators supporting Bob
-            bob_count += 1
-
-        # Check if the current spectator supports both Alice and Bob
-        if view == "11":
-            # Increment the total influence by the influence of the current spectator
-            total_influence += influence
-
-    # Check if at least half of the spectators support Alice and at least half of them support Bob
-    if alice_count >= len(spectators) // 2 and bob_count >= len(spectators) // 2:
-        # Return the total influence
-        return total_influence
-    else:
-        # Return 0 as the total influence is not maximized
-        return 0
+if __name__ == '__main__':
+    main()
 

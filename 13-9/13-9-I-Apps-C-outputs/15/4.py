@@ -1,14 +1,13 @@
 
-def is_jackpot_possible(bids):
-    # Sort the bids in descending order
-    bids.sort(reverse=True)
-    # Initialize the minimum bid as the first element of the list
-    min_bid = bids[0]
-    # Iterate through the list of bids
-    for i in range(1, len(bids)):
-        # If the current bid is not equal to the minimum bid, return "No"
-        if bids[i] != min_bid:
-            return "No"
-    # If all bids are equal, return "Yes"
-    return "Yes"
+def get_max_score(numbers):
+    # Your code here
+    return max_score
+
+def main():
+    n = int(input())
+    numbers = list(map(int, input().split()))
+    print(get_max_score(numbers))
+
+if __name__ == '__main__':
+    main()
 

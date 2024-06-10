@@ -1,25 +1,31 @@
 
-def can_deploy_services(n, x1, x2, c):
-    # Sort the servers in descending order of their specifications
-    c_sorted = sorted(c, reverse=True)
-    
-    # Initialize the number of servers used for each service
-    k1 = 0
-    k2 = 0
-    
-    # Loop through the servers and assign them to either service 1 or service 2
-    for i, ci in enumerate(c_sorted, 1):
-        if x1 / ci <= n - i + 1 and x2 / ci <= n - i + 1:
-            if i % 2 == 1:
-                k1 += 1
-            else:
-                k2 += 1
+def is_good(s):
+    count_zeros = 0
+    count_ones = 0
+    for c in s:
+        if c == '0':
+            count_zeros += 1
         else:
-            break
-    
-    # If both services can be deployed, return the number of servers used for each service and the indices of the servers used
-    if k1 > 0 and k2 > 0:
-        return "Yes", k1, k1, k2
+            count_ones += 1
+    return count_zeros != count_ones
+
+def cut_into_good_substrings(s):
+    if not is_good(s):
+        return [s]
     else:
-        return "No", 0, 0, 0
+        i = 1
+        while i < len(s) and is_good(s[:i]):
+            i += 1
+        return [s[:i-1]] + cut_into_good_substrings(s[i-1:])
+
+def main():
+    n = int(input())
+    s = input()
+    k = len(cut_into_good_substrings(s))
+    print(k)
+    for s in cut_into_good_substrings(s):
+        print(s, end=' ')
+
+if __name__ == '__main__':
+    main()
 

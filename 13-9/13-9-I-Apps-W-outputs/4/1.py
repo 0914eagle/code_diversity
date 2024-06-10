@@ -1,28 +1,35 @@
 
-def split_strip(n, s, l, a):
-    # Sort the array in ascending order
-    a.sort()
-    # Initialize the number of pieces to 0
-    pieces = 0
-    # Initialize the current piece to be empty
-    current_piece = []
-    # Loop through the array
-    for i in range(n):
-        # If the current piece is empty, add the first number to it
-        if not current_piece:
-            current_piece.append(a[i])
-        # If the current piece is not empty and the difference between the current number and the last number in the piece is less than or equal to s, add the current number to the piece
-        elif a[i] - current_piece[-1] <= s:
-            current_piece.append(a[i])
-        # If the current piece is not empty and the difference between the current number and the last number in the piece is greater than s, start a new piece
-        else:
-            pieces += 1
-            current_piece = [a[i]]
-    # Add the last piece
-    pieces += 1
-    # If the length of the last piece is less than l, return -1 because no way to split the strip
-    if len(current_piece) < l:
-        return -1
-    # Return the number of pieces
-    return pieces
+def get_smallest_number(n, display):
+    # Initialize the smallest number as the initial display
+    smallest_number = display
+    
+    # Loop through all possible numbers
+    for i in range(10**n):
+        # Convert the current number to a string
+        current_number = str(i)
+        
+        # Pad the current number with leading zeros
+        current_number = current_number.zfill(n)
+        
+        # Check if the current number is smaller than the smallest number
+        if current_number < smallest_number:
+            # Update the smallest number
+            smallest_number = current_number
+    
+    # Return the smallest number
+    return smallest_number
+
+def main():
+    # Read the number of digits and the initial state of the display
+    n = int(input())
+    display = input()
+    
+    # Get the smallest number
+    smallest_number = get_smallest_number(n, display)
+    
+    # Print the smallest number
+    print(smallest_number)
+
+if __name__ == '__main__':
+    main()
 

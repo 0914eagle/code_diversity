@@ -1,15 +1,26 @@
 
-def is_triangle(a, b, c):
-    return (a + b > c) and (b + c > a) and (c + a > b)
+def k_rounding(n, k):
+    if n == 0:
+        return 0
+    if k == 0:
+        return n
+    
+    x = 1
+    while x < n:
+        x *= 10
+    
+    while x % n != 0:
+        x //= 10
+    
+    while x % 10 != 0:
+        x *= 10
+    
+    return x
 
-def can_form_triangle(segments):
-    for i in range(len(segments)):
-        for j in range(i+1, len(segments)):
-            for k in range(j+1, len(segments)):
-                if is_triangle(segments[i], segments[j], segments[k]):
-                    return True
-    return False
+def main():
+    n, k = map(int, input().split())
+    print(k_rounding(n, k))
 
-segments = [int(x) for x in input().split()]
-print("YES") if can_form_triangle(segments) else print("NO")
+if __name__ == '__main__':
+    main()
 

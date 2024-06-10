@@ -1,24 +1,26 @@
 
-def solve(N, A, P, V):
-    # Sort the dwarves and elves by strength in descending order
-    P = sorted(P, reverse=True)
-    V = sorted(V, reverse=True)
-    
-    # Initialize the number of victories
-    victories = 0
-    
-    # Iterate through the elves
-    for i in range(N):
-        # Find the index of the dwarf that the elf will fight against
-        j = A[i] - 1
-        
-        # If the elf is stronger than the dwarf, they will win
-        if V[i] > P[j]:
-            victories += 1
-        
-        # Remove the defeated dwarf from the list
-        P.pop(j)
-    
-    # Return the number of victories
-    return victories
+def get_contiguous_subsequence(arr, k):
+    return sorted(arr[:k])
+
+def get_smallest_element(arr, k):
+    return min(get_contiguous_subsequence(arr, k))
+
+def get_largest_element(arr, k):
+    return max(get_contiguous_subsequence(arr, k))
+
+def get_smallest_difference(arr, k, q):
+    smallest_difference = float('inf')
+    for i in range(q):
+        smallest_element = get_smallest_element(arr, k)
+        largest_element = get_largest_element(arr, k)
+        difference = largest_element - smallest_element
+        if difference < smallest_difference:
+            smallest_difference = difference
+        arr = arr[1:]
+    return smallest_difference
+
+if __name__ == '__main__':
+    n, k, q = map(int, input().split())
+    arr = list(map(int, input().split()))
+    print(get_smallest_difference(arr, k, q))
 

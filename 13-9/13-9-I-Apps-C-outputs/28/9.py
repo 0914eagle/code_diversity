@@ -1,39 +1,50 @@
 
-def largest_square_killer(matrix):
-    # Initialize variables
-    max_size = -1
-    current_size = 0
-    num_rows = len(matrix)
-    num_cols = len(matrix[0])
+import itertools
+
+def get_universities_pairs(universities, n):
     
-    # Loop through each element in the matrix
-    for row in range(num_rows):
-        for col in range(num_cols):
-            # If the current element is a 1, check if it forms a square killer
-            if matrix[row][col] == "1":
-                # Check if the current element is the top-left corner of a square killer
-                if row > 0 and col > 0 and matrix[row-1][col-1] == "1":
-                    # Check if the current element is the top-right corner of a square killer
-                    if col < num_cols-1 and matrix[row-1][col+1] == "1":
-                        # Check if the current element is the bottom-left corner of a square killer
-                        if row < num_rows-1 and matrix[row+1][col-1] == "1":
-                            # Check if the current element is the bottom-right corner of a square killer
-                            if col < num_cols-1 and matrix[row+1][col+1] == "1":
-                                # If all corners are 1s, increment the current size
-                                current_size += 1
-                            else:
-                                # If not all corners are 1s, break out of the loops
-                                break
-                        else:
-                            # If not all corners are 1s, break out of the loops
-                            break
-                    else:
-                        # If not all corners are 1s, break out of the loops
-                        break
-                else:
-                    # If not all corners are 1s, break out of the loops
-                    break
+    # Initialize a list to store the pairs
+    pairs = []
+    # Iterate over the combinations of universities
+    for combination in itertools.combinations(universities, 2):
+        # Check if the pair is not already in the list
+        if combination not in pairs:
+            # Add the pair to the list
+            pairs.append(combination)
+        # If the list has reached the required number of pairs
+        if len(pairs) == n:
+            # Break the loop
+            break
+    # Return the pairs
+    return pairs
+
+def get_total_distance(pairs, towns, roads):
     
-    # Return the largest size found
-    return max_size
+    # Initialize the total distance to 0
+    total_distance = 0
+    # Iterate over the pairs
+    for pair in pairs:
+        # Get the town indices for the current pair
+        town_indices = [towns.index(university) for university in pair]
+        # Get the distances between the towns in the current pair
+        distances = [roads[town_index] for town_index in town_indices]
+        # Add the distances to the total distance
+        total_distance += sum(distances)
+    # Return the total distance
+    return total_distance
+
+def main():
+    # Read the input
+    n, k = map(int, input().split())
+    universities = list(map(int, input().split()))
+    towns = list(range(1, n + 1))
+    roads = [list(map(int, input().split())) for _ in range(n - 1)]
+    # Get the maximum total distance
+    pairs = get_universities_pairs(universities, k)
+    total_distance = get_total_distance(pairs, towns, roads)
+    # Print the result
+    print(total_distance)
+
+if __name__ == '__main__':
+    main()
 

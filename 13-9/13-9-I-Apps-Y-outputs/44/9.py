@@ -1,8 +1,32 @@
 
-def is_security_code_hard_to_enter(S):
-    if len(S) != 4:
-        return "Bad"
-    if S[1] == S[2] or S[2] == S[3]:
-        return "Bad"
-    return "Good"
+import random
+
+def evaluate_expression(expression):
+    # Split the expression into a list of integers and plus symbols
+    tokens = expression.split('+')
+    
+    # Initialize a list to store the results
+    results = []
+    
+    # Loop through each token and evaluate it
+    for i in range(len(tokens)):
+        # If the token is a plus symbol, randomly choose whether to interpret it as addition or string concatenation
+        if tokens[i] == '+':
+            if random.randint(0, 1) == 0:
+                results.append(tokens[i-1] + tokens[i+1])
+            else:
+                results.append(tokens[i-1] + '+' + tokens[i+1])
+        # If the token is an integer, append it to the results list
+        else:
+            results.append(tokens[i])
+    
+    # Return the number of distinct integers in the results list
+    return len(set(results))
+
+def main():
+    expression = input("Enter an expression: ")
+    print(evaluate_expression(expression))
+
+if __name__ == '__main__':
+    main()
 

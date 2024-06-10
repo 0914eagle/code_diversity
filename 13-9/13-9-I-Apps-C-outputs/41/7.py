@@ -1,38 +1,20 @@
 
-def solve(offers):
-    # Sort the offers by the first section of the fence
-    offers.sort(key=lambda x: x[1])
+import random
 
-    # Initialize the variables
-    colors = set()
-    sections = set()
-    accepted_offers = 0
+def explosion_damage(opponent_health, d):
+    
+    return random.sample(opponent_health, k=d)
 
-    # Iterate through the offers
-    for offer in offers:
-        # Check if the offer is valid
-        if offer[1] in sections or offer[2] in sections:
-            continue
+def opponent_minions_removed(opponent_health, d):
+    
+    total_damage = sum(explosion_damage(opponent_health, d))
+    return total_damage / sum(opponent_health)
 
-        # Add the color and sections to the set
-        colors.add(offer[0])
-        sections.update(range(offer[1], offer[2] + 1))
+def main():
+    n, m, d = map(int, input().split())
+    opponent_health = list(map(int, input().split()))
+    print(round(opponent_minions_removed(opponent_health, d), 6))
 
-        # Check if we have accepted all the sections
-        if len(sections) == 10000:
-            break
-
-        # Increment the number of accepted offers
-        accepted_offers += 1
-
-        # Check if we have used more than 3 colors
-        if len(colors) > 3:
-            return "IMPOSSIBLE"
-
-    # Check if we have accepted all the sections
-    if len(sections) == 10000:
-        return accepted_offers
-
-    # If we have not accepted all the sections, return IMPOSSIBLE
-    return "IMPOSSIBLE"
+if __name__ == '__main__':
+    main()
 

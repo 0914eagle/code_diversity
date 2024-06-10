@@ -1,15 +1,15 @@
 
-def solve(a, k):
-    n = len(a)
-    x = 0
-    count = 0
-    while True:
-        for i in range(n):
-            if a[i] % k != 0:
-                a[i] += x
-                count += 1
-        x += 1
-        if all(a[i] % k == 0 for i in range(n)):
-            break
-    return count
+def score_words(words):
+    vowels = ['a', 'e', 'i', 'o', 'u', 'y']
+    score = 0
+    for word in words:
+        vowel_count = 0
+        for letter in word:
+            if letter in vowels:
+                vowel_count += 1
+        if vowel_count % 2 == 0:
+            score += 2
+        else:
+            score += 1
+    return score
 

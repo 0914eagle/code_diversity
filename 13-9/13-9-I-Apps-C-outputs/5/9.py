@@ -1,23 +1,44 @@
 
-import itertools
+def get_max_reachable_vertices(graph, start):
+    visited = set()
+    queue = [start]
+    while queue:
+        vertex = queue.pop(0)
+        if vertex not in visited:
+            visited.add(vertex)
+            queue += graph[vertex]
+    return len(visited)
 
-def solve(n, s, predictions):
-    # Initialize an empty list to store the sorted predictions
-    sorted_predictions = []
+def get_min_reachable_vertices(graph, start):
+    visited = set()
+    queue = [start]
+    while queue:
+        vertex = queue.pop(0)
+        if vertex not in visited:
+            visited.add(vertex)
+            queue += [v for v in graph[vertex] if v not in visited]
+    return len(visited)
 
-    # Iterate over the predictions
-    for prediction in predictions:
-        # Calculate the probability of the prediction appearing sometime during the match
-        probability = 1
-        for i in range(len(prediction)):
-            probability *= (n - i) / (n - i + 1)
+def get_plan(graph, start):
+    max_reachable = get_max_reachable_vertices(graph, start)
+    min_reachable = get_min_reachable_vertices(graph, start)
+    if max_reachable == min_reachable:
+        return f"{max_reachable}\n{'+'*len(graph)}"
+    else:
+        return f"{max_reachable}\n{'+'*len(graph)}"
 
-        # Add the prediction and its probability to the sorted list
-        sorted_predictions.append((probability, prediction))
+def main():
+    n, m, s = map(int, input().split())
+    graph = {i: [] for i in range(1, n+1)}
+    for _ in range(m):
+        t, u, v = map(int, input().split())
+        if t == 1:
+            graph[u].append(v)
+        else:
+            graph[u].append(v)
+            graph[v].append(u)
+    print(get_plan(graph, s))
 
-    # Sort the sorted list in descending order of probability
-    sorted_predictions.sort(key=lambda x: x[0], reverse=True)
-
-    # Return the sorted list of predictions
-    return [prediction for probability, prediction in sorted_predictions]
+if __name__ == '__main__':
+    main()
 

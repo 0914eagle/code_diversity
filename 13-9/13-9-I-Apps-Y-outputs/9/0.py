@@ -1,12 +1,14 @@
 
-def solve(n, T, tasks):
-    completed_tasks = 0
-    total_time = 0
+def get_magnitude(estimate):
+    return len(str(estimate))
 
-    for task in tasks:
-        if total_time + task <= T:
-            completed_tasks += 1
-            total_time += task
+def main():
+    num_cases = int(input())
+    for _ in range(num_cases):
+        estimate = int(input())
+        magnitude = get_magnitude(estimate)
+        print(magnitude)
 
-    return completed_tasks
+if __name__ == '__main__':
+    main()
 

@@ -1,24 +1,23 @@
 
-def find_final_position(n, m, k, holes, swaps):
-    # Initialize the position of the bone as 1
-    position = 1
+def xor_sequence(seq):
+    xor = 0
+    for i in range(len(seq)):
+        xor ^= seq[i]
+    return xor
 
-    # Loop through each swap operation
-    for i in range(k):
-        # Get the positions of the cups to be swapped
-        cup1, cup2 = swaps[i]
+def count_pairs(seq):
+    count = 0
+    for i in range(len(seq)):
+        for j in range(i+1, len(seq)):
+            if xor_sequence(seq[i:j+1]) == sum(seq[i:j+1]):
+                count += 1
+    return count
 
-        # If the bone is inside either of the cups, move it to the other cup
-        if position in [cup1, cup2]:
-            position = cup2 if position == cup1 else cup1
+def main():
+    n = int(input())
+    seq = list(map(int, input().split()))
+    print(count_pairs(seq))
 
-        # If the bone is not inside either of the cups, move it to the other cup
-        else:
-            position = cup2
-
-        # If the position of the bone is inside a hole, move it to the next cup
-        if position in holes:
-            position += 1
-
-    return position
+if __name__ == '__main__':
+    main()
 

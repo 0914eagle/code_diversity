@@ -1,13 +1,19 @@
 
-def solve(N):
-    # Initialize variables
-    operations = 0
-    currencies = [1, 6, 9]
+def get_min_abs_diff(weights):
+    n = len(weights)
+    min_diff = float('inf')
+    for t in range(1, n):
+        s1 = sum(weights[:t])
+        s2 = sum(weights[t:])
+        diff = abs(s1 - s2)
+        min_diff = min(min_diff, diff)
+    return min_diff
 
-    # Loop through the currencies and count the number of operations required for each currency
-    for currency in currencies:
-        operations += N // currency
-        N %= currency
+def main():
+    n = int(input())
+    weights = list(map(int, input().split()))
+    print(get_min_abs_diff(weights))
 
-    return operations
+if __name__ == '__main__':
+    main()
 

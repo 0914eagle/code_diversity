@@ -1,44 +1,68 @@
 
-def get_maximum_water_amount(n, p, k, pipes, improvements):
-    # Initialize a graph to represent the pipe network
-    graph = {}
-    for pipe in pipes:
-        graph[pipe[0]] = {pipe[1]: pipe[2]}
+def get_valid_scenarios(n, k, questions):
+    # Initialize a set to store the valid scenarios
+    valid_scenarios = set()
     
-    # Initialize the maximum water amount to 0
-    maximum_water_amount = 0
+    # Iterate over each question
+    for i in range(k):
+        # Get the current question
+        question = questions[i]
+        
+        # If this is the first question, add the starting scenario (1, question) to the valid scenarios
+        if i == 0:
+            valid_scenarios.add((1, question))
+        
+        # If this is not the first question, iterate over the current valid scenarios
+        else:
+            # Get the current valid scenarios
+            current_valid_scenarios = set(valid_scenarios)
+            
+            # Iterate over the current valid scenarios
+            for scenario in current_valid_scenarios:
+                # Get the starting cell and ending cell of the scenario
+                starting_cell, ending_cell = scenario
+                
+                # If the starting cell is not the same as the question, add the new scenario (starting_cell, question) to the valid scenarios
+                if starting_cell != question:
+                    valid_scenarios.add((starting_cell, question))
+                
+                # If the ending cell is not the same as the question, add the new scenario (question, ending_cell) to the valid scenarios
+                if ending_cell != question:
+                    valid_scenarios.add((question, ending_cell))
     
-    # Loop through each improvement
-    for improvement in improvements:
-        # Get the current capacity of the pipe between the two stations
-        current_capacity = graph[improvement[0]][improvement[1]]
-        
-        # Increase the capacity of the pipe by the given amount
-        new_capacity = current_capacity + improvement[2]
-        
-        # Update the graph with the new capacity
-        graph[improvement[0]][improvement[1]] = new_capacity
-        
-        # Calculate the maximum water amount after the improvement
-        maximum_water_amount = max(maximum_water_amount, get_maximum_water_amount_helper(n, graph, improvement[0], improvement[1]))
-    
-    return maximum_water_amount
+    # Return the number of valid scenarios
+    return len(valid_scenarios)
 
-def get_maximum_water_amount_helper(n, graph, start, end):
-    # Base case: if we have reached the end station, return the maximum water amount
-    if start == end:
-        return n
+def get_number_of_scenarios(n, k, questions):
+    # Get the valid scenarios
+    valid_scenarios = get_valid_scenarios(n, k, questions)
     
-    # Initialize the maximum water amount to 0
-    maximum_water_amount = 0
+    # Initialize a set to store the unique scenarios
+    unique_scenarios = set()
     
-    # Loop through each neighbor of the current station
-    for neighbor in graph[start]:
-        # Get the current capacity of the pipe between the current station and the neighbor
-        current_capacity = graph[start][neighbor]
+    # Iterate over the valid scenarios
+    for scenario in valid_scenarios:
+        # Get the starting cell and ending cell of the scenario
+        starting_cell, ending_cell = scenario
         
-        # Calculate the maximum water amount through the pipe
-        maximum_water_amount = max(maximum_water_amount, current_capacity + get_maximum_water_amount_helper(n, graph, neighbor, end))
+        # If the starting cell is not the same as the ending cell, add the scenario to the unique scenarios
+        if starting_cell != ending_cell:
+            unique_scenarios.add(scenario)
     
-    return maximum_water_amount
+    # Return the number of unique scenarios
+    return len(unique_scenarios)
+
+def main():
+    # Read the input
+    n, k = map(int, input().split())
+    questions = list(map(int, input().split()))
+    
+    # Call the function to get the number of scenarios
+    number_of_scenarios = get_number_of_scenarios(n, k, questions)
+    
+    # Print the number of scenarios
+    print(number_of_scenarios)
+
+if __name__ == '__main__':
+    main()
 

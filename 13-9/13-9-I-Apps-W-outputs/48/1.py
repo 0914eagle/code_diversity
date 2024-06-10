@@ -1,23 +1,24 @@
 
-def solve(N, S, T, U, V):
-    # Initialize the matrix with all zeros
-    a = [[0] * N for _ in range(N)]
+def calculate_result(x, y, z):
+    if x > y:
+        return "+"
+    elif x < y:
+        return "-"
+    else:
+        return "0"
 
-    # Populate the matrix based on the given conditions
-    for i in range(N):
-        for j in range(N):
-            if S[i] == 0:
-                a[i][j] = U[i] & V[j]
-            else:
-                a[i][j] = U[i] | V[j]
+def check_uncertainty(x, y, z):
+    if z == 0:
+        return calculate_result(x, y, z)
+    else:
+        for i in range(z + 1):
+            for j in range(z + 1):
+                k = z - i - j
+                if calculate_result(x + i, y + j, k) != calculate_result(x + j, y + i, k):
+                    return "?"
+        return calculate_result(x, y, z)
 
-    # Check if the matrix satisfies the conditions
-    for i in range(N):
-        for j in range(N):
-            if T[j] == 0 and a[i][j] != U[i]:
-                return -1
-            if T[j] == 1 and a[i][j] != V[j]:
-                return -1
-
-    return a
+if __name__ == '__main__':
+    x, y, z = map(int, input().split())
+    print(check_uncertainty(x, y, z))
 

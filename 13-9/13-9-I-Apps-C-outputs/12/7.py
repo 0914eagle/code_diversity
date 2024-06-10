@@ -1,34 +1,28 @@
 
-import math
+def get_max_sum(arr):
+    # Find the maximum element in the array
+    max_element = max(arr)
+    # Initialize the maximum sum to be the sum of all elements
+    max_sum = sum(arr)
+    # Loop through each element in the array
+    for i in range(len(arr)):
+        # If the current element is not the maximum element, flip its sign
+        if arr[i] != max_element:
+            arr[i] = -arr[i]
+        # Calculate the sum of the array after flipping the sign
+        sum_after_flip = sum(arr)
+        # If the sum after flipping the sign is greater than the current maximum sum, update the maximum sum
+        if sum_after_flip > max_sum:
+            max_sum = sum_after_flip
+        # Flip the sign back to its original value
+        arr[i] = -arr[i]
+    return max_sum
 
-def get_probabilities(n, x, r, g):
-    # Calculate the probability that the car hits the first red light
-    prob_first_red = 0
-    for i in range(n):
-        if i == 0:
-            prob_first_red += (x[i] / r[i]) * (1 - (x[i] / r[i]))
-        else:
-            prob_first_red += (x[i] / r[i]) * (1 - (x[i] / r[i])) * (1 - prob_first_red)
-    
-    # Calculate the probability that the car makes it all the way without stopping
-    prob_all_the_way = 1
-    for i in range(n):
-        prob_all_the_way *= 1 - (x[i] / r[i])
-    
-    return prob_first_red, prob_all_the_way
+def main():
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(get_max_sum(arr))
 
-n = int(input())
-x = []
-r = []
-g = []
-for i in range(n):
-    x_i, r_i, g_i = map(int, input().split())
-    x.append(x_i)
-    r.append(r_i)
-    g.append(g_i)
-
-prob_first_red, prob_all_the_way = get_probabilities(n, x, r, g)
-
-print(prob_first_red)
-print(prob_all_the_way)
+if __name__ == '__main__':
+    main()
 

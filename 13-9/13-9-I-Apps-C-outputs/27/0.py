@@ -1,28 +1,26 @@
 
-def solve(n, m, a, w):
-    # Calculate the total weight of all pictures
-    total_weight = sum(w)
+def get_total_chairs(n, guests):
+    total_chairs = 0
+    for guest in guests:
+        total_chairs += guest[0] + guest[1] + 1
+    return total_chairs
 
-    # Initialize the expected weights
-    expected_weights = [0] * n
+def get_min_chairs(n, guests):
+    min_chairs = 0
+    for guest in guests:
+        min_chairs += max(guest[0], guest[1]) + 1
+    return min_chairs
 
-    # Loop through each visit
-    for i in range(m):
-        # Choose a picture randomly based on its weight
-        chosen_picture = random.choices(population=range(n), weights=w, k=1)[0]
+def solve(n, guests):
+    total_chairs = get_total_chairs(n, guests)
+    min_chairs = get_min_chairs(n, guests)
+    return max(total_chairs, min_chairs)
 
-        # If the chosen picture is liked, increase its weight by 1
-        if a[chosen_picture] == 1:
-            w[chosen_picture] += 1
-
-        # If the chosen picture is not liked, decrease its weight by 1
-        else:
-            w[chosen_picture] -= 1
-
-        # Calculate the new expected weight for each picture
-        for j in range(n):
-            expected_weights[j] += w[j] / total_weight
-
-    # Return the expected weights modulo 998244353
-    return [int(998244353 * x) % 998244353 for x in expected_weights]
+if __name__ == '__main__':
+    n = int(input())
+    guests = []
+    for i in range(n):
+        l, r = map(int, input().split())
+        guests.append([l, r])
+    print(solve(n, guests))
 

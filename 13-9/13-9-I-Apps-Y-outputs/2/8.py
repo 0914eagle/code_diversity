@@ -1,10 +1,14 @@
 
-def fidget_cube_box(v):
-    # Calculate the surface area of the box
-    surface_area = 2 * (v * 2) + 2 * (v * 2)
-    
-    # Calculate the cost of the box
-    cost = surface_area
-    
-    return cost
+def get_next_letter(letter):
+    return chr(ord(letter) + 1)
+
+def get_next_letter_in_alphabet(letter):
+    if letter == 'z':
+        return 'a'
+    else:
+        return get_next_letter(letter)
+
+if __name__ == '__main__':
+    letter = input()
+    print(get_next_letter_in_alphabet(letter))
 

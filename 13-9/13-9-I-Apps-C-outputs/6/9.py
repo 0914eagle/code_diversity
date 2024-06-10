@@ -1,21 +1,33 @@
 
-def solve(r, l, rooms):
-    # Sort the rooms by their x-coordinates
-    sorted_rooms = sorted(rooms, key=lambda x: x[0])
+def is_valid_divisibility_hack(b, d):
+    if not isinstance(b, int) or not isinstance(d, int):
+        raise ValueError("b and d must be integers")
+    if b < 2 or d < 2:
+        return False
+    if b == d:
+        return True
+    if d % 2 == 0:
+        return False
+    for i in range(3, int(d**0.5) + 1, 2):
+        if d % i == 0:
+            return False
+    return True
 
-    # Initialize the maximum number of rooms that can be hit
-    max_rooms = 0
+def find_m(b, d):
+    if not isinstance(b, int) or not isinstance(d, int):
+        raise ValueError("b and d must be integers")
+    if not is_valid_divisibility_hack(b, d):
+        return None
+    for m in range(1, b):
+        if (b**m - 1) % d == 0:
+            return m
+    return None
 
-    # Iterate over the rooms
-    for i in range(r):
-        # Get the current room
-        room = sorted_rooms[i]
-
-        # Check if the room is within the range of the phaser beam
-        if room[0] + l >= sorted_rooms[i+1][0]:
-            # If the room is within the range, increase the maximum number of rooms that can be hit
-            max_rooms += 1
-
-    # Return the maximum number of rooms that can be hit
-    return max_rooms
+if __name__ == '__main__':
+    b, d = map(int, input().split())
+    m = find_m(b, d)
+    if m is None:
+        print("no")
+    else:
+        print("yes")
 

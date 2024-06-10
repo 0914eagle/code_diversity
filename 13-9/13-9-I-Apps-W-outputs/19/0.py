@@ -1,16 +1,22 @@
 
-def solve(hashtags):
-    # Sort the hashtags in lexicographical order
-    sorted_hashtags = sorted(hashtags)
+def can_divide_array(arr):
+    n = len(arr)
+    sum1 = sum(arr[:n//2])
+    sum2 = sum(arr[n//2:])
+    if sum1 == sum2:
+        return "YES"
+    
+    for i in range(n//2):
+        if arr[i] + arr[n-1] == sum1:
+            return "YES"
+    
+    return "NO"
 
-    # Initialize the result with the first hashtag
-    result = [sorted_hashtags[0]]
+def main():
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(can_divide_array(arr))
 
-    # Iterate over the remaining hashtags
-    for hashtag in sorted_hashtags[1:]:
-        # If the current hashtag is not a prefix of the previous result, add it to the result
-        if not hashtag.startswith(result[-1]):
-            result.append(hashtag)
-
-    return result
+if __name__ == '__main__':
+    main()
 

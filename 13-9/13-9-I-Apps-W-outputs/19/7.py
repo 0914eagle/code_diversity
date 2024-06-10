@@ -1,29 +1,40 @@
 
-def solve(hashtags):
-    # Sort the hashtags in lexicographical order
-    hashtags.sort()
-    # Initialize the result and the number of symbols to delete
-    result = []
-    num_deleted_symbols = 0
-    # Loop through the hashtags
-    for hashtag in hashtags:
-        # If the hashtag is not '#', delete the suffix
-        if hashtag != "#":
-            suffix_to_delete = 1
-            # Loop through the characters in the hashtag
-            for i in range(len(hashtag) - 1, 0, -1):
-                # If the character is different from the previous one, break
-                if hashtag[i] != hashtag[i - 1]:
-                    break
-                # Otherwise, increment the number of symbols to delete
-                suffix_to_delete += 1
-            # Add the hashtag with the deleted suffix to the result
-            result.append(hashtag[:-suffix_to_delete])
-            # Increment the number of deleted symbols
-            num_deleted_symbols += suffix_to_delete
-        # Otherwise, add the hashtag to the result
+def can_divide(arr):
+    # Calculate the sum of the elements in the array
+    sum_arr = sum(arr)
+    # Calculate the sum of the elements in the first half of the array
+    sum_first_half = sum(arr[:len(arr)//2])
+    # Calculate the sum of the elements in the second half of the array
+    sum_second_half = sum(arr[len(arr)//2:])
+    # If the sums of the first and second half are equal, return True
+    if sum_first_half == sum_second_half:
+        return True
+    # If the sums of the first and second half are not equal, try moving an element to the other half
+    for i in range(len(arr)):
+        # If the element is in the first half, move it to the second half
+        if i < len(arr)//2:
+            arr.append(arr.pop(i))
+        # If the element is in the second half, move it to the first half
         else:
-            result.append(hashtag)
-    # Return the result and the number of deleted symbols
-    return result, num_deleted_symbols
+            arr.insert(0, arr.pop(i))
+        # Calculate the new sum of the first half
+        sum_first_half = sum(arr[:len(arr)//2])
+        # Calculate the new sum of the second half
+        sum_second_half = sum(arr[len(arr)//2:])
+        # If the sums of the first and second half are equal, return True
+        if sum_first_half == sum_second_half:
+            return True
+    # If no move can make the division possible, return False
+    return False
+
+def main():
+    n = int(input())
+    arr = list(map(int, input().split()))
+    if can_divide(arr):
+        print("YES")
+    else:
+        print("NO")
+
+if __name__ == '__main__':
+    main()
 

@@ -1,18 +1,30 @@
 
+import sys
 import math
 
-def expected_distance(n, points):
-    area = 0
-    for i in range(n):
-        area += points[i][0] * points[i+1][1] - points[i+1][0] * points[i][1]
-    area = abs(area) / 2
+def get_input():
+    N = int(input())
+    cheetahs = []
+    for i in range(N):
+        t, v = map(int, input().split())
+        cheetahs.append((t, v))
+    return N, cheetahs
 
-    distance = 0
-    for i in range(n):
-        p1 = points[i]
-        p2 = points[(i+1) % n]
-        side = math.sqrt((p1[0]-p2[0])**2 + (p1[1]-p2[1])**2)
-        distance += side * (area / side)
+def solve(N, cheetahs):
+    cheetahs.sort(key=lambda x: x[0])
+    min_length = float('inf')
+    for i in range(N):
+        t_i, v_i = cheetahs[i]
+        for j in range(i+1, N):
+            t_j, v_j = cheetahs[j]
+            length = (t_j - t_i) * v_i + (v_i - v_j) * (t_j - t_i) / 2
+            min_length = min(min_length, length)
+    return min_length
 
-    return distance
+def main():
+    N, cheetahs = get_input()
+    print(solve(N, cheetahs))
+
+if __name__ == '__main__':
+    main()
 

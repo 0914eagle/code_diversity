@@ -1,36 +1,47 @@
 
-def can_ksusha_reach_end(n, k, road):
-    # Check if the first and last characters of the road are valid
-    if road[0] == "#" or road[-1] == "#":
-        return "NO"
+def get_min_cost(n, cities):
+    # Initialize variables
+    min_cost = 0
+    visited = set()
+    queue = []
     
-    # Initialize a set to store the safe sectors
-    safe_sectors = set()
+    # Add the first city to the queue
+    queue.append(cities[0])
+    visited.add(cities[0])
     
-    # Add the first sector as safe
-    safe_sectors.add(1)
-    
-    # Iterate through the road
-    for i in range(1, n):
-        # Check if the current sector is safe
-        if road[i] == "#":
-            return "NO"
+    # Loop through the queue
+    while queue:
+        # Get the current city
+        current_city = queue.pop(0)
         
-        # Add the current sector to the set of safe sectors
-        safe_sectors.add(i)
+        # Check if the current city is a Byteland city
+        if current_city[1] == 'B':
+            # Add the cost of the cable to the min_cost
+            min_cost += current_city[0]
         
-        # Check if the next k sectors are safe
-        for j in range(1, k+1):
-            if i + j > n:
-                break
-            if road[i+j] == "#":
-                return "NO"
-            safe_sectors.add(i+j)
+        # Add the neighbors of the current city to the queue
+        for neighbor in cities:
+            if neighbor[0] > current_city[0] and neighbor[0] not in visited:
+                queue.append(neighbor)
+                visited.add(neighbor)
     
-    # Check if the last sector is safe
-    if road[-1] == "#":
-        return "NO"
+    # Return the min_cost
+    return min_cost
+
+def main():
+    # Read the input
+    n = int(input())
+    cities = []
+    for i in range(n):
+        x, c = input().split()
+        cities.append((int(x), c))
     
-    # If all the sectors are safe, return "YES"
-    return "YES"
+    # Call the get_min_cost function
+    min_cost = get_min_cost(n, cities)
+    
+    # Print the result
+    print(min_cost)
+
+if __name__ == '__main__':
+    main()
 

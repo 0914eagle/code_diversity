@@ -1,47 +1,45 @@
 
-def solve(memory):
-    # Initialize variables
-    max_size = 0
-    max_killer = []
+import sys
+input = sys.stdin.read()
 
-    # Loop through each row of the memory
-    for i in range(len(memory)):
-        # Loop through each column of the memory
-        for j in range(len(memory[0])):
-            # Check if the current cell is part of a killer
-            if memory[i][j] == "1":
-                # Find the size of the killer
-                size = find_killer_size(memory, i, j)
+def get_input():
+    n, k = map(int, input.split())
+    towns = set(map(int, input.split()))
+    roads = []
+    for i in range(n - 1):
+        x, y = map(int, input.split())
+        roads.append((x, y))
+    return n, k, towns, roads
 
-                # If the killer is larger than the current largest killer, update the variables
-                if size > max_size:
-                    max_size = size
-                    max_killer = [[i, j]]
+def get_pairs(towns, roads):
+    pairs = []
+    for i in range(k):
+        x, y = map(int, input.split())
+        pairs.append((x, y))
+    return pairs
 
-                # If the killer is the same size as the current largest killer, add it to the list of killers
-                elif size == max_size:
-                    max_killer.append([i, j])
+def get_distance(towns, roads, pairs):
+    distance = 0
+    for pair in pairs:
+        x, y = pair
+        distance += get_distance_between_towns(towns, roads, x, y)
+    return distance
 
-    # Return the size of the largest killer
-    return max_size
+def get_distance_between_towns(towns, roads, x, y):
+    for road in roads:
+        if x in road and y in road:
+            return 1
+    return 0
 
-# Find the size of a killer starting at a given cell
-def find_killer_size(memory, i, j):
-    # Initialize variables
-    size = 0
-    visited = set()
+def get_maximum_distance(towns, roads, k):
+    pairs = get_pairs(towns, roads)
+    distance = get_distance(towns, roads, pairs)
+    return distance
 
-    # Loop through each cell in the killer
-    for di in range(-size, size+1):
-        for dj in range(-size, size+1):
-            # Check if the current cell is part of the killer
-            if memory[i+di][j+dj] == "1" and (i+di, j+dj) not in visited:
-                # Add the current cell to the visited set
-                visited.add((i+di, j+dj))
+def main():
+    n, k, towns, roads = get_input()
+    print(get_maximum_distance(towns, roads, k))
 
-                # Increment the size of the killer
-                size += 1
-
-    # Return the size of the killer
-    return size
+if __name__ == '__main__':
+    main()
 

@@ -1,34 +1,72 @@
 
-def get_best_flight_changes(flights):
-    # Initialize a graph with the given flights
-    graph = {i: set() for i in range(1, len(flights) + 1)}
-    for flight in flights:
-        graph[flight[0]].add(flight[1])
-        graph[flight[1]].add(flight[0])
+def get_splitters(a, b, c, d):
+    # Initialize the number of splitters to 0
+    n = 0
+    
+    # Initialize the list of splitters
+    splitters = []
+    
+    # While there are still boxes to be distributed
+    while c > 0 or d > 0:
+        # If the current splitter has not been used yet
+        if n not in splitters:
+            # Add the current splitter to the list of splitters
+            splitters.append(n)
+            # Decrement the number of boxes to be distributed by the ratio of the current splitter
+            c -= a / (a + b)
+            d -= b / (a + b)
+            # Increment the number of splitters
+            n += 1
+    
+    # If there are still boxes to be distributed
+    if c > 0 or d > 0:
+        # Return -1 to indicate that it is not possible to distribute the boxes with the given constraints
+        return -1
+    
+    # Otherwise, return the list of splitters
+    return splitters
 
-    # Find the flight with the most connections
-    max_connections = 0
-    flight_to_cancel = None
-    for flight, connections in graph.items():
-        if len(connections) > max_connections:
-            max_connections = len(connections)
-            flight_to_cancel = flight
+def get_network(a, b, c, d):
+    # Get the list of splitters
+    splitters = get_splitters(a, b, c, d)
+    
+    # If the list of splitters is -1, return -1 to indicate that it is not possible to distribute the boxes with the given constraints
+    if splitters == -1:
+        return -1
+    
+    # Initialize the network with the global input belt and the first global output belt
+    network = [0, -2]
+    
+    # For each splitter in the list of splitters
+    for i in range(1, len(splitters)):
+        # Get the index of the splitter connected to the left output
+        l = splitters[i - 1]
+        # Get the index of the splitter connected to the right output
+        r = splitters[i]
+        # Add the splitter to the network
+        network.append(l)
+        network.append(r)
+    
+    # Return the network
+    return network
 
-    # Find the best flight to add
-    best_flight = None
-    min_changes = float('inf')
-    for i in range(1, len(flights) + 1):
-        for j in range(1, len(flights) + 1):
-            if i != j and (i, j) not in flights and (j, i) not in flights:
-                changes = 0
-                for flight in flights:
-                    if flight[0] == i and flight[1] == j:
-                        changes += 1
-                    elif flight[0] == j and flight[1] == i:
-                        changes += 1
-                if changes < min_changes:
-                    min_changes = changes
-                    best_flight = (i, j)
+def main():
+    # Read the input
+    a, b = map(int, input().split())
+    c, d = map(int, input().split())
+    
+    # Get the network
+    network = get_network(a, b, c, d)
+    
+    # If the network is -1, print -1
+    if network == -1:
+        print(-1)
+    # Otherwise, print the network
+    else:
+        print(len(network))
+        for i in network:
+            print(i, end=" ")
 
-    return (min_changes + 1, flight_to_cancel, best_flight)
+if __name__ == '__main__':
+    main()
 

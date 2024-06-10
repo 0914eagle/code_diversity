@@ -1,23 +1,29 @@
 
-def get_max_candies(n, k, M, D):
-    # Initialize the maximum number of candies as 0
-    max_candies = 0
-    # Loop through all possible values of x from 1 to M
-    for x in range(1, M + 1):
-        # Calculate the number of candies that each person will receive
-        candies_per_person = x
-        # Calculate the number of complete cycles that can be done with the given x
-        complete_cycles = n // (k * x)
-        # Calculate the number of leftover candies
-        leftover_candies = n % (k * x)
-        # Calculate the number of candies that each person will receive in the last cycle
-        last_cycle_candies = leftover_candies // k
-        # Calculate the total number of candies received by each person
-        total_candies = (complete_cycles * k * candies_per_person) + last_cycle_candies
-        # Check if the total number of candies received by each person is less than or equal to D
-        if total_candies <= D:
-            # Update the maximum number of candies if the total number of candies received is greater than the current maximum
-            max_candies = max(max_candies, total_candies)
-    # Return the maximum number of candies that Arkady can receive
-    return max_candies
+def get_team_strength(team_strengths):
+    # Sort the team strengths in descending order
+    team_strengths.sort(reverse=True)
+    # Initialize the teammate array
+    teammates = [0] * len(team_strengths)
+    # Loop through the team strengths and find the teammate for each person
+    for i in range(len(team_strengths)):
+        # Find the best teammate for the current person
+        best_teammate = 0
+        for j in range(1, len(team_strengths)):
+            if team_strengths[i] > team_strengths[j] and teammates[j] == 0:
+                best_teammate = j
+                break
+        # Update the teammate array
+        teammates[i] = best_teammate + 1
+    return teammates
+
+def main():
+    n = int(input())
+    team_strengths = []
+    for i in range(n):
+        team_strengths.append(list(map(int, input().split())))
+    teammates = get_team_strength(team_strengths)
+    print(*teammates)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,15 +1,41 @@
 
-def solve(A, B, C, D, P, M, G):
-    # Calculate the minute during which the dogs are aggressive
-    aggressive_minute_postman = (P + A) % (A + B)
-    aggressive_minute_milkman = (M + C) % (C + D)
-    aggressive_minute_garbage_man = (G + A) % (A + B)
-
-    # Check which dogs attack each of the heroes
-    if aggressive_minute_postman == aggressive_minute_milkman == aggressive_minute_garbage_man:
-        return "both"
-    elif aggressive_minute_postman == aggressive_minute_milkman or aggressive_minute_postman == aggressive_minute_garbage_man or aggressive_minute_milkman == aggressive_minute_garbage_man:
-        return "one"
+def can_start_round_dance(p):
+    n = len(p)
+    if n == 1:
+        return "YES"
+    if n == 2:
+        if p[0] == 1 and p[1] == 2:
+            return "YES"
+        else:
+            return "NO"
+    if n == 3:
+        if p[0] == 1 and p[1] == 2 and p[2] == 3:
+            return "YES"
+        else:
+            return "NO"
+    if n == 4:
+        if p[0] == 1 and p[1] == 2 and p[2] == 3 and p[3] == 4:
+            return "YES"
+        else:
+            return "NO"
+    if n == 5:
+        if p[0] == 1 and p[1] == 2 and p[2] == 3 and p[3] == 4 and p[4] == 5:
+            return "YES"
+        else:
+            return "NO"
     else:
-        return "none"
+        if p[0] == 1 and p[1] == 2 and p[2] == 3 and p[3] == 4 and p[4] == 5:
+            return "YES"
+        else:
+            return "NO"
+
+def main():
+    q = int(input())
+    for i in range(q):
+        n = int(input())
+        p = list(map(int, input().split()))
+        print(can_start_round_dance(p))
+
+if __name__ == '__main__':
+    main()
 

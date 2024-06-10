@@ -1,19 +1,25 @@
 
-def solve(n, results):
-    # Sort the results in ascending order
-    sorted_results = sorted(results)
+def get_gcd(a, b):
+    while b != 0:
+        a, b = b, a % b
+    return a
 
-    # Initialize the finalists array
-    finalists = ["0"] * n
+def get_gcd_efficient(a, b):
+    if a == 0:
+        return b
+    if b == 0:
+        return a
+    if a == b:
+        return a
+    if a > b:
+        return get_gcd_efficient(a - b, b)
+    else:
+        return get_gcd_efficient(a, b - a)
 
-    # Set the k value to 0 for now
-    k = 0
+def main():
+    a, b = map(int, input().split())
+    print(get_gcd_efficient(a, b))
 
-    # Loop through the results and find the winners from both semifinals
-    for i in range(n):
-        if sorted_results[i] in results:
-            finalists[i] = "1"
-
-    # Return the finalists array
-    return finalists
+if __name__ == '__main__':
+    main()
 

@@ -1,38 +1,37 @@
 
-def solve(N, adversaries, dwarves, elves):
-    # Initialize a dictionary to store the strength of each elf
-    elf_strength = {}
-    for i in range(N):
-        elf_strength[i+1] = elves[i]
+def solve(A, K, Q):
+    # Step 1: Sort the array A
+    A.sort()
+    
+    # Step 2: Initialize the smallest and largest values
+    smallest, largest = A[0], A[0]
+    
+    # Step 3: Loop through the Q operations
+    for i in range(Q):
+        # Step 3.1: Find the contiguous subsequence of length K
+        subsequence = A[i:i+K]
+        
+        # Step 3.2: Remove the smallest element from the subsequence
+        smallest = min(subsequence)
+        subsequence.remove(smallest)
+        
+        # Step 3.3: Update the largest value
+        largest = max(subsequence)
+    
+    # Step 4: Return the difference between the smallest and largest values
+    return largest - smallest
 
-    # Initialize a dictionary to store the strength of each dwarf
-    dwarf_strength = {}
-    for i in range(N):
-        dwarf_strength[i+1] = dwarves[i]
+def main():
+    # Read the input
+    N, K, Q = map(int, input().split())
+    A = list(map(int, input().split()))
+    
+    # Solve the problem
+    result = solve(A, K, Q)
+    
+    # Print the result
+    print(result)
 
-    # Initialize a dictionary to store the number of victories for each elf
-    elf_victories = {}
-    for i in range(N):
-        elf_victories[i+1] = 0
-
-    # Initialize a list to store the order of elves to send to the hall
-    send_order = []
-
-    # Loop through each elf and calculate their strength against each dwarf
-    for i in range(N):
-        elf = i+1
-        adversary = adversaries[i]
-        elf_strength[elf] += dwarf_strength[adversary]
-        send_order.append(elf)
-
-    # Loop through each elf in the send order and calculate their number of victories
-    for elf in send_order:
-        victories = 0
-        for i in range(N):
-            if elf_strength[elf] > elf_strength[i+1]:
-                victories += 1
-        elf_victories[elf] = victories
-
-    # Return the maximum number of victories
-    return max(elf_victories.values())
+if __name__ == '__main__':
+    main()
 

@@ -1,28 +1,24 @@
 
-def get_attacking_dogs(A, B, C, D, P, M, G):
-    # Calculate the minute in the day when the first dog will be aggressive
-    first_aggressive_minute = (P + A) % (A + B)
-    
-    # Calculate the minute in the day when the second dog will be aggressive
-    second_aggressive_minute = (M + C) % (C + D)
-    
-    # Check if the postman is attacked by either dog
-    if first_aggressive_minute == P or second_aggressive_minute == P:
-        postman_attacked = "one"
-    else:
-        postman_attacked = "none"
-    
-    # Check if the milkman is attacked by either dog
-    if first_aggressive_minute == M or second_aggressive_minute == M:
-        milkman_attacked = "one"
-    else:
-        milkman_attacked = "none"
-    
-    # Check if the garbage man is attacked by either dog
-    if first_aggressive_minute == G or second_aggressive_minute == G:
-        garbage_man_attacked = "one"
-    else:
-        garbage_man_attacked = "none"
-    
-    return postman_attacked, milkman_attacked, garbage_man_attacked
+def can_start_round_dance(n, p):
+    # Check if the permutation is a circle
+    if p[0] != 1:
+        return "NO"
+    # Check if the permutation is a circle
+    if p[-1] != n:
+        return "NO"
+    # Check if the permutation is a circle
+    for i in range(1, n):
+        if p[i] != i + 1:
+            return "NO"
+    return "YES"
+
+def main():
+    q = int(input())
+    for _ in range(q):
+        n = int(input())
+        p = list(map(int, input().split()))
+        print(can_start_round_dance(n, p))
+
+if __name__ == '__main__':
+    main()
 

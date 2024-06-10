@@ -1,28 +1,27 @@
 
-def solve(n, adversaries, dwarves, elves):
-    # Sort the dwarves and elves by strength
-    dwarves = sorted(dwarves)
-    elves = sorted(elves, reverse=True)
-    
-    # Create a dictionary to map each elf to its adversary
-    elf_adversary = {i: adversaries[i-1] for i in range(1, n+1)}
-    
-    # Initialize the number of victories to 0
-    victories = 0
-    
-    # Loop through each elf
-    for i in range(1, n+1):
-        # Find the index of the elf's adversary in the sorted dwarve list
-        adj_index = dwarves.index(elf_adversary[i])
-        
-        # If the elf is stronger than their adversary, they win
-        if elves[i-1] > dwarves[adj_index]:
-            victories += 1
-        
-        # Remove the elf and their adversary from the sorted lists
-        dwarves.pop(adj_index)
-        elves.pop(i-1)
-    
-    # Return the number of victories
-    return victories
+def get_optimal_value(A, K, Q):
+    # Sort the array in ascending order
+    A.sort()
+    # Initialize the optimal value to zero
+    optimal_value = 0
+    # Loop through each contiguous subsequence of length K
+    for i in range(len(A) - K + 1):
+        # Get the smallest element in the subsequence
+        smallest_element = A[i]
+        # Get the largest element in the subsequence
+        largest_element = A[i + K - 1]
+        # Update the optimal value
+        optimal_value = max(optimal_value, largest_element - smallest_element)
+    # Return the optimal value
+    return optimal_value
+
+def main():
+    # Read the input from stdin
+    N, K, Q = map(int, input().split())
+    A = list(map(int, input().split()))
+    # Call the get_optimal_value function and print the result
+    print(get_optimal_value(A, K, Q))
+
+if __name__ == '__main__':
+    main()
 

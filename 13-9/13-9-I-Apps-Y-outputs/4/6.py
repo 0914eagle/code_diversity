@@ -1,21 +1,17 @@
 
-def is_valid_password(stored_password, attempted_password):
-    # Check if the stored and attempted passwords are identical
-    if stored_password == attempted_password:
-        return True
+def get_earliest_party_day(number_of_trees, tree_growth_days):
+    # Sort the tree growth days in ascending order
+    tree_growth_days.sort()
+    # The earliest day the party can be organized is the sum of the growth days of all the trees
+    earliest_party_day = sum(tree_growth_days)
+    return earliest_party_day
 
-    # Check if the stored password can be formed by prepending a single digit to the attempted password
-    if attempted_password.startswith(stored_password):
-        return True
+def main():
+    number_of_trees = int(input())
+    tree_growth_days = list(map(int, input().split()))
+    earliest_party_day = get_earliest_party_day(number_of_trees, tree_growth_days)
+    print(earliest_party_day)
 
-    # Check if the stored password can be formed by appending a single digit to the attempted password
-    if stored_password in attempted_password:
-        return True
-
-    # Check if the stored password is equal to the attempted password after reversing the case of all letters
-    if stored_password.lower() == attempted_password.lower():
-        return True
-
-    # If none of the above conditions are met, return False
-    return False
+if __name__ == '__main__':
+    main()
 

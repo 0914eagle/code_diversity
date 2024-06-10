@@ -1,12 +1,22 @@
 
-def generate_pascals_triangle(num_rows):
-    triangle = []
-    for row in range(num_rows):
-        triangle.append([])
-        for col in range(row+1):
-            if col == 0 or col == row:
-                triangle[row].append(1)
-            else:
-                triangle[row].append(triangle[row-1][col-1] + triangle[row-1][col])
-    return triangle
+def is_increasing(names):
+    return all(names[i] < names[i+1] for i in range(len(names)-1))
+
+def is_decreasing(names):
+    return all(names[i] > names[i+1] for i in range(len(names)-1))
+
+def main():
+    n = int(input())
+    names = []
+    for i in range(n):
+        names.append(input())
+    if is_increasing(names):
+        print("INCREASING")
+    elif is_decreasing(names):
+        print("DECREASING")
+    else:
+        print("NEITHER")
+
+if __name__ == '__main__':
+    main()
 

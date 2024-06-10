@@ -1,45 +1,47 @@
 
 import math
 
-def largest_area_corn_fields(vertices, canal):
-    # Calculate the area of the polygon
-    area = polygon_area(vertices)
+def get_toys_coordinates(n):
+    toys = []
+    for i in range(n):
+        x, y = map(int, input().split())
+        toys.append((x, y))
+    return toys
+
+def get_trees_coordinates(m):
+    trees = []
+    for i in range(m):
+        x, y = map(int, input().split())
+        trees.append((x, y))
+    return trees
+
+def get_leash_length(toys, trees):
+    # Calculate the distance from Spot's starting position to the first toy
+    dist_to_first_toy = math.sqrt((toys[0][0] - 0) ** 2 + (toys[0][1] - 0) ** 2)
     
-    # Find the point on the canal that is closest to the polygon
-    closest_point = find_closest_point(vertices, canal)
+    # Calculate the distance from Spot's starting position to the next toy
+    dist_to_next_toy = math.sqrt((toys[1][0] - 0) ** 2 + (toys[1][1] - 0) ** 2)
     
-    # Calculate the area of the triangle formed by the closest point, the canal, and the origin
-    triangle_area = triangle_area_from_origin(closest_point, canal)
+    # Calculate the length of the leash needed to reach the first toy
+    leash_length = dist_to_first_toy + dist_to_next_toy
     
-    # Return the largest area of land to grow corn fields
-    return max(0, area - triangle_area)
+    # If there are trees in the park, calculate the distance from Spot's starting position to the nearest tree
+    if len(trees) > 0:
+        dist_to_tree = min([math.sqrt((trees[i][0] - 0) ** 2 + (trees[i][1] - 0) ** 2) for i in range(len(trees))])
+        
+        # If the distance to the tree is less than the distance to the first toy, increase the leash length to account for the tree
+        if dist_to_tree < dist_to_first_toy:
+            leash_length += dist_to_tree
+    
+    return leash_length
 
-def polygon_area(vertices):
-    # Calculate the area of the polygon by taking the absolute value of the cross product of two vectors
-    area = 0
-    for i in range(len(vertices)):
-        vector1 = [vertices[i][0] - vertices[(i-1)%len(vertices)][0], vertices[i][1] - vertices[(i-1)%len(vertices)][1]]
-        vector2 = [vertices[(i+1)%len(vertices)][0] - vertices[i][0], vertices[(i+1)%len(vertices)][1] - vertices[i][1]]
-        area += abs(vector1[0] * vector2[1] - vector1[1] * vector2[0])
-    return area / 2
+def main():
+    n, m = map(int, input().split())
+    toys = get_toys_coordinates(n)
+    trees = get_trees_coordinates(m)
+    leash_length = get_leash_length(toys, trees)
+    print(f"{leash_length:.2f}")
 
-def find_closest_point(vertices, canal):
-    # Find the point on the canal that is closest to the polygon
-    closest_point = [0, 0]
-    min_distance = float('inf')
-    for i in range(len(vertices)):
-        for j in range(len(canal)):
-            distance = distance_between_points(vertices[i], canal[j])
-            if distance < min_distance:
-                min_distance = distance
-                closest_point = canal[j]
-    return closest_point
-
-def distance_between_points(point1, point2):
-    # Calculate the distance between two points
-    return math.sqrt((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)
-
-def triangle_area_from_origin(point, canal):
-    # Calculate the area of the triangle formed by the point, the canal, and the origin
-    return 0.5 * abs(point[0] * canal[1] - point[1] * canal[0])
+if __name__ == '__main__':
+    main()
 

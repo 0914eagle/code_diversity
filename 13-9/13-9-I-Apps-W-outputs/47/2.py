@@ -1,16 +1,26 @@
 
-def solve(a):
-    n = len(a)
-    mod = 1000000007
-    prefix_sum = [0] * (n + 1)
-    for i in range(n):
-        prefix_sum[i + 1] = (prefix_sum[i] + a[i]) % mod
-    suffix_sum = [0] * (n + 1)
-    for i in range(n - 1, -1, -1):
-        suffix_sum[i] = (suffix_sum[i + 1] + a[i]) % mod
-    result = 0
-    for i in range(n):
-        result = (result + prefix_sum[i] * (i + 1) % mod) % mod
-        result = (result + suffix_sum[i + 1] * (n - i) % mod) % mod
-    return result
+def get_original_string(code_string):
+    original_string = ""
+    code_list = code_string.split("-")
+    for code in code_list:
+        if "+" in code:
+            integer, string = code.split("+")
+            original_string += string * int(integer)
+        else:
+            original_string += code
+    return original_string
+
+def check_palindrome(original_string):
+    return original_string == original_string[::-1]
+
+def main():
+    code_string = input("Enter the code string: ")
+    original_string = get_original_string(code_string)
+    if check_palindrome(original_string):
+        print("Return")
+    else:
+        print("Continue")
+
+if __name__ == '__main__':
+    main()
 

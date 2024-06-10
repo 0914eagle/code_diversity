@@ -1,35 +1,38 @@
 
-def solve(k):
-    # Initialize the alphabet with its corresponding value
-    alphabet = {chr(i): i for i in range(97, 123)}
+def get_min_problems(c, d, n, m, k):
+    # Calculate the total number of participants in the finals
+    total_participants = n*m + k
+    
+    # Calculate the number of problems needed in the main rounds
+    main_rounds_problems = c*n
+    
+    # Calculate the number of problems needed in the additional rounds
+    additional_rounds_problems = d*m
+    
+    # Calculate the total number of problems needed
+    total_problems = main_rounds_problems + additional_rounds_problems
+    
+    # Return the minimum number of problems needed
+    return total_problems
 
-    # Initialize the minimum length of the name
-    min_length = 1
+def get_main_rounds(c, n):
+    # Calculate the number of main rounds needed
+    main_rounds = n//c
+    
+    # Return the number of main rounds needed
+    return main_rounds
 
-    # Initialize the name with the first letter
-    name = "a"
+def get_additional_rounds(d, m):
+    # Calculate the number of additional rounds needed
+    additional_rounds = m//d
+    
+    # Return the number of additional rounds needed
+    return additional_rounds
 
-    # Iterate until the name has the minimum length
-    while len(name) < min_length:
-        # Get the next letter in the alphabet
-        next_letter = chr(ord(name[-1]) + 1)
-
-        # Calculate the difference between the current letter and the next letter
-        difference = abs(alphabet[name[-1]] - alphabet[next_letter])
-
-        # Check if the difference is equal to the Sensei's favorite number
-        if difference == k:
-            # If it is, return the name
-            return name + next_letter
-
-        # If the difference is greater than the Sensei's favorite number,
-        # increment the minimum length and try again
-        if difference > k:
-            min_length += 1
-
-        # Add the next letter to the name and continue the loop
-        name += next_letter
-
-    # If no name has been found, return "impossible"
-    return "impossible"
+if __name__ == '__main__':
+    c, d, n, m, k = map(int, input().split())
+    total_problems = get_min_problems(c, d, n, m, k)
+    main_rounds = get_main_rounds(c, n)
+    additional_rounds = get_additional_rounds(d, m)
+    print(total_problems)
 

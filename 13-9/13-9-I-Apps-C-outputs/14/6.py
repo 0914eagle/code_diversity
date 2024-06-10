@@ -1,17 +1,27 @@
 
-import itertools
+def get_diameter(flaws):
+    # Find the minimum and maximum x, y, and z coordinates of the flaws
+    min_x = min(flaw[0] for flaw in flaws)
+    max_x = max(flaw[0] for flaw in flaws)
+    min_y = min(flaw[1] for flaw in flaws)
+    max_y = max(flaw[1] for flaw in flaws)
+    min_z = min(flaw[2] for flaw in flaws)
+    max_z = max(flaw[2] for flaw in flaws)
 
-def get_number_of_suspect_sets(n, p, names):
-    # Initialize a set to store the names of the coders who agreed with the head's choice
-    agreed_coders = set()
+    # Calculate the diameter of the cube
+    diameter = max(max_x - min_x, max_y - min_y, max_z - min_z)
 
-    # Iterate over the names of the coders
-    for name in names:
-        # If the coder named at least one of the two suspects, add their name to the set of agreed coders
-        if name[0] in agreed_coders or name[1] in agreed_coders:
-            agreed_coders.add(name[0])
-            agreed_coders.add(name[1])
+    return diameter
 
-    # Return the number of two-suspect sets that have at least p coders who agreed with the head's choice
-    return len([s for s in itertools.combinations(range(1, n + 1), 2) if len(agreed_coders.intersection(s)) >= p])
+def main():
+    num_flaws = int(input())
+    flaws = []
+    for i in range(num_flaws):
+        x, y, z = input().split()
+        flaws.append((float(x), float(y), float(z)))
+
+    print(get_diameter(flaws))
+
+if __name__ == '__main__':
+    main()
 

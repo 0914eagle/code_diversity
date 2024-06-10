@@ -1,17 +1,24 @@
 
-def get_dog_attacks(aggressive_1, calm_1, aggressive_2, calm_2, arrival_time):
-    # Calculate the number of minutes since the start of the day
-    current_minute = arrival_time % 1440
+def can_start_dance(p):
+    n = len(p)
+    if n == 1:
+        return True
+    if n == 2:
+        return p[0] == p[1]
+    if p[0] != 1:
+        return False
+    for i in range(1, n-1):
+        if p[i] != i+1:
+            return False
+    return p[n-1] == n
 
-    # Calculate the number of minutes until the next aggressive period
-    aggressive_1_minutes_left = aggressive_1 - (current_minute % (aggressive_1 + calm_1))
-    aggressive_2_minutes_left = aggressive_2 - (current_minute % (aggressive_2 + calm_2))
+def main():
+    q = int(input())
+    for _ in range(q):
+        n = int(input())
+        p = list(map(int, input().split()))
+        print("YES") if can_start_dance(p) else print("NO")
 
-    # Check if either dog is aggressive during the arrival time
-    if aggressive_1_minutes_left == 0 or aggressive_2_minutes_left == 0:
-        return "both"
-    elif aggressive_1_minutes_left != 0 and aggressive_2_minutes_left != 0:
-        return "none"
-    else:
-        return "one"
+if __name__ == '__main__':
+    main()
 

@@ -1,46 +1,36 @@
 
-def solve(program, grid):
-    # Initialize the robot's position and direction
-    row, col = next((row, col) for row in range(len(grid)) for col in range(len(grid[0])) if grid[row][col] == "R")
-    dir = 0
+def longest_substring(input_str):
+    # Initialize a dictionary to store the counts of each substring
+    substring_counts = {}
+    
+    # Initialize the longest repeated substring as an empty string
+    longest_repeated_substring = ""
+    
+    # Iterate through the input string
+    for i in range(len(input_str)):
+        # Get the current substring
+        current_substring = input_str[i]
+        
+        # Check if the substring is already in the dictionary
+        if current_substring in substring_counts:
+            # If it is, increment its count
+            substring_counts[current_substring] += 1
+            
+            # If the count is greater than the length of the longest repeated substring, update the longest repeated substring
+            if substring_counts[current_substring] > len(longest_repeated_substring):
+                longest_repeated_substring = current_substring
+        else:
+            # If the substring is not in the dictionary, add it with a count of 1
+            substring_counts[current_substring] = 1
+    
+    # Return the longest repeated substring
+    return longest_repeated_substring
 
-    # Initialize the trail as a list of tuples (row, col)
-    trail = [(row, col)]
+def main():
+    input_str = input()
+    longest_repeated_substring = longest_substring(input_str)
+    print(longest_repeated_substring)
 
-    # Loop through the program
-    for char in program:
-        # Update the direction based on the current character
-        if char == "<":
-            dir = (dir - 1) % 4
-        elif char == ">":
-            dir = (dir + 1) % 4
-
-        # Update the position based on the direction
-        if dir == 0:
-            col -= 1
-        elif dir == 1:
-            row += 1
-        elif dir == 2:
-            col += 1
-        elif dir == 3:
-            row -= 1
-
-        # Check if the new position is valid
-        if row < 0 or row >= len(grid) or col < 0 or col >= len(grid[0]) or grid[row][col] == "#":
-            break
-
-        # Add the new position to the trail
-        trail.append((row, col))
-
-    # Check if the trail is of finite length
-    if len(trail) < len(program):
-        return 1
-
-    # Find the smallest integer X such that the suffix of the trail has a repetition of a continuous subsequence of length X
-    for x in range(1, len(trail)):
-        if trail[-x:] == trail[:x]:
-            return x
-
-    # If no such integer exists, the trail is infinite
-    return -1
+if __name__ == '__main__':
+    main()
 

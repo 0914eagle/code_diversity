@@ -1,27 +1,41 @@
 
-def solve(n, s, l, a):
-    # Sort the array in non-decreasing order
-    a.sort()
-    # Initialize the number of pieces as 0
-    pieces = 0
-    # Initialize the start index of the current piece as 0
-    start = 0
-    # Loop through the array
-    for i in range(n):
-        # If the current number is greater than the maximum number in the current piece by more than s, start a new piece
-        if a[i] - a[start] > s:
-            pieces += 1
-            start = i
-        # If the current number is less than the minimum number in the current piece by more than s, start a new piece
-        elif a[start] - a[i] > s:
-            pieces += 1
-            start = i
-    # Add one more piece for the last part of the array
-    pieces += 1
-    # If the number of pieces is less than or equal to l, return the number of pieces
-    if pieces <= l:
-        return pieces
-    # Otherwise, return -1
-    else:
-        return -1
+def get_smallest_number(display):
+    # Initialize the smallest number as the initial display
+    smallest_number = display
+    
+    # Iterate through all possible orders of pressing the buttons
+    for i in range(2**len(display)):
+        # Convert the binary representation of i to a list of 0s and 1s
+        binary_rep = [int(x) for x in bin(i)[2:]]
+        
+        # Initialize the current display as the initial display
+        current_display = display
+        
+        # Iterate through the list of 0s and 1s and apply the corresponding button press
+        for j, button in enumerate(binary_rep):
+            if button == 0:
+                current_display = add_one(current_display)
+            else:
+                current_display = shift_right(current_display)
+        
+        # If the current display is smaller than the smallest number, update the smallest number
+        if current_display < smallest_number:
+            smallest_number = current_display
+    
+    return smallest_number
+
+def add_one(display):
+    # Add 1 to all digits in the display
+    return [str((int(x) + 1) % 10) for x in display]
+
+def shift_right(display):
+    # Shift all digits in the display one position to the right
+    return [display[-1]] + display[:-1]
+
+def main():
+    display = [int(x) for x in input().strip()]
+    print(''.join(get_smallest_number(display)))
+
+if __name__ == '__main__':
+    main()
 

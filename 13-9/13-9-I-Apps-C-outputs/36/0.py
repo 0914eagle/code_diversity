@@ -1,32 +1,28 @@
 
-def solve(A, B, N, conveyors):
-    # Initialize the minimum time to travel from A to B
-    min_time = 0
+def is_winning_strategy(k, ancient_values):
+    # Check if k is in the list of ancient values
+    if k in ancient_values:
+        return True
     
-    # Loop through each conveyor
-    for conveyor in conveyors:
-        # Calculate the distance from A to the start of the conveyor
-        dist_start = distance(A, conveyor[0])
-        # Calculate the distance from A to the end of the conveyor
-        dist_end = distance(A, conveyor[1])
-        # Calculate the total distance on the conveyor
-        total_dist = distance(conveyor[0], conveyor[1])
-        # Calculate the time to travel on the conveyor
-        time_conveyor = total_dist / 2
-        # Calculate the time to travel from A to the start of the conveyor
-        time_start = dist_start / 1
-        # Calculate the time to travel from the end of the conveyor to B
-        time_end = distance(B, conveyor[1]) / 1
-        # Calculate the total time to travel on the conveyor
-        total_time = time_start + time_conveyor + time_end
-        # If the total time is less than the current minimum time, update the minimum time
-        if total_time < min_time or min_time == 0:
-            min_time = total_time
+    # Check if any of the ancient values is a factor of k
+    for a in ancient_values:
+        if k % a == 0:
+            return True
     
-    # Return the minimum time to travel from A to B
-    return min_time
+    # Check if any of the ancient values is a factor of any of the other ancient values
+    for i in range(len(ancient_values)):
+        for j in range(i+1, len(ancient_values)):
+            if ancient_values[i] % ancient_values[j] == 0:
+                return True
+    
+    # If none of the above conditions are met, then Arya has no winning strategy
+    return False
 
-# Function to calculate the distance between two points
-def distance(A, B):
-    return ((B[0]-A[0])**2 + (B[1]-A[1])**2)**0.5
+def main():
+    n, k = map(int, input().split())
+    ancient_values = list(map(int, input().split()))
+    print("Yes") if is_winning_strategy(k, ancient_values) else print("No")
+
+if __name__ == '__main__':
+    main()
 

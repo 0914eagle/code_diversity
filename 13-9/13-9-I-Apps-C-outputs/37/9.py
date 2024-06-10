@@ -1,29 +1,22 @@
 
-def solve(n, logical_scheme):
-    # Initialize a dictionary to store the values of the inputs
-    input_values = {}
-    # Initialize a dictionary to store the values of the outputs
-    output_values = {}
-    # Loop through each vertex in the graph
-    for vertex in logical_scheme:
-        # If the vertex is an input, store its value
-        if vertex[0] == "IN":
-            input_values[vertex[1]] = vertex[2]
-        # If the vertex is not an input, calculate its value based on the values of its inputs
-        else:
-            # Get the indices of the input vertices
-            input_indices = vertex[1:]
-            # Get the values of the input vertices
-            input_values_list = [input_values[index] for index in input_indices]
-            # Calculate the value of the vertex based on the input values
-            if vertex[0] == "AND":
-                output_values[vertex[1]] = int(all(input_values_list))
-            elif vertex[0] == "OR":
-                output_values[vertex[1]] = int(any(input_values_list))
-            elif vertex[0] == "XOR":
-                output_values[vertex[1]] = int(sum(input_values_list) % 2)
-            elif vertex[0] == "NOT":
-                output_values[vertex[1]] = int(not input_values_list[0])
-    # Return the values of the outputs
-    return "".join(str(output_values[i]) for i in range(1, n+1))
+def is_perfect(s, k):
+    # Function to check if a set is perfect
+    for i in range(k+1):
+        for j in range(i+1, k+1):
+            if (i ^ j) not in s:
+                return False
+    return True
+
+def count_perfect_sets(k):
+    # Function to count the number of perfect sets
+    count = 0
+    for i in range(k+1):
+        s = set([i])
+        if is_perfect(s, k):
+            count += 1
+    return count
+
+if __name__ == '__main__':
+    k = int(input())
+    print(count_perfect_sets(k) % 1000000007)
 

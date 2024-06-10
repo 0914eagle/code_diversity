@@ -1,11 +1,15 @@
 
-def solve(l1, r1, l2, r2):
-    a = (l1 + r1) // 2
-    b = (l2 + r2) // 2
-    if a == b:
-        if a == l1:
-            b = r1
-        else:
-            a = l1
-    return a, b
+def get_input():
+    return int(input())
+
+def get_hours_until_new_year(hour):
+    return 24 - hour
+
+def main():
+    hour = get_input()
+    hours_until_new_year = get_hours_until_new_year(hour)
+    print(f"We have {hours_until_new_year} hours until New Year at {hour}:00 on 30th, December.")
+
+if __name__ == '__main__':
+    main()
 

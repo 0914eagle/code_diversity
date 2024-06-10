@@ -1,12 +1,10 @@
 {
     "inputs": [
-        "20 100\n",
-        "2 3\n",
-        "10 1\n"
+        "7 4\n#######\n#P.GTG#\n#..TGG#\n#######\n",
+        "8 6\n########\n#...GTG#\n#..PG.G#\n#...G#G#\n#..TG.G#\n########\n"
     ],
     "outputs": [
-        "Dr. Chaz will have 80 pieces of chicken left over!\n",
-        "Dr. Chaz will have 1 piece of chicken left over!\n",
-        "Dr. Chaz needs 9 more pieces of chicken!\n"
+        "1\n",
+        "4\n"
     ]
 }

@@ -1,11 +1,24 @@
 
-def generate_pascal_triangle(num_rows):
-    pascal_triangle = []
-    for row in range(num_rows):
-        row_values = [1] * (row + 1)
-        if row > 0:
-            for col in range(1, row):
-                row_values[col] = pascal_triangle[row - 1][col - 1] + pascal_triangle[row - 1][col]
-        pascal_triangle.append(row_values)
-    return pascal_triangle
+def get_sorted_names(names):
+    return sorted(names)
+
+def get_sorted_names_reverse(names):
+    return sorted(names, reverse=True)
+
+def check_order(names):
+    sorted_names = get_sorted_names(names)
+    sorted_names_reverse = get_sorted_names_reverse(names)
+    if names == sorted_names:
+        return "INCREASING"
+    elif names == sorted_names_reverse:
+        return "DECREASING"
+    else:
+        return "NEITHER"
+
+if __name__ == '__main__':
+    num_names = int(input())
+    names = []
+    for _ in range(num_names):
+        names.append(input())
+    print(check_order(names))
 

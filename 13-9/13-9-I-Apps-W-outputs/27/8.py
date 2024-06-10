@@ -1,20 +1,41 @@
 
-def solve(n, a):
-    # Find the candidate with the most votes
-    max_votes = max(a)
-    max_index = a.index(max_votes)
+def can_reach_target(line, k):
+    # Initialize variables
+    current_position = line.index("G")
+    target_position = line.index("T")
+    visited = set()
+    queue = []
+    
+    # Add the initial position to the queue
+    queue.append(current_position)
+    visited.add(current_position)
+    
+    # Loop through the queue
+    while queue:
+        current_position = queue.pop(0)
+        
+        # Check if the current position is the target position
+        if current_position == target_position:
+            return True
+        
+        # Add the neighbors to the queue
+        for i in range(1, k + 1):
+            neighbor = current_position + i
+            if neighbor not in visited and neighbor < len(line) and line[neighbor] == ".":
+                queue.append(neighbor)
+                visited.add(neighbor)
+    
+    # If the queue is empty, return False
+    return False
 
-    # Calculate the number of votes Limak needs to win
-    votes_needed = max_votes - a[0] + 1
+def main():
+    n, k = map(int, input().split())
+    line = input()
+    if can_reach_target(line, k):
+        print("YES")
+    else:
+        print("NO")
 
-    # Initialize the number of bribes needed to 0
-    bribes_needed = 0
-
-    # Loop through the candidates and calculate the number of bribes needed
-    for i in range(1, n):
-        if a[i] > 0:
-            bribes_needed += min(a[i], votes_needed // (n - 1))
-
-    # Return the number of bribes needed
-    return bribes_needed
+if __name__ == '__main__':
+    main()
 

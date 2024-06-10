@@ -1,7 +1,14 @@
 
-def hulk_feeling(n):
-    if n == 1:
-        return "I hate it"
-    else:
-        return "I hate that " + hulk_feeling(n-1)
+def evaluate_expression(a, b):
+    result = 0
+    for i in range(1, a+1):
+        result += i**b
+    return result % a
+
+def main():
+    a, b = map(int, input().split())
+    print(evaluate_expression(a, b))
+
+if __name__ == '__main__':
+    main()
 

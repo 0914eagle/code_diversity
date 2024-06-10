@@ -1,11 +1,28 @@
 
-def solve(c_1, c_2, c_3, c_4, n, m, a, b):
-    # Calculate the total cost of each type of ticket
-    cost_1 = c_1 * sum(a)
-    cost_2 = c_2 * sum(a)
-    cost_3 = c_3 * (n + m)
-    cost_4 = c_4
+def get_minimum_time(sticks):
+    # Sort the sticks in non-decreasing order
+    sticks.sort()
+    
+    # Initialize the minimum time to 0
+    minimum_time = 0
+    
+    # Loop through the sticks and check if they can form a triangle
+    for i in range(len(sticks)):
+        for j in range(i+1, len(sticks)):
+            for k in range(j+1, len(sticks)):
+                if sticks[i] + sticks[j] > sticks[k]:
+                    return minimum_time
+    
+    # If no triangle can be formed, return -1
+    return -1
 
-    # Return the minimum cost
-    return min(cost_1, cost_2, cost_3, cost_4)
+def main():
+    # Read the sticks from stdin
+    a, b, c = map(int, input().split())
+    
+    # Call the get_minimum_time function and print the result
+    print(get_minimum_time([a, b, c]))
+
+if __name__ == '__main__':
+    main()
 

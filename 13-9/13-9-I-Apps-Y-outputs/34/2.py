@@ -1,13 +1,26 @@
 
-def find_price(a, b):
-    # Loop through possible prices
-    for price in range(1, 101):
-        # Calculate the amount of tax at 8% and 10%
-        tax_8 = int(price * 0.08)
-        tax_10 = int(price * 0.1)
-        # Check if the tax amounts are equal to A and B respectively
-        if tax_8 == a and tax_10 == b:
-            return price
-    # If no price satisfies the condition, return -1
-    return -1
+def get_number_of_ways_to_paint_balls(n, k):
+    # Initialize a 2D array to store the number of ways to paint each subarray
+    dp = [[0] * (k+1) for _ in range(n+1)]
+    
+    # Base case: only one way to paint an empty subarray
+    for i in range(k+1):
+        dp[0][i] = 1
+    
+    # Populate the 2D array using the recurrence relation
+    for i in range(1, n+1):
+        for j in range(1, k+1):
+            for color in range(k):
+                if color != j:
+                    dp[i][j] += dp[i-1][color]
+    
+    # Return the number of ways to paint the entire array
+    return dp[n][1]
+
+def main():
+    n, k = map(int, input().split())
+    print(get_number_of_ways_to_paint_balls(n, k))
+
+if __name__ == '__main__':
+    main()
 

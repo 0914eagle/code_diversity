@@ -1,30 +1,26 @@
 
-def solve(N):
-    # Initialize variables
-    operations = 0
-    curr_amount = 0
+def get_weights():
+    n = int(input())
+    weights = list(map(int, input().split()))
+    return n, weights
 
-    # While the current amount is less than the target amount
-    while curr_amount < N:
-        # If the current amount is less than 9, withdraw 1 yen
-        if curr_amount < 9:
-            curr_amount += 1
-        # If the current amount is between 9 and 81, withdraw 9 yen
-        elif curr_amount < 81:
-            curr_amount += 9
-        # If the current amount is between 81 and 216, withdraw 36 yen
-        elif curr_amount < 216:
-            curr_amount += 36
-        # If the current amount is between 216 and 729, withdraw 81 yen
-        elif curr_amount < 729:
-            curr_amount += 81
-        # If the current amount is greater than or equal to 729, withdraw 216 yen
-        else:
-            curr_amount += 216
+def get_min_abs_diff(weights, t):
+    s1, s2 = 0, 0
+    for i in range(t):
+        s1 += weights[i]
+    for i in range(t, len(weights)):
+        s2 += weights[i]
+    return abs(s1 - s2)
 
-        # Increment the number of operations
-        operations += 1
+def solve():
+    n, weights = get_weights()
+    min_abs_diff = float('inf')
+    for t in range(1, n):
+        abs_diff = get_min_abs_diff(weights, t)
+        if abs_diff < min_abs_diff:
+            min_abs_diff = abs_diff
+    return min_abs_diff
 
-    # Return the number of operations required
-    return operations
+if __name__ == '__main__':
+    print(solve())
 

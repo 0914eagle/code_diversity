@@ -1,20 +1,16 @@
 
-def max_rooms_hit(rooms, beam_length):
-    # Sort the rooms by their x-coordinate
-    sorted_rooms = sorted(rooms, key=lambda x: x[0])
+def divisibility_hack(b, d):
+    if b == 1 or d == 1:
+        return "no"
+    for m in range(1, b):
+        if pow(b, m, d) == 1:
+            return "yes"
+    return "no"
 
-    # Initialize the maximum number of rooms hit to 0
-    max_rooms = 0
+def main():
+    b, d = map(int, input().split())
+    print(divisibility_hack(b, d))
 
-    # Iterate over the sorted rooms
-    for i in range(len(sorted_rooms)):
-        # Get the current room
-        current_room = sorted_rooms[i]
-
-        # Check if the room is within the beam length
-        if current_room[0] + beam_length >= sorted_rooms[i + 1][0]:
-            # Increment the maximum number of rooms hit
-            max_rooms += 1
-
-    return max_rooms
+if __name__ == '__main__':
+    main()
 

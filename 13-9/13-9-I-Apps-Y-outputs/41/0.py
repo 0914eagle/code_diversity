@@ -1,15 +1,30 @@
 
-def solve(gunnar_dice, emma_dice):
-    gunnar_sum = 0
-    emma_sum = 0
-    for die in gunnar_dice:
-        gunnar_sum += die[1] - die[0] + 1
-    for die in emma_dice:
-        emma_sum += die[1] - die[0] + 1
-    if gunnar_sum > emma_sum:
-        return "Gunnar"
-    elif gunnar_sum < emma_sum:
-        return "Emma"
-    else:
-        return "Tie"
+def get_rows_cols(matrix):
+    rows = set()
+    cols = set()
+    for i in range(len(matrix)):
+        for j in range(len(matrix[0])):
+            if matrix[i][j] == 1:
+                rows.add(i)
+                cols.add(j)
+    return rows, cols
+
+def count_white_cells(matrix, rows, cols):
+    count = 0
+    for i in range(len(matrix)):
+        for j in range(len(matrix[0])):
+            if i not in rows and j not in cols:
+                count += 1
+    return count
+
+def main():
+    h, w = map(int, input().split())
+    matrix = []
+    for i in range(h):
+        matrix.append(list(map(int, input().split())))
+    rows, cols = get_rows_cols(matrix)
+    print(count_white_cells(matrix, rows, cols))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,28 +1,48 @@
 
-def get_smallest_cluster_size(n, a, b, c):
-    # Initialize the smallest cluster size and the corresponding (S, T) pair
-    smallest_cluster_size = float('inf')
-    best_st_pair = (0, 0)
+def get_tree(n, cs):
+    # Base case: if n is 1, return a single node
+    if n == 1:
+        return [1]
+    
+    # Initialize an empty tree
+    tree = []
+    
+    # Iterate over all possible root nodes
+    for i in range(1, n + 1):
+        # If the root node has at least two sons, recursively build the left and right subtrees
+        if i < n and cs[i] >= 2:
+            left_subtree = get_tree(i - 1, cs[:i])
+            right_subtree = get_tree(n - i, cs[i:])
+            # If both subtrees are valid, combine them into a single tree
+            if left_subtree and right_subtree:
+                tree.append(i)
+                tree.extend(left_subtree)
+                tree.extend(right_subtree)
+                break
+    
+    # If no valid tree was found, return None
+    if not tree:
+        return None
+    
+    # If the tree is valid, return it
+    return tree
 
-    # Iterate over all possible (S, T) pairs
-    for s in range(0, 2000001):
-        for t in range(0, 2000001):
-            # Sort the poll results by the measure a_i * S + b_i * T
-            sorted_indices = sorted(range(n), key=lambda i: a[i] * s + b[i] * t)
+def is_valid_tree(n, cs):
+    # Get the rooted tree
+    tree = get_tree(n, cs)
+    
+    # If the tree is None, return False
+    if not tree:
+        return False
+    
+    # If the tree is valid, return True
+    return True
 
-            # Find the indices of the first and last results with c_i true
-            j = 0
-            k = 0
-            while j < n and not c[sorted_indices[j]]:
-                j += 1
-            while k < n and c[sorted_indices[k]]:
-                k += 1
+def main():
+    n = int(input())
+    cs = list(map(int, input().split()))
+    print("YES") if is_valid_tree(n, cs) else print("NO")
 
-            # Calculate the cluster size and compare it with the current smallest cluster size
-            cluster_size = k - j + 1
-            if cluster_size < smallest_cluster_size:
-                smallest_cluster_size = cluster_size
-                best_st_pair = (s, t)
-
-    return smallest_cluster_size
+if __name__ == '__main__':
+    main()
 

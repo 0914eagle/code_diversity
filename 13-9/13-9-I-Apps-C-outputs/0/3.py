@@ -1,35 +1,43 @@
 
-def get_maximal_influence(n, spectators):
-    # Sort the spectators by their influence in descending order
-    spectators.sort(key=lambda x: x[1], reverse=True)
+def read_input():
+    n, k = map(int, input().split())
+    batteries = list(map(int, input().split()))
+    return n, k, batteries
 
-    # Initialize variables to keep track of the number of spectators supporting Alice and Bob
-    alice_count = 0
-    bob_count = 0
+def get_min_difference(batteries):
+    batteries.sort()
+    min_diff = float('inf')
+    for i in range(len(batteries) - 1):
+        diff = batteries[i + 1] - batteries[i]
+        min_diff = min(min_diff, diff)
+    return min_diff
 
-    # Initialize a variable to keep track of the total influence
-    total_influence = 0
+def get_optimal_allocation(n, k, batteries):
+    batteries.sort()
+    allocated_batteries = []
+    for i in range(n):
+        allocated_batteries.append(batteries[i * k:(i + 1) * k])
+    return allocated_batteries
 
-    # Iterate through the sorted list of spectators
-    for spectator in spectators:
-        # Check if the current spectator supports Alice
-        if spectator[0] == "11" or spectator[0] == "10":
-            # Increment the number of spectators supporting Alice
-            alice_count += 1
+def get_power_outputs(allocated_batteries):
+    power_outputs = []
+    for batteries in allocated_batteries:
+        power_outputs.append(min(batteries))
+    return power_outputs
 
-        # Check if the current spectator supports Bob
-        if spectator[0] == "11" or spectator[0] == "01":
-            # Increment the number of spectators supporting Bob
-            bob_count += 1
+def get_difference(power_outputs):
+    diff = 0
+    for i in range(len(power_outputs) - 1):
+        diff += abs(power_outputs[i + 1] - power_outputs[i])
+    return diff
 
-        # Check if at least half of the spectators support Alice and at least half of them support Bob
-        if alice_count >= n/2 and bob_count >= n/2:
-            # Return the total influence
-            return total_influence
+def main():
+    n, k, batteries = read_input()
+    allocated_batteries = get_optimal_allocation(n, k, batteries)
+    power_outputs = get_power_outputs(allocated_batteries)
+    d = get_difference(power_outputs)
+    print(d)
 
-        # Add the influence of the current spectator to the total influence
-        total_influence += spectator[1]
-
-    # If we reach this point, it means that it is impossible to select a non-empty set of spectators satisfying the conditions
-    return 0
+if __name__ == '__main__':
+    main()
 

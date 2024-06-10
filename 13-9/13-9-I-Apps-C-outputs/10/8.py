@@ -1,24 +1,68 @@
 
-def solve(R, S, G, apples):
-    # Initialize a 2D array to represent the fruit garden
-    garden = [[0] * S for _ in range(R)]
+def get_possible_edits(n, m, k, connections, capacities):
+    # Initialize a list to store the possible edits
+    possible_edits = []
+    
+    # Iterate over the connections in the existing network architecture
+    for i in range(m):
+        # Get the ids of the two servers connected in the old network architecture
+        u, v = connections[i]
+        
+        # Check if the servers are directly connected in the existing network architecture
+        if u in capacities[v] and v in capacities[u]:
+            # If they are directly connected, check if the edit is possible
+            if k > 0:
+                # If the edit is possible, add it to the list of possible edits
+                possible_edits.append((u, v))
+                # Decrement the number of edits available
+                k -= 1
+    
+    # Return the list of possible edits
+    return possible_edits
 
-    # Fill the garden with trees based on the input
-    for i in range(R):
-        for j in range(S):
-            if apples[i][j] == "x":
-                garden[i][j] = 1
+def can_connect_servers(n, m, k, connections, capacities):
+    # Get the list of possible edits
+    possible_edits = get_possible_edits(n, m, k, connections, capacities)
+    
+    # Initialize a list to store the servers that are connected to each other
+    connected_servers = []
+    
+    # Iterate over the possible edits
+    for u, v in possible_edits:
+        # Check if the servers are already connected in the existing network architecture
+        if u in connected_servers and v in connected_servers:
+            # If they are already connected, continue to the next edit
+            continue
+        
+        # Add the servers to the list of connected servers
+        connected_servers.append(u)
+        connected_servers.append(v)
+        
+        # Check if all the servers are connected to each other
+        if len(connected_servers) == n:
+            # If all the servers are connected to each other, return true
+            return True
+    
+    # If not all the servers are connected to each other, return false
+    return False
 
-    # Calculate the squared distance between the apple fall and the nearest tree
-    distances = []
-    for i in range(G):
-        r, s = apples[i]
-        distance = 0
-        for dr in range(-1, 2):
-            for ds in range(-1, 2):
-                if 0 <= r + dr < R and 0 <= s + ds < S and garden[r + dr][s + ds] == 1:
-                    distance = max(distance, (dr ** 2 + ds ** 2))
-        distances.append(distance)
+def main():
+    # Read the input from stdin
+    n, m, k = map(int, input().split())
+    connections = []
+    capacities = [set() for _ in range(n)]
+    for _ in range(m):
+        u, v = map(int, input().split())
+        connections.append((u, v))
+        capacities[u].add(v)
+        capacities[v].add(u)
+    
+    # Check if the servers can be connected to one network by making k or less edits
+    can_connect = can_connect_servers(n, m, k, connections, capacities)
+    
+    # Print the output
+    print("yes" if can_connect else "no")
 
-    return distances
+if __name__ == '__main__':
+    main()
 

@@ -1,11 +1,13 @@
 
-def fidget_cubes(v):
-    # Calculate the minimum length and width of the box to hold V fidget cubes
-    length = (v ** 0.5) + 1
-    width = v // length
-    
-    # Calculate the cost of the box
-    cost = length * width
-    
-    return cost
+def get_next_letter(letter):
+    alphabet = "abcdefghijklmnopqrstuvwxyz"
+    index = alphabet.index(letter)
+    return alphabet[index + 1]
+
+def main():
+    letter = input("Enter a lowercase English letter: ")
+    print(get_next_letter(letter))
+
+if __name__ == '__main__':
+    main()
 

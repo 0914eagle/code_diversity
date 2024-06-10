@@ -1,19 +1,27 @@
 
-def find_final_position(n, m, k, holes, swaps):
-    # Initialize the position of the bone as 1
-    bone = 1
-    # Loop through each swap operation
-    for i in range(k):
-        # Get the positions of the cups to be swapped
-        cup1, cup2 = swaps[i]
-        # If the bone is inside one of the cups, move it to the other cup
-        if bone in [cup1, cup2]:
-            bone = cup2 if bone == cup1 else cup1
-        # If the bone falls into a hole, return -1
-        if bone in holes:
-            return -1
-        # Swap the positions of the cups
-        cup1, cup2 = cup2, cup1
-    # Return the final position of the bone
-    return bone
+def read_input():
+    N = int(input())
+    A = list(map(int, input().split()))
+    return N, A
+
+def xor_bitwise(A, l, r):
+    result = 0
+    for i in range(l, r+1):
+        result ^= A[i]
+    return result
+
+def count_pairs(A, N):
+    count = 0
+    for l in range(N):
+        for r in range(l, N):
+            if xor_bitwise(A, l, r) == sum(A[l:r+1]):
+                count += 1
+    return count
+
+def main():
+    N, A = read_input()
+    print(count_pairs(A, N))
+
+if __name__ == '__main__':
+    main()
 

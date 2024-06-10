@@ -1,30 +1,75 @@
 
-def get_max_messiness(n, k):
-    # Initialize a list to store the cows and their labels
-    cows = list(range(1, n+1))
-    # Initialize a variable to store the maximum messiness
-    max_messiness = 0
-    # Loop through each minute
-    for i in range(k):
-        # Swap the cows in the first and last stalls
-        cows[0], cows[-1] = cows[-1], cows[0]
-        # Calculate the messiness for this minute
-        messiness = get_messiness(cows)
-        # Update the maximum messiness if necessary
-        max_messiness = max(max_messiness, messiness)
-    # Return the maximum messiness
-    return max_messiness
+import sys
 
-def get_messiness(cows):
-    # Initialize a variable to store the messiness
-    messiness = 0
-    # Loop through each cow
-    for i in range(len(cows)):
-        # Loop through each cow after the current cow
-        for j in range(i+1, len(cows)):
-            # If the current cow is larger than the next cow, increment the messiness
-            if cows[i] > cows[j]:
-                messiness += 1
-    # Return the messiness
-    return messiness
+class Node:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+def build_tree(a, b):
+    root = Node(1)
+    for i in range(1, len(a)):
+        parent = root
+        current = root
+        while current:
+            if current.val == a[i]:
+                parent = current
+                current = current.left
+            elif current.val == b[i]:
+                parent = current
+                current = current.right
+            else:
+                break
+        if parent.val == a[i]:
+            parent.left = Node(b[i])
+        else:
+            parent.right = Node(b[i])
+    return root
+
+def find_subtree_vertices(root, p):
+    vertices = []
+    queue = [root]
+    while queue:
+        current = queue.pop(0)
+        if current.val == p:
+            vertices.append(current.val)
+        if current.left:
+            queue.append(current.left)
+        if current.right:
+            queue.append(current.right)
+    return vertices
+
+def increment_counters(root, p, x):
+    vertices = find_subtree_vertices(root, p)
+    for vertex in vertices:
+        root.val += x
+    return root
+
+def get_counters(root):
+    queue = [root]
+    counters = []
+    while queue:
+        current = queue.pop(0)
+        counters.append(current.val)
+        if current.left:
+            queue.append(current.left)
+        if current.right:
+            queue.append(current.right)
+    return counters
+
+def main():
+    n, q = map(int, input().split())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    p = list(map(int, input().split()))
+    x = list(map(int, input().split()))
+    root = build_tree(a, b)
+    for i in range(q):
+        root = increment_counters(root, p[i], x[i])
+    counters = get_counters(root)
+    print(*counters)
+
+if __name__ == '__main__':
+    main()
 

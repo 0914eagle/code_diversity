@@ -1,25 +1,24 @@
 
-def solve(n, friends):
-    # Initialize a dictionary to map each friend to their gift receiver
-    gift_map = {i: 0 for i in range(1, n + 1)}
+def get_number_of_paths(grid, k):
+    n, m = len(grid), len(grid[0])
+    dp = [[0] * (m + 1) for _ in range(n + 1)]
+    dp[1][1] = 1
+    for i in range(1, n + 1):
+        for j in range(1, m + 1):
+            if i == 1 and j == 1:
+                continue
+            dp[i][j] += dp[i - 1][j]
+            if j > 1 and grid[i - 1][j - 2] ^ grid[i - 1][j - 1] == k:
+                dp[i][j] += dp[i - 1][j - 1]
+    return dp[n][m]
 
-    # Iterate through the input array
-    for i, friend in enumerate(friends, start=1):
-        # If the friend doesn't know whom they want to give the gift to, skip them
-        if friend == 0:
-            continue
-        # If the friend knows whom they want to give the gift to, get the gift receiver's ID
-        gift_receiver = friend
-        # If the gift receiver has already been assigned a gift, find the next available friend as the gift receiver
-        while gift_map[gift_receiver] != 0:
-            gift_receiver += 1
-            if gift_receiver > n:
-                gift_receiver = 1
-        # Assign the gift receiver to the current friend
-        gift_map[i] = gift_receiver
-        # Assign the current friend as the gift receiver to the gift receiver
-        gift_map[gift_receiver] = i
+def main():
+    n, m, k = map(int, input().split())
+    grid = []
+    for _ in range(n):
+        grid.append(list(map(int, input().split())))
+    print(get_number_of_paths(grid, k))
 
-    # Return the gift map
-    return gift_map
+if __name__ == '__main__':
+    main()
 

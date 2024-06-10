@@ -1,65 +1,39 @@
 
-def remove_ads(web_page):
-    # Initialize variables
-    ads_removed = 0
-    images = []
-    border_char = "$"
-    banned_chars = ["!", ",", ".", "?"]
-    whitespace = " "
+def get_expression_value(expression, x):
+    # Replace all instances of x with x**2
+    expression = expression.replace("x", "x**2")
+    
+    # Evaluate the expression
+    return eval(expression)
 
-    # Loop through each row of the web page
-    for i in range(len(web_page)):
-        # Loop through each column of the web page
-        for j in range(len(web_page[i])):
-            # Check if the current character is a border character
-            if web_page[i][j] == border_char:
-                # Find the coordinates of the top-left corner of the image
-                top_left_row, top_left_col = find_top_left_corner(web_page, i, j)
-                # Find the coordinates of the bottom-right corner of the image
-                bottom_right_row, bottom_right_col = find_bottom_right_corner(web_page, top_left_row, top_left_col)
-                # Check if the image is valid
-                if is_valid_image(web_page, top_left_row, top_left_col, bottom_right_row, bottom_right_col):
-                    # Add the image to the list of images
-                    images.append((top_left_row, top_left_col, bottom_right_row, bottom_right_col))
+def get_min_x(expression, p, m):
+    # Initialize min_x to 0
+    min_x = 0
+    
+    # Loop until we find a value of x that gives us the correct remainder
+    while True:
+        # Calculate the value of the expression with the current value of x
+        value = get_expression_value(expression, min_x)
+        
+        # If the value is divisible by m with a remainder of p, we have found the minimum value of x
+        if value % m == p:
+            break
+        
+        # Otherwise, increment x by 1 and try again
+        min_x += 1
+    
+    return min_x
 
-    # Loop through each image and check if it contains any banned characters
-    for image in images:
-        # Get the coordinates of the top-left and bottom-right corners of the image
-        top_left_row, top_left_col, bottom_right_row, bottom_right_col = image
-        # Loop through each row of the image
-        for i in range(top_left_row, bottom_right_row+1):
-            # Loop through each column of the image
-            for j in range(top_left_col, bottom_right_col+1):
-                # Check if the current character is a banned character
-                if web_page[i][j] in banned_chars:
-                    # Flag the image as an ad and remove it from the web page
-                    ads_removed += 1
-                    web_page[i][j] = whitespace
+def main():
+    # Read the input expression and p, m from stdin
+    expression, p, m = input().split()
+    
+    # Calculate the minimum value of x
+    min_x = get_min_x(expression, int(p), int(m))
+    
+    # Print the result
+    print(min_x)
 
-    # Return the web page with all the ads removed
-    return web_page
-
-def find_top_left_corner(web_page, row, col):
-    # Find the top-left corner of the image by moving up and left from the current position
-    while row > 0 and col > 0 and web_page[row][col] == border_char:
-        row -= 1
-        col -= 1
-    return row, col
-
-def find_bottom_right_corner(web_page, row, col):
-    # Find the bottom-right corner of the image by moving down and right from the current position
-    while row < len(web_page) and col < len(web_page[row]) and web_page[row][col] == border_char:
-        row += 1
-        col += 1
-    return row-1, col-1
-
-def is_valid_image(web_page, top_left_row, top_left_col, bottom_right_row, bottom_right_col):
-    # Check if the image is valid by checking if it is at least 3x3, has no adjacent borders, and does not contain any characters that are not allowed
-    if (bottom_right_row - top_left_row < 2) or (bottom_right_col - top_left_col < 2):
-        return False
-    for i in range(top_left_row, bottom_right_row+1):
-        for j in range(top_left_col, bottom_right_col+1):
-            if web_page[i][j] != border_char and web_page[i][j] not in ["!", ",", ".", "?"]:
-                return False
-    return True
+if __name__ == '__main__':
+    main()
 

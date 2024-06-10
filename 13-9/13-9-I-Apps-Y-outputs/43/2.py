@@ -1,15 +1,46 @@
 
-def get_minimum_teams_not_starting(N, S, R, damaged_teams, reserve_teams):
-    # Initialize a set to store the teams that cannot start
-    cannot_start = set()
+def get_roads(districts, gangs):
+    # Initialize a graph with the districts as nodes
+    graph = {i: set() for i in range(1, len(districts) + 1)}
 
-    # Iterate over the damaged teams and their adjacent teams
-    for team in damaged_teams:
-        for adjacent_team in range(team-1, team+2):
-            # If the adjacent team has a reserve kayak, add it to the set of teams that cannot start
-            if adjacent_team in reserve_teams:
-                cannot_start.add(adjacent_team)
+    # Add edges to the graph based on the gang affiliations
+    for i in range(len(districts)):
+        for j in range(i + 1, len(districts)):
+            if gangs[i] != gangs[j]:
+                graph[i].add(j)
+                graph[j].add(i)
 
-    # Return the size of the set of teams that cannot start
-    return len(cannot_start)
+    # Find all reachable districts from each district
+    reachable = {i: set() for i in range(1, len(districts) + 1)}
+    for i in range(len(districts)):
+        queue = [i]
+        while queue:
+            curr = queue.pop(0)
+            reachable[i].add(curr)
+            queue.extend(graph[curr] - reachable[i])
+
+    # Check if all districts are reachable from each other
+    for i in range(len(districts)):
+        for j in range(i + 1, len(districts)):
+            if i not in reachable[j] or j not in reachable[i]:
+                return "NO"
+
+    # Build the roads
+    roads = []
+    for i in range(len(districts)):
+        for j in range(i + 1, len(districts)):
+            if gangs[i] != gangs[j]:
+                roads.append([i, j])
+
+    return "YES\n" + "\n".join(str(road[0]) + " " + str(road[1]) for road in roads)
+
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        gangs = list(map(int, input().split()))
+        print(get_roads(list(range(1, n + 1)), gangs))
+
+if __name__ == '__main__':
+    main()
 

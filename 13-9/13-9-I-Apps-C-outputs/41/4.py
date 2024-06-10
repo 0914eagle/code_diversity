@@ -1,37 +1,33 @@
 
-def solve(offers):
-    # Sort the offers by the first section of each offer
-    sorted_offers = sorted(offers, key=lambda x: x[1])
+import itertools
+import math
 
-    # Initialize the variables to keep track of the colors and sections
-    colors = set()
-    sections = set()
-    accepted_offers = 0
+def explosion_probability(n, m, d):
+    # Calculate the probability of killing each minion
+    probabilities = [minion_probability(n, m, d) for _ in range(m)]
+    
+    # Calculate the probability of killing all minions
+    return sum(probabilities)
 
-    # Iterate through the sorted offers
-    for offer in sorted_offers:
-        # If the color of the current offer is not in the colors set, add it to the colors set
-        if offer[0] not in colors:
-            colors.add(offer[0])
+def minion_probability(n, m, d):
+    # Calculate the number of ways to kill a minion
+    num_ways = math.comb(m, d)
+    
+    # Calculate the number of ways to kill all minions
+    denom = math.comb(m, n)
+    
+    # Calculate the probability of killing all minions
+    return num_ways / denom
 
-        # If the current offer intersects with any of the previous offers, skip it
-        if any(offer[1] <= section <= offer[2] for section in sections):
-            continue
+def input_parser(input_string):
+    n, m, d = input_string.split()
+    return int(n), int(m), int(d)
 
-        # Add the current offer to the accepted offers
-        accepted_offers += 1
+def main():
+    input_string = input()
+    n, m, d = input_parser(input_string)
+    print(explosion_probability(n, m, d))
 
-        # Add the sections of the current offer to the sections set
-        sections.update(range(offer[1], offer[2] + 1))
-
-        # If the number of colors exceeds 3, return "IMPOSSIBLE"
-        if len(colors) > 3:
-            return "IMPOSSIBLE"
-
-    # If all the sections have been painted, return the number of accepted offers
-    if len(sections) == 10000:
-        return accepted_offers
-
-    # If not all the sections have been painted, return "IMPOSSIBLE"
-    return "IMPOSSIBLE"
+if __name__ == '__main__':
+    main()
 

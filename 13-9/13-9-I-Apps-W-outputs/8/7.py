@@ -1,20 +1,27 @@
 
-def get_max_messiness(n, k):
-    # Initialize the messiness array with 0s
-    messiness = [0] * (n + 1)
+import sys
+input = sys.stdin.read().split()
 
-    # Loop through each minute
-    for minute in range(1, k + 1):
-        # Get the current stall numbers
-        stalls = list(range(1, n + 1))
+N, Q = map(int, input[0:2])
+edges = [(int(input[i]), int(input[i+1])) for i in range(2, 2*N, 2)]
+operations = [(int(input[i]), int(input[i+1])) for i in range(2*N, 2*N + Q, 2)]
 
-        # Swap the first and last stalls
-        stalls[0], stalls[n] = stalls[n], stalls[0]
+def get_subtree(vertex, tree):
+    subtree = [vertex]
+    for edge in tree:
+        if edge[0] == vertex:
+            subtree += get_subtree(edge[1], tree)
+    return subtree
 
-        # Update the messiness array
-        for i in range(n):
-            messiness[stalls[i]] += n - i
+def solve(edges, operations):
+    tree = edges[:]
+    counters = [0] * (N + 1)
+    for operation in operations:
+        subtree = get_subtree(operation[0], tree)
+        for vertex in subtree:
+            counters[vertex] += operation[1]
+    return counters
 
-    # Return the maximum messiness
-    return max(messiness)
+if __name__ == '__main__':
+    print(*solve(edges, operations))
 

@@ -1,20 +1,17 @@
 
-def solve(p, y):
-    # Initialize a list to store the reachable branches
-    reachable_branches = []
+def get_final_string(n, m, s, operations):
+    for operation in operations:
+        l, r, c_1, c_2 = operation
+        s = s[:l-1] + c_2 * (r - l + 1) + s[r:]
+    return s
 
-    # Iterate through each grasshopper and add the reachable branches to the list
-    for i in range(2, p + 1):
-        for j in range(i, int(y / i) + 1):
-            reachable_branches.append(j * i)
+def main():
+    n, m = map(int, input().split())
+    s = input()
+    operations = [input().split() for _ in range(m)]
+    final_string = get_final_string(n, m, s, operations)
+    print(final_string)
 
-    # Sort the list in ascending order
-    reachable_branches.sort()
-
-    # Check if the highest branch is reachable
-    if y in reachable_branches:
-        return -1
-    else:
-        # Return the highest branch that is not reachable
-        return y
+if __name__ == '__main__':
+    main()
 

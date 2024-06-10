@@ -1,17 +1,27 @@
 
-def solve(n, a):
-    # Initialize the number of bribed citizens to 0
-    bribed = 0
-    # Sort the list of votes in descending order
-    a.sort(reverse=True)
-    # Loop through the list of votes
+def is_possible_to_jump(grid, k, current_position):
+    n = len(grid)
+    if current_position == n-1:
+        return True
+    if current_position + k > n-1:
+        return False
+    if grid[current_position + k] == '#':
+        return False
+    return is_possible_to_jump(grid, k, current_position + k)
+
+def is_target_reachable(grid, k):
+    n = len(grid)
     for i in range(n):
-        # If the current vote is 0, break the loop
-        if a[i] == 0:
-            break
-        # Otherwise, bribe one citizen and decrease the current vote by 1
-        bribed += 1
-        a[i] -= 1
-    # Return the number of bribed citizens
-    return bribed
+        if grid[i] == 'G':
+            if is_possible_to_jump(grid, k, i):
+                return True
+    return False
+
+def main():
+    n, k = map(int, input().split())
+    grid = list(input())
+    print("YES") if is_target_reachable(grid, k) else print("NO")
+
+if __name__ == '__main__':
+    main()
 

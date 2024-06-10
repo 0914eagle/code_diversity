@@ -1,24 +1,34 @@
 
-def get_maximum_value(k, n, employees):
-    # Sort the employees by their productivity in descending order
-    employees.sort(key=lambda x: x[1], reverse=True)
+def is_rhyming(word1, word2):
+    return word1[-min(3, len(word1), len(word2)):].lower() == word2[-min(3, len(word1), len(word2)):].lower()
 
-    # Initialize the maximum total value and the current team size
-    max_value = 0
-    team_size = 0
+def is_consistent(statements):
+    # Initialize a dictionary to store the rhyming pairs
+    rhyming_pairs = {}
+    # Iterate over the statements
+    for statement in statements:
+        # Split the statement into two words
+        word1, word2 = statement.split()
+        # Check if the two words are already in the dictionary
+        if word1 in rhyming_pairs and rhyming_pairs[word1] != word2:
+            # If they are, and they don't have the same rhyming pair, return "wait what?"
+            return "wait what?"
+        # If the two words are not in the dictionary, add them to the dictionary with their rhyming pair
+        rhyming_pairs[word1] = word2
+        rhyming_pairs[word2] = word1
+    # If we reach this point, all statements are consistent
+    return "yes"
 
-    # Iterate through the employees
-    for employee in employees:
-        # If the current employee is recommended by the CEO or by an employee who is already in the team, add them to the team
-        if employee[2] == 0 or employee[2] in [employee[0] for employee in team]:
-            team.append(employee)
-            team_size += 1
-            max_value += employee[1] / employee[0]
+def main():
+    # Read the number of statements
+    num_statements = int(input())
+    # Read the statements
+    statements = [input() for _ in range(num_statements)]
+    # Call the is_consistent function
+    result = is_consistent(statements)
+    # Print the result
+    print(result)
 
-        # If the team size is equal to k, break the loop
-        if team_size == k:
-            break
-
-    # Return the maximum total value
-    return round(max_value, 3)
+if __name__ == '__main__':
+    main()
 

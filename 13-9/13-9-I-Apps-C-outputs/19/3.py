@@ -1,34 +1,37 @@
 
-def solve(n, m, roads):
-    # Initialize a graph with the given roads
-    graph = {i: set() for i in range(1, n + 1)}
-    for u, v in roads:
-        graph[u].add(v)
+def get_positive_energy_lamp_coordinates(lamp_list):
+    positive_energy_lamp_coordinates = []
+    for lamp in lamp_list:
+        if lamp[2] > 0:
+            positive_energy_lamp_coordinates.append(lamp[:2])
+    return positive_energy_lamp_coordinates
 
-    # Find all possible paths from station 1 to station n
-    paths = []
-    for path in all_paths(graph, 1, n):
-        paths.append(path)
+def get_negative_energy_lamp_coordinates(lamp_list):
+    negative_energy_lamp_coordinates = []
+    for lamp in lamp_list:
+        if lamp[2] < 0:
+            negative_energy_lamp_coordinates.append(lamp[:2])
+    return negative_energy_lamp_coordinates
 
-    # Find the path with the maximum length
-    max_length = 0
-    for path in paths:
-        length = len(path) - 1
-        if length > max_length:
-            max_length = length
+def get_line_length(positive_energy_lamp_coordinates, negative_energy_lamp_coordinates):
+    min_length = float('inf')
+    for positive_energy_lamp in positive_energy_lamp_coordinates:
+        for negative_energy_lamp in negative_energy_lamp_coordinates:
+            length = abs(positive_energy_lamp[0] - negative_energy_lamp[0]) + abs(positive_energy_lamp[1] - negative_energy_lamp[1])
+            if length < min_length:
+                min_length = length
+    return min_length
 
-    # Return the minimum length path that a winner can take if at most one road is blocked
-    return max_length
+def main():
+    lamp_list = []
+    num_lamp = int(input())
+    for i in range(num_lamp):
+        lamp_list.append(list(map(int, input().split())))
+    positive_energy_lamp_coordinates = get_positive_energy_lamp_coordinates(lamp_list)
+    negative_energy_lamp_coordinates = get_negative_energy_lamp_coordinates(lamp_list)
+    line_length = get_line_length(positive_energy_lamp_coordinates, negative_energy_lamp_coordinates)
+    print(line_length)
 
-def all_paths(graph, start, end, path=[]):
-    path = path + [start]
-    if start == end:
-        return [path]
-    if start not in graph:
-        return []
-    paths = []
-    for node in graph[start]:
-        if node not in path:
-            paths.extend(all_paths(graph, node, end, path))
-    return paths
+if __name__ == '__main__':
+    main()
 

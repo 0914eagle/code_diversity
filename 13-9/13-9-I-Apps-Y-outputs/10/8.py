@@ -1,13 +1,14 @@
 
-def solve_queries(queries):
-    answers = []
-    for query in queries:
-        l1, r1, l2, r2 = map(int, query)
-        a = max(l1, l2)
-        b = min(r1, r2)
-        if a < b:
-            answers.append([a, b])
-        else:
-            answers.append([b, a])
-    return answers
+def get_hours_until_new_year(hour):
+    current_hour = int(hour)
+    hours_until_new_year = 24 - current_hour
+    return hours_until_new_year
+
+def main():
+    hour = input("Enter the hour: ")
+    hours_until_new_year = get_hours_until_new_year(hour)
+    print(f"We have {hours_until_new_year} hours until New Year at {hour} o'clock on 30th, December.")
+
+if __name__ == '__main__':
+    main()
 

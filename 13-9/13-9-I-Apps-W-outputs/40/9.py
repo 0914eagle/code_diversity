@@ -1,11 +1,24 @@
 
-def solve(c_one, c_two, c_three, c_four, n_buses, n_trolleys, bus_rides, trolley_rides):
-    # Calculate the total cost of each type of ticket
-    cost_one = c_one * sum(bus_rides) + c_one * sum(trolley_rides)
-    cost_two = c_two * (sum(bus_rides) + sum(trolley_rides))
-    cost_three = c_three * (n_buses + n_trolleys)
-    cost_four = c_four
+def get_triangle_area(a, b, c):
+    perimeter = a + b + c
+    semiperimeter = perimeter / 2
+    area = semiperimeter * (semiperimeter - a) * (semiperimeter - b) * (semiperimeter - c)
+    return area
 
-    # Return the minimum cost
-    return min(cost_one, cost_two, cost_three, cost_four)
+def get_min_minutes(a, b, c):
+    area = get_triangle_area(a, b, c)
+    if area > 0:
+        return 0
+    else:
+        max_length = max(a, b, c)
+        min_length = min(a, b, c)
+        mid_length = a + b + c - max_length - min_length
+        return max_length - min_length + mid_length - 1
+
+def main():
+    a, b, c = map(int, input().split())
+    print(get_min_minutes(a, b, c))
+
+if __name__ == '__main__':
+    main()
 

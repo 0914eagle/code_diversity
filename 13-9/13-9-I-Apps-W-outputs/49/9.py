@@ -1,34 +1,34 @@
 
-def max_distinct_numbers(n, cubes):
-    # Sort the cubes in non-decreasing order
-    cubes.sort()
+def solve(n, s, a):
+    # Find the maximum number of gifts Vasya can get by reciting the whole verse
+    max_gifts = sum(a)
     
-    # Initialize the maximum number of distinct numbers as 0
-    max_num_distinct = 0
+    # Initialize the minimum number of gifts Vasya can get by skipping one part
+    min_gifts = 0
     
-    # Initialize the current number of distinct numbers as 0
-    curr_num_distinct = 0
-    
-    # Initialize the first and second heaps as empty lists
-    heap1 = []
-    heap2 = []
-    
-    # Iterate over the cubes
+    # Iterate through each part of the verse
     for i in range(n):
-        # If the current cube is greater than or equal to the previous cube, add it to the first heap
-        if i == 0 or cubes[i] >= cubes[i-1]:
-            heap1.append(cubes[i])
-        # Otherwise, add it to the second heap
-        else:
-            heap2.append(cubes[i])
+        # Calculate the number of gifts Vasya can get by skipping the current part
+        gifts = sum(a[j] for j in range(i)) + sum(a[j] for j in range(i + 1, n))
         
-        # Update the current number of distinct numbers
-        curr_num_distinct += 1
+        # If the number of gifts is greater than the maximum number of gifts, update the maximum number of gifts
+        if gifts > max_gifts:
+            max_gifts = gifts
         
-        # If the current number of distinct numbers is greater than the maximum number of distinct numbers, update the maximum number of distinct numbers
-        if curr_num_distinct > max_num_distinct:
-            max_num_distinct = curr_num_distinct
+        # If the number of gifts is less than the minimum number of gifts, update the minimum number of gifts
+        if gifts < min_gifts:
+            min_gifts = gifts
     
-    # Return the maximum number of distinct numbers and the heaps
-    return [max_num_distinct, heap1, heap2]
+    # Return the part number that Vasya needs to skip to obtain the maximum number of gifts
+    return max_gifts - min_gifts
+
+def main():
+    t = int(input())
+    for _ in range(t):
+        n, s = map(int, input().split())
+        a = list(map(int, input().split()))
+        print(solve(n, s, a))
+
+if __name__ == '__main__':
+    main()
 

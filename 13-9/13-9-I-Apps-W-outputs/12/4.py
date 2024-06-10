@@ -1,12 +1,25 @@
 
-def k_tree_paths(n, k, d):
-    mod = 1000000007
-    dp = [[0] * (n + 1) for _ in range(k + 1)]
-    dp[0][0] = 1
-    for i in range(1, k + 1):
-        for j in range(1, n + 1):
-            if j >= d:
-                dp[i][j] += dp[i - 1][j - d]
-            dp[i][j] += dp[i - 1][j]
-    return dp[k][n] % mod
+def read_input():
+    n = int(input())
+    p = list(map(int, input().split()))
+    return n, p
+
+def sort_permutation(n, p):
+    swaps = []
+    for i in range(n):
+        for j in range(i+1, n):
+            if abs(i-j) >= n//2:
+                swaps.append((i, j))
+                break
+    return swaps
+
+def print_output(swaps):
+    print(len(swaps))
+    for i, j in swaps:
+        print(i, j)
+
+if __name__ == '__main__':
+    n, p = read_input()
+    swaps = sort_permutation(n, p)
+    print_output(swaps)
 

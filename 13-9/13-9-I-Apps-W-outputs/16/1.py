@@ -1,21 +1,25 @@
 
-def solve(s, p):
-    # Initialize the answer array
-    answer = [0] * (len(s) + 1)
+def paint_pixel(grid, row, col):
+    grid[row][col] = "B"
 
-    # Loop through each possible removal length
-    for x in range(len(s)):
-        # Remove x characters from the string
-        s_prime = s[:x] + s[x + 1:]
+def check_square(grid, row, col):
+    if grid[row][col] == "B" and grid[row+1][col] == "B" and grid[row][col+1] == "B" and grid[row+1][col+1] == "B":
+        return True
+    return False
 
-        # Calculate the number of non-overlapping substrings of p in s'
-        occ = 0
-        while s_prime.find(p) != -1:
-            occ += 1
-            s_prime = s_prime[s_prime.find(p) + 1:]
+def solve(grid, moves):
+    for move in moves:
+        row, col = move
+        paint_pixel(grid, row, col)
+        if check_square(grid, row, col):
+            return move[0]
+    return 0
 
-        # Update the answer array
-        answer[x] = max(answer[x], occ)
-
-    return answer
+if __name__ == '__main__':
+    n, m, k = map(int, input().split())
+    grid = [["W"] * m for _ in range(n)]
+    moves = []
+    for _ in range(k):
+        moves.append(tuple(map(int, input().split())))
+    print(solve(grid, moves))
 

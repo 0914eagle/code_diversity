@@ -1,16 +1,22 @@
 
-def count_ways(n):
-    # Initialize a list to store the number of ways for each length
-    ways = [0] * (n + 1)
-    ways[0] = 1
-    
-    for length in range(1, n + 1):
-        # Loop over the possible lengths of the parts
-        for i in range(length):
-            # Check if the length is not a square
-            if length * length != i * i:
-                # Add the number of ways for the current length to the total number of ways
-                ways[length] += ways[i]
-    
-    return ways[n]
+def get_subsequences(sequence, length):
+    subsequences = []
+    for i in range(len(sequence)):
+        for j in range(i+1, len(sequence)):
+            subsequences.append(sequence[i:j+1])
+    return subsequences
+
+def count_subsequences(sequence, length):
+    subsequences = get_subsequences(sequence, length)
+    unique_subsequences = set(map(tuple, subsequences))
+    return len(unique_subsequences) % (10**9 + 7)
+
+def main():
+    n = int(input())
+    sequence = list(map(int, input().split()))
+    for i in range(1, n+1):
+        print(count_subsequences(sequence, i))
+
+if __name__ == '__main__':
+    main()
 

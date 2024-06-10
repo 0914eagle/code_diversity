@@ -1,32 +1,47 @@
 
-def solve(n, m, grid):
-    # Initialize the number of north and south magnets
-    north_magnets, south_magnets = 0, 0
-    
-    # Iterate over each row and column
+def get_card_info(n):
+    card_info = []
     for i in range(n):
-        for j in range(m):
-            # Check if the current cell is black
-            if grid[i][j] == '#':
-                # Check if there is a south magnet in the current row
-                if not any(grid[i][k] == '.' for k in range(m)):
-                    return -1
-                # Check if there is a south magnet in the current column
-                if not any(grid[k][j] == '.' for k in range(n)):
-                    return -1
-    
-    # Iterate over each row and column
+        w, h, q = map(int, input().split())
+        card_info.append((w, h, q))
+    return card_info
+
+def get_envelope_info(k):
+    envelope_info = []
+    for i in range(k):
+        w, h = map(int, input().split())
+        envelope_info.append((w, h))
+    return envelope_info
+
+def get_min_waste(card_info, envelope_info):
+    # Initialize variables
+    n = len(card_info)
+    k = len(envelope_info)
+    waste = 0
+
+    # Sort the card info by area
+    card_info.sort(key=lambda x: x[0] * x[1])
+
+    # Loop through the cards and find the best envelope match
     for i in range(n):
-        for j in range(m):
-            # Check if the current cell is black
-            if grid[i][j] == '#':
-                # Check if there is a north magnet in the current row
-                if any(grid[i][k] == 'N' for k in range(m)):
-                    north_magnets += 1
-                # Check if there is a north magnet in the current column
-                if any(grid[k][j] == 'N' for k in range(n)):
-                    north_magnets += 1
-    
-    # Return the minimum number of north magnets required
-    return north_magnets
+        card = card_info[i]
+        # Find the first envelope that is large enough
+        for j in range(k):
+            envelope = envelope_info[j]
+            if card[0] <= envelope[0] and card[1] <= envelope[1]:
+                break
+        # Calculate the waste for this card
+        waste += (envelope[0] * envelope[1]) - (card[0] * card[1])
+
+    return waste
+
+def main():
+    n, k = map(int, input().split())
+    card_info = get_card_info(n)
+    envelope_info = get_envelope_info(k)
+    waste = get_min_waste(card_info, envelope_info)
+    print(waste)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,9 +1,14 @@
 
-def solve(a, b, c):
-    result = 0
-    for i in range(1, a+1):
-        for j in range(1, b+1):
-            for k in range(1, c+1):
-                result += i*j*k
-    return result % 998244353
+def get_login(first_name, last_name):
+    # find the earliest possible login for the given names
+    return earliest_login(first_name, last_name)
+
+def earliest_login(first_name, last_name):
+    # find the earliest possible login for the given names
+    return first_name[0] + last_name[0]
+
+if __name__ == '__main__':
+    first_name = input("Enter the first name: ")
+    last_name = input("Enter the last name: ")
+    print(get_login(first_name, last_name))
 

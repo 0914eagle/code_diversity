@@ -1,23 +1,23 @@
 
-def get_finalists(n, results):
-    # Sort the results in ascending order
-    sorted_results = sorted(results)
+def gcd(a, b):
+    if b == 0:
+        return a
+    else:
+        return gcd(b, a % b)
 
-    # Initialize the finalists as all zeros
-    finalists = [0] * n
+def gcd_efficient(a, b):
+    while b != 0:
+        a, b = b, a % b
+    return a
 
-    # Determine the k value based on the number of finalists needed
-    k = n // 2
+def input_numbers():
+    a, b = map(int, input().split())
+    return a, b
 
-    # Fill the finalists list with the top k results from each semifinal
-    for i in range(k):
-        finalists[i] = 1
-        finalists[n - 1 - i] = 1
+def main():
+    a, b = input_numbers()
+    print(gcd_efficient(a, b))
 
-    # Fill the remaining places with the top (n - 2k) results from each semifinal
-    for i in range(k, n - k):
-        finalists[i] = 1
-        finalists[n - 1 - i] = 1
-
-    return finalists
+if __name__ == '__main__':
+    main()
 

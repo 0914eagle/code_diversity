@@ -1,23 +1,34 @@
 
-def solve(A, B, k, m):
-    if len(A) < k or len(B) < m:
-        return "NO"
+def get_max_minutes(a1, a2):
+    # Initialize variables
+    minutes = 0
+    charged_a1 = a1
+    charged_a2 = a2
     
-    i = 0
-    j = 0
-    count = 0
-    while i < len(A) and j < len(B):
-        if A[i] < B[j]:
-            i += 1
-            count += 1
-        elif A[i] > B[j]:
-            j += 1
-        else:
-            i += 1
-            j += 1
+    # Loop until both joysticks are discharged
+    while charged_a1 > 0 and charged_a2 > 0:
+        # Increment minutes
+        minutes += 1
+        
+        # Charged joystick
+        if charged_a1 < a1:
+            charged_a1 += 1
+        if charged_a2 < a2:
+            charged_a2 += 1
+        
+        # Discharged joystick
+        if charged_a1 == 0:
+            charged_a1 = a1
+        if charged_a2 == 0:
+            charged_a2 = a2
     
-    if count == k:
-        return "YES"
-    else:
-        return "NO"
+    # Return maximum minutes
+    return minutes
+
+def main():
+    a1, a2 = map(int, input().split())
+    print(get_max_minutes(a1, a2))
+
+if __name__ == '__main__':
+    main()
 

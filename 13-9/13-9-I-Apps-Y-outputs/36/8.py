@@ -1,14 +1,23 @@
 
-def is_box_big_enough(boxes, V):
-    # Sort the boxes by volume in descending order
-    sorted_boxes = sorted(boxes, key=lambda x: x[2], reverse=True)
+def get_judgment(instance):
+    m, n = instance[0], instance[1]
+    clauses = instance[2:]
+    
+    # Check if the instance has 8 or more clauses
+    if len(clauses) >= 8:
+        return "satisfactory"
+    
+    # Check if the instance is satisfiable
+    for clause in clauses:
+        if all(lit != 0 for lit in clause):
+            return "unsatisfactory"
+    
+    return "unsatisfactory"
 
-    # Initialize the largest box and its volume
-    largest_box = sorted_boxes[0]
-    largest_volume = largest_box[2]
+def main():
+    instance = [int(x) for x in input().split()]
+    print(get_judgment(instance))
 
-    # Calculate the difference between the largest box volume and V
-    difference = largest_volume - V
-
-    return difference
+if __name__ == '__main__':
+    main()
 

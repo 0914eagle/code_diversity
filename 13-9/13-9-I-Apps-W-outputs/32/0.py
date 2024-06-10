@@ -1,38 +1,25 @@
 
-def solve(n, k, initial_state):
-    # Initialize the state of the chips
-    state = list(initial_state)
+def get_bouquets(n, a, b):
+    # Initialize a list to store the bouquets
+    bouquets = []
+    
+    # Loop through each possible number of flowers in the bouquet
+    for i in range(1, n + 1):
+        # Check if the number of flowers is not equal to a or b
+        if i != a and i != b:
+            # Add the number of flowers to the list of bouquets
+            bouquets.append(i)
+    
+    # Return the number of bouquets, modulo (10^9 + 7)
+    return len(bouquets) % (10**9 + 7)
 
-    # Iterate over the number of iterations
-    for i in range(k):
-        # Iterate over the chips
-        for j in range(n):
-            # Get the neighbors of the current chip
-            neighbors = get_neighbors(j, n)
+def main():
+    # Read the input from stdin
+    n, a, b = map(int, input().split())
+    
+    # Call the get_bouquets function and print the result
+    print(get_bouquets(n, a, b))
 
-            # Count the number of white and black chips among the neighbors
-            num_white, num_black = 0, 0
-            for neighbor in neighbors:
-                if state[neighbor] == "W":
-                    num_white += 1
-                else:
-                    num_black += 1
-
-            # Check if the current chip should become white or black
-            if num_white > num_black:
-                state[j] = "W"
-            else:
-                state[j] = "B"
-
-    # Return the final state of the chips
-    return "".join(state)
-
-def get_neighbors(i, n):
-    # Handle the edge cases
-    if i == 0:
-        return [n-1, 1, 2]
-    elif i == n-1:
-        return [n-2, n-1, 0]
-    else:
-        return [i-1, i, i+1]
+if __name__ == '__main__':
+    main()
 

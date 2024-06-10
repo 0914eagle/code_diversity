@@ -1,46 +1,47 @@
 
 import math
 
-def largest_area_corn_fields(polygon, canal):
-    # Convert the polygon and canal to arrays
-    polygon = np.array(polygon)
-    canal = np.array(canal)
+def distance(x1, y1, x2, y2):
+    return math.sqrt((x2-x1)**2 + (y2-y1)**2)
 
-    # Find the center of the polygon
-    center = polygon.mean(axis=0)
+def find_leash_length(toy_coordinates, tree_coordinates):
+    # Initialize the leash length to 0
+    leash_length = 0
+    
+    # Loop through the toy coordinates and add the distance to the leash length
+    for i in range(len(toy_coordinates)):
+        leash_length += distance(toy_coordinates[i][0], toy_coordinates[i][1], 0, 0)
+    
+    # If there are trees, loop through the tree coordinates and add the distance to the leash length
+    if tree_coordinates:
+        for i in range(len(tree_coordinates)):
+            leash_length += distance(tree_coordinates[i][0], tree_coordinates[i][1], 0, 0)
+    
+    # Return the leash length
+    return leash_length
 
-    # Find the distance of each vertex from the center
-    distances = np.linalg.norm(polygon - center, axis=1)
+def main():
+    # Read the number of toys and trees
+    n, m = map(int, input().split())
+    
+    # Read the toy coordinates
+    toy_coordinates = []
+    for i in range(n):
+        x, y = map(int, input().split())
+        toy_coordinates.append((x, y))
+    
+    # Read the tree coordinates
+    tree_coordinates = []
+    for i in range(m):
+        x, y = map(int, input().split())
+        tree_coordinates.append((x, y))
+    
+    # Find the leash length
+    leash_length = find_leash_length(toy_coordinates, tree_coordinates)
+    
+    # Print the leash length
+    print(round(leash_length, 2))
 
-    # Sort the vertices by their distance from the center
-    sorted_indices = np.argsort(distances)
-
-    # Initialize the largest area and the current area
-    largest_area = 0
-    current_area = 0
-
-    # Iterate through the sorted vertices
-    for i in range(len(polygon)):
-        # Find the next vertex after the current one
-        j = (i + 1) % len(polygon)
-
-        # Find the area of the triangle formed by the current vertex, the next vertex, and the center
-        area = math.triangle_area(polygon[i], polygon[j], center)
-
-        # If the area is positive, it means that the triangle is oriented counterclockwise, which means that the vertex is inside the polygon
-        if area > 0:
-            # Add the area to the current area
-            current_area += area
-
-            # If the current area is greater than the largest area, update the largest area
-            if current_area > largest_area:
-                largest_area = current_area
-
-        # If the area is zero, it means that the vertex is on the border of the polygon
-        elif area == 0:
-            # Add the area of the triangle formed by the current vertex, the next vertex, and the center to the current area
-            current_area += math.triangle_area(polygon[i], polygon[j], center)
-
-    # Return the largest area
-    return largest_area
+if __name__ == '__main__':
+    main()
 

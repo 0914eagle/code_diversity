@@ -1,20 +1,32 @@
 
-def get_min_light_radius(lanterns, street_length):
-    # Sort the lanterns by their position
-    lanterns.sort()
+def get_number_of_ways(n, k, lamps):
+    # Initialize a dictionary to store the number of ways for each combination of lamps
+    number_of_ways = {}
     
-    # Initialize the minimum light radius to the maximum possible value
-    min_radius = float('inf')
-    
-    # Iterate over each pair of adjacent lanterns
-    for i in range(len(lanterns) - 1):
-        # Calculate the distance between the two lanterns
-        distance = lanterns[i + 1] - lanterns[i]
+    # Iterate over all possible combinations of lamps
+    for combination in combinations(lamps, k):
+        # Initialize a flag to indicate if the combination is valid
+        valid_combination = True
         
-        # If the distance is less than the minimum light radius, update the minimum light radius
-        if distance < min_radius:
-            min_radius = distance
+        # Iterate over all lamps in the combination
+        for lamp in combination:
+            # If any lamp is not turned on at the same time, the combination is not valid
+            if lamp not in lamps[lamp]:
+                valid_combination = False
+                break
+        
+        # If the combination is valid, increment the number of ways
+        if valid_combination:
+            number_of_ways[combination] = number_of_ways.get(combination, 0) + 1
     
-    # Return the minimum light radius
-    return min_radius
+    # Return the number of ways modulo 998244353
+    return sum(number_of_ways.values()) % 998244353
+
+def main():
+    n, k = map(int, input().split())
+    lamps = [set(map(int, input().split())) for _ in range(n)]
+    print(get_number_of_ways(n, k, lamps))
+
+if __name__ == '__main__':
+    main()
 

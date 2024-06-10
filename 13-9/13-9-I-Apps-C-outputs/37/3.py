@@ -1,33 +1,36 @@
 
-def solve(n, graph):
-    # Initialize a dictionary to store the values of the inputs
-    inputs = {}
-    for i in range(n):
-        inputs[i+1] = 0
+def get_perfect_sets(k):
+    # Initialize a set to store the perfect sets
+    perfect_sets = set()
+    
+    # Iterate from 0 to k
+    for i in range(k+1):
+        # Initialize a set to store the elements of the current set
+        curr_set = set()
+        # Iterate from 0 to i
+        for j in range(i+1):
+            # If the current element is not in the current set, add it
+            if j not in curr_set:
+                curr_set.add(j)
+                # If the current set is perfect, add it to the perfect sets
+                if is_perfect(curr_set):
+                    perfect_sets.add(frozenset(curr_set))
+    
+    # Return the number of perfect sets modulo 1000000007
+    return len(perfect_sets) % 1000000007
 
-    # Initialize a dictionary to store the values of the outputs
-    outputs = {}
-    for i in range(n):
-        outputs[i+1] = 0
+def is_perfect(s):
+    # Iterate over all pairs of elements in the set
+    for i in s:
+        for j in s:
+            # If the exclusive or of the two elements is not in the set, return False
+            if i ^ j not in s:
+                return False
+    
+    # If all pairs of elements have an exclusive or in the set, return True
+    return True
 
-    # Iterate through the graph and calculate the values of the outputs
-    for i in range(n):
-        if graph[i][0] == "IN":
-            # If the vertex is an input, set its value to the given input value
-            outputs[i+1] = inputs[i+1]
-        elif graph[i][0] == "AND":
-            # If the vertex is an AND gate, calculate the output value based on the inputs
-            outputs[i+1] = inputs[graph[i][1]] & inputs[graph[i][2]]
-        elif graph[i][0] == "OR":
-            # If the vertex is an OR gate, calculate the output value based on the inputs
-            outputs[i+1] = inputs[graph[i][1]] | inputs[graph[i][2]]
-        elif graph[i][0] == "XOR":
-            # If the vertex is an XOR gate, calculate the output value based on the inputs
-            outputs[i+1] = inputs[graph[i][1]] ^ inputs[graph[i][2]]
-        elif graph[i][0] == "NOT":
-            # If the vertex is a NOT gate, calculate the output value based on the input
-            outputs[i+1] = ~inputs[graph[i][1]] & 1
-
-    # Return the values of the outputs
-    return "".join(str(int(outputs[i+1])) for i in range(n))
+if __name__ == '__main__':
+    k = int(input())
+    print(get_perfect_sets(k))
 

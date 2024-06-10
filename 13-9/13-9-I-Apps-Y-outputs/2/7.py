@@ -1,10 +1,11 @@
 
-def fidget_cubes(v):
-    # Calculate the minimum surface area of a rectangular box to hold v fidget cubes
-    surface_area = 6 * v
-    
-    # Calculate the cost of the box
-    cost = surface_area / 1
-    
-    return cost
+def get_next_letter(letter):
+    return chr(ord(letter) + 1)
+
+def main():
+    letter = input("Enter a lowercase English letter that is not z: ")
+    print(get_next_letter(letter))
+
+if __name__ == '__main__':
+    main()
 

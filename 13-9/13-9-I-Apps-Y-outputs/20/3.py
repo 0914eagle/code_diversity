@@ -1,10 +1,24 @@
 
-def solve(s1, s2, s3, s4):
-    # Calculate the perimeter of the quadrilateral
-    perimeter = s1 + s2 + s3 + s4
+def get_min_and_max_numbers(L, D, X):
+    for N in range(L, D+1):
+        if sum(int(digit) for digit in str(N)) == X:
+            M = N
+            break
+    else:
+        return -1, -1
     
-    # Calculate the maximum area using Heron's formula
-    area = (perimeter * (perimeter - s1) * (perimeter - s2) * (perimeter - s3) * (perimeter - s4)) ** 0.5
+    for M in range(L, D+1):
+        if sum(int(digit) for digit in str(M)) == X:
+            break
     
-    return area
+    return N, M
+
+def main():
+    L, D, X = map(int, input().split())
+    N, M = get_min_and_max_numbers(L, D, X)
+    print(N)
+    print(M)
+
+if __name__ == '__main__':
+    main()
 

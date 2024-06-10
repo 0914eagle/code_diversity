@@ -1,11 +1,13 @@
 
-def tasks_completed(tasks, T):
-    total_time = 0
-    count = 0
-    for task in tasks:
-        total_time += task
-        count += 1
-        if total_time > T:
-            return count - 1
-    return count
+def get_magnitude(estimate):
+    return len(str(estimate))
+
+def main():
+    num_cases = int(input())
+    for _ in range(num_cases):
+        estimate = int(input())
+        print(get_magnitude(estimate))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,27 +1,24 @@
 
-def get_non_similar_worlds(n, m):
-    # Initialize the graph with only the s and t vertices
-    graph = {s: set(), t: set()}
+def read_input():
+    n, k = map(int, input().split())
+    return n, k
 
-    # Iterate over the number of changes
-    for i in range(n):
-        # Add a new vertex to the graph
-        w = i + 2
-        graph[w] = set()
+def find_number_of_ways(n, k):
+    # Initialize a list to store the number of ways to write the numbers on the houses' plaques
+    ways = [0] * (n + 1)
+    ways[0] = 1
+    
+    # Iterate through each house and calculate the number of ways to write the number on the plaque
+    for i in range(1, n + 1):
+        ways[i] = sum(ways[j] for j in range(i, min(i + k, n + 1)))
+    
+    # Return the number of ways modulo 1000000007
+    return ways[n] % 1000000007
 
-        # Choose an edge (u, v) at random and add the two new edges (u, w) and (v, w)
-        u, v = random.sample(graph, 2)
-        graph[u].add(w)
-        graph[v].add(w)
-        graph[w].add(u)
-        graph[w].add(v)
+def main():
+    n, k = read_input()
+    print(find_number_of_ways(n, k))
 
-    # Count the number of non-similar worlds
-    non_similar_worlds = 0
-    for u in graph:
-        for v in graph:
-            if u != v and graph[u] == graph[v]:
-                non_similar_worlds += 1
-
-    return non_similar_worlds % (10**9 + 7)
+if __name__ == '__main__':
+    main()
 

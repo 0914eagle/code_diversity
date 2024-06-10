@@ -1,21 +1,53 @@
 
-def calculate_slugging_percentage(at_bats):
-    # Initialize variables to keep track of bases and walks
-    bases = 0
-    walks = 0
-    
-    # Iterate through the list of at-bats
-    for at_bat in at_bats:
-        # If at-bat is a walk, increment walks by 1
-        if at_bat == -1:
-            walks += 1
-        # Otherwise, increment bases by the value of the at-bat
+def get_optimal_platform_placement(points, k):
+    # Sort the points by their x-coordinates
+    sorted_points = sorted(points, key=lambda x: x[0])
+
+    # Initialize the optimal placement with the first platform placed at the leftmost point
+    optimal_placement = [(sorted_points[0], sorted_points[0] + k)]
+
+    # Iterate through the remaining points
+    for i in range(1, len(sorted_points)):
+        # Check if the current point is within the range of the current platform
+        if sorted_points[i][0] <= optimal_placement[-1][1][0]:
+            # If the current point is within the range, update the right border of the platform
+            optimal_placement[-1][1] = (sorted_points[i] + k)
         else:
-            bases += at_bat
-    
-    # Calculate slugging percentage by dividing bases by number of at-bats minus walks
-    slugging_percentage = bases / (len(at_bats) - walks)
-    
-    # Return the slugging percentage
-    return slugging_percentage
+            # If the current point is not within the range, create a new platform
+            optimal_placement.append((sorted_points[i], sorted_points[i] + k))
+
+    return optimal_placement
+
+def get_saved_points(platforms, points):
+    # Initialize the saved points with an empty list
+    saved_points = []
+
+    # Iterate through the platforms
+    for platform in platforms:
+        # Iterate through the points
+        for point in points:
+            # Check if the point is within the range of the current platform
+            if platform[0][0] <= point[0] <= platform[1][0]:
+                # If the point is within the range, add it to the saved points
+                saved_points.append(point)
+
+    return saved_points
+
+def main():
+    t = int(input())
+
+    for _ in range(t):
+        n, k = map(int, input().split())
+        points = []
+        for _ in range(n):
+            x, y = map(int, input().split())
+            points.append((x, y))
+
+        platforms = get_optimal_platform_placement(points, k)
+        saved_points = get_saved_points(platforms, points)
+
+        print(len(saved_points))
+
+if __name__ == '__main__':
+    main()
 

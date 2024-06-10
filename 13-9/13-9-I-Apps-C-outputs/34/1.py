@@ -1,38 +1,33 @@
 
-def solve(N, program, grid):
-    # Initialize the robot's current location and trail
-    current_location = (0, 0)
-    trail = [current_location]
+def get_longest_repeated_substring(input_string):
+    # Initialize variables
+    longest_substring = ""
+    current_substring = ""
+    substring_length = 0
+    
+    # Iterate through the input string
+    for i in range(len(input_string)):
+        # Check if the current character is already in the current substring
+        if input_string[i] in current_substring:
+            # If it is, update the longest substring and reset the current substring
+            if len(current_substring) > len(longest_substring):
+                longest_substring = current_substring
+            current_substring = ""
+        # If the current character is not in the current substring, add it to the current substring
+        else:
+            current_substring += input_string[i]
+    
+    # If the current substring is longer than the longest substring, update the longest substring
+    if len(current_substring) > len(longest_substring):
+        longest_substring = current_substring
+    
+    return longest_substring
 
-    # Iterate through the program
-    for instruction in program:
-        # Get the new location of the robot based on the instruction
-        if instruction == '<':
-            new_location = (current_location[0] - 1, current_location[1])
-        elif instruction == '>':
-            new_location = (current_location[0] + 1, current_location[1])
-        elif instruction == '^':
-            new_location = (current_location[0], current_location[1] - 1)
-        elif instruction == 'v':
-            new_location = (current_location[0], current_location[1] + 1)
+def main():
+    input_string = input()
+    longest_repeated_substring = get_longest_repeated_substring(input_string)
+    print(longest_repeated_substring)
 
-        # Check if the new location is passable
-        if grid[new_location[0]][new_location[1]] == '#':
-            continue
-
-        # Update the robot's location and trail
-        current_location = new_location
-        trail.append(current_location)
-
-    # Check if the trail is finite
-    if len(trail) < N * N:
-        return 1
-
-    # Find the smallest X such that the suffix of the trail is a repetition of a continuous subsequence of the trail of length exactly X
-    for X in range(2, N * N):
-        if trail[-X:] == trail[:X]:
-            return X
-
-    # If no such X exists, return 1
-    return 1
+if __name__ == '__main__':
+    main()
 

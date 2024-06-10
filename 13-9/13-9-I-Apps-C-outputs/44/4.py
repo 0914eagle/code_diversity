@@ -1,39 +1,41 @@
 
-def solve(n, flights):
-    # Initialize a graph with the given flights
-    graph = {i: set() for i in range(1, n + 1)}
-    for flight in flights:
-        graph[flight[0]].add(flight[1])
-        graph[flight[1]].add(flight[0])
+def create_splitter_network(a, b, c, d):
+    # Initialize the network with a single input belt and two output belts
+    network = [(0, 1, 2)]
+    splitters = []
+    
+    # Loop until the desired splitter ratio is reached
+    while True:
+        # Find the splitter with the lowest index that can be used to distribute the input
+        current_splitter = min(network, key=lambda x: x[0])
+        
+        # If the current splitter has a ratio that matches the desired ratio, return the network
+        if current_splitter[1] == c and current_splitter[2] == d:
+            return network
+        
+        # Otherwise, create a new splitter with the desired ratio and add it to the network
+        new_splitter = (len(network), c, d)
+        network.append(new_splitter)
+        splitters.append(new_splitter)
+        
+        # Connect the new splitter to the input and output belts
+        network.append((new_splitter[0], current_splitter[1], new_splitter[1]))
+        network.append((new_splitter[0], new_splitter[2], current_splitter[2]))
+        
+        # Update the network with the new splitter
+        network.remove(current_splitter)
+        network.append(new_splitter)
+    
+    # Return the network with the desired splitter ratio
+    return network
 
-    # Find the flight with the maximum number of changes
-    max_changes = 0
-    flight_to_cancel = None
-    for city in graph:
-        changes = 0
-        for neighbor in graph[city]:
-            if neighbor != city:
-                changes += 1
-        if changes > max_changes:
-            max_changes = changes
-            flight_to_cancel = city
+def main():
+    a, b, c, d = map(int, input().split())
+    network = create_splitter_network(a, b, c, d)
+    print(len(network))
+    for splitter in network:
+        print(splitter[0], splitter[1], splitter[2])
 
-    # Find the city pair with the minimum number of changes
-    min_changes = float('inf')
-    city_pair = None
-    for city1 in graph:
-        for city2 in graph[city1]:
-            if city1 < city2 and graph[city2].issuperset({city1}):
-                changes = 0
-                for neighbor in graph[city1]:
-                    if neighbor != city1 and neighbor != city2:
-                        changes += 1
-                for neighbor in graph[city2]:
-                    if neighbor != city1 and neighbor != city2:
-                        changes += 1
-                if changes < min_changes:
-                    min_changes = changes
-                    city_pair = (city1, city2)
-
-    return [max_changes, flight_to_cancel, city_pair]
+if __name__ == '__main__':
+    main()
 

@@ -1,24 +1,29 @@
 
-def solve(n, x, arr):
-    # Calculate the denominator
-    denominator = 1
-    for i in arr:
-        denominator *= x ** i
+def solve(n, s, t, p):
+    # Initialize a dictionary to keep track of the position of the marble
+    marble_pos = {i: i for i in range(1, n+1)}
+    marble_pos[s] = t
     
-    # Calculate the numerator
-    numerator = 0
-    for i in arr:
-        numerator += x ** -i
+    # Initialize a list to keep track of the shuffling operations
+    shuffles = []
     
-    # Calculate the greatest common divisor
-    gcd = gcd_euclid(numerator, denominator)
+    # Loop through the shuffling operations and apply them to the marble position
+    for i in range(len(p)):
+        pos = p[i]
+        marble_pos[pos] = marble_pos[pos-1]
+        shuffles.append(pos)
     
-    # Return the result modulo 1000000007
-    return gcd % 1000000007
-
-def gcd_euclid(a, b):
-    if b == 0:
-        return a
+    # Check if the marble has reached its final position
+    if marble_pos[t] == t:
+        return len(shuffles)
     else:
-        return gcd_euclid(b, a % b)
+        return -1
+
+def main():
+    n, s, t = map(int, input().split())
+    p = list(map(int, input().split()))
+    print(solve(n, s, t, p))
+
+if __name__ == '__main__':
+    main()
 

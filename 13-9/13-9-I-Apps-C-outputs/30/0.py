@@ -1,66 +1,28 @@
 
-def intergalactic_surgeon(grid):
-    # Initialize variables
-    rows, cols = len(grid), len(grid[0])
-    organs = [i for i in range(1, cols * 2 + 1)]
-    empty_cell = (rows - 1, cols)
-    moves = []
+def get_clock_angle(hour, minute, second):
+    angle = (hour * 30) + (minute * 0.5)
+    return angle
 
-    # Check if the grid is valid
-    for i in range(rows):
-        for j in range(cols):
-            if grid[i][j] != "E" and grid[i][j] not in organs:
-                return "SURGERY FAILED"
+def get_hand_distance(angle1, angle2):
+    distance = abs(angle1 - angle2)
+    if distance > 180:
+        distance = 360 - distance
+    return distance
 
-    # Move the organs to their correct positions
-    for i in range(rows):
-        for j in range(cols):
-            if grid[i][j] != "E":
-                current_organ = grid[i][j]
-                target_cell = (i, organs.index(current_organ))
-                moves.append(move_organ(grid, empty_cell, target_cell))
-                empty_cell = target_cell
-                organs.remove(current_organ)
+def can_prepare_contest(hour, minute, second, t1, t2):
+    clock_angle = get_clock_angle(hour, minute, second)
+    hand_distance = get_hand_distance(clock_angle, t1)
+    if hand_distance == 0:
+        return "YES"
+    hand_distance += get_hand_distance(clock_angle, t2)
+    if hand_distance == 0:
+        return "YES"
+    return "NO"
 
-    return "SURGERY COMPLETE\n" + "".join(moves)
+def main():
+    hour, minute, second, t1, t2 = map(int, input().split())
+    print(can_prepare_contest(hour, minute, second, t1, t2))
 
-def move_organ(grid, empty_cell, target_cell):
-    # Check if the target cell is empty
-    if grid[target_cell[0]][target_cell[1]] != "E":
-        return ""
-
-    # Check if the target cell is in the same row as the empty cell
-    if target_cell[0] == empty_cell[0]:
-        # Check if the target cell is to the left of the empty cell
-        if target_cell[1] < empty_cell[1]:
-            return "l"
-        # Check if the target cell is to the right of the empty cell
-        else:
-            return "r"
-
-    # Check if the target cell is in the same column as the empty cell
-    if target_cell[1] == empty_cell[1]:
-        # Check if the target cell is above the empty cell
-        if target_cell[0] < empty_cell[0]:
-            return "u"
-        # Check if the target cell is below the empty cell
-        else:
-            return "d"
-
-    # Check if the target cell is in the center of the grid
-    if target_cell[0] == (empty_cell[0] + 1) // 2 and target_cell[1] == (empty_cell[1] + 1) // 2:
-        # Check if the target cell is above and to the left of the empty cell
-        if target_cell[0] < empty_cell[0] and target_cell[1] < empty_cell[1]:
-            return "l"
-        # Check if the target cell is above and to the right of the empty cell
-        elif target_cell[0] < empty_cell[0] and target_cell[1] > empty_cell[1]:
-            return "r"
-        # Check if the target cell is below and to the left of the empty cell
-        elif target_cell[0] > empty_cell[0] and target_cell[1] < empty_cell[1]:
-            return "u"
-        # Check if the target cell is below and to the right of the empty cell
-        else:
-            return "d"
-
-    return ""
+if __name__ == '__main__':
+    main()
 

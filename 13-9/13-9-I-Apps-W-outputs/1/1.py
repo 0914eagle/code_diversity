@@ -1,25 +1,35 @@
 
-def max_rows_clean(n, grid):
-    # Initialize the number of rows cleaned to 0
-    rows_cleaned = 0
+def solve(s):
+    # Initialize variables
+    n = len(s)
+    count = 0
+    i = 0
 
-    # Iterate through each column of the grid
-    for col in range(n):
-        # Initialize the number of rows cleaned in this column to 0
-        rows_cleaned_in_col = 0
+    # Loop through the string
+    while i < n:
+        # If the current character is not equal to the next character, increment the count and move on
+        if s[i] != s[i+1]:
+            count += 1
+            i += 1
+        # If the current character is equal to the next character, delete the contiguous substring
+        else:
+            count += 1
+            # Find the length of the contiguous substring
+            length = 1
+            while i+length < n and s[i] == s[i+length]:
+                length += 1
+            # Increment the count by the length of the substring
+            count += length
+            # Move the index to the end of the substring
+            i += length
 
-        # Iterate through each row of the grid
-        for row in range(n):
-            # Check if the current square is clean
-            if grid[row][col] == "0":
-                # If the current square is clean, increment the number of rows cleaned in this column
-                rows_cleaned_in_col += 1
+    return count
 
-        # Check if the number of rows cleaned in this column is equal to the number of rows in the grid
-        if rows_cleaned_in_col == n:
-            # If so, increment the total number of rows cleaned
-            rows_cleaned += 1
+def main():
+    n = int(input())
+    s = input()
+    print(solve(s))
 
-    # Return the total number of rows cleaned
-    return rows_cleaned
+if __name__ == '__main__':
+    main()
 

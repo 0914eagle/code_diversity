@@ -1,22 +1,33 @@
 
-def solve(n, a):
-    # Check if at least one box has at least one chocolate piece
-    if not any(a):
-        return -1
+def get_input():
+    n, m = map(int, input().split())
+    arr = []
+    for _ in range(n):
+        arr.append(int(input()))
+    return n, m, arr
+
+def solve(n, m, arr):
+    # Sort the array using a stable sorting algorithm
+    arr.sort()
     
-    # Find the smallest positive integer that is common to all boxes
-    gcd = a[0]
-    for i in range(1, n):
-        gcd = math.gcd(gcd, a[i])
+    # Initialize a counter to keep track of the number of digits changed
+    count = 0
     
-    # If the GCD is 1, then there is no way to make Alice happy
-    if gcd == 1:
-        return -1
+    # Iterate through the array and change the digits of the elements as needed
+    for i in range(n - 1):
+        if arr[i] // 10**(m - 1) == arr[i + 1] // 10**(m - 1):
+            count += 1
+            arr[i] += 1
     
-    # Calculate the minimum number of seconds needed to make Alice happy
-    seconds = 0
-    for i in range(n):
-        seconds += a[i] // gcd
-    
-    return seconds
+    # Return the sorted array and the number of digits changed
+    return arr, count
+
+def main():
+    n, m, arr = get_input()
+    sorted_arr, count = solve(n, m, arr)
+    print(sorted_arr)
+    print(count)
+
+if __name__ == '__main__':
+    main()
 

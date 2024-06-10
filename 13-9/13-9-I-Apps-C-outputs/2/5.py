@@ -1,37 +1,39 @@
 
-def solve(n, t, m, spio_cheers):
-    # Initialize the variables
-    sportify_goals = 0
-    spoilify_goals = 0
-    cheerleaders = []
+def get_max_blocks_and_x(m):
+    # Initialize variables
+    max_blocks = 0
+    max_x = 0
+    
+    # Iterate through all possible values of X
+    for x in range(1, m + 1):
+        # Initialize variables for this value of X
+        blocks = 0
+        volume = 0
+        
+        # Iterate through all possible values of the side of the blocks
+        for side in range(1, int(m ** (1/3)) + 1):
+            # Calculate the volume of the block
+            volume += side ** 3
+            
+            # If the volume is less than or equal to X, add the block to the tower
+            if volume <= x:
+                blocks += 1
+            else:
+                break
+        
+        # If the number of blocks is greater than the current maximum, update the maximum values
+        if blocks > max_blocks:
+            max_blocks = blocks
+            max_x = x
+    
+    # Return the maximum number of blocks and X
+    return max_blocks, max_x
 
-    # Add the Spoilify cheerleaders to the list
-    for i in range(m):
-        cheerleaders.append([spio_cheers[i][0], spio_cheers[i][1]])
+def main():
+    m = int(input())
+    max_blocks, max_x = get_max_blocks_and_x(m)
+    print(max_blocks, max_x)
 
-    # Sort the cheerleaders by their starting time
-    cheerleaders.sort(key=lambda x: x[0])
-
-    # Iterate through the 90 minutes of the game
-    for i in range(90):
-        # Check if any Spoilify cheerleaders are active at the current time
-        active_spio_cheerleaders = []
-        for cheerleader in cheerleaders:
-            if i >= cheerleader[0] and i < cheerleader[1]:
-                active_spio_cheerleaders.append(cheerleader)
-
-        # Check if any Sportify cheerleaders are active at the current time
-        active_sportify_cheerleaders = []
-        for j in range(n):
-            if i >= j * (t // n) and i < (j + 1) * (t // n):
-                active_sportify_cheerleaders.append(j)
-
-        # Update the goal counts
-        if len(active_spio_cheerleaders) > len(active_sportify_cheerleaders):
-            spoilify_goals += 1
-        elif len(active_spio_cheers) < len(active_sportify_cheerleaders):
-            sportify_goals += 1
-
-    # Return the goal counts
-    return sportify_goals, spoilify_goals
+if __name__ == '__main__':
+    main()
 

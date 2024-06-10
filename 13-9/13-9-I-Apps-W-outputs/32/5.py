@@ -1,34 +1,35 @@
 
-def solve(n, k, chips):
-    # Initialize the result string
-    result = ""
+import sys
+import math
 
-    # Iterate over the given number of iterations
-    for i in range(k):
-        # Iterate over the chips
-        for j in range(n):
-            # Find the indices of the three neighbors
-            indices = [j-1, j, j+1]
-            indices[0] = indices[0] % n
-            indices[2] = indices[2] % n
+def get_input():
+    n, a, b = map(int, sys.stdin.readline().strip().split())
+    return n, a, b
 
-            # Count the number of white and black chips among the neighbors
-            white_neighbors = 0
-            black_neighbors = 0
-            for idx in indices:
-                if chips[idx] == "W":
-                    white_neighbors += 1
-                else:
-                    black_neighbors += 1
+def count_bouquets(n, a, b):
+    # Initialize the number of bouquets to 0
+    num_bouquets = 0
+    
+    # Iterate over all possible number of flowers in the bouquet
+    for num_flowers in range(1, n + 1):
+        # Check if the number of flowers is not equal to a or b
+        if num_flowers != a and num_flowers != b:
+            # Increment the number of bouquets
+            num_bouquets += 1
+    
+    # Return the number of bouquets modulo (10^9 + 7)
+    return num_bouquets % (10**9 + 7)
 
-            # Update the current chip based on the number of white and black neighbors
-            if white_neighbors > black_neighbors:
-                chips[j] = "W"
-            else:
-                chips[j] = "B"
+def main():
+    # Read the input
+    n, a, b = get_input()
+    
+    # Calculate the number of bouquets
+    num_bouquets = count_bouquets(n, a, b)
+    
+    # Print the number of bouquets
+    print(num_bouquets)
 
-        # Update the result string
-        result += "".join(chips)
-
-    return result
+if __name__ == '__main__':
+    main()
 

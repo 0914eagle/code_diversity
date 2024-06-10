@@ -1,29 +1,44 @@
 
-def get_maximum_value(k, n, employees):
-    # Sort the employees by their productivity in descending order
-    employees.sort(key=lambda x: x[1], reverse=True)
+def get_input():
+    N = int(input())
+    statements = []
+    for i in range(N):
+        statements.append(input())
+    return statements
+
+def check_consistency(statements):
+    # Initialize a dictionary to store the relationships between words
+    relationships = {}
+    for statement in statements:
+        # Split the statement into two words
+        words = statement.split()
+        # Check if the words are already in the dictionary
+        if words[0] in relationships and words[1] in relationships[words[0]]:
+            # If both words are already in the dictionary and they are not equal, return "wait what?"
+            return "wait what?"
+        # Add the words to the dictionary with their relationship
+        if words[0] not in relationships:
+            relationships[words[0]] = {words[1]}
+        else:
+            relationships[words[0]].add(words[1])
+        if words[1] not in relationships:
+            relationships[words[1]] = {words[0]}
+        else:
+            relationships[words[1]].add(words[0])
     
-    # Initialize the maximum total value and the current team size
-    max_value = 0
-    team_size = 0
+    # Check if all the words are consistent with each other
+    for word in relationships:
+        if len(relationships[word]) != 1:
+            # If a word has more than one relationship, return "wait what?"
+            return "wait what?"
     
-    # Iterate through the employees
-    for employee in employees:
-        # If the employee's recommender is not in the team and is not the CEO, skip this employee
-        if employee[2] not in team and employee[2] != 0:
-            continue
-        
-        # Add the employee to the team
-        team.append(employee)
-        team_size += 1
-        
-        # If the team size is equal to k, break the loop
-        if team_size == k:
-            break
-    
-    # Calculate the maximum total value by dividing the sum of the productivities by the sum of the salaries
-    max_value = sum([employee[1] for employee in team]) / sum([employee[0] for employee in team])
-    
-    # Return the maximum total value
-    return round(max_value, 3)
+    # If all the words are consistent with each other, return "yes"
+    return "yes"
+
+def main():
+    statements = get_input()
+    print(check_consistency(statements))
+
+if __name__ == '__main__':
+    main()
 

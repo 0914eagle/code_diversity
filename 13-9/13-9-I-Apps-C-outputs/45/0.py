@@ -1,70 +1,31 @@
 
-import sys
+import itertools
 
-def get_vertices(N):
-    # Validate input
-    if N < 3 or N > 400000:
-        raise ValueError("Invalid input")
+def get_possible_suspects(n_coders, min_agreed, coder_pairs):
+    # Initialize a set to store the possible suspects
+    possible_suspects = set()
     
-    # Initialize variables
-    vertices = []
-    x = 0
-    y = 0
+    # Iterate over the coder pairs and check if at least one of the two coders is in the possible suspects set
+    for coder1, coder2 in coder_pairs:
+        if coder1 in possible_suspects or coder2 in possible_suspects:
+            possible_suspects.add(coder1)
+            possible_suspects.add(coder2)
     
-    # Generate vertices
-    for i in range(N):
-        # Generate random x and y coordinates
-        x = random.randint(0, 40000000)
-        y = random.randint(0, 40000000)
-        
-        # Ensure that the coordinates are distinct and form a convex polygon
-        while (x, y) in vertices or not is_convex_polygon(vertices + [(x, y)]):
-            x = random.randint(0, 40000000)
-            y = random.randint(0, 40000000)
-        
-        # Add vertex to list
-        vertices.append((x, y))
-    
-    return vertices
+    # Return the number of possible suspects that are also in the possible suspects set
+    return len([suspect for suspect in range(1, n_coders + 1) if suspect in possible_suspects])
 
-def is_convex_polygon(vertices):
-    # Validate input
-    if len(vertices) < 3:
-        return False
+def count_possible_suspect_pairs(n_coders, min_agreed, coder_pairs):
+    # Get the possible suspects for each coder pair
+    possible_suspects = [get_possible_suspects(n_coders, min_agreed, coder_pairs) for _ in range(n_coders)]
     
-    # Initialize variables
-    prev = vertices[0]
-    curr = vertices[1]
-    next = vertices[2]
-    convex = True
-    
-    # Check if the polygon is convex
-    for i in range(len(vertices)):
-        # Check if the current vertex is collinear with the previous two vertices
-        if is_collinear(prev, curr, next):
-            convex = False
-            break
-        
-        # Update vertices
-        prev = curr
-        curr = next
-        next = vertices[(i + 1) % len(vertices)]
-    
-    return convex
+    # Count the number of possible suspect pairs
+    return sum(itertools.combinations(possible_suspects, 2))
 
-def is_collinear(a, b, c):
-    # Calculate the slope of the line between a and b
-    slope = (b[1] - a[1]) / (b[0] - a[0])
-    
-    # Calculate the y-intercept of the line
-    y_intercept = a[1] - slope * a[0]
-    
-    # Check if the point c lies on the line
-    return abs(slope * c[0] + y_intercept - c[1]) <= 1e-9
+def main():
+    n_coders, min_agreed = map(int, input().split())
+    coder_pairs = [tuple(map(int, input().split())) for _ in range(n_coders)]
+    print(count_possible_suspect_pairs(n_coders, min_agreed, coder_pairs))
 
-if __name__ == "__main__":
-    N = int(input())
-    vertices = get_vertices(N)
-    for vertex in vertices:
-        print(vertex[0], vertex[1])
+if __name__ == '__main__':
+    main()
 

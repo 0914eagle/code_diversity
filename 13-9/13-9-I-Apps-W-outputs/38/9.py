@@ -1,25 +1,21 @@
 
-def min_segments(points):
-    x1, y1 = points[0]
-    x2, y2 = points[1]
-    x3, y3 = points[2]
+def get_smallest_chessboard(n):
+    for m in range(1, n+1):
+        if m * m >= n:
+            return m
+    return -1
 
-    # Sort the points by their x-coordinates
-    points = sorted(points, key=lambda x: x[0])
+def place_pieces(n, m):
+    pieces = [(i, i) for i in range(1, n+1)]
+    return pieces
 
-    # Initialize the minimum number of segments to 2
-    min_segments = 2
-
-    # Iterate through the points and check if they are on the same line
-    for i in range(2, len(points)):
-        x1, y1 = points[i - 2]
-        x2, y2 = points[i - 1]
-        x3, y3 = points[i]
-
-        # Check if the points are collinear
-        if x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2) == 0:
-            min_segments = 1
-            break
-
-    return min_segments
+if __name__ == '__main__':
+    n = int(input())
+    m = get_smallest_chessboard(n)
+    if m != -1:
+        pieces = place_pieces(n, m)
+        for piece in pieces:
+            print(piece[0], piece[1])
+    else:
+        print(-1)
 

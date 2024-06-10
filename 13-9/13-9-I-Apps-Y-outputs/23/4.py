@@ -1,32 +1,36 @@
 
-def get_good_observatories(n, m, heights, roads):
-    # Initialize a dictionary to store the elevation of each observatory
-    observatories = {i: heights[i-1] for i in range(1, n+1)}
-    # Initialize a dictionary to store the roads that connect each observatory
-    roads_dict = {i: set() for i in range(1, n+1)}
-    for road in roads:
-        roads_dict[road[0]].add(road[1])
-        roads_dict[road[1]].add(road[0])
-    
-    # Initialize a set to store the good observatories
-    good_observatories = set()
-    
-    # Iterate through each observatory
-    for observatory in observatories:
-        # Initialize a set to store the elevations of the observatories that can be reached from the current observatory
-        reachable_elevations = set()
-        # Initialize a queue to store the observatories that need to be visited
-        queue = [observatory]
-        while queue:
-            current_observatory = queue.pop(0)
-            reachable_elevations.add(observatories[current_observatory])
-            for connected_observatory in roads_dict[current_observatory]:
-                if connected_observatory not in reachable_elevations:
-                    queue.append(connected_observatory)
-        
-        # If the elevation of the current observatory is higher than all the reachable elevations, it is a good observatory
-        if observatories[observatory] > max(reachable_elevations):
-            good_observatories.add(observatory)
-    
-    return len(good_observatories)
+def get_nearest_checkpoint(student, checkpoints):
+    nearest_checkpoint = None
+    min_distance = float('inf')
+    for checkpoint in checkpoints:
+        distance = manhattan_distance(student, checkpoint)
+        if distance < min_distance:
+            min_distance = distance
+            nearest_checkpoint = checkpoint
+    return nearest_checkpoint
+
+def manhattan_distance(point1, point2):
+    return abs(point1[0] - point2[0]) + abs(point1[1] - point2[1])
+
+def solve(students, checkpoints):
+    nearest_checkpoints = []
+    for student in students:
+        nearest_checkpoint = get_nearest_checkpoint(student, checkpoints)
+        nearest_checkpoints.append(nearest_checkpoint)
+    return nearest_checkpoints
+
+def main():
+    num_students, num_checkpoints = map(int, input().split())
+    students = []
+    for _ in range(num_students):
+        students.append(tuple(map(int, input().split())))
+    checkpoints = []
+    for _ in range(num_checkpoints):
+        checkpoints.append(tuple(map(int, input().split())))
+    nearest_checkpoints = solve(students, checkpoints)
+    for nearest_checkpoint in nearest_checkpoints:
+        print(nearest_checkpoint)
+
+if __name__ == '__main__':
+    main()
 

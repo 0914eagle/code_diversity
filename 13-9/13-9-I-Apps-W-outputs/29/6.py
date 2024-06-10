@@ -1,28 +1,21 @@
 
-def solve(n, results):
-    # Sort the results in ascending order
-    results.sort()
+def get_gcd(a, b):
+    if a == 0:
+        return b
+    return get_gcd(b % a, a)
 
-    # Initialize the strings for the two semifinals
-    semifinal1 = "0" * n
-    semifinal2 = "0" * n
+def get_divisors(a, b):
+    divisors = []
+    for i in range(a, b+1):
+        if i % get_gcd(a, b) == 0:
+            divisors.append(i)
+    return divisors
 
-    # Determine the k value based on the results
-    k = 0
-    while k < n and results[k] <= results[n - 1 - k]:
-        k += 1
+def get_biggest_divisor(divisors):
+    return max(divisors)
 
-    # Mark the finalists in each semifinal
-    for i in range(k):
-        semifinal1 = semifinal1[:i] + "1" + semifinal1[i + 1:]
-        semifinal2 = semifinal2[:i] + "1" + semifinal2[i + 1:]
-
-    # Mark the other places in each semifinal
-    for i in range(k, n):
-        if results[i] <= results[n - 1 - k]:
-            semifinal1 = semifinal1[:i] + "1" + semifinal1[i + 1:]
-        else:
-            semifinal2 = semifinal2[:i] + "1" + semifinal2[i + 1:]
-
-    return semifinal1, semifinal2
+if __name__ == '__main__':
+    a, b = map(int, input().split())
+    divisors = get_divisors(a, b)
+    print(get_biggest_divisor(divisors))
 

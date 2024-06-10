@@ -1,15 +1,26 @@
 
-def get_attacking_dogs(a, b, c, d, p, m, g):
-    # Calculate the minute in the day when the dogs are aggressive
-    aggressive_minute_postman = (p - 1) % (a + b) < a
-    aggressive_minute_milkman = (m - 1) % (c + d) < c
-    aggressive_minute_garbage_man = (g - 1) % (c + d) < c
+def can_start_round_dance(p):
+    n = len(p)
+    if n == 1:
+        return True
+    if n == 2:
+        return p[0] == p[1]
+    if n == 3:
+        return p[0] == p[1] and p[1] == p[2]
+    if p[0] == p[n-1] and p[1] == p[2]:
+        return True
+    return False
 
-    # Check if any of the dogs are aggressive
-    if aggressive_minute_postman and aggressive_minute_milkman and aggressive_minute_garbage_man:
-        return "both"
-    elif aggressive_minute_postman xor aggressive_minute_milkman xor aggressive_minute_garbage_man:
-        return "one"
-    else:
-        return "none"
+def main():
+    q = int(input())
+    for i in range(q):
+        n = int(input())
+        p = list(map(int, input().split()))
+        if can_start_round_dance(p):
+            print("YES")
+        else:
+            print("NO")
+
+if __name__ == '__main__':
+    main()
 

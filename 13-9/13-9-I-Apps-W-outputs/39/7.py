@@ -1,48 +1,32 @@
 
-def solve(n, p, k, improvements):
-    # Initialize a graph to represent the pipes between the stations
-    graph = [[] for _ in range(n + 1)]
-
-    # Add the initial pipes to the graph
-    for i in range(p):
-        a, b, c = improvements[i]
-        graph[a].append((b, c))
-        graph[b].append((a, c))
-
-    # Initialize the maximum amount of water that can reach the mansion
-    max_water = 0
-
-    # Iterate over each improvement and calculate the maximum amount of water that can reach the mansion after each improvement
+def get_valid_scenarios(n, k, x):
+    # Initialize a set to store the valid scenarios
+    valid_scenarios = set()
+    
+    # Iterate over each question
     for i in range(k):
-        a, b, c = improvements[i + p]
+        # Get the current and next cell numbers
+        curr_cell = x[i]
+        next_cell = x[(i+1) % k]
+        
+        # If the current cell and next cell are adjacent, add the scenario to the set
+        if abs(curr_cell - next_cell) == 1:
+            valid_scenarios.add((curr_cell, next_cell))
+    
+    # Return the number of valid scenarios
+    return len(valid_scenarios)
 
-        # If there is no pipe between a and b, create one with capacity c
-        if not graph[a]:
-            graph[a].append((b, c))
-            graph[b].append((a, c))
+def main():
+    # Read the input
+    n, k = map(int, input().split())
+    x = list(map(int, input().split()))
+    
+    # Get the number of valid scenarios
+    valid_scenarios = get_valid_scenarios(n, k, x)
+    
+    # Print the number of valid scenarios
+    print(valid_scenarios)
 
-        # Increase the capacity of the pipe between a and b by c
-        for j, (neighbor, capacity) in enumerate(graph[a]):
-            if neighbor == b:
-                graph[a][j] = (neighbor, capacity + c)
-                break
-
-        # Calculate the maximum amount of water that can reach the mansion after the improvement
-        max_water = max(max_water, dfs(graph, 1, n, {}))
-
-    return [max_water] + [dfs(graph, 1, n, {}) for _ in range(k)]
-
-# Depth-first search function to calculate the maximum amount of water that can reach the mansion from a given station
-def dfs(graph, curr, target, visited):
-    if curr == target:
-        return 1000
-
-    visited[curr] = True
-
-    max_water = 0
-    for neighbor, capacity in graph[curr]:
-        if not visited[neighbor] and capacity > 0:
-            max_water = max(max_water, dfs(graph, neighbor, target, visited))
-
-    return max_water
+if __name__ == '__main__':
+    main()
 

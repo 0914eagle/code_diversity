@@ -1,32 +1,65 @@
 
-def solve(wheels):
-    # Initialize the minimum number of rotations to -1
-    min_rotations = -1
+def get_cube_colors(tiles):
+    # Initialize a set to store the colors of the cube
+    cube_colors = set()
+    
+    # Iterate over the tiles
+    for tile in tiles:
+        # Get the colors of the current tile
+        colors = [tile[0], tile[1], tile[2], tile[3]]
+        
+        # Add the colors to the set
+        cube_colors.add(tuple(colors))
+    
+    return cube_colors
 
-    # Loop through each wheel
-    for wheel in wheels:
-        # Check if the wheel has all unique letters
-        if len(set(wheel)) != len(wheel):
-            # If not, return -1
-            return -1
+def get_cube_combinations(tiles):
+    # Initialize a set to store the combinations of the cube
+    cube_combinations = set()
+    
+    # Iterate over the tiles
+    for tile in tiles:
+        # Get the colors of the current tile
+        colors = [tile[0], tile[1], tile[2], tile[3]]
+        
+        # Iterate over the possible rotations of the tile
+        for rotation in range(4):
+            # Get the rotated colors of the current tile
+            rotated_colors = [colors[(rotation + i) % 4] for i in range(4)]
+            
+            # Add the rotated colors to the set
+            cube_combinations.add(tuple(rotated_colors))
+    
+    return cube_combinations
 
-    # If all wheels have unique letters, set the minimum number of rotations to 0
-    min_rotations = 0
+def get_number_of_cubes(tiles):
+    # Get the colors of the cube
+    cube_colors = get_cube_colors(tiles)
+    
+    # Get the combinations of the cube
+    cube_combinations = get_cube_combinations(tiles)
+    
+    # Return the number of unique combinations
+    return len(cube_combinations)
 
-    # Loop through each wheel
-    for wheel in wheels:
-        # Find the index of the first occurrence of 'A' in the wheel
-        index_A = wheel.index('A')
-
-        # Find the index of the first occurrence of 'B' in the wheel
-        index_B = wheel.index('B')
-
-        # Find the index of the first occurrence of 'C' in the wheel
-        index_C = wheel.index('C')
-
-        # Calculate the minimum number of rotations required to align the letters
-        min_rotations += min(abs(index_A - index_B), abs(index_A - index_C), abs(index_B - index_C))
-
-    # Return the minimum number of rotations
-    return min_rotations
+if __name__ == '__main__':
+    # Get the number of tiles
+    n = int(input())
+    
+    # Initialize a list to store the tiles
+    tiles = []
+    
+    # Iterate over the tiles
+    for i in range(n):
+        # Get the colors of the current tile
+        colors = [int(j) for j in input().split()]
+        
+        # Add the colors to the list
+        tiles.append(colors)
+    
+    # Get the number of cubes
+    number_of_cubes = get_number_of_cubes(tiles)
+    
+    # Print the number of cubes
+    print(number_of_cubes)
 

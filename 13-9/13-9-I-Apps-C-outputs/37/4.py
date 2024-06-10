@@ -1,40 +1,29 @@
 
-def solve(n, data):
-    # Initialize a dictionary to store the inputs and their values
-    inputs = {}
-    for i in range(n):
-        inputs[i+1] = None
+def is_perfect(s):
+    # Check if s is a subset of the powers of 2
+    if not set(s).issubset(set(range(1 << len(s)))):
+        return False
+    
+    # Check if s is a perfect set
+    for i in range(len(s)):
+        for j in range(i + 1, len(s)):
+            if s[i] ^ s[j] not in s:
+                return False
+    return True
 
-    # Iterate through the data and create a graph representing the logical scheme
-    graph = {}
-    for row in data:
-        vertex_type, *vertex_inputs = row.split()
-        vertex_inputs = [int(input) for input in vertex_inputs]
-        graph[i] = (vertex_type, vertex_inputs)
+def count_perfect_sets(k):
+    # Initialize a set to store the perfect sets
+    perfect_sets = set()
+    
+    # Iterate from 0 to k and check if each number is a perfect set
+    for i in range(k + 1):
+        if is_perfect(set(range(i + 1))):
+            perfect_sets.add(i)
+    
+    # Return the number of perfect sets
+    return len(perfect_sets)
 
-    # Function to evaluate the output of a vertex
-    def evaluate(vertex):
-        vertex_type, vertex_inputs = graph[vertex]
-        if vertex_type == "IN":
-            return inputs[vertex]
-        elif vertex_type == "AND":
-            return all(inputs[input] for input in vertex_inputs)
-        elif vertex_type == "OR":
-            return any(inputs[input] for input in vertex_inputs)
-        elif vertex_type == "XOR":
-            return any(inputs[input] for input in vertex_inputs) and not all(inputs[input] for input in vertex_inputs)
-        elif vertex_type == "NOT":
-            return not inputs[vertex_inputs[0]]
-
-    # Initialize the output string
-    output = ""
-
-    # Iterate through the inputs and evaluate the output for each input
-    for input_vertex in range(1, n+1):
-        inputs[input_vertex] = 0
-        output += str(evaluate(n))
-        inputs[input_vertex] = 1
-        output += str(evaluate(n))
-
-    return output
+if __name__ == '__main__':
+    k = int(input())
+    print(count_perfect_sets(k) % 1000000007)
 

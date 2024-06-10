@@ -1,50 +1,61 @@
 
-def solve(s1, s2, s3):
-    # Initialize the number of rotations to 0
-    rotations = 0
+def get_cube_count(tiles):
+    # Initialize a set to store the unique cubes
+    unique_cubes = set()
+    
+    # Iterate over all possible combinations of tiles
+    for tile_1 in tiles:
+        for tile_2 in tiles:
+            for tile_3 in tiles:
+                for tile_4 in tiles:
+                    for tile_5 in tiles:
+                        for tile_6 in tiles:
+                            # Check if the cubes are valid
+                            if is_valid_cube([tile_1, tile_2, tile_3, tile_4, tile_5, tile_6]):
+                                # Add the cube to the set of unique cubes
+                                unique_cubes.add(frozenset([tile_1, tile_2, tile_3, tile_4, tile_5, tile_6]))
+    
+    # Return the number of unique cubes
+    return len(unique_cubes)
 
-    # Create a set to store the unique letters in each column
-    unique_letters = set()
+def is_valid_cube(tiles):
+    # Check if all tiles have the same color at the top-left corner
+    top_left_color = tiles[0][0]
+    for tile in tiles:
+        if tile[0] != top_left_color:
+            return False
+    
+    # Check if all tiles have the same color at the top-right corner
+    top_right_color = tiles[0][1]
+    for tile in tiles:
+        if tile[1] != top_right_color:
+            return False
+    
+    # Check if all tiles have the same color at the bottom-left corner
+    bottom_left_color = tiles[0][2]
+    for tile in tiles:
+        if tile[2] != bottom_left_color:
+            return False
+    
+    # Check if all tiles have the same color at the bottom-right corner
+    bottom_right_color = tiles[0][3]
+    for tile in tiles:
+        if tile[3] != bottom_right_color:
+            return False
+    
+    # If all colors are the same, return True
+    return True
 
-    # Loop through each column of the first wheel
-    for i in range(len(s1)):
-        # Add the letter in the current column to the set of unique letters
-        unique_letters.add(s1[i])
-
-        # If the set has three unique letters, break the loop
-        if len(unique_letters) == 3:
-            break
-
-    # If the set has three unique letters, return the number of rotations
-    if len(unique_letters) == 3:
-        return rotations
-
-    # Loop through each column of the second wheel
-    for i in range(len(s2)):
-        # Add the letter in the current column to the set of unique letters
-        unique_letters.add(s2[i])
-
-        # If the set has three unique letters, break the loop
-        if len(unique_letters) == 3:
-            break
-
-    # If the set has three unique letters, return the number of rotations
-    if len(unique_letters) == 3:
-        return rotations
-
-    # Loop through each column of the third wheel
-    for i in range(len(s3)):
-        # Add the letter in the current column to the set of unique letters
-        unique_letters.add(s3[i])
-
-        # If the set has three unique letters, break the loop
-        if len(unique_letters) == 3:
-            break
-
-    # If the set has three unique letters, return the number of rotations
-    if len(unique_letters) == 3:
-        return rotations
-
-    # If the set does not have three unique letters, return -1
-    return -1
+if __name__ == '__main__':
+    # Read the input from stdin
+    N = int(input())
+    tiles = []
+    for _ in range(N):
+        tiles.append(list(map(int, input().split())))
+    
+    # Call the function to get the number of unique cubes
+    cube_count = get_cube_count(tiles)
+    
+    # Print the result
+    print(cube_count)
 

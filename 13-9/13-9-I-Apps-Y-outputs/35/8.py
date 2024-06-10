@@ -1,13 +1,18 @@
 
-def solve(N):
-    # Initialize a list to store the positions of the cuts
-    cuts = []
+def get_rounded_amount(candy_price, smallest_bill):
+    # Calculate the nearest amount that Mirko can pay
+    nearest_amount = (candy_price // smallest_bill) * smallest_bill
+    
+    # If the nearest amount is less than the candy price, add the smallest bill to it
+    if nearest_amount < candy_price:
+        nearest_amount += smallest_bill
+    
+    return nearest_amount
 
-    # Iterate from 1 to N
-    for i in range(1, N + 1):
-        # Append the current position to the list of cuts
-        cuts.append(i)
+def main():
+    candy_price, smallest_bill = map(int, input().split())
+    print(get_rounded_amount(candy_price, smallest_bill))
 
-    # Return the length of the list of cuts, which is the largest number of pieces Slavko's chessboard can crash into
-    return len(cuts)
+if __name__ == '__main__':
+    main()
 

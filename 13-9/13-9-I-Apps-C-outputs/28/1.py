@@ -1,30 +1,43 @@
 
-def find_largest_square_killer(memory):
-    rows, cols = len(memory), len(memory[0])
-    largest_killer = 0
+def read_input():
+    n, k = map(int, input().split())
+    universities = set(map(int, input().split()))
+    roads = []
+    for _ in range(n - 1):
+        x, y = map(int, input().split())
+        roads.append((x, y))
+    return n, k, universities, roads
 
-    for row in range(rows):
-        for col in range(cols):
-            if memory[row][col] == "1":
-                current_killer = 1
-                for r in range(row, rows):
-                    for c in range(col, cols):
-                        if memory[r][c] == "1":
-                            current_killer += 1
-                        else:
-                            break
-                    if current_killer > largest_killer:
-                        largest_killer = current_killer
-                    current_killer = 1
-                    for r in range(row, -1, -1):
-                        for c in range(col, -1, -1):
-                            if memory[r][c] == "1":
-                                current_killer += 1
-                            else:
-                                break
-                        if current_killer > largest_killer:
-                            largest_killer = current_killer
-                        current_killer = 1
+def pairwise_distance(pairs):
+    total_distance = 0
+    for i in range(len(pairs)):
+        for j in range(i + 1, len(pairs)):
+            total_distance += distance(pairs[i], pairs[j])
+    return total_distance
 
-    return largest_killer
+def distance(pair1, pair2):
+    town1, town2 = pair1
+    town3, town4 = pair2
+    if town1 == town3:
+        return distance(pair2, pair1)
+    for road in roads:
+        if (road[0] == town1 and road[1] == town3) or (road[0] == town3 and road[1] == town1):
+            return 1
+    for road in roads:
+        if (road[0] == town2 and road[1] == town4) or (road[0] == town4 and road[1] == town2):
+            return 1
+    return 0
+
+def find_maximum_pairwise_distance(universities, k):
+    pairs = []
+    for i in range(k):
+        pairs.append((universities.pop(), universities.pop()))
+    return pairwise_distance(pairs)
+
+def main():
+    n, k, universities, roads = read_input()
+    print(find_maximum_pairwise_distance(universities, k))
+
+if __name__ == '__main__':
+    main()
 

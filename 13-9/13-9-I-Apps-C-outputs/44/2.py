@@ -1,34 +1,95 @@
 
-def solve(n, flights):
-    # Initialize a graph with the given flights
-    graph = {i: set() for i in range(1, n + 1)}
-    for i, j in flights:
-        graph[i].add(j)
-        graph[j].add(i)
+def get_splitter_network(a, b, c, d):
+    # Initialize the network with a single input belt and two output belts
+    network = {
+        "input": [],
+        "output1": [],
+        "output2": []
+    }
+    
+    # Calculate the ratio of boxes sent to each output
+    output1_ratio = c / (c + d)
+    output2_ratio = d / (c + d)
+    
+    # Initialize the number of splitters used
+    num_splitters = 0
+    
+    # Loop until the global input is distributed evenly between the two outputs
+    while True:
+        # Calculate the number of boxes sent to each output based on the current network configuration
+        output1_boxes = len(network["output1"])
+        output2_boxes = len(network["output2"])
+        
+        # If the number of boxes on both outputs is equal, break the loop
+        if output1_boxes == output2_boxes:
+            break
+        
+        # If the number of boxes on the first output is less than the number of boxes on the second output, add a splitter to the first output
+        if output1_boxes < output2_boxes:
+            # Add a new splitter to the network
+            network[num_splitters] = {
+                "input": network["output1"],
+                "output1": [],
+                "output2": []
+            }
+            
+            # Update the output belts of the previous splitter
+            network[num_splitters - 1]["output1"] = network[num_splitters]["input"]
+            
+            # Update the input belt of the new splitter
+            network[num_splitters]["input"] = network["input"]
+            
+            # Update the number of splitters used
+            num_splitters += 1
+            
+        # If the number of boxes on the first output is greater than the number of boxes on the second output, add a splitter to the second output
+        else:
+            # Add a new splitter to the network
+            network[num_splitters] = {
+                "input": network["output2"],
+                "output1": [],
+                "output2": []
+            }
+            
+            # Update the output belts of the previous splitter
+            network[num_splitters - 1]["output2"] = network[num_splitters]["input"]
+            
+            # Update the input belt of the new splitter
+            network[num_splitters]["input"] = network["input"]
+            
+            # Update the number of splitters used
+            num_splitters += 1
+    
+    # Return the number of splitters used and the connection details
+    return num_splitters, network
 
-    # Find the flight to cancel and the new flight to add
-    flight_to_cancel, new_flight = None, None
-    min_changes = float("inf")
-    for i in range(1, n + 1):
-        for j in range(i + 1, n + 1):
-            if i != j and j not in graph[i]:
-                # Find the number of changes needed when cancelling the flight (i, j)
-                changes = 0
-                queue = [i]
-                visited = set()
-                while queue:
-                    node = queue.pop(0)
-                    if node == j:
-                        break
-                    for neighbor in graph[node]:
-                        if neighbor not in visited:
-                            queue.append(neighbor)
-                            visited.add(neighbor)
-                            changes += 1
-                if changes < min_changes:
-                    min_changes = changes
-                    flight_to_cancel = (i, j)
-                    new_flight = (j, i)
+def main():
+    # Read the input ratios
+    a, b = map(int, input().split())
+    c, d = map(int, input().split())
+    
+    # Get the splitter network
+    num_splitters, network = get_splitter_network(a, b, c, d)
+    
+    # Print the number of splitters used
+    print(num_splitters)
+    
+    # Print the connection details
+    for i in range(num_splitters):
+        # Get the output belts of the current splitter
+        output1 = network[i]["output1"]
+        output2 = network[i]["output2"]
+        
+        # If the current splitter is the first splitter, the input belt is the global input
+        if i == 0:
+            input_belts = "input"
+        # If the current splitter is not the first splitter, the input belt is the output of the previous splitter
+        else:
+            input_belts = network[i - 1]["output1"]
+        
+        # Print the connection details
+        print(input_belts, output1, output2)
 
-    return min_changes, flight_to_cancel, new_flight
+if __name__ == '__main__':
+    main()
 

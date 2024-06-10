@@ -1,25 +1,24 @@
 
-def solve(n, s, t, u, v):
-    # Initialize the matrix with all zeros
-    a = [[0] * n for _ in range(n)]
+def get_result(x, y, z):
+    # Calculate the number of upvotes and downvotes
+    upvotes = x
+    downvotes = y
+    for i in range(z):
+        upvotes += 1
+        downvotes += 1
+    
+    # Check if the result is uncertain
+    if upvotes > downvotes:
+        return "+"
+    elif upvotes < downvotes:
+        return "-"
+    else:
+        return "0"
 
-    # Populate the matrix based on the conditions given
-    for i in range(n):
-        for j in range(n):
-            if s[i] == 0:
-                a[i][j] = u[i] & v[j]
-            elif s[i] == 1:
-                a[i][j] = u[i] | v[j]
-            if t[j] == 0:
-                a[i][j] &= v[j]
-            elif t[j] == 1:
-                a[i][j] |= v[j]
+def main():
+    x, y, z = map(int, input().split())
+    print(get_result(x, y, z))
 
-    # Check if the matrix satisfies the conditions
-    for i in range(n):
-        for j in range(n):
-            if a[i][j] < 0 or a[i][j] >= 2 ** 64:
-                return -1
-
-    return a
+if __name__ == '__main__':
+    main()
 

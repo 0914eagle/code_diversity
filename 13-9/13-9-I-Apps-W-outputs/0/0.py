@@ -1,28 +1,35 @@
 
-import itertools
+def dfs(graph, node, visited, order):
+    visited[node] = True
+    order.append(node)
+    for neighbor in graph[node]:
+        if not visited[neighbor]:
+            dfs(graph, neighbor, visited, order)
+    return order
 
-def get_num_strings(message):
-    # Initialize a list to store the candidate strings
-    candidate_strings = []
-    
-    # Iterate over the letters of the message
-    for i in range(len(message)):
-        # If the current letter is 'w', replace it with 'uu'
-        if message[i] == 'w':
-            message = message[:i] + 'uu' + message[i+1:]
-        # If the current letter is 'm', replace it with 'nn'
-        elif message[i] == 'm':
-            message = message[:i] + 'nn' + message[i+1:]
-    
-    # Generate all possible combinations of letters for the message
-    combinations = itertools.product('abcdefghijklmnopqrstuvwxyz', repeat=len(message))
-    
-    # Iterate over the combinations and check if they match the message
-    for combination in combinations:
-        # If the current combination matches the message, add it to the list of candidate strings
-        if ''.join(combination) == message:
-            candidate_strings.append(combination)
-    
-    # Return the number of candidate strings modulo 10^9+7
-    return len(candidate_strings) % (10**9+7)
+def build_graph(n, edges):
+    graph = [[] for _ in range(n + 1)]
+    for edge in edges:
+        graph[edge[0]].append(edge[1])
+        graph[edge[1]].append(edge[0])
+    return graph
+
+def get_grade(graph, k, times):
+    visited = [False] * (len(graph) + 1)
+    order = []
+    dfs(graph, 1, visited, order)
+    return min(times[node] for node in order[:k])
+
+def main():
+    n, k = map(int, input().split())
+    times = list(map(int, input().split()))
+    edges = []
+    for i in range(n - 1):
+        u, v = map(int, input().split())
+        edges.append((u, v))
+    graph = build_graph(n, edges)
+    print(get_grade(graph, k, times))
+
+if __name__ == '__main__':
+    main()
 

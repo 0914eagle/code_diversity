@@ -1,20 +1,29 @@
 
-def solve(n, a, b, c):
-    # Sort the poll results by the measure a_i * S + b_i * T
-    sorted_results = sorted(zip(a, b, c), key=lambda x: x[0] * S + x[1] * T)
+def is_rooted_tree_possible(n, c):
+    # Initialize a list to store the number of nodes in each subtree
+    subtree_sizes = [0] * (n + 1)
+    subtree_sizes[0] = 1
 
-    # Find the indices of the first and last results with c_i true
-    j = 0
-    k = 0
+    # Iterate through the input array and calculate the number of nodes in each subtree
     for i in range(n):
-        if sorted_results[i][2] == 1:
-            j = i
-            break
-    for i in range(n-1, -1, -1):
-        if sorted_results[i][2] == 1:
-            k = i
-            break
+        subtree_sizes[i + 1] = subtree_sizes[i] + c[i]
 
-    # Return the smallest possible cluster size
-    return k-j+1
+    # Check if the number of nodes in the last subtree is greater than or equal to the number of nodes in the first subtree
+    if subtree_sizes[-1] < subtree_sizes[0]:
+        return False
+
+    # Check if the number of nodes in each internal node is greater than or equal to 2
+    for i in range(1, n):
+        if subtree_sizes[i] < 2:
+            return False
+
+    return True
+
+def main():
+    n = int(input())
+    c = list(map(int, input().split()))
+    print("YES") if is_rooted_tree_possible(n, c) else print("NO")
+
+if __name__ == '__main__':
+    main()
 

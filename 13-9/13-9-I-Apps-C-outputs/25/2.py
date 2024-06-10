@@ -1,21 +1,20 @@
 
-def min_seconds(n, a):
-    # Initialize the number of seconds needed
-    seconds = 0
-    # Initialize the number of chocolates in each box
-    chocolates = a
-    # Loop until all boxes are divisible by k
-    while not all(map(lambda x: x % k == 0, chocolates)) for k in range(2, 1000001):
-        # Find the box with the most chocolates
-        max_index = chocolates.index(max(chocolates))
-        # Move the most chocolates to the next box
-        chocolates[max_index] -= 1
-        chocolates[(max_index + 1) % n] += 1
-        # Increment the number of seconds
-        seconds += 1
-    # If all boxes are divisible by k, return the number of seconds
-    if all(map(lambda x: x % k == 0, chocolates)):
-        return seconds
-    # Otherwise, return -1
-    return -1
+def get_sorted_array(numbers):
+    # Your code here
+    return sorted(numbers)
+
+def get_min_digit_changes(numbers):
+    # Your code here
+    return 0
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    numbers = []
+    for _ in range(n):
+        numbers.append(int(input()))
+    sorted_array = get_sorted_array(numbers)
+    min_digit_changes = get_min_digit_changes(numbers)
+    print(min_digit_changes)
+    for number in sorted_array:
+        print(number)
 

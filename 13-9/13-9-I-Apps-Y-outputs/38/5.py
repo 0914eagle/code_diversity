@@ -1,9 +1,18 @@
 
-def find_score(answers):
-    n = len(answers)
-    score = 0
-    for i, answer in enumerate(answers):
-        if answer == "A":
-            score += 1
-    return score
+def get_input():
+    return list(map(int, input().split()))
+
+def can_buy_toy(coins, cost):
+    return sum(coins) >= cost
+
+def main():
+    coins = get_input()
+    cost = get_input()
+    if can_buy_toy(coins, cost):
+        print("Yes")
+    else:
+        print("No")
+
+if __name__ == '__main__':
+    main()
 

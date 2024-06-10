@@ -1,21 +1,30 @@
 
-def solve(a):
-    # Find the greatest common divisor (gcd) of all elements in the array
-    gcd = a[0]
-    for i in range(1, len(a)):
-        gcd = gcd_two_numbers(gcd, a[i])
+def solve(n, k, a):
+    # Step 1: Sort the array in non-decreasing order
+    a.sort()
     
-    # Count the number of positive integers x that divide each number in the array
-    count = 0
-    for i in range(1, gcd + 1):
-        if gcd % i == 0:
-            count += 1
+    # Step 2: Initialize the minimum number of moves to 0
+    min_moves = 0
     
-    return count
+    # Step 3: Loop through the array and find the minimum and maximum values
+    min_value = a[0]
+    max_value = a[n-1]
+    
+    # Step 4: Loop through the array and check if there are at least k equal elements
+    for i in range(n):
+        if a[i] == min_value:
+            min_moves += 1
+        if a[i] == max_value:
+            min_moves -= 1
+    
+    # Step 5: Return the minimum number of moves
+    return min_moves
 
-def gcd_two_numbers(a, b):
-    if b == 0:
-        return a
-    else:
-        return gcd_two_numbers(b, a % b)
+def main():
+    n, k = map(int, input().split())
+    a = list(map(int, input().split()))
+    print(solve(n, k, a))
+
+if __name__ == '__main__':
+    main()
 

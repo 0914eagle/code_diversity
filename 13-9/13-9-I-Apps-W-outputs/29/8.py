@@ -1,19 +1,23 @@
 
-def get_finalists(n, results):
-    # Sort the results in ascending order
-    results.sort()
-    
-    # Initialize variables to keep track of the finalists
-    finalists_1 = []
-    finalists_2 = []
-    
-    # Loop through the results and identify the finalists
-    for i in range(n):
-        if i < n - 2*k:
-            finalists_1.append(results[i])
-        elif i < n - k:
-            finalists_2.append(results[i])
-    
-    # Return the finalists for both semifinals
-    return finalists_1, finalists_2
+def get_input():
+    a, b = map(int, input().split())
+    return a, b
+
+def gcd(a, b):
+    if b == 0:
+        return a
+    return gcd(b, a % b)
+
+def solve(a, b):
+    result = 1
+    for i in range(a, b+1):
+        result = gcd(result, i)
+    return result
+
+def main():
+    a, b = get_input()
+    print(solve(a, b))
+
+if __name__ == '__main__':
+    main()
 

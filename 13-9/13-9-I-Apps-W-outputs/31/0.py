@@ -1,15 +1,16 @@
 
-def max_palindromes(strings):
-    # Initialize a list to store the palindromic strings
-    palindromes = []
+def find_min_positive_divisible(l, r, d):
+    for i in range(l, r+1):
+        if i % d == 0 and i not in range(l, r+1):
+            return i
+    return -1
 
-    # Loop through each string and check if it is palindromic
-    for string in strings:
-        # Check if the string is palindromic
-        if string == string[::-1]:
-            # If it is palindromic, add it to the list of palindromes
-            palindromes.append(string)
+def main():
+    q = int(input())
+    for _ in range(q):
+        l, r, d = map(int, input().split())
+        print(find_min_positive_divisible(l, r, d))
 
-    # Return the number of palindromes
-    return len(palindromes)
+if __name__ == '__main__':
+    main()
 

@@ -1,14 +1,19 @@
 
-def num_ways_to_choose_subset(n, scores):
-    # Sort the scores in descending order
-    sorted_scores = sorted(scores, reverse=True)
-    # Initialize the number of ways to choose a subset as 0
-    num_ways = 0
-    # Loop through the sorted scores and count the number of ways to choose a subset
+def get_valid_ways(A, B):
+    n = len(A)
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
     for i in range(n):
-        # If the current score is not zero, increment the number of ways
-        if sorted_scores[i] != 0:
-            num_ways += 1
-    # Return the number of ways
-    return num_ways
+        for j in range(i + 1):
+            if A[i] == B[j]:
+                dp[i + 1][j + 1] = dp[i][j] + dp[i][j + 1]
+            else:
+                dp[i + 1][j + 1] = dp[i][j]
+    return dp[n][0]
+
+def main():
+    A, B = input().split()
+    print(get_valid_ways(A, B))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,31 +1,57 @@
 
-def is_loop_possible(points):
-    # Sort the points by their x-coordinate
-    sorted_points = sorted(points, key=lambda point: point[0])
+def check_string(a_00, a_01, a_10, a_11):
+    # Initialize variables
+    s = ""
+    count = 0
+    i = 0
+    j = 0
+    
+    # Loop through the string
+    while count < 1000000:
+        # Add a character to the string
+        if i == 0 and j == 0:
+            s += "0"
+            i += 1
+        elif i == 1 and j == 0:
+            s += "1"
+            j += 1
+        elif i == 0 and j == 1:
+            s += "1"
+            i += 1
+        elif i == 1 and j == 1:
+            s += "0"
+            j += 1
+        
+        # Check if the string matches the given integers
+        if s[0] == "0" and s[1] == "0":
+            count += a_00
+        if s[0] == "0" and s[1] == "1":
+            count += a_01
+        if s[0] == "1" and s[1] == "0":
+            count += a_10
+        if s[0] == "1" and s[1] == "1":
+            count += a_11
+        
+        # If the string matches, return it
+        if count == a_00 + a_01 + a_10 + a_11:
+            return s
+        
+        # If the string doesn't match, continue the loop
+        count = 0
+        s = ""
+        i = 0
+        j = 0
+    
+    # If no string matches, return "Impossible"
+    return "Impossible"
 
-    # Initialize the previous and next points
-    previous_point = sorted_points[0]
-    next_point = sorted_points[1]
+def main():
+    # Read input
+    a_00, a_01, a_10, a_11 = map(int, input().split())
+    
+    # Call the check_string function and print the result
+    print(check_string(a_00, a_01, a_10, a_11))
 
-    # Iterate through the points and check if they form a valid loop
-    for i in range(2, len(sorted_points)):
-        current_point = sorted_points[i]
-
-        # Check if the current point is aligned with the previous and next points
-        if current_point[0] != previous_point[0] and current_point[0] != next_point[0]:
-            return False
-
-        # Check if the current point is between the previous and next points
-        if current_point[0] < previous_point[0] or current_point[0] > next_point[0]:
-            return False
-
-        # Update the previous and next points
-        previous_point = current_point
-        next_point = sorted_points[i + 1]
-
-    # Check if the first and last points are the same
-    if previous_point != sorted_points[0]:
-        return False
-
-    return True
+if __name__ == '__main__':
+    main()
 

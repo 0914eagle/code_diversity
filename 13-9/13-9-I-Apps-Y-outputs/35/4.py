@@ -1,14 +1,20 @@
 
-def cut_chessboard(N):
-    # Initialize the number of pieces as 64 (since there are 64 pieces in a standard chessboard)
-    num_pieces = 64
-    # Loop through each cut
-    for i in range(N):
-        # Decrease the number of pieces by 4 (since each cut will remove 4 pieces)
-        num_pieces -= 4
-        # If the number of pieces becomes negative, break the loop
-        if num_pieces < 0:
-            break
-    # Return the largest number of pieces that can be removed (i.e. the initial number of pieces - the number of pieces after the last cut)
-    return 64 - num_pieces
+def get_rounded_amount(candy_price, smallest_bill_power):
+    # Find the nearest power of 10 that is greater than or equal to the candy price
+    nearest_power = 10 ** smallest_bill_power
+    while nearest_power < candy_price:
+        nearest_power *= 10
+    
+    # Round the candy price to the nearest power of 10
+    rounded_amount = nearest_power
+    
+    return rounded_amount
+
+def main():
+    candy_price, smallest_bill_power = map(int, input().split())
+    rounded_amount = get_rounded_amount(candy_price, smallest_bill_power)
+    print(rounded_amount)
+
+if __name__ == '__main__':
+    main()
 

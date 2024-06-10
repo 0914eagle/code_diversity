@@ -1,25 +1,23 @@
 
-def solve(N, A, P, V):
-    # Sort the dwarves and elves by strength in descending order
-    P = sorted(P, reverse=True)
-    V = sorted(V, reverse=True)
-    
-    # Initialize the number of victories as 0
-    victories = 0
-    
-    # Loop through each elf
-    for i in range(N):
-        # Find the index of the dwarf that the elf will face
-        j = A[i] - 1
-        
-        # If the elf is stronger than the dwarf, they will win
-        if V[i] > P[j]:
-            victories += 1
-        
-        # If the elf is weaker than the dwarf, they will lose
-        else:
-            pass
-    
-    # Return the number of victories
-    return victories
+def get_optimal_subsequence(arr, k):
+    # Sort the array in ascending order
+    arr.sort()
+    # Initialize the smallest and largest elements removed as the first and last elements of the array
+    smallest, largest = arr[0], arr[-1]
+    # Iterate over the array and remove the smallest element in each contiguous subsequence of length k
+    for i in range(len(arr) - k + 1):
+        smallest = min(smallest, arr[i + k - 1])
+        largest = max(largest, arr[i])
+    # Return the difference between the largest and smallest elements removed
+    return largest - smallest
+
+def main():
+    # Read the input data from stdin
+    n, k, q = map(int, input().split())
+    arr = list(map(int, input().split()))
+    # Find the smallest possible value of X-Y by calling the get_optimal_subsequence function
+    print(get_optimal_subsequence(arr, k))
+
+if __name__ == '__main__':
+    main()
 

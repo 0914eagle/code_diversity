@@ -1,28 +1,36 @@
 
-def can_reach_end(n, k, road):
-    # Initialize a set to store the indices of sectors with rocks
-    rocks = set()
-    # Iterate through the road description
-    for i, sector in enumerate(road):
-        # If the current sector has a rock, add its index to the set
-        if sector == "#":
-            rocks.add(i)
-    # Initialize a set to store the indices of sectors that Ksusha can reach
-    reachable = set([0])
-    # Iterate through the road description
-    for i in range(n - 1):
-        # Get the indices of the sectors that Ksusha can reach in the current step
-        next_reachable = set()
-        for j in reachable:
-            # If Ksusha can reach sector j, she can also reach sector j + 1, j + 2, ..., j + k
-            for k in range(1, k + 1):
-                if j + k not in rocks and j + k <= n - 1:
-                    next_reachable.add(j + k)
-        # Add the indices of the sectors that Ksusha can reach in the current step to the set
-        reachable = reachable.union(next_reachable)
-    # If Ksusha can reach the last sector, return "YES", otherwise return "NO"
-    if n - 1 in reachable:
-        return "YES"
-    else:
-        return "NO"
+def get_cable_length(city_1, city_2):
+    return abs(city_1 - city_2)
+
+def get_min_cables(cities, type_1, type_2):
+    min_cables = []
+    for i in range(len(cities)):
+        if cities[i] == type_1:
+            for j in range(i+1, len(cities)):
+                if cities[j] == type_2:
+                    min_cables.append(get_cable_length(cities[i], cities[j]))
+    return min_cables
+
+def get_total_length(min_cables):
+    total_length = 0
+    for cable in min_cables:
+        total_length += cable
+    return total_length
+
+def main():
+    n = int(input())
+    cities = []
+    for i in range(n):
+        city = int(input())
+        type = input()
+        cities.append((city, type))
+    
+    byteland_cables = get_min_cables(cities, 'B', 'P')
+    berland_cables = get_min_cables(cities, 'R', 'P')
+    
+    total_length = get_total_length(byteland_cables + berland_cables)
+    print(total_length)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,18 +1,46 @@
 
-def get_number_of_possible_suspects(n, p, coders):
-    # Initialize a set to store the suspected coders
-    suspected_coders = set()
+import math
 
-    # Iterate over the coders and add their suspected coders to the set
-    for coder in coders:
-        suspected_coders.update(coder)
+def get_flaws_diameter(flaws):
+    
+    x_coords, y_coords, z_coords = zip(*flaws)
+    x_max, x_min = max(x_coords), min(x_coords)
+    y_max, y_min = max(y_coords), min(y_coords)
+    z_max, z_min = max(z_coords), min(z_coords)
+    diameter = max(x_max-x_min, y_max-y_min, z_max-z_min)
+    return diameter
 
-    # Get the number of unique suspected coders
-    num_unique_suspected_coders = len(suspected_coders)
+def get_flaws_center(flaws):
+    
+    x_coords, y_coords, z_coords = zip(*flaws)
+    x_center = sum(x_coords) / len(flaws)
+    y_center = sum(y_coords) / len(flaws)
+    z_center = sum(z_coords) / len(flaws)
+    return (x_center, y_center, z_center)
 
-    # Calculate the number of possible two-suspect sets
-    num_possible_suspects = num_unique_suspected_coders * (num_unique_suspected_coders - 1) // 2
+def get_flaws_distance(flaws, center):
+    
+    x_center, y_center, z_center = center
+    distances = []
+    for flaw in flaws:
+        x, y, z = flaw
+        distance = math.sqrt((x-x_center)**2 + (y-y_center)**2 + (z-z_center)**2)
+        distances.append(distance)
+    return max(distances)
 
-    # Return the number of possible two-suspect sets
-    return num_possible_suspects
+def get_min_drill_diameter(flaws):
+    
+    center = get_flaws_center(flaws)
+    distance = get_flaws_distance(flaws, center)
+    return 2 * distance
+
+def main():
+    num_flaws = int(input())
+    flaws = []
+    for _ in range(num_flaws):
+        flaws.append(tuple(map(float, input().split())))
+    print(get_min_drill_diameter(flaws))
+
+if __name__ == '__main__':
+    main()
 

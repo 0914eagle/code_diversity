@@ -1,51 +1,38 @@
 
-def get_maximum_total_influence(n, spectators):
-    # Sort the spectators by their influence in descending order
-    spectators.sort(key=lambda x: x[1], reverse=True)
+def get_optimal_allocation(n, k, batteries):
+    # Sort the batteries in non-decreasing order
+    batteries.sort()
+    # Initialize the optimal difference between the power outputs of the two chips as infinity
+    d = float('inf')
+    # Initialize the optimal allocation of batteries as an empty list
+    allocation = []
+    # Iterate over all possible combinations of batteries
+    for i in range(len(batteries) - k + 1):
+        # Get the current combination of batteries
+        current_combination = batteries[i:i+k]
+        # Get the power output of the first chip in the current combination
+        power_output_1 = min(current_combination)
+        # Get the power output of the second chip in the current combination
+        power_output_2 = max(current_combination)
+        # Calculate the difference between the power outputs of the two chips
+        difference = power_output_2 - power_output_1
+        # If the difference is less than or equal to the current optimal difference, update the optimal difference and allocation
+        if difference <= d:
+            d = difference
+            allocation = current_combination
+    # Return the optimal difference and allocation
+    return d, allocation
 
-    # Initialize variables to keep track of the number of spectators supporting Alice and Bob
-    alice_count = 0
-    bob_count = 0
+def main():
+    # Read the input data
+    n, k = map(int, input().split())
+    batteries = list(map(int, input().split()))
+    # Get the optimal allocation of batteries
+    d, allocation = get_optimal_allocation(n, k, batteries)
+    # Print the optimal difference and allocation
+    print(d)
+    print(*allocation)
 
-    # Initialize a variable to keep track of the total influence
-    total_influence = 0
-
-    # Iterate through the sorted list of spectators
-    for spectator in spectators:
-        # Check if the current spectator supports Alice
-        if spectator[0] == "11" or spectator[0] == "10":
-            # Increment the number of spectators supporting Alice
-            alice_count += 1
-
-        # Check if the current spectator supports Bob
-        if spectator[0] == "11" or spectator[0] == "01":
-            # Increment the number of spectators supporting Bob
-            bob_count += 1
-
-        # Check if the current spectator supports both Alice and Bob
-        if spectator[0] == "11":
-            # Increment the total influence by the influence of the current spectator
-            total_influence += spectator[1]
-
-    # Check if at least half of the spectators support Alice and at least half of the spectators support Bob
-    if alice_count >= n / 2 and bob_count >= n / 2:
-        # Return the total influence
-        return total_influence
-    else:
-        # Return 0 since it is impossible to select a non-empty set of spectators that satisfy the conditions
-        return 0
-
-
-n = int(input())
-spectators = []
-
-# Iterate through the next n lines of input
-for i in range(n):
-    # Split the current line into the political views and influence
-    political_views, influence = input().split()
-    # Add the current spectator to the list of spectators
-    spectators.append((political_views, int(influence)))
-
-# Call the get_maximum_total_influence function and print the result
-print(get_maximum_total_influence(n, spectators))
+if __name__ == '__main__':
+    main()
 

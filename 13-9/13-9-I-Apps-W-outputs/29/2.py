@@ -1,21 +1,24 @@
 
-def get_finalists(n, a, b):
-    # Sort the results in ascending order
-    a.sort()
-    b.sort()
-    
-    # Initialize the finalists array
-    finalists = [0] * n
-    
-    # Identify the winners from each semifinal
-    for i in range(n):
-        if a[i] == b[i]:
-            finalists[i] = 1
-    
-    # Identify the participants who have any chances to advance to the finals
-    for i in range(n):
-        if finalists[i] == 0 and a[i] <= b[n-1-i]:
-            finalists[i] = 1
-    
-    return finalists
+def get_gcd(a, b):
+    while b != 0:
+        a, b = b, a % b
+    return a
+
+def get_greatest_common_divisor(a, b):
+    gcd = get_gcd(a, b)
+    for i in range(a, b+1):
+        if i % gcd != 0:
+            return gcd
+    return gcd
+
+def input_numbers():
+    a, b = map(int, input().split())
+    return a, b
+
+def main():
+    a, b = input_numbers()
+    print(get_greatest_common_divisor(a, b))
+
+if __name__ == '__main__':
+    main()
 

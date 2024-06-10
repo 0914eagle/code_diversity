@@ -1,24 +1,51 @@
 
-def get_maximum_value(k, n, employees):
-    # Sort the employees by their productivity in descending order
-    employees.sort(key=lambda x: x[1], reverse=True)
+def is_consistent(statements):
+    # Initialize a dictionary to store the rhyming relationships
+    rhyming_dict = {}
     
-    # Initialize the maximum total value and the current team size
-    max_value = 0
-    team_size = 0
-    
-    # Iterate through the employees
-    for employee in employees:
-        # If the employee is recommended by the CEO or by another employee already in the team, add them to the team
-        if employee[2] == 0 or employee[2] in team:
-            team.add(employee[0])
-            team_size += 1
-            max_value += employee[1] / employee[0]
+    # Iterate through the statements
+    for statement in statements:
+        # Split the statement into words
+        words = statement.split()
+        
+        # Check if the statement is of the form "X is Y"
+        if words[1] == "is":
+            # Add the rhyming relationship to the dictionary
+            rhyming_dict[words[0]] = words[2]
             
-            # If the team size is equal to k, break the loop
-            if team_size == k:
-                break
+        # Check if the statement is of the form "X not Y"
+        elif words[1] == "not":
+            # Add the rhyming relationship to the dictionary with the value "False"
+            rhyming_dict[words[0]] = False
+            
+    # Iterate through the statements again
+    for statement in statements:
+        # Split the statement into words
+        words = statement.split()
+        
+        # Check if the statement is of the form "X is Y"
+        if words[1] == "is":
+            # Check if the words are rhyming
+            if rhyming_dict.get(words[0], False) == words[2]:
+                return "wait what?"
+            
+    return "yes"
+
+def main():
+    # Read the number of statements
+    n = int(input())
     
-    # Return the maximum total value
-    return round(max_value, 3)
+    # Read the statements
+    statements = []
+    for i in range(n):
+        statements.append(input())
+    
+    # Check if the statements are consistent
+    result = is_consistent(statements)
+    
+    # Print the result
+    print(result)
+
+if __name__ == '__main__':
+    main()
 

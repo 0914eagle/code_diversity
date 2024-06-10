@@ -1,21 +1,31 @@
 
-def largest_square_killer(matrix):
-    # Initialize a list to store the sizes of the square killers
-    killer_sizes = []
-    
-    # Loop through each row of the matrix
-    for i in range(len(matrix)):
-        # Loop through each column of the matrix
-        for j in range(len(matrix[0])):
-            # Check if the current element is part of a square killer
-            if matrix[i][j] == "1":
-                # Find the size of the square killer by checking the surrounding elements
-                size = 1
-                while i + size < len(matrix) and j + size < len(matrix[0]) and matrix[i + size][j + size] == "1":
-                    size += 1
-                # Add the size of the square killer to the list
-                killer_sizes.append(size)
-    
-    # Return the largest square killer size or -1 if there are no square killers
-    return max(killer_sizes) if killer_sizes else -1
+import itertools
+
+def get_pairs(universities, n):
+    pairs = []
+    for i in range(n):
+        for j in range(i+1, n):
+            pairs.append((universities[i], universities[j]))
+    return pairs
+
+def get_distances(pairs, n):
+    distances = []
+    for i in range(n):
+        for j in range(i+1, n):
+            distances.append(abs(pairs[i][0] - pairs[j][1]) + abs(pairs[i][1] - pairs[j][0]))
+    return distances
+
+def get_maximum_distance(distances):
+    return max(distances)
+
+def main():
+    n, k = map(int, input().split())
+    universities = list(map(int, input().split()))
+    pairs = get_pairs(universities, k)
+    distances = get_distances(pairs, k)
+    maximum_distance = get_maximum_distance(distances)
+    print(maximum_distance)
+
+if __name__ == '__main__':
+    main()
 

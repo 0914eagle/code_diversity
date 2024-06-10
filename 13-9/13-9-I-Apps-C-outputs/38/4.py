@@ -1,15 +1,27 @@
 
-import sys
+def get_minimum_people(visitor_record):
+    # Initialize a set to store the unique visitors
+    unique_visitors = set()
 
-def count_ways(N, d):
-    # Calculate the number of ways to connect the parts
-    num_ways = 1
-    for i in range(N-1):
-        num_ways = num_ways * (d[i] * (d[i+1]-1)) % 998244353
-    return num_ways
+    # Iterate through the visitor record
+    for visitor in visitor_record:
+        # If the visitor is entering the club, add them to the set
+        if visitor == "+":
+            unique_visitors.add(visitor)
+        # If the visitor is leaving the club, remove them from the set
+        elif visitor == "-":
+            unique_visitors.remove(visitor)
 
-if __name__ == "__main__":
-    N = int(input())
-    d = list(map(int, input().split()))
-    print(count_ways(N, d))
+    # Return the minimum number of unique visitors
+    return len(unique_visitors)
+
+def main():
+    # Read a line of input from stdin and split it into a list of characters
+    visitor_record = list(input().strip())
+
+    # Call the get_minimum_people function and print the result
+    print(get_minimum_people(visitor_record))
+
+if __name__ == '__main__':
+    main()
 

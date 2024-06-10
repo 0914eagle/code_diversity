@@ -1,14 +1,17 @@
 
-def sabotage_chessboard(N):
-    # Initialize the number of pieces as 64
-    num_pieces = 64
-    # Loop through the number of cuts
-    for i in range(N):
-        # Decrement the number of pieces by 1
-        num_pieces -= 1
-        # If the number of pieces is even, decrement it by 1 again
-        if num_pieces % 2 == 0:
-            num_pieces -= 1
-    # Return the number of pieces
-    return num_pieces
+def round_to_nearest(candy_price, k):
+    # Find the nearest power of 10 that is greater than or equal to the candy price
+    nearest_power = 10**k
+    while nearest_power < candy_price:
+        nearest_power *= 10
+    
+    # Round the candy price to the nearest power of 10
+    return nearest_power
+
+def main():
+    candy_price, k = map(int, input().split())
+    print(round_to_nearest(candy_price, k))
+
+if __name__ == '__main__':
+    main()
 

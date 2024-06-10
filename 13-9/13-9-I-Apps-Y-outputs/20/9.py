@@ -1,12 +1,18 @@
 
-def solve(sides):
-    s1, s2, s3, s4 = sides
-    max_area = 0
-    for i in range(1, 4):
-        for j in range(i+1, 4):
-            for k in range(j+1, 4):
-                l = 4 - i - j - k
-                area = (s1 * s2 * s3 * s4) / (s[i] * s[j] * s[k] * s[l])
-                max_area = max(max_area, area)
-    return max_area
+def get_min_number(L, D, X):
+    for N in range(L, D+1):
+        if sum(int(i) for i in str(N)) == X:
+            return N
+    return -1
+
+def get_max_number(L, D, X):
+    for M in range(L, D+1):
+        if sum(int(i) for i in str(M)) == X:
+            return M
+    return -1
+
+if __name__ == '__main__':
+    L, D, X = map(int, input().split())
+    print(get_min_number(L, D, X))
+    print(get_max_number(L, D, X))
 

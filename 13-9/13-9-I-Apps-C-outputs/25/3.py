@@ -1,52 +1,51 @@
 
-def solve(n, a):
-    # Initialize the minimum number of seconds as 0
-    seconds = 0
+def get_min_digit_changes(numbers, m):
+    # Initialize a count of digit changes to 0
+    digit_changes = 0
+    
+    # Loop through the numbers and compare adjacent pairs
+    for i in range(len(numbers) - 1):
+        # If the current number is greater than the next number, increment the digit changes
+        if numbers[i] > numbers[i + 1]:
+            digit_changes += 1
+    
+    # Return the minimum number of digit changes needed to sort the numbers
+    return digit_changes
 
-    # Check if at least one of the boxes has a positive number of chocolates
-    if any(a):
-        # Sort the boxes in descending order of the number of chocolates
-        sorted_boxes = sorted(a, reverse=True)
+def sort_numbers(numbers, m):
+    # Initialize a sorted list of numbers
+    sorted_numbers = []
+    
+    # Loop through the numbers and add them to the sorted list in sorted order
+    for i in range(len(numbers)):
+        # Find the smallest number that is greater than or equal to the current number
+        smallest_greater = float('inf')
+        for j in range(len(sorted_numbers)):
+            if sorted_numbers[j] >= numbers[i] and smallest_greater > sorted_numbers[j]:
+                smallest_greater = sorted_numbers[j]
+        
+        # Add the current number to the sorted list
+        sorted_numbers.append(smallest_greater)
+    
+    # Return the sorted list of numbers
+    return sorted_numbers
 
-        # Initialize the greatest common divisor as the largest number of chocolates in a box
-        gcd = sorted_boxes[0]
+def main():
+    # Read the input
+    n, m = map(int, input().split())
+    numbers = []
+    for _ in range(n):
+        numbers.append(int(input()))
+    
+    # Call the functions to get the minimum digit changes and sort the numbers
+    min_digit_changes = get_min_digit_changes(numbers, m)
+    sorted_numbers = sort_numbers(numbers, m)
+    
+    # Print the minimum digit changes and the sorted list of numbers
+    print(min_digit_changes)
+    for number in sorted_numbers:
+        print(number)
 
-        # Iterate through the boxes in descending order
-        for i in range(1, len(a)):
-            # Calculate the greatest common divisor of the current box and the previous box
-            gcd = get_gcd(gcd, sorted_boxes[i])
-
-            # If the greatest common divisor is 1, it means that the boxes are not coprime and Alice will not be happy
-            if gcd == 1:
-                return -1
-
-        # Return the minimum number of seconds needed to make Alice happy
-        return seconds
-
-    # If all the boxes have 0 chocolates, return -1
-    else:
-        return -1
-
-# Function to calculate the greatest common divisor of two numbers
-def get_gcd(a, b):
-    while b != 0:
-        a, b = b, a % b
-    return a
-
-# Test the solve function with example inputs
-n = 3
-a = [4, 8, 5]
-print(solve(n, a)) # Output: 9
-
-n = 5
-a = [3, 10, 2, 1, 5]
-print(solve(n, a)) # Output: 2
-
-n = 4
-a = [0, 5, 15, 10]
-print(solve(n, a)) # Output: 0
-
-n = 1
-a = [1]
-print(solve(n, a)) # Output: -1
+if __name__ == '__main__':
+    main()
 

@@ -1,7 +1,11 @@
 
-def express_feeling(n):
-    if n == 1:
-        return "I hate it"
-    else:
-        return "I hate that I love " + express_feeling(n-1)
+def solve(a, b):
+    return (1**b + 2**b + ... + a**b) % a
+
+def main():
+    a, b = map(int, input().split())
+    print(solve(a, b))
+
+if __name__ == '__main__':
+    main()
 

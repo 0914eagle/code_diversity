@@ -1,46 +1,57 @@
 
-def is_valid_configuration(n, a, targets):
-    # Check if the targets are valid
-    for i in range(n):
-        if len(targets[i]) > 2:
-            return False
+def get_expected_weight(n, m, a, w):
+    # Initialize the expected weight of each picture
+    expected_weight = [0] * n
     
-    # Check if the targets are unique
-    for i in range(n):
-        for j in range(i+1, n):
-            if targets[i] == targets[j]:
-                return False
-    
-    # Check if the targets are in the correct rows and columns
-    for i in range(n):
-        for target in targets[i]:
-            if target[0] != i+1 and target[1] != i+1:
-                return False
-    
-    # Check if the number of targets matches the number of hits
-    for i in range(n):
-        if len(targets[i]) != a[i]:
-            return False
-    
-    return True
-
-def solve(n, a):
-    # Initialize the targets as empty lists
-    targets = [[] for _ in range(n)]
-    
-    # Fill in the targets row by row
-    for i in range(n):
-        # Check if the current row has enough space for the targets
-        if len(targets[i]) == 2:
-            return -1
+    # Iterate over each visit
+    for i in range(m):
+        # Choose a picture randomly according to its weight
+        picture_index = choose_picture(w)
         
-        # Add the targets to the current row
-        for j in range(a[i]):
-            targets[i].append([i+1, j+1])
+        # If the chosen picture is liked by Nauuo, add 1 to its weight
+        if a[picture_index] == 1:
+            w[picture_index] += 1
+        # Otherwise, subtract 1 from its weight
+        else:
+            w[picture_index] -= 1
+        
+        # Update the expected weight of the chosen picture
+        expected_weight[picture_index] += w[picture_index] / (i + 1)
     
-    # Check if the configuration is valid
-    if is_valid_configuration(n, a, targets):
-        return targets
-    else:
-        return -1
+    # Return the expected weight of each picture
+    return expected_weight
+
+def choose_picture(w):
+    # Generate a random number between 0 and the sum of all weights
+    random_number = random.randint(0, sum(w))
+    
+    # Initialize the current weight to 0
+    current_weight = 0
+    
+    # Iterate over each picture
+    for i in range(len(w)):
+        # If the current weight is less than the random number, choose the current picture
+        if current_weight < random_number <= current_weight + w[i]:
+            return i
+        # Otherwise, update the current weight
+        current_weight += w[i]
+    
+    # If no picture is chosen, return the last picture
+    return len(w) - 1
+
+def main():
+    # Read the input
+    n, m = map(int, input().split())
+    a = list(map(int, input().split()))
+    w = list(map(int, input().split()))
+    
+    # Call the function to get the expected weight of each picture
+    expected_weight = get_expected_weight(n, m, a, w)
+    
+    # Print the expected weight of each picture
+    for i in range(n):
+        print(expected_weight[i])
+
+if __name__ == '__main__':
+    main()
 

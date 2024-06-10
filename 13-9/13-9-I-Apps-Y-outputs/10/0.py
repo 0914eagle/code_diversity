@@ -1,26 +1,15 @@
 
-def solve(l1, r1, l2, r2):
-    # Find the middle point of the first segment
-    mid1 = (l1 + r1) // 2
-    
-    # Find the middle point of the second segment
-    mid2 = (l2 + r2) // 2
-    
-    # If the middle points of the two segments are not equal, then we can choose them as the answer
-    if mid1 != mid2:
-        return [mid1, mid2]
-    
-    # If the middle points of the two segments are equal, then we need to recursively call the function to find the answer
+def get_hours_until_new_year(hour):
+    if hour < 24:
+        return 24 - hour
     else:
-        # If the first segment is longer than the second segment, then we can choose the middle point of the first segment and the right endpoint of the second segment as the answer
-        if r1 - l1 > r2 - l2:
-            return [mid1, r2]
-        # If the first segment is shorter than the second segment, then we can choose the middle point of the first segment and the left endpoint of the second segment as the answer
-        else:
-            return [mid1, l2]
+        return 24 - (hour - 24)
 
-q = int(input())
-for i in range(q):
-    l1, r1, l2, r2 = map(int, input().split())
-    print(*solve(l1, r1, l2, r2))
+def main():
+    hour = int(input())
+    hours_until_new_year = get_hours_until_new_year(hour)
+    print(f"We have {hours_until_new_year} hours until New Year at {hour}:00 on 30th, December.")
+
+if __name__ == '__main__':
+    main()
 

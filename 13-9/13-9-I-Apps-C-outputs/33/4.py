@@ -1,40 +1,58 @@
 
-def solve(n, m):
-    # Initialize a set to store the unique digits
-    unique_digits = set()
-    
-    # Iterate over each possible hour
-    for hour in range(n):
-        # Iterate over each possible minute
-        for minute in range(m):
-            # Convert the hour and minute to base 7
-            hour_base7 = convert_to_base7(hour)
-            minute_base7 = convert_to_base7(minute)
-            
-            # Check if the hour and minute have distinct digits
-            if len(set(hour_base7 + minute_base7)) == len(hour_base7) + len(minute_base7):
-                # Add the unique digits to the set
-                unique_digits.update(hour_base7 + minute_base7)
-    
-    # Return the number of unique digits
-    return len(unique_digits)
+import sys
+import itertools
 
-# Convert a number to base 7
-def convert_to_base7(num):
-    # Initialize the base 7 string
-    base7_str = ""
+def get_tastiness(n, k, t, u):
+    # Initialize the tastiness of each combination of flavors
+    tastiness = [[0] * (k + 1) for _ in range(k + 1)]
     
-    # Loop until the number is 0
-    while num > 0:
-        # Get the remainder
-        remainder = num % 7
-        
-        # Add the remainder to the base 7 string
-        base7_str = str(remainder) + base7_str
-        
-        # Divide the number by 7
-        num //= 7
+    # Populate the tastiness of each combination of flavors
+    for i in range(1, k + 1):
+        for j in range(1, k + 1):
+            tastiness[i][j] = tastiness[i - 1][j - 1] + t[i - 1] + t[j - 1] + u[i - 1][j - 1]
     
-    # Return the base 7 string
-    return base7_str
+    # Initialize the maximum tastiness and the corresponding number of scoops
+    max_tastiness = 0
+    num_scoops = 0
+    
+    # Iterate over all possible combinations of flavors
+    for combination in itertools.combinations(range(1, k + 1), n):
+        # Calculate the tastiness of this combination
+        tastiness_combination = sum(tastiness[i][i] for i in combination)
+        
+        # If the tastiness of this combination is greater than the current maximum, update the maximum and the number of scoops
+        if tastiness_combination > max_tastiness:
+            max_tastiness = tastiness_combination
+            num_scoops = len(combination)
+    
+    # Return the maximum tastiness and the corresponding number of scoops
+    return max_tastiness, num_scoops
+
+def get_cost(n, k, a, b):
+    # Calculate the cost of the ice cream
+    cost = n * a + b
+    
+    # Return the cost
+    return cost
+
+def get_tastiness_per_gold_coin_ratio(n, k, t, u, a, b):
+    # Calculate the maximum tastiness and the number of scoops
+    max_tastiness, num_scoops = get_tastiness(n, k, t, u)
+    
+    # Calculate the cost
+    cost = get_cost(num_scoops, k, a, b)
+    
+    # Calculate the tastiness per gold coin ratio
+    tastiness_per_gold_coin_ratio = max_tastiness / cost
+    
+    # Return the tastiness per gold coin ratio
+    return tastiness_per_gold_coin_ratio
+
+if __name__ == '__main__':
+    n, k, a, b = map(int, input().split())
+    t = list(map(int, input().split()))
+    u = []
+    for i in range(k):
+        u.append(list(map(int, input().split())))
+    print(get_tastiness_per_gold_coin_ratio(n, k, t, u, a, b))
 

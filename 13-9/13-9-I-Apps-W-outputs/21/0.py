@@ -1,13 +1,12 @@
 
-import math
+def check_password(password):
+    # Your code here
+    return "Correct" if len(password) >= 5 and any(c.isupper() for c in password) and any(c.islower() for c in password) and any(c.isdigit() for c in password) else "Too weak"
 
-def get_min_radius(points):
-    x_coords = [point[0] for point in points]
-    y_coords = [point[1] for point in points]
-    x_min = min(x_coords)
-    x_max = max(x_coords)
-    y_min = min(y_coords)
-    y_max = max(y_coords)
-    radius = 0.5 * math.sqrt((x_max-x_min)**2 + (y_max-y_min)**2)
-    return radius
+def main():
+    password = input("Enter password: ")
+    print(check_password(password))
+
+if __name__ == '__main__':
+    main()
 

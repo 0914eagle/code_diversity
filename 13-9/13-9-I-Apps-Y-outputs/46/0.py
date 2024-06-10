@@ -1,18 +1,57 @@
 
-def solve(N, M):
-    # Initialize a variable to store the number of ways to choose two balls
-    # such that the sum is even
-    num_ways = 0
-
-    # Loop through all possible values of the first ball
-    for i in range(1, N + M + 1):
-        # If the first ball is even, the second ball must be odd to make the sum even
-        if i % 2 == 0:
-            # Increment the number of ways to choose two balls
-            num_ways += M
-        # If the first ball is odd, the second ball can be either even or odd to make the sum even
+def get_min_moves(a):
+    # Find the starting and ending positions of the contiguous segment
+    start, end = 0, 0
+    for i in range(len(a)):
+        if a[i] == 1:
+            if start == 0:
+                start = i
+            end = i
+    
+    # Initialize the minimum number of moves to 0
+    min_moves = 0
+    
+    # Loop until the starting and ending positions are the same
+    while start != end:
+        # Find the leftmost and rightmost positions of the contiguous segment
+        left = start
+        right = end
+        for i in range(start, end+1):
+            if a[i] == 1:
+                left = i
+                break
+        for i in range(end, start-1, -1):
+            if a[i] == 1:
+                right = i
+                break
+        
+        # Shift the contiguous segment to the right by 1
+        if right < len(a) and a[right+1] == 0:
+            a[left:right+1] = a[left+1:right+2]
+            start += 1
+            end += 1
+            min_moves += 1
+        
+        # Shift the contiguous segment to the left by 1
+        elif left > 1 and a[left-1] == 0:
+            a[left-1:right+1] = a[left-2:right]
+            start -= 1
+            end -= 1
+            min_moves += 1
+        
+        # If neither of the above conditions are met, then the contiguous segment cannot be shifted any further
         else:
-            num_ways += M + 1
+            break
+    
+    return min_moves
 
-    return num_ways
+def main():
+    t = int(input())
+    for i in range(t):
+        n = int(input())
+        a = list(map(int, input().split()))
+        print(get_min_moves(a))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,13 +1,19 @@
 
-def solve(n, m):
-    # Initialize the number of non-similar worlds to 0
-    non_similar_worlds = 0
+def get_number_of_ways(n, k):
+    # Initialize a list to store the number of ways for each house
+    number_of_ways = [0] * (n + 1)
+    number_of_ways[0] = 1
     
-    # Loop through each world
-    for i in range(n):
-        # Add the world to the number of non-similar worlds
-        non_similar_worlds += 1
+    # Loop through each house and calculate the number of ways to reach it
+    for i in range(1, n + 1):
+        number_of_ways[i] = (number_of_ways[i - 1] + number_of_ways[i - k - 1]) % 1000000007
     
-    # Return the number of non-similar worlds modulo 10^9 + 7
-    return non_similar_worlds % (10**9 + 7)
+    return number_of_ways[n]
+
+def main():
+    n, k = map(int, input().split())
+    print(get_number_of_ways(n, k))
+
+if __name__ == '__main__':
+    main()
 

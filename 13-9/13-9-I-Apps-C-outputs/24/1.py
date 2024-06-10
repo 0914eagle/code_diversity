@@ -1,29 +1,22 @@
 
-def solve(n, poll_results):
-    # Initialize the smallest cluster size
-    smallest_cluster_size = float('inf')
+def is_possible(n, c):
+    if n == 1:
+        return True
+    if n == 2:
+        return c[0] == c[1]
+    if n == 3:
+        return c[0] == c[1] and c[1] == c[2]
+    if n == 4:
+        return c[0] + c[1] + c[2] + c[3] == sum(c)
+    return False
 
-    # Iterate over all possible values of S and T
-    for S in range(0, 2000001):
-        for T in range(0, 2000001):
-            # Sort the poll results by the measure a_i * S + b_i * T
-            sorted_results = sorted(poll_results, key=lambda x: x[0] * S + x[1] * T)
+def solve(n, c):
+    if is_possible(n, c):
+        return "YES"
+    return "NO"
 
-            # Initialize the current cluster size
-            current_cluster_size = 0
-
-            # Iterate over the sorted results and find the cluster size
-            for i in range(n):
-                if sorted_results[i][2] == 1:
-                    current_cluster_size += 1
-                else:
-                    if current_cluster_size > smallest_cluster_size:
-                        smallest_cluster_size = current_cluster_size
-                    current_cluster_size = 0
-
-            # Check if the current cluster size is the smallest seen so far
-            if current_cluster_size > smallest_cluster_size:
-                smallest_cluster_size = current_cluster_size
-
-    return smallest_cluster_size
+if __name__ == '__main__':
+    n = int(input())
+    c = list(map(int, input().split()))
+    print(solve(n, c))
 

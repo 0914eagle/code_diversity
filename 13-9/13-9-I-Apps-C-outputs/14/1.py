@@ -1,24 +1,38 @@
 
-def count_two_suspects(n, p, names):
-    # Initialize a dictionary to store the number of coders named by each coder
-    named_by = {}
+import math
+
+def get_flaws_diameter(flaws):
+    # Calculate the diameter of the largest flaw
+    largest_diameter = 0
+    for flaw in flaws:
+        diameter = 2 * max(abs(flaw[0]), abs(flaw[1]), abs(flaw[2]))
+        largest_diameter = max(largest_diameter, diameter)
+    
+    # Return the diameter of the smallest drill bit that would remove all the flaws
+    return largest_diameter
+
+def get_flaws_positions(n):
+    # Read the flaws positions from the input
+    flaws = []
     for i in range(n):
-        named_by[i + 1] = set()
+        flaw = list(map(float, input().split()))
+        flaws.append(flaw)
+    
+    return flaws
 
-    # Populate the dictionary with the names of the coders named by each coder
-    for i, name in enumerate(names):
-        named_by[i + 1].update(name)
+def main():
+    # Read the number of flaws from the input
+    n = int(input())
+    
+    # Get the positions of the flaws
+    flaws = get_flaws_positions(n)
+    
+    # Calculate the diameter of the smallest drill bit that would remove all the flaws
+    diameter = get_flaws_diameter(flaws)
+    
+    # Print the result
+    print(diameter)
 
-    # Initialize a set to store the two suspects
-    suspects = set()
-
-    # Iterate over the dictionary and count the number of coders who named at least one of the two suspects
-    count = 0
-    for i in range(n):
-        if len(suspects) < 2:
-            suspects.add(i + 1)
-        if len(suspects) == 2:
-            count += len(named_by[i + 1].intersection(suspects))
-
-    return count
+if __name__ == '__main__':
+    main()
 

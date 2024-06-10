@@ -1,34 +1,60 @@
 
-def find_min_path_length(n, m, roads):
-    # Initialize a dictionary to store the length of the path from each station to the endpoint
-    station_to_endpoint_length = {}
-    for road in roads:
-        u, v = road[0], road[1]
-        if u not in station_to_endpoint_length:
-            station_to_endpoint_length[u] = 1
-        if v not in station_to_endpoint_length:
-            station_to_endpoint_length[v] = 1
-        station_to_endpoint_length[u] = max(station_to_endpoint_length[u], station_to_endpoint_length[v] + 1)
-    
-    # Initialize a dictionary to store the length of the path from each station to the starting station
-    station_to_starting_length = {}
-    for road in roads:
-        u, v = road[0], road[1]
-        if v not in station_to_starting_length:
-            station_to_starting_length[v] = 1
-        if u not in station_to_starting_length:
-            station_to_starting_length[u] = 1
-        station_to_starting_length[v] = max(station_to_starting_length[v], station_to_starting_length[u] + 1)
-    
-    # Find the maximum length path
-    max_length = max(station_to_endpoint_length.values())
-    
-    # Find the minimum length path that a racer can take if at most one road is blocked off
-    min_length = max_length
-    for road in roads:
-        u, v = road[0], road[1]
-        length_u_to_v = station_to_starting_length[u] + station_to_endpoint_length[v] - 2
-        min_length = min(min_length, length_u_to_v)
-    
-    return min_length
+def get_energy_contribution(lamps):
+    positive_energy = 0
+    negative_energy = 0
+    for lamp in lamps:
+        if lamp[2] > 0:
+            positive_energy += lamp[2]
+        else:
+            negative_energy += lamp[2]
+    return positive_energy, negative_energy
+
+def get_balancing_line(lamps):
+    positive_energy, negative_energy = get_energy_contribution(lamps)
+    if positive_energy == negative_energy:
+        return "IMPOSSIBLE"
+    elif positive_energy > negative_energy:
+        return "IMPOSSIBLE"
+    else:
+        balancing_line = []
+        for i in range(len(lamps)):
+            lamp = lamps[i]
+            if lamp[2] < 0:
+                continue
+            for j in range(i+1, len(lamps)):
+                other_lamp = lamps[j]
+                if other_lamp[2] > 0:
+                    continue
+                if lamp[0] == other_lamp[0] and lamp[1] == other_lamp[1]:
+                    continue
+                if lamp[0] == other_lamp[0] and lamp[1] - other_lamp[1] == 1:
+                    balancing_line.append(lamp)
+                    break
+                elif lamp[1] == other_lamp[1] and lamp[0] - other_lamp[0] == 1:
+                    balancing_line.append(lamp)
+                    break
+        if len(balancing_line) == 0:
+            return "IMPOSSIBLE"
+        else:
+            return balancing_line
+
+def main():
+    num_lamps = int(input())
+    lamps = []
+    for i in range(num_lamps):
+        x, y, e = map(int, input().split())
+        lamps.append((x, y, e))
+    balancing_line = get_balancing_line(lamps)
+    if balancing_line == "IMPOSSIBLE":
+        print("IMPOSSIBLE")
+    else:
+        balancing_line_length = 0
+        for i in range(len(balancing_line)-1):
+            lamp1 = balancing_line[i]
+            lamp2 = balancing_line[i+1]
+            balancing_line_length += abs(lamp1[0] - lamp2[0])
+        print(balancing_line_length)
+
+if __name__ == '__main__':
+    main()
 

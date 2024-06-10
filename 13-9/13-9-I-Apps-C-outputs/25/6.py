@@ -1,27 +1,31 @@
 
-def get_min_seconds(n, a):
-    # Initialize variables
-    seconds = 0
-    k = 1
-    boxes = [0] * n
-    for i in range(n):
-        boxes[i] = a[i]
+def get_sorted_array(n, m, arr):
+    # Sort the array in ascending order
+    arr.sort()
+    # Initialize a counter to keep track of the number of digits changed
+    count = 0
+    # Loop through the array and change the digits as needed
+    for i in range(n - 1):
+        # If the current element is greater than the next element, change the digits
+        if arr[i] > arr[i + 1]:
+            # Change the digits of the current element
+            arr[i] = arr[i + 1]
+            # Change the digits of the next element
+            arr[i + 1] = arr[i]
+            # Increment the counter
+            count += 1
+    # Return the sorted array and the number of digits changed
+    return arr, count
 
-    # Keep increasing k until all boxes are divisible by k
-    while not all(box % k == 0 for box in boxes):
-        k += 1
-        seconds += 1
+def main():
+    n, m = map(int, input().split())
+    arr = []
+    for _ in range(n):
+        arr.append(int(input()))
+    sorted_arr, count = get_sorted_array(n, m, arr)
+    print(*sorted_arr)
+    print(count)
 
-        # Move chocolate pieces from box i to box i-1 or i+1 if possible
-        for i in range(n):
-            if boxes[i] % k == 0:
-                continue
-            if i > 0 and boxes[i-1] % k == 0:
-                boxes[i-1] += boxes[i] % k
-                boxes[i] -= boxes[i] % k
-            elif i < n-1 and boxes[i+1] % k == 0:
-                boxes[i+1] += boxes[i] % k
-                boxes[i] -= boxes[i] % k
-
-    return -1 if seconds == 0 else seconds
+if __name__ == '__main__':
+    main()
 

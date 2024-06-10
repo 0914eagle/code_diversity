@@ -1,20 +1,38 @@
 
-def get_min_light_radius(lanterns, street_length):
-    # Sort the lanterns by their position
-    lanterns.sort()
+import sys
+
+def get_input():
+    n, k = map(int, input().split())
+    lamps = []
+    for i in range(n):
+        l, r = map(int, input().split())
+        lamps.append((l, r))
+    return n, k, lamps
+
+def solve(n, k, lamps):
+    # Initialize the answer to 0
+    ans = 0
     
-    # Initialize the minimum light radius as the distance between the first two lanterns
-    min_light_radius = lanterns[1] - lanterns[0]
+    # Iterate over all possible combinations of lamps
+    for combination in combinations(lamps, k):
+        # Check if the combination meets the criteria
+        if all(lamp[1] >= sum(map(lambda x: x[0], combination)) for lamp in combination):
+            # Increment the answer
+            ans += 1
     
-    # Iterate over the lanterns
-    for i in range(1, len(lanterns)):
-        # Calculate the distance between the current lantern and the previous lantern
-        distance = lanterns[i] - lanterns[i-1]
-        
-        # If the distance is greater than the minimum light radius, update the minimum light radius
-        if distance > min_light_radius:
-            min_light_radius = distance
+    # Return the answer modulo 998244353
+    return ans % 998244353
+
+def main():
+    # Get the input
+    n, k, lamps = get_input()
     
-    # Return the minimum light radius
-    return min_light_radius
+    # Solve the problem
+    ans = solve(n, k, lamps)
+    
+    # Print the answer
+    print(ans)
+
+if __name__ == '__main__':
+    main()
 

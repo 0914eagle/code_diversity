@@ -1,35 +1,26 @@
 
-import sys
-import math
+def get_original_string(code_string):
+    original_string = ""
+    code_list = code_string.split("-")
+    for element in code_list:
+        if "+" in element:
+            num, word = element.split("+")
+            original_string += word * int(num)
+        else:
+            original_string += element
+    return original_string
 
-sys.setrecursionlimit(10**6)
+def check_palindrome(original_string):
+    return original_string == original_string[::-1]
 
-def prefix_sum(arr):
-    n = len(arr)
-    prefix_sums = [0] * (n + 1)
-    for i in range(n):
-        prefix_sums[i + 1] = prefix_sums[i] + arr[i]
-    return prefix_sums
+def main():
+    code_string = input("Enter code string: ")
+    original_string = get_original_string(code_string)
+    if check_palindrome(original_string):
+        print("Return")
+    else:
+        print("Continue")
 
-def sum_of_subarray_minimums(arr):
-    n = len(arr)
-    prefix_sums = prefix_sum(arr)
-    suffix_sums = prefix_sum(arr[::-1])
-    suffix_sums.pop()
-    suffix_sums.reverse()
-    total_sum = 0
-    for i in range(n):
-        total_sum += min(prefix_sums[i], suffix_sums[i])
-    return total_sum % (10**9 + 7)
-
-def solve(arr):
-    n = len(arr)
-    total_sum = 0
-    for i in range(n):
-        for j in range(i, n):
-            total_sum += sum_of_subarray_minimums(arr[i:j+1])
-    return total_sum % (10**9 + 7)
-
-arr = [int(x) for x in input().split()]
-print(solve(arr))
+if __name__ == '__main__':
+    main()
 

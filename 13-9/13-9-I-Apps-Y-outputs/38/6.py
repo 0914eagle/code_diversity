@@ -1,6 +1,14 @@
 
-def get_final_score(answers):
-    n = len(answers)
-    correct_answers = answers.count('A')
-    return correct_answers
+def can_buy(A, B, C):
+    return A + B >= C
+
+def main():
+    A, B, C = map(int, input().split())
+    if can_buy(A, B, C):
+        print("Yes")
+    else:
+        print("No")
+
+if __name__ == '__main__':
+    main()
 

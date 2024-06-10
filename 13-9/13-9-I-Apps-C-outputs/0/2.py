@@ -1,30 +1,33 @@
 
-def get_max_influence(spectators):
-    # Sort the spectators by influence in descending order
-    spectators.sort(key=lambda x: x[1], reverse=True)
+def get_battery_powers(n, k):
+    powers = []
+    for i in range(2*n*k):
+        powers.append(int(input()))
+    return powers
 
-    # Initialize variables to keep track of the number of spectators supporting Alice and Bob
-    alice_count = 0
-    bob_count = 0
+def get_optimal_allocation(powers, n, k):
+    batteries_per_machine = k*2
+    allocated_batteries = []
+    for i in range(n):
+        machine_batteries = sorted(powers[i*batteries_per_machine:(i+1)*batteries_per_machine])
+        allocated_batteries += machine_batteries[:k]
+        allocated_batteries += machine_batteries[k:]
+    return allocated_batteries
 
-    # Initialize a variable to keep track of the total influence
-    total_influence = 0
+def get_difference(allocated_batteries, n, k):
+    differences = []
+    for i in range(n):
+        machine_batteries = allocated_batteries[i*k:(i+1)*k]
+        differences.append(abs(machine_batteries[0] - machine_batteries[1]))
+    return min(differences)
 
-    # Iterate through the spectators and select the ones that support Alice and Bob
-    for spectator in spectators:
-        if spectator[0] == "11" or spectator[0] == "10":
-            alice_count += 1
-        if spectator[0] == "11" or spectator[0] == "01":
-            bob_count += 1
-        total_influence += spectator[1]
+def main():
+    n, k = map(int, input().split())
+    powers = get_battery_powers(n, k)
+    allocated_batteries = get_optimal_allocation(powers, n, k)
+    difference = get_difference(allocated_batteries, n, k)
+    print(difference)
 
-        # If we have selected at least half of the spectators supporting Alice and Bob, break the loop
-        if alice_count >= len(spectators) // 2 and bob_count >= len(spectators) // 2:
-            break
-
-    # If we have selected at least half of the spectators supporting Alice and Bob, return the total influence
-    if alice_count >= len(spectators) // 2 and bob_count >= len(spectators) // 2:
-        return total_influence
-    else:
-        return 0
+if __name__ == '__main__':
+    main()
 

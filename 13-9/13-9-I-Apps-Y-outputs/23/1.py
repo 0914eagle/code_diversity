@@ -1,25 +1,37 @@
 
-def get_good_observatories(num_observatories, num_roads, elevations, roads):
-    # Initialize a list to store the good observatories
-    good_observatories = []
-    
-    # Iterate over each observatory
-    for observatory in range(num_observatories):
-        # Initialize a set to store the elevations of the observatories that can be reached from the current observatory using just one road
-        reachable_elevations = set()
-        
-        # Iterate over each road
-        for road in roads:
-            # If the current observatory is the starting point of the road
-            if road[0] == observatory:
-                # Add the elevation of the ending point of the road to the set of reachable elevations
-                reachable_elevations.add(elevations[road[1] - 1])
-        
-        # If the elevation of the current observatory is higher than all the reachable elevations
-        if elevations[observatory] > max(reachable_elevations):
-            # Add the current observatory to the list of good observatories
-            good_observatories.append(observatory + 1)
-    
-    # Return the list of good observatories
-    return good_observatories
+import math
+
+def get_manhattan_distance(point1, point2):
+    return abs(point1[0] - point2[0]) + abs(point1[1] - point2[1])
+
+def get_nearest_checkpoint(student, checkpoints):
+    nearest_checkpoint = None
+    min_distance = math.inf
+    for checkpoint in checkpoints:
+        distance = get_manhattan_distance(student, checkpoint)
+        if distance < min_distance:
+            min_distance = distance
+            nearest_checkpoint = checkpoint
+    return nearest_checkpoint
+
+def solve(students, checkpoints):
+    nearest_checkpoints = []
+    for student in students:
+        nearest_checkpoints.append(get_nearest_checkpoint(student, checkpoints))
+    return nearest_checkpoints
+
+def main():
+    students = []
+    checkpoints = []
+    n, m = map(int, input().split())
+    for _ in range(n):
+        students.append(tuple(map(int, input().split())))
+    for _ in range(m):
+        checkpoints.append(tuple(map(int, input().split())))
+    nearest_checkpoints = solve(students, checkpoints)
+    for nearest_checkpoint in nearest_checkpoints:
+        print(checkpoints.index(nearest_checkpoint) + 1)
+
+if __name__ == '__main__':
+    main()
 

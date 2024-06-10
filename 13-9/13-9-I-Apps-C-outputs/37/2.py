@@ -1,32 +1,33 @@
 
-def get_output(n, logical_scheme):
-    # Initialize a dictionary to store the values of the inputs
-    inputs = {}
-    for i in range(n):
-        inputs[i+1] = 0
+def get_perfect_sets(k):
+    # Initialize a set to store the perfect sets
+    perfect_sets = set()
+    
+    # Iterate from 0 to k
+    for i in range(k+1):
+        # Check if i is a perfect set
+        if is_perfect_set(i):
+            # Add i to the perfect sets
+            perfect_sets.add(i)
+    
+    # Return the number of perfect sets
+    return len(perfect_sets)
 
-    # Initialize a dictionary to store the values of the logical elements
-    elements = {}
-    for i in range(n, 2*n-1):
-        elements[i+1] = 0
+def is_perfect_set(n):
+    # Initialize a set to store the elements of n
+    elements = set()
+    
+    # Iterate from 0 to n
+    for i in range(n+1):
+        # Check if i is a perfect set
+        if n & (1 << i):
+            # Add i to the elements
+            elements.add(i)
+    
+    # Return True if n is a perfect set, False otherwise
+    return len(elements) == 2
 
-    # Process the logical scheme
-    for i in range(n):
-        vertex_type = logical_scheme[i][0]
-        if vertex_type == "AND":
-            elements[i+1] = inputs[logical_scheme[i][1]] & inputs[logical_scheme[i][2]]
-        elif vertex_type == "OR":
-            elements[i+1] = inputs[logical_scheme[i][1]] | inputs[logical_scheme[i][2]]
-        elif vertex_type == "XOR":
-            elements[i+1] = inputs[logical_scheme[i][1]] ^ inputs[logical_scheme[i][2]]
-        elif vertex_type == "NOT":
-            elements[i+1] = ~inputs[logical_scheme[i][1]]
-        elif vertex_type == "IN":
-            inputs[i+1] = logical_scheme[i][1]
-
-    # Return the output values
-    output = ""
-    for i in range(n):
-        output += str(elements[i+1])
-    return output
+if __name__ == '__main__':
+    k = int(input())
+    print(get_perfect_sets(k))
 

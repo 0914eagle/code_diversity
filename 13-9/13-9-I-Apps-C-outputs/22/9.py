@@ -1,70 +1,49 @@
 
-def solve(n, points):
-    # Sort the points by their x-coordinate
-    sorted_points = sorted(points, key=lambda x: x[0])
+def get_solution(a_00, a_01, a_10, a_11):
+    if a_00 + a_01 + a_10 + a_11 == 0:
+        return "Impossible"
+    
+    s = ""
+    while a_00 > 0 or a_01 > 0 or a_10 > 0 or a_11 > 0:
+        if a_00 > 0 and a_01 > 0:
+            s += "01"
+            a_00 -= 1
+            a_01 -= 1
+        elif a_00 > 0 and a_10 > 0:
+            s += "00"
+            a_00 -= 1
+            a_10 -= 1
+        elif a_01 > 0 and a_11 > 0:
+            s += "10"
+            a_01 -= 1
+            a_11 -= 1
+        elif a_00 > 0 and a_11 > 0:
+            s += "01"
+            a_00 -= 1
+            a_11 -= 1
+        elif a_01 > 0 and a_10 > 0:
+            s += "10"
+            a_01 -= 1
+            a_10 -= 1
+        elif a_00 > 0:
+            s += "0"
+            a_00 -= 1
+        elif a_01 > 0:
+            s += "1"
+            a_01 -= 1
+        elif a_10 > 0:
+            s += "0"
+            a_10 -= 1
+        elif a_11 > 0:
+            s += "1"
+            a_11 -= 1
+    
+    return s
 
-    # Create a graph with the points as vertices and edges between adjacent points
-    graph = {}
-    for i in range(n):
-        graph[i] = [i+1]
+def main():
+    a_00, a_01, a_10, a_11 = map(int, input().split())
+    print(get_solution(a_00, a_01, a_10, a_11))
 
-    # Iterate through the points and add edges between adjacent points
-    for i in range(n-1):
-        graph[i].append(i+2)
-
-    # Check if the graph is a tree
-    if not is_tree(graph):
-        return "NO"
-
-    # Check if the loop goes through all points
-    if not goes_through_all_points(graph, sorted_points):
-        return "NO"
-
-    # Check if the loop is a single loop
-    if not is_single_loop(graph):
-        return "NO"
-
-    return "YES"
-
-def is_tree(graph):
-    # Check if the graph is a tree by performing a depth-first search
-    visited = set()
-    stack = [0]
-    while stack:
-        node = stack.pop()
-        if node in visited:
-            return False
-        visited.add(node)
-        stack.extend(graph[node])
-    return True
-
-def goes_through_all_points(graph, sorted_points):
-    # Check if the loop goes through all points
-    visited = set()
-    current_node = 0
-    while len(visited) < len(sorted_points):
-        next_node = graph[current_node][0]
-        if next_node not in visited:
-            visited.add(next_node)
-            current_node = next_node
-        else:
-            return False
-    return True
-
-def is_single_loop(graph):
-    # Check if the loop is a single loop by checking if all edges are used exactly once
-    used_edges = set()
-    for node in graph:
-        for neighbor in graph[node]:
-            if (node, neighbor) in used_edges or (neighbor, node) in used_edges:
-                return False
-            used_edges.add((node, neighbor))
-    return True
-
-n = int(input())
-points = []
-for i in range(n):
-    x, y = map(int, input().split())
-    points.append((x, y))
-print(solve(n, points))
+if __name__ == '__main__':
+    main()
 

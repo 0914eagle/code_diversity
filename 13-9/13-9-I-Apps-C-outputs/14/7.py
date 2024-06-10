@@ -1,21 +1,25 @@
 
-def number_of_suspects(n, p, names):
-    # Initialize a dictionary to store the number of agreements for each coder
-    agreements = {i: 0 for i in range(1, n + 1)}
+import math
 
-    # Iterate over the names of the coders and increment the agreement count for each coder
-    for name in names:
-        agreements[name[0]] += 1
-        agreements[name[1]] += 1
+def get_flaws_positions(n):
+    flaws = []
+    for i in range(n):
+        flaws.append(list(map(float, input().split())))
+    return flaws
 
-    # Initialize a set to store the selected suspects
-    selected_suspects = set()
+def get_diameter(flaws):
+    x_coords = [flaw[0] for flaw in flaws]
+    y_coords = [flaw[1] for flaw in flaws]
+    z_coords = [flaw[2] for flaw in flaws]
+    max_distance = max(math.sqrt(x_coords[i]**2 + y_coords[i]**2 + z_coords[i]**2) for i in range(len(flaws)))
+    return 2 * max_distance
 
-    # Iterate over the agreements and select the suspects that have at least p agreements
-    for coder, agreement in agreements.items():
-        if agreement >= p:
-            selected_suspects.add(coder)
+def main():
+    n = int(input())
+    flaws = get_flaws_positions(n)
+    diameter = get_diameter(flaws)
+    print(diameter)
 
-    # Return the number of possible two-suspect sets
-    return len(selected_suspects) * (len(selected_suspects) - 1) // 2
+if __name__ == '__main__':
+    main()
 

@@ -1,14 +1,19 @@
 
-def is_sum_of_cubes(n):
-    for i in range(1, int(n**(1/3))):
-        j = n - i**3
-        if j >= 0 and j**(1/3) % 1 == 0:
-            return True
-    return False
+def get_max_moves(heights):
+    max_moves = 0
+    for i in range(len(heights)):
+        current_height = heights[i]
+        j = i + 1
+        while j < len(heights) and heights[j] <= current_height:
+            j += 1
+        max_moves = max(max_moves, j - i)
+    return max_moves
 
-def find_largest_bus_number(m):
-    for i in range(m, 0, -1):
-        if is_sum_of_cubes(i):
-            return i
-    return None
+def main():
+    num_squares = int(input())
+    heights = list(map(int, input().split()))
+    print(get_max_moves(heights))
+
+if __name__ == '__main__':
+    main()
 

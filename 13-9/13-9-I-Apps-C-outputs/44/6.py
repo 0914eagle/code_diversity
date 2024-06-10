@@ -1,36 +1,34 @@
 
-def find_best_flight(n, flights):
-    # Initialize a graph with n vertices and 0 edges
-    graph = [[] for _ in range(n)]
+def get_input():
+    a, b = map(int, input().split())
+    c, d = map(int, input().split())
+    return a, b, c, d
 
-    # Add edges to the graph based on the given flights
-    for flight in flights:
-        graph[flight[0] - 1].append(flight[1] - 1)
-        graph[flight[1] - 1].append(flight[0] - 1)
+def get_splitter_ratios(a, b, c, d):
+    splitter_ratios = []
+    current_ratio = a / (a + b)
+    next_ratio = c / (c + d)
+    while current_ratio != next_ratio:
+        splitter_ratios.append((current_ratio, 1 - current_ratio))
+        current_ratio = next_ratio
+        next_ratio = (c * current_ratio) / (c + d)
+    return splitter_ratios
 
-    # Find the flight with the maximum number of connections
-    max_connections = 0
-    flight_to_cancel = None
-    for i in range(n - 1):
-        connections = 0
-        for j in range(n - 1):
-            if i != j and graph[i][j] == 1:
-                connections += 1
-        if connections > max_connections:
-            max_connections = connections
-            flight_to_cancel = i + 1
+def get_splitter_connections(splitter_ratios):
+    connections = []
+    for i, (left_ratio, right_ratio) in enumerate(splitter_ratios):
+        if i == 0:
+            connections.append((-1, -2))
+        else:
+            connections.append((i - 1, i))
+    return connections
 
-    # Find the city with the minimum number of connections
-    min_connections = n
-    city_to_add = None
-    for i in range(n - 1):
-        connections = 0
-        for j in range(n - 1):
-            if graph[i][j] == 1:
-                connections += 1
-        if connections < min_connections:
-            min_connections = connections
-            city_to_add = i + 1
+def get_output(a, b, c, d):
+    splitter_ratios = get_splitter_ratios(a, b, c, d)
+    connections = get_splitter_connections(splitter_ratios)
+    return len(splitter_ratios), connections
 
-    return [max_connections, flight_to_cancel, city_to_add]
+if __name__ == '__main__':
+    a, b, c, d = get_input()
+    print(get_output(a, b, c, d))
 

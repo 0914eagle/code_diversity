@@ -1,79 +1,44 @@
 
-def get_largest_square_killer(matrix):
-    # Initialize variables
-    largest_killer_size = 0
-    killer_size = 0
-    current_row = 0
-    current_col = 0
-    max_row = len(matrix)
-    max_col = len(matrix[0])
+def get_max_distance(n, k, roads, universities):
+    # Initialize the maximum distance to 0
+    max_distance = 0
+    # Iterate over all possible pairs of universities
+    for i in range(k):
+        for j in range(i+1, k):
+            # Calculate the distance between the current pair of universities
+            distance = get_distance(n, roads, universities[i], universities[j])
+            # Update the maximum distance if necessary
+            if distance > max_distance:
+                max_distance = distance
+    # Return the maximum distance
+    return max_distance
 
-    # Loop through the matrix
-    while current_row < max_row and current_col < max_col:
-        # Check if the current position is a potential start of a square killer
-        if matrix[current_row][current_col] == "1":
-            # Check if the current position is the start of a square killer
-            if is_square_killer_start(matrix, current_row, current_col):
-                # Find the size of the square killer
-                killer_size = find_square_killer_size(matrix, current_row, current_col)
-                # Update the largest killer size
-                largest_killer_size = max(largest_killer_size, killer_size)
+def get_distance(n, roads, university1, university2):
+    # Initialize the distance to 0
+    distance = 0
+    # Iterate over all roads between the two universities
+    for road in roads:
+        # If the current road connects the two universities, update the distance
+        if (road[0] == university1 and road[1] == university2) or (road[0] == university2 and road[1] == university1):
+            distance += 1
+    # Return the distance
+    return distance
 
-        # Increment the current position
-        current_col += 1
-        if current_col == max_col:
-            current_col = 0
-            current_row += 1
+def main():
+    # Read the input data
+    n, k = map(int, input().split())
+    roads = []
+    universities = []
+    for i in range(n - 1):
+        x, y = map(int, input().split())
+        roads.append((x, y))
+    for i in range(k):
+        universities.append(int(input()))
+    # Call the get_max_distance function to get the maximum distance
+    max_distance = get_max_distance(n, k, roads, universities)
+    # Print the maximum distance
+    print(max_distance)
 
-    # Return the largest killer size
-    return largest_killer_size
-
-def is_square_killer_start(matrix, row, col):
-    # Check if the current position is the start of a square killer
-    if matrix[row][col] == "1" and matrix[row][col + 1] == "1" and matrix[row + 1][col] == "1" and matrix[row + 1][col + 1] == "1":
-        return True
-    else:
-        return False
-
-def find_square_killer_size(matrix, row, col):
-    # Initialize variables
-    killer_size = 0
-    max_row = len(matrix)
-    max_col = len(matrix[0])
-
-    # Loop through the matrix
-    while row < max_row and col < max_col:
-        # Check if the current position is part of the square killer
-        if matrix[row][col] == "1":
-            # Increment the killer size
-            killer_size += 1
-
-        # Increment the current position
-        col += 1
-        if col == max_col:
-            col = 0
-            row += 1
-
-    # Return the killer size
-    return killer_size
-
-# Test the function
-matrix = [
-    [1, 0, 1, 0, 1],
-    [1, 1, 0, 0, 1],
-    [1, 0, 1, 0, 1],
-    [0, 1, 0, 1, 0],
-    [1, 0, 1, 0, 1]
-]
-print(get_largest_square_killer(matrix))
-
-# Test the function with no square killers
-matrix = [
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0]
-]
-print(get_largest_square_killer(matrix))
+if __name__ == '__main__':
+    main()
 

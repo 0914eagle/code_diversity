@@ -1,23 +1,36 @@
 
-def solve(n, grid):
-    # Initialize the maximum number of rows that can be made completely clean
-    max_rows = 0
+def delete_substring(s):
+    # Initialize variables
+    n = len(s)
+    count = 0
     
-    # Loop through each column of the grid
-    for col in range(n):
-        # Initialize the number of clean rows in this column
-        num_clean_rows = 0
-        
-        # Loop through each row in the column
-        for row in range(n):
-            # If the square is clean, increment the number of clean rows
-            if grid[row][col] == "1":
-                num_clean_rows += 1
-        
-        # If the number of clean rows in this column is greater than the maximum number of rows that can be made completely clean, update the maximum number of rows
-        if num_clean_rows > max_rows:
-            max_rows = num_clean_rows
+    # Iterate through the string
+    for i in range(n):
+        # If the current character is not equal to the next character
+        if s[i] != s[i+1]:
+            # Increment the count
+            count += 1
     
-    # Return the maximum number of rows that can be made completely clean
-    return max_rows
+    # Return the count
+    return count
+
+def minimum_operations(s):
+    # Initialize variables
+    n = len(s)
+    count = 0
+    
+    # Iterate through the string
+    for i in range(n):
+        # If the current character is not equal to the next character
+        if s[i] != s[i+1]:
+            # Increment the count
+            count += 1
+    
+    # Return the count
+    return count
+
+if __name__ == '__main__':
+    n = int(input())
+    s = input()
+    print(minimum_operations(s))
 

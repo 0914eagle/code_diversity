@@ -1,15 +1,17 @@
 
-def get_max_palindromes(strings):
-    # Initialize a variable to store the maximum number of palindromes
-    max_palindromes = 0
-    
-    # Loop through each string
-    for string in strings:
-        # Check if the string is already palindrome
-        if string == string[::-1]:
-            # If it is, increment the maximum number of palindromes
-            max_palindromes += 1
-    
-    # Return the maximum number of palindromes
-    return max_palindromes
+def get_min_positive_divisible_not_in_segment(l, r, d):
+    # Find the smallest positive integer that is divisible by d and does not belong to the segment [l, r]
+    for x in range(l, r+1):
+        if x % d == 0 and x not in range(l, r+1):
+            return x
+    return -1
+
+def main():
+    q = int(input())
+    for _ in range(q):
+        l, r, d = map(int, input().split())
+        print(get_min_positive_divisible_not_in_segment(l, r, d))
+
+if __name__ == '__main__':
+    main()
 

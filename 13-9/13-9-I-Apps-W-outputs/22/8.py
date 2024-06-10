@@ -1,17 +1,27 @@
 
-def solve(n, m, k, holes, swaps):
-    # Initialize the position of the bone as 1
-    bone = 1
-    # Loop through each swapping operation
-    for i in range(k):
-        # Get the positions of the cups to be swapped
-        cup1, cup2 = swaps[i]
-        # If the bone is inside one of the cups, move it to the other cup
-        if bone in [cup1, cup2]:
-            bone = cup2 if bone == cup1 else cup1
-        # If the bone is inside a hole, move it to the other cup
-        if bone in holes:
-            bone = cup2 if bone == cup1 else cup1
-    # Return the final position of the bone
-    return bone
+def xor(a, b):
+    return a ^ b
+
+def get_xor_of_subarray(arr, l, r):
+    result = arr[l]
+    for i in range(l + 1, r + 1):
+        result = xor(result, arr[i])
+    return result
+
+def count_pairs_with_equal_sum_and_xor(arr):
+    n = len(arr)
+    count = 0
+    for l in range(n):
+        for r in range(l, n):
+            if get_xor_of_subarray(arr, l, r) == sum(arr[l:r + 1]):
+                count += 1
+    return count
+
+def main():
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(count_pairs_with_equal_sum_and_xor(arr))
+
+if __name__ == '__main__':
+    main()
 

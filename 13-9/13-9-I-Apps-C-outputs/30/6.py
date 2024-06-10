@@ -1,48 +1,60 @@
 
-def solve(grid):
-    # Convert the grid to a list of lists
-    grid = [[int(x) for x in row] for row in grid]
+def clock_paradox(h, m, s, t_1, t_2):
+    # Convert the input times to integers
+    h = int(h)
+    m = int(m)
+    s = int(s)
+    t_1 = int(t_1)
+    t_2 = int(t_2)
     
-    # Initialize the empty space coordinates
-    empty_space = [0, 0]
+    # Check if the target time is the same as the starting time
+    if t_1 == t_2:
+        return "NO"
     
-    # Initialize the moves list
-    moves = []
+    # Check if the target time is within the range of the hands
+    if t_2 < 1 or t_2 > 12:
+        return "NO"
     
-    # Loop through the grid
-    for i in range(len(grid)):
-        for j in range(len(grid[0])):
-            # If the current cell is empty, set the empty space coordinates
-            if grid[i][j] == 0:
-                empty_space = [i, j]
-                break
+    # Check if the starting time is within the range of the hands
+    if t_1 < 1 or t_1 > 12:
+        return "NO"
     
-    # Loop through the grid again
-    for i in range(len(grid)):
-        for j in range(len(grid[0])):
-            # If the current cell is not empty and is not in its correct position, make a move
-            if grid[i][j] != 0 and grid[i][j] != empty_space[0] + 1:
-                # If the current cell is in the first row, move it to the left or right
-                if i == 0:
-                    if j > 0 and grid[i][j - 1] == 0:
-                        moves.append("l")
-                        empty_space[1] -= 1
-                    elif j < len(grid[0]) - 1 and grid[i][j + 1] == 0:
-                        moves.append("r")
-                        empty_space[1] += 1
-                    else:
-                        return "SURGERY FAILED"
-                # If the current cell is in the second row, move it up or down
-                elif i == 1:
-                    if j > 0 and grid[i - 1][j] == 0:
-                        moves.append("u")
-                        empty_space[0] -= 1
-                    elif j < len(grid[0]) - 1 and grid[i + 1][j] == 0:
-                        moves.append("d")
-                        empty_space[0] += 1
-                    else:
-                        return "SURGERY FAILED"
+    # Check if the target time is on the same arc as the starting time
+    if t_1 <= 6 and t_2 <= 6:
+        return "YES"
+    if t_1 > 6 and t_2 > 6:
+        return "YES"
     
-    # Return the moves list
-    return "SURGERY COMPLETE\n" + "".join(moves)
+    # Check if the target time is on the opposite arc as the starting time
+    if t_1 <= 6 and t_2 > 6:
+        return "NO"
+    if t_1 > 6 and t_2 <= 6:
+        return "NO"
+    
+    # Check if the target time is on the same side of the 12-hour mark as the starting time
+    if t_1 <= 6 and t_2 > 6:
+        return "YES"
+    if t_1 > 6 and t_2 <= 6:
+        return "YES"
+    
+    # Check if the target time is on the opposite side of the 12-hour mark as the starting time
+    if t_1 <= 6 and t_2 < 12:
+        return "NO"
+    if t_1 > 6 and t_2 > 12:
+        return "NO"
+    
+    # If none of the above conditions are met, return "NO"
+    return "NO"
+
+def main():
+    h = input("Enter the hour: ")
+    m = input("Enter the minute: ")
+    s = input("Enter the second: ")
+    t_1 = input("Enter the starting time: ")
+    t_2 = input("Enter the target time: ")
+    
+    print(clock_paradox(h, m, s, t_1, t_2))
+
+if __name__ == '__main__':
+    main()
 

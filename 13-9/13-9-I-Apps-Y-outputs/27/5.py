@@ -1,21 +1,30 @@
 
-def solve(friends):
-    n = len(friends)
-    given_gifts = [0] * n
-    received_gifts = [0] * n
-    for i in range(n):
-        if friends[i] != 0:
-            given_gifts[i] = 1
-            received_gifts[friends[i] - 1] = 1
+def get_paths(n, m, k, grid):
+    # Initialize the dp table with all 0s
+    dp = [[0] * (m+1) for _ in range(n+1)]
     
-    for i in range(n):
-        if friends[i] == 0:
-            for j in range(n):
-                if given_gifts[j] == 0 and received_gifts[j] == 0:
-                    friends[i] = j + 1
-                    given_gifts[i] = 1
-                    received_gifts[j] = 1
-                    break
+    # Base case: when we are at the last cell, the xor sum is just the number at that cell
+    dp[n][m] = grid[n-1][m-1]
     
-    return friends
+    # Loop through the grid in reverse order
+    for i in range(n-1, -1, -1):
+        for j in range(m-1, -1, -1):
+            # Get the xor sum of the current cell and the cell to the right and below it
+            xor_sum = dp[i+1][j] ^ dp[i][j+1]
+            
+            # If the xor sum is equal to k, add the number at the current cell to the count
+            if xor_sum == k:
+                dp[i][j] += grid[i][j]
+    
+    return dp[0][0]
+
+def main():
+    n, m, k = map(int, input().split())
+    grid = []
+    for _ in range(n):
+        grid.append(list(map(int, input().split())))
+    print(get_paths(n, m, k, grid))
+
+if __name__ == '__main__':
+    main()
 

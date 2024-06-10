@@ -1,49 +1,47 @@
 
-def largest_corn_area(vertices, canal):
-    
-    # Create a list to store the areas of the corn fields for each piece of land
-    areas = []
+import math
 
-    # Iterate over the vertices and find the area of each piece of land
-    for i in range(len(vertices)):
-        # Find the indices of the vertices that form the current piece of land
-        ind1 = i
-        ind2 = (i + 1) % len(vertices)
+def get_toys_coordinates(n):
+    toys_coordinates = []
+    for i in range(n):
+        x, y = map(int, input().split())
+        toys_coordinates.append((x, y))
+    return toys_coordinates
 
-        # Find the coordinates of the vertices that form the current piece of land
-        x1, y1 = vertices[ind1]
-        x2, y2 = vertices[ind2]
+def get_trees_coordinates(m):
+    trees_coordinates = []
+    for i in range(m):
+        x, y = map(int, input().split())
+        trees_coordinates.append((x, y))
+    return trees_coordinates
 
-        # Find the area of the current piece of land
-        area = (x1 * y2 - x2 * y1) / 2
+def find_shortest_path(start, end, toys_coordinates, trees_coordinates):
+    visited = set()
+    queue = [(0, start)]
+    while queue:
+        distance, current = queue.pop(0)
+        if current == end:
+            return distance
+        if current in visited:
+            continue
+        visited.add(current)
+        for toy in toys_coordinates:
+            if toy not in visited and math.sqrt((current[0]-toy[0])**2 + (current[1]-toy[1])**2) <= 10000:
+                queue.append((distance + 1, toy))
+        for tree in trees_coordinates:
+            if tree not in visited and math.sqrt((current[0]-tree[0])**2 + (current[1]-tree[1])**2) <= 10000:
+                queue.append((distance + 1, tree))
+    return -1
 
-        # Add the area to the list of areas
-        areas.append(area)
+def main():
+    n, m = map(int, input().split())
+    toys_coordinates = get_toys_coordinates(n)
+    trees_coordinates = get_trees_coordinates(m)
+    shortest_path = find_shortest_path((0, 0), toys_coordinates[0], toys_coordinates, trees_coordinates)
+    for i in range(1, n):
+        shortest_path = min(shortest_path, find_shortest_path(toys_coordinates[i-1], toys_coordinates[i], toys_coordinates, trees_coordinates))
+    print(f"{shortest_path:.2f}")
 
-    # Find the index of the piece of land that is symmetric about the canal
-    sym_ind = find_symmetric_land(vertices, canal)
-
-    # Find the area of the largest corn field
-    max_area = max(areas)
-
-    # Return the area of the largest corn field
-    return max_area
-
-def find_symmetric_land(vertices, canal):
-    
-    # Find the midpoint of the canal
-    midpoint = (canal[0] + canal[1]) / 2
-
-    # Find the distance from the midpoint to the vertices of the polygon
-    distances = []
-    for vertex in vertices:
-        x, y = vertex
-        distance = abs(x - midpoint) + abs(y - midpoint)
-        distances.append(distance)
-
-    # Find the index of the vertex that is closest to the midpoint
-    min_index = distances.index(min(distances))
-
-    # Return the index of the piece of land that is symmetric about the canal
-    return min_index
+if __name__ == '__main__':
+    main()
 

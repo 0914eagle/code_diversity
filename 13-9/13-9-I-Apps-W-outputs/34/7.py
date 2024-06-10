@@ -1,15 +1,34 @@
 
-def get_max_candies(n, k, M, D):
-    # Initialize the maximum number of candies as 0
-    max_candies = 0
-    # Loop through all possible values of x
-    for x in range(1, M + 1):
-        # Calculate the number of candies given to each person
-        num_candies = x * (k - 1)
-        # Calculate the number of candies received by Arkady
-        arkady_candies = num_candies // k
-        # Check if the number of candies received by Arkady is greater than the maximum
-        if arkady_candies > max_candies:
-            max_candies = arkady_candies
-    return max_candies
+def get_teammate(n, strengths):
+    # Initialize a dictionary to store the teammate for each person
+    teammates = {}
+    
+    # Iterate through the strengths of each possible combination of two people
+    for i in range(1, n + 1):
+        for j in range(i + 1, n + 1):
+            # If the strength of the team is the highest among all possible teams,
+            # set the teammate for person i and j
+            if strengths[i - 1][j - 1] == max(strengths[i - 1]):
+                teammates[i] = j
+                teammates[j] = i
+    
+    # Return the teammate for each person
+    return teammates
+
+def main():
+    # Read the input
+    n = int(input())
+    strengths = []
+    for i in range(n):
+        strengths.append(list(map(int, input().split())))
+    
+    # Get the teammate for each person
+    teammates = get_teammate(n, strengths)
+    
+    # Print the teammate for each person
+    for i in range(1, n + 1):
+        print(teammates[i], end=" ")
+
+if __name__ == '__main__':
+    main()
 

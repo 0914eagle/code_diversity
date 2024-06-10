@@ -1,37 +1,34 @@
 
-def solve(offers):
-    # Sort the offers by the first section number
-    sorted_offers = sorted(offers, key=lambda x: x[1])
+import itertools
 
-    # Initialize the variables to keep track of the number of colors and sections
-    num_colors = 0
-    num_sections = 0
+def get_probability(n, m, d, your_minions, opponent_minions):
+    # Calculate the total number of combinations
+    total_combinations = len(list(itertools.product(range(1, 7), repeat=n)))
+    
+    # Initialize a counter for the number of combinations that result in all opponent's minions being removed
+    removed_combinations = 0
+    
+    # Iterate over all possible combinations of healths for your minions
+    for combination in itertools.product(range(1, 7), repeat=n):
+        # Calculate the number of remaining opponent's minions after the explosion
+        remaining_opponent_minions = m
+        for i in range(n):
+            if combination[i] - d <= 0:
+                remaining_opponent_minions -= 1
+        
+        # If all opponent's minions were removed, increase the counter
+        if remaining_opponent_minions == 0:
+            removed_combinations += 1
+    
+    # Return the probability of all opponent's minions being removed
+    return removed_combinations / total_combinations
 
-    # Initialize the result list to store the accepted offers
-    result = []
+def main():
+    n, m, d = map(int, input().split())
+    your_minions = list(map(int, input().split()))
+    opponent_minions = list(map(int, input().split()))
+    print(get_probability(n, m, d, your_minions, opponent_minions))
 
-    # Iterate through the sorted offers
-    for offer in sorted_offers:
-        # Check if the current offer overlaps with any of the previously accepted offers
-        overlap = False
-        for accepted_offer in result:
-            if offer[1] <= accepted_offer[2] and offer[2] >= accepted_offer[1]:
-                overlap = True
-                break
-
-        # If the current offer does not overlap with any of the previously accepted offers, accept it
-        if not overlap:
-            # Add the current offer to the result list
-            result.append(offer)
-
-            # Increment the number of colors and sections
-            num_colors += 1
-            num_sections += offer[2] - offer[1] + 1
-
-            # Check if the current offer meets the requirements
-            if num_colors <= 3 and num_sections == 10000:
-                return result
-
-    # If we reach this point, it means that we could not find a set of offers that meet the requirements
-    return "IMPOSSIBLE"
+if __name__ == '__main__':
+    main()
 

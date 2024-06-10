@@ -1,24 +1,63 @@
 
-def solve(n, arr):
-    # Initialize variables
-    rest_days = 0
-    last_day = 0
+class LongLongString:
+    def __init__(self, string):
+        self.string = string
 
-    # Iterate through the array
-    for i in range(n):
-        # Check if the current day is the same as the last day
-        if arr[i] == last_day:
-            # If it is, increase the number of rest days
-            rest_days += 1
-        # Check if the current day is a contest day
-        elif arr[i] in [1, 3]:
-            # If it is, increase the number of rest days
-            rest_days += 1
-        # Check if the current day is a gym day
-        elif arr[i] in [2, 3]:
-            # If it is, set the last day to the current day
-            last_day = arr[i]
+    def insert(self, p, c):
+        self.string = self.string[:p] + c + self.string[p:]
 
-    # Return the number of rest days
-    return rest_days
+    def delete(self, p):
+        self.string = self.string[:p] + self.string[p+1:]
+
+def is_identical(program1, program2):
+    string1 = LongLongString("")
+    string2 = LongLongString("")
+
+    for op in program1:
+        if op[0] == "I":
+            string1.insert(int(op[1]), op[2])
+        elif op[0] == "D":
+            string1.delete(int(op[1]))
+
+    for op in program2:
+        if op[0] == "I":
+            string2.insert(int(op[1]), op[2])
+        elif op[0] == "D":
+            string2.delete(int(op[1]))
+
+    return string1.string == string2.string
+
+def main():
+    program1 = []
+    program2 = []
+
+    while True:
+        line = input()
+        if line == "E":
+            break
+        else:
+            op = line.split()
+            if op[0] == "I":
+                program1.append(["I", int(op[1]), op[2]])
+            elif op[0] == "D":
+                program1.append(["D", int(op[1])])
+
+    while True:
+        line = input()
+        if line == "E":
+            break
+        else:
+            op = line.split()
+            if op[0] == "I":
+                program2.append(["I", int(op[1]), op[2]])
+            elif op[0] == "D":
+                program2.append(["D", int(op[1])])
+
+    if is_identical(program1, program2):
+        print("0")
+    else:
+        print("1")
+
+if __name__ == '__main__':
+    main()
 

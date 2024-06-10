@@ -1,17 +1,34 @@
 
-def longest_clue(taboo_strings):
-    # Initialize the longest clue to be empty
-    longest_clue = ""
+def get_min_bitcoins(hp_y, atk_y, def_y, hp_m, atk_m, def_m, h, a, d):
+    # Initialize variables
+    bitcoins_spent = 0
+    hp_diff = hp_y - hp_m
+    atk_diff = atk_y - atk_m
+    def_diff = def_y - def_m
+    
+    # Buy HP
+    while hp_diff > 0:
+        bitcoins_spent += h
+        hp_diff -= h
+    
+    # Buy ATK
+    while atk_diff > 0:
+        bitcoins_spent += a
+        atk_diff -= a
+    
+    # Buy DEF
+    while def_diff > 0:
+        bitcoins_spent += d
+        def_diff -= d
+    
+    return bitcoins_spent
 
-    # Iterate over the taboo strings
-    for taboo_string in taboo_strings:
-        # Check if the taboo string is a prefix of the longest clue
-        if taboo_string == longest_clue or longest_clue.startswith(taboo_string):
-            # If it is, extend the longest clue by one character
-            longest_clue += "0"
-        else:
-            # If it is not, extend the longest clue by two characters
-            longest_clue += "10"
+def main():
+    hp_y, atk_y, def_y = map(int, input().split())
+    hp_m, atk_m, def_m = map(int, input().split())
+    h, a, d = map(int, input().split())
+    print(get_min_bitcoins(hp_y, atk_y, def_y, hp_m, atk_m, def_m, h, a, d))
 
-    return longest_clue
+if __name__ == '__main__':
+    main()
 

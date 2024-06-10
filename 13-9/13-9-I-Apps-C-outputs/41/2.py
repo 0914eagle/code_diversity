@@ -1,31 +1,29 @@
 
-def solve(offers):
-    # Sort the offers by the first section of each offer
-    sorted_offers = sorted(offers, key=lambda x: x[1])
+import itertools
+import math
 
-    # Initialize the variables to keep track of the current color and section
-    current_color = ""
-    current_section = 0
+def explosion(n, m, d):
+    # Initialize a list to store the probability of each combination of health
+    probabilities = [0] * (m + 1)
+    probabilities[0] = 1
 
-    # Initialize the number of offers accepted
-    num_accepted = 0
+    # Iterate over each possible combination of health for the opponent's minions
+    for health in itertools.product(range(1, 7), repeat=m):
+        # Calculate the probability of the explosion removing all minions
+        probability = 1
+        for i in range(m):
+            probability *= (d - i) / (6 - health[i] + 1)
 
-    # Loop through the sorted offers
-    for offer in sorted_offers:
-        # If the current color is not the same as the color in the current offer, we need to accept the current offer
-        if current_color != offer[0]:
-            num_accepted += 1
-            current_color = offer[0]
+        # Add the probability to the list of probabilities
+        probabilities[sum(health)] += probability
 
-        # If the current section is not the same as the section in the current offer, we need to accept the current offer
-        if current_section != offer[1]:
-            num_accepted += 1
-            current_section = offer[1]
+    # Return the sum of the probabilities
+    return sum(probabilities)
 
-        # If we have accepted more than 3 colors, it is impossible to satisfy the requirements
-        if num_accepted > 3:
-            return "IMPOSSIBLE"
+def main():
+    n, m, d = map(int, input().split())
+    print(explosion(n, m, d))
 
-    # If we have accepted all the offers, return the number of offers accepted
-    return num_accepted
+if __name__ == '__main__':
+    main()
 

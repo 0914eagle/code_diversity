@@ -1,10 +1,11 @@
 
-def count_xorangles(n):
-    count = 0
-    for a in range(1, n+1):
-        for b in range(a+1, n+1):
-            c = n - a - b
-            if a ^ b ^ c == 0:
-                count += 1
-    return count
+def get_last_digit(n):
+    return int(str(1378**n)[-1])
+
+def main():
+    n = int(input())
+    print(get_last_digit(n))
+
+if __name__ == '__main__':
+    main()
 

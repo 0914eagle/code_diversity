@@ -1,40 +1,41 @@
 
-def solve(n, t, m, spoi_cheer):
+def get_max_blocks_and_x(m):
     # Initialize variables
-    sportify_cheer = []
-    sportify_score = 0
-    spoilify_score = 0
-    goal_count = 0
-
-    # Sort the Spoilify cheerleading schedule by start time
-    spoi_cheer.sort(key=lambda x: x[0])
-
-    # Iterate through each minute of the game
-    for i in range(90):
-        # Check if Sportify is cheering
-        if i in sportify_cheer:
-            # Increment Sportify's score
-            sportify_score += 1
-            # Reset the goal count
-            goal_count = 0
-        # Check if Spoilify is cheering
-        for j in range(m):
-            if spoi_cheer[j][0] <= i <= spoi_cheer[j][1]:
-                # Increment Spoilify's score
-                spoilify_score += 1
-                # Reset the goal count
-                goal_count = 0
+    max_blocks = 0
+    max_x = 0
+    
+    # Iterate through all possible values of X
+    for x in range(1, m + 1):
+        # Initialize variables
+        blocks = 0
+        volume = 0
+        
+        # Iterate through all possible values of the side of the block
+        for side in range(1, int(x ** (1/3)) + 1):
+            # Calculate the volume of the block
+            volume += side ** 3
+            
+            # Check if the volume exceeds X
+            if volume > x:
+                # Break the loop and move on to the next value of X
                 break
-        # Check if the goal count has reached 5
-        if goal_count == 5:
-            # Increment Sportify's score
-            sportify_score += 1
-            # Reset the goal count
-            goal_count = 0
+            else:
+                # Increment the number of blocks
+                blocks += 1
+        
+        # Check if the current value of X results in the maximum number of blocks
+        if blocks > max_blocks:
+            max_blocks = blocks
+            max_x = x
+    
+    # Return the maximum number of blocks and the maximum value of X
+    return max_blocks, max_x
 
-        # Increment the goal count
-        goal_count += 1
+def main():
+    m = int(input())
+    max_blocks, max_x = get_max_blocks_and_x(m)
+    print(max_blocks, max_x)
 
-    # Return the scores
-    return sportify_score, spoilify_score
+if __name__ == '__main__':
+    main()
 

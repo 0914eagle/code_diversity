@@ -1,17 +1,17 @@
 
-def solve(s, t):
-    # Initialize a variable to keep track of the minimum number of changes needed
-    min_changes = len(s)
-    
-    # Iterate through all possible starting indices in S
-    for i in range(len(s) - len(t) + 1):
-        # Check if the substring of S starting at index i matches T
-        if s[i:i+len(t)] == t:
-            # If it matches, we don't need to make any changes
-            return 0
-        # If it doesn't match, we need to change at least one character
-        min_changes = min(min_changes, len(s) - i - len(t) + 1)
-    
-    # Return the minimum number of changes needed
-    return min_changes
+def get_total_accommodation_fee(n, k, x, y):
+    total = 0
+    for i in range(1, n+1):
+        if i <= k:
+            total += x
+        else:
+            total += y
+    return total
+
+def main():
+    n, k, x, y = map(int, input().split())
+    print(get_total_accommodation_fee(n, k, x, y))
+
+if __name__ == '__main__':
+    main()
 

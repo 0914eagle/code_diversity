@@ -1,26 +1,33 @@
 
-def count_worlds(n, m):
-    # Initialize the graph with only the source and sink vertices
-    graph = {(0, 0): set(), (0, 1): set(), (1, 0): set(), (1, 1): set()}
+def solve(n, k):
+    # Initialize the number of ways as 1
+    ways = 1
+    
+    # Iterate over the houses
+    for i in range(1, n + 1):
+        # If the house is not the first house
+        if i != 1:
+            # If the house is indexed from 1 to k, inclusive
+            if i <= k:
+                # The penguin can walk to house number 1
+                ways *= 2
+            else:
+                # The penguin cannot walk to house number 1
+                ways *= 1
+    
+    # Return the number of ways modulo 1000000007
+    return ways % 1000000007
 
-    # Iterate over the number of changes
-    for i in range(n):
-        # Add a new vertex and edges to the graph
-        graph[(i, 0)] = set()
-        graph[(i, 1)] = set()
-        graph[(i - 1, 0)].add((i, 0))
-        graph[(i - 1, 1)].add((i, 1))
-        graph[(i, 0)].add((i - 1, 0))
-        graph[(i, 1)].add((i - 1, 1))
+def main():
+    # Read the input
+    n, k = map(int, input().split())
+    
+    # Call the solve function
+    result = solve(n, k)
+    
+    # Print the result
+    print(result)
 
-    # Count the number of non-similar worlds
-    count = 0
-    for v in graph:
-        # Check if the vertex is not the source or sink vertex
-        if v != (0, 0) and v != (n, 0):
-            # Check if the vertex has a minimum cut of size at least m
-            if len(graph[v]) >= m:
-                count += 1
-
-    return count % 1000000007
+if __name__ == '__main__':
+    main()
 

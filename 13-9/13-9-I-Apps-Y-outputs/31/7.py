@@ -1,14 +1,30 @@
 
-def solve(N, M, roads):
-    # Initialize a dictionary to store the number of roads connected to each city
-    num_roads = {i: 0 for i in range(1, N + 1)}
-    
-    # Iterate over the roads and increment the number of roads connected to each city
-    for road in roads:
-        city1, city2 = road
-        num_roads[city1] += 1
-        num_roads[city2] += 1
-    
-    # Return the number of roads connected to each city
-    return [num_roads[i] for i in range(1, N + 1)]
+import math
+
+def distance(x1, y1, x2, y2):
+    return math.sqrt((x2-x1)**2 + (y2-y1)**2)
+
+def find_escape_hole(gopher_x, gopher_y, dog_x, dog_y, holes):
+    min_distance = math.inf
+    escape_hole = None
+    for hole in holes:
+        hole_distance = distance(gopher_x, gopher_y, hole[0], hole[1])
+        if hole_distance < min_distance:
+            min_distance = hole_distance
+            escape_hole = hole
+    if escape_hole:
+        return "The gopher can escape through the hole at ({}, {})".format(escape_hole[0], escape_hole[1])
+    else:
+        return "The gopher cannot escape."
+
+def main():
+    gopher_x, gopher_y, dog_x, dog_y = map(float, input().split())
+    holes = []
+    for _ in range(int(input())):
+        x, y = map(float, input().split())
+        holes.append((x, y))
+    print(find_escape_hole(gopher_x, gopher_y, dog_x, dog_y, holes))
+
+if __name__ == '__main__':
+    main()
 

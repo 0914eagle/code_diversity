@@ -1,18 +1,25 @@
 
-def solve(a, b, c, d, p, m, g):
-    # Calculate the time when the dogs are aggressive
-    aggressive_time_dog_1 = (p + m + g) % (a + b)
-    aggressive_time_dog_2 = (p + m + g) % (c + d)
+def can_start_round_dance(p):
+    n = len(p)
+    if n == 1:
+        return True
+    if n == 2:
+        return p[0] == 1 and p[1] == 2
+    if n == 3:
+        return p[0] == 1 and p[1] == 2 and p[2] == 3
+    if p[0] != 1:
+        return False
+    for i in range(1, n):
+        if p[i] != i + 1:
+            return False
+    return True
 
-    # Check if both dogs are aggressive
-    if aggressive_time_dog_1 == 0 and aggressive_time_dog_2 == 0:
-        return "both"
+def solve(q):
+    for _ in range(q):
+        n = int(input())
+        p = list(map(int, input().split()))
+        print("YES") if can_start_round_dance(p) else print("NO")
 
-    # Check if only one dog is aggressive
-    elif aggressive_time_dog_1 == 0 or aggressive_time_dog_2 == 0:
-        return "one"
-
-    # Check if no dog is aggressive
-    else:
-        return "none"
+if __name__ == '__main__':
+    solve(int(input()))
 

@@ -1,30 +1,22 @@
 
-def solve(coordinates, conveyors):
-    # Initialize the minimum time needed to get from A to B
-    min_time = 0
+def check_winning_strategy(n, k, ancient_values):
+    # Check if k is in the list of ancient values
+    if k in ancient_values:
+        return True
+    
+    # Check if there are any ancient values that divide k
+    for i in range(n):
+        if k % ancient_values[i] == 0:
+            return True
+    
+    # If none of the above conditions are met, Arya cannot have a winning strategy
+    return False
 
-    # Initialize the current location
-    current_location = coordinates[0]
+def main():
+    n, k = map(int, input().split())
+    ancient_values = list(map(int, input().split()))
+    print("Yes") if check_winning_strategy(n, k, ancient_values) else print("No")
 
-    # Loop through each conveyor
-    for conveyor in conveyors:
-        # Check if the current location is on the conveyor
-        if current_location in conveyor:
-            # Calculate the distance to the end of the conveyor
-            distance = conveyor[1] - current_location
-
-            # Add the distance to the minimum time
-            min_time += distance
-
-            # Set the current location to the end of the conveyor
-            current_location = conveyor[1]
-
-    # Calculate the distance to the final location
-    distance = coordinates[1] - current_location
-
-    # Add the distance to the minimum time
-    min_time += distance
-
-    # Return the minimum time
-    return min_time
+if __name__ == '__main__':
+    main()
 

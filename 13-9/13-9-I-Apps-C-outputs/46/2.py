@@ -1,23 +1,30 @@
 
-def reconstruct_map(map_pieces):
-    # Initialize a dictionary to store the map pieces and their dimensions
-    pieces = {}
-    for i, piece in enumerate(map_pieces):
-        pieces[i] = (piece[0], piece[1], piece[2:])
+import math
 
-    # Find the width and height of the reconstructed map
-    width = max(piece[0] for piece in pieces.values())
-    height = max(piece[1] for piece in pieces.values())
+def get_expected_payment(N, L, R):
+    expected_payment = 0
+    for i in range(N):
+        for j in range(i+1, N):
+            if L[i] > L[j] and R[i] > R[j]:
+                expected_payment += R[i] - L[i] + 1
+            elif L[i] > L[j] and R[i] < R[j]:
+                expected_payment += R[i] - L[i] + 1 + R[j] - L[j]
+            elif L[i] < L[j] and R[i] > R[j]:
+                expected_payment += R[i] - L[i] + 1 + R[j] - L[j]
+            else:
+                expected_payment += R[i] - L[i] + 1 + R[j] - L[j] + (R[j] - L[j] + 1)
+    return expected_payment / (N * (N - 1) / 2)
 
-    # Initialize the reconstructed map with empty strings
-    reconstructed_map = [["" for _ in range(width)] for _ in range(height)]
+def main():
+    N = int(input())
+    L = []
+    R = []
+    for i in range(N):
+        L_i, R_i = map(float, input().split())
+        L.append(L_i)
+        R.append(R_i)
+    print(get_expected_payment(N, L, R))
 
-    # Fill in the reconstructed map with the map pieces
-    for i, piece in pieces.items():
-        for row in range(piece[1]):
-            for col in range(piece[0]):
-                reconstructed_map[row][col] += piece[2][row][col]
-
-    # Return the reconstructed map and the indices of the map pieces
-    return (width, height), ["".join(row) for row in reconstructed_map]
+if __name__ == '__main__':
+    main()
 

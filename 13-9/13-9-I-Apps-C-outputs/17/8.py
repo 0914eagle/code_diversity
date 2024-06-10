@@ -1,36 +1,39 @@
 
-def solve(n, adversaries, dwarf_strengths, elf_strengths):
-    # Sort the elves and dwarves by strength in descending order
-    sorted_dwarf_strengths = sorted(dwarf_strengths, reverse=True)
-    sorted_elf_strengths = sorted(elf_strengths, reverse=True)
+def get_optimal_subsequence(arr, k):
+    n = len(arr)
+    if n == 0:
+        return []
+    if k == 0:
+        return arr
+    if k == 1:
+        return [min(arr)]
+    if k == n:
+        return arr
+    
+    # find the minimum element in the first k elements
+    min_val = min(arr[:k])
+    # find the index of the minimum element
+    min_idx = arr.index(min_val)
+    # remove the minimum element from the array
+    arr.pop(min_idx)
+    # recurse for the rest of the array
+    return [min_val] + get_optimal_subsequence(arr, k-1)
 
-    # Create a dictionary to map each elf to its adversary
-    elf_adversary_map = {i: adversaries[i-1] for i in range(1, n+1)}
+def solve(arr, k, q):
+    n = len(arr)
+    if n == 0 or k == 0 or q == 0:
+        return 0
+    
+    # find the optimal subsequence of length k
+    opt_subseq = get_optimal_subsequence(arr, k)
+    # find the largest and smallest element in the optimal subsequence
+    largest = max(opt_subseq)
+    smallest = min(opt_subseq)
+    # return the difference between the largest and smallest element
+    return largest - smallest
 
-    # Initialize the number of victories for each elf
-    elf_victories = [0] * (n+1)
-
-    # Iterate over the elves and their adversaries
-    for elf, adversary in elf_adversary_map.items():
-        # Find the index of the elf's adversary in the sorted dwarf strengths list
-        adversary_index = sorted_dwarf_strengths.index(adversary)
-
-        # Find the index of the elf in the sorted elf strengths list
-        elf_index = sorted_elf_strengths.index(elf_strengths[elf-1])
-
-        # If the elf's strength is greater than their adversary's strength, they win
-        if elf_strengths[elf-1] > dwarf_strengths[adversary-1]:
-            elf_victories[elf] += 1
-
-        # If the elf's strength is less than their adversary's strength, they lose
-        elif elf_strengths[elf-1] < dwarf_strengths[adversary-1]:
-            elf_victories[adversary] += 1
-
-        # If the elf's strength is equal to their adversary's strength, they draw
-        else:
-            elf_victories[elf] += 1
-            elf_victories[adversary] += 1
-
-    # Return the maximum number of victories among all elves
-    return max(elf_victories)
+if __name__ == '__main__':
+    n, k, q = map(int, input().split())
+    arr = list(map(int, input().split()))
+    print(solve(arr, k, q))
 

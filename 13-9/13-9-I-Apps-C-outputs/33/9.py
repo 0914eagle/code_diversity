@@ -1,22 +1,54 @@
 
-def solve(n, m):
-    # Initialize a set to store the unique digits
-    unique_digits = set()
+import sys
+import math
+
+def max_tastiness(n, k, a, b, tastiness, complementary_tastiness):
+    # Initialize the maximum tastiness and the corresponding combination of scoops
+    max_tastiness = 0
+    scoops = []
     
-    # Iterate over each hour
-    for hour in range(n):
-        # Iterate over each minute
-        for minute in range(m):
-            # Convert the hour and minute to base 7
-            hour_base7 = str(hour).encode("utf-8").hex()
-            minute_base7 = str(minute).encode("utf-8").hex()
+    # Loop through each possible combination of scoops
+    for i in range(1, n + 1):
+        for combination in combinations(range(k), i):
+            # Calculate the tastiness of the current combination of scoops
+            current_tastiness = sum(tastiness[i] for i in combination)
             
-            # Check if the hour and minute have distinct digits
-            if len(set(hour_base7)) == len(hour_base7) and len(set(minute_base7)) == len(minute_base7):
-                # Add the hour and minute to the set of unique digits
-                unique_digits.add(hour_base7)
-                unique_digits.add(minute_base7)
+            # Check if the current combination of scoops is complementary
+            complementary = all(complementary_tastiness[i][j] >= 0 for i in combination for j in combination if i != j)
+            
+            # If the current combination of scoops is complementary and has a higher tastiness than the previous maximum, update the maximum tastiness and the corresponding combination of scoops
+            if complementary and current_tastiness > max_tastiness:
+                max_tastiness = current_tastiness
+                scoops = combination
     
-    # Return the number of unique pairs
-    return len(unique_digits)
+    # Calculate the cost of the ice cream
+    cost = a * len(scoops) + b
+    
+    # Return the maximum possible tastiness per gold coin ratio
+    return max_tastiness / cost
+
+def combinations(iterable, r):
+    # combinations('abc', 2) --> ('ab', 'ac', 'bc')
+    pool = tuple(iterable)
+    n = len(pool)
+    if r > n:
+        return
+    indices = list(range(r))
+    yield tuple(pool[i] for i in indices)
+    while True:
+        for i in reversed(range(r)):
+            if indices[i] != i + n - r:
+                break
+        else:
+            return
+        indices[i:] = list(range(i + 1, i + n - r + 1))
+        yield tuple(pool[i] for i in indices)
+
+if __name__ == '__main__':
+    n, k, a, b = map(int, input().split())
+    tastiness = list(map(int, input().split()))
+    complementary_tastiness = [[0] * k for _ in range(k)]
+    for i in range(k):
+        complementary_tastiness[i] = list(map(int, input().split()))
+    print(max_tastiness(n, k, a, b, tastiness, complementary_tastiness))
 

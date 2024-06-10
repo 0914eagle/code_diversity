@@ -1,23 +1,26 @@
 
-def solve(n, k, a):
-    # Calculate the total power Inna tells Dima off with
-    total_power = sum(a)
-    
-    # Initialize the minimum power and the corresponding task number
-    min_power = total_power
-    task_number = 1
-    
-    # Iterate through all possible tasks Dima can start with
-    for i in range(n):
-        # Calculate the power Inna tells Dima off with if he starts with the current task
-        current_power = 0
-        for j in range(i, n, k):
-            current_power += a[j % n]
-            
-        # If the current power is less than the minimum power, update the minimum power and the corresponding task number
-        if current_power < min_power:
-            min_power = current_power
-            task_number = i + 1
-    
-    return task_number
+def get_compressed_word(sentence):
+    # Split the sentence into a list of words
+    words = sentence.split()
+    # Initialize the compressed word as the first word
+    compressed_word = words[0]
+    # Iterate through the remaining words
+    for word in words[1:]:
+        # Find the longest prefix of the current word that coincides with a suffix of the compressed word
+        for i in range(len(word), 0, -1):
+            if word[:i] == compressed_word[-i:]:
+                # If a prefix is found, merge the words by removing the prefix and appending the remaining part of the current word
+                compressed_word = compressed_word[:-i] + word[i:]
+                break
+        else:
+            # If no prefix is found, simply append the current word to the compressed word
+            compressed_word += " " + word
+    return compressed_word.strip()
+
+def main():
+    sentence = input()
+    print(get_compressed_word(sentence))
+
+if __name__ == '__main__':
+    main()
 

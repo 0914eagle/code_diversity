@@ -1,22 +1,25 @@
 
-import math
+def solve(n, t, v):
+    # Find the maximum start time and minimum velocity
+    max_start_time = max(t)
+    min_velocity = min(v)
+    
+    # Calculate the minimum length of the pack
+    length = (max_start_time * min_velocity) / (min_velocity - 1)
+    
+    return length
 
-def solve(n, points):
-    # Calculate the area of the CBD polygon
-    area = 0
+def main():
+    n = int(input())
+    t = []
+    v = []
     for i in range(n):
-        area += points[i][0] * points[i-1][1] - points[i-1][0] * points[i][1]
-    area = abs(area) / 2
+        t_i, v_i = map(int, input().split())
+        t.append(t_i)
+        v.append(v_i)
+    length = solve(n, t, v)
+    print(f"{length:.3f}")
 
-    # Calculate the distance of the taxi traveling between the points
-    distance = 0
-    for i in range(n):
-        x1, y1 = points[i]
-        x2, y2 = points[(i+1)%n]
-        distance += math.sqrt((x2-x1)**2 + (y2-y1)**2)
-
-    # Calculate the expected distance
-    expected_distance = distance * area / n
-
-    return expected_distance
+if __name__ == '__main__':
+    main()
 

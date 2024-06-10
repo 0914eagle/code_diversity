@@ -1,10 +1,15 @@
 
-def fidget_cubes(V):
-    # Calculate the minimum surface area of the box
-    surface_area = 2 * V
-    
-    # Calculate the cost of the box
-    cost = surface_area
-    
-    return cost
+def get_next_letter(letter):
+    return chr(ord(letter) + 1)
+
+def main():
+    letter = input("Enter a lowercase letter: ")
+    if letter.isalpha() and letter.islower() and letter != "z":
+        next_letter = get_next_letter(letter)
+        print(f"{letter} is followed by {next_letter}.")
+    else:
+        print("Invalid input.")
+
+if __name__ == '__main__':
+    main()
 

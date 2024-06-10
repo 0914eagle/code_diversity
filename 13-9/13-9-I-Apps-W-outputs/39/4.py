@@ -1,46 +1,34 @@
 
-def solve(n, p, k, pipes, improvements):
-    # Initialize the graph with the given pipes
-    graph = {i: set() for i in range(1, n + 1)}
-    for a, b, c in pipes:
-        graph[a].add((b, c))
-        graph[b].add((a, c))
+def get_valid_scenarios(n, questions):
+    valid_scenarios = set()
+    for i in range(n):
+        for j in range(i+1, n+1):
+            if j-i <= 1:
+                continue
+            valid_scenarios.add((i, j))
+    return valid_scenarios
 
-    # Initialize the maximum flow matrix with the initial configuration
-    max_flow = [[0] * (n + 1) for _ in range(n + 1)]
-    max_flow[1][3] = 10
+def count_scenarios(n, questions, valid_scenarios):
+    count = 0
+    for i in range(len(questions)):
+        question = questions[i]
+        for j in range(i+1, len(questions)):
+            next_question = questions[j]
+            if question == next_question:
+                continue
+            for scenario in valid_scenarios:
+                if scenario[0] == question and scenario[1] == next_question:
+                    count += 1
+                    break
+    return count
 
-    # Loop through the improvements
-    for a, b, c in improvements:
-        # If there is no pipe between a and b, create one with capacity c
-        if (a, b) not in graph:
-            graph[a].add((b, c))
-            graph[b].add((a, c))
-        # Otherwise, increase the capacity of the existing pipe
-        else:
-            graph[a].remove((b, c))
-            graph[b].remove((a, c))
-            graph[a].add((b, c + c))
-            graph[b].add((a, c + c))
+def main():
+    n, k = map(int, input().split())
+    questions = list(map(int, input().split()))
+    valid_scenarios = get_valid_scenarios(n, questions)
+    count = count_scenarios(n, questions, valid_scenarios)
+    print(count)
 
-        # Calculate the maximum flow after the improvement
-        max_flow = calculate_max_flow(graph, max_flow)
-
-    # Return the maximum flow after all improvements
-    return max_flow
-
-def calculate_max_flow(graph, max_flow):
-    # Loop through all nodes
-    for node in range(1, len(graph)):
-        # If the node is not the pumping station, skip it
-        if node == 1:
-            continue
-        # Loop through all incoming pipes
-        for parent, capacity in graph[node]:
-            # If the flow through the pipe is less than its capacity, update the maximum flow
-            if max_flow[parent][node] < capacity:
-                max_flow[parent][node] = capacity
-
-    # Return the maximum flow matrix
-    return max_flow
+if __name__ == '__main__':
+    main()
 

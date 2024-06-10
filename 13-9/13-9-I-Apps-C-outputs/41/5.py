@@ -1,36 +1,56 @@
 
-def solve(offers):
-    # Sort the offers by the first section of the fence
-    offers.sort(key=lambda x: x[1])
+import itertools
 
-    # Initialize the variables
-    current_color = offers[0][0]
-    current_section = offers[0][1]
-    num_colors = 1
-    num_sections = offers[0][2] - offers[0][1] + 1
-    accepted_offers = 1
+def number_of_ways_to_kill_opponent(n_opponent, n_self, d):
+    
+    # Base case: if there are no opponent's minions, there is only one way to kill them (do nothing)
+    if n_opponent == 0:
+        return 1
+    
+    # Initialize the number of ways to kill the opponent's minions to 0
+    num_ways = 0
+    
+    # Iterate over all possible ways to distribute the damage
+    for damage_distribution in itertools.combinations(range(d), n_opponent):
+        # Initialize the number of remaining opponent's minions to n_opponent
+        remaining_opponent = n_opponent
+        
+        # Iterate over the damage distribution
+        for damage in damage_distribution:
+            # If the damage is not 0, subtract 1 from the number of remaining opponent's minions
+            if damage != 0:
+                remaining_opponent -= 1
+        
+        # If the number of remaining opponent's minions is 0, add 1 to the number of ways to kill the opponent's minions
+        if remaining_opponent == 0:
+            num_ways += 1
+    
+    # Return the number of ways to kill the opponent's minions
+    return num_ways
 
-    # Iterate through the remaining offers
-    for i in range(1, len(offers)):
-        # If the current color is the same as the previous offer, update the current section and number of sections
-        if offers[i][0] == current_color:
-            current_section = offers[i][2]
-            num_sections += offers[i][2] - offers[i][1] + 1
-        # If the current color is different from the previous offer, update the number of colors and the current color
-        else:
-            num_colors += 1
-            current_color = offers[i][0]
-            current_section = offers[i][1]
-            accepted_offers += 1
+def probability_of_killing_opponent(n_opponent, n_self, d):
+    
+    # Calculate the number of ways to kill the opponent's minions
+    num_ways = number_of_ways_to_kill_opponent(n_opponent, n_self, d)
+    
+    # Calculate the probability that the Explosion spell will kill all the opponent's minions
+    probability = num_ways / (2 ** n_opponent)
+    
+    # Return the probability
+    return probability
 
-        # If the number of colors is greater than 3, return "IMPOSSIBLE"
-        if num_colors > 3:
-            return "IMPOSSIBLE"
+def main():
+    # Read the input
+    n_opponent, n_self, d = map(int, input().split())
+    opponent_health = list(map(int, input().split()))
+    self_health = list(map(int, input().split()))
+    
+    # Calculate the probability that the Explosion spell will kill all the opponent's minions
+    probability = probability_of_killing_opponent(n_opponent, n_self, d)
+    
+    # Print the probability
+    print(probability)
 
-    # If all sections are painted and the number of colors is less than or equal to 3, return the number of accepted offers
-    if num_sections == 10000 and num_colors <= 3:
-        return accepted_offers
-
-    # Otherwise, return "IMPOSSIBLE"
-    return "IMPOSSIBLE"
+if __name__ == '__main__':
+    main()
 

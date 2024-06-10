@@ -1,17 +1,28 @@
 
-def solve(n, arr):
-    # convert the array to a set to remove duplicates
-    unique_elements = set(arr)
-    # sort the array in descending order
-    sorted_arr = sorted(arr, reverse=True)
-    # initialize a variable to store the largest number of unique elements
-    max_unique_elements = 0
-    # loop through the array and check if the current number of unique elements is greater than the largest number of unique elements so far
-    for i in range(n):
-        if len(unique_elements) > max_unique_elements:
-            max_unique_elements = len(unique_elements)
-        # remove the current number from the set of unique elements
-        unique_elements.remove(sorted_arr[i])
-    # return the largest number of unique elements
-    return max_unique_elements
+def get_monotonic_renumberings(a):
+    n = len(a)
+    b = [0] * n
+    b[0] = 0
+    for i in range(1, n):
+        if a[i] == a[i-1]:
+            b[i] = b[i-1]
+        else:
+            b[i] = b[i-1] + 1
+    return b
+
+def count_monotonic_renumberings(a):
+    n = len(a)
+    b = get_monotonic_renumberings(a)
+    count = 1
+    for i in range(1, n):
+        if b[i] == b[i-1]:
+            count *= 2
+        else:
+            count *= 2 - 1
+    return count % 998244353
+
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(count_monotonic_renumberings(a))
 

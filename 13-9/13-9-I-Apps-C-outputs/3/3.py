@@ -1,22 +1,42 @@
 
-def solve(n, days):
-    # Initialize variables
-    rest_days = 0
-    last_day_sport = -1
-    last_day_contest = -1
+class LongLongString:
+    def __init__(self, string):
+        self.string = string
 
-    # Iterate through the days
-    for i in range(n):
-        # Check if the gym is open and the contest is carried out
-        if days[i] in [2, 3]:
-            # Check if the last day was a sport day
-            if last_day_sport == i-1:
-                # If it was, increase the rest days by 1
-                rest_days += 1
-            # Update the last day sport and contest days
-            last_day_sport = i
-            last_day_contest = i
+    def __len__(self):
+        return len(self.string)
 
-    # Return the minimum number of rest days
-    return rest_days
+    def __getitem__(self, index):
+        return self.string[index]
+
+    def __setitem__(self, index, char):
+        self.string = self.string[:index] + char + self.string[index + 1:]
+
+    def __delitem__(self, index):
+        self.string = self.string[:index] + self.string[index + 1:]
+
+    def __str__(self):
+        return self.string
+
+def compare_programs(prog1, prog2):
+    seq = LongLongString("")
+    for op in prog1:
+        if op[0] == "I":
+            seq[int(op[1])] = op[2]
+        elif op[0] == "D":
+            del seq[int(op[1])]
+    return seq == compare_programs(prog2, seq)
+
+def parse_program(program):
+    return [op.split() for op in program.split("\n") if op]
+
+def main():
+    prog1 = input("Enter the first program: ")
+    prog2 = input("Enter the second program: ")
+    prog1 = parse_program(prog1)
+    prog2 = parse_program(prog2)
+    print(compare_programs(prog1, prog2))
+
+if __name__ == '__main__':
+    main()
 

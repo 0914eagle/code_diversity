@@ -1,16 +1,29 @@
 
-def count_simple_loops(m, n, connections):
-    # Initialize a graph with m nodes and n edges
-    graph = [[] for _ in range(m)]
-    for connection in connections:
-        graph[connection[0]].append(connection[1])
-    
-    # Count the number of simple loops
-    loops = 0
-    for i in range(m):
-        for j in range(m):
-            if i != j and graph[i] and graph[j] and graph[i][0] == graph[j][0]:
-                loops += 1
-    
-    return loops
+import math
+
+def get_distance(a, b):
+    return math.sqrt(sum([(x - y)**2 for x, y in zip(a, b)]))
+
+def get_time(distance, speed):
+    return distance / speed
+
+def get_min_time(vasiliy_coords, taxi_coords):
+    min_time = float('inf')
+    for taxi in taxi_coords:
+        distance = get_distance(vasiliy_coords, taxi)
+        time = get_time(distance, taxi[2])
+        if time < min_time:
+            min_time = time
+    return min_time
+
+def main():
+    vasiliy_coords = tuple(map(int, input().split()))
+    n = int(input())
+    taxi_coords = []
+    for _ in range(n):
+        taxi_coords.append(tuple(map(int, input().split())))
+    print(get_min_time(vasiliy_coords, taxi_coords))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,7 +1,17 @@
 
-def find_min_radius(points):
-    x_coords, y_coords = zip(*points)
-    x_avg, y_avg = sum(x_coords) / len(points), sum(y_coords) / len(points)
-    distances = [(x - x_avg) ** 2 + (y - y_avg) ** 2 for x, y in points]
-    return math.sqrt(min(distances))
+import re
+
+def check_password_complexity(password):
+    pattern = r"^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!?.,_])[A-Za-z0-9!?.,_]{5,}$"
+    if re.match(pattern, password):
+        return "Correct"
+    else:
+        return "Too weak"
+
+def main():
+    password = input("Enter password: ")
+    print(check_password_complexity(password))
+
+if __name__ == '__main__':
+    main()
 

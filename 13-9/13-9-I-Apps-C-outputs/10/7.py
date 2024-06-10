@@ -1,38 +1,66 @@
 
-def get_squared_distance(matrix, row, col):
-    # Find the index of the tree in the matrix
-    tree_idx = next((i for i, x in enumerate(matrix[row]) if x == 'x'), None)
+import sys
+
+def get_input():
+    n, m, k = map(int, input().split())
+    capacities = list(map(int, input().split()))
+    connections = []
+    for _ in range(m):
+        u, v = map(int, input().split())
+        connections.append((u, v))
+    return n, m, k, capacities, connections
+
+def can_connect_servers(n, m, k, capacities, connections):
+    # Initialize a graph with the given number of servers and connections
+    graph = [[] for _ in range(n)]
+    for u, v in connections:
+        graph[u].append(v)
+        graph[v].append(u)
     
-    # If there is no tree in the given row, return 0
-    if tree_idx is None:
-        return 0
+    # Initialize a list to keep track of the number of connections made so far
+    connections_made = [0] * n
     
-    # Calculate the distance between the tree and the apple
-    distance = abs(tree_idx - col)
+    # Initialize a list to keep track of the number of connections available on each server
+    connections_available = [capacities[i] - len(graph[i]) for i in range(n)]
     
-    # Return the squared distance
-    return distance ** 2
+    # Initialize a set to keep track of the servers that have been visited
+    visited = set()
+    
+    # Function to recursively explore the graph and make connections
+    def explore(server, depth):
+        nonlocal connections_made, connections_available, visited
+        
+        # Base case: if we have reached the maximum depth or the number of connections made is greater than the number of connections available, return False
+        if depth == k or connections_made[server] > connections_available[server]:
+            return False
+        
+        # Mark the current server as visited
+        visited.add(server)
+        
+        # Recursively explore the graph
+        for neighbor in graph[server]:
+            if neighbor not in visited:
+                if explore(neighbor, depth + 1):
+                    # If a connection can be made to a neighboring server, make the connection and return True
+                    graph[server].append(neighbor)
+                    graph[neighbor].append(server)
+                    connections_made[server] += 1
+                    connections_available[server] -= 1
+                    connections_available[neighbor] -= 1
+                    return True
+        
+        # If no connection can be made to a neighboring server, return False
+        return False
+    
+    # Call the explore function on the first server
+    explore(0, 0)
+    
+    # Check if all servers have been visited
+    return len(visited) == n
 
 def main():
-    # Read the input
-    R, S = map(int, input().split())
-    matrix = [input() for _ in range(R)]
-    G = int(input())
-    falls = [tuple(map(int, input().split())) for _ in range(G)]
-    
-    # Initialize the output list
-    output = []
-    
-    # Iterate over the falls
-    for fall in falls:
-        # Get the squared distance for the current fall
-        squared_distance = get_squared_distance(matrix, fall[0], fall[1])
-        
-        # Add the squared distance to the output list
-        output.append(squared_distance)
-    
-    # Print the output
-    print(*output, sep='\n')
+    n, m, k, capacities, connections = get_input()
+    print("yes" if can_connect_servers(n, m, k, capacities, connections) else "no")
 
 if __name__ == '__main__':
     main()

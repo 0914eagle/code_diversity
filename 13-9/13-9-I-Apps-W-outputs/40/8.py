@@ -1,11 +1,27 @@
 
-def solve(c_1, c_2, c_3, c_4, n, m, buses, trolleys):
-    # Calculate the cost of each ticket type
-    ticket_1_cost = c_1 * sum(buses)
-    ticket_2_cost = c_2 * sum(buses)
-    ticket_3_cost = c_3 * (n + m)
-    ticket_4_cost = c_4
+def get_min_time(a, b, c):
+    # Sort the sticks by length in non-decreasing order
+    sticks = sorted([a, b, c])
+    
+    # Initialize the minimum time to 0
+    min_time = 0
+    
+    # Loop through the sticks and increase their length by one centimeter each
+    for i in range(len(sticks)):
+        min_time += 1
+        sticks[i] += 1
+        
+        # If the sum of the lengths of the sticks is greater than the largest stick, return the current minimum time
+        if sum(sticks) > max(sticks):
+            return min_time
+    
+    # If the sum of the lengths of the sticks is not greater than the largest stick, return -1
+    return -1
 
-    # Find the minimum cost
-    return min(ticket_1_cost, ticket_2_cost, ticket_3_cost, ticket_4_cost)
+def main():
+    a, b, c = map(int, input().split())
+    print(get_min_time(a, b, c))
+
+if __name__ == '__main__':
+    main()
 

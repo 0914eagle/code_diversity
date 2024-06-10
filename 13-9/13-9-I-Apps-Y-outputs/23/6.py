@@ -1,31 +1,32 @@
 
-def solve():
-    import sys
-    input = sys.stdin.read()
-    data = list(map(int, input.split()))
-    n, m = data[0:2]
-    heights = data[2:(2 * n + 2):2]
-    roads = list(zip(data[(2 * n + 2):(2 * n + 2 + m * 2):2], data[(3 * n + 4):(2 * n + 2 + m * 2):2]))
+import math
+import sys
 
-    # Create a graph with the roads as edges
-    graph = [[] for _ in range(n)]
-    for road in roads:
-        graph[road[0] - 1].append(road[1] - 1)
+def get_manhattan_distance(point1, point2):
+    return abs(point1[0] - point2[0]) + abs(point1[1] - point2[1])
 
-    # Find the good observatories by starting from each observatory and checking if it is higher than all the observatories it can reach
-    good_observatories = 0
-    for i in range(n):
-        visited = [False] * n
-        queue = [i]
-        visited[i] = True
-        while queue:
-            observatory = queue.pop(0)
-            for neighbor in graph[observatory]:
-                if not visited[neighbor]:
-                    visited[neighbor] = True
-                    queue.append(neighbor)
-        if visited.count(True) == 1:
-            good_observatories += 1
+def get_nearest_checkpoint(student, checkpoints):
+    nearest_distance = math.inf
+    nearest_checkpoint = -1
+    for checkpoint in checkpoints:
+        distance = get_manhattan_distance(student, checkpoint)
+        if distance < nearest_distance:
+            nearest_distance = distance
+            nearest_checkpoint = checkpoint
+    return nearest_checkpoint
 
-    return good_observatories
+def main():
+    n, m = map(int, input().split())
+    students = []
+    for _ in range(n):
+        students.append(tuple(map(int, input().split())))
+    checkpoints = []
+    for _ in range(m):
+        checkpoints.append(tuple(map(int, input().split())))
+    for student in students:
+        nearest_checkpoint = get_nearest_checkpoint(student, checkpoints)
+        print(nearest_checkpoint)
+
+if __name__ == '__main__':
+    main()
 

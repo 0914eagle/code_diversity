@@ -1,47 +1,39 @@
 
-def get_largest_square_killer(memory):
-    # Initialize variables
-    max_size = 0
-    max_size_found = False
-    
-    # Loop through each row of the memory
-    for row in range(len(memory)):
-        # Loop through each column of the memory
-        for col in range(len(memory[0])):
-            # Check if the current position is a potential starting point for a square killer
-            if memory[row][col] == "1":
-                # Check if the current position is part of a square killer
-                size = check_square_killer(memory, row, col)
-                
-                # If the current position is part of a square killer, update the max size
-                if size > max_size:
-                    max_size = size
-                    max_size_found = True
-    
-    # If no square killer is found, return -1
-    if not max_size_found:
-        return -1
-    
-    # Return the size of the largest square killer
-    return max_size
+def get_universities_pairs(universities, n):
+    pairs = []
+    for i in range(n):
+        pair = [universities[i], universities[n+i]]
+        pairs.append(pair)
+    return pairs
 
-# Check if the current position is part of a square killer
-def check_square_killer(memory, row, col):
-    # Initialize variables
-    size = 1
-    current_row = row
-    current_col = col
-    
-    # Loop through each row and column of the square killer
-    for i in range(1, len(memory)):
-        # Check if the current position is part of the square killer
-        if memory[current_row][current_col] == "1":
-            size += 1
-            current_row += 1
-            current_col += 1
-        else:
-            break
-    
-    # Return the size of the square killer
-    return size
+def get_pairs_distances(pairs, roads):
+    distances = []
+    for pair in pairs:
+        distance = 0
+        for i in range(len(pair)-1):
+            distance += get_distance(pair[i], pair[i+1], roads)
+        distances.append(distance)
+    return distances
+
+def get_distance(town1, town2, roads):
+    for road in roads:
+        if town1 in road and town2 in road:
+            return 1
+    return 0
+
+def get_maximum_sum(distances):
+    return sum(distances)
+
+def main():
+    universities = [1, 5, 6, 2, 3, 7, 4]
+    n = 7
+    k = 2
+    roads = [[1, 3], [3, 2], [4, 5], [3, 7], [4, 3], [4, 6], [2, 1], [2, 8]]
+    pairs = get_universities_pairs(universities, n)
+    distances = get_pairs_distances(pairs, roads)
+    maximum_sum = get_maximum_sum(distances)
+    print(maximum_sum)
+
+if __name__ == '__main__':
+    main()
 

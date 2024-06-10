@@ -1,25 +1,45 @@
 
-def solve(N, S, R, damaged, reserved):
-    # Initialize a set to store the teams that cannot start
-    cannot_start = set()
+def solve_test_case(n, gangs):
+    # Initialize a graph with n nodes and 0 edges
+    graph = [[] for _ in range(n)]
 
-    # Iterate over the teams with damaged kayaks
-    for team in damaged:
-        # If the team has a reserve kayak, it can start
-        if team in reserved:
-            continue
-        # Otherwise, it cannot start
-        cannot_start.add(team)
+    # Add edges between nodes belonging to different gangs
+    for i in range(n):
+        for j in range(i+1, n):
+            if gangs[i] != gangs[j]:
+                graph[i].append(j)
+                graph[j].append(i)
 
-    # Iterate over the teams with reserve kayaks
-    for team in reserved:
-        # If the team has a damaged kayak, it cannot start
-        if team in damaged:
-            cannot_start.add(team)
-        # Otherwise, it can start
-        else:
-            continue
+    # BFS to find a Hamiltonian cycle
+    queue = [0]
+    visited = [False] * n
+    visited[0] = True
+    while queue:
+        node = queue.pop(0)
+        for neighbor in graph[node]:
+            if not visited[neighbor]:
+                visited[neighbor] = True
+                queue.append(neighbor)
+                if neighbor == 0:
+                    break
+    else:
+        return "NO"
 
-    # Return the smallest number of teams that cannot start
-    return len(cannot_start)
+    # Return the Hamiltonian cycle as a list of edges
+    cycle = []
+    node = 0
+    while node != 0:
+        cycle.append(node)
+        node = graph[node][0]
+    return "YES\n" + "\n".join(f"{node+1} {cycle[i]+1}" for i in range(1, len(cycle)))
+
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        gangs = list(map(int, input().split()))
+        print(solve_test_case(n, gangs))
+
+if __name__ == '__main__':
+    main()
 

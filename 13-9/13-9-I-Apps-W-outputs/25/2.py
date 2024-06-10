@@ -1,26 +1,44 @@
 
-def is_m_cute(a, b, m):
-    if a == b:
-        return 1
-    elif b - a == 1:
-        return 2
-    else:
-        x = (a + b) // 2
-        y = b - x
-        if x <= m and y <= m:
-            return 2
-        elif x > m and y <= m:
-            return is_m_cute(a, x - 1, m) + is_m_cute(x, b, m)
-        elif x <= m and y > m:
-            return is_m_cute(a, x + 1, m) + is_m_cute(x + 1, b, m)
-        else:
-            return is_m_cute(a, x - 1, m) + is_m_cute(x + 1, b, m)
+def count_incomparable_strings(s1, s2):
+    n = len(s1)
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
+    dp[0][0] = 1
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            if s1[i - 1] == '?':
+                dp[i][j] += dp[i - 1][j]
+            if s2[j - 1] == '?':
+                dp[i][j] += dp[i][j - 1]
+            if s1[i - 1] != '?' and s2[j - 1] != '?':
+                if s1[i - 1] > s2[j - 1]:
+                    dp[i][j] += dp[i - 1][j - 1]
+                else:
+                    dp[i][j] += dp[i][j - 1]
+    return dp[n][n]
 
-def solve(a, b, m):
-    if is_m_cute(a, b, m) == 1:
-        return [a]
-    elif is_m_cute(a, b, m) == 2:
-        return [a, b]
-    else:
-        return [-1]
+def count_ways_to_replace_question_marks(s1, s2):
+    n = len(s1)
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
+    dp[0][0] = 1
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            if s1[i - 1] == '?':
+                dp[i][j] += dp[i - 1][j]
+            if s2[j - 1] == '?':
+                dp[i][j] += dp[i][j - 1]
+            if s1[i - 1] != '?' and s2[j - 1] != '?':
+                if s1[i - 1] > s2[j - 1]:
+                    dp[i][j] += dp[i - 1][j - 1]
+                else:
+                    dp[i][j] += dp[i][j - 1]
+    return dp[n][n]
+
+def main():
+    n = int(input())
+    s1 = input()
+    s2 = input()
+    print(count_ways_to_replace_question_marks(s1, s2) % 1000000007)
+
+if __name__ == '__main__':
+    main()
 

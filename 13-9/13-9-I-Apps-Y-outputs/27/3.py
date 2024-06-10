@@ -1,27 +1,24 @@
 
-def solve(friends):
-    n = len(friends)
-    given = [0] * n
-    received = [0] * n
+def get_number_of_paths(grid, k):
+    n, m = len(grid), len(grid[0])
+    dp = [[0] * (m+1) for _ in range(n+1)]
+    dp[n][m] = 1
+    for i in range(n-1, -1, -1):
+        for j in range(m-1, -1, -1):
+            dp[i][j] += dp[i+1][j]
+            if j < m-1 and grid[i][j] ^ grid[i][j+1] == k:
+                dp[i][j] += dp[i][j+1]
+            if i < n-1 and grid[i][j] ^ grid[i+1][j] == k:
+                dp[i][j] += dp[i+1][j]
+    return dp[0][0]
+
+def main():
+    n, m, k = map(int, input().split())
+    grid = []
     for i in range(n):
-        if friends[i] != 0:
-            given[i] = 1
-            received[friends[i] - 1] += 1
-    
-    for i in range(n):
-        if given[i] == 0:
-            for j in range(n):
-                if received[j] == 0:
-                    given[i] = 1
-                    received[j] += 1
-                    break
-    
-    for i in range(n):
-        if given[i] == 0:
-            return []
-    
-    result = []
-    for i in range(n):
-        result.append(friends[i] if friends[i] != 0 else received[i] + 1)
-    return result
+        grid.append(list(map(int, input().split())))
+    print(get_number_of_paths(grid, k))
+
+if __name__ == '__main__':
+    main()
 

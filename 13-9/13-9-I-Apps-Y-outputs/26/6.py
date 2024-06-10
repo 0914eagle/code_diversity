@@ -1,13 +1,27 @@
 
-def solve(n, skills):
-    # Sort the skills in non-decreasing order
-    skills.sort()
-    # Initialize the minimum number of problems to 0
-    min_problems = 0
-    # Iterate through the skills and form teams
-    for i in range(0, n, 2):
-        # If the skills are not equal, increase the minimum number of problems
-        if skills[i] != skills[i+1]:
-            min_problems += abs(skills[i] - skills[i+1])
-    return min_problems
+def encrypt(message, key):
+    encrypted_message = ""
+    for i, c in enumerate(message):
+        if i % 2 == 0:
+            encrypted_message += chr((ord(c) + ord(key[i]) - 2 * ord('A')) % 26 + ord('A'))
+        else:
+            encrypted_message += chr((ord(c) - ord(key[i]) - 2 * ord('A')) % 26 + ord('A'))
+    return encrypted_message
+
+def decrypt(encrypted_message, key):
+    message = ""
+    for i, c in enumerate(encrypted_message):
+        if i % 2 == 0:
+            message += chr((ord(c) - ord(key[i]) + 2 * ord('A')) % 26 + ord('A'))
+        else:
+            message += chr((ord(c) - ord(key[i]) - 2 * ord('A')) % 26 + ord('A'))
+    return message
+
+if __name__ == '__main__':
+    message = input("Enter message: ")
+    key = input("Enter key: ")
+    encrypted_message = encrypt(message, key)
+    print(f"Encrypted message: {encrypted_message}")
+    decrypted_message = decrypt(encrypted_message, key)
+    print(f"Decrypted message: {decrypted_message}")
 

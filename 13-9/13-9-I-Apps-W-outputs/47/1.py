@@ -1,17 +1,29 @@
 
-def solve(arr):
-    n = len(arr)
-    prefix_sum = [0] * (n + 1)
-    for i in range(1, n + 1):
-        prefix_sum[i] = prefix_sum[i - 1] + arr[i - 1]
-    
-    suffix_sum = [0] * (n + 1)
-    for i in range(n, 0, -1):
-        suffix_sum[i - 1] = suffix_sum[i] + arr[i - 1]
-    
-    total_sum = 0
-    for i in range(n):
-        total_sum += (prefix_sum[i] * (i + 1) + suffix_sum[i + 1] * (n - i)) % 1000000007
-    
-    return total_sum % 1000000007
+def get_original_string(code_string):
+    original_string = ""
+    for i in range(len(code_string)):
+        if code_string[i].isdigit():
+            repeat_count = int(code_string[i])
+            j = i + 1
+            while j < len(code_string) and code_string[j] != "-":
+                original_string += code_string[j]
+                j += 1
+            i = j
+        else:
+            original_string += code_string[i]
+    return original_string
+
+def is_palindrome(string):
+    return string == string[::-1]
+
+def solve(code_string):
+    original_string = get_original_string(code_string)
+    if is_palindrome(original_string):
+        return "Return"
+    else:
+        return "Continue"
+
+if __name__ == '__main__':
+    code_string = input()
+    print(solve(code_string))
 

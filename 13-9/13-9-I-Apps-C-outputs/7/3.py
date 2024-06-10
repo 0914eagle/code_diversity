@@ -1,60 +1,39 @@
 
-def get_number_of_non_similar_worlds(n, m):
-    # Initialize a set to store the worlds
-    worlds = set()
-    # Add the initial world to the set
-    worlds.add(("s", "t"))
-    # Iterate through the number of changes
-    for i in range(n):
-        # Initialize a set to store the new worlds
-        new_worlds = set()
-        # Iterate through the current worlds
-        for world in worlds:
-            # Add a new vertex to the world
-            new_world = world + ("w",)
-            # Add the new world to the set
-            new_worlds.add(new_world)
-            # Iterate through the existing edges in the world
-            for j in range(len(world) - 1):
-                # Get the two vertices of the edge
-                u, v = world[j], world[j + 1]
-                # Add the new edge to the world
-                new_world = world[:j] + ("w", u, v) + world[j + 1:]
-                # Add the new world to the set
-                new_worlds.add(new_world)
-        # Update the worlds set with the new worlds
-        worlds = new_worlds
-    # Initialize a counter for the number of non-similar worlds
-    count = 0
-    # Iterate through the worlds
-    for world in worlds:
-        # Check if the minimum cut of the world is at least m
-        if get_min_cut(world) >= m:
-            # Increment the counter
-            count += 1
-    # Return the number of non-similar worlds
-    return count % 1000000007
+def get_number_of_ways(n, k):
+    # Initialize a list to store the numbers on the houses' plaques
+    plaques = [0] * (n + 1)
+    # Initialize a variable to store the number of ways to write the numbers on the houses' plaques
+    number_of_ways = 0
+    
+    # Iterate over the houses
+    for i in range(1, n + 1):
+        # If the house is the first house, set the number on its plaque to 1
+        if i == 1:
+            plaques[i] = 1
+        # If the house is not the first house, set the number on its plaque to the sum of the numbers on the plaques of the previous houses
+        else:
+            plaques[i] = sum(plaques[1:i])
+    
+    # Iterate over the houses
+    for i in range(1, n + 1):
+        # If the house is the first house, set the number of ways to write the numbers on the houses' plaques to the number of ways to write the numbers on the houses' plaques up to the current house
+        if i == 1:
+            number_of_ways = number_of_ways + 1
+        # If the house is not the first house, set the number of ways to write the numbers on the houses' plaques to the sum of the number of ways to write the numbers on the houses' plaques up to the current house and the number of ways to write the numbers on the houses' plaques up to the previous house
+        else:
+            number_of_ways = (number_of_ways + plaques[i - 1]) % 1000000007
+    
+    # Return the number of ways to write the numbers on the houses' plaques modulo 1000000007
+    return number_of_ways
 
-def get_min_cut(world):
-    # Initialize a set to store the vertices in the minimum cut
-    min_cut = set()
-    # Iterate through the vertices in the world
-    for i in range(len(world)):
-        # Check if the vertex is not connected to s(G)
-        if world[i] != "s" and not is_connected(world, "s", world[i]):
-            # Add the vertex to the minimum cut
-            min_cut.add(world[i])
-    # Return the number of edges in the minimum cut
-    return len(min_cut)
+def main():
+    # Read the input
+    n, k = map(int, input().split())
+    # Call the function to get the number of ways to write the numbers on the houses' plaques
+    number_of_ways = get_number_of_ways(n, k)
+    # Print the result
+    print(number_of_ways)
 
-def is_connected(world, u, v):
-    # Check if the two vertices are adjacent in the world
-    if u in world and v in world and world.index(u) + 1 == world.index(v):
-        return True
-    # Check if the two vertices are connected by an edge in the world
-    for i in range(len(world) - 1):
-        if world[i] == u and world[i + 1] == v:
-            return True
-    # The two vertices are not connected
-    return False
+if __name__ == '__main__':
+    main()
 

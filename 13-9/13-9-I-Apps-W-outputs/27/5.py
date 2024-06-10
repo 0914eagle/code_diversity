@@ -1,26 +1,45 @@
 
-def solve(n, arr):
-    # Calculate the total number of votes
-    total_votes = sum(arr)
+def read_input():
+    n, k = map(int, input().split())
+    line = input()
+    return n, k, line
 
-    # Initialize a variable to store the minimum number of citizens to bribe
-    min_citizens = 0
+def find_grasshopper(line, k):
+    for i in range(len(line)):
+        if line[i] == 'G':
+            return i
+    return -1
 
-    # Iterate through the array of votes
-    for i in range(n):
-        # Calculate the number of votes Limak needs to have strictly more than the current candidate
-        needed_votes = total_votes - arr[i] + 1
+def find_insect(line, k):
+    for i in range(len(line)):
+        if line[i] == 'T':
+            return i
+    return -1
 
-        # If Limak has enough votes, break the loop
-        if needed_votes <= 0:
-            break
+def can_jump(i, j, k):
+    return abs(i - j) <= k
 
-        # Calculate the number of citizens Limak needs to bribe to achieve the needed votes
-        citizens_needed = needed_votes // arr[i]
+def solve(n, k, line):
+    grasshopper = find_grasshopper(line, k)
+    insect = find_insect(line, k)
+    if grasshopper == -1 or insect == -1:
+        return "NO"
+    visited = [False] * n
+    queue = [(grasshopper, 0)]
+    while queue:
+        current, steps = queue.pop(0)
+        if current == insect:
+            return "YES"
+        for i in range(current - k, current + k + 1):
+            if can_jump(current, i, k) and not visited[i] and line[i] == '.':
+                visited[i] = True
+                queue.append((i, steps + 1))
+    return "NO"
 
-        # Update the minimum number of citizens to bribe
-        min_citizens += citizens_needed
+def main():
+    n, k, line = read_input()
+    print(solve(n, k, line))
 
-    # Return the minimum number of citizens to bribe
-    return min_citizens
+if __name__ == '__main__':
+    main()
 

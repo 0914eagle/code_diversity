@@ -1,32 +1,19 @@
 
-def playfair_cipher(key_phrase, plaintext):
-    # Initialize the encryption key
-    encryption_key = []
-    for char in key_phrase:
-        if char != " " and char not in encryption_key:
-            encryption_key.append(char)
-    for char in "abcdefghijklmnopqrstuvwxyz":
-        if char not in encryption_key:
-            encryption_key.append(char)
-    encryption_key = "".join(encryption_key)
+def get_optimal_cut(s):
+    n = len(s)
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
+    for i in range(n):
+        for j in range(i + 1, n + 1):
+            dp[i][j] = max(dp[i][j - 1], dp[i + 1][j] + 1)
+            if s[i] != s[j - 1]:
+                dp[i][j] = max(dp[i][j], dp[i + 1][j - 1] + 1)
+    return dp[0][n]
 
-    # Remove spaces and duplicate letters from the plaintext
-    plaintext = plaintext.replace(" ", "")
-    plaintext = "".join(set(plaintext))
+def main():
+    n = int(input())
+    s = input()
+    print(get_optimal_cut(s))
 
-    # Encrypt the plaintext
-    encrypted_text = ""
-    for i in range(0, len(plaintext), 2):
-        if i == len(plaintext) - 1:
-            encrypted_text += encryption_key[encryption_key.index(plaintext[i])]
-        elif plaintext[i] == plaintext[i + 1]:
-            encrypted_text += encryption_key[encryption_key.index(plaintext[i])] + "X"
-        elif encryption_key.index(plaintext[i]) == encryption_key.index(plaintext[i + 1]):
-            encrypted_text += encryption_key[encryption_key.index(plaintext[i]) + 1]
-        elif encryption_key.index(plaintext[i]) // 5 == encryption_key.index(plaintext[i + 1]) // 5:
-            encrypted_text += encryption_key[encryption_key.index(plaintext[i + 1]) + 5 - encryption_key.index(plaintext[i]) % 5]
-        else:
-            encrypted_text += encryption_key[encryption_key.index(plaintext[i]) // 5 * 5 + encryption_key.index(plaintext[i + 1]) % 5]
-
-    return encrypted_text.upper()
+if __name__ == '__main__':
+    main()
 

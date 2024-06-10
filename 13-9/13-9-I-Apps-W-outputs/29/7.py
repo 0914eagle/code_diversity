@@ -1,20 +1,18 @@
 
-def solve(n, a, b):
-    # Sort the results in ascending order
-    a.sort()
-    b.sort()
-    
-    # Initialize the finalists string
-    finalists = "0" * n
-    
-    # Determine the k value based on the results
-    k = 0
-    while k < n and a[k] <= b[k]:
-        k += 1
-    
-    # Update the finalists string based on the k value
-    for i in range(k):
-        finalists = finalists[:i] + "1" + finalists[i+1:]
-    
-    return finalists
+def gcd(a, b):
+    if b == 0:
+        return a
+    else:
+        return gcd(b, a % b)
+
+def input_numbers():
+    a, b = map(int, input().split())
+    return a, b
+
+def main():
+    a, b = input_numbers()
+    print(gcd(a, b))
+
+if __name__ == '__main__':
+    main()
 

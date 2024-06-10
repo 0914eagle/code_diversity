@@ -1,31 +1,23 @@
 
-def get_time(start, end, conveyors):
-    # Calculate the distance between start and end points
-    distance = ((end[0] - start[0]) ** 2 + (end[1] - start[1]) ** 2) ** 0.5
+def check_strategy(k, ancient_values):
+    # Check if k is one of the ancient values
+    if k in ancient_values:
+        return True
+    
+    # Check if any two ancient values have a common multiple that is also an ancient value
+    for i in range(len(ancient_values)):
+        for j in range(i+1, len(ancient_values)):
+            if ancient_values[i] * ancient_values[j] in ancient_values:
+                return True
+    
+    # If none of the above conditions are met, then Arya has no winning strategy
+    return False
 
-    # Initialize the minimum time to travel the distance
-    min_time = distance / 1
+def main():
+    n, k = map(int, input().split())
+    ancient_values = list(map(int, input().split()))
+    print("Yes") if check_strategy(k, ancient_values) else print("No")
 
-    # Iterate over each conveyor
-    for conveyor in conveyors:
-        # Calculate the distance to the conveyor
-        conveyor_distance = ((conveyor[0] - start[0]) ** 2 + (conveyor[1] - start[1]) ** 2) ** 0.5
-
-        # Calculate the time to travel the distance to the conveyor
-        conveyor_time = conveyor_distance / 2
-
-        # Calculate the distance from the conveyor to the end point
-        end_distance = ((end[0] - conveyor[2]) ** 2 + (end[1] - conveyor[3]) ** 2) ** 0.5
-
-        # Calculate the time to travel the distance from the conveyor to the end point
-        end_time = end_distance / 1
-
-        # Calculate the total time to travel from start to end using the conveyor
-        total_time = conveyor_time + end_time
-
-        # Update the minimum time if the total time is less than the current minimum time
-        if total_time < min_time:
-            min_time = total_time
-
-    return min_time
+if __name__ == '__main__':
+    main()
 

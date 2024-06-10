@@ -1,11 +1,15 @@
 
-def solve(a1, b1, a2, b2):
-    sum1 = (b1 - a1 + 1) + (b1 - a1 + 2)
-    sum2 = (b2 - a2 + 1) + (b2 - a2 + 2)
-    if sum1 > sum2:
-        return "Gunnar"
-    elif sum1 < sum2:
-        return "Emma"
-    else:
-        return "Tie"
+def get_input():
+    return [int(x) for x in input().split()]
+
+def paint_cells(h, w, H, W):
+    return H * W - h * W - w * H + h * w
+
+def main():
+    H, W = get_input()
+    h, w = get_input()
+    print(paint_cells(h, w, H, W))
+
+if __name__ == '__main__':
+    main()
 

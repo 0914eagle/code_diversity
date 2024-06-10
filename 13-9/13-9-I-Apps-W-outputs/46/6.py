@@ -1,11 +1,28 @@
 
-def quasibinary_sum(n):
-    # Initialize a list to store the quasibinary numbers
-    quasibinary_list = []
-    # Loop until the sum of the quasibinary numbers is equal to n
-    while sum(quasibinary_list) != n:
-        # Add the largest quasibinary number that is less than or equal to n to the list
-        quasibinary_list.append(min(quasibinary_list + [1], key=lambda x: abs(x - n)))
-    # Return the list of quasibinary numbers
-    return quasibinary_list
+def gcd(a, b):
+    while b != 0:
+        a, b = b, a % b
+    return a
+
+def f(p):
+    gcds = []
+    for i in range(len(p)):
+        gcds.append(gcd(p[i], p[i+1]))
+    return len(set(gcds))
+
+def f_max(n):
+    permutations = []
+    for i in range(1, n+1):
+        permutations.append(i)
+    return max(f(p) for p in permutations)
+
+def count_permutations(n):
+    permutations = []
+    for i in range(1, n+1):
+        permutations.append(i)
+    return len([p for p in permutations if f(p) == f_max(n)])
+
+if __name__ == '__main__':
+    n = int(input())
+    print(count_permutations(n) % 1000000007)
 

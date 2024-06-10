@@ -1,62 +1,37 @@
 
-def get_max_water_reachable(n, p, k, pipes, improvements):
-    # Initialize a graph with the given number of nodes
-    graph = [[] for _ in range(n + 1)]
+def get_valid_scenarios(n, k, x):
+    # Initialize a set to store the valid scenarios
+    valid_scenarios = set()
+    
+    # Iterate over all possible starting positions
+    for i in range(1, n+1):
+        # Initialize the current position and the number of questions answered
+        current_position = i
+        questions_answered = 0
+        
+        # Iterate over all questions
+        for j in range(k):
+            # If the question is about the current position, answer "NO"
+            if x[j] == current_position:
+                questions_answered += 1
+                continue
+            
+            # If the question is not about the current position, move to the next cell
+            next_position = (current_position + 1) % n + 1
+            current_position = next_position
+            questions_answered += 1
+            
+        # If all questions were answered, add the scenario to the set of valid scenarios
+        if questions_answered == k:
+            valid_scenarios.add((i, current_position))
+    
+    return len(valid_scenarios)
 
-    # Add edges to the graph based on the given pipes
-    for pipe in pipes:
-        graph[pipe[0]].append((pipe[1], pipe[2]))
-        graph[pipe[1]].append((pipe[0], pipe[2]))
+def main():
+    n, k = map(int, input().split())
+    x = list(map(int, input().split()))
+    print(get_valid_scenarios(n, k, x))
 
-    # Initialize the max water reachable from the pumping station to 0
-    max_water_reachable = 0
-
-    # Loop through each improvement
-    for improvement in improvements:
-        # Get the starting and ending stations and the increase in capacity
-        start, end, increase = improvement
-
-        # Check if there is already a pipe between the starting and ending stations
-        if (start, end) in graph[start] or (end, start) in graph[end]:
-            # If there is a pipe, increase its capacity by the given amount
-            for edge in graph[start]:
-                if edge[0] == end:
-                    edge[1] += increase
-                    break
-            for edge in graph[end]:
-                if edge[0] == start:
-                    edge[1] += increase
-                    break
-        else:
-            # If there is no pipe, create a new one with the given capacity
-            graph[start].append((end, increase))
-            graph[end].append((start, increase))
-
-        # Find the maximum water reachable from the pumping station after the improvement
-        max_water_reachable = max(max_water_reachable, get_max_water(graph, n, 1))
-
-    return [max_water_reachable] + [get_max_water(graph, n, i) for i in range(2, n + 1)]
-
-def get_max_water(graph, n, start):
-    # Initialize the maximum water reachable to 0
-    max_water = 0
-
-    # Create a queue to store the nodes to visit
-    queue = [start]
-
-    # Loop through the nodes in the queue
-    while queue:
-        # Get the current node and its neighbors
-        node = queue.pop(0)
-        neighbors = graph[node]
-
-        # Loop through the neighbors
-        for neighbor, capacity in neighbors:
-            # Check if the neighbor has not been visited yet
-            if neighbor not in queue:
-                # Add the neighbor to the queue and update the maximum water reachable
-                queue.append(neighbor)
-                max_water = max(max_water, capacity)
-
-    return max_water
+if __name__ == '__main__':
+    main()
 

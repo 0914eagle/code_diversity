@@ -1,27 +1,37 @@
 
-def largest_corn_area(polygon, canal):
-    # Convert the polygon and canal to sets of points
-    polygon_points = set(polygon)
-    canal_points = set(canal)
-    
-    # Find the intersection of the polygon and canal
-    intersection = polygon_points & canal_points
-    
-    # If the intersection is empty, return 0
-    if not intersection:
-        return 0
-    
-    # Find the area of the largest triangle that can be formed from the intersection
-    max_area = 0
-    for i in range(len(intersection)):
-        for j in range(i+1, len(intersection)):
-            for k in range(j+1, len(intersection)):
-                area = triangle_area(intersection[i], intersection[j], intersection[k])
-                if area > max_area:
-                    max_area = area
-    
-    return max_area
+import math
 
-def triangle_area(a, b, c):
-    return 0.5 * abs(a[0] * (b[1] - c[1]) + b[0] * (c[1] - a[1]) + c[0] * (a[1] - b[1]))
+def calculate_distance(x1, y1, x2, y2):
+    return math.sqrt((x2-x1)**2 + (y2-y1)**2)
+
+def find_longest_distance(toys, trees):
+    longest_distance = 0
+    for i in range(len(toys)):
+        for j in range(i+1, len(toys)):
+            toy1 = toys[i]
+            toy2 = toys[j]
+            distance = calculate_distance(toy1[0], toy1[1], toy2[0], toy2[1])
+            if distance > longest_distance:
+                longest_distance = distance
+    for tree in trees:
+        for toy in toys:
+            distance = calculate_distance(tree[0], tree[1], toy[0], toy[1])
+            if distance > longest_distance:
+                longest_distance = distance
+    return longest_distance
+
+def main():
+    n, m = map(int, input().split())
+    toys = []
+    for i in range(n):
+        x, y = map(int, input().split())
+        toys.append((x, y))
+    trees = []
+    for i in range(m):
+        x, y = map(int, input().split())
+        trees.append((x, y))
+    print(round(find_longest_distance(toys, trees), 2))
+
+if __name__ == '__main__':
+    main()
 

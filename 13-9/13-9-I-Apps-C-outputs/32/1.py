@@ -1,24 +1,32 @@
 
-def is_handsome(n):
-    n_str = str(n)
-    for i in range(len(n_str) - 1):
-        if n_str[i] == n_str[i + 1]:
-            return False
-    return True
+def standard_addition(num1, num2):
+    sum = 0
+    carry = 0
+    while num1 > 0 or num2 > 0:
+        sum = (num1 % 10) + (num2 % 10) + carry
+        carry = sum // 10
+        num1 //= 10
+        num2 //= 10
+    return sum
 
-def find_closest_handsome_number(n):
-    n_str = str(n)
-    for i in range(len(n_str) - 1):
-        if n_str[i] == n_str[i + 1]:
-            break
-    else:
-        return n
+def simple_addition(num1, num2):
+    count = 0
+    while num1 > num2:
+        num1 -= 1
+        num2 += 1
+        count += 1
+    return count
 
-    left = int(n_str[:i] + str(int(n_str[i]) - 1) + n_str[i + 1:])
-    right = int(n_str[:i] + str(int(n_str[i]) + 1) + n_str[i + 1:])
+def combined_addition(num1, num2):
+    count = 0
+    while standard_addition(num1, num2) >= 10:
+        num1 += 1
+        num2 -= 1
+        count += 1
+    return count
 
-    if is_handsome(left):
-        return left, right
-    else:
-        return right, left
+if __name__ == '__main__':
+    num1 = int(input())
+    num2 = int(input())
+    print(combined_addition(num1, num2))
 

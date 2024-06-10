@@ -1,20 +1,29 @@
 
-def solve(N, taboo_strings):
-    # Initialize the longest clue to be empty
-    longest_clue = ""
+def buy_hp(hp, hp_price):
+    return hp * hp_price
 
-    # Iterate over the taboo strings
-    for taboo_string in taboo_strings:
-        # Check if the taboo string is a prefix of the longest clue
-        if taboo_string.startswith(longest_clue):
-            # If it is, update the longest clue to be the suffix of the taboo string
-            longest_clue = taboo_string[len(longest_clue):]
-        # Check if the taboo string is a suffix of the longest clue
-        elif taboo_string.endswith(longest_clue):
-            # If it is, update the longest clue to be the prefix of the taboo string
-            longest_clue = taboo_string[:len(longest_clue)]
-        # Otherwise, the taboo string is not a substring of the longest clue, so do nothing
+def buy_atk(atk, atk_price):
+    return atk * atk_price
 
-    # Return the longest clue
-    return longest_clue
+def buy_def(def, def_price):
+    return def * def_price
+
+def calculate_bitcoins_needed(hp_y, atk_y, def_y, hp_m, atk_m, def_m, hp_price, atk_price, def_price):
+    bitcoins_needed = 0
+    while hp_y > 0 and hp_m > 0:
+        bitcoins_needed += buy_hp(hp_y, hp_price)
+        bitcoins_needed += buy_atk(atk_y, atk_price)
+        bitcoins_needed += buy_def(def_y, def_price)
+        hp_y = max(0, hp_y - max(0, atk_m - def_y))
+        hp_m = max(0, hp_m - max(0, atk_y - def_m))
+    return bitcoins_needed
+
+def main():
+    hp_y, atk_y, def_y = map(int, input().split())
+    hp_m, atk_m, def_m = map(int, input().split())
+    hp_price, atk_price, def_price = map(int, input().split())
+    print(calculate_bitcoins_needed(hp_y, atk_y, def_y, hp_m, atk_m, def_m, hp_price, atk_price, def_price))
+
+if __name__ == '__main__':
+    main()
 

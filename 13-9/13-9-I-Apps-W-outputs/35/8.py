@@ -1,12 +1,13 @@
 
-def sum_abc(a, b, c):
-    return (a * b * c) % 998244353
+def get_earliest_login(first_name, last_name):
+    prefix_first_name = first_name[0]
+    prefix_last_name = last_name[0]
+    return min(prefix_first_name + prefix_last_name, prefix_last_name + prefix_first_name, key=lambda x: x.lower())
 
-def solve(a, b, c):
-    result = 0
-    for i in range(1, a + 1):
-        for j in range(1, b + 1):
-            for k in range(1, c + 1):
-                result += sum_abc(i, j, k)
-    return result % 998244353
+def main():
+    first_name, last_name = input().split()
+    print(get_earliest_login(first_name, last_name))
+
+if __name__ == '__main__':
+    main()
 

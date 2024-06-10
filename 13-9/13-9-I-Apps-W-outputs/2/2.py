@@ -1,21 +1,26 @@
 
-def get_girl_name(names, a, b):
-    # Sort the names in ascending order
-    sorted_names = sorted(names)
+def get_triangle_points(n, m, k):
+    for x1 in range(n+1):
+        for y1 in range(m+1):
+            for x2 in range(x1+1, n+1):
+                for y2 in range(y1+1, m+1):
+                    x3 = n-x1-x2
+                    y3 = m-y1-y2
+                    if x3 >= 0 and y3 >= 0 and x1*y2+x2*y3+x3*y1 == k:
+                        return (x1, y1), (x2, y2), (x3, y3)
+    return None
 
-    # Find the closest name to each name in the range [a, b]
-    closest_names = []
-    for i in range(a, b + 1, 2):
-        if i in sorted_names:
-            closest_names.append(i)
-        else:
-            closest_names.append(sorted_names[bisect_right(sorted_names, i) - 1])
+def main():
+    n, m, k = map(int, input().split())
+    points = get_triangle_points(n, m, k)
+    if points is None:
+        print("NO")
+    else:
+        print("YES")
+        print(points[0])
+        print(points[1])
+        print(points[2])
 
-    # Find the name that is farthest from all the names
-    girl_name = closest_names[0]
-    for i in range(1, len(closest_names)):
-        if abs(closest_names[i] - girl_name) > abs(closest_names[i - 1] - girl_name):
-            girl_name = closest_names[i]
-
-    return girl_name
+if __name__ == '__main__':
+    main()
 

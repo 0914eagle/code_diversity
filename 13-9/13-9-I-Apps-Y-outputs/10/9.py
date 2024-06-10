@@ -1,11 +1,18 @@
 
-def solve(l1, r1, l2, r2):
-    # Find the smallest integer greater than or equal to the left endpoint of the first segment
-    a = int(l1) + 1
-    # Find the smallest integer greater than or equal to the left endpoint of the second segment
-    b = int(l2) + 1
-    # If the right endpoint of the first segment is less than or equal to the left endpoint of the second segment, then swap them
-    if r1 <= l2:
-        a, b = b, a
-    return a, b
+def get_hours_until_new_year(hour):
+    current_hour = int(hour)
+    if current_hour < 0 or current_hour > 23:
+        raise ValueError("Invalid input")
+    return 24 - current_hour
+
+def main():
+    hour = input("Enter the hour: ")
+    try:
+        hours_until_new_year = get_hours_until_new_year(hour)
+        print(f"We have {hours_until_new_year} hours until New Year at {hour} o'clock on 30th, December.")
+    except ValueError as e:
+        print(e)
+
+if __name__ == '__main__':
+    main()
 

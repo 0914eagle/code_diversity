@@ -1,15 +1,22 @@
 
-def get_palindromic_strings(strings):
-    # Initialize a list to store the indices of palindromic strings
-    palindromic_strings = []
+def get_minimum_positive_integer_divisible_by(d):
+    for i in range(1, 10**9 + 1):
+        if i % d == 0:
+            return i
+    return -1
 
-    # Loop through each string in the input list
-    for i, string in enumerate(strings):
-        # Check if the string is already palindromic
-        if string == string[::-1]:
-            # If it is, add its index to the list of palindromic strings
-            palindromic_strings.append(i)
+def get_minimum_positive_integer_not_in_segment(l, r, d):
+    if l % d == 0:
+        return l + d
+    else:
+        return l + d - l % d
 
-    # Return the list of palindromic strings
-    return palindromic_strings
+def main():
+    q = int(input())
+    for _ in range(q):
+        l, r, d = map(int, input().split())
+        print(get_minimum_positive_integer_not_in_segment(l, r, d))
+
+if __name__ == '__main__':
+    main()
 

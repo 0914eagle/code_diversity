@@ -1,29 +1,52 @@
 
-def solve_ncpp_airways(n, flights):
-    # Initialize a graph with the given flights
-    graph = {i: set() for i in range(1, n + 1)}
-    for flight in flights:
-        graph[flight[0]].add(flight[1])
-        graph[flight[1]].add(flight[0])
+def get_splitter_configuration(a, b, c, d):
+    # Initialize the splitter configuration
+    splitters = []
+    output_belts = [0, 0]
+    
+    # While there are still boxes to be distributed
+    while sum(output_belts) < c + d:
+        # Find the next splitter to use
+        next_splitter = get_next_splitter(a, b, c, d, splitters)
+        
+        # Add the splitter to the configuration
+        splitters.append(next_splitter)
+        
+        # Update the output belts
+        output_belts[next_splitter[0]] += a / (a + b)
+        output_belts[next_splitter[1]] += b / (a + b)
+    
+    # Return the configuration
+    return splitters
 
-    # Find the flight with the maximum number of connections
-    max_connections = 0
-    flight_to_cancel = None
-    for city in graph:
-        connections = len(graph[city])
-        if connections > max_connections:
-            max_connections = connections
-            flight_to_cancel = city
+def get_next_splitter(a, b, c, d, splitters):
+    # Find the splitter with the smallest number of boxes received
+    smallest_received = float('inf')
+    next_splitter = None
+    for i in range(len(splitters)):
+        received = sum(splitters[i])
+        if received < smallest_received:
+            smallest_received = received
+            next_splitter = i
+    
+    # Return the next splitter
+    return next_splitter
 
-    # Find the best new flight to add
-    min_connections = float('inf')
-    flight_to_add = None
-    for city in graph:
-        if city != flight_to_cancel:
-            connections = len(graph[city])
-            if connections < min_connections:
-                min_connections = connections
-                flight_to_add = city
+def main():
+    # Read the input
+    a, b = map(int, input().split())
+    c, d = map(int, input().split())
+    
+    # Get the splitter configuration
+    splitters = get_splitter_configuration(a, b, c, d)
+    
+    # Print the number of splitters used
+    print(len(splitters))
+    
+    # Print the splitter configuration
+    for i in range(len(splitters)):
+        print(splitters[i][0], splitters[i][1])
 
-    return (max_connections - 1, flight_to_cancel, flight_to_add)
+if __name__ == '__main__':
+    main()
 

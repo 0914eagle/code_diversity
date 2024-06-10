@@ -1,38 +1,35 @@
 
-def playfair_cipher(key_phrase, plaintext):
-    # Create the encryption key
-    key = [char for char in key_phrase if char != ' ']
-    key += [char for char in 'abcdefghijklmnopqrstuvwxyz' if char not in key]
-    key = ''.join(key)
-    
-    # Create the encryption table
-    table = [key[i:i+5] for i in range(0, len(key), 5)]
-    
-    # Encrypt the plaintext
-    ciphertext = ''
-    for i in range(0, len(plaintext), 2):
-        if plaintext[i] == plaintext[i+1]:
-            ciphertext += plaintext[i] + 'X'
-        elif plaintext[i] in table[0]:
-            ciphertext += table[0][table[0].index(plaintext[i])+1]
-        elif plaintext[i+1] in table[0]:
-            ciphertext += table[0][table[0].index(plaintext[i+1])+1]
-        elif plaintext[i] in table[1]:
-            ciphertext += table[1][table[1].index(plaintext[i])+1]
-        elif plaintext[i+1] in table[1]:
-            ciphertext += table[1][table[1].index(plaintext[i+1])+1]
-        elif plaintext[i] in table[2]:
-            ciphertext += table[2][table[2].index(plaintext[i])+1]
-        elif plaintext[i+1] in table[2]:
-            ciphertext += table[2][table[2].index(plaintext[i+1])+1]
-        elif plaintext[i] in table[3]:
-            ciphertext += table[3][table[3].index(plaintext[i])+1]
-        elif plaintext[i+1] in table[3]:
-            ciphertext += table[3][table[3].index(plaintext[i+1])+1]
-        elif plaintext[i] in table[4]:
-            ciphertext += table[4][table[4].index(plaintext[i])+1]
-        elif plaintext[i+1] in table[4]:
-            ciphertext += table[4][table[4].index(plaintext[i+1])+1]
-    
-    return ciphertext.upper()
+def get_optimal_position(s):
+    n = len(s)
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
+    for i in range(n):
+        for j in range(i + 1, n + 1):
+            dp[i][j] = max(dp[i][j - 1], dp[i + 1][j] + 1)
+            if s[i] != s[j - 1]:
+                dp[i][j] = max(dp[i][j], dp[i + 1][j - 1] + 1)
+    return dp[0][n]
+
+def get_optimal_substring(s, pos):
+    n = len(s)
+    l, r = 0, pos
+    dp = [0] * (n + 1)
+    for i in range(pos, -1, -1):
+        if s[i] != s[pos]:
+            l = i + 1
+            break
+    for i in range(pos + 1, n + 1):
+        if s[i - 1] != s[pos]:
+            r = i - 1
+            break
+    return s[l:r]
+
+def main():
+    n = int(input())
+    s = input()
+    pos = get_optimal_position(s)
+    substring = get_optimal_substring(s, pos)
+    print(len(set(substring)))
+
+if __name__ == '__main__':
+    main()
 

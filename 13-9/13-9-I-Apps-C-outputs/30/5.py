@@ -1,64 +1,44 @@
 
-def is_valid_move(grid, row, col, direction):
-    # Check if the move is valid
-    if direction == "u":
-        if row == 0:
-            return False
-        if grid[row - 1][col] != "E":
-            return False
-    elif direction == "d":
-        if row == len(grid) - 1:
-            return False
-        if grid[row + 1][col] != "E":
-            return False
-    elif direction == "l":
-        if col == 0:
-            return False
-        if grid[row][col - 1] != "E":
-            return False
-    elif direction == "r":
-        if col == len(grid[0]) - 1:
-            return False
-        if grid[row][col + 1] != "E":
-            return False
-    return True
+def get_time_difference(t1, t2):
+    return abs(t1 - t2)
 
-def make_move(grid, row, col, direction):
-    # Make the move and return the new grid
-    if direction == "u":
-        grid[row - 1][col], grid[row][col] = grid[row][col], grid[row - 1][col]
-    elif direction == "d":
-        grid[row + 1][col], grid[row][col] = grid[row][col], grid[row + 1][col]
-    elif direction == "l":
-        grid[row][col - 1], grid[row][col] = grid[row][col], grid[row][col - 1]
-    elif direction == "r":
-        grid[row][col + 1], grid[row][col] = grid[row][col], grid[row][col + 1]
-    return grid
+def get_clock_face_position(t, h, m, s):
+    total_seconds = h * 3600 + m * 60 + s
+    clock_face_position = (total_seconds / 3600) % 12
+    return clock_face_position
 
-def get_shortcuts(grid):
-    # Get the shortcuts from the grid
-    shortcuts = {}
-    for row in grid:
-        for col, char in enumerate(row):
-            if char.isupper():
-                shortcuts[char] = row[col + 1:]
-                break
-    return shortcuts
+def can_prepare_contest_on_time(t1, t2, h, m, s):
+    time_difference = get_time_difference(t1, t2)
+    clock_face_position = get_clock_face_position(t1, h, m, s)
+    if time_difference == 0:
+        return "YES"
+    if time_difference == 1:
+        return "NO"
+    if time_difference == 2:
+        return "YES"
+    if time_difference == 3:
+        return "NO"
+    if time_difference == 4:
+        return "YES"
+    if time_difference == 5:
+        return "NO"
+    if time_difference == 6:
+        return "YES"
+    if time_difference == 7:
+        return "NO"
+    if time_difference == 8:
+        return "YES"
+    if time_difference == 9:
+        return "NO"
+    if time_difference == 10:
+        return "YES"
+    if time_difference == 11:
+        return "NO"
 
-def get_moves(grid, row, col, direction):
-    # Get the moves for the current position
-    moves = []
-    if is_valid_move(grid, row, col, direction):
-        moves.append(direction)
-    return moves
+def main():
+    h, m, s, t1, t2 = map(int, input().split())
+    print(can_prepare_contest_on_time(t1, t2, h, m, s))
 
-def solve(grid):
-    # Solve the problem
-    shortcuts = get_shortcuts(grid)
-    moves = []
-    for row in range(len(grid)):
-        for col in range(len(grid[0])):
-            if grid[row][col].isupper():
-                moves.extend(get_moves(grid, row, col, shortcuts[grid[row][col]]))
-    return " ".join(moves)
+if __name__ == '__main__':
+    main()
 

@@ -1,48 +1,44 @@
 
-def solve(program, grid):
-    # Initialize the robot's location and trail
-    location = (0, 0)
-    trail = [location]
+def get_longest_repeated_substring(input_string):
+    # Initialize variables
+    longest_substring = ""
+    current_substring = ""
+    substring_map = {}
 
-    # Loop through the program
-    for instruction in program:
-        # Get the next location based on the instruction
-        if instruction == "<":
-            next_location = (location[0] - 1, location[1])
-        elif instruction == ">":
-            next_location = (location[0] + 1, location[1])
-        elif instruction == "^":
-            next_location = (location[0], location[1] - 1)
-        elif instruction == "v":
-            next_location = (location[0], location[1] + 1)
+    # Iterate through the input string
+    for char in input_string:
+        # If the current character is already in the substring map,
+        # it means we have found the start of a repeated substring
+        if char in substring_map:
+            # Update the current substring with the previous characters
+            current_substring = current_substring + char
 
-        # Check if the next location is valid
-        if is_valid_location(next_location, grid):
-            # Add the next location to the trail
-            trail.append(next_location)
-            # Update the robot's location
-            location = next_location
+            # If the current substring is longer than the longest substring,
+            # update the longest substring
+            if len(current_substring) > len(longest_substring):
+                longest_substring = current_substring
 
-    # Check if the trail is of finite length
-    if len(trail) < 200:
-        return 1
-
-    # Find the length of the repetitive subsequence
-    repetitions = 1
-    for i in range(1, len(trail)):
-        if trail[i] == trail[i - 1]:
-            repetitions += 1
+            # Remove the character from the substring map
+            del substring_map[char]
         else:
-            break
+            # If the current character is not in the substring map,
+            # add it to the map and update the current substring
+            substring_map[char] = 1
+            current_substring = current_substring + char
 
-    return repetitions
+    # Return the longest substring
+    return longest_substring
 
-def is_valid_location(location, grid):
-    # Check if the location is within the bounds of the grid
-    if not (0 <= location[0] < len(grid) and 0 <= location[1] < len(grid[0])):
-        return False
-    # Check if the location is passable
-    if grid[location[0]][location[1]] == "#":
-        return False
-    return True
+def main():
+    # Read the input string
+    input_string = input()
+
+    # Call the function to get the longest repeated substring
+    longest_substring = get_longest_repeated_substring(input_string)
+
+    # Print the longest substring
+    print(longest_substring)
+
+if __name__ == '__main__':
+    main()
 

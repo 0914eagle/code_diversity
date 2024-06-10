@@ -1,79 +1,61 @@
 
-def solve(web_page):
-    # Initialize variables
-    ads_removed = 0
-    image_border = "$+$"
-    allowed_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?!, "
+def parse_expression(expression):
+    # Function to parse the expression and return a list of tuples containing the operation and the operands
+    operation_map = {
+        "+": "+",
+        "-": "-",
+        "*": "*",
+    }
+    operands = []
+    current_operand = ""
+    for char in expression:
+        if char in operation_map:
+            if current_operand != "":
+                operands.append((current_operand, operation_map[char]))
+                current_operand = ""
+            else:
+                operands.append(("0", operation_map[char]))
+        elif char.isdigit():
+            current_operand += char
+        elif char == "x":
+            current_operand += char
+        else:
+            raise ValueError("Invalid character in expression")
+    if current_operand != "":
+        operands.append((current_operand, "+"))
+    return operands
 
-    # Loop through the web page
-    for i in range(len(web_page)):
-        for j in range(len(web_page[i])):
-            # Check if the current character is part of an ad
-            if web_page[i][j] not in allowed_chars:
-                # Find the border of the ad
-                ad_border = find_border(web_page, i, j)
-                # Check if the ad is the smallest ad found so far
-                if ad_border[0] * ad_border[1] < min_ad_size:
-                    min_ad_size = ad_border[0] * ad_border[1]
-                    ad_start = (ad_border[2], ad_border[3])
-                    ad_end = (ad_border[4], ad_border[5])
+def evaluate_expression(expression, x):
+    # Function to evaluate the expression for a given value of x
+    operands = parse_expression(expression)
+    result = 0
+    for operand, operation in operands:
+        if operation == "+":
+            result += int(operand)
+        elif operation == "-":
+            result -= int(operand)
+        elif operation == "*":
+            result *= int(operand)
+        else:
+            raise ValueError("Invalid operation in expression")
+    return result
 
-                # Remove the ad from the web page
-                remove_ad(web_page, ad_start, ad_end)
-                ads_removed += 1
+def find_min_x(expression, p, m):
+    # Function to find the minimum value of x such that the remainder of dividing the expression with m is equal to p
+    l, r = 0, m
+    while l <= r:
+        mid = (l + r) // 2
+        if evaluate_expression(expression, mid) % m == p:
+            if mid == 0 or evaluate_expression(expression, mid - 1) % m != p:
+                return mid
+            else:
+                r = mid - 1
+        else:
+            l = mid + 1
+    return -1
 
-    return web_page
-
-def find_border(web_page, i, j):
-    # Initialize variables
-    top = i
-    bottom = i
-    left = j
-    right = j
-    found_top = False
-    found_bottom = False
-    found_left = False
-    found_right = False
-
-    # Find the border of the ad
-    while not found_top or not found_bottom or not found_left or not found_right:
-        # Check if the current character is part of the ad border
-        if web_page[i][j] == image_border:
-            # Check if the current character is part of the top border
-            if not found_top:
-                top = i
-                found_top = True
-            # Check if the current character is part of the bottom border
-            if not found_bottom:
-                bottom = i
-                found_bottom = True
-            # Check if the current character is part of the left border
-            if not found_left:
-                left = j
-                found_left = True
-            # Check if the current character is part of the right border
-            if not found_right:
-                right = j
-                found_right = True
-
-        # Move to the next character
-        i += 1
-        j += 1
-
-    # Return the border of the ad
-    return (top, bottom, left, right)
-
-def remove_ad(web_page, ad_start, ad_end):
-    # Initialize variables
-    row_start = ad_start[0]
-    row_end = ad_end[0]
-    col_start = ad_start[1]
-    col_end = ad_end[1]
-
-    # Remove the ad from the web page
-    for i in range(row_start, row_end + 1):
-        for j in range(col_start, col_end + 1):
-            web_page[i][j] = " "
-
-    return web_page
+if __name__ == '__main__':
+    expression = input()
+    p, m = map(int, input().split())
+    print(find_min_x(expression, p, m))
 

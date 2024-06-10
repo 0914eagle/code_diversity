@@ -1,38 +1,41 @@
 
-def get_optimal_flight_change(n, flights):
-    # Initialize a graph with n vertices and 0 edges
-    graph = [[] for _ in range(n)]
+def get_splitters(a, b, c, d):
+    # Initialize the number of splitters to 0
+    n = 0
+    # Initialize the list of splitters
+    splitters = []
+    # Initialize the input and output belts
+    input_belt = 0
+    output_belts = [1, 2]
+    # While there are still boxes to distribute
+    while any(boxes_left := sum(output_belts)):
+        # Find the ratio of boxes that need to be distributed to each output belt
+        output_ratios = [c/(c+d), d/(c+d)]
+        # Find the number of boxes that can be sent to each output belt
+        output_boxes = [int(boxes_left * ratio) for ratio in output_ratios]
+        # Create a new splitter with the given ratio
+        splitters.append([a, b])
+        # Connect the input belt to the new splitter
+        input_belt = n
+        # Connect the new splitter to the output belts
+        output_belts = [input_belt, input_belt]
+        # Increment the number of splitters
+        n += 1
+    # Return the number of splitters and the list of splitters
+    return n, splitters
 
-    # Add edges to the graph based on the given flights
-    for flight in flights:
-        graph[flight[0] - 1].append(flight[1] - 1)
-        graph[flight[1] - 1].append(flight[0] - 1)
+def main():
+    # Read the input
+    a, b = map(int, input().split())
+    c, d = map(int, input().split())
+    # Get the number of splitters and the list of splitters
+    n, splitters = get_splitters(a, b, c, d)
+    # Print the number of splitters
+    print(n)
+    # Print the list of splitters
+    for i, splitter in enumerate(splitters):
+        print(f"{splitter[0]} {splitter[1]}")
 
-    # Find the flight with the maximum number of connections
-    max_connections = 0
-    flight_to_cancel = None
-    for i in range(n - 1):
-        connections = 0
-        for j in range(n - 1):
-            if i != j and graph[i][j] == 1:
-                connections += 1
-        if connections > max_connections:
-            max_connections = connections
-            flight_to_cancel = i + 1
-
-    # Find the best new flight to add
-    min_connections = n
-    new_flight = None
-    for i in range(n - 1):
-        for j in range(n - 1):
-            if i != j and graph[i][j] == 0:
-                connections = 0
-                for k in range(n - 1):
-                    if graph[i][k] == 1 and graph[k][j] == 1:
-                        connections += 1
-                if connections < min_connections:
-                    min_connections = connections
-                    new_flight = (i + 1, j + 1)
-
-    return (max_connections - min_connections + 1, flight_to_cancel, new_flight)
+if __name__ == '__main__':
+    main()
 

@@ -1,12 +1,20 @@
 
-def is_triangle(a, b, c):
-    return (a + b > c) and (b + c > a) and (c + a > b)
+def k_rounding(n, k):
+    if k == 0:
+        return n
+    
+    while n % 10 != 0:
+        n *= 10
+    
+    while len(str(n)) <= k:
+        n *= 10
+    
+    return n
 
-def solve(n, line_segments):
-    for i in range(n - 2):
-        for j in range(i + 1, n - 1):
-            for k in range(j + 1, n):
-                if is_triangle(line_segments[i], line_segments[j], line_segments[k]):
-                    return "YES"
-    return "NO"
+def main():
+    n, k = map(int, input().split())
+    print(k_rounding(n, k))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,20 +1,31 @@
 
-def solve(N, K, A, D):
-    # Initialize the maximum energy to 0
-    max_energy = 0
-    
-    # Loop through each possible value for E_i
-    for i in range(1, N+1):
-        # Check if the current value of E_i is not equal to i
-        if i != E_i:
-            # Calculate the total energy gained by exciting atom i
-            total_energy = sum(A[j] for j in range(1, N+1) if j != i and E_i == j+1)
-            
-            # Check if the total energy gained is greater than the maximum energy
-            if total_energy > max_energy:
-                # Update the maximum energy
-                max_energy = total_energy
-    
-    # Return the maximum energy
-    return max_energy
+def count_unattacked_cells(board_size, rook_positions):
+    # Initialize a matrix to keep track of the cells that are under attack
+    attacked_cells = [[False for _ in range(board_size)] for _ in range(board_size)]
+
+    # Loop through all the rook positions and mark the cells that are under attack
+    for x, y in rook_positions:
+        for i in range(board_size):
+            attacked_cells[x][i] = True
+            attacked_cells[i][y] = True
+
+    # Count the number of unattacked cells
+    unattacked_cells = 0
+    for i in range(board_size):
+        for j in range(board_size):
+            if not attacked_cells[i][j]:
+                unattacked_cells += 1
+
+    return unattacked_cells
+
+def main():
+    board_size, num_rooks = map(int, input().split())
+    rook_positions = []
+    for _ in range(num_rooks):
+        x, y = map(int, input().split())
+        rook_positions.append((x, y))
+    print(count_unattacked_cells(board_size, rook_positions))
+
+if __name__ == '__main__':
+    main()
 

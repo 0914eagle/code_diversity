@@ -1,15 +1,30 @@
 
-def solve(N, taboo_strings):
-    # Initialize the longest clue to be an empty string
-    longest_clue = ""
+def get_monster_hp(monster_hp, monster_atk, monster_def, yang_atk):
+    return max(0, monster_hp - max(0, yang_atk - monster_def))
 
-    # Iterate over each taboo string
-    for taboo_string in taboo_strings:
-        # Check if the taboo string is a prefix of the longest clue
-        if taboo_string.startswith(longest_clue):
-            # If it is, update the longest clue to be the taboo string
-            longest_clue = taboo_string
+def get_yang_hp(yang_hp, yang_atk, yang_def, monster_atk):
+    return max(0, yang_hp - max(0, monster_atk - yang_def))
 
-    # Return the longest clue
-    return longest_clue
+def get_min_bitcoins(yang_hp, yang_atk, yang_def, monster_hp, monster_atk, monster_def, hp_price, atk_price, def_price):
+    bitcoins_spent = 0
+    while yang_hp > 0 and monster_hp > 0:
+        monster_hp = get_monster_hp(monster_hp, monster_atk, monster_def, yang_atk)
+        yang_hp = get_yang_hp(yang_hp, yang_atk, yang_def, monster_atk)
+        bitcoins_spent += hp_price
+        if yang_hp == 0:
+            break
+        bitcoins_spent += atk_price
+        if monster_hp == 0:
+            break
+        bitcoins_spent += def_price
+    return bitcoins_spent
+
+def main():
+    yang_hp, yang_atk, yang_def = map(int, input().split())
+    monster_hp, monster_atk, monster_def = map(int, input().split())
+    hp_price, atk_price, def_price = map(int, input().split())
+    print(get_min_bitcoins(yang_hp, yang_atk, yang_def, monster_hp, monster_atk, monster_def, hp_price, atk_price, def_price))
+
+if __name__ == '__main__':
+    main()
 

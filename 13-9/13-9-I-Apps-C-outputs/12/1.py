@@ -1,34 +1,28 @@
 
-import math
-
-def get_traffic_light_probabilities(traffic_lights):
-    # Calculate the probability that the first red light is hit by an "ideal" car at each traffic light
-    probabilities = []
-    for traffic_light in traffic_lights:
-        x, r, g = traffic_light
-        probability = (g / (r + g)) ** 2
-        probabilities.append(probability)
+def get_max_sum(arr):
+    # Find the maximum element in the array
+    max_element = max(arr)
     
-    # Calculate the probability that an "ideal" car makes it all the way without stopping
-    total_probability = 1
-    for i in range(len(traffic_lights)):
-        total_probability *= 1 - probabilities[i]
+    # Initialize the maximum sum to be the sum of the maximum element
+    max_sum = max_element
     
-    return probabilities, total_probability
+    # Iterate through the array and find the maximum sum by changing the sign of the elements
+    for i in range(len(arr)):
+        current_sum = 0
+        for j in range(len(arr)):
+            if i == j:
+                current_sum += arr[j]
+            else:
+                current_sum += arr[j] * (-1)
+        max_sum = max(max_sum, current_sum)
+    
+    return max_sum
 
 def main():
     n = int(input())
-    traffic_lights = []
-    for i in range(n):
-        x, r, g = map(int, input().split())
-        traffic_lights.append((x, r, g))
-    
-    probabilities, total_probability = get_traffic_light_probabilities(traffic_lights)
-    
-    for probability in probabilities:
-        print(f"{probability:.12f}")
-    print(f"{total_probability:.12f}")
+    arr = list(map(int, input().split()))
+    print(get_max_sum(arr))
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
 

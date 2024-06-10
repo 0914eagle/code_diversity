@@ -1,29 +1,24 @@
 
-def find_min_seconds(n, a):
-    # Initialize variables
-    seconds = 0
-    k = 1
-    is_happy = False
-
-    # Loop through each box and its chocolate pieces
+def input_numbers(n, m):
+    numbers = []
     for i in range(n):
-        # If the current box is not empty and the number of pieces is not divisible by k, find the next divisor of the number of pieces
-        if a[i] > 0 and a[i] % k != 0:
-            while a[i] % k != 0:
-                k += 1
+        numbers.append(int(input()))
+    return numbers
 
-        # If the current box is not empty and the number of pieces is divisible by k, move the pieces to the next box
-        if a[i] > 0 and a[i] % k == 0:
-            seconds += 1
-            a[i] = 0
-            if i < n - 1:
-                a[i+1] += a[i]
-            else:
-                a[1] += a[i]
+def lossy_sort(numbers, m):
+    sorted_numbers = sorted(numbers)
+    for i in range(len(sorted_numbers)):
+        if sorted_numbers[i] != numbers[i]:
+            numbers[i] = sorted_numbers[i]
+    return numbers
 
-    # If at least one box is not empty, continue the loop
-    if any(a):
-        seconds += find_min_seconds(n, a)
+def main():
+    n, m = map(int, input().split())
+    numbers = input_numbers(n, m)
+    sorted_numbers = lossy_sort(numbers, m)
+    for number in sorted_numbers:
+        print(number)
 
-    return seconds
+if __name__ == '__main__':
+    main()
 

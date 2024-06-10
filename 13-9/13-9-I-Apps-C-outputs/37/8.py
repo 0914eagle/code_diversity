@@ -1,28 +1,31 @@
 
-def solve(n, scheme):
-    # Initialize a dictionary to store the values of the inputs
-    inputs = {}
-    for i in range(n):
-        inputs[i+1] = 0
+def count_perfect_sets(k):
+    # Initialize a set to store the perfect sets
+    perfect_sets = set()
+    
+    # Iterate from 0 to k
+    for i in range(k+1):
+        # Add the current number to the perfect sets
+        perfect_sets.add(i)
+        # Iterate from 0 to k-1
+        for j in range(i):
+            # Calculate the exclusive or of the current number and j
+            xor = i ^ j
+            # If the exclusive or is less than or equal to k, add it to the perfect sets
+            if xor <= k:
+                perfect_sets.add(xor)
+    
+    # Return the number of perfect sets modulo 1000000007
+    return len(perfect_sets) % 1000000007
 
-    # Initialize a dictionary to store the values of the outputs
-    outputs = {}
-    for i in range(n):
-        outputs[i+1] = 0
+def main():
+    # Read the input k
+    k = int(input())
+    # Calculate the number of perfect sets
+    count = count_perfect_sets(k)
+    # Print the number of perfect sets modulo 1000000007
+    print(count)
 
-    # Iterate through the scheme and calculate the values of the outputs
-    for vertex in scheme:
-        if vertex[0] == "AND":
-            inputs[vertex[1]] = inputs[vertex[1]] & inputs[vertex[2]]
-        elif vertex[0] == "OR":
-            inputs[vertex[1]] = inputs[vertex[1]] | inputs[vertex[2]]
-        elif vertex[0] == "XOR":
-            inputs[vertex[1]] = inputs[vertex[1]] ^ inputs[vertex[2]]
-        elif vertex[0] == "NOT":
-            inputs[vertex[1]] = ~inputs[vertex[1]]
-        else:
-            inputs[vertex[0]] = vertex[1]
-
-    # Return the values of the outputs
-    return "".join(str(outputs[i+1]) for i in range(n))
+if __name__ == '__main__':
+    main()
 

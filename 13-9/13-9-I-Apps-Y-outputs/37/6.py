@@ -1,19 +1,24 @@
 
-def solve(a, k):
-    n = len(a)
-    x = 0
-    count = 0
-    while True:
-        done = True
-        for i in range(n):
-            if a[i] % k != 0:
-                done = False
-                break
-        if done:
-            return count
-        for i in range(n):
-            if a[i] % k != 0:
-                a[i] += x
-                count += 1
-        x += 1
+def score_words(words):
+    score = 0
+    for word in words:
+        vowels = ["a", "e", "i", "o", "u", "y"]
+        vowel_count = 0
+        for letter in word:
+            if letter in vowels:
+                vowel_count += 1
+        if vowel_count % 2 == 0:
+            score += 2
+        else:
+            score += 1
+    return score
+
+def main():
+    words = input("Enter a list of lowercase words separated by spaces: ")
+    words = words.split()
+    score = score_words(words)
+    print("The score is:", score)
+
+if __name__ == '__main__':
+    main()
 

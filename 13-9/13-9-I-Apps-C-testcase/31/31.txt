@@ -1,12 +1,12 @@
 {
     "inputs": [
-        "8 20\n apples are great!  \n++++++++++++++++++++\n+ oranges are      +\n+ way better!      +\n+ #oranges>apples  +\n++++++++++++++++++++\n check out our      \n fresh apples!      \n",
-        "7 7\n+++++++\n+  =  +\n+ +++ +\n+ + + +\n+ +++ +\n+     +\n+++++++\n",
-        "7 7\n+++++++\n+     +\n+ +++ +\n+ +=+ +\n+ +++ +\n+     +\n+++++++\n"
+        "5+3+x\n9 10\n",
+        "20+3+x\n0 5\n",
+        "3*(x+(x+4)*5)\n1 7\n"
     ],
     "outputs": [
-        " apples are great!  \n                    \n                    \n                    \n                    \n                    \n check out our      \n fresh apples!      \n",
-        "       \n       \n       \n       \n       \n       \n       \n",
-        "+++++++\n+     +\n+     +\n+     +\n+     +\n+     +\n+++++++\n"
+        "1\n",
+        "2\n",
+        "1\n"
     ]
 }

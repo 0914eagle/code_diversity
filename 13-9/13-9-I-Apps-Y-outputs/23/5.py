@@ -1,26 +1,47 @@
 
-def get_good_observatories(elevations, roads):
-    # Initialize a set to store the good observatories
-    good_observatories = set()
+def get_nearest_checkpoint(student_coords, checkpoint_coords):
+    # Initialize the nearest checkpoint as the first checkpoint
+    nearest_checkpoint = checkpoint_coords[0]
+    nearest_dist = manhattan_dist(student_coords, nearest_checkpoint)
 
-    # Loop through each observatory and its elevation
-    for observatory, elevation in enumerate(elevations):
-        # Check if the observatory is already in the good observatories set
-        if observatory in good_observatories:
-            continue
+    # Loop through the remaining checkpoints and find the nearest one
+    for checkpoint in checkpoint_coords[1:]:
+        dist = manhattan_dist(student_coords, checkpoint)
+        if dist < nearest_dist:
+            nearest_checkpoint = checkpoint
+            nearest_dist = dist
 
-        # Loop through each road and its endpoints
-        for road in roads:
-            # Check if the observatory is the starting point of the road
-            if road[0] == observatory:
-                # Add the ending point of the road to the good observatories set
-                good_observatories.add(road[1])
+    return nearest_checkpoint
 
-        # Check if the elevation of the observatory is higher than that of all its reachable observatories
-        if elevation > max(elevations[obs] for obs in good_observatories):
-            # Add the observatory to the good observatories set
-            good_observatories.add(observatory)
+def manhattan_dist(point1, point2):
+    return abs(point1[0] - point2[0]) + abs(point1[1] - point2[1])
 
-    # Return the number of good observatories
-    return len(good_observatories)
+def get_student_checkpoints(student_coords, checkpoint_coords):
+    student_checkpoints = []
+    for student in student_coords:
+        nearest_checkpoint = get_nearest_checkpoint(student, checkpoint_coords)
+        student_checkpoints.append(nearest_checkpoint)
+
+    return student_checkpoints
+
+def main():
+    student_coords, checkpoint_coords = read_input()
+    student_checkpoints = get_student_checkpoints(student_coords, checkpoint_coords)
+    for student_checkpoint in student_checkpoints:
+        print(student_checkpoint)
+
+def read_input():
+    student_coords = []
+    checkpoint_coords = []
+    n, m = map(int, input().split())
+    for i in range(n):
+        a, b = map(int, input().split())
+        student_coords.append((a, b))
+    for i in range(m):
+        c, d = map(int, input().split())
+        checkpoint_coords.append((c, d))
+    return student_coords, checkpoint_coords
+
+if __name__ == '__main__':
+    main()
 

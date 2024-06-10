@@ -1,32 +1,29 @@
 
-def solve(n, graph):
-    # Initialize a dictionary to store the values of the inputs
-    inputs = {}
-    for i in range(n):
-        inputs[i+1] = 0
+def get_perfect_sets(k):
+    # Initialize a set to store the perfect sets
+    perfect_sets = set()
+    
+    # Iterate from 0 to k
+    for i in range(k+1):
+        # Add the current number to the set
+        perfect_sets.add(i)
+        
+        # Iterate from 0 to k
+        for j in range(k+1):
+            # Calculate the exclusive or of the current number and j
+            xor = i ^ j
+            
+            # If the exclusive or is less than or equal to k, add it to the set
+            if xor <= k:
+                perfect_sets.add(xor)
+    
+    # Return the number of perfect sets
+    return len(perfect_sets)
 
-    # Initialize a dictionary to store the values of the outputs
-    outputs = {}
-    for i in range(n):
-        outputs[i+1] = 0
+def main():
+    k = int(input())
+    print(get_perfect_sets(k))
 
-    # Iterate through the graph and calculate the values of the outputs
-    for i in range(n):
-        vertex = graph[i]
-        if vertex[0] == "IN":
-            # If the vertex is an input, set its value to the corresponding input value
-            outputs[i+1] = inputs[vertex[1]]
-        else:
-            # If the vertex is a logical element, calculate its value based on the values of its inputs
-            if vertex[0] == "AND":
-                outputs[i+1] = inputs[vertex[1]] & inputs[vertex[2]]
-            elif vertex[0] == "OR":
-                outputs[i+1] = inputs[vertex[1]] | inputs[vertex[2]]
-            elif vertex[0] == "XOR":
-                outputs[i+1] = inputs[vertex[1]] ^ inputs[vertex[2]]
-            elif vertex[0] == "NOT":
-                outputs[i+1] = ~inputs[vertex[1]]
-
-    # Return the values of the outputs as a string of '0's and '1's
-    return "".join(str(outputs[i]) for i in range(1, n+1))
+if __name__ == '__main__':
+    main()
 

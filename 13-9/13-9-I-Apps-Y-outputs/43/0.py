@@ -1,15 +1,24 @@
 
-def get_min_teams_not_starting(num_teams, num_damaged, num_reserve, damaged_teams, reserve_teams):
-    # Initialize a set to store the teams that cannot start
-    cannot_start = set()
+import sys
 
-    # Loop through the damaged teams and their adjacent teams
-    for damaged_team in damaged_teams:
-        for team in range(damaged_team-1, damaged_team+2):
-            # If the team has a reserve kayak, add it to the cannot_start set
-            if team in reserve_teams:
-                cannot_start.add(team)
+def get_input():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        a = list(map(int, input().split()))
+        yield n, a
 
-    # Return the size of the cannot_start set
-    return len(cannot_start)
+def solve(n, a):
+    # Your code here
+    pass
+
+def main():
+    for n, a in get_input():
+        if solve(n, a):
+            print("YES")
+        else:
+            print("NO")
+
+if __name__ == '__main__':
+    main()
 

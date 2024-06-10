@@ -1,14 +1,14 @@
 
-def can_equal_bids(bids):
-    # Sort the bids in non-decreasing order
-    bids.sort()
-    # Initialize the minimum bid as the first element of the list
-    min_bid = bids[0]
-    # Iterate through the list of bids
-    for i in range(1, len(bids)):
-        # If the current bid is not equal to the minimum bid, return "No"
-        if bids[i] != min_bid:
-            return "No"
-    # If all bids are equal, return "Yes"
-    return "Yes"
+def get_max_score(numbers):
+    # Your code here
+    return max_score
+
+def main():
+    n = int(input())
+    numbers = list(map(int, input().split()))
+    max_score = get_max_score(numbers)
+    print(max_score)
+
+if __name__ == '__main__':
+    main()
 

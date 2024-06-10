@@ -1,33 +1,38 @@
 
-import sys
-sys.setrecursionlimit(100000)
-import copy
+def read_input():
+    n, m = map(int, input().split())
+    roads = []
+    for _ in range(m):
+        a, b, d = map(int, input().split())
+        roads.append((a, b, d))
+    return n, m, roads
 
-def bfs(connections, source):
-    visited = [False] * len(connections)
-    queue = [source]
-    visited[source] = True
+def find_route(n, m, roads):
+    # Initialize a graph with n vertices and m edges
+    graph = [[] for _ in range(n)]
+    for a, b, d in roads:
+        graph[a].append((b, d))
+        graph[b].append((a, d))
+    
+    # Find the shortest path from Delft (vertex 0) to Amsterdam (vertex 1)
+    visited = [False] * n
+    queue = [(0, 0, [0])]
     while queue:
-        current = queue.pop(0)
-        for neighbor in connections[current]:
+        dist, prev, path = queue.pop(0)
+        current = path[-1]
+        if current == 1:
+            return path
+        for neighbor, weight in graph[current]:
             if not visited[neighbor]:
                 visited[neighbor] = True
-                queue.append(neighbor)
-    return visited
+                queue.append((dist + weight, neighbor, path + [neighbor]))
+    
+    return "impossible"
 
-def get_brain_latency(connections):
-    brain_latency = 0
-    for i in range(1, len(connections)):
-        if not bfs(connections, i):
-            brain_latency = max(brain_latency, i)
-    return brain_latency
+def main():
+    n, m, roads = read_input()
+    print(find_route(n, m, roads))
 
 if __name__ == '__main__':
-    n, m = map(int, input().split())
-    connections = [[] for _ in range(n + 1)]
-    for _ in range(m):
-        a, b = map(int, input().split())
-        connections[a].append(b)
-        connections[b].append(a)
-    print(get_brain_latency(connections))
+    main()
 

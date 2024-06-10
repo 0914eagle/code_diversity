@@ -1,13 +1,15 @@
 
-def solve(a, b):
-    # Loop through possible prices
-    for price in range(1, 101):
-        # Calculate the consumption tax for 8% and 10% tax rates
-        tax_8 = int(price * 0.08)
-        tax_10 = int(price * 0.1)
-        # Check if the consumption tax is equal to A or B
-        if tax_8 == a or tax_10 == b:
-            return price
-    # If no price satisfies the condition, return -1
-    return -1
+def number_of_ways_to_paint_balls(N, K):
+    if N == 1:
+        return K
+    if K == 1:
+        return 1
+    return number_of_ways_to_paint_balls(N-1, K) * (K-1) + number_of_ways_to_paint_balls(N-1, K-1)
+
+def main():
+    N, K = map(int, input().split())
+    print(number_of_ways_to_paint_balls(N, K))
+
+if __name__ == '__main__':
+    main()
 

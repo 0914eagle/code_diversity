@@ -1,25 +1,20 @@
 
-def get_finalists(results, k):
-    # Sort the results in ascending order
-    results.sort()
-    
-    # Initialize the finalists array
-    finalists = [0] * len(results)
-    
-    # Find the k best results in each semifinal
-    k_best = results[:k]
-    
-    # Find the index of the k-th best result in each semifinal
-    k_best_index = [results.index(result) for result in k_best]
-    
-    # Set the finalists for the k-th best results in each semifinal
-    for i in range(k):
-        finalists[k_best_index[i]] = 1
-    
-    # Set the finalists for the other places
-    for i in range(k, len(results)):
-        if results[i] not in k_best:
-            finalists[i] = 1
-    
-    return finalists
+def gcd(a, b):
+    if b == 0:
+        return a
+    return gcd(b, a % b)
+
+def input_numbers():
+    a, b = map(int, input().split())
+    return a, b
+
+def find_gcd(a, b):
+    return gcd(a, b)
+
+def main():
+    a, b = input_numbers()
+    print(find_gcd(a, b))
+
+if __name__ == '__main__':
+    main()
 

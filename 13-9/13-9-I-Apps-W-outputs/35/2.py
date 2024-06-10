@@ -1,9 +1,19 @@
 
-def solve(a, b, c):
-    result = 0
-    for i in range(1, a+1):
-        for j in range(1, b+1):
-            for k in range(1, c+1):
-                result += i*j*k
-    return result % 998244353
+def get_login(first_name, last_name):
+    
+    first_prefix = get_prefix(first_name)
+    last_prefix = get_prefix(last_name)
+    return first_prefix + last_prefix
+
+def get_prefix(name):
+    
+    return name[:1]
+
+def main():
+    first_name = input("Enter the first name: ")
+    last_name = input("Enter the last name: ")
+    print(get_login(first_name, last_name))
+
+if __name__ == '__main__':
+    main()
 

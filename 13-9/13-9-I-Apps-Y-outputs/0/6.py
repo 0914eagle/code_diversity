@@ -1,24 +1,22 @@
 
-def solve(n):
-    # Initialize variables
-    operations = 0
-    current = 0
+def get_weights():
+    return list(map(int, input().split()))
 
-    # While the total amount withdrawn is less than the given amount
-    while current < n:
-        # If the current amount is divisible by 6, withdraw 6 yen
-        if current % 6 == 0:
-            current += 6
-        # If the current amount is divisible by 9, withdraw 9 yen
-        elif current % 9 == 0:
-            current += 9
-        # Otherwise, withdraw 1 yen
-        else:
-            current += 1
+def get_min_abs_diff(weights, t):
+    s1 = sum(weights[:t])
+    s2 = sum(weights[t:])
+    return abs(s1 - s2)
 
-        # Increment the number of operations
-        operations += 1
+def main():
+    weights = get_weights()
+    n = len(weights)
+    min_diff = float('inf')
+    for t in range(1, n):
+        diff = get_min_abs_diff(weights, t)
+        if diff < min_diff:
+            min_diff = diff
+    print(min_diff)
 
-    # Return the number of operations required
-    return operations
+if __name__ == '__main__':
+    main()
 

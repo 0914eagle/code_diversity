@@ -1,32 +1,44 @@
 
-def playfair_cipher(key_phrase, plaintext):
-    # Initialize the encryption key
-    encryption_key = []
-    for char in key_phrase:
-        if char != " ":
-            if char not in encryption_key:
-                encryption_key.append(char)
-    for char in "abcdefghijklmnopqrstuvwxyz":
-        if char not in encryption_key:
-            encryption_key.append(char)
-    encryption_key = "".join(encryption_key)
-
-    # Encrypt the plaintext
-    encrypted_text = ""
-    for i in range(0, len(plaintext) - 1, 2):
-        if plaintext[i] == plaintext[i + 1]:
-            encrypted_text += plaintext[i] + "x"
-        elif plaintext[i] in encryption_key[5:]:
-            row = encryption_key.index(plaintext[i]) // 5
-            col = encryption_key.index(plaintext[i + 1]) // 5
-            if row == col:
-                encrypted_text += encryption_key[row * 5 + (col + 1) % 5]
+def get_optimal_position(s):
+    n = len(s)
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            if s[i - 1] == s[j - 1]:
+                dp[i][j] = dp[i - 1][j - 1] + 1
             else:
-                encrypted_text += encryption_key[row * 5 + col]
-        else:
-            encrypted_text += encryption_key[encryption_key.index(plaintext[i]) + 5]
-    if len(plaintext) % 2 == 1:
-        encrypted_text += encryption_key[encryption_key.index(plaintext[-1]) + 5]
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+    return dp[n][n]
 
-    return encrypted_text.upper()
+def get_largest_common_substring(s):
+    n = len(s)
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            if s[i - 1] == s[j - 1]:
+                dp[i][j] = dp[i - 1][j - 1] + 1
+            else:
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+    lcs = ""
+    i, j = n, n
+    while i > 0 and j > 0:
+        if s[i - 1] == s[j - 1]:
+            lcs = s[i - 1] + lcs
+            i -= 1
+            j -= 1
+        elif dp[i - 1][j] > dp[i][j - 1]:
+            i -= 1
+        else:
+            j -= 1
+    return lcs
+
+def main():
+    n = int(input())
+    s = input()
+    position = get_optimal_position(s)
+    lcs = get_largest_common_substring(s)
+    print(len(lcs))
+
+if __name__ == '__main__':
+    main()
 

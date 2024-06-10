@@ -1,16 +1,27 @@
 
-def count_ways_to_make_figure_complete(n, d):
-    # Initialize the number of ways to make the figure complete to 0
-    ways = 0
-    
-    # Loop over all possible ways to connect the parts
-    for i in range(1, n):
-        for j in range(i+1, n):
-            # Check if the parts are connected by a connecting component
-            if d[i] >= 1 and d[j] >= 1:
-                # Increment the number of ways to make the figure complete
-                ways += 1
-    
-    # Return the number of ways to make the figure complete modulo 998244353
-    return ways % 998244353
+def get_distinct_people(visits):
+    # Initialize a set to store the distinct people
+    distinct_people = set()
+
+    # Iterate through the visit sequence
+    for visit in visits:
+        # If the visit is "+" (someone entered the club), add their name to the set
+        if visit == "+":
+            distinct_people.add("Person")
+        # If the visit is "-" (someone left the club), remove their name from the set
+        elif visit == "-":
+            distinct_people.remove("Person")
+
+    # Return the minimum number of distinct people
+    return len(distinct_people)
+
+def main():
+    # Read a visit sequence from stdin
+    visits = input()
+
+    # Call the get_distinct_people function and print the result
+    print(get_distinct_people(visits))
+
+if __name__ == '__main__':
+    main()
 

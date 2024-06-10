@@ -1,16 +1,25 @@
 
-def find_min_x(a, b):
-    # Initialize x to be a large positive value
-    x = 1000
-    # Loop through all possible values of x
-    while x >= 0:
-        # Calculate the coordinates of the points on the polyline
-        points = [(0, 0), (x, x), (2*x, 0), (3*x, x), (4*x, 0)]
-        # Check if the polyline passes through the point (a, b)
-        if (a, b) in points:
-            return x
-        # If the polyline does not pass through the point, increment x
-        x += 1
-    # If no value of x works, return -1
-    return -1
+def game(g, k, p):
+    # Initialize the probability of Gon winning as 0
+    prob_gon_wins = 0
+    
+    # Loop through all possible strings of length 10^100 that Gon and Killua can form
+    for i in range(10**100):
+        # Check if the current string is a substring of Gon's string
+        if g in str(i):
+            # If it is, add the probability of Gon winning to the total probability
+            prob_gon_wins += p**i * (1-p)**(10**100-i)
+    
+    # Return the total probability of Gon winning
+    return prob_gon_wins
+
+def main():
+    # Read input from stdin
+    g, k, p = input().split()
+    
+    # Call the game function and print the result
+    print(game(g, k, float(p)))
+
+if __name__ == '__main__':
+    main()
 

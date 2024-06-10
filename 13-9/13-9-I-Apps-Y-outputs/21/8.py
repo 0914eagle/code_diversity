@@ -1,16 +1,18 @@
 
-def solve(s, t):
-    # Initialize a variable to keep track of the minimum number of changes needed
-    min_changes = len(s)
-    
-    # Loop through each substring of S that is the same length as T
-    for i in range(len(s) - len(t) + 1):
-        # Check if the substring is equal to T
-        if s[i:i+len(t)] == t:
-            # If it is, return the minimum number of changes needed (0)
-            return 0
-    
-    # If we reach this point, T is not a substring of S
-    # Return the minimum number of changes needed (the length of S)
-    return min_changes
+def get_accommodation_fee(n, k, x, y):
+    total_fee = 0
+    for i in range(1, n+1):
+        if i <= k:
+            total_fee += x
+        else:
+            total_fee += y
+    return total_fee
+
+def main():
+    n, k, x, y = map(int, input().split())
+    total_fee = get_accommodation_fee(n, k, x, y)
+    print(total_fee)
+
+if __name__ == '__main__':
+    main()
 

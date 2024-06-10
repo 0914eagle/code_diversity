@@ -1,9 +1,16 @@
 
-def camel_race(n, jaap_bet, jan_bet, thijs_bet):
-    pairs = 0
-    for i in range(n):
-        for j in range(i+1, n):
-            if jaap_bet[i] == jan_bet[j] and jan_bet[i] == thijs_bet[j] and thijs_bet[i] == jaap_bet[j]:
-                pairs += 1
-    return pairs
+def get_max_score(grid, conveyor_belts):
+    # Implement your solution here
+    return max_score
+
+def main():
+    R, C, K = map(int, input().split())
+    grid = []
+    for _ in range(R):
+        grid.append(list(input()))
+    conveyor_belts = [int(x) for x in input().split()]
+    print(get_max_score(grid, conveyor_belts))
+
+if __name__ == '__main__':
+    main()
 

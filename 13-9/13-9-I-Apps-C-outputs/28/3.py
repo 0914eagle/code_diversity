@@ -1,17 +1,22 @@
 
-def find_largest_square_killer(matrix):
-    rows, cols = len(matrix), len(matrix[0])
-    largest_killer = -1
-    for i in range(rows):
-        for j in range(cols):
-            if matrix[i][j] == "1":
-                killer_size = 1
-                for x in range(i, rows):
-                    for y in range(j, cols):
-                        if matrix[x][y] == "0":
-                            break
-                        killer_size += 1
-                    if killer_size > largest_killer:
-                        largest_killer = killer_size
-    return largest_killer
+def get_division(towns, universities, roads):
+    # Implement your solution here
+    return division
+
+def get_total_distance(division):
+    # Implement your solution here
+    return total_distance
+
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    towns = set(map(int, input().split()))
+    universities = set(map(int, input().split()))
+    roads = []
+    for _ in range(n - 1):
+        x, y = map(int, input().split())
+        roads.append((x, y))
+    
+    division = get_division(towns, universities, roads)
+    total_distance = get_total_distance(division)
+    print(total_distance)
 

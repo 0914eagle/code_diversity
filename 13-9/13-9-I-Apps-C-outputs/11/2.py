@@ -1,22 +1,38 @@
 
-def solve(wheels):
-    # Initialize the minimum number of rotations to -1
-    min_rotations = -1
+import itertools
+
+def get_cubes(tiles):
     
-    # Iterate through each column of the first wheel
-    for col in range(len(wheels[0])):
-        # Initialize a set to store the unique letters in the column
-        unique_letters = set()
-        
-        # Iterate through each wheel
-        for wheel in wheels:
-            # Add the letter at the current column to the set
-            unique_letters.add(wheel[col])
-        
-        # If the set has three unique letters, return the minimum number of rotations
-        if len(unique_letters) == 3:
-            return min_rotations
+    # Initialize a list to store the cubes
+    cubes = []
     
-    # If we reach this point, it isn't possible to have three unique letters in every column, so return -1
-    return min_rotations
+    # Iterate over the tiles
+    for tile in tiles:
+        # Get the colors of the current tile
+        colors = [tile[0], tile[1], tile[2], tile[3]]
+        
+        # Iterate over the possible rotations of the current tile
+        for rotation in itertools.permutations(colors):
+            # Check if the current rotation is already in the list of cubes
+            if rotation not in cubes:
+                # If not, add it to the list of cubes
+                cubes.append(rotation)
+    
+    # Return the number of different cubes
+    return len(cubes)
+
+def main():
+    # Read the input from stdin
+    tiles = []
+    for _ in range(int(input())):
+        tiles.append(list(map(int, input().split())))
+    
+    # Call the get_cubes function to get the number of different cubes
+    cubes = get_cubes(tiles)
+    
+    # Print the number of cubes
+    print(cubes)
+
+if __name__ == '__main__':
+    main()
 

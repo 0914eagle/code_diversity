@@ -1,23 +1,23 @@
 
-def solve(n):
-    facts = [
-        "The highest mountain above sea level in the world is Mount Everest. Its peak rises to 8848 m.",
-        "The largest board game tournament consisted of 958 participants playing chapaev.",
-        "The largest online maths competition consisted of 12766 participants.",
-        "The Nile is credited as the longest river in the world. From its farthest stream in Burundi, it extends 6695 km in length.",
-        "While not in flood, the main stretches of the Amazon river in South America can reach widths of up to 1100 km at its widest points.",
-        "Angel Falls is the highest waterfall. Its greatest single drop measures 807 m.",
-        "The Hotel Everest View above Namche, Nepal — the village closest to Everest base camp – is at a record height of 31962 m.",
-        "Uranium is the heaviest of all the naturally occurring elements. Its most common isotope has a nucleus containing 146 neutrons.",
-        "The coldest permanently inhabited place is the Siberian village of Oymyakon, where the temperature of -68°C was registered in the twentieth century.",
-        "The longest snake held in captivity is over 25 feet long. Its name is Medusa.",
-        "Colonel Meow holds the world record for longest fur on a cat — almost 134 centimeters.",
-        "Sea otters can have up to 10000 hairs per square inch. This is the most dense fur in the animal kingdom.",
-        "The largest state of USA is Alaska; its area is 663268 square miles.",
-        "Alaska has a longer coastline than all of the other 49 U.S. States put together: it is 154103 miles long.",
-        "Lake Baikal is the largest freshwater lake in the world. It reaches 1642 meters in depth and contains around one-fifth of the world’s unfrozen fresh water.",
-        "The most colorful national flag is the one of Turkmenistan, with 106 colors."
-    ]
-    
-    return len(facts[n-1])
+def is_second_smallest(arr, i):
+    if i == 0:
+        return arr[i] < arr[i+1] and arr[i] < arr[i+2]
+    if i == len(arr)-1:
+        return arr[i-1] < arr[i] and arr[i] < arr[i+1]
+    return arr[i-1] < arr[i] and arr[i] < arr[i+1] and arr[i] < arr[i+2]
+
+def count_second_smallest(arr):
+    count = 0
+    for i in range(1, len(arr)-1):
+        if is_second_smallest(arr, i):
+            count += 1
+    return count
+
+def main():
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(count_second_smallest(arr))
+
+if __name__ == '__main__':
+    main()
 

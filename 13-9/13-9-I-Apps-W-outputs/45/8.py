@@ -1,21 +1,29 @@
 
-def rotate_lock(rotations):
-    # Initialize the pointer at zero
-    pointer = 0
-    
-    # Iterate over the rotations
-    for rotation in rotations:
-        # Check if the rotation is clockwise
-        if rotation > 0:
-            # Rotate the pointer clockwise
-            pointer = (pointer + rotation) % 360
-        else:
-            # Rotate the pointer counterclockwise
-            pointer = (pointer - rotation) % 360
-    
-    # Check if the pointer is back at zero
-    if pointer == 0:
-        return "YES"
-    else:
-        return "NO"
+import math
+
+def get_divisors(n):
+    divisors = []
+    for i in range(1, int(math.sqrt(n)) + 1):
+        if n % i == 0:
+            divisors.append(i)
+            if i * i != n:
+                divisors.append(n // i)
+    divisors.sort()
+    return divisors
+
+def get_expected_value(n, k):
+    divisors = get_divisors(n)
+    p = 1
+    q = 1
+    for i in range(k):
+        p *= divisors[i % len(divisors)]
+        q *= n
+    return p * pow(q, -1, 1000000007) % 1000000007
+
+def main():
+    n, k = map(int, input().split())
+    print(get_expected_value(n, k))
+
+if __name__ == '__main__':
+    main()
 

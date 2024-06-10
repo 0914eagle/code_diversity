@@ -1,18 +1,30 @@
 
-def solve(r, l, rooms):
-    # Initialize a list to store the hit rooms
-    hit_rooms = []
-    
-    # Iterate over the rooms
-    for room in rooms:
-        # Calculate the area of the current room
-        area = (room[2] - room[0]) * (room[3] - room[1])
-        
-        # Check if the room is hit by the phaser beam
-        if area > 0:
-            # Add the room to the list of hit rooms
-            hit_rooms.append(room)
-    
-    # Return the number of hit rooms
-    return len(hit_rooms)
+def divisibility_hack(b, d):
+    # Initialize m to 1
+    m = 1
+    # Loop until m is valid or not found
+    while True:
+        # Calculate the reduction function for m
+        f = (b ** m - 1) // (b - 1)
+        # If f is divisible by d, m is valid
+        if f % d == 0:
+            return m
+        # Otherwise, increment m and try again
+        m += 1
+    # If m is not found, return None
+    return None
+
+def main():
+    # Read input
+    b, d = map(int, input().split())
+    # Check if divisibility hack is valid
+    m = divisibility_hack(b, d)
+    # Print output
+    if m is None:
+        print("no")
+    else:
+        print("yes")
+
+if __name__ == '__main__':
+    main()
 

@@ -1,17 +1,31 @@
 
-def is_triangle_possible(stick_lengths):
+def get_min_stones(S):
+    # Initialize variables
+    min_stones = 0
+    count_black = 0
+    count_white = 0
     
-    # Sort the stick lengths in descending order
-    stick_lengths.sort(reverse=True)
+    # Iterate through the string S
+    for i in range(len(S)):
+        # Check if the current stone is black
+        if S[i] == "B":
+            count_black += 1
+        # Check if the current stone is white
+        elif S[i] == "W":
+            count_white += 1
+    
+    # Check if the board needs to be reversed
+    if count_black > count_white:
+        min_stones = count_black - count_white
+    elif count_white > count_black:
+        min_stones = count_white - count_black
+    
+    return min_stones
 
-    # Initialize variables to track the longest and shortest stick lengths
-    longest_stick = stick_lengths[0]
-    shortest_stick = stick_lengths[-1]
+def main():
+    S = input()
+    print(get_min_stones(S))
 
-    # Iterate through the stick lengths and check if they can form a triangle
-    for i in range(1, len(stick_lengths) - 1):
-        if stick_lengths[i] < longest_stick + shortest_stick:
-            return "possible"
-
-    return "impossible"
+if __name__ == '__main__':
+    main()
 

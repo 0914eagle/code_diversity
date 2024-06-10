@@ -1,9 +1,22 @@
 
-def get_final_score(answers):
-    n = len(answers)
-    score = 0
-    for i in range(n):
-        if answers[i] == "A":
-            score += 1
-    return score
+def get_change(coins, total):
+    coins.sort(reverse=True)
+    change = []
+    for coin in coins:
+        while total >= coin:
+            total -= coin
+            change.append(coin)
+    return change
+
+def solve(A, B, C):
+    coins = [A, B]
+    change = get_change(coins, C)
+    if sum(change) == C:
+        return "Yes"
+    else:
+        return "No"
+
+if __name__ == '__main__':
+    A, B, C = map(int, input().split())
+    print(solve(A, B, C))
 

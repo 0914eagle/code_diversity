@@ -1,27 +1,38 @@
 
-def get_max_value(k, n, employees):
-    # Sort the employees by their productivity in descending order
-    employees.sort(key=lambda x: x[1], reverse=True)
+def solve(statements):
+    # Initialize a dictionary to store the rhyming relationships
+    rhyming_dict = {}
 
-    # Create a dictionary to store the employees and their recommender
-    employee_dict = {}
-    for employee in employees:
-        employee_dict[employee[0]] = employee[2]
+    # Iterate through the statements and populate the rhyming dictionary
+    for statement in statements:
+        words = statement.split()
+        if len(words) == 3 and words[1] == "is":
+            rhyming_dict[words[0]] = words[2]
+        elif len(words) == 3 and words[1] == "not":
+            rhyming_dict[words[0]] = None
 
-    # Initialize the team with the CEO
-    team = [0]
-    total_value = 0
+    # Check if there are any contradictions in the rhyming dictionary
+    for word, rhyme in rhyming_dict.items():
+        if rhyme is not None and word != rhyme and rhyming_dict[rhyme] != word:
+            return "wait what?"
 
-    # Iterate through the employees and add them to the team if their recommender is also in the team or is the CEO
-    for employee in employees:
-        if employee[0] in team or employee_dict[employee[0]] == 0:
-            team.append(employee[0])
-            total_value += employee[1] / employee[0]
+    return "yes"
 
-        # If the team is full, break the loop
-        if len(team) == k:
-            break
+def main():
+    # Read the number of statements
+    num_statements = int(input())
 
-    # Return the total value of the team
-    return round(total_value, 3)
+    # Read the statements
+    statements = []
+    for _ in range(num_statements):
+        statements.append(input())
+
+    # Solve the problem
+    result = solve(statements)
+
+    # Print the result
+    print(result)
+
+if __name__ == '__main__':
+    main()
 

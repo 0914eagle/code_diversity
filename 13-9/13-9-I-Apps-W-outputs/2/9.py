@@ -1,21 +1,25 @@
 
-def find_girl_name(names, a, b):
-    # Convert the list of names to a set for fast lookups
-    names = set(names)
-    
-    # Initialize the maximum distance and the girl's name to -1
-    max_distance = -1
-    girl_name = -1
-    
-    # Iterate through the odd numbers in the range [a, b]
-    for i in range(a, b + 1, 2):
-        # Calculate the minimum distance between the current number and any of the names
-        distance = min([abs(i - x) for x in names])
-        
-        # If the current distance is greater than the maximum distance, update the maximum distance and the girl's name
-        if distance > max_distance:
-            max_distance = distance
-            girl_name = i
-    
-    return girl_name
+def get_points(n, m, k):
+    for x1 in range(n+1):
+        for y1 in range(m+1):
+            for x2 in range(x1+1, n+1):
+                for y2 in range(y1+1, m+1):
+                    for x3 in range(x2+1, n+1):
+                        for y3 in range(y2+1, m+1):
+                            if x1 + x2 + x3 == n and y1 + y2 + y3 == m:
+                                return [[x1, y1], [x2, y2], [x3, y3]]
+    return "NO"
+
+def main():
+    n, m, k = map(int, input().split())
+    points = get_points(n, m, k)
+    if points == "NO":
+        print("NO")
+    else:
+        print("YES")
+        for point in points:
+            print(*point)
+
+if __name__ == '__main__':
+    main()
 

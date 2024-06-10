@@ -1,22 +1,44 @@
 
-def can_ksusha_reach_end(n, k, road):
-    # Check if the first and last characters are "."
-    if road[0] != "." or road[-1] != ".":
-        return "NO"
-    
-    # Initialize a set to store the safe sectors
-    safe_sectors = set([1])
-    
-    # Iterate through the road description
-    for i in range(1, n):
-        # If the current sector is safe and there is a jump of length k or less to the next sector, add the next sector to the safe sectors set
-        if road[i] == "." and i + k <= n:
-            safe_sectors.add(i + 1)
-    
-    # Check if the last sector is safe
-    if road[-1] == ".":
-        safe_sectors.add(n)
-    
-    # Return "YES" if all sectors are safe, otherwise return "NO"
-    return "YES" if len(safe_sectors) == n else "NO"
+def get_cable_cost(x1, x2):
+    return abs(x1 - x2)
+
+def connect_cities(cities, cable_cost):
+    n = len(cities)
+    cost = 0
+    for i in range(n - 1):
+        for j in range(i + 1, n):
+            if cities[i] != cities[j]:
+                cost += cable_cost[i][j]
+    return cost
+
+def solve(cities, cable_cost):
+    n = len(cities)
+    cost = connect_cities(cities, cable_cost)
+    for i in range(n):
+        for j in range(i + 1, n):
+            if cities[i] != cities[j]:
+                cable_cost[i][j] = 0
+                cost_with_removed_city = connect_cities(cities, cable_cost)
+                if cost_with_removed_city < cost:
+                    cost = cost_with_removed_city
+                cable_cost[i][j] = get_cable_cost(cities[i], cities[j])
+    return cost
+
+def main():
+    n = int(input())
+    cities = []
+    cable_cost = []
+    for i in range(n):
+        x, c = map(int, input().split())
+        cities.append(x)
+        cable_cost.append([])
+        for j in range(n):
+            if i == j:
+                cable_cost[i].append(0)
+            else:
+                cable_cost[i].append(get_cable_cost(x, cities[j]))
+    print(solve(cities, cable_cost))
+
+if __name__ == '__main__':
+    main()
 

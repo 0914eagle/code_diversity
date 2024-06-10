@@ -1,18 +1,32 @@
 
-def count_simple_loops(transit_system):
-    # Initialize a set to store the simple loops
-    simple_loops = set()
+import math
+import sys
 
-    # Iterate over each connection in the transit system
-    for i in range(len(transit_system)):
-        # Get the current connection
-        current_connection = transit_system[i]
+def get_input():
+    a, b = map(int, input().split())
+    n = int(input())
+    cars = []
+    for i in range(n):
+        x, y, v = map(int, input().split())
+        cars.append((x, y, v))
+    return a, b, n, cars
 
-        # Check if the current connection is a simple loop
-        if current_connection[0] == current_connection[1]:
-            # If it is a simple loop, add it to the set of simple loops
-            simple_loops.add(current_connection)
+def get_distance(x1, y1, x2, y2):
+    return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
 
-    # Return the number of unique simple loops in the transit system
-    return len(simple_loops)
+def get_min_time(a, b, n, cars):
+    min_time = sys.maxsize
+    for car in cars:
+        x, y, v = car
+        time = get_distance(a, b, x, y) / v
+        if time < min_time:
+            min_time = time
+    return min_time
+
+def main():
+    a, b, n, cars = get_input()
+    print(get_min_time(a, b, n, cars))
+
+if __name__ == '__main__':
+    main()
 

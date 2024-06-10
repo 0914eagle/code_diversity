@@ -1,12 +1,20 @@
 
-def solve_quadrilateral(s1, s2, s3, s4):
-    
-    # Sort the side lengths in descending order
-    s = sorted([s1, s2, s3, s4], reverse=True)
+def find_min_n(l, d, x):
+    for n in range(l, d+1):
+        if sum(int(i) for i in str(n)) == x:
+            return n
+    return -1
 
-    # Find the maximum area of the quadrilateral
-    area = (s[0] + s[1] + s[2] + s[3]) * (s[0] + s[1] - s[2] - s[3]) * (s[0] - s[1] + s[2] + s[3]) * (-s[0] + s[1] + s[2] + s[3])
-    area = area / 16
+def find_max_m(l, d, x):
+    for m in range(l, d+1):
+        if sum(int(i) for i in str(m)) == x:
+            return m
+    return -1
 
-    return area
+if __name__ == '__main__':
+    l = int(input())
+    d = int(input())
+    x = int(input())
+    print(find_min_n(l, d, x))
+    print(find_max_m(l, d, x))
 

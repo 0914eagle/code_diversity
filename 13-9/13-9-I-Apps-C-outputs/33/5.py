@@ -1,53 +1,41 @@
 
-def solve(n, m):
-    # Initialize a set to store the unique pairs
-    unique_pairs = set()
+import sys
 
-    # Loop through each possible hour
-    for hour in range(n):
-        # Loop through each possible minute
-        for minute in range(m):
-            # Convert the hour and minute to base 7
-            hour_base7 = convert_to_base7(hour)
-            minute_base7 = convert_to_base7(minute)
+def get_tastiness(tastiness_matrix, n, cost_per_scoop, cost_per_cone):
+    # Initialize the maximum tastiness and the corresponding number of scoops
+    max_tastiness = 0
+    num_scoops = 0
+    
+    # Iterate over all possible combinations of flavors
+    for i in range(1, n+1):
+        for flavor_combination in itertools.combinations(range(n), i):
+            # Calculate the tastiness of the current combination of flavors
+            current_tastiness = sum(tastiness_matrix[flavor][flavor_combination] for flavor in flavor_combination)
+            
+            # Calculate the cost of the current combination of flavors
+            current_cost = i * cost_per_scoop + (i-1) * cost_per_cone
+            
+            # Update the maximum tastiness and the corresponding number of scoops if necessary
+            if current_tastiness > max_tastiness:
+                max_tastiness = current_tastiness
+                num_scoops = i
+    
+    # Return the maximum tastiness and the corresponding number of scoops
+    return max_tastiness, num_scoops
 
-            # Check if the hour and minute have distinct digits
-            if has_distinct_digits(hour_base7) and has_distinct_digits(minute_base7):
-                # Add the pair to the set
-                unique_pairs.add((hour, minute))
+def main():
+    # Read the input from stdin
+    n, k, a, b = map(int, input().split())
+    tastiness_matrix = []
+    for _ in range(k):
+        tastiness_matrix.append(list(map(int, input().split())))
+    
+    # Call the get_tastiness function to get the maximum tastiness and the corresponding number of scoops
+    max_tastiness, num_scoops = get_tastiness(tastiness_matrix, n, a, b)
+    
+    # Print the maximum tastiness and the corresponding number of scoops
+    print(max_tastiness, num_scoops)
 
-    # Return the length of the set
-    return len(unique_pairs)
-
-# Convert a number to base 7
-def convert_to_base7(num):
-    # Initialize the base 7 representation
-    base7 = ""
-
-    # Loop until the number is 0
-    while num > 0:
-        # Get the remainder
-        remainder = num % 7
-
-        # Add the remainder to the base 7 representation
-        base7 = str(remainder) + base7
-
-        # Update the number
-        num //= 7
-
-    # Return the base 7 representation
-    return base7
-
-# Check if a number has distinct digits
-def has_distinct_digits(num):
-    # Initialize a set to store the digits
-    digits = set()
-
-    # Loop through each digit
-    for digit in num:
-        # Add the digit to the set
-        digits.add(digit)
-
-    # Return True if the set has the same number of elements as the number
-    return len(digits) == len(num)
+if __name__ == '__main__':
+    main()
 

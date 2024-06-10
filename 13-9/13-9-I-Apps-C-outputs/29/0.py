@@ -1,12 +1,25 @@
 
-def get_maximum_sum(arr):
-    # Sort the array in non-decreasing order
-    arr.sort()
-    # Initialize the maximum sum to be the sum of the first n elements
-    max_sum = sum(arr[:len(arr)//2])
-    # Iterate over the array and calculate the sum of the first n elements
-    # after changing the sign of each element
-    for i in range(len(arr)//2):
-        max_sum = max(max_sum, sum(arr[:i+1]) + sum(arr[i+1:])*(-1))
-    return max_sum
+def get_distance(mirko_row, mirko_col, slavko_row, slavko_col):
+    return abs(mirko_row - slavko_row) + abs(mirko_col - slavko_col)
+
+def get_spread(board, player):
+    spread = 0
+    for i in range(len(board)):
+        for j in range(len(board[0])):
+            if board[i][j] == player:
+                for k in range(len(board)):
+                    for l in range(len(board[0])):
+                        if board[k][l] == player:
+                            spread += get_distance(i, j, k, l)
+    return spread
+
+def main():
+    R, C = map(int, input().split())
+    board = [input() for _ in range(R)]
+    mirko_spread = get_spread(board, 'M')
+    slavko_spread = get_spread(board, 'S')
+    print(mirko_spread, slavko_spread)
+
+if __name__ == '__main__':
+    main()
 

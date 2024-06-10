@@ -1,23 +1,33 @@
 
-def solve(encrypted_password):
-    # Initialize a counter for the number of ways the password might have looked originally
-    num_ways = 0
+def paint_cross(n, p):
+    # Initialize the number of crosses as 1
+    num_crosses = 1
+    # Initialize the current room as 1
+    current_room = 1
+    # Initialize the number of portal moves as 0
+    num_moves = 0
+    
+    # Loop through each room from 1 to n
+    for i in range(1, n + 1):
+        # If the current room has an odd number of crosses, use the second portal
+        if num_crosses % 2 == 1:
+            current_room = p[current_room - 1]
+        # Otherwise, use the first portal
+        else:
+            current_room += 1
+        # Increment the number of crosses
+        num_crosses += 1
+        # Increment the number of portal moves
+        num_moves += 1
+    
+    # Return the number of portal moves
+    return num_moves % 1000000007
 
-    # Iterate through all possible passwords that could have produced the encrypted password
-    for password in itertools.product("aeiou", repeat=len(encrypted_password)):
-        # Initialize a flag to indicate if the password has been transformed correctly
-        transformed_correctly = True
+def main():
+    n = int(input())
+    p = list(map(int, input().split()))
+    print(paint_cross(n, p))
 
-        # Iterate through the characters of the password
-        for i in range(len(password)):
-            # If the character is a consonant, double it and add an 'o' between them
-            if password[i] not in "aeiou":
-                password = password[:i] + password[i] + "o" + password[i] + password[i+1:]
-
-        # If the transformed password is equal to the encrypted password, increment the counter
-        if "".join(password) == encrypted_password:
-            num_ways += 1
-
-    # Return the number of ways the password might have looked originally, modulo 1000009
-    return num_ways % 1000009
+if __name__ == '__main__':
+    main()
 

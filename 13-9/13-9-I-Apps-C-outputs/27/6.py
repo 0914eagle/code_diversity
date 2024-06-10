@@ -1,26 +1,35 @@
 
-def solve(n, m, a, w):
-    # Calculate the sum of the weights
-    sum_w = sum(w)
+def get_total_chairs(n, left_requirements, right_requirements):
+    # Initialize a list to store the number of chairs for each circle
+    chairs_per_circle = []
     
-    # Initialize the expected weights
-    expected_w = [0] * n
-    
-    # Loop through each visit
-    for i in range(m):
-        # Choose a picture randomly with probability proportional to its weight
-        picture = random.choices(population=range(n), weights=w, k=1)[0]
+    # Iterate through the input lists
+    for i in range(n):
+        # Calculate the total number of chairs required for the current circle
+        total_chairs = left_requirements[i] + right_requirements[i] + 1
         
-        # If Nauuo likes the picture, add 1 to its weight
-        if a[picture]:
-            w[picture] += 1
-        # Otherwise, subtract 1 from its weight
-        else:
-            w[picture] -= 1
-        
-        # Calculate the expected weight of the picture
-        expected_w[picture] = w[picture] * (sum_w - w[picture]) / sum_w
+        # Add the total number of chairs to the list
+        chairs_per_circle.append(total_chairs)
     
-    # Return the expected weights modulo 998244353
-    return [int(expected_w[i] * 998244353) % 998244353 for i in range(n)]
+    # Return the sum of all chairs required
+    return sum(chairs_per_circle)
+
+def main():
+    # Read the number of guests
+    n = int(input())
+    
+    # Read the left and right requirements for each guest
+    left_requirements = []
+    right_requirements = []
+    for i in range(n):
+        left, right = map(int, input().split())
+        left_requirements.append(left)
+        right_requirements.append(right)
+    
+    # Call the get_total_chairs function and print the result
+    total_chairs = get_total_chairs(n, left_requirements, right_requirements)
+    print(total_chairs)
+
+if __name__ == '__main__':
+    main()
 

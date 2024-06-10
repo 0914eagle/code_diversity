@@ -1,30 +1,36 @@
 
-def solve(n, a):
-    # Initialize a 2D array to store the number of targets in each row and column
-    targets = [[0] * (n + 1) for _ in range(n + 1)]
+def get_expected_weights(n, m, likes, weights):
+    # Initialize the expected weights
+    expected_weights = [0] * n
 
-    # Populate the array with the given number of targets for each column
-    for i in range(n):
-        targets[0][i + 1] = a[i]
+    # Iterate over each visit
+    for visit in range(m):
+        # Randomly select a picture with probability proportional to its weight
+        selected_picture = np.random.choice(n, p=weights / sum(weights))
 
-    # Iterate through each row and column
-    for i in range(1, n + 1):
-        for j in range(1, n + 1):
-            # If the target is already placed in this row or column, skip it
-            if targets[i][0] > 0 or targets[0][j] > 0:
-                continue
+        # Check if the selected picture is liked by Nauuo
+        if likes[selected_picture]:
+            # Add 1 to the expected weight if the picture is liked
+            expected_weights[selected_picture] += 1
+        else:
+            # Subtract 1 from the expected weight if the picture is not liked
+            expected_weights[selected_picture] -= 1
 
-            # If the target is not placed and the number of targets in this row and column is less than 2, place the target
-            if targets[i][j] == 0 and targets[i][0] + targets[0][j] < 2:
-                targets[i][j] = 1
-                targets[i][0] += 1
-                targets[0][j] += 1
+    # Return the expected weights modulo 998244353
+    return [expected_weight % 998244353 for expected_weight in expected_weights]
 
-    # Check if all targets have been placed
-    if all(targets[i][0] == a[i - 1] for i in range(1, n + 1)):
-        # If all targets have been placed, return the configuration
-        return targets[1:]
+def main():
+    # Read the input
+    n, m = map(int, input().split())
+    likes = list(map(int, input().split()))
+    weights = list(map(int, input().split()))
 
-    # If not all targets have been placed, return -1
-    return -1
+    # Calculate the expected weights
+    expected_weights = get_expected_weights(n, m, likes, weights)
+
+    # Print the expected weights
+    print(*expected_weights, sep='\n')
+
+if __name__ == '__main__':
+    main()
 

@@ -1,30 +1,38 @@
 
-def solve(n, a):
-    # Check if the number of targets is valid
-    if sum(a) > 2 * n:
-        return -1
+def calculate_expected_weight(weights, likes):
     
-    # Initialize the target configuration
-    targets = []
+    n = len(weights)
+    likes_count = likes.count(True)
+    likes_index = [i for i, x in enumerate(likes) if x]
+    total_weight = sum(weights)
+    expected_weight = [0] * n
     for i in range(n):
-        targets.append([])
+        if likes[i]:
+            expected_weight[i] = (weights[i] + likes_count) / (total_weight + likes_count)
+        else:
+            expected_weight[i] = weights[i] / total_weight
+    return expected_weight
+
+def solve(n, m, weights, likes):
     
-    # Place the targets
+    expected_weight = calculate_expected_weight(weights, likes)
+    result = []
     for i in range(n):
-        # Check if the target is already placed
-        if len(targets[i]) == 2:
-            continue
-        
-        # Place the target
-        targets[i].append(a[i])
-        
-        # Update the number of targets
-        a[i] -= 1
+        gcd, x, y = extended_euclid(998244353, int(expected_weight[i] * 10**9 + 0.5))
+        result.append((x * 998244353) % 998244353)
+    return result
+
+def extended_euclid(a, b):
     
-    # Check if all targets are placed
-    if sum(a) > 0:
-        return -1
-    
-    # Return the target configuration
-    return targets
+    if a == 0:
+        return b, 0, 1
+    gcd, y, x = extended_euclid(b % a, a)
+    return gcd, x - (b // a) * y, y
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    weights = list(map(int, input().split()))
+    likes = list(map(int, input().split()))
+    result = solve(n, m, weights, likes)
+    print(*result, sep='\n')
 

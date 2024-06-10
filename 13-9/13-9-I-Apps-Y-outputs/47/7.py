@@ -1,14 +1,19 @@
 
-def solve(n, a, edges):
-    # Initialize a dictionary to store the cost of each vertex as the key, and the vertex value as the value
-    costs = {i: a[i-1] for i in range(1, n+1)}
+def get_input():
+    m = int(input())
+    m_set = set(map(int, input().split()))
+    n = int(input())
+    n_set = set(map(int, input().split()))
+    return m_set, n_set
 
-    # Iterate over the edges and update the cost of each vertex based on the distance between them
-    for edge in edges:
-        u, v = edge
-        costs[u] += costs[v]
-        costs[v] += costs[u]
+def symmetric_difference(m_set, n_set):
+    return m_set ^ n_set
 
-    # Return the maximum cost
-    return max(costs.values())
+def main():
+    m_set, n_set = get_input()
+    symmetric_difference = symmetric_difference(m_set, n_set)
+    print(*sorted(symmetric_difference), sep='\n')
+
+if __name__ == '__main__':
+    main()
 

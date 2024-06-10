@@ -1,12 +1,13 @@
 
-def solve(n, T, tasks):
-    total_time = 0
-    count = 0
-    for task in tasks:
-        if total_time + task <= T:
-            total_time += task
-            count += 1
-        else:
-            break
-    return count
+def get_estimate_cost_magnitude(estimate):
+    return len(str(estimate))
+
+def main():
+    num_cases = int(input())
+    for _ in range(num_cases):
+        estimate = int(input())
+        print(get_estimate_cost_magnitude(estimate))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,37 +1,36 @@
 
-def min_seconds_to_make_alice_happy(n, a):
-    # Initialize a variable to store the minimum number of seconds
-    seconds = 0
-    
-    # Initialize a variable to store the number of positive values in the array
-    positive_values = 0
-    
-    # Iterate through the array
-    for i in range(n):
-        # If the current value is positive, increment the number of positive values
-        if a[i] > 0:
-            positive_values += 1
-    
-    # If there is only one positive value, return -1 because Alice will not be happy
-    if positive_values == 1:
-        return -1
-    
-    # Initialize a variable to store the minimum number of chocolates in a box
-    min_chocolates = float('inf')
-    
-    # Initialize a variable to store the maximum number of chocolates in a box
-    max_chocolates = 0
-    
-    # Iterate through the array
-    for i in range(n):
-        # If the current value is positive, update the minimum and maximum numbers of chocolates
-        if a[i] > 0:
-            min_chocolates = min(min_chocolates, a[i])
-            max_chocolates = max(max_chocolates, a[i])
-    
-    # Calculate the number of seconds needed to make Alice happy
-    seconds = (max_chocolates - min_chocolates) // (positive_values - 1)
-    
-    # Return the number of seconds
-    return seconds
+def read_input():
+    n, m = map(int, input().split())
+    arr = []
+    for _ in range(n):
+        arr.append(int(input()))
+    return n, m, arr
+
+def lossy_sort(arr, m):
+    # Sort the array
+    arr.sort()
+    # Find the minimum number of digits to change
+    min_digits = m - 1
+    for i in range(n - 1):
+        for j in range(m):
+            if arr[i][j] != arr[i + 1][j]:
+                min_digits = min(min_digits, j)
+                break
+    # Make the minimum number of digit changes
+    for i in range(n - 1):
+        for j in range(min_digits):
+            if arr[i][j] > arr[i + 1][j]:
+                arr[i][j] -= 1
+            elif arr[i][j] < arr[i + 1][j]:
+                arr[i][j] += 1
+    return arr
+
+def main():
+    n, m, arr = read_input()
+    sorted_arr = lossy_sort(arr, m)
+    for num in sorted_arr:
+        print(num)
+
+if __name__ == '__main__':
+    main()
 

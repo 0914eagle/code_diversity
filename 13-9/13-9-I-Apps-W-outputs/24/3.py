@@ -1,14 +1,16 @@
 
-def find_last_visited_cafe(visited_cafes):
-    # Sort the visited cafes in ascending order
-    visited_cafes.sort()
-    # Initialize the last visited cafe as the first cafe in the list
-    last_visited_cafe = visited_cafes[0]
-    # Iterate over the visited cafes starting from the second cafe
-    for cafe in visited_cafes[1:]:
-        # If the current cafe is different from the last visited cafe, update the last visited cafe
-        if cafe != last_visited_cafe:
-            last_visited_cafe = cafe
-    # Return the last visited cafe
-    return last_visited_cafe
+def get_tv_screens(a, b, x, y):
+    count = 0
+    for w in range(1, a+1):
+        for h in range(1, b+1):
+            if w/h == x/y and w <= a and h <= b:
+                count += 1
+    return count
+
+def main():
+    a, b, x, y = map(int, input().split())
+    print(get_tv_screens(a, b, x, y))
+
+if __name__ == '__main__':
+    main()
 

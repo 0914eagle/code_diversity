@@ -1,21 +1,23 @@
 
-def solve(s, p):
-    # Initialize the answer array
-    answer = [0] * (len(s) + 1)
+def read_input():
+    n, m, k = map(int, input().split())
+    moves = []
+    for _ in range(k):
+        moves.append(tuple(map(int, input().split())))
+    return n, m, k, moves
 
-    # Loop through each possible number of characters to remove
-    for x in range(len(s)):
-        # Remove x characters from the end of the string
-        s_prime = s[:len(s) - x]
+def check_losing_move(n, m, k, moves):
+    board = [[0] * m for _ in range(n)]
+    for i, j in moves:
+        board[i - 1][j - 1] = 1
+        if board[i - 1][j - 1] == 1 and board[i - 1][j] == 1 and board[i][j - 1] == 1:
+            return k
+    return 0
 
-        # Count the number of non-overlapping substrings equal to p in s_prime
-        count = 0
-        while s_prime.find(p) != -1:
-            count += 1
-            s_prime = s_prime[s_prime.find(p) + len(p):]
+def main():
+    n, m, k, moves = read_input()
+    print(check_losing_move(n, m, k, moves))
 
-        # Update the answer for this number of characters removed
-        answer[x] = count
-
-    return answer
+if __name__ == '__main__':
+    main()
 

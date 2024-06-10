@@ -1,18 +1,29 @@
 
-def get_possible_two_suspect_sets(n, p, names):
-    # Initialize a set to store the possible two-suspect sets
-    possible_sets = set()
+import math
 
-    # Iterate over the names of the coders
-    for i in range(n):
-        # Get the names of the coders named by the current coder
-        x, y = names[i]
+def get_min_drill_diameter(flaws):
+    # Calculate the center of the flaws
+    center = [sum(flaws[:, i]) / len(flaws) for i in range(3)]
+    
+    # Calculate the distance from the center to each flaw
+    dist = [math.sqrt(sum((flaw - center)**2)) for flaw in flaws]
+    
+    # Return the maximum distance as the minimum drill diameter
+    return max(dist) * 2
 
-        # If both coders named by the current coder are in the possible sets, add them to the current set
-        if x in possible_sets and y in possible_sets:
-            possible_sets.add((i, x))
-            possible_sets.add((i, y))
+def main():
+    # Read the number of flaws and their positions
+    n = int(input())
+    flaws = []
+    for _ in range(n):
+        flaws.append([float(x) for x in input().split()])
+    
+    # Calculate the minimum drill diameter
+    drill_diameter = get_min_drill_diameter(flaws)
+    
+    # Print the result
+    print(drill_diameter)
 
-    # Return the number of possible two-suspect sets
-    return len(possible_sets)
+if __name__ == '__main__':
+    main()
 

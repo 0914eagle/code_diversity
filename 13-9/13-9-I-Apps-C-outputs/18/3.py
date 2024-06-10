@@ -1,31 +1,31 @@
 
-def largest_corn_area(vertices, canal_points):
-    
-    # Sort the vertices in counterclockwise order
-    vertices = sorted(vertices, key=lambda x: x[0])
+import math
 
-    # Find the indices of the vertices on either side of the canal
-    left_vertices = []
-    right_vertices = []
-    for i in range(len(vertices)):
-        if vertices[i][0] < canal_points[0][0]:
-            left_vertices.append(vertices[i])
-        else:
-            right_vertices.append(vertices[i])
+def get_distance(x1, y1, x2, y2):
+    return math.sqrt((x2-x1)**2 + (y2-y1)**2)
 
-    # Find the area of the polygon on either side of the canal
-    left_area = polygon_area(left_vertices)
-    right_area = polygon_area(right_vertices)
+def get_leash_length(toy_coordinates, tree_coordinates):
+    leash_length = 0
+    current_toy = toy_coordinates[0]
+    for tree in tree_coordinates:
+        distance_to_tree = get_distance(current_toy[0], current_toy[1], tree[0], tree[1])
+        if distance_to_tree > leash_length:
+            leash_length = distance_to_tree
+        current_toy = toy_coordinates[toy_coordinates.index(current_toy) + 1]
+    return leash_length
 
-    # Return the larger of the two areas
-    return max(left_area, right_area)
+def main():
+    n, m = map(int, input().split())
+    toy_coordinates = []
+    for i in range(n):
+        x, y = map(int, input().split())
+        toy_coordinates.append((x, y))
+    tree_coordinates = []
+    for i in range(m):
+        x, y = map(int, input().split())
+        tree_coordinates.append((x, y))
+    print(f"{get_leash_length(toy_coordinates, tree_coordinates):.2f}")
 
-def polygon_area(vertices):
-    
-    area = 0
-    for i in range(len(vertices)):
-        x1, y1 = vertices[i]
-        x2, y2 = vertices[(i + 1) % len(vertices)]
-        area += (x1 * y2 - x2 * y1)
-    return abs(area / 2)
+if __name__ == '__main__':
+    main()
 

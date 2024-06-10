@@ -1,31 +1,33 @@
 
-def get_maximum_water_reach(n, p, k, pipes, improvements):
-    # Initialize the graph with the given pipes
-    graph = {}
+def get_valid_scenarios(n, k, x):
+    # Initialize a set to store the valid scenarios
+    valid_scenarios = set()
+    
+    # Iterate over all possible starting positions
     for i in range(1, n+1):
-        graph[i] = []
-    for pipe in pipes:
-        graph[pipe[0]].append((pipe[1], pipe[2]))
-    
-    # Initialize the maximum water reach for each station
-    max_water_reach = [0] * (n+1)
-    max_water_reach[1] = 1000
-    
-    # Iterate through the improvements
-    for improvement in improvements:
-        # Get the current capacity of the pipe
-        current_capacity = 0
-        if improvement[0] in graph and improvement[1] in graph[improvement[0]]:
-            current_capacity = graph[improvement[0]][graph[improvement[0]].index(improvement[1])][1]
+        # Initialize the current position and the number of moves made
+        current_position = i
+        num_moves = 0
         
-        # Increase the capacity of the pipe
-        graph[improvement[0]][graph[improvement[0]].index(improvement[1])] = (improvement[1], current_capacity + improvement[2])
-        
-        # Update the maximum water reach for each station
-        for station in graph:
-            for neighbor, capacity in graph[station]:
-                max_water_reach[neighbor] = max(max_water_reach[neighbor], max_water_reach[station] - capacity)
+        # Iterate over all questions
+        for j in range(k):
+            # If the current position is not the question, move to the next position
+            if current_position != x[j]:
+                current_position = current_position + 1 if x[j] > current_position else current_position - 1
+                num_moves += 1
+            
+            # If the current position is the question and the number of moves made is even, add the scenario to the set
+            if current_position == x[j] and num_moves % 2 == 0:
+                valid_scenarios.add((i, current_position))
+                break
     
-    # Return the maximum water reach for the mansion
-    return max_water_reach[-1]
+    return len(valid_scenarios)
+
+def main():
+    n, k = map(int, input().split())
+    x = list(map(int, input().split()))
+    print(get_valid_scenarios(n, k, x))
+
+if __name__ == '__main__':
+    main()
 

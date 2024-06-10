@@ -1,12 +1,17 @@
 
-def is_triangle(a, b, c):
-    return (a + b > c) and (b + c > a) and (c + a > b)
+def k_rounding(n, k):
+    if n == 0:
+        return 0
+    else:
+        x = 1
+        while x < n:
+            x *= 10
+        return x // n * n
 
-def solve(n, a):
-    for i in range(n - 2):
-        for j in range(i + 1, n - 1):
-            for k in range(j + 1, n):
-                if is_triangle(a[i], a[j], a[k]):
-                    return "YES"
-    return "NO"
+def main():
+    n, k = map(int, input().split())
+    print(k_rounding(n, k))
+
+if __name__ == '__main__':
+    main()
 

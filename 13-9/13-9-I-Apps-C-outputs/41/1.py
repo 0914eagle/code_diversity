@@ -1,34 +1,51 @@
 
-def paint_fence(offers):
-    # Sort the offers by the first section of the fence
-    sorted_offers = sorted(offers, key=lambda x: x[1])
+import itertools
 
-    # Initialize the variables to keep track of the number of colors and sections painted
-    num_colors = 0
-    num_sections = 0
+def explosion_probability(your_minions, opponent_minions, damage):
+    # Calculate the total health of both players
+    total_health = sum(your_minions) + sum(opponent_minions)
+    
+    # Initialize a list to store the probability of each possible outcome
+    probabilities = [0] * (total_health + 1)
+    
+    # Set the initial probability of the first outcome (all opponent minions dead)
+    probabilities[0] = 1
+    
+    # Iterate through each possible outcome
+    for i in range(1, total_health + 1):
+        # Calculate the probability of the current outcome
+        probability = 0
+        for j in range(1, damage + 1):
+            # Calculate the probability of the current damage amount
+            damage_probability = 1 / total_health
+            
+            # Calculate the probability of the current outcome given the current damage amount
+            outcome_probability = 0
+            for k in range(1, total_health + 1):
+                if k - j >= 0:
+                    outcome_probability += probabilities[k - j] / total_health
+            
+            # Add the probability of the current damage amount to the total probability
+            probability += damage_probability * outcome_probability
+        
+        # Add the probability of the current outcome to the list
+        probabilities[i] = probability
+    
+    # Return the probability of all opponent minions dead
+    return probabilities[total_health]
 
-    # Initialize a list to store the accepted offers
-    accepted_offers = []
+def main():
+    # Read the input
+    n, m, d = map(int, input().split())
+    your_minions = list(map(int, input().split()))
+    opponent_minions = list(map(int, input().split()))
+    
+    # Calculate the probability
+    probability = explosion_probability(your_minions, opponent_minions, d)
+    
+    # Print the output
+    print(probability)
 
-    # Iterate through the sorted offers
-    for offer in sorted_offers:
-        # Check if the current offer can be accepted
-        if offer[1] == num_sections + 1 and offer[2] <= 10000:
-            # Accept the offer and update the number of colors and sections painted
-            accepted_offers.append(offer)
-            num_colors += 1
-            num_sections = offer[2]
-
-        # Check if the current offer cannot be accepted and the fence is already painted with 3 colors
-        elif num_colors == 3:
-            # Return "IMPOSSIBLE" as the output
-            return "IMPOSSIBLE"
-
-    # Check if all sections of the fence are painted
-    if num_sections == 10000:
-        # Return the number of accepted offers as the output
-        return len(accepted_offers)
-    else:
-        # Return "IMPOSSIBLE" as the output
-        return "IMPOSSIBLE"
+if __name__ == '__main__':
+    main()
 

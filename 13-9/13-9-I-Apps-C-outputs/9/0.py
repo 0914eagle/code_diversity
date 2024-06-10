@@ -1,25 +1,18 @@
 
-def camel_race(n, jaap_bet, jan_bet, thijs_bet):
-    # Initialize a dictionary to store the number of camels in each position
-    camel_positions = {}
-    for i in range(n):
-        camel_positions[i+1] = 0
+def get_maximum_score(grid, conveyor_belts):
+    # Implement your solution here
+    return 0
 
-    # Count the number of camels in each position for Jaap's bet
-    for camel in jaap_bet:
-        camel_positions[camel] += 1
+def main():
+    R, C, K = map(int, input().split())
+    grid = []
+    for _ in range(R):
+        grid.append(list(input()))
+    conveyor_belts = []
+    for _ in range(K):
+        conveyor_belts.append(list(input()))
+    print(get_maximum_score(grid, conveyor_belts))
 
-    # Count the number of camels in each position for Jan's and Thijs' bets
-    for bet in [jan_bet, thijs_bet]:
-        for camel in bet:
-            camel_positions[camel] += 1
-
-    # Count the number of pairs of camels that appear in the same order in all 3 bets
-    same_order_pairs = 0
-    for i in range(n):
-        for j in range(i+1, n):
-            if camel_positions[i+1] == camel_positions[j+1]:
-                same_order_pairs += 1
-
-    return same_order_pairs
+if __name__ == '__main__':
+    main()
 

@@ -1,37 +1,30 @@
 
-def gl_bot(N, program, grid):
-    # Initialize the robot's location and trail
-    location = (N-1, N-1)
-    trail = [location]
+def longest_repeated_substring(input_string):
+    # Initialize variables
+    start_index = 0
+    end_index = 0
+    max_length = 0
+    repeated_substring = ""
 
-    # Loop through the program
-    for char in program:
-        # Get the new location based on the character
-        if char == "<":
-            new_location = (location[0]-1, location[1])
-        elif char == ">":
-            new_location = (location[0]+1, location[1])
-        elif char == "^":
-            new_location = (location[0], location[1]-1)
-        elif char == "v":
-            new_location = (location[0], location[1]+1)
+    # Iterate over the input string
+    for i in range(len(input_string)):
+        # Check if the substring starting at index i is repeated
+        if input_string[i] in input_string[start_index:i]:
+            # If it is repeated, find the length of the repeated substring
+            repeated_substring = input_string[start_index:i]
+            max_length = max(max_length, len(repeated_substring))
+        # If the substring is not repeated, update the start index
+        else:
+            start_index = i + 1
+    
+    # Return the longest repeated substring
+    return repeated_substring
 
-        # Check if the new location is valid
-        if grid[new_location[0]][new_location[1]] == ".":
-            # Add the new location to the trail
-            trail.append(new_location)
-            location = new_location
+def main():
+    input_string = input()
+    repeated_substring = longest_repeated_substring(input_string)
+    print(repeated_substring)
 
-    # Check if the trail is finite
-    if len(trail) < N*N:
-        return 1
-
-    # Find the smallest integer X such that the suffix of the trail is a repetition of a continuous subsequence of the trail of length exactly X
-    X = 1
-    while X < len(trail):
-        if trail[:X] == trail[len(trail)-X:]:
-            break
-        X += 1
-
-    return X
+if __name__ == '__main__':
+    main()
 

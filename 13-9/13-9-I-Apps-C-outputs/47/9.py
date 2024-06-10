@@ -1,16 +1,31 @@
 
-def solve(a, b):
-    # Find the minimum positive value of x such that the polyline passes through (a, b)
-    # The polyline is defined by the points (0, 0) - (x, x) - (2x, 0) - (3x, x) - (4x, 0) - ... - (2kx, 0) - (2kx + x, x) - ...
-    # We can write the equation of the polyline as:
-    # f(x) = (x^2 - a)^2 + (x - b)^2
-    # To find the minimum value of x, we can differentiate f(x) and set it to 0:
-    # f'(x) = 2x(x - a) - 2(x - b)
-    # We can then solve for x:
-    x = (a + b)/2
-    # Check if the polyline passes through (a, b)
-    if (x**2 - a)**2 + (x - b)**2 == 0:
-        return x
-    else:
-        return -1
+def get_g_k_strings():
+    g = input()
+    k = input()
+    return g, k
+
+def get_p_coin_flip():
+    p = float(input())
+    return p
+
+def get_probability_gon_wins(g, k, p):
+    g_len = len(g)
+    k_len = len(k)
+    probability_g_wins = 0
+    probability_k_wins = 0
+    probability_draw = 0
+    for i in range(100):
+        probability_g_wins += (g_len / (g_len + k_len)) * (1 - p) ** i
+        probability_k_wins += (k_len / (g_len + k_len)) * p ** i
+        probability_draw += (1 - p) ** i * (1 - (g_len / (g_len + k_len)) * (1 - p) ** i)
+    return probability_g_wins, probability_k_wins, probability_draw
+
+def main():
+    g, k = get_g_k_strings()
+    p = get_p_coin_flip()
+    probability_g_wins, probability_k_wins, probability_draw = get_probability_gon_wins(g, k, p)
+    print(probability_g_wins)
+
+if __name__ == '__main__':
+    main()
 

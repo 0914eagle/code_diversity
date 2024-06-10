@@ -1,9 +1,16 @@
 
-def get_price_before_tax(a, b):
-    for price in range(1, 101):
-        tax_8 = int(price * 0.08)
-        tax_10 = int(price * 0.1)
-        if tax_8 == a and tax_10 == b:
-            return price
-    return -1
+def paint_balls(n, k):
+    # Base case: if there is only one ball, there is only one way to paint it
+    if n == 1:
+        return k
+    
+    # Recursive case: paint the first ball and then paint the rest of the balls
+    return k * paint_balls(n-1, k)
+
+def main():
+    n, k = map(int, input().split())
+    print(paint_balls(n, k))
+
+if __name__ == '__main__':
+    main()
 

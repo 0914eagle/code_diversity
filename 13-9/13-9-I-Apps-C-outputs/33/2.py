@@ -1,40 +1,41 @@
 
-def solve(n, m):
-    # Initialize a set to store the unique pairs
-    unique_pairs = set()
-    
-    # Iterate over each hour
-    for hour in range(n):
-        # Iterate over each minute
-        for minute in range(m):
-            # Convert the hour and minute to base 7
-            hour_base7 = convert_to_base7(hour)
-            minute_base7 = convert_to_base7(minute)
-            
-            # Check if the hour and minute are distinct
-            if hour_base7 != minute_base7:
-                # Add the pair to the set
-                unique_pairs.add((hour, minute))
-    
-    # Return the length of the set
-    return len(unique_pairs)
+import sys
+import itertools
 
-# Convert a number to base 7
-def convert_to_base7(num):
-    # Initialize the base 7 representation
-    base7_rep = ""
-    
-    # While the number is not zero
-    while num > 0:
-        # Get the remainder
-        rem = num % 7
-        
-        # Add the remainder to the base 7 representation
-        base7_rep = str(rem) + base7_rep
-        
-        # Divide the number by 7
-        num //= 7
-    
-    # Return the base 7 representation
-    return base7_rep
+def get_input():
+    n, k, a, b = map(int, input().split())
+    tastiness = list(map(int, input().split()))
+    complement_matrix = []
+    for i in range(k):
+        complement_matrix.append(list(map(int, input().split())))
+    return n, k, a, b, tastiness, complement_matrix
+
+def calculate_tastiness(tastiness, complement_matrix, n):
+    total_tastiness = 0
+    for combination in itertools.combinations(range(k), n):
+        current_tastiness = 0
+        for i in range(n):
+            current_tastiness += tastiness[combination[i]]
+            for j in range(i+1, n):
+                current_tastiness += complement_matrix[combination[i]][combination[j]]
+        total_tastiness = max(total_tastiness, current_tastiness)
+    return total_tastiness
+
+def calculate_cost(n, a, b):
+    return n * a + b
+
+def get_ratio(tastiness, complement_matrix, n, a, b):
+    total_tastiness = calculate_tastiness(tastiness, complement_matrix, n)
+    total_cost = calculate_cost(n, a, b)
+    if total_cost == 0:
+        return 0
+    return total_tastiness / total_cost
+
+def main():
+    n, k, a, b, tastiness, complement_matrix = get_input()
+    ratio = get_ratio(tastiness, complement_matrix, n, a, b)
+    print(ratio)
+
+if __name__ == '__main__':
+    main()
 

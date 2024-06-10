@@ -1,40 +1,46 @@
 
-def get_brain_latency(n, m, connectors):
-    # Initialize a graph with n nodes and m edges
-    graph = [[] for _ in range(n)]
-    for a, b in connectors:
-        graph[a - 1].append(b - 1)
-        graph[b - 1].append(a - 1)
-    
-    # Find the maximum distance between any two nodes
-    max_distance = 0
-    for i in range(n):
-        for j in range(i + 1, n):
-            distance = bfs(graph, i, j)
-            max_distance = max(max_distance, distance)
-    
-    return max_distance
+def get_shortest_path(graph, start, end):
+    visited = [False] * len(graph)
+    queue = [[start]]
 
-def bfs(graph, start, end):
-    # Breadth-first search
-    queue = [start]
-    visited = set([start])
-    distance = 0
     while queue:
-        node = queue.pop(0)
-        if node == end:
-            return distance
-        for neighbor in graph[node]:
-            if neighbor not in visited:
-                visited.add(neighbor)
-                queue.append(neighbor)
-        distance += 1
-    return distance
+        path = queue.pop(0)
+        current = path[-1]
 
-n, m = map(int, input().split())
-connectors = []
-for _ in range(m):
-    a, b = map(int, input().split())
-    connectors.append((a, b))
-print(get_brain_latency(n, m, connectors))
+        if current == end:
+            return path
+
+        for neighbor in graph[current]:
+            if not visited[neighbor]:
+                visited[neighbor] = True
+                queue.append(path + [neighbor])
+
+    return []
+
+def solve(n, m, roads):
+    graph = [[] for _ in range(n)]
+
+    for a, b, _ in roads:
+        graph[a].append(b)
+        graph[b].append(a)
+
+    path = get_shortest_path(graph, 0, 1)
+
+    if not path:
+        return "impossible"
+
+    return " ".join(str(p) for p in path)
+
+def main():
+    n, m = map(int, input().split())
+    roads = []
+
+    for _ in range(m):
+        a, b, d = map(int, input().split())
+        roads.append((a, b, d))
+
+    print(solve(n, m, roads))
+
+if __name__ == '__main__':
+    main()
 

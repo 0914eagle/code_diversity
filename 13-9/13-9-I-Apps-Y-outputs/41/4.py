@@ -1,15 +1,14 @@
 
-def solve(gunnar_dice, emma_dice):
-    gunnar_sum = 0
-    emma_sum = 0
-    for die in gunnar_dice:
-        gunnar_sum += die[1] - die[0] + 1
-    for die in emma_dice:
-        emma_sum += die[1] - die[0] + 1
-    if gunnar_sum > emma_sum:
-        return "Gunnar"
-    elif gunnar_sum < emma_sum:
-        return "Emma"
-    else:
-        return "Tie"
+def get_input():
+    return list(map(int, input().split()))
+
+def get_number_of_white_cells(H, W, h, w):
+    return H * W - h * W - W * w + h * w
+
+def main():
+    H, W, h, w = get_input()
+    print(get_number_of_white_cells(H, W, h, w))
+
+if __name__ == '__main__':
+    main()
 

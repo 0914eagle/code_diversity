@@ -1,13 +1,17 @@
 
-import math
+import re
 
-def solve(points):
-    x_coords = [point[0] for point in points]
-    y_coords = [point[1] for point in points]
-    x_min = min(x_coords)
-    x_max = max(x_coords)
-    y_min = min(y_coords)
-    y_max = max(y_coords)
-    r = 0.5 * math.sqrt((x_max-x_min)**2 + (y_max-y_min)**2)
-    return r
+def is_complex_enough(password):
+    pattern = r"^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(.{5,})$"
+    return bool(re.match(pattern, password))
+
+def check_password(password):
+    if is_complex_enough(password):
+        return "Correct"
+    else:
+        return "Too weak"
+
+if __name__ == '__main__':
+    password = input("Enter your password: ")
+    print(check_password(password))
 

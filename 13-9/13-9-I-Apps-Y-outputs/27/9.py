@@ -1,25 +1,24 @@
 
-def solve(n, friends):
-    # Initialize a dictionary to map each friend to their gift recipient
-    gift_map = {}
-    
-    # Iterate through the input list of friends
-    for i, friend in enumerate(friends):
-        # If the friend doesn't know whom they want to give the gift to, set their gift recipient to the next friend in the list
-        if friend == 0:
-            gift_map[i] = (i + 1) % n
-        # Otherwise, set their gift recipient to the specified friend
-        else:
-            gift_map[i] = friend
-    
-    # Initialize a list to store the final output
-    output = []
-    
-    # Iterate through the gift map
-    for i in range(n):
-        # Add the gift recipient for the current friend to the output list
-        output.append(gift_map[i])
-    
-    # Return the output list
-    return output
+def get_path_count(grid, k):
+    n, m = len(grid), len(grid[0])
+    dp = [[0] * (m + 1) for _ in range(n + 1)]
+    dp[1][1] = 1
+    for i in range(1, n + 1):
+        for j in range(1, m + 1):
+            if i == 1 and j == 1:
+                continue
+            dp[i][j] += dp[i - 1][j]
+            if j > 1 and grid[i - 1][j - 2] ^ grid[i - 1][j - 1] == k:
+                dp[i][j] += dp[i - 1][j - 1]
+            if i > 1 and grid[i - 2][j - 1] ^ grid[i - 1][j - 1] == k:
+                dp[i][j] += dp[i - 1][j - 1]
+    return dp[n][m]
+
+def main():
+    n, m, k = map(int, input().split())
+    grid = [list(map(int, input().split())) for _ in range(n)]
+    print(get_path_count(grid, k))
+
+if __name__ == '__main__':
+    main()
 

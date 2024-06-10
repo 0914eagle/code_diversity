@@ -1,20 +1,23 @@
 
-def climb_pine(p, y):
-    # Initialize a list to store the reachable branches
-    reachable_branches = []
+def get_input():
+    n, m = map(int, input().split())
+    s = input()
+    operations = []
+    for i in range(m):
+        l, r, c1, c2 = map(int, input().split())
+        operations.append((l, r, c1, c2))
+    return n, m, s, operations
 
-    # Iterate through each grasshopper and calculate the reachable branches
-    for i in range(2, p + 1):
-        for j in range(i, int(y / i) + 1):
-            reachable_branches.append(j * i)
+def perform_operations(s, operations):
+    for l, r, c1, c2 in operations:
+        s = s[:l-1] + c2 + s[r:]
+    return s
 
-    # Sort and remove duplicates from the list of reachable branches
-    reachable_branches = sorted(set(reachable_branches))
+def main():
+    n, m, s, operations = get_input()
+    final_string = perform_operations(s, operations)
+    print(final_string)
 
-    # Check if the highest branch is reachable
-    if y in reachable_branches:
-        return -1
-    else:
-        # Return the highest branch that is not reachable
-        return max(reachable_branches) + 1
+if __name__ == '__main__':
+    main()
 

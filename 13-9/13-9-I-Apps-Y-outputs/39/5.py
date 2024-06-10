@@ -1,16 +1,24 @@
 
-def get_safe_operations(registers):
-    # Initialize the number of safe operations to the number of registers
-    safe_operations = len(registers)
+def is_possible(a, b, c):
+    # Initialize a list to store the selected integers
+    selected_integers = []
     
-    # Iterate through the registers in reverse order
-    for i in range(len(registers)-1, -1, -1):
-        # If the current register is 1, the computer will blow up
-        if registers[i] == 1:
-            return 0
-        # If the current register is not 1, decrement the number of safe operations
-        else:
-            safe_operations -= 1
+    # Loop through all multiples of a until the sum is congruent to c modulo b
+    for i in range(a, b+1, a):
+        selected_integers.append(i)
+        if sum(selected_integers) % b == c:
+            return True
     
-    return safe_operations
+    # If the sum is not congruent to c modulo b after looping through all multiples of a, return False
+    return False
+
+def main():
+    a, b, c = map(int, input().split())
+    if is_possible(a, b, c):
+        print("YES")
+    else:
+        print("NO")
+
+if __name__ == '__main__':
+    main()
 

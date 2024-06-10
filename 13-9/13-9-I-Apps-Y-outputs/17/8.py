@@ -1,9 +1,14 @@
 
-def solve(a, b):
-    str1 = a * b
-    str2 = b * a
-    if str1 < str2:
-        return str1
-    else:
-        return str2
+def get_largest_integer(A, B, X):
+    for i in range(1, 10**9):
+        if A*i + B*len(str(i)) <= X:
+            return i
+    return 0
+
+def main():
+    A, B, X = map(int, input().split())
+    print(get_largest_integer(A, B, X))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,7 +1,14 @@
 
-def solve(alpha):
-    if alpha.isupper():
-        return "A"
+def check_hiss(word):
+    if 's' * 2 in word:
+        return 'hiss'
     else:
-        return "a"
+        return 'no hiss'
+
+def main():
+    word = input()
+    print(check_hiss(word))
+
+if __name__ == '__main__':
+    main()
 

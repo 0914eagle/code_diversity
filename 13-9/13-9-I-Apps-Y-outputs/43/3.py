@@ -1,15 +1,27 @@
 
-def solve(N, S, R, damaged_teams, reserve_teams):
-    # Initialize a set to store the teams that cannot start
-    cannot_start = set()
+import sys
 
-    # Iterate over the damaged teams and their adjacent teams
-    for team in damaged_teams:
-        for adjacent_team in range(team-1, team+2):
-            # If the adjacent team has a reserve kayak, add it to the cannot_start set
-            if adjacent_team in reserve_teams:
-                cannot_start.add(adjacent_team)
+def get_input():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        a = list(map(int, input().split()))
+        yield n, a
 
-    # Return the size of the cannot_start set
-    return len(cannot_start)
+def solve(n, a):
+    # Your code here
+    pass
+
+def main():
+    for n, a in get_input():
+        result = solve(n, a)
+        if result:
+            print("YES")
+            for road in result:
+                print(" ".join(map(str, road)))
+        else:
+            print("NO")
+
+if __name__ == '__main__':
+    main()
 

@@ -1,15 +1,52 @@
 
-def solve(n, polls):
-    # Sort the polls by the measure a_i * S + b_i * T
-    polls.sort(key=lambda x: x[0] * S + x[1] * T)
-    
-    # Initialize the cluster size to the total number of polls
-    cluster_size = n
-    
-    # Iterate through the polls and find the cluster size
-    for i in range(n-1):
-        if polls[i][2] == 1 and polls[i+1][2] == 0:
-            cluster_size = min(cluster_size, i+1)
-    
-    return cluster_size
+def read_input():
+    n = int(input())
+    c = list(map(int, input().split()))
+    return n, c
+
+def build_tree(c):
+    # Base case: if there are no nodes, return an empty tree
+    if not c:
+        return []
+
+    # Find the largest value in the list
+    largest = max(c)
+
+    # Find the index of the largest value
+    largest_index = c.index(largest)
+
+    # Create a new tree with the largest value as the root
+    tree = [largest]
+
+    # Remove the largest value from the list
+    c.pop(largest_index)
+
+    # Recursively build the left and right subtrees
+    tree.append(build_tree(c[:largest_index]))
+    tree.append(build_tree(c[largest_index:]))
+
+    return tree
+
+def is_valid_tree(tree):
+    # Base case: if the tree is empty, return True
+    if not tree:
+        return True
+
+    # If the tree has only one node, return False
+    if len(tree) == 1:
+        return False
+
+    # If the tree has at least two nodes, return True
+    return True
+
+def main():
+    n, c = read_input()
+    tree = build_tree(c)
+    if is_valid_tree(tree):
+        print("YES")
+    else:
+        print("NO")
+
+if __name__ == '__main__':
+    main()
 

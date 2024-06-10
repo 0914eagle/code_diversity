@@ -1,25 +1,21 @@
 
-def solve(n, scores):
-    # Sort the scores in non-decreasing order
-    scores.sort()
-
-    # Initialize the number of ways to choose a subset as 0
-    ways = 0
-
-    # Iterate over the scores
+def get_number_of_ways(A, B):
+    n = len(A)
+    dp = [[0] * n for _ in range(n)]
     for i in range(n):
-        # Check if the current score is non-zero
-        if scores[i] != 0:
-            # Increment the number of ways to choose a subset
-            ways += 1
+        dp[i][i] = 1
+    for i in range(n-1):
+        for j in range(i+1, n):
+            if A[i] == B[j] and A[j] == B[i]:
+                dp[i][j] = dp[i+1][j-1] + dp[i][j-1]
+            else:
+                dp[i][j] = dp[i+1][j-1]
+    return dp[0][n-1]
 
-            # Iterate over the remaining scores
-            for j in range(i+1, n):
-                # Check if the current score is greater than or equal to the previous score
-                if scores[j] >= scores[i]:
-                    # Increment the number of ways to choose a subset
-                    ways += 1
+def main():
+    A, B = input().split()
+    print(get_number_of_ways(A, B))
 
-    # Return the number of ways to choose a subset
-    return ways
+if __name__ == '__main__':
+    main()
 

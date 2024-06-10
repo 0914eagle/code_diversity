@@ -1,27 +1,28 @@
 
-def get_occurrences(s, p):
-    # Initialize the maximum number of occurrences as 0
-    max_occurrences = 0
-    # Loop through the length of the string
-    for i in range(len(s)):
-        # Check if the substring starting from i with length equal to the pattern length is equal to the pattern
-        if s[i:i+len(p)] == p:
-            # If it is, increment the maximum number of occurrences
-            max_occurrences += 1
-    # Return the maximum number of occurrences
-    return max_occurrences
+def check_moves(n, m, moves):
+    # Initialize a 2D array to store the color of each pixel
+    field = [[0] * m for _ in range(n)]
 
-def solve(s, p):
-    # Initialize a list to store the answers
-    answers = []
-    # Loop through the length of the string
-    for i in range(len(s)+1):
-        # Get the substring of length i from the start of the string
-        s_prime = s[:i]
-        # Get the number of occurrences of the pattern in the substring
-        occurrences = get_occurrences(s_prime, p)
-        # Add the occurrences to the list of answers
-        answers.append(occurrences)
-    # Return the list of answers
-    return answers
+    # Loop through each move and color the corresponding pixel
+    for i, j in moves:
+        field[i - 1][j - 1] = 1
+
+    # Check if a 2x2 square of black pixels is formed
+    for i in range(n - 1):
+        for j in range(m - 1):
+            if field[i][j] == 1 and field[i][j + 1] == 1 and field[i + 1][j] == 1 and field[i + 1][j + 1] == 1:
+                return i * m + j + 1
+
+    return 0
+
+def main():
+    n, m, k = map(int, input().split())
+    moves = []
+    for _ in range(k):
+        moves.append(list(map(int, input().split())))
+    result = check_moves(n, m, moves)
+    print(result)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,13 +1,34 @@
 
-def get_maximum_grade(scores):
-    # Calculate the sum of the scores
-    total_score = sum(scores)
-
-    # Check if the total score is a multiple of 10
-    if total_score % 10 == 0:
-        # If it is, return the total score
-        return total_score
+def get_wall_height(h, w, n, x):
+    # Calculate the total height of the wall
+    total_height = 0
+    for i in range(n):
+        total_height += x[i]
+    # Check if the total height is greater than or equal to the height of the wall
+    if total_height >= h:
+        return True
     else:
-        # If it's not, find the highest multiple of 10 that is lower than the total score
-        return (total_score // 10) * 10
+        return False
+
+def get_wall_width(w, n, x):
+    # Calculate the total width of the wall
+    total_width = 0
+    for i in range(n):
+        total_width += x[i]
+    # Check if the total width is greater than or equal to the width of the wall
+    if total_width >= w:
+        return True
+    else:
+        return False
+
+def main():
+    h, w, n = map(int, input().split())
+    x = list(map(int, input().split()))
+    if get_wall_height(h, w, n, x) and get_wall_width(w, n, x):
+        print("YES")
+    else:
+        print("NO")
+
+if __name__ == '__main__':
+    main()
 

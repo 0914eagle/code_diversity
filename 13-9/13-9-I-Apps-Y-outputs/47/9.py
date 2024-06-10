@@ -1,13 +1,20 @@
 
-def get_maximum_cost(n, a, edges):
-    # Initialize a dictionary to store the distance of each vertex from the root
-    dist = {i: 0 for i in range(1, n + 1)}
+def get_input():
+    m = int(input())
+    m_list = list(map(int, input().split()))
+    n = int(input())
+    n_list = list(map(int, input().split()))
+    return m, m_list, n, n_list
 
-    # Iterate through the edges and update the distance of the vertices
-    for u, v in edges:
-        dist[v] = dist[u] + 1
-        dist[u] = dist[v] + 1
+def symmetric_difference(m_list, n_list):
+    return list(set(m_list).symmetric_difference(set(n_list)))
 
-    # Calculate the maximum cost by summing the distance of each vertex from the root multiplied by its value
-    return sum(dist[i] * a[i - 1] for i in range(1, n + 1))
+def main():
+    m, m_list, n, n_list = get_input()
+    result = symmetric_difference(m_list, n_list)
+    for num in sorted(result):
+        print(num)
+
+if __name__ == '__main__':
+    main()
 

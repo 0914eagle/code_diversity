@@ -1,37 +1,63 @@
 
-def find_min_path_length(n, m, roads):
-    # Initialize a graph with n nodes and m edges
-    graph = [[] for _ in range(n)]
-    for u, v in roads:
-        graph[u-1].append(v-1)
-
-    # Find all maximum length paths in the graph
-    max_length_paths = []
+def get_light_positions(n):
+    positions = []
     for i in range(n):
-        visited = [False] * n
-        max_length_paths.extend(find_max_length_paths(graph, i, visited))
+        x, y, e = map(int, input().split())
+        positions.append((x, y, e))
+    return positions
 
-    # Find the minimum length path that competitors can achieve if at most one of the roads is blocked off
-    min_length = float('inf')
-    for path in max_length_paths:
-        length = len(path)
-        for i in range(n):
-            for j in range(i+1, n):
-                if [i+1, j+1] in roads:
-                    length -= 1
-        min_length = min(min_length, length)
+def get_light_energy(positions):
+    total_energy = 0
+    for x, y, e in positions:
+        total_energy += e
+    return total_energy
 
-    return min_length
+def get_light_balance_line(positions):
+    total_energy = get_light_energy(positions)
+    if total_energy == 0:
+        return 0
 
-def find_max_length_paths(graph, start, visited):
-    visited[start] = True
-    paths = []
-    for neighbor in graph[start]:
-        if not visited[neighbor]:
-            paths.extend(find_max_length_paths(graph, neighbor, visited))
-    if not paths:
-        paths.append([start])
-    for path in paths:
-        path.append(start)
-    return paths
+    sorted_positions = sorted(positions, key=lambda x: x[2])
+    negative_energy = 0
+    for x, y, e in sorted_positions:
+        if e < 0:
+            negative_energy += e
+        else:
+            break
+
+    if negative_energy == 0:
+        return 0
+
+    positive_energy = total_energy - negative_energy
+    ratio = negative_energy / positive_energy
+
+    for x, y, e in sorted_positions:
+        if e > 0:
+            break
+        negative_energy -= e
+        positive_energy -= e * ratio
+
+    return get_light_balance_line_helper(positions, negative_energy, positive_energy)
+
+def get_light_balance_line_helper(positions, negative_energy, positive_energy):
+    if negative_energy == 0 or positive_energy == 0:
+        return 0
+
+    sorted_positions = sorted(positions, key=lambda x: x[2])
+    for x, y, e in sorted_positions:
+        if e > 0:
+            break
+        negative_energy -= e
+        positive_energy -= e
+
+    return get_light_balance_line_helper(positions, negative_energy, positive_energy)
+
+def main():
+    n = int(input())
+    positions = get_light_positions(n)
+    balance_line = get_light_balance_line(positions)
+    print(balance_line)
+
+if __name__ == '__main__':
+    main()
 

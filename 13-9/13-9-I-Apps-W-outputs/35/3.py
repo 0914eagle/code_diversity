@@ -1,4 +1,17 @@
 
-def solve(a, b, c):
-    return sum(i * j * k for i in range(1, a + 1) for j in range(1, b + 1) for k in range(1, c + 1)) % 998244353
+def get_login(first_name, last_name):
+    
+    return first_name[0] + last_name[0]
+
+def get_input():
+    
+    return input().split()
+
+def main():
+    first_name, last_name = get_input()
+    login = get_login(first_name, last_name)
+    print(login)
+
+if __name__ == '__main__':
+    main()
 

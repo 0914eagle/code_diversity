@@ -1,14 +1,35 @@
 
-def solve(n, m, roads):
-    # Initialize a dictionary to store the number of roads connected to each city
-    roads_connected = {i: 0 for i in range(1, n + 1)}
+import math
 
-    # Iterate over the roads and increment the number of roads connected to each city
-    for road in roads:
-        city1, city2 = road
-        roads_connected[city1] += 1
-        roads_connected[city2] += 1
+def get_hole_coordinates():
+    hole_coordinates = []
+    for _ in range(int(input())):
+        hole_coordinates.append(tuple(map(float, input().split())))
+    return hole_coordinates
 
-    # Return the number of roads connected to each city
-    return [roads_connected[i] for i in range(1, n + 1)]
+def find_closest_hole(gopher_coordinates, dog_coordinates, hole_coordinates):
+    min_distance = float('inf')
+    closest_hole = None
+    for hole in hole_coordinates:
+        distance = math.sqrt((gopher_coordinates[0] - hole[0]) ** 2 + (gopher_coordinates[1] - hole[1]) ** 2)
+        if distance < min_distance:
+            min_distance = distance
+            closest_hole = hole
+    return closest_hole
+
+def escape_through_hole(gopher_coordinates, dog_coordinates, hole_coordinates):
+    closest_hole = find_closest_hole(gopher_coordinates, dog_coordinates, hole_coordinates)
+    if closest_hole:
+        return f"The gopher can escape through the hole at ({closest_hole[0]}, {closest_hole[1]})."
+    else:
+        return "The gopher cannot escape."
+
+def main():
+    gopher_coordinates = tuple(map(float, input().split()))
+    dog_coordinates = tuple(map(float, input().split()))
+    hole_coordinates = get_hole_coordinates()
+    print(escape_through_hole(gopher_coordinates, dog_coordinates, hole_coordinates))
+
+if __name__ == '__main__':
+    main()
 

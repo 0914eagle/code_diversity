@@ -1,17 +1,25 @@
 
-def longest_interesting_subsequence(A, S):
-    # Initialize variables
-    N = len(A)
-    dp = [0] * (N + 1)
+def get_min_f_value(a, j):
+    n = len(a)
+    min_f_value = float('inf')
+    for i in range(1, n+1):
+        if i != j:
+            f_value = (i-j)**2 + g(a, i, j)**2
+            if f_value < min_f_value:
+                min_f_value = f_value
+    return min_f_value
 
-    # Loop through each element in the array
-    for i in range(1, N + 1):
-        # If the current element is greater than or equal to S, then the longest interesting subsequence starting with this element is 0
-        if A[i - 1] >= S:
-            dp[i] = 0
-        # Otherwise, find the maximum length of the longest interesting subsequence starting with the previous elements
-        else:
-            dp[i] = max(dp[j] for j in range(1, i))
+def g(a, i, j):
+    if i < j:
+        i, j = j, i
+    sum = 0
+    for k in range(i+1, j+1):
+        sum += a[k]
+    return sum
 
-    return dp
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    j = int(input())
+    print(get_min_f_value(a, j))
 

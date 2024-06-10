@@ -1,20 +1,23 @@
 
-def solve(N):
-    # Initialize variables
-    operations = 0
-    current_amount = 0
+def get_input():
+    n = int(input())
+    weights = list(map(int, input().split()))
+    return n, weights
 
-    # While the current amount is less than the target amount
-    while current_amount < N:
-        # If the current amount is less than 9, withdraw 1 yen
-        if current_amount < 9:
-            current_amount += 1
-        # If the current amount is greater than or equal to 9, withdraw 9 yen
-        else:
-            current_amount += 9
-        # Increment the number of operations
-        operations += 1
+def find_min_diff(n, weights):
+    min_diff = float('inf')
+    for t in range(1, n):
+        s1 = sum(weights[:t])
+        s2 = sum(weights[t:])
+        diff = abs(s1 - s2)
+        if diff < min_diff:
+            min_diff = diff
+    return min_diff
 
-    # Return the number of operations required
-    return operations
+def main():
+    n, weights = get_input()
+    print(find_min_diff(n, weights))
+
+if __name__ == '__main__':
+    main()
 

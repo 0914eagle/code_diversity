@@ -1,26 +1,24 @@
 
-import math
+def get_suspects(n, p):
+    # Initialize a set to store the suspects
+    suspects = set()
+    
+    # Iterate over the input array
+    for i in range(n):
+        # Add the two named coders to the set of suspects
+        suspects.add(i + 1)
+        suspects.add(input()[1])
+    
+    # Return the number of ways to choose two suspects such that at least p coders agree with the choice
+    return len(suspects)
 
-def generate_convex_polygon(n):
-    # Validate input
-    if n < 3:
-        raise ValueError("Number of vertices must be at least 3")
-    if n > 400000:
-        raise ValueError("Number of vertices must be less than 400000")
+def main():
+    # Read the input n and p
+    n, p = map(int, input().split())
     
-    # Initialize the polygon with the first vertex at (0, 0)
-    polygon = [(0, 0)]
-    
-    # Iterate until the polygon has the desired number of vertices
-    while len(polygon) < n:
-        # Generate a random integer in the range [1, 400000]
-        x = math.floor(math.random() * 400000)
-        y = math.floor(math.random() * 400000)
-        
-        # Check if the point is not already in the polygon
-        if (x, y) not in polygon:
-            # Add the point to the polygon
-            polygon.append((x, y))
-    
-    return polygon
+    # Call the get_suspects function and print the result
+    print(get_suspects(n, p))
+
+if __name__ == '__main__':
+    main()
 

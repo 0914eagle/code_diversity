@@ -1,29 +1,29 @@
 
-def solve(k, n):
-    # Convert the input numbers to strings
-    k_str = str(k)
-    n_str = str(n)
+def get_maximum_distance(n, x, a, b):
+    if x == 0:
+        return abs(a - b)
     
-    # Initialize the minimum number of differences to the length of the number
-    min_differences = len(n_str)
+    # Initialize the distance between the rivals
+    distance = abs(a - b)
     
-    # Loop through all possible combinations of digits
-    for i in range(10):
-        for j in range(10):
-            for k in range(10):
-                # Check if the sum of the digits is greater than or equal to k
-                if i + j + k >= k:
-                    # Create a string with the possible digits
-                    possible_digits = str(i) + str(j) + str(k)
-                    
-                    # Check if the number of differences between the initial number and n is less than the current minimum
-                    num_differences = 0
-                    for m in range(len(n_str)):
-                        if n_str[m] != possible_digits[m]:
-                            num_differences += 1
-                    
-                    if num_differences < min_differences:
-                        min_differences = num_differences
+    # Loop through each swap
+    for i in range(x):
+        # Find the two adjacent students
+        student1 = a - 1 if a - 1 >= 1 else n
+        student2 = a + 1 if a + 1 <= n else 1
+        
+        # Check if the distance between the rivals is increased
+        if abs(student1 - student2) > distance:
+            distance = abs(student1 - student2)
     
-    return min_differences
+    return distance
+
+def main():
+    t = int(input())
+    for _ in range(t):
+        n, x, a, b = map(int, input().split())
+        print(get_maximum_distance(n, x, a, b))
+
+if __name__ == '__main__':
+    main()
 

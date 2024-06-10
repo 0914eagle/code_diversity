@@ -1,39 +1,31 @@
 
-def solve(N, program, grid):
-    # Initialize the robot's location and trail
-    location = (N-1, N-1)
-    trail = [location]
-
-    # Loop through the program
-    for char in program:
-        # Get the new location based on the character
-        if char == '<':
-            new_location = (location[0]-1, location[1])
-        elif char == '>':
-            new_location = (location[0]+1, location[1])
-        elif char == '^':
-            new_location = (location[0], location[1]-1)
-        elif char == 'v':
-            new_location = (location[0], location[1]+1)
-
-        # Check if the new location is passable
-        if grid[new_location[0]][new_location[1]] == '.':
-            # Add the new location to the trail
-            trail.append(new_location)
-            location = new_location
+def get_longest_repeated_substring(input_string):
+    # Initialize a dictionary to store the length and starting index of each repeated substring
+    repeated_substrings = {}
+    
+    # Loop through the input string
+    for i in range(len(input_string)):
+        # Check if the current substring has been encountered before
+        if input_string[i] in repeated_substrings:
+            # If it has, update the length and starting index of the repeated substring
+            repeated_substrings[input_string[i]][0] += 1
+            repeated_substrings[input_string[i]][1] = i - repeated_substrings[input_string[i]][0] + 1
         else:
-            # Skip the movement if the new location is impassable
-            continue
+            # If it hasn't, add it to the dictionary with a length of 1 and the current index as the starting index
+            repeated_substrings[input_string[i]] = [1, i]
+    
+    # Find the longest repeated substring
+    longest_substring = ""
+    for key, value in repeated_substrings.items():
+        if value[0] > len(longest_substring):
+            longest_substring = input_string[value[1]:value[1] + value[0]]
+    
+    return longest_substring
 
-    # Check if the trail is of finite length
-    if len(trail) == N*N:
-        return 1
-    else:
-        # Find the smallest integer X such that the suffix of the trail is a repetition of a continuous subsequence of the trail of length exactly X
-        X = 1
-        while True:
-            if trail[:X] == trail[N*N-X:]:
-                break
-            X += 1
-        return X
+def main():
+    input_string = input()
+    print(get_longest_repeated_substring(input_string))
+
+if __name__ == '__main__':
+    main()
 

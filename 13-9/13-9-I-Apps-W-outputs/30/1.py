@@ -1,15 +1,23 @@
 
-def solve(n, arr):
-    # Sort the array in descending order
-    arr.sort(reverse=True)
+def get_valid_ways(A, B):
+    n = len(A)
+    if n == 0:
+        return 0
     
-    # Initialize a variable to store the number of ways
-    ways = 0
+    dp = [0] * (n + 1)
+    dp[0] = 1
     
-    # Loop through the array and check if the current element is greater than or equal to the previous element
-    for i in range(n-1):
-        if arr[i] >= arr[i+1]:
-            ways += 1
+    for i in range(1, n + 1):
+        for j in range(i):
+            if A[j] == B[i - 1]:
+                dp[i] += dp[j]
     
-    return ways
+    return dp[n]
+
+def main():
+    A, B = input().split()
+    print(get_valid_ways(A, B))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,17 +1,26 @@
 
-def get_nametag_name(k):
-    # Initialize a list to store the possible names
-    names = []
+def get_minimum_problems(c, d, n, m, k):
+    # Calculate the total number of people that need to go to the finals
+    total_people = n * m
     
-    # Iterate through all lowercase letters
-    for letter in 'abcdefghijklmnopqrstuvwxyz':
-        # Calculate the absolute difference between the current letter and the next letter
-        diff = abs(ord(letter) - ord(letter.upper()))
-        
-        # If the difference is equal to the input number, add the current letter to the list of possible names
-        if diff == k:
-            names.append(letter)
+    # Calculate the number of problems needed for the main rounds
+    main_rounds = total_people // c
+    main_problems = main_rounds * c
     
-    # Return the shortest name in the list of possible names
-    return sorted(names)[0]
+    # Calculate the number of problems needed for the additional rounds
+    additional_rounds = total_people - main_rounds
+    additional_problems = additional_rounds * d
+    
+    # Calculate the total number of problems needed
+    total_problems = main_problems + additional_problems
+    
+    # Return the minimum number of problems needed
+    return total_problems
+
+def main():
+    c, d, n, m, k = map(int, input().split())
+    print(get_minimum_problems(c, d, n, m, k))
+
+if __name__ == '__main__':
+    main()
 

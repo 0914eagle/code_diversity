@@ -1,25 +1,30 @@
 
-def solve(n, f):
-    # Initialize a list to store the answers
-    ans = [0] * n
+def get_grid_size():
+    return list(map(int, input().split()))
 
-    # Iterate through the input and fill in the answers
-    for i in range(n):
-        # If the current friend doesn't know whom to give the gift to, find the next available friend
-        if f[i] == 0:
-            for j in range(1, n + 1):
-                if j != i and ans[j - 1] == 0:
-                    ans[i] = j
-                    ans[j - 1] = i + 1
-                    break
-        # If the current friend knows whom to give the gift to, find the next available friend who doesn't know whom to give the gift to
-        else:
-            for j in range(1, n + 1):
-                if j != i and ans[j - 1] == 0 and f[j - 1] != 0:
-                    ans[i] = j
-                    ans[j - 1] = i + 1
-                    break
+def get_grid():
+    grid = []
+    for _ in range(n):
+        grid.append(list(map(int, input().split())))
+    return grid
 
-    # Return the answers
-    return ans
+def get_path_count(grid, x, y, k, visited):
+    if x == n and y == m:
+        return 1 if grid[x][y] ^ k == 0 else 0
+    
+    count = 0
+    for i in range(x, n):
+        for j in range(y, m):
+            if grid[i][j] ^ k == 0 and (i, j) not in visited:
+                visited.add((i, j))
+                count += get_path_count(grid, i, j, k, visited)
+                visited.remove((i, j))
+    
+    return count
+
+n, m, k = get_grid_size()
+grid = get_grid()
+visited = set()
+count = get_path_count(grid, 0, 0, k, visited)
+print(count)
 

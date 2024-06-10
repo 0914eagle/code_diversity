@@ -1,15 +1,19 @@
 
-def solve(a, k):
-    n = len(a)
-    x = 0
-    count = 0
-    while True:
-        for i in range(n):
-            if a[i] % k != 0:
-                a[i] += x
-                count += 1
-        x += 1
-        if all(a[i] % k == 0 for i in range(n)):
-            break
-    return count
+def score_words(words):
+    score = 0
+    for word in words:
+        vowels = 0
+        for char in word:
+            if char in 'aeiouy':
+                vowels += 1
+        if vowels % 2 == 0:
+            score += 2
+        else:
+            score += 1
+    return score
+
+if __name__ == '__main__':
+    n = int(input())
+    words = input().split()
+    print(score_words(words))
 

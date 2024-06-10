@@ -1,23 +1,26 @@
 
-import sys
+def get_sorted_permutation(permutation):
+    n = len(permutation)
+    swaps = []
+    for i in range(n):
+        for j in range(i+1, n):
+            if abs(i-j) >= n//2:
+                swaps.append((i, j))
+                break
+    return swaps
 
-mod = 1000000007
+def perform_swaps(permutation, swaps):
+    for i, j in swaps:
+        permutation[i], permutation[j] = permutation[j], permutation[i]
+    return permutation
 
-def num_paths(n, k, d):
-    # Initialize the dp table with 0s
-    dp = [0] * (n + 1)
-    dp[0] = 1
-    
-    # Iterate over the values of n
-    for i in range(1, n + 1):
-        # Iterate over the values of k
-        for j in range(1, k + 1):
-            # If j is greater than or equal to d, add the number of paths from the previous value of n and k
-            if j >= d:
-                dp[i] = (dp[i] + dp[i - 1]) % mod
-    
-    return dp[n]
-
-n, k, d = map(int, input().split())
-print(num_paths(n, k, d))
+if __name__ == '__main__':
+    n = int(input())
+    permutation = list(map(int, input().split()))
+    swaps = get_sorted_permutation(permutation)
+    print(len(swaps))
+    for i, j in swaps:
+        print(i, j)
+    permutation = perform_swaps(permutation, swaps)
+    print(*permutation)
 

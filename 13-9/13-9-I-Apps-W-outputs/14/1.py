@@ -1,43 +1,56 @@
 
-def get_brain_latency(n, m, brain_connectors):
-    # Initialize a graph with n vertices
-    graph = [[] for _ in range(n)]
-
-    # Add edges to the graph
-    for a, b in brain_connectors:
-        graph[a - 1].append(b - 1)
-        graph[b - 1].append(a - 1)
-
-    # Find the maximum distance between any two vertices
-    max_distance = 0
-    for i in range(n):
-        for j in range(n):
-            if i != j:
-                distance = bfs(graph, i, j)
-                max_distance = max(max_distance, distance)
-
-    return max_distance
-
-def bfs(graph, start, end):
-    # Breadth-first search
-    queue = [start]
+def get_shortest_path(graph, start, end):
     visited = set()
-    distance = 0
-    while queue:
-        vertex = queue.pop(0)
-        if vertex == end:
-            return distance
-        for neighbor in graph[vertex]:
-            if neighbor not in visited:
-                queue.append(neighbor)
-                visited.add(neighbor)
-        distance += 1
-    return -1
+    queue = [[start]]
 
-n, m = map(int, input().split())
-brain_connectors = []
-for _ in range(m):
-    a, b = map(int, input().split())
-    brain_connectors.append((a, b))
-print(get_brain_latency(n, m, brain_connectors))
+    while queue:
+        path = queue.pop(0)
+        node = path[-1]
+
+        if node not in visited:
+            visited.add(node)
+            neighbors = graph[node]
+
+            for neighbor in neighbors:
+                new_path = list(path)
+                new_path.append(neighbor)
+                queue.append(new_path)
+
+                if neighbor == end:
+                    return new_path
+
+    return None
+
+def solve(n, m, roads):
+    graph = {}
+
+    for road in roads:
+        a, b, d = road
+        if a not in graph:
+            graph[a] = []
+        if b not in graph:
+            graph[b] = []
+
+        graph[a].append(b)
+        graph[b].append(a)
+
+    path = get_shortest_path(graph, 0, 1)
+
+    if path is None:
+        return "impossible"
+
+    return " ".join(str(node) for node in path[1:])
+
+def main():
+    n, m = map(int, input().split())
+    roads = []
+
+    for _ in range(m):
+        a, b, d = map(int, input().split())
+        roads.append((a, b, d))
+
+    print(solve(n, m, roads))
+
+if __name__ == '__main__':
+    main()
 

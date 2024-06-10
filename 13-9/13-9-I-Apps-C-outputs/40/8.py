@@ -1,21 +1,46 @@
 
-def solve(N, a):
-    # Initialize the maximum amount of money to be earned
-    max_money = 0
-    # Iterate over all possible values of x
-    for x in range(1, N + 1):
-        # Initialize the amount of money earned in this iteration
-        money = 0
-        # Iterate over all gems
-        for i in range(N):
-            # If the gem is not smashed and its label is a multiple of x
-            if i + 1 not in a and (i + 1) % x == 0:
-                # Add the value of the gem to the amount of money earned
-                money += a[i]
-        # If the amount of money earned in this iteration is greater than the maximum amount of money
-        if money > max_money:
-            # Update the maximum amount of money
-            max_money = money
-    # Return the maximum amount of money that can be earned
-    return max_money
+def compute_chances(N, L, walk, graph):
+    # Initialize the probability of success as 1
+    prob = 1
+
+    # Iterate over the rooms in the walk
+    for i in range(L):
+        # Get the current room and its neighbors
+        current_room = walk[i]
+        neighbors = graph[current_room]
+
+        # If the current room has neighbors, calculate the probability of visiting them
+        if len(neighbors) > 0:
+            # Initialize the probability of visiting a neighbor as 0
+            prob_neighbor = 0
+
+            # Iterate over the neighbors
+            for neighbor in neighbors:
+                # If the neighbor is not the previous room, calculate the probability of visiting it
+                if neighbor != walk[i - 1]:
+                    prob_neighbor += 1 / len(neighbors)
+
+            # Update the probability of success with the probability of visiting a neighbor
+            prob *= prob_neighbor
+
+    # Return the probability of success
+    return prob
+
+def main():
+    # Read the input
+    N, L = map(int, input().split())
+    walk = list(map(int, input().split()))
+    graph = [[] for _ in range(N)]
+    for _ in range(N):
+        node, neighbors = map(int, input().split())
+        graph[node] = list(map(int, input().split()))
+
+    # Compute the chances of success
+    prob = compute_chances(N, L, walk, graph)
+
+    # Print the result
+    print(prob)
+
+if __name__ == '__main__':
+    main()
 

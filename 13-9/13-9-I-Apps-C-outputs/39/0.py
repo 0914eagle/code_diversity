@@ -1,36 +1,45 @@
 
-def solve(n, hits):
-    # Initialize a 2D array to store the configuration of targets
-    targets = [[0] * (n + 1) for _ in range(n + 1)]
-    
-    # Populate the array with the given number of hits for each column
-    for i in range(1, n + 1):
-        targets[n][i] = hits[i - 1]
-    
-    # Check if the configuration is valid
-    if not is_valid(targets):
-        return -1
-    
-    # If the configuration is valid, return the number of targets and their positions
-    t = 0
-    for i in range(1, n + 1):
-        for j in range(1, n + 1):
-            if targets[i][j] == 1:
-                t += 1
-                print(i, j)
-    
-    return t
+def get_expected_weights(n, m, likes, weights):
+    # Initialize the expected weights
+    expected_weights = [0] * n
 
-def is_valid(targets):
-    # Check if each row has at most 2 targets
-    for i in range(1, len(targets)):
-        if len([j for j in range(1, len(targets[0])) if targets[i][j] == 1]) > 2:
-            return False
-    
-    # Check if each column has at most 2 targets
-    for j in range(1, len(targets[0])):
-        if len([i for i in range(1, len(targets)) if targets[i][j] == 1]) > 2:
-            return False
-    
-    return True
+    # Loop through each visit
+    for visit in range(m):
+        # Generate a random number between 1 and the sum of the weights
+        random_number = randint(1, sum(weights))
+
+        # Find the index of the picture that corresponds to the random number
+        picture_index = 0
+        while random_number > weights[picture_index]:
+            random_number -= weights[picture_index]
+            picture_index += 1
+
+        # If the picture is liked, increase its weight by 1
+        if likes[picture_index] == 1:
+            weights[picture_index] += 1
+        # Otherwise, decrease its weight by 1
+        else:
+            weights[picture_index] -= 1
+
+        # Update the expected weight
+        expected_weights[picture_index] += weights[picture_index]
+
+    # Return the expected weights
+    return expected_weights
+
+def main():
+    # Read the input
+    n, m = map(int, input().split())
+    likes = list(map(int, input().split()))
+    weights = list(map(int, input().split()))
+
+    # Calculate the expected weights
+    expected_weights = get_expected_weights(n, m, likes, weights)
+
+    # Print the expected weights
+    for expected_weight in expected_weights:
+        print(expected_weight)
+
+if __name__ == '__main__':
+    main()
 

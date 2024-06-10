@@ -1,19 +1,23 @@
 
-def solve(n, room):
-    # Initialize the maximum number of clean rows to 0
-    max_clean_rows = 0
-    # Loop through each column of the room
-    for col in range(n):
-        # Initialize the number of clean rows in this column to 0
-        clean_rows = 0
-        # Loop through each row in the column
-        for row in range(n):
-            # Check if the current square is clean
-            if room[row][col] == "1":
-                # Increment the number of clean rows in this column
-                clean_rows += 1
-        # Update the maximum number of clean rows if necessary
-        max_clean_rows = max(max_clean_rows, clean_rows)
-    # Return the maximum number of clean rows
-    return max_clean_rows
+def get_min_operations(s):
+    # Initialize a variable to store the minimum number of operations
+    min_operations = 0
+    # Loop through the string and check if there are any consecutive characters that are the same
+    for i in range(len(s) - 1):
+        if s[i] == s[i+1]:
+            # If there are consecutive characters that are the same, delete them and increment the minimum number of operations
+            min_operations += 1
+            # Delete the consecutive characters
+            s = s[:i] + s[i+2:]
+    # Return the minimum number of operations
+    return min_operations
+
+def main():
+    # Read the input string
+    s = input()
+    # Call the get_min_operations function and print the result
+    print(get_min_operations(s))
+
+if __name__ == '__main__':
+    main()
 

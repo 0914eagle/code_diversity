@@ -1,39 +1,38 @@
 
-def solve(n, a):
-    # Initialize variables
-    seconds = 0
-    k = 1
-    divisible_boxes = []
+def lossy_sort(numbers, m):
+    # Sort the numbers in ascending order
+    sorted_numbers = sorted(numbers)
+    
+    # Initialize a dictionary to keep track of the number of digits changed for each number
+    digits_changed = {number: 0 for number in numbers}
+    
+    # Loop through the numbers and check if they are sorted
+    for i in range(len(numbers)):
+        # If the current number is not sorted, find the smallest number that is greater than it
+        if sorted_numbers[i] != numbers[i]:
+            # Find the index of the smallest number that is greater than the current number
+            j = i + 1
+            while j < len(numbers) and sorted_numbers[j] <= numbers[i]:
+                j += 1
+            
+            # Swap the current number with the smallest number that is greater than it
+            numbers[i], numbers[j] = numbers[j], numbers[i]
+            
+            # Increment the number of digits changed for the current number
+            digits_changed[numbers[i]] += 1
+    
+    # Return the sorted numbers and the minimum number of digits changed
+    return sorted_numbers, min(digits_changed.values())
 
-    # Loop through each box
-    for i in range(n):
-        # If the current box is not divisible by k, find the next divisor of a[i]
-        while a[i] % k != 0:
-            k += 1
+def main():
+    n, m = map(int, input().split())
+    numbers = []
+    for _ in range(n):
+        numbers.append(int(input()))
+    sorted_numbers, digits_changed = lossy_sort(numbers, m)
+    print(*sorted_numbers)
+    print(digits_changed)
 
-        # If k is greater than the number of chocolates in the current box, return -1
-        if k > a[i]:
-            return -1
-
-        # If the current box is divisible by k, add it to the list of divisible boxes
-        if a[i] % k == 0:
-            divisible_boxes.append(i)
-
-    # If all boxes are divisible by k, return the number of seconds
-    if len(divisible_boxes) == n:
-        return seconds
-
-    # If not all boxes are divisible by k, find the box with the smallest number of chocolates
-    smallest_box = 0
-    for i in range(n):
-        if a[i] < a[smallest_box]:
-            smallest_box = i
-
-    # Move a piece of chocolate from the smallest box to the next box
-    a[smallest_box] -= 1
-    a[smallest_box + 1] += 1
-    seconds += 1
-
-    # Recursively call the function to solve the updated problem
-    return solve(n, a)
+if __name__ == '__main__':
+    main()
 

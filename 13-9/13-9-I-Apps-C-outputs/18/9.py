@@ -1,24 +1,42 @@
 
 import math
 
-def get_largest_corn_area(polygon, canal):
-    # Convert the polygon and canal to tuples
-    polygon = tuple(polygon)
-    canal = tuple(canal)
-    
-    # Find the center of the polygon
-    center_x = sum(x for x, y in polygon) / len(polygon)
-    center_y = sum(y for x, y in polygon) / len(polygon)
-    
-    # Find the distance from the center of the polygon to the canal
-    dist_to_canal = min(math.sqrt((center_x - x) ** 2 + (center_y - y) ** 2) for x, y in canal)
-    
-    # Find the largest area of corn fields that can be grown
-    largest_area = 0
-    for i in range(len(polygon)):
-        # Find the area of the triangle formed by the center of the polygon, the canal, and the current vertex
-        area = math.sqrt(dist_to_canal ** 2 - (polygon[i][0] - center_x) ** 2 - (polygon[i][1] - center_y) ** 2) * dist_to_canal
-        largest_area = max(largest_area, area)
-    
-    return largest_area
+def calculate_leash_length(n, m, toy_coordinates, tree_coordinates):
+    # Calculate the distance between the post and the first toy
+    first_toy_distance = math.sqrt((toy_coordinates[0][0] - 0) ** 2 + (toy_coordinates[0][1] - 0) ** 2)
+
+    # Calculate the distance between the post and the last toy
+    last_toy_distance = math.sqrt((toy_coordinates[-1][0] - 0) ** 2 + (toy_coordinates[-1][1] - 0) ** 2)
+
+    # Calculate the distance between the post and the first tree
+    first_tree_distance = math.sqrt((tree_coordinates[0][0] - 0) ** 2 + (tree_coordinates[0][1] - 0) ** 2)
+
+    # Calculate the distance between the post and the last tree
+    last_tree_distance = math.sqrt((tree_coordinates[-1][0] - 0) ** 2 + (tree_coordinates[-1][1] - 0) ** 2)
+
+    # Calculate the maximum distance Spot can travel between any two toys
+    max_toy_distance = max(first_toy_distance, last_toy_distance)
+
+    # Calculate the maximum distance Spot can travel between any two trees
+    max_tree_distance = max(first_tree_distance, last_tree_distance)
+
+    # Calculate the leash length needed to get to all toys and trees
+    leash_length = max(max_toy_distance, max_tree_distance)
+
+    return round(leash_length, 2)
+
+def main():
+    n, m = map(int, input().split())
+    toy_coordinates = []
+    tree_coordinates = []
+    for i in range(n):
+        x, y = map(int, input().split())
+        toy_coordinates.append((x, y))
+    for i in range(m):
+        x, y = map(int, input().split())
+        tree_coordinates.append((x, y))
+    print(calculate_leash_length(n, m, toy_coordinates, tree_coordinates))
+
+if __name__ == '__main__':
+    main()
 

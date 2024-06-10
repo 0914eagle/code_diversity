@@ -1,27 +1,23 @@
 
-def is_possible_triangle(sticks):
-    
-    # Sort the sticks in descending order
-    sticks.sort(reverse=True)
+def solve(S):
+    # Initialize the number of new stones needed
+    new_stones = 0
 
-    # Find the longest stick
-    longest_stick = sticks[0]
+    # Iterate through the string S
+    for i in range(len(S)):
+        # If the current character is 'B' and the previous character is 'W', we need to place a new black stone
+        if S[i] == 'B' and (i == 0 or S[i-1] == 'W'):
+            new_stones += 1
+        # If the current character is 'W' and the next character is 'B', we need to place a new white stone
+        elif S[i] == 'W' and (i == len(S)-1 or S[i+1] == 'B'):
+            new_stones += 1
 
-    # Find the second longest stick
-    second_longest_stick = sticks[1]
+    return new_stones
 
-    # Find the shortest stick
-    shortest_stick = sticks[2]
+def main():
+    S = input()
+    print(solve(S))
 
-    # Calculate the semi-perimeter of the triangle
-    semi_perimeter = longest_stick + second_longest_stick + shortest_stick
-
-    # Calculate the area of the triangle
-    area = (semi_perimeter - longest_stick) * (semi_perimeter - second_longest_stick) * (semi_perimeter - shortest_stick)
-
-    # Check if the area is positive
-    if area > 0:
-        return "possible"
-    else:
-        return "impossible"
+if __name__ == '__main__':
+    main()
 

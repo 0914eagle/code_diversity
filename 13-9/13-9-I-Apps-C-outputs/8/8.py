@@ -1,42 +1,43 @@
 
-def min_cost_to_travel(gas_stations, fuel_tank_capacity):
-    # Sort the gas stations by distance from left to right
-    gas_stations.sort(key=lambda x: x[0])
+def get_signed_binary_representation(n):
+    # Convert the input to a binary string
+    binary_str = bin(n)[2:]
     
-    # Initialize the current distance from the origin to 0
-    current_distance = 0
+    # Initialize the signed binary representation as a list of zeros
+    signed_binary_repr = [0] * len(binary_str)
     
-    # Initialize the current fuel level to the fuel tank capacity
-    current_fuel_level = fuel_tank_capacity
-    
-    # Initialize the minimum cost to travel to the rightmost gas station to infinity
-    min_cost = float('inf')
-    
-    # Iterate through the gas stations
-    for gas_station in gas_stations:
-        # Calculate the distance from the current position to the gas station
-        distance_to_gas_station = gas_station[0] - current_distance
-        
-        # Calculate the fuel needed to reach the gas station
-        fuel_needed = distance_to_gas_station / 1000
-        
-        # If the fuel needed is less than or equal to the current fuel level, fill up the tank and update the current fuel level
-        if fuel_needed <= current_fuel_level:
-            current_fuel_level = fuel_tank_capacity
-        # Otherwise, calculate the fuel needed to travel the remaining distance and update the current fuel level
+    # Loop through the binary string and convert each digit to -1, 0, or 1
+    for i, digit in enumerate(binary_str):
+        if digit == "0":
+            signed_binary_repr[i] = 0
+        elif digit == "1":
+            signed_binary_repr[i] = 1
         else:
-            current_fuel_level -= fuel_needed - current_fuel_level
-        
-        # Add the cost of gas at the current gas station to the minimum cost
-        min_cost += gas_station[1]
-        
-        # Update the current distance to the gas station
-        current_distance = gas_station[0]
+            signed_binary_repr[i] = -1
     
-    # If the current fuel level is non-negative, return the minimum cost
-    if current_fuel_level >= 0:
-        return min_cost
-    # Otherwise, return "cancel road trip"
-    else:
-        return "cancel road trip"
+    # Return the signed binary representation as a string
+    return "".join(str(digit) for digit in signed_binary_repr)
+
+def get_minimal_signed_binary_representation(n):
+    # Get the signed binary representation of the input number
+    signed_binary_repr = get_signed_binary_representation(n)
+    
+    # Initialize the minimal signed binary representation as the current signed binary representation
+    minimal_signed_binary_repr = signed_binary_repr
+    
+    # Loop through the signed binary representation and check if any digit can be changed to a smaller digit
+    for i in range(len(signed_binary_repr)):
+        if signed_binary_repr[i] == 1:
+            # If the digit is 1, change it to -1 and check if the resulting representation is smaller
+            signed_binary_repr[i] = -1
+            if len(signed_binary_repr) < len(minimal_signed_binary_repr):
+                minimal_signed_binary_repr = signed_binary_repr
+            signed_binary_repr[i] = 1
+    
+    # Return the minimal signed binary representation as a string
+    return "".join(str(digit) for digit in minimal_signed_binary_repr)
+
+if __name__ == '__main__':
+    n = int(input())
+    print(get_minimal_signed_binary_representation(n))
 

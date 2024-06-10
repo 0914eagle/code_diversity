@@ -1,19 +1,62 @@
 
-def slugging_percentage(at_bats):
-    # Initialize variables to store the number of hits and total bases
-    hits = 0
-    total_bases = 0
+def solve(points, k):
+    # Sort the points by their x-coordinates
+    points.sort(key=lambda x: x[0])
+    
+    # Initialize the maximum number of points that can be saved
+    max_points = 0
+    
+    # Loop through all possible starting points for the first platform
+    for i in range(len(points)):
+        # Initialize the number of points that can be saved for this platform
+        points_saved = 0
+        
+        # Loop through all possible ending points for the first platform
+        for j in range(i, len(points)):
+            # Check if the platform overlaps with any other platform
+            overlaps = False
+            for platform in platforms:
+                if platform[0] <= points[j][0] <= platform[1] or platform[0] <= points[i][0] <= platform[1]:
+                    overlaps = True
+                    break
+            
+            # If the platform does not overlap with any other platform, increment the number of points that can be saved
+            if not overlaps:
+                points_saved += 1
+            
+            # If the platform is long enough, add it to the list of platforms
+            if points[j][0] - points[i][0] + 1 >= k:
+                platforms.append([points[i][0], points[j][0]])
+        
+        # Update the maximum number of points that can be saved
+        max_points = max(max_points, points_saved)
+    
+    return max_points
 
-    # Iterate through the list of at-bats
-    for at_bat in at_bats:
-        # If the at-bat is not a walk, increment the number of hits and add the number of bases for the at-bat to the total
-        if at_bat != -1:
-            hits += 1
-            total_bases += at_bat
+def read_input():
+    # Read the number of test cases
+    t = int(input())
+    
+    # Loop through each test case
+    for _ in range(t):
+        # Read the number of points and the length of each platform
+        n, k = map(int, input().split())
+        
+        # Read the x-coordinates of the points
+        x = [int(x) for x in input().split()]
+        
+        # Read the y-coordinates of the points
+        y = [int(y) for y in input().split()]
+        
+        # Create a list of points
+        points = [(x[i], y[i]) for i in range(n)]
+        
+        # Find the maximum number of points that can be saved
+        max_points = solve(points, k)
+        
+        # Print the answer for this test case
+        print(max_points)
 
-    # Calculate the slugging percentage by dividing the total number of bases by the number of hits
-    slugging_percentage = total_bases / hits
-
-    # Return the slugging percentage
-    return slugging_percentage
+if __name__ == '__main__':
+    read_input()
 

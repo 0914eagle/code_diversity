@@ -1,10 +1,20 @@
 
-def max_quadrilateral(s1, s2, s3, s4):
-    # Sort the side lengths in descending order
-    s = sorted([s1, s2, s3, s4], reverse=True)
+def get_min_number(L, D, X):
+    for N in range(L, D+1):
+        if sum(int(digit) for digit in str(N)) == X:
+            return N
+    return -1
 
-    # Calculate the maximum area
-    area = (s[0] + s[1] + s[2] + s[3]) * (s[0] + s[1] - s[2] - s[3]) * (s[0] - s[1] + s[2] - s[3]) * (s[0] - s[1] - s[2] + s[3])
+def get_max_number(L, D, X):
+    for M in range(L, D+1):
+        if sum(int(digit) for digit in str(M)) == X:
+            return M
+    return -1
 
-    return area
+if __name__ == '__main__':
+    L = int(input())
+    D = int(input())
+    X = int(input())
+    print(get_min_number(L, D, X))
+    print(get_max_number(L, D, X))
 

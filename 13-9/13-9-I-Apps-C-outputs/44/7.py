@@ -1,30 +1,53 @@
 
-def solve_flight_problem(n, flights):
-    # Initialize a graph with the given flights
-    graph = {i: set() for i in range(1, n + 1)}
-    for flight in flights:
-        graph[flight[0]].add(flight[1])
-        graph[flight[1]].add(flight[0])
+def get_splitters(a, b, c, d, n):
+    # Initialize the splitters dictionary
+    splitters = {}
+    
+    # Initialize the input and output belts
+    input_belt = 0
+    output_belts = [1, 2]
+    
+    # Iterate through the desired ratios
+    for i in range(n):
+        # Calculate the ratio of the input to the first output
+        ratio = a / (a + b)
+        
+        # Add the splitter to the dictionary
+        splitters[i] = (input_belt, output_belts[0], ratio)
+        
+        # Update the input and output belts
+        input_belt = output_belts[0]
+        output_belts[0] = output_belts[1]
+        output_belts[1] = i + 3
+    
+    # Return the splitters dictionary
+    return splitters
 
-    # Find the flight with the maximum number of connections
-    max_connections = 0
-    flight_to_cancel = None
-    for city in graph:
-        connections = len(graph[city])
-        if connections > max_connections:
-            max_connections = connections
-            flight_to_cancel = city
+def get_network(a, b, c, d):
+    # Calculate the number of splitters needed
+    n = (c * d) // (a * b)
+    
+    # Get the splitters
+    splitters = get_splitters(a, b, c, d, n)
+    
+    # Return the splitters dictionary
+    return splitters
 
-    # Find the best new flight to add
-    min_connections = max_connections
-    new_flight = None
-    for city1 in graph:
-        for city2 in graph:
-            if city1 != city2 and (city1, city2) not in flights:
-                connections = len(graph[city1]) + len(graph[city2])
-                if connections < min_connections:
-                    min_connections = connections
-                    new_flight = (city1, city2)
-
-    return (min_connections, flight_to_cancel, new_flight)
+def main():
+    # Read the input
+    a, b = map(int, input().split())
+    c, d = map(int, input().split())
+    
+    # Get the network
+    splitters = get_network(a, b, c, d)
+    
+    # Print the number of splitters
+    print(len(splitters))
+    
+    # Print the splitters
+    for i, (input_belt, output_belt, ratio) in splitters.items():
+        print(input_belt, output_belt)
+    
+if __name__ == '__main__':
+    main()
 

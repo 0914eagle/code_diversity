@@ -1,30 +1,26 @@
 
-def is_handsome(n):
-    n_str = str(n)
-    for i in range(len(n_str) - 1):
-        if n_str[i] == n_str[i + 1]:
-            return False
-    return True
+def get_standard_sum(num1, num2):
+    sum = 0
+    while num1 > 0 or num2 > 0:
+        sum += (num1 % 10) + (num2 % 10)
+        num1 //= 10
+        num2 //= 10
+    return sum
 
-def find_closest_handsome_number(n):
-    n_str = str(n)
-    for i in range(len(n_str) - 1):
-        if n_str[i] != n_str[i + 1]:
-            break
-    else:
-        return n
+def get_min_steps(num1, num2):
+    steps = 0
+    while get_standard_sum(num1, num2) > 9:
+        steps += 1
+        if num1 > num2:
+            num1 -= 1
+        else:
+            num2 -= 1
+    return steps
 
-    if n_str[i] == '0':
-        return int(n_str[:i] + '1' + n_str[i + 1:])
-    elif n_str[i] == '9':
-        return int(n_str[:i] + '8' + n_str[i + 1:])
-    else:
-        return int(n_str[:i] + str(int(n_str[i]) + 1) + n_str[i + 1:])
+def main():
+    num1, num2 = map(int, input().split())
+    print(get_min_steps(num1, num2))
 
-def solve(n):
-    handsome_number = find_closest_handsome_number(n)
-    if is_handsome(handsome_number):
-        return str(handsome_number)
-    else:
-        return str(handsome_number - 1) + ' ' + str(handsome_number)
+if __name__ == '__main__':
+    main()
 

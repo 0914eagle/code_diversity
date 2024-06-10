@@ -1,16 +1,15 @@
 
-def solve(l1, r1, l2, r2):
-    # Find the middle point of the first segment
-    mid1 = (l1 + r1) // 2
-    
-    # Find the middle point of the second segment
-    mid2 = (l2 + r2) // 2
-    
-    # If the middle points of the two segments are the same, return any point within the segments
-    if mid1 == mid2:
-        return l1, r2
-    
-    # If the middle points of the two segments are not the same, return the middle point of the first segment and the middle point of the second segment
+def get_hours_until_new_year(hour):
+    if hour < 24:
+        return 24 - hour
     else:
-        return mid1, mid2
+        return 24 - (hour - 24)
+
+def main():
+    hour = int(input())
+    hours_until_new_year = get_hours_until_new_year(hour)
+    print(f"We have {hours_until_new_year} hours until New Year at {hour:02d} o'clock on 30th, December.")
+
+if __name__ == '__main__':
+    main()
 

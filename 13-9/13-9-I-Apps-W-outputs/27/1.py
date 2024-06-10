@@ -1,17 +1,40 @@
 
-def solve(n, a):
-    # Calculate the number of votes Limak needs to have strictly more than any other candidate
-    votes_needed = max(a) + 1
+def is_jump_possible(n, k, line):
+    # Initialize variables
+    empty_cells = []
+    obstacles = []
+    grasshopper_position = 0
+    insect_position = 0
+    
+    # Parse the input line
+    for i, char in enumerate(line):
+        if char == '.':
+            empty_cells.append(i)
+        elif char == '#':
+            obstacles.append(i)
+        elif char == 'G':
+            grasshopper_position = i
+        elif char == 'T':
+            insect_position = i
+    
+    # Check if the grasshopper can reach the insect
+    for i in range(len(empty_cells)):
+        if empty_cells[i] - grasshopper_position == k:
+            if empty_cells[i] == insect_position:
+                return True
+            elif empty_cells[i] in obstacles:
+                break
+    
+    return False
 
-    # Initialize a counter for the number of citizens Limak needs to bribe
-    citizens_needed = 0
+def main():
+    n, k = map(int, input().split())
+    line = input()
+    if is_jump_possible(n, k, line):
+        print("YES")
+    else:
+        print("NO")
 
-    # Iterate through the array of votes for each candidate
-    for i in range(n):
-        # If the current candidate has fewer votes than what Limak needs,
-        # increment the counter by the difference between the two
-        if a[i] < votes_needed:
-            citizens_needed += votes_needed - a[i]
-
-    return citizens_needed
+if __name__ == '__main__':
+    main()
 

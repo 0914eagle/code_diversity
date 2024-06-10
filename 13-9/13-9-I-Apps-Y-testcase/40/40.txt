@@ -1,10 +1,1 @@
-{
-    "inputs": [
-        "playfair example\nhide the gold in the tree stump\n",
-        "the magic key\ni love programming competition\n"
-    ],
-    "outputs": [
-        "BMNDZBXDKYBEJVDMUIXMMNUVIF\n",
-        "YDVHCWSPKNTAHKUBIPERMHGHDVRU\n"
-    ]
-}
+{"inputs": ["6\naabbca\n", "10\naaaaaaaaaa\n", "45\ntgxgdqkyjzhyputjjtllptdfxocrylqfqjynmfbfucbir\n"], "outputs": ["2\n", "1\n", "9\n"]}

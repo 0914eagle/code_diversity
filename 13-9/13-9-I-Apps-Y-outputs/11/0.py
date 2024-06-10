@@ -1,5 +1,25 @@
 
-def solve(n, a):
-    # Your code here
-    return len(set(a))
+def get_monotonic_renumbering(a):
+    n = len(a)
+    b = [0] * n
+    b[0] = 0
+    for i in range(1, n):
+        if a[i] == a[i-1]:
+            b[i] = b[i-1]
+        else:
+            b[i] = b[i-1] + 1
+    return b
+
+def count_monotonic_renumberings(a):
+    n = len(a)
+    count = 1
+    for i in range(1, n):
+        if a[i] != a[i-1]:
+            count *= 2
+    return count % 998244353
+
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(count_monotonic_renumberings(a))
 

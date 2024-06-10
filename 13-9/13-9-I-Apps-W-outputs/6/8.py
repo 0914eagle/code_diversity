@@ -1,28 +1,49 @@
 
-def can_reach_end(n, k, road):
-    # Initialize a set to store the indices of sectors with rocks
-    rocks = set()
-    # Iterate through the road description
-    for i, char in enumerate(road):
-        # If the current sector has a rock, add its index to the set
-        if char == "#":
-            rocks.add(i)
-    # Initialize a set to store the indices of sectors that Ksusha can reach
-    reachable = set([0])
-    # Iterate through the road description
-    for i in range(n - 1):
-        # Get the indices of the next sectors that Ksusha can reach
-        next_reachable = set()
-        for j in reachable:
-            # If the current sector has no rocks, add the indices of the next sectors that Ksusha can reach to the set
-            if j + 1 not in rocks:
-                next_reachable.add(j + 1)
-            # If Ksusha can jump k sectors, add the indices of the next sectors that Ksusha can reach to the set
-            for k_ in range(1, k + 1):
-                if j + k_ not in rocks:
-                    next_reachable.add(j + k_)
-        # Add the indices of the next sectors that Ksusha can reach to the set of reachable sectors
-        reachable = reachable.union(next_reachable)
-    # Return "YES" if Ksusha can reach the last sector, otherwise return "NO"
-    return "YES" if n - 1 in reachable else "NO"
+def get_min_cost(cities):
+    # Initialize variables
+    min_cost = 0
+    connected_cities = []
+
+    # Iterate through each city
+    for city in cities:
+        # If the city is not connected, find the closest connected city and calculate the cost
+        if city not in connected_cities:
+            closest_city = find_closest_city(city, connected_cities)
+            cost = abs(city - closest_city)
+            min_cost += cost
+            connected_cities.append(city)
+
+    return min_cost
+
+def find_closest_city(city, connected_cities):
+    # Initialize variables
+    closest_city = None
+    min_distance = float('inf')
+
+    # Iterate through each connected city
+    for connected_city in connected_cities:
+        # Calculate the distance between the current city and the connected city
+        distance = abs(city - connected_city)
+        # If the distance is less than the current minimum distance, update the minimum distance and closest city
+        if distance < min_distance:
+            min_distance = distance
+            closest_city = connected_city
+
+    return closest_city
+
+def main():
+    # Read the number of cities
+    n = int(input())
+    # Read the cities
+    cities = []
+    for i in range(n):
+        city = int(input())
+        cities.append(city)
+    # Find the minimum cost
+    min_cost = get_min_cost(cities)
+    # Print the minimum cost
+    print(min_cost)
+
+if __name__ == '__main__':
+    main()
 

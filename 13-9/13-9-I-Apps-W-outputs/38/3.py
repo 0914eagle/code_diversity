@@ -1,13 +1,24 @@
 
-def solve(x1, y1, x2, y2, x3, y3):
-    # Calculate the slope of the line that passes through the first two points
-    m1 = (y2-y1)/(x2-x1)
-    # Calculate the slope of the line that passes through the first and third points
-    m2 = (y3-y1)/(x3-x1)
-    # If the slopes are equal, the polyline can be a single segment
-    if m1 == m2:
-        return 1
-    # If the slopes are not equal, the polyline must consist of at least two segments
-    else:
-        return 2
+def get_min_size(n):
+    # Find the minimum size of the chessboard
+    for m in range(1, n):
+        if n % m == 0:
+            return m
+    return n
+
+def place_pieces(n, m):
+    # Place the pieces on the chessboard
+    pieces = [(i, j) for i in range(1, m+1) for j in range(1, m+1)]
+    return pieces[:n]
+
+def main():
+    n = int(input())
+    m = get_min_size(n)
+    pieces = place_pieces(n, m)
+    print(m)
+    for piece in pieces:
+        print(*piece)
+
+if __name__ == '__main__':
+    main()
 

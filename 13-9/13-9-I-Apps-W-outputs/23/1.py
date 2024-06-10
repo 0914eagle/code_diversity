@@ -1,26 +1,34 @@
 
-def can_deploy_services(n, x1, x2, c):
-    # Sort the servers in descending order of their specifications
-    c_sorted = sorted(c, reverse=True)
-    
-    # Initialize the number of servers used for each service
-    k1 = 0
-    k2 = 0
-    
-    # Loop through the servers and allocate them to either service 1 or service 2
-    for i in range(n):
-        if x1 // c_sorted[i] > 0:
-            k1 += 1
-            x1 -= c_sorted[i]
-        elif x2 // c_sorted[i] > 0:
-            k2 += 1
-            x2 -= c_sorted[i]
+def is_good(s):
+    count_zeros = 0
+    count_ones = 0
+    for c in s:
+        if c == '0':
+            count_zeros += 1
         else:
-            break
-    
-    # Check if both services can be deployed with the allocated servers
-    if k1 > 0 and k2 > 0:
-        return "Yes"
-    else:
-        return "No"
+            count_ones += 1
+    return count_zeros != count_ones
+
+def find_good_substrings(s):
+    if len(s) == 1:
+        return [s]
+    for i in range(1, len(s)):
+        if is_good(s[:i]) and is_good(s[i:]):
+            return [s[:i], s[i:]]
+    return None
+
+def solve(s):
+    k = 1
+    while True:
+        substrings = find_good_substrings(s)
+        if substrings is not None:
+            return k, substrings
+        k += 1
+
+if __name__ == '__main__':
+    n = int(input())
+    s = input()
+    k, substrings = solve(s)
+    print(k)
+    print(*substrings, sep=' ')
 

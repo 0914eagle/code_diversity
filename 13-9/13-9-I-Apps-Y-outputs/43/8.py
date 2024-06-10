@@ -1,24 +1,41 @@
 
-def solve(N, S, R, damaged, reserves):
-    # Initialize a set to store the teams that cannot start
-    cannot_start = set()
+def solve(n, a):
+    # Initialize a graph with n nodes
+    graph = [[] for _ in range(n)]
+    # Add edges to the graph
+    for i in range(n):
+        for j in range(i+1, n):
+            if a[i] != a[j]:
+                graph[i].append(j)
+                graph[j].append(i)
+    # Check if the graph is connected
+    visited = [False] * n
+    queue = [0]
+    while queue:
+        node = queue.pop(0)
+        if not visited[node]:
+            visited[node] = True
+            queue += graph[node]
+    if not all(visited):
+        return "NO"
+    # Find a valid assignment of roads
+    roads = []
+    for i in range(n):
+        for j in range(i+1, n):
+            if a[i] != a[j] and [i, j] not in roads:
+                roads.append([i, j])
+    if len(roads) == n-1:
+        return "YES\n" + "\n".join([f"{i} {j}" for i, j in roads])
+    else:
+        return "NO"
 
-    # Iterate over the teams with damaged kayaks
-    for team in damaged:
-        # If the team is not in the set of teams with reserves, it cannot start
-        if team not in reserves:
-            cannot_start.add(team)
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        a = list(map(int, input().split()))
+        print(solve(n, a))
 
-    # Iterate over the teams with reserves
-    for team in reserves:
-        # If the team is not in the set of teams with damaged kayaks, it can start
-        if team not in damaged:
-            # Find the team number that is immediately next to the current team
-            next_team = (team + 1) % N
-            # If the team number is in the set of teams with damaged kayaks, it cannot start
-            if next_team in damaged:
-                cannot_start.add(team)
-
-    # Return the smallest number of teams that cannot start
-    return len(cannot_start)
+if __name__ == '__main__':
+    main()
 

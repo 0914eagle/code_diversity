@@ -1,32 +1,41 @@
 
-def solve(N, K, A, D):
-    # Initialize the maximum energy and the current energy
-    max_energy = 0
-    current_energy = 0
+def is_cell_under_attack(row, col, n):
+    # Check if the cell is under attack
+    for i in range(1, n+1):
+        if row == i or col == i:
+            return True
+    return False
+
+def get_unattacked_cells(board, n):
+    # Initialize the number of unattacked cells
+    unattacked_cells = 0
     
-    # Create a list to store the changed bonds
-    changed_bonds = [False] * N
+    # Loop through each cell on the board
+    for i in range(1, n+1):
+        for j in range(1, n+1):
+            # Check if the cell is under attack
+            if not is_cell_under_attack(i, j, n):
+                unattacked_cells += 1
     
-    # Loop through each atom
-    for i in range(N):
-        # If the atom is not excited and the current energy is less than the total energy needed to excite the atom,
-        # then exciting the atom will not give any energy gain
-        if not changed_bonds[i] and current_energy < D[i]:
-            continue
-        
-        # Excite the atom and add the energy given by the atom to the current energy
-        current_energy += A[i]
-        
-        # If the atom has a bond, then exciting the atom will also excite the bonded atom
-        if i + 1 < N:
-            current_energy += A[i + 1]
-        
-        # Add the energy given by the atom to the maximum energy
-        max_energy += A[i]
-        
-        # Mark the bond as changed
-        changed_bonds[i] = True
+    # Return the number of unattacked cells
+    return unattacked_cells
+
+def main():
+    # Read the input
+    n, m = map(int, input().split())
+    board = []
+    for i in range(m):
+        board.append(list(map(int, input().split())))
     
-    # Return the maximum energy
-    return max_energy
+    # Calculate the number of unattacked cells after each rook is placed
+    unattacked_cells = [0] * m
+    for i in range(m):
+        unattacked_cells[i] = get_unattacked_cells(board[:i+1], n)
+    
+    # Print the number of unattacked cells after each rook is placed
+    for i in range(m):
+        print(unattacked_cells[i])
+
+if __name__ == '__main__':
+    main()
 

@@ -1,22 +1,21 @@
 
-def get_fact(n):
-    facts = {
-        1: 8848,
-        2: 958,
-        3: 12766,
-        4: 6695,
-        5: 1100,
-        6: 807,
-        7: 31962,
-        8: 146,
-        9: -68,
-        10: 25,
-        11: 134,
-        12: 10000,
-        13: 663268,
-        14: 154103,
-        15: 1642,
-        16: 106
-    }
-    return facts.get(n, 0)
+def get_permutation(n):
+    permutation = list(map(int, input().split()))
+    return permutation
+
+def count_second_smallest(permutation):
+    count = 0
+    for i in range(1, len(permutation) - 1):
+        if permutation[i] < permutation[i - 1] and permutation[i] < permutation[i + 1]:
+            count += 1
+    return count
+
+def main():
+    n = int(input())
+    permutation = get_permutation(n)
+    count = count_second_smallest(permutation)
+    print(count)
+
+if __name__ == '__main__':
+    main()
 

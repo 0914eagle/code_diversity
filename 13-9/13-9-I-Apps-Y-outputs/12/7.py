@@ -1,11 +1,25 @@
 
-def generate_pascal_triangle(num_rows):
-    pascal_triangle = []
-    for row in range(num_rows):
-        current_row = [1] * (row + 1)
-        if row > 1:
-            for col in range(1, row):
-                current_row[col] = pascal_triangle[row - 1][col - 1] + pascal_triangle[row - 1][col]
-        pascal_triangle.append(current_row)
-    return pascal_triangle
+def is_increasing(names):
+    return all(names[i] < names[i+1] for i in range(len(names)-1))
+
+def is_decreasing(names):
+    return all(names[i] > names[i+1] for i in range(len(names)-1))
+
+def is_neither(names):
+    return not (is_increasing(names) or is_decreasing(names))
+
+def main():
+    num_names = int(input())
+    names = []
+    for _ in range(num_names):
+        names.append(input())
+    if is_increasing(names):
+        print("INCREASING")
+    elif is_decreasing(names):
+        print("DECREASING")
+    else:
+        print("NEITHER")
+
+if __name__ == '__main__':
+    main()
 

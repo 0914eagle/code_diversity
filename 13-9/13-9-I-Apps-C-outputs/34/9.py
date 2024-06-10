@@ -1,54 +1,33 @@
 
-def solve(N, program, grid):
-    # Initialize the robot's position and trail
-    pos = (0, 0)
-    trail = [pos]
+def get_longest_repeated_substring(input_string):
+    # Initialize a dictionary to store the length of each substring and its count
+    substring_lengths = {}
+    
+    # Iterate through the input string
+    for i in range(len(input_string)):
+        # Get the substring starting from the current index and iterate through the remaining substring
+        for j in range(i, len(input_string)):
+            # Check if the substring is already in the dictionary
+            if input_string[i:j+1] in substring_lengths:
+                # If it is, increment its count
+                substring_lengths[input_string[i:j+1]] += 1
+            else:
+                # If it's not, add it to the dictionary with a count of 1
+                substring_lengths[input_string[i:j+1]] = 1
+    
+    # Find the longest repeated substring
+    longest_substring = ""
+    for substring, count in substring_lengths.items():
+        if count > 1 and len(substring) > len(longest_substring):
+            longest_substring = substring
+    
+    return longest_substring
 
-    # Loop through the program
-    for char in program:
-        # Get the new position based on the current position and character
-        new_pos = get_new_position(pos, char, N, grid)
+def main():
+    input_string = input()
+    longest_repeated_substring = get_longest_repeated_substring(input_string)
+    print(longest_repeated_substring)
 
-        # If the new position is valid, update the position and trail
-        if new_pos is not None:
-            pos = new_pos
-            trail.append(pos)
-
-    # If the trail is finite, return 1
-    if len(trail) < N * N:
-        return 1
-
-    # Otherwise, find the smallest integer X such that the suffix of the trail is a repetition of a continuous subsequence of length X
-    for X in range(1, N * N):
-        if trail[-X:] == trail[:X]:
-            return X
-
-    # If no such X exists, return 1
-    return 1
-
-# Function to get the new position of the robot based on the current position and character
-def get_new_position(pos, char, N, grid):
-    # Get the current row and column
-    row, col = pos
-
-    # Check if the character is valid
-    if char not in ["<", ">", "^", "v"]:
-        return None
-
-    # Update the row and column based on the character
-    if char == "<":
-        col -= 1
-    elif char == ">":
-        col += 1
-    elif char == "^":
-        row -= 1
-    elif char == "v":
-        row += 1
-
-    # Check if the new position is valid
-    if row < 0 or row >= N or col < 0 or col >= N or grid[row][col] == "#":
-        return None
-
-    # Return the new position
-    return (row, col)
+if __name__ == '__main__':
+    main()
 

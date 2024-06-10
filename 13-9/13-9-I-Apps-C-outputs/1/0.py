@@ -1,29 +1,44 @@
 
-def solve(grid):
-    # Initialize the variables
-    rows, cols = len(grid), len(grid[0])
-    north_magnets, south_magnets = 0, 0
-    black_cells, white_cells = set(), set()
+def get_wasted_paper(cards, envelopes):
+    # Calculate the total wasted paper for each card type
+    wasted_paper = [envelopes[0] - card[0] * card[1] for card in cards]
+    
+    # Calculate the total wasted paper for all card types
+    total_wasted_paper = sum(wasted_paper)
+    
+    return total_wasted_paper
 
-    # Loop through the grid and count the number of north and south magnets
-    for i in range(rows):
-        for j in range(cols):
-            if grid[i][j] == "N":
-                north_magnets += 1
-            elif grid[i][j] == "S":
-                south_magnets += 1
+def get_envelope_sizes(cards, k):
+    # Sort the cards by their area in decreasing order
+    cards.sort(key=lambda x: x[0] * x[1], reverse=True)
+    
+    # Initialize the envelope sizes
+    envelope_sizes = [0] * k
+    
+    # Fill the envelopes with the largest cards first
+    for i in range(k):
+        envelope_sizes[i] = cards[i][0]
+    
+    return envelope_sizes
 
-    # Loop through the grid and find the black and white cells
-    for i in range(rows):
-        for j in range(cols):
-            if grid[i][j] == "#":
-                black_cells.add((i, j))
-            elif grid[i][j] == ".":
-                white_cells.add((i, j))
+def get_min_wasted_paper(cards, k):
+    # Get the envelope sizes
+    envelope_sizes = get_envelope_sizes(cards, k)
+    
+    # Calculate the wasted paper for each card type
+    wasted_paper = [envelope_sizes[0] - card[0] * card[1] for card in cards]
+    
+    # Calculate the total wasted paper
+    total_wasted_paper = sum(wasted_paper)
+    
+    return total_wasted_paper
 
-    # Check if it is possible to place magnets such that the conditions are met
-    if len(black_cells) > 0 and len(white_cells) > 0 and north_magnets >= south_magnets:
-        return north_magnets
-    else:
-        return -1
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    cards = []
+    for _ in range(n):
+        w, h, q = map(int, input().split())
+        cards.append((w, h, q))
+    
+    print(get_min_wasted_paper(cards, k))
 

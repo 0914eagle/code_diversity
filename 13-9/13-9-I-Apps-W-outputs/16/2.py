@@ -1,23 +1,28 @@
 
-def get_occurrence(s, p):
-    occurence = 0
-    for i in range(len(s)):
-        if s[i:i+len(p)] == p:
-            occurence += 1
-    return occurence
+def read_input():
+    n, m, k = map(int, input().split())
+    moves = []
+    for _ in range(k):
+        moves.append(list(map(int, input().split())))
+    return n, m, k, moves
 
-def solve(s, p):
-    n = len(s)
-    dp = [0] * (n+1)
-    for i in range(n):
-        dp[i+1] = max(dp[i], dp[i-len(p)] + 1)
-    return dp
+def check_win(n, m, moves):
+    board = [[0] * m for _ in range(n)]
+    for i, j in moves:
+        board[i-1][j-1] = 1
+        if board[i-1][j-1] == 1 and board[i-1][j] == 1 and board[i][j-1] == 1:
+            return True
+    return False
+
+def solve(n, m, k, moves):
+    for i in range(k):
+        if check_win(n, m, moves[:i+1]):
+            return i+1
+    return 0
 
 def main():
-    s = input()
-    p = input()
-    dp = solve(s, p)
-    print(*dp)
+    n, m, k, moves = read_input()
+    print(solve(n, m, k, moves))
 
 if __name__ == '__main__':
     main()

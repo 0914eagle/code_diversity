@@ -1,17 +1,17 @@
 
-def camel_race(n, jaap_bet, jan_bet, thijs_bet):
-    # Initialize a dictionary to store the number of pairs of camels that appear in the same order
-    pairs = {}
+def get_maximum_score(grid):
+    # Implement your solution here
+    return max_score
 
-    # Iterate over the bets
-    for bet in [jaap_bet, jan_bet, thijs_bet]:
-        # Iterate over the pairs of camels in the bet
-        for i in range(n - 1):
-            for j in range(i + 1, n):
-                # If the pair of camels appears in the same order in all bets, increment the count by 1
-                if bet[i] < bet[j] and bet[i + 1] < bet[j + 1]:
-                    pairs[(i, j)] = pairs.get((i, j), 0) + 1
+def main():
+    r, c, k = map(int, input().split())
+    grid = []
+    for _ in range(r):
+        grid.append(list(input()))
+    score = list(map(int, input().split()))
+    max_score = get_maximum_score(grid, score)
+    print(max_score)
 
-    # Return the number of pairs of camels that appear in the same order in all bets
-    return sum(pairs.values())
+if __name__ == '__main__':
+    main()
 

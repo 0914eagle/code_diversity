@@ -1,18 +1,21 @@
 
-def solve(n, a):
-    # Find the candidate with the most votes
-    max_votes = max(a)
-    max_index = a.index(max_votes)
+def is_reachable(n, k, line):
+    start, end = line.index('G'), line.index('T')
+    if abs(start - end) <= k:
+        return True
+    for i in range(start, end):
+        if line[i] == '#':
+            return False
+    return True
 
-    # Initialize the number of bribes needed to 0
-    bribes_needed = 0
+def main():
+    n, k = map(int, input().split())
+    line = input()
+    if is_reachable(n, k, line):
+        print("YES")
+    else:
+        print("NO")
 
-    # Loop through the candidates and check if they have more votes than Limak
-    for i in range(1, n):
-        if a[i] > a[0]:
-            # Calculate the number of bribes needed to overtake the current candidate
-            bribes_needed += a[i] - a[0]
-
-    # Return the minimum number of bribes needed to win the election
-    return bribes_needed
+if __name__ == '__main__':
+    main()
 

@@ -1,19 +1,30 @@
 
-def expected_distance(n, points):
-    # Calculate the area of the CBD polygon
-    area = 0
-    for i in range(n):
-        area += points[i][0] * points[i+1][1] - points[i+1][0] * points[i][1]
-    area = abs(area) / 2
+def get_min_length(start_times, speeds):
+    # Calculate the distance traveled by each cheetah
+    distances = [speed * (max(start_times) - start_time) for start_time, speed in zip(start_times, speeds)]
+    
+    # Find the minimum distance traveled by all cheetahs
+    min_distance = min(distances)
+    
+    # Return the minimum length of the running pack
+    return min_distance
 
-    # Calculate the expected distance traveled by the taxi
-    distance = 0
-    for i in range(n):
-        x1, y1 = points[i]
-        x2, y2 = points[i+1]
-        distance += (x2-x1)**2 + (y2-y1)**2
-    distance = (distance / n) ** 0.5
+def main():
+    # Read the number of cheetahs and their start times and speeds
+    num_cheetahs = int(input())
+    start_times = []
+    speeds = []
+    for _ in range(num_cheetahs):
+        start_time, speed = map(int, input().split())
+        start_times.append(start_time)
+        speeds.append(speed)
+    
+    # Calculate the minimum length of the running pack
+    min_length = get_min_length(start_times, speeds)
+    
+    # Print the minimum length of the running pack
+    print(min_length)
 
-    # Return the expected distance traveled by the taxi
-    return distance
+if __name__ == '__main__':
+    main()
 

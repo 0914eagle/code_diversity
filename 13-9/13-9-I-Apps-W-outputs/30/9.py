@@ -1,16 +1,28 @@
 
-def solve(n, scores):
-    # Sort the scores in descending order
-    scores.sort(reverse=True)
+def get_solutions(A, B):
+    # Initialize variables
+    n = len(A)
+    solutions = 0
     
-    # Initialize the number of ways to choose a subset as 0
-    ways = 0
-    
-    # Loop through the scores and count the number of ways to choose a subset
+    # Iterate through all possible groups of consecutive students
     for i in range(n):
-        # If the current score is non-zero, increment the number of ways
-        if scores[i] != 0:
-            ways += 1
+        for j in range(i+1, n+1):
+            # Check if the group of students has the same length as the input string
+            if j - i == len(B):
+                # Check if the group of students has the same characters as the input string
+                if A[i:j] == B:
+                    solutions += 1
     
-    return ways
+    return solutions
+
+def main():
+    # Read input from stdin
+    A = input()
+    B = input()
+    
+    # Call the get_solutions function and print the result
+    print(get_solutions(A, B))
+
+if __name__ == '__main__':
+    main()
 

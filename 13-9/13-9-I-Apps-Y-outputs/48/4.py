@@ -1,5 +1,11 @@
 
-def is_haiku(phrases):
-    A, B, C = phrases
-    return A + B + C == 15 and A % 5 == 0 and B % 7 == 0 and C % 5 == 0
+def get_min_snacks(A, B):
+    return (A + B) // 2
+
+def main():
+    A, B = map(int, input().split())
+    print(get_min_snacks(A, B))
+
+if __name__ == '__main__':
+    main()
 

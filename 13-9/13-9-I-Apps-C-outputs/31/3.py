@@ -1,31 +1,38 @@
 
-def remove_ads(web_page):
-    # Initialize variables
-    H, W = len(web_page), len(web_page[0])
-    ads = []
+def parse_expression(expression):
+    # Function to parse the expression and return a list of tuples containing the operation and the operands
+    operations = ["+", "-", "*"]
+    operands = []
+    for char in expression:
+        if char in operations:
+            operands.append(char)
+        elif char.isdigit():
+            operands.append(int(char))
+    return list(zip(operands[0::2], operands[1::2]))
 
-    # Loop through each character in the web page
-    for i in range(H):
-        for j in range(W):
-            # If the character is '$', check if it forms an ad
-            if web_page[i][j] == '$':
-                # Check if the character forms a border of an image
-                if web_page[i-1][j] == '$' and web_page[i+1][j] == '$' and web_page[i][j-1] == '$' and web_page[i][j+1] == '$':
-                    # Check if the image contains any banned characters
-                    banned_chars = ['?', '!', ',', '.', ' ']
-                    contains_banned_char = False
-                    for char in banned_chars:
-                        if char in web_page[i-1:i+2, j-1:j+2].flatten():
-                            contains_banned_char = True
-                            break
+def evaluate_expression(expression, x):
+    # Function to evaluate the expression for a given value of x
+    if expression[1] == "x":
+        return x
+    else:
+        return expression[1]
 
-                    # If the image contains a banned character, add it to the list of ads
-                    if contains_banned_char:
-                        ads.append((i-1, j-1))
+def find_min_x(expression, p, m):
+    # Function to find the minimal non-negative value of x for which the remainder of dividing the expression with m is equal to p
+    min_x = 0
+    while True:
+        result = evaluate_expression(expression, min_x) % m
+        if result == p:
+            break
+        min_x += 1
+    return min_x
 
-    # Loop through the list of ads and replace them with whitespaces
-    for ad in ads:
-        web_page[ad[0]:ad[0]+3, ad[1]:ad[1]+3] = ' '
+def main():
+    expression = input()
+    p, m = map(int, input().split())
+    parsed_expression = parse_expression(expression)
+    print(find_min_x(parsed_expression, p, m))
 
-    return web_page
+if __name__ == '__main__':
+    main()
 

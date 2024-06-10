@@ -1,18 +1,39 @@
 
-import sys
+def get_sorted_permutation(p):
+    n = len(p)
+    # Initialize the number of swaps to 0
+    num_swaps = 0
+    # Loop through each element in the permutation
+    for i in range(n):
+        # Find the index of the element that is two indices away from the current element
+        j = i + 2
+        # If the element at the found index is smaller than the current element, swap them
+        if j < n and p[j] < p[i]:
+            p[i], p[j] = p[j], p[i]
+            num_swaps += 1
+    return p, num_swaps
 
-def k_tree_paths(n, k, d):
-    mod = 1000000007
-    dp = [[0] * (n + 1) for _ in range(k + 1)]
-    dp[0][0] = 1
-    for i in range(1, k + 1):
-        for j in range(1, n + 1):
-            if j >= d:
-                dp[i][j] = (dp[i - 1][j - d] + dp[i][j - 1]) % mod
-            else:
-                dp[i][j] = dp[i][j - 1]
-    return dp[k][n]
+def get_swaps(p):
+    n = len(p)
+    # Initialize the number of swaps to 0
+    num_swaps = 0
+    # Loop through each element in the permutation
+    for i in range(n):
+        # Find the index of the element that is two indices away from the current element
+        j = i + 2
+        # If the element at the found index is smaller than the current element, swap them
+        if j < n and p[j] < p[i]:
+            num_swaps += 1
+    return num_swaps
 
-n, k, d = map(int, sys.stdin.readline().split())
-print(k_tree_paths(n, k, d))
+def main():
+    n = int(input())
+    p = list(map(int, input().split()))
+    p, num_swaps = get_sorted_permutation(p)
+    print(num_swaps)
+    for i in range(num_swaps):
+        print(i+1, i+2)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,21 +1,23 @@
 
-def solve(n, k, a):
-    # Calculate the total power Inna tells Dima off with
-    total_power = sum(a)
-    
-    # Initialize the minimum power and the corresponding first task
-    min_power = total_power
-    first_task = 1
-    
-    # Iterate over all possible first tasks
-    for i in range(1, n + 1):
-        # Calculate the power Inna tells Dima off with for the current first task
-        power = sum(a[i:i+k-1])
-        
-        # If the current power is less than the minimum power, update the minimum power and the corresponding first task
-        if power < min_power:
-            min_power = power
-            first_task = i
-    
-    return first_task
+def get_compressed_word(sentence):
+    n = len(sentence)
+    if n == 1:
+        return sentence[0]
+    else:
+        first_word = sentence[0]
+        second_word = sentence[1]
+        longest_prefix = ""
+        for i in range(len(second_word)):
+            if second_word[:i+1] == first_word[-i-1:]:
+                longest_prefix = second_word[:i+1]
+        return first_word[:-len(longest_prefix)] + second_word[len(longest_prefix):]
+
+def main():
+    n = int(input())
+    sentence = input().split()
+    compressed_word = get_compressed_word(sentence)
+    print(compressed_word)
+
+if __name__ == '__main__':
+    main()
 

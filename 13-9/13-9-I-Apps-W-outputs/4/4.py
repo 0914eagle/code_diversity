@@ -1,24 +1,46 @@
 
-def strip_split(n, s, l, a):
-    # Sort the array in ascending order
-    a.sort()
-    # Initialize the number of pieces to 0
-    pieces = 0
-    # Initialize the current piece to be empty
-    current_piece = []
-    # Iterate through the array
-    for i in range(n):
-        # If the current piece is empty, add the current number to the piece
-        if not current_piece:
-            current_piece.append(a[i])
-        # If the current piece is not empty and the current number is within the range of the piece, add the current number to the piece
-        elif a[i] - current_piece[0] <= s and len(current_piece) + 1 >= l:
-            current_piece.append(a[i])
-        # If the current piece is not empty and the current number is not within the range of the piece, start a new piece
-        else:
-            pieces += 1
-            current_piece = [a[i]]
-    # Add the last piece
-    pieces += 1
-    return pieces
+def get_smallest_number(display):
+    # Initialize a variable to store the smallest number
+    smallest_number = ""
+    
+    # Iterate through each digit in the display
+    for digit in display:
+        # If the digit is not zero, add it to the smallest number
+        if digit != "0":
+            smallest_number += digit
+    
+    # If the smallest number is empty, set it to "0"
+    if not smallest_number:
+        smallest_number = "0"
+    
+    return smallest_number
+
+def get_desired_display(display):
+    # Get the smallest number from the display
+    smallest_number = get_smallest_number(display)
+    
+    # Create a list to store the digits of the smallest number
+    smallest_number_list = list(smallest_number)
+    
+    # Iterate through each digit in the display
+    for i in range(len(display)):
+        # If the digit is not the smallest digit, shift it to the right
+        if display[i] != smallest_number_list[i]:
+            display = display[1:] + display[:1]
+    
+    return display
+
+def main():
+    # Read the number of digits and the initial display from stdin
+    n = int(input())
+    display = input()
+    
+    # Get the desired display
+    desired_display = get_desired_display(display)
+    
+    # Print the desired display
+    print(desired_display)
+
+if __name__ == '__main__':
+    main()
 

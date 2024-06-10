@@ -1,15 +1,21 @@
 
-def get_palindromic_strings(strings):
-    # Initialize a list to store the indices of palindromic strings
-    palindromic_strings = []
+def find_min_positive_integer(l, r, d):
+    # Find the smallest number greater than or equal to l that is divisible by d
+    x = (l // d + 1) * d
+    # Check if x is within the range [l, r]
+    if l <= x <= r:
+        # If x is within the range, return the next number that is divisible by d and not in the range
+        return x + d
+    else:
+        # If x is not within the range, return -1
+        return -1
 
-    # Loop through each string in the input list
-    for i, string in enumerate(strings):
-        # Check if the string is palindromic
-        if string == string[::-1]:
-            # If it is, add its index to the list of palindromic strings
-            palindromic_strings.append(i)
+def main():
+    q = int(input())
+    for i in range(q):
+        l, r, d = map(int, input().split())
+        print(find_min_positive_integer(l, r, d))
 
-    # Return the list of palindromic strings
-    return palindromic_strings
+if __name__ == '__main__':
+    main()
 

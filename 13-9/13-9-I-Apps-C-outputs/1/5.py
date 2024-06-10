@@ -1,29 +1,34 @@
 
-def solve(grid):
-    # Initialize variables
-    rows = len(grid)
-    cols = len(grid[0])
-    north_magnets = 0
-    south_magnets = 0
-    black_cells = 0
+def get_card_dimensions(n):
+    card_dimensions = []
+    for i in range(n):
+        w, h, q = map(int, input().split())
+        card_dimensions.append((w, h, q))
+    return card_dimensions
 
-    # Count the number of south magnets and black cells
-    for i in range(rows):
-        for j in range(cols):
-            if grid[i][j] == "s":
-                south_magnets += 1
-            if grid[i][j] == "#":
-                black_cells += 1
+def get_envelope_dimensions(k):
+    envelope_dimensions = []
+    for i in range(k):
+        w, h = map(int, input().split())
+        envelope_dimensions.append((w, h))
+    return envelope_dimensions
 
-    # Check if it is possible to place magnets such that the conditions are met
-    if south_magnets < rows and south_magnets < cols:
-        return -1
+def get_wasted_paper(card_dimensions, envelope_dimensions):
+    wasted_paper = 0
+    for card in card_dimensions:
+        for envelope in envelope_dimensions:
+            if card[0] <= envelope[0] and card[1] <= envelope[1]:
+                wasted_paper += (envelope[0] * envelope[1]) - (card[0] * card[1])
+                break
+    return wasted_paper
 
-    # Count the number of north magnets required
-    for i in range(rows):
-        for j in range(cols):
-            if grid[i][j] == "b":
-                north_magnets += 1
+def main():
+    n, k = map(int, input().split())
+    card_dimensions = get_card_dimensions(n)
+    envelope_dimensions = get_envelope_dimensions(k)
+    wasted_paper = get_wasted_paper(card_dimensions, envelope_dimensions)
+    print(wasted_paper)
 
-    return north_magnets
+if __name__ == '__main__':
+    main()
 

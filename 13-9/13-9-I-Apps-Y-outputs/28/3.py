@@ -1,22 +1,17 @@
 
-def get_fact(n):
-    facts = {
-        1: 1,
-        2: 8848,
-        3: 958,
-        4: 12766,
-        5: 6695,
-        6: 1100,
-        7: 807,
-        8: 31962,
-        9: 146,
-        10: -68,
-        11: 25,
-        12: 134,
-        13: 10000,
-        14: 663268,
-        15: 154103,
-        16: 1642
-    }
-    return facts.get(n, 0)
+def get_second_smallest(p):
+    n = len(p)
+    count = 0
+    for i in range(1, n-1):
+        if p[i] < p[i-1] and p[i] < p[i+1]:
+            count += 1
+    return count
+
+def main():
+    n = int(input())
+    p = list(map(int, input().split()))
+    print(get_second_smallest(p))
+
+if __name__ == '__main__':
+    main()
 

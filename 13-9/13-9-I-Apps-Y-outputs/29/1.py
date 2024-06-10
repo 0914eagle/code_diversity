@@ -1,24 +1,23 @@
 
-def get_refill_scheme(n, m, s, d, current_slots):
-    # Initialize the probability of all students getting a cold soda as 0
-    prob_cold_soda = 0
-    # Initialize the refill scheme as an empty list
-    refill_scheme = []
-    
-    # Loop through each slot in the fridge
-    for i in range(s):
-        # Calculate the number of empty slots in front of the current slot
-        empty_slots = s - i - 1
-        # Calculate the number of new bottles that can be placed in front of the current slot
-        num_new_bottles = min(n, empty_slots)
-        # Calculate the number of cold bottles that can be placed in front of the current slot
-        num_cold_bottles = min(current_slots[i], num_new_bottles)
-        # Calculate the probability of all students getting a cold soda from the current slot
-        prob_cold_soda += num_cold_bottles / (num_cold_bottles + num_new_bottles)
-    
-    # If the probability of all students getting a cold soda is greater than or equal to the number of students, return the refill scheme
-    if prob_cold_soda >= m:
-        return refill_scheme
+def get_permutation(n, q):
+    permutation = []
+    for i in range(n):
+        permutation.append(i+1)
+    for i in range(n-1):
+        for j in range(n-i-1):
+            if q[i] < q[j]:
+                permutation[i], permutation[j] = permutation[j], permutation[i]
+    return permutation
+
+def main():
+    n = int(input())
+    q = list(map(int, input().split()))
+    permutation = get_permutation(n, q)
+    if permutation is None:
+        print(-1)
     else:
-        return "impossible"
+        print(*permutation)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,18 +1,23 @@
 
-def get_safe_operations(registers):
-    # Initialize a list to store the primes
-    primes = [2, 3, 5, 7, 11, 13, 17, 19]
-    
-    # Initialize a variable to store the number of safe operations
-    safe_operations = len(registers)
-    
-    # Iterate over the registers and primes
-    for i, (register, prime) in enumerate(zip(registers, primes)):
-        # If the register is equal to the prime minus 1, the computer will blow up
-        if register == prime - 1:
-            # Return the number of safe operations
-            return safe_operations - i - 1
-    
-    # If the computer has not blown up, return the number of safe operations
-    return safe_operations
+def get_input():
+    return [int(x) for x in input().split()]
+
+def is_multiple_of_a(n, a):
+    return n % a == 0
+
+def find_numbers(a, b, c):
+    for i in range(1, b):
+        if is_multiple_of_a(i, a) and (i + c) % b == 0:
+            return True
+    return False
+
+def main():
+    a, b, c = get_input()
+    if find_numbers(a, b, c):
+        print("YES")
+    else:
+        print("NO")
+
+if __name__ == '__main__':
+    main()
 

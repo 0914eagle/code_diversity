@@ -1,21 +1,44 @@
 
-def get_expected_distance(n, points):
-    # Calculate the area of the CBD polygon
-    area = 0
-    for i in range(n):
-        area += points[i][0] * points[(i+1)%n][1] - points[i][1] * points[(i+1)%n][0]
-    area = abs(area) / 2
+def get_pack_length(start_times, speeds):
+    # Sort the cheetahs by their start time
+    sorted_cheetahs = sorted(zip(start_times, speeds), key=lambda x: x[0])
 
-    # Calculate the total distance traveled by the taxi
-    total_distance = 0
-    for i in range(n):
-        for j in range(i+1, n):
-            total_distance += distance(points[i], points[j])
+    # Initialize the pack length and the previous cheetah's speed
+    pack_length = 0
+    prev_speed = 0
 
-    # Calculate the expected distance
-    expected_distance = total_distance / area
-    return expected_distance
+    # Iterate through the sorted cheetahs
+    for start_time, speed in sorted_cheetahs:
+        # Calculate the time difference between this cheetah and the previous one
+        time_diff = start_time - prev_speed
 
-def distance(point1, point2):
-    return abs(point1[0] - point2[0]) + abs(point1[1] - point2[1])
+        # Calculate the distance travelled by the previous cheetah during the time difference
+        dist_travelled = prev_speed * time_diff
+
+        # Update the pack length
+        pack_length += dist_travelled
+
+        # Update the previous cheetah's speed
+        prev_speed = speed
+
+    return pack_length
+
+def main():
+    # Read the input
+    num_cheetahs = int(input())
+    start_times = []
+    speeds = []
+    for _ in range(num_cheetahs):
+        start_time, speed = map(int, input().split())
+        start_times.append(start_time)
+        speeds.append(speed)
+
+    # Calculate the pack length
+    pack_length = get_pack_length(start_times, speeds)
+
+    # Print the output
+    print(f"{pack_length:.3f}")
+
+if __name__ == '__main__':
+    main()
 

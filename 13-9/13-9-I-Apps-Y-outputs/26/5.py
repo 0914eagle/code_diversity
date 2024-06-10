@@ -1,14 +1,27 @@
 
-def solve(n, a):
-    # Sort the array in ascending order
-    a.sort()
-    # Initialize the minimum number of problems to solve as 0
-    min_problems = 0
-    # Loop through the array and find the median
-    for i in range(n//2):
-        # Find the difference between the current element and the median
-        diff = a[i] - a[n//2]
-        # Add the difference to the minimum number of problems to solve
-        min_problems += diff
-    return min_problems
+def encrypt_message(message, key):
+    encrypted_message = ""
+    for i in range(len(message)):
+        if i % 2 == 0:
+            encrypted_message += chr((ord(message[i]) + ord(key[i]) - 2 * ord('A')) % 26 + ord('A'))
+        else:
+            encrypted_message += chr((ord(message[i]) - ord(key[i]) - 2 * ord('A')) % 26 + ord('A'))
+    return encrypted_message
+
+def decrypt_message(encrypted_message, key):
+    decrypted_message = ""
+    for i in range(len(encrypted_message)):
+        if i % 2 == 0:
+            decrypted_message += chr((ord(encrypted_message[i]) - ord(key[i]) + 2 * ord('A')) % 26 + ord('A'))
+        else:
+            decrypted_message += chr((ord(encrypted_message[i]) - ord(key[i]) - 2 * ord('A')) % 26 + ord('A'))
+    return decrypted_message
+
+if __name__ == '__main__':
+    message = input("Enter message: ")
+    key = input("Enter key: ")
+    encrypted_message = encrypt_message(message, key)
+    print("Encrypted message:", encrypted_message)
+    decrypted_message = decrypt_message(encrypted_message, key)
+    print("Decrypted message:", decrypted_message)
 

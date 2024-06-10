@@ -1,22 +1,20 @@
 
-def get_fact(n):
-    facts = {
-        1: 8848,
-        2: 958,
-        3: 12766,
-        4: 6695,
-        5: 1100,
-        6: 807,
-        7: 31962,
-        8: 146,
-        9: -68,
-        10: 134,
-        11: 10000,
-        12: 663268,
-        13: 154103,
-        14: 1642,
-        15: 106,
-        16: 100
-    }
-    return facts.get(n, 0)
+def get_input():
+    n = int(input())
+    p = list(map(int, input().split()))
+    return n, p
+
+def solve(n, p):
+    count = 0
+    for i in range(1, n-1):
+        if p[i-1] < p[i] and p[i] < p[i+1]:
+            count += 1
+    return count
+
+def main():
+    n, p = get_input()
+    print(solve(n, p))
+
+if __name__ == '__main__':
+    main()
 

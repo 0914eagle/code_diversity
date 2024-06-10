@@ -1,10 +1,28 @@
 
-import math
+def get_min_pack_length(start_times, speeds):
+    # Sort the cheetahs by their start times
+    sorted_cheetahs = sorted(zip(start_times, speeds), key=lambda x: x[0])
 
-def expected_distance(n, points):
-    total_distance = 0
-    for i in range(n):
-        point1, point2 = points[i], points[i-1]
-        total_distance += math.sqrt((point1[0]-point2[0])**2 + (point1[1]-point2[1])**2)
-    return total_distance / n
+    # Initialize the minimum length of the pack as the distance between the first and last cheetah
+    min_length = sorted_cheetahs[-1][0] - sorted_cheetahs[0][0]
+
+    # Iterate through the cheetahs and calculate the minimum length of the pack at each time
+    for i in range(len(sorted_cheetahs) - 1):
+        current_length = sorted_cheetahs[i + 1][0] - sorted_cheetahs[i][0]
+        min_length = min(min_length, current_length)
+
+    return min_length
+
+def main():
+    num_cheetahs = int(input())
+    start_times = []
+    speeds = []
+    for i in range(num_cheetahs):
+        start_time, speed = map(int, input().split())
+        start_times.append(start_time)
+        speeds.append(speed)
+    print(get_min_pack_length(start_times, speeds))
+
+if __name__ == '__main__':
+    main()
 

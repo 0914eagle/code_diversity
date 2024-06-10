@@ -1,39 +1,39 @@
 
-def solve(n, t, m, spio_cheer):
-    # Initialize the variables
-    sportify_goals = 0
-    spoilify_goals = 0
-    current_sportify_streak = 0
-    current_spoilify_streak = 0
-
-    # Sort the Spoilify cheerleader intervals by start time
-    spio_cheer.sort(key=lambda x: x[0])
-
-    # Iterate through each minute of the game
-    for i in range(90):
-        # Check if any Spoilify cheerleaders are active during this minute
-        for cheerleader in spio_cheer:
-            if i >= cheerleader[0] and i <= cheerleader[1]:
-                # Increment the Spoilify streak
-                current_spoilify_streak += 1
+def get_max_blocks(m):
+    # Initialize variables
+    max_blocks = 0
+    max_x = 0
+    
+    # Iterate through possible values of x
+    for x in range(1, m + 1):
+        # Initialize variables for this value of x
+        blocks = 0
+        volume = 0
+        
+        # Iterate through possible values of the side of the block
+        for side in range(1, int(m ** (1/3)) + 1):
+            # Calculate the volume of the block
+            volume += side ** 3
+            
+            # If the volume is less than or equal to x, add the block to the tower
+            if volume <= x:
+                blocks += 1
+            else:
                 break
-        else:
-            # No Spoilify cheerleaders are active, so reset the Spoilify streak
-            current_spoilify_streak = 0
+        
+        # If the number of blocks is greater than the current maximum, update the maximum
+        if blocks > max_blocks:
+            max_blocks = blocks
+            max_x = x
+    
+    # Return the maximum number of blocks and the maximum x
+    return max_blocks, max_x
 
-        # Check if the Sportify team has a goal
-        if current_spoilify_streak >= 5:
-            spoilify_goals += 1
-            current_spoilify_streak = 0
+def main():
+    m = int(input())
+    max_blocks, max_x = get_max_blocks(m)
+    print(max_blocks, max_x)
 
-        # Check if the Sportify team has a goal
-        if current_sportify_streak >= 5:
-            sportify_goals += 1
-            current_sportify_streak = 0
-
-        # Increment the Sportify streak
-        current_sportify_streak += 1
-
-    # Return the results
-    return sportify_goals, spoilify_goals
+if __name__ == '__main__':
+    main()
 

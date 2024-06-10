@@ -1,22 +1,24 @@
 
-def solve(offers):
-    # Sort the offers by the first section of the fence
-    offers.sort(key=lambda x: x[1])
+import itertools
+
+def explosion(n, m, d):
+    # Calculate the probability of a single minion being killed
+    prob_single = d / (n + m)
     
-    # Initialize the variables to keep track of the colors and sections
-    colors = set()
-    sections = set()
+    # Calculate the probability of all minions being killed
+    prob_all = 1
+    for i in range(m):
+        prob_all -= prob_single
     
-    # Loop through the offers and accept them if they are valid
-    for offer in offers:
-        color, start, end = offer
-        if start not in sections and end not in sections and len(colors) < 3:
-            colors.add(color)
-            sections.update(range(start, end + 1))
+    return prob_all
+
+def main():
+    n, m, d = map(int, input().split())
+    my_health = list(map(int, input().split()))
+    opponent_health = list(map(int, input().split()))
     
-    # If all sections of the fence are painted, return the number of accepted offers
-    if len(sections) == 10000:
-        return len(offers)
-    else:
-        return "IMPOSSIBLE"
+    print(explosion(n, m, d))
+
+if __name__ == '__main__':
+    main()
 

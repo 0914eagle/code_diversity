@@ -1,21 +1,41 @@
 
-def solve(wheels):
-    # Initialize the minimum number of rotations required to -1
-    min_rotations = -1
+def get_color_combinations(tile_colors):
+    
+    combinations = []
+    for i in range(len(tile_colors)):
+        for j in range(i+1, len(tile_colors)):
+            for k in range(j+1, len(tile_colors)):
+                combinations.append([tile_colors[i], tile_colors[j], tile_colors[k]])
+    return combinations
 
-    # Loop through each column of the first wheel
-    for col in range(len(wheels[0])):
-        # Initialize the set of letters in the current column to be empty
-        letters = set()
+def get_tile_colors(tile_colors, tile_number):
+    
+    return tile_colors[tile_number-1]
 
-        # Loop through each wheel and add the letter in the current column to the set
-        for wheel in wheels:
-            letters.add(wheel[col])
+def get_cube_colors(tile_colors, cube_configuration):
+    
+    cube_colors = []
+    for tile_number in cube_configuration:
+        tile_colors = get_tile_colors(tile_colors, tile_number)
+        cube_colors.extend(tile_colors)
+    return cube_colors
 
-        # If the set of letters has more than 3 elements, return -1
-        if len(letters) > 3:
-            return -1
+def get_unique_cubes(tile_colors):
+    
+    unique_cubes = set()
+    for tile_combination in itertools.combinations(range(1, len(tile_colors)+1), 6):
+        cube_configuration = list(itertools.permutations(tile_combination, 6))
+        for configuration in cube_configuration:
+            cube_colors = get_cube_colors(tile_colors, configuration)
+            unique_cubes.add(tuple(cube_colors))
+    return len(unique_cubes)
 
-    # If we reach this point, all columns have at most 3 distinct letters, so return the minimum number of rotations required
-    return min_rotations
+def main():
+    tile_colors = []
+    for _ in range(int(input())):
+        tile_colors.append(list(map(int, input().split())))
+    print(get_unique_cubes(tile_colors))
+
+if __name__ == '__main__':
+    main()
 

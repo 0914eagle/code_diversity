@@ -1,24 +1,29 @@
 
-def max_clean_rows(grid):
-    # Initialize variables
-    rows, cols = len(grid), len(grid[0])
-    clean_rows = 0
-    dirty_cols = [0] * cols
+def delete_string(s):
+    # Initialize a variable to store the result
+    result = 0
+    
+    # Loop through the string and check if there are any equal consecutive characters
+    for i in range(len(s) - 1):
+        if s[i] == s[i + 1]:
+            # If there are, delete the consecutive characters and update the result
+            result += 1
+            s = s[:i] + s[i + 2:]
+    
+    # Return the result
+    return result
 
-    # Iterate over each row
-    for i in range(rows):
-        # Iterate over each column
-        for j in range(cols):
-            # If the current square is clean and the column is dirty, make the column dirty
-            if grid[i][j] == "0" and dirty_cols[j] == 0:
-                dirty_cols[j] = 1
-            # If the current square is dirty and the column is clean, make the column clean
-            elif grid[i][j] == "1" and dirty_cols[j] == 1:
-                dirty_cols[j] = 0
+def main():
+    # Take input from the user
+    n = int(input())
+    s = input()
+    
+    # Calculate the minimum number of operations to delete the string
+    result = delete_string(s)
+    
+    # Print the result
+    print(result)
 
-        # If all squares in the current row are clean, increase the number of clean rows
-        if all(grid[i] == "0" for i in range(rows)):
-            clean_rows += 1
-
-    return clean_rows
+if __name__ == '__main__':
+    main()
 

@@ -1,34 +1,30 @@
 
-import sys
+def get_permutations(n):
+    permutations = []
+    for i in range(n+1):
+        permutations.append(list(range(n+1)))
+    return permutations
 
-def get_entirely_unsorted_sequences(arr):
-    n = len(arr)
-    count = 0
-    for i in range(1, n + 1):
-        for perm in permutations(arr, i):
-            if not is_sorted(perm):
-                count += 1
-    return count % (10**9 + 9)
+def get_beauty(permutation):
+    beauty = 0
+    for i in range(len(permutation)):
+        beauty += (i ^ permutation[i])
+    return beauty
 
-def is_sorted(arr):
-    n = len(arr)
-    for i in range(n - 1):
-        if arr[i] > arr[i + 1]:
-            return False
-    return True
-
-def permutations(arr, k):
-    if k == 0:
-        return [[]]
-    else:
-        permutations_list = []
-        for i in range(len(arr)):
-            for perm in permutations(arr[:i] + arr[i + 1:], k - 1):
-                permutations_list.append([arr[i]] + perm)
-        return permutations_list
+def get_maximum_beauty_permutation(n):
+    permutations = get_permutations(n)
+    maximum_beauty = 0
+    maximum_beauty_permutation = []
+    for permutation in permutations:
+        beauty = get_beauty(permutation)
+        if beauty > maximum_beauty:
+            maximum_beauty = beauty
+            maximum_beauty_permutation = permutation
+    return maximum_beauty, maximum_beauty_permutation
 
 if __name__ == '__main__':
     n = int(input())
-    arr = list(map(int, input().split()))
-    print(get_entirely_unsorted_sequences(arr))
+    maximum_beauty, maximum_beauty_permutation = get_maximum_beauty_permutation(n)
+    print(maximum_beauty)
+    print(*maximum_beauty_permutation)
 

@@ -1,39 +1,25 @@
 
-import itertools
+def get_flaw_locations(n_flaws):
+    flaws = []
+    for _ in range(n_flaws):
+        x, y, z = map(float, input().split())
+        flaws.append((x, y, z))
+    return flaws
 
-def solve(n, p, coders):
-    # Initialize a set to store the possible suspects
-    suspects = set()
+def get_diameter(flaws):
+    x_coords, y_coords, z_coords = zip(*flaws)
+    x_max, x_min = max(x_coords), min(x_coords)
+    y_max, y_min = max(y_coords), min(y_coords)
+    z_max, z_min = max(z_coords), min(z_coords)
+    diameter = max(x_max-x_min, y_max-y_min, z_max-z_min)
+    return diameter
 
-    # Iterate over the coders' opinions
-    for coder in coders:
-        # Add the names of the coders to the set of suspects
-        suspects.update(coder)
+def main():
+    n_flaws = int(input())
+    flaws = get_flaw_locations(n_flaws)
+    diameter = get_diameter(flaws)
+    print(diameter)
 
-    # Use itertools.combinations to generate all possible pairs of suspects
-    pairs = itertools.combinations(suspects, 2)
-
-    # Initialize a counter to store the number of possible two-suspect sets
-    count = 0
-
-    # Iterate over the pairs of suspects
-    for pair in pairs:
-        # Initialize a set to store the coders who agree with the current pair
-        agree = set()
-
-        # Iterate over the coders' opinions
-        for coder in coders:
-            # If the current coder agrees with the current pair, add them to the set
-            if pair[0] in coder or pair[1] in coder:
-                agree.add(coder)
-
-        # If the number of coders who agree with the current pair is at least p, increment the counter
-        if len(agree) >= p:
-            count += 1
-
-    return count
-
-n, p = map(int, input().split())
-coders = [set(map(int, input().split())) for _ in range(n)]
-print(solve(n, p, coders))
+if __name__ == '__main__':
+    main()
 

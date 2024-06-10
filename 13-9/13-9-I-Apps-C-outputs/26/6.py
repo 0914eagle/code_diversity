@@ -1,17 +1,32 @@
 
-def count_possible_passwords(encrypted_password):
-    # Initialize a list to store the possible passwords
-    possible_passwords = []
+def get_portals(n, portals):
+    # Initialize a list to store the number of portals needed for each room
+    portals_needed = [0] * (n + 1)
     
-    # Iterate through the encrypted password
-    for i in range(len(encrypted_password)):
-        # If the current character is a consonant, double it and add an 'o' in between
-        if encrypted_password[i].lower() not in "aeiou":
-            possible_passwords.append(encrypted_password[:i] + "o" + encrypted_password[i] + encrypted_password[i] + encrypted_password[i+1:])
-        # If the current character is a vowel, just add it to the list
+    # Set the initial room to 1 and the initial number of portals needed to 0
+    current_room = 1
+    portals_needed[current_room] = 0
+    
+    # Loop through each room
+    for i in range(1, n + 1):
+        # If the current room has an odd number of portals needed, use the second portal
+        if portals_needed[current_room] % 2 == 1:
+            current_room = portals[current_room - 1]
+        # Otherwise, use the first portal
         else:
-            possible_passwords.append(encrypted_password[:i] + encrypted_password[i] + encrypted_password[i+1:])
+            current_room += 1
+        
+        # Increment the number of portals needed for the current room
+        portals_needed[current_room] += 1
     
-    # Return the number of possible passwords modulo 1000009
-    return len(possible_passwords) % 1000009
+    # Return the number of portals needed to get to the last room
+    return portals_needed[-1]
+
+def main():
+    n = int(input())
+    portals = [int(x) for x in input().split()]
+    print(get_portals(n, portals) % 1000000007)
+
+if __name__ == '__main__':
+    main()
 

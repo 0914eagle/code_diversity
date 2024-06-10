@@ -1,11 +1,20 @@
 
-def solve_maximum_quadrilateral_problem(s1, s2, s3, s4):
-    # Calculate the perimeter of the quadrilateral
-    p = s1 + s2 + s3 + s4
-    
-    # Calculate the area of the quadrilateral
-    area = (s1 * s2 + s2 * s3 + s3 * s4 + s4 * s1) / 2
-    
-    # Return the maximum area
-    return area
+def get_min_number(L, D, X):
+    for N in range(L, D+1):
+        if sum(int(digit) for digit in str(N)) == X:
+            return N
+    return -1
+
+def get_max_number(L, D, X):
+    for M in range(L, D+1):
+        if sum(int(digit) for digit in str(M)) == X:
+            return M
+    return -1
+
+if __name__ == '__main__':
+    L, D, X = map(int, input().split())
+    N = get_min_number(L, D, X)
+    M = get_max_number(L, D, X)
+    print(N)
+    print(M)
 

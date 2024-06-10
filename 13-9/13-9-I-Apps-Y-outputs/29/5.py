@@ -1,25 +1,24 @@
 
-def refill_fridge(n, m, s, d, current_bottles):
-    # Initialize the probability of all students getting a cold soda to 0
-    prob_cold_soda = 0
-    
-    # Loop through all possible combinations of placing the new bottles in the fridge
-    for combination in itertools.product(range(n+1), repeat=s):
-        # Calculate the number of cold bottles in the fridge after this combination
-        num_cold_bottles = sum(combination)
-        
-        # Calculate the probability of all students getting a cold soda after this combination
-        prob_cold_soda_combination = math.comb(s, num_cold_bottles) * math.comb(n, num_cold_bottles) / math.comb(n+s, m)
-        
-        # If the probability of all students getting a cold soda after this combination is greater than the current maximum, update the maximum and the corresponding combination
-        if prob_cold_soda_combination > prob_cold_soda:
-            prob_cold_soda = prob_cold_soda_combination
-            optimal_combination = combination
-    
-    # If the probability of all students getting a cold soda is 0, return "impossible"
-    if prob_cold_soda == 0:
-        return "impossible"
-    
-    # Otherwise, return the optimal combination of placing the new bottles in the fridge
-    return list(optimal_combination)
+def get_permutation(n, q):
+    # Initialize a list to store the permutation
+    permutation = [0] * n
+    # Set the first element of the permutation to 1
+    permutation[0] = 1
+    # Iterate over the remaining elements of the permutation
+    for i in range(1, n):
+        # Find the next element of the permutation using the formula p_i = q_i + p_{i-1}
+        permutation[i] = q[i-1] + permutation[i-1]
+    # Return the permutation
+    return permutation
+
+def main():
+    # Read the input n and q
+    n, q = map(int, input().split())
+    # Call the get_permutation function to get the permutation
+    permutation = get_permutation(n, q)
+    # Print the permutation
+    print(*permutation)
+
+if __name__ == '__main__':
+    main()
 

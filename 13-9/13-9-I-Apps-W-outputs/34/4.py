@@ -1,17 +1,25 @@
 
-def get_maximum_candies(n, k, M, D):
-    # Initialize the maximum number of candies as 0
-    max_candies = 0
-    # Loop through all possible values of x
-    for x in range(1, M + 1):
-        # Calculate the number of candies given to each person
-        num_candies = x * (k - 1)
-        # Calculate the number of candies received by Arkady
-        arkady_candies = n - num_candies
-        # Check if the number of candies received by Arkady is divisible by D
-        if arkady_candies % D == 0:
-            # If it is divisible, update the maximum number of candies
-            max_candies = max(max_candies, arkady_candies)
-    # Return the maximum number of candies
-    return max_candies
+def get_strength(a, b):
+    return a + b
+
+def get_teammate(strengths, n):
+    teammates = [0] * (n + 1)
+    for i in range(1, n + 1):
+        max_strength = 0
+        for j in range(1, n + 1):
+            if i != j and strengths[i][j] > max_strength:
+                max_strength = strengths[i][j]
+                teammates[i] = j
+    return teammates
+
+def main():
+    n = int(input())
+    strengths = []
+    for i in range(n):
+        strengths.append(list(map(int, input().split())))
+    teammates = get_teammate(strengths, n)
+    print(*teammates)
+
+if __name__ == '__main__':
+    main()
 

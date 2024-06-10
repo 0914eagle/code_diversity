@@ -1,11 +1,17 @@
 
-def get_changed_bits(n, bits):
-    # Convert the binary string to an integer
-    value = int(bits, 2)
-    # Add 1 to the integer
-    value += 1
-    # Convert the integer back to a binary string
-    bits = bin(value)[2:]
-    # Return the number of bits that changed
-    return len(bits)
+def is_happy(message):
+    return "iloveyou" in message
+
+def is_sad(message):
+    return "iloveyou" not in message
+
+def main():
+    message = input("Enter the message: ")
+    if is_happy(message):
+        print("Happy")
+    else:
+        print("Sad")
+
+if __name__ == '__main__':
+    main()
 

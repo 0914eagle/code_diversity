@@ -1,22 +1,37 @@
 
-def largest_box_volume(n, V, boxes):
-    # Initialize the largest box and its volume
-    largest_box = None
-    largest_volume = 0
+def is_satisfiable(clauses):
+    variables = set()
+    for clause in clauses:
+        variables.update(clause)
+    variables = list(variables)
+    variables.sort()
+    assignment = [False] * len(variables)
+    return is_satisfiable_helper(clauses, variables, assignment)
 
-    # Iterate through the boxes
-    for box in boxes:
-        # Calculate the volume of the current box
-        volume = box[0] * box[1] * box[2]
+def is_satisfiable_helper(clauses, variables, assignment):
+    if not clauses:
+        return True
+    clause = clauses.pop()
+    for i in range(len(variables)):
+        if assignment[i] == False and is_satisfiable_helper(clauses, variables, assignment[:i] + [True] + assignment[i+1:]):
+            return True
+        if assignment[i] == True and is_satisfiable_helper(clauses, variables, assignment[:i] + [False] + assignment[i+1:]):
+            return True
+    return False
 
-        # If the current box is larger than the largest box, update the largest box and its volume
-        if volume > largest_volume:
-            largest_box = box
-            largest_volume = volume
+def get_judgement(clauses):
+    if len(clauses) < 8:
+        return "unsatisfactory"
+    else:
+        return "satisfactory"
 
-    # Calculate the difference between the largest box's volume and the minimum volume required (V)
-    difference = largest_volume - V
+def main():
+    m, n = map(int, input().split())
+    clauses = []
+    for _ in range(m):
+        clauses.append(set(map(int, input().split())))
+    print(get_judgement(clauses))
 
-    # Return the difference
-    return difference
+if __name__ == '__main__':
+    main()
 

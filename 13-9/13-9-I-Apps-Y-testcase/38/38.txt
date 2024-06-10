@@ -1,10 +1,1 @@
-{
-    "inputs": [
-        "4\nA\nA\nA\nA\n",
-        "6\nA\nD\nB\nB\nC\nA\n"
-    ],
-    "outputs": [
-        "3\n",
-        "1\n"
-    ]
-}
+{"inputs": ["50 100 120\n", "500 100 1000\n", "19 123 143\n", "19 123 142\n"], "outputs": ["Yes\n", "No\n", "No\n", "Yes\n"]}

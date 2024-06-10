@@ -1,29 +1,28 @@
 
-def solve(n, arr):
-    # Initialize variables
-    rest_days = 0
-    last_day_sport = -1
-    last_day_contest = -1
-    
-    # Iterate through the array
-    for i in range(n):
-        # Check if the gym is open and a contest is carried out
-        if arr[i] in [2, 3]:
-            # Check if the last day Vasya did sport was the previous day
-            if last_day_sport == i-1:
-                # Increment the number of rest days
-                rest_days += 1
-            # Update the last day Vasya did sport
-            last_day_sport = i
-        # Check if a contest is carried out and the gym is closed
-        elif arr[i] == 1:
-            # Check if the last day Vasya wrote the contest was the previous day
-            if last_day_contest == i-1:
-                # Increment the number of rest days
-                rest_days += 1
-            # Update the last day Vasya wrote the contest
-            last_day_contest = i
-    
-    # Return the number of rest days
-    return rest_days
+def get_program(input_string):
+    program = []
+    for line in input_string.splitlines():
+        if line.startswith("D"):
+            program.append(("D", int(line[2:])))
+        elif line.startswith("I"):
+            program.append(("I", int(line[2:line.find(" ")]), line[line.find(" ")+1]))
+        else:
+            program.append(("E",))
+    return program
+
+def compare_programs(program1, program2):
+    if len(program1) != len(program2):
+        return False
+    for i in range(len(program1)):
+        if program1[i] != program2[i]:
+            return False
+    return True
+
+def main():
+    program1 = get_program(input())
+    program2 = get_program(input())
+    print(int(compare_programs(program1, program2)))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,29 +1,32 @@
 
-def solve(n, g, distances, costs):
-    # Sort the gas stations by distance
-    sorted_gas_stations = sorted(zip(distances, costs), key=lambda x: x[0])
+def find_signed_binary_representation(n):
+    # Convert the input to a list of digits
+    digits = [int(digit) for digit in str(n)]
+    # Initialize the minimum number of non-zero digits as the length of the input
+    min_non_zero_digits = len(digits)
+    # Initialize the minimum representation as the input itself
+    min_representation = digits
+    # Iterate over all possible representations
+    for representation in itertools.product([-1, 0, 1], repeat=len(digits)):
+        # Convert the representation to a list of digits
+        representation_digits = [int(digit) for digit in representation]
+        # Count the number of non-zero digits in the representation
+        non_zero_digits = sum(digit != 0 for digit in representation_digits)
+        # If the number of non-zero digits is less than the minimum, update the minimum
+        if non_zero_digits < min_non_zero_digits:
+            min_non_zero_digits = non_zero_digits
+            min_representation = representation_digits
+    # Return the minimum representation
+    return min_representation
 
-    # Initialize the current position and fuel level
-    current_position = 0
-    fuel_level = g
+def main():
+    # Read the input from stdin
+    n = int(input())
+    # Find the signed binary representation of the input
+    representation = find_signed_binary_representation(n)
+    # Print the representation
+    print("".join(str(digit) for digit in representation))
 
-    # Initialize the minimum cost
-    min_cost = 0
-
-    # Iterate through the sorted gas stations
-    for i in range(n):
-        # Get the distance and cost of the current gas station
-        distance, cost = sorted_gas_stations[i]
-
-        # Check if the current gas station is within reach
-        if current_position + distance <= fuel_level:
-            # Fuel up and update the fuel level
-            fuel_level -= distance
-            min_cost += cost
-        else:
-            # Cancel the road trip
-            return "cancel road trip"
-
-    # Return the minimum cost
-    return min_cost
+if __name__ == '__main__':
+    main()
 

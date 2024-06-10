@@ -1,35 +1,71 @@
 
-def min_rest_days(n, activities):
-    # Initialize variables to keep track of the number of consecutive days with activity
-    sport_days = 0
-    contest_days = 0
-    # Initialize the minimum number of rest days to the maximum possible value
-    min_rest = n
-    # Iterate through the list of activities
-    for activity in activities:
-        # If the gym is closed and the contest is not carried out, do nothing
-        if activity == 0:
-            continue
-        # If the gym is closed and the contest is carried out, increase the contest days by 1
-        elif activity == 1:
-            contest_days += 1
-        # If the gym is open and the contest is not carried out, increase the sport days by 1
-        elif activity == 2:
-            sport_days += 1
-        # If the gym is open and the contest is carried out, increase both the sport days and contest days by 1
-        else:
-            sport_days += 1
-            contest_days += 1
-        # If the sport days or contest days exceed the minimum number of rest days, update the minimum number of rest days
-        if sport_days > min_rest:
-            min_rest = sport_days
-        if contest_days > min_rest:
-            min_rest = contest_days
-        # Reset the sport days and contest days if they exceed the minimum number of rest days
-        if sport_days == min_rest:
-            sport_days = 0
-        if contest_days == min_rest:
-            contest_days = 0
-    # Return the minimum number of rest days
-    return min_rest
+def dna_edit_distance(p1, p2):
+    # Initialize an empty string
+    string = ''
+    
+    # Iterate through the operations in program 1
+    for op in p1:
+        # If the operation is a deletion, remove the character at the given position
+        if op[0] == 'D':
+            string = string[:op[1]-1] + string[op[1]:]
+        # If the operation is an insertion, insert the given character at the given position
+        elif op[0] == 'I':
+            string = string[:op[1]-1] + op[2] + string[op[1]-1:]
+    
+    # Initialize a set to store the characters in the string
+    chars = set()
+    
+    # Iterate through the characters in the string
+    for c in string:
+        # If the character is not already in the set, add it
+        if c not in chars:
+            chars.add(c)
+    
+    # Initialize a set to store the operations in program 2
+    ops = set()
+    
+    # Iterate through the operations in program 2
+    for op in p2:
+        # If the operation is a deletion, remove the character at the given position
+        if op[0] == 'D':
+            string = string[:op[1]-1] + string[op[1]:]
+        # If the operation is an insertion, insert the given character at the given position
+        elif op[0] == 'I':
+            string = string[:op[1]-1] + op[2] + string[op[1]-1:]
+        # Add the operation to the set
+        ops.add(op)
+    
+    # If the sets of characters and operations are the same, the programs are identical
+    if chars == set(string) and ops == set(p2):
+        return 0
+    # Otherwise, the programs are different
+    else:
+        return 1
+
+def main():
+    # Read the input
+    p1 = []
+    p2 = []
+    while True:
+        line = input()
+        if line == 'E':
+            break
+        if line[0] == 'D':
+            p1.append(('D', int(line[2:])))
+        elif line[0] == 'I':
+            p1.append(('I', int(line[2:line.index(' ')]), line[line.index(' ')+1]))
+    while True:
+        line = input()
+        if line == 'E':
+            break
+        if line[0] == 'D':
+            p2.append(('D', int(line[2:])))
+        elif line[0] == 'I':
+            p2.append(('I', int(line[2:line.index(' ')]), line[line.index(' ')+1]))
+    
+    # Compare the programs
+    print(dna_edit_distance(p1, p2))
+
+if __name__ == '__main__':
+    main()
 

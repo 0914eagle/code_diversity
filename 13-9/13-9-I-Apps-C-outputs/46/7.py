@@ -1,27 +1,21 @@
 
-def reconstruct_map(map_pieces):
-    # Initialize an empty grid to store the reconstructed map
-    grid = []
+def get_expected_damages(N, L, R):
+    expected_damages = 0
+    for i in range(N):
+        for j in range(i+1, N):
+            expected_damages += max(0, R[i] - L[j]) + max(0, R[j] - L[i])
+    return expected_damages / N ** 2
 
-    # Iterate through the map pieces
-    for piece in map_pieces:
-        # Get the width and height of the current piece
-        width, height = piece[0], piece[1]
+def main():
+    N = int(input())
+    L = []
+    R = []
+    for i in range(N):
+        L_i, R_i = map(float, input().split())
+        L.append(L_i)
+        R.append(R_i)
+    print(get_expected_damages(N, L, R))
 
-        # Iterate through the squares in the current piece
-        for i in range(height):
-            for j in range(width):
-                # Get the value of the current square
-                value = piece[i + 2][j]
-
-                # If the grid is not large enough to fit the current piece, extend it
-                if len(grid) < height:
-                    grid.append([])
-                if len(grid[i]) < width:
-                    grid[i].append(value)
-                else:
-                    grid[i].append(value)
-
-    # Return the reconstructed map
-    return grid
+if __name__ == '__main__':
+    main()
 

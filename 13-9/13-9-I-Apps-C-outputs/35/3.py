@@ -1,21 +1,30 @@
 
-def longest_interesting_subsequence(A, S):
-    
-    # Initialize the result array
-    result = [0] * len(A)
+def get_min_f(n, a):
+    # Initialize the minimum value of f(i, j) to a large number
+    min_f = 1000000
+    # Loop through all possible values of i and j
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            # Calculate the value of f(i, j)
+            f = (i - j) ** 2 + g(i, j, a) ** 2
+            # Update the minimum value of f(i, j) if necessary
+            if f < min_f and i != j:
+                min_f = f
+    # Return the minimum value of f(i, j)
+    return min_f
 
-    # Loop through each element in the sequence
-    for i in range(len(A)):
-        # Calculate the sum of the first K elements
-        sum1 = sum(A[:i+1])
+def g(i, j, a):
+    # Initialize the sum to 0
+    sum = 0
+    # Loop through all values of k between i and j (inclusive)
+    for k in range(min(i, j) + 1, max(i, j) + 1):
+        # Add the value of a[k] to the sum
+        sum += a[k]
+    # Return the sum
+    return sum
 
-        # Calculate the sum of the last K elements
-        sum2 = sum(A[i:])
-
-        # If neither sum is greater than S, the subsequence is interesting
-        if sum1 <= S and sum2 <= S:
-            # Set the length of the interesting subsequence starting with this element
-            result[i] = i + 1
-
-    return result
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(get_min_f(n, a))
 

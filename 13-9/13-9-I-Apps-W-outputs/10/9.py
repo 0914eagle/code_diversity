@@ -1,25 +1,22 @@
 
-def count_simple_loops(stations, connections):
-    # Initialize a dictionary to store the simple loops
-    simple_loops = {}
+import math
 
-    # Iterate over each connection
-    for connection in connections:
-        # Extract the source and destination stations
-        source, destination = connection
+def get_min_time(a, b, n, taxis):
+    min_time = math.inf
+    for taxi in taxis:
+        time = math.sqrt((taxi[0] - a) ** 2 + (taxi[1] - b) ** 2) / taxi[2]
+        min_time = min(min_time, time)
+    return min_time
 
-        # Check if the source station is already in a simple loop
-        if source in simple_loops:
-            # If it is, check if the destination station is already in the simple loop
-            if destination in simple_loops[source]:
-                # If it is, skip this connection
-                continue
-            # If it's not, add the destination station to the simple loop
-            simple_loops[source].add(destination)
-        # If the source station is not in a simple loop, create a new simple loop with the source and destination stations
-        else:
-            simple_loops[source] = {source, destination}
+def main():
+    a, b = map(int, input().split())
+    n = int(input())
+    taxis = []
+    for _ in range(n):
+        x, y, v = map(int, input().split())
+        taxis.append([x, y, v])
+    print(get_min_time(a, b, n, taxis))
 
-    # Return the number of unique simple loops
-    return len(simple_loops)
+if __name__ == '__main__':
+    main()
 

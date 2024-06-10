@@ -1,9 +1,21 @@
 
-def solve(n):
-    if n == 1:
-        return 1
-    elif n == 7:
-        return 0
-    else:
-        return -1
+def get_permutation(n):
+    permutation = list(map(int, input().split()))
+    return permutation
+
+def get_second_smallest(permutation):
+    count = 0
+    for i in range(1, len(permutation) - 1):
+        if permutation[i] < permutation[i - 1] and permutation[i] < permutation[i + 1]:
+            count += 1
+    return count
+
+def main():
+    n = int(input())
+    permutation = get_permutation(n)
+    count = get_second_smallest(permutation)
+    print(count)
+
+if __name__ == '__main__':
+    main()
 

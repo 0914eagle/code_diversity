@@ -1,36 +1,36 @@
 
-def solve(n, p, k, pipes, improvements):
-    # Initialize the graph with the given pipes
-    graph = {i: set() for i in range(1, n + 1)}
-    for a, b, c in pipes:
-        graph[a].add((b, c))
-        graph[b].add((a, c))
+def get_valid_scenarios(n, k, questions):
+    # Initialize a set to store the valid scenarios
+    valid_scenarios = set()
     
-    # Initialize the maximum water amount for each station
-    max_water = [0] * (n + 1)
-    max_water[1] = 1000
-    
-    # Perform the improvements
-    for a, b, c in improvements:
-        # If there is no pipe between a and b, create one with capacity c
-        if (a, b) not in graph:
-            graph[a].add((b, c))
-            graph[b].add((a, c))
-        # Increase the capacity of the pipe between a and b by c
-        else:
-            for i, j in graph[a]:
-                if j == b:
-                    graph[a].remove((i, j))
-                    graph[a].add((i, j + c))
-                    graph[b].remove((a, j))
-                    graph[b].add((a, j + c))
-                    break
-    
-    # Find the maximum water amount for each station after the improvements
+    # Iterate over all possible starting positions
     for i in range(1, n + 1):
-        for j, c in graph[i]:
-            max_water[i] = max(max_water[i], max_water[j] + c)
+        # Initialize the current position and the number of questions answered
+        current_position = i
+        num_questions_answered = 0
+        
+        # Iterate over the questions
+        for j in range(k):
+            # If the current position is the question, answer "NO" and move to the next position
+            if current_position == questions[j]:
+                num_questions_answered += 1
+                current_position += 1
+                
+                # If the current position is out of bounds, move back to the starting position
+                if current_position > n:
+                    current_position = i
+            
+        # If all questions were answered "NO", add the scenario to the set of valid scenarios
+        if num_questions_answered == k:
+            valid_scenarios.add((i, current_position))
     
-    # Return the maximum water amount for the mansion
-    return max_water[-1]
+    return len(valid_scenarios)
+
+def main():
+    n, k = map(int, input().split())
+    questions = list(map(int, input().split()))
+    print(get_valid_scenarios(n, k, questions))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,22 +1,32 @@
 
-def count_simple_loops(transit_system):
-    # Initialize a set to store the simple loops
-    simple_loops = set()
+import math
 
-    # Iterate over each connection in the transit system
-    for connection in transit_system:
-        # Extract the source and destination stations from the connection
-        source, destination = connection
+def get_distance(point1, point2):
+    return math.sqrt((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)
 
-        # Check if the destination station is already in the simple loop
-        if destination in simple_loops:
-            # If it is, add the source station to the simple loop
-            simple_loops.add(source)
-        else:
-            # If it's not, create a new simple loop with the source and destination stations
-            simple_loops.add(source)
-            simple_loops.add(destination)
+def get_time(distance, speed):
+    return distance / speed
 
-    # Return the number of unique simple loops
-    return len(simple_loops)
+def get_min_time(vasiliy_coords, taxi_coords, taxi_speeds):
+    min_time = float('inf')
+    for i in range(len(taxi_coords)):
+        distance = get_distance(vasiliy_coords, taxi_coords[i])
+        time = get_time(distance, taxi_speeds[i])
+        if time < min_time:
+            min_time = time
+    return min_time
+
+def main():
+    vasiliy_coords = [int(x) for x in input().split()]
+    n = int(input())
+    taxi_coords = []
+    taxi_speeds = []
+    for i in range(n):
+        coords, speed = [int(x) for x in input().split()]
+        taxi_coords.append([coords[0], coords[1]])
+        taxi_speeds.append(speed)
+    print(get_min_time(vasiliy_coords, taxi_coords, taxi_speeds))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,20 +1,20 @@
 
-def remove_ads(image):
-    # Initialize a set to store the positions of all ads
-    ads = set()
+import re
 
-    # Iterate through the image and check if any characters are not allowed
-    for i in range(len(image)):
-        for j in range(len(image[0])):
-            if image[i][j] not in ["+", "!", "?", ",", ".", " ", "\n"]:
-                # If a character is not allowed, mark the position as an ad
-                ads.add((i, j))
+def evaluate(expression, x):
+    return eval(expression.replace("x", str(x)))
 
-    # Iterate through the image again and replace all characters in ads with whitespace
-    for i in range(len(image)):
-        for j in range(len(image[0])):
-            if (i, j) in ads:
-                image[i][j] = " "
+def find_minimal_x(expression, p, m):
+    for x in range(m):
+        if evaluate(expression, x) % m == p:
+            return x
+    return -1
 
-    return image
+def main():
+    expression = input()
+    p, m = map(int, input().split())
+    print(find_minimal_x(expression, p, m))
+
+if __name__ == '__main__':
+    main()
 

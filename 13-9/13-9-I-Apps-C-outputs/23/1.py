@@ -1,22 +1,34 @@
 
-def get_maximum_value(k, n, employees):
-    # Sort the employees by their productivity in descending order
-    employees.sort(key=lambda x: x[1], reverse=True)
-    # Initialize the team with the CEO
-    team = [0]
-    # Initialize the total value of the team
-    total_value = 0
-    # Iterate through the employees
-    for employee in employees:
-        # If the employee is not the CEO and is not already in the team
-        if employee[2] != 0 and employee[2] not in team:
-            # Add the employee to the team
-            team.append(employee[2])
-            # Add the employee's productivity to the total value
-            total_value += employee[1]
-            # If the team is full, break the loop
-            if len(team) == k:
+def get_input():
+    num_statements = int(input())
+    statements = []
+    for _ in range(num_statements):
+        statements.append(input())
+    return statements
+
+def rhyme(word1, word2):
+    min_length = min(3, len(word1), len(word2))
+    return word1[-min_length:] == word2[-min_length:]
+
+def is_consistent(statements):
+    consistent = True
+    for i in range(len(statements)):
+        for j in range(i+1, len(statements)):
+            if statements[i].split()[0] == statements[j].split()[1] and not rhyme(statements[i].split()[0], statements[j].split()[1]):
+                consistent = False
                 break
-    # Return the total value divided by the sum of the employees' salaries
-    return total_value / sum(employee[0] for employee in employees if employee[2] in team)
+            elif statements[i].split()[1] == statements[j].split()[0] and not rhyme(statements[i].split()[1], statements[j].split()[0]):
+                consistent = False
+                break
+    return consistent
+
+def main():
+    statements = get_input()
+    if is_consistent(statements):
+        print("yes")
+    else:
+        print("wait what?")
+
+if __name__ == '__main__':
+    main()
 

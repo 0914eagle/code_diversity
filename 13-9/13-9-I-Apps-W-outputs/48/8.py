@@ -1,25 +1,27 @@
 
-def solve(N, S, T, U, V):
-    # Initialize the matrix with zeros
-    a = [[0 for _ in range(N)] for _ in range(N)]
+def get_result(upvotes, downvotes, unknown):
+    total_votes = upvotes + downvotes
+    if upvotes > downvotes:
+        return "+"
+    elif downvotes > upvotes:
+        return "-"
+    else:
+        return "0"
 
-    # Populate the matrix based on the conditions
-    for i in range(N):
-        for j in range(N):
-            if S[i] == 0:
-                a[i][j] = U[i] & V[j]
-            elif S[i] == 1:
-                a[i][j] = U[i] | V[j]
-            if T[j] == 0:
-                a[i][j] &= V[j]
-            elif T[j] == 1:
-                a[i][j] |= V[j]
+def is_result_uncertain(upvotes, downvotes, unknown):
+    total_votes = upvotes + downvotes
+    if unknown == 0:
+        return False
+    elif total_votes == 0:
+        return True
+    else:
+        return unknown > total_votes // 2
 
-    # Check if the matrix satisfies the conditions
-    for i in range(N):
-        for j in range(N):
-            if a[i][j] < 0 or a[i][j] >= 2**64:
-                return -1
-
-    return a
+if __name__ == '__main__':
+    upvotes, downvotes, unknown = map(int, input().split())
+    result = get_result(upvotes, downvotes, unknown)
+    if is_result_uncertain(upvotes, downvotes, unknown):
+        print("?")
+    else:
+        print(result)
 

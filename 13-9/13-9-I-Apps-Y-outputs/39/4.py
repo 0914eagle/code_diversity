@@ -1,16 +1,29 @@
 
-def get_safe_operations(registers):
-    # Initialize the number of safe operations to the number of registers
-    safe_operations = len(registers)
-    
-    # Iterate through the registers from largest to smallest
-    for i in range(len(registers)-1, -1, -1):
-        # If the register is not zero, decrement the number of safe operations
-        if registers[i] != 0:
-            safe_operations -= 1
-        # If the register is zero and the previous register is not zero, break the loop
-        elif i > 0 and registers[i-1] != 0:
-            break
-    
-    return safe_operations
+def get_input():
+    return list(map(int, input().split()))
+
+def is_multiple_of_a(n, a):
+    return n % a == 0
+
+def is_congruent_to_c_modulo_b(sum_of_selected_numbers, c, b):
+    return sum_of_selected_numbers % b == c
+
+def select_numbers(a, b, c):
+    selected_numbers = []
+    current_sum = 0
+    while current_sum < c:
+        current_sum += a
+        selected_numbers.append(current_sum)
+    return selected_numbers
+
+def main():
+    a, b, c = get_input()
+    selected_numbers = select_numbers(a, b, c)
+    if is_multiple_of_a(selected_numbers[0], a) and is_congruent_to_c_modulo_b(sum(selected_numbers), c, b):
+        print("YES")
+    else:
+        print("NO")
+
+if __name__ == '__main__':
+    main()
 

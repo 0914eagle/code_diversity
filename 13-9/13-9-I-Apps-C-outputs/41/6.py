@@ -1,32 +1,28 @@
 
-def solve(offers):
-    # Sort the offers by the first section of the fence
-    offers.sort(key=lambda x: x[1])
+import itertools
+
+def explosion_damage(n, m, d):
+    # Calculate the probability of a single minion surviving the explosion
+    p_survive = 1 - (d / 6)
     
-    # Initialize the variables to keep track of the number of colors and sections painted
-    num_colors = 0
-    num_sections = 0
+    # Calculate the probability of all minions surviving the explosion
+    p_all_survive = p_survive ** m
     
-    # Initialize a set to store the colors that have been used
-    used_colors = set()
+    # Calculate the probability of at least one minion surviving the explosion
+    p_at_least_one_survive = 1 - p_all_survive
     
-    # Iterate through the offers
-    for offer in offers:
-        # Check if the current offer can be accepted
-        if offer[1] == num_sections + 1 and len(used_colors) < 3:
-            # Accept the offer and update the variables
-            num_colors += 1
-            num_sections = offer[2]
-            used_colors.add(offer[0])
-        else:
-            # The current offer cannot be accepted, so break the loop
-            break
+    # Calculate the probability of all opponent's minions being removed
+    p_all_removed = p_at_least_one_survive ** n
     
-    # Check if all sections of the fence have been painted
-    if num_sections == 10000:
-        # Return the number of accepted offers
-        return len(offers[:num_sections])
-    else:
-        # Not all sections of the fence have been painted, so return "IMPOSSIBLE"
-        return "IMPOSSIBLE"
+    return p_all_removed
+
+def main():
+    n, m, d = map(int, input().split())
+    health_own = list(map(int, input().split()))
+    health_opp = list(map(int, input().split()))
+    
+    print(explosion_damage(n, m, d))
+
+if __name__ == '__main__':
+    main()
 

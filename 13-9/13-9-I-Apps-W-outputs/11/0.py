@@ -1,13 +1,17 @@
 
-def solve(k):
-    alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-    result = []
-    for i in range(len(alphabet)):
-        for j in range(i+1, len(alphabet)):
-            diff1 = abs(alphabet.index(alphabet[i]) - alphabet.index(alphabet[j]))
-            diff2 = abs(alphabet.index(alphabet[j]) - alphabet.index(alphabet[i]))
-            sum_diff = diff1 + diff2
-            if sum_diff == k:
-                result.append(alphabet[i] + alphabet[j])
-    return sorted(result)[0]
+def get_min_problems(c, d, n, m, k):
+    # Calculate the total number of winners in the main and additional rounds
+    total_winners = n * m + k
+    
+    # Calculate the minimum number of problems needed to ensure at least total_winners go to the finals
+    min_problems = total_winners * (c + d)
+    
+    return min_problems
+
+def main():
+    c, d, n, m, k = map(int, input().split())
+    print(get_min_problems(c, d, n, m, k))
+
+if __name__ == '__main__':
+    main()
 

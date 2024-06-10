@@ -1,23 +1,33 @@
 
-def solve(N, K, A, D):
-    # Initialize the maximum energy to 0
-    max_energy = 0
-    
-    # Loop through each atom
-    for i in range(N):
-        # If the atom is not excited, continue to the next atom
-        if A[i] == 0:
-            continue
-        
-        # If the atom is excited, check if changing the bond is allowed
-        if K > 0:
-            # If changing the bond is allowed, change the bond to a different value
-            E[i] = i + 1
-            K -= 1
-        
-        # Add the energy given by the excited atom to the maximum energy
-        max_energy += A[i]
-    
-    # Return the maximum energy
-    return max_energy
+def get_unattacked_cells(n, m, rooks):
+    # Initialize a matrix to keep track of the cells that are under attack
+    attack_matrix = [[False for _ in range(n)] for _ in range(n)]
+
+    # Iterate through the rooks and mark the cells that are under attack
+    for i in range(m):
+        x, y = rooks[i]
+        attack_matrix[x][y] = True
+        for j in range(n):
+            attack_matrix[x][j] = True
+            attack_matrix[j][y] = True
+
+    # Count the number of cells that are not under attack
+    unattacked_cells = 0
+    for i in range(n):
+        for j in range(n):
+            if not attack_matrix[i][j]:
+                unattacked_cells += 1
+
+    return unattacked_cells
+
+def main():
+    n, m = map(int, input().split())
+    rooks = []
+    for i in range(m):
+        x, y = map(int, input().split())
+        rooks.append((x, y))
+    print(get_unattacked_cells(n, m, rooks))
+
+if __name__ == '__main__':
+    main()
 

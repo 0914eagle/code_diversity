@@ -1,43 +1,26 @@
 
-def solve(grid, program):
-    # Initialize the robot's location and trail
-    location = (0, 0)
-    trail = [location]
-
-    # Loop through the program string
-    for dir in program:
-        # Get the new location based on the direction
-        if dir == "<":
-            new_location = (location[0] - 1, location[1])
-        elif dir == ">":
-            new_location = (location[0] + 1, location[1])
-        elif dir == "^":
-            new_location = (location[0], location[1] - 1)
+def find_longest_repeated_substring(input_string):
+    # Initialize a dictionary to store the starting indices of each unique substring
+    substring_indices = {}
+    # Initialize the longest repeated substring as an empty string
+    longest_repeated_substring = ""
+    # Iterate over the characters of the input string
+    for i in range(len(input_string)):
+        # Check if the current substring is already in the dictionary
+        if input_string[i] in substring_indices:
+            # If it is, update the longest repeated substring if necessary
+            if len(longest_repeated_substring) < i - substring_indices[input_string[i]] + 1:
+                longest_repeated_substring = input_string[substring_indices[input_string[i]]:i+1]
+        # If the current substring is not in the dictionary, add it to the dictionary with its starting index
         else:
-            new_location = (location[0], location[1] + 1)
+            substring_indices[input_string[i]] = i
+    # Return the longest repeated substring
+    return longest_repeated_substring
 
-        # Check if the new location is valid
-        if is_valid_location(new_location, grid):
-            # Add the new location to the trail
-            trail.append(new_location)
-            location = new_location
+def main():
+    input_string = input()
+    print(find_longest_repeated_substring(input_string))
 
-    # Check if the trail is of finite length
-    if len(trail) < len(grid) ** 2:
-        return 1
-
-    # Find the smallest integer X such that the suffix of the trail
-    # will be a repetition of a continuous subsequence of the trail
-    # of length exactly X
-    for x in range(len(trail)):
-        suffix = trail[x:]
-        if suffix * (len(trail) // len(suffix)) == trail:
-            return x
-
-    # If no such integer X exists, return 1
-    return 1
-
-# Check if a location is valid
-def is_valid_location(location, grid):
-    return (0 <= location[0] < len(grid)) and (0 <= location[1] < len(grid[0])) and grid[location[0]][location[1]] != "#"
+if __name__ == '__main__':
+    main()
 

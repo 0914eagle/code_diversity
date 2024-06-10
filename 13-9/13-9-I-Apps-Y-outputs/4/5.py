@@ -1,21 +1,23 @@
 
-def is_valid_password(stored_password, entered_password):
-    # Check if the stored and entered passwords are identical
-    if stored_password == entered_password:
-        return True
+def get_earliest_day(num_trees, grow_days):
+    # Sort the grow days in ascending order
+    grow_days.sort()
+    
+    # Initialize the earliest day as the last grow day
+    earliest_day = grow_days[-1]
+    
+    # Loop through the grow days and calculate the earliest day
+    for i in range(num_trees - 1):
+        earliest_day = max(earliest_day, grow_days[i] + grow_days[i + 1])
+    
+    return earliest_day
 
-    # Check if the entered password can be formed by prepending a single digit to the stored password
-    if entered_password[1:] == stored_password:
-        return True
+def main():
+    num_trees = int(input())
+    grow_days = list(map(int, input().split()))
+    earliest_day = get_earliest_day(num_trees, grow_days)
+    print(earliest_day)
 
-    # Check if the entered password can be formed by appending a single digit to the stored password
-    if stored_password[1:] == entered_password:
-        return True
-
-    # Check if the entered password is equal to the stored password after reversing the case of all letters
-    if stored_password.lower() == entered_password.lower():
-        return True
-
-    # If none of the above conditions are met, return False
-    return False
+if __name__ == '__main__':
+    main()
 

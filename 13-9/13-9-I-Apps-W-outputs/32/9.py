@@ -1,35 +1,24 @@
 
-def solve(n, k, chips):
-    # Initialize the result string
-    result = ""
+def get_bouquets(n, a, b):
+    # Initialize a list to store the bouquets
+    bouquets = []
+    
+    # Loop through each possible number of flowers in the bouquet
+    for i in range(1, n + 1):
+        # If the number of flowers is not equal to a or b, add it to the bouquets list
+        if i != a and i != b:
+            bouquets.append(i)
+    
+    # Return the number of bouquets modulo (10^9 + 7)
+    return len(bouquets) % (10**9 + 7)
 
-    # Loop through each iteration
-    for i in range(k):
-        # Loop through each chip
-        for j in range(n):
-            # Find the neighbors of the current chip
-            neighbors = []
-            if j == 0:
-                neighbors = [n - 1, j + 1]
-            elif j == n - 1:
-                neighbors = [j - 1, 0]
-            else:
-                neighbors = [j - 1, j + 1]
+def main():
+    # Read the input data
+    n, a, b = map(int, input().split())
+    
+    # Call the get_bouquets function and print the result
+    print(get_bouquets(n, a, b))
 
-            # Count the number of white and black neighbors
-            white_neighbors = 0
-            black_neighbors = 0
-            for neighbor in neighbors:
-                if chips[neighbor] == "W":
-                    white_neighbors += 1
-                else:
-                    black_neighbors += 1
-
-            # Check if the current chip should be white or black
-            if white_neighbors > black_neighbors:
-                result += "W"
-            else:
-                result += "B"
-
-    return result
+if __name__ == '__main__':
+    main()
 

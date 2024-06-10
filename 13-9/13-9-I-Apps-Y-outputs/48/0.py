@@ -1,9 +1,17 @@
 
-def is_haiku(phrase_1, phrase_2, phrase_3):
-    # Check if the sum of the syllables in each phrase is 17
-    if phrase_1 + phrase_2 + phrase_3 == 17:
-        # Check if the number of syllables in each phrase is valid
-        if phrase_1 in range(1, 6) and phrase_2 in range(1, 6) and phrase_3 in range(1, 8):
-            return "YES"
-    return "NO"
+def get_min_pieces(A, B):
+    # Find the greatest common divisor of A and B
+    gcd = get_gcd(A, B)
+    # Return the minimum number of pieces that can be divided evenly between A and B
+    return (A // gcd) * (B // gcd)
+
+def get_gcd(a, b):
+    if b == 0:
+        return a
+    else:
+        return get_gcd(b, a % b)
+
+if __name__ == '__main__':
+    A, B = map(int, input().split())
+    print(get_min_pieces(A, B))
 

@@ -1,18 +1,26 @@
 
-import sys
+def input_permutation():
+    n = int(input())
+    permutation = list(map(int, input().split()))
+    return n, permutation
 
-def num_paths(n, k, d):
-    mod = 1000000007
-    dp = [[0] * (n + 1) for _ in range(k + 1)]
-    dp[0][0] = 1
-    for i in range(1, k + 1):
-        for j in range(1, n + 1):
-            if j >= d:
-                dp[i][j] += dp[i - 1][j - d]
-            dp[i][j] += dp[i - 1][j]
-            dp[i][j] %= mod
-    return dp[k][n]
+def sort_permutation(permutation):
+    n = len(permutation)
+    swaps = []
+    for i in range(n):
+        for j in range(i+1, n):
+            if abs(permutation[i] - permutation[j]) >= n//2:
+                swaps.append((i, j))
+                permutation[i], permutation[j] = permutation[j], permutation[i]
+    return permutation, swaps
 
-n, k, d = map(int, sys.stdin.readline().split())
-print(num_paths(n, k, d))
+def output_swaps(swaps):
+    print(len(swaps))
+    for i, j in swaps:
+        print(i+1, j+1)
+
+if __name__ == '__main__':
+    n, permutation = input_permutation()
+    sorted_permutation, swaps = sort_permutation(permutation)
+    output_swaps(swaps)
 

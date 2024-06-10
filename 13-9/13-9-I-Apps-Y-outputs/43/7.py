@@ -1,15 +1,41 @@
 
-def min_teams_cannot_start(N, S, R, damaged_teams, reserve_teams):
-    # Initialize a set to store the teams that cannot start
-    cannot_start = set()
+def is_reachable(districts, gangs, current_district, visited):
+    if current_district == len(districts):
+        return True
+    
+    visited.add(current_district)
+    for next_district in range(len(districts)):
+        if next_district not in visited and gangs[current_district] != gangs[next_district]:
+            if is_reachable(districts, gangs, next_district, visited):
+                return True
+    return False
 
-    # Iterate over the damaged teams and their adjacent teams
-    for team in damaged_teams:
-        for adjacent_team in range(team-1, team+2):
-            # If the adjacent team has a reserve kayak, add it to the cannot start set
-            if adjacent_team in reserve_teams:
-                cannot_start.add(adjacent_team)
+def can_build_roads(districts, gangs):
+    roads = []
+    for i in range(len(districts)):
+        for j in range(i+1, len(districts)):
+            if gangs[i] != gangs[j]:
+                roads.append((i+1, j+1))
+    return roads
 
-    # Return the size of the cannot start set
-    return len(cannot_start)
+def solve(districts, gangs):
+    roads = can_build_roads(districts, gangs)
+    if len(roads) < len(districts) - 1:
+        return "NO"
+    
+    visited = set()
+    for road in roads:
+        if not is_reachable(districts, gangs, road[0]-1, visited):
+            return "NO"
+        if not is_reachable(districts, gangs, road[1]-1, visited):
+            return "NO"
+    
+    return "YES\n" + "\n".join([f"{i} {j}" for i, j in roads])
+
+if __name__ == '__main__':
+    num_cases = int(input())
+    for case in range(1, num_cases+1):
+        num_districts = int(input())
+        gangs = [int(x) for x in input().split()]
+        print(f"Case {case}: {solve(num_districts, gangs)}")
 

@@ -1,28 +1,34 @@
 
-import math
+def get_min_chairs(n, left_counts, right_counts):
+    # Initialize the minimum number of chairs to be the sum of all left and right counts
+    min_chairs = sum(left_counts) + sum(right_counts)
+    
+    # Iterate over the guests and check if they can be seated in a single circle
+    for i in range(n):
+        # Check if the guest has enough left and right chairs to be seated in a single circle
+        if left_counts[i] + right_counts[i] <= min_chairs:
+            # If the guest can be seated in a single circle, remove their left and right counts from the minimum number of chairs
+            min_chairs -= left_counts[i] + right_counts[i]
+    
+    return min_chairs
 
-def solve(n, m, likes, weights):
-    # Calculate the sum of all weights
-    total_weight = sum(weights)
+def main():
+    n = int(input())
+    left_counts = []
+    right_counts = []
     
-    # Initialize the expected weights
-    expected_weights = [0] * n
+    # Read the input
+    for i in range(n):
+        left_count, right_count = map(int, input().split())
+        left_counts.append(left_count)
+        right_counts.append(right_count)
     
-    # Iterate through each visit
-    for i in range(m):
-        # Choose a picture randomly with a probability proportional to its weight
-        picture_index = random.choices(population=range(n), weights=weights, k=1)[0]
-        
-        # If the picture is liked, add 1 to its weight
-        if likes[picture_index] == 1:
-            weights[picture_index] += 1
-        # Otherwise, subtract 1 from its weight
-        else:
-            weights[picture_index] -= 1
-        
-        # Calculate the expected weight of the picture
-        expected_weights[picture_index] = (expected_weights[picture_index] * i + weights[picture_index]) / (i + 1)
+    # Call the function to get the minimum number of chairs
+    min_chairs = get_min_chairs(n, left_counts, right_counts)
     
-    # Return the expected weights modulo 998244353
-    return [expected_weight % 998244353 for expected_weight in expected_weights]
+    # Print the result
+    print(min_chairs)
+
+if __name__ == '__main__':
+    main()
 

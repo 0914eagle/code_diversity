@@ -1,30 +1,21 @@
 
-def max_palindromes(n, strings):
-    # Initialize a dictionary to store the palindromic strings
-    palindromes = {}
-    
-    # Loop through each string
-    for i, string in enumerate(strings):
-        # Check if the string is already a palindrome
-        if string == string[::-1]:
-            # If it is, add it to the dictionary with value 1
-            palindromes[i] = 1
-    
-    # Initialize a variable to store the maximum number of palindromic strings
-    max_palindromes = len(palindromes)
-    
-    # Loop through each string
-    for i, string in enumerate(strings):
-        # Check if the string is not already a palindrome
-        if i not in palindromes:
-            # Loop through each character in the string
-            for j in range(len(string)):
-                # Check if the character at position j is the same as the character at position |string| - j - 1
-                if string[j] == string[len(string) - j - 1]:
-                    # If it is, we can make the string palindromic by swapping the character at position j with the character at position |string| - j - 1
-                    palindromes[i] = 1
-                    break
-    
-    # Return the maximum number of palindromic strings
-    return max_palindromes
+def get_min_positive_divisible(l, r, d):
+    for i in range(l, r+1):
+        if i % d == 0 and i not in range(l, r+1):
+            return i
+    return -1
+
+def get_min_positive_divisible_efficient(l, r, d):
+    if d > r:
+        return -1
+    return (d // l + 1) * l
+
+def main():
+    q = int(input())
+    for _ in range(q):
+        l, r, d = map(int, input().split())
+        print(get_min_positive_divisible_efficient(l, r, d))
+
+if __name__ == '__main__':
+    main()
 

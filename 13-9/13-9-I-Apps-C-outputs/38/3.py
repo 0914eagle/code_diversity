@@ -1,18 +1,25 @@
 
-def solve(N, di):
-    # Calculate the number of ways to connect the parts
-    num_ways = 1
-    for i in range(N):
-        num_ways *= di[i]
-    
-    # Calculate the number of ways to connect the parts in each way
-    num_ways_each_way = 1
-    for i in range(N):
-        num_ways_each_way *= 2
-    
-    # Calculate the final answer
-    answer = num_ways * num_ways_each_way
-    
-    # Return the answer modulo 998244353
-    return answer % 998244353
+def get_min_people(records):
+    # Initialize variables
+    people = set()
+    current_person = 0
+
+    # Iterate through the records
+    for record in records:
+        if record == "+":
+            people.add(current_person)
+            current_person += 1
+        else:
+            people.remove(current_person - 1)
+            current_person -= 1
+
+    # Return the minimum number of people
+    return len(people)
+
+def main():
+    records = input()
+    print(get_min_people(records))
+
+if __name__ == '__main__':
+    main()
 

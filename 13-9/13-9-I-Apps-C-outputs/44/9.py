@@ -1,31 +1,85 @@
 
-def find_optimal_flight(n, flights):
-    # Initialize a graph with the given flights
-    graph = {i: set() for i in range(1, n + 1)}
-    for i, j in flights:
-        graph[i].add(j)
-        graph[j].add(i)
+def find_splitters(a, b, c, d):
+    # Initialize the number of splitters to be used
+    n = 0
+    
+    # Initialize the list of splitters
+    splitters = []
+    
+    # Initialize the input and output belts
+    input_belts = [0]
+    output_belts = [0, 0]
+    
+    # While there are more output belts to be connected
+    while len(output_belts) < 2:
+        # Find the next splitter to be added
+        next_splitter = find_next_splitter(input_belts, output_belts, a, b, c, d)
+        
+        # If no splitter can be added, return None
+        if next_splitter is None:
+            return None
+        
+        # Add the next splitter to the list of splitters
+        splitters.append(next_splitter)
+        
+        # Update the input and output belts
+        input_belts.append(next_splitter[0])
+        output_belts.append(next_splitter[1])
+        
+        # Increment the number of splitters used
+        n += 1
+    
+    # Return the list of splitters
+    return splitters
 
-    # Find the flight with the maximum number of changes
-    max_changes = 0
-    flight_to_cancel = None
-    for i in range(1, n + 1):
-        for j in range(i + 1, n + 1):
-            if len(graph[i] & graph[j]) == 0:
-                num_changes = len(graph[i]) + len(graph[j]) - 2
-                if num_changes > max_changes:
-                    max_changes = num_changes
-                    flight_to_cancel = (i, j)
+def find_next_splitter(input_belts, output_belts, a, b, c, d):
+    # Initialize the best splitter to be None
+    best_splitter = None
+    
+    # Initialize the best efficiency to be 0
+    best_efficiency = 0
+    
+    # Iterate over the possible splitters
+    for i in range(len(input_belts)):
+        for j in range(len(output_belts)):
+            # If the splitter has already been used, skip it
+            if i == j:
+                continue
+            
+            # Calculate the efficiency of the splitter
+            efficiency = calculate_efficiency(input_belts[i], output_belts[j], a, b, c, d)
+            
+            # If the efficiency is greater than the best efficiency, set it as the best splitter
+            if efficiency > best_efficiency:
+                best_splitter = (i, j)
+                best_efficiency = efficiency
+    
+    # Return the best splitter
+    return best_splitter
 
-    # Find the best new flight to add
-    new_flight = None
-    for i in range(1, n + 1):
-        for j in range(i + 1, n + 1):
-            if (i, j) != flight_to_cancel and (j, i) not in graph:
-                new_flight = (i, j)
-                break
-        if new_flight:
-            break
+def calculate_efficiency(input_belts, output_belts, a, b, c, d):
+    # Calculate the efficiency of the splitter
+    efficiency = (a * c + b * d) / (a * c + b * d + a * (1 - c) + b * (1 - d))
+    
+    # Return the efficiency
+    return efficiency
 
-    return max_changes, flight_to_cancel, new_flight
+if __name__ == '__main__':
+    # Read the input
+    a, b = map(int, input().split())
+    c, d = map(int, input().split())
+    
+    # Find the splitters
+    splitters = find_splitters(a, b, c, d)
+    
+    # If no splitters can be found, print None
+    if splitters is None:
+        print("None")
+    else:
+        # Print the number of splitters
+        print(len(splitters))
+        
+        # Print the splitters
+        for splitter in splitters:
+            print(splitter[0], splitter[1])
 

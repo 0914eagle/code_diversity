@@ -1,13 +1,27 @@
 
-def solve(n, p, coders):
-    # Initialize a set to store the two suspects
-    suspects = set()
-    # Iterate over the coders
-    for coder in coders:
-        # If the coder agreed with the head's choice, add their names to the suspects set
-        if coder[0] in suspects or coder[1] in suspects:
-            suspects.add(coder[0])
-            suspects.add(coder[1])
-    # Return the number of possible two-suspect sets
-    return len(suspects)
+import math
+
+def get_flaws_center(flaws):
+    x_coords = [flaw[0] for flaw in flaws]
+    y_coords = [flaw[1] for flaw in flaws]
+    z_coords = [flaw[2] for flaw in flaws]
+    return (sum(x_coords) / len(flaws), sum(y_coords) / len(flaws), sum(z_coords) / len(flaws))
+
+def get_flaws_radius(flaws, center):
+    return max([math.sqrt((flaw[0] - center[0]) ** 2 + (flaw[1] - center[1]) ** 2 + (flaw[2] - center[2]) ** 2) for flaw in flaws])
+
+def get_smallest_drill_bit(flaws):
+    center = get_flaws_center(flaws)
+    radius = get_flaws_radius(flaws, center)
+    return 2 * radius
+
+def main():
+    num_flaws = int(input())
+    flaws = []
+    for i in range(num_flaws):
+        flaws.append(tuple(map(float, input().split())))
+    print(get_smallest_drill_bit(flaws))
+
+if __name__ == '__main__':
+    main()
 

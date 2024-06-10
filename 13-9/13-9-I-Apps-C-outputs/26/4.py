@@ -1,17 +1,29 @@
 
-def get_original_passwords(encrypted_password):
-    # Initialize a list to store the original passwords
-    original_passwords = []
+def get_number_of_portals(n, portals):
+    # Initialize variables
+    visited = [False] * (n + 1)
+    queue = [1]
+    visited[1] = True
+    count = 0
+    
+    # Breadth-first search
+    while queue:
+        room = queue.pop(0)
+        count += 1
+        if room == n:
+            return count
+        for portal in portals:
+            if not visited[portal]:
+                visited[portal] = True
+                queue.append(portal)
+    
+    return -1
 
-    # Loop through each character in the encrypted password
-    for i in range(len(encrypted_password)):
-        # If the current character is a consonant, double it and add an 'o' in between
-        if encrypted_password[i].islower() and encrypted_password[i] != 'o':
-            original_passwords.append(encrypted_password[:i] + encrypted_password[i] + 'o' + encrypted_password[i] + encrypted_password[i+1:])
-        # If the current character is a vowel, just add it to the list
-        else:
-            original_passwords.append(encrypted_password[:i] + encrypted_password[i] + encrypted_password[i+1:])
+def main():
+    n = int(input())
+    portals = list(map(int, input().split()))
+    print(get_number_of_portals(n, portals) % 1000000007)
 
-    # Return the number of original passwords
-    return len(original_passwords) % 1000009
+if __name__ == '__main__':
+    main()
 

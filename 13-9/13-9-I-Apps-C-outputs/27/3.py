@@ -1,30 +1,31 @@
 
-def solve(n, m, likes, weights):
-    # Calculate the sum of all weights
-    total_weight = sum(weights)
+def get_total_number_of_chairs(n, left_requirements, right_requirements):
+    # Initialize a list to store the number of chairs for each circle
+    num_chairs_list = []
     
-    # Create a dictionary to store the likes and weights of each picture
-    picture_likes = {}
+    # Iterate through the input requirements and calculate the minimum number of chairs required for each circle
     for i in range(n):
-        picture_likes[i] = {
-            "like": likes[i],
-            "weight": weights[i]
-        }
-    
-    # Loop through each visit
-    for visit in range(m):
-        # Calculate the probability of each picture being displayed
-        probabilities = [picture["weight"] / total_weight for picture in picture_likes.values()]
+        # Calculate the minimum number of chairs required for the current circle
+        num_chairs = left_requirements[i] + right_requirements[i] + 1
         
-        # Choose a picture randomly based on the probabilities
-        choice = np.random.choice(n, p=probabilities)
-        
-        # Update the weight of the chosen picture
-        picture_likes[choice]["weight"] += 1 if picture_likes[choice]["like"] else -1
+        # Add the number of chairs required for the current circle to the list
+        num_chairs_list.append(num_chairs)
     
-    # Calculate the expected weight of each picture
-    expected_weights = [picture["weight"] / (visit + 1) for visit, picture in picture_likes.items()]
+    # Return the sum of the minimum number of chairs required for all circles
+    return sum(num_chairs_list)
+
+def main():
+    # Read the input
+    n = int(input())
+    left_requirements = [int(x) for x in input().split()]
+    right_requirements = [int(x) for x in input().split()]
     
-    # Return the expected weights modulo 998244353
-    return [expected_weight % 998244353 for expected_weight in expected_weights]
+    # Calculate the total number of chairs required
+    total_num_chairs = get_total_number_of_chairs(n, left_requirements, right_requirements)
+    
+    # Print the result
+    print(total_num_chairs)
+
+if __name__ == '__main__':
+    main()
 

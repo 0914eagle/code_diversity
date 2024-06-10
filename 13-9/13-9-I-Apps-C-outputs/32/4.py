@@ -1,21 +1,26 @@
 
-def get_closest_handsome_number(n):
-    # Convert the input number to a string
-    n_str = str(n)
-    
-    # Initialize the closest handsome numbers as the input number itself
-    closest_handsome_numbers = [n]
-    
-    # Iterate through the digits of the input number
-    for i in range(len(n_str) - 1):
-        # Check if the current digit and the next digit have the same parity
-        if int(n_str[i]) % 2 == int(n_str[i+1]) % 2:
-            # If they have the same parity, replace the current digit with the next digit
-            n_str = n_str[:i] + n_str[i+1] + n_str[i+2:]
-    
-    # Convert the modified string back to an integer
-    closest_handsome_numbers.append(int(n_str))
-    
-    # Return the smallest handsome number
-    return sorted(closest_handsome_numbers)[0]
+def get_input():
+    num1 = int(input())
+    num2 = int(input())
+    return num1, num2
+
+def get_steps(num1, num2):
+    steps = 0
+    while num1 != num2:
+        if num1 > num2:
+            num1 -= 1
+            steps += 1
+        else:
+            num2 -= 1
+            steps += 1
+    return steps
+
+def get_output(num1, num2):
+    steps = get_steps(num1, num2)
+    return steps
+
+if __name__ == '__main__':
+    num1, num2 = get_input()
+    output = get_output(num1, num2)
+    print(output)
 

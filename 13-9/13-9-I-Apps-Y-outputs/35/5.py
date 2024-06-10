@@ -1,18 +1,13 @@
 
-def sabotage(N):
-    # Initialize a list to store the cuts
-    cuts = []
+def get_rounded_amount(candy_price, smallest_bill):
+    # Calculate the nearest multiple of the smallest bill that is greater than or equal to the candy price
+    rounded_amount = (candy_price // smallest_bill + 1) * smallest_bill
+    return rounded_amount
 
-    # Add horizontal cuts
-    for i in range(N):
-        cuts.append([i, 0])
-        cuts.append([i, 1])
+def main():
+    candy_price, smallest_bill = map(int, input().split())
+    print(get_rounded_amount(candy_price, smallest_bill))
 
-    # Add vertical cuts
-    for i in range(N):
-        cuts.append([0, i])
-        cuts.append([1, i])
-
-    # Return the length of the cuts list, which is the maximum number of pieces the chessboard can crash into
-    return len(cuts)
+if __name__ == '__main__':
+    main()
 

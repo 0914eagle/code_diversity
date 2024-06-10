@@ -1,37 +1,40 @@
 
-import sys
-input = sys.stdin.read()
-n, m = map(int, input.split())
+def get_input():
+    n, m = map(int, input().split())
+    roads = []
+    for i in range(m):
+        a, b, d = map(int, input().split())
+        roads.append((a, b, d))
+    return n, m, roads
 
-# Initialize the brain connectors and their distances
-brain_connectors = []
-distances = [[0] * (n + 1) for _ in range(n + 1)]
-for i in range(1, n + 1):
-    for j in range(1, n + 1):
-        if i == j:
-            distances[i][j] = 0
-        else:
-            distances[i][j] = float('inf')
+def find_shortest_path(n, m, roads):
+    # Create a graph with the given roads
+    graph = [[] for _ in range(n)]
+    for a, b, d in roads:
+        graph[a].append((b, d))
+        graph[b].append((a, d))
+    
+    # Find the shortest path from Delft (0) to Amsterdam (1)
+    visited = [False] * n
+    queue = [(0, 0, [0])]
+    while queue:
+        node, distance, path = queue.pop(0)
+        if node == 1:
+            return path
+        visited[node] = True
+        for neighbor, d in graph[node]:
+            if not visited[neighbor]:
+                queue.append((neighbor, distance + d, path + [neighbor]))
+    
+    return []
 
-# Read the brain connectors and their distances
-for i in range(m):
-    a, b = map(int, input.split())
-    brain_connectors.append((a, b))
-    distances[a][b] = 1
+def solve(n, m, roads):
+    path = find_shortest_path(n, m, roads)
+    if not path:
+        return "impossible"
+    return str(len(path)) + " " + " ".join(map(str, path))
 
-# Floyd-Warshall algorithm to find the shortest distances between all pairs of brains
-for k in range(1, n + 1):
-    for i in range(1, n + 1):
-        for j in range(1, n + 1):
-            if distances[i][k] + distances[k][j] < distances[i][j]:
-                distances[i][j] = distances[i][k] + distances[k][j]
-
-# Find the maximum distance between any two brains
-max_distance = 0
-for i in range(1, n + 1):
-    for j in range(1, n + 1):
-        if distances[i][j] > max_distance:
-            max_distance = distances[i][j]
-
-print(max_distance)
+if __name__ == '__main__':
+    n, m, roads = get_input()
+    print(solve(n, m, roads))
 

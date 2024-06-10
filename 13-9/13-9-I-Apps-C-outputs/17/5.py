@@ -1,18 +1,37 @@
 
-def get_maximum_victories(dwarves, elves):
-    # Sort the dwarves and elves by strength in descending order
-    dwarves = sorted(dwarves, reverse=True)
-    elves = sorted(elves, reverse=True)
+def get_optimal_subsequence(sequence, k, q):
+    # Sort the sequence in non-decreasing order
+    sequence.sort()
     
-    # Initialize the number of victories to 0
-    victories = 0
+    # Initialize the smallest and largest elements removed
+    smallest, largest = 0, 0
     
-    # Iterate through the dwarves and elves together
-    for dwarf, elf in zip(dwarves, elves):
-        # If the elf is stronger than the dwarf, add 1 to the number of victories
-        if elf > dwarf:
-            victories += 1
+    # Loop through each contiguous subsequence of length k
+    for i in range(len(sequence) - k + 1):
+        # Get the subsequence
+        subsequence = sequence[i:i+k]
+        
+        # Remove the smallest element from the subsequence
+        smallest_element = subsequence.pop(subsequence.index(min(subsequence)))
+        
+        # Update the smallest and largest elements removed
+        smallest = min(smallest, smallest_element)
+        largest = max(largest, smallest_element)
+        
+    # Return the difference between the largest and smallest elements removed
+    return largest - smallest
+
+def main():
+    # Read the input
+    n, k, q = map(int, input().split())
+    sequence = list(map(int, input().split()))
     
-    # Return the number of victories
-    return victories
+    # Call the function to get the optimal subsequence
+    optimal_subsequence = get_optimal_subsequence(sequence, k, q)
+    
+    # Print the smallest possible value of X-Y
+    print(optimal_subsequence)
+
+if __name__ == '__main__':
+    main()
 

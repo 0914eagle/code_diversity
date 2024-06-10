@@ -1,16 +1,20 @@
 
-def get_maximum_cost(n, a, edges):
-    # Initialize a dictionary to store the cost of each vertex as the key, and the vertex number as the value
-    cost = {i: a[i-1] for i in range(1, n+1)}
+def get_input():
+    m = int(input())
+    m_set = set(map(int, input().split()))
+    n = int(input())
+    n_set = set(map(int, input().split()))
+    return m_set, n_set
 
-    # Iterate through the edges and update the cost of the vertices
-    for u, v in edges:
-        cost[u] += cost[v]
-        cost[v] = 0
+def symmetric_difference(m_set, n_set):
+    return m_set.union(n_set).difference(m_set.intersection(n_set))
 
-    # Find the maximum costamoumedents = max(cost.values())
-    maximum_cost = max(cost.values())
+def main():
+    m_set, n_set = get_input()
+    symmetric_difference = symmetric_difference(m_set, n_set)
+    for num in sorted(symmetric_difference):
+        print(num)
 
-    # Return the maximum cost
-    return maximum_cost
+if __name__ == '__main__':
+    main()
 

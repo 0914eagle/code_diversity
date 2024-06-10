@@ -1,11 +1,12 @@
 
-n = int(input())
-answers = input().split()
-score = 0
+def can_buy_toy(coins, cost):
+    return sum(coins) >= cost
 
-for i in range(n):
-    if answers[i] == "A":
-        score += 1
+def main():
+    coins = list(map(int, input().split()))
+    cost = int(input())
+    print("Yes") if can_buy_toy(coins, cost) else print("No")
 
-print(score)
+if __name__ == '__main__':
+    main()
 

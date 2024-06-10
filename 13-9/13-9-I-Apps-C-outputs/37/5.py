@@ -1,32 +1,27 @@
 
-def solve(n, vertices):
-    # Initialize a dictionary to store the values of the inputs
-    inputs = {}
-    for vertex in vertices:
-        if vertex[0] == "IN":
-            inputs[vertex[1]] = vertex[2]
+def get_perfect_sets(k):
+    # Initialize a set to store the perfect sets
+    perfect_sets = set()
+    
+    # Iterate from 0 to k
+    for i in range(k+1):
+        # Check if i is a perfect set
+        if is_perfect_set(i):
+            # Add i to the set of perfect sets
+            perfect_sets.add(i)
+    
+    # Return the number of perfect sets modulo 1000000007
+    return len(perfect_sets) % 1000000007
 
-    # Initialize a dictionary to store the values of the outputs
-    outputs = {}
+def is_perfect_set(n):
+    # Check if n is a perfect set
+    for i in range(n):
+        # Check if (n xor i) is in the set of integers not greater than n
+        if (n ^ i) not in range(n+1):
+            return False
+    return True
 
-    # Iterate through the vertices and calculate the values of the outputs
-    for vertex in vertices:
-        if vertex[0] == "AND":
-            inputs1 = inputs[vertex[1]]
-            inputs2 = inputs[vertex[2]]
-            outputs[vertex[3]] = str(int(inputs1) & int(inputs2))
-        elif vertex[0] == "OR":
-            inputs1 = inputs[vertex[1]]
-            inputs2 = inputs[vertex[2]]
-            outputs[vertex[3]] = str(int(inputs1) | int(inputs2))
-        elif vertex[0] == "XOR":
-            inputs1 = inputs[vertex[1]]
-            inputs2 = inputs[vertex[2]]
-            outputs[vertex[3]] = str(int(inputs1) ^ int(inputs2))
-        elif vertex[0] == "NOT":
-            inputs1 = inputs[vertex[1]]
-            outputs[vertex[2]] = str(int(not int(inputs1)))
-
-    # Return the values of the outputs in the order of the vertices
-    return "".join(outputs[i] for i in range(1, n + 1))
+if __name__ == '__main__':
+    k = int(input())
+    print(get_perfect_sets(k))
 

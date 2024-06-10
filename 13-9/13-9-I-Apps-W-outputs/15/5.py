@@ -1,24 +1,29 @@
 
-def solve(self, N, K, A, D):
-    # Initialize the maximum energy as 0
-    max_energy = 0
+def count_unattacked_cells(n, m, rooks):
+    # Initialize a 2D array to store the state of the board
+    board = [[0] * n for _ in range(n)]
 
-    # Loop through each atom and calculate the maximum energy
-    for i in range(N):
-        # Calculate the total energy of the atom when it is excited
-        total_energy = A[i]
+    # Iterate over the rooks and mark their positions on the board
+    for x, y in rooks:
+        board[x - 1][y - 1] = 1
 
-        # Calculate the energy required to excite the atom
-        energy_required = D[i]
+    # Count the number of unattacked cells
+    unattacked_cells = 0
+    for i in range(n):
+        for j in range(n):
+            if board[i][j] == 0:
+                unattacked_cells += 1
 
-        # Check if the atom can be excited
-        if energy_required <= max_energy:
-            # Excite the atom and calculate the total energy gained
-            max_energy += total_energy
+    return unattacked_cells
 
-            # Decrease the energy required to excite the next atom
-            energy_required -= total_energy
+def main():
+    n, m = map(int, input().split())
+    rooks = []
+    for _ in range(m):
+        x, y = map(int, input().split())
+        rooks.append((x, y))
+    print(count_unattacked_cells(n, m, rooks))
 
-    # Return the maximum energy
-    return max_energy
+if __name__ == '__main__':
+    main()
 

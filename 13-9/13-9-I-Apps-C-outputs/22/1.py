@@ -1,40 +1,28 @@
 
-def is_possible_to_create_loop(points):
-    # Sort the points by their x-coordinate
-    sorted_points = sorted(points, key=lambda point: point[0])
+def get_strings(a_00, a_01, a_10, a_11):
+    strings = []
+    for i in range(a_00):
+        strings.append("00")
+    for i in range(a_01):
+        strings.append("01")
+    for i in range(a_10):
+        strings.append("10")
+    for i in range(a_11):
+        strings.append("11")
+    return strings
 
-    # Initialize the loop with the first point
-    loop = [sorted_points[0]]
+def check_strings(strings, a_00, a_01, a_10, a_11):
+    for string in strings:
+        if string.count("00") == a_00 and string.count("01") == a_01 and string.count("10") == a_10 and string.count("11") == a_11:
+            return string
+    return "Impossible"
 
-    # Iterate through the remaining points
-    for i in range(1, len(sorted_points)):
-        # Get the current point and the previous point in the loop
-        current_point = sorted_points[i]
-        previous_point = loop[-1]
+def main():
+    a_00, a_01, a_10, a_11 = map(int, input().split())
+    strings = get_strings(a_00, a_01, a_10, a_11)
+    result = check_strings(strings, a_00, a_01, a_10, a_11)
+    print(result)
 
-        # Check if the current point is parallel to the x-axis and is not already in the loop
-        if current_point[1] == previous_point[1] and current_point not in loop:
-            # Add the current point to the loop
-            loop.append(current_point)
-        else:
-            # Check if the current point is perpendicular to the previous point in the loop
-            if previous_point[0] != current_point[0] and previous_point[1] != current_point[1]:
-                # Add the current point to the loop
-                loop.append(current_point)
-            else:
-                # The loop is not possible
-                return False
-
-    # Check if the loop goes through all the points
-    if len(loop) != len(points):
-        return False
-
-    # Check if the loop is valid (i.e., it does not self-intersect)
-    for i in range(len(loop) - 1):
-        for j in range(i + 1, len(loop)):
-            if loop[i] == loop[j]:
-                return False
-
-    # The loop is valid
-    return True
+if __name__ == '__main__':
+    main()
 

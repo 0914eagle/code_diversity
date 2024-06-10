@@ -1,45 +1,37 @@
 
-def find_largest_square_killer(matrix):
-    # Initialize variables
-    largest_killer = 0
-    killer_sizes = []
+def get_maximum_distance(n, k, u, roads):
+    # Initialize the distance matrix with 0s
+    distance_matrix = [[0 for _ in range(n)] for _ in range(n)]
 
-    # Loop through each row of the matrix
-    for i in range(len(matrix)):
-        # Loop through each column of the matrix
-        for j in range(len(matrix[i])):
-            # If the current element is a 1, check if it is part of a square killer
-            if matrix[i][j] == "1":
-                # Check if the current element is part of a square killer by checking the elements above, below, and to the left and right
-                if (i > 0 and matrix[i - 1][j] == "1") and (j > 0 and matrix[i][j - 1] == "1"):
-                    # If the current element is part of a square killer, find the size of the killer by checking the elements around it
-                    killer_size = 1
-                    for k in range(i - 1, -1, -1):
-                        if matrix[k][j] == "1":
-                            killer_size += 1
-                        else:
-                            break
-                    for l in range(j - 1, -1, -1):
-                        if matrix[i][l] == "1":
-                            killer_size += 1
-                        else:
-                            break
-                    for m in range(i + 1, len(matrix)):
-                        if matrix[m][j] == "1":
-                            killer_size += 1
-                        else:
-                            break
-                    for n in range(j + 1, len(matrix[i])):
-                        if matrix[i][n] == "1":
-                            killer_size += 1
-                        else:
-                            break
-                    # Add the size of the killer to the list of killer sizes
-                    killer_sizes.append(killer_size)
+    # Fill in the distance matrix with the distances between towns
+    for road in roads:
+        x, y = road
+        distance_matrix[x - 1][y - 1] = 1
+        distance_matrix[y - 1][x - 1] = 1
 
-    # Return the largest killer size
-    if len(killer_sizes) > 0:
-        return max(killer_sizes)
-    else:
-        return -1
+    # Use Floyd-Warshall algorithm to find the shortest path between all pairs of towns
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                distance_matrix[i][j] = min(distance_matrix[i][j], distance_matrix[i][k] + distance_matrix[k][j])
+
+    # Find the maximum distance by considering all possible pairs of universities
+    maximum_distance = 0
+    for i in range(k):
+        for j in range(i + 1, k):
+            maximum_distance = max(maximum_distance, distance_matrix[u[i] - 1][u[j] - 1])
+
+    return maximum_distance
+
+def main():
+    n, k = map(int, input().split())
+    u = list(map(int, input().split()))
+    roads = []
+    for _ in range(n - 1):
+        x, y = map(int, input().split())
+        roads.append((x, y))
+    print(get_maximum_distance(n, k, u, roads))
+
+if __name__ == '__main__':
+    main()
 

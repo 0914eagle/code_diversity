@@ -1,23 +1,39 @@
 
-def solve(n, t, m, intervals):
-    # Initialize the variables to keep track of the scores
-    sportify_score = 0
-    spoilify_score = 0
-    current_streak = 0
+def get_number_of_blocks(volume, blocks):
+    # Initialize variables
+    number_of_blocks = 0
+    current_volume = 0
+    
+    # Iterate through the blocks and add them to the tower until the volume exceeds the given volume
+    for block in blocks:
+        current_volume += block ** 3
+        number_of_blocks += 1
+        if current_volume > volume:
+            break
+    
+    # Return the number of blocks and the current volume
+    return number_of_blocks, current_volume
 
-    # Iterate through each interval in the Spoilify cheerleading schedule
-    for interval in intervals:
-        # Check if the interval overlaps with the current streak
-        if interval[0] <= current_streak <= interval[1]:
-            # If it overlaps, reset the current streak to 0
-            current_streak = 0
-        # Check if the interval is within the 5-minute window
-        elif interval[1] - interval[0] >= 5:
-            # If it is, increase the Spoilify score
-            spoilify_score += 1
-            # And reset the current streak to the end of the interval
-            current_streak = interval[1]
+def get_maximum_volume_and_number_of_blocks(m):
+    # Initialize variables
+    maximum_volume = 0
+    maximum_number_of_blocks = 0
+    
+    # Iterate through the possible values of X and find the maximum number of blocks and the maximum volume
+    for x in range(1, m + 1):
+        # Get the number of blocks and the current volume for the current value of X
+        number_of_blocks, current_volume = get_number_of_blocks(x, range(1, x + 1))
+        
+        # If the current number of blocks is greater than the maximum number of blocks, update the maximum number of blocks and volume
+        if number_of_blocks > maximum_number_of_blocks:
+            maximum_number_of_blocks = number_of_blocks
+            maximum_volume = current_volume
+    
+    # Return the maximum number of blocks and the maximum volume
+    return maximum_number_of_blocks, maximum_volume
 
-    # Return the final scores
-    return sportify_score, spoilify_score
+if __name__ == '__main__':
+    m = int(input())
+    number_of_blocks, maximum_volume = get_maximum_volume_and_number_of_blocks(m)
+    print(number_of_blocks, maximum_volume)
 

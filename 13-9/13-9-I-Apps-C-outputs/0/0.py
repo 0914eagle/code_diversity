@@ -1,25 +1,42 @@
 
-def get_max_influence(n, spectators):
-    # Sort the spectators by their influence in descending order
-    spectators.sort(key=lambda x: x[1], reverse=True)
+def get_power_outputs(n, k, batteries):
+    # Sort the batteries in non-decreasing order
+    batteries.sort()
+    # Initialize the power outputs for each chip
+    power_outputs = [0] * n
+    # Assign the batteries to the chips
+    for i in range(n):
+        power_outputs[i] = batteries[i * k]
+    return power_outputs
 
-    # Initialize the variables to keep track of the number of spectators supporting Alice and Bob
-    alice_count = 0
-    bob_count = 0
-    total_influence = 0
+def get_difference(power_outputs):
+    # Calculate the difference between the power outputs of the two chips
+    difference = abs(power_outputs[0] - power_outputs[1])
+    for i in range(2, len(power_outputs)):
+        difference = max(difference, abs(power_outputs[i] - power_outputs[i - 1]))
+    return difference
 
-    # Iterate through the spectators and add them to the set if they support Alice or Bob
-    for spectator in spectators:
-        if spectator[0] == "11" or spectator[0] == "10":
-            alice_count += 1
-        if spectator[0] == "11" or spectator[0] == "01":
-            bob_count += 1
-        total_influence += spectator[1]
+def get_optimal_allocation(n, k, batteries):
+    # Sort the batteries in non-decreasing order
+    batteries.sort()
+    # Initialize the optimal difference
+    optimal_difference = 1000000000
+    # Iterate over all possible allocations of the batteries
+    for i in range(n):
+        for j in range(i + 1, n):
+            # Get the power outputs for the two chips
+            power_outputs = get_power_outputs(n, k, batteries[i * k:j * k])
+            # Calculate the difference between the power outputs
+            difference = get_difference(power_outputs)
+            # Update the optimal difference
+            optimal_difference = min(optimal_difference, difference)
+    return optimal_difference
 
-        # If we have at least half of the spectators supporting Alice and Bob, return the total influence
-        if alice_count >= n / 2 and bob_count >= n / 2:
-            return total_influence
+def main():
+    n, k = map(int, input().split())
+    batteries = list(map(int, input().split()))
+    print(get_optimal_allocation(n, k, batteries))
 
-    # If we reach this point, it is impossible to select a non-empty set of spectators with at least half supporting Alice and Bob
-    return 0
+if __name__ == '__main__':
+    main()
 

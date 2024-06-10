@@ -1,28 +1,38 @@
 
-def get_maximum_distinct_numbers(n, cubes):
-    # Sort the cubes in non-decreasing order
-    cubes.sort()
-    # Initialize the first heap with the first n cubes
-    first_heap = cubes[:n]
-    # Initialize the second heap with the remaining cubes
-    second_heap = cubes[n:]
-    # Initialize the number of distinct four-digit numbers to 0
-    distinct_numbers = 0
-    # Loop through each cube in the first heap
+def get_maximum_gifts(n, s, a):
+    # Find the sum of the times it takes to recite each part of the verse
+    sum_a = sum(a)
+    
+    # If the sum of the times is less than or equal to the maximum number of seconds Santa will listen to Vasya, then Vasya can recite the whole verse and get the maximum number of gifts
+    if sum_a <= s:
+        return 0
+    
+    # Initialize the maximum number of gifts as 0
+    max_gifts = 0
+    
+    # Initialize the part that Vasya needs to skip as 0
+    skip_part = 0
+    
+    # Iterate over each part of the verse
     for i in range(n):
-        # Get the number on the current cube
-        current_number = first_heap[i]
-        # Loop through each cube in the second heap
-        for j in range(n):
-            # Get the number on the current cube
-            current_number_2 = second_heap[j]
-            # Check if the number is not already present in the first heap
-            if current_number_2 not in first_heap:
-                # Add the number to the first heap
-                first_heap.append(current_number_2)
-                # Increment the number of distinct four-digit numbers
-                distinct_numbers += 1
-                break
-    # Return the maximum number of distinct four-digit numbers
-    return distinct_numbers
+        # If Vasya skips the current part, then he gets the sum of the times it takes to recite all the parts except the current part
+        gifts = sum_a - a[i]
+        
+        # If the number of gifts is greater than the maximum number of gifts, then update the maximum number of gifts and the part that Vasya needs to skip
+        if gifts > max_gifts:
+            max_gifts = gifts
+            skip_part = i
+    
+    # Return the part that Vasya needs to skip to obtain the maximum number of gifts
+    return skip_part
+
+def main():
+    t = int(input())
+    for _ in range(t):
+        n, s = map(int, input().split())
+        a = list(map(int, input().split()))
+        print(get_maximum_gifts(n, s, a))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,23 +1,17 @@
 
-def get_highest_branch(p, y):
-    # Initialize a list to store the reachable branches
-    reachable_branches = []
+def get_final_string(n, m, s, l, r, c1, c2):
+    for i in range(m):
+        s = s[:l-1] + c2 + s[r:]
+    return s
 
-    # Iterate from 2 to y
-    for x in range(2, y + 1):
-        # Check if x is a factor of y
-        if y % x == 0:
-            # Add the reachable branch to the list
-            reachable_branches.append(x)
+def main():
+    n, m = map(int, input().split())
+    s = input()
+    for i in range(m):
+        l, r, c1, c2 = map(int, input().split())
+        s = get_final_string(n, m, s, l, r, c1, c2)
+    print(s)
 
-    # Check if there are any reachable branches
-    if not reachable_branches:
-        # Return -1 if there are no reachable branches
-        return -1
-
-    # Sort the reachable branches in descending order
-    reachable_branches.sort(reverse=True)
-
-    # Return the highest reachable branch
-    return reachable_branches[0]
+if __name__ == '__main__':
+    main()
 

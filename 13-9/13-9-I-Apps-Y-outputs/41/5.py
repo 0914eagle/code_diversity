@@ -1,11 +1,20 @@
 
-def find_winner(dice1, dice2):
-    sum1 = sum([i for i in range(dice1[0], dice1[1]+1)])
-    sum2 = sum([i for i in range(dice2[0], dice2[1]+1)])
-    if sum1 > sum2:
-        return "Gunnar"
-    elif sum1 < sum2:
-        return "Emma"
-    else:
-        return "Tie"
+def get_rows_and_columns(input_string):
+    H, W = map(int, input_string.split())
+    return H, W
+
+def get_choosen_rows_and_columns(H, W):
+    h, w = map(int, input().split())
+    return h, w
+
+def get_white_cells_remaining(H, W, h, w):
+    return H*W - h*W - W*w + h*w
+
+def main():
+    H, W = get_rows_and_columns(input())
+    h, w = get_choosen_rows_and_columns(H, W)
+    print(get_white_cells_remaining(H, W, h, w))
+
+if __name__ == '__main__':
+    main()
 

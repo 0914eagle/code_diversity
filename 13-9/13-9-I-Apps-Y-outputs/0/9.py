@@ -1,21 +1,28 @@
 
-def solve(N):
-    # Initialize variables
-    operations = 0
-    current_amount = 0
+def get_min_diff(weights, T):
+    # Calculate the sum of the weights in the first group
+    sum_1 = sum(weights[:T])
+    # Calculate the sum of the weights in the second group
+    sum_2 = sum(weights[T:])
+    # Return the absolute difference between the two sums
+    return abs(sum_1 - sum_2)
 
-    # Loop until we have reached the desired amount
-    while current_amount < N:
-        # Check if the current amount is a multiple of 6 or 9
-        if current_amount % 6 == 0 or current_amount % 9 == 0:
-            # If it is, we can withdraw the corresponding amount
-            current_amount += current_amount
-            operations += 1
-        else:
-            # If it is not, we can only withdraw 1 yen
-            current_amount += 1
-            operations += 1
+def solve(weights):
+    # Find the minimum absolute difference for all possible values of T
+    min_diff = float('inf')
+    for T in range(1, len(weights)):
+        diff = get_min_diff(weights, T)
+        if diff < min_diff:
+            min_diff = diff
+    # Return the minimum absolute difference
+    return min_diff
 
-    # Return the number of operations required
-    return operations
+if __name__ == '__main__':
+    # Read the input data
+    N = int(input())
+    weights = [int(x) for x in input().split()]
+    # Solve the problem
+    result = solve(weights)
+    # Print the result
+    print(result)
 

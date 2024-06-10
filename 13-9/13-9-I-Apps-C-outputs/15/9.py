@@ -1,15 +1,14 @@
 
-def solve(n, a):
-    # Sort the bids in descending order
-    a.sort(reverse=True)
-    
-    # Initialize the minimum bid as the first bid
-    min_bid = a[0]
-    
-    # Iterate through the bids and check if they are equal to the minimum bid
-    for i in range(1, n):
-        if a[i] != min_bid:
-            return "No"
-    
-    return "Yes"
+def get_max_score(numbers):
+    # Your code here
+    return max_score
+
+def main():
+    n = int(input())
+    numbers = list(map(int, input().split()))
+    max_score = get_max_score(numbers)
+    print(max_score)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,15 +1,45 @@
 
-def divisibility_hack(b, d):
-    # Initialize m to 1
-    m = 1
-    # Loop until m exceeds b
-    while m <= b:
-        # Check if b^m is divisible by d
-        if b**m % d == 0:
-            # If it is, return "yes"
-            return "yes"
-        # Increment m
-        m += 1
-    # If no value of m works, return "no"
-    return "no"
+def get_fruits(x, y):
+    # Initialize variables
+    oranges = x
+    apples = y
+    cards = []
+
+    # Play the game
+    while oranges > 0 and apples > 0:
+        # Remove a card from the deck
+        card = input("Enter a card: ")
+        cards.append(card)
+
+        # If the card is 'A', give all oranges to Bob and take apples from the bag
+        if card == 'A':
+            oranges = 0
+            apples -= oranges
+
+        # If the card is 'B', give all apples to Alice and take oranges from the bag
+        elif card == 'B':
+            apples = 0
+            oranges -= apples
+
+    # Compress the sequence of cards
+    compressed_cards = []
+    current_card = cards[0]
+    count = 1
+    for i in range(1, len(cards)):
+        if cards[i] == current_card:
+            count += 1
+        else:
+            compressed_cards.append(str(count) + current_card)
+            current_card = cards[i]
+            count = 1
+    compressed_cards.append(str(count) + current_card)
+
+    return "".join(compressed_cards)
+
+def main():
+    x, y = map(int, input("Enter the number of oranges and apples: ").split())
+    print(get_fruits(x, y))
+
+if __name__ == '__main__':
+    main()
 

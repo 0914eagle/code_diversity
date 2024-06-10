@@ -1,28 +1,21 @@
 
-def get_dog_attack(A, B, C, D, P, M, G):
-    # Calculate the minute in the day during which the dogs are aggressive
-    aggressive_minute_1 = (A + B) % 60
-    aggressive_minute_2 = (C + D) % 60
+def can_start_round_dance(permutation):
+    n = len(permutation)
+    for i in range(n):
+        if permutation[i] != i + 1:
+            return False
+    return True
 
-    # Calculate the minute in the day during which the dogs are calm
-    calm_minute_1 = (B + A) % 60
-    calm_minute_2 = (D + C) % 60
+def main():
+    q = int(input())
+    for _ in range(q):
+        n = int(input())
+        permutation = list(map(int, input().split()))
+        if can_start_round_dance(permutation):
+            print("YES")
+        else:
+            print("NO")
 
-    # Check which dog is aggressive during each minute
-    if aggressive_minute_1 == P or aggressive_minute_2 == P:
-        postman_attack = "one"
-    else:
-        postman_attack = "none"
-
-    if aggressive_minute_1 == M or aggressive_minute_2 == M:
-        milkman_attack = "one"
-    else:
-        milkman_attack = "none"
-
-    if aggressive_minute_1 == G or aggressive_minute_2 == G:
-        garbage_man_attack = "one"
-    else:
-        garbage_man_attack = "none"
-
-    return postman_attack, milkman_attack, garbage_man_attack
+if __name__ == '__main__':
+    main()
 

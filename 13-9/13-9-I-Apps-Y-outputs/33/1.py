@@ -1,13 +1,20 @@
 
-def get_bus_number(m):
-    for i in range(m, 0, -1):
-        if is_bus_number(i):
-            return i
-    return None
+def read_input():
+    N = int(input())
+    H = list(map(int, input().split()))
+    return N, H
 
-def is_bus_number(n):
-    for i in range(1, int(n**(1/3))):
-        if n == i**3 + (n-i**3)**3:
-            return True
-    return False
+def solve(N, H):
+    max_moves = 0
+    for i in range(N):
+        if i + 1 < N and H[i] >= H[i+1]:
+            max_moves += 1
+    return max_moves
+
+def main():
+    N, H = read_input()
+    print(solve(N, H))
+
+if __name__ == '__main__':
+    main()
 

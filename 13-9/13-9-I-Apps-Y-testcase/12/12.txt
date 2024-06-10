@@ -1,1 +1,12 @@
-{"fn_name": "generate", "inputs": [[5], [1]], "outputs": [[[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]], [[1]]]}
+{
+    "inputs": [
+        "5\nJOE\nBOB\nANDY\nAL\nADAM\n",
+        "11\nHOPE\nALI\nBECKY\nJULIE\nMEGHAN\nLAUREN\nMORGAN\nCARLI\nMEGAN\nALEX\nTOBIN\n",
+        "4\nGEORGE\nJOHN\nPAUL\nRINGO\n"
+    ],
+    "outputs": [
+        "DECREASING\n",
+        "NEITHER\n",
+        "INCREASING\n"
+    ]
+}

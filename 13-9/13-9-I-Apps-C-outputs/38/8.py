@@ -1,21 +1,27 @@
 
-def solve(N, d):
-    # Calculate the number of ways to connect the parts
-    num_ways = 1
-    for i in range(N):
-        num_ways *= d[i]
-    
-    # Calculate the number of connected components
-    num_connected = N - 1
-    
-    # Calculate the number of ways to connect the parts with connecting components
-    for i in range(N):
-        for j in range(i+1, N):
-            num_ways -= d[i] * d[j]
-    
-    # Calculate the number of ways to connect the parts with connecting components and the number of connected components
-    num_ways //= num_connected
-    
-    # Return the result modulo 998244353
-    return num_ways % 998244353
+def get_min_people(visitor_records):
+    # Initialize a set to store the unique visitors
+    unique_visitors = set()
+
+    # Iterate through the visitor records
+    for record in visitor_records:
+        # If the record is '+', add the current visitor to the set
+        if record == '+':
+            unique_visitors.add(len(unique_visitors))
+        # If the record is '-', remove the last added visitor from the set
+        elif record == '-':
+            unique_visitors.remove(len(unique_visitors) - 1)
+
+    # Return the minimum number of unique visitors
+    return len(unique_visitors)
+
+def main():
+    # Read the visitor records from stdin
+    visitor_records = input()
+
+    # Call the get_min_people function and print the result
+    print(get_min_people(visitor_records))
+
+if __name__ == '__main__':
+    main()
 

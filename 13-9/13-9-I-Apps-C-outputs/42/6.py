@@ -1,20 +1,23 @@
 
-def divisibility_hack(b, d):
-    # Check if d is a prime number
-    if d == 1:
-        return "no"
+def get_sequence(oranges, apples):
+    if oranges < 1 or apples < 1:
+        return "Impossible"
     
-    # Iterate through possible values of m
-    for m in range(1, b):
-        # Calculate the reduction function for m
-        f = lambda n: (n // b**m) * b**m + sum(int(n % b**i / b**(i-m)) for i in range(m, 0, -1))
-        
-        # Check if f(b**k) is divisible by d for all k
-        for k in range(1, b):
-            if f(b**k) % d != 0:
-                break
+    sequence = []
+    while oranges > 0 and apples > 0:
+        if oranges > apples:
+            sequence.append("A")
+            oranges -= 1
         else:
-            return "yes"
+            sequence.append("B")
+            apples -= 1
     
-    return "no"
+    return "".join(sequence)
+
+def main():
+    oranges, apples = map(int, input().split())
+    print(get_sequence(oranges, apples))
+
+if __name__ == '__main__':
+    main()
 

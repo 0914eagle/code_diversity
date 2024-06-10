@@ -1,41 +1,55 @@
 
-import math
+def get_min_chairs(n_guests, left_reqs, right_reqs):
+    # Initialize variables
+    min_chairs = 0
+    current_chair = 1
+    previous_guest = 0
 
-def solve(n, m, a, w):
-    # Calculate the total weight of all pictures
-    total_weight = sum(w)
+    # Loop through each guest
+    for i in range(n_guests):
+        # Calculate the minimum number of chairs required for this guest
+        min_chairs += max(left_reqs[i], right_reqs[i])
 
-    # Initialize the expected weights
-    expected_weights = [0] * n
+        # If the guest has a left requirement that is greater than the current chair number,
+        # add the difference to the minimum number of chairs
+        if left_reqs[i] > current_chair:
+            min_chairs += left_reqs[i] - current_chair
 
-    # Loop through each visit
-    for i in range(m):
-        # Calculate the probability of each picture being displayed
-        probabilities = [w[j] / total_weight for j in range(n)]
+        # If the guest has a right requirement that is greater than the current chair number,
+        # add the difference to the minimum number of chairs
+        if right_reqs[i] > current_chair:
+            min_chairs += right_reqs[i] - current_chair
 
-        # Find the index of the picture that is displayed
-        displayed_index = -1
-        for j in range(n):
-            if probabilities[j] >= 1 / n:
-                displayed_index = j
-                break
+        # Update the current chair number
+        current_chair += 1
 
-        # Update the expected weight of the displayed picture
-        expected_weights[displayed_index] += 1
+        # If the guest has a left requirement that is greater than the current chair number,
+        # add the difference to the minimum number of chairs
+        if left_reqs[i] > current_chair:
+            min_chairs += left_reqs[i] - current_chair
 
-        # Update the weight of the displayed picture
-        w[displayed_index] += 1
+        # If the guest has a right requirement that is greater than the current chair number,
+        # add the difference to the minimum number of chairs
+        if right_reqs[i] > current_chair:
+            min_chairs += right_reqs[i] - current_chair
 
-        # Update the total weight
-        total_weight += 1
+        # Update the current chair number
+        current_chair += 1
 
-    # Calculate the gcd of the expected weights
-    gcd = math.gcd(expected_weights[0], expected_weights[1])
-    for i in range(2, n):
-        gcd = math.gcd(gcd, expected_weights[i])
+    return min_chairs
 
-    # Divide the expected weights by their gcd and multiply by 998244353
-    result = [int((expected_weights[i] // gcd) * 998244353) for i in range(n)]
+def main():
+    # Read the input
+    n_guests = int(input())
+    left_reqs = list(map(int, input().split()))
+    right_reqs = list(map(int, input().split()))
 
-    return result
+    # Call the function to get the minimum number of chairs
+    min_chairs = get_min_chairs(n_guests, left_reqs, right_reqs)
+
+    # Print the output
+    print(min_chairs)
+
+if __name__ == '__main__':
+    main()
 

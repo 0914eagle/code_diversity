@@ -1,32 +1,52 @@
 
-def solve(k):
+def get_min_problems(c, d, n, m, k):
     # Initialize variables
-    name = ""
-    min_length = 1000000
+    total_winners = n*m + k
+    main_rounds = 0
+    additional_rounds = 0
+    problems_per_round = c
+    
+    # Calculate the number of main and additional rounds needed
+    while total_winners > 0:
+        if total_winners > n:
+            main_rounds += 1
+            total_winners -= n
+        else:
+            additional_rounds += 1
+            total_winners -= 1
+    
+    # Calculate the total number of problems needed
+    total_problems = main_rounds*c + additional_rounds*d
+    
+    return total_problems
 
-    # Iterate through all lowercase letters
-    for c in range(97, 123):
-        # Calculate the value of the current letter
-        value = abs(c - 97)
+def get_min_problems_optimized(c, d, n, m, k):
+    # Initialize variables
+    total_winners = n*m + k
+    main_rounds = 0
+    additional_rounds = 0
+    problems_per_round = c
+    
+    # Calculate the number of main and additional rounds needed
+    while total_winners > 0:
+        if total_winners > n:
+            main_rounds += 1
+            total_winners -= n
+        else:
+            additional_rounds += 1
+            total_winners -= 1
+    
+    # Calculate the total number of problems needed
+    total_problems = main_rounds*c + additional_rounds*d
+    
+    # Optimize the number of problems by removing unnecessary rounds
+    if main_rounds > 0 and additional_rounds > 0:
+        total_problems -= c
+    
+    return total_problems
 
-        # Calculate the difference between the current letter and the previous letter
-        if len(name) > 0:
-            diff = abs(ord(name[-1]) - c)
-            value += diff
-
-        # If the current value is equal to the target value, add the current letter to the name
-        if value == k:
-            name += chr(c)
-            break
-
-        # If the current value is less than the target value, add the current letter to the name and continue
-        elif value < k:
-            name += chr(c)
-
-    # If the name is empty, return "impossible"
-    if not name:
-        return "impossible"
-
-    # Return the shortest string that encodes to the target value
-    return name
+if __name__ == '__main__':
+    c, d, n, m, k = map(int, input().split())
+    print(get_min_problems(c, d, n, m, k))
+    print(get_min_problems_optimized(c, d, n, m, k))
 

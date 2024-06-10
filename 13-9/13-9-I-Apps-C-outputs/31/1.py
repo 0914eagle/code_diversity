@@ -1,52 +1,51 @@
 
-def remove_ads(image):
-    # Initialize a set to store the positions of the '$' characters
-    border_positions = set()
-    
-    # Iterate through the image and find all positions of '$' characters
-    for i in range(len(image)):
-        for j in range(len(image[0])):
-            if image[i][j] == '$':
-                border_positions.add((i, j))
-    
-    # Initialize a set to store the positions of the ads
-    ad_positions = set()
-    
-    # Iterate through the border positions and find all positions of ads
-    for i, j in border_positions:
-        # Check if the current position is the top-left corner of an ad
-        if image[i][j] == '$' and image[i+1][j] == '$' and image[i][j+1] == '$':
-            # Find the bottom-right corner of the ad
-            bottom_right_corner = find_bottom_right_corner(image, i, j)
-            # Add the positions of the ad to the set of ad positions
-            ad_positions.add((i, j, bottom_right_corner[0], bottom_right_corner[1]))
-    
-    # Initialize a list to store the positions of the characters to be replaced with whitespace
-    replace_positions = []
-    
-    # Iterate through the ad positions and find all positions of characters to be replaced with whitespace
-    for i, j, bottom_i, bottom_j in ad_positions:
-        # Add the positions of the characters inside the ad to the list of positions to be replaced
-        for k in range(i+1, bottom_i):
-            for l in range(j+1, bottom_j):
-                replace_positions.append((k, l))
-    
-    # Replace the characters with whitespace
-    for i, j in replace_positions:
-        image[i][j] = ' '
-    
-    return image
+import math
+import itertools
 
-def find_bottom_right_corner(image, top_i, top_j):
-    # Initialize the bottom-right corner as the top-right corner
-    bottom_i, bottom_j = top_i, top_j
+def parse_expression(expression):
     
-    # Iterate through the image and find the bottom-right corner of the ad
-    for i in range(top_i+1, len(image)):
-        for j in range(top_j+1, len(image[0])):
-            if image[i][j] == '$':
-                bottom_i, bottom_j = i, j
-                break
+    coefficients = []
+    variable = None
+    for token in expression.split():
+        if token.isdigit():
+            coefficients.append(int(token))
+        elif token == 'x':
+            variable = 'x'
+        elif token in '+-':
+            pass
+        else:
+            raise ValueError("Invalid token in expression: {}".format(token))
+    return coefficients, variable
+
+def find_solution(coefficients, variable, p, m):
     
-    return bottom_i, bottom_j
+    # Find the greatest common divisor of the coefficients and m
+    gcd = math.gcd(m, *coefficients)
+    # Divide the coefficients and m by the gcd
+    coefficients = [coeff // gcd for coeff in coefficients]
+    m //= gcd
+    # Find the prime factors of m
+    prime_factors = set(itertools.takewhile(lambda x: x <= int(math.sqrt(m)), itertools.count(2)))
+    while len(prime_factors) > 0:
+        # Try each prime factor as the solution
+        for prime in prime_factors:
+            # Check if the solution is valid
+            if (prime * coefficients[0]) % m == p:
+                return prime
+        # Remove the smallest prime factor and try again
+        prime_factors.remove(min(prime_factors))
+    return None
+
+def main():
+    expression = input()
+    p, m = map(int, input().split())
+    coefficients, variable = parse_expression(expression)
+    solution = find_solution(coefficients, variable, p, m)
+    if solution is not None:
+        print(solution)
+    else:
+        print("No solution found")
+
+if __name__ == '__main__':
+    main()
 

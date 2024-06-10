@@ -1,22 +1,24 @@
 
-def solve(map_pieces):
-    # Convert the map pieces to a 2D array of integers
-    map_array = []
-    for piece in map_pieces:
-        map_array.append([int(x) for x in piece])
-    
-    # Find the width and height of the reconstructed map
-    width = len(map_array[0])
-    height = len(map_array)
-    
-    # Initialize the reconstructed map with all zeros
-    reconstructed_map = [[0] * width for _ in range(height)]
-    
-    # Fill in the reconstructed map with the map pieces
-    for i in range(len(map_array)):
-        for j in range(len(map_array[0])):
-            reconstructed_map[i][j] = map_array[i][j]
-    
-    # Return the reconstructed map and the indices of the map pieces
-    return reconstructed_map, [i+1 for i in range(len(map_array))]
+import math
+
+def get_salaries(n, low, high):
+    return [random.uniform(low, high) for _ in range(n)]
+
+def get_expected_damages(salaries):
+    n = len(salaries)
+    damages = 0
+    for i in range(n):
+        for j in range(i+1, n):
+            if salaries[i] < salaries[j]:
+                damages += salaries[j] - salaries[i]
+    return damages / n ** 2
+
+def main():
+    n = int(input())
+    low, high = map(float, input().split())
+    salaries = get_salaries(n, low, high)
+    print(get_expected_damages(salaries))
+
+if __name__ == '__main__':
+    main()
 

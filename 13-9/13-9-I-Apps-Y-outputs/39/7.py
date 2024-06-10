@@ -1,20 +1,27 @@
 
-def get_safe_operations(registers):
-    # Initialize the number of safe operations to the number of registers
-    safe_operations = len(registers)
+def find_solution(a, b, c):
+    # Initialize a list to store the selected integers
+    selected_integers = []
     
-    # Iterate through the registers in reverse order
-    for i in range(len(registers)-1, -1, -1):
-        # Check if the current register is equal to its maximum value
-        if registers[i] == i:
-            # If the current register is equal to its maximum value, set it to 0 and decrement the next register
-            registers[i] = 0
-            registers[i-1] += 1
-        # Check if the current register is not equal to its maximum value
-        else:
-            # If the current register is not equal to its maximum value, break the loop
-            break
+    # Iterate through the possible integers starting from a
+    for i in range(a, b+1, a):
+        # If the current integer is congruent to c modulo b, add it to the list
+        if i % b == c:
+            selected_integers.append(i)
     
-    # Return the number of safe operations
-    return safe_operations - registers[0]
+    # If at least one integer is found, return YES, otherwise return NO
+    if selected_integers:
+        return "YES"
+    else:
+        return "NO"
+
+def main():
+    # Read a, b, and c from stdin
+    a, b, c = map(int, input().split())
+    
+    # Call the find_solution function and print the result
+    print(find_solution(a, b, c))
+
+if __name__ == '__main__':
+    main()
 

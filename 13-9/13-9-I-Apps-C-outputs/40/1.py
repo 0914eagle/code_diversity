@@ -1,24 +1,38 @@
 
-def get_max_earnings(a):
-    # Initialize variables
-    n = len(a)
-    smashed = [False] * n
-    earnings = 0
+import math
 
-    # Iterate through the gems
-    for i in range(n):
-        # If the gem is not smashed and has a positive value, smash it
-        if not smashed[i] and a[i] > 0:
-            # Smash the gem and add its value to the earnings
-            smashed[i] = True
-            earnings += a[i]
+def get_neighbors(graph, node):
+    return graph[node]
 
-            # Smash all gems that are multiples of the current gem
-            for j in range(i + i, n, i):
-                if not smashed[j]:
-                    smashed[j] = True
-                    earnings += a[j]
+def get_paths(graph, nodes):
+    paths = []
+    for node in nodes:
+        neighbors = get_neighbors(graph, node)
+        for neighbor in neighbors:
+            paths.append([node, neighbor])
+    return paths
 
-    # Return the maximum earnings
-    return earnings
+def get_chance(graph, nodes, sentry_move_time):
+    paths = get_paths(graph, nodes)
+    total_paths = len(paths)
+    sentry_visits = math.floor(sentry_move_time / len(nodes))
+    captured_paths = 0
+    for i in range(sentry_visits):
+        sentry_path = paths[i]
+        captured_paths += 1 if sentry_path[0] == sentry_path[1] else 0
+    return 1 - captured_paths / total_paths
+
+def main():
+    nodes_count, walk_length = map(int, input().split())
+    nodes = list(map(int, input().split()))
+    graph = [[] for _ in range(nodes_count)]
+    for i in range(nodes_count):
+        neighbors_count = int(input())
+        graph[i] = list(map(int, input().split()))
+    sentry_move_time = int(input())
+    chance = get_chance(graph, nodes, sentry_move_time)
+    print(chance)
+
+if __name__ == '__main__':
+    main()
 

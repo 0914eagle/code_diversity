@@ -1,23 +1,19 @@
 
-def solve(N, S, T, U, V):
-    # Initialize the matrix with all zeros
-    a = [[0] * N for _ in range(N)]
+def get_result(x, y, z):
+    total_votes = x + y
+    if total_votes == 0:
+        return "?"
+    if x > y:
+        return "+"
+    elif x < y:
+        return "-"
+    else:
+        return "0"
 
-    # Fill in the matrix based on the conditions
-    for i in range(N):
-        for j in range(N):
-            if S[i] == 0:
-                a[i][j] |= U[i]
-            if T[j] == 0:
-                a[i][j] &= V[j]
+def main():
+    x, y, z = map(int, input().split())
+    print(get_result(x, y, z))
 
-    # Check if the matrix satisfies the conditions
-    for i in range(N):
-        for j in range(N):
-            if S[i] == 1 and a[i][j] != U[i]:
-                return -1
-            if T[j] == 1 and a[i][j] != V[j]:
-                return -1
-
-    return a
+if __name__ == '__main__':
+    main()
 

@@ -1,19 +1,15 @@
 
-def get_highest_branch(p, y):
-    # Initialize a list to store the reachable branches
-    reachable_branches = []
+def get_string_after_operations(n, m, s, operations):
+    for l, r, c1, c2 in operations:
+        s = s[:l-1] + c2 * (r-l+1) + s[r:]
+    return s
 
-    # Iterate through each grasshopper and add their reachable branches to the list
-    for i in range(2, p + 1):
-        for j in range(i, int(y / i) + 1):
-            reachable_branches.append(j * i)
+def main():
+    n, m = map(int, input().split())
+    s = input()
+    operations = [tuple(input().split()) for _ in range(m)]
+    print(get_string_after_operations(n, m, s, operations))
 
-    # Sort the list in ascending order
-    reachable_branches.sort()
-
-    # Check if the highest branch is reachable
-    if reachable_branches[-1] == y:
-        return -1
-    else:
-        return y
+if __name__ == '__main__':
+    main()
 

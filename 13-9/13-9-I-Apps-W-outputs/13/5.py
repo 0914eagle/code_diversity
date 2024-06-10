@@ -1,23 +1,27 @@
 
-def solve(n, k, a):
-    # Calculate the total power Inna tells Dima off with for each task
-    total_power = [0] * (n + 1)
-    for i in range(1, n + 1):
-        total_power[i] = total_power[i - 1] + a[i - 1]
-    
-    # Initialize the minimum power and the first task to do
-    min_power = total_power[n]
-    first_task = 1
-    
-    # Iterate over all possible first tasks
-    for i in range(1, n + 1):
-        # Calculate the power Dima gets told off with if he starts from the current task
-        power = total_power[n] - total_power[i - 1]
-        
-        # If the power is less than the minimum power, update the minimum power and the first task to do
-        if power < min_power:
-            min_power = power
-            first_task = i
-    
-    return first_task
+def input_words(n):
+    return input().split()
+
+def merge_words(words):
+    merged_word = ""
+    for i in range(len(words)):
+        if i == 0:
+            merged_word = words[i]
+        else:
+            merged_word = merge_two_words(merged_word, words[i])
+    return merged_word
+
+def merge_two_words(word1, word2):
+    i = 0
+    while i < len(word2) and word2[i] == word1[-1]:
+        i += 1
+    return word1 + word2[i:]
+
+def main():
+    n = int(input())
+    words = input_words(n)
+    print(merge_words(words))
+
+if __name__ == '__main__':
+    main()
 

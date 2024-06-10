@@ -1,37 +1,22 @@
 
-def playfair_cipher(key_phrase, plaintext):
-    # Initialize the encryption key
-    encryption_key = ""
-    for char in key_phrase:
-        if char != " " and char not in encryption_key:
-            encryption_key += char
-    for char in "abcdefghijklmnopqrstuvwxyz":
-        if char not in encryption_key:
-            encryption_key += char
+def get_max_different_letters(s):
+    n = len(s)
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
     
-    # Remove spaces and duplicate letters from the plaintext
-    plaintext = plaintext.replace(" ", "")
-    plaintext = "".join(set(plaintext))
-    
-    # Encrypt the plaintext
-    encrypted_text = ""
-    for i in range(0, len(plaintext), 2):
-        if i + 1 == len(plaintext):
-            encrypted_text += encryption_key[ord(plaintext[i]) - ord("a")]
-        else:
-            first_char = plaintext[i]
-            second_char = plaintext[i + 1]
-            if first_char == second_char:
-                first_char = encryption_key[ord(first_char) - ord("a") + 1]
-                second_char = encryption_key[ord(second_char) - ord("a") + 1]
-            elif first_char == "x":
-                first_char = encryption_key[ord(second_char) - ord("a") - 1]
-            elif second_char == "x":
-                second_char = encryption_key[ord(first_char) - ord("a") - 1]
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            if s[i - 1] == s[j - 1]:
+                dp[i][j] = dp[i - 1][j - 1] + 1
             else:
-                first_char = encryption_key[ord(first_char) - ord("a")]
-                second_char = encryption_key[ord(second_char) - ord("a")]
-            encrypted_text += first_char + second_char
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
     
-    return encrypted_text.upper()
+    return n - dp[n][n]
+
+def main():
+    n = int(input())
+    s = input()
+    print(get_max_different_letters(s))
+
+if __name__ == '__main__':
+    main()
 

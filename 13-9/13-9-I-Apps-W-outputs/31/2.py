@@ -1,15 +1,19 @@
 
-def solve(s):
-    n = len(s)
-    dp = [[0] * (n + 1) for _ in range(n + 1)]
-    for i in range(n + 1):
-        dp[i][0] = 1
-        dp[0][i] = 1
-    for i in range(1, n + 1):
-        for j in range(1, n + 1):
-            if s[i - 1] == s[j - 1]:
-                dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j] + dp[i][j - 1]
-            else:
-                dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j] + dp[i][j - 1]
-    return dp[n][n]
+def find_minimum_positive_divisible_by_d(l, r, d):
+    for i in range(l, r+1):
+        if i % d == 0 and i not in range(l, r+1):
+            return i
+    return -1
+
+def solve_queries(queries):
+    for query in queries:
+        l, r, d = query
+        print(find_minimum_positive_divisible_by_d(l, r, d))
+
+if __name__ == '__main__':
+    q = int(input())
+    queries = []
+    for i in range(q):
+        queries.append(list(map(int, input().split())))
+    solve_queries(queries)
 

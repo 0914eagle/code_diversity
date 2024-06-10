@@ -1,22 +1,23 @@
 
-def solve(map_pieces):
-    # Convert the map pieces to a 2D array
-    map_array = []
-    for piece in map_pieces:
-        map_array.append(list(piece))
-    
-    # Find the width and height of the reconstructed map
-    width = len(map_array[0])
-    height = len(map_array)
-    
-    # Initialize the reconstructed map with all 0s
-    reconstructed_map = [[0] * width for _ in range(height)]
-    
-    # Loop through each piece and update the reconstructed map
-    for i, piece in enumerate(map_array):
-        for j, char in enumerate(piece):
-            reconstructed_map[j][i] = char
-    
-    # Return the width and height of the reconstructed map, followed by the reconstructed map
-    return width, height, reconstructed_map
+import math
+
+def get_expected_damages(N, L, R):
+    expected_damages = 0
+    for i in range(N):
+        for j in range(i+1, N):
+            expected_damages += (max(L[i], L[j]) - min(R[i], R[j])) * (R[i] - L[i]) * (R[j] - L[j])
+    return expected_damages / (N * (N - 1) / 2)
+
+def main():
+    N = int(input())
+    L = []
+    R = []
+    for i in range(N):
+        L.append(float(input()))
+        R.append(float(input()))
+    expected_damages = get_expected_damages(N, L, R)
+    print(expected_damages)
+
+if __name__ == '__main__':
+    main()
 

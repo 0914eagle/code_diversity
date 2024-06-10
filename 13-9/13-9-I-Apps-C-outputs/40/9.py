@@ -1,21 +1,40 @@
 
-def solve(N, a):
-    # Initialize the maximum amount of money to be earned to 0
-    max_money = 0
-    # Iterate over all possible values of x
-    for x in range(1, N+1):
-        # Initialize the amount of money earned in this iteration to 0
-        money = 0
-        # Iterate over all gems
-        for i in range(N):
-            # If the gem is not smashed and its label is a multiple of x
-            if i % x == 0 and i not in a:
-                # Add the value of the gem to the amount of money earned in this iteration
-                money += a[i]
-        # If the amount of money earned in this iteration is greater than the maximum amount of money earned so far
-        if money > max_money:
-            # Update the maximum amount of money earned
-            max_money = money
-    # Return the maximum amount of money earned
-    return max_money
+import math
+
+def compute_chance(n, l, walk, graph):
+    # Initialize the probability of success to 1
+    probability = 1
+
+    # Loop through each room in the walk
+    for i in range(l):
+        # Get the current room and its neighbors
+        current_room = walk[i]
+        neighbors = graph[current_room]
+
+        # Loop through each neighbor of the current room
+        for neighbor in neighbors:
+            # If the neighbor is not the previous room, update the probability
+            if neighbor != walk[i - 1]:
+                probability *= 0.5
+
+    # Return the probability of success
+    return probability
+
+def main():
+    # Read the input
+    n, l = map(int, input().split())
+    walk = list(map(int, input().split()))
+    graph = [[] for _ in range(n)]
+    for _ in range(n):
+        n_neighbors, *neighbors = map(int, input().split())
+        graph[n_neighbors] = neighbors
+
+    # Compute the chance of success
+    chance = compute_chance(n, l, walk, graph)
+
+    # Print the result
+    print(chance)
+
+if __name__ == '__main__':
+    main()
 

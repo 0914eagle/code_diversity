@@ -1,12 +1,13 @@
 
-def solve(tasks, time_limit):
-    completed_tasks = 0
-    time_spent = 0
+def get_digits_count(estimate):
+    return len(str(estimate))
 
-    for task in tasks:
-        if time_spent + task <= time_limit:
-            completed_tasks += 1
-            time_spent += task
+def get_magnitude(estimate):
+    return get_digits_count(estimate)
 
-    return completed_tasks
+if __name__ == '__main__':
+    num_cases = int(input())
+    for _ in range(num_cases):
+        estimate = int(input())
+        print(get_magnitude(estimate))
 

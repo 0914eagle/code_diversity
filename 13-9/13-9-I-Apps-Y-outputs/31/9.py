@@ -1,14 +1,24 @@
 
-def get_number_of_roads_connected_to_city(n_cities, m_roads, roads):
-    # Initialize a dictionary to store the number of roads connected to each city
-    num_roads_per_city = {i: 0 for i in range(1, n_cities + 1)}
+import math
 
-    # Iterate over the roads and increment the number of roads connected to each city
-    for road in roads:
-        city1, city2 = road
-        num_roads_per_city[city1] += 1
-        num_roads_per_city[city2] += 1
+def distance(x1, y1, x2, y2):
+    return math.sqrt((x2-x1)**2 + (y2-y1)**2)
 
-    # Return the number of roads connected to each city
-    return [num_roads_per_city[i] for i in range(1, n_cities + 1)]
+def escape_hole(gopher_x, gopher_y, dog_x, dog_y, hole_x, hole_y):
+    gopher_to_hole = distance(gopher_x, gopher_y, hole_x, hole_y)
+    dog_to_hole = distance(dog_x, dog_y, hole_x, hole_y)
+    if gopher_to_hole < dog_to_hole * 2:
+        return "The gopher can escape through the hole at ({}, {}).".format(hole_x, hole_y)
+    else:
+        return "The gopher cannot escape."
+
+def main():
+    gopher_x, gopher_y, dog_x, dog_y = map(float, input().split())
+    num_holes = int(input())
+    for _ in range(num_holes):
+        hole_x, hole_y = map(float, input().split())
+        print(escape_hole(gopher_x, gopher_y, dog_x, dog_y, hole_x, hole_y))
+
+if __name__ == '__main__':
+    main()
 

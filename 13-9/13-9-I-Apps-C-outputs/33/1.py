@@ -1,26 +1,36 @@
 
-def solve(n, m):
-    # Calculate the maximum number of places needed to display any integer from 0 to n-1
-    max_hours = len(str(n-1))
-    # Calculate the maximum number of places needed to display any integer from 0 to m-1
-    max_minutes = len(str(m-1))
-    # Initialize a set to store all unique pairs of hour and minute
-    unique_pairs = set()
-    # Iterate over all possible hours
-    for hour in range(n):
-        # Iterate over all possible minutes
-        for minute in range(m):
-            # Convert the hour and minute to strings in base 7
-            hour_str = str(hour)
-            minute_str = str(minute)
-            # Add leading zeroes to the hour and minute strings if necessary
-            if len(hour_str) < max_hours:
-                hour_str = "0" * (max_hours - len(hour_str)) + hour_str
-            if len(minute_str) < max_minutes:
-                minute_str = "0" * (max_minutes - len(minute_str)) + minute_str
-            # Add the pair of hour and minute to the set if it is not already present
-            if (hour_str + minute_str) not in unique_pairs:
-                unique_pairs.add(hour_str + minute_str)
-    # Return the length of the set, which is the number of unique pairs of hour and minute
-    return len(unique_pairs)
+import sys
+import itertools
+
+def read_list(t): return [int(x) for x in sys.stdin.readline().strip().split()]
+def read_matrix(n): return [read_list(t) for _ in range(n)]
+
+def solve(n, k, a, b, t, u):
+    # convert tastiness matrix to a list
+    tastiness = [sum(row) for row in t]
+    
+    # convert cost matrix to a list
+    cost = [a + b * row[0] for row in t]
+    
+    # find all possible combinations of flavors
+    combinations = itertools.combinations(range(k), n)
+    
+    # calculate the total tastiness and cost for each combination
+    total_tastiness = [sum(tastiness[i] for i in comb) for comb in combinations]
+    total_cost = [sum(cost[i] for i in comb) for comb in combinations]
+    
+    # find the combination with the maximum tastiness-to-cost ratio
+    best_index = total_tastiness.index(max(total_tastiness))
+    best_ratio = total_tastiness[best_index] / total_cost[best_index]
+    
+    return best_ratio
+
+def main():
+    n, k, a, b = read_list(4)
+    t = read_matrix(k)
+    u = read_matrix(k)
+    print(solve(n, k, a, b, t, u))
+
+if __name__ == '__main__':
+    main()
 

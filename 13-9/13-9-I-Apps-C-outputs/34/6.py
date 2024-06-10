@@ -1,37 +1,34 @@
 
-def gl_bot(N, program, grid):
-    # Initialize the robot's location and trail
-    location = (N-1, N-1)
-    trail = [location]
+def longest_repeated_substring(input_string):
+    # Initialize variables
+    start_index = 0
+    end_index = 0
+    max_length = 0
+    repeated_substring = ""
 
-    # Loop through the program
-    for char in program:
-        # Move the robot in the current direction
-        if char == "<":
-            location = (location[0]-1, location[1])
-        elif char == ">":
-            location = (location[0]+1, location[1])
-        elif char == "^":
-            location = (location[0], location[1]-1)
-        elif char == "v":
-            location = (location[0], location[1]+1)
+    # Iterate through the input string
+    for i in range(len(input_string)):
+        # Check if the substring starting at position i has been seen before
+        if input_string[i] in input_string[:i]:
+            # If it has, find the length of the longest repeated substring
+            # starting at position i and ending at the first occurrence of the substring
+            # in the input string
+            start_index = i
+            end_index = input_string.find(input_string[i], i)
+            length = end_index - start_index + 1
 
-        # Add the new location to the trail
-        trail.append(location)
+            # If the length is greater than the current max length, update the max length and repeated substring
+            if length > max_length:
+                max_length = length
+                repeated_substring = input_string[start_index:end_index+1]
 
-        # If the new location is impassable, skip this movement
-        if grid[location[0]][location[1]] == "#":
-            continue
+    return repeated_substring
 
-    # If the trail is of finite length, return 1
-    if len(trail) < N*N:
-        return 1
+def main():
+    input_string = input("Enter a string of lowercase letters: ")
+    repeated_substring = longest_repeated_substring(input_string)
+    print(repeated_substring)
 
-    # Otherwise, find the length of the repetition
-    for i in range(N*N):
-        if trail[i:] == trail[:N*N-i]:
-            return i+1
-
-    # If no repetition is found, return 1
-    return 1
+if __name__ == '__main__':
+    main()
 

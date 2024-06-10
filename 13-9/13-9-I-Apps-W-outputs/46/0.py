@@ -1,16 +1,27 @@
 
-def quasibinary_sum(n):
-    # Initialize a list to store the quasibinary numbers
-    quasibinary_list = []
-    
-    # Loop through the numbers from 1 to n
-    for i in range(1, n+1):
-        # Convert the number to binary and check if it contains only 0s and 1s
-        binary_str = bin(i)[2:]
-        if binary_str.isdigit() and all(int(i) in [0, 1] for i in binary_str):
-            # If the number is quasibinary, add it to the list
-            quasibinary_list.append(binary_str)
-    
-    # Return the list of quasibinary numbers
-    return quasibinary_list
+def gcd(a, b):
+    if b == 0:
+        return a
+    else:
+        return gcd(b, a % b)
+
+def f(p):
+    prefix = p[:len(p)]
+    gcds = [gcd(prefix[i-1], prefix[i]) for i in range(1, len(prefix))]
+    return len(set(gcds))
+
+def f_max(n):
+    permutations = list(itertools.permutations(range(1, n+1)))
+    return max(f(p) for p in permutations)
+
+def count_permutations(n):
+    permutations = list(itertools.permutations(range(1, n+1)))
+    return len([p for p in permutations if f(p) == f_max(n)])
+
+def main():
+    n = int(input())
+    print((count_permutations(n) % 1000000007))
+
+if __name__ == '__main__':
+    main()
 

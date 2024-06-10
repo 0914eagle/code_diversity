@@ -1,39 +1,40 @@
 
-import itertools
+import math
 
-def get_number_of_suspects(n, p, coders):
-    # Initialize a set to store the suspects
-    suspects = set()
+def get_flaws_center(flaws):
+    x_coords = [flaw[0] for flaw in flaws]
+    y_coords = [flaw[1] for flaw in flaws]
+    z_coords = [flaw[2] for flaw in flaws]
+    x_center = sum(x_coords) / len(flaws)
+    y_center = sum(y_coords) / len(flaws)
+    z_center = sum(z_coords) / len(flaws)
+    return [x_center, y_center, z_center]
 
-    # Iterate over the coders' statements
-    for coder in coders:
-        # Add the two suspects named by the current coder to the set
-        suspects.update(coder)
+def get_flaws_radius(flaws, center):
+    x_coords = [math.fabs(flaw[0] - center[0]) for flaw in flaws]
+    y_coords = [math.fabs(flaw[1] - center[1]) for flaw in flaws]
+    z_coords = [math.fabs(flaw[2] - center[2]) for flaw in flaws]
+    radius = max(x_coords + y_coords + z_coords)
+    return radius
 
-    # Get the power set of the suspects (i.e. all possible subsets)
-    power_set = itertools.combinations(suspects, 2)
+def get_diameter(radius):
+    return radius * 2
 
-    # Initialize a counter for the number of valid suspect sets
-    count = 0
+def get_smallest_diameter(flaws):
+    center = get_flaws_center(flaws)
+    radius = get_flaws_radius(flaws, center)
+    diameter = get_diameter(radius)
+    return diameter
 
-    # Iterate over the power set
-    for suspect_set in power_set:
-        # Initialize a set to store the coders who agreed with the current suspect set
-        agreed_coders = set()
+def main():
+    n = int(input())
+    flaws = []
+    for i in range(n):
+        x, y, z = map(float, input().split())
+        flaws.append([x, y, z])
+    smallest_diameter = get_smallest_diameter(flaws)
+    print(smallest_diameter)
 
-        # Iterate over the coders' statements
-        for coder in coders:
-            # If the current suspect set contains at least one of the two suspects named by the current coder, add the coder to the agreed_coders set
-            if suspect_set[0] in coder or suspect_set[1] in coder:
-                agreed_coders.add(coder)
-
-        # If the number of agreed coders is greater than or equal to p, increment the counter
-        if len(agreed_coders) >= p:
-            count += 1
-
-    return count
-
-n, p = map(int, input().split())
-coders = [set(map(int, input().split())) for _ in range(n)]
-print(get_number_of_suspects(n, p, coders))
+if __name__ == '__main__':
+    main()
 

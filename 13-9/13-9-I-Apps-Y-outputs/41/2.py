@@ -1,11 +1,21 @@
 
-def solve(gunnar_dice, emma_dice):
-    gunnar_sum = sum(range(gunnar_dice[0], gunnar_dice[1] + 1))
-    emma_sum = sum(range(emma_dice[0], emma_dice[1] + 1))
-    if gunnar_sum > emma_sum:
-        return "Gunnar"
-    elif gunnar_sum < emma_sum:
-        return "Emma"
-    else:
-        return "Tie"
+def get_white_cells(H, W, h, w):
+    # Calculate the total number of cells
+    total_cells = H * W
+    # Calculate the number of cells in the chosen rows and columns
+    chosen_cells = h * W + H * w
+    # Calculate the number of white cells that will remain
+    white_cells = total_cells - chosen_cells
+    return white_cells
+
+def main():
+    # Read the input
+    H, W, h, w = map(int, input().split())
+    # Calculate the number of white cells that will remain
+    white_cells = get_white_cells(H, W, h, w)
+    # Print the result
+    print(white_cells)
+
+if __name__ == '__main__':
+    main()
 

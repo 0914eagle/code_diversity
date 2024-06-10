@@ -1,25 +1,36 @@
 
-def solve(hashtags):
-    # Sort the hashtags in lexicographical order
-    hashtags.sort()
-    # Initialize the result and the number of deleted symbols
-    result = []
-    deleted_symbols = 0
-    # Iterate through the hashtags
-    for hashtag in hashtags:
-        # If the hashtag is not '#', delete the suffixes
-        if hashtag != "#":
-            # Find the longest suffix that is not in lexicographical order
-            i = 1
-            while i < len(hashtag) and hashtag[i:] + hashtag[:i] in hashtags:
-                i += 1
-            # Add the hashtag with the deleted suffix to the result
-            result.append(hashtag[:-i])
-            # Increment the number of deleted symbols
-            deleted_symbols += i
-        # Otherwise, add the hashtag to the result without changes
+def can_divide_array(a):
+    # Calculate the sum of all elements in the array
+    sum_array = sum(a)
+    # Calculate the sum of elements in the first half of the array
+    sum_first_half = sum(a[:len(a)//2])
+    # Check if the sum of elements in the first half is equal to the sum of elements in the second half
+    if sum_first_half == sum_array - sum_first_half:
+        return True
+    else:
+        return False
+
+def move_element(a, index, new_index):
+    # Move the element at the given index to the new index
+    a.insert(new_index, a.pop(index))
+    return a
+
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    # Check if the array can be divided after moving one element
+    if can_divide_array(a):
+        print("YES")
+    else:
+        # Find the index of the element that can be moved to divide the array
+        for i in range(len(a)):
+            for j in range(len(a)):
+                if i != j and can_divide_array(move_element(a, i, j)):
+                    print("YES")
+                    break
+            else:
+                continue
+            break
         else:
-            result.append(hashtag)
-    # Return the result and the number of deleted symbols
-    return result, deleted_symbols
+            print("NO")
 

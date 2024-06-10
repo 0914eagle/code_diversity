@@ -1,17 +1,18 @@
 
-def solve(n, scores):
-    # Sort the scores in descending order
-    scores.sort(reverse=True)
-
-    # Initialize the number of ways to choose a subset of participants to be awarded with diplomas
-    ways = 0
-
-    # Loop through the scores and count the number of ways to choose a subset of participants to be awarded with diplomas
+def get_valid_permutations(A, B):
+    n = len(A)
+    valid_permutations = 0
     for i in range(n):
-        # If the current score is non-zero, increment the number of ways
-        if scores[i] != 0:
-            ways += 1
+        for j in range(i+1, n+1):
+            if A[i:j] == B[i:j]:
+                valid_permutations += 1
+    return valid_permutations
 
-    # Return the number of ways
-    return ways
+def main():
+    A = input()
+    B = input()
+    print(get_valid_permutations(A, B))
+
+if __name__ == '__main__':
+    main()
 

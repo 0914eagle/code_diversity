@@ -1,28 +1,38 @@
 
-def solve(n, m, a, w):
-    # Calculate the sum of the weights
-    sum_weights = sum(w)
+def get_minimum_chairs(n_guests, left_right_requirements):
+    # Initialize variables
+    min_chairs = 0
+    current_chairs = 0
+    guests_with_requirements = []
 
-    # Initialize the expected weights
-    expected_weights = [0] * n
+    # Loop through the input and find the guests with requirements
+    for i in range(n_guests):
+        left, right = left_right_requirements[i]
+        if left > 0 or right > 0:
+            guests_with_requirements.append((i, left, right))
 
-    # Loop through each visit
-    for i in range(m):
-        # Choose a picture randomly based on its weight
-        picture_index = random.choices(population=range(n), weights=w, k=1)[0]
+    # Sort the guests by their left requirements in descending order
+    guests_with_requirements.sort(key=lambda x: x[1], reverse=True)
 
-        # If Nauuo likes the picture, add 1 to its weight
-        if a[picture_index] == 1:
-            w[picture_index] += 1
-        # Otherwise, subtract 1 from its weight
-        else:
-            w[picture_index] -= 1
+    # Loop through the guests and assign chairs
+    for i, left, right in guests_with_requirements:
+        current_chairs += 1
+        min_chairs = max(min_chairs, current_chairs)
+        if left > 0:
+            current_chairs += left
+        if right > 0:
+            current_chairs += right
 
-        # Calculate the new expected weight
-        expected_weights[picture_index] = (expected_weights[picture_index] * (i) + w[picture_index]) / (i + 1)
+    return min_chairs
 
-    # Calculate the modulo 998244353 for each expected weight
-    mod_expected_weights = [expected_weight % 998244353 for expected_weight in expected_weights]
+def main():
+    n_guests = int(input())
+    left_right_requirements = []
+    for i in range(n_guests):
+        left, right = map(int, input().split())
+        left_right_requirements.append((left, right))
+    print(get_minimum_chairs(n_guests, left_right_requirements))
 
-    return mod_expected_weights
+if __name__ == '__main__':
+    main()
 
