@@ -1,19 +1,15 @@
 
-def is_correct_sorting(arr):
-    # Sort the array in non-decreasing order
-    arr.sort()
-    
-    # Initialize a variable to keep track of the current height of the stacks
-    current_height = 0
-    
-    # Loop through the array and check if the stacks will slide
-    for i in range(len(arr)):
-        # If the current height is less than the height of the current stack, the stacks will slide
-        if current_height < arr[i]:
-            return "NO"
-        # Update the current height to the height of the current stack
-        current_height = arr[i]
-    
-    # If the loop completes successfully, the array can be sorted using the described procedure
-    return "YES"
+def get_correct_choice(a, b):
+    # Convert the input to a set to remove duplicates
+    choices = set([a, b])
+    # Find the only element in the set that is not 1 or 2
+    correct_choice = [x for x in choices if x not in [1, 2]][0]
+    return correct_choice
+
+def main():
+    a, b = map(int, input().split())
+    print(get_correct_choice(a, b))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,34 +1,44 @@
 
-def get_drained_water_volume(height, width, map_data, device_position):
-    # Initialize the total drained water volume to 0
-    total_volume = 0
+def max_amount_of_money(n, m, coupons):
+    # Initialize a dictionary to store the number of coupons for each value
+    num_coupons = {}
+    for q, w in coupons:
+        if q not in num_coupons:
+            num_coupons[q] = 1
+        else:
+            num_coupons[q] += 1
+    
+    # Initialize a list to store the values that are not used in the array
+    unused_values = set(num_coupons.keys())
+    
+    # Initialize a variable to store the maximum amount of money that can be paid
+    max_amount = 0
+    
+    # Loop through each value in the range [1, n]
+    for i in range(1, n + 1):
+        # If the current value is not used in the array, continue to the next value
+        if i not in unused_values:
+            continue
+        
+        # If the current value is used in the array, remove it from the unused values list
+        unused_values.remove(i)
+        
+        # If the current value has a coupon, pay the cost of the coupon and add the value to the list of unused values
+        if i in num_coupons:
+            max_amount += num_coupons[i]
+            unused_values.add(i + 1)
+    
+    # Return the maximum amount of money that can be paid
+    return max_amount
 
-    # Get the device position and altitude
-    device_row, device_col = device_position
-    device_altitude = map_data[device_row - 1][device_col - 1]
+def main():
+    n, m = map(int, input().split())
+    coupons = []
+    for i in range(m):
+        q, w = map(int, input().split())
+        coupons.append((q, w))
+    print(max_amount_of_money(n, m, coupons))
 
-    # Loop through the map data and find all the cells that are connected to the device cell
-    for row in range(height):
-        for col in range(width):
-            # If the current cell is connected to the device cell and has a negative altitude, add its volume to the total volume
-            if map_data[row][col] < device_altitude and is_connected(map_data, row, col, device_row, device_col):
-                total_volume += abs(map_data[row][col])
-
-    # Return the total drained water volume
-    return total_volume
-
-# Check if two cells are connected
-def is_connected(map_data, row1, col1, row2, col2):
-    # Check if the cells are directly adjacent
-    if row1 == row2 and abs(col1 - col2) == 1:
-        return True
-    if col1 == col2 and abs(row1 - row2) == 1:
-        return True
-
-    # Check if the cells are diagonally adjacent
-    if abs(row1 - row2) == 1 and abs(col1 - col2) == 1:
-        return True
-
-    # If none of the above conditions are met, the cells are not connected
-    return False
+if __name__ == '__main__':
+    main()
 

@@ -1,20 +1,18 @@
 
-def is_reasonable_network(n, m, friends):
-    # Initialize a graph with n nodes
-    graph = [[] for _ in range(n)]
+def align_maps(map1, map2):
+    # Find the first row and column where both maps have the same sequence of characters
+    for i in range(len(map1)):
+        for j in range(len(map2[0])):
+            if map1[i] == map2[:,j]:
+                return i, j
+    return None
 
-    # Add edges between friends
-    for i in range(m):
-        graph[friends[i][0] - 1].append(friends[i][1])
-        graph[friends[i][1] - 1].append(friends[i][0])
+def main():
+    map1 = input().split()
+    map2 = input().split()
+    i, j = align_maps(map1, map2)
+    print(i, j)
 
-    # Check if the network is transitive
-    for i in range(n):
-        for j in range(n):
-            for k in range(n):
-                if i != j and j != k and graph[i][j] and graph[j][k]:
-                    if not graph[i][k]:
-                        return "NO"
-
-    return "YES"
+if __name__ == '__main__':
+    main()
 

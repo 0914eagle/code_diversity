@@ -1,45 +1,39 @@
 
-def solve(n, x):
-    # Sort the measurements of Kirill in ascending order
-    x.sort()
-    
-    # Find the minimum and maximum values among Kirill's measurements
-    min_value = x[0]
-    max_value = x[n-1]
-    
-    # Initialize the number of equal measurements to 0
-    equal_measurements = 0
-    
-    # Iterate through the measurements of Kirill
-    for i in range(n):
-        # If the current measurement is equal to the minimum value among Kirill's measurements
-        if x[i] == min_value:
-            # Increment the number of equal measurements
-            equal_measurements += 1
-    
-    # Initialize the list of measurements for Anya
-    y = []
-    
-    # If the number of equal measurements is even
-    if equal_measurements % 2 == 0:
-        # Iterate through the measurements of Kirill
-        for i in range(n):
-            # If the current measurement is equal to the minimum value among Kirill's measurements
-            if x[i] == min_value:
-                # Add the current measurement to the list of measurements for Anya
-                y.append(x[i])
-    
-    # If the number of equal measurements is odd
-    else:
-        # Iterate through the measurements of Kirill
-        for i in range(n):
-            # If the current measurement is equal to the minimum value among Kirill's measurements
-            if x[i] == min_value:
-                # Add the current measurement to the list of measurements for Anya
-                y.append(x[i])
-                # Break the loop
-                break
-    
-    # Return the number of equal measurements and the list of measurements for Anya
-    return equal_measurements, y
+def get_max_number(paint, a):
+    # Initialize variables
+    max_number = 0
+    curr_paint = 0
+    i = 1
+
+    # Iterate through the array of a
+    while i <= 9 and curr_paint <= paint:
+        # Calculate the current number
+        curr_number = a[i-1] * i
+
+        # Check if the current number is greater than the maximum number
+        if curr_number > max_number:
+            max_number = curr_number
+
+        # Increment the current paint
+        curr_paint += a[i-1]
+
+        # Increment the loop variable
+        i += 1
+
+    # Return the maximum number
+    return max_number
+
+def main():
+    # Read input
+    paint = int(input())
+    a = list(map(int, input().split()))
+
+    # Call the function to get the maximum number
+    max_number = get_max_number(paint, a)
+
+    # Print the output
+    print(max_number)
+
+if __name__ == '__main__':
+    main()
 

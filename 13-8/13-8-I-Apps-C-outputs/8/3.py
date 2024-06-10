@@ -1,20 +1,28 @@
 
-def solve(street, tiles):
-    # Initialize a dictionary to store the number of untileable cells for each length of tile
-    untileable_cells = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
+def get_longest_exploration_sequence(arr, D, M):
+    # Initialize a dictionary to store the length of the longest exploration sequence for each index
+    dp = {i: 1 for i in range(len(arr))}
+    
+    # Loop through the array and calculate the length of the longest exploration sequence for each index
+    for i in range(len(arr)):
+        for j in range(i+1, min(i+D+1, len(arr))):
+            if abs(arr[i] - arr[j]) <= M:
+                dp[j] = max(dp[j], dp[i] + 1)
+    
+    # Return the length of the longest exploration sequence
+    return max(dp.values())
 
-    # Loop through each tile pattern
-    for tile in tiles:
-        # Get the length of the tile pattern
-        tile_length = len(tile)
+def main():
+    # Read the input data
+    n, D, M = map(int, input().split())
+    arr = list(map(int, input().split()))
+    
+    # Calculate the length of the longest exploration sequence
+    longest_sequence = get_longest_exploration_sequence(arr, D, M)
+    
+    # Print the output
+    print(longest_sequence)
 
-        # Loop through each position in the street
-        for i in range(len(street) - tile_length + 1):
-            # Check if the tile pattern matches the street substring
-            if tile == street[i:i+tile_length]:
-                # If it matches, increment the number of untileable cells for the length of the tile pattern
-                untileable_cells[tile_length] += 1
-
-    # Return the total number of untileable cells
-    return sum(untileable_cells.values())
+if __name__ == '__main__':
+    main()
 

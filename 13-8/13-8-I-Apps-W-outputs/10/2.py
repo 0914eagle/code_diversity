@@ -1,12 +1,16 @@
 
-def solve(n, k, A, B):
-    coins = 0
-    while n > 1:
-        if n % k == 0:
-            coins += B
-            n //= k
-        else:
-            coins += A
-            n -= 1
-    return coins
+def compare(x, y):
+    if x**y < y**x:
+        return '<'
+    elif x**y > y**x:
+        return '>'
+    else:
+        return '='
+
+def main():
+    x, y = map(int, input().split())
+    print(compare(x, y))
+
+if __name__ == '__main__':
+    main()
 

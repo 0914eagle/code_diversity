@@ -1,45 +1,35 @@
 
-def solve(n, m, edges):
-    # Initialize a dictionary to store the neighbors of each vertex
-    neighbors = {i: set() for i in range(1, n + 1)}
+def get_hidden_strings(s):
+    hidden_strings = []
+    for i in range(len(s)):
+        for j in range(i+1, len(s)):
+            if s[i] == s[j]:
+                hidden_strings.append(s[i:j+1])
+    return hidden_strings
 
-    # Add the edges to the dictionary
-    for edge in edges:
-        u, v = edge[0], edge[1]
-        neighbors[u].add(v)
-        neighbors[v].add(u)
+def get_occurrences(s, hidden_strings):
+    occurrences = {}
+    for hidden_string in hidden_strings:
+        occurrences[hidden_string] = 0
+        for i in range(len(s) - len(hidden_string) + 1):
+            if s[i:i+len(hidden_string)] == hidden_string:
+                occurrences[hidden_string] += 1
+    return occurrences
 
-    # Check if the graph is connected
-    visited = set()
-    queue = [1]
-    while queue:
-        vertex = queue.pop(0)
-        if vertex not in visited:
-            visited.add(vertex)
-            queue.extend(neighbors[vertex] - visited)
+def get_max_occurrences(occurrences):
+    max_occurrences = 0
+    for hidden_string, count in occurrences.items():
+        if count > max_occurrences:
+            max_occurrences = count
+    return max_occurrences
 
-    if len(visited) == n:
-        # The graph is connected, now find a possible string
-        s = ["a"] * n
-        for i in range(1, n):
-            for j in range(i + 1, n + 1):
-                if j in neighbors[i]:
-                    s[j - 1] = "b"
-                    break
-            else:
-                s[j - 1] = "c"
+def main():
+    s = input()
+    hidden_strings = get_hidden_strings(s)
+    occurrences = get_occurrences(s, hidden_strings)
+    max_occurrences = get_max_occurrences(occurrences)
+    print(max_occurrences)
 
-        # Check if the string produces the given graph
-        for i in range(n - 1):
-            for j in range(i + 1, n):
-                if s[i] == s[j]:
-                    return "Yes\n" + "".join(s)
-
-                if s[i] == "a" and s[j] == "c":
-                    return "No"
-
-        return "Yes\n" + "".join(s)
-
-    else:
-        return "No"
+if __name__ == '__main__':
+    main()
 

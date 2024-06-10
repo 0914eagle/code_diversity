@@ -1,20 +1,33 @@
 
-def permutation_happiness(n, m):
-    # Calculate the sum of happiness for all permutations of length n
-    sum_happiness = 0
-    for perm in permutations(range(1, n+1)):
-        happiness = 0
-        for i in range(1, n+1):
-            # Check if [i, i] is a framed segment
-            if perm[i-1] == i:
-                happiness += 1
-            else:
-                # Check if [i, n] is a framed segment
-                if perm[i-1] == n:
-                    happiness += 1
-                # Check if [1, i] is a framed segment
-                if perm[n-1] == i:
-                    happiness += 1
-        sum_happiness += happiness
-    return sum_happiness % m
+def get_number_of_standing_dominoes(n, s):
+    # Initialize variables
+    standing_dominoes = 0
+    dominoes_fallen = 0
+    dominoes_pushed_left = 0
+    dominoes_pushed_right = 0
+
+    # Iterate through the dominoes
+    for i in range(n):
+        # Check if the domino has been pushed left or right
+        if s[i] == "L":
+            dominoes_pushed_left += 1
+        elif s[i] == "R":
+            dominoes_pushed_right += 1
+
+        # Check if the domino is standing vertically
+        if s[i] == "." or (s[i] == "L" and i + 1 < n and s[i + 1] == "R") or (s[i] == "R" and i + 1 < n and s[i + 1] == "L"):
+            standing_dominoes += 1
+        else:
+            dominoes_fallen += 1
+
+    # Return the number of standing dominoes
+    return standing_dominoes
+
+def main():
+    n = int(input())
+    s = input()
+    print(get_number_of_standing_dominoes(n, s))
+
+if __name__ == '__main__':
+    main()
 

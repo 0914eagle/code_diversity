@@ -1,14 +1,20 @@
 
-def get_average_path_length(towns):
-    # Calculate the distance between each pair of towns
-    distances = []
-    for i in range(len(towns)):
-        for j in range(i+1, len(towns)):
-            distance = ((towns[i][0]-towns[j][0])**2 + (towns[i][1]-towns[j][1])**2)**0.5
-            distances.append(distance)
-    
-    # Calculate the average distance
-    average_distance = sum(distances) / len(distances)
-    
-    return average_distance
+from collections import namedtuple
+
+def get_input():
+    n = int(input())
+    columns = input().split()
+    students = []
+    for _ in range(n):
+        student = namedtuple('Student', columns)(*input().split())
+        students.append(student)
+    return students
+
+def get_average_marks(students):
+    total_marks = sum(student.MARKS for student in students)
+    return round(total_marks / len(students), 2)
+
+if __name__ == '__main__':
+    students = get_input()
+    print(get_average_marks(students))
 

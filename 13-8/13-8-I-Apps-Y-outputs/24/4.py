@@ -1,47 +1,31 @@
 
-def solve(s_a, s_b, s_c):
-    # Initialize the decks of the players
-    alice_deck = list(s_a)
-    bob_deck = list(s_b)
-    charlie_deck = list(s_c)
+def is_easily_playable(s):
+    # Check if the length of the string is between 1 and 100 (inclusive)
+    if not 1 <= len(s) <= 100:
+        return "No"
     
-    # Initialize the winner of the game
-    winner = None
+    # Check if all characters are L, R, U, or D
+    for i in s:
+        if i not in "LRUD":
+            return "No"
     
-    # Game loop
-    while alice_deck and bob_deck and charlie_deck:
-        # Alice takes the first turn
-        if alice_deck:
-            current_player = "Alice"
-            current_deck = alice_deck
-        # Bob takes the second turn
-        elif bob_deck:
-            current_player = "Bob"
-            current_deck = bob_deck
-        # Charlie takes the third turn
-        else:
-            current_player = "Charlie"
-            current_deck = charlie_deck
-        
-        # Discard the top card from the current player's deck
-        discarded_card = current_deck.pop(0)
-        
-        # Determine the next player based on the letter on the discarded card
-        if discarded_card == "a":
-            next_player = "Alice"
-        elif discarded_card == "b":
-            next_player = "Bob"
-        else:
-            next_player = "Charlie"
-        
-        # Update the winner of the game
-        if next_player == "Alice":
-            winner = "Alice"
-        elif next_player == "Bob":
-            winner = "Bob"
-        else:
-            winner = "Charlie"
+    # Check if every character in an odd position is R, U, or D
+    for i in range(1, len(s), 2):
+        if s[i] not in "RUD":
+            return "No"
     
-    # Return the winner of the game
-    return winner
+    # Check if every character in an even position is L, U, or D
+    for i in range(2, len(s), 2):
+        if s[i] not in "LUD":
+            return "No"
+    
+    # If all conditions are met, return "Yes"
+    return "Yes"
+
+def main():
+    s = input()
+    print(is_easily_playable(s))
+
+if __name__ == '__main__':
+    main()
 

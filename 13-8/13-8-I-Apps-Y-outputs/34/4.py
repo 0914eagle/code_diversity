@@ -1,9 +1,14 @@
 
-def solve(X):
-    # Find the smallest k such that (Y1 + 1) * (Y2 + 1) * ... * (Yk + 1) = X
-    k = 1
-    while X > 1:
-        X //= k + 1
-        k += 1
-    return k
+def read_input():
+    return map(int, input().split())
+
+def solve(a, b):
+    return a + b
+
+def main():
+    a, b = read_input()
+    print(solve(a, b))
+
+if __name__ == '__main__':
+    main()
 

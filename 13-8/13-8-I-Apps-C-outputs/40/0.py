@@ -1,22 +1,38 @@
 
-def solve(N):
-    # Initialize an empty list to store the vertices of the polygon
-    vertices = []
+def get_app_order(n, c, apps):
+    # Sort the apps by their download size in descending order
+    apps.sort(key=lambda x: x[0], reverse=True)
     
-    # Iterate from 0 to N-1
-    for i in range(N):
-        # Generate a random x and y coordinate for the current vertex
-        x = random.randint(0, 40000000)
-        y = random.randint(0, 40000000)
-        
-        # Check if the current vertex is already present in the list of vertices
-        if [x, y] in vertices:
-            # If the vertex is already present, generate a new coordinate
-            continue
-        
-        # Add the current vertex to the list of vertices
-        vertices.append([x, y])
+    # Initialize the installed apps and their sizes
+    installed_apps = []
+    installed_size = 0
     
-    # Return the list of vertices
-    return vertices
+    # Loop through the apps and install them if there is enough space
+    for app in apps:
+        if installed_size + app[0] <= c:
+            installed_apps.append(app[1])
+            installed_size += app[0]
+    
+    return installed_apps
+
+def get_max_apps(n, c, apps):
+    # Get the order of the apps to install
+    app_order = get_app_order(n, c, apps)
+    
+    # Count the number of apps that can be installed
+    max_apps = 0
+    for app in app_order:
+        if app[0] <= c:
+            max_apps += 1
+    
+    return max_apps
+
+if __name__ == '__main__':
+    n, c = map(int, input().split())
+    apps = []
+    for i in range(n):
+        d, s = map(int, input().split())
+        apps.append([d, s])
+    print(get_max_apps(n, c, apps))
+    print(*get_app_order(n, c, apps), sep=' ')
 

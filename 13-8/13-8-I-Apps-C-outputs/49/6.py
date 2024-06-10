@@ -1,18 +1,18 @@
 
-import math
+def get_distinct_sizes(sizes):
+    return len(set(sizes)) == 3
 
-def get_min_damage(x_s, y_s, s_s, r_i, r_f, x_a, y_a, s_a):
-    # Calculate the distance between Anthony and the center of the safety zone
-    dist = math.sqrt((x_a - x_s) ** 2 + (y_a - y_s) ** 2)
+def get_sizes_diff_less_than_or_equal_to_2(sizes):
+    return all(abs(sizes[i] - sizes[i+1]) <= 2 for i in range(len(sizes)-1))
 
-    # Calculate the time it takes for Anthony to reach the safety zone
-    t = dist / s_a
+def can_give_gifts(n, sizes):
+    return get_distinct_sizes(sizes) and get_sizes_diff_less_than_or_equal_to_2(sizes)
 
-    # Calculate the radius of the safety zone at the time Anthony reaches it
-    r = r_i - s_s * t
+def main():
+    n = int(input())
+    sizes = list(map(int, input().split()))
+    print("YES") if can_give_gifts(n, sizes) else print("NO")
 
-    # Calculate the minimum amount of damage Anthony will take
-    d = r_f - r
-
-    return d
+if __name__ == '__main__':
+    main()
 

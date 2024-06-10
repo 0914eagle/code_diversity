@@ -1,32 +1,19 @@
 
-def solve(n, m, edges):
-    # Initialize a dictionary to store the neighbors of each vertex
-    neighbors = {i: set() for i in range(1, n + 1)}
+def hidden_strings(s):
+    n = len(s)
+    count = 0
+    for i in range(n):
+        for j in range(i+1, n):
+            for k in range(j+1, n):
+                if s[i] == s[j] == s[k]:
+                    count += 1
+    return count
 
-    # Add the edges to the dictionary
-    for u, v in edges:
-        neighbors[u].add(v)
-        neighbors[v].add(u)
+def secret_message(s):
+    hidden_strings_count = hidden_strings(s)
+    return hidden_strings_count
 
-    # Check if the graph is connected
-    visited = set()
-    queue = [1]
-    while queue:
-        vertex = queue.pop(0)
-        if vertex not in visited:
-            visited.add(vertex)
-            queue.extend(neighbors[vertex])
-
-    if len(visited) == n:
-        # The graph is connected, now find the string
-        string = ["a"] * n
-        for i in range(1, n):
-            for j in range(i + 1, n + 1):
-                if j in neighbors[i]:
-                    string[i - 1] = "b"
-                    string[j - 1] = "c"
-                    break
-        return "Yes\n" + "".join(string)
-    else:
-        return "No"
+if __name__ == '__main__':
+    s = input()
+    print(secret_message(s))
 

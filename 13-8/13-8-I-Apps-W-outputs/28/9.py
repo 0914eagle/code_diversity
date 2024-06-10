@@ -1,20 +1,17 @@
 
-def get_bdd_size(n, function_values):
-    # Initialize the BDD with a single vertex representing the root
-    bdd = [0]
+def get_interval(a, b):
+    # Find the smallest number that is common to both a and b
+    gcd = a * b // __gcd(a, b)
+    # Check if the number is a power of 2
+    if gcd & (gcd - 1) == 0:
+        return "YES"
+    else:
+        return "NO"
 
-    # Iterate over the function values
-    for i in range(2**n):
-        # Get the current function value
-        value = function_values[i]
+def main():
+    a, b = map(int, input().split())
+    print(get_interval(a, b))
 
-        # If the value is 0, skip it
-        if value == 0:
-            continue
-
-        # If the value is 1, add a new vertex to the BDD
-        bdd.append(len(bdd))
-
-    # Return the size of the BDD
-    return len(bdd)
+if __name__ == '__main__':
+    main()
 

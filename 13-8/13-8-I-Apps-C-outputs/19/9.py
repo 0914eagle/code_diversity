@@ -1,17 +1,38 @@
 
-def solve(a, b, l, r):
-    # Initialize the string with the first a letters of the alphabet
-    s = "".join(chr(ord('a') + i) for i in range(a))
+def get_magical_subarray(arr, l, r):
+    # Find the smallest and largest elements in the subarray
+    smallest = arr[l]
+    largest = arr[l]
+    for i in range(l+1, r+1):
+        if arr[i] < smallest:
+            smallest = arr[i]
+        if arr[i] > largest:
+            largest = arr[i]
+    
+    # Return the length of the subarray if all elements are between the smallest and largest elements
+    if all(smallest <= x <= largest for x in arr[l:r+1]):
+        return r - l + 1
+    
+    # Return 0 if the subarray is not magical
+    return 0
 
-    # Mister B appends b letters on each move
-    for i in range(b):
-        # The computer appends a letter that is not in the suffix of length a
-        suffix = s[l-1:r]
-        letter = chr(ord('a') + a + 1)
-        while letter in suffix:
-            letter = chr(ord(letter) + 1)
-        s += letter
+def solve(arr, queries):
+    result = []
+    for l, r in queries:
+        result.append(get_magical_subarray(arr, l, r))
+    return result
 
-    # Return the number of different letters in the segment from l to r, inclusive
-    return len(set(s[l-1:r]))
+def main():
+    n = int(input())
+    arr = list(map(int, input().split()))
+    q = int(input())
+    queries = []
+    for i in range(q):
+        queries.append(list(map(int, input().split())))
+    result = solve(arr, queries)
+    for i in result:
+        print(i)
+
+if __name__ == '__main__':
+    main()
 

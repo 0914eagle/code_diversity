@@ -1,18 +1,29 @@
 
-def solve_problem(shipment_volume, large_bottle_volume, small_bottle_volume):
-    # Check if the shipment volume is greater than the volume of the large bottles
-    if shipment_volume > large_bottle_volume:
-        return "Impossible"
+def get_diverse_garland(n, s):
+    # Initialize variables
+    recolors = 0
+    diverse_garland = s
+    colors = ["R", "G", "B"]
     
-    # Calculate the number of large bottles needed to hold the shipment volume
-    num_large_bottles = shipment_volume // large_bottle_volume
+    # Iterate through the garland and check if any two adjacent lamps have the same color
+    for i in range(n - 1):
+        if diverse_garland[i] == diverse_garland[i + 1]:
+            # If they have the same color, find a new color for the lamp and replace it in the garland
+            new_color = colors[0]
+            if new_color == diverse_garland[i]:
+                new_color = colors[1]
+            diverse_garland = diverse_garland[:i] + new_color + diverse_garland[i + 1:]
+            recolors += 1
     
-    # Calculate the remaining volume that cannot be held by the large bottles
-    remaining_volume = shipment_volume % large_bottle_volume
-    
-    # Calculate the number of small bottles needed to hold the remaining volume
-    num_small_bottles = remaining_volume // small_bottle_volume
-    
-    # Return the number of large and small bottles needed
-    return num_large_bottles, num_small_bottles
+    return recolors, diverse_garland
+
+def main():
+    n = int(input())
+    s = input()
+    recolors, diverse_garland = get_diverse_garland(n, s)
+    print(recolors)
+    print(diverse_garland)
+
+if __name__ == '__main__':
+    main()
 

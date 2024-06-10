@@ -1,20 +1,24 @@
 
-def get_maximum_sum(a, b, k):
-    # Sort both arrays in non-decreasing order
-    a.sort()
-    b.sort()
-    # Initialize the maximum sum and the current sum
-    max_sum = 0
-    current_sum = 0
-    # Loop through both arrays and calculate the current sum
-    for i in range(len(a)):
-        current_sum += a[i]
-        current_sum += b[i]
-        # If the current sum is greater than the maximum sum, update the maximum sum
-        if current_sum > max_sum:
-            max_sum = current_sum
-        # If the number of swaps used is greater than k, break the loop
-        if i >= k:
-            break
-    return max_sum
+import math
+
+def get_pizza_radius():
+    return float(input())
+
+def get_pizza_crust_width():
+    return float(input())
+
+def get_cheese_percentage(radius, crust_width):
+    area_of_pizza = math.pi * radius ** 2
+    area_of_crust = math.pi * (radius - crust_width) ** 2
+    area_of_cheese = area_of_pizza - area_of_crust
+    return area_of_cheese / area_of_pizza
+
+def main():
+    radius = get_pizza_radius()
+    crust_width = get_pizza_crust_width()
+    cheese_percentage = get_cheese_percentage(radius, crust_width)
+    print(cheese_percentage)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,28 +1,36 @@
 
-def solve(A, B, C, D, E, F):
-    # Initialize the variables
-    sugar_water = 0
-    sugar_dissolved = 0
+def get_companies(n, k, roads):
+    # Initialize a dictionary to store the companies and the cities they own
+    companies = {}
+    for i in range(1, n+1):
+        companies[i] = set()
+    
+    # Iterate over the roads and assign them to companies
+    for road in roads:
+        company = len(companies) + 1
+        companies[company].add(road[0])
+        companies[company].add(road[1])
+    
+    # Check if the number of cities with two or more roads belonging to one company is at most k
+    not_good_cities = 0
+    for city in range(1, n+1):
+        if len(companies[city]) > 1:
+            not_good_cities += 1
+    
+    # If the number of not good cities is greater than k, return -1
+    if not_good_cities > k:
+        return -1
+    
+    # Otherwise, return the number of companies and the company assignments
+    return len(companies), [companies[i] for i in range(1, len(companies)+1)]
 
-    # Loop through all possible combinations of operations
-    for a in range(A, B + 1):
-        for c in range(C, D + 1):
-            # Calculate the mass of sugar water and sugar dissolved
-            sugar_water = a + c
-            sugar_dissolved = c
+def main():
+    n, k = map(int, input().split())
+    roads = []
+    for _ in range(n-1):
+        roads.append(list(map(int, input().split())))
+    print(get_companies(n, k, roads))
 
-            # Check if the sugar water is within the given limits
-            if sugar_water <= F:
-                # Calculate the density of the sugar water
-                density = sugar_dissolved * 100 / sugar_water
-
-                # Check if the density is higher than the current highest density
-                if density > highest_density:
-                    # Update the highest density and the corresponding mass of sugar water and sugar dissolved
-                    highest_density = density
-                    sugar_water_max = sugar_water
-                    sugar_dissolved_max = sugar_dissolved
-
-    # Return the mass of sugar water and sugar dissolved with the highest density
-    return sugar_water_max, sugar_dissolved_max
+if __name__ == '__main__':
+    main()
 

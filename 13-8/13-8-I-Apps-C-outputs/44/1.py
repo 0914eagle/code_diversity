@@ -1,20 +1,55 @@
 
-def solve(n):
-    # Calculate the number of special points
-    num_special_points = (n * (n + 1)) // 2
+def get_cycles(n, m, corridors):
+    # Initialize a graph with n nodes and m edges
+    graph = [[] for _ in range(n)]
+    for u, v in corridors:
+        graph[u-1].append(v-1)
     
-    # Initialize the minimum number of points to block as the number of special points
-    min_points_to_block = num_special_points
+    # Find all cycles in the graph
+    cycles = []
+    for i in range(n):
+        for j in range(i+1, n):
+            if graph[i][j] == 1:
+                cycles.append([i+1, j+1])
     
-    # Iterate through all possible combinations of blocked points
-    for i in range(1, num_special_points + 1):
-        # Calculate the number of non-special points that are 4-connected to a special point
-        num_non_special_points = num_special_points - i
+    return cycles
+
+def remove_corridors(n, m, corridors, k):
+    # Initialize a set to keep track of removed corridors
+    removed = set()
+    
+    # Remove at most k corridors
+    for i in range(k):
+        # Find the longest cycle
+        longest_cycle = None
+        for cycle in get_cycles(n, m, corridors):
+            if longest_cycle is None or len(cycle) > len(longest_cycle):
+                longest_cycle = cycle
         
-        # If the number of non-special points is less than or equal to the number of special points,
-        # we have found a valid combination where no special point is 4-connected to a non-special point
-        if num_non_special_points <= num_special_points:
-            min_points_to_block = min(min_points_to_block, i)
+        # Remove the first edge in the cycle
+        u, v = longest_cycle[0], longest_cycle[1]
+        removed.add((u, v))
+        corridors.remove((u, v))
     
-    return min_points_to_block
+    return removed
+
+def main():
+    n, m = map(int, input().split())
+    corridors = []
+    for _ in range(m):
+        u, v = map(int, input().split())
+        corridors.append((u, v))
+    
+    # Remove at most half of the corridors
+    removed = remove_corridors(n, m, corridors, m//2)
+    
+    # Print the number of removed corridors
+    print(len(removed))
+    
+    # Print the removed corridors
+    for u, v in removed:
+        print(u, v)
+
+if __name__ == '__main__':
+    main()
 

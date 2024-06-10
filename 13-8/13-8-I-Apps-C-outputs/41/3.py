@@ -1,21 +1,34 @@
 
-def solve(N, L, x):
-    # Calculate the minimum distance between any two luggage pieces
-    min_dist = 1 + 1e-9
+def riffle_shuffle(deck, n):
+    # Split the deck into two stacks
+    stack1 = deck[:n//2]
+    stack2 = deck[n//2:]
     
-    # Loop through all possible speeds
-    for v in range(10, 100):
-        # Calculate the distance traveled by each luggage piece at speed v
-        dist = [int(x_i / v) for x_i in x]
-        
-        # Calculate the minimum distance between any two luggage pieces at this speed
-        curr_dist = min(dist)
-        
-        # If the current minimum distance is less than the previous minimum distance, update the minimum distance and the optimal speed
-        if curr_dist < min_dist:
-            min_dist = curr_dist
-            optimal_v = v
+    # Interleave the two stacks
+    interleaved = [stack1[0]]
+    for i in range(1, n):
+        if i % 2 == 0:
+            interleaved.append(stack1[i])
+        else:
+            interleaved.append(stack2[i])
     
-    # Return the optimal speed
-    return optimal_v
+    return interleaved
+
+def shuffle_count(deck, n):
+    # Initialize the shuffle count to 0
+    count = 0
+    
+    # While the deck is not in the correct order
+    while deck != list(range(1, n+1)):
+        # Shuffle the deck
+        deck = riffle_shuffle(deck, n)
+        count += 1
+    
+    # Return the shuffle count
+    return count
+
+if __name__ == '__main__':
+    n = int(input())
+    deck = list(map(int, input().split()))
+    print(shuffle_count(deck, n))
 

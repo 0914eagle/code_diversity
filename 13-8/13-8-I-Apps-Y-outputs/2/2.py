@@ -1,25 +1,31 @@
 
-def solve(grid):
-    # Get the number of rows and columns
-    n_rows, n_cols = len(grid), len(grid[0])
-    
-    # Initialize the rating variable
-    rating = 0
-    
-    # Iterate over each row
-    for i in range(n_rows):
-        # Initialize the number of blank columns in the current row
-        n_blank = 0
-        
-        # Iterate over each column in the current row
-        for j in range(n_cols):
-            # If the current character is a blank, increase the number of blank columns
-            if grid[i][j] == "_":
-                n_blank += 1
-            # If the current character is a dollar sign and the previous character is also a dollar sign, increase the rating
-            elif grid[i][j] == "$" and grid[i][j-1] == "$":
-                rating += 1
-    
-    # Return the rating
-    return rating
+def is_prime(n):
+    if n <= 1:
+        return False
+    for i in range(2, int(n ** 0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+def solve(n):
+    count = 0
+    for i in range(2, n + 1):
+        if is_prime(i):
+            count += 1
+    return count
+
+def input_data():
+    n = int(input())
+    return n
+
+def output_result(result):
+    print(result)
+
+def main():
+    n = input_data()
+    result = solve(n)
+    output_result(result)
+
+if __name__ == '__main__':
+    main()
 

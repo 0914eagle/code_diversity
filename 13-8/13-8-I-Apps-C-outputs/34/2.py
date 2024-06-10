@@ -1,18 +1,31 @@
 
-def is_cleaning_possible(wells, pipes):
-    # Initialize a set to store the wells that have been cleaned
-    cleaned_wells = set()
+def check_pauses(intervals):
+    for i in range(len(intervals) - 1):
+        if intervals[i + 1][0] - intervals[i][1] != 1:
+            return False
+    return True
 
-    # Iterate over the pipes
-    for pipe in pipes:
-        # Check if the well at which the pipe starts has already been cleaned
-        if pipe[0] not in cleaned_wells:
-            # If not, add it to the set of cleaned wells
-            cleaned_wells.add(pipe[0])
+def check_frequencies(frequencies):
+    for frequency in frequencies:
+        if not check_pauses(frequency[1]):
+            return False
+    return True
 
-    # Check if all wells have been cleaned
-    if len(cleaned_wells) == len(wells):
-        return "possible"
+def main():
+    num_frequencies = int(input())
+    frequencies = []
+    for i in range(num_frequencies):
+        t, n = map(int, input().split())
+        intervals = []
+        for j in range(n):
+            t1, t2 = map(int, input().split())
+            intervals.append([t1, t2])
+        frequencies.append([t, intervals])
+    if check_frequencies(frequencies):
+        print("possible")
     else:
-        return "impossible"
+        print("impossible")
+
+if __name__ == '__main__':
+    main()
 

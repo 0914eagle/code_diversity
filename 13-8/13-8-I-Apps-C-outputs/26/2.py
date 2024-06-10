@@ -1,45 +1,54 @@
 
-def count_optimal_paths(n, roads):
-    # Initialize a graph with n nodes and 0 edges
-    graph = [[] for _ in range(n)]
+def get_complete_codes(m, n, partial_code):
+    # Initialize a list to store the complete codes
+    complete_codes = []
+    
+    # Iterate over each row of the partial code
+    for i in range(m):
+        # Get the current row of the partial code
+        current_row = partial_code[i]
+        
+        # If the current row has no zeros, it is a complete code
+        if current_row.count(0) == 0:
+            complete_codes.append(current_row)
+            continue
+        
+        # If the current row has zeros, we need to find the possible values for the zeros
+        possible_values = get_possible_values(current_row)
+        
+        # Iterate over each possible value for the zeros
+        for possible_value in possible_values:
+            # Replace the zeros with the possible value in the current row
+            current_row = [possible_value if x == 0 else x for x in current_row]
+            
+            # If the current row is a complete code, add it to the list of complete codes
+            if current_row.count(0) == 0:
+                complete_codes.append(current_row)
+    
+    # Return the list of complete codes
+    return complete_codes
 
-    # Add edges to the graph
-    for u, v in roads:
-        graph[u - 1].append(v - 1)
-        graph[v - 1].append(u - 1)
+def get_possible_values(row):
+    # Initialize a set to store the possible values for the zeros
+    possible_values = set()
+    
+    # Iterate over each pair of non-zero digits in the row
+    for i in range(len(row)):
+        for j in range(i+1, len(row)):
+            # If the two digits are not zero and they have the property described in the problem, add their product, sum, difference, or quotient to the set of possible values
+            if row[i] != 0 and row[j] != 0 and (row[i] * row[j] in row or row[i] + row[j] in row or row[i] - row[j] in row or row[i] // row[j] in row):
+                possible_values.add(row[i] * row[j])
+                possible_values.add(row[i] + row[j])
+                possible_values.add(row[i] - row[j])
+                possible_values.add(row[i] // row[j])
+    
+    # Return the set of possible values
+    return possible_values
 
-    # Initialize a dictionary to store the number of optimal paths from each node to each other node
-    optimal_paths = {}
-
-    # Function to count the number of optimal paths from node u to node v
-    def count_optimal_paths_helper(u, v, visited):
-        # If u and v are the same, return 1
-        if u == v:
-            return 1
-
-        # If we have already visited u, return 0
-        if u in visited:
-            return 0
-
-        # Mark u as visited
-        visited.add(u)
-
-        # Initialize the number of optimal paths to 0
-        count = 0
-
-        # Recursively count the number of optimal paths from u to each of its neighbors
-        for neighbor in graph[u]:
-            count += count_optimal_paths_helper(neighbor, v, visited)
-
-        # Return the number of optimal paths from u to v
-        return count
-
-    # Count the number of optimal paths from each node to each other node
-    for u in range(n):
-        for v in range(n):
-            if u != v:
-                optimal_paths[(u, v)] = count_optimal_paths_helper(u, v, set())
-
-    # Return the sum of the number of optimal paths from each node to each other node
-    return sum(optimal_paths.values())
+if __name__ == '__main__':
+    m, n = map(int, input().split())
+    partial_code = []
+    for i in range(m):
+        partial_code.append(list(map(int, input().split())))
+    print(len(get_complete_codes(m, n, partial_code)))
 

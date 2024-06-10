@@ -1,14 +1,26 @@
 
-def is_palindrome(string):
-    return string == string[::-1]
+def get_moves(S):
+    # Initialize the number of children on each square
+    num_children = [0] * len(S)
+    
+    # Set the first and last children
+    num_children[0] = 1
+    num_children[-1] = 1
+    
+    # Iterate through the moves
+    for i in range(10**100):
+        for j in range(len(S)):
+            if S[j] == "L":
+                num_children[j-1] += num_children[j]
+            else:
+                num_children[j+1] += num_children[j]
+    
+    return num_children
 
-def get_max_palindrome_subpair(str1, str2):
-    for i in range(len(str1)):
-        for j in range(len(str2)):
-            if is_palindrome(str1[i:] + str2[:j]):
-                return len(str1[i:]) + len(str2[:j])
-    return 0
+def main():
+    S = input()
+    print(*get_moves(S), sep=" ")
 
-def solve(str1, str2):
-    return get_max_palindrome_subpair(str1, str2)
+if __name__ == '__main__':
+    main()
 

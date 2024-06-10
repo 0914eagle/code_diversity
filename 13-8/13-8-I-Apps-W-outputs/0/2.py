@@ -1,16 +1,38 @@
 
-def can_switch_garlands(k1, k2, k3):
-    # Check if k1, k2, and k3 are positive
-    if k1 <= 0 or k2 <= 0 or k3 <= 0:
-        return "NO"
+def get_synchronized_stones(c_stones, t_stones):
+    # Initialize a list to store the synchronized stones
+    synchronized_stones = []
     
-    # Check if k1, k2, and k3 are coprime
-    if __gcd(k1, k2) != 1 or __gcd(k1, k3) != 1 or __gcd(k2, k3) != 1:
-        return "NO"
+    # Loop through the charges of Grigory's stones
+    for i in range(len(c_stones)):
+        # Find the index of the stone with the same charge in Andrew's list
+        j = t_stones.index(c_stones[i])
+        
+        # If the stone is not already synchronized, synchronize it with its neighboring stones
+        if j != i:
+            # Calculate the new charge of the stone
+            new_charge = c_stones[i - 1] + c_stones[i + 1] - c_stones[i]
+            
+            # Add the synchronized stone to the list
+            synchronized_stones.append(new_charge)
+        else:
+            # If the stone is already synchronized, add it to the list as is
+            synchronized_stones.append(c_stones[i])
     
-    # Check if the sum of k1, k2, and k3 is less than or equal to 1500
-    if k1 + k2 + k3 > 1500:
-        return "NO"
+    return synchronized_stones
+
+def main():
+    # Read the input
+    n = int(input())
+    c_stones = list(map(int, input().split()))
+    t_stones = list(map(int, input().split()))
     
-    return "YES"
+    # Check if there exists a sequence of synchronization operations that transforms Grigory's stones into Andrew's stones
+    if get_synchronized_stones(c_stones, t_stones) == t_stones:
+        print("Yes")
+    else:
+        print("No")
+
+if __name__ == '__main__':
+    main()
 

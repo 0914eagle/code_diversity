@@ -1,32 +1,27 @@
 
-def solve(n):
-    # Initialize the maximum sum to 0
-    max_sum = 0
-    # Loop through all possible values of a
-    for a in range(n+1):
-        # Find the corresponding value of b
-        b = n - a
-        # Calculate the sum of digits in a and b
-        sum_a = sum_digits(a)
-        sum_b = sum_digits(b)
-        # Check if the sum of digits is greater than the maximum sum
-        if sum_a + sum_b > max_sum:
-            # If it is, update the maximum sum and the values of a and b
-            max_sum = sum_a + sum_b
-            best_a = a
-            best_b = b
-    # Return the values of a and b with the maximum sum
-    return (best_a, best_b)
+def get_meow_factor(string):
+    # Initialize variables
+    meow_factor = 0
+    string_length = len(string)
+    word = "meow"
+    word_length = len(word)
+    
+    # Loop through each substring of the string
+    for i in range(string_length - word_length + 1):
+        # Check if the substring matches the word "meow"
+        if string[i:i+word_length] == word:
+            # If it matches, return the meow factor
+            return meow_factor
+        # If it doesn't match, increment the meow factor and try the next substring
+        meow_factor += 1
+    
+    # If the word "meow" is not found in the string, return -1
+    return -1
 
-def sum_digits(n):
-    # Initialize the sum to 0
-    sum = 0
-    # Loop through the digits of n
-    while n > 0:
-        # Add the last digit to the sum
-        sum += n % 10
-        # Remove the last digit
-        n //= 10
-    # Return the sum
-    return sum
+def main():
+    string = input("Enter a string: ")
+    print(get_meow_factor(string))
+
+if __name__ == '__main__':
+    main()
 

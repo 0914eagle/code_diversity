@@ -1,32 +1,39 @@
 
-def solve(A, B, Q, s, t, x):
-    # Sort the shrines and temples by their distances from the west end of the road
-    shrines = sorted(s)
-    temples = sorted(t)
-    
-    # Initialize the answer array
-    answers = [0] * Q
-    
-    # Iterate over each query
-    for i in range(Q):
-        # Get the current query
-        curr_x = x[i]
-        
-        # Initialize the minimum distance to visit one shrine and one temple
-        min_dist = float('inf')
-        
-        # Iterate over each shrine and temple
-        for j in range(A):
-            for k in range(B):
-                # Calculate the distance to visit the j-th shrine and k-th temple
-                dist = abs(curr_x - shrines[j]) + abs(curr_x - temples[k])
-                
-                # Update the minimum distance if necessary
-                if dist < min_dist:
-                    min_dist = dist
-        
-        # Add the minimum distance to the answer array
-        answers[i] = min_dist
-    
-    return answers
+def get_maximum_lit_time(a, M):
+    # Initialize variables
+    n = len(a)
+    total_lit_time = 0
+    max_lit_time = 0
+    current_state = 1
+    current_time = 0
+
+    # Iterate through the program
+    for i in range(n):
+        # Calculate the time until the next event
+        next_time = a[i]
+        if next_time > current_time:
+            # Calculate the lit time for the current segment
+            lit_time = next_time - current_time
+            total_lit_time += lit_time
+
+            # Check if the current segment is the longest lit segment so far
+            if lit_time > max_lit_time:
+                max_lit_time = lit_time
+
+        # Flip the current state
+        current_state = 1 - current_state
+        current_time = next_time
+
+    # Calculate the total lit time
+    total_lit_time += M - current_time
+
+    return total_lit_time
+
+def main():
+    n, M = map(int, input().split())
+    a = list(map(int, input().split()))
+    print(get_maximum_lit_time(a, M))
+
+if __name__ == '__main__':
+    main()
 

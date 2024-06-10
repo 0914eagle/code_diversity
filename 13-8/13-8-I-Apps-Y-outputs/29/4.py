@@ -1,27 +1,24 @@
 
-def get_max_sum(a, b, k):
-    # Sort both arrays in non-decreasing order
-    a.sort()
-    b.sort()
-    # Initialize the maximum sum to 0
-    max_sum = 0
-    # Loop through each element in a and b
-    for i in range(len(a)):
-        # Check if the current element in a is less than or equal to the current element in b
-        if a[i] <= b[i]:
-            # If so, add the current element in a to the maximum sum
-            max_sum += a[i]
-        else:
-            # If not, check if we have any swaps left
-            if k > 0:
-                # If we do, swap the current element in a with the current element in b and decrease the number of swaps by 1
-                a[i], b[i] = b[i], a[i]
-                k -= 1
-                # Add the current element in a to the maximum sum
-                max_sum += a[i]
-            else:
-                # If we don't, add the current element in b to the maximum sum
-                max_sum += b[i]
-    # Return the maximum sum
-    return max_sum
+import math
+
+def get_input():
+    return list(map(int, input().split()))
+
+def get_pizza_area(radius, crust_width):
+    return math.pi * radius ** 2 - math.pi * (radius - crust_width) ** 2
+
+def get_cheese_area(pizza_area, crust_width):
+    return pizza_area - math.pi * (radius - crust_width) ** 2
+
+def get_cheese_percentage(pizza_area, crust_width):
+    return get_cheese_area(pizza_area, crust_width) / pizza_area
+
+def main():
+    radius, crust_width = get_input()
+    pizza_area = get_pizza_area(radius, crust_width)
+    cheese_percentage = get_cheese_percentage(pizza_area, crust_width)
+    print(cheese_percentage)
+
+if __name__ == '__main__':
+    main()
 

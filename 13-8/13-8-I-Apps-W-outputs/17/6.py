@@ -1,20 +1,27 @@
 
-def max_clique(A):
-    # Initialize a dictionary to store the clique size for each number
-    clique_sizes = {}
-    # Iterate over the numbers in the set
-    for num in A:
-        # Initialize the clique size for the current number to 1
-        clique_size = 1
-        # Iterate over the numbers that are divisible by the current number
-        for divisor in A:
-            if num % divisor == 0 and divisor != num:
-                # If the current number is divisible by a number that is not equal to it,
-                # and the clique size for that number is greater than the current clique size,
-                # update the clique size for the current number
-                clique_size = max(clique_size, clique_sizes.get(divisor, 1) + 1)
-        # Add the clique size for the current number to the dictionary
-        clique_sizes[num] = clique_size
-    # Return the maximum clique size among all the numbers
-    return max(clique_sizes.values())
+def get_max_profit(buns, patties, chicken, hamburger_price, chicken_price):
+    # Calculate the maximum number of hamburgers that can be made
+    max_hamburgers = int(buns / 2)
+    # Calculate the maximum number of chicken burgers that can be made
+    max_chicken_burgers = int(buns / 2)
+    # Calculate the maximum profit that can be achieved
+    max_profit = (max_hamburgers * hamburger_price) + (max_chicken_burgers * chicken_price)
+    return max_profit
+
+def main():
+    # Read the number of queries
+    queries = int(input())
+    # Loop through each query
+    for _ in range(queries):
+        # Read the number of buns, patties, and chicken
+        buns, patties, chicken = map(int, input().split())
+        # Read the hamburger and chicken burger prices
+        hamburger_price, chicken_price = map(int, input().split())
+        # Calculate the maximum profit
+        max_profit = get_max_profit(buns, patties, chicken, hamburger_price, chicken_price)
+        # Print the maximum profit
+        print(max_profit)
+
+if __name__ == '__main__':
+    main()
 

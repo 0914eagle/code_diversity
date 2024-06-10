@@ -1,13 +1,23 @@
 
-def get_bottles(shipment_volume, bottle1_volume, bottle2_volume):
-    if shipment_volume > bottle1_volume or bottle1_volume < bottle2_volume:
-        return "Impossible"
-    
-    num_bottles1 = shipment_volume // bottle1_volume
-    num_bottles2 = 0
-    while num_bottles1 > 0:
-        num_bottles2 += 1
-        num_bottles1 -= num_bottles2 * bottle2_volume
-    
-    return num_bottles1, num_bottles2
+def get_diverse_garland(s):
+    n = len(s)
+    recolored = 0
+    t = [""] * n
+    for i in range(n):
+        if i > 0 and s[i] == s[i-1]:
+            t[i] = "R" if s[i] == "G" else "G"
+            recolored += 1
+        else:
+            t[i] = s[i]
+    return recolored, "".join(t)
+
+def main():
+    n = int(input())
+    s = input()
+    recolored, t = get_diverse_garland(s)
+    print(recolored)
+    print(t)
+
+if __name__ == '__main__':
+    main()
 

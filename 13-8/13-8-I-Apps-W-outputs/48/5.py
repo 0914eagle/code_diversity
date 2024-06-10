@@ -1,26 +1,32 @@
 
-def solve(x, y):
-    # Convert the binary strings to integers
-    x_int = int(x, 2)
-    y_int = int(y, 2)
-    
-    # Initialize the minimum k and its corresponding rev_k
-    min_k = 0
-    min_rev_k = x_int + y_int
-    
-    # Iterate through the possible values of k
-    for k in range(1, 100):
-        # Calculate the sum of x and y multiplied by 2^k
-        s_k = x_int + y_int * 2**k
-        
-        # Convert the sum to a binary string and reverse it
-        rev_k = bin(s_k)[2:][::-1]
-        
-        # If the reversed binary string is lexicographically smaller than the current minimum, update the minimum k and its corresponding rev_k
-        if rev_k < min_rev_k:
-            min_k = k
-            min_rev_k = rev_k
-    
-    # Return the minimum k
-    return min_k
+def read_matrix():
+    n, m, d = map(int, input().split())
+    matrix = []
+    for _ in range(n):
+        matrix.append(list(map(int, input().split())))
+    return n, m, d, matrix
+
+def solve(n, m, d, matrix):
+    # Initialize the minimum number of moves to a large value
+    min_moves = 1000
+    # Loop through each element in the matrix
+    for i in range(n):
+        for j in range(m):
+            # Check if the element is not equal to the target value
+            if matrix[i][j] != d:
+                # Calculate the absolute difference between the element and the target value
+                abs_diff = abs(matrix[i][j] - d)
+                # Check if the absolute difference is less than or equal to the minimum number of moves
+                if abs_diff <= min_moves:
+                    # If it is, then update the minimum number of moves
+                    min_moves = abs_diff
+    # Return the minimum number of moves
+    return min_moves
+
+def main():
+    n, m, d, matrix = read_matrix()
+    print(solve(n, m, d, matrix))
+
+if __name__ == '__main__':
+    main()
 

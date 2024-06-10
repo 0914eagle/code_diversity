@@ -1,28 +1,51 @@
 
-def solve(A, B, C, D, E, F):
-    # Calculate the maximum amount of sugar that can be dissolved in water
-    max_sugar = E * 100 / A
-
-    # Initialize the mass of sugar and water to 0
-    sugar, water = 0, 0
-
-    # Loop until the mass of sugar and water is less than or equal to the maximum amount that can be contained in the beaker
-    while sugar + water <= F:
-        # If the current mass of sugar is less than or equal to the maximum amount that can be dissolved in water, add 100 grams of water
-        if sugar <= max_sugar:
-            water += 100
-        # If the current mass of sugar is greater than the maximum amount that can be dissolved in water, add as much sugar as possible
+def find_minimal_number_of_companies(n, k, roads):
+    # Initialize a dictionary to keep track of the companies and the cities they serve
+    companies = {}
+    for road in roads:
+        # If the company is already in the dictionary, add the city to the list of cities served by the company
+        if road[0] in companies:
+            companies[road[0]].append(road[1])
+        # Otherwise, create a new key in the dictionary with the city as the value
         else:
-            sugar += max_sugar
+            companies[road[0]] = [road[1]]
+    
+    # Initialize a set to keep track of the cities with multiple roads
+    multiple_cities = set()
+    for company, cities in companies.items():
+        # If the company serves more than one city, add those cities to the set
+        if len(cities) > 1:
+            multiple_cities.update(cities)
+    
+    # Return the number of companies needed to assign each road to a company
+    return len(multiple_cities) + 1
 
-        # If the current mass of sugar is less than or equal to C, add C grams of sugar
-        if sugar <= C:
-            sugar += C
-        # If the current mass of sugar is greater than C but less than or equal to D, add D grams of sugar
-        elif sugar <= D:
-            sugar += D
-        # If the current mass of sugar is greater than D, do not add any sugar
+def assign_companies(n, k, roads):
+    # Find the minimal number of companies needed to assign each road to a company
+    num_companies = find_minimal_number_of_companies(n, k, roads)
+    
+    # Initialize a dictionary to keep track of the companies and the cities they serve
+    companies = {}
+    for i in range(num_companies):
+        companies[i+1] = []
+    
+    # Assign each road to a company
+    for road in roads:
+        # If the company is already in the dictionary, add the city to the list of cities served by the company
+        if road[0] in companies:
+            companies[road[0]].append(road[1])
+        # Otherwise, create a new key in the dictionary with the city as the value
+        else:
+            companies[road[0]] = [road[1]]
+    
+    # Return the list of companies and the cities they serve
+    return [companies[i+1] for i in range(num_companies)]
 
-    # Return the mass of sugar and water
-    return sugar, water
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    roads = []
+    for _ in range(n-1):
+        x, y = map(int, input().split())
+        roads.append([x, y])
+    print(assign_companies(n, k, roads))
 

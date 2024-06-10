@@ -1,26 +1,26 @@
 
-def solve(n, a):
-    # Initialize the number of connected components to 0
-    num_components = 0
+def is_relatively_prime(v, u):
+    return gcd(v, u) == 1
 
-    # Iterate over each pair of vertices (l, r)
-    for l in range(1, n + 1):
-        for r in range(l, n + 1):
-            # Initialize a set to store the vertices that are left in the tree
-            vertices = set()
+def construct_relatively_prime_graph(n, m):
+    edges = []
+    for i in range(m):
+        v, u = map(int, input().split())
+        if not is_relatively_prime(v, u):
+            return "Impossible"
+        edges.append((v, u))
+    return edges
 
-            # Iterate over each vertex i
-            for i in range(1, n + 1):
-                # If the value of vertex i is in the range [l, r]
-                if l <= a[i - 1] <= r:
-                    # Add vertex i to the set of vertices that are left in the tree
-                    vertices.add(i)
+def main():
+    n, m = map(int, input().split())
+    edges = construct_relatively_prime_graph(n, m)
+    if edges == "Impossible":
+        print(edges)
+    else:
+        print("Possible")
+        for edge in edges:
+            print(edge[0], edge[1])
 
-            # If there is at least one vertex left in the tree
-            if vertices:
-                # Increment the number of connected components
-                num_components += 1
-
-    # Return the total number of connected components
-    return num_components
+if __name__ == '__main__':
+    main()
 

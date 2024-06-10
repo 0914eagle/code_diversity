@@ -1,15 +1,26 @@
 
-import sys
+def get_lcm(a, b):
+    if a == 0 or b == 0:
+        return 0
+    while b > 0:
+        a, b = b, a % b
+    return a
 
-def solve(n, m, k, b):
-    # Calculate the number of distinct strings modulo 998244353
-    result = 1
-    for i in range(m):
-        result = (result * b[i]) % 998244353
-    
-    return result
+def get_max_lcm(arr):
+    n = len(arr)
+    max_lcm = 0
+    for i in range(n):
+        for j in range(i+1, n):
+            lcm = get_lcm(arr[i], arr[j])
+            if lcm > max_lcm:
+                max_lcm = lcm
+    return max_lcm
 
-n, m, k = map(int, input().split())
-b = list(map(int, input().split()))
-print(solve(n, m, k, b))
+def main():
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(get_max_lcm(arr))
+
+if __name__ == '__main__':
+    main()
 

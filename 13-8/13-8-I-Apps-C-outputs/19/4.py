@@ -1,11 +1,23 @@
 
-def solve(a, b, l, r):
-    # Initialize the string with the first a letters of the alphabet
-    s = "".join(chr(i + ord('a')) for i in range(a))
+def is_magical(arr):
+    return all(arr[0] <= x <= arr[-1] for x in arr)
 
-    # Mister B's turn
-    s += "".join(chr(i + ord('a')) for i in range(a, a + b))
+def get_longest_magical_subarray(arr, l, r):
+    longest = 0
+    for i in range(l, r+1):
+        subarr = arr[i:r+1]
+        if is_magical(subarr) and len(subarr) > longest:
+            longest = len(subarr)
+    return longest
 
-    # Compute the number of different letters in the segment [l, r]
-    return len(set(s[l - 1:r]))
+def main():
+    n = int(input())
+    arr = list(map(int, input().split()))
+    q = int(input())
+    for i in range(q):
+        l, r = map(int, input().split())
+        print(get_longest_magical_subarray(arr, l, r))
+
+if __name__ == '__main__':
+    main()
 

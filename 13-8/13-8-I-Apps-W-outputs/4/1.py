@@ -1,25 +1,38 @@
 
-def cake_eater(grid):
-    rows, cols = len(grid), len(grid[0])
-    visited = [[False for _ in range(cols)] for _ in range(rows)]
-    count = 0
+def get_number_of_distinct_messages(messages, k):
+    # Initialize a set to store the seen messages
+    seen = set()
+    # Initialize a queue to store the messages to be processed
+    queue = []
+    # Add the first message to the queue
+    queue.append(messages[0])
+    # Loop until the queue is empty
+    while queue:
+        # Get the current message from the queue
+        message = queue.pop(0)
+        # If the message is not in the seen set, add it to the seen set and the number of distinct messages
+        if message not in seen:
+            seen.add(message)
+        # If the message has a link, add the linked message to the queue
+        if messages[message]:
+            queue.append(messages[message])
+    # Return the number of distinct messages
+    return len(seen)
 
-    for i in range(rows):
-        for j in range(cols):
-            if grid[i][j] == "." and not visited[i][j]:
-                count += 1
-                dfs(grid, visited, i, j)
+def main():
+    # Read the input n and k
+    n, k = map(int, input().split())
+    # Read the message links
+    messages = list(map(int, input().split()))
+    # Initialize the number of distinct messages for each message
+    number_of_distinct_messages = [0] * (n + 1)
+    # Loop through each message
+    for i in range(1, n + 1):
+        # Get the number of distinct messages for the current message
+        number_of_distinct_messages[i] = get_number_of_distinct_messages(messages, k)
+    # Print the number of distinct messages for each message
+    print(*number_of_distinct_messages, sep='\n')
 
-    return count
-
-def dfs(grid, visited, i, j):
-    rows, cols = len(grid), len(grid[0])
-    if i < 0 or i >= rows or j < 0 or j >= cols or grid[i][j] == "S" or visited[i][j]:
-        return
-
-    visited[i][j] = True
-    dfs(grid, visited, i+1, j)
-    dfs(grid, visited, i-1, j)
-    dfs(grid, visited, i, j+1)
-    dfs(grid, visited, i, j-1)
+if __name__ == '__main__':
+    main()
 

@@ -1,19 +1,34 @@
 
-def solve(sequences):
+def longest_acgt_substring(s):
     # Initialize variables
-    k = len(sequences)
-    n_i = [len(sequence) for sequence in sequences]
-    a_i = [[element for element in sequence] for sequence in sequences]
+    max_length = 0
+    current_length = 0
+    start_index = 0
     
-    # Iterate over all possible pairs of sequences
-    for i in range(k):
-        for j in range(i+1, k):
-            # Check if the sums of the sequences are equal
-            if sum(a_i[i]) == sum(a_i[j]):
-                # Find the indices of the elements to remove
-                x = a_i[i].index(min(a_i[i]))
-                y = a_i[j].index(min(a_i[j]))
-                return "YES\n" + str(i+1) + " " + str(x+1) + "\n" + str(j+1) + " " + str(y+1)
+    # Iterate through the string
+    for i in range(len(s)):
+        # If the current character is A, C, G, or T, increase the current length
+        if s[i] in ["A", "C", "G", "T"]:
+            current_length += 1
+        # If the current character is not A, C, G, or T, or if we have reached the end of the string, check if the current length is greater than the maximum length
+        else:
+            if current_length > max_length:
+                max_length = current_length
+                start_index = i - current_length
+            current_length = 0
     
-    return "NO"
+    # If the string ends with an ACGT string, check if the current length is greater than the maximum length
+    if current_length > max_length:
+        max_length = current_length
+        start_index = len(s) - current_length
+    
+    # Return the length of the longest ACGT string
+    return max_length
+
+def main():
+    s = input()
+    print(longest_acgt_substring(s))
+
+if __name__ == '__main__':
+    main()
 

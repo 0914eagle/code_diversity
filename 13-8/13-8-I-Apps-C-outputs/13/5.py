@@ -1,29 +1,38 @@
 
-def solve(n, k, a):
-    # Convert the input denomination to a list
-    a = list(a)
+def get_closest_handsome_numbers(n):
+    # Convert the input number to a string
+    n_str = str(n)
+    
+    # Initialize the closest handsome numbers as the input number itself
+    closest_handsome_numbers = [n_str]
+    
+    # Iterate through the digits of the input number
+    for i in range(len(n_str) - 1):
+        # Check if the current digit and the next digit have the same parity
+        if int(n_str[i]) % 2 == int(n_str[i+1]) % 2:
+            # If they have the same parity, replace the current digit with the next digit
+            closest_handsome_numbers[0] = closest_handsome_numbers[0][:i] + n_str[i+1] + closest_handsome_numbers[0][i+1:]
+    
+    # If the input number is handsome, return it as the only handsome number
+    if is_handsome_number(n_str):
+        return closest_handsome_numbers[0]
+    
+    # If the input number is not handsome, return the closest handsome numbers
+    return " ".join(closest_handsome_numbers)
 
-    # Initialize the count of happy digits
-    count = 0
+def is_handsome_number(n_str):
+    # Check if the input number has only one digit
+    if len(n_str) == 1:
+        return True
+    
+    # Check if the input number has consecutive digits of different parity
+    for i in range(len(n_str) - 1):
+        if int(n_str[i]) % 2 == int(n_str[i+1]) % 2:
+            return False
+    
+    return True
 
-    # Initialize the list of happy digits
-    happy_digits = []
-
-    # Loop through each denomination
-    for i in range(n):
-        # Get the value of the current denomination
-        value = a[i]
-
-        # Loop through each digit in the value
-        for digit in str(value):
-            # Check if the digit is a happy digit
-            if digit in str(k):
-                # Increment the count of happy digits
-                count += 1
-
-                # Add the digit to the list of happy digits
-                happy_digits.append(digit)
-
-    # Return the count of happy digits and the list of happy digits
-    return count, happy_digits
+if __name__ == '__main__':
+    n = int(input())
+    print(get_closest_handsome_numbers(n))
 

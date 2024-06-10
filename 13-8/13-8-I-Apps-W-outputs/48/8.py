@@ -1,27 +1,31 @@
 
-def solve(x, y):
-    # Convert the binary strings to integers
-    x_int = int(x, 2)
-    y_int = int(y, 2)
-    
-    # Calculate the maximum value of k that satisfies the constraint
-    max_k = len(x) - len(y)
-    
-    # Initialize the minimum value of k and the corresponding reverse binary string
-    min_k = 0
-    min_rev_k = x_int + y_int * 2 ** min_k
-    
-    # Iterate through the possible values of k
-    for k in range(1, max_k + 1):
-        # Calculate the sum of the two integers and its reverse binary string
-        s_k = x_int + y_int * 2 ** k
-        rev_k = int(str(s_k)[::-1])
-        
-        # If the reverse binary string is lexicographically smaller than the current minimum, update the minimum value of k and the corresponding reverse binary string
-        if rev_k < min_rev_k:
-            min_k = k
-            min_rev_k = rev_k
-    
-    # Return the minimum value of k
-    return min_k
+def get_matrix_size():
+    n, m, d = map(int, input().split())
+    return n, m, d
+
+def get_matrix():
+    n, m = get_matrix_size()
+    matrix = []
+    for _ in range(n):
+        matrix.append(list(map(int, input().split())))
+    return matrix
+
+def get_moves(matrix, d):
+    n, m = get_matrix_size()
+    moves = 0
+    for i in range(n):
+        for j in range(m):
+            if matrix[i][j] % d != 0:
+                moves += matrix[i][j] % d
+                matrix[i][j] -= matrix[i][j] % d
+    return moves
+
+def main():
+    matrix = get_matrix()
+    d = get_matrix_size()[2]
+    moves = get_moves(matrix, d)
+    print(moves)
+
+if __name__ == '__main__':
+    main()
 

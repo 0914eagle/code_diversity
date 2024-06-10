@@ -1,19 +1,21 @@
 
-def get_sellers_valera_can_deal_with(n, v, sellers):
-    sellers_can_deal_with = []
-    for seller in sellers:
-        if seller["price"] <= v:
-            sellers_can_deal_with.append(seller["id"])
-    return sellers_can_deal_with
+def get_min_operations(colors):
+    n = len(colors)
+    counts = [0] * (n + 1)
+    for color in colors:
+        counts[color] += 1
+    max_count = max(counts)
+    min_operations = 0
+    for i in range(1, n + 1):
+        if counts[i] == max_count:
+            min_operations += (max_count - 1)
+    return min_operations
 
-n, v = map(int, input().split())
-sellers = []
-for i in range(n):
-    k, *prices = map(int, input().split())
-    for j, price in enumerate(prices, start=1):
-        sellers.append({"id": i, "price": price})
+def main():
+    n = int(input())
+    colors = list(map(int, input().split()))
+    print(get_min_operations(colors))
 
-sellers_can_deal_with = get_sellers_valera_can_deal_with(n, v, sellers)
-print(len(sellers_can_deal_with))
-print(*sellers_can_deal_with)
+if __name__ == '__main__':
+    main()
 

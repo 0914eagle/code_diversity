@@ -1,19 +1,31 @@
 
-def count_distinct_strings(n, m, a, b):
-    # Initialize a set to store the distinct strings
-    distinct_strings = set()
+def get_lcm(a, b):
     
-    # Loop through each element in the array b
-    for i in range(m):
-        # Get the current value of k
-        k = b[i]
-        
-        # Loop through each character in the string
-        for j in range(n):
-            # If the current character is not already in the set, add it
-            if s[j] not in distinct_strings:
-                distinct_strings.add(s[j])
+    if a == 0 or b == 0:
+        return 0
+    else:
+        return a * b // gcd(a, b)
+
+def gcd(a, b):
     
-    # Return the number of distinct strings
-    return len(distinct_strings) % 998244353
+    if b == 0:
+        return a
+    else:
+        return gcd(b, a % b)
+
+def get_max_lcm(arr):
+    
+    n = len(arr)
+    max_lcm = 0
+    for i in range(n):
+        for j in range(i+1, n):
+            lcm = get_lcm(arr[i], arr[j])
+            if lcm > max_lcm:
+                max_lcm = lcm
+    return max_lcm
+
+if __name__ == '__main__':
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(get_max_lcm(arr))
 

@@ -1,31 +1,58 @@
 
-def solve(n, d, b, a):
-    # Initialize the number of students in each room
-    students = [0] * (n + 1)
-    for i in range(n):
-        students[i] = a[i]
+def get_square_killer(memory):
+    # Initialize variables
+    max_size = 0
+    max_killer = []
     
-    # Initialize the number of rooms with non-hidden students
-    x_1 = 0
-    x_2 = 0
+    # Iterate over each element in the memory
+    for i in range(len(memory)):
+        for j in range(len(memory[0])):
+            # Check if the current element is part of a square killer
+            size = check_square_killer(memory, i, j)
+            
+            # If the size is greater than the current maximum, update the maximum and the maximum killer
+            if size > max_size:
+                max_size = size
+                max_killer = [(i, j)]
+                
+            # If the size is equal to the current maximum, add the current element to the maximum killer
+            elif size == max_size:
+                max_killer.append((i, j))
     
-    # Loop through each room
-    for i in range(n):
-        # Count the number of non-hidden students in the current room
-        non_hidden_students = 0
-        for j in range(i, n):
-            non_hidden_students += students[j]
-        
-        # Check if the number of non-hidden students is different from b
-        if non_hidden_students != b:
-            # Increment the number of rooms with non-hidden students
-            x_1 += 1
-        
-        # Move to the next room
-        i += d
-        if i > n:
-            i = n
+    # Return the maximum killer
+    return max_killer
+
+def check_square_killer(memory, i, j):
+    # Initialize variables
+    size = 1
+    current = memory[i][j]
     
-    # Return the minimal possible value of the maximum of x_i
-    return min(x_1, x_2)
+    # Check if the current element is part of a square killer
+    for k in range(i, len(memory)):
+        for l in range(j, len(memory[0])):
+            # If the element is not part of the killer, return 0
+            if memory[k][l] != current:
+                return 0
+            
+            # If the element is part of the killer, update the size and move on to the next element
+            size += 1
+    
+    # If the element is part of a square killer, return the size
+    return size
+
+def main():
+    # Read the input
+    R, C = map(int, input().split())
+    memory = []
+    for _ in range(R):
+        memory.append(list(input()))
+    
+    # Get the largest square killer
+    largest_killer = get_square_killer(memory)
+    
+    # Print the size of the largest square killer
+    print(len(largest_killer))
+
+if __name__ == '__main__':
+    main()
 

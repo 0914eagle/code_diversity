@@ -1,27 +1,33 @@
 
-def solve(s_a, s_b, s_c):
-    # Initialize the decks of the players
-    alice = deque(s_a)
-    bob = deque(s_b)
-    charlie = deque(s_c)
+def is_easily_playable(s):
+    # Initialize variables to keep track of the positions
+    odd_positions = []
+    even_positions = []
     
-    # Game ends when a player's deck is empty
-    while alice and bob and charlie:
-        # Alice takes the first turn
-        if alice:
-            alice.popleft()
-        # Bob takes the turn if the top card of Alice's deck is 'a'
-        elif bob and alice and alice[0] == 'a':
-            bob.popleft()
-        # Charlie takes the turn if the top card of Alice's deck is 'c'
-        elif charlie and alice and alice[0] == 'c':
-            charlie.popleft()
+    # Iterate through the string and append the characters to the appropriate list
+    for i, char in enumerate(s):
+        if i % 2 == 0:
+            even_positions.append(char)
+        else:
+            odd_positions.append(char)
     
-    # Return the winner
-    if alice:
-        return 'A'
-    elif bob:
-        return 'B'
-    else:
-        return 'C'
+    # Check if all the characters in odd positions are R, U, or D
+    for char in odd_positions:
+        if char not in "RUD":
+            return "No"
+    
+    # Check if all the characters in even positions are L, U, or D
+    for char in even_positions:
+        if char not in "LUD":
+            return "No"
+    
+    # If all the conditions are met, return "Yes"
+    return "Yes"
+
+def main():
+    s = input()
+    print(is_easily_playable(s))
+
+if __name__ == '__main__':
+    main()
 

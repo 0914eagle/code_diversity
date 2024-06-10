@@ -1,21 +1,28 @@
 
-def solve(n, m, subarrays):
-    # Initialize the array a with all 0s
-    a = [0] * n
+import math
 
-    # Iterate over the subarrays chosen by Alyona
-    for l, r in subarrays:
-        # Find the minimum element in the subarray
-        min_elem = min(a[l:r+1])
+def expected_profit(x, p):
+    # Calculate the probability of winning and losing
+    win_prob = p / 100
+    lose_prob = 1 - win_prob
+    
+    # Calculate the expected value of each bet
+    win_value = 2
+    lose_value = -1
+    
+    # Calculate the expected value of the entire game
+    expected_value = win_prob * win_value + lose_prob * lose_value
+    
+    # Calculate the maximum expected profit
+    max_expected_profit = x / 100 * expected_value
+    
+    return max_expected_profit
 
-        # If the minimum element is 0, then set it to 1
-        if min_elem == 0:
-            a[l] = 1
+def main():
+    x = float(input())
+    p = float(input())
+    print(expected_profit(x, p))
 
-        # Otherwise, set the minimum element to its next higher integer
-        else:
-            a[l] = min_elem + 1
-
-    # Return the maximum possible minimum mex and the array a
-    return max(a), a
+if __name__ == '__main__':
+    main()
 

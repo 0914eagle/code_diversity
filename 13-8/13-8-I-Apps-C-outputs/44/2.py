@@ -1,19 +1,47 @@
 
-def solve(n):
-    # Calculate the number of special points
-    num_special_points = (n * (n + 1)) // 2
-    
-    # Initialize the number of blocked points to 0
-    num_blocked_points = 0
-    
-    # Iterate through all possible combinations of blocked points
-    for i in range(num_special_points):
-        # Calculate the number of blocked points needed for this combination
-        num_blocked_points_needed = num_special_points - i
-        
-        # Check if this is the minimum number of blocked points needed
-        if num_blocked_points_needed > num_blocked_points:
-            num_blocked_points = num_blocked_points_needed
-    
-    return num_blocked_points
+def read_input():
+    n, m = map(int, input().split())
+    corridors = []
+    for _ in range(m):
+        u, v = map(int, input().split())
+        corridors.append((u, v))
+    return n, m, corridors
+
+def find_cycles(n, corridors):
+    visited = [False] * (n + 1)
+    cycles = []
+    for i in range(1, n + 1):
+        if not visited[i]:
+            cycle = []
+            dfs(i, visited, corridors, cycle)
+            if len(cycle) > 1:
+                cycles.append(cycle)
+    return cycles
+
+def dfs(i, visited, corridors, cycle):
+    visited[i] = True
+    cycle.append(i)
+    for j, k in corridors:
+        if i == j and not visited[k]:
+            dfs(k, visited, corridors, cycle)
+    return
+
+def remove_cycles(n, m, corridors):
+    cycles = find_cycles(n, corridors)
+    removed_corridors = []
+    for cycle in cycles:
+        for i in range(1, len(cycle)):
+            u, v = cycle[i - 1], cycle[i]
+            removed_corridors.append((u, v))
+    return removed_corridors
+
+def main():
+    n, m, corridors = read_input()
+    removed_corridors = remove_cycles(n, m, corridors)
+    print(len(removed_corridors))
+    for u, v in removed_corridors:
+        print(u, v)
+
+if __name__ == '__main__':
+    main()
 

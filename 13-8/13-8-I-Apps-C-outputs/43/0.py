@@ -1,27 +1,35 @@
 
-def solve(N, P, bad_pairs):
-    # Initialize a set to store the used ingredients
-    used_ingredients = set()
-    # Initialize a list to store the drinks
-    drinks = []
-    # Loop through the bad pairs of ingredients
-    for a, b in bad_pairs:
-        # If both ingredients are already used, skip this pair
-        if a in used_ingredients and b in used_ingredients:
-            continue
-        # If either ingredient is already used, add the other ingredient to the set of used ingredients
-        elif a in used_ingredients:
-            used_ingredients.add(b)
-        elif b in used_ingredients:
-            used_ingredients.add(a)
-        # If neither ingredient is used, add both to the set of used ingredients
-        else:
-            used_ingredients.update([a, b])
-    # Loop through the remaining ingredients
-    for i in range(1, N + 1):
-        # If the ingredient is not used, add it to the list of drinks
-        if i not in used_ingredients:
-            drinks.append(i)
-    # Return the number of drinks
-    return len(drinks)
+def get_lane_switch_plan(num_lanes, sensor_range, car_locations):
+    # Initialize the plan as impossible
+    plan = "Impossible"
+    
+    # Iterate over each lane
+    for lane in range(num_lanes):
+        # Calculate the distance to the back of the car in the current lane
+        distance_to_back = sum(car_location[1] for car_location in car_locations if car_location[0] == lane)
+        
+        # If the distance to the back of the car is less than the sensor range, the lane is safe to switch to
+        if distance_to_back <= sensor_range:
+            # Calculate the safety factor for the current lane
+            safety_factor = distance_to_back / sensor_range
+            
+            # If the safety factor is higher than the current plan, update the plan
+            if safety_factor > plan:
+                plan = safety_factor
+    
+    return plan
+
+def main():
+    num_lanes, num_cars, sensor_range = map(int, input().split())
+    car_locations = []
+    
+    for _ in range(num_cars):
+        lane, length, distance = map(int, input().split())
+        car_locations.append((lane, length, distance))
+    
+    plan = get_lane_switch_plan(num_lanes, sensor_range, car_locations)
+    print(plan)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,16 +1,25 @@
 
-def pubnite(x_s, y_s, s_s, r_i, r_f, x_a, y_a, s_a):
-    # Calculate the distance between Anthony's current position and the center of the safety zone
-    distance = ((x_a - x_s) ** 2 + (y_a - y_s) ** 2) ** 0.5
-    
-    # Calculate the time it takes for Anthony to reach the center of the safety zone
-    time = distance / s_a
-    
-    # Calculate the radius of the safety zone at the time Anthony reaches the center
-    radius = r_i - s_s * time
-    
-    # Calculate the amount of damage Anthony will take if he stays in the safety zone until it shrinks to r_f
-    damage = (radius ** 2 - r_f ** 2) / 2
-    
-    return damage
+def get_distinct_sizes(sizes):
+    return len(set(sizes))
+
+def get_sizes_difference(sizes):
+    return max(sizes) - min(sizes)
+
+def can_choose_three_balls(n, sizes):
+    if get_distinct_sizes(sizes) < 3:
+        return False
+    if get_sizes_difference(sizes) > 2:
+        return False
+    return True
+
+def main():
+    n = int(input())
+    sizes = list(map(int, input().split()))
+    if can_choose_three_balls(n, sizes):
+        print("YES")
+    else:
+        print("NO")
+
+if __name__ == '__main__':
+    main()
 

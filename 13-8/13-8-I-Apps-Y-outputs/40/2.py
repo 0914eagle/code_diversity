@@ -1,35 +1,20 @@
 
-def solve(N, M, s_list, c_list):
-    # Initialize the smallest integer as -1
-    smallest_int = -1
-    
-    # Loop through each digit and check if it is valid
-    for i in range(M):
-        # Get the digit and its position from the input
-        digit = c_list[i]
-        position = s_list[i]
-        
-        # Check if the digit is valid
-        if digit < 0 or digit > 9:
-            return smallest_int
-        
-        # Check if the position is valid
-        if position < 1 or position > N:
-            return smallest_int
-        
-        # Check if the digit is already used in a previous position
-        if digit in c_list[:i]:
-            return smallest_int
-        
-    # If all digits and positions are valid, find the smallest integer that satisfies the conditions
-    smallest_int = 0
-    for i in range(M):
-        # Get the digit and its position from the input
-        digit = c_list[i]
-        position = s_list[i]
-        
-        # Add the digit to the smallest integer
-        smallest_int += digit * 10 ** (N - position)
-    
-    return smallest_int
+def is_periodic(s, k):
+    if len(s) % k != 0:
+        return False
+    sub_strings = [s[i:i+k] for i in range(0, len(s), k)]
+    for i in range(1, len(sub_strings)):
+        if sub_strings[i] != sub_strings[i-1][1:] + sub_strings[i-1][0]:
+            return False
+    return True
+
+def solve(s):
+    for k in range(1, len(s)):
+        if is_periodic(s, k):
+            return k
+    return -1
+
+if __name__ == '__main__':
+    s = input()
+    print(solve(s))
 

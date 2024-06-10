@@ -1,23 +1,63 @@
 
-def divide_swimmers(n, positions):
-    # Sort the positions of the swimmers by their x-coordinate
-    sorted_positions = sorted(positions, key=lambda x: x[0])
-
-    # Initialize the locations of the lifeguards
-    guard1_x = 0
-    guard2_x = 0
-
-    # Divide the swimmers into two groups
-    group1 = []
-    group2 = []
-    for i in range(n):
-        if i % 2 == 0:
-            group1.append(sorted_positions[i])
+def get_rebus_solution(rebus):
+    # Split the rebus into a list of tokens
+    tokens = rebus.split()
+    
+    # Initialize a set to store the numbers used in the rebus
+    numbers = set()
+    
+    # Iterate over the tokens and check if they are integers or arithmetic operations
+    for token in tokens:
+        if token.isdigit():
+            # If the token is an integer, add it to the set of numbers
+            numbers.add(int(token))
+        elif token in ['+', '-']:
+            # If the token is an arithmetic operation, continue to the next token
+            continue
         else:
-            group2.append(sorted_positions[i])
+            # If the token is not an integer or arithmetic operation, the rebus is invalid
+            return "Impossible"
+    
+    # Check if the set of numbers is equal to the range of integers from 1 to n
+    if len(numbers) == range(1, int(tokens[-1]) + 1):
+        # If the set of numbers is equal to the range of integers, the rebus has a solution
+        return "Possible"
+    else:
+        # If the set of numbers is not equal to the range of integers, the rebus does not have a solution
+        return "Impossible"
 
-    # Find the location of the second lifeguard
-    guard2_x = guard1_x + (group2[-1][0] - group1[-1][0])
+def replace_question_marks(rebus, solution):
+    # Split the rebus into a list of tokens
+    tokens = rebus.split()
+    
+    # Initialize a dictionary to store the mapping from question marks to integers
+    mapping = {}
+    
+    # Iterate over the tokens and check if they are integers or arithmetic operations
+    for i, token in enumerate(tokens):
+        if token.isdigit():
+            # If the token is an integer, add it to the set of numbers
+            mapping[i] = int(token)
+        elif token in ['+', '-']:
+            # If the token is an arithmetic operation, continue to the next token
+            continue
+        else:
+            # If the token is not an integer or arithmetic operation, the rebus is invalid
+            return "Impossible"
+    
+    # Replace the question marks with the corresponding integers from the solution
+    for i, token in enumerate(tokens):
+        if token == '?':
+            tokens[i] = str(solution[i])
+    
+    # Return the rebus with question marks replaced by integers
+    return " ".join(tokens)
 
-    return guard1_x, guard2_x
+if __name__ == '__main__':
+    rebus = input()
+    solution = get_rebus_solution(rebus)
+    if solution == "Possible":
+        print(replace_question_marks(rebus, solution))
+    else:
+        print(solution)
 

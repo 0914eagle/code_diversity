@@ -1,20 +1,33 @@
 
-def get_maximum_xor_sum(numbers):
-    # Sort the numbers in descending order
-    numbers.sort(reverse=True)
-    # Initialize the maximum xor sum and the corresponding subset
-    max_xor_sum = 0
-    subset = []
-    # Iterate over the numbers
-    for i, num in enumerate(numbers):
-        # If the xor sum of the current subset and the current number is greater than the maximum xor sum, update the maximum xor sum and the corresponding subset
-        xor_sum = sum(subset) ^ num
-        if xor_sum > max_xor_sum:
-            max_xor_sum = xor_sum
-            subset = [num]
-        # If the xor sum of the current subset and the current number is equal to the maximum xor sum, add the current number to the subset
-        elif xor_sum == max_xor_sum:
-            subset.append(num)
-    # Return the maximum xor sum
-    return max_xor_sum
+def get_discrete_dish_tastiness(num_items, initial_tastiness, decay_rate):
+    return initial_tastiness - (num_items - 1) * decay_rate
+
+def get_continuous_dish_tastiness(total_weight, initial_tastiness, decay_rate):
+    return initial_tastiness - total_weight * decay_rate
+
+def get_max_meal_tastiness(dishes, total_weight):
+    max_tastiness = 0
+    for dish in dishes:
+        if dish[0] == "D":
+            num_items = total_weight // dish[1]
+            tastiness = get_discrete_dish_tastiness(num_items, dish[2], dish[3])
+            max_tastiness += tastiness
+        else:
+            tastiness = get_continuous_dish_tastiness(total_weight, dish[1], dish[2])
+            max_tastiness += tastiness
+    return max_tastiness
+
+def main():
+    dishes = []
+    total_weight = int(input())
+    for _ in range(int(input())):
+        dish = input().split()
+        if dish[0] == "D":
+            dishes.append(tuple(map(int, dish[1:])))
+        else:
+            dishes.append(tuple(map(int, dish[1:])))
+    print(get_max_meal_tastiness(dishes, total_weight))
+
+if __name__ == '__main__':
+    main()
 

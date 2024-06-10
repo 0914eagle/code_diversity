@@ -1,22 +1,20 @@
 
-def rate_dance(grid):
-    # Initialize variables
-    rating = 0
-    moves = 0
+def is_prime(n):
+    if n <= 1:
+        return False
+    for i in range(2, int(n ** 0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
 
-    # Iterate through the grid
-    for i in range(len(grid)):
-        for j in range(len(grid[0])):
-            # Check if the current position is blank
-            if grid[i][j] == "_":
-                # Increment the moves count
-                moves += 1
-            # Check if the current position is the last position in the grid
-            if j == len(grid[0]) - 1:
-                # Increment the rating by the number of moves
-                rating += moves
-                # Reset the moves count
-                moves = 0
+def solve(n):
+    count = 0
+    for i in range(2, n + 1):
+        if is_prime(i):
+            count += 1
+    return count
 
-    return rating
+if __name__ == '__main__':
+    n = int(input())
+    print(solve(n))
 

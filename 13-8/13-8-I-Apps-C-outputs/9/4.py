@@ -1,28 +1,31 @@
 
-def solve(n):
-    # Initialize the maximum sum to 0
-    max_sum = 0
-    # Loop through all possible values of a
-    for a in range(n+1):
-        # Find the corresponding value of b
-        b = n - a
-        # Calculate the sum of digits in a and b
-        sum_a = sum_digits(a)
-        sum_b = sum_digits(b)
-        # Update the maximum sum if necessary
-        max_sum = max(max_sum, sum_a + sum_b)
-    # Return the maximum sum
-    return max_sum
+def meow_factor(string):
+    # Initialize a dictionary to store the meow factor for each prefix of the string
+    meow_factors = {}
+    
+    # Initialize the meow factor for the empty string as 0
+    meow_factors[""] = 0
+    
+    # Loop through each prefix of the string
+    for i in range(len(string)):
+        # Get the prefix of length i
+        prefix = string[:i+1]
+        
+        # If the prefix contains "meow" as a substring, set the meow factor to 0
+        if "meow" in prefix:
+            meow_factors[prefix] = 0
+        
+        # Otherwise, find the minimum meow factor of all prefixes of length i-1 and add 1 to it
+        else:
+            meow_factors[prefix] = 1 + min(meow_factors[prefix[:-1]] for prefix in prefixes if prefix in meow_factors)
+    
+    # Return the meow factor of the entire string
+    return meow_factors[string]
 
-def sum_digits(n):
-    # Initialize the sum to 0
-    sum = 0
-    # Loop through the digits of n
-    while n > 0:
-        # Add the last digit of n to the sum
-        sum += n % 10
-        # Remove the last digit of n
-        n //= 10
-    # Return the sum
-    return sum
+def main():
+    string = input("Enter a string: ")
+    print(meow_factor(string))
+
+if __name__ == '__main__':
+    main()
 

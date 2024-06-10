@@ -1,8 +1,14 @@
 
-def solve(x):
-    k = 0
-    for i in range(1, x):
-        if x % i == 0 and i > k:
-            k = i
-    return k
+def read_input():
+    return map(int, input().split())
+
+def solve(a, b):
+    return a + b
+
+def main():
+    a, b = read_input()
+    print(solve(a, b))
+
+if __name__ == '__main__':
+    main()
 

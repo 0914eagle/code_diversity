@@ -1,18 +1,35 @@
 
-def get_bottles(shipment_volume, bottle1_volume, bottle2_volume):
-    if shipment_volume <= 0 or bottle1_volume <= 0 or bottle2_volume <= 0:
-        return "Impossible"
-    if bottle1_volume < bottle2_volume:
-        bottle1_volume, bottle2_volume = bottle2_volume, bottle1_volume
-    num_bottles1 = shipment_volume // bottle1_volume
-    num_bottles2 = 0
-    while num_bottles1 > 0:
-        remaining_volume = shipment_volume - num_bottles1 * bottle1_volume
-        if remaining_volume % bottle2_volume == 0:
-            num_bottles2 = remaining_volume // bottle2_volume
-            break
-        num_bottles1 -= 1
-    if num_bottles1 == 0:
-        return "Impossible"
-    return num_bottles1, num_bottles2
+def get_diverse_garland(n, s):
+    # Initialize a dictionary to store the number of recolors needed for each color
+    recolors = {"R": 0, "G": 0, "B": 0}
+    
+    # Iterate through the garland and count the number of recolors needed for each color
+    for i in range(n - 1):
+        if s[i] == s[i + 1]:
+            recolors[s[i]] += 1
+    
+    # Find the color with the minimum number of recolors needed
+    min_recolors = min(recolors.values())
+    
+    # Initialize a list to store the diverse garland
+    diverse_garland = []
+    
+    # Iterate through the garland and recolor the lamps with the minimum number of recolors needed
+    for i in range(n):
+        if recolors[s[i]] == min_recolors:
+            diverse_garland.append(s[i])
+        else:
+            diverse_garland.append("R" if s[i] == "G" else "G")
+    
+    return diverse_garland
+
+def main():
+    n = int(input())
+    s = input()
+    diverse_garland = get_diverse_garland(n, s)
+    print(len(diverse_garland))
+    print("".join(diverse_garland))
+
+if __name__ == "__main__":
+    main()
 

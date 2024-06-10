@@ -1,26 +1,57 @@
 
-def solve(n, k, w):
-    # Calculate the total number of pebbles
-    total_pebbles = sum(w)
+def get_keys_to_open_chests(chests, keys):
+    # Initialize a dictionary to store the keys that can open each chest
+    keys_to_open_chests = {}
     
-    # Initialize the number of days needed to collect all pebbles as 0
-    days = 0
-    
-    # Loop through each pebble type
-    for i in range(n):
-        # Calculate the number of pebbles of the current type that can be collected in one day
-        day_pebbles = k * (w[i] // k)
+    # Iterate over the keys
+    for key in keys:
+        # Get the value of the key
+        key_value = key[1]
         
-        # If the number of pebbles of the current type is less than the number that can be collected in one day, then collect all the pebbles of the current type in one day
-        if w[i] < day_pebbles:
-            days += 1
-            w[i] = 0
-        # Otherwise, collect as many pebbles of the current type as possible in one day and subtract the number of pebbles collected from the total number of pebbles
-        else:
-            days += 1
-            w[i] -= day_pebbles
-            total_pebbles -= day_pebbles
+        # Iterate over the chests
+        for chest in chests:
+            # Get the value of the chest
+            chest_value = chest[0]
+            
+            # Check if the sum of the key value and the chest value is odd
+            if (key_value + chest_value) % 2 == 1:
+                # If it is, add the key to the dictionary with the chest as the key
+                keys_to_open_chests[chest] = key
     
-    # Return the number of days needed to collect all pebbles
-    return days
+    return keys_to_open_chests
+
+def get_maximum_number_of_opened_chests(keys_to_open_chests):
+    # Initialize a set to store the opened chests
+    opened_chests = set()
+    
+    # Iterate over the keys to open chests dictionary
+    for chest, key in keys_to_open_chests.items():
+        # Check if the chest has already been opened
+        if chest not in opened_chests:
+            # If it hasn't, add the chest to the set of opened chests and the key to the dictionary
+            opened_chests.add(chest)
+    
+    return len(opened_chests)
+
+def main():
+    # Read the number of chests and keys
+    n, m = map(int, input().split())
+    
+    # Read the values of the chests
+    chests = [list(map(int, input().split())) for _ in range(n)]
+    
+    # Read the values of the keys
+    keys = [list(map(int, input().split())) for _ in range(m)]
+    
+    # Get the keys that can open each chest
+    keys_to_open_chests = get_keys_to_open_chests(chests, keys)
+    
+    # Get the maximum number of opened chests
+    maximum_number_of_opened_chests = get_maximum_number_of_opened_chests(keys_to_open_chests)
+    
+    # Print the maximum number of opened chests
+    print(maximum_number_of_opened_chests)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,34 +1,48 @@
 
-def solve(A, B, C, D, E, F):
-    # Calculate the maximum amount of sugar that can be dissolved in water
-    max_sugar = E * 100 / A
+def get_min_number_of_companies(n, k, edges):
+    # Initialize a dictionary to store the companies and the cities they own
+    companies = {}
+    for i in range(n):
+        companies[i+1] = set()
+    
+    # Iterate over the edges and assign them to companies
+    for edge in edges:
+        # If the edge is not already owned by a company, assign it to a new company
+        if edge not in companies:
+            companies[len(companies)+1] = set([edge])
+        # If the edge is already owned by a company, add it to that company
+        else:
+            companies[edge].add(edge)
+    
+    # Initialize a set to store the cities with two or more roads belonging to the same company
+    bad_cities = set()
+    
+    # Iterate over the companies and check if they own two or more roads entering the same city
+    for company, roads in companies.items():
+        for road in roads:
+            # If the company owns two or more roads entering the same city, add that city to the bad_cities set
+            if len(roads) > 1:
+                bad_cities.add(road[0])
+    
+    # Return the minimum number of companies needed to have at most k bad cities
+    return len(companies), len(bad_cities) <= k
 
-    # Initialize the variables to keep track of the best solution
-    best_density = 0
-    best_sugar = 0
-    best_water = 0
+def main():
+    n, k = map(int, input().split())
+    edges = []
+    for i in range(n-1):
+        x, y = map(int, input().split())
+        edges.append((x, y))
+    
+    r, is_feasible = get_min_number_of_companies(n, k, edges)
+    if is_feasible:
+        print(r)
+        for i in range(n-1):
+            print(i+1, end=" ")
+        print()
+    else:
+        print(-1)
 
-    # Iterate over all possible combinations of operations
-    for operation1 in range(A + 1):
-        for operation2 in range(B + 1):
-            for operation3 in range(C + 1):
-                for operation4 in range(D + 1):
-                    # Calculate the total amount of water and sugar used
-                    total_water = operation1 * A + operation2 * B
-                    total_sugar = operation3 * C + operation4 * D
-
-                    # Check if the total amount of water and sugar used does not exceed the maximum amount allowed
-                    if total_water + total_sugar <= F:
-                        # Calculate the density of the sugar water
-                        density = total_sugar * 100 / (total_water + total_sugar)
-
-                        # Check if the density is higher than the current best density
-                        if density > best_density:
-                            # Update the best density, sugar, and water
-                            best_density = density
-                            best_sugar = total_sugar
-                            best_water = total_water
-
-    # Return the best solution
-    return [best_water, best_sugar]
+if __name__ == '__main__':
+    main()
 

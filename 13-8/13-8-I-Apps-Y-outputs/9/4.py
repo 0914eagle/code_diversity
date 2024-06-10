@@ -1,4 +1,15 @@
 
-def solve(s):
-    return "".join([s[i] for i in range(1, len(s), 2)])
+def solve(n, k):
+    # Your code here
+    pass
+
+def main():
+    t = int(input())
+    for _ in range(t):
+        n, k = map(int, input().split())
+        result = solve(n, k)
+        print(result)
+
+if __name__ == '__main__':
+    main()
 

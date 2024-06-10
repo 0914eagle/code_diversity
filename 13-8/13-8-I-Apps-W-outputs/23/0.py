@@ -1,22 +1,39 @@
 
-def solve(str1, str2):
-    # Find all subpairs of str1 and str2
-    subpairs1 = []
-    subpairs2 = []
-    for i in range(len(str1)):
-        for j in range(i+1, len(str1)+1):
-            subpairs1.append((str1[i:j], str1[j:]))
-    for i in range(len(str2)):
-        for j in range(i+1, len(str2)+1):
-            subpairs2.append((str2[i:j], str2[j:]))
+def get_moves(S):
+    # Initialize the number of moves to 0
+    num_moves = 0
     
-    # Find the maximum palindrome by iterating through all possible combinations of subpairs
-    max_palindrome = 0
-    for subpair1 in subpairs1:
-        for subpair2 in subpairs2:
-            concatenated = subpair1[0] + subpair1[1] + subpair2[0] + subpair2[1]
-            if concatenated == concatenated[::-1] and len(concatenated) > max_palindrome:
-                max_palindrome = len(concatenated)
+    # Loop through each character in the string S
+    for i in range(len(S)):
+        # If the current character is L, move one square to the left
+        if S[i] == 'L':
+            num_moves -= 1
+        # If the current character is R, move one square to the right
+        else:
+            num_moves += 1
     
-    return max_palindrome
+    # Return the total number of moves
+    return num_moves
+
+def get_squares(S):
+    # Initialize a list to store the number of children standing on each square
+    num_children = [0] * len(S)
+    
+    # Loop through each character in the string S
+    for i in range(len(S)):
+        # If the current character is L, move one square to the left
+        if S[i] == 'L':
+            num_children[i-1] += 1
+        # If the current character is R, move one square to the right
+        else:
+            num_children[i+1] += 1
+    
+    # Return the list of number of children standing on each square
+    return num_children
+
+if __name__ == '__main__':
+    S = input()
+    num_moves = get_moves(S)
+    num_children = get_squares(S)
+    print(*num_children)
 

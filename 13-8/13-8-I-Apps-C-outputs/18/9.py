@@ -1,36 +1,37 @@
 
-def get_min_rain_expectation(d, t, c, r, clouds, roofs):
-    # Initialize variables
-    min_rain_expectation = 0
-    current_time = 0
-    current_rain_intensity = 0
-    current_rain_probability = 0
+def get_media_companies(n, k, c, teams):
+    # Initialize a list to store the media companies and their constraints
+    media_companies = []
+    
+    # Iterate over the teams and add them to the media companies if they satisfy the constraints
+    for i in range(n):
+        team = teams[i]
+        if len(media_companies) == 0 or team != media_companies[-1][-1]:
+            media_companies.append([team])
+        else:
+            media_companies[-1].append(team)
+            if len(media_companies[-1]) == k:
+                media_companies.append([])
+    
+    # Remove any empty lists from the media companies
+    media_companies = [mc for mc in media_companies if mc]
+    
+    # Count the number of media companies that have at least c distinct colors
+    num_media_companies = 0
+    for mc in media_companies:
+        colors = set()
+        for team in mc:
+            colors.add(team)
+        if len(colors) >= c:
+            num_media_companies += 1
+    
+    return num_media_companies
 
-    # Loop through the clouds
-    for cloud in clouds:
-        # Get the cloud parameters
-        start_time, end_time, rain_probability, rain_intensity = cloud
+def main():
+    n, k, c = map(int, input().split())
+    teams = list(map(int, input().split()))
+    print(get_media_companies(n, k, c, teams))
 
-        # Check if the cloud is currently raining
-        if current_time >= start_time and current_time < end_time:
-            # Add the current rain intensity to the total rain expectation
-            min_rain_expectation += rain_intensity
-
-        # Check if the cloud will be raining during the travel time
-        if start_time < current_time + t and end_time > current_time + t:
-            # Add the rain intensity to the total rain expectation
-            min_rain_expectation += rain_intensity
-
-    # Loop through the roofs
-    for roof in roofs:
-        # Get the roof parameters
-        start_point, end_point = roof
-
-        # Check if the bus stop is under the roof
-        if start_point <= d and end_point > d:
-            # Add the rain intensity to the total rain expectation
-            min_rain_expectation += current_rain_intensity * current_rain_probability
-
-    # Return the minimum rain expectation
-    return min_rain_expectation
+if __name__ == '__main__':
+    main()
 

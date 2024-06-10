@@ -1,59 +1,53 @@
 
-def count_ways(n, trenches):
-    # Initialize a list to store the positions of the guards
-    guards = [0] * n
-    # Initialize a variable to store the number of ways
-    ways = 0
-    # Loop through each possible position for the first guard
+def get_vertical_markings(n, vertical_spec):
+    # Initialize the vertical markings as a 2D array of 0s
+    vertical_markings = [[0] * (n+1) for _ in range(n)]
+    
+    # Iterate through the vertical specification and mark the appropriate borders
+    for i, row in enumerate(vertical_spec):
+        for j, group_size in enumerate(row):
+            for k in range(group_size):
+                vertical_markings[i][j+k] = 1
+    
+    return vertical_markings
+
+def get_horizontal_markings(n, horizontal_spec):
+    # Initialize the horizontal markings as a 2D array of 0s
+    horizontal_markings = [[0] * n for _ in range(n+1)]
+    
+    # Iterate through the horizontal specification and mark the appropriate borders
+    for i, col in enumerate(horizontal_spec):
+        for j, group_size in enumerate(col):
+            for k in range(group_size):
+                horizontal_markings[i+k][j] = 1
+    
+    return horizontal_markings
+
+def get_consistent_markings(n, vertical_spec, horizontal_spec):
+    # Get the vertical markings
+    vertical_markings = get_vertical_markings(n, vertical_spec)
+    
+    # Get the horizontal markings
+    horizontal_markings = get_horizontal_markings(n, horizontal_spec)
+    
+    # Initialize the final markings as a 2D array of 0s
+    final_markings = [[0] * (n+1) for _ in range(n)]
+    
+    # Combine the vertical and horizontal markings to get the final markings
     for i in range(n):
-        # Check if the first guard can see the other two guards
-        if can_see_others(i, guards, trenches):
-            # If so, place the first guard at that position
-            guards[i] = 1
-            # Recursively call the function to place the second guard
-            ways += count_ways(n, trenches, guards)
-            # Backtrack and remove the first guard from the position
-            guards[i] = 0
-    return ways
+        for j in range(n+1):
+            final_markings[i][j] = vertical_markings[i][j] | horizontal_markings[i][j]
+    
+    return final_markings
 
-def can_see_others(i, guards, trenches):
-    # Initialize a variable to store the number of guards seen
-    num_seen = 0
-    # Loop through each trench
-    for trench in trenches:
-        # Check if the guard at position i can see the trench
-        if can_see_trench(i, trench, guards):
-            # If so, increment the number of guards seen
-            num_seen += 1
-            # If the guard has seen all the other guards, return true
-            if num_seen == 2:
-                return True
-    # If the guard has not seen all the other guards, return false
-    return False
+def main():
+    n = int(input())
+    vertical_spec = [list(map(int, input().split())) for _ in range(n)]
+    horizontal_spec = [list(map(int, input().split())) for _ in range(n)]
+    final_markings = get_consistent_markings(n, vertical_spec, horizontal_spec)
+    for row in final_markings:
+        print("".join(map(str, row)))
 
-def can_see_trench(i, trench, guards):
-    # Initialize variables to store the positions of the trench ends
-    x1, y1, x2, y2 = trench
-    # Initialize variables to store the positions of the guard ends
-    xi, yi = i, 0
-    # Loop through each point on the line segment of the trench
-    for x in range(min(x1, x2), max(x1, x2) + 1):
-        # Check if the guard can see the point
-        if can_see_point(xi, yi, x, y1, guards):
-            # If so, return true
-            return True
-    # If the guard cannot see any point on the line segment, return false
-    return False
-
-def can_see_point(xi, yi, x, y, guards):
-    # Initialize a variable to store the distance between the guard and the point
-    dist = abs(xi - x) + abs(yi - y)
-    # Loop through each guard
-    for i in range(len(guards)):
-        # Check if the guard is not at the current position and is within the distance
-        if guards[i] == 0 and abs(i - xi) + abs(0 - yi) <= dist:
-            # If so, return false
-            return False
-    # If no guard is within the distance, return true
-    return True
+if __name__ == '__main__':
+    main()
 

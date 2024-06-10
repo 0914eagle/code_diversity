@@ -1,52 +1,29 @@
 
-def max_tables(n, k, s):
-    # Count the number of occupied tables
-    occupied_tables = s.count("1")
+def equalize_prices(n, k, a):
+    # Sort the prices in ascending order
+    a.sort()
+    
+    # Initialize the minimum and maximum prices
+    min_price = a[0]
+    max_price = a[-1]
+    
+    # Loop through the prices and find the minimum and maximum prices
+    for i in range(1, n):
+        if a[i] - a[i-1] > k:
+            return -1
+        min_price = min(min_price, a[i])
+        max_price = max(max_price, a[i])
+    
+    # Return the minimum or maximum price as the answer
+    return max_price
 
-    # If there are no occupied tables, then we can occupy all the tables
-    if occupied_tables == 0:
-        return n
+def main():
+    q = int(input())
+    for i in range(q):
+        n, k = map(int, input().split())
+        a = list(map(int, input().split()))
+        print(equalize_prices(n, k, a))
 
-    # Initialize the maximum number of tables that can be occupied
-    max_tables = 0
-
-    # Iterate over the string and check if we can occupy a table
-    for i in range(n):
-        # If the table is already occupied, then skip it
-        if s[i] == "1":
-            continue
-
-        # If the table is free, then check if we can occupy it
-        # without violating the rules of the restaurant
-        if can_occupy_table(i, k, s):
-            max_tables += 1
-
-    return max_tables
-
-def can_occupy_table(i, k, s):
-    # Check if the table is within the range of the string
-    if i < 0 or i >= len(s):
-        return False
-
-    # If the table is already occupied, then we cannot occupy it
-    if s[i] == "1":
-        return False
-
-    # Iterate over the string and check if there is a table that is
-    # closer than k to the current table
-    for j in range(i-k, i+k+1):
-        # If the table is within the range of the string and is occupied,
-        # then we cannot occupy the current table
-        if j >= 0 and j < len(s) and s[j] == "1":
-            return False
-
-    # If we reach this point, then we can occupy the table
-    return True
-
-print(max_tables(6, 1, "100010"))
-print(max_tables(6, 2, "000000"))
-print(max_tables(5, 1, "10101"))
-print(max_tables(3, 1, "001"))
-print(max_tables(2, 2, "00"))
-print(max_tables(1, 1, "0"))
+if __name__ == '__main__':
+    main()
 

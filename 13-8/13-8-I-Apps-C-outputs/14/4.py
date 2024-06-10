@@ -1,23 +1,38 @@
 
-def solve(K, N):
-    # Initialize a list to store the results
-    results = []
+import math
 
-    # Iterate over each possible sum
-    for i in range(1, 2*K+1):
-        # Initialize a set to store the combinations that satisfy the condition
-        combinations = set()
+def get_centre(points):
+    # Calculate the centroid of the points
+    centroid = [0, 0, 0]
+    for point in points:
+        centroid[0] += point[0]
+        centroid[1] += point[1]
+        centroid[2] += point[2]
+    centroid[0] /= len(points)
+    centroid[1] /= len(points)
+    centroid[2] /= len(points)
 
-        # Iterate over each possible combination of dice rolls
-        for rolls in itertools.combinations(range(1, K+1), N):
-            # Check if the sum of the rolls is equal to the current sum
-            if sum(rolls) == i:
-                # Add the combination to the set of combinations that satisfy the condition
-                combinations.add(tuple(rolls))
+    # Calculate the distance of each point from the centroid
+    distances = []
+    for point in points:
+        distance = math.sqrt((point[0] - centroid[0]) ** 2 + (point[1] - centroid[1]) ** 2 + (point[2] - centroid[2]) ** 2)
+        distances.append(distance)
 
-        # Add the number of combinations that satisfy the condition to the results list
-        results.append(len(combinations))
+    # Find the point with the maximum distance from the centroid
+    max_distance = max(distances)
+    max_distance_index = distances.index(max_distance)
 
-    # Return the results list
-    return results
+    # Return the coordinates of the point with the maximum distance from the centroid
+    return points[max_distance_index]
+
+def main():
+    points = []
+    for _ in range(4):
+        x, y, z = map(float, input().split())
+        points.append([x, y, z])
+    centre = get_centre(points)
+    print(" ".join(str(round(x, 4)) for x in centre))
+
+if __name__ == '__main__':
+    main()
 

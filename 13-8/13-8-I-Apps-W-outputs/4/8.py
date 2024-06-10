@@ -1,23 +1,34 @@
 
-def cake_eater(grid):
-    # Initialize variables
-    rows, cols = len(grid), len(grid[0])
-    total_cells = rows * cols
-    eaten_cells = 0
-    max_eaten_cells = 0
+def get_message_history(n, k, message_links):
+    # Initialize a set to store the visited messages
+    visited_messages = set()
+    # Initialize a queue to store the messages to be processed
+    queue = []
+    # Add the starting message to the queue
+    queue.append(n)
+    # Loop until the queue is empty
+    while queue:
+        # Get the current message from the queue
+        current_message = queue.pop(0)
+        # If the current message has not been visited before, mark it as visited and add it to the set
+        if current_message not in visited_messages:
+            visited_messages.add(current_message)
+        # Get the link for the current message
+        link = message_links[current_message]
+        # If the link is not zero, add the linked message to the queue
+        if link != 0:
+            queue.append(link)
+    # Return the number of distinct messages visited
+    return len(visited_messages)
 
-    # Loop through each row
-    for i in range(rows):
-        # Loop through each column
-        for j in range(cols):
-            # Check if the cell has an evil strawberry
-            if grid[i][j] == 'S':
-                # Calculate the number of cells in the row and column that have not been eaten
-                row_cells = sum([1 if grid[i][k] == '.' else 0 for k in range(cols)])
-                col_cells = sum([1 if grid[k][j] == '.' else 0 for k in range(rows)])
+def main():
+    n, k = map(int, input().split())
+    message_links = list(map(int, input().split()))
+    result = []
+    for i in range(1, n+1):
+        result.append(get_message_history(i, k, message_links))
+    print(*result, sep='\n')
 
-                # Update the maximum number of cells that can be eaten
-                max_eaten_cells = max(max_eaten_cells, row_cells + col_cells)
-
-    return max_eaten_cells
+if __name__ == '__main__':
+    main()
 

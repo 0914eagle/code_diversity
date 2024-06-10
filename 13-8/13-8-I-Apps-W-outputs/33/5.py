@@ -1,16 +1,36 @@
 
-def get_min_operations(balances):
-    n = len(balances)
-    operations = 0
-    for i in range(n):
-        balance = balances[i]
-        while balance != 0:
-            operations += 1
-            if balance > 0:
-                balance -= 1
-                balances[(i+1)%n] += 1
-            else:
-                balance += 1
-                balances[(i-1)%n] -= 1
-    return operations
+def get_minimum_price(n, c_1, c_2):
+    # Initialize variables
+    min_price = float('inf')
+    groups = []
+
+    # Iterate over all possible groups
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            if i + j == n:
+                # Calculate the price of the current group
+                price = c_1 + c_2 * (i - 1) ** 2
+
+                # Check if the price is lower than the current minimum price
+                if price < min_price:
+                    min_price = price
+                    groups = [(i, j)]
+                elif price == min_price:
+                    groups.append((i, j))
+
+    return min_price
+
+def main():
+    # Read the input
+    n, c_1, c_2 = map(int, input().split())
+    visitors = list(map(int, input()))
+
+    # Calculate the minimum price
+    min_price = get_minimum_price(n, c_1, c_2)
+
+    # Print the result
+    print(min_price)
+
+if __name__ == '__main__':
+    main()
 

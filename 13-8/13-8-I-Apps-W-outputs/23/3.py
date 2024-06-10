@@ -1,23 +1,35 @@
 
-def find_palindrome(str1, str2):
-    # Find all subpairs of str1 and str2
-    subpairs1 = []
-    subpairs2 = []
-    for i in range(len(str1)):
-        for j in range(i+1, len(str1)+1):
-            subpairs1.append((str1[i:j], str1[j:i-1:-1]))
-    for i in range(len(str2)):
-        for j in range(i+1, len(str2)+1):
-            subpairs2.append((str2[i:j], str2[j:i-1:-1]))
+def get_moves(S):
+    # Initialize the number of children on each square
+    num_children = [0] * len(S)
     
-    # Find the maximum length palindrome by iterating over all possible subpairs
-    max_length = 0
-    for subpair1 in subpairs1:
-        for subpair2 in subpairs2:
-            if subpair1[0] == subpair2[1] and subpair1[1] == subpair2[0]:
-                length = len(subpair1[0]) + len(subpair2[0])
-                if length > max_length:
-                    max_length = length
+    # Set the initial number of children on the first and last squares
+    num_children[0] = 1
+    num_children[-1] = 1
     
-    return max_length
+    # Loop through each character of the string
+    for i in range(1, len(S) - 1):
+        # If the character is L, move the child to the left
+        if S[i] == "L":
+            num_children[i - 1] += num_children[i]
+        # If the character is R, move the child to the right
+        else:
+            num_children[i + 1] += num_children[i]
+    
+    return num_children
+
+def get_final_positions(S):
+    # Get the number of children on each square after each child moves
+    num_children = get_moves(S)
+    
+    # Get the final number of children on each square
+    final_positions = [0] * len(S)
+    for i in range(len(S)):
+        final_positions[i] = num_children[i]
+    
+    return final_positions
+
+if __name__ == '__main__':
+    S = input()
+    print(*get_final_positions(S), sep=' ')
 

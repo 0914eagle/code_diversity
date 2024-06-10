@@ -1,19 +1,22 @@
 
-def solve(a, b, l, r):
-    # Initialize the string s with the first a lowercase English letters in alphabetical order
-    s = "".join(chr(ord('a') + i) for i in range(a))
+def get_magical_subarray(arr, l, r):
+    max_len = 0
+    for i in range(l, r+1):
+        for j in range(i, r+1):
+            if is_magical(arr[i:j+1]):
+                max_len = max(max_len, j-i+1)
+    return max_len
 
-    # Mister B moves first and appends b letters to the string s
-    s += "".join(chr(ord('a') + i) for i in range(a, a + b))
+def is_magical(arr):
+    return arr[0] <= arr[-1] and all(l <= x <= r for x in arr)
 
-    # The opponent adds a letters on each move and appends them to the end of the string s
-    while len(s) < r:
-        # Generate a string t of length a such that all letters in the string t are distinct and don't appear in the considered suffix
-        t = "".join(chr(ord('a') + i) for i in range(a) if chr(ord('a') + i) not in s[-a:])
+def solve(arr, queries):
+    return [get_magical_subarray(arr, l, r) for l, r in queries]
 
-        # Append the string t to the end of s
-        s += t
-
-    # Return the minimum number of different letters in the segment from position l to position r, inclusive
-    return len(set(s[l - 1:r]))
+if __name__ == '__main__':
+    n = int(input())
+    arr = list(map(int, input().split()))
+    q = int(input())
+    queries = [list(map(int, input().split())) for _ in range(q)]
+    print(*solve(arr, queries), sep='\n')
 

@@ -1,32 +1,35 @@
 
-def solve(A, B, Q, shrine_locations, temple_locations, x):
-    # Sort the shrine and temple locations
-    shrine_locations.sort()
-    temple_locations.sort()
+def get_max_lit_time(a, M):
+    # Initialize variables
+    n = len(a)
+    max_lit_time = 0
+    curr_lit_time = 0
+    curr_state = "on"
+    prev_state = "off"
     
-    # Initialize the minimum distance to visit one shrine and one temple
-    min_distance = float('inf')
+    # Iterate through the array
+    for i in range(n):
+        # If the current state is "on", turn it off
+        if curr_state == "on":
+            curr_state = "off"
+            curr_lit_time += a[i] - prev_state
+            prev_state = a[i]
+        # If the current state is "off", turn it on
+        else:
+            curr_state = "on"
+            prev_state = a[i]
     
-    # Loop through each query
-    for i in range(Q):
-        # Get the current query
-        current_x = x[i]
-        
-        # Initialize the minimum distance for this query
-        min_distance_query = float('inf')
-        
-        # Loop through each shrine and temple
-        for j in range(A):
-            for k in range(B):
-                # Calculate the distance to visit this shrine and temple
-                distance = abs(current_x - shrine_locations[j]) + abs(current_x - temple_locations[k])
-                
-                # Check if this is the minimum distance so far
-                if distance < min_distance_query:
-                    min_distance_query = distance
-        
-        # Add the minimum distance for this query to the total minimum distance
-        min_distance += min_distance_query
+    # Add the time when the lamp is turned off
+    curr_lit_time += M - prev_state
     
-    return min_distance
+    # Return the maximum lit time
+    return curr_lit_time
+
+def main():
+    n, M = map(int, input().split())
+    a = list(map(int, input().split()))
+    print(get_max_lit_time(a, M))
+
+if __name__ == '__main__':
+    main()
 

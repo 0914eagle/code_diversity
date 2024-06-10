@@ -1,17 +1,19 @@
 
-def get_maximum_minimum_mex(n, m, subarrays):
-    # Initialize the array with all zeros
-    a = [0] * n
+def get_maximum_expected_profit(x, p):
+    # Calculate the expected value of each bet
+    expected_value = 2 - 1 + (x / 100)
+    
+    # Calculate the maximum expected profit
+    maximum_expected_profit = expected_value * p
+    
+    return maximum_expected_profit
 
-    # Loop through each subarray
-    for l, r in subarrays:
-        # Find the maximum value in the subarray
-        max_value = max(a[l:r+1])
+def main():
+    x = float(input("Enter the refund percentage: "))
+    p = float(input("Enter the winning probability: "))
+    maximum_expected_profit = get_maximum_expected_profit(x, p)
+    print(f"The maximum expected profit is: {maximum_expected_profit:.3f}")
 
-        # Update the array with the maximum value plus one
-        for i in range(l, r+1):
-            a[i] = max(a[i], max_value+1)
-
-    # Return the maximum value in the array
-    return max(a)
+if __name__ == '__main__':
+    main()
 

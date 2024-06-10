@@ -1,32 +1,48 @@
 
-def solve(grid):
-    # Convert grid to a 2D array
-    grid = [[int(cell) for cell in row] for row in grid]
-    
-    # Get the dimensions of the grid
-    n = len(grid)
-    m = len(grid[0])
-    
-    # Initialize a 2D array to store the levels of Zombie Contamination for each cell
-    contamination = [[0] * m for _ in range(n)]
-    
-    # Loop through each cell in the grid
-    for i in range(n):
-        for j in range(m):
-            # If the cell is inside the lair, add its level of Zombie Contamination to the contamination array
-            if grid[i][j] != 0:
-                contamination[i][j] = grid[i][j]
-            # If the cell is on the border of the lair, add the level of Zombie Contamination of the adjacent cells to the contamination array
-            else:
-                contamination[i][j] = sum(grid[i][j:j+2]) + sum(grid[i+1][j:j+2])
-    
-    # Loop through each cell in the grid again
-    for i in range(n):
-        for j in range(m):
-            # If the cell is inside the lair and has a level of Zombie Contamination that is not the same as the one reported in the input, return "No"
-            if grid[i][j] != 0 and grid[i][j] != contamination[i][j]:
-                return "No"
-    
-    # If all cells have the same level of Zombie Contamination as reported in the input, return "Yes"
-    return "Yes"
+def get_replacement_sequence(a, b):
+    # Initialize a dictionary to keep track of the elements in b
+    element_dict = {}
+    for element in b:
+        element_dict[element] = 0
+
+    # Initialize a list to store the resulting sequence
+    result = []
+
+    # Iterate through the elements in a
+    for element in a:
+        # If the element is 0, replace it with an element from b
+        if element == 0:
+            # Find the first unused element in b
+            for i in range(1, len(b) + 1):
+                if element_dict[i] == 0:
+                    result.append(i)
+                    element_dict[i] = 1
+                    break
+        # If the element is not 0, add it to the resulting sequence
+        else:
+            result.append(element)
+
+    return result
+
+def is_increasing_sequence(sequence):
+    # Check if the sequence is increasing
+    for i in range(len(sequence) - 1):
+        if sequence[i] >= sequence[i + 1]:
+            return False
+    return True
+
+def main():
+    n, k = map(int, input().split())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+
+    result = get_replacement_sequence(a, b)
+
+    if is_increasing_sequence(result):
+        print("Yes")
+    else:
+        print("No")
+
+if __name__ == '__main__':
+    main()
 

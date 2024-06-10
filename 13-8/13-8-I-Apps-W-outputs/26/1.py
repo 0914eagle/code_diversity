@@ -1,20 +1,20 @@
 
-def is_reasonable_network(n, m, friends):
-    # Initialize a graph with n nodes
-    graph = [[] for _ in range(n)]
+def get_intersection(map1, map2):
+    for i in range(len(map1)):
+        for j in range(len(map1[0])):
+            if map1[i][j] != map2[i][j]:
+                return i, j
+    return None
 
-    # Add edges to the graph
-    for i in range(m):
-        graph[friends[i][0] - 1].append(friends[i][1])
-        graph[friends[i][1] - 1].append(friends[i][0])
+def main():
+    map1 = []
+    map2 = []
+    for _ in range(int(input())):
+        map1.append(input())
+        map2.append(input())
+    intersection = get_intersection(map1, map2)
+    print(intersection[0], intersection[1])
 
-    # Check if the network is reasonable
-    for i in range(n):
-        for j in range(n):
-            for k in range(n):
-                if i != j and j != k and i != k:
-                    if (j in graph[i] and k in graph[j]) and (k not in graph[i]):
-                        return "NO"
-
-    return "YES"
+if __name__ == '__main__':
+    main()
 

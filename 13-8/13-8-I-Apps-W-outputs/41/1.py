@@ -1,17 +1,22 @@
 
-def get_max_happiness(n, m, a, b):
-    # Initialize the dp table
-    dp = [[0] * (n + 1) for _ in range(m + 1)]
+def get_min_recorders(n, c, programs):
+    recorders = []
+    for program in sorted(programs, key=lambda x: x[0]):
+        channel, start, end = program
+        if not recorders or recorders[-1][1] < start:
+            recorders.append([channel, end])
+        else:
+            recorders[-1][1] = max(recorders[-1][1], end)
+    return len(recorders)
 
-    # Fill in the base case
-    for i in range(m):
-        dp[i][0] = a[i]
+def main():
+    n, c = map(int, input().split())
+    programs = []
+    for _ in range(n):
+        s, t, c = map(int, input().split())
+        programs.append([c, s, t])
+    print(get_min_recorders(n, c, programs))
 
-    # Fill in the rest of the table
-    for i in range(m):
-        for j in range(1, n + 1):
-            dp[i][j] = max(dp[i - 1][j], dp[i][j - 1] + b[i - 1])
-
-    # Return the maximum total happiness
-    return dp[m - 1][n]
+if __name__ == '__main__':
+    main()
 

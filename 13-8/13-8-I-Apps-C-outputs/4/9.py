@@ -1,20 +1,36 @@
 
-def solve(n, arr):
-    # Initialize variables
-    rest_days = 0
-    last_day_type = 0
+def dfs(node, parent, color, weight, colors, weights, X, N):
+    if node == 1:
+        colors[node] = color
+        weights[node] = weight
+    else:
+        colors[node] = 1 - color
+        weights[node] = X[node] - weight
+    
+    for i in range(1, N+1):
+        if P[i] == node:
+            dfs(i, node, colors[node], weights[node], colors, weights, X, N)
 
-    # Iterate through the array
-    for day_type in arr:
-        # If the current day type is the same as the last day type, increase the rest days count
-        if day_type == last_day_type:
-            rest_days += 1
-        # If the current day type is different from the last day type, reset the rest days count
-        else:
-            rest_days = 0
-        # Update the last day type
-        last_day_type = day_type
+def is_possible(X, N):
+    P = [0] * (N+1)
+    colors = [0] * (N+1)
+    weights = [0] * (N+1)
+    
+    for i in range(2, N+1):
+        P[i] = int(input())
+    
+    dfs(1, 0, 0, 0, colors, weights, X, N)
+    
+    for i in range(1, N+1):
+        if colors[i] != 0 and weights[i] != X[i]:
+            return "IMPOSSIBLE"
+    
+    return "POSSIBLE"
 
-    # Return the minimum number of rest days
-    return rest_days
+if __name__ == '__main__':
+    N = int(input())
+    X = [0] * (N+1)
+    for i in range(1, N+1):
+        X[i] = int(input())
+    print(is_possible(X, N))
 

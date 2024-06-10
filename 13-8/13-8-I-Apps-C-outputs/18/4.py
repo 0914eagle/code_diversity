@@ -1,47 +1,40 @@
 
-def get_min_rain(d, t, c, r, clouds, roofs):
+def get_maximum_media_companies(N, K, C, A):
     # Initialize variables
-    min_rain = 0
-    curr_time = 0
-    rain_intensity = 0
-    rain_probability = 0
-    rain_duration = 0
-    roof_start = 0
-    roof_end = 0
+    media_companies = 0
+    sector_colors = []
+    consecutive_sectors = 0
 
-    # Loop through the clouds
-    for i in range(c):
-        # Get the cloud information
-        s, e, p, a = clouds[i]
+    # Iterate through the sectors
+    for i in range(N):
+        # If the sector color is not in the list of sector colors, add it
+        if A[i] not in sector_colors:
+            sector_colors.append(A[i])
+        # If the sector color is already in the list of sector colors, check if it forms a consecutive sector
+        else:
+            # If the sector color forms a consecutive sector, increment the consecutive sectors counter
+            if A[i-1] == A[i]:
+                consecutive_sectors += 1
+            # If the sector color does not form a consecutive sector, reset the consecutive sectors counter
+            else:
+                consecutive_sectors = 0
 
-        # Check if the cloud is within the time frame
-        if s <= t and e <= t:
-            # Calculate the rain intensity and probability
-            rain_intensity += a
-            rain_probability += p
-            rain_duration += e - s
+        # If the consecutive sectors counter is equal to the minimum number of consecutive sectors required, increment the media companies counter
+        if consecutive_sectors == K:
+            media_companies += 1
+            consecutive_sectors = 0
 
-    # Loop through the roofs
-    for i in range(r):
-        # Get the roof information
-        x, y = roofs[i]
+    # If the last sector color forms a consecutive sector, increment the media companies counter
+    if consecutive_sectors == K:
+        media_companies += 1
 
-        # Check if the roof overlaps with the time frame
-        if x <= t and y >= t:
-            # Calculate the roof start and end times
-            roof_start = max(x, curr_time)
-            roof_end = min(y, t)
+    return media_companies
 
-            # Calculate the rain intensity and probability during the roof period
-            rain_intensity += (roof_end - roof_start) * rain_intensity / rain_duration
-            rain_probability += (roof_end - roof_start) * rain_probability / rain_duration
+def main():
+    N, K, C = map(int, input().split())
+    A = list(map(int, input().split()))
+    print(get_maximum_media_companies(N, K, C, A))
 
-            # Update the current time
-            curr_time = roof_end
-
-    # Calculate the minimum rain intensity
-    min_rain = rain_intensity * rain_probability
-
-    # Return the minimum rain intensity
-    return min_rain
+if __name__ == '__main__':
+    main()
 

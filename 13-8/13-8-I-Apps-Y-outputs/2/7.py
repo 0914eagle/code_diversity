@@ -1,19 +1,18 @@
 
-def solve(grid):
-    # Initialize variables
-    N, M = len(grid), len(grid[0])
-    moves = 0
+def get_square_root(n):
+    return int(n ** 0.5)
 
-    # Iterate over each column
-    for j in range(M):
-        # If the current column is blank, skip it
-        if grid[0][j] == "_":
-            continue
-        # If the current column is not blank, check if the previous column is also not blank
-        if j > 0 and grid[0][j-1] == "_":
-            # If the previous column is blank, it means we have found a move
-            moves += 1
+def is_perfect_square(n):
+    sqrt = get_square_root(n)
+    return sqrt ** 2 == n
 
-    # Return the number of moves
-    return moves
+def solve(n):
+    if is_perfect_square(n):
+        return 0
+    else:
+        return 1
+
+if __name__ == '__main__':
+    n = int(input())
+    print(solve(n))
 

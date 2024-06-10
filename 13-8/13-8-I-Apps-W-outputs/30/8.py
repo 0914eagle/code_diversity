@@ -1,21 +1,22 @@
 
-def solve(n, x):
-    # Sort the measurements in ascending order
-    x.sort()
-    
-    # Find the minimum and maximum values
-    min_value = x[0]
-    max_value = x[-1]
-    
-    # Initialize the number of equal measurements to 0
-    num_equal = 0
-    
-    # Iterate over the measurements
-    for i in range(n):
-        # If the current measurement is equal to the minimum or maximum value, increment the number of equal measurements
-        if x[i] == min_value or x[i] == max_value:
-            num_equal += 1
-    
-    # Return the minimum possible number of equal measurements and the values Anya should write
-    return num_equal, [min_value] * num_equal
+def get_paint_required(a):
+    return sum(a)
+
+def get_max_number(v, a):
+    max_number = ""
+    for i in range(1, 10):
+        if get_paint_required(a[i:]) <= v:
+            max_number += str(i)
+            v -= get_paint_required(a[i:])
+        if v == 0:
+            break
+    return max_number if max_number != "" else -1
+
+def main():
+    v = int(input())
+    a = list(map(int, input().split()))
+    print(get_max_number(v, a))
+
+if __name__ == '__main__':
+    main()
 

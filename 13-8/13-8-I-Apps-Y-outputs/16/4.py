@@ -1,24 +1,21 @@
 
-def solve(N, K):
-    # Initialize the probability to 0
-    probability = 0
+def get_hand_strength(hand):
+    hand = hand.split()
+    rank_count = {}
+    for card in hand:
+        rank = card[0]
+        if rank not in rank_count:
+            rank_count[rank] = 1
+        else:
+            rank_count[rank] += 1
     
-    # Iterate over all possible values of the die
-    for i in range(1, N+1):
-        # Calculate the probability of getting a score of i
-        p = 1 / N
-        
-        # If the score is between 1 and K-1, inclusive, we need to consider the probability of getting consecutive heads
-        if i >= 1 and i < K:
-            # Calculate the number of consecutive heads needed to get a score of K or above
-            num_consecutive_heads = K - i
-            
-            # Calculate the probability of getting consecutive heads
-            p *= (1/2)**num_consecutive_heads
-        
-        # Add the probability to the total probability
-        probability += p
-    
-    # Return the probability that Snuke wins
-    return probability
+    max_rank = max(rank_count.values())
+    return max_rank
+
+def main():
+    hand = input("Enter five cards: ")
+    print(get_hand_strength(hand))
+
+if __name__ == '__main__':
+    main()
 

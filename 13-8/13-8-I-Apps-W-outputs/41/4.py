@@ -1,16 +1,29 @@
 
-def get_maximum_happiness(n, m, a, b):
-    # Initialize the dp table
-    dp = [[0] * (n + 1) for _ in range(m + 1)]
+def get_recorders_needed(n, c, programs):
+    # Sort the programs by their start time
+    programs.sort(key=lambda x: x[0])
+    
+    # Initialize the number of recorders needed to 0
+    recorders_needed = 0
+    
+    # Iterate through the programs
+    for program in programs:
+        # Check if the current program can be recorded with the current number of recorders
+        if recorders_needed < program[2]:
+            # If not, add a new recorder
+            recorders_needed += 1
+    
+    return recorders_needed
 
-    # Fill in the dp table
-    for i in range(1, m + 1):
-        for j in range(1, n + 1):
-            if j >= a[i - 1]:
-                dp[i][j] = max(dp[i - 1][j], dp[i][j - a[i - 1]] + b[i - 1])
-            else:
-                dp[i][j] = dp[i - 1][j]
+def main():
+    n, c = map(int, input().split())
+    programs = []
+    for _ in range(n):
+        s, t, c = map(int, input().split())
+        programs.append([s, t, c])
+    
+    print(get_recorders_needed(n, c, programs))
 
-    # Return the final answer
-    return dp[m][n]
+if __name__ == '__main__':
+    main()
 

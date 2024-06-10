@@ -1,11 +1,16 @@
 
-def get_lexicographically_smallest_string_and_k(s):
-    n = len(s)
-    for k in range(1, n+1):
-        s_modified = s[:k]
-        for i in range(n-k+1):
-            s_modified += s[i+k-1] + s[i:i+k-1][::-1]
-        if s_modified < s:
-            return s_modified, k
-    return s, 1
+def read_ints():
+    return map(int, input().split())
+
+def compare_ints(a, b):
+    if a < b:
+        return "<"
+    elif a > b:
+        return ">"
+    else:
+        return "="
+
+if __name__ == '__main__':
+    a, b = read_ints()
+    print(compare_ints(a, b))
 

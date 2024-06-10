@@ -1,33 +1,20 @@
 
-def solve(n, v, sellers):
-    # Initialize variables
-    p = 0
-    q = []
-
-    # Iterate over each seller
-    for i in range(n):
-        # Initialize variables for each seller
-        k = sellers[i][0]
-        prices = sellers[i][1:]
-
-        # Check if the seller has any items for sale
-        if k == 0:
+def get_min_operations(colors):
+    n = len(colors)
+    colors = sorted(colors)
+    count = 0
+    for i in range(n-1):
+        if colors[i] == colors[i+1]:
             continue
+        else:
+            count += 1
+    return count
 
-        # Initialize variables for each item
-        min_price = float('inf')
-        min_index = 0
+def main():
+    n = int(input())
+    colors = list(map(int, input().split()))
+    print(get_min_operations(colors))
 
-        # Find the minimum price of the items
-        for j in range(k):
-            if prices[j] < min_price:
-                min_price = prices[j]
-                min_index = j
-
-        # Check if the minimum price is within Valera's budget
-        if min_price <= v:
-            p += 1
-            q.append(i + 1)
-
-    return p, q
+if __name__ == '__main__':
+    main()
 

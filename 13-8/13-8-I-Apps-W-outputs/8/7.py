@@ -1,31 +1,25 @@
 
-def solve(n, k, pebbles):
-    # Number of days needed to collect all pebbles
-    days = 0
+def get_maximum_chests(chests, keys):
+    # Initialize a dictionary to store the number of chests that can be opened using each key
+    key_to_chests = {}
+    for key in keys:
+        key_to_chests[key] = 0
     
-    # Number of pebbles collected on each day
-    collected = [0] * n
+    # Iterate through the chests and increment the number of chests that can be opened using each key
+    for chest in chests:
+        for key in keys:
+            if (chest + key) % 2 == 1:
+                key_to_chests[key] += 1
     
-    # Sort pebbles in descending order
-    pebbles.sort(reverse=True)
-    
-    # Loop through each pebble type
-    for i in range(n):
-        # Calculate the number of pebbles that can be collected on this day
-        num_collected = min(pebbles[i], k)
-        
-        # Update the number of pebbles collected on this day
-        collected[i] += num_collected
-        
-        # Update the number of pebbles left to collect
-        pebbles[i] -= num_collected
-        
-        # If all pebbles of this type have been collected, move on to the next type
-        if pebbles[i] == 0:
-            continue
-        
-        # Increment the number of days needed to collect all pebbles
-        days += 1
-    
-    return days
+    # Return the maximum number of chests that can be opened
+    return max(key_to_chests.values())
+
+def main():
+    n, m = map(int, input().split())
+    chests = list(map(int, input().split()))
+    keys = list(map(int, input().split()))
+    print(get_maximum_chests(chests, keys))
+
+if __name__ == '__main__':
+    main()
 

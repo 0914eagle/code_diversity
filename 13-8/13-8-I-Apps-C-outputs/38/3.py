@@ -1,34 +1,36 @@
 
-def solve(offers):
-    # Sort the offers by the first section of the fence
-    offers.sort(key=lambda x: x[1])
+def get_input():
+    n, k = map(int, input().split())
+    players = []
+    for _ in range(n):
+        players.append(list(map(int, input().split())))
+    return n, k, players
 
-    # Initialize the variables
-    num_colors = 0
-    curr_color = ""
-    curr_section = 0
-    accepted_offers = 0
+def get_similarity(player, new_player):
+    similarity = 0
+    for i in range(len(player)):
+        if player[i] == new_player[i]:
+            similarity += 1
+    return similarity
 
-    # Iterate through the offers
-    for offer in offers:
-        # Check if the current color is the same as the previous color
-        if offer[0] == curr_color:
-            # If it is the same, continue painting with the current color
-            curr_section = offer[2]
-        else:
-            # If it is not the same, check if we have reached the maximum number of colors
-            if num_colors == 3:
-                # If we have, return "IMPOSSIBLE"
-                return "IMPOSSIBLE"
-            else:
-                # If we have not, start painting with a new color
-                num_colors += 1
-                curr_color = offer[0]
-                curr_section = offer[2]
+def get_new_player(n, k, players):
+    new_player = [0] * k
+    max_similarity = 0
+    for i in range(1 << k):
+        player = list(bin(i)[2:].zfill(k))
+        similarity = 0
+        for p in players:
+            similarity += get_similarity(p, player)
+        if similarity > max_similarity:
+            max_similarity = similarity
+            new_player = player
+    return new_player
 
-        # Accept the offer
-        accepted_offers += 1
+def main():
+    n, k, players = get_input()
+    new_player = get_new_player(n, k, players)
+    print(*new_player)
 
-    # Return the number of accepted offers
-    return accepted_offers
+if __name__ == '__main__':
+    main()
 

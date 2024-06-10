@@ -1,26 +1,33 @@
 
-def linkoping_pipes(wells, pipes):
-    # Initialize a graph with the wells as nodes
-    graph = {}
-    for well in wells:
-        graph[well] = []
+def can_play_frequencies(frequencies):
+    # Initialize a dictionary to store the playback times for each frequency
+    playback_times = {}
+    for frequency in frequencies:
+        playback_times[frequency] = []
 
-    # Add edges to the graph based on the pipes
-    for pipe in pipes:
-        graph[pipe[0]].append(pipe[1:])
+    # Iterate through the frequencies and add the playback times to the dictionary
+    for frequency in frequencies:
+        for playback_time in frequency[1]:
+            playback_times[frequency[0]].append(playback_time)
 
-    # Find all cycles in the graph
-    cycles = []
-    for well in graph:
-        for pipe in graph[well]:
-            if pipe[1] in graph and pipe[0] != pipe[1]:
-                cycles.append([well, pipe[1]])
+    # Sort the playback times for each frequency in ascending order
+    for frequency in playback_times:
+        playback_times[frequency].sort()
 
-    # Check if there are any cycles with more than 2 edges
-    for cycle in cycles:
-        if len(cycle) > 2:
-            return "impossible"
+    # Check if the playback times for each frequency are valid
+    for frequency in playback_times:
+        for i in range(len(playback_times[frequency]) - 1):
+            if playback_times[frequency][i + 1] - playback_times[frequency][i] != frequency[1]:
+                return "impossible"
 
-    # If all cycles have 2 edges, return "possible"
     return "possible"
+
+def main():
+    frequencies = []
+    for _ in range(int(input())):
+        frequencies.append(list(map(int, input().split())))
+    print(can_play_frequencies(frequencies))
+
+if __name__ == '__main__':
+    main()
 

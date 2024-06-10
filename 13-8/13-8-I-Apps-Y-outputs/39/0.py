@@ -1,10 +1,24 @@
 
-def get_min_shots(a):
-    n = len(a)
-    dp = [0] * (n + 1)
-    for i in range(1, n + 1):
-        dp[i] = float('inf')
-        for j in range(1, i + 1):
-            dp[i] = min(dp[i], dp[j - 1] + a[j - 1] * j)
-    return dp[n]
+def get_order(projects, rating):
+    order = []
+    for project in projects:
+        if rating >= project[0]:
+            order.append(project)
+            rating += project[1]
+    return order
+
+def main():
+    n, r = map(int, input().split())
+    projects = []
+    for i in range(n):
+        a, b = map(int, input().split())
+        projects.append((a, b))
+    order = get_order(projects, r)
+    if len(order) == n:
+        print("YES")
+    else:
+        print("NO")
+
+if __name__ == '__main__':
+    main()
 

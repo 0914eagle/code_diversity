@@ -1,13 +1,26 @@
 
-def check_lair(grid):
-    # Initialize a set to store the levels of Zombie Contamination
-    levels = set()
-    
-    # Loop through the grid and add the levels of Zombie Contamination to the set
-    for row in grid:
-        for level in row:
-            levels.add(int(level))
-    
-    # Check if the set of levels contains all numbers between 0 and 4, inclusive
-    return len(levels) == 5 and set(range(5)) == levels
+def get_resulting_sequence(a, b):
+    resulting_sequence = []
+    for i in range(len(a)):
+        if a[i] == 0:
+            resulting_sequence.append(b.pop(0))
+        else:
+            resulting_sequence.append(a[i])
+    return resulting_sequence
+
+def is_increasing_sequence(sequence):
+    for i in range(len(sequence) - 1):
+        if sequence[i] >= sequence[i + 1]:
+            return False
+    return True
+
+def is_possible_to_recover_hitagi(a, b):
+    resulting_sequence = get_resulting_sequence(a, b)
+    return not is_increasing_sequence(resulting_sequence)
+
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    print("Yes") if is_possible_to_recover_hitagi(a, b) else print("No")
 

@@ -1,29 +1,29 @@
 
-def get_equal_measurements(x):
-    # Sort the list of measurements
-    x.sort()
-    # Initialize the minimum number of equal measurements to 0
-    min_equal = 0
-    # Initialize the list of equal measurements to be empty
-    equal = []
-    # Iterate over the measurements
-    for i in range(len(x)):
-        # Check if the current measurement is equal to the previous measurement
-        if i > 0 and x[i] == x[i-1]:
-            # If it is, add it to the list of equal measurements
-            equal.append(x[i])
-        # If the current measurement is not equal to the previous measurement, check if it is equal to the next measurement
-        elif i < len(x)-1 and x[i] == x[i+1]:
-            # If it is, add it to the list of equal measurements
-            equal.append(x[i])
-        # If the current measurement is not equal to the previous or next measurement, check if it is equal to the minimum measurement
-        elif x[i] == x[0]:
-            # If it is, add it to the list of equal measurements
-            equal.append(x[i])
-        # If the current measurement is not equal to the previous, next, or minimum measurement, check if it is equal to the maximum measurement
-        elif x[i] == x[-1]:
-            # If it is, add it to the list of equal measurements
-            equal.append(x[i])
-    # Return the minimum number of equal measurements and the list of equal measurements
-    return (min_equal, equal)
+def get_maximum_number(v, a):
+    # Initialize variables
+    max_number = 0
+    current_digit = 1
+    remaining_paint = v
+
+    # Iterate through the digits of the maximum number
+    while remaining_paint >= a[current_digit] and current_digit <= 9:
+        # Calculate the current digit of the maximum number
+        current_digit_value = int(remaining_paint / a[current_digit])
+        max_number = max_number * 10 + current_digit_value
+        remaining_paint = remaining_paint % a[current_digit]
+        current_digit += 1
+
+    # Check if the maximum number has any zeroes
+    if "0" in str(max_number):
+        return -1
+
+    return max_number
+
+def main():
+    v = int(input())
+    a = list(map(int, input().split()))
+    print(get_maximum_number(v, a))
+
+if __name__ == '__main__':
+    main()
 

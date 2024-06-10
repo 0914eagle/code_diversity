@@ -1,27 +1,37 @@
 
-def get_max_cuts(n, B, a):
-    # Sort the array in non-decreasing order
-    a.sort()
+def get_correct_bracket_sequences(n):
+    sequences = []
+    for i in range(n):
+        sequences.append("()")
+    for i in range(n):
+        for sequence in sequences:
+            sequences.append("(" + sequence + ")")
+    for i in range(n):
+        for sequence1 in sequences:
+            for sequence2 in sequences:
+                sequences.append(sequence1 + sequence2)
+    return sequences
 
-    # Initialize variables to keep track of the current cost and number of cuts
-    cost = 0
-    num_cuts = 0
+def get_maximum_matching(sequences):
+    matching = 0
+    for sequence in sequences:
+        open_brackets = 0
+        for i in range(len(sequence)):
+            if sequence[i] == '(':
+                open_brackets += 1
+            else:
+                open_brackets -= 1
+            if open_brackets < 0:
+                break
+        else:
+            matching += 1
+    return matching
 
-    # Loop through the array and check if the current element is a cut point
-    for i in range(n - 1):
-        # Check if the current element is a cut point
-        if a[i] % 2 != a[i + 1] % 2:
-            # Calculate the cost of the current cut
-            cost += abs(a[i] - a[i + 1])
+def solve(n):
+    sequences = get_correct_bracket_sequences(n)
+    return get_maximum_matching(sequences) % (10**9 + 7)
 
-            # Check if the current cost exceeds the budget
-            if cost > B:
-                # If it does, return the current number of cuts
-                return num_cuts
-
-            # Increment the number of cuts
-            num_cuts += 1
-
-    # If we reach the end of the array and the cost is still within budget, return the number of cuts
-    return num_cuts
+if __name__ == '__main__':
+    n = int(input())
+    print(solve(n))
 

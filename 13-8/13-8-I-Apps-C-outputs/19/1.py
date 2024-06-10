@@ -1,15 +1,33 @@
 
-def solve(a, b, l, r):
-    # Initialize the string s with the first a lowercase English letters in alphabetical order
-    s = "".join(chr(i + 97) for i in range(a))
+def input_data():
+    N = int(input())
+    arr = list(map(int, input().split()))
+    Q = int(input())
+    queries = []
+    for i in range(Q):
+        queries.append(list(map(int, input().split())))
+    return N, arr, Q, queries
 
-    # Mister B moves first and appends b letters to the string s
-    s += "".join(chr(i + 97) for i in range(a, a + b))
+def is_magical(arr):
+    return all(arr[0] <= x <= arr[-1] for x in arr)
 
-    # The opponent adds a letters on each move, so Mister B has to append b letters on each move as well
-    while len(s) < r:
-        s += "".join(chr(i + 97) for i in range(a + b, a + 2 * b))
+def get_longest_magical_subarray(arr, L, R):
+    max_len = 0
+    for i in range(L, R+1):
+        for j in range(i, R+1):
+            if is_magical(arr[i:j+1]):
+                max_len = max(max_len, j-i+1)
+    return max_len
 
-    # Count the number of different letters in the segment from position l to position r, inclusive
-    return len(set(s[l - 1:r]))
+def solve(N, arr, Q, queries):
+    result = []
+    for L, R in queries:
+        result.append(get_longest_magical_subarray(arr, L, R))
+    return result
+
+if __name__ == '__main__':
+    N, arr, Q, queries = input_data()
+    result = solve(N, arr, Q, queries)
+    for x in result:
+        print(x)
 

@@ -1,38 +1,35 @@
 
-def solve(N, M, cubes):
-    # Initialize a 2D array to store the number of cubes on each square
-    num_cubes = [[0] * N for _ in range(N)]
+def get_max_length(logs, k):
+    # Sort the logs in descending order
+    logs.sort(reverse=True)
     
-    # Count the number of cubes on each square
-    for r, c in cubes:
-        num_cubes[r-1][c-1] += 1
+    # Initialize the maximum length and the number of cuts
+    max_length = 0
+    num_cuts = 0
     
-    # Initialize a queue to store the squares to be processed
-    queue = [(0, 0)]
+    # Loop through the logs and calculate the maximum length after at most k cuts
+    for log in logs:
+        # If the number of cuts is less than k, we can make at most one cut
+        if num_cuts < k:
+            max_length = max(max_length, log)
+            num_cuts += 1
+        # If the number of cuts is equal to k, we can no longer make any cuts
+        else:
+            break
     
-    # Initialize a set to store the visited squares
-    visited = set()
+    return max_length
+
+def main():
+    # Read the input from stdin
+    n, k = map(int, input().split())
+    logs = list(map(int, input().split()))
     
-    # Initialize the number of moves to 0
-    moves = 0
+    # Get the maximum length after at most k cuts
+    max_length = get_max_length(logs, k)
     
-    # Loop until the queue is empty
-    while queue:
-        # Get the current square from the queue
-        r, c = queue.pop(0)
-        
-        # If the current square is not visited, mark it as visited and increment the number of moves
-        if (r, c) not in visited:
-            visited.add((r, c))
-            moves += 1
-            
-            # If the current square has a cube, remove it and add the adjacent squares to the queue
-            if num_cubes[r][c] > 0:
-                num_cubes[r][c] -= 1
-                for new_r, new_c in [(r-1, c), (r+1, c), (r, c-1), (r, c+1)]:
-                    if 0 <= new_r < N and 0 <= new_c < N:
-                        queue.append((new_r, new_c))
-    
-    # Return the number of moves
-    return moves
+    # Print the result
+    print(max_length)
+
+if __name__ == '__main__':
+    main()
 

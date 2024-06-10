@@ -1,14 +1,24 @@
 
-def get_maximum_minimum_mex(n, m, l_list, r_list):
-    a = [0] * n
-    for i in range(m):
-        l = l_list[i] - 1
-        r = r_list[i] - 1
-        for j in range(l, r + 1):
-            a[j] = 1
-    mex = 0
-    for i in range(n):
-        if a[i] == 0:
-            mex += 1
-    return mex, a
+import math
+
+def betting_strategy(x, p):
+    
+    # Calculate the probability of losing and winning at least once
+    losing_prob = 1 - p
+    winning_prob = p
+    
+    # Calculate the expected value of each bet
+    expected_value = 2 * p - 1
+    
+    # Calculate the maximum expected profit
+    max_expected_profit = x * expected_value * losing_prob
+    
+    return max_expected_profit
+
+def main():
+    x, p = map(float, input().split())
+    print(f"{betting_strategy(x, p):.3f}")
+
+if __name__ == '__main__':
+    main()
 

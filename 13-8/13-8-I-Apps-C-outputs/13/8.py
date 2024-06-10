@@ -1,20 +1,31 @@
 
-def solve(n, k, a):
-    # Initialize a set to store the divine digits
-    divine_digits = set()
+def is_handsome(n):
+    n_str = str(n)
+    for i in range(len(n_str) - 1):
+        if n_str[i] == n_str[i + 1]:
+            return False
+    return True
 
-    # Iterate over the banknote denominations
-    for i in range(n):
-        # Get the value of the current banknote
-        value = a[i]
+def get_closest_handsome_numbers(n):
+    n_str = str(n)
+    for i in range(len(n_str) - 1):
+        if n_str[i] == n_str[i + 1]:
+            break
+    else:
+        return [n]
 
-        # Iterate over the digits of the current banknote
-        for digit in str(value):
-            # Check if the digit is the divine digit
-            if digit == str(k - 1):
-                # Add the digit to the set of divine digits
-                divine_digits.add(digit)
+    left = int(n_str[:i] + n_str[i + 1] + n_str[i + 2:])
+    right = int(n_str[:i + 1] + n_str[i + 2] + n_str[i + 3:])
+    if is_handsome(left):
+        return [left, right]
+    else:
+        return [right, left]
 
-    # Return the number of divine digits and the set of divine digits
-    return len(divine_digits), divine_digits
+def main():
+    n = int(input())
+    handsome_numbers = get_closest_handsome_numbers(n)
+    print(" ".join(str(x) for x in handsome_numbers))
+
+if __name__ == '__main__':
+    main()
 

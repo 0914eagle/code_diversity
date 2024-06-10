@@ -1,20 +1,37 @@
 
-def can_switch_on_garlands(k1, k2, k3):
-    # Check if k1, k2, and k3 are positive
-    if k1 <= 0 or k2 <= 0 or k3 <= 0:
-        return "NO"
+def get_synchronized_stones(c_stones, t_stones):
+    # Initialize the synchronized stones as a copy of the input stones
+    sync_stones = c_stones.copy()
+    
+    # Iterate through the stones and synchronize them with their neighbors
+    for i in range(1, len(c_stones) - 1):
+        sync_stones[i] = sync_stones[i + 1] + sync_stones[i - 1] - c_stones[i]
+    
+    # Return the synchronized stones
+    return sync_stones
 
-    # Check if the greatest common divisor of k1, k2, and k3 is 1
-    if __gcd(k1, k2) != 1 or __gcd(k1, k3) != 1 or __gcd(k2, k3) != 1:
-        return "NO"
+def is_synchronized(c_stones, t_stones):
+    # Get the synchronized stones
+    sync_stones = get_synchronized_stones(c_stones, t_stones)
+    
+    # Check if the synchronized stones are equal to the target stones
+    if sync_stones == t_stones:
+        return True
+    else:
+        return False
 
-    # Check if the sum of k1, k2, and k3 is even
-    if k1 + k2 + k3 % 2 == 0:
-        return "NO"
+def main():
+    # Read the input
+    n = int(input())
+    c_stones = list(map(int, input().split()))
+    t_stones = list(map(int, input().split()))
+    
+    # Check if the stones can be synchronized
+    if is_synchronized(c_stones, t_stones):
+        print("Yes")
+    else:
+        print("No")
 
-    # Check if the product of k1, k2, and k3 is odd
-    if k1 * k2 * k3 % 2 == 0:
-        return "NO"
-
-    return "YES"
+if __name__ == '__main__':
+    main()
 

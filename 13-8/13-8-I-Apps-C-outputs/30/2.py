@@ -1,13 +1,49 @@
 
-def find_minimum_side_length(n, k, vertices):
-    # Calculate the area of the polygon
-    area = 0
-    for i in range(n):
-        area += vertices[i][0] * vertices[i-1][1] - vertices[i-1][0] * vertices[i][1]
-    area = abs(area) / 2
+def is_bfs_order(n, edges, sequence):
+    # Initialize a graph with n nodes and no edges
+    graph = [[] for _ in range(n + 1)]
 
-    # Calculate the side length for each map
-    side_length = (area / k) ** 0.5
+    # Add edges to the graph
+    for edge in edges:
+        graph[edge[0]].append(edge[1])
+        graph[edge[1]].append(edge[0])
 
-    return round(side_length, 2)
+    # Initialize a queue to perform BFS
+    queue = [1]
+
+    # Initialize a set to keep track of visited nodes
+    visited = set()
+
+    # Perform BFS starting from node 1
+    while queue:
+        node = queue.pop(0)
+        visited.add(node)
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                queue.append(neighbor)
+
+    # Check if all nodes are visited
+    if len(visited) == n:
+        return True
+
+    # Check if the sequence is a valid BFS ordering
+    for i, node in enumerate(sequence):
+        if node not in visited:
+            return False
+        if i != sequence.index(node):
+            return False
+
+    return True
+
+def main():
+    n = int(input())
+    edges = []
+    for i in range(n - 1):
+        edge = list(map(int, input().split()))
+        edges.append(edge)
+    sequence = list(map(int, input().split()))
+    print("Yes") if is_bfs_order(n, edges, sequence) else print("No")
+
+if __name__ == '__main__':
+    main()
 

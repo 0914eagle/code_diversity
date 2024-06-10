@@ -1,20 +1,19 @@
 
-def solve(N, M, s_list, c_list):
-    # Initialize a variable to store the smallest satisfying integer
-    smallest_int = -1
+def is_periodic(s, k):
+    if len(s) % k != 0:
+        return False
+    for i in range(len(s) // k):
+        if s[i*k:(i+1)*k] != s[(i+1)*k:(i+2)*k]:
+            return False
+    return True
 
-    # Loop through all possible integers with N digits
-    for i in range(10**(N-1), 10**N):
-        # Convert the integer to a list of digits
-        int_list = list(str(i))
+def find_smallest_period(s):
+    for k in range(1, len(s)):
+        if is_periodic(s, k):
+            return k
+    return 0
 
-        # Check if the integer satisfies the conditions
-        if all(int_list[s-1] == c for s, c in zip(s_list, c_list)):
-            # If it does, check if it is the smallest satisfying integer so far
-            if smallest_int == -1 or i < smallest_int:
-                smallest_int = i
-                break
-
-    # Return the smallest satisfying integer
-    return smallest_int
+if __name__ == '__main__':
+    s = input()
+    print(find_smallest_period(s))
 

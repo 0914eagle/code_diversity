@@ -1,32 +1,80 @@
 
-def solve(N, P, bad_pairs):
-    # Initialize a set to store the indices of the ingredients that have been used
-    used_ingredients = set()
-    # Initialize a list to store the indices of the ingredients for each drink
-    drink_ingredients = []
-    # Initialize a variable to store the number of drinks made
-    num_drinks = 0
-    # Loop through each bad pair of ingredients
-    for a, b in bad_pairs:
-        # If both ingredients have already been used, skip this pair
-        if a in used_ingredients and b in used_ingredients:
-            continue
-        # If one of the ingredients has already been used, add the other ingredient to the set of used ingredients
-        elif a in used_ingredients:
-            used_ingredients.add(b)
-        elif b in used_ingredients:
-            used_ingredients.add(a)
-        # If neither ingredient has been used, add both to the set of used ingredients
-        else:
-            used_ingredients.add(a)
-            used_ingredients.add(b)
-    # Loop through each ingredient
-    for i in range(1, N + 1):
-        # If the ingredient has not been used, add it to the list of ingredients for the current drink
-        if i not in used_ingredients:
-            drink_ingredients.append(i)
-    # Increment the number of drinks made
-    num_drinks += 1
-    # Return the number of drinks made
-    return num_drinks % 1000000007
+def get_sensor_readings(lanes, sensor_range):
+    # Initialize a list to store the sensor readings for each lane
+    sensor_readings = [[] for _ in range(lanes)]
+    
+    # Fill the sensor readings for each lane
+    for i in range(lanes):
+        for j in range(sensor_range):
+            sensor_readings[i].append(j)
+    
+    return sensor_readings
+
+def get_lane_switch_plan(lanes, sensor_readings, car_length, car_distance):
+    # Initialize a list to store the lane switch plan
+    lane_switch_plan = []
+    
+    # Fill the lane switch plan
+    for i in range(lanes):
+        # Check if the current lane is empty
+        if len(sensor_readings[i]) == 0:
+            # Add a "switch to this lane" command to the plan
+            lane_switch_plan.append(i)
+            break
+        # Check if the current lane has enough space for the car
+        elif sensor_readings[i][0] > car_length:
+            # Add a "switch to this lane" command to the plan
+            lane_switch_plan.append(i)
+            break
+        # Check if the current lane is the last lane
+        elif i == lanes - 1:
+            # Add an "impossible" command to the plan
+            lane_switch_plan.append("Impossible")
+            break
+    
+    return lane_switch_plan
+
+def get_safety_factor(lanes, sensor_readings, car_length, car_distance):
+    # Initialize a variable to store the safety factor
+    safety_factor = 0
+    
+    # Fill the safety factor
+    for i in range(lanes):
+        # Check if the current lane is the destination lane
+        if i == sensor_readings[0]:
+            # Add the distance to the safety factor
+            safety_factor += sensor_readings[i][0]
+            break
+        # Check if the current lane is the last lane
+        elif i == lanes - 1:
+            # Add the distance to the safety factor
+            safety_factor += sensor_readings[i][0]
+            break
+    
+    return safety_factor
+
+def main():
+    # Read the input
+    lanes, cars, sensor_range = map(int, input().split())
+    sensor_readings = get_sensor_readings(lanes, sensor_range)
+    
+    # Fill the sensor readings for each car
+    for i in range(cars):
+        lane, length, distance = map(int, input().split())
+        sensor_readings[lane].append(distance)
+    
+    # Get the lane switch plan
+    lane_switch_plan = get_lane_switch_plan(lanes, sensor_readings, length, distance)
+    
+    # Get the safety factor
+    safety_factor = get_safety_factor(lanes, sensor_readings, length, distance)
+    
+    # Print the output
+    if lane_switch_plan[0] == "Impossible":
+        print("Impossible")
+    else:
+        print(safety_factor)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,23 +1,25 @@
 
-import sys
+def read_input():
+    n, k = map(int, input().split())
+    strings = [input() for _ in range(n)]
+    return n, k, strings
 
-def solve(R, W, d):
-    # Base case: if there are no red or white wine boxes, there is only one way to arrange them
-    if R == 0 and W == 0:
-        return 1
-    
-    # Base case: if there is only one red or white wine box, it can only be arranged in one way
-    if R == 1 and W == 0:
-        return 1
-    if R == 0 and W == 1:
-        return 1
-    
-    # Recursive case: arrange the red and white wine boxes recursively
-    total = 0
-    for i in range(1, min(d+1, R+1)):
-        total += solve(R-i, W, d)
-    for i in range(1, W+1):
-        total += solve(R, W-i, d)
-    
-    return total % (10**9 + 7)
+def longest_common_subsequence(strings):
+    m = len(strings[0])
+    n = len(strings)
+    dp = [[0] * (m + 1) for _ in range(n + 1)]
+    for i in range(1, n + 1):
+        for j in range(1, m + 1):
+            if strings[i - 1][j - 1] == strings[0][j - 1]:
+                dp[i][j] = dp[i - 1][j - 1] + 1
+            else:
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+    return dp[n][m]
+
+def main():
+    n, k, strings = read_input()
+    print(longest_common_subsequence(strings))
+
+if __name__ == '__main__':
+    main()
 

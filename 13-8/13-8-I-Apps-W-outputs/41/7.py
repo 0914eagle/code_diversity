@@ -1,17 +1,22 @@
 
-def get_maximum_happiness(n, m, a, b):
-    # Initialize the dp table with 0
-    dp = [0] * (n + 1)
+def read_input():
+    N, C = map(int, input().split())
+    programs = []
+    for _ in range(N):
+        s, t, c = map(int, input().split())
+        programs.append((s, t, c))
+    return N, C, programs
 
-    # Loop through each type of flower
-    for i in range(m):
-        # Loop through each number of flowers
-        for j in range(n + 1):
-            # Check if the current number of flowers is greater than or equal to the number of flowers of the current type
-            if j >= a[i]:
-                # Update the dp table with the maximum of the current value and the previous value plus the happiness gained from the current type of flower
-                dp[j] = max(dp[j], dp[j - a[i]] + b[i] * (j - a[i]))
+def solve(N, C, programs):
+    channels = [0] * (C + 1)
+    for s, t, c in programs:
+        channels[c] += t - s
+    return sum(1 for x in channels if x > 0)
 
-    # Return the maximum total happiness
-    return dp[n]
+def main():
+    N, C, programs = read_input()
+    print(solve(N, C, programs))
+
+if __name__ == '__main__':
+    main()
 

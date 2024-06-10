@@ -1,37 +1,44 @@
 
-def solve_problem(n, k, seats):
+def get_minimum_night_count(n):
     # Initialize variables
-    status_passengers = 0
-    ordinary_passengers = 0
-    adjacent_status_passengers = 0
+    nights = 0
+    bacteria_count = 1
+    total_mass = 1
 
-    # Iterate through each row of seats
-    for row in seats:
-        # Initialize variables for the current row
-        current_row_status_passengers = 0
-        current_row_ordinary_passengers = 0
-        current_row_adjacent_status_passengers = 0
+    # Loop until the total mass is equal to n
+    while total_mass < n:
+        # Increment the night count
+        nights += 1
 
-        # Iterate through each seat in the current row
-        for seat in row:
-            # Check if the current seat is occupied by a status passenger
-            if seat == "S":
-                current_row_status_passengers += 1
-            # Check if the current seat is occupied by an ordinary passenger
-            elif seat == "P":
-                current_row_ordinary_passengers += 1
+        # Split the bacteria
+        bacteria_count *= 2
 
-        # Update the total number of status passengers and ordinary passengers
-        status_passengers += current_row_status_passengers
-        ordinary_passengers += current_row_ordinary_passengers
+        # Increment the total mass
+        total_mass += bacteria_count
 
-        # Update the total number of adjacent status passengers
-        current_row_adjacent_status_passengers = current_row_status_passengers - 1
-        adjacent_status_passengers += current_row_adjacent_status_passengers
+    # Return the minimum night count and the number of bacteria that should split on each day
+    return nights, [int(bacteria_count / 2)] * nights
 
-    # Calculate the minimum number of adjacent status passengers
-    min_adjacent_status_passengers = adjacent_status_passengers
+def main():
+    # Read the number of test cases
+    t = int(input())
 
-    # Return the minimum number of adjacent status passengers and the optimal seating plan
-    return min_adjacent_status_passengers, seats
+    # Loop through each test case
+    for _ in range(t):
+        # Read the target total mass
+        n = int(input())
+
+        # Get the minimum night count and the number of bacteria that should split on each day
+        nights, bacteria_to_split = get_minimum_night_count(n)
+
+        # Check if a solution exists
+        if nights == -1:
+            print(-1)
+        else:
+            # Print the minimum night count and the number of bacteria that should split on each day
+            print(nights)
+            print(" ".join(map(str, bacteria_to_split)))
+
+if __name__ == '__main__':
+    main()
 

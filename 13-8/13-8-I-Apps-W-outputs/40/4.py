@@ -1,27 +1,32 @@
 
-def solve(s, t):
-    # Initialize a counter for the maximum number of occurrences
-    max_occurrences = 0
-    # Initialize a variable to store the result string
-    result = ""
+import math
 
-    # Loop through each character in the input string
-    for i in range(len(s)):
-        # If the current character is a question mark, replace it with each character in the target string
-        if s[i] == "?":
-            for j in range(len(t)):
-                # Create a new string by replacing the current question mark with the jth character of the target string
-                new_string = s[:i] + t[j] + s[i+1:]
-                # Check if the new string has the maximum number of occurrences of the target string
-                occurrences = new_string.count(t)
-                if occurrences > max_occurrences:
-                    # If so, update the maximum number of occurrences and the result string
-                    max_occurrences = occurrences
-                    result = new_string
-        # If the current character is not a question mark, add it to the result string
-        else:
-            result += s[i]
+def get_probabilities(p):
+    probabilities = []
+    for i in range(len(p)):
+        probabilities.append(p[i] / sum(p))
+    return probabilities
 
-    # Return the result string
-    return result
+def get_expected_value(p, k):
+    expected_value = 0
+    for i in range(len(p) - k + 1):
+        expected_value += p[i] * sum(range(i + 1, i + k + 1))
+    return expected_value
+
+def get_maximum_expected_value(p, k):
+    probabilities = get_probabilities(p)
+    maximum_expected_value = 0
+    for i in range(len(p) - k + 1):
+        expected_value = get_expected_value(probabilities[i:i+k], k)
+        if expected_value > maximum_expected_value:
+            maximum_expected_value = expected_value
+    return maximum_expected_value
+
+def main():
+    n, k = map(int, input().split())
+    p = list(map(int, input().split()))
+    print(get_maximum_expected_value(p, k))
+
+if __name__ == '__main__':
+    main()
 

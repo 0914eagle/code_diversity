@@ -1,31 +1,34 @@
 
-def get_happiness(n, m):
-    # Calculate the factorial of n
-    factorial = 1
-    for i in range(1, n+1):
-        factorial *= i
+def get_vertical_dominoes(n, s):
+    # Initialize variables
+    vertical_dominoes = 0
+    dominoes_pushed = [0] * n
     
-    # Initialize the sum of happiness to 0
-    sum_happiness = 0
+    # Iterate through the string of pushed dominoes
+    for i in range(n):
+        # If the domino has been pushed to the left, push the domino to the left and the domino to the right
+        if s[i] == "L":
+            dominoes_pushed[i] = 1
+            if i < n - 1 and dominoes_pushed[i + 1] == 0:
+                dominoes_pushed[i + 1] = 1
+        # If the domino has been pushed to the right, push the domino to the right and the domino to the left
+        elif s[i] == "R":
+            dominoes_pushed[i] = 1
+            if i > 0 and dominoes_pushed[i - 1] == 0:
+                dominoes_pushed[i - 1] = 1
     
-    # Iterate through all permutations of length n
-    for permutation in range(1, factorial+1):
-        # Convert the permutation to a list of integers
-        permutation_list = [int(i) for i in str(permutation)]
-        
-        # Initialize the happiness of the permutation to 0
-        happiness = 0
-        
-        # Iterate through all subsegments of the permutation
-        for l in range(1, n+1):
-            for r in range(l, n+1):
-                # Check if the subsegment is a framed segment
-                if max(permutation_list[l-1:r]) - min(permutation_list[l-1:r]) == r - l:
-                    happiness += 1
-        
-        # Add the happiness of the permutation to the sum
-        sum_happiness += happiness
+    # Count the number of vertical dominoes
+    for i in range(n):
+        if dominoes_pushed[i] == 0:
+            vertical_dominoes += 1
     
-    # Return the sum of happiness modulo m
-    return sum_happiness % m
+    return vertical_dominoes
+
+def main():
+    n = int(input())
+    s = input()
+    print(get_vertical_dominoes(n, s))
+
+if __name__ == '__main__':
+    main()
 

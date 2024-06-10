@@ -1,23 +1,32 @@
 
-def solve(sequences):
+def find_longest_acgt_substring(s):
     # Initialize variables
-    k = len(sequences)
-    n_i = []
-    a_i = []
-    for i in range(k):
-        n_i.append(len(sequences[i]))
-        a_i.append(sum(sequences[i]))
+    longest_substring = ""
+    current_substring = ""
     
-    # Iterate over all possible pairs of sequences
-    for i in range(k):
-        for j in range(i+1, k):
-            # Check if the sums of the sequences are equal
-            if a_i[i] == a_i[j]:
-                # Find the element to remove in each sequence to make the sum equal
-                for x in range(n_i[i]):
-                    for y in range(n_i[j]):
-                        if sequences[i][x] + sequences[j][y] == a_i[i]:
-                            return "YES\n" + str(i+1) + " " + str(x+1) + "\n" + str(j+1) + " " + str(y+1)
+    # Iterate through the characters of the input string
+    for char in s:
+        # If the current character is A, C, G, or T, add it to the current substring
+        if char in "ACGT":
+            current_substring += char
+        # If the current character is not A, C, G, or T, check if the current substring is longer than the longest substring found so far
+        else:
+            if len(current_substring) > len(longest_substring):
+                longest_substring = current_substring
+            # Reset the current substring to an empty string
+            current_substring = ""
     
-    return "NO"
+    # Check if the last substring is longer than the longest substring found so far
+    if len(current_substring) > len(longest_substring):
+        longest_substring = current_substring
+    
+    # Return the length of the longest substring
+    return len(longest_substring)
+
+def main():
+    s = input()
+    print(find_longest_acgt_substring(s))
+
+if __name__ == '__main__':
+    main()
 

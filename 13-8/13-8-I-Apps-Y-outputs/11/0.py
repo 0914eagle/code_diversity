@@ -1,15 +1,29 @@
 
-import math
+import collections
 
-def solve(path):
-    N = int(input())
-    x_coords = [int(x) for x in input().split()]
-    y_coords = [int(y) for y in input().split()]
+def get_column_indexes(header):
+    column_indexes = {}
+    for i, column_name in enumerate(header):
+        column_indexes[column_name] = i
+    return column_indexes
 
-    total_distance = 0
-    for i in range(N):
-        for j in range(i+1, N):
-            total_distance += math.sqrt((x_coords[i] - x_coords[j])**2 + (y_coords[i] - y_coords[j])**2)
+def get_average_marks(marks):
+    total = 0
+    for mark in marks:
+        total += mark
+    return total / len(marks)
 
-    return total_distance / math.factorial(N)
+def main():
+    num_students = int(input())
+    header = input().split()
+    column_indexes = get_column_indexes(header)
+    marks = []
+    for _ in range(num_students):
+        line = input().split()
+        marks.append(int(line[column_indexes["MARKS"]]))
+    average_marks = get_average_marks(marks)
+    print(f"{average_marks:.2f}")
+
+if __name__ == '__main__':
+    main()
 

@@ -1,24 +1,20 @@
 
-def get_max_clique(A):
-    # Initialize a dictionary to store the divisibility relationships
-    divisibility = {}
-    for i in range(len(A)):
-        for j in range(i+1, len(A)):
-            if A[i] % A[j] == 0 or A[j] % A[i] == 0:
-                divisibility[(A[i], A[j])] = True
-            else:
-                divisibility[(A[i], A[j])] = False
-    
-    # Find the maximum clique by iteratively adding vertices to the clique
-    # and checking if the added vertex is connected to all the other vertices in the clique
-    max_clique = []
-    for i in range(len(A)):
-        clique = [A[i]]
-        for j in range(i+1, len(A)):
-            if (A[i], A[j]) in divisibility and (A[j], A[i]) in divisibility:
-                clique.append(A[j])
-        if len(clique) > len(max_clique):
-            max_clique = clique
-    
-    return len(max_clique)
+def get_max_profit(buns, patties, cutlets, hamburger_price, chicken_price):
+    hamburgers = buns // 2
+    chicken_burgers = buns // 2
+    if patties < hamburgers:
+        hamburgers = patties
+    if cutlets < chicken_burgers:
+        chicken_burgers = cutlets
+    return hamburgers * hamburger_price + chicken_burgers * chicken_price
+
+def main():
+    num_queries = int(input())
+    for _ in range(num_queries):
+        buns, patties, cutlets = map(int, input().split())
+        hamburger_price, chicken_price = map(int, input().split())
+        print(get_max_profit(buns, patties, cutlets, hamburger_price, chicken_price))
+
+if __name__ == '__main__':
+    main()
 

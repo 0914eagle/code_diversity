@@ -1,23 +1,17 @@
 
-def find_candidates(robot_image, floor_image):
-    # Initialize a list to store the candidate locations
-    candidates = []
-    
-    # Loop through each possible location to overlay the robot image on the floor image
-    for x in range(len(floor_image) - len(robot_image) + 1):
-        for y in range(len(floor_image[0]) - len(robot_image[0]) + 1):
-            # Calculate the number of pixels that are the same between the robot image and the floor image at the current location
-            num_same_pixels = 0
-            for i in range(len(robot_image)):
-                for j in range(len(robot_image[0])):
-                    if robot_image[i][j] == floor_image[i + x][j + y]:
-                        num_same_pixels += 1
-            
-            # If the number of same pixels is greater than the current maximum number of same pixels, add the current location to the list of candidates
-            if num_same_pixels > max_same_pixels:
-                max_same_pixels = num_same_pixels
-                candidates.append((x, y))
-    
-    # Return the list of candidates
-    return candidates
+def find_character(f_string, k):
+    return f_string[k - 1]
+
+def main():
+    q = int(input())
+    for i in range(q):
+        n, k = map(int, input().split())
+        if n == 0:
+            f_string = "What are you doing at the end of the world? Are you busy? Will you save us?"
+        else:
+            f_string = "What are you doing while sending " + find_character(f_string, k - 1) + "? Are you busy? Will you send " + find_character(f_string, k - 1) + "?"
+        print(find_character(f_string, k), end="")
+
+if __name__ == '__main__':
+    main()
 

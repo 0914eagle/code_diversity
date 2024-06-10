@@ -1,34 +1,22 @@
 
-def solve_problem(n, residents):
-    # Initialize variables
-    council_members = []
-    club_representatives = {}
-    parties = {}
+def get_strengths(n, k, x, rangers):
+    # Sort the rangers in increasing order of strength
+    rangers.sort()
+    
+    # Perform the operation k times
+    for _ in range(k):
+        # Take the bitwise XOR of the strength of each alternate ranger with x and update it's strength
+        for i in range(0, n, 2):
+            rangers[i] = rangers[i] ^ x
+    
+    # Return the minimum and maximum strength of the rangers after performing the operation k times
+    return min(rangers), max(rangers)
 
-    # Iterate through each resident
-    for resident in residents:
-        # Get the resident's information
-        resident_name, party, num_clubs, *clubs = resident.split()
+def main():
+    n, k, x = map(int, input().split())
+    rangers = list(map(int, input().split()))
+    print(*get_strengths(n, k, x, rangers))
 
-        # If the resident is not already a council member
-        if resident_name not in council_members:
-            # Add the resident to the council
-            council_members.append(resident_name)
-
-            # Assign a club representative for the resident
-            club_representatives[resident_name] = clubs[0]
-
-            # Update the party information
-            if party not in parties:
-                parties[party] = 1
-            else:
-                parties[party] += 1
-
-    # Check if the number of council members from each party does not exceed half the membership of the council
-    for party, num_members in parties.items():
-        if num_members > n // 2:
-            return "Impossible"
-
-    # Return the council members and their clubs
-    return "\n".join([f"{member} {club_representatives[member]}" for member in council_members])
+if __name__ == '__main__':
+    main()
 

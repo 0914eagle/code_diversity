@@ -1,44 +1,41 @@
 
-def get_rbs(s):
-    # Initialize a stack to keep track of the opening brackets
-    stack = []
-    # Initialize a counter for the number of replacements
-    count = 0
-    # Iterate through the string
-    for char in s:
-        # If the character is an opening bracket, push it to the stack
-        if char in ["<", "{", "(", "["]:
-            stack.append(char)
-        # If the character is a closing bracket, pop the top element from the stack
-        elif char in [">", "}", ")", "]"]:
-            # If the top element of the stack is not the corresponding opening bracket, increase the count and replace the character with the opening bracket
-            if stack and stack[-1] != {
-                "<": ">",
-                "{": "}",
-                "(": ")",
-                "[": "]"
-            }[char]:
-                count += 1
-                stack.pop()
-            # If the stack is empty, increase the count and replace the character with the opening bracket
-            elif not stack:
-                count += 1
-                stack.append({
-                    ">": "<",
-                    "}": "{",
-                    ")": "(",
-                    "]": "["
-                }[char])
-    # If the stack is not empty, increase the count by the number of elements in the stack and make them all opening brackets
-    if stack:
-        count += len(stack)
-        for char in stack:
-            stack.append({
-                "<": ">",
-                "{": "}",
-                "(": ")",
-                "[": "]"
-            }[char])
-    # Return the count
-    return count
+def get_max_students_with_favorite_drink(n, k, a):
+    # Calculate the minimum number of sets needed to give each student a drink
+    min_sets = ceil(n / 2)
+    
+    # Create a dictionary to store the number of students with each drink type
+    drink_counts = {}
+    for i in range(n):
+        if a[i] not in drink_counts:
+            drink_counts[a[i]] = 1
+        else:
+            drink_counts[a[i]] += 1
+    
+    # Initialize the maximum number of students with a favorite drink to 0
+    max_students = 0
+    
+    # Iterate over the drink types
+    for drink in range(1, k + 1):
+        # If the drink type has at least one student with it as their favorite drink
+        if drink in drink_counts:
+            # Calculate the number of students with this drink type
+            num_students = drink_counts[drink]
+            
+            # If the number of students with this drink type is greater than the minimum number of sets needed
+            if num_students > min_sets:
+                # Calculate the number of students with a favorite drink
+                max_students += min_sets
+            else:
+                # Calculate the number of students with a favorite drink
+                max_students += num_students
+    
+    return max_students
+
+def main():
+    n, k = map(int, input().split())
+    a = list(map(int, input().split()))
+    print(get_max_students_with_favorite_drink(n, k, a))
+
+if __name__ == '__main__':
+    main()
 

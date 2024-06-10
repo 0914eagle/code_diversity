@@ -1,27 +1,21 @@
 
-def solve(sequences):
-    # Initialize variables
-    k = len(sequences)
-    sums = [0] * k
-    for i in range(k):
-        sums[i] = sum(sequences[i])
-    
-    # Iterate over all pairs of sequences
-    for i in range(k):
-        for j in range(i+1, k):
-            # Check if the sums of the two sequences are equal
-            if sums[i] == sums[j]:
-                # Find the element to remove in the first sequence
-                for x in range(len(sequences[i])):
-                    if sequences[i][x] not in sequences[j]:
-                        break
-                # Find the element to remove in the second sequence
-                for y in range(len(sequences[j])):
-                    if sequences[j][y] not in sequences[i]:
-                        break
-                # Check if the elements are not equal
-                if x != y:
-                    return "YES\n" + str(i+1) + " " + str(x+1) + "\n" + str(j+1) + " " + str(y+1)
-    
-    return "NO"
+def get_longest_acgt_substring(s):
+    longest_substring = ""
+    for i in range(len(s)):
+        for j in range(i, len(s)):
+            substring = s[i:j+1]
+            if is_acgt_string(substring):
+                if len(substring) > len(longest_substring):
+                    longest_substring = substring
+    return len(longest_substring)
+
+def is_acgt_string(s):
+    for c in s:
+        if c not in "ACGT":
+            return False
+    return True
+
+if __name__ == '__main__':
+    s = input()
+    print(get_longest_acgt_substring(s))
 

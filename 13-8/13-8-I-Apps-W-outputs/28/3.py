@@ -1,31 +1,22 @@
 
-def solve(n, values):
-    # Initialize the BDD with a single vertex representing the root
-    bdd = [0]
+def get_steps_with_even_and_odd_numbers(a, b):
+    steps = []
+    for i in range(1, int(a / 2) + 1):
+        steps.append(2 * i)
+    for i in range(1, int((b - a) / 2) + 1):
+        steps.append(2 * i + 1)
+    return steps
 
-    # Iterate over the input values
-    for i in range(len(values)):
-        # Convert the input value to binary
-        binary = "{0:b}".format(i)
+def check_interval(l, r, a, b):
+    steps = get_steps_with_even_and_odd_numbers(a, b)
+    for i in range(l - 1, r):
+        if steps[i] % 2 == 0 and steps[i] != 2 * (i + 1):
+            return "NO"
+        if steps[i] % 2 == 1 and steps[i] != 2 * (i + 1) + 1:
+            return "NO"
+    return "YES"
 
-        # Iterate over the bits of the binary representation
-        for j in range(n):
-            # Get the current vertex and its label
-            vertex = bdd[len(bdd) - 1]
-            label = binary[j]
-
-            # If the vertex is a leaf vertex, create a new vertex and add it to the BDD
-            if vertex == 0 or vertex == 1:
-                bdd.append(int(label))
-                vertex = len(bdd) - 1
-
-            # If the vertex is not a leaf vertex, follow the edge labelled with the current bit
-            else:
-                vertex = vertex + 1 if label == "1" else vertex + 2
-
-            # Set the current vertex as the parent of the new vertex
-            bdd[len(bdd) - 1] = vertex
-
-    # Return the number of vertices in the minimal BDD
-    return len(bdd)
+if __name__ == '__main__':
+    a, b = map(int, input().split())
+    print(check_interval(1, 100, a, b))
 

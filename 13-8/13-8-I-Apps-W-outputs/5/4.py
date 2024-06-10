@@ -1,23 +1,29 @@
 
-def solve(segments):
-    # Sort the segments by their left endpoint
-    segments.sort(key=lambda x: x[0])
+def get_number_of_occurences(N, T):
+    # Initialize a counter for the number of occurences
+    count = 0
+    
+    # Initialize a string S that is the concatenation of 10^10 copies of the string 110
+    S = "110" * 10**10
+    
+    # Loop through each substring of S that is of length N
+    for i in range(len(S) - N + 1):
+        # Check if the substring is equal to T
+        if S[i:i+N] == T:
+            # Increment the counter if it is
+            count += 1
+    
+    # Return the number of occurences
+    return count
 
-    # Initialize the coverage array with False
-    coverage = [False] * len(segments)
+def main():
+    # Read the input from stdin
+    N = int(input())
+    T = input()
+    
+    # Call the function and print the result
+    print(get_number_of_occurences(N, T))
 
-    # Loop through the segments and check if they cover any other segment
-    for i, segment in enumerate(segments):
-        for j in range(i+1, len(segments)):
-            if segments[j][0] <= segment[0] and segments[j][1] >= segment[1]:
-                coverage[i] = True
-                break
-
-    # Check if there is a segment that covers all other segments
-    for i, segment in enumerate(segments):
-        if coverage[i] and all(coverage[j] for j in range(len(segments)) if j != i):
-            return i+1
-
-    # If no such segment exists, return -1
-    return -1
+if __name__ == '__main__':
+    main()
 

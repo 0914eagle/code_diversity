@@ -1,20 +1,28 @@
 
-def get_happy_digits(n, k, a):
-    # Initialize a set to store the happy digits
-    happy_digits = set()
-    
-    # Iterate over the banknote denominations
-    for i in range(n):
-        # Get the current denomination
-        curr_denom = a[i]
-        
-        # Get the last digit of the current denomination in the Martian number system
-        last_digit = curr_denom % k
-        
-        # If the last digit is a divine digit, add it to the set of happy digits
-        if last_digit in [0, 4]:
-            happy_digits.add(last_digit)
-    
-    # Return the number of happy digits and the set of happy digits
-    return len(happy_digits), happy_digits
+def is_handsome(n):
+    n_str = str(n)
+    for i in range(len(n_str) - 1):
+        if n_str[i] == n_str[i + 1]:
+            return False
+    return True
+
+def find_closest_handsome(n):
+    n_str = str(n)
+    for i in range(len(n_str)):
+        if n_str[i] % 2 == 0:
+            n_str = n_str[:i] + '1' + n_str[i + 1:]
+        else:
+            n_str = n_str[:i] + '0' + n_str[i + 1:]
+    return int(n_str)
+
+def main():
+    n = int(input())
+    if is_handsome(n):
+        print(-1)
+    else:
+        closest_handsome = find_closest_handsome(n)
+        print(closest_handsome)
+
+if __name__ == '__main__':
+    main()
 

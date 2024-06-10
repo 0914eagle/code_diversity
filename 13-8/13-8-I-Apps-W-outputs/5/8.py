@@ -1,19 +1,24 @@
 
-def solve(segments):
-    # Sort the segments by their left endpoint
-    sorted_segments = sorted(segments, key=lambda x: x[0])
+def count_occurrences(T, N):
+    # Initialize a counter for the number of occurrences
+    count = 0
+    
+    # Loop through the string S and check if T occurs as a contiguous substring
+    for i in range(len(S) - N + 1):
+        if S[i:i+N] == T:
+            count += 1
+    
+    # Return the number of occurrences
+    return count
 
-    # Initialize the covering segment as the first segment
-    covering_segment = sorted_segments[0]
+def main():
+    # Read the input from stdin
+    N = int(input())
+    T = input()
+    
+    # Call the count_occurrences function and print the result
+    print(count_occurrences(T, N))
 
-    # Iterate through the remaining segments
-    for segment in sorted_segments[1:]:
-        # If the current segment does not cover the covering segment, return -1
-        if segment[1] <= covering_segment[1]:
-            return -1
-        # Otherwise, update the covering segment to the current segment
-        covering_segment = segment
-
-    # Return the number of the covering segment
-    return covering_segment[0]
+if __name__ == '__main__':
+    main()
 

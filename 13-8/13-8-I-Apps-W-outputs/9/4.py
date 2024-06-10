@@ -1,20 +1,39 @@
 
-def solve(n, B, a):
-    # Sort the array in ascending order
-    a.sort()
-    # Initialize variables to keep track of the number of cuts and the current cost
-    cuts, cost = 0, 0
-    # Loop through the array and check if the current element is within the budget
-    for i in range(n - 1):
-        # Calculate the cost of the current cut
-        cost += abs(a[i] - a[i + 1])
-        # Check if the current cost is less than or equal to the budget
-        if cost <= B:
-            # Increment the number of cuts
-            cuts += 1
-        else:
-            # If the current cost is greater than the budget, break the loop
-            break
-    # Return the number of cuts
-    return cuts
+def get_correct_bracket_sequences(n):
+    def helper(n, s):
+        if n == 0:
+            return [""]
+        sequences = []
+        for seq in helper(n-1, s):
+            sequences.append("(" + seq + ")")
+            sequences.append(seq + ")")
+        return sequences
+    return helper(n, "")
+
+def get_maximum_matching(n):
+    sequences = get_correct_bracket_sequences(n)
+    graph = {}
+    for seq in sequences:
+        for i in range(len(seq)):
+            if seq[i] == "(":
+                if i+1 < len(seq) and seq[i+1] == ")":
+                    if i not in graph:
+                        graph[i] = []
+                    graph[i].append(i+1)
+    matching = []
+    visited = set()
+    def dfs(node):
+        if node in visited:
+            return
+        visited.add(node)
+        for neighbor in graph[node]:
+            dfs(neighbor)
+        matching.append(node)
+    for node in graph:
+        dfs(node)
+    return len(matching) % (10**9 + 7)
+
+if __name__ == '__main__':
+    n = int(input())
+    print(get_maximum_matching(n))
 

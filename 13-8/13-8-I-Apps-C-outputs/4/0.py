@@ -1,36 +1,35 @@
 
-def solve(n, days):
-    # Initialize variables
-    rest_days = 0
-    current_day = 1
-    previous_day = 0
+def is_possible(N, P, X):
+    # Initialize the color and weight of the root vertex as white and 0
+    color = [0] * (N + 1)
+    weight = [0] * (N + 1)
+    color[1] = 0
+    weight[1] = 0
 
-    # Iterate through the list of days
-    for day in days:
-        # If the gym is closed and the contest is not carried out
-        if day == 0:
-            # Increment the number of rest days
-            rest_days += 1
-        # If the gym is closed and the contest is carried out
-        elif day == 1:
-            # Increment the number of rest days
-            rest_days += 1
-            # Set the previous day to the current day
-            previous_day = current_day
-        # If the gym is open and the contest is not carried out
-        elif day == 2:
-            # Do sport on the current day
-            pass
-        # If the gym is open and the contest is carried out
-        elif day == 3:
-            # Do sport on the current day
-            pass
-            # Set the previous day to the current day
-            previous_day = current_day
+    # Iterate through the vertices in the order of their depth in the tree
+    for i in range(2, N + 1):
+        # Get the parent of the current vertex
+        parent = P[i]
 
-        # Increment the current day
-        current_day += 1
+        # If the current vertex has a different color than its parent, assign it the same color as its parent
+        if color[i] != color[parent]:
+            color[i] = color[parent]
 
-    # Return the minimum number of rest days
-    return rest_days
+        # If the current vertex has a different weight than its parent, assign it the same weight as its parent
+        if weight[i] != weight[parent]:
+            weight[i] = weight[parent]
+
+        # If the current vertex has a different color and weight than its parent, return False
+        if color[i] != color[parent] and weight[i] != weight[parent]:
+            return False
+
+    # If all vertices have the same color and weight as their parent, return True
+    return True
+
+def main():
+    N, P, X = map(int, input().split())
+    print("POSSIBLE" if is_possible(N, P, X) else "IMPOSSIBLE")
+
+if __name__ == '__main__':
+    main()
 

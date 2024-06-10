@@ -1,13 +1,24 @@
 
-def find_solution(a, b, c):
-    # Calculate the distances between the points
-    ab_dist = ((a[0]-b[0])**2 + (a[1]-b[1])**2)**0.5
-    bc_dist = ((b[0]-c[0])**2 + (b[1]-c[1])**2)**0.5
-    ca_dist = ((c[0]-a[0])**2 + (c[1]-a[1])**2)**0.5
+def is_d_magic(n, d):
+    n_str = str(n)
+    for i in range(len(n_str)):
+        if i % 2 == 0:
+            if n_str[i] != d:
+                return False
+    return True
 
-    # Check if the distances are equal
-    if ab_dist == bc_dist and bc_dist == ca_dist:
-        return "Yes"
-    else:
-        return "No"
+def count_d_magic_numbers(a, b, d, m):
+    count = 0
+    for i in range(a, b+1):
+        if i % m == 0 and is_d_magic(i, d):
+            count += 1
+    return count
+
+def main():
+    m, d = map(int, input().split())
+    a, b = map(int, input().split())
+    print(count_d_magic_numbers(a, b, d, m) % (10**9 + 7))
+
+if __name__ == '__main__':
+    main()
 

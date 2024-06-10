@@ -1,18 +1,35 @@
 
-def solve(n, planets):
-    # Calculate the distance between each pair of planets
-    distances = {}
-    for i in range(n):
-        for j in range(i+1, n):
-            distances[(i, j)] = distances[(j, i)] = calc_distance(planets[i], planets[j])
+def is_symmetric(grid):
+    # Check if the grid is symmetric by comparing the elements in the top row with the elements in the bottom row, and the elements in the left column with the elements in the right column
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j] != grid[len(grid) - i - 1][len(grid[0]) - j - 1]:
+                return False
+    return True
 
-    # Use dynamic programming to find the minimum distance for each planet
-    min_distances = [0] * n
-    for i in range(1, n):
-        min_distances[i] = min(min_distances[i-1] + distances[(i-1, i)], min_distances[i-1] + distances[(i, i-1)])
+def can_make_symmetric(grid):
+    # Check if the grid can be made symmetric by swapping two rows or two columns
+    for i in range(len(grid)):
+        for j in range(i + 1, len(grid)):
+            if grid[i] != grid[j] and is_symmetric(swap_rows(grid, i, j)):
+                return True
+            elif grid[:, i] != grid[:, j] and is_symmetric(swap_cols(grid, i, j)):
+                return True
+    return False
 
-    return min_distances[-1]
+def swap_rows(grid, i, j):
+    # Swap the ith row with the jth row of the grid
+    grid[i], grid[j] = grid[j], grid[i]
+    return grid
 
-def calc_distance(planet1, planet2):
-    return ((planet1[0] - planet2[0]) ** 2 + (planet1[1] - planet2[1]) ** 2 + (planet1[2] - planet2[2]) ** 2) ** 0.5
+def swap_cols(grid, i, j):
+    # Swap the ith column with the jth column of the grid
+    grid = grid.T
+    grid[i], grid[j] = grid[j], grid[i]
+    return grid.T
+
+if __name__ == '__main__':
+    H, W = map(int, input().split())
+    grid = [input() for _ in range(H)]
+    print("YES") if can_make_symmetric(grid) else print("NO")
 

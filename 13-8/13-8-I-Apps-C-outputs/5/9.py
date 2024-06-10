@@ -1,25 +1,34 @@
 
-def solve(arr):
-    n = len(arr)
-    if n == 1:
-        return 0
-    
-    # Sort the array
-    arr.sort()
-    
+def get_min_extensions(a, b, h, w, n, a_list):
     # Initialize variables
-    min_size = 0
-    i = 1
+    min_extensions = 0
+    current_h = h
+    current_w = w
     
-    # Iterate through the array
-    while i < n:
-        # If the current element is the same as the previous element, update the minimum size
-        if arr[i] == arr[i-1]:
-            min_size = max(min_size, i-1)
-        # If the current element is different from the previous element, update the minimum size
-        else:
-            min_size = max(min_size, i)
-        i += 1
+    # Iterate through the available extensions
+    for i in range(n):
+        # Check if the current extension can be used to increase the width
+        if a_list[i] <= current_w:
+            current_w *= a_list[i]
+            min_extensions += 1
+        
+        # Check if the current extension can be used to increase the height
+        if a_list[i] <= current_h:
+            current_h *= a_list[i]
+            min_extensions += 1
+        
+        # Check if the rectangle can be placed on the current field
+        if current_w >= a and current_h >= b:
+            break
     
-    return min_size
+    # Return the minimum number of extensions needed to reach Arkady's goal
+    return min_extensions
+
+def main():
+    a, b, h, w, n = map(int, input().split())
+    a_list = list(map(int, input().split()))
+    print(get_min_extensions(a, b, h, w, n, a_list))
+
+if __name__ == '__main__':
+    main()
 

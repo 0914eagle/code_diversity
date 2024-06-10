@@ -1,18 +1,11 @@
 
-def find_escape_hole(gopher_location, dog_location, hole_locations):
-    # Calculate the distance between the gopher and the dog
-    distance = abs(gopher_location[0] - dog_location[0]) + abs(gopher_location[1] - dog_location[1])
+def get_performance(current_rating, goal_rating):
+    return (goal_rating + current_rating) / 2
 
-    # Calculate the distance between the gopher and each hole
-    hole_distances = []
-    for hole_location in hole_locations:
-        hole_distance = abs(gopher_location[0] - hole_location[0]) + abs(gopher_location[1] - hole_location[1])
-        hole_distances.append(hole_distance)
+def main():
+    current_rating, goal_rating = map(int, input().split())
+    print(get_performance(current_rating, goal_rating))
 
-    # Check if the gopher can escape through any hole
-    for i in range(len(hole_locations)):
-        if hole_distances[i] > distance:
-            return f"The gopher can escape through the hole at ({hole_locations[i][0]}, {hole_locations[i][1]})."
-
-    return "The gopher cannot escape."
+if __name__ == '__main__':
+    main()
 

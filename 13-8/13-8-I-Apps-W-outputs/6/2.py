@@ -1,27 +1,42 @@
 
-import math
+def get_min_distance(vehicles):
+    # Sort the vehicles by their position
+    vehicles.sort(key=lambda x: x[0])
+    
+    # Initialize the minimum distance to a large value
+    min_distance = 100000
+    
+    # Iterate over the vehicles
+    for i in range(len(vehicles)-1):
+        # Get the current and next vehicle
+        current_vehicle = vehicles[i]
+        next_vehicle = vehicles[i+1]
+        
+        # Calculate the distance between the current and next vehicle
+        distance = abs(next_vehicle[0] - current_vehicle[0])
+        
+        # Update the minimum distance if necessary
+        if distance < min_distance:
+            min_distance = distance
+    
+    return min_distance
 
-def shortest_paths(D, q, queries):
-    # Initialize a dictionary to store the number of shortest paths between each pair of vertices
-    shortest_paths = {}
+def main():
+    # Read the number of vehicles
+    n = int(input())
+    
+    # Read the positions and velocities of the vehicles
+    vehicles = []
+    for i in range(n):
+        x, v = map(int, input().split())
+        vehicles.append((x, v))
+    
+    # Call the get_min_distance function
+    min_distance = get_min_distance(vehicles)
+    
+    # Print the result
+    print(min_distance)
 
-    # Iterate over each query
-    for v, u in queries:
-        # If the query is for the same vertex, the number of shortest paths is 1
-        if v == u:
-            shortest_paths[(v, u)] = 1
-        # If the query is for two different vertices, calculate the number of shortest paths
-        else:
-            # Initialize the number of shortest paths to 0
-            num_shortest_paths = 0
-            # Iterate over each divisor of D
-            for divisor in range(1, int(math.sqrt(D)) + 1):
-                # If the divisor is a common divisor of v and u, increment the number of shortest paths
-                if v % divisor == 0 and u % divisor == 0:
-                    num_shortest_paths += 1
-            # Add the number of shortest paths to the dictionary
-            shortest_paths[(v, u)] = num_shortest_paths
-
-    # Return the number of shortest paths for each query
-    return [shortest_paths[(v, u)] for v, u in queries]
+if __name__ == '__main__':
+    main()
 

@@ -1,41 +1,26 @@
 
-def get_minimal_bdd_size(n, function_values):
-    # Initialize a dictionary to store the BDD nodes
-    nodes = {}
-    
-    # Initialize the root node with function value 1
-    root = 1
-    nodes[root] = {}
-    
-    # Iterate over the function values
-    for i in range(len(function_values)):
-        # Get the current function value
-        current_value = function_values[i]
-        
-        # If the current value is 0, skip this iteration
-        if current_value == 0:
-            continue
-        
-        # Get the current node
-        current_node = root
-        
-        # Iterate over the bits of the current value
-        for j in range(n):
-            # Get the current bit
-            current_bit = (current_value >> j) & 1
-            
-            # If the current bit is 0, skip this iteration
-            if current_bit == 0:
-                continue
-            
-            # If the current node does not have a child node for the current bit, create one
-            if j not in nodes[current_node]:
-                nodes[current_node][j] = len(nodes)
-                nodes[nodes[current_node][j]] = {}
-            
-            # Set the current node to the child node for the current bit
-            current_node = nodes[current_node][j]
-    
-    # Return the number of vertices in the BDD
-    return len(nodes)
+def get_even_odd_steps(a, b):
+    even_steps = []
+    odd_steps = []
+    for i in range(1, a+1):
+        even_steps.append(2*i)
+    for i in range(1, b+1):
+        odd_steps.append(2*i-1)
+    return even_steps, odd_steps
+
+def check_interval(l, r, even_steps, odd_steps):
+    even_count = 0
+    odd_count = 0
+    for i in range(l, r+1):
+        if i in even_steps:
+            even_count += 1
+        if i in odd_steps:
+            odd_count += 1
+    return even_count == odd_count
+
+if __name__ == '__main__':
+    a, b = map(int, input().split())
+    even_steps, odd_steps = get_even_odd_steps(a, b)
+    l, r = map(int, input().split())
+    print("YES") if check_interval(l, r, even_steps, odd_steps) else print("NO")
 

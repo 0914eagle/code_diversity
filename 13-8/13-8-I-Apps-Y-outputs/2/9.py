@@ -1,28 +1,20 @@
 
-def rate_dance(grid):
-    # Initialize variables
-    rating = 0
-    current_move = 0
-    previous_move = 0
+def is_prime(n):
+    if n <= 1:
+        return False
+    for i in range(2, int(n ** 0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
 
-    # Iterate through the grid
-    for i in range(len(grid)):
-        for j in range(len(grid[0])):
-            # Check if the current character is '$'
-            if grid[i][j] == '$':
-                # Increment the current move
-                current_move += 1
-            # Check if the current character is '_' and the previous character was '$'
-            elif grid[i][j] == '_' and grid[i][j-1] == '$':
-                # Increment the rating
-                rating += 1
-                # Reset the current move
-                current_move = 0
-            # Check if the current character is '_' and the previous character was '_'
-            elif grid[i][j] == '_' and grid[i][j-1] == '_':
-                # Increment the previous move
-                previous_move += 1
+def solve(n):
+    count = 0
+    for i in range(2, n + 1):
+        if is_prime(i):
+            count += 1
+    return count
 
-    # Return the rating
-    return rating
+if __name__ == '__main__':
+    n = int(input())
+    print(solve(n))
 

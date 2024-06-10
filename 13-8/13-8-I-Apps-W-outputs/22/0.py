@@ -1,22 +1,38 @@
 
-def solve(n, c, t):
-    if c == t:
-        return "Yes"
-    
-    # Initialize the charges of the stones
-    charges = c
-    
-    # Iterate through the stones and synchronize them with their neighbors
-    for i in range(1, n):
-        # Calculate the new charge of the current stone
-        new_charge = charges[i-1] + charges[i+1] - charges[i]
-        
-        # Update the charge of the current stone
-        charges[i] = new_charge
-    
-    # Check if the charges of the stones match the required charges
-    if charges == t:
-        return "Yes"
-    else:
-        return "No"
+def get_min_time(n, m, d, g, r):
+    # Initialize variables
+    min_time = 0
+    current_pos = 0
+    current_dir = 1
+    safety_islands = set(d)
+    green_light = True
+
+    # Iterate until Denis reaches the end of the road
+    while current_pos != n:
+        # If the red light is on, Denis must be on a safety island
+        if not green_light and current_pos not in safety_islands:
+            return -1
+
+        # If Denis is on a safety island, he can change direction
+        if current_pos in safety_islands:
+            current_dir = -current_dir
+
+        # Move Denis in the current direction
+        current_pos += current_dir
+
+        # Update the time and the green light status
+        min_time += 1
+        green_light = not green_light
+
+    # Return the minimum time
+    return min_time
+
+def main():
+    n, m = map(int, input().split())
+    d = list(map(int, input().split()))
+    g, r = map(int, input().split())
+    print(get_min_time(n, m, d, g, r))
+
+if __name__ == '__main__':
+    main()
 

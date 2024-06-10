@@ -1,5 +1,23 @@
 
-def find_reconstructions(pre_output, in_output, post_output):
-    # Your code here
-    pass
+def get_entirely_unsorted_sequences(arr):
+    n = len(arr)
+    count = 0
+    for i in range(1, n+1):
+        for j in itertools.permutations(arr, i):
+            if is_entirely_unsorted(j):
+                count += 1
+    return count % (10**9 + 9)
+
+def is_entirely_unsorted(arr):
+    n = len(arr)
+    for i in range(n-1):
+        for j in range(i+1, n):
+            if arr[i] > arr[j]:
+                return False
+    return True
+
+if __name__ == '__main__':
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(get_entirely_unsorted_sequences(arr))
 

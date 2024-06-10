@@ -1,28 +1,48 @@
 
-def solve(N, K, board):
-    # Initialize a two-dimensional array to store the sums of the dominoes
-    sums = [[0] * (N - 1) for _ in range(N - 1)]
+def get_path_lengths(n, k_list):
+    # Initialize a dictionary to store the path lengths from each fragment to the assembly node
+    path_lengths = {}
+    
+    # Loop through each fragment
+    for i in range(n):
+        # Initialize the current node as the factorial of the fragment's index
+        current_node = k_list[i]!
+        # Initialize the path length from the current fragment to the assembly node as 0
+        path_length = 0
+        
+        # Loop until the current node is the assembly node
+        while current_node != 1:
+            # Get the lowest prime divisor of the current node
+            prime_divisor = get_lowest_prime_divisor(current_node)
+            # Update the current node to be the quotient of the current node and the lowest prime divisor
+            current_node = current_node // prime_divisor
+            # Increment the path length by 1
+            path_length += 1
+        
+        # Add the path length from the current fragment to the assembly node to the dictionary
+        path_lengths[i] = path_length
+    
+    return path_lengths
 
-    # Loop through each row of the board
-    for i in range(N - 1):
-        # Loop through each column of the board
-        for j in range(N - 1):
-            # Calculate the sum of the dominoes in the current position
-            sums[i][j] = board[i][j] + board[i][j + 1] + board[i + 1][j] + board[i + 1][j + 1]
+def get_lowest_prime_divisor(n):
+    # Initialize a list to store the prime factors of n
+    prime_factors = []
+    
+    # Loop until the square root of n
+    for i in range(2, int(n**0.5) + 1):
+        # If n is divisible by i, add i to the list of prime factors
+        if n % i == 0:
+            prime_factors.append(i)
+    
+    # Return the smallest prime factor
+    return min(prime_factors)
 
-    # Initialize a variable to store the maximum sum
-    max_sum = 0
+def main():
+    n = int(input())
+    k_list = list(map(int, input().split()))
+    path_lengths = get_path_lengths(n, k_list)
+    print(sum(path_lengths.values()))
 
-    # Loop through each possible combination of dominoes
-    for i in range(K):
-        for j in range(K):
-            # Calculate the sum of the current combination of dominoes
-            current_sum = sums[i][j] + sums[i + 1][j + 1]
-
-            # Update the maximum sum if the current sum is greater than the previous maximum sum
-            if current_sum > max_sum:
-                max_sum = current_sum
-
-    # Return the maximum sum
-    return max_sum
+if __name__ == '__main__':
+    main()
 

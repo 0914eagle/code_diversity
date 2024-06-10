@@ -1,41 +1,23 @@
 
-def is_rbs(s):
-    stack = []
-    for char in s:
-        if char == "(" or char == "[" or char == "<" or char == "{":
-            stack.append(char)
-        else:
-            if not stack or stack[-1] != match(char):
-                return False
-            stack.pop()
-    return not stack
-
-def match(char):
-    if char == ")":
-        return "("
-    elif char == "]":
-        return "["
-    elif char == "}":
-        return "{"
-    else:
-        return "<"
-
-def get_min_replaces(s):
-    stack = []
-    count = 0
-    for char in s:
-        if char == "(" or char == "[" or char == "<" or char == "{":
-            stack.append(char)
-        else:
-            if not stack or stack[-1] != match(char):
-                stack.append(match(char))
+def get_max_students_with_favorite_drink(n, k, a):
+    # Find the maximum number of students who can get their favorite drink
+    max_students = 0
+    for i in range(1, k+1):
+        # Count the number of students who prefer drink i
+        count = 0
+        for j in range(n):
+            if a[j] == i:
                 count += 1
-            stack.pop()
-    return count
+        # Update the maximum number of students who can get their favorite drink
+        if count > max_students:
+            max_students = count
+    return max_students
 
-def solve(s):
-    if is_rbs(s):
-        return "0"
-    else:
-        return str(get_min_replaces(s))
+def main():
+    n, k = map(int, input().split())
+    a = list(map(int, input().split()))
+    print(get_max_students_with_favorite_drink(n, k, a))
+
+if __name__ == '__main__':
+    main()
 

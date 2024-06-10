@@ -1,19 +1,31 @@
 
-def solve(a, b, l, r):
-    # Initialize the string with the first a letters of the alphabet
-    s = "".join(chr(ord('a') + i) for i in range(a))
+def get_magical_subarray(array, l, r):
+    # Find the minimum and maximum values in the subarray
+    min_val = min(array[l:r+1])
+    max_val = max(array[l:r+1])
     
-    # Mister B's opponent's strategy is to append a string of length b that does not contain any letters from the suffix of length a of the string
-    while len(s) < r:
-        # Find the suffix of length a
-        suffix = s[len(s) - a:]
-        
-        # Generate a string of length b that does not contain any letters from the suffix
-        t = "".join(chr(ord('a') + i) for i in range(a, a + b) if chr(ord('a') + i) not in suffix)
-        
-        # Append the string to the end of s
-        s += t
+    # Iterate through the subarray and count the number of elements that are between the minimum and maximum values
+    count = 0
+    for i in range(l, r+1):
+        if array[i] >= min_val and array[i] <= max_val:
+            count += 1
     
-    # Return the number of different letters in the segment from position l to position r, inclusive
-    return len(set(s[l - 1:r]))
+    return count
+
+def solve(array, queries):
+    result = []
+    for l, r in queries:
+        result.append(get_magical_subarray(array, l, r))
+    return result
+
+if __name__ == '__main__':
+    n = int(input())
+    array = list(map(int, input().split()))
+    q = int(input())
+    queries = []
+    for i in range(q):
+        queries.append(list(map(int, input().split())))
+    result = solve(array, queries)
+    for i in result:
+        print(i)
 

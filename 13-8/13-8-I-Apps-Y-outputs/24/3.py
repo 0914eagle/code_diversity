@@ -1,43 +1,28 @@
 
-def determine_winner(s_a, s_b, s_c):
-    # Initialize the decks of the players
-    alice_deck = [c for c in s_a]
-    bob_deck = [c for c in s_b]
-    charlie_deck = [c for c in s_c]
+def is_easily_playable(s):
+    # Check if the length of the string is between 1 and 100
+    if not 1 <= len(s) <= 100:
+        return "No"
     
-    # While all decks are not empty
-    while alice_deck and bob_deck and charlie_deck:
-        # Alice goes first
-        current_player = 0
-        
-        # While the current player's deck is not empty
-        while alice_deck and current_player == 0:
-            # Discard the top card in the current player's deck
-            card = alice_deck.pop(0)
-            
-            # Determine the next player based on the letter on the card
-            if card == "a":
-                current_player = 0
-            elif card == "b":
-                current_player = 1
-            else:
-                current_player = 2
-        
-        # If the current player's deck is empty, they win the game
-        if not alice_deck:
-            return "A"
-        
-        # Swap the current player with the next player
-        current_player = (current_player + 1) % 3
+    # Check if the string contains only L, R, U, and D
+    if not all(c in "LRUD" for c in s):
+        return "No"
     
-    # If Alice's deck is empty, Bob wins the game
-    if not bob_deck:
-        return "B"
+    # Check if the characters in odd positions are R, U, or D
+    if not all(s[i] in "RUD" for i in range(1, len(s), 2)):
+        return "No"
     
-    # If Bob's deck is empty, Charlie wins the game
-    if not charlie_deck:
-        return "C"
+    # Check if the characters in even positions are L, U, or D
+    if not all(s[i] in "LUD" for i in range(2, len(s), 2)):
+        return "No"
     
-    # If all decks are not empty, the game continues
-    return "D"
+    # If all conditions are met, return "Yes"
+    return "Yes"
+
+def main():
+    s = input("Enter a string: ")
+    print(is_easily_playable(s))
+
+if __name__ == "__main__":
+    main()
 

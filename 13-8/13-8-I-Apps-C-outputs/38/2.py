@@ -1,35 +1,54 @@
 
-def solve(offers):
-    # Sort the offers by the first section of each offer
-    sorted_offers = sorted(offers, key=lambda x: x[1])
+def get_character_features(n, k, existing_characters):
+    # Initialize a dictionary to store the features of Tira's character
+    tira_character = {}
+    
+    # Iterate through the existing characters
+    for character in existing_characters:
+        # Initialize a set to store the features of the current character
+        current_character = set()
+        
+        # Iterate through the features of the current character
+        for j in range(k):
+            # If the current character has the j'th feature, add it to the set
+            if character[j] == "1":
+                current_character.add(j)
+        
+        # Add the set of features of the current character to the dictionary
+        tira_character[frozenset(current_character)] = 0
+    
+    # Initialize a variable to store the maximum similarity between Tira's character and any other character
+    max_similarity = 0
+    
+    # Iterate through the features of Tira's character
+    for i in range(k):
+        # Initialize a set to store the features of Tira's character that are different from the i'th feature
+        different_features = set(range(k))
+        different_features.remove(i)
+        
+        # Initialize a variable to store the similarity between Tira's character and the current character
+        current_similarity = 0
+        
+        # Iterate through the features of the current character
+        for j in range(k):
+            # If the current character has the j'th feature and Tira's character does not have it, increase the similarity
+            if tira_character[frozenset(different_features)][j] == 1 and character[j] == "0":
+                current_similarity += 1
+        
+        # If the similarity between Tira's character and the current character is greater than the maximum similarity, update the maximum similarity
+        if current_similarity > max_similarity:
+            max_similarity = current_similarity
+    
+    # Return the features of Tira's character with the maximum similarity
+    return [int(i in tira_character[frozenset(different_features)]) for i in range(k)]
 
-    # Initialize the variables to keep track of the number of colors and sections painted
-    num_colors = 0
-    num_sections = 0
+def main():
+    n, k = map(int, input().split())
+    existing_characters = []
+    for _ in range(n):
+        existing_characters.append(input())
+    print("".join(str(i) for i in get_character_features(n, k, existing_characters)))
 
-    # Initialize a set to store the colors that have been used
-    used_colors = set()
-
-    # Loop through the sorted offers and accept them if they can be accepted
-    for offer in sorted_offers:
-        color, first_section, last_section = offer
-
-        # If the color has not been used before, increment the number of colors
-        if color not in used_colors:
-            num_colors += 1
-            used_colors.add(color)
-
-        # Increment the number of sections painted
-        num_sections += last_section - first_section + 1
-
-        # If the number of colors is greater than 3, return "IMPOSSIBLE"
-        if num_colors > 3:
-            return "IMPOSSIBLE"
-
-    # If all the sections have been painted, return the number of offers accepted
-    if num_sections == 10000:
-        return len(offers)
-
-    # If not all the sections have been painted, return "IMPOSSIBLE"
-    return "IMPOSSIBLE"
+if __name__ == '__main__':
+    main()
 

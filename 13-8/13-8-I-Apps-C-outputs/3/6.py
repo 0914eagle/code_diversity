@@ -1,11 +1,15 @@
 
-def solve(n):
-    # The minimum number of packets is n
-    packets = n
-    # Loop through all possible values of x
-    for x in range(1, n+1):
-        # If x is not a multiple of n, we need one more packet
-        if x % n != 0:
-            packets += 1
-    return packets
+def power_sum(N, k):
+    # Calculate the sum of costs for all non-empty subsets
+    total_cost = 0
+    for i in range(1, N+1):
+        total_cost += (i**k) % (10**9 + 7)
+    return total_cost
+
+def main():
+    N, k = map(int, input().split())
+    print(power_sum(N, k))
+
+if __name__ == '__main__':
+    main()
 

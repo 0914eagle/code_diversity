@@ -1,16 +1,31 @@
 
-def can_switch_garlands(k1, k2, k3):
-    # Check if k1, k2, and k3 are positive
-    if k1 <= 0 or k2 <= 0 or k3 <= 0:
-        return "NO"
+def get_synchronized_stones(charges, target_charges):
+    # Initialize the synchronized stones as the original charges
+    synchronized_stones = charges.copy()
 
-    # Check if the greatest common divisor of k1, k2, and k3 is 1
-    if __gcd(k1, k2) != 1 or __gcd(k1, k3) != 1 or __gcd(k2, k3) != 1:
-        return "NO"
+    # Loop through the stones and synchronize them with their neighbors
+    for i in range(1, len(charges) - 1):
+        # Calculate the new charge for the current stone
+        new_charge = synchronized_stones[i + 1] + synchronized_stones[i - 1] - synchronized_stones[i]
 
-    # Check if the sum of k1, k2, and k3 is less than or equal to 1500
-    if k1 + k2 + k3 > 1500:
-        return "NO"
+        # Update the charge of the current stone
+        synchronized_stones[i] = new_charge
 
-    return "YES"
+    # Return the synchronized stones
+    return synchronized_stones
+
+def main():
+    # Read the input data
+    n = int(input())
+    charges = list(map(int, input().split()))
+    target_charges = list(map(int, input().split()))
+
+    # Check if the charges can be synchronized
+    if get_synchronized_stones(charges, target_charges) == target_charges:
+        print("Yes")
+    else:
+        print("No")
+
+if __name__ == '__main__':
+    main()
 

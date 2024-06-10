@@ -1,19 +1,30 @@
 
-def solve(n, l, luggage_positions):
-    # Initialize the maximum speed to be the minimum speed
-    max_speed = 0.1
+def riffle_shuffle(deck):
+    n = len(deck)
+    mid = n // 2
+    left, right = deck[:mid], deck[mid:]
+    return left + right
 
-    # Loop through each piece of luggage and check if it will collide with any other piece of luggage
-    for i in range(n):
-        for j in range(i+1, n):
-            # Calculate the distance between the two pieces of luggage
-            distance = abs(luggage_positions[i] - luggage_positions[j])
+def dovetail_shuffle(deck):
+    n = len(deck)
+    mid = n // 2
+    left, right = deck[:mid], deck[mid:]
+    return [left[i] for i in range(mid)] + [right[i] for i in range(mid)]
 
-            # If the distance is less than or equal to the length of the circular conveyor belt, they will collide
-            if distance <= l:
-                # Update the maximum speed to be the minimum speed necessary to avoid the collision
-                max_speed = max(max_speed, distance / l)
+def shuffle_count(deck, shuffle_func):
+    count = 0
+    while True:
+        deck = shuffle_func(deck)
+        count += 1
+        if deck == list(range(1, len(deck) + 1)):
+            return count
 
-    # Return the maximum speed
-    return max_speed
+def main():
+    n = int(input())
+    deck = list(map(int, input().split()))
+    print(shuffle_count(deck, riffle_shuffle))
+    print(shuffle_count(deck, dovetail_shuffle))
+
+if __name__ == '__main__':
+    main()
 

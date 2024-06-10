@@ -1,48 +1,42 @@
 
-def solve(D, q, queries):
-    # Initialize a dictionary to store the number of shortest paths between each pair of vertices
-    num_paths = {}
+def read_input():
+    n = int(input())
+    vehicles = []
+    for i in range(n):
+        x, v = map(int, input().split())
+        vehicles.append((x, v))
+    return n, vehicles
 
-    # Iterate over each query
-    for v, u in queries:
-        # If the query is for the same vertex, the number of shortest paths is 1
-        if v == u:
-            num_paths[(v, u)] = 1
-        # Otherwise, calculate the number of shortest paths between the two vertices
-        else:
-            # Initialize a set to store the vertices that are not divisible by either v or u
-            non_divisible = set()
+def get_closest_distance(vehicles):
+    # Sort the vehicles by their position
+    vehicles.sort(key=lambda x: x[0])
+    
+    # Initialize the closest distance to infinity
+    closest_distance = float('inf')
+    
+    # Iterate over the vehicles and calculate the distance between them
+    for i in range(len(vehicles) - 1):
+        x1, v1 = vehicles[i]
+        x2, v2 = vehicles[i + 1]
+        distance = abs(x2 - x1)
+        closest_distance = min(closest_distance, distance)
+    
+    return closest_distance
 
-            # Iterate over each divisor of D
-            for d in range(1, D + 1):
-                # If d is not divisible by either v or u, add it to the set
-                if d % v != 0 and d % u != 0:
-                    non_divisible.add(d)
+def get_minimum_range(vehicles, closest_distance):
+    # Calculate the minimum range needed to cover all the vehicles
+    minimum_range = 0
+    for x, v in vehicles:
+        minimum_range = max(minimum_range, abs(x) + closest_distance)
+    
+    return minimum_range
 
-            # Initialize a dictionary to store the number of paths from v to each vertex that is not divisible by either v or u
-            paths_from_v = {}
+def main():
+    n, vehicles = read_input()
+    closest_distance = get_closest_distance(vehicles)
+    minimum_range = get_minimum_range(vehicles, closest_distance)
+    print(minimum_range)
 
-            # Iterate over each vertex that is not divisible by either v or u
-            for vertex in non_divisible:
-                # Initialize a set to store the vertices that are not divisible by vertex
-                non_divisible_vertices = set()
-
-                # Iterate over each divisor of D
-                for d in range(1, D + 1):
-                    # If d is not divisible by vertex, add it to the set
-                    if d % vertex != 0:
-                        non_divisible_vertices.add(d)
-
-                # If vertex is not divisible by either v or u, add it to the set of non-divisible vertices
-                if vertex % v != 0 and vertex % u != 0:
-                    non_divisible_vertices.add(vertex)
-
-                # Calculate the number of paths from v to vertex that are not divisible by either v or u
-                paths_from_v[vertex] = len(non_divisible_vertices)
-
-            # Calculate the number of shortest paths between v and u by summing the number of paths from v to each vertex that is not divisible by either v or u
-            num_paths[(v, u)] = sum(paths_from_v.values())
-
-    # Return the number of shortest paths for each query
-    return [num_paths[(v, u)] % 998244353 for v, u in queries]
+if __name__ == '__main__':
+    main()
 

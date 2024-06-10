@@ -1,21 +1,50 @@
 
-def solve(n, d, b, a):
-    # Initialize the number of rooms with non-hidden students different from b
-    x_1 = 0
-    x_2 = 0
+def get_square_killer_size(memory):
+    # Initialize variables
+    max_size = 0
+    current_size = 0
+    row_index = 0
+    col_index = 0
+    row_count = len(memory)
+    col_count = len(memory[0])
     
-    # Iterate through each room
-    for i in range(n):
-        # Calculate the number of students in the current room
-        students = a[i]
-        
-        # If the number of students is different from b, increment the appropriate counter
-        if students != b:
-            if i % 2 == 0:
-                x_1 += 1
-            else:
-                x_2 += 1
+    # Iterate through the memory matrix
+    for i in range(row_count):
+        for j in range(col_count):
+            # If the current element is 1, check if there is a square killer
+            if memory[i][j] == 1:
+                # Check if the current element is part of a square killer
+                current_size = 1
+                for k in range(i, row_count):
+                    if memory[k][j] == 1:
+                        current_size += 1
+                    else:
+                        break
+                for l in range(j, col_count):
+                    if memory[i][l] == 1:
+                        current_size += 1
+                    else:
+                        break
+                # Update the maximum size if necessary
+                if current_size > max_size:
+                    max_size = current_size
     
-    # Return the minimal possible value of the maximum of x_i
-    return min(x_1, x_2)
+    # Return the maximum size
+    return max_size
+
+def main():
+    # Read the input
+    row_count, col_count = map(int, input().split())
+    memory = []
+    for _ in range(row_count):
+        memory.append(list(map(int, input())))
+    
+    # Get the square killer size
+    size = get_square_killer_size(memory)
+    
+    # Print the output
+    print(size)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,30 +1,43 @@
 
-import sys
+def get_longest_common_subsequence(strings):
+    # Find the length of the longest common subsequence
+    # of the first two strings
+    lcs = len(get_lcs(strings[0], strings[1]))
+    
+    # Iterate over the rest of the strings
+    for i in range(2, len(strings)):
+        # Find the length of the longest common subsequence
+        # of the current string and the previous strings
+        lcs = max(lcs, len(get_lcs(strings[i], strings[i-1])))
+    
+    return lcs
 
-def solve(R, W, d):
-    # Calculate the number of ways to arrange the red and white wine piles
-    num_red_piles = (R + d - 1) // d
-    num_white_piles = W
-    num_piles = num_red_piles + num_white_piles
+def get_lcs(s1, s2):
+    # Initialize the matrix to store the length of the LCS
+    dp = [[0] * (len(s2) + 1) for _ in range(len(s1) + 1)]
     
-    # Calculate the number of ways to arrange the piles in a line
-    num_arrangements = 1
-    for i in range(num_piles):
-        num_arrangements *= num_piles - i
+    # Fill in the matrix
+    for i in range(1, len(s1) + 1):
+        for j in range(1, len(s2) + 1):
+            if s1[i-1] == s2[j-1]:
+                dp[i][j] = dp[i-1][j-1] + 1
+            else:
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1])
     
-    # Calculate the number of ways to arrange the red and white wine piles in a line with no two piles of the same type next to each other
-    num_arrangements_with_no_adjacent_piles = 0
-    for i in range(num_red_piles):
-        for j in range(i + 1, num_red_piles):
-            num_arrangements_with_no_adjacent_piles += num_white_piles
+    # Find the length of the LCS
+    lcs = 0
+    for i in range(len(s1), 0, -1):
+        for j in range(len(s2), 0, -1):
+            if dp[i][j] > lcs:
+                lcs = dp[i][j]
     
-    # Calculate the number of ways to arrange the piles in a line with no two piles of the same type next to each other and no red pile with more than d boxes
-    num_valid_arrangements = num_arrangements_with_no_adjacent_piles - num_red_piles + 1
-    
-    # Return the number of valid arrangements modulo 10^9 + 7
-    return num_valid_arrangements % (10**9 + 7)
+    return lcs
 
-if __name__ == "__main__":
-    R, W, d = map(int, sys.stdin.readline().split())
-    print(solve(R, W, d))
+def main():
+    n, k = map(int, input().split())
+    strings = [input() for _ in range(n)]
+    print(get_longest_common_subsequence(strings))
+
+if __name__ == '__main__':
+    main()
 

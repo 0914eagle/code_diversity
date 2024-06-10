@@ -1,45 +1,51 @@
 
-def minimum_spanning_tree(points):
-    # Sort the points based on their x-coordinate
-    sorted_points = sorted(points, key=lambda point: point[0])
+def get_max_value(sequence):
+    # Initialize variables
+    max_value = 0
+    operations = []
 
-    # Create a disjoint set data structure to store the points and their parents
-    dsu = DisjointSetUnion(sorted_points)
+    # Loop through the sequence
+    while len(sequence) > 1:
+        # Find the maximum value in the sequence
+        max_index = sequence.index(max(sequence))
+        max_value = max(max_value, sequence[max_index])
 
-    # Initialize the minimum spanning tree weight to 0
-    mst_weight = 0
-
-    # Iterate through the points and find the minimum spanning tree weight
-    for i in range(len(sorted_points)):
-        for j in range(i+1, len(sorted_points)):
-            point1 = sorted_points[i]
-            point2 = sorted_points[j]
-            weight = abs(point1[0] - point2[0]) + abs(point1[1] - point2[1])
-            if dsu.find(point1) != dsu.find(point2):
-                dsu.union(point1, point2)
-                mst_weight += weight
-
-    return mst_weight
-
-# Disjoint Set Union (DSU) data structure
-class DisjointSetUnion:
-    def __init__(self, points):
-        self.parents = {point: point for point in points}
-        self.ranks = {point: 0 for point in points}
-
-    def find(self, point):
-        if self.parents[point] != point:
-            self.parents[point] = self.find(self.parents[point])
-        return self.parents[point]
-
-    def union(self, point1, point2):
-        root1 = self.find(point1)
-        root2 = self.find(point2)
-        if self.ranks[root1] > self.ranks[root2]:
-            self.parents[root2] = root1
-        elif self.ranks[root1] < self.ranks[root2]:
-            self.parents[root1] = root2
+        # If the maximum value is at the end of the sequence, delete it
+        if max_index == len(sequence) - 1:
+            sequence.pop()
+        # If the maximum value is at the beginning of the sequence, delete it
+        elif max_index == 0:
+            sequence.pop(0)
+        # If the maximum value is in the middle of the sequence, replace it with the sum of the two adjacent elements and delete them
         else:
-            self.parents[root2] = root1
-            self.ranks[root1] += 1
+            sequence[max_index] = sequence[max_index - 1] + sequence[max_index + 1]
+            sequence.pop(max_index - 1)
+            sequence.pop(max_index - 1)
+
+        # Add the operation to the list of operations
+        operations.append(max_index + 1)
+
+    # Return the maximum value and the list of operations
+    return max_value, operations
+
+def main():
+    # Read the input
+    N = int(input())
+    sequence = list(map(int, input().split()))
+
+    # Get the maximum value and the list of operations
+    max_value, operations = get_max_value(sequence)
+
+    # Print the maximum value
+    print(max_value)
+
+    # Print the number of operations
+    print(len(operations))
+
+    # Print the indices of the elements chosen in each operation
+    for operation in operations:
+        print(operation)
+
+if __name__ == '__main__':
+    main()
 

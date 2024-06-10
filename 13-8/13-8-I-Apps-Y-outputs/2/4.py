@@ -1,15 +1,23 @@
 
-def solve(grid):
-    # Convert the grid to a list of lists
-    grid = [list(row) for row in grid.split('\n')]
-    # Initialize the rating variable
-    rating = 0
-    # Iterate through the grid
-    for i in range(len(grid)):
-        # Check if the current row is blank
-        if all(char == '_' for char in grid[i]):
-            # If it is, increment the rating
-            rating += 1
-    # Return the rating
-    return rating
+def is_prime(n):
+    if n <= 1:
+        return False
+    for i in range(2, int(n ** 0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+def solve(n):
+    count = 0
+    for i in range(2, n + 1):
+        if is_prime(i):
+            count += 1
+    return count
+
+def main():
+    n = int(input())
+    print(solve(n))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,25 +1,27 @@
 
-def solve(n, distances):
-    # Initialize the disparities of both subsets as infinite
-    disparity_a = float('inf')
-    disparity_b = float('inf')
-    
-    # Initialize the subsets as empty
-    subset_a = []
-    subset_b = []
-    
-    # Iterate over each distance
-    for i in range(n):
-        for j in range(i+1, n):
-            # If the distance is less than the current disparity of either subset,
-            # update the disparity and the subset accordingly
-            if distances[i][j] < disparity_a:
-                disparity_a = distances[i][j]
-                subset_a = [i, j]
-            elif distances[i][j] < disparity_b:
-                disparity_b = distances[i][j]
-                subset_b = [i, j]
-    
-    # Return the sum of the disparities
-    return disparity_a + disparity_b
+import math
+
+def calculate_velocity(distance, time):
+    return distance / time
+
+def calculate_minimum_velocity(mice, multiplier):
+    velocities = []
+    for mouse in mice:
+        velocity = calculate_velocity(mouse[0], mouse[1])
+        velocities.append(velocity)
+        velocities.append(velocity * multiplier)
+    return min(velocities)
+
+def main():
+    mice = []
+    num_mice = int(input())
+    for i in range(num_mice):
+        mouse = [int(x) for x in input().split()]
+        mice.append(mouse)
+    multiplier = float(input())
+    minimum_velocity = calculate_minimum_velocity(mice, multiplier)
+    print(minimum_velocity)
+
+if __name__ == '__main__':
+    main()
 

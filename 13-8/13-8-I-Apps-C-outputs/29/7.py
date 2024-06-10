@@ -1,27 +1,39 @@
 
-def solve(kid_preferences):
-    # Initialize the variables
-    teachers = [0, 0, 0]
-    classes = [[], [], []]
-    T = 0
+def get_min_energy(N, P, energy_list, probability_list):
+    # Initialize variables
+    min_energy = 0
+    total_probability = 0
 
-    # Iterate through the kids and their preferences
-    for kid, preference in enumerate(kid_preferences):
-        # Find the teacher with the least number of students
-        teacher = teachers.index(min(teachers))
-        classes[teacher].append(kid)
-        teachers[teacher] += 1
+    # Sort the boxes by probability in descending order
+    sorted_boxes = sorted(range(N), key=lambda i: probability_list[i], reverse=True)
 
-        # Update the number of students in the same class as the kid's current class
-        current_class = kid_preferences[kid][0]
-        classes[current_class].remove(kid)
+    # Loop through the boxes and calculate the minimum energy needed
+    for i in sorted_boxes:
+        energy = energy_list[i]
+        probability = probability_list[i]
+        total_probability += probability
 
-        # Update the number of students in the same class as the kid's new class
-        new_class = teacher
-        classes[new_class].append(kid)
+        if total_probability >= P:
+            min_energy += energy
+            break
+        else:
+            min_energy += energy
 
-        # Update the number of students in the same class as the kid's top T preferences
-        T = max(T, len(set(preference[:T]) & set(classes[new_class])))
+    return min_energy
 
-    return T
+def main():
+    N, P = map(int, input().split())
+    energy_list = []
+    probability_list = []
+
+    for i in range(N):
+        energy, probability = map(float, input().split())
+        energy_list.append(energy)
+        probability_list.append(probability)
+
+    min_energy = get_min_energy(N, P, energy_list, probability_list)
+    print(min_energy)
+
+if __name__ == '__main__':
+    main()
 

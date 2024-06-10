@@ -1,16 +1,37 @@
 
-def solve(k1, k2, k3):
-    # Check if k1, k2, and k3 are pairwise coprime
-    if __gcd(k1, k2) != 1 or __gcd(k1, k3) != 1 or __gcd(k2, k3) != 1:
-        return "NO"
+def get_charge_difference(stone_charges, target_charges):
     
-    # Check if k1, k2, and k3 are all less than or equal to 1500
-    if k1 > 1500 or k2 > 1500 or k3 > 1500:
-        return "NO"
+    return [target_charges[i] - stone_charges[i] for i in range(len(stone_charges))]
+
+def synchronize(stone_charges, i):
     
-    # Check if the sum of k1, k2, and k3 is less than or equal to 1500
-    if k1 + k2 + k3 > 1500:
-        return "NO"
+    left_charge = stone_charges[i - 1]
+    right_charge = stone_charges[i + 1]
+    stone_charges[i] = left_charge + right_charge - stone_charges[i]
+
+def can_synchronize(stone_charges, target_charges):
     
-    return "YES"
+    difference = get_charge_difference(stone_charges, target_charges)
+    if all(difference == 0):
+        return True
+    for i in range(1, len(stone_charges) - 1):
+        if difference[i] != 0:
+            continue
+        synchronize(stone_charges, i)
+        difference = get_charge_difference(stone_charges, target_charges)
+        if all(difference == 0):
+            return True
+    return False
+
+def main():
+    n = int(input())
+    stone_charges = list(map(int, input().split()))
+    target_charges = list(map(int, input().split()))
+    if can_synchronize(stone_charges, target_charges):
+        print("Yes")
+    else:
+        print("No")
+
+if __name__ == '__main__':
+    main()
 

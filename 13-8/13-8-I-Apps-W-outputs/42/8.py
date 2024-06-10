@@ -1,25 +1,27 @@
 
-import sys
+def get_tree_height(n, parent):
+    height = 0
+    while n != 1:
+        n = parent[n]
+        height += 1
+    return height
 
-def solve(r1, c1, r2, c2):
-    # Initialize a 2D array to store the values of f(i, j)
-    dp = [[0] * (c2+1) for _ in range(r2+1)]
+def get_swap_pairs(n, a, parent):
+    height = get_tree_height(n, parent)
+    pairs = set()
+    for i in range(1, n + 1):
+        for j in range(i + 1, n + 1):
+            if parent[i] != parent[j] and a[i] != 0 and a[j] != 0 and abs(height[i] - height[j]) % 2 == 1:
+                pairs.add((i, j))
+    return pairs
 
-    # Base case: f(i, j) = 1 when i == 0 or j == 0
-    for i in range(r2+1):
-        dp[i][0] = 1
-    for j in range(c2+1):
-        dp[0][j] = 1
-
-    # Fill in the 2D array using the recurrence relation
-    for i in range(1, r2+1):
-        for j in range(1, c2+1):
-            dp[i][j] = dp[i-1][j] + dp[i][j-1]
-
-    # Return the sum modulo 10^9+7
-    return sum(dp[r2][c2]) % (10**9+7)
+def main():
+    n = int(input())
+    a = list(map(int, input().split()))
+    parent = list(map(int, input().split()))
+    pairs = get_swap_pairs(n, a, parent)
+    print(len(pairs))
 
 if __name__ == '__main__':
-    r1, c1, r2, c2 = map(int, sys.stdin.readline().split())
-    print(solve(r1, c1, r2, c2))
+    main()
 

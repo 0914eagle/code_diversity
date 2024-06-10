@@ -1,13 +1,21 @@
 
-def solve(a):
-    # Calculate the sum of the elements in the array
-    sum = 0
-    for i in a:
-        sum += i
-    
-    # Return "YES" if the sum is odd, and "NO" otherwise
-    if sum % 2 == 1:
-        return "YES"
-    else:
-        return "NO"
+import math
+
+def compute_time(n, p, s, v):
+    c = 0
+    time_taken = 0
+    while True:
+        time_taken = n * (math.log(n) ** (c * math.sqrt(2))) / (p * 10 ** 9)
+        if time_taken <= s / v:
+            break
+        c += 0.001
+    return time_taken, c
+
+def main():
+    n, p, s, v = map(float, input().split())
+    time_taken, c = compute_time(n, p, s, v)
+    print(time_taken, c)
+
+if __name__ == '__main__':
+    main()
 

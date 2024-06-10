@@ -1,22 +1,35 @@
 
-def solve(N, L, positions):
-    # Calculate the minimum distance between two pieces of luggage
-    min_distance = 1 + 1e-9
+def riffle_shuffle(n, order):
+    # Initialize the number of shuffles to 0
+    shuffles = 0
     
-    # Initialize the maximum speed to 0
-    max_speed = 0
+    # Split the deck into two stacks
+    stack1 = order[:n//2]
+    stack2 = order[n//2:]
     
-    # Iterate through each pair of positions
-    for i in range(N):
-        for j in range(i+1, N):
-            # Calculate the distance between the two positions
-            distance = abs(positions[i] - positions[j])
-            
-            # If the distance is less than the minimum distance, update the minimum distance and maximum speed
-            if distance < min_distance:
-                min_distance = distance
-                max_speed = (L - min_distance) / min_distance
+    # Interleave the stacks in a random order
+    while stack1 and stack2:
+        if random.random() < 0.5:
+            order.append(stack1.pop())
+        else:
+            order.append(stack2.pop())
+        shuffles += 1
     
-    # Return the maximum speed
-    return max_speed
+    # If either stack is not empty, add the remaining cards to the end of the order
+    while stack1:
+        order.append(stack1.pop())
+        shuffles += 1
+    while stack2:
+        order.append(stack2.pop())
+        shuffles += 1
+    
+    return shuffles
+
+def main():
+    n = int(input())
+    order = list(map(int, input().split()))
+    print(riffle_shuffle(n, order))
+
+if __name__ == '__main__':
+    main()
 

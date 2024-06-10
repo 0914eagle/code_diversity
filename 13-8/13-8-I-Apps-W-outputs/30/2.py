@@ -1,22 +1,43 @@
 
-def solve(n, x):
-    # Sort the measurements in ascending order
-    x.sort()
+def get_paint_required(digits):
+    # Calculate the total amount of paint required for the given digits
+    total_paint = 0
+    for digit in digits:
+        total_paint += digit
+    return total_paint
+
+def get_max_number(paint, digits):
+    # Initialize the maximum number as 0
+    max_number = 0
     
-    # Find the minimum and maximum values
-    min_val = x[0]
-    max_val = x[n-1]
+    # Iterate through the digits and check if the current digit can be used
+    for digit in digits:
+        # Check if the current digit can be used with the available paint
+        if digit <= paint:
+            # Update the maximum number by adding the current digit
+            max_number = max_number * 10 + digit
+            # Update the available paint by subtracting the current digit
+            paint -= digit
     
-    # Initialize the number of equal measurements to 0
-    equal_measurements = 0
+    # Return the maximum number
+    return max_number
+
+def main():
+    # Read the input
+    v = int(input())
+    digits = [int(x) for x in input().split()]
     
-    # Loop through the measurements
-    for i in range(n):
-        # Check if the current measurement is equal to the minimum or maximum value
-        if x[i] == min_val or x[i] == max_val:
-            # Increment the number of equal measurements
-            equal_measurements += 1
+    # Calculate the total amount of paint required
+    paint = get_paint_required(digits)
     
-    # Return the minimum possible number of equal measurements and the corresponding values
-    return equal_measurements, [min_val] * equal_measurements + [max_val] * (n - equal_measurements)
+    # Check if the available paint is enough to write any number
+    if paint == 0:
+        print(-1)
+    else:
+        # Find the maximum number that can be written
+        max_number = get_max_number(paint, digits)
+        print(max_number)
+
+if __name__ == '__main__':
+    main()
 

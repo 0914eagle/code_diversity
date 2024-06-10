@@ -1,21 +1,34 @@
 
-def solve(offers):
-    # Sort the offers by the first section of the fence
-    offers.sort(key=lambda x: x[1])
+def get_input():
+    n, k = map(int, input().split())
+    characters = []
+    for _ in range(n):
+        characters.append(list(map(int, input())))
+    return n, k, characters
 
-    # Initialize the variables to keep track of the colors and sections
-    colors = set()
-    sections = set()
+def get_features(characters):
+    features = [0] * k
+    for character in characters:
+        for i in range(k):
+            if character[i] == 1:
+                features[i] += 1
+    return features
 
-    # Loop through the offers and add them to the list of colors and sections
-    for offer in offers:
-        colors.add(offer[0])
-        sections.update(range(offer[1], offer[2] + 1))
+def get_character(features):
+    character = [0] * k
+    for i in range(k):
+        if features[i] % 2 == 0:
+            character[i] = 0
+        else:
+            character[i] = 1
+    return "".join(map(str, character))
 
-    # If all sections are painted and there are at most 3 colors, return the number of offers accepted
-    if len(sections) == 10000 and len(colors) <= 3:
-        return len(offers)
+def main():
+    n, k, characters = get_input()
+    features = get_features(characters)
+    character = get_character(features)
+    print(character)
 
-    # Otherwise, return "IMPOSSIBLE"
-    return "IMPOSSIBLE"
+if __name__ == '__main__':
+    main()
 

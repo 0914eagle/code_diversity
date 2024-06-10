@@ -1,29 +1,52 @@
 
-def solve(n, m, names, ips, commands):
-    # Initialize an empty dictionary to map ips to names
-    ip_to_name = {}
+def is_rebel(r, b, k):
+    # Initialize a list to store the painted planks
+    painted_planks = []
 
-    # Iterate over the list of names and ips
-    for name, ip in zip(names, ips):
-        # Add the ip and name to the dictionary
-        ip_to_name[ip] = name
+    # Loop through all the planks
+    for i in range(10**100):
+        # Check if the current plank is divisible by r and b
+        if i % r == 0 and i % b == 0:
+            # If both conditions are true, choose a color at random
+            color = "red" if random.random() > 0.5 else "blue"
+        elif i % r == 0:
+            # If the current plank is divisible by r, paint it red
+            color = "red"
+        elif i % b == 0:
+            # If the current plank is divisible by b, paint it blue
+            color = "blue"
+        else:
+            # If the current plank is not divisible by either r or b, skip it
+            continue
 
-    # Initialize an empty list to store the modified commands
-    modified_commands = []
+        # Add the painted plank to the list
+        painted_planks.append(color)
 
-    # Iterate over the list of commands
-    for command in commands:
-        # Split the command into the ip and command parts
-        ip, command = command.split(" ")
+        # Check if there are k consecutive planks with the same color
+        if len(painted_planks) >= k:
+            # If there are, return True (the execution is unavoidable)
+            return True
 
-        # Check if the ip is in the dictionary
-        if ip in ip_to_name:
-            # Get the name associated with the ip
-            name = ip_to_name[ip]
+    # If we reach this point, return False (the execution is not unavoidable)
+    return False
 
-            # Add the name to the command and append it to the list of modified commands
-            modified_commands.append(f"{command} {ip}; # {name}")
+def main():
+    # Read the number of test cases
+    num_cases = int(input())
 
-    # Return the list of modified commands
-    return modified_commands
+    # Loop through each test case
+    for _ in range(num_cases):
+        # Read the coefficients r, b, and k
+        r, b, k = map(int, input().split())
+
+        # Check if the execution is unavoidable
+        if is_rebel(r, b, k):
+            # If it is, print REBEL
+            print("REBEL")
+        else:
+            # If it's not, print OBEY
+            print("OBEY")
+
+if __name__ == "__main__":
+    main()
 

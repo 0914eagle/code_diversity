@@ -1,16 +1,35 @@
 
-def is_possible(k1, k2, k3):
-    # Check if k1, k2, and k3 are positive
-    if k1 <= 0 or k2 <= 0 or k3 <= 0:
-        return "NO"
+def get_synchronized_stones(c_stones, t_stones):
+    # Initialize a queue to store the indices of the stones to be synchronized
+    queue = [i for i in range(1, len(c_stones)) if c_stones[i] != t_stones[i]]
 
-    # Check if k1, k2, and k3 are pairwise coprime
-    if __gcd(k1, k2) != 1 or __gcd(k1, k3) != 1 or __gcd(k2, k3) != 1:
-        return "NO"
+    # Loop until the queue is empty
+    while queue:
+        # Get the index of the stone to be synchronized
+        i = queue.pop(0)
 
-    # Check if the sum of k1, k2, and k3 is even
-    if k1 + k2 + k3 % 2 == 1:
-        return "NO"
+        # Synchronize the stone with its neighbors
+        c_stones[i] = c_stones[i + 1] + c_stones[i - 1] - c_stones[i]
 
-    return "YES"
+        # If the synchronized charge is not equal to the target charge, add the stone's index to the queue
+        if c_stones[i] != t_stones[i]:
+            queue.append(i)
+
+    # Return True if all stones have been synchronized, False otherwise
+    return all(c_stones[i] == t_stones[i] for i in range(len(c_stones)))
+
+def main():
+    # Read the input
+    n = int(input())
+    c_stones = list(map(int, input().split()))
+    t_stones = list(map(int, input().split()))
+
+    # Check if the stones can be synchronized
+    if get_synchronized_stones(c_stones, t_stones):
+        print("Yes")
+    else:
+        print("No")
+
+if __name__ == '__main__':
+    main()
 

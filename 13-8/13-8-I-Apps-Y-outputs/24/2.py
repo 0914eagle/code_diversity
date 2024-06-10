@@ -1,26 +1,33 @@
 
-def solve(S_A, S_B, S_C):
-    deck_A = list(S_A)
-    deck_B = list(S_B)
-    deck_C = list(S_C)
-    while deck_A and deck_B and deck_C:
-        card_A = deck_A.pop(0)
-        if card_A == "a":
-            turn = "A"
-        elif card_A == "b":
-            turn = "B"
+def is_easily_playable(s):
+    # Initialize a variable to keep track of the current position
+    current_position = 1
+    
+    # Iterate through the string
+    for char in s:
+        # Check if the current position is odd
+        if current_position % 2 == 1:
+            # If the current position is odd, the character must be R, U, or D
+            if char not in "RUD":
+                return False
+        # Check if the current position is even
         else:
-            turn = "C"
-        if turn == "A":
-            deck_A.extend(deck_B.pop(0))
-        elif turn == "B":
-            deck_B.extend(deck_C.pop(0))
-        else:
-            deck_C.extend(deck_A.pop(0))
-    if deck_A:
-        return "A"
-    elif deck_B:
-        return "B"
+            # If the current position is even, the character must be L, U, or D
+            if char not in "LUD":
+                return False
+        # Increment the current position
+        current_position += 1
+    
+    # If all characters are valid, return True
+    return True
+
+def main():
+    s = input()
+    if is_easily_playable(s):
+        print("Yes")
     else:
-        return "C"
+        print("No")
+
+if __name__ == '__main__':
+    main()
 

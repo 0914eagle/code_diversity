@@ -1,15 +1,22 @@
 
-def solve(N, M, conditions):
-    # Initialize the smallest integer to be the maximum possible value
-    smallest_int = 10**N - 1
-    # Iterate through all possible integers with N digits
-    for i in range(10**(N-1), 10**N):
-        # Convert the integer to a list of digits
-        digits = [int(digit) for digit in str(i)]
-        # Check if the integer satisfies the conditions
-        if all(digits[s-1] == c for s, c in conditions):
-            # If it satisfies the conditions, update the smallest integer
-            smallest_int = min(smallest_int, i)
-    # Return the smallest integer or -1 if no integer satisfies the conditions
-    return smallest_int if smallest_int != 10**N - 1 else -1
+def is_k_periodic(s, k):
+    if len(s) % k != 0:
+        return False
+    
+    sub_strings = [s[i:i+k] for i in range(0, len(s), k)]
+    for i in range(1, len(sub_strings)):
+        if sub_strings[i] != sub_strings[i-1][1:] + sub_strings[i-1][0]:
+            return False
+    
+    return True
+
+def solve(s):
+    for k in range(1, len(s)):
+        if is_k_periodic(s, k):
+            return k
+    return 0
+
+if __name__ == '__main__':
+    s = input()
+    print(solve(s))
 

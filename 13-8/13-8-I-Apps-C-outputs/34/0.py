@@ -1,16 +1,30 @@
 
-def is_cleaning_possible(wells, pipes):
-    # Initialize a dictionary to keep track of the number of robots at each well
-    robots_at_well = {}
-    for well in wells:
-        robots_at_well[well] = 0
+def play_movie_theme_songs(frequencies):
+    # Initialize a dictionary to store the frequencies and their intervals
+    frequency_intervals = {}
+    for frequency in frequencies:
+        frequency_intervals[frequency] = []
 
-    # Iterate over the pipes and check if it is possible to clean all intersections
-    for pipe in pipes:
-        well, x, y = pipe
-        if robots_at_well[well] == 2:
-            return "impossible"
-        robots_at_well[well] += 1
+    # Iterate over the intervals for each frequency
+    for frequency in frequencies:
+        for interval in frequency_intervals[frequency]:
+            # Check if the interval is valid
+            if interval[1] - interval[0] != 1:
+                return "impossible"
 
+    # If all intervals are valid, return "possible"
     return "possible"
+
+def main():
+    frequencies = []
+    for _ in range(int(input())):
+        t, n = map(int, input().split())
+        intervals = []
+        for _ in range(n):
+            intervals.append(list(map(int, input().split())))
+        frequencies.append((t, intervals))
+    print(play_movie_theme_songs(frequencies))
+
+if __name__ == '__main__':
+    main()
 

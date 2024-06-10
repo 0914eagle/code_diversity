@@ -1,19 +1,23 @@
 
-def solve(a):
-    n = len(a)
-    increasing = []
-    decreasing = []
-    for i in range(n):
-        if a[i] not in increasing and a[i] not in decreasing:
-            increasing.append(a[i])
-        elif a[i] in increasing:
-            increasing.remove(a[i])
-            decreasing.append(a[i])
-        elif a[i] in decreasing:
-            decreasing.remove(a[i])
-            increasing.append(a[i])
-    if len(increasing) + len(decreasing) == n:
-        return "YES"
-    else:
-        return "NO"
+import sys
+
+def get_substrings(s):
+    substrings = []
+    for i in range(len(s)):
+        for j in range(i+1, len(s)+1):
+            substrings.append(s[i:j])
+    return substrings
+
+def kth_lexicographically_smallest(s, k):
+    substrings = get_substrings(s)
+    substrings.sort()
+    return substrings[k-1]
+
+def main():
+    s = sys.stdin.readline().strip()
+    k = int(sys.stdin.readline().strip())
+    print(kth_lexicographically_smallest(s, k))
+
+if __name__ == '__main__':
+    main()
 

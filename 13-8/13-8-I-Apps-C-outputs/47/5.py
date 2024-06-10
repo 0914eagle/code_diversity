@@ -1,27 +1,21 @@
 
-def solve(shelves):
-    # Initialize variables
-    N, M = len(shelves), len(shelves[0])
-    K = max(max(row) for row in shelves)
-    dp = [[0] * (K + 1) for _ in range(N)]
-    for i in range(N):
-        for j in range(M):
-            dp[i][shelves[i][j]] = 1
+def standard_addition(num1, num2):
+    sum = 0
+    carry = 0
+    while num1 > 0 or num2 > 0:
+        sum = (num1 % 10) + (num2 % 10) + carry
+        carry = sum // 10
+        num1 = num1 // 10
+        num2 = num2 // 10
+    return sum
 
-    # Fill in the table
-    for i in range(N):
-        for j in range(M):
-            if shelves[i][j] != 0:
-                for k in range(1, K + 1):
-                    if dp[i][k] == 0 and (j - 1 >= 0 and shelves[i][j - 1] == k or j + 1 < M and shelves[i][j + 1] == k):
-                        dp[i][k] = dp[i][shelves[i][j]] + 1
+def faster_addition(num1, num2):
+    while num1 >= num2:
+        num1 -= 1
+        num2 += 1
+    return num1 + num2
 
-    # Find the minimum number of lifts
-    min_lifts = float('inf')
-    for i in range(N):
-        for j in range(M):
-            if shelves[i][j] != 0 and dp[i][shelves[i][j]] < min_lifts:
-                min_lifts = dp[i][shelves[i][j]]
-
-    return -1 if min_lifts == float('inf') else min_lifts
+if __name__ == '__main__':
+    num1, num2 = map(int, input().split())
+    print(faster_addition(num1, num2))
 

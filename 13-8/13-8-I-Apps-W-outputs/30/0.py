@@ -1,19 +1,39 @@
 
-def solve(n, x):
-    # Sort the input array
-    x.sort()
-    
-    # Find the minimum and maximum values
-    min_val = x[0]
-    max_val = x[-1]
-    
-    # Initialize the output array
-    y = [0] * n
-    
-    # Fill the output array with the minimum value
-    for i in range(n):
-        y[i] = min_val
-    
-    # Return the output array
-    return y
+def get_max_number(v, a):
+    # Initialize variables
+    max_number = 0
+    remaining_paint = v
+
+    # Loop through the list of numbers
+    for i in range(len(a)):
+        # Calculate the current number
+        current_number = a[i] * (10 ** i)
+
+        # Check if the current number is possible with the remaining paint
+        if current_number <= remaining_paint:
+            # Add the current number to the maximum number
+            max_number += current_number
+
+            # Subtract the current number from the remaining paint
+            remaining_paint -= current_number
+        else:
+            # If the current number is not possible, break the loop
+            break
+
+    # Return the maximum number
+    return max_number
+
+def main():
+    # Take input
+    v = int(input())
+    a = list(map(int, input().split()))
+
+    # Call the get_max_number function
+    max_number = get_max_number(v, a)
+
+    # Print the maximum number
+    print(max_number)
+
+if __name__ == '__main__':
+    main()
 

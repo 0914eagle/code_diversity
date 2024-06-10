@@ -1,27 +1,32 @@
 
-def solve(sequences):
+def longest_acgt_substring(s):
     # Initialize variables
-    n = len(sequences)
-    sums = [0] * n
-    for i in range(n):
-        sums[i] = sum(sequences[i])
+    max_length = 0
+    current_length = 0
+    acgt_substring = ""
     
-    # Iterate over all pairs of sequences
-    for i in range(n):
-        for j in range(i+1, n):
-            # Check if the sums of the sequences are equal
-            if sums[i] == sums[j]:
-                # Find the index of the element to remove in sequence i
-                for x in range(len(sequences[i])):
-                    if sequences[i][x] != sequences[j][0]:
-                        break
-                # Find the index of the element to remove in sequence j
-                for y in range(len(sequences[j])):
-                    if sequences[j][y] != sequences[i][0]:
-                        break
-                # Return the indices of the elements to remove
-                return "YES\n" + str(i+1) + " " + str(x+1) + "\n" + str(j+1) + " " + str(y+1)
+    # Iterate through the string
+    for i in range(len(s)):
+        # If the current character is A, C, G, or T, increment the current length
+        if s[i] in ["A", "C", "G", "T"]:
+            current_length += 1
+        # If the current character is not A, C, G, or T, or if we have reached the end of the string, check if the current length is greater than the maximum length
+        elif current_length > max_length:
+            max_length = current_length
+            acgt_substring = s[i-current_length:i]
+            current_length = 0
     
-    # If no pairs of sequences have equal sums, return "NO"
-    return "NO"
+    # Check if the last substring is the longest
+    if current_length > max_length:
+        max_length = current_length
+        acgt_substring = s[len(s)-current_length:]
+    
+    return max_length
+
+def main():
+    s = input()
+    print(longest_acgt_substring(s))
+
+if __name__ == '__main__':
+    main()
 

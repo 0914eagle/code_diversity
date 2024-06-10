@@ -1,28 +1,29 @@
 
-def get_max_tables(n, k, s):
-    # Initialize variables
-    max_tables = 0
-    current_table = 0
-    previous_table = -1
+def equal_prices(n, k, prices):
+    # Sort the prices in non-decreasing order
+    prices.sort()
+    # Initialize the minimum difference between prices as k
+    min_diff = k
+    # Initialize the equal price as the first price
+    equal_price = prices[0]
+    # Iterate through the prices
+    for i in range(1, n):
+        # Calculate the difference between the current price and the equal price
+        diff = abs(prices[i] - equal_price)
+        # If the difference is less than the minimum difference, update the minimum difference and the equal price
+        if diff < min_diff:
+            min_diff = diff
+            equal_price = prices[i]
+    # Return the equal price
+    return equal_price
 
-    # Iterate through the string
-    for i in range(n):
-        # If the current table is occupied
-        if s[i] == "1":
-            # Check if the minimum distance between the current table and the previous table is greater than k
-            if previous_table != -1 and i - previous_table <= k:
-                # If not, return 0
-                return 0
-            # Update the current table and previous table
-            current_table = i
-            previous_table = i
+def main():
+    q = int(input())
+    for i in range(q):
+        n, k = map(int, input().split())
+        prices = list(map(int, input().split()))
+        print(equal_prices(n, k, prices))
 
-    # If all tables are occupied, return 0
-    if current_table == n - 1:
-        return 0
-
-    # Calculate the maximum number of tables that can be occupied
-    max_tables = current_table + k + 1
-
-    return max_tables
+if __name__ == '__main__':
+    main()
 

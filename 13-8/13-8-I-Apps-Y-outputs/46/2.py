@@ -1,9 +1,8 @@
 
-def solve(age, cost):
-    if age >= 13:
-        return cost
-    elif 6 <= age <= 12:
-        return cost // 2
-    else:
-        return 0
+def solve(n, a):
+    a.sort(reverse=True)
+    b = a[:]
+    for i in range(n):
+        b[i] //= 2
+    return sum(a), sum(b)
 

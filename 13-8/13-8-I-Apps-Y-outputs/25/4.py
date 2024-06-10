@@ -1,13 +1,27 @@
 
-def solve(N, D, X, A):
-    # Calculate the total number of chocolate pieces eaten by all participants
-    total_eaten = sum(A)
-    
-    # Check if the total number of chocolate pieces eaten is equal to the number of pieces remaining at the end of the camp
-    if total_eaten == X:
-        # If they are equal, then the number of pieces prepared at the beginning of the camp is N - total_eaten
-        return N - total_eaten
-    else:
-        # If they are not equal, then the number of pieces prepared at the beginning of the camp is not determined
-        return -1
+def get_input():
+    N, M, X, Y = map(int, input().split())
+    x_coords = list(map(int, input().split()))
+    y_coords = list(map(int, input().split()))
+    return N, M, X, Y, x_coords, y_coords
+
+def check_war(N, M, X, Y, x_coords, y_coords):
+    # Check if there is a common coordinate between the two empires
+    common_coords = set(x_coords).intersection(set(y_coords))
+    if common_coords:
+        return "War"
+
+    # Check if there is a coordinate that satisfies all three conditions
+    for i in range(1, X):
+        if i in x_coords and i in y_coords:
+            return "No War"
+
+    return "War"
+
+def main():
+    N, M, X, Y, x_coords, y_coords = get_input()
+    print(check_war(N, M, X, Y, x_coords, y_coords))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,34 +1,23 @@
 
-def solve(arr):
-    n = len(arr)
-    if n % 6 == 0:
-        return 0
+def plus_one(digits):
     
-    # Sort the array in ascending order
-    arr.sort()
-    
-    # Initialize variables to keep track of the number of elements to remove
-    remove = 0
-    count = 0
-    
-    # Iterate through the array and count the number of occurrences of each number
-    for i in range(n):
-        if arr[i] == 4:
-            count += 1
-        elif arr[i] == 8:
-            count += 2
-        elif arr[i] == 15:
-            count += 3
-        elif arr[i] == 16:
-            count += 4
-        elif arr[i] == 23:
-            count += 5
-        elif arr[i] == 42:
-            count += 6
-    
-    # If the count is not a multiple of 6, remove the minimum number of elements to make it a multiple of 6
-    if count % 6 != 0:
-        remove = 6 - (count % 6)
-    
-    return remove
+    if len(digits) == 0:
+        return []
+    digits[-1] += 1
+    i = len(digits) - 1
+    while i > 0 and digits[i] == 10:
+        digits[i] = 0
+        i -= 1
+        digits[i] += 1
+    if digits[0] == 10:
+        digits[0] = 0
+        digits.insert(0, 1)
+    return digits
+
+def main():
+    digits = [1, 2, 3]
+    print(plus_one(digits))
+
+if __name__ == '__main__':
+    main()
 

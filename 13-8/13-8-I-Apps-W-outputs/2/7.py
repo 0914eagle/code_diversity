@@ -1,41 +1,37 @@
 
-def solve(N, M, cubes):
-    # Initialize a 2D array to represent the surface
-    surface = [[0 for _ in range(N)] for _ in range(N)]
+def get_max_length(logs, k):
+    # Sort the logs in non-decreasing order
+    logs.sort()
+    
+    # Initialize the maximum length and the number of cuts
+    max_length = 0
+    num_cuts = 0
+    
+    # Iterate through the logs and calculate the maximum length after at most k cuts
+    for i in range(len(logs)):
+        # Calculate the length of the current log
+        length = logs[i]
+        
+        # Check if the current log can be cut
+        if length > max_length and num_cuts < k:
+            # Cut the current log in half and update the maximum length
+            max_length = max(max_length, length // 2)
+            num_cuts += 1
+        else:
+            # Update the maximum length with the current log
+            max_length = max(max_length, length)
+    
+    # Return the rounded up maximum length
+    return int(math.ceil(max_length))
 
-    # Place the cubes on the surface
-    for cube in cubes:
-        r, c = cube
-        surface[r-1][c-1] = 1
+def main():
+    # Read the input
+    n, k = map(int, input().split())
+    logs = list(map(int, input().split()))
+    
+    # Call the get_max_length function and print the result
+    print(get_max_length(logs, k))
 
-    # Initialize a queue to store the moves
-    queue = []
-
-    # Initialize a variable to store the number of moves
-    moves = 0
-
-    # Loop through the surface and find the cube that is not in the rectangle
-    for i in range(N):
-        for j in range(N):
-            if surface[i][j] == 1 and (i, j) not in queue:
-                # Add the cube to the queue
-                queue.append((i, j))
-                break
-
-    # Loop through the queue and make moves until the rectangle is formed
-    while queue:
-        # Get the first cube from the queue
-        r, c = queue.pop(0)
-
-        # Find the adjacent squares that are not in the rectangle
-        for i in range(r-1, r+2):
-            for j in range(c-1, c+2):
-                if 0 <= i < N and 0 <= j < N and surface[i][j] == 0 and (i, j) not in queue:
-                    # Add the adjacent square to the queue
-                    queue.append((i, j))
-                    # Update the surface
-                    surface[i][j] = 1
-                    moves += 1
-
-    return moves
+if __name__ == '__main__':
+    main()
 

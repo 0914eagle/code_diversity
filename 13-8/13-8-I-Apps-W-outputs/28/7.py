@@ -1,22 +1,30 @@
 
-def get_minimal_bdd_size(n, function_values):
-    # Initialize the BDD with a single vertex representing the root
-    bdd = [0]
+def get_steps(a, b):
+    # find the smallest number that is a multiple of both a and b
+    lcm = a * b // gcd(a, b)
+    # find the interval of steps that covers the lcm
+    l, r = 1, lcm // a
+    return l, r
 
-    # Iterate over the function values
-    for i in range(len(function_values)):
-        # Get the current vertex and the function value for the current input
-        vertex = bdd[0]
-        value = function_values[i]
-
-        # If the current vertex is a leaf vertex, create a new leaf vertex with the current function value
-        if vertex == 0:
-            bdd.append(value)
-        # If the current vertex is an internal vertex, create a new internal vertex and two child vertices
+def check_interval(a, b, l, r):
+    # check if the interval of steps from l to r has the correct number of even and odd steps
+    even_steps = 0
+    odd_steps = 0
+    for i in range(l, r + 1):
+        if i % 2 == 0:
+            even_steps += 1
         else:
-            bdd.append(1 - value)
-            bdd.append(value)
+            odd_steps += 1
+    return even_steps == a and odd_steps == b
 
-    # Return the number of vertices in the minimal BDD
-    return len(bdd)
+def main():
+    a, b = map(int, input().split())
+    l, r = get_steps(a, b)
+    if check_interval(a, b, l, r):
+        print("YES")
+    else:
+        print("NO")
+
+if __name__ == '__main__':
+    main()
 

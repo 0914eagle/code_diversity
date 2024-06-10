@@ -1,19 +1,26 @@
 
-def solve(n, t, m, intervals):
-    # Initialize the variables to keep track of the number of goals
-    sportify_goals = 0
-    spoilify_goals = 0
-    
-    # Iterate through each interval in which the Spoilify cheerleaders are active
-    for i in range(m):
-        # Get the start and end time of the interval
-        start, end = intervals[i]
-        
-        # Check if the interval overlaps with the 5 minute interval
-        if end - start >= 5:
-            # If it does, add a goal to the Sportify team's score
-            sportify_goals += 1
-    
-    # Return the final scores
-    return sportify_goals, spoilify_goals
+def get_course_difficulty(course_name):
+    # This function takes a course name as input and returns its difficulty
+    # You can write your own code to retrieve the difficulty of a course based on its name
+    # For example, you can use a dictionary to map course names to difficulties
+    return difficulty
+
+def get_min_difficulty_courses(courses, k):
+    # This function takes a list of courses and an integer k as input and returns the minimum sum of difficulties of the k courses
+    # You can use a sorting algorithm, such as selection sort or insertion sort, to find the k courses with the minimum sum of difficulties
+    return courses
+
+def main():
+    n, k = map(int, input().split())
+    courses = []
+    for i in range(n):
+        course_name, difficulty = input().split()
+        courses.append((course_name, int(difficulty)))
+    courses = sorted(courses, key=lambda x: x[1])
+    min_difficulty_courses = get_min_difficulty_courses(courses, k)
+    total_difficulty = sum(course[1] for course in min_difficulty_courses)
+    print(total_difficulty)
+
+if __name__ == '__main__':
+    main()
 

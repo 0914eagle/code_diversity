@@ -1,30 +1,25 @@
 
-def get_maximum_clique(A):
-    # Initialize a graph with the given set of numbers as vertices
-    graph = {a: set() for a in A}
+def get_max_profit(buns, beef_patties, chicken_cutlets, hamburger_price, chicken_burger_price):
+    # Calculate the maximum number of hamburgers and chicken burgers that can be sold
+    max_hamburgers = min(buns // 2, beef_patties)
+    max_chicken_burgers = min(buns // 2, chicken_cutlets)
 
-    # Add edges between vertices based on divisibility relationship
-    for i in range(len(A)):
-        for j in range(i+1, len(A)):
-            if A[i] % A[j] == 0 or A[j] % A[i] == 0:
-                graph[A[i]].add(A[j])
-                graph[A[j]].add(A[i])
+    # Calculate the total income
+    total_income = (max_hamburgers * hamburger_price) + (max_chicken_burgers * chicken_burger_price)
 
-    # Find the maximum clique in the graph
-    clique = []
-    for a in A:
-        clique.append(get_clique(a, graph))
+    return total_income
 
-    return max(clique)
+def main():
+    num_queries = int(input())
 
-def get_clique(a, graph):
-    visited = set()
-    queue = [a]
-    while queue:
-        vertex = queue.pop(0)
-        if vertex not in visited:
-            visited.add(vertex)
-            queue += graph[vertex] - visited
+    for _ in range(num_queries):
+        buns, beef_patties, chicken_cutlets = map(int, input().split())
+        hamburger_price, chicken_burger_price = map(int, input().split())
 
-    return len(visited)
+        max_profit = get_max_profit(buns, beef_patties, chicken_cutlets, hamburger_price, chicken_burger_price)
+
+        print(max_profit)
+
+if __name__ == '__main__':
+    main()
 

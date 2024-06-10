@@ -1,16 +1,41 @@
 
-def solve(x_s, y_s, s_s, r_i, r_f, x_a, y_a, s_a):
-    # Calculate the distance between Anthony's current location and the center of the safety zone
-    distance = ((x_a - x_s) ** 2 + (y_a - y_s) ** 2) ** 0.5
-    
-    # Calculate the minimum amount of time Anthony needs to spend inside the safety zone to avoid taking damage
-    time = distance / s_a
-    
-    # Calculate the radius of the safety zone at the end of that time
-    radius = r_i - s_s * time
-    
-    # Calculate the minimum amount of damage Anthony will take if he stays inside the safety zone for the entire time
-    damage = 2 * (radius - r_f)
-    
-    return damage
+def get_balls(n, t):
+    # sort the list of ball sizes in ascending order
+    t.sort()
+    # initialize three variables to keep track of the chosen balls
+    ball1, ball2, ball3 = 0, 0, 0
+    # loop through the list of ball sizes
+    for i in range(n):
+        # check if the current ball is within the range of the previous two balls
+        if t[i] - t[i-1] <= 2:
+            # if it is, assign it to the third ball
+            ball3 = t[i]
+            break
+        # if it is not, assign it to the first ball
+        else:
+            ball1 = t[i]
+    # loop through the list of ball sizes again
+    for i in range(n):
+        # check if the current ball is within the range of the first two balls
+        if t[i] - t[i-1] <= 2:
+            # if it is, assign it to the third ball
+            ball3 = t[i]
+            break
+        # if it is not, assign it to the second ball
+        else:
+            ball2 = t[i]
+    # return the chosen balls
+    return [ball1, ball2, ball3]
+
+def main():
+    # read the number of balls and the list of ball sizes from stdin
+    n = int(input())
+    t = list(map(int, input().split()))
+    # get the chosen balls
+    balls = get_balls(n, t)
+    # print the result
+    print("YES" if balls[0] != balls[1] and balls[1] != balls[2] and balls[2] != balls[0] else "NO")
+
+if __name__ == '__main__':
+    main()
 

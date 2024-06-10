@@ -1,69 +1,60 @@
 
-def solve(chessboard):
-    # Initialize variables to keep track of the pieces and their positions
-    white_pieces = []
-    black_pieces = []
-    white_king = None
-    black_king = None
+def is_valid_solution(solution, a, n, m, segments, umbrellas):
+    # Check if the solution is valid
+    if solution[0] != 0 or solution[-1] != a:
+        return False
+    for i in range(1, len(solution)):
+        if solution[i] <= solution[i-1]:
+            return False
+    for i in range(n):
+        if solution[segments[i][0]] != solution[segments[i][1]]:
+            return False
+    for i in range(m):
+        if solution[umbrellas[i][0]] != solution[umbrellas[i][1]]:
+            return False
+    return True
 
-    # Iterate through the rows of the chessboard
-    for i, row in enumerate(chessboard):
-        # Iterate through the columns of the chessboard
-        for j, column in enumerate(row):
-            # Check if the current position is occupied by a piece
-            if column.isalpha():
-                # Check if the piece is white or black
-                if column.isupper():
-                    # Add the piece to the list of white pieces
-                    white_pieces.append((i, j, column))
-                    # Check if the piece is a king
-                    if column == "K":
-                        # Save the position of the white king
-                        white_king = (i, j)
-                else:
-                    # Add the piece to the list of black pieces
-                    black_pieces.append((i, j, column))
-                    # Check if the piece is a king
-                    if column == "k":
-                        # Save the position of the black king
-                        black_king = (i, j)
+def get_fatigue(solution, umbrellas):
+    # Calculate the total fatigue of the solution
+    fatigue = 0
+    for i in range(len(solution)-1):
+        fatigue += sum(umbrellas[j][1] for j in range(len(umbrellas)) if solution[j] == solution[i+1])
+    return fatigue
 
-    # Sort the white pieces by their position
-    white_pieces.sort(key=lambda x: x[0])
-    white_pieces.sort(key=lambda x: x[1])
+def solve(a, n, m, segments, umbrellas):
+    # Initialize the solution with all umbrellas at point 0
+    solution = [0 for _ in range(a+1)]
+    for i in range(m):
+        solution[umbrellas[i][0]] = umbrellas[i][1]
+    # Iterate through each segment and find the best umbrella to pick up
+    for i in range(n):
+        current_segment = segments[i]
+        current_fatigue = get_fatigue(solution, umbrellas)
+        best_fatigue = current_fatigue
+        best_umbrella = -1
+        for j in range(m):
+            if solution[umbrellas[j][0]] == 0:
+                continue
+            solution[umbrellas[j][0]] = 0
+            new_fatigue = get_fatigue(solution, umbrellas)
+            if new_fatigue < best_fatigue:
+                best_fatigue = new_fatigue
+                best_umbrella = j
+        if best_umbrella == -1:
+            return -1
+        solution[current_segment[1]] = umbrellas[best_umbrella][1]
+    # Check if the solution is valid
+    if not is_valid_solution(solution, a, n, m, segments, umbrellas):
+        return -1
+    # Return the minimum fatigue of the solution
+    return get_fatigue(solution, umbrellas)
 
-    # Sort the black pieces by their position
-    black_pieces.sort(key=lambda x: x[0])
-    black_pieces.sort(key=lambda x: x[1])
+def main():
+    a, n, m = map(int, input().split())
+    segments = [tuple(map(int, input().split())) for _ in range(n)]
+    umbrellas = [tuple(map(int, input().split())) for _ in range(m)]
+    print(solve(a, n, m, segments, umbrellas))
 
-    # Create a list to store the description of the white pieces
-    white_description = []
-    # Create a list to store the description of the black pieces
-    black_description = []
-
-    # Iterate through the white pieces
-    for piece in white_pieces:
-        # Get the type of the piece
-        piece_type = piece[2]
-        # Get the position of the piece
-        piece_position = piece[1] + 1
-        # Add the piece to the description
-        white_description.append(piece_type + str(piece_position))
-
-    # Iterate through the black pieces
-    for piece in black_pieces:
-        # Get the type of the piece
-        piece_type = piece[2]
-        # Get the position of the piece
-        piece_position = piece[1] + 1
-        # Add the piece to the description
-        black_description.append(piece_type + str(piece_position))
-
-    # Add the white king to the description
-    white_description.append("K" + str(white_king[1] + 1))
-    # Add the black king to the description
-    black_description.append("k" + str(black_king[1] + 1))
-
-    # Return the description of the white and black pieces
-    return "White: " + ",".join(white_description) + "\nBlack: " + ",".join(black_description)
+if __name__ == '__main__':
+    main()
 

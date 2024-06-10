@@ -1,41 +1,74 @@
 
-def minimum_spanning_tree(points):
-    # Sort the points based on their x-coordinate
-    sorted_points = sorted(points, key=lambda point: point[0])
+def get_max_value(sequence):
+    # Initialize variables
+    max_value = 0
+    max_sequence = []
+    length = len(sequence)
+    
+    # Loop through each element in the sequence
+    for i in range(length):
+        # Check if the element is at either end of the sequence
+        if i == 0 or i == length - 1:
+            # If it is, delete the element
+            sequence.pop(i)
+            length -= 1
+        else:
+            # If it is not, replace the element with the sum of the two elements that are adjacent to it
+            sequence[i] = sequence[i - 1] + sequence[i + 1]
+            # Then, delete those two elements
+            sequence.pop(i - 1)
+            sequence.pop(i - 1)
+            length -= 2
+        
+        # Check if the current sequence is the maximum sequence seen so far
+        if sum(sequence) > max_value:
+            max_value = sum(sequence)
+            max_sequence = sequence[:]
+    
+    # Return the maximum value and the sequence
+    return max_value, max_sequence
 
-    # Create a disjoint set data structure to store the points and their parents
-    dsu = DisjointSetUnion(sorted_points)
+def get_operations(sequence):
+    # Initialize variables
+    operations = []
+    length = len(sequence)
+    
+    # Loop through each element in the sequence
+    for i in range(length):
+        # Check if the element is at either end of the sequence
+        if i == 0 or i == length - 1:
+            # If it is, delete the element
+            sequence.pop(i)
+            length -= 1
+        else:
+            # If it is not, replace the element with the sum of the two elements that are adjacent to it
+            sequence[i] = sequence[i - 1] + sequence[i + 1]
+            # Then, delete those two elements
+            sequence.pop(i - 1)
+            sequence.pop(i - 1)
+            length -= 2
+        
+        # Add the index of the element chosen to the operations list
+        operations.append(i)
+    
+    # Return the operations list
+    return operations
 
-    # Initialize the minimum spanning tree weight to 0
-    mst_weight = 0
-
-    # Iterate through the points and add the weight of the edges to the minimum spanning tree weight
-    for i in range(len(sorted_points)):
-        for j in range(i + 1, len(sorted_points)):
-            point1 = sorted_points[i]
-            point2 = sorted_points[j]
-            weight = manhattan_distance(point1, point2)
-            if dsu.find(point1) != dsu.find(point2):
-                mst_weight += weight
-                dsu.union(point1, point2)
-
-    return mst_weight
-
-def manhattan_distance(point1, point2):
-    return abs(point1[0] - point2[0]) + abs(point1[1] - point2[1])
-
-def read_points(n):
-    points = []
-    for _ in range(n):
-        x, y = map(int, input().split())
-        points.append((x, y))
-    return points
-
-def main():
-    n = int(input())
-    points = read_points(n)
-    print(minimum_spanning_tree(points))
-
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    # Get the input sequence
+    sequence = list(map(int, input().split()))
+    
+    # Get the maximum value and the sequence
+    max_value, max_sequence = get_max_value(sequence)
+    
+    # Get the operations
+    operations = get_operations(sequence)
+    
+    # Print the maximum value and the number of operations
+    print(max_value)
+    print(len(operations))
+    
+    # Print the indices of the elements chosen in each operation
+    for operation in operations:
+        print(operation + 1)
 

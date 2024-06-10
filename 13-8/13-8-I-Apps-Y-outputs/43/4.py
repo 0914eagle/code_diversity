@@ -1,32 +1,33 @@
 
-def get_largest_perfect_power(x):
-    # Initialize a list to store the perfect powers
-    perfect_powers = []
+def get_good_observatories(num_observatories, num_roads, observatory_elevations, road_pairs):
+    # Initialize a dictionary to store the elevations of the observatories that can be reached from each observatory
+    reachable_elevations = {}
+    for observatory in range(1, num_observatories + 1):
+        reachable_elevations[observatory] = set()
     
-    # Loop through all integers from 1 to x
-    for i in range(1, x + 1):
-        # Check if the integer is a perfect power
-        if is_perfect_power(i):
-            # If it is a perfect power, add it to the list
-            perfect_powers.append(i)
+    # Iterate over the roads to find the elevations of the observatories that can be reached from each observatory
+    for road in road_pairs:
+        observatory1, observatory2 = road[0], road[1]
+        reachable_elevations[observatory1].add(observatory2)
+        reachable_elevations[observatory2].add(observatory1)
     
-    # Return the largest perfect power in the list
-    return max(perfect_powers)
+    # Initialize a set to store the good observatories
+    good_observatories = set()
+    
+    # Iterate over the observatories and check if they are good
+    for observatory in range(1, num_observatories + 1):
+        # If the elevation of the current observatory is higher than the elevations of all the observatories that can be reached from it, it is good
+        if observatory_elevations[observatory - 1] > max(reachable_elevations[observatory]):
+            good_observatories.add(observatory)
+    
+    return len(good_observatories)
 
-def is_perfect_power(n):
-    # Initialize a flag to indicate if n is a perfect power
-    is_pp = False
-    
-    # Loop through all integers from 1 to the square root of n
-    for i in range(1, int(n ** 0.5) + 1):
-        # Check if i is a factor of n
-        if n % i == 0:
-            # If it is, check if the other factor is also an integer
-            if n // i == i:
-                # If it is, n is a perfect power
-                is_pp = True
-                break
-    
-    # Return the flag
-    return is_pp
+def main():
+    num_observatories, num_roads = map(int, input().split())
+    observatory_elevations = list(map(int, input().split()))
+    road_pairs = [list(map(int, input().split())) for _ in range(num_roads)]
+    print(get_good_observatories(num_observatories, num_roads, observatory_elevations, road_pairs))
+
+if __name__ == '__main__':
+    main()
 

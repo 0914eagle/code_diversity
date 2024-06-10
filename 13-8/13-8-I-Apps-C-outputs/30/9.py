@@ -1,37 +1,64 @@
 
-def find_minimum_side_length(n, k, vertices):
-    
-    # Sort the vertices in clockwise order
-    vertices.sort(key=lambda x: (x[1], x[0]))
+def bfs_traversal(graph, start):
+    # Initialize a queue for BFS
+    queue = [start]
 
-    # Find the bounding box of the polygon
-    min_x = min(vertices, key=lambda x: x[0])[0]
-    max_x = max(vertices, key=lambda x: x[0])[0]
-    min_y = min(vertices, key=lambda x: x[1])[1]
-    max_y = max(vertices, key=lambda x: x[1])[1]
+    # Initialize a set to keep track of visited nodes
+    visited = set()
 
-    # Calculate the area of the polygon
-    area = abs(poly_area(vertices))
+    # Loop until the queue is empty
+    while queue:
+        # Dequeue a node from the queue
+        node = queue.pop(0)
 
-    # Initialize the minimum side length to the width of the bounding box
-    min_side_length = max_x - min_x
+        # If the node has not been visited, mark it as visited and add its neighbors to the queue
+        if node not in visited:
+            visited.add(node)
+            queue.extend(graph[node])
 
-    # Iterate through each possible side length
-    for side_length in range(int(min_side_length), int(max_side_length) + 1):
-        # Calculate the number of maps needed to cover the polygon
-        num_maps = int(ceil(area / (side_length ** 2)))
+    # If all nodes in the graph have been visited, return True, otherwise return False
+    return len(visited) == len(graph)
 
-        # If the number of maps is less than or equal to k, update the minimum side length
-        if num_maps <= k:
-            min_side_length = side_length
+def check_sequence(graph, sequence):
+    # Initialize the start node as 1
+    start = 1
 
-    return round(min_side_length, 2)
+    # Loop through the sequence
+    for node in sequence:
+        # If the current node is not in the graph, return False
+        if node not in graph:
+            return False
 
-def poly_area(vertices):
-    
-    area = 0
-    for i in range(len(vertices)):
-        j = (i + 1) % len(vertices)
-        area += vertices[i][0] * vertices[j][1] - vertices[j][0] * vertices[i][1]
-    return area / 2
+        # If the current node is not a neighbor of the previous node, return False
+        if node not in graph[start]:
+            return False
+
+        # Update the start node to the current node
+        start = node
+
+    # If all nodes in the sequence are valid, return True
+    return True
+
+def main():
+    # Read the input data
+    n = int(input())
+    graph = {}
+    for _ in range(n - 1):
+        x, y = map(int, input().split())
+        if x not in graph:
+            graph[x] = []
+        if y not in graph:
+            graph[y] = []
+        graph[x].append(y)
+        graph[y].append(x)
+    sequence = list(map(int, input().split()))
+
+    # Check if the sequence corresponds to a valid BFS traversal of the graph
+    result = check_sequence(graph, sequence)
+
+    # Print the result
+    print("Yes") if result else print("No")
+
+if __name__ == '__main__':
+    main()
 

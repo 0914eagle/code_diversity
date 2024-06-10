@@ -1,13 +1,26 @@
 
-import math
+def get_lcm(a, b):
+    if a == 0 or b == 0:
+        return 0
+    while b > 0:
+        a, b = b, a % b
+    return a
 
-def solve(n, m, a, b):
-    modulo = 998244353
-    powers = [1]
-    for i in range(m):
-        powers.append(powers[-1] * b[i] % modulo)
-    result = 1
+def get_max_lcm(arr):
+    n = len(arr)
+    max_lcm = 0
     for i in range(n):
-        result = (result * (powers[i] - 1 + modulo) % modulo) * (powers[n - i - 1] - 1 + modulo) % modulo
-    return result
+        for j in range(i+1, n):
+            lcm = get_lcm(arr[i], arr[j])
+            if lcm > max_lcm:
+                max_lcm = lcm
+    return max_lcm
+
+def main():
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(get_max_lcm(arr))
+
+if __name__ == '__main__':
+    main()
 

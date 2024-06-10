@@ -1,23 +1,16 @@
 
-def find_sugar_water(A, B, C, D, E, F):
-    # Initialize variables
-    sugar_water = 0
-    sugar_dissolved = 0
+def get_companies(n, k):
+    # Implement your solution here
+    return r
 
-    # Loop through all possible combinations of operations
-    for a in range(A, B+1):
-        for c in range(C, D+1):
-            # Calculate the mass of sugar water and sugar dissolved
-            sugar_water_candidate = a + c
-            sugar_dissolved_candidate = c * 100 / (a + c)
+def get_road_assignment(n, k, r):
+    # Implement your solution here
+    return c
 
-            # Check if the mass of substances in the beaker does not exceed F
-            if sugar_water_candidate + sugar_dissolved_candidate <= F:
-                # Check if the mass of sugar water is higher than the current highest density
-                if sugar_water_candidate > sugar_water:
-                    sugar_water = sugar_water_candidate
-                    sugar_dissolved = sugar_dissolved_candidate
-
-    # Return the mass of sugar water and sugar dissolved
-    return sugar_water, sugar_dissolved
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    r = get_companies(n, k)
+    c = get_road_assignment(n, k, r)
+    print(r)
+    print(*c)
 

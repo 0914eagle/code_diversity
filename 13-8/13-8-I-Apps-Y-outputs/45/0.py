@@ -1,22 +1,42 @@
 
-def solve_problem(shipment_volume, large_bottle_volume, small_bottle_volume):
-    # Check if the shipment volume is greater than the volume of the large bottles
-    if shipment_volume > large_bottle_volume:
-        return "Impossible"
-    
-    # Calculate the number of large bottles needed to fill the shipment volume
-    num_large_bottles = shipment_volume // large_bottle_volume
-    
-    # Calculate the remaining volume that cannot be filled with large bottles
-    remaining_volume = shipment_volume % large_bottle_volume
-    
-    # Check if the remaining volume is greater than the volume of the small bottles
-    if remaining_volume > small_bottle_volume:
-        return "Impossible"
-    
-    # Calculate the number of small bottles needed to fill the remaining volume
-    num_small_bottles = remaining_volume // small_bottle_volume
-    
-    # Return the number of large and small bottles needed to fill the shipment volume
-    return num_large_bottles, num_small_bottles
+def get_diverse_garland(s):
+    n = len(s)
+    recolored_lamp_count = 0
+    diverse_garland = ''
+    for i in range(n):
+        if i > 0 and s[i] == s[i-1]:
+            recolored_lamp_count += 1
+            if s[i] == 'R':
+                diverse_garland += 'G'
+            elif s[i] == 'G':
+                diverse_garland += 'B'
+            else:
+                diverse_garland += 'R'
+        else:
+            diverse_garland += s[i]
+    return recolored_lamp_count, diverse_garland
+
+def solve(s):
+    n = len(s)
+    recolored_lamp_count = 0
+    diverse_garland = ''
+    for i in range(n):
+        if i > 0 and s[i] == s[i-1]:
+            recolored_lamp_count += 1
+            if s[i] == 'R':
+                diverse_garland += 'G'
+            elif s[i] == 'G':
+                diverse_garland += 'B'
+            else:
+                diverse_garland += 'R'
+        else:
+            diverse_garland += s[i]
+    return recolored_lamp_count, diverse_garland
+
+if __name__ == '__main__':
+    n = int(input())
+    s = input()
+    recolored_lamp_count, diverse_garland = solve(s)
+    print(recolored_lamp_count)
+    print(diverse_garland)
 

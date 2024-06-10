@@ -1,27 +1,41 @@
 
-def canyon_mapping(n, k, vertices):
-    
-    # Sort the vertices in counterclockwise order
-    sorted_vertices = sorted(vertices, key=lambda x: x[0])
+def bfs(graph, start):
+    queue = [start]
+    visited = set()
+    while queue:
+        vertex = queue.pop(0)
+        if vertex not in visited:
+            visited.add(vertex)
+            queue.extend(graph[vertex])
+    return visited
 
-    # Initialize the minimum side length of each map to the maximum possible value
-    min_side_length = float('inf')
+def is_valid_bfs(graph, sequence):
+    visited = set()
+    for vertex in sequence:
+        if vertex not in graph:
+            return False
+        if vertex in visited:
+            return False
+        visited.add(vertex)
+    return True
 
-    # Iterate through all possible combinations of maps
-    for map_indices in combinations(range(n), k):
-        # Calculate the area of the current combination of maps
-        area = 0
-        for i in range(k):
-            # Calculate the area of each map
-            map_area = 0
-            for j in range(n):
-                if j in map_indices[i]:
-                    map_area += (sorted_vertices[j][0] * sorted_vertices[(j+1)%n][1]) - (sorted_vertices[j][1] * sorted_vertices[(j+1)%n][0])
-            area += abs(map_area) / 2
+def main():
+    n = int(input())
+    graph = {}
+    for i in range(n - 1):
+        x, y = map(int, input().split())
+        if x not in graph:
+            graph[x] = []
+        if y not in graph:
+            graph[y] = []
+        graph[x].append(y)
+        graph[y].append(x)
+    sequence = list(map(int, input().split()))
+    if is_valid_bfs(graph, sequence):
+        print("Yes")
+    else:
+        print("No")
 
-        # If the current combination of maps covers the entire polygon, update the minimum side length
-        if area == 0:
-            min_side_length = min(min_side_length, sorted_vertices[map_indices[0]][0] - sorted_vertices[map_indices[k-1]][0])
-
-    return min_side_length
+if __name__ == '__main__':
+    main()
 

@@ -1,16 +1,26 @@
 
-def dance_rating(grid):
-    # Initialize variables
-    rating = 0
-    moves = []
+def is_prime(n):
+    if n <= 1:
+        return False
+    for i in range(2, int(n ** 0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
 
-    # Loop through the grid
-    for i in range(len(grid)):
-        # Check if the current row is a move
-        if grid[i].count("$") > 0:
-            # Add the move to the list of moves
-            moves.append(i)
+def solve(n):
+    count = 0
+    for i in range(1, n + 1):
+        if is_prime(i):
+            count += 1
+    return count
 
-    # Return the number of moves
-    return len(moves)
+def input_data():
+    return int(input())
+
+def main():
+    n = input_data()
+    print(solve(n))
+
+if __name__ == '__main__':
+    main()
 

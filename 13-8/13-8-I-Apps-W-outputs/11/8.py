@@ -1,24 +1,25 @@
 
-def solve(a, k, pos):
-    # find the maximum sum of a subsequence of length k
-    max_sum = 0
-    for i in range(len(a) - k + 1):
-        sum = 0
-        for j in range(k):
-            sum += a[i + j]
-        if sum > max_sum:
-            max_sum = sum
+def get_happy_ticket(ticket):
+    n = len(ticket) // 2
+    first_sum = sum(int(ticket[i]) for i in range(n))
+    second_sum = sum(int(ticket[i]) for i in range(n, len(ticket)))
+    return first_sum == second_sum
 
-    # find the lexicographically minimal subsequence of length k with the maximum sum
-    min_subsequence = []
-    for i in range(len(a) - k + 1):
-        sum = 0
-        for j in range(k):
-            sum += a[i + j]
-        if sum == max_sum:
-            subsequence = a[i:i+k]
-            if len(min_subsequence) == 0 or subsequence < min_subsequence:
-                min_subsequence = subsequence
+def get_winner(ticket):
+    if "?" not in ticket:
+        return "Bicarp"
+    
+    happy_ticket = get_happy_ticket(ticket)
+    if happy_ticket:
+        return "Bicarp"
+    else:
+        return "Monocarp"
 
-    return min_subsequence[pos - 1]
+def main():
+    n = int(input())
+    ticket = input()
+    print(get_winner(ticket))
+
+if __name__ == '__main__':
+    main()
 

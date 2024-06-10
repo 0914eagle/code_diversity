@@ -1,23 +1,36 @@
 
-def solve(N, L, x):
-    # Calculate the minimum distance between two luggage pieces
-    min_distance = 1 + 1e-9
+def shuffle(n, cards):
+    # Initialize the number of shuffles to 0
+    shuffles = 0
     
-    # Initialize the maximum speed to be the minimum speed
-    max_speed = 0.1
+    # Split the deck into two stacks
+    stack_1 = cards[:n//2]
+    stack_2 = cards[n//2:]
     
-    # Iterate through each luggage piece
-    for i in range(N):
-        # Calculate the distance between the current luggage piece and the next luggage piece
-        distance = abs(x[i] - x[(i+1)%N])
-        
-        # If the distance is less than the minimum distance, update the minimum distance
-        if distance < min_distance:
-            min_distance = distance
+    # Interleave the stacks in a random order
+    interleaved = []
+    while stack_1 and stack_2:
+        interleaved.append(stack_1.pop())
+        interleaved.append(stack_2.pop())
     
-    # Calculate the maximum speed that will avoid all collisions
-    max_speed = L / min_distance
+    # Add any remaining cards to the end of the list
+    while stack_1:
+        interleaved.append(stack_1.pop())
+    while stack_2:
+        interleaved.append(stack_2.pop())
     
-    # Return the maximum speed
-    return max_speed
+    # Check if the deck is now in the desired order
+    if interleaved == cards:
+        return shuffles
+    
+    # If not, recurse on the interleaved deck
+    return 1 + shuffle(n, interleaved)
+
+def main():
+    n = int(input())
+    cards = list(map(int, input().split()))
+    print(shuffle(n, cards))
+
+if __name__ == '__main__':
+    main()
 

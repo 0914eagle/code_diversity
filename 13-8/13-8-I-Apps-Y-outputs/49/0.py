@@ -1,18 +1,22 @@
 
-def solve(a):
-    # Calculate the sum of the elements in the array
-    sum_of_elements = sum(a)
-    
-    # Check if the sum is odd
-    if sum_of_elements % 2 == 1:
-        return "YES"
-    
-    # Check if there is a pair of indices with the same value
-    for i in range(len(a)):
-        for j in range(i+1, len(a)):
-            if a[i] == a[j]:
-                return "YES"
-    
-    # If none of the above conditions are met, return "NO"
-    return "NO"
+import math
+
+def get_optimal_c(n, p, s, v):
+    # Function to find the optimal value of c
+    c = (n * (math.log(n)**(1.5)) / (p * 10**9))**(1/s)
+    return c
+
+def get_time_to_distribute_keys(n, p, s, v, c):
+    # Function to find the time to distribute the keys
+    time = s * (1 + 1/c) / v
+    return time
+
+def main():
+    n, p, s, v = map(float, input().split())
+    c = get_optimal_c(n, p, s, v)
+    time = get_time_to_distribute_keys(n, p, s, v, c)
+    print(time, c)
+
+if __name__ == '__main__':
+    main()
 

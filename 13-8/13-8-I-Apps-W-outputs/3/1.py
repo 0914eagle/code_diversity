@@ -1,21 +1,26 @@
 
-import sys
+def get_arithmetic_progression(L, A, B):
+    progression = []
+    for i in range(L):
+        progression.append(A + B * i)
+    return progression
 
-def solve(engineers):
-    # Initialize the answer as 1
-    answer = 1
+def get_concatenated_number(progression):
+    concatenated_number = ''
+    for term in progression:
+        concatenated_number += str(term)
+    return concatenated_number
 
-    # Loop through each engineer
-    for engineer in engineers:
-        # Get the current and desired desk numbers
-        current_desk, desired_desk = engineer
+def get_remainder(concatenated_number, M):
+    return int(concatenated_number) % M
 
-        # If the current and desired desk numbers are different, we can have 2 possibilities:
-        # Either the engineer stays at their current desk, or they move to the desired desk.
-        # In either case, the answer is multiplied by 2.
-        if current_desk != desired_desk:
-            answer *= 2
+def main():
+    L, A, B, M = map(int, input().split())
+    progression = get_arithmetic_progression(L, A, B)
+    concatenated_number = get_concatenated_number(progression)
+    remainder = get_remainder(concatenated_number, M)
+    print(remainder)
 
-    # Return the answer modulo 1000000007
-    return answer % 1000000007
+if __name__ == '__main__':
+    main()
 

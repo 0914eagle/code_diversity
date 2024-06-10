@@ -1,14 +1,25 @@
 
-def solve(x_s, y_s, s_s, r_i, r_f, x_a, y_a, s_a):
-    # Calculate the distance between Anthony's current position and the center of the safety zone
-    distance = ((x_a - x_s) ** 2 + (y_a - y_s) ** 2) ** 0.5
-    
-    # Calculate the amount of time it takes for Anthony to reach the safety zone at his maximum speed
-    time = distance / s_a
-    
-    # Calculate the amount of damage Anthony will take during that time
-    damage = time * s_s
-    
-    # Return the minimum amount of damage Anthony will take
-    return damage
+def get_input():
+    n = int(input())
+    sizes = list(map(int, input().split()))
+    return n, sizes
+
+def is_valid_choice(sizes):
+    sizes.sort()
+    for i in range(len(sizes) - 2):
+        if sizes[i] + 2 < sizes[i + 2]:
+            return False
+    return True
+
+def main():
+    n, sizes = get_input()
+    if len(sizes) < 3:
+        print("NO")
+    elif is_valid_choice(sizes):
+        print("YES")
+    else:
+        print("NO")
+
+if __name__ == '__main__':
+    main()
 

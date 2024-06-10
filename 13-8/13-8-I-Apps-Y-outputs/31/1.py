@@ -1,23 +1,27 @@
 
-def solve(N, M, K, A, B):
-    # Sort the books on Desk A and Desk B by their reading time
-    A.sort()
-    B.sort()
+def parse_input(input_string):
+    # Initialize an empty string to store the parsed input
+    parsed_string = ""
     
-    # Initialize variables to keep track of the number of books read and the total time taken
-    num_books = 0
-    total_time = 0
+    # Iterate through the input string
+    for char in input_string:
+        # If the current character is not '<', append it to the parsed string
+        if char != "<":
+            parsed_string += char
     
-    # Loop through the books on Desk A and Desk B
-    while num_books < N and num_books < M and total_time < K:
-        # If the current book on Desk A is the fastest to read, read it and remove it from the desk
-        if A[num_books] < B[num_books]:
-            total_time += A.pop(0)
-        # If the current book on Desk B is the fastest to read, read it and remove it from the desk
-        else:
-            total_time += B.pop(0)
-        num_books += 1
+    # Return the parsed string
+    return parsed_string
+
+def main():
+    # Read a single line of input from stdin and remove the trailing newline
+    input_string = input().rstrip()
     
-    # Return the maximum number of books that can be read within the given time limit
-    return num_books
+    # Call the parse_input function and store the result in a variable
+    parsed_string = parse_input(input_string)
+    
+    # Print the parsed string to stdout
+    print(parsed_string)
+
+if __name__ == '__main__':
+    main()
 

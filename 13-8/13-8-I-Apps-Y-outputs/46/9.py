@@ -1,9 +1,12 @@
 
-def cost_of_ferris_wheel(age, cost):
-    if age >= 13:
-        return cost
-    elif 6 <= age <= 12:
-        return cost // 2
-    else:
-        return 0
+def solve(n, pieces):
+    pieces = sorted(pieces, reverse=True)
+    alice = []
+    bob = []
+    for i in range(n):
+        if i % 2 == 0:
+            alice.append(pieces[i])
+        else:
+            bob.append(pieces[i])
+    return sum(alice), sum(bob)
 

@@ -1,32 +1,38 @@
 
-def solve(A, B, Q, s, t, x):
-    # Sort the shrines and temples by their distances from the west end of the road
-    shrines = sorted(s)
-    temples = sorted(t)
-    
-    # Initialize the answer array
-    answer = []
-    
-    # Loop through each query
-    for i in range(Q):
-        # Get the starting point for this query
-        start = x[i]
-        
-        # Initialize the minimum distance to visit one shrine and one temple
-        min_dist = float('inf')
-        
-        # Loop through each shrine and temple
-        for j in range(A):
-            for k in range(B):
-                # Get the distance to visit this shrine and temple
-                dist = abs(shrines[j] - temples[k])
-                
-                # If the distance is less than the minimum distance, update the minimum distance
-                if dist < min_dist:
-                    min_dist = dist
-        
-        # Add the minimum distance to the answer array
-        answer.append(min_dist)
-    
-    return answer
+def get_maximum_lit_time(a, M):
+    # Initialize variables
+    n = len(a)
+    total_lit_time = 0
+    current_state = True
+    current_time = 0
+
+    # Iterate through the program
+    for i in range(n):
+        # Calculate the time until the next transition
+        time_until_next_transition = a[i] - current_time
+
+        # Update the total lit time
+        total_lit_time += time_until_next_transition * current_state
+
+        # Flip the current state
+        current_state = not current_state
+
+        # Update the current time
+        current_time = a[i]
+
+    # Calculate the time until power off
+    time_until_power_off = M - current_time
+
+    # Update the total lit time
+    total_lit_time += time_until_power_off * current_state
+
+    return total_lit_time
+
+def main():
+    n, M = map(int, input().split())
+    a = list(map(int, input().split()))
+    print(get_maximum_lit_time(a, M))
+
+if __name__ == '__main__':
+    main()
 

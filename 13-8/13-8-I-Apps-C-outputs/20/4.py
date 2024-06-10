@@ -1,32 +1,43 @@
 
-def solve(height, width, altitudes, i, j):
-    # Initialize the total volume of water drained to 0
-    total_volume = 0
+def get_maximum_amount(n, m, coupons):
+    # Initialize a dictionary to store the number of coupon uses for each number
+    coupon_uses = {}
+    for q, w in coupons:
+        if q not in coupon_uses:
+            coupon_uses[q] = 0
+        coupon_uses[q] += 1
 
-    # Loop through each row of the grid
-    for row in range(height):
-        # Loop through each column of the grid
-        for col in range(width):
-            # Check if the current cell is a water cell (i.e., has negative altitude)
-            if altitudes[row][col] < 0:
-                # Calculate the volume of water in the current cell
-                volume = abs(altitudes[row][col])
+    # Initialize a set to store the numbers that have been used
+    used_numbers = set()
 
-                # Check if the current cell is the cell where the draining device is placed
-                if row == i and col == j:
-                    # If the device is placed in a water cell, add the volume to the total volume
-                    total_volume += volume
-                else:
-                    # If the device is not placed in a water cell, check if the cell is connected to the device through water flow
-                    for neighbor in [(row-1, col), (row+1, col), (row, col-1), (row, col+1), (row-1, col-1), (row-1, col+1), (row+1, col-1), (row+1, col+1)]:
-                        # Check if the neighboring cell is a water cell and the device is not placed in that cell
-                        if 0 <= neighbor[0] < height and 0 <= neighbor[1] < width and altitudes[neighbor[0]][neighbor[1]] < 0 and (neighbor[0] != i or neighbor[1] != j):
-                            # If the cell is connected to the device through water flow, add the volume to the total volume
-                            total_volume += volume
+    # Initialize a variable to store the maximum amount paid
+    maximum_amount = 0
 
-                            # Break out of the loop, as the cell is now drained and cannot be drained again
-                            break
+    # Iterate through the numbers 1 to n
+    for i in range(1, n + 1):
+        # If the number has not been used and there are coupons available for it
+        if i not in used_numbers and coupon_uses.get(i, 0) > 0:
+            # Use the coupon for the number and add the cost to the maximum amount paid
+            maximum_amount += i
+            used_numbers.add(i)
+            coupon_uses[i] -= 1
 
-    # Return the total volume of water drained
-    return total_volume
+            # If the maximum amount paid is equal to the total cost of all coupons
+            if maximum_amount == sum(w for q, w in coupons):
+                # Return the maximum amount paid
+                return maximum_amount
+
+    # If no optimal solution is found, return 0
+    return 0
+
+def main():
+    n, m = map(int, input().split())
+    coupons = []
+    for _ in range(m):
+        q, w = map(int, input().split())
+        coupons.append((q, w))
+    print(get_maximum_amount(n, m, coupons))
+
+if __name__ == '__main__':
+    main()
 

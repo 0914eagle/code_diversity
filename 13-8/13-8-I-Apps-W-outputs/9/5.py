@@ -1,14 +1,15 @@
 
-def max_cuts(numbers, budget):
-    # Sort the numbers in ascending order
-    numbers.sort()
-    # Initialize variables to keep track of the current cost and the maximum number of cuts
-    cost, max_cuts = 0, 0
-    # Iterate through the numbers and check if the current cost is less than or equal to the budget
-    for i in range(len(numbers)-1):
-        cost += abs(numbers[i+1] - numbers[i])
-        if cost <= budget:
-            max_cuts += 1
-    # Return the maximum number of cuts that can be made with the given budget
-    return max_cuts
+def get_correct_bracket_sequences(n):
+    if n == 1:
+        return 1
+    else:
+        return 2 * get_correct_bracket_sequences(n - 1)
+
+def get_maximum_matching(n):
+    correct_bracket_sequences = get_correct_bracket_sequences(n)
+    return correct_bracket_sequences * (correct_bracket_sequences - 1) // 2
+
+if __name__ == '__main__':
+    n = int(input())
+    print(get_maximum_matching(n) % (10**9 + 7))
 

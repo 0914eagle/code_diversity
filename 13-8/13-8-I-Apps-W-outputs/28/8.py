@@ -1,49 +1,29 @@
 
-def get_minimal_bdd_vertices(n, function_values):
-    # Initialize a dictionary to store the BDD nodes
-    nodes = {}
-    
-    # Initialize the root node with the function values
-    root = Node(0, function_values)
-    nodes[0] = root
-    
-    # Iterate until there are no more nodes to process
-    while len(nodes) > 0:
-        # Get the next node to process
-        node = nodes.pop(0)
-        
-        # If the node is a leaf node, we are done
-        if node.is_leaf:
-            continue
-        
-        # Get the child nodes for the current node
-        child_nodes = node.get_child_nodes()
-        
-        # Add the child nodes to the dictionary
-        for child_node in child_nodes:
-            nodes[child_node.index] = child_node
-    
-    # Return the number of vertices in the BDD
-    return len(nodes) + 1
+def get_steps(a, b):
+    steps = []
+    for i in range(1, a+b+1):
+        if i % 2 == 0:
+            steps.append("even")
+        else:
+            steps.append("odd")
+    return steps
 
-# Node class to represent a node in the BDD
-class Node:
-    def __init__(self, index, values):
-        self.index = index
-        self.values = values
-        self.is_leaf = False
-    
-    # Get the child nodes for the current node
-    def get_child_nodes(self):
-        child_nodes = []
-        
-        # Iterate over the possible values for the current node
-        for i in range(len(self.values)):
-            # Create a new node for the child
-            child_node = Node(self.index * 2 + i, self.values[i])
-            
-            # Add the child node to the list of child nodes
-            child_nodes.append(child_node)
-        
-        return child_nodes
+def check_interval(steps, l, r):
+    even_steps = 0
+    odd_steps = 0
+    for i in range(l-1, r):
+        if steps[i] == "even":
+            even_steps += 1
+        else:
+            odd_steps += 1
+    if even_steps == a and odd_steps == b:
+        return "YES"
+    else:
+        return "NO"
+
+if __name__ == '__main__':
+    a, b = map(int, input().split())
+    steps = get_steps(a, b)
+    l, r = map(int, input().split())
+    print(check_interval(steps, l, r))
 

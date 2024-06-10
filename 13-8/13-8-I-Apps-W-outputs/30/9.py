@@ -1,24 +1,42 @@
 
-def solve(n, x):
-    # Sort the list of measurements in ascending order
-    x.sort()
+def get_max_number(v, a):
+    # Initialize a list to store the numbers that can be written
+    numbers = []
     
-    # Initialize the minimum number of equal measurements to 0
-    min_equal = 0
+    # Iterate through the list of a_i values
+    for i in range(len(a)):
+        # Check if the current value is less than or equal to the available paint
+        if a[i] <= v:
+            # Add the current value to the list of numbers that can be written
+            numbers.append(i)
     
-    # Initialize the list of measurements to write in Anya's work
-    y = []
+    # Sort the list of numbers in descending order
+    numbers.sort(reverse=True)
     
-    # Loop through each measurement in Kirill's work
-    for i in range(n):
-        # Check if the current measurement is equal to the previous measurement
-        if i > 0 and x[i] == x[i-1]:
-            # Increment the minimum number of equal measurements
-            min_equal += 1
-        # Otherwise, append the current measurement to the list of measurements to write in Anya's work
+    # Initialize a variable to store the maximum number that can be written
+    max_number = 0
+    
+    # Iterate through the list of numbers
+    for i in range(len(numbers)):
+        # Check if the current number is a multiple of 10
+        if numbers[i] % 10 == 0 and numbers[i] != 0:
+            # Skip this number
+            continue
         else:
-            y.append(x[i])
+            # Add the current number to the maximum number that can be written
+            max_number += numbers[i] * 10 ** i
     
-    # Return the minimum number of equal measurements and the list of measurements to write in Anya's work
-    return min_equal, y
+    # Return the maximum number that can be written
+    return max_number
+
+def main():
+    # Read the input
+    v = int(input())
+    a = list(map(int, input().split()))
+    
+    # Call the get_max_number function and print the result
+    print(get_max_number(v, a))
+
+if __name__ == '__main__':
+    main()
 

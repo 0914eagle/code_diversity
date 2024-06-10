@@ -1,31 +1,34 @@
 
-def solve(beacons, mountains):
-    # Initialize a set to store the lit beacons
-    lit_beacons = set()
-    # Loop through each beacon and check if it is within sight of any other beacon
-    for beacon in beacons:
-        for other_beacon in beacons:
-            if are_within_sight(beacon, other_beacon, mountains):
-                lit_beacons.add(beacon)
-                break
-    # Return the number of messages required
-    return len(lit_beacons)
+def get_two_suspects(n, p, coders):
+    # Initialize a set to store the two suspects
+    suspects = set()
+    
+    # Iterate over the coders
+    for coder in coders:
+        # If the coder agreed with the choice of the two suspects
+        if coder[0] in suspects or coder[1] in suspects:
+            # Increment the number of agreed coders
+            p -= 1
+        
+        # If the number of agreed coders is greater than or equal to p
+        if p <= 0:
+            # Break the loop
+            break
+    
+    # Return the number of possible two-suspect sets
+    return len(suspects)
 
-# Check if two beacons are within sight of each other
-def are_within_sight(beacon1, beacon2, mountains):
-    # Check if the straight line between the two beacons is blocked by a mountain
-    for mountain in mountains:
-        if is_line_blocked(beacon1, beacon2, mountain):
-            return False
-    return True
+def main():
+    # Read the input
+    n, p = map(int, input().split())
+    coders = [tuple(map(int, input().split())) for _ in range(n)]
+    
+    # Call the get_two_suspects function
+    result = get_two_suspects(n, p, coders)
+    
+    # Print the result
+    print(result)
 
-# Check if a straight line is blocked by a mountain
-def is_line_blocked(beacon1, beacon2, mountain):
-    # Calculate the slope and y-intercept of the line
-    slope = (beacon2[1] - beacon1[1]) / (beacon2[0] - beacon1[0])
-    y_intercept = beacon1[1] - slope * beacon1[0]
-    # Calculate the x-coordinate of the line at the y-coordinate of the mountain
-    x_at_y = (mountain[1] - y_intercept) / slope
-    # Check if the x-coordinate is within the range of the mountain
-    return x_at_y > mountain[0] - mountain[2] and x_at_y < mountain[0] + mountain[2]
+if __name__ == '__main__':
+    main()
 

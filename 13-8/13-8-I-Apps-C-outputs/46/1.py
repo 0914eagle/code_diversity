@@ -1,25 +1,20 @@
 
-def get_candidate_locations(robot_image, floor_image):
-    # Initialize a list to store the candidate locations
-    candidates = []
-    
-    # Loop through each possible location to overlay the robot image on the floor image
-    for x in range(len(floor_image) - len(robot_image) + 1):
-        for y in range(len(floor_image[0]) - len(robot_image[0]) + 1):
-            # Compute the number of pixels that are the same between the two images at the current location
-            num_same_pixels = 0
-            for i in range(len(robot_image)):
-                for j in range(len(robot_image[0])):
-                    if robot_image[i][j] == floor_image[i + x][j + y]:
-                        num_same_pixels += 1
-            
-            # If the current location has the most number of pixels the same between the two images, add it to the list of candidates
-            if num_same_pixels > max([candidate[2] for candidate in candidates]):
-                candidates.append((x, y, num_same_pixels))
-    
-    # Sort the candidates by x-coordinate and then by y-coordinate
-    candidates.sort(key=lambda x: (x[0], x[1]))
-    
-    # Return the list of candidate locations
-    return candidates
+def get_f_string(n):
+    if n == 0:
+        return "What are you doing at the end of the world? Are you busy? Will you save us?"
+    else:
+        return "What are you doing while sending \"" + get_f_string(n-1) + "\"? Are you busy? Will you send \"" + get_f_string(n-1) + "\"?"
+
+def get_character(n, k):
+    f_string = get_f_string(n)
+    if k > len(f_string):
+        return '.'
+    else:
+        return f_string[k-1]
+
+if __name__ == '__main__':
+    q = int(input())
+    for i in range(q):
+        n, k = map(int, input().split())
+        print(get_character(n, k), end='')
 

@@ -1,21 +1,31 @@
 
-def can_switch_garlands(k1, k2, k3):
-    # Check if k1, k2, and k3 are positive
-    if k1 <= 0 or k2 <= 0 or k3 <= 0:
-        return "NO"
+def is_synchronizable(c_charges, t_charges):
+    
+    if len(c_charges) != len(t_charges):
+        return False
+    
+    # Initialize a queue with the indices of the stones that need to be synchronized
+    queue = [i for i in range(1, len(c_charges))]
+    
+    while queue:
+        i = queue.pop(0)
+        ci, ti = c_charges[i], t_charges[i]
+        if ci != ti:
+            # Synchronize the stone with its neighbors
+            c_charges[i] = c_charges[i-1] + c_charges[i+1] - ci
+            queue.append(i-1)
+            queue.append(i+1)
+    
+    # Check if all the charges are equal to the required ones
+    return all(c == t for c, t in zip(c_charges, t_charges))
 
-    # Check if k1, k2, and k3 are coprime
-    if __gcd(k1, k2) != 1 or __gcd(k1, k3) != 1 or __gcd(k2, k3) != 1:
-        return "NO"
+def main():
+    n = int(input())
+    c_charges = list(map(int, input().split()))
+    t_charges = list(map(int, input().split()))
+    
+    print("Yes") if is_synchronizable(c_charges, t_charges) else print("No")
 
-    # Check if the sum of k1, k2, and k3 is even
-    if k1 + k2 + k3 % 2 == 0:
-        return "NO"
-
-    # Check if the sum of k1, k2, and k3 is divisible by 3
-    if (k1 + k2 + k3) % 3 == 0:
-        return "NO"
-
-    # If all conditions are met, return "YES"
-    return "YES"
+if __name__ == '__main__':
+    main()
 

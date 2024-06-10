@@ -1,39 +1,47 @@
 
-def solve(n, t, m, sp_cheer):
-    # Initialize variables
-    sportify_goals = 0
-    spoilify_goals = 0
-    sportify_cheer = 0
-    spoilify_cheer = 0
-    intervals = []
+import sys
+import itertools
 
-    # Add the Spoilify cheerleading intervals to a list
-    for i in range(m):
-        intervals.append([sp_cheer[i][0], sp_cheer[i][1]])
+def get_input():
+    n, k = map(int, input().split())
+    courses = []
+    for i in range(n):
+        course, difficulty = input().split()
+        courses.append((course, int(difficulty)))
+    return n, k, courses
 
-    # Sort the intervals by start time
-    intervals.sort(key=lambda x: x[0])
+def get_courses_per_semester(courses, k):
+    courses_per_semester = []
+    for i in range(2):
+        courses_per_semester.append([])
+    for course, difficulty in courses:
+        if course.endswith("1"):
+            courses_per_semester[0].append((course, difficulty))
+        elif course.endswith("2"):
+            courses_per_semester[1].append((course, difficulty))
+        else:
+            courses_per_semester[0].append((course, difficulty))
+    return courses_per_semester
 
-    # Iterate through the 90-minute game
-    for i in range(90):
-        # Check if any Spoilify cheerleaders are active during this interval
-        for interval in intervals:
-            if interval[0] <= i <= interval[1]:
-                spoilify_cheer += 1
-                break
+def get_min_difficulty(courses_per_semester):
+    min_difficulty = 0
+    for semester in courses_per_semester:
+        min_difficulty += min(course[1] for course in semester)
+    return min_difficulty
 
-        # Check if Sportify should cheer during this interval
-        if sportify_cheer < t:
-            sportify_cheer += 1
+def get_min_difficulty_with_constraints(courses_per_semester):
+    min_difficulty = 0
+    for semester in courses_per_semester:
+        courses = sorted(semester, key=lambda x: x[1])
+        min_difficulty += courses[0][1]
+    return min_difficulty
 
-        # Check if a goal should be scored
-        if sportify_cheer > spoilify_cheer + 5:
-            sportify_goals += 1
-            sportify_cheer = 0
-        elif spoilify_cheer > sportify_cheer + 5:
-            spoilify_goals += 1
-            spoilify_cheer = 0
+def main():
+    n, k, courses = get_input()
+    courses_per_semester = get_courses_per_semester(courses, k)
+    min_difficulty = get_min_difficulty_with_constraints(courses_per_semester)
+    print(min_difficulty)
 
-    # Return the results
-    return [sportify_goals, spoilify_goals]
+if __name__ == '__main__':
+    main()
 

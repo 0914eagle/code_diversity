@@ -1,31 +1,48 @@
 
-def longest_match(repository, snippet):
-    # Initialize variables
-    matches = []
-    longest_match_length = 0
-    longest_match_files = []
+import sys
+import math
 
-    # Iterate through each file in the repository
-    for file in repository:
-        # Initialize variables for current file
-        current_match_length = 0
-        current_match_files = []
+def is_leaf(node, graph):
+    return len(graph[node]) == 1
 
-        # Iterate through each line in the file
-        for line in file:
-            # Check if the line is a match
-            if line in snippet:
-                # Increment the match length
-                current_match_length += 1
-                # Add the file to the list of matching files
-                current_match_files.append(file)
+def is_simple_path(u, v, graph):
+    visited = set()
+    queue = [u]
+    while queue:
+        node = queue.pop(0)
+        if node == v:
+            return True
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append(neighbor)
+    return False
 
-        # Check if the current match length is the longest match length
-        if current_match_length > longest_match_length:
-            # Update the longest match length and files
-            longest_match_length = current_match_length
-            longest_match_files = current_match_files
+def can_reach_value(graph, value):
+    queue = [(1, 0)]
+    visited = set()
+    while queue:
+        node, cost = queue.pop(0)
+        if node == len(graph):
+            return True
+        for neighbor, weight in graph[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, cost + weight))
+    return False
 
-    # Return the longest match length and files
-    return longest_match_length, longest_match_files
+def solve(n, edges):
+    graph = [[] for _ in range(n + 1)]
+    for u, v in edges:
+        graph[u].append((v, 1))
+        graph[v].append((u, 1))
+    return "YES" if can_reach_value(graph, 0) else "NO"
+
+if __name__ == '__main__':
+    n = int(input())
+    edges = []
+    for _ in range(n - 1):
+        u, v = map(int, input().split())
+        edges.append((u, v))
+    print(solve(n, edges))
 

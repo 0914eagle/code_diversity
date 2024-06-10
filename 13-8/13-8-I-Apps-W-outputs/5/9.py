@@ -1,19 +1,14 @@
 
-def solve(segments):
-    # Sort the segments by their left endpoint
-    segments.sort(key=lambda x: x[0])
+def find_substring(substring, string):
+    return string.count(substring)
 
-    # Initialize the cover segment to be the first segment
-    cover_segment = segments[0]
+def main():
+    N = int(input())
+    T = input()
+    S = "110" * 10**10
+    count = find_substring(T, S)
+    print(count)
 
-    # Iterate through the remaining segments
-    for segment in segments[1:]:
-        # If the current segment does not overlap with the cover segment, return -1
-        if segment[0] > cover_segment[1]:
-            return -1
-        # Update the cover segment to be the maximum segment that covers all previous segments
-        cover_segment = [cover_segment[0], max(cover_segment[1], segment[1])]
-
-    # Return the number of the cover segment
-    return segments.index(cover_segment) + 1
+if __name__ == '__main__':
+    main()
 

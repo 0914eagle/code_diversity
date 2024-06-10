@@ -1,28 +1,28 @@
 
-def get_maximum_free_tables(n, k, s):
-    # Count the number of occupied tables
-    num_occupied_tables = s.count("1")
+def equalize_prices(n, k, prices):
+    # Sort the prices in non-decreasing order
+    prices.sort()
+    # Initialize the maximum equal price as the smallest price
+    equal_price = prices[0]
+    # Iterate through the prices and calculate the maximum equal price
+    for i in range(1, n):
+        # Calculate the difference between the current price and the equal price
+        diff = prices[i] - equal_price
+        # If the difference is greater than k, return -1
+        if diff > k:
+            return -1
+        # Update the equal price to be the current price
+        equal_price = prices[i]
+    # Return the maximum equal price
+    return equal_price
 
-    # If all tables are occupied, return 0
-    if num_occupied_tables == n:
-        return 0
+def main():
+    q = int(input())
+    for i in range(q):
+        n, k = map(int, input().split())
+        prices = list(map(int, input().split()))
+        print(equalize_prices(n, k, prices))
 
-    # Initialize the maximum number of free tables to occupy
-    max_free_tables = 0
-
-    # Iterate over the tables
-    for i in range(n):
-        # Check if the table is occupied
-        if s[i] == "0":
-            # Calculate the minimum distance between the current table and the nearest occupied table
-            min_distance = k + 1
-            for j in range(i):
-                if s[j] == "1":
-                    min_distance = min(min_distance, abs(i - j))
-
-            # If the minimum distance is greater than k, we can occupy the current table
-            if min_distance > k:
-                max_free_tables += 1
-
-    return max_free_tables
+if __name__ == '__main__':
+    main()
 

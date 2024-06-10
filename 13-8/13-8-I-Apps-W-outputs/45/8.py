@@ -1,25 +1,70 @@
 
-def solve(n, k, rows):
-    # Initialize the number of neighbors for each status passenger to 0
-    neighbors = [0] * n
+def get_min_night_count(total_mass, bacteria_count=1):
+    # Base case: if the total mass is 1, return 0 nights
+    if total_mass == 1:
+        return 0
+    
+    # Initialize variables
+    night_count = 0
+    current_mass = 1
+    bacteria_count_list = [bacteria_count]
+    
+    # Loop until the total mass is reached
+    while current_mass < total_mass:
+        # Increment the night count
+        night_count += 1
+        
+        # Split the bacteria
+        bacteria_count_list = [bacteria_count_list[i] // 2 for i in range(len(bacteria_count_list))]
+        
+        # Increment the mass of each bacterium
+        current_mass += sum(bacteria_count_list)
+    
+    # Return the minimum number of nights needed
+    return night_count
 
-    # Loop through each row of seats
-    for i in range(n):
-        # If the current seat is empty, continue to the next seat
-        if rows[i][j] == '.':
-            continue
+def get_bacteria_split_counts(total_mass, night_count):
+    # Initialize variables
+    bacteria_count = 1
+    current_mass = 1
+    bacteria_split_counts = [0] * night_count
+    
+    # Loop until the total mass is reached
+    while current_mass < total_mass:
+        # Increment the mass of each bacterium
+        current_mass += bacteria_count
+        
+        # Split the bacteria
+        bacteria_count_list = [bacteria_count // 2 for i in range(bacteria_count)]
+        bacteria_count = sum(bacteria_count_list)
+        
+        # Increment the split count for each night
+        for i in range(night_count):
+            bacteria_split_counts[i] += len(bacteria_count_list)
+    
+    # Return the bacteria split counts
+    return bacteria_split_counts
 
-        # If the current seat is occupied by a status passenger, increment the number of neighbors
-        if rows[i][j] == 'S':
-            neighbors[i] += 1
+def main():
+    # Read the input
+    test_cases = int(input())
+    for _ in range(test_cases):
+        total_mass = int(input())
+        
+        # Get the minimum number of nights needed
+        night_count = get_min_night_count(total_mass)
+        
+        # Check if a solution exists
+        if night_count == -1:
+            print(-1)
+        else:
+            # Get the bacteria split counts
+            bacteria_split_counts = get_bacteria_split_counts(total_mass, night_count)
+            
+            # Print the output
+            print(night_count)
+            print(" ".join(map(str, bacteria_split_counts)))
 
-    # Loop through each row of seats again
-    for i in range(n):
-        # If the current seat is empty and there are still passengers to place, place a passenger in the current seat
-        if rows[i][j] == '.' and k > 0:
-            rows[i][j] = 'x'
-            k -= 1
-
-    # Return the total number of neighbors and the updated seat plan
-    return neighbors, rows
+if __name__ == '__main__':
+    main()
 

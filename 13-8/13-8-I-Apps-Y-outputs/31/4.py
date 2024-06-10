@@ -1,27 +1,17 @@
 
-def read_books(n, m, k, a, b):
-    # Sort the books on desk A and desk B by their reading time
-    desk_a = sorted(a)
-    desk_b = sorted(b)
+def solve(text):
+    # Initialize an empty string to store the corrected text
+    corrected_text = ""
     
-    # Initialize variables to keep track of the number of books read and the time elapsed
-    num_books = 0
-    time_elapsed = 0
+    # Iterate through the input text
+    for char in text:
+        # If the current character is not '<', add it to the corrected text
+        if char != "<":
+            corrected_text += char
+        # If the current character is '<' and the previous character is not '<', remove the previous character from the corrected text
+        elif corrected_text and corrected_text[-1] != "<":
+            corrected_text = corrected_text[:-1]
     
-    # Loop until we have read all the books or the time limit is reached
-    while num_books < n + m and time_elapsed <= k:
-        # Check if the next book on desk A is ready to be read
-        if desk_a[num_books] <= time_elapsed:
-            # Read the book and remove it from the desk
-            time_elapsed += desk_a[num_books]
-            num_books += 1
-        
-        # Check if the next book on desk B is ready to be read
-        if desk_b[num_books] <= time_elapsed:
-            # Read the book and remove it from the desk
-            time_elapsed += desk_b[num_books]
-            num_books += 1
-    
-    # Return the number of books read
-    return num_books
+    # Return the corrected text
+    return corrected_text
 

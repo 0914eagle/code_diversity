@@ -1,57 +1,37 @@
 
-def solve(repository, snippet):
-    # Initialize a dictionary to store the file names and their contents
-    file_names = {}
-    for file_name, content in repository:
-        file_names[file_name] = content
+def is_reachable(n, edges):
+    # Initialize a dictionary to store the values of the edges
+    values = {(i+1, j+1): 0 for i in range(n-1) for j in range(i+1, n)}
+    values[(1, n)] = 0
+    
+    # Initialize a queue to store the nodes to be processed
+    queue = [(1, n)]
+    
+    while queue:
+        # Dequeue a node
+        node = queue.pop(0)
+        
+        # If the node is a leaf, add the value of the edge to the value of the parent node
+        if node[0] == node[1]:
+            values[node] += 1
+        
+        # If the node has a parent, enqueue the parent node
+        if node[0] != 1:
+            queue.append((node[0], node[1]))
+    
+    # If all the edges have a non-zero value, return True
+    return all(values[edge] != 0 for edge in edges)
 
-    # Initialize a list to store the longest match and the file names of the matching fragments
-    longest_match = []
-    matching_file_names = []
+def main():
+    n = int(input())
+    edges = []
+    
+    for i in range(n-1):
+        u, v = map(int, input().split())
+        edges.append((u, v))
+    
+    print("YES" if is_reachable(n, edges) else "NO")
 
-    # Iterate through the lines of the snippet
-    for line in snippet:
-        # Ignore empty lines and lines with only spaces
-        if not line.strip():
-            continue
-
-        # Iterate through the file names and their contents in the repository
-        for file_name, content in file_names.items():
-            # Find the longest match between the current line and the content of the file
-            match = longest_common_subsequence(line, content)
-
-            # If the match is longer than the current longest match, update the longest match and the file names of the matching fragments
-            if len(match) > len(longest_match):
-                longest_match = match
-                matching_file_names = [file_name]
-
-            # If the match is equal to the current longest match, add the file name to the list of matching file names
-            elif len(match) == len(longest_match):
-                matching_file_names.append(file_name)
-
-    # Return the length of the longest match and the file names of the matching fragments
-    return len(longest_match), " ".join(matching_file_names)
-
-# Function to find the longest common subsequence between two strings
-def longest_common_subsequence(str1, str2):
-    # Find the length of the strings
-    m = len(str1)
-    n = len(str2)
-
-    # Initialize a 2D array to store the longest common subsequence
-    dp = [[0] * (n + 1) for _ in range(m + 1)]
-
-    # Fill in the first row and first column of the array
-    for i in range(1, m + 1):
-        for j in range(1, n + 1):
-            if str1[i - 1] == str2[j - 1]:
-                dp[i][j] = dp[i - 1][j - 1] + 1
-            else:
-                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
-
-    # Find the length of the longest common subsequence
-    result = dp[m][n]
-
-    # Return the longest common subsequence
-    return str1[:result]
+if __name__ == '__main__':
+    main()
 

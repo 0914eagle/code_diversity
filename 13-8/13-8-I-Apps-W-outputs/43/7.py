@@ -1,18 +1,42 @@
 
-def solve(n, m, servers, commands):
-    # Initialize an empty dictionary to map IP addresses to server names
-    ip_to_name = {}
+def paint_fence(r, b, k):
+    # Initialize variables
+    red_planks = 0
+    blue_planks = 0
+    consecutive_planks = 0
 
-    # Iterate over the list of servers and populate the dictionary
-    for server in servers:
-        ip_to_name[server[1]] = server[0]
+    # Loop through all planks
+    for i in range(10**100):
+        # Check if plank is divisible by r
+        if i % r == 0:
+            red_planks += 1
+            consecutive_planks += 1
+        # Check if plank is divisible by b
+        elif i % b == 0:
+            blue_planks += 1
+            consecutive_planks += 1
+        # Check if plank is divisible by both r and b
+        elif i % (r * b) == 0:
+            red_planks += 1
+            blue_planks += 1
+            consecutive_planks += 1
+        # Check if plank is not divisible by r, b, or their product
+        else:
+            consecutive_planks = 0
 
-    # Iterate over the list of commands and add the server names to the end of each line
-    for i in range(len(commands)):
-        command = commands[i]
-        ip = command.split(" ")[1]
-        name = ip_to_name[ip]
-        commands[i] = command + " #" + name
+        # Check if there are k consecutive planks of the same color
+        if consecutive_planks == k:
+            return "REBEL"
 
-    return commands
+    # If we reach this point, we have painted all planks and there are no k consecutive planks of the same color
+    return "OBEY"
+
+def main():
+    tests = int(input())
+    for i in range(tests):
+        r, b, k = map(int, input().split())
+        print(paint_fence(r, b, k))
+
+if __name__ == '__main__':
+    main()
 

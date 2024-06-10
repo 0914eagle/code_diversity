@@ -1,19 +1,36 @@
 
 import math
 
-def solve(n, d, r):
-    # Calculate the probability of a gem splitting into two gems
-    p = 1 / n
+def calculate_area_covered_by_pickles(n, r, s):
+    # Calculate the area of a single pickle
+    pickle_area = math.pi * r ** 2
+    
+    # Calculate the total area of all pickles
+    total_pickle_area = n * pickle_area
+    
+    # Calculate the area of the sandwich
+    sandwich_area = math.pi * s ** 2
+    
+    # Calculate the maximum area covered by pickles
+    max_area_covered = sandwich_area * (100 - z) / 100
+    
+    # Return the number of pickles that can be placed on the sandwich
+    return math.floor(max_area_covered / total_pickle_area)
 
-    # Calculate the expected number of gems after d nights
-    expected_gems = 0
-    for i in range(1, n+1):
-        expected_gems += i * math.pow(p, d)
+def get_maximum_number_of_pickles(s, r, n, z):
+    # Calculate the area covered by pickles
+    area_covered_by_pickles = calculate_area_covered_by_pickles(n, r, s)
+    
+    # Calculate the maximum number of pickles that can be placed on the sandwich
+    max_number_of_pickles = math.floor(area_covered_by_pickles / (math.pi * r ** 2))
+    
+    # Return the maximum number of pickles
+    return max_number_of_pickles
 
-    # Calculate the expected number of gems held by the top r inhabitants
-    expected_top_r_gems = 0
-    for i in range(n-r+1, n+1):
-        expected_top_r_gems += i * math.pow(p, d)
+def main():
+    s, r, n, z = map(float, input().split())
+    print(get_maximum_number_of_pickles(s, r, n, z))
 
-    return expected_top_r_gems
+if __name__ == '__main__':
+    main()
 

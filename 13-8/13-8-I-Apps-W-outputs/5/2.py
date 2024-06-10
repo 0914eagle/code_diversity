@@ -1,24 +1,20 @@
 
-def solve(segments):
-    # Sort the segments by their left endpoint
-    segments.sort(key=lambda x: x[0])
+def concatenate(s, n):
+    return s * n
 
-    # Initialize the covered segments as an empty set
-    covered_segments = set()
+def count_substring(s, t):
+    count = 0
+    for i in range(len(s) - len(t) + 1):
+        if s[i:i+len(t)] == t:
+            count += 1
+    return count
 
-    # Iterate through the segments
-    for segment in segments:
-        # If the current segment is covered by any other segment, skip it
-        if any(segment[0] in covered_segment for covered_segment in covered_segments):
-            continue
+def main():
+    n = int(input())
+    t = input()
+    s = concatenate("110", 10**10)
+    print(count_substring(s, t))
 
-        # If the current segment covers all other segments, return its number
-        if all(segment[0] <= other_segment[0] and segment[1] >= other_segment[1] for other_segment in segments):
-            return segment[2]
-
-        # Otherwise, add the current segment to the covered segments set
-        covered_segments.add(segment)
-
-    # If no segment covers all other segments, return -1
-    return -1
+if __name__ == '__main__':
+    main()
 

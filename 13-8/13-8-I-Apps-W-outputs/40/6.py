@@ -1,15 +1,21 @@
 
-def solve(s, t):
-    # Initialize a counter for the number of occurrences of t
-    count = 0
+def get_expected_sum(N, K, p):
+    # Calculate the expected sum for each combination of K dice
+    expected_sums = []
+    for i in range(N - K + 1):
+        sum = 0
+        for j in range(K):
+            sum += p[i + j]
+        expected_sums.append(sum)
     
-    # Iterate through the characters of s
-    for i in range(len(s)):
-        # If the current character is a question mark, replace it with a character from t
-        if s[i] == "?":
-            s = s[:i] + t[i % len(t)] + s[i+1:]
-            count += 1
-    
-    # Return the number of occurrences of t
-    return count
+    # Return the maximum expected sum
+    return max(expected_sums)
+
+def main():
+    N, K = map(int, input().split())
+    p = list(map(int, input().split()))
+    print(get_expected_sum(N, K, p))
+
+if __name__ == '__main__':
+    main()
 

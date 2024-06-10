@@ -1,26 +1,27 @@
 
-def get_minimal_bdd_vertices(n, function_values):
-    # Initialize the BDD with a single vertex representing the root
-    bdd = [0]
-
-    # Iterate over the function values
-    for i in range(2**n):
-        # Get the current vertex and the label of the edge leading to it
-        vertex, label = bdd[-1], i % 2
-
-        # If the vertex is not a leaf vertex, create a new vertex and add it to the BDD
-        if vertex != 1:
-            bdd.append(vertex ^ label)
-
-        # If the vertex is a leaf vertex, check if it is a duplicate of an existing vertex
+def get_interval(even_steps, odd_steps):
+    # Initialize a list to store the numbers of steps with even and odd numbers
+    steps = [0] * 101
+    
+    # Populate the list with the number of steps with even and odd numbers
+    for i in range(1, 101):
+        if i % 2 == 0:
+            steps[i] = even_steps
         else:
-            for j in range(len(bdd) - 1):
-                if bdd[j] == vertex:
-                    bdd[j] = vertex ^ label
-                    break
-            else:
-                bdd.append(vertex ^ label)
+            steps[i] = odd_steps
+    
+    # Iterate through the list and check if there is an interval with the given number of steps
+    for i in range(1, 100):
+        for j in range(i+1, 101):
+            if steps[i] == steps[j]:
+                return "YES"
+    
+    return "NO"
 
-    # Return the number of vertices in the BDD
-    return len(set(bdd))
+def main():
+    even_steps, odd_steps = map(int, input().split())
+    print(get_interval(even_steps, odd_steps))
+
+if __name__ == '__main__':
+    main()
 

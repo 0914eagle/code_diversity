@@ -1,16 +1,26 @@
 
-def solve(x_s, y_s, s_s, r_i, r_f, x_a, y_a, s_a):
-    # Calculate the distance between Anthony's current position and the center of the safety zone
-    distance = ((x_a - x_s) ** 2 + (y_a - y_s) ** 2) ** 0.5
+def input_data():
+    n = int(input())
+    sizes = list(map(int, input().split()))
+    return n, sizes
 
-    # Calculate the time it takes for Anthony to reach the safety zone
-    time = distance / s_a
+def find_distinct_sizes(sizes):
+    return len(set(sizes)) == 3
 
-    # Calculate the radius of the safety zone at the time Anthony reaches it
-    radius = r_i - s_s * time
+def find_difference_less_than_or_equal_to_2(sizes):
+    for i in range(len(sizes) - 1):
+        for j in range(i + 1, len(sizes)):
+            if abs(sizes[i] - sizes[j]) > 2:
+                return False
+    return True
 
-    # Calculate the damage Anthony will take if he reaches the safety zone
-    damage = 0 if radius > r_f else (radius - r_f) / s_s
+def main():
+    n, sizes = input_data()
+    if find_distinct_sizes(sizes) and find_difference_less_than_or_equal_to_2(sizes):
+        print("YES")
+    else:
+        print("NO")
 
-    return damage
+if __name__ == '__main__':
+    main()
 

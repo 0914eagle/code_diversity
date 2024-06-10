@@ -1,27 +1,32 @@
 
-def solve(n, preferences):
-    # Initialize the variables
-    teachers = [0, 0, 0]
-    classes = [[], [], []]
-    same_teacher_count = 0
-    same_class_count = 0
-    top_t = 0
+def get_energy_wasted(boxes, P):
+    # Sort the boxes by probability in descending order
+    sorted_boxes = sorted(boxes, key=lambda x: x[1], reverse=True)
 
-    # Loop through each kid and their preference list
-    for i in range(n):
-        teacher, preference_list = preferences[i]
+    # Initialize the energy wasted and the probability of finding Polly
+    energy_wasted = 0
+    prob_found = 0
 
-        # Check if the kid has the same teacher as last year
-        if teacher == teachers[i]:
-            same_teacher_count += 1
+    # Loop through the boxes and add the energy wasted and the probability of finding Polly
+    for box in sorted_boxes:
+        energy_wasted += box[0]
+        prob_found += box[1]
 
-        # Check if the kid is in the same class as last year
-        if classes[teacher].count(i) > 0:
-            same_class_count += 1
+        # If the probability of finding Polly is greater than or equal to P, return the minimum energy wasted
+        if prob_found >= P:
+            return energy_wasted
 
-        # Find the top T places of the preference list
-        top_t = max(top_t, len(preference_list))
+    # If Polly was not found with at least probability P, return -1
+    return -1
 
-    # Return the smallest non-negative integer T that satisfies the conditions
-    return max(0, top_t - same_teacher_count - same_class_count)
+def main():
+    N, P = map(int, input().split())
+    boxes = []
+    for _ in range(N):
+        e, p = map(float, input().split())
+        boxes.append((e, p))
+    print(get_energy_wasted(boxes, P))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,19 +1,43 @@
 
-def min_cards_to_verify_statement(s):
-    vowels = set("aeiou")
-    even_digits = set("02468")
-    vowel_cards = 0
-    even_digit_cards = 0
-    for i in range(len(s)):
-        if s[i].isalpha():
-            if s[i].lower() in vowels:
-                vowel_cards += 1
-            if s[i].isdigit() and int(s[i]) in even_digits:
-                even_digit_cards += 1
-        else:
-            if s[i-1].isalpha() and s[i-1].lower() in vowels:
-                vowel_cards += 1
-            if s[i-1].isdigit() and int(s[i-1]) in even_digits:
-                even_digit_cards += 1
-    return max(vowel_cards, even_digit_cards)
+def get_zoo_data(n, m):
+    # Function to get the data for the zoo
+    areas = []
+    roads = []
+    
+    for i in range(n):
+        areas.append(int(input()))
+    
+    for i in range(m):
+        x, y = map(int, input().split())
+        roads.append((x, y))
+    
+    return areas, roads
+
+def get_min_animal_count(areas, roads):
+    # Function to get the minimum animal count for each pair of areas
+    min_animal_count = {}
+    
+    for i in range(len(areas)):
+        for j in range(i+1, len(areas)):
+            min_animal_count[(i+1, j+1)] = min(areas[i], areas[j])
+    
+    return min_animal_count
+
+def get_avg_min_animal_count(areas, roads):
+    # Function to get the average minimum animal count for all pairs of areas
+    min_animal_count = get_min_animal_count(areas, roads)
+    total = 0
+    count = 0
+    
+    for i in range(len(areas)):
+        for j in range(i+1, len(areas)):
+            total += min_animal_count[(i+1, j+1)]
+            count += 1
+    
+    return total / count
+
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    areas, roads = get_zoo_data(n, m)
+    print(get_avg_min_animal_count(areas, roads))
 

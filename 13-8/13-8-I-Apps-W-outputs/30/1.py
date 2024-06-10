@@ -1,21 +1,27 @@
 
-def solve(n, x):
-    # Sort the list of measurements
-    x.sort()
-    
-    # Find the minimum and maximum values
-    min_val = x[0]
-    max_val = x[-1]
-    
-    # Initialize the list of measurements for Anya
-    y = []
-    
-    # Loop through the measurements and find the equal measurements
-    for i in range(n):
-        # If the current measurement is equal to the minimum or maximum value, add it to the list of equal measurements
-        if x[i] == min_val or x[i] == max_val:
-            y.append(x[i])
-    
-    # Return the minimum number of equal measurements and the list of measurements for Anya
-    return len(y), y
+def get_largest_number(paint_liters, paint_needed):
+    largest_number = 0
+    for i in range(1, 10):
+        if paint_needed[i] <= paint_liters:
+            largest_number = largest_number * 10 + i
+            paint_liters -= paint_needed[i]
+        else:
+            break
+    return largest_number
+
+def get_paint_needed(a):
+    paint_needed = [0] * 10
+    for i in range(1, 10):
+        paint_needed[i] = a[i]
+    return paint_needed
+
+def main():
+    paint_liters = int(input())
+    a = list(map(int, input().split()))
+    paint_needed = get_paint_needed(a)
+    largest_number = get_largest_number(paint_liters, paint_needed)
+    print(largest_number)
+
+if __name__ == '__main__':
+    main()
 

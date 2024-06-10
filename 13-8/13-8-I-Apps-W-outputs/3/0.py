@@ -1,32 +1,20 @@
 
-import sys
+def get_remainder(L, A, B, M):
+    # Calculate the sum of the terms in the arithmetic progression
+    sum = (L * (L + 1)) // 2 * A
+    
+    # Calculate the product of the terms in the arithmetic progression
+    product = (L * (L + 1)) // 2 * A ** 2
+    
+    # Calculate the remainder when the product is divided by M
+    remainder = product % M
+    
+    return remainder
 
-def count_assignments(N, current_desks, desired_desks):
-    # Initialize a list to store the possible assignments
-    assignments = []
-
-    # Iterate over the current and desired desks
-    for i in range(N):
-        # If the current and desired desks are the same, add the assignment to the list
-        if current_desks[i] == desired_desks[i]:
-            assignments.append(current_desks[i])
-        # If the current and desired desks are different, add both assignments to the list
-        else:
-            assignments.append(current_desks[i])
-            assignments.append(desired_desks[i])
-
-    # Return the number of possible assignments, modulo 1000000007
-    return len(set(assignments)) % 1000000007
+def main():
+    L, A, B, M = map(int, input().split())
+    print(get_remainder(L, A, B, M))
 
 if __name__ == '__main__':
-    N = int(input())
-    current_desks = []
-    desired_desks = []
-
-    for i in range(N):
-        current_desk, desired_desk = map(int, input().split())
-        current_desks.append(current_desk)
-        desired_desks.append(desired_desk)
-
-    print(count_assignments(N, current_desks, desired_desks))
+    main()
 

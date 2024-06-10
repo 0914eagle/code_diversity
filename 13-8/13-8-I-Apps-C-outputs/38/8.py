@@ -1,30 +1,28 @@
 
-def solve(offers):
-    # Sort the offers by the first section of the fence
-    offers.sort(key=lambda x: x[1])
+def get_input():
+    n, k = map(int, input().split())
+    characters = []
+    for _ in range(n):
+        characters.append(list(map(int, input().strip())))
+    return n, k, characters
+
+def get_character(characters, k):
+    # Initialize the character with all features set to 0
+    character = [0] * k
     
-    # Initialize the variables to keep track of the number of colors and sections painted
-    num_colors = 0
-    num_sections = 0
+    # Iterate through the characters and find the features that are not present in any of them
+    for c in characters:
+        for i in range(k):
+            if c[i] == 1 and character[i] == 0:
+                character[i] = 1
     
-    # Iterate through the offers and accept them if they can be added to the solution
-    for offer in offers:
-        # Check if the offer can be added to the solution
-        if offer[1] == num_sections + 1 and offer[2] <= num_sections + 10000:
-            # Add the offer to the solution
-            num_sections += offer[2] - offer[1] + 1
-            num_colors += 1
-            # Check if the solution is complete
-            if num_sections == 10000:
-                break
-        # If the offer cannot be added to the solution, return "IMPOSSIBLE"
-        else:
-            return "IMPOSSIBLE"
-    
-    # If the solution is complete, return the number of offers accepted
-    if num_sections == 10000:
-        return num_colors
-    # If the solution is not complete, return "IMPOSSIBLE"
-    else:
-        return "IMPOSSIBLE"
+    return character
+
+def main():
+    n, k, characters = get_input()
+    character = get_character(characters, k)
+    print(*character, sep='')
+
+if __name__ == '__main__':
+    main()
 

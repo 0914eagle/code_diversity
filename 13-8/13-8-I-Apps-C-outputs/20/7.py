@@ -1,35 +1,32 @@
 
-def get_drained_water(grid, i, j):
-    # Initialize the total drained water to 0
-    total_drained_water = 0
+def get_maximum_amount(n, m, coupons):
+    # Initialize a dictionary to store the number of coupons used for each number
+    num_coupon_dict = {}
+    for coupon in coupons:
+        num_coupon_dict[coupon[0]] = num_coupon_dict.get(coupon[0], 0) + 1
+    
+    # Initialize a list to store the maximum amount of money that can be paid for each number
+    max_amount_list = [0] * (n + 1)
+    for i in range(1, n + 1):
+        if i in num_coupon_dict:
+            max_amount_list[i] = num_coupon_dict[i] * coupons[i - 1][1]
+    
+    # Dynamic programming to find the maximum amount of money that can be paid
+    for i in range(2, n + 1):
+        for j in range(1, i):
+            if max_amount_list[i] < max_amount_list[j] + max_amount_list[i - j]:
+                max_amount_list[i] = max_amount_list[j] + max_amount_list[i - j]
+    
+    return max_amount_list[n]
 
-    # Loop through the grid and find all the cells that are connected to the draining device
-    for row in range(len(grid)):
-        for col in range(len(grid[0])):
-            if grid[row][col] < 0 and (row, col) != (i, j):
-                # If the cell is connected to the draining device, mark it as visited and add its water volume to the total
-                total_drained_water += abs(grid[row][col])
-                grid[row][col] = 0
+def main():
+    n, m = map(int, input().split())
+    coupons = []
+    for i in range(m):
+        q, w = map(int, input().split())
+        coupons.append((q, w))
+    print(get_maximum_amount(n, m, coupons))
 
-                # Recursively visit all the neighbors of the current cell and mark them as visited if they are connected to the draining device
-                for neighbor in get_neighbors(grid, row, col):
-                    if grid[neighbor[0]][neighbor[1]] < 0 and (neighbor[0], neighbor[1]) != (i, j):
-                        total_drained_water += abs(grid[neighbor[0]][neighbor[1]])
-                        grid[neighbor[0]][neighbor[1]] = 0
-
-    # Return the total drained water
-    return total_drained_water
-
-def get_neighbors(grid, row, col):
-    # Get the neighbors of the current cell
-    neighbors = [(row-1, col), (row+1, col), (row, col-1), (row, col+1),
-                 (row-1, col-1), (row-1, col+1), (row+1, col-1), (row+1, col+1)]
-
-    # Filter out the neighbors that are out of bounds or not connected to the draining device
-    neighbors = [neighbor for neighbor in neighbors if 0 <= neighbor[0] < len(grid) and 0 <= neighbor[1] < len(grid[0]) and grid[neighbor[0]][neighbor[1]] < 0]
-
-    return neighbors
-
-def solve(grid, i, j):
-    return get_drained_water(grid, i, j)
+if __name__ == '__main__':
+    main()
 

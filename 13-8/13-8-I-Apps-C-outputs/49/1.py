@@ -1,18 +1,23 @@
 
-import math
+def get_distinct_sizes(sizes):
+    return len(set(sizes))
 
-def solve(x_s, y_s, s_s, r_i, r_f, x_a, y_a, s_a):
-    # Calculate the distance between Anthony's current position and the center of the safety zone
-    distance = math.sqrt((x_a - x_s) ** 2 + (y_a - y_s) ** 2)
-    
-    # Calculate the time it takes for Anthony to reach the safety zone
-    time = distance / s_a
-    
-    # Calculate the radius of the safety zone at the time Anthony reaches it
-    radius = r_i - s_s * time
-    
-    # Calculate the amount of damage Anthony will take if he reaches the safety zone
-    damage = 0 if radius >= r_f else radius / s_s
-    
-    return damage
+def get_max_diff(sizes):
+    return max(sizes) - min(sizes)
+
+def can_give_gifts(sizes):
+    distinct_sizes = get_distinct_sizes(sizes)
+    max_diff = get_max_diff(sizes)
+    return distinct_sizes == 3 and max_diff <= 2
+
+def main():
+    n = int(input())
+    sizes = list(map(int, input().split()))
+    if can_give_gifts(sizes):
+        print("YES")
+    else:
+        print("NO")
+
+if __name__ == '__main__':
+    main()
 

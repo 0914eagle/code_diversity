@@ -1,32 +1,35 @@
 
-def solve(n, a):
-    # Initialize a dictionary to store the components
-    components = {}
+def is_prime(n):
+    if n <= 1:
+        return False
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
 
-    # Iterate over the vertices
+def is_relatively_prime(n, m):
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0 and m % i == 0:
+            return False
+    return True
+
+def construct_relatively_prime_graph(n, m):
+    edges = []
     for i in range(n):
-        # If the current vertex is not in any component, create a new component
-        if i not in components:
-            components[i] = set([i])
+        for j in range(i+1, n):
+            if is_relatively_prime(i+1, j+1) and len(edges) < m:
+                edges.append((i+1, j+1))
+    return edges
 
-        # If the current vertex is in a component, merge the component with the previous vertex's component
-        if i-1 in components:
-            components[i-1] |= components[i]
-            del components[i]
+def main():
+    n, m = map(int, input().split())
+    if n * (n-1) // 2 < m:
+        print("Impossible")
+    else:
+        print("Possible")
+        for edge in construct_relatively_prime_graph(n, m):
+            print(edge[0], edge[1])
 
-        # If the current vertex is not in a component, merge it with the previous vertex's component
-        if i-1 not in components and i-1 >= 0:
-            components[i-1] |= set([i])
-
-    # Initialize a set to store the values of the vertices that are left
-    values = set()
-
-    # Iterate over the components
-    for component in components.values():
-        # If the minimum value of the component is between l and r, include it in the set of values
-        if min(component) >= l and min(component) <= r:
-            values |= component
-
-    # Return the number of components
-    return len(values)
+if __name__ == '__main__':
+    main()
 

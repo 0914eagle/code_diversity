@@ -1,40 +1,46 @@
 
-def solve(altitudes, device_position):
-    # Initialize the total volume of drained water to 0
-    total_volume = 0
+def get_maximum_amount(n, m, coupons):
+    # Initialize a dictionary to store the number of coupons used for each number
+    num_coupon_used = {}
+    for i in range(m):
+        q, w = coupons[i]
+        num_coupon_used[q] = num_coupon_used.get(q, 0) + 1
+    
+    # Initialize a list to store the numbers that can be used to construct the array
+    available_nums = []
+    for i in range(1, n+1):
+        if i not in num_coupon_used or num_coupon_used[i] > 0:
+            available_nums.append(i)
+    
+    # Initialize a list to store the maximum amount of money that can be paid for each number
+    max_amount = [0] * (n+1)
+    max_amount[0] = 0
+    for i in range(1, n+1):
+        if i in num_coupon_used:
+            max_amount[i] = max_amount[i-1] + num_coupon_used[i] * coupons[i-1][1]
+        else:
+            max_amount[i] = max_amount[i-1]
+    
+    # Initialize a list to store the maximum amount of money that can be paid for each combination of numbers
+    dp = [0] * (n+1)
+    dp[0] = 0
+    for i in range(1, n+1):
+        for j in range(i, n+1):
+            if i in num_coupon_used and j in num_coupon_used and num_coupon_used[i] > 0 and num_coupon_used[j] > 0:
+                dp[j] = max(dp[j], dp[i-1] + max_amount[j])
+            else:
+                dp[j] = max(dp[j], dp[i-1] + max_amount[j])
+    
+    return dp[n]
 
-    # Get the height and width of the grid
-    height, width = len(altitudes), len(altitudes[0])
+def main():
+    n, m = map(int, input().split())
+    coupons = []
+    for i in range(m):
+        q, w = map(int, input().split())
+        coupons.append((q, w))
+    print(get_maximum_amount(n, m, coupons))
 
-    # Create a queue to store the positions of the cells to be processed
-    queue = []
-
-    # Add the position of the device to the queue
-    queue.append(device_position)
-
-    # Loop until the queue is empty
-    while queue:
-        # Get the current position from the queue
-        i, j = queue.pop(0)
-
-        # Check if the current position is a valid cell with negative altitude
-        if 0 <= i < height and 0 <= j < width and altitudes[i][j] < 0:
-            # Increment the total volume of drained water
-            total_volume += abs(altitudes[i][j])
-
-            # Set the altitude of the current cell to 0
-            altitudes[i][j] = 0
-
-            # Add the positions of the adjacent cells to the queue
-            if i > 0:
-                queue.append((i-1, j))
-            if i < height-1:
-                queue.append((i+1, j))
-            if j > 0:
-                queue.append((i, j-1))
-            if j < width-1:
-                queue.append((i, j+1))
-
-    # Return the total volume of drained water
-    return total_volume
+if __name__ == '__main__':
+    main()
 

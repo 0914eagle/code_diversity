@@ -1,23 +1,32 @@
 
-def solve(n, B, arr):
-    # Sort the array in non-decreasing order
-    arr.sort()
+def get_correct_bracket_sequences(n):
+    sequences = [""]
+    for i in range(n):
+        new_sequences = []
+        for sequence in sequences:
+            new_sequences.append("(" + sequence + ")")
+            new_sequences.append(sequence + "(")
+        sequences = new_sequences
+    return sequences
 
-    # Initialize variables to keep track of the number of cuts and the current budget
-    cuts = 0
-    budget = B
+def get_maximum_matching(sequences):
+    import itertools
+    matching = 0
+    for sequence in sequences:
+        for i in range(len(sequence)):
+            if sequence[i] == "(":
+                for j in range(i+1, len(sequence)):
+                    if sequence[j] == ")":
+                        matching += 1
+                        break
+    return matching
 
-    # Iterate through the array and check if the current element is within budget
-    for i in range(n - 1):
-        # Calculate the cost of the current cut
-        cost = abs(arr[i] - arr[i + 1])
+def main():
+    n = int(input())
+    sequences = get_correct_bracket_sequences(n)
+    matching = get_maximum_matching(sequences)
+    print(matching % (10**9 + 7))
 
-        # Check if the current cut is within budget
-        if cost <= budget:
-            # Increment the number of cuts and decrement the budget
-            cuts += 1
-            budget -= cost
-
-    # Return the maximum number of cuts possible with the given budget
-    return cuts
+if __name__ == '__main__':
+    main()
 

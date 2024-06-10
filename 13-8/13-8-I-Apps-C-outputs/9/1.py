@@ -1,32 +1,33 @@
 
-def solve(n):
-    # Initialize the maximum sum to 0
-    max_sum = 0
-    # Loop through all possible values of a
-    for a in range(n+1):
-        # Find the corresponding value of b
-        b = n - a
-        # Calculate the sum of digits in a and b
-        sum_a = sum_digits(a)
-        sum_b = sum_digits(b)
-        # Check if the sum of digits is greater than the maximum sum
-        if sum_a + sum_b > max_sum:
-            # If yes, update the maximum sum and the values of a and b
-            max_sum = sum_a + sum_b
-            best_a = a
-            best_b = b
-    # Return the values of a and b with the maximum sum of digits
-    return (best_a, best_b)
+def get_meow_factor(string):
+    # Initialize the meow factor to 0
+    meow_factor = 0
+    
+    # Loop through each character in the string
+    for i in range(len(string)):
+        # Check if the current character is 'm'
+        if string[i] == 'm':
+            # If it is, check if the next three characters are 'e', 'o', and 'w'
+            if i + 1 < len(string) and string[i + 1] == 'e' and i + 2 < len(string) and string[i + 2] == 'o' and i + 3 < len(string) and string[i + 3] == 'w':
+                # If they are, return the meow factor
+                return meow_factor
+            # If the current character is 'm' and the next three characters are not 'e', 'o', and 'w', increment the meow factor
+            else:
+                meow_factor += 1
+    
+    # If the string does not contain the word "meow", return -1
+    return -1
 
-def sum_digits(n):
-    # Initialize the sum to 0
-    sum = 0
-    # Loop through the digits of n
-    while n > 0:
-        # Add the last digit of n to the sum
-        sum += n % 10
-        # Remove the last digit of n
-        n //= 10
-    # Return the sum
-    return sum
+def main():
+    # Read a single line of input from stdin and save it to our variable, string
+    string = input()
+    
+    # Call our get_meow_factor function and save its result to our variable, meow_factor
+    meow_factor = get_meow_factor(string)
+    
+    # Print the meow factor
+    print(meow_factor)
+
+if __name__ == '__main__':
+    main()
 

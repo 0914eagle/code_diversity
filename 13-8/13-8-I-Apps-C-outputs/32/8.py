@@ -1,19 +1,41 @@
 
 import math
 
-def gem_island(n, d, r):
-    # Calculate the probability of a gem splitting into two
-    p = 1 / n
+def area_covered(sandwich_radius, pickle_radius, num_pickles):
+    # Calculate the area of the sandwich
+    sandwich_area = math.pi * sandwich_radius ** 2
+    
+    # Calculate the area of a single pickle
+    pickle_area = math.pi * pickle_radius ** 2
+    
+    # Calculate the total area covered by the pickles
+    total_pickle_area = num_pickles * pickle_area
+    
+    # Calculate the percentage of the sandwich covered by the pickles
+    covered_percentage = total_pickle_area / sandwich_area * 100
+    
+    return covered_percentage
 
-    # Calculate the expected number of gems after d nights
-    expected_gems = 0
-    for i in range(1, d+1):
-        expected_gems += math.comb(n, i) * p ** i * (1 - p) ** (n-i)
+def max_num_pickles(sandwich_radius, pickle_radius, max_coverage):
+    # Initialize variables
+    low = 0
+    high = 7
+    mid = (low + high) // 2
+    
+    # Binary search to find the maximum number of pickles that can be placed on the sandwich
+    while low < high:
+        if area_covered(sandwich_radius, pickle_radius, mid) <= max_coverage:
+            low = mid + 1
+        else:
+            high = mid
+        mid = (low + high) // 2
+    
+    return low
 
-    # Calculate the expected number of gems held by the top r inhabitants
-    expected_top_r_gems = 0
-    for i in range(1, r+1):
-        expected_top_r_gems += math.comb(n, i) * p ** i * (1 - p) ** (n-i)
+def main():
+    sandwich_radius, pickle_radius, num_pickles, max_coverage = map(float, input().split())
+    print(max_num_pickles(sandwich_radius, pickle_radius, max_coverage))
 
-    return expected_top_r_gems
+if __name__ == '__main__':
+    main()
 

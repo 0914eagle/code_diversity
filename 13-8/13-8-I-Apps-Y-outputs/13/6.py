@@ -1,29 +1,20 @@
 
-def solve(a):
-    n = len(a)
-    if n % 6 != 0:
-        return n
+def plus_one(digits):
     
-    count = 0
-    i = 0
-    while i < n:
-        if a[i] != 4:
-            count += 1
-        i += 1
-    
-    if count == 0:
-        return 0
-    
-    i = 0
-    while i < n:
-        if a[i] == 4:
-            i += 1
-            continue
-        if a[i] == 8 and a[i+1] == 15 and a[i+2] == 16 and a[i+3] == 23 and a[i+4] == 42:
-            i += 5
-            continue
-        count += 1
-        i += 1
-    
-    return count
+    if digits == [0]:
+        return [1]
+    for i in range(len(digits)-1, -1, -1):
+        if digits[i] != 9:
+            digits[i] += 1
+            return digits
+        else:
+            digits[i] = 0
+    return [1] + digits
+
+def main():
+    print(plus_one([1,2,3]))
+    print(plus_one([4,3,2,1]))
+
+if __name__ == '__main__':
+    main()
 

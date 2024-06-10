@@ -1,16 +1,44 @@
 
-def is_possible(k1, k2, k3):
-    # Check if k1, k2, and k3 are positive
-    if k1 <= 0 or k2 <= 0 or k3 <= 0:
-        return "NO"
+def get_synchronization_sequence(grigory_charges, andrew_charges):
+    # Initialize the sequence of synchronization operations
+    sequence = []
+    
+    # Loop through the stones
+    for i in range(len(grigory_charges)):
+        # If the charges are not equal, add a synchronization operation to the sequence
+        if grigory_charges[i] != andrew_charges[i]:
+            sequence.append(i)
+    
+    # Return the sequence of synchronization operations
+    return sequence
 
-    # Check if the greatest common divisor of k1, k2, and k3 is 1
-    if __gcd(k1, k2) != 1 or __gcd(k1, k3) != 1 or __gcd(k2, k3) != 1:
-        return "NO"
+def perform_synchronization(grigory_charges, sequence):
+    # Loop through the sequence of synchronization operations
+    for i in sequence:
+        # Synchronize the stone at index i with its neighbors
+        grigory_charges[i] = grigory_charges[i + 1] + grigory_charges[i - 1] - grigory_charges[i]
+    
+    # Return the updated charges
+    return grigory_charges
 
-    # Check if the product of k1, k2, and k3 is less than or equal to 1500
-    if k1 * k2 * k3 > 1500:
-        return "NO"
+def main():
+    # Read the input
+    n = int(input())
+    grigory_charges = list(map(int, input().split()))
+    andrew_charges = list(map(int, input().split()))
+    
+    # Get the sequence of synchronization operations
+    sequence = get_synchronization_sequence(grigory_charges, andrew_charges)
+    
+    # Perform the synchronization operations
+    grigory_charges = perform_synchronization(grigory_charges, sequence)
+    
+    # Check if the charges are equal
+    if grigory_charges == andrew_charges:
+        print("Yes")
+    else:
+        print("No")
 
-    return "YES"
+if __name__ == '__main__':
+    main()
 

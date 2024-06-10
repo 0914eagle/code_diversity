@@ -1,31 +1,34 @@
 
-def get_min_m(n, k):
-    m = 1
-    while True:
-        sets = []
-        for i in range(n):
-            set_size = 0
-            while set_size < 4:
-                num = m + 1 + i + set_size
-                if all(num % x != 0 for x in sets):
-                    sets.append(num)
-                    set_size += 1
-            if set_size < 4:
-                return -1
-        if all(gcd(sets[i], sets[j]) == k for i in range(n) for j in range(i+1, n)):
-            return m
-        m += 1
+def is_check(king_x, king_y, queen_x, queen_y):
+    # Check if the king is in check
+    if king_x == queen_x and (king_y == queen_y + 1 or king_y == queen_y - 1):
+        return True
+    elif king_y == queen_y and (king_x == queen_x + 1 or king_x == queen_x - 1):
+        return True
+    elif abs(king_x - queen_x) == abs(king_y - queen_y):
+        return True
+    else:
+        return False
 
-def gcd(a, b):
-    while b != 0:
-        a, b = b, a % b
-    return a
+def solve(n, a_x, a_y, b_x, b_y, c_x, c_y):
+    # Check if the king is in check
+    if is_check(b_x, b_y, a_x, a_y):
+        return "NO"
+    
+    # Check if the target location is in check
+    if is_check(c_x, c_y, a_x, a_y):
+        return "NO"
+    
+    # Check if the king can move to the target location
+    if abs(b_x - c_x) <= 1 and abs(b_y - c_y) <= 1:
+        return "YES"
+    else:
+        return "NO"
 
-n, k = map(int, input().split())
-m = get_min_m(n, k)
-if m == -1:
-    print(-1)
-else:
-    for i in range(n):
-        print(*[m+1+i+j for j in range(4)], sep=' ')
+if __name__ == '__main__':
+    n = int(input())
+    a_x, a_y = map(int, input().split())
+    b_x, b_y = map(int, input().split())
+    c_x, c_y = map(int, input().split())
+    print(solve(n, a_x, a_y, b_x, b_y, c_x, c_y))
 

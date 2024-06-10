@@ -1,24 +1,59 @@
 
-def solve(n, t, m, intervals):
-    # Initialize the variables to keep track of the number of goals
-    sportify_goals = 0
-    spoilify_goals = 0
+import sys
+import itertools
 
-    # Initialize a list to keep track of the cheerleaders' energy
-    energy = [t] * n
+def get_input():
+    n, k = map(int, input().split())
+    courses = []
+    for i in range(n):
+        name, difficulty = input().split()
+        courses.append((name, int(difficulty)))
+    return n, k, courses
 
-    # Iterate through each interval in the Spoilify cheerleading schedule
-    for a, b in intervals:
-        # Decrease the energy of the cheerleaders in the current interval
-        for i in range(a, b):
-            energy[i % n] -= 1
+def get_prerequisites(courses):
+    prerequisites = {}
+    for course in courses:
+        if '1' in course[0]:
+            prerequisites[course[0]] = course[0].replace('1', '2')
+    return prerequisites
 
-        # Check if the cheerleaders' energy has dropped to zero
-        for i in range(a, b):
-            if energy[i % n] == 0:
-                # Increment the number of goals for the Spoilify team
-                spoilify_goals += 1
+def get_courses_by_level(courses, prerequisites):
+    courses_by_level = {}
+    for course in courses:
+        level = 1
+        if course[0] in prerequisites:
+            level = 2
+        if course[0] not in courses_by_level:
+            courses_by_level[level] = []
+        courses_by_level[level].append(course)
+    return courses_by_level
 
-    # Return the number of goals for the Sportify and Spoilify teams
-    return sportify_goals, spoilify_goals
+def get_possible_course_combinations(courses_by_level, k):
+    possible_combinations = []
+    for level in range(1, 3):
+        if level in courses_by_level:
+            possible_combinations.extend(itertools.combinations(courses_by_level[level], k))
+    return possible_combinations
+
+def get_min_difficulty(courses, prerequisites, possible_combinations):
+    min_difficulty = sys.maxsize
+    for combination in possible_combinations:
+        difficulty = 0
+        for course in combination:
+            difficulty += course[1]
+            if course[0] in prerequisites and prerequisites[course[0]] not in combination:
+                difficulty += 1
+        if difficulty < min_difficulty:
+            min_difficulty = difficulty
+    return min_difficulty
+
+def main():
+    n, k, courses = get_input()
+    prerequisites = get_prerequisites(courses)
+    courses_by_level = get_courses_by_level(courses, prerequisites)
+    possible_combinations = get_possible_course_combinations(courses_by_level, k)
+    print(get_min_difficulty(courses, prerequisites, possible_combinations))
+
+if __name__ == '__main__':
+    main()
 

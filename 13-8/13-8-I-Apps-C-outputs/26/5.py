@@ -1,19 +1,32 @@
 
-def solve(N, roads):
-    # Initialize a graph with N junctions
-    graph = [[] for _ in range(N)]
+def get_complete_codes(partial_code):
+    m, n = len(partial_code), len(partial_code[0])
+    complete_codes = 0
+    for i in range(m):
+        for j in range(n):
+            if partial_code[i][j] == 0:
+                continue
+            for k in range(i, m):
+                for l in range(j, n):
+                    if partial_code[k][l] == 0:
+                        continue
+                    if partial_code[i][j] * partial_code[k][l] == partial_code[k][j]:
+                        complete_codes += 1
+                    if partial_code[i][j] + partial_code[k][l] == partial_code[k][j]:
+                        complete_codes += 1
+                    if partial_code[i][j] - partial_code[k][l] == partial_code[k][j] or partial_code[k][l] - partial_code[i][j] == partial_code[k][j]:
+                        complete_codes += 1
+                    if partial_code[i][j] // partial_code[k][l] == partial_code[k][j] or partial_code[k][l] // partial_code[i][j] == partial_code[k][j]:
+                        complete_codes += 1
+    return complete_codes
 
-    # Add edges to the graph
-    for u, v in roads:
-        graph[u - 1].append(v - 1)
-        graph[v - 1].append(u - 1)
+def main():
+    m, n = map(int, input().split())
+    partial_code = []
+    for _ in range(m):
+        partial_code.append(list(map(int, input().split())))
+    print(get_complete_codes(partial_code))
 
-    # Count the number of optimal paths of length 2
-    count = 0
-    for u in range(N):
-        for v in range(u + 1, N):
-            if len(graph[u]) == 2 and len(graph[v]) == 2:
-                count += 1
-
-    return count
+if __name__ == '__main__':
+    main()
 

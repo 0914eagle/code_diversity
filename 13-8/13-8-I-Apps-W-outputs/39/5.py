@@ -1,19 +1,31 @@
 
-import itertools
-import sys
+def get_lcm(x, y):
+    if x > y:
+        greater = x
+    else:
+        greater = y
+    while True:
+        if greater % x == 0 and greater % y == 0:
+            lcm = greater
+            break
+        greater += 1
+    return lcm
 
-def solve(n, m, k, b):
-    # Initialize a list to store the distinct strings
-    distinct_strings = []
+def get_max_lcm(arr):
+    n = len(arr)
+    max_lcm = 0
+    for i in range(n-1):
+        for j in range(i+1, n):
+            lcm = get_lcm(arr[i], arr[j])
+            if lcm > max_lcm:
+                max_lcm = lcm
+    return max_lcm
 
-    # Iterate over all possible combinations of characters from the set A
-    for combination in itertools.combinations(range(k), n):
-        # Initialize a string with the current combination of characters
-        string = "".join(chr(ord('A') + c) for c in combination)
+def main():
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(get_max_lcm(arr))
 
-        # Append the string to the list of distinct strings
-        distinct_strings.append(string)
-
-    # Return the number of distinct strings modulo 998244353
-    return len(distinct_strings) % 998244353
+if __name__ == '__main__':
+    main()
 

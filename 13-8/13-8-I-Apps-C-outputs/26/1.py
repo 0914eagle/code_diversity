@@ -1,36 +1,29 @@
 
-def count_optimal_paths(n, roads):
-    # Initialize a graph with n junctions and n-1 roads
-    graph = [[] for _ in range(n)]
-    for u, v in roads:
-        graph[u-1].append(v-1)
-        graph[v-1].append(u-1)
-    
-    # Function to count the number of optimal paths of length 2 from a junction to another
-    def count_optimal_paths_helper(curr, visited, target, count):
-        # Base case: if the current junction is the target junction, return 1
-        if curr == target:
-            return 1
-        
-        # Mark the current junction as visited
-        visited[curr] = True
-        
-        # Recursively count the number of optimal paths from the current junction to the target junction
-        for neighbor in graph[curr]:
-            if not visited[neighbor]:
-                count += count_optimal_paths_helper(neighbor, visited, target, count)
-        
-        # Unmark the current junction as visited
-        visited[curr] = False
-        
-        return count
-    
-    # Initialize the count of optimal paths to 0
-    count = 0
-    
-    # Iterate over all junctions and count the number of optimal paths from each junction to the target junction
-    for junction in range(n):
-        count += count_optimal_paths_helper(junction, [False] * n, junction, count)
-    
-    return count
+import itertools
+
+def get_complete_codes(partial_code):
+    m, n = len(partial_code), len(partial_code[0])
+    complete_codes = []
+    for i in range(m):
+        for j in range(n):
+            if partial_code[i][j] == 0:
+                continue
+            for k in range(i+1, m):
+                if partial_code[k][j] == 0:
+                    continue
+                for l in range(j+1, n):
+                    if partial_code[i][l] == 0 or partial_code[k][l] == 0:
+                        continue
+                    complete_codes.append(list(itertools.product(partial_code[i][:j] + partial_code[k][j:l], partial_code[i][l:] + partial_code[k][l:])))
+    return complete_codes
+
+def count_complete_codes(partial_code):
+    return len(get_complete_codes(partial_code))
+
+if __name__ == '__main__':
+    m, n = map(int, input().split())
+    partial_code = []
+    for _ in range(m):
+        partial_code.append(list(map(int, input().split())))
+    print(count_complete_codes(partial_code))
 

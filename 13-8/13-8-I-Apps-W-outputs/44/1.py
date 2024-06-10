@@ -1,16 +1,28 @@
 
-def solve(n, p):
-    # Initialize a dictionary to store the number of holes for each student
-    holes = {i: 0 for i in range(1, n + 1)}
-    
-    # Iterate through the list of reported students
-    for i in range(n):
-        # If the current student has not been reported yet, mark him as reported
-        if holes[i] == 0:
-            holes[i] = 1
-            # Update the number of holes for the student who reported the current student
-            holes[p[i]] += 1
-    
-    # Return a list of students who will receive two holes in their badges
-    return [i for i in range(1, n + 1) if holes[i] == 2]
+def get_min_energy(parts, ropes):
+    # Initialize a dictionary to store the minimum energy to remove each part
+    min_energy = {i: 0 for i in range(1, len(parts) + 1)}
+
+    # Loop through each rope and update the minimum energy to remove each part
+    for rope in ropes:
+        x, y = rope
+        min_energy[x] += parts[x - 1]
+        min_energy[y] += parts[y - 1]
+
+    # Return the minimum energy to remove all parts
+    return sum(min_energy.values())
+
+def main():
+    # Read the number of parts and ropes
+    n, m = map(int, input().split())
+
+    # Read the parts and ropes
+    parts = list(map(int, input().split()))
+    ropes = [tuple(map(int, input().split())) for _ in range(m)]
+
+    # Call the get_min_energy function and print the result
+    print(get_min_energy(parts, ropes))
+
+if __name__ == '__main__':
+    main()
 

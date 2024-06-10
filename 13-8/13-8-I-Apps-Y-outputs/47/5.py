@@ -1,26 +1,26 @@
 
-def get_minimum_string(string, k):
-    n = len(string)
-    # Base case: if we can't perform any moves, return the original string
-    if k == 0:
-        return string
-    
-    # Initialize the minimum string to the original string
-    minimum_string = string
-    
-    # Loop through each index in the string
-    for i in range(n - 1):
-        # If the current index is 1 and the next index is 0, we can swap them
-        if string[i] == "1" and string[i + 1] == "0":
-            # Swap the characters at indices i and i + 1
-            minimum_string = minimum_string[:i] + "0" + minimum_string[i + 1] + "1" + minimum_string[i + 2:]
-            # Decrement k by 1 since we used 1 move
-            k -= 1
-            # If k is now 0, we can't perform any more moves so return the minimum string
-            if k == 0:
-                return minimum_string
-    
-    # If we reach this point, we have performed all possible moves but the string is not sorted
-    # So we return the sorted string
-    return sorted(minimum_string)
+def expected_score(n, k):
+    # Initialize the probability of each outcome
+    probabilities = [1 / n] * n
+
+    # Initialize the expected score for each outcome
+    expected_scores = [i for i in range(1, n + 1)]
+
+    # Loop through each roll
+    for i in range(k):
+        # Calculate the probability of each outcome after this roll
+        probabilities = [j / n for j in range(1, n + 1)]
+
+        # Calculate the expected score for each outcome after this roll
+        expected_scores = [sum(probabilities[j] * j for j in range(i, n + 1)) for i in range(n)]
+
+    # Return the expected score for the final roll
+    return expected_scores[n - 1]
+
+def main():
+    n, k = map(int, input().split())
+    print(expected_score(n, k))
+
+if __name__ == '__main__':
+    main()
 

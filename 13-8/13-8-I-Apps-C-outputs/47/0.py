@@ -1,30 +1,41 @@
 
-def solve(shelves):
+def get_carry_steps(num1, num2):
     # Initialize variables
-    num_shelves, num_books = len(shelves), len(shelves[0])
-    visited = [[False for _ in range(num_books)] for _ in range(num_shelves)]
-    queue = [(0, 0, 0)]
-    level = 0
+    steps = 0
+    carry = 0
 
-    # BFS to find the minimum number of lifting
-    while queue:
-        shelf, book, level = queue.pop(0)
-        if visited[shelf][book]:
-            continue
-        visited[shelf][book] = True
+    # Loop until there is no carry
+    while carry != 0 or num1 < num2:
+        # Add 1 to one number and subtract 1 from the other
+        num1 += 1
+        num2 -= 1
 
-        # Check if the current state matches the wanted state
-        if shelves[shelf][book] == 0:
-            continue
-        if shelf == num_shelves - 1 and book == num_books - 1:
-            return level
+        # Check if there is a carry
+        carry = num1 // 10
+        num1 %= 10
 
-        # Enqueue the neighboring states
-        for i in range(num_shelves):
-            for j in range(num_books):
-                if shelves[i][j] == shelves[shelf][book] and not visited[i][j]:
-                    queue.append((i, j, level + 1))
+        # Increment the step count
+        steps += 1
 
-    # If no matching state is found, return -1
-    return -1
+    # Return the step count
+    return steps
+
+def get_sum(num1, num2):
+    # Get the carry steps
+    steps = get_carry_steps(num1, num2)
+
+    # Add the numbers without carry
+    sum = num1 + num2
+
+    # Add the carry steps to the sum
+    for _ in range(steps):
+        sum += 10
+
+    # Return the sum
+    return sum
+
+if __name__ == '__main__':
+    num1 = int(input())
+    num2 = int(input())
+    print(get_sum(num1, num2))
 

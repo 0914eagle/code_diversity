@@ -1,18 +1,17 @@
 
-def solve(strengths):
-    n = len(strengths) // 2
-    teams = [[] for _ in range(n)]
-    for i in range(n):
-        for j in range(i+1, n):
-            teams[i].append(j)
-            teams[j].append(i)
-    teammates = [0] * n
-    for i in range(n):
-        max_strength = 0
-        for j in teams[i]:
-            if strengths[i][j] > max_strength:
-                max_strength = strengths[i][j]
-                teammates[i] = j
-        teams[teammates[i]].remove(i)
-    return teammates
+def is_lovely(n):
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+def get_biggest_lovely_number(n):
+    for i in range(n, 1, -1):
+        if is_lovely(i):
+            return i
+    return 1
+
+if __name__ == '__main__':
+    n = int(input())
+    print(get_biggest_lovely_number(n))
 

@@ -1,32 +1,34 @@
 
-def solve(grid):
-    # Initialize variables
-    rows = len(grid)
-    cols = len(grid[0])
-    max_cells = 0
+def get_visible_messages(messages, k):
+    visible_messages = set()
+    for message in messages:
+        if message.link_to:
+            visible_messages.add(message.link_to)
+        for i in range(1, k + 1):
+            if message.link_to - i >= 0:
+                visible_messages.add(message.link_to - i)
+            if message.link_to + i <= len(messages):
+                visible_messages.add(message.link_to + i)
+    return visible_messages
 
-    # Loop through each row and column
-    for i in range(rows):
-        for j in range(cols):
-            # If the current cell is empty, continue to the next cell
-            if grid[i][j] == '.':
-                continue
+def get_distinct_messages(messages, k):
+    distinct_messages = set()
+    for message in messages:
+        if message.link_to:
+            distinct_messages.add(message.link_to)
+    return len(distinct_messages)
 
-            # If the current cell is an evil strawberry, mark it as visited
-            visited = set()
-            visited.add((i, j))
+class Message:
+    def __init__(self, link_to):
+        self.link_to = link_to
 
-            # Find all the adjacent empty cells and mark them as visited
-            queue = [(i, j)]
-            while queue:
-                row, col = queue.pop(0)
-                for r, c in [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]:
-                    if 0 <= r < rows and 0 <= c < cols and grid[r][c] == '.' and (r, c) not in visited:
-                        visited.add((r, c))
-                        queue.append((r, c))
+def main():
+    n, k = map(int, input().split())
+    messages = [Message(int(i)) for i in input().split()]
+    visible_messages = get_visible_messages(messages, k)
+    distinct_messages = get_distinct_messages(visible_messages, k)
+    print(distinct_messages)
 
-            # Update the maximum number of cells if necessary
-            max_cells = max(max_cells, len(visited))
-
-    return max_cells
+if __name__ == '__main__':
+    main()
 

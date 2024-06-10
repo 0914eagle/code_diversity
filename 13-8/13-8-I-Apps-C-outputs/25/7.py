@@ -1,18 +1,39 @@
 
-def get_number_of_ways(r, w, d):
-    # Initialize the number of ways to be 0
-    ways = 0
-    
-    # Loop through all possible number of red wine piles
-    for red_piles in range(1, r + 1):
-        # Calculate the number of white wine piles
-        white_piles = r - red_piles
-        
-        # Check if the number of white wine piles is valid
-        if white_piles >= 0 and red_piles <= d:
-            # Increment the number of ways
-            ways += 1
-    
-    # Return the number of ways modulo 10^9 + 7
-    return ways % (10**9 + 7)
+def longest_common_subsequence(strings):
+    # Find the length of the longest common subsequence
+    # of the first two strings
+    lcs = 0
+    for i in range(len(strings[0])):
+        for j in range(len(strings[1])):
+            if strings[0][i] == strings[1][j]:
+                lcs += 1
+                break
+    # Compare the length of the longest common subsequence
+    # of the first two strings with the length of the longest
+    # common subsequence of the first string with the ith string
+    # for all i in range(2, len(strings)):
+    for i in range(2, len(strings)):
+        curr_lcs = 0
+        for j in range(len(strings[0])):
+            for k in range(len(strings[i])):
+                if strings[0][j] == strings[i][k]:
+                    curr_lcs += 1
+                    break
+        if curr_lcs > lcs:
+            lcs = curr_lcs
+    return lcs
+
+def main():
+    # Read the input data
+    n, k = map(int, input().split())
+    strings = []
+    for i in range(n):
+        strings.append(input())
+    # Find the longest common subsequence of all strings
+    lcs = longest_common_subsequence(strings)
+    # Print the result
+    print(lcs)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,25 +1,33 @@
 
-def is_valid_network(D):
-    N = len(D)
-    if N < 2:
-        return "NO"
-    # Check if the number of rooms is valid
-    if any(D[i] < 1 or D[i] > N - 1 for i in range(N)):
-        return "NO"
-    # Check if the number of tunnels is valid
-    if sum(D) != N - 1:
-        return "NO"
-    # Check if the network is connected
-    visited = set([1])
-    queue = [1]
-    while queue:
-        current = queue.pop(0)
-        for i in range(1, N + 1):
-            if i not in visited and D[current - 1] >= i:
-                visited.add(i)
-                queue.append(i)
-    if len(visited) == N:
-        return "YES"
-    else:
-        return "NO"
+import sys
+
+def read_image():
+    r, c = map(int, input().split())
+    image = []
+    for _ in range(r):
+        image.append(list(input()))
+    return image
+
+def dfs(i, j, image, visited):
+    if not (0 <= i < len(image)) or not (0 <= j < len(image[0])) or visited[i][j] or image[i][j] == 'C':
+        return 0
+    visited[i][j] = True
+    return 1 + dfs(i-1, j, image, visited) + dfs(i+1, j, image, visited) + dfs(i, j-1, image, visited) + dfs(i, j+1, image, visited)
+
+def num_islands(image):
+    visited = [[False for _ in range(len(image[0]))] for _ in range(len(image))]
+    count = 0
+    for i in range(len(image)):
+        for j in range(len(image[0])):
+            if not visited[i][j] and image[i][j] == 'L':
+                count += 1
+                dfs(i, j, image, visited)
+    return count
+
+def main():
+    image = read_image()
+    print(num_islands(image))
+
+if __name__ == '__main__':
+    main()
 

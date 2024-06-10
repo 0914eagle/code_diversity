@@ -1,17 +1,22 @@
 
-def solve(n, k, arr):
-    left, right = 0, n-1
-    count = 0
-    while left <= right:
-        if arr[left] <= k:
-            count += 1
-            left += 1
-        if arr[right] <= k:
-            count += 1
-            right -= 1
-        if left <= right:
-            count += 1
-            left += 1
-            right -= 1
-    return count
+def get_input():
+    N = int(input())
+    A = [int(i) for i in input().split()]
+    return N, A
+
+def solve(N, A):
+    sheet = set()
+    for a in A:
+        if a in sheet:
+            sheet.remove(a)
+        else:
+            sheet.add(a)
+    return len(sheet)
+
+def main():
+    N, A = get_input()
+    print(solve(N, A))
+
+if __name__ == '__main__':
+    main()
 

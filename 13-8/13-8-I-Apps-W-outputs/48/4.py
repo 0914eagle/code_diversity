@@ -1,26 +1,54 @@
 
-def solve(x, y):
-    # Convert the binary strings to integers
-    x_int = int(x, 2)
-    y_int = int(y, 2)
-    
-    # Initialize the minimum k and its corresponding reverse binary string
-    min_k = 0
-    min_rev_k = x_int + y_int
-    
-    # Iterate through all possible values of k
-    for k in range(31):
-        # Calculate the sum of x and y multiplied by 2^k
-        sum_k = x_int + y_int * (2 ** k)
-        
-        # Convert the sum to a binary string and reverse it
-        rev_k = bin(sum_k)[2:][::-1]
-        
-        # If the reverse binary string is lexicographically smaller than the current minimum, update the minimum k and its reverse binary string
-        if rev_k < min_rev_k:
-            min_k = k
-            min_rev_k = rev_k
-    
-    # Return the minimum k
-    return min_k
+def get_min_moves(matrix, d):
+    # Initialize variables
+    rows, cols = len(matrix), len(matrix[0])
+    min_moves = 0
+    visited = set()
+    queue = [(0, 0, 0)]
+
+    # Loop through the queue
+    while queue:
+        row, col, moves = queue.pop(0)
+
+        # Check if the current cell is already visited
+        if (row, col) in visited:
+            continue
+
+        # Check if the current cell is the last cell
+        if row == rows - 1 and col == cols - 1:
+            return moves
+
+        # Mark the current cell as visited
+        visited.add((row, col))
+
+        # Add the current cell to the queue
+        queue.append((row, col + 1, moves))
+        queue.append((row + 1, col, moves))
+
+        # Check if the current cell can be modified
+        if matrix[row][col] % d == 0:
+            continue
+
+        # Modify the current cell
+        matrix[row][col] += d
+        min_moves += 1
+
+    # If the queue is empty, it means that it is not possible to make all the elements equal
+    return -1
+
+def main():
+    # Read the input
+    n, m, d = map(int, input().split())
+    matrix = []
+    for _ in range(n):
+        matrix.append(list(map(int, input().split())))
+
+    # Get the minimum number of moves
+    min_moves = get_min_moves(matrix, d)
+
+    # Print the result
+    print(min_moves)
+
+if __name__ == '__main__':
+    main()
 

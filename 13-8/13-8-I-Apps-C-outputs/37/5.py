@@ -1,54 +1,33 @@
 
-def get_paths(map):
-    # Initialize variables
-    paths = 0
-    visited = set()
-    queue = [(0, 0)]
+def solve(grid_size, black_rectangles):
+    # Initialize a grid of zeros
+    grid = [[0] * grid_size for _ in range(grid_size)]
 
-    # Loop through the queue
-    while queue:
-        row, col = queue.pop(0)
+    # Fill in the grid with the black rectangles
+    for rectangle in black_rectangles:
+        x1, y1, x2, y2 = rectangle
+        for i in range(x1, x2 + 1):
+            for j in range(y1, y2 + 1):
+                grid[i][j] = 1
 
-        # Check if the current position is the destination
-        if map[row][col] == "@":
-            paths += 1
-            continue
+    # Calculate the minimum total cost
+    total_cost = 0
+    for i in range(grid_size):
+        for j in range(grid_size):
+            if grid[i][j] == 1:
+                total_cost += 1
+            else:
+                total_cost += min(i, j)
 
-        # Check if the current position is already visited
-        if (row, col) in visited:
-            continue
+    return total_cost
 
-        # Mark the current position as visited
-        visited.add((row, col))
+def main():
+    grid_size, num_rectangles = map(int, input().split())
+    black_rectangles = []
+    for _ in range(num_rectangles):
+        black_rectangles.append(list(map(int, input().split())))
+    print(solve(grid_size, black_rectangles))
 
-        # Get the neighbors of the current position
-        neighbors = get_neighbors(map, row, col)
-
-        # Add the neighbors to the queue
-        queue.extend(neighbors)
-
-    # Return the number of paths
-    return paths % 1000003
-
-# Get the neighbors of a given position
-def get_neighbors(map, row, col):
-    neighbors = []
-
-    # Check if the current position is on the right side of the map
-    if col < len(map[0]) - 1 and map[row][col + 1] != "#":
-        neighbors.append((row, col + 1))
-
-    # Check if the current position is on the left side of the map
-    if col > 0 and map[row][col - 1] != "#":
-        neighbors.append((row, col - 1))
-
-    # Check if the current position is on the top side of the map
-    if row > 0 and map[row - 1][col] != "#":
-        neighbors.append((row - 1, col))
-
-    # Check if the current position is on the bottom side of the map
-    if row < len(map) - 1 and map[row + 1][col] != "#":
-        neighbors.append((row + 1, col))
-
-    return neighbors
+if __name__ == '__main__':
+    main()
 

@@ -1,18 +1,25 @@
 
-def solve(s, t):
-    # Initialize variables
-    max_occurrences = 0
-    occurrences = 0
-    i = 0
+def input_data():
+    N, K = map(int, input().split())
+    p = list(map(int, input().split()))
+    return N, K, p
 
-    # Loop through the string s and check if the substring t can be found
-    while i < len(s):
-        # If the substring t is found, replace it with the corresponding letter from string t and increment the number of occurrences
-        if s[i:i+len(t)] == t:
-            s = s[:i] + t[0] + s[i+len(t):]
-            occurrences += 1
-        i += 1
+def expected_sum(p, K):
+    # Calculate the expected sum for each possible combination of K dice
+    expected_sums = []
+    for i in range(N - K + 1):
+        sum = 0
+        for j in range(K):
+            sum += p[i + j]
+        expected_sums.append(sum)
+    
+    # Return the maximum expected sum
+    return max(expected_sums)
 
-    # Return the maximum number of occurrences
-    return occurrences
+def main():
+    N, K, p = input_data()
+    print(expected_sum(p, K))
+
+if __name__ == '__main__':
+    main()
 

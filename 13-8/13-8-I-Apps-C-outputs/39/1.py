@@ -1,41 +1,22 @@
 
-def solve_problem(residents, parties, clubs, council_size):
-    # Initialize the dictionary to store the club members
-    club_members = {}
-    for club in clubs:
-        club_members[club] = None
+def get_max_min_strength(n, k, x, strengths):
+    # Sort the strengths in ascending order
+    sorted_strengths = sorted(strengths)
 
-    # Iterate through the residents and assign them to clubs
-    for resident in residents:
-        # Check if the resident is already assigned to a club
-        if club_members[resident[2]] is not None:
-            # If the resident is already assigned, skip them
-            continue
-        # Assign the resident to the club they belong to
-        club_members[resident[2]] = resident[0]
+    # Perform the operation k times
+    for i in range(k):
+        for j in range(0, len(sorted_strengths), 2):
+            # Update the strength of each alternate ranger
+            sorted_strengths[j] = sorted_strengths[j] ^ x
 
-    # Initialize the list to store the council members
-    council = []
-    # Iterate through the clubs and assign them a member
-    for club in clubs:
-        # Check if the club has a member already
-        if club_members[club] is not None:
-            # If the club has a member, add them to the council
-            council.append((club_members[club], club))
-        else:
-            # If the club does not have a member, assign a resident to it
-            for resident in residents:
-                if resident[2] == club:
-                    # Assign the resident to the club
-                    club_members[club] = resident[0]
-                    # Add them to the council
-                    council.append((resident[0], club))
-                    break
+    # Return the maximum and minimum strengths after the operation
+    return max(sorted_strengths), min(sorted_strengths)
 
-    # Check if the council size is valid
-    if len(council) > council_size:
-        return "Impossible"
+def main():
+    n, k, x = map(int, input().split())
+    strengths = list(map(int, input().split()))
+    print(*get_max_min_strength(n, k, x, strengths))
 
-    # Return the council members
-    return council
+if __name__ == '__main__':
+    main()
 

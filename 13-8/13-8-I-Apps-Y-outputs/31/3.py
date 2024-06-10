@@ -1,33 +1,30 @@
 
-def read_books(N, M, K, A, B):
-    # Sort the books on Desk A and Desk B by their reading time
-    A.sort()
-    B.sort()
+def bjarki_editor(string):
+    # Initialize an empty string to store the corrected string
+    corrected_string = ""
     
-    # Initialize the number of books read to 0
-    books_read = 0
+    # Iterate through the input string
+    for char in string:
+        # If the current character is not '<', append it to the corrected string
+        if char != "<":
+            corrected_string += char
+        # If the current character is '<' and the previous character is not '<', remove the previous character from the corrected string
+        elif char == "<" and corrected_string and corrected_string[-1] != "<":
+            corrected_string = corrected_string[:-1]
     
-    # Initialize the time taken to read the books to 0
-    time_taken = 0
+    # Return the corrected string
+    return corrected_string
+
+def main():
+    # Read a single line of input from stdin and split it into a list of characters
+    string = input().split()
     
-    # Loop through the books on Desk A and Desk B
-    while A and B:
-        # Check if the time taken to read the books so far is less than or equal to the given time limit
-        if time_taken <= K:
-            # Add the time taken to read the topmost book on Desk A to the time taken
-            time_taken += A[0]
-            # Remove the topmost book from Desk A
-            A.pop(0)
-            # Increment the number of books read
-            books_read += 1
-        if time_taken <= K:
-            # Add the time taken to read the topmost book on Desk B to the time taken
-            time_taken += B[0]
-            # Remove the topmost book from Desk B
-            B.pop(0)
-            # Increment the number of books read
-            books_read += 1
+    # Pass the list of characters to the bjarki_editor function and store the result in a variable
+    corrected_string = bjarki_editor(string)
     
-    # Return the maximum number of books that can be read within the given time limit
-    return books_read
+    # Print the corrected string to stdout
+    print(corrected_string)
+
+if __name__ == '__main__':
+    main()
 

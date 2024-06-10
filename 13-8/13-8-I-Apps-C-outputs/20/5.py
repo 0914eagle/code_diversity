@@ -1,41 +1,43 @@
 
-def solve(grid, i, j):
-    # Initialize the total volume of water drained to 0
-    total_volume = 0
-
-    # Iterate through the grid and find all the cells that are connected to the draining device
-    queue = [(i, j)]
-    visited = set()
-    while queue:
-        i, j = queue.pop(0)
-        if (i, j) not in visited:
-            visited.add((i, j))
-            total_volume += grid[i - 1][j - 1]
-            for neighbor in get_neighbors(grid, i, j):
-                queue.append(neighbor)
-
-    return total_volume
-
-def get_neighbors(grid, i, j):
-    neighbors = []
-    if i > 1 and grid[i - 2][j - 1] < 0:
-        neighbors.append((i - 1, j))
-    if i < len(grid) and grid[i][j - 1] < 0:
-        neighbors.append((i + 1, j))
-    if j > 1 and grid[i - 1][j - 2] < 0:
-        neighbors.append((i, j - 1))
-    if j < len(grid[0]) and grid[i - 1][j] < 0:
-        neighbors.append((i, j + 1))
-    return neighbors
+def get_maximum_amount_of_money(n, m, coupons):
+    # Initialize a dictionary to store the number of coupons available for each value
+    coupon_counts = {}
+    for coupon in coupons:
+        q, w = coupon
+        if q not in coupon_counts:
+            coupon_counts[q] = 1
+        else:
+            coupon_counts[q] += 1
+    
+    # Initialize a list to store the values that have been used
+    used_values = []
+    
+    # Initialize a variable to store the maximum amount of money that can be paid
+    maximum_amount = 0
+    
+    # Loop through the values in the array
+    for i in range(n):
+        # If the current value has not been used, try to use it
+        if i not in used_values:
+            # Get the current value and the number of coupons available for it
+            current_value = i + 1
+            current_coupon_count = coupon_counts[current_value] if current_value in coupon_counts else 0
+            
+            # If there are enough coupons available for the current value, use it and update the maximum amount of money that can be paid
+            if current_coupon_count > 0:
+                used_values.append(i)
+                maximum_amount += current_value * current_coupon_count
+    
+    return maximum_amount
 
 def main():
-    h, w = map(int, input().split())
-    grid = []
-    for _ in range(h):
-        grid.append(list(map(int, input().split())))
-    i, j = map(int, input().split())
-    print(solve(grid, i, j))
+    n, m = map(int, input().split())
+    coupons = []
+    for i in range(m):
+        q, w = map(int, input().split())
+        coupons.append((q, w))
+    print(get_maximum_amount_of_money(n, m, coupons))
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
 

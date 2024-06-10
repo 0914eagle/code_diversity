@@ -1,23 +1,31 @@
 
-def solve(a, b, l, r):
-    # Initialize the string with the first a lowercase English letters in alphabetical order
-    s = "".join(chr(ord('a') + i) for i in range(a))
+def get_magical_subarray(arr, l, r):
+    # Find the minimum and maximum values in the subarray
+    min_val = min(arr[l:r+1])
+    max_val = max(arr[l:r+1])
+    
+    # Initialize the length of the longest magical subarray as 0
+    longest_magical_subarray = 0
+    
+    # Iterate through the subarray and check if the values are between the minimum and maximum values
+    for i in range(l, r+1):
+        if arr[i] >= min_val and arr[i] <= max_val:
+            longest_magical_subarray = max(longest_magical_subarray, i - l + 1)
+    
+    return longest_magical_subarray
 
-    # Mister B appends b letters on each move
-    for i in range(b):
-        # The opponent appends a letters on each move
-        s += "".join(chr(ord('a') + i) for i in range(a))
+def main():
+    # Read the input
+    N = int(input())
+    arr = list(map(int, input().split()))
+    Q = int(input())
+    queries = [list(map(int, input().split())) for _ in range(Q)]
+    
+    # Iterate through the queries and find the longest magical subarray for each query
+    for query in queries:
+        l, r = query
+        print(get_magical_subarray(arr, l, r))
 
-    # The opponent's suffix is the substring of s from positions l to r, inclusive
-    suffix = s[l-1:r]
-
-    # Create a set to store the unique letters in the suffix
-    unique_letters = set()
-
-    # Iterate through the suffix and add each letter to the set
-    for letter in suffix:
-        unique_letters.add(letter)
-
-    # Return the length of the unique letters set, which is the minimum number of different letters in the segment
-    return len(unique_letters)
+if __name__ == '__main__':
+    main()
 

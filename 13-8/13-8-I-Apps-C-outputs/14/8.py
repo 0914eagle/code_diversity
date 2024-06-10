@@ -1,19 +1,33 @@
 
-def solve(K, N):
-    # Initialize a 2D array to store the number of combinations for each i and j
-    dp = [[0] * (K + 1) for _ in range(K + 1)]
+import math
 
-    # Initialize the base cases
-    for i in range(1, K + 1):
-        dp[i][i] = 1
+def get_centre(p1, p2, p3, p4):
+    v1 = [p2[0] - p1[0], p2[1] - p1[1], p2[2] - p1[2]]
+    v2 = [p3[0] - p1[0], p3[1] - p1[1], p3[2] - p1[2]]
+    v3 = [p4[0] - p1[0], p4[1] - p1[1], p4[2] - p1[2]]
+    
+    cross1 = [v1[1] * v2[2] - v1[2] * v2[1], v1[2] * v2[0] - v1[0] * v2[2], v1[0] * v2[1] - v1[1] * v2[0]]
+    cross2 = [v2[1] * v3[2] - v2[2] * v3[1], v2[2] * v3[0] - v2[0] * v3[2], v2[0] * v3[1] - v2[1] * v3[0]]
+    cross3 = [v3[1] * v1[2] - v3[2] * v1[1], v3[2] * v1[0] - v3[0] * v1[2], v3[0] * v1[1] - v3[1] * v1[0]]
+    
+    dot = cross1[0] * cross2[0] + cross1[1] * cross2[1] + cross1[2] * cross2[2]
+    det = cross1[0] * cross3[0] + cross1[1] * cross3[1] + cross1[2] * cross3[2]
+    
+    x = (dot * (p1[1] * p2[2] - p1[2] * p2[1]) + det * (p1[2] * p3[1] - p1[1] * p3[2])) / (2 * (v1[1] * v2[2] - v1[2] * v2[1]))
+    y = (dot * (p1[2] * p2[0] - p1[0] * p2[2]) + det * (p1[0] * p3[2] - p1[2] * p3[0])) / (2 * (v1[2] * v2[0] - v1[0] * v2[2]))
+    z = (dot * (p1[0] * p2[1] - p1[1] * p2[0]) + det * (p1[1] * p3[0] - p1[0] * p3[1])) / (2 * (v1[0] * v2[1] - v1[1] * v2[0]))
+    
+    return [x, y, z]
 
-    # Fill in the rest of the 2D array using the recurrence relation
-    for i in range(2, K + 1):
-        for j in range(1, K + 1):
-            if i == j:
-                continue
-            dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j]
+def main():
+    p1 = [float(x) for x in input().split()]
+    p2 = [float(x) for x in input().split()]
+    p3 = [float(x) for x in input().split()]
+    p4 = [float(x) for x in input().split()]
+    
+    centre = get_centre(p1, p2, p3, p4)
+    print(" ".join(map(str, centre)))
 
-    # Return the answer modulo 998244353
-    return [dp[i][i] % 998244353 for i in range(1, 2 * K)]
+if __name__ == '__main__':
+    main()
 

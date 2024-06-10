@@ -1,30 +1,74 @@
 
-def get_least_wet(T, c, d, rain):
-    # Initialize variables
-    wetness = 0
-    speed = 0
-    time = 0
+def get_purchases(num_children, num_purchases, cards_per_child, purchase_list):
+    # Initialize a dictionary to store the number of cards each child has
+    cards_dict = {i: cards_per_child for i in range(1, num_children + 1)}
+    
+    # Initialize a list to store the purchases
+    purchases = []
+    
+    # Loop through each purchase
+    for i in range(num_purchases):
+        # Get the two children who made the purchase
+        children = purchase_list[i]
+        
+        # Get the number of cards each child got
+        num_cards = 2
+        
+        # Update the number of cards each child has
+        cards_dict[children[0]] += num_cards
+        cards_dict[children[1]] += num_cards
+        
+        # Add the purchase to the list of purchases
+        purchases.append((children[0], children[1], num_cards))
+    
+    return purchases
 
-    # Loop through each minute interval
-    for i in range(T):
-        # Calculate the amount of rain during this interval
-        rain_this_interval = rain[i]
+def get_winners(purchases, cards_per_child):
+    # Initialize a dictionary to store the number of cards each child has
+    cards_dict = {i: cards_per_child for i in range(1, len(purchases) + 1)}
+    
+    # Initialize a list to store the winners
+    winners = []
+    
+    # Loop through each purchase
+    for i in range(len(purchases)):
+        # Get the two children who made the purchase
+        children = purchases[i]
+        
+        # Get the number of cards each child got
+        num_cards = children[2]
+        
+        # Update the number of cards each child has
+        cards_dict[children[0]] += num_cards
+        cards_dict[children[1]] += num_cards
+        
+        # Add the winner to the list of winners
+        winners.append(children[0])
+    
+    return winners
 
-        # Calculate the amount of sweat during this interval
-        sweat_this_interval = c * speed ** 2
+def main():
+    # Get the input
+    num_children, num_purchases = map(int, input().split())
+    cards_per_child = int(input())
+    purchase_list = []
+    for i in range(num_purchases):
+        purchase_list.append(tuple(map(int, input().split())))
+    
+    # Get the purchases
+    purchases = get_purchases(num_children, num_purchases, cards_per_child, purchase_list)
+    
+    # Get the winners
+    winners = get_winners(purchases, cards_per_child)
+    
+    # Print the output
+    print(len(purchases))
+    for purchase in purchases:
+        print(purchase[0], purchase[1], purchase[2])
+    
+    for winner in winners:
+        print(winner)
 
-        # Calculate the total wetness during this interval
-        total_wetness = rain_this_interval + sweat_this_interval
-
-        # Update the wetness variable
-        wetness += total_wetness
-
-        # Update the speed variable
-        speed = d / T
-
-        # Update the time variable
-        time += 1
-
-    # Return the least wetness
-    return wetness
+if __name__ == '__main__':
+    main()
 

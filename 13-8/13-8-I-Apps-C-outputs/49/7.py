@@ -1,18 +1,21 @@
 
-def solve(x_s, y_s, s_s, r_i, r_f, x_a, y_a, s_a):
-    # Calculate the distance between Anthony's current position and the center of the safety zone
-    distance = ((x_a - x_s) ** 2 + (y_a - y_s) ** 2) ** 0.5
-    
-    # Calculate the time it takes for Anthony to reach the center of the safety zone
-    time = distance / s_a
-    
-    # Calculate the radius of the safety zone at the time Anthony reaches the center
-    radius = r_i - s_s * time
-    
-    # Calculate the amount of damage Anthony will take if he stays in the safety zone
-    damage = 0
-    if radius > r_f:
-        damage = (radius - r_f) * (radius - r_f)
-    
-    return damage
+def get_distinct_sizes(ball_sizes):
+    return len(set(ball_sizes)) == 3
+
+def get_sizes_diff_less_than_or_equal_to_2(ball_sizes):
+    return all(abs(ball_sizes[i] - ball_sizes[i+1]) <= 2 for i in range(len(ball_sizes)-1))
+
+def can_give_gifts(n, ball_sizes):
+    if n != 3:
+        return False
+    if not get_distinct_sizes(ball_sizes):
+        return False
+    if not get_sizes_diff_less_than_or_equal_to_2(ball_sizes):
+        return False
+    return True
+
+if __name__ == '__main__':
+    n = int(input())
+    ball_sizes = [int(size) for size in input().split()]
+    print("YES") if can_give_gifts(n, ball_sizes) else print("NO")
 

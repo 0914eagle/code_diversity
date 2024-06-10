@@ -1,32 +1,19 @@
 
-def solve(n, a):
-    # Initialize a dictionary to store the components
-    components = {}
+def is_relatively_prime(v, u):
+    return gcd(v, u) == 1
 
-    # Iterate over the inputs
-    for i in range(n):
-        # Get the current vertex value
-        vertex_value = a[i]
+def construct_relatively_prime_graph(n, m):
+    edges = []
+    for i in range(1, n+1):
+        for j in range(i+1, n+1):
+            if is_relatively_prime(i, j) and len(edges) < m:
+                edges.append((i, j))
+    if len(edges) == m:
+        return edges
+    else:
+        return "Impossible"
 
-        # If the vertex value is not in the components dictionary, add it to the dictionary with a count of 1
-        if vertex_value not in components:
-            components[vertex_value] = 1
-
-        # If the vertex value is in the components dictionary, increment the count by 1
-        else:
-            components[vertex_value] += 1
-
-    # Initialize a variable to store the sum
-    sum = 0
-
-    # Iterate over the components
-    for component in components:
-        # Get the count of vertices with the current component value
-        count = components[component]
-
-        # Add the count to the sum
-        sum += count
-
-    # Return the sum
-    return sum
+if __name__ == '__main__':
+    n, m = map(int, input().split())
+    print(construct_relatively_prime_graph(n, m))
 

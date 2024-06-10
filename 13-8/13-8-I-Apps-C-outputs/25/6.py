@@ -1,31 +1,26 @@
 
-import sys
-
-def get_number_of_ways(R, W, d):
-    # Base case: if there are no red or white wine boxes, there is only one way to arrange them
-    if R == 0 and W == 0:
-        return 1
+def get_lcs(strings):
+    # Initialization
+    m = len(strings)
+    n = len(strings[0])
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
     
-    # Initialize the number of ways to arrange the wine boxes
-    ways = 0
+    # Fill in the dp table
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if strings[i - 1][j - 1] == strings[0][j - 1]:
+                dp[i][j] = dp[i - 1][j - 1] + 1
+            else:
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
     
-    # If there are red wine boxes, consider arranging them into piles
-    if R > 0:
-        # The number of ways to arrange the red wine boxes into piles is the number of ways to choose the number of red wine boxes in the first pile, times the number of ways to arrange the remaining red wine boxes into piles
-        ways += (R + 1) * get_number_of_ways(R - d, W, d)
-    
-    # If there are white wine boxes, consider arranging them into piles
-    if W > 0:
-        # The number of ways to arrange the white wine boxes into piles is the number of ways to choose the number of white wine boxes in the first pile, times the number of ways to arrange the remaining white wine boxes into piles
-        ways += (W + 1) * get_number_of_ways(R, W - 1, d)
-    
-    # Return the number of ways to arrange the wine boxes
-    return ways
+    # Return the length of the lcs
+    return dp[m][n]
 
 def main():
-    R, W, d = map(int, input().split())
-    print(get_number_of_ways(R, W, d) % (10**9 + 7))
+    n, k = map(int, input().split())
+    strings = [input() for _ in range(n)]
+    print(get_lcs(strings))
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
 

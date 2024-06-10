@@ -1,26 +1,53 @@
 
-def get_sugar_water(A, B, C, D, E, F):
-    # Initialize the variables
-    sugar_water = 0
-    sugar_dissolved = 0
+def get_input():
+    n, k = map(int, input().split())
+    roads = []
+    for _ in range(n-1):
+        x, y = map(int, input().split())
+        roads.append((x, y))
+    return n, k, roads
 
-    # Loop through all possible combinations of operations
-    for a in range(A, B + 1):
-        for c in range(C, D + 1):
-            # Calculate the mass of sugar water and sugar dissolved
-            sugar_water_mass = a + c
-            sugar_dissolved_mass = c * 100 / (a + c)
+def solve(n, k, roads):
+    # Initialize the company assignments
+    company_assignments = [0] * (n-1)
+    
+    # Initialize the number of companies
+    num_companies = 1
+    
+    # Loop through the roads
+    for i in range(n-1):
+        # If the road has not been assigned to a company, assign it to the current company
+        if company_assignments[i] == 0:
+            company_assignments[i] = num_companies
+            num_companies += 1
+        # If the road has already been assigned to a company, check if the current company is the same as the previous company
+        else:
+            if company_assignments[i] != num_companies:
+                company_assignments[i] = num_companies
+                num_companies += 1
+    
+    # Find the number of cities with two or more roads belonging to one company
+    num_cities_with_two_or_more_roads = 0
+    for i in range(n):
+        num_roads_for_city = 0
+        for j in range(n-1):
+            if roads[j][0] == i or roads[j][1] == i:
+                num_roads_for_city += 1
+        if num_roads_for_city >= 2:
+            num_cities_with_two_or_more_roads += 1
+    
+    # Return the number of companies and the company assignments if the number of cities with two or more roads belonging to one company is at most k, otherwise return -1
+    if num_cities_with_two_or_more_roads <= k:
+        return num_companies, company_assignments
+    else:
+        return -1, []
 
-            # Check if the sugar water is within the desired range
-            if sugar_water_mass <= F:
-                # Calculate the density of the sugar water
-                density = sugar_dissolved_mass / sugar_water_mass
+def main():
+    n, k, roads = get_input()
+    num_companies, company_assignments = solve(n, k, roads)
+    print(num_companies)
+    print(" ".join(map(str, company_assignments)))
 
-                # Check if the density is higher than the current density
-                if density > sugar_water:
-                    sugar_water = density
-                    sugar_dissolved = sugar_dissolved_mass
-
-    # Return the results
-    return sugar_water, sugar_dissolved
+if __name__ == '__main__':
+    main()
 

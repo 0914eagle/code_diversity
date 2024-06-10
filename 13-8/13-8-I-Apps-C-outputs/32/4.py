@@ -1,19 +1,31 @@
 
 import math
 
-def solve(n, d, r):
-    # Calculate the probability of a gem splitting into two gems
-    p = 1 / n
+def get_area_covered_by_pickles(pickle_radius, pickles_placed, sandwich_radius):
+    
+    total_area = 0
+    for i in range(pickles_placed):
+        x = sandwich_radius * math.cos(2 * math.pi * i / pickles_placed)
+        y = sandwich_radius * math.sin(2 * math.pi * i / pickles_placed)
+        total_area += math.pi * pickle_radius ** 2 + (x ** 2 + y ** 2 - 2 * pickle_radius ** 2)
+    return total_area
 
-    # Calculate the expected number of gems after d nights
-    expected_gems = 0
-    for i in range(1, n+1):
-        expected_gems += i * math.pow(p, d)
+def get_max_pickles_placed(sandwich_radius, pickle_radius, max_area_percent):
+    
+    low = 0
+    high = 7
+    while low < high:
+        mid = (low + high) // 2
+        if get_area_covered_by_pickles(pickle_radius, mid, sandwich_radius) <= max_area_percent * math.pi * sandwich_radius ** 2 / 100:
+            low = mid + 1
+        else:
+            high = mid
+    return low - 1
 
-    # Calculate the expected number of gems held by the top r inhabitants
-    expected_top_r_gems = 0
-    for i in range(n-r+1, n+1):
-        expected_top_r_gems += i * math.pow(p, d)
+def main():
+    sandwich_radius, pickle_radius, max_area_percent = map(float, input().split())
+    print(get_max_pickles_placed(sandwich_radius, pickle_radius, max_area_percent))
 
-    return expected_top_r_gems
+if __name__ == '__main__':
+    main()
 

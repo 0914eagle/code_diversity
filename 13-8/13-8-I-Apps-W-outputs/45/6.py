@@ -1,32 +1,54 @@
 
-def solve_problem(n, k, rows):
-    # Initialize the number of neighbors for each status passenger to 0
-    neighbors = [0] * n
+def get_total_mass(bacteria_mass, n):
+    # Initialize variables
+    total_mass = 0
+    nights = 0
+    bacteria = [bacteria_mass]
 
-    # Loop through each row of seats
-    for i in range(n):
-        # If the current seat is occupied by a status passenger, skip it
-        if rows[i][0] == "S":
-            continue
+    # Loop through nights
+    while total_mass < n:
+        # Increment nights
+        nights += 1
 
-        # If the current seat is occupied by an ordinary passenger, check if it is a neighbor for any status passenger
-        if rows[i][0] == "P":
-            # Loop through each status passenger in the current row
-            for j in range(n):
-                # If the current seat is occupied by a status passenger and it is not the current seat, increment the neighbor count
-                if rows[i][j] == "S" and j != i:
-                    neighbors[j] += 1
+        # Split bacteria
+        new_bacteria = []
+        for b in bacteria:
+            if b >= 2:
+                new_bacteria.append(b / 2)
+                new_bacteria.append(b / 2)
+            else:
+                new_bacteria.append(b)
+        bacteria = new_bacteria
 
-    # Sort the neighbors in descending order
-    neighbors.sort(reverse=True)
+        # Increment bacteria mass
+        for i in range(len(bacteria)):
+            bacteria[i] += 1
 
-    # Initialize the total number of neighbors to 0
-    total_neighbors = 0
+        # Calculate total mass
+        total_mass = sum(bacteria)
 
-    # Loop through each status passenger and add their neighbor count to the total
-    for i in range(n):
-        total_neighbors += neighbors[i]
+    # Return results
+    return nights, bacteria
 
-    # Return the total number of neighbors
-    return total_neighbors
+def main():
+    # Test cases
+    test_cases = int(input())
+    for i in range(test_cases):
+        # Read input
+        n = int(input())
+
+        # Get total mass
+        nights, bacteria = get_total_mass(1, n)
+
+        # Check if total mass is possible
+        if nights == -1:
+            print(-1)
+        else:
+            # Print output
+            print(nights)
+            for b in bacteria:
+                print(int(b))
+
+if __name__ == '__main__':
+    main()
 

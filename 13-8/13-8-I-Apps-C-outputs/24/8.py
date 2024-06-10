@@ -1,59 +1,74 @@
 
-def find_minimum_spanning_tree(points):
-    # Sort the points based on their x-coordinate
-    sorted_points = sorted(points, key=lambda point: point[0])
-
-    # Create a disjoint set to store the points and their parents
-    dsu = DisjointSet(sorted_points)
-
-    # Initialize the minimum spanning tree weight to 0
-    mst_weight = 0
-
-    # Iterate through the points and find the minimum spanning tree weight
-    for i in range(len(sorted_points)):
-        for j in range(i + 1, len(sorted_points)):
-            # Calculate the Manhattan distance between the two points
-            distance = abs(sorted_points[i][0] - sorted_points[j][0]) + abs(sorted_points[i][1] - sorted_points[j][1])
-
-            # If the distance is less than or equal to the current minimum spanning tree weight, update the weight and merge the two points in the disjoint set
-            if distance <= mst_weight:
-                mst_weight = distance
-                dsu.union(i, j)
-
-    # Return the minimum spanning tree weight
-    return mst_weight
-
-# Define a class to represent a disjoint set
-class DisjointSet:
-    def __init__(self, points):
-        self.parents = [-1] * len(points)
-        self.ranks = [0] * len(points)
-        self.size = len(points)
-
-    # Find the root of the tree
-    def find(self, point):
-        if self.parents[point] == -1:
-            return point
+def get_maximum_value(sequence):
+    # Find the maximum value in the sequence
+    max_value = max(sequence)
+    
+    # Initialize a variable to store the number of operations
+    operations = 0
+    
+    # While the length of the sequence is greater than 1
+    while len(sequence) > 1:
+        # Find the index of the maximum value in the sequence
+        max_index = sequence.index(max_value)
+        
+        # If the maximum value is at the end of the sequence
+        if max_index == len(sequence) - 1:
+            # Delete the maximum value
+            sequence.pop()
+        # If the maximum value is at the beginning of the sequence
+        elif max_index == 0:
+            # Delete the maximum value
+            sequence.pop(0)
+        # If the maximum value is in the middle of the sequence
         else:
-            self.parents[point] = self.find(self.parents[point])
-            return self.parents[point]
+            # Add the values of the two elements adjacent to the maximum value
+            sum_adjacent = sequence[max_index - 1] + sequence[max_index + 1]
+            # Replace the maximum value with the sum of the adjacent elements
+            sequence[max_index] = sum_adjacent
+            # Delete the two elements adjacent to the maximum value
+            sequence.pop(max_index - 1)
+            sequence.pop(max_index)
+        
+        # Increment the number of operations
+        operations += 1
+    
+    # Return the maximum value and the number of operations
+    return max_value, operations
 
-    # Union two points in the disjoint set
-    def union(self, point1, point2):
-        root1 = self.find(point1)
-        root2 = self.find(point2)
+def get_chosen_elements(sequence, operations):
+    # Initialize a list to store the indices of the elements chosen in each operation
+    chosen_elements = []
+    
+    # For each operation
+    for i in range(operations):
+        # Find the index of the maximum value in the sequence
+        max_index = sequence.index(max(sequence))
+        
+        # Add the index of the maximum value to the list of chosen elements
+        chosen_elements.append(max_index)
+        
+        # Delete the maximum value
+        sequence.pop(max_index)
+    
+    # Return the list of chosen elements
+    return chosen_elements
 
-        # If the roots are not the same, combine them
-        if root1 != root2:
-            if self.ranks[root1] > self.ranks[root2]:
-                self.parents[root2] = root1
-            else:
-                self.parents[root1] = root2
-                if self.ranks[root1] == self.ranks[root2]:
-                    self.ranks[root2] += 1
-            self.size -= 1
-
-    # Return the size of the disjoint set
-    def get_size(self):
-        return self.size
+if __name__ == '__main__':
+    # Read the input from stdin
+    N = int(input())
+    sequence = list(map(int, input().split()))
+    
+    # Get the maximum value and the number of operations
+    max_value, operations = get_maximum_value(sequence)
+    
+    # Get the indices of the elements chosen in each operation
+    chosen_elements = get_chosen_elements(sequence, operations)
+    
+    # Print the maximum value
+    print(max_value)
+    # Print the number of operations
+    print(operations)
+    # Print the indices of the elements chosen in each operation
+    for i in range(operations):
+        print(chosen_elements[i] + 1)
 

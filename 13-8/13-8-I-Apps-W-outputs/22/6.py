@@ -1,26 +1,49 @@
 
-def solve(n, c, t):
-    # Initialize a dictionary to store the charges of Grigory's stones
-    charges = {i: c[i-1] for i in range(1, n+1)}
-    # Initialize a set to store the indices of the stones that have been synchronized
-    synchronized = set()
-    # Loop through each stone and check if it can be synchronized with its neighbors
-    for i in range(1, n+1):
-        # If the stone has already been synchronized, skip it
-        if i in synchronized:
-            continue
-        # If the stone does not have the required charge, try synchronizing it with its neighbors
-        if charges[i] != t[i-1]:
-            # If the stone has a neighbor with the required charge, synchronize it with that neighbor
-            if i-1 in charges and charges[i-1] == t[i-1]:
-                synchronized.add(i-1)
-                charges[i] = charges[i-1]
-            elif i+1 in charges and charges[i+1] == t[i-1]:
-                synchronized.add(i+1)
-                charges[i] = charges[i+1]
-            # If neither neighbor has the required charge, return "No"
+def get_min_time(n, m, d, g, r):
+    # Initialize variables
+    min_time = 0
+    current_position = 0
+    direction = 1
+    safety_island_position = 0
+    green_light_time = g
+    red_light_time = r
+    safety_island_list = d
+    
+    # Loop until the end of the road is reached
+    while current_position < n:
+        # Check if the current position is a safety island
+        if current_position in safety_island_list:
+            safety_island_position = current_position
+        
+        # Check if the green light is on
+        if green_light_time > 0:
+            # Move in the current direction
+            current_position += direction
+            green_light_time -= 1
+        else:
+            # Change direction if necessary
+            if current_position == safety_island_position:
+                direction = -direction
             else:
-                return "No"
-    # If all stones have the required charge, return "Yes"
-    return "Yes"
+                direction = 1
+                safety_island_position = current_position
+            
+            # Wait for the red light
+            red_light_time -= 1
+            green_light_time = g
+        
+        # Increment the minimum time
+        min_time += 1
+    
+    # Return the minimum time
+    return min_time
+
+def main():
+    n, m = map(int, input().split())
+    d = list(map(int, input().split()))
+    g, r = map(int, input().split())
+    print(get_min_time(n, m, d, g, r))
+
+if __name__ == '__main__':
+    main()
 

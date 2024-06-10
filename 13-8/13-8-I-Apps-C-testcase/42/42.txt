@@ -1,10 +1,10 @@
 {
     "inputs": [
-        "1 31 2\n20 60\n50 90\n",
-        "2 5 3\n0 90\n0 90\n3 90\n"
+        "5 2\nlinearalgebra 10\ncalculus1 10\ncalculus2 20\nhonorsanalysis1 50\nhonorsanalysis2 100\n",
+        "7 5\nintrotocs 40\nalgorithms1 50\nalgorithms2 200\ndatastructures 120\ntheoryofcomputation 200\nmachinelearning1 100\nmachinelearning2 50\n"
     ],
     "outputs": [
-        "4 3\n",
-        "0 17\n"
+        "20\n",
+        "360\n"
     ]
 }

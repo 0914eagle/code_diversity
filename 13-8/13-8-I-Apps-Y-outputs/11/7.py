@@ -1,13 +1,31 @@
 
-import math
+import collections
+import sys
 
-def get_average_path_length(coordinates):
-    num_towns = len(coordinates)
-    total_length = 0
-    for i in range(num_towns):
-        for j in range(i+1, num_towns):
-            x1, y1 = coordinates[i]
-            x2, y2 = coordinates[j]
-            total_length += math.sqrt((x1-x2)**2 + (y1-y2)**2)
-    return total_length / math.factorial(num_towns)
+def get_input():
+    N = int(input())
+    columns = input().split()
+    marks = []
+    ids = []
+    names = []
+    classes = []
+    for i in range(N):
+        mark, id, name, cls = input().split()
+        marks.append(int(mark))
+        ids.append(int(id))
+        names.append(name)
+        classes.append(cls)
+    return N, columns, marks, ids, names, classes
+
+def solve(N, columns, marks, ids, names, classes):
+    average = sum(marks) / N
+    return round(average, 2)
+
+def main():
+    N, columns, marks, ids, names, classes = get_input()
+    average = solve(N, columns, marks, ids, names, classes)
+    print(average)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,26 +1,46 @@
 
-def solve(n, k, rows):
-    # Initialize the minimum number of neighbors to infinity
-    min_neighbors = float('inf')
-    # Initialize the solution matrix
-    solution = [[0] * n for _ in range(n)]
-    # Loop through each row
-    for i in range(n):
-        # Loop through each column
-        for j in range(n):
-            # If the current cell is empty
-            if rows[i][j] == '.':
-                # Check if the cell has at least k empty cells around it
-                neighbors = 0
-                for row in range(i-1, i+2):
-                    for col in range(j-1, j+2):
-                        if 0 <= row < n and 0 <= col < n and rows[row][col] == '.':
-                            neighbors += 1
-                # If the cell has at least k empty cells around it, add it to the solution
-                if neighbors >= k:
-                    solution[i][j] = 1
-                    # Update the minimum number of neighbors
-                    min_neighbors = min(min_neighbors, neighbors)
-    # Return the solution matrix and the minimum number of neighbors
-    return solution, min_neighbors
+def find_min_days(total_mass):
+    # Initialize variables
+    days = 0
+    bacteria = 1
+    mass = 1
+    
+    # Loop until the total mass is reached
+    while mass < total_mass:
+        # Increment the number of days
+        days += 1
+        
+        # Split the bacteria
+        bacteria *= 2
+        
+        # Increment the mass of each bacterium
+        mass += bacteria
+    
+    # Return the minimum number of days needed
+    return days
+
+def find_split_pattern(total_mass):
+    # Initialize variables
+    days = 0
+    bacteria = 1
+    mass = 1
+    
+    # Loop until the total mass is reached
+    while mass < total_mass:
+        # Increment the number of days
+        days += 1
+        
+        # Split the bacteria
+        bacteria *= 2
+        
+        # Increment the mass of each bacterium
+        mass += bacteria
+    
+    # Return the split pattern
+    return [int(bacteria / 2)] * days
+
+if __name__ == '__main__':
+    total_mass = int(input())
+    print(find_min_days(total_mass))
+    print(*find_split_pattern(total_mass), sep=' ')
 

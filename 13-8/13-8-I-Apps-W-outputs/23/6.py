@@ -1,22 +1,29 @@
 
-def solve(string1, string2):
-    # Find all subpairs of string1 and string2
-    subpairs1 = []
-    subpairs2 = []
-    for i in range(len(string1)):
-        for j in range(len(string2)):
-            subpairs1.append((string1[i:i+1], string2[j:j+1]))
-            subpairs2.append((string1[i:i+1], string2[j:]))
-            subpairs2.append((string1[i:], string2[j:j+1]))
-            subpairs2.append((string1[i:i+1], string2[j:]))
+def move_children(S):
+    # Initialize the number of children on each square
+    num_children = [0] * len(S)
     
-    # Find the longest palindrome by concatenating subpairs
-    longest_palindrome = 0
-    for pair1 in subpairs1:
-        for pair2 in subpairs2:
-            concatenated = pair1[0] + pair1[1] + pair2[0] + pair2[1]
-            if concatenated == concatenated[::-1] and len(concatenated) > longest_palindrome:
-                longest_palindrome = len(concatenated)
+    # Set the first and last children to 1
+    num_children[0] = 1
+    num_children[-1] = 1
     
-    return longest_palindrome
+    # Loop through each character of the string
+    for i in range(1, len(S) - 1):
+        # If the character is L, move the child to the left
+        if S[i] == 'L':
+            num_children[i - 1] += num_children[i]
+        # If the character is R, move the child to the right
+        else:
+            num_children[i + 1] += num_children[i]
+    
+    # Return the number of children on each square
+    return num_children
+
+def main():
+    S = input()
+    num_children = move_children(S)
+    print(*num_children)
+
+if __name__ == '__main__':
+    main()
 

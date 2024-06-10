@@ -1,27 +1,38 @@
 
-def min_rest_days(n, arr):
-    # Initialize variables
-    rest_days = 0
-    last_day_was_contest = False
-    last_day_was_sport = False
+def is_possible(n, parents, x_sequence):
+    # Initialize a dictionary to store the color and weight of each vertex
+    color_weight = {}
+    for i in range(1, n + 1):
+        color_weight[i] = [None, 0]
 
-    # Iterate through the array
-    for day in arr:
-        # Check if the current day is a contest day
-        if day == 1 or day == 3:
-            # If the last day was a contest day, Vasya will have a rest
-            if last_day_was_contest:
-                rest_days += 1
-            # Set the flag for the last day was a contest day
-            last_day_was_contest = True
-        # Check if the current day is a sport day
-        elif day == 2 or day == 0:
-            # If the last day was a sport day, Vasya will have a rest
-            if last_day_was_sport:
-                rest_days += 1
-            # Set the flag for the last day was a sport day
-            last_day_was_sport = True
+    # Set the color and weight of the root vertex (Vertex 1)
+    color_weight[1][0] = "white"
+    color_weight[1][1] = x_sequence[1]
 
-    # Return the minimum number of rest days
-    return rest_days
+    # Recursively assign colors and weights to the remaining vertices
+    for i in range(2, n + 1):
+        parent = parents[i - 1]
+        if color_weight[parent][0] == "white":
+            color_weight[i][0] = "black"
+        else:
+            color_weight[i][0] = "white"
+        color_weight[i][1] = x_sequence[i] - color_weight[parent][1]
+
+    # Check if the total weight of the vertices with the same color as each vertex is equal to its weight
+    for i in range(1, n + 1):
+        if color_weight[i][1] != x_sequence[i]:
+            return False
+    return True
+
+def main():
+    n = int(input())
+    parents = [int(x) for x in input().split()]
+    x_sequence = [int(x) for x in input().split()]
+    if is_possible(n, parents, x_sequence):
+        print("POSSIBLE")
+    else:
+        print("IMPOSSIBLE")
+
+if __name__ == '__main__':
+    main()
 

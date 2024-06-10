@@ -1,37 +1,44 @@
 
-def solve_passenger_problem(row_count, column_count, row_data, passenger_count):
+def get_bacteria_growth(n):
     # Initialize variables
-    total_neighbors = 0
-    seat_assignments = ["."] * row_count * column_count
-    status_passengers = []
-    regular_passengers = []
+    bacteria = [1]
+    days = 0
+    nights = 0
+    
+    # Loop until the total mass of the bacteria is equal to n
+    while sum(bacteria) != n:
+        # Split the bacteria
+        new_bacteria = []
+        for mass in bacteria:
+            if mass >= 2:
+                new_bacteria.append(mass / 2)
+                new_bacteria.append(mass / 2)
+            else:
+                new_bacteria.append(mass)
+        bacteria = new_bacteria
+        days += 1
+        nights += 1
+        
+        # Increase the mass of the bacteria
+        for i in range(len(bacteria)):
+            bacteria[i] += 1
+    
+    # Return the number of days and nights needed
+    return days, nights
 
-    # Parse the input data
-    for i in range(row_count):
-        for j in range(column_count):
-            if row_data[i][j] == "S":
-                status_passengers.append((i, j))
-            elif row_data[i][j] == "P":
-                regular_passengers.append((i, j))
+def main():
+    # Read the input
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        
+        # Call the function to get the number of days and nights needed
+        days, nights = get_bacteria_growth(n)
+        
+        # Print the output
+        print(days)
+        print(" ".join(str(night) for night in range(nights)))
 
-    # Assign regular passengers to seats
-    for passenger in regular_passengers:
-        row, col = passenger
-        for i in range(row_count):
-            for j in range(column_count):
-                if seat_assignments[i * column_count + j] == ".":
-                    seat_assignments[i * column_count + j] = "P"
-                    break
-
-    # Calculate the total number of neighbors for each status passenger
-    for passenger in status_passengers:
-        row, col = passenger
-        neighbor_count = 0
-        for i in range(row_count):
-            for j in range(column_count):
-                if seat_assignments[i * column_count + j] == "P" and (i, j) != passenger:
-                    neighbor_count += 1
-        total_neighbors += neighbor_count
-
-    return total_neighbors
+if __name__ == '__main__':
+    main()
 

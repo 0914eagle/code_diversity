@@ -1,32 +1,44 @@
 
-def solve(d, t, c, r, clouds, roofs):
+def get_maximum_media_companies(num_sectors, min_consecutive_sectors, min_distinct_colors, fan_assignments):
     # Initialize variables
-    total_rain = 0
-    current_time = 0
-    current_roof = 0
+    max_media_companies = 0
+    current_media_companies = 0
+    current_consecutive_sectors = 0
+    current_distinct_colors = set()
+    
+    # Iterate through the fan assignments
+    for i in range(num_sectors):
+        # If the current sector is assigned to a team that is already in the current range, skip it
+        if current_consecutive_sectors > 0 and fan_assignments[i] == fan_assignments[i - 1]:
+            continue
+        
+        # If the current sector is assigned to a team that is not in the current range, start a new range
+        if current_consecutive_sectors == 0 or fan_assignments[i] != fan_assignments[i - 1]:
+            current_media_companies += 1
+            current_consecutive_sectors = 1
+            current_distinct_colors = set()
+        
+        # Add the color of the current team to the set of distinct colors
+        current_distinct_colors.add(fan_assignments[i])
+        
+        # If the current range meets the minimum requirements, update the maximum number of media companies
+        if current_consecutive_sectors >= min_consecutive_sectors and len(current_distinct_colors) >= min_distinct_colors:
+            max_media_companies = max(max_media_companies, current_media_companies)
+    
+    # Return the maximum number of media companies
+    return max_media_companies
 
-    # Sort the clouds by their starting time
-    clouds.sort(key=lambda x: x[0])
+def main():
+    # Read the input
+    num_sectors, min_consecutive_sectors, min_distinct_colors = map(int, input().split())
+    fan_assignments = list(map(int, input().split()))
+    
+    # Solve the problem
+    max_media_companies = get_maximum_media_companies(num_sectors, min_consecutive_sectors, min_distinct_colors, fan_assignments)
+    
+    # Print the output
+    print(max_media_companies)
 
-    # Loop through the clouds
-    for cloud in clouds:
-        s, e, p, a = cloud
-
-        # Check if the cloud is in your zip code
-        if p > 0:
-            # Check if the cloud is currently raining
-            if current_time >= s and current_time < e:
-                # Add the rain amount to the total
-                total_rain += a
-
-                # Check if the cloud is over a roof
-                while current_roof < len(roofs) and roofs[current_roof][0] <= s:
-                    current_roof += 1
-
-                # Check if the cloud is under a roof
-                while current_roof > 0 and roofs[current_roof - 1][1] > e:
-                    current_roof -= 1
-
-    # Return the total rain amount
-    return total_rain
+if __name__ == '__main__':
+    main()
 

@@ -1,30 +1,24 @@
 
-def is_solvable(a, b, c):
-    # Calculate the area of the triangle
-    area = triangle_area(a, b, c)
-    
-    # Check if the area is zero
-    if area == 0:
-        return "No"
-    
-    # Calculate the centroid of the triangle
-    centroid = triangle_centroid(a, b, c)
-    
-    # Calculate the angle between the sides of the triangle
-    angle = triangle_angle(a, b, c)
-    
-    # Check if the angle is acute
-    if angle < 90:
-        return "Yes"
-    else:
-        return "No"
+def is_d_magic(n, d):
+    n_str = str(n)
+    for i in range(len(n_str)):
+        if i % 2 == 0:
+            if n_str[i] != d:
+                return False
+    return True
 
-def triangle_area(a, b, c):
-    return 0.5 * abs(a[0] * (b[1] - c[1]) + b[0] * (c[1] - a[1]) + c[0] * (a[1] - b[1]))
+def count_d_magic_numbers(a, b, d, m):
+    count = 0
+    for i in range(a, b+1):
+        if i % m == 0 and is_d_magic(i, d):
+            count += 1
+    return count
 
-def triangle_centroid(a, b, c):
-    return [(a[0] + b[0] + c[0]) / 3, (a[1] + b[1] + c[1]) / 3]
+def main():
+    m, d = map(int, input().split())
+    a, b = map(int, input().split())
+    print(count_d_magic_numbers(a, b, d, m) % (10**9 + 7))
 
-def triangle_angle(a, b, c):
-    return math.degrees(math.acos(((b[0] - a[0]) * (c[0] - a[0]) + (b[1] - a[1]) * (c[1] - a[1])) / ((b[0] - a[0]) ** 2 + (b[1] - a[1]) ** 2)))
+if __name__ == '__main__':
+    main()
 

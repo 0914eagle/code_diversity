@@ -1,37 +1,43 @@
 
-def max_cuts(sequence, budget):
-    # Initialize variables
-    n = len(sequence)
-    odd_count = 0
-    even_count = 0
-    cost = 0
-    cuts = 0
+def get_bracket_sequences(n):
+    sequences = []
+    for i in range(1, n+1):
+        sequences.extend(get_bracket_sequences_helper(i, n))
+    return sequences
 
-    # Count the number of odd and even numbers in the sequence
-    for i in range(n):
-        if sequence[i] % 2 == 0:
-            even_count += 1
-        else:
-            odd_count += 1
+def get_bracket_sequences_helper(i, n):
+    if i == 0:
+        return [""]
+    sequences = []
+    for j in range(1, n+1):
+        for seq in get_bracket_sequences_helper(i-1, n):
+            sequences.append("(" + seq + ")")
+            sequences.append(")" + seq + "(")
+    return sequences
 
-    # Calculate the maximum number of cuts that can be made
-    for i in range(n - 1):
-        if odd_count == even_count:
-            break
-        if sequence[i] % 2 == 0 and sequence[i + 1] % 2 == 1:
-            odd_count += 1
-            even_count -= 1
-            cost += 1
-            cuts += 1
-        elif sequence[i] % 2 == 1 and sequence[i + 1] % 2 == 0:
-            odd_count -= 1
-            even_count += 1
-            cost += 1
-            cuts += 1
+def get_maximum_matching(n):
+    sequences = get_bracket_sequences(n)
+    graph = {}
+    for seq in sequences:
+        for i in range(len(seq)):
+            if seq[i] == "(":
+                graph[i] = []
+            else:
+                graph[i] = [i-1]
+    matching = []
+    for i in range(len(graph)):
+        if i not in matching:
+            dfs(graph, i, matching)
+    return len(matching)
 
-    # Check if the total cost is less than or equal to the budget
-    if cost <= budget:
-        return cuts
-    else:
-        return 0
+def dfs(graph, i, matching):
+    if i in matching:
+        return
+    matching.append(i)
+    for j in graph[i]:
+        dfs(graph, j, matching)
+
+if __name__ == '__main__':
+    n = int(input())
+    print(get_maximum_matching(n) % 1000000007)
 

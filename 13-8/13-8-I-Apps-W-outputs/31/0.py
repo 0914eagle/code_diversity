@@ -1,30 +1,31 @@
 
-def solve(n, m):
-    def is_permutation(arr):
-        return len(set(arr)) == len(arr) and len(arr) == n
+def count_standing_dominoes(n, s):
+    # Initialize variables
+    standing_dominoes = 0
+    left_pushed_dominoes = 0
+    right_pushed_dominoes = 0
 
-    def is_framed_segment(arr, l, r):
-        return max(arr[l:r+1]) - min(arr[l:r+1]) == r - l
+    # Iterate through the dominoes
+    for i in range(n):
+        # Check if the domino has been pushed to the left
+        if s[i] == "L":
+            left_pushed_dominoes += 1
+        # Check if the domino has been pushed to the right
+        elif s[i] == "R":
+            right_pushed_dominoes += 1
+        # Check if the domino is standing vertically
+        elif left_pushed_dominoes > 0 and right_pushed_dominoes > 0:
+            standing_dominoes += 1
+            left_pushed_dominoes -= 1
+            right_pushed_dominoes -= 1
 
-    def count_happiness(arr):
-        count = 0
-        for l in range(n):
-            for r in range(l, n):
-                if is_framed_segment(arr, l, r):
-                    count += 1
-        return count
+    return standing_dominoes
 
-    def count_all_permutations(n, m):
-        return pow(n, n, m)
+def main():
+    n = int(input())
+    s = input()
+    print(count_standing_dominoes(n, s))
 
-    def count_happiness_modulo(n, m):
-        count = 0
-        for i in range(count_all_permutations(n, m)):
-            arr = list(range(1, n+1))
-            arr = arr[i:] + arr[:i]
-            if is_permutation(arr):
-                count += count_happiness(arr)
-        return count % m
-
-    return count_happiness_modulo(n, m)
+if __name__ == '__main__':
+    main()
 

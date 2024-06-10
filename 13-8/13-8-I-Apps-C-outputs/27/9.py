@@ -1,29 +1,33 @@
 
-def solve(barbarians, rounds):
-    # Initialize a dictionary to store the count of consecutive substrings for each barbarian
-    barbarian_counts = {i: 0 for i in range(1, len(barbarians) + 1)}
+def get_common_factors(num1, num2):
+    common_factors = []
+    for i in range(2, int(num1**0.5) + 1):
+        if num1 % i == 0 and num2 % i == 0:
+            common_factors.append(i)
+            if num1 // i != i:
+                common_factors.append(num1 // i)
+            if num2 // i != i:
+                common_factors.append(num2 // i)
+    return set(common_factors)
 
-    # Iterate over each round
-    for round in rounds:
-        # If the round is of type 1, show the word to all barbarians
-        if round[0] == 1:
-            word = round[1]
-            for i in range(1, len(barbarians) + 1):
-                if word in barbarians[i - 1]:
-                    barbarian_counts[i] += 1
-        # If the round is of type 2, ask the question to the barbarian with the given label
-        else:
-            barbarian_label = round[1]
-            yield barbarian_counts[barbarian_label]
+def get_number_of_ways(nums):
+    n = len(nums)
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
+    for i in range(n + 1):
+        dp[i][0] = 1
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            if i == j:
+                dp[i][j] = 1
+            else:
+                common_factors = get_common_factors(nums[i - 1], nums[j - 1])
+                dp[i][j] = sum(dp[i - 1][k] * dp[k + 1][j] for k in range(i, j) if k not in common_factors)
+    return dp[1][n] % 1000000007
 
-# Test the function with some sample inputs and outputs
-barbarians = ["a", "bc", "abc"]
-rounds = [(1, "abca"), (2, 1), (2, 3)]
-result = list(solve(barbarians, rounds))
-print(result)  # Should print [1, 1]
+def main():
+    nums = [int(input()) for _ in range(int(input()))]
+    print(get_number_of_ways(nums))
 
-barbarians = ["a", "bc", "abc"]
-rounds = [(1, "abca"), (2, 1), (2, 3), (1, "def"), (2, 2)]
-result = list(solve(barbarians, rounds))
-print(result)  # Should print [1, 1, 0]
+if __name__ == '__main__':
+    main()
 

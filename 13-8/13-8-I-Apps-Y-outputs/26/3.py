@@ -1,22 +1,19 @@
 
-def solve(H, n, d):
-    # Calculate the total damage dealt by the monster in each round
-    total_damage = sum(d)
+def get_earliest_delivery_time(A, B, C, D, E):
+    # Calculate the delivery time for each dish
+    delivery_time_ABC_Don = A
+    delivery_time_ARC_Curry = B + delivery_time_ABC_Don
+    delivery_time_AGC_Pasta = C + delivery_time_ARC_Curry
+    delivery_time_ATC_Hanbagu = D + delivery_time_AGC_Pasta
+    delivery_time_APC_Ramen = E + delivery_time_ATC_Hanbagu
 
-    # If the total damage is greater than or equal to the initial health,
-    # the monster will die in the first round
-    if total_damage >= H:
-        return 1
+    # Return the earliest delivery time
+    return min(delivery_time_ABC_Don, delivery_time_ARC_Curry, delivery_time_AGC_Pasta, delivery_time_ATC_Hanbagu, delivery_time_APC_Ramen)
 
-    # If the total damage is less than the initial health,
-    # the monster will not die in the first round
-    else:
-        # Calculate the number of rounds needed to kill the monster
-        num_rounds = H // total_damage
+def main():
+    A, B, C, D, E = map(int, input().split())
+    print(get_earliest_delivery_time(A, B, C, D, E))
 
-        # Calculate the number of minutes needed to kill the monster
-        num_minutes = num_rounds * n
-
-        # Return the number of minutes needed to kill the monster
-        return num_minutes + 1
+if __name__ == '__main__':
+    main()
 

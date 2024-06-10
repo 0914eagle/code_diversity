@@ -1,26 +1,37 @@
 
-def solve(x, y):
-    # Convert the binary strings to integers
-    x_int = int(x, 2)
-    y_int = int(y, 2)
-    
-    # Initialize the minimum k and its corresponding reversed binary string
-    min_k = 0
-    min_rev_k = x_int + y_int
-    
-    # Loop through all possible values of k
-    for k in range(1, 100):
-        # Calculate the sum of x and y multiplied by 2^k
-        s_k = x_int + y_int * (2 ** k)
-        
-        # Convert the sum to a binary string and reverse it
-        rev_k = bin(s_k)[2:].zfill(k)
-        
-        # If the reversed binary string is lexicographically smaller than the current minimum, update the minimum k and its corresponding reversed binary string
-        if rev_k < min_rev_k:
-            min_k = k
-            min_rev_k = rev_k
-    
-    # Return the minimum k
-    return min_k
+def read_input():
+    n, m, d = map(int, input().split())
+    matrix = []
+    for _ in range(n):
+        matrix.append(list(map(int, input().split())))
+    return n, m, d, matrix
+
+def solve(n, m, d, matrix):
+    # Initialize variables
+    min_moves = 0
+    target = matrix[0][0]
+    visited = set()
+
+    # Breadth-first search
+    queue = [(0, 0, 0)]
+    while queue:
+        row, col, moves = queue.pop(0)
+        if (row, col) in visited:
+            continue
+        visited.add((row, col))
+        if matrix[row][col] == target:
+            min_moves = max(min_moves, moves)
+        else:
+            for r, c in [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]:
+                if 0 <= r < n and 0 <= c < m and matrix[r][c] + d == target:
+                    queue.append((r, c, moves+1))
+
+    return min_moves if min_moves != 0 else -1
+
+def main():
+    n, m, d, matrix = read_input()
+    print(solve(n, m, d, matrix))
+
+if __name__ == '__main__':
+    main()
 

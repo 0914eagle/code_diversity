@@ -1,29 +1,36 @@
 
-def solve(offers):
-    # Sort the offers by the first section of the fence
-    sorted_offers = sorted(offers, key=lambda x: x[1])
+def get_similarity(character1, character2):
+    similarity = 0
+    for i in range(len(character1)):
+        if character1[i] == character2[i]:
+            similarity += 1
+    return similarity
 
-    # Initialize the variables to keep track of the current color and section
-    current_color = ""
-    current_section = 0
+def create_original_character(characters, k):
+    # Initialize the new character with all features disabled
+    new_character = [0] * k
+    
+    # Loop through each feature and enable it if it is not present in any of the existing characters
+    for i in range(k):
+        feature_enabled = False
+        for character in characters:
+            if character[i] == 1:
+                feature_enabled = True
+                break
+        if not feature_enabled:
+            new_character[i] = 1
+    
+    return new_character
 
-    # Initialize the count of offers accepted
-    count = 0
+def main():
+    n, k = map(int, input().split())
+    characters = []
+    for _ in range(n):
+        characters.append(list(map(int, input().strip())))
+    
+    new_character = create_original_character(characters, k)
+    print(*new_character)
 
-    # Loop through the sorted offers
-    for offer in sorted_offers:
-        # If the current color is different from the color in the offer, we need to accept the offer
-        if current_color != offer[0]:
-            count += 1
-            current_color = offer[0]
-
-        # Update the current section to be the last section of the offer
-        current_section = offer[2]
-
-    # If the current section is not equal to the total number of sections, we cannot satisfy the requirement of painting all sections
-    if current_section != 10000:
-        return "IMPOSSIBLE"
-
-    # Return the count of offers accepted
-    return count
+if __name__ == '__main__':
+    main()
 

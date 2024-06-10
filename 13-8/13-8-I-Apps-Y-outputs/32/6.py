@@ -1,15 +1,30 @@
 
-def get_maximum_free_tables(n, k, s):
-    # Count the number of occupied tables
-    occupied_tables = s.count("1")
+def get_equal_prices(n, k, a):
+    # Sort the prices in ascending order
+    a.sort()
+    # Initialize the minimum difference between prices
+    min_diff = k + 1
+    # Initialize the equal price
+    equal_price = -1
+    # Iterate over the prices
+    for i in range(n):
+        # Calculate the difference between the current price and the equal price
+        diff = abs(a[i] - equal_price)
+        # If the difference is less than or equal to the minimum difference, update the equal price and the minimum difference
+        if diff <= min_diff:
+            equal_price = a[i]
+            min_diff = diff
+    # If the minimum difference is less than or equal to the given value of k, return the equal price
+    # Otherwise, return -1
+    return equal_price if min_diff <= k else -1
 
-    # Initialize the maximum number of free tables to occupy
-    max_free_tables = 0
+def main():
+    q = int(input())
+    for _ in range(q):
+        n, k = map(int, input().split())
+        a = list(map(int, input().split()))
+        print(get_equal_prices(n, k, a))
 
-    # Iterate over the string and check if the distance between any two occupied tables is greater than k
-    for i in range(n - 1):
-        if s[i] == "1" and s[i + 1] == "1" and i - k > 0 and i + k < n:
-            max_free_tables += 1
-
-    return max_free_tables
+if __name__ == '__main__':
+    main()
 

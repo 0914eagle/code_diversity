@@ -1,45 +1,49 @@
 
-def solve(chess_board):
-    # Initialize an empty list to store the positions of the pieces
-    positions = []
+def get_umbrella_strategy(a, n, m, segments, umbrellas):
+    # Initialize the optimal strategy as a list of tuples (umbrella index, segment index)
+    strategy = []
+    
+    # Loop through each segment and find the first umbrella that covers it
+    for i in range(n):
+        segment = segments[i]
+        for j in range(m):
+            umbrella = umbrellas[j]
+            if umbrella[0] <= segment[0] and segment[1] <= umbrella[1]:
+                strategy.append((j, i))
+                break
+    
+    # Return the optimal strategy
+    return strategy
 
-    # Iterate over the rows of the chess board
-    for i, row in enumerate(chess_board):
-        # Iterate over the columns of the current row
-        for j, piece in enumerate(row):
-            # Check if the current piece is not a space
-            if piece != " ":
-                # Get the type of the piece and the position of the piece
-                piece_type = piece.upper()
-                piece_pos = (j + 1, 8 - i)
+def get_total_fatigue(a, n, m, segments, umbrellas, strategy):
+    # Initialize the total fatigue as 0
+    total_fatigue = 0
+    
+    # Loop through each segment and calculate the fatigue for each umbrella
+    for i in range(n):
+        segment = segments[i]
+        umbrella_index, _ = strategy[i]
+        umbrella = umbrellas[umbrella_index]
+        fatigue = umbrella[1] * (segment[1] - segment[0])
+        total_fatigue += fatigue
+    
+    # Return the total fatigue
+    return total_fatigue
 
-                # Add the piece to the list of positions
-                positions.append((piece_type, piece_pos))
+def main():
+    a, n, m = map(int, input().split())
+    segments = []
+    umbrellas = []
+    for i in range(n):
+        l, r = map(int, input().split())
+        segments.append((l, r))
+    for i in range(m):
+        x, p = map(int, input().split())
+        umbrellas.append((x, p))
+    strategy = get_umbrella_strategy(a, n, m, segments, umbrellas)
+    total_fatigue = get_total_fatigue(a, n, m, segments, umbrellas, strategy)
+    print(total_fatigue)
 
-    # Sort the list of positions based on the piece type and position
-    positions.sort(key=lambda x: (x[0], x[1]))
-
-    # Initialize empty strings to store the output for white and black players
-    white_output = ""
-    black_output = ""
-
-    # Iterate over the list of positions
-    for piece_type, piece_pos in positions:
-        # Check if the piece is a white piece
-        if piece_type.isupper():
-            # Add the piece to the white output
-            white_output += piece_type
-            white_output += str(piece_pos[0])
-            white_output += str(piece_pos[1])
-            white_output += ","
-        # Check if the piece is a black piece
-        else:
-            # Add the piece to the black output
-            black_output += piece_type
-            black_output += str(piece_pos[0])
-            black_output += str(piece_pos[1])
-            black_output += ","
-
-    # Return the output for white and black players
-    return "White: " + white_output[:-1] + "\nBlack: " + black_output[:-1]
+if __name__ == '__main__':
+    main()
 

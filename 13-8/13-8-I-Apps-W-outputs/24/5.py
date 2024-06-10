@@ -1,15 +1,17 @@
 
-def is_solvable(a, b, c):
-    # Calculate the dot product of the vectors ab and ac
-    dot_product = (b[0] - a[0]) * (c[0] - a[0]) + (b[1] - a[1]) * (c[1] - a[1])
-    
-    # Calculate the magnitude of the vectors ab and ac
-    ab_mag = ((b[0] - a[0]) ** 2 + (b[1] - a[1]) ** 2) ** 0.5
-    ac_mag = ((c[0] - a[0]) ** 2 + (c[1] - a[1]) ** 2) ** 0.5
-    
-    # Check if the dot product is equal to the product of the magnitudes
-    if dot_product == ab_mag * ac_mag:
-        return True
-    else:
-        return False
+def get_d_magic_numbers(m, d, a, b):
+    count = 0
+    for i in range(a, b+1):
+        if i % m == 0 and str(i).count(str(d)) > 0:
+            count += 1
+    return count
+
+def get_answer(m, d, a, b):
+    count = get_d_magic_numbers(m, d, a, b)
+    return count % (10**9 + 7)
+
+if __name__ == '__main__':
+    m, d = map(int, input().split())
+    a, b = map(int, input().split())
+    print(get_answer(m, d, a, b))
 

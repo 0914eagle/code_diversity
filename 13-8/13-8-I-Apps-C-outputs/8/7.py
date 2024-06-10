@@ -1,28 +1,33 @@
 
-def solve(street, tiles):
-    # Initialize a dictionary to store the number of untileable cells for each length
-    untileable_cells = {}
+def get_longest_exploration_sequence(arr, D, M):
+    # Initialize a dictionary to store the length of the longest exploration sequence for each index
+    dp = {i: 1 for i in range(len(arr))}
     
-    # Loop through each length from 1 to the length of the street
-    for length in range(1, len(street) + 1):
-        # Initialize a set to store the tile patterns of the current length
-        current_tiles = set()
+    # Loop through the array and calculate the length of the longest exploration sequence for each index
+    for i in range(len(arr)):
+        # Get the current element
+        curr = arr[i]
         
-        # Loop through each tile pattern
-        for tile in tiles:
-            # If the tile pattern is the current length, add it to the set
-            if len(tile) == length:
-                current_tiles.add(tile)
-        
-        # Initialize a counter for the number of untileable cells
-        untileable_cells[length] = 0
-        
-        # Loop through each cell in the street
-        for i in range(len(street) - length + 1):
-            # If the cell is not covered by any tile pattern, increment the counter
-            if street[i:i+length] not in current_tiles:
-                untileable_cells[length] += 1
+        # Loop through the previous elements within the maximum jump distance D
+        for j in range(i-D, i):
+            # If the previous element is within the maximum jump distance and the difference in values is less than or equal to M, update the length of the longest exploration sequence for the current index
+            if j >= 0 and abs(curr - arr[j]) <= M:
+                dp[i] = max(dp[i], dp[j] + 1)
     
-    # Return the total number of untileable cells
-    return sum(untileable_cells.values())
+    # Return the length of the longest exploration sequence for the last index
+    return dp[len(arr) - 1]
+
+def main():
+    # Read the input
+    n, D, M = map(int, input().split())
+    arr = list(map(int, input().split()))
+    
+    # Calculate the length of the longest exploration sequence
+    longest_sequence = get_longest_exploration_sequence(arr, D, M)
+    
+    # Print the result
+    print(longest_sequence)
+
+if __name__ == '__main__':
+    main()
 

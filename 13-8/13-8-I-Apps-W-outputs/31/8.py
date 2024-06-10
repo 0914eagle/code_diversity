@@ -1,25 +1,28 @@
 
-def get_happiness(n, m):
-    def is_framed_segment(arr, l, r):
-        return max(arr[l:r+1]) - min(arr[l:r+1]) == r - l
+def push_dominoes(n, s):
+    # Initialize variables
+    standing_dominoes = 0
+    direction = [0] * n
+    for i in range(n):
+        if s[i] == "L":
+            direction[i] = -1
+        elif s[i] == "R":
+            direction[i] = 1
+    
+    # Simulate the dominoes falling
+    for i in range(n):
+        if direction[i] != 0:
+            standing_dominoes += 1
+        if i < n - 1 and direction[i] != direction[i + 1]:
+            standing_dominoes -= 1
+    
+    return standing_dominoes
 
-    def count_framed_segments(arr):
-        n = len(arr)
-        count = 0
-        for l in range(n):
-            for r in range(l, n):
-                if is_framed_segment(arr, l, r):
-                    count += 1
-        return count
+def main():
+    n = int(input())
+    s = input()
+    print(push_dominoes(n, s))
 
-    def count_happiness(n):
-        arr = list(range(1, n+1))
-        return count_framed_segments(arr)
-
-    total_happiness = 0
-    for perm in permutations(range(1, n+1)):
-        total_happiness += count_happiness(n)
-        total_happiness %= m
-
-    return total_happiness
+if __name__ == '__main__':
+    main()
 

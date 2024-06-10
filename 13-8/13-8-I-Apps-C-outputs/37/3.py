@@ -1,33 +1,31 @@
 
-def find_paths(y, x, x_init, map):
-    # Initialize the number of paths to 0
-    paths = 0
-    
-    # Loop through each row of the map
-    for i in range(y):
-        # If the current row is the last row and the current column is the castle column
-        if i == y-1 and map[i][x_init] == '@':
-            # Increment the number of paths
-            paths += 1
-        
-        # Loop through each column of the current row
-        for j in range(x):
-            # If the current column is the castle column and the current row is not the last row
-            if j == x_init and i < y-1:
-                # Increment the number of paths
-                paths += 1
-            
-            # If the current tile is a current tile
-            if map[i][j] in ['>', '<']:
-                # If the current tile is a current tile and the next tile is not a current tile or a wall
-                if map[i][j] == '>' and (j == x-1 or map[i][j+1] not in ['>', '#']):
-                    # Increment the number of paths
-                    paths += 1
-                # If the current tile is a current tile and the previous tile is not a current tile or a wall
-                elif map[i][j] == '<' and (j == 0 or map[i][j-1] not in ['<', '#']):
-                    # Increment the number of paths
-                    paths += 1
-    
-    # Return the number of paths
-    return paths % 1000003
+def get_min_cost(grid_size, black_rectangles):
+    # Initialize the cost array with 0s
+    cost = [[0] * grid_size for _ in range(grid_size)]
+
+    # Loop through each black rectangle
+    for rect in black_rectangles:
+        # Get the coordinates of the rectangle
+        x1, y1, x2, y2 = rect
+
+        # Loop through each cell in the rectangle
+        for i in range(x1, x2 + 1):
+            for j in range(y1, y2 + 1):
+                # Increment the cost of the cell by 1
+                cost[i][j] += 1
+
+    # Return the maximum cost in the cost array
+    return max(max(row) for row in cost)
+
+def main():
+    grid_size, num_black_rectangles = map(int, input().split())
+    black_rectangles = []
+
+    for _ in range(num_black_rectangles):
+        black_rectangles.append(list(map(int, input().split())))
+
+    print(get_min_cost(grid_size, black_rectangles))
+
+if __name__ == '__main__':
+    main()
 

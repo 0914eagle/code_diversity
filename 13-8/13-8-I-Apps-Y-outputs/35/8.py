@@ -1,16 +1,17 @@
 
-def solve(s):
-    n = len(s)
-    count = [s.count(i) for i in "012"]
-    if count == [n//3, n//3, n//3]:
-        return s
-    
-    # find the smallest element in the count list
-    smallest = min(count)
-    # find the index of the smallest element in the count list
-    smallest_index = count.index(smallest)
-    
-    # create a new string with the smallest element replaced by '0'
-    new_s = s[:smallest_index] + "0" + s[smallest_index+1:]
-    return new_s
+def get_subordinates(n, a):
+    subordinates = [0] * (n + 1)
+    for i in range(2, n + 1):
+        subordinates[a[i - 1]] += 1
+    return subordinates
+
+def main():
+    n = int(input())
+    a = list(map(int, input().split()))
+    subordinates = get_subordinates(n, a)
+    for i in range(1, n + 1):
+        print(subordinates[i])
+
+if __name__ == '__main__':
+    main()
 

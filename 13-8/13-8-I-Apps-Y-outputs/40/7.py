@@ -1,22 +1,21 @@
 
-def solve(N, M, s_list, c_list):
-    # Initialize the smallest integer as -1
-    smallest_int = -1
+def is_periodic(s, k):
+    if len(s) % k != 0:
+        return False
+    
+    sub_strings = [s[i:i+k] for i in range(0, len(s), k)]
+    for i in range(1, len(sub_strings)):
+        if sub_strings[i] != sub_strings[i-1][1:] + sub_strings[i-1][0]:
+            return False
+    return True
 
-    # Iterate through all possible integers with N digits
-    for i in range(10**(N-1), 10**N):
-        # Convert the integer to a list of digits
-        digit_list = list(str(i))
+def get_period(s):
+    for k in range(1, len(s)):
+        if is_periodic(s, k):
+            return k
+    return 0
 
-        # Check if the digit at each position is correct
-        for j in range(M):
-            if digit_list[s_list[j]-1] != str(c_list[j]):
-                break
-        else:
-            # If all digits are correct, update the smallest integer
-            smallest_int = i
-            break
-
-    # Return the smallest integer
-    return smallest_int
+if __name__ == '__main__':
+    s = input()
+    print(get_period(s))
 

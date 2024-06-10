@@ -1,32 +1,33 @@
 
-def largest_perfect_power(x):
-    # Initialize a list to store the perfect powers
-    perfect_powers = []
-    
-    # Loop through all integers from 1 to x
-    for i in range(1, x + 1):
-        # Check if the integer is a perfect power
-        if is_perfect_power(i):
-            # If it is a perfect power, add it to the list
-            perfect_powers.append(i)
-    
-    # Return the largest perfect power in the list
-    return max(perfect_powers)
+def get_elevations(n):
+    return list(map(int, input().split()))
 
-def is_perfect_power(n):
-    # Initialize a variable to store the result
-    result = False
-    
-    # Loop through all integers from 1 to the square root of n
-    for i in range(1, int(n ** 0.5) + 1):
-        # Check if i is a factor of n
-        if n % i == 0:
-            # If it is, check if the other factor is also an integer
-            if n // i <= n ** 0.5:
-                # If it is, the number is a perfect power
-                result = True
-                break
-    
-    # Return the result
-    return result
+def get_roads(m):
+    roads = []
+    for _ in range(m):
+        roads.append(list(map(int, input().split())))
+    return roads
+
+def is_good_observatory(observatory, elevations, roads):
+    for road in roads:
+        if road[0] == observatory:
+            if elevations[road[1]] > elevations[observatory]:
+                return False
+    return True
+
+def count_good_observatories(n, m, elevations, roads):
+    good_observatories = 0
+    for observatory in range(n):
+        if is_good_observatory(observatory, elevations, roads):
+            good_observatories += 1
+    return good_observatories
+
+def main():
+    n, m = map(int, input().split())
+    elevations = get_elevations(n)
+    roads = get_roads(m)
+    print(count_good_observatories(n, m, elevations, roads))
+
+if __name__ == '__main__':
+    main()
 

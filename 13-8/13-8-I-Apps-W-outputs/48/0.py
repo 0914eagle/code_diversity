@@ -1,26 +1,40 @@
 
-def solve(x, y):
-    # Convert the binary strings to integers
-    x_int = int(x, 2)
-    y_int = int(y, 2)
-    
-    # Initialize the minimum k and its corresponding reversed binary string
-    min_k = 0
-    min_rev_k = "0" * len(x)
-    
-    # Iterate through all possible values of k
-    for k in range(len(x)):
-        # Calculate the sum of x and y multiplied by 2^k
-        sum_k = x_int + (y_int * (2 ** k))
-        
-        # Convert the sum to a binary string and reverse it
-        rev_k = bin(sum_k)[2:].zfill(len(x))[::-1]
-        
-        # If the reversed binary string is lexicographically smaller than the current minimum, update the minimum k and its corresponding reversed binary string
-        if rev_k < min_rev_k:
-            min_k = k
-            min_rev_k = rev_k
-    
-    # Return the minimum k
-    return min_k
+def get_min_moves(matrix, d):
+    # Initialize the minimum number of moves to make all elements equal
+    min_moves = 0
+    # Initialize a set to store the unique elements in the matrix
+    unique_elements = set()
+    # Loop through each element in the matrix
+    for row in matrix:
+        for element in row:
+            # Add the element to the set of unique elements
+            unique_elements.add(element)
+    # If there is only one unique element in the matrix, return -1
+    if len(unique_elements) == 1:
+        return -1
+    # Loop through each element in the matrix
+    for row in matrix:
+        for element in row:
+            # Find the difference between the element and the closest unique element
+            diff = min(unique_elements, key=lambda x: abs(x - element))
+            # If the difference is not zero, increment the minimum number of moves
+            if diff != 0:
+                min_moves += 1
+    # Return the minimum number of moves
+    return min_moves
+
+def main():
+    # Read the input n, m, and d
+    n, m, d = map(int, input().split())
+    # Read the matrix
+    matrix = []
+    for _ in range(n):
+        matrix.append(list(map(int, input().split())))
+    # Find the minimum number of moves
+    min_moves = get_min_moves(matrix, d)
+    # Print the minimum number of moves
+    print(min_moves)
+
+if __name__ == '__main__':
+    main()
 

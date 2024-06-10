@@ -1,10 +1,24 @@
 
-def get_probability(N, K):
-    probability = 0
-    for i in range(1, N+1):
-        if i < K:
-            probability += 1/N
+def get_hand_strength(hand):
+    hand_dict = {}
+    for card in hand:
+        rank = card[0]
+        if rank not in hand_dict:
+            hand_dict[rank] = 1
         else:
-            probability += 1/N * (1/2)**(i-1)
-    return probability
+            hand_dict[rank] += 1
+
+    max_strength = 0
+    for rank, count in hand_dict.items():
+        if count > max_strength:
+            max_strength = count
+
+    return max_strength
+
+def main():
+    hand = input("Enter five cards: ").split()
+    print(get_hand_strength(hand))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,28 +1,29 @@
 
-def solve_town_council(residents, parties, clubs):
-    # Initialize an empty dictionary to store the council members and the clubs they represent
-    council_members = {}
-    
-    # Iterate through the residents and clubs
-    for resident, party, num_clubs, *club_names in residents:
-        # Check if the resident is already in the council
-        if resident in council_members:
-            # If the resident is already in the council, they cannot represent any more clubs
-            continue
-        
-        # Check if the resident belongs to any clubs
-        if num_clubs == 0:
-            # If the resident does not belong to any clubs, they cannot be added to the council
-            continue
-        
-        # Check if the resident belongs to more than one club
-        if num_clubs > 1:
-            # If the resident belongs to more than one club, they must be represented by the club with the most members
-            club_names = sorted(club_names, key=lambda x: len(clubs[x]), reverse=True)
-        
-        # Add the resident to the council and represent the club with the most members
-        council_members[resident] = club_names[0]
-    
-    # Return the council members and the clubs they represent
-    return council_members
+def get_ranger_strengths(n, k, x, ranger_strengths):
+    # Sort the ranger strengths in increasing order
+    sorted_ranger_strengths = sorted(ranger_strengths)
+
+    # Initialize the minimum and maximum strengths
+    min_strength, max_strength = sorted_ranger_strengths[0], sorted_ranger_strengths[-1]
+
+    # Perform the operation k times
+    for i in range(k):
+        # Take the bitwise XOR of the strength of each alternate ranger with x and update its strength
+        for j in range(0, n, 2):
+            sorted_ranger_strengths[j] = sorted_ranger_strengths[j] ^ x
+
+        # Update the minimum and maximum strengths
+        min_strength = min(min_strength, sorted_ranger_strengths[0])
+        max_strength = max(max_strength, sorted_ranger_strengths[-1])
+
+    return min_strength, max_strength
+
+def main():
+    n, k, x = map(int, input().split())
+    ranger_strengths = list(map(int, input().split()))
+    min_strength, max_strength = get_ranger_strengths(n, k, x, ranger_strengths)
+    print(min_strength, max_strength)
+
+if __name__ == '__main__':
+    main()
 

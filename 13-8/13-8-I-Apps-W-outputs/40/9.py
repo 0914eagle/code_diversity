@@ -1,21 +1,26 @@
 
-def solve(s, t):
-    # Initialize a dictionary to store the number of occurrences of each substring
-    # of length |t| in s
-    occurrences = {}
+import math
+import sys
 
-    # Iterate through each substring of length |t| in s
-    for i in range(len(s) - len(t) + 1):
-        substring = s[i:i+len(t)]
+def get_expected_value(p):
+    return sum(p) / len(p)
 
-        # If the substring is already in the dictionary, increment its count
-        if substring in occurrences:
-            occurrences[substring] += 1
+def get_max_expected_value(p, k):
+    if k == 1:
+        return get_expected_value(p)
+    
+    max_value = 0
+    for i in range(len(p) - k + 1):
+        max_value = max(max_value, get_expected_value(p[i:i+k]))
+    
+    return max_value
 
-        # Otherwise, add it to the dictionary with count 1
-        else:
-            occurrences[substring] = 1
+def main():
+    n, k = map(int, input().split())
+    p = list(map(int, input().split()))
+    
+    print(get_max_expected_value(p, k))
 
-    # Return the maximum number of occurrences of t in s
-    return max(occurrences.values())
+if __name__ == '__main__':
+    main()
 

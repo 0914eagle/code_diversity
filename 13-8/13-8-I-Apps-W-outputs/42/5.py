@@ -1,18 +1,26 @@
 
-import sys
+def get_swap_count(n, a, p):
+    # Count the number of leaves
+    leaves = []
+    for i in range(1, n+1):
+        if p[i] == 0:
+            leaves.append(i)
+    
+    # Count the number of ways to make the swap
+    count = 0
+    for i in range(1, n+1):
+        for j in range(1, n+1):
+            if i != j and a[i] != a[j] and leaves.count(i) == 1 and leaves.count(j) == 1:
+                count += 1
+    
+    return count
 
-def f(r, c):
-    if r == 0 or c == 0:
-        return 1
-    elif r == 1 and c == 1:
-        return 2
-    else:
-        return (f(r-1, c) + f(r, c-1)) % (10**9+7)
-
-def solve(r1, c1, r2, c2):
-    return sum(f(i, j) for i in range(r1, r2+1) for j in range(c1, c2+1)) % (10**9+7)
+def main():
+    n = int(input())
+    a = list(map(int, input().split()))
+    p = list(map(int, input().split()))
+    print(get_swap_count(n, a, p))
 
 if __name__ == '__main__':
-    r1, c1, r2, c2 = map(int, sys.stdin.readline().split())
-    print(solve(r1, c1, r2, c2))
+    main()
 

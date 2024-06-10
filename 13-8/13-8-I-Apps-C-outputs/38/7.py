@@ -1,33 +1,41 @@
 
-def solve(offers):
-    # Sort the offers by the first section of each offer
-    sorted_offers = sorted(offers, key=lambda x: x[1])
+def get_features(n, k):
+    features = []
+    for i in range(k):
+        features.append(0)
+    return features
 
-    # Initialize the variables to keep track of the number of colors and sections painted
-    num_colors = 0
-    num_sections = 0
+def get_similarity(features1, features2):
+    similarity = 0
+    for i in range(len(features1)):
+        if features1[i] == features2[i]:
+            similarity += 1
+    return similarity
 
-    # Initialize a set to keep track of the colors that have been used
-    colors = set()
+def create_character(features, n, k):
+    character = get_features(n, k)
+    for i in range(k):
+        if features[i] == 0:
+            character[i] = 1
+    return character
 
-    # Iterate through the sorted offers
-    for offer in sorted_offers:
-        # If the current offer does not overlap with any of the previous offers, accept it
-        if offer[1] > num_sections:
-            num_colors += 1
-            colors.add(offer[0])
-            num_sections = offer[2]
-        # If the current offer overlaps with a previous offer, but does not use a new color, accept it
-        elif offer[0] in colors:
-            num_sections = offer[2]
-        # If the current offer overlaps with a previous offer and uses a new color, reject it
-        else:
-            return "IMPOSSIBLE"
+def get_best_character(features, n, k):
+    best_character = get_features(n, k)
+    best_similarity = 0
+    for i in range(2**k):
+        character = create_character(features, n, k)
+        similarity = get_similarity(character, features)
+        if similarity > best_similarity:
+            best_character = character
+            best_similarity = similarity
+    return best_character
 
-    # If all sections have been painted and no more than 3 colors have been used, return the number of accepted offers
-    if num_sections == 10000 and num_colors <= 3:
-        return len(sorted_offers)
-    # Otherwise, return "IMPOSSIBLE"
-    else:
-        return "IMPOSSIBLE"
+def main():
+    n, k = map(int, input().split())
+    features = list(map(int, input()))
+    character = get_best_character(features, n, k)
+    print(*character)
+
+if __name__ == '__main__':
+    main()
 

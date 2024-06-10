@@ -1,22 +1,35 @@
 
-def solve(r, c, cake):
-    # Initialize a 2D array to store the number of evil strawberries in each row and column
-    rows = [[0] * c for _ in range(r)]
-    cols = [[0] * c for _ in range(c)]
+def get_message_counts(n, k, message_links):
+    # Initialize a set to store the seen messages
+    seen_messages = set()
+    # Initialize a queue to store the current message and its depth
+    queue = [(1, 0)]
+    # Initialize a dictionary to store the message counts
+    message_counts = {}
 
-    # Count the number of evil strawberries in each row and column
-    for i in range(r):
-        for j in range(c):
-            if cake[i][j] == 'S':
-                rows[i][j] = 1
-                cols[j][i] = 1
+    while queue:
+        # Get the current message and its depth from the queue
+        message, depth = queue.pop(0)
+        # If the message is not seen before, mark it as seen and update the message counts
+        if message not in seen_messages:
+            seen_messages.add(message)
+            message_counts[message] = depth
+        # If the message has a link, add the linked message to the queue with an updated depth
+        if message_links[message - 1] != 0:
+            queue.append((message_links[message - 1], depth + 1))
 
-    # Find the maximum number of cake cells that can be eaten by choosing a row or column with no evil strawberries
-    max_cells = 0
-    for i in range(r):
-        for j in range(c):
-            if rows[i][j] == 0 and cols[j][i] == 0:
-                max_cells = max(max_cells, sum(rows[i]) + sum(cols[j]))
+    # Return the message counts
+    return message_counts
 
-    return max_cells
+def main():
+    # Read the input n, k, and message links from stdin
+    n, k = map(int, input().split())
+    message_links = list(map(int, input().split()))
+    # Call the get_message_counts function and print the results
+    message_counts = get_message_counts(n, k, message_links)
+    for i in range(1, n + 1):
+        print(message_counts[i])
+
+if __name__ == '__main__':
+    main()
 

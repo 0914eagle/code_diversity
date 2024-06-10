@@ -1,34 +1,34 @@
 
-def solve(n, distances):
-    # Initialize the disparity of each shipment as 0
-    disparity = [0] * n
+import math
 
-    # Loop through each shipment
+def get_mouse_distance(mouse):
+    return math.sqrt(mouse[0]**2 + mouse[1]**2)
+
+def get_velocity(mouse, cat_velocity, m):
+    return cat_velocity * m
+
+def get_time_to_eat(mouse, cat_velocity, m):
+    return get_mouse_distance(mouse) / get_velocity(mouse, cat_velocity, m)
+
+def get_optimal_velocity(mice, m):
+    cat_velocity = 1
+    for mouse in mice:
+        time_to_eat = get_time_to_eat(mouse, cat_velocity, m)
+        if time_to_eat > mouse[2]:
+            return None
+        cat_velocity = get_velocity(mouse, cat_velocity, m)
+    return cat_velocity
+
+def main():
+    n = int(input())
+    mice = []
     for i in range(n):
-        # Loop through each other shipment
-        for j in range(i+1, n):
-            # Calculate the distance between the two shipments
-            distance = distances[i][j]
+        mouse = [int(x) for x in input().split()]
+        mice.append(mouse)
+    m = float(input())
+    optimal_velocity = get_optimal_velocity(mice, m)
+    print(optimal_velocity)
 
-            # If the distance is greater than the current disparity, update the disparity
-            if distance > disparity[i]:
-                disparity[i] = distance
-            if distance > disparity[j]:
-                disparity[j] = distance
-
-    # Partition the shipments into two groups based on their disparities
-    group_1 = []
-    group_2 = []
-    for i in range(n):
-        if disparity[i] == 0:
-            group_1.append(i)
-        else:
-            group_2.append(i)
-
-    # Calculate the sum of the disparities for each group
-    sum_1 = sum(disparity[i] for i in group_1)
-    sum_2 = sum(disparity[i] for i in group_2)
-
-    # Return the minimum possible sum of disparities
-    return min(sum_1, sum_2)
+if __name__ == '__main__':
+    main()
 

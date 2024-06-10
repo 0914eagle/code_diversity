@@ -1,23 +1,48 @@
 
-def solve(n, k):
-    # Initialize variables to track the number of winners, diplomas, and certificates
-    num_winners = 0
-    num_diplomas = 0
-    num_certificates = 0
+def read_notes(a, b):
+    # Find the maximum number of notes that can be read in a day
+    max_notes = a if a < b else b
 
-    # Loop through each student and check if they are a winner
-    for i in range(1, n+1):
-        # Check if the current student is a winner
-        if num_winners < n//2 and num_diplomas < num_certificates*k:
-            num_winners += 1
-            num_diplomas += 1
-            num_certificates += k
-        else:
-            num_diplomas += 1
+    # Initialize the list of notes to read in the first day
+    notes_today = []
 
-    # Calculate the number of non-winners
-    num_non_winners = n - num_winners
+    # Initialize the list of notes to read in the second day
+    notes_tomorrow = []
 
-    # Return the results
-    return num_diplomas, num_certificates, num_non_winners
+    # Loop through the range of notes
+    for i in range(1, max_notes + 1):
+        # Check if the current note can be read in the first day
+        if i <= a:
+            # Add the note to the list of notes to read in the first day
+            notes_today.append(i)
+
+        # Check if the current note can be read in the second day
+        if i <= b:
+            # Add the note to the list of notes to read in the second day
+            notes_tomorrow.append(i)
+
+    # Return the lists of notes to read in the first and second days
+    return notes_today, notes_tomorrow
+
+def main():
+    # Read the number of hours Lesha has today and tomorrow
+    a, b = map(int, input().split())
+
+    # Call the read_notes function to get the lists of notes to read in the first and second days
+    notes_today, notes_tomorrow = read_notes(a, b)
+
+    # Print the number of notes to read in the first day
+    print(len(notes_today))
+
+    # Print the list of notes to read in the first day
+    print(*notes_today)
+
+    # Print the number of notes to read in the second day
+    print(len(notes_tomorrow))
+
+    # Print the list of notes to read in the second day
+    print(*notes_tomorrow)
+
+if __name__ == '__main__':
+    main()
 

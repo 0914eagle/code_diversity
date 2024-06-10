@@ -1,18 +1,26 @@
 
-def get_maximum_clique(A):
-    # Initialize a dictionary to store the clique size for each number
-    clique_sizes = {}
-    # Iterate over the numbers in A
-    for num in A:
-        # Initialize the clique size for the current number to 1
-        clique_size = 1
-        # Iterate over the numbers in A that are divisible by the current number
-        for div in [x for x in A if num % x == 0]:
-            # If the divisible number is already in the clique size dictionary, add its size to the current clique size
-            if div in clique_sizes:
-                clique_size += clique_sizes[div]
-        # Add the current clique size to the dictionary
-        clique_sizes[num] = clique_size
-    # Return the maximum clique size
-    return max(clique_sizes.values())
+def get_max_profit(buns, patties, cutlets, hamburger_price, chicken_price):
+    # Calculate the maximum number of hamburgers that can be sold
+    max_hamburgers = min(buns // 2, patties)
+    # Calculate the maximum number of chicken burgers that can be sold
+    max_chicken_burgers = min(buns // 2, cutlets)
+    # Calculate the total profit
+    total_profit = (max_hamburgers * hamburger_price) + (max_chicken_burgers * chicken_price)
+    return total_profit
+
+def main():
+    # Read the number of queries
+    num_queries = int(input())
+    # Loop through each query
+    for _ in range(num_queries):
+        # Read the input
+        buns, patties, cutlets = map(int, input().split())
+        hamburger_price, chicken_price = map(int, input().split())
+        # Calculate the maximum profit
+        max_profit = get_max_profit(buns, patties, cutlets, hamburger_price, chicken_price)
+        # Print the result
+        print(max_profit)
+
+if __name__ == '__main__':
+    main()
 

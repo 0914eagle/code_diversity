@@ -1,32 +1,29 @@
 
-def largest_perfect_power(X):
-    # Initialize a list to store the perfect powers
-    perfect_powers = []
+def get_good_observatories(n, m, heights, roads):
+    # Initialize a dictionary to store the height of each observatory
+    observatory_heights = {i: heights[i-1] for i in range(1, n+1)}
+    # Initialize a set to store the good observatories
+    good_observatories = set()
+    
+    for i in range(m):
+        # Get the two observatories connected by the current road
+        observatory1 = roads[i][0]
+        observatory2 = roads[i][1]
+        # If the elevation of the first observatory is higher than the second observatory, add the first observatory to the set of good observatories
+        if observatory_heights[observatory1] > observatory_heights[observatory2]:
+            good_observatories.add(observatory1)
+        # If the elevation of the second observatory is higher than the first observatory, add the second observatory to the set of good observatories
+        elif observatory_heights[observatory2] > observatory_heights[observatory1]:
+            good_observatories.add(observatory2)
+    
+    return len(good_observatories)
 
-    # Loop through all integers from 1 to X
-    for i in range(1, X + 1):
-        # Check if the integer is a perfect power
-        if is_perfect_power(i):
-            # If it is a perfect power, add it to the list
-            perfect_powers.append(i)
+def main():
+    n, m = map(int, input().split())
+    heights = list(map(int, input().split()))
+    roads = [list(map(int, input().split())) for _ in range(m)]
+    print(get_good_observatories(n, m, heights, roads))
 
-    # Return the largest perfect power in the list
-    return max(perfect_powers)
-
-def is_perfect_power(n):
-    # Initialize a variable to store the result
-    result = False
-
-    # Loop through all integers from 1 to the square root of n
-    for i in range(1, int(n ** 0.5) + 1):
-        # Check if i is a factor of n
-        if n % i == 0:
-            # If it is, return True
-            return True
-
-    # If no factor is found, return False
-    return result
-
-X = int(input())
-print(largest_perfect_power(X))
+if __name__ == '__main__':
+    main()
 

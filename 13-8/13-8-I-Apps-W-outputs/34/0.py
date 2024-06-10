@@ -1,8 +1,20 @@
 
-def solve(s):
-    n = len(s)
-    for k in range(1, n+1):
-        for i in range(n-k+1):
-            s = s[:i] + s[i:i+k][::-1] + s[i+k:]
-    return s, k
+def read_input():
+    return input().strip()
+
+def compare_numbers(a, b):
+    if a == b:
+        return "="
+    elif a < b:
+        return "<"
+    else:
+        return ">"
+
+def main():
+    a = read_input()
+    b = read_input()
+    print(compare_numbers(a, b))
+
+if __name__ == '__main__':
+    main()
 

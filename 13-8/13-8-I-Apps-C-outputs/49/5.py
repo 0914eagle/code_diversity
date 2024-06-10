@@ -1,16 +1,25 @@
 
-def min_damage(x_s, y_s, s_s, r_i, r_f, x_a, y_a, s_a):
-    # Calculate the distance between Anthony's current position and the center of the safety zone
-    dist = ((x_a - x_s) ** 2 + (y_a - y_s) ** 2) ** 0.5
-    
-    # Calculate the time it takes for Anthony to reach the safety zone
-    t = dist / s_a
-    
-    # Calculate the radius of the safety zone at the time Anthony reaches it
-    r = r_i - s_s * t
-    
-    # Calculate the amount of damage Anthony will take if he stays inside the safety zone
-    damage = 0 if r >= r_f else (r - r_f) / s_s
-    
-    return damage
+def input_data():
+    n = int(input())
+    sizes = list(map(int, input().split()))
+    return n, sizes
+
+def check_sizes(sizes):
+    sizes.sort()
+    for i in range(len(sizes) - 2):
+        if sizes[i + 1] - sizes[i] > 2:
+            return False
+    return True
+
+def main():
+    n, sizes = input_data()
+    if len(sizes) < 3:
+        print("NO")
+    elif check_sizes(sizes):
+        print("YES")
+    else:
+        print("NO")
+
+if __name__ == '__main__':
+    main()
 

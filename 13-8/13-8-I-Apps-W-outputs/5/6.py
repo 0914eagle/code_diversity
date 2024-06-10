@@ -1,21 +1,29 @@
 
-def solve(segments):
-    # Sort the segments by their left endpoint
-    segments.sort(key=lambda x: x[0])
+def get_substring_count(N, T):
+    # Initialize variables
+    count = 0
+    substring = ""
+    
+    # Iterate through the string S
+    for i in range(N):
+        # Append the next character to the substring
+        substring += T[i % len(T)]
+        
+        # If the substring is equal to T, increment the count
+        if substring == T:
+            count += 1
+    
+    # Return the count
+    return count
 
-    # Initialize the cover segment as the first segment
-    cover_segment = segments[0]
+def main():
+    # Read the input
+    N = int(input())
+    T = input()
+    
+    # Call the function and print the result
+    print(get_substring_count(N, T))
 
-    # Iterate through the remaining segments
-    for segment in segments[1:]:
-        # Check if the current segment is covered by the cover segment
-        if cover_segment[0] <= segment[0] and cover_segment[1] >= segment[1]:
-            # If it is, update the cover segment
-            cover_segment = segment
-        else:
-            # If it's not, return -1 as there is no cover segment
-            return -1
-
-    # Return the number of the cover segment
-    return segments.index(cover_segment) + 1
+if __name__ == '__main__':
+    main()
 

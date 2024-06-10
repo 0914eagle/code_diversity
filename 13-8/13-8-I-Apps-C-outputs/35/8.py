@@ -1,45 +1,49 @@
 
-def solve(n, s):
-    # Initialize the number of returnable rooms to 0
-    returnable_rooms = 0
+def get_max_points(n, T, p_list, t_list, d_list, distance_matrix):
+    # Initialize the dp table with 0 for all indices
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
     
-    # Iterate through each room
+    # Loop through all possible tasks
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            # If the task is not done and there is a deadline, check if the task can be completed within the deadline
+            if dp[i][j] == 0 and d_list[j - 1] != -1:
+                if d_list[j - 1] - t_list[j - 1] < T:
+                    dp[i][j] = 1
+    
+    # Loop through all possible tasks
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            # If the task is not done, check if the task can be completed within the time limit
+            if dp[i][j] == 0 and t_list[j - 1] <= T:
+                dp[i][j] = 1
+    
+    # Return the maximum total points and the list of tasks to be performed
+    max_points = 0
+    tasks = []
+    for i in range(1, n + 1):
+        if dp[n][i] == 1:
+            max_points += p_list[i - 1]
+            tasks.append(i)
+    return max_points, tasks
+
+def get_input():
+    n, T = map(int, input().split())
+    p_list = []
+    t_list = []
+    d_list = []
+    distance_matrix = []
     for i in range(n):
-        # If the current room is returnable
-        if is_returnable(i, n, s):
-            # Increment the number of returnable rooms
-            returnable_rooms += 1
-    
-    # Return the number of returnable rooms
-    return returnable_rooms
+        p, t, d = map(int, input().split())
+        p_list.append(p)
+        t_list.append(t)
+        d_list.append(d)
+        distance_matrix.append(list(map(int, input().split())))
+    return n, T, p_list, t_list, d_list, distance_matrix
 
-def is_returnable(i, n, s):
-    # If the current room is the first room
-    if i == 0:
-        # If the conveyor belt leading to the next room is clockwise, return False
-        if s[i] == '>':
-            return False
-        # Otherwise, return True
-        else:
-            return True
-    # If the current room is the last room
-    elif i == n - 1:
-        # If the conveyor belt leading to the previous room is anticlockwise, return False
-        if s[i] == '<':
-            return False
-        # Otherwise, return True
-        else:
-            return True
-    # If the current room is in the middle
-    else:
-        # If the conveyor belt leading to the previous room is clockwise and the conveyor belt leading to the next room is anticlockwise, return False
-        if s[i] == '>' and s[(i+1)%n] == '<':
-            return False
-        # Otherwise, return True
-        else:
-            return True
-
-n = int(input())
-s = input()
-print(solve(n, s))
+if __name__ == '__main__':
+    n, T, p_list, t_list, d_list, distance_matrix = get_input()
+    max_points, tasks = get_max_points(n, T, p_list, t_list, d_list, distance_matrix)
+    print(max_points)
+    print(" ".join(map(str, tasks)))
 

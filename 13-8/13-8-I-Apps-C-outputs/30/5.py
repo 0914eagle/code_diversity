@@ -1,16 +1,39 @@
 
-def canyon_mapping(n, k, vertices):
-    # Sort the vertices based on their x-coordinate
-    sorted_vertices = sorted(vertices, key=lambda x: x[0])
+def bfs_traversal(n, edges, sequence):
+    # Initialize a queue to do BFS traversal
+    queue = [1]
+    visited = [False] * (n + 1)
+    visited[1] = True
+    
+    # Do BFS traversal
+    while queue:
+        vertex = queue.pop(0)
+        for neighbor in get_neighbors(edges, vertex):
+            if not visited[neighbor]:
+                visited[neighbor] = True
+                queue.append(neighbor)
+    
+    # Check if the given sequence corresponds to a valid BFS traversal
+    for i in range(n):
+        if visited[sequence[i]]:
+            return "Yes"
+    return "No"
 
-    # Calculate the width of the canyon
-    width = sorted_vertices[-1][0] - sorted_vertices[0][0]
+def get_neighbors(edges, vertex):
+    neighbors = []
+    for edge in edges:
+        if edge[0] == vertex:
+            neighbors.append(edge[1])
+        elif edge[1] == vertex:
+            neighbors.append(edge[0])
+    return neighbors
 
-    # Calculate the height of the canyon
-    height = sorted_vertices[-1][1] - sorted_vertices[0][1]
-
-    # Calculate the side length of the square maps
-    side_length = width / k
-
-    return round(side_length, 2)
+if __name__ == '__main__':
+    n = int(input())
+    edges = []
+    for i in range(n - 1):
+        edge = list(map(int, input().split()))
+        edges.append(edge)
+    sequence = list(map(int, input().split()))
+    print(bfs_traversal(n, edges, sequence))
 

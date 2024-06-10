@@ -1,13 +1,45 @@
 
-def solve(n, k, polygon):
-    # Calculate the area of the polygon
-    area = 0
-    for i in range(n):
-        area += polygon[i][0] * polygon[i-1][1] - polygon[i-1][0] * polygon[i][1]
-    area = abs(area) / 2
+def bfs(graph, start):
+    queue = [start]
+    visited = set()
+    while queue:
+        node = queue.pop(0)
+        if node not in visited:
+            visited.add(node)
+            queue.extend(graph[node])
+    return visited
 
-    # Calculate the side length of the square map
-    side_length = (area / k) ** 0.5
+def is_valid_bfs(graph, sequence):
+    start = 1
+    visited = set()
+    for node in sequence:
+        if node not in graph:
+            return False
+        if node == start:
+            start = node
+            continue
+        if node in visited:
+            return False
+        visited.add(node)
+    return True
 
-    return round(side_length, 2)
+def main():
+    n = int(input())
+    graph = {}
+    for _ in range(n - 1):
+        x, y = map(int, input().split())
+        if x not in graph:
+            graph[x] = []
+        if y not in graph:
+            graph[y] = []
+        graph[x].append(y)
+        graph[y].append(x)
+    sequence = list(map(int, input().split()))
+    if is_valid_bfs(graph, sequence):
+        print("Yes")
+    else:
+        print("No")
+
+if __name__ == '__main__':
+    main()
 

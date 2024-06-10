@@ -1,16 +1,22 @@
 
-def get_max_sum(a, b, k):
-    n = len(a)
-    if k >= n:
-        return sum(a) + sum(b)
-    if k == 0:
-        return 0
-    a = sorted(a)
-    b = sorted(b)
-    max_sum = 0
-    for i in range(n):
-        for j in range(i+1, n):
-            if a[i] + b[j] > max_sum:
-                max_sum = a[i] + b[j]
-    return max_sum
+import math
+
+def get_percentage(r, c):
+    # Calculate the area of the crust
+    crust_area = math.pi * c ** 2
+    
+    # Calculate the area of the cheese
+    cheese_area = math.pi * (r ** 2 - c ** 2)
+    
+    # Calculate the percentage of cheese
+    percentage = cheese_area / (crust_area + cheese_area)
+    
+    return percentage
+
+def main():
+    r, c = map(int, input().split())
+    print(get_percentage(r, c))
+
+if __name__ == '__main__':
+    main()
 

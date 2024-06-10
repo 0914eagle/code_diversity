@@ -1,39 +1,33 @@
 
-def get_rain_amount(d, t, c, r):
+def get_media_companies(num_sectors, min_consecutive_sectors, min_distinct_colors, team_assignments):
     # Initialize variables
-    rain_amount = 0
-    current_time = 0
-    roof_segments = []
+    media_companies = 0
+    sector_colors = []
+    consecutive_sectors = 0
 
-    # Read the clouds and roof segments
-    for i in range(c):
-        s, e, p, a = map(int, input().split())
-        rain_amount += p * a * (e - s)
+    # Iterate through the team assignments
+    for i in range(num_sectors):
+        # If the current sector has a different color than the previous sector, increase the consecutive sectors count
+        if i == 0 or team_assignments[i] != team_assignments[i - 1]:
+            consecutive_sectors += 1
+        # If the consecutive sectors count is greater than or equal to the minimum required, increase the media companies count
+        if consecutive_sectors >= min_consecutive_sectors:
+            media_companies += 1
+        # If the current sector has a different color than the previous sector, add the color to the sector colors list
+        if i == 0 or team_assignments[i] != team_assignments[i - 1]:
+            sector_colors.append(team_assignments[i])
+        # If the number of distinct colors in the sector colors list is greater than or equal to the minimum required, return the media companies count
+        if len(set(sector_colors)) >= min_distinct_colors:
+            return media_companies
 
-    for i in range(r):
-        x, y = map(int, input().split())
-        roof_segments.append((x, y))
+    # If the end of the list is reached and the media companies count is still less than the minimum required, return -1
+    return -1
 
-    # Sort the roof segments by their start position
-    roof_segments.sort(key=lambda x: x[0])
+def main():
+    num_sectors, min_consecutive_sectors, min_distinct_colors = map(int, input().split())
+    team_assignments = list(map(int, input().split()))
+    print(get_media_companies(num_sectors, min_consecutive_sectors, min_distinct_colors, team_assignments))
 
-    # Loop through the clouds and check for overlap with the roof segments
-    for s, e, p, a in clouds:
-        # Check if the cloud is currently raining
-        if current_time >= s and current_time < e:
-            # Check if the cloud is under a roof
-            under_roof = False
-            for x, y in roof_segments:
-                if x <= current_time and current_time < y:
-                    under_roof = True
-                    break
-
-            # If the cloud is not under a roof, add its rainfall amount to the total
-            if not under_roof:
-                rain_amount += a
-
-        # Update the current time
-        current_time = e
-
-    return rain_amount
+if __name__ == '__main__':
+    main()
 

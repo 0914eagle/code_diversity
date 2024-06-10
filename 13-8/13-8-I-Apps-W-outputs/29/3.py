@@ -1,7 +1,11 @@
 
-def get_minimum_steps(n, k):
-    if k == 0:
-        return 0
-    else:
-        return max(n-k, k)
+def get_max_birds(length, distance, num_birds):
+    return int((length - num_birds * distance - 6) / (distance + 6))
+
+def main():
+    length, distance, num_birds = map(int, input().split())
+    print(get_max_birds(length, distance, num_birds))
+
+if __name__ == '__main__':
+    main()
 

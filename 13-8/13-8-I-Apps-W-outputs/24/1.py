@@ -1,12 +1,16 @@
 
-def is_solvable(a, b, c):
-    # Calculate the slope of the line that passes through points a and b
-    m1 = (b[1] - a[1]) / (b[0] - a[0])
-    # Calculate the slope of the line that passes through points a and c
-    m2 = (c[1] - a[1]) / (c[0] - a[0])
-    # Check if the slopes are equal
-    if m1 == m2:
-        return "Yes"
-    else:
-        return "No"
+def get_d_magic_numbers(m, d, a, b):
+    count = 0
+    for i in range(a, b+1):
+        if i % m == 0 and str(i)[::2].count(str(d)) > 0:
+            count += 1
+    return count
+
+def get_answer(m, d, a, b):
+    return get_d_magic_numbers(m, d, a, b) % (10**9 + 7)
+
+if __name__ == '__main__':
+    m, d = map(int, input().split())
+    a, b = map(int, input().split())
+    print(get_answer(m, d, a, b))
 

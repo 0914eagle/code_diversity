@@ -1,9 +1,11 @@
 
-def find_escape_hole(gopher_coords, dog_coords, holes):
-    gopher_x, gopher_y = gopher_coords
-    dog_x, dog_y = dog_coords
-    for hole_x, hole_y in holes:
-        if hole_x == gopher_x and hole_y == gopher_y:
-            return "The gopher can escape through the hole at ({}, {}).".format(hole_x, hole_y)
-    return "The gopher cannot escape."
+def get_rating_requirement(current_rating, desired_rating):
+    return (desired_rating + current_rating) / 2
+
+def get_performance_requirement(current_rating, desired_rating):
+    return get_rating_requirement(current_rating, desired_rating) - current_rating
+
+if __name__ == '__main__':
+    current_rating, desired_rating = map(int, input().split())
+    print(get_performance_requirement(current_rating, desired_rating))
 

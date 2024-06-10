@@ -1,26 +1,37 @@
 
-def get_max_additional_birds(l, d, n, positions):
-    # Sort the positions of the birds already on the wire
-    sorted_positions = sorted(positions)
+def cut_string(s):
+    n = len(s)
+    dp = [0] * (n + 1)
+    for i in range(1, n + 1):
+        if s[i - 1] == '0':
+            dp[i] = dp[i - 1] + 1
+        else:
+            dp[i] = dp[i - 1]
+    for i in range(n - 1, -1, -1):
+        if s[i] == '1':
+            dp[i] = max(dp[i], dp[i + 1] + 1)
+    return dp[0]
 
-    # Initialize the maximum number of additional birds to 0
-    max_additional_birds = 0
-
-    # Iterate over the positions of the birds already on the wire
+def get_cuts(s, k):
+    n = len(s)
+    cuts = []
+    start = 0
     for i in range(n):
-        # Get the position of the current bird
-        current_position = sorted_positions[i]
+        if dp[i] == k:
+            cuts.append(s[start:i])
+            start = i
+    cuts.append(s[start:])
+    return cuts
 
-        # Check if the current position is within the allowed distance from the pole
-        if current_position < 6 or current_position > l - 6:
-            continue
+def solve(s):
+    k = cut_string(s)
+    cuts = get_cuts(s, k)
+    return k, cuts
 
-        # Check if the current position is within the allowed distance from the previous bird
-        if i > 0 and current_position - sorted_positions[i - 1] < d:
-            continue
-
-        # Increment the maximum number of additional birds
-        max_additional_birds += 1
-
-    return max_additional_birds
+if __name__ == '__main__':
+    n = int(input())
+    s = input()
+    k, cuts = solve(s)
+    print(k)
+    print(' '.join(cuts))
 

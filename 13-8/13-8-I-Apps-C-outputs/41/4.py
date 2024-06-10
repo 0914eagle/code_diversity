@@ -1,29 +1,34 @@
 
-def solve(N, L, luggage_positions):
-    # Sort the luggage positions in ascending order
-    sorted_positions = sorted(luggage_positions)
+def shuffle(n, cards):
+    # Initialize the number of shuffles to 0
+    shuffles = 0
+    
+    # Split the deck into two stacks
+    stack1 = cards[:n//2]
+    stack2 = cards[n//2:]
+    
+    # Interleave the stacks in a random order
+    while stack1 and stack2:
+        shuffles += 1
+        if len(stack1) > len(stack2):
+            stack1.append(stack1.pop(0))
+        else:
+            stack2.append(stack2.pop(0))
+    
+    # Return the number of shuffles
+    return shuffles
 
-    # Initialize the maximum speed to be the minimum speed
-    max_speed = 0.1
+def main():
+    # Read the input
+    n = int(input())
+    cards = list(map(int, input().split()))
+    
+    # Determine the minimum number of shuffles
+    shuffles = shuffle(n, cards)
+    
+    # Print the output
+    print(shuffles)
 
-    # Iterate through each pair of luggage positions
-    for i in range(N - 1):
-        # Calculate the distance between the two luggage positions
-        distance = sorted_positions[i + 1] - sorted_positions[i]
-
-        # If the distance is less than the length of the circular conveyor belt,
-        # then the luggage may collide
-        if distance < L:
-            # Calculate the minimum speed required to avoid the collision
-            min_speed = (L - distance) / L
-
-            # Update the maximum speed if necessary
-            if min_speed > max_speed:
-                max_speed = min_speed
-
-    # Return the maximum speed or "no fika" if no collision-free speed exists
-    if max_speed == 0.1:
-        return "no fika"
-    else:
-        return max_speed
+if __name__ == '__main__':
+    main()
 

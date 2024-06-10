@@ -1,45 +1,35 @@
 
-def get_min_m(n, k):
-    # Initialize m to 1
-    m = 1
-    # Initialize a list to store the sets
-    sets = []
-    # Loop until we have n sets
-    while len(sets) < n:
-        # Generate a set of four integers from 1 to m
-        set_ = set(range(1, m + 1))
-        # Check if the set is valid
-        if is_valid_set(set_, k):
-            # Add the set to the list of sets
-            sets.append(set_)
-        # Increment m
-        m += 1
-    # Return the minimum m and the sets
-    return m, sets
+def is_in_check(n, a_x, a_y, b_x, b_y, c_x, c_y):
+    # Check if the king is in check
+    if a_x == b_x and (a_y == b_y - 1 or a_y == b_y + 1):
+        return True
+    if a_y == b_y and (a_x == b_x - 1 or a_x == b_x + 1):
+        return True
+    if abs(a_x - b_x) == abs(a_y - b_y):
+        return True
+    return False
 
-def is_valid_set(set_, k):
-    # Check if the set has four elements
-    if len(set_) != 4:
-        return False
-    # Check if the set has no duplicates
-    if len(set_) != len(set(set_)):
-        return False
-    # Check if the set is of rank k
-    for i in range(len(set_)):
-        for j in range(i + 1, len(set_)):
-            if gcd(set_[i], set_[j]) != k:
-                return False
-    # If all checks pass, return True
-    return True
+def can_move_king(n, a_x, a_y, b_x, b_y, c_x, c_y):
+    # Check if the king can move to the target location
+    if b_x == c_x and (b_y == c_y - 1 or b_y == c_y + 1):
+        return True
+    if b_y == c_y and (b_x == c_x - 1 or b_x == c_x + 1):
+        return True
+    if abs(b_x - c_x) == abs(b_y - c_y):
+        return True
+    return False
 
-def gcd(a, b):
-    while b != 0:
-        a, b = b, a % b
-    return a
+def solve(n, a_x, a_y, b_x, b_y, c_x, c_y):
+    if is_in_check(n, a_x, a_y, b_x, b_y, c_x, c_y):
+        return "NO"
+    if can_move_king(n, a_x, a_y, b_x, b_y, c_x, c_y):
+        return "YES"
+    return "NO"
 
-n, k = map(int, input().split())
-m, sets = get_min_m(n, k)
-print(m)
-for set_ in sets:
-    print(*set_)
+if __name__ == '__main__':
+    n = int(input())
+    a_x, a_y = map(int, input().split())
+    b_x, b_y = map(int, input().split())
+    c_x, c_y = map(int, input().split())
+    print(solve(n, a_x, a_y, b_x, b_y, c_x, c_y))
 

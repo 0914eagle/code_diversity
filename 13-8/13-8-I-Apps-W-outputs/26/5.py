@@ -1,19 +1,44 @@
 
-def is_reasonable_network(n, m, friends):
-    # Initialize a graph with n nodes
-    graph = [[] for _ in range(n)]
+def find_matching_section(map1, map2):
+    # Initialize a dictionary to store the frequency of each character in the first map
+    freq1 = {}
+    for row in map1:
+        for char in row:
+            if char not in freq1:
+                freq1[char] = 1
+            else:
+                freq1[char] += 1
+    
+    # Initialize a dictionary to store the frequency of each character in the second map
+    freq2 = {}
+    for row in map2:
+        for char in row:
+            if char not in freq2:
+                freq2[char] = 1
+            else:
+                freq2[char] += 1
+    
+    # Find the matching section by comparing the frequencies of the characters in the two maps
+    for i in range(len(map1)):
+        for j in range(len(map2[0])):
+            if freq1 == freq2:
+                return i, j
+    
+    # If no matching section is found, return -1, -1
+    return -1, -1
 
-    # Add edges to the graph
-    for i in range(m):
-        graph[friends[i][0] - 1].append(friends[i][1])
-        graph[friends[i][1] - 1].append(friends[i][0])
+def main():
+    # Read the input maps
+    n, m = map(int, input().split())
+    map1 = [input() for _ in range(n)]
+    map2 = [input() for _ in range(m)]
+    
+    # Find the matching section
+    i, j = find_matching_section(map1, map2)
+    
+    # Print the output
+    print(i, j)
 
-    # Check if the network is reasonable
-    for i in range(n):
-        for j in range(n):
-            for k in range(n):
-                if i != j and j != k and k != i and graph[i][j] and graph[j][k] and not graph[i][k]:
-                    return "NO"
-
-    return "YES"
+if __name__ == '__main__':
+    main()
 

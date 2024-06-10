@@ -1,15 +1,18 @@
 
-def is_sorted_correctly(arr):
-    # Sort the array in non-decreasing order
-    arr.sort()
+def get_correct_choice(A, B):
+    # Convert A and B to sets to remove duplicates
+    A_set = set(A)
+    B_set = set(B)
     
-    # Initialize a variable to keep track of the height of the tallest stack
-    tallest_stack = 0
+    # Find the element that is not in both sets
+    correct_choice = A_set.symmetric_difference(B_set).pop()
     
-    # Iterate through the array and check if the stacks are sorted correctly
-    for i in range(len(arr) - 1):
-        if arr[i] + 1 != arr[i + 1]:
-            return "NO"
-    
-    return "YES"
+    return correct_choice
+
+def main():
+    A, B = map(int, input().split())
+    print(get_correct_choice(A, B))
+
+if __name__ == '__main__':
+    main()
 

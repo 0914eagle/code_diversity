@@ -1,17 +1,16 @@
 
-def get_maximum_sum(a, b, k):
-    # Sort the arrays a and b in non-decreasing order
-    a.sort()
-    b.sort()
-    # Initialize the maximum sum to 0
-    max_sum = 0
-    # Loop through the arrays a and b and find the maximum sum
-    for i in range(len(a)):
-        for j in range(len(b)):
-            # Check if the current sum is greater than the maximum sum
-            if a[i] + b[j] > max_sum:
-                # Update the maximum sum
-                max_sum = a[i] + b[j]
-    # Return the maximum sum
-    return max_sum
+import math
+
+def get_percentage(radius, crust_thickness):
+    total_area = math.pi * radius ** 2
+    crust_area = math.pi * (radius - crust_thickness) ** 2
+    cheese_area = total_area - crust_area
+    return 100 * cheese_area / total_area
+
+def main():
+    radius, crust_thickness = map(int, input().split())
+    print(get_percentage(radius, crust_thickness))
+
+if __name__ == '__main__':
+    main()
 

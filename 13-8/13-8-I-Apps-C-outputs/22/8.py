@@ -1,19 +1,38 @@
 
-def get_optimal_choice(n, probabilities):
-    # Sort the probabilities in descending order
-    probabilities.sort(reverse=True)
-    # Initialize the optimal choice as the first friend
-    optimal_choice = 0
-    # Initialize the probability of Andrey not getting upset as the probability of the first friend
-    probability = probabilities[0]
-    # Iterate over the remaining friends
-    for i in range(1, n):
-        # Calculate the probability of Andrey not getting upset if he asks the current friend
-        new_probability = probability * probabilities[i]
-        # If the probability is higher than the current optimal probability, update the optimal choice and probability
-        if new_probability > probability:
-            optimal_choice = i
-            probability = new_probability
-    # Return the optimal choice
-    return optimal_choice
+import math
+
+def get_tide_height(t, a):
+    return 0.5 * a * (math.cos(t * 2 * math.pi / 12) + 1)
+
+def get_dry_area(heights, tide_height):
+    dry_area = []
+    for i in range(len(heights)):
+        for j in range(len(heights[0])):
+            if abs(heights[i][j] - tide_height) <= 1:
+                dry_area.append((i, j))
+    return dry_area
+
+def get_max_distance(home, dry_area, speed, time):
+    max_distance = 0
+    for i in range(len(dry_area)):
+        for j in range(i+1, len(dry_area)):
+            distance = math.sqrt((dry_area[i][0] - dry_area[j][0]) ** 2 + (dry_area[i][1] - dry_area[j][1]) ** 2)
+            if distance > max_distance:
+                max_distance = distance
+    return max_distance * speed * time
+
+def main():
+    a, m = map(float, input().split())
+    w, h, x, y = map(int, input().split())
+    heights = []
+    for i in range(h):
+        heights.append(list(map(int, input().split())))
+    
+    tide_height = get_tide_height(1, a)
+    dry_area = get_dry_area(heights, tide_height)
+    max_distance = get_max_distance((x, y), dry_area, m, 1)
+    print(max_distance)
+
+if __name__ == '__main__':
+    main()
 

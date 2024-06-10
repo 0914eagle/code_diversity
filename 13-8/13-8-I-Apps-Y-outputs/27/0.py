@@ -1,7 +1,18 @@
 
-def solve(n, k, d, s):
-    if k == 0:
-        return "impossible"
-    else:
-        return round(d - (d-s)*(k/n), 6)
+def get_good_sleep_times(n, h, l, r, a):
+    good_times = 0
+    current_time = 0
+    for i in range(n):
+        if current_time + a[i] - 1 <= r:
+            good_times += 1
+        current_time = (current_time + a[i]) % h
+    return good_times
+
+def main():
+    n, h, l, r = map(int, input().split())
+    a = list(map(int, input().split()))
+    print(get_good_sleep_times(n, h, l, r, a))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,51 +1,57 @@
 
-def solve(n, b):
-    # Sort the input array
-    b.sort()
+def get_student_tutor_pairs(students, tutors):
+    # Initialize a dictionary to store the pairs of students and tutors
+    pairs = {}
     
-    # Create a dictionary to store the counts of each element
-    counts = {}
-    for num in b:
-        if num in counts:
-            counts[num] += 1
-        else:
-            counts[num] = 1
+    # Iterate through the students and find the tutor with the shortest distance
+    for student in students:
+        # Find the tutor with the shortest distance to the student
+        shortest_distance = float('inf')
+        for tutor in tutors:
+            distance = get_distance(student, tutor)
+            if distance < shortest_distance:
+                shortest_distance = distance
+                pairs[student] = tutor
     
-    # Check if the sequence is strictly increasing
-    for i in range(n-1):
-        if b[i] >= b[i+1]:
-            return "No"
-    
-    # Check if the sequence can be permutated to be strictly increasing
-    for perm in permutations(b):
-        # Check if the permutation is valid
-        if is_valid_permutation(perm):
-            return "Yes\n" + " ".join(map(str, perm))
-    
-    return "No"
+    return pairs
 
-def is_valid_permutation(perm):
-    # Check if the permutation is valid by checking if the number of occurrences of each element is the same
-    counts = {}
-    for num in perm:
-        if num in counts:
-            counts[num] += 1
-        else:
-            counts[num] = 1
+def get_distance(point1, point2):
+    # Calculate the absolute difference between the x and y coordinates of the two points
+    x_diff = abs(point1[0] - point2[0])
+    y_diff = abs(point1[1] - point2[1])
     
-    for num in counts:
-        if counts[num] != b.count(num):
-            return False
+    # Return the sum of the absolute differences
+    return x_diff + y_diff
+
+def main():
+    # Read the number of students and tutors
+    n = int(input())
     
-    return True
+    # Read the locations of the students
+    students = []
+    for i in range(n):
+        x, y = map(int, input().split())
+        students.append((x, y))
+    
+    # Read the locations of the tutors
+    tutors = []
+    for i in range(n):
+        x, y = map(int, input().split())
+        tutors.append((x, y))
+    
+    # Find the optimal pairing of students to tutors
+    pairs = get_student_tutor_pairs(students, tutors)
+    
+    # Calculate the maximum distance between any two students in a pair
+    max_distance = 0
+    for student, tutor in pairs.items():
+        distance = get_distance(student, tutor)
+        if distance > max_distance:
+            max_distance = distance
+    
+    # Print the result
+    print(max_distance)
 
-# Test the function with the example input
-n = 6
-b = [4, 7, 7, 12, 31, 61]
-print(solve(n, b))
-
-# Test the function with another example input
-n = 3
-b = [1, 2, 3]
-print(solve(n, b))
+if __name__ == '__main__':
+    main()
 

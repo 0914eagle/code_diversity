@@ -1,17 +1,30 @@
 
-def main_office_vertices(N):
-    # Initialize a list to store the vertices of the main office
-    vertices = []
-    
-    # Iterate from 0 to N-1
-    for i in range(N):
-        # Calculate the x and y coordinates of the current vertex
-        x = i * (40000000 // N)
-        y = (i * (40000000 // N)) ** 2
-        
-        # Add the current vertex to the list of vertices
-        vertices.append((x, y))
-    
-    # Return the list of vertices
-    return vertices
+def get_available_space(apps):
+    total_space = 0
+    for app in apps:
+        total_space += app[1]
+    return total_space
+
+def get_max_apps(apps, available_space):
+    max_apps = 0
+    selected_apps = []
+    for app in apps:
+        if app[0] <= available_space:
+            max_apps += 1
+            selected_apps.append(app[2])
+            available_space -= app[0]
+    return max_apps, selected_apps
+
+def main():
+    n, c = map(int, input().split())
+    apps = []
+    for i in range(n):
+        d, s = map(int, input().split())
+        apps.append((d, s, i+1))
+    max_apps, selected_apps = get_max_apps(apps, c)
+    print(max_apps)
+    print(*selected_apps)
+
+if __name__ == '__main__':
+    main()
 

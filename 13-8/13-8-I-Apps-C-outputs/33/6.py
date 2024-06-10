@@ -1,18 +1,16 @@
 
-def solve(n, m, grid):
-    # Initialize the number of north and south magnets
-    north_magnets, south_magnets = 0, 0
-    
-    # Iterate over each row and column
-    for i in range(n):
-        for j in range(m):
-            # If the current cell is black, increment the number of north magnets
-            if grid[i][j] == "#":
-                north_magnets += 1
-            # If the current cell is white, increment the number of south magnets
-            elif grid[i][j] == ".":
-                south_magnets += 1
-    
-    # Return the minimum number of north magnets required
-    return north_magnets
+def get_max_points(array):
+    n = len(array)
+    dp = [0] * (n + 1)
+    for i in range(n - 1, -1, -1):
+        dp[i] = max(dp[i + 1], array[i] + dp[i + 2])
+    return dp[0]
+
+def main():
+    n = int(input())
+    array = [int(x) for x in input().split()]
+    print(get_max_points(array))
+
+if __name__ == '__main__':
+    main()
 

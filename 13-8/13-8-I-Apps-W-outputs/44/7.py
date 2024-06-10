@@ -1,25 +1,70 @@
 
-def find_badge_holder(n, p):
-    # Initialize a dictionary to store the number of holes in each badge
-    badge_holes = {}
+def get_energy_cost(parts, ropes):
+    # Initialize a dictionary to store the energy cost of each part
+    energy_cost = {}
+    for part in parts:
+        energy_cost[part] = 0
+
+    # Iterate through the ropes and update the energy cost of each part
+    for rope in ropes:
+        part1, part2 = rope
+        energy_cost[part1] += parts[part2]
+        energy_cost[part2] += parts[part1]
+
+    # Return the total energy cost
+    return sum(energy_cost.values())
+
+def get_minimum_energy_cost(parts, ropes):
+    # Initialize a list to store the parts that have not been removed
+    remaining_parts = list(parts.keys())
+
+    # Initialize a variable to store the minimum total energy cost
+    minimum_energy_cost = 0
+
+    # Iterate through the parts and remove the parts with the minimum energy cost
+    while remaining_parts:
+        # Find the part with the minimum energy cost
+        minimum_energy_cost_part = min(remaining_parts, key=lambda part: energy_cost[part])
+
+        # Remove the part with the minimum energy cost
+        remaining_parts.remove(minimum_energy_cost_part)
+
+        # Update the minimum total energy cost
+        minimum_energy_cost += energy_cost[minimum_energy_cost_part]
+
+    # Return the minimum total energy cost
+    return minimum_energy_cost
+
+def main():
+    # Read the input data
+    parts, ropes = read_input()
+
+    # Calculate the energy cost of each part
+    energy_cost = get_energy_cost(parts, ropes)
+
+    # Calculate the minimum total energy cost
+    minimum_energy_cost = get_minimum_energy_cost(parts, ropes)
+
+    # Print the minimum total energy cost
+    print(minimum_energy_cost)
+
+def read_input():
+    # Read the number of parts and ropes
+    n, m = map(int, input().split())
+
+    # Read the energy cost of each part
+    parts = {}
     for i in range(1, n+1):
-        badge_holes[i] = 0
-    
-    # Iterate through the list of reported students
-    for i in range(n):
-        # If the current student has already been reported, skip them
-        if badge_holes[i] == 1:
-            continue
-        # Find the next student in the sequence according to the list of reported students
-        next_student = p[i-1]
-        # Add a hole to the badge of the next student
-        badge_holes[next_student] += 1
-        # If the next student has already been reported, add a hole to their badge as well
-        if badge_holes[next_student] == 1:
-            badge_holes[p[next_student-1]] += 1
-    
-    # Find the student with two holes in their badge
-    for i in range(1, n+1):
-        if badge_holes[i] == 2:
-            return i
+        parts[i] = int(input())
+
+    # Read the ropes
+    ropes = []
+    for i in range(m):
+        x, y = map(int, input().split())
+        ropes.append((x, y))
+
+    return parts, ropes
+
+if __name__ == '__main__':
+    main()
 

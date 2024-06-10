@@ -1,47 +1,37 @@
 
-def generate_main_office(N):
-    # Initialize a list to store the vertices of the main office
-    vertices = []
+def get_apps_to_install(n, c, apps):
+    # Sort the apps by their download size in descending order
+    apps.sort(key=lambda x: x[0], reverse=True)
     
-    # Generate the first vertex
-    x = 0
-    y = 0
-    vertices.append((x, y))
+    # Initialize variables to keep track of the apps that can be installed and the total disk space used
+    installed_apps = []
+    total_disk_space = 0
     
-    # Generate the remaining vertices
-    for i in range(1, N):
-        # Generate a random integer between 0 and 40000000
-        x = random.randint(0, 40000000)
-        y = random.randint(0, 40000000)
-        
-        # Ensure that the vertex is not collinear with any of the existing vertices
-        while not is_convex_polygon(vertices + [(x, y)]):
-            x = random.randint(0, 40000000)
-            y = random.randint(0, 40000000)
-        
-        # Add the vertex to the list of vertices
-        vertices.append((x, y))
+    # Iterate through the apps and add them to the list of installed apps if there is enough disk space
+    for app in apps:
+        if total_disk_space + app[0] <= c:
+            installed_apps.append(app[1])
+            total_disk_space += app[0]
     
-    return vertices
+    return installed_apps
 
-def is_convex_polygon(vertices):
-    # Check if the polygon is convex
-    for i in range(len(vertices)):
-        for j in range(len(vertices)):
-            if i == j:
-                continue
-            for k in range(len(vertices)):
-                if i == k or j == k:
-                    continue
-                if not is_collinear(vertices[i], vertices[j], vertices[k]):
-                    return False
+def get_installation_order(n, c, apps):
+    # Get the list of apps that can be installed
+    installed_apps = get_apps_to_install(n, c, apps)
     
-    return True
+    # Sort the apps by their storage size in descending order
+    installed_apps.sort(key=lambda x: x[1], reverse=True)
+    
+    # Return the list of apps in the order that they should be installed
+    return installed_apps
 
-def is_collinear(p1, p2, p3):
-    # Check if the three points are collinear
-    if p1[0] * (p2[1] - p3[1]) + p2[0] * (p3[1] - p1[1]) + p3[0] * (p1[1] - p2[1]) == 0:
-        return True
-    else:
-        return False
+if __name__ == '__main__':
+    n, c = map(int, input().split())
+    apps = []
+    for _ in range(n):
+        d, s = map(int, input().split())
+        apps.append((d, s))
+    print(len(get_installation_order(n, c, apps)))
+    for app in get_installation_order(n, c, apps):
+        print(app)
 

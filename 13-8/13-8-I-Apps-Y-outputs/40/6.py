@@ -1,26 +1,25 @@
 
-def solve(n, m, digits):
-    # Initialize the smallest integer as -1
-    smallest = -1
+def is_periodic(s, k):
+    if len(s) % k != 0:
+        return False
     
-    # Iterate through all possible integers with n digits
-    for i in range(10**(n-1), 10**n):
-        # Convert the integer to a list of digits
-        digit_list = list(str(i))
-        
-        # Check if the digit list has the required length
-        if len(digit_list) != n:
-            continue
-        
-        # Check if the digit list satisfies the conditions
-        for j in range(m):
-            if digit_list[digits[j]-1] != str(j+1):
-                break
-        else:
-            # If all conditions are satisfied, update the smallest integer
-            smallest = i
-            break
+    substring_length = len(s) // k
+    substrings = [s[i:i + substring_length] for i in range(0, len(s), substring_length)]
     
-    # Return the smallest integer
-    return smallest
+    for i in range(1, len(substrings)):
+        if substrings[i] != substrings[i - 1][1:] + substrings[i - 1][0]:
+            return False
+    
+    return True
+
+def find_smallest_period(s):
+    for k in range(1, len(s)):
+        if is_periodic(s, k):
+            return k
+    
+    return len(s)
+
+if __name__ == '__main__':
+    s = input()
+    print(find_smallest_period(s))
 

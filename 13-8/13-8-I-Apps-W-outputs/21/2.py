@@ -1,10 +1,20 @@
 
-def solve(n_1, n_2, k_1, k_2):
-    if n_1 <= k_1 and n_2 <= k_2:
-        return "First"
-    if n_1 <= k_2 and n_2 <= k_1:
-        return "Second"
-    if n_1 > k_1 and n_2 > k_2:
-        return "First"
-    return "Second"
+def solve(n, a, b):
+    # Find the largest number that is a multiple of 6 and less than or equal to n
+    s = (n // 6) * 6
+    
+    # Calculate the final area of the room
+    area = s * (a + b)
+    
+    # Return the final area and the new dimensions of the room
+    return area, a + s, b + s
+
+def main():
+    n, a, b = map(int, input().split())
+    area, a, b = solve(n, a, b)
+    print(area)
+    print(a, b)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,18 +1,32 @@
 
-import sys
+def get_swap_count(n, apples, parents):
+    # Initialize a dictionary to store the number of apples at each node
+    apples_at_node = {i: apples[i-1] for i in range(1, n+1)}
+    
+    # Initialize a list to store the children of each node
+    children = [[] for _ in range(n+1)]
+    for i in range(2, n+1):
+        children[parents[i-1]].append(i)
+    
+    # Initialize a set to store the pairs of nodes that can be swapped
+    swap_pairs = set()
+    
+    # Iterate over each node and its children
+    for node in range(1, n+1):
+        for child in children[node]:
+            # If the node and its child have different numbers of apples, they can be swapped
+            if apples_at_node[node] != apples_at_node[child]:
+                swap_pairs.add((node, child))
+    
+    # Return the number of swap pairs
+    return len(swap_pairs)
 
-def f(r, c):
-    if r == 0 or c == 0:
-        return 1
-    elif r == 1 and c == 1:
-        return 2
-    else:
-        return (f(r-1, c) + f(r, c-1)) % 1000000007
+def main():
+    n = int(input())
+    apples = list(map(int, input().split()))
+    parents = list(map(int, input().split()))
+    print(get_swap_count(n, apples, parents))
 
-def solve(r1, c1, r2, c2):
-    return sum(f(i, j) for i in range(r1, r2+1) for j in range(c1, c2+1)) % 1000000007
-
-if __name__ == "__main__":
-    r1, c1, r2, c2 = map(int, sys.stdin.readline().split())
-    print(solve(r1, c1, r2, c2))
+if __name__ == '__main__':
+    main()
 

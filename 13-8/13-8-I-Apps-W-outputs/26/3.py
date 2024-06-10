@@ -1,20 +1,28 @@
 
-def is_network_reasonable(n, m, edges):
-    # Initialize a dictionary to store the friends of each member
-    friends = {i: set() for i in range(1, n + 1)}
+def get_common_section(map1, map2):
+    # Find the longest common subsequence between the two maps
+    lcs = ""
+    for i in range(len(map1)):
+        for j in range(len(map2[0])):
+            if map1[i] == map2[j]:
+                lcs += map1[i]
+    # Find the starting indices of the lcs in both maps
+    i_start = map1.index(lcs[0])
+    j_start = map2[0].index(lcs[0])
+    return i_start, j_start
 
-    # Add the given edges to the dictionary
-    for edge in edges:
-        friends[edge[0]].add(edge[1])
-        friends[edge[1]].add(edge[0])
+def main():
+    map1 = []
+    map2 = []
+    # Read the input
+    for _ in range(int(input())):
+        map1.append(input())
+    for _ in range(int(input())):
+        map2.append(input())
+    # Find the common section
+    i_start, j_start = get_common_section(map1, map2)
+    print(i_start, j_start)
 
-    # Check if the network is reasonable
-    for x in range(1, n + 1):
-        for y in range(1, n + 1):
-            for z in range(1, n + 1):
-                if x != y and y != z and x != z:
-                    if (x in friends[y] and y in friends[z]) and (x not in friends[z]):
-                        return "NO"
-
-    return "YES"
+if __name__ == '__main__':
+    main()
 

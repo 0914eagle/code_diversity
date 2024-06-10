@@ -1,19 +1,19 @@
 
-def is_sorted_correctly(arr):
-    # Sort the array in non-decreasing order
-    arr.sort()
-    
-    # Initialize a variable to keep track of the current height of the stacks
-    current_height = 0
-    
-    # Iterate through the array and check if the stacks will slide
-    for i in range(len(arr)):
-        # If the current height is less than the height of the current stack, the stacks will slide
-        if current_height < arr[i]:
-            return "NO"
-        # Update the current height to the height of the current stack
-        current_height = arr[i]
-    
-    # If the array is sorted correctly, return "YES"
-    return "YES"
+def find_correct_choice(a, b):
+    choices = [1, 2, 3]
+    correct_choice = None
+    for choice in choices:
+        if choice not in [a, b]:
+            correct_choice = choice
+            break
+    return correct_choice
+
+def main():
+    a = int(input())
+    b = int(input())
+    correct_choice = find_correct_choice(a, b)
+    print(correct_choice)
+
+if __name__ == '__main__':
+    main()
 

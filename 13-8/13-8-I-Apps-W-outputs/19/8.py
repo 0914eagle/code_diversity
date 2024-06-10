@@ -1,25 +1,23 @@
 
-def solve(n, v, sellers):
-    # Initialize variables
-    p = 0
-    q = []
+def get_min_operations(colors):
+    n = len(colors)
+    counts = [0] * (n + 1)
+    for color in colors:
+        counts[color] += 1
+    
+    # Calculate the minimum number of operations
+    min_operations = 0
+    for i in range(1, n + 1):
+        if counts[i] > 0:
+            min_operations += counts[i] - 1
+    
+    return min_operations
 
-    # Iterate over each seller
-    for i in range(n):
-        # Find the highest price the seller is offering
-        highest_price = max(sellers[i])
+def main():
+    n = int(input())
+    colors = list(map(int, input().split()))
+    print(get_min_operations(colors))
 
-        # Check if the highest price is less than or equal to Valera's money
-        if highest_price <= v:
-            # Increment the number of sellers Valera can make a deal with
-            p += 1
-
-            # Add the seller's number to the list of sellers Valera can make a deal with
-            q.append(i+1)
-
-    # Sort the list of sellers Valera can make a deal with in increasing order
-    q.sort()
-
-    # Return the number of sellers Valera can make a deal with and the list of sellers
-    return p, q
+if __name__ == '__main__':
+    main()
 

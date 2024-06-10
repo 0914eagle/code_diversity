@@ -1,21 +1,21 @@
 
-def solve(segments):
-    # Sort the segments by their left endpoint
-    segments.sort(key=lambda x: x[0])
+def concatenate_strings(string1, string2):
+    return string1 + string2
 
-    # Initialize the covering segment to be the first segment
-    covering_segment = segments[0]
+def count_substring(string, substring):
+    count = 0
+    for i in range(len(string) - len(substring) + 1):
+        if string[i:i+len(substring)] == substring:
+            count += 1
+    return count
 
-    # Iterate through the remaining segments
-    for segment in segments[1:]:
-        # If the current segment is not covered by the covering segment, return -1
-        if segment[0] < covering_segment[0] or segment[1] > covering_segment[1]:
-            return -1
+def main():
+    N = int(input())
+    T = input()
+    S = concatenate_strings("110", T)
+    count = count_substring(S, T)
+    print(count)
 
-        # Update the covering segment to be the current segment if it is larger than the current covering segment
-        if segment[1] > covering_segment[1]:
-            covering_segment = segment
-
-    # Return the number of the covering segment
-    return segments.index(covering_segment) + 1
+if __name__ == '__main__':
+    main()
 

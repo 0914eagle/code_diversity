@@ -1,20 +1,19 @@
 
-def solve(H, n, d):
-    # Calculate the total change in hp for each round
-    total_change = sum(d)
-    
-    # If the total change is positive, the monster will die
-    if total_change > 0:
-        return -1
-    
-    # If the total change is negative, the monster will survive
-    if total_change < 0:
-        return n
-    
-    # If the total change is zero, the monster will survive if its hp is greater than zero
-    if H > 0:
-        return -1
-    
-    # If the total change is zero and the monster's hp is zero, the battle will last infinitely
-    return n
+def get_earliest_delivery_time(A, B, C, D, E):
+    # Calculate the delivery time for each dish
+    delivery_time_abc_don = A
+    delivery_time_arc_curry = B + delivery_time_abc_don
+    delivery_time_agc_pasta = C + delivery_time_arc_curry
+    delivery_time_atc_hanbagu = D + delivery_time_agc_pasta
+    delivery_time_apc_ramen = E + delivery_time_atc_hanbagu
+
+    # Return the earliest delivery time
+    return min(delivery_time_apc_ramen, delivery_time_atc_hanbagu, delivery_time_agc_pasta, delivery_time_arc_curry, delivery_time_abc_don)
+
+def main():
+    A, B, C, D, E = map(int, input().split())
+    print(get_earliest_delivery_time(A, B, C, D, E))
+
+if __name__ == '__main__':
+    main()
 

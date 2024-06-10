@@ -1,26 +1,33 @@
 
-def max_sum_coverage(N, K, board):
-    # Initialize a two-dimensional array to store the sums of the numbers in each row and column
-    row_sums = [[0] * N for _ in range(N)]
-    col_sums = [[0] * N for _ in range(N)]
+def get_distance(node, fragments):
+    total_distance = 0
+    for fragment in fragments:
+        distance = 0
+        while fragment != node:
+            distance += 1
+            fragment = fragment // fragment // get_lowest_prime_divisor(fragment)
+        total_distance += distance
+    return total_distance
 
-    # Populate the row and column sums
-    for i in range(N):
-        for j in range(N):
-            row_sums[i][j] = row_sums[i][j-1] + board[i][j]
-            col_sums[i][j] = col_sums[i-1][j] + board[i][j]
+def get_lowest_prime_divisor(n):
+    for i in range(2, int(n ** 0.5) + 1):
+        if n % i == 0:
+            return i
+    return n
 
-    # Initialize a two-dimensional array to store the maximum sum possible with each domino in each position
-    dp = [[0] * (N-1) for _ in range(K+1)]
+def get_min_distance(fragments):
+    min_distance = float('inf')
+    for node in range(1, len(fragments) + 1):
+        distance = get_distance(node, fragments)
+        if distance < min_distance:
+            min_distance = distance
+    return min_distance
 
-    # Base case: no dominoes placed, maximum sum is 0
-    dp[0][0] = 0
+def main():
+    n = int(input())
+    fragments = list(map(int, input().split()))
+    print(get_min_distance(fragments))
 
-    # Populate the dp array using the recurrence relation
-    for i in range(1, K+1):
-        for j in range(N-1):
-            dp[i][j] = max(dp[i-1][j], dp[i-1][j-1] + row_sums[i][j] + col_sums[i][j])
-
-    # Return the maximum sum possible with K dominoes
-    return dp[K][N-1]
+if __name__ == '__main__':
+    main()
 

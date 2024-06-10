@@ -1,22 +1,31 @@
 
-def solve(string1, string2):
-    # find all subpairs of string1 and string2
-    subpairs1 = []
-    subpairs2 = []
-    for i in range(len(string1)):
-        for j in range(i+1, len(string1)):
-            subpairs1.append((string1[i:j], string1[j:]))
-    for i in range(len(string2)):
-        for j in range(i+1, len(string2)):
-            subpairs2.append((string2[i:j], string2[j:]))
+def count_children(S):
+    # Initialize a list to store the number of children on each square
+    children = [0] * len(S)
     
-    # find the maximum length palindrome with the given conditions
-    max_length = 0
-    for pair1 in subpairs1:
-        for pair2 in subpairs2:
-            x = pair1[0] + pair1[1] + pair2[0] + pair2[1]
-            if (x == x[::-1] and len(pair1[0]) == len(pair2[0]) and len(pair1[1]) == len(pair2[1]) and len(x) > max_length):
-                max_length = len(x)
+    # Set the first and last squares to have one child each
+    children[0] = 1
+    children[-1] = 1
     
-    return max_length
+    # Iterate through each character of the string
+    for i in range(1, len(S) - 1):
+        # If the current character is L, move one square to the left
+        if S[i] == "L":
+            children[i - 1] += 1
+        # If the current character is R, move one square to the right
+        else:
+            children[i + 1] += 1
+    
+    # Return the number of children on each square
+    return children
+
+def main():
+    # Read a string from standard input
+    S = input()
+    
+    # Call the count_children function and print the result
+    print(" ".join(map(str, count_children(S))))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,17 +1,30 @@
 
-def solve(n, d, b, a):
-    # Initialize the number of rooms with non-hidden students different from b
-    x_1 = 0
-    x_2 = 0
+def get_largest_square_killer(memory):
+    rows, cols = len(memory), len(memory[0])
+    largest_killer = 0
     
-    # Iterate through each room
-    for i in range(n):
-        # Check if the number of students in the room is different from b
-        if a[i] != b:
-            # Increment the number of rooms with non-hidden students different from b
-            x_1 += 1
-            x_2 += 1
+    for row in range(rows):
+        for col in range(cols):
+            if memory[row][col] == "1":
+                current_killer = 1
+                for i in range(row, rows):
+                    for j in range(col, cols):
+                        if memory[i][j] == "0":
+                            break
+                        current_killer += 1
+                    else:
+                        continue
+                    break
+                largest_killer = max(largest_killer, current_killer)
     
-    # Return the minimum of the maximum of x_1 and x_2
-    return min(x_1, x_2)
+    return largest_killer
+
+def main():
+    rows, cols = map(int, input().split())
+    memory = [input() for _ in range(rows)]
+    largest_square_killer = get_largest_square_killer(memory)
+    print(largest_square_killer)
+
+if __name__ == '__main__':
+    main()
 

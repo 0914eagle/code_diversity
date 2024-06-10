@@ -1,24 +1,45 @@
 
-def find_positions(n, swimmers):
-    # Sort the swimmers by their x coordinates
-    swimmers.sort(key=lambda x: x[0])
-
-    # Initialize the positions of the lifeguards
-    guard1_x = 0
-    guard2_x = 0
-
-    # Loop through the swimmers and assign them to a guard
-    for i in range(n):
-        # Calculate the distance between the current swimmer and each guard
-        dist1 = abs(swimmers[i][0] - guard1_x)
-        dist2 = abs(swimmers[i][0] - guard2_x)
-
-        # Assign the swimmer to the guard with the shortest distance
-        if dist1 < dist2:
-            guard1_x += swimmers[i][0]
+def solve(rebus):
+    # Split the rebus into a list of tokens
+    tokens = rebus.split()
+    
+    # Initialize a set to store the values of the question marks
+    values = set()
+    
+    # Iterate over the tokens and check if they are question marks or integers
+    for token in tokens:
+        if token == "?":
+            # If the token is a question mark, add it to the set of values
+            values.add(token)
         else:
-            guard2_x += swimmers[i][0]
+            # If the token is an integer, check if it is positive and not greater than n
+            value = int(token)
+            if value <= 0 or value > n:
+                return "Impossible"
+    
+    # If all tokens are valid, try to solve the rebus
+    for value in values:
+        # Replace the question mark with the current value and evaluate the expression
+        expression = rebus.replace("?", str(value))
+        result = eval(expression)
+        
+        # If the result is equal to n, return the rebus with the question marks replaced by the current value
+        if result == n:
+            return "Possible\n" + expression
+    
+    # If no value works, return "Impossible"
+    return "Impossible"
 
-    # Return the positions of the lifeguards
-    return [guard1_x, guard2_x]
+def main():
+    # Read a line of input from stdin and convert it to an integer
+    n = int(input())
+    
+    # Read a line of input from stdin and convert it to a string
+    rebus = input()
+    
+    # Call the solve function and print the result
+    print(solve(rebus))
+
+if __name__ == '__main__':
+    main()
 

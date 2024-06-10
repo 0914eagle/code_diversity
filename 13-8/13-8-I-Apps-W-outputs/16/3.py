@@ -1,14 +1,38 @@
 
-def get_max_score(arr, k, z):
-    n = len(arr)
-    dp = [[0] * (k+1) for _ in range(n+1)]
-    for i in range(1, n+1):
-        for j in range(1, k+1):
-            if i == 1:
-                dp[i][j] = arr[i-1]
-            elif j == 1:
-                dp[i][j] = max(dp[i-1][j], dp[i-1][j-1] + arr[i-1])
-            else:
-                dp[i][j] = max(dp[i-1][j], dp[i-1][j-1] + arr[i-1], dp[i-2][j-2] + arr[i-1] + arr[i-2])
-    return dp[n][k]
+def is_elegant(n):
+    factors = []
+    i = 2
+    while i * i <= n:
+        if n % i:
+            i += 1
+            continue
+        factors.append(i)
+        n //= i
+    if n > 1:
+        factors.append(n)
+    gcd = 1
+    for f in factors:
+        gcd = gcd_recursive(gcd, f)
+    return gcd == 1
+
+def gcd_recursive(a, b):
+    if b == 0:
+        return a
+    return gcd_recursive(b, a % b)
+
+def count_elegant(n):
+    count = 0
+    for i in range(2, n + 1):
+        if is_elegant(i):
+            count += 1
+    return count
+
+def main():
+    num_cases = int(input())
+    for _ in range(num_cases):
+        n = int(input())
+        print(count_elegant(n))
+
+if __name__ == '__main__':
+    main()
 

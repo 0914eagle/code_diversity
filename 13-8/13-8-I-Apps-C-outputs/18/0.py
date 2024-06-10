@@ -1,38 +1,39 @@
 
-def get_min_rainfall(d, t, c, r, clouds, roofs):
+def get_media_companies(sectors, min_consecutive_sectors, min_distinct_colors):
     # Initialize variables
-    min_rainfall = 0
-    current_time = 0
-    inside_roof = False
+    media_companies = 0
+    current_sector = 1
+    current_color = 1
+    consecutive_sectors = 1
+    distinct_colors = 1
 
-    # Sort the clouds by their starting time
-    clouds = sorted(clouds, key=lambda x: x[0])
+    # Iterate through the sectors
+    for sector in sectors:
+        # If the current sector is the same as the previous sector, increment the consecutive sectors counter
+        if sector == current_sector:
+            consecutive_sectors += 1
+        # If the current sector is different from the previous sector, reset the consecutive sectors counter
+        else:
+            consecutive_sectors = 1
+        # Update the current sector and color
+        current_sector = sector
+        current_color = sector
 
-    # Iterate through the clouds
-    for cloud in clouds:
-        start_time, end_time, prob, rain = cloud
+        # If the current sector is the first sector or the previous sector is different from the current sector, increment the distinct colors counter
+        if current_sector == 1 or sector != current_sector:
+            distinct_colors += 1
 
-        # Check if the cloud is within the time frame
-        if start_time <= current_time <= end_time:
-            # Check if the cloud is in the zip code
-            if prob > 0:
-                # Add the rain to the min_rainfall
-                min_rainfall += prob * rain
+        # If the consecutive sectors counter is greater than or equal to the minimum consecutive sectors required and the distinct colors counter is greater than or equal to the minimum distinct colors required, increment the media companies counter
+        if consecutive_sectors >= min_consecutive_sectors and distinct_colors >= min_distinct_colors:
+            media_companies += 1
 
-        # Check if the current time is within the roof segments
-        for roof in roofs:
-            x, y = roof
-            if x <= current_time <= y:
-                inside_roof = True
-                break
+    return media_companies
 
-        # Check if the current time is outside the roof segments
-        if not inside_roof and current_time > y:
-            inside_roof = False
+def main():
+    sectors, min_consecutive_sectors, min_distinct_colors = map(int, input().split())
+    sectors = list(map(int, input().split()))
+    print(get_media_companies(sectors, min_consecutive_sectors, min_distinct_colors))
 
-        # Update the current time
-        current_time = min(current_time + 1, t)
-
-    # Return the min_rainfall
-    return min_rainfall
+if __name__ == '__main__':
+    main()
 

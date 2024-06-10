@@ -1,21 +1,27 @@
 
-def get_max_occurrences(s, t):
-    # Initialize a dictionary to store the count of each substring
-    # of length |t| in s
-    substring_counts = {}
+def input_data():
+    N, K = map(int, input().split())
+    p = list(map(int, input().split()))
+    return N, K, p
 
-    # Loop through each substring of length |t| in s
-    for i in range(len(s) - len(t) + 1):
-        substring = s[i:i+len(t)]
+def get_expected_value(p, K):
+    expected_value = 0
+    for i in range(K):
+        expected_value += p[i]
+    return expected_value
 
-        # If the substring is already in the dictionary, increment its count
-        if substring in substring_counts:
-            substring_counts[substring] += 1
+def get_maximum_expected_value(p, K, N):
+    maximum_expected_value = 0
+    for i in range(N - K + 1):
+        expected_value = get_expected_value(p[i:i+K], K)
+        if expected_value > maximum_expected_value:
+            maximum_expected_value = expected_value
+    return maximum_expected_value
 
-        # Otherwise, add the substring to the dictionary with count 1
-        else:
-            substring_counts[substring] = 1
+def main():
+    N, K, p = input_data()
+    print(get_maximum_expected_value(p, K, N))
 
-    # Return the maximum count of any substring in the dictionary
-    return max(substring_counts.values())
+if __name__ == '__main__':
+    main()
 

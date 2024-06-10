@@ -1,21 +1,29 @@
 
-def solve(s, t):
-    # Initialize a dictionary to store the count of each letter in t
-    letter_count = {}
-    for letter in t:
-        letter_count[letter] = letter_count.get(letter, 0) + 1
+import sys
 
-    # Initialize a variable to store the maximum number of occurrences
-    max_occurrences = 0
+def get_input():
+    n, k = map(int, input().split())
+    p = list(map(int, input().split()))
+    return n, k, p
 
-    # Iterate through the string s and check if each letter is in t
-    for i in range(len(s)):
-        if s[i] in letter_count:
-            # If the letter is in t, decrement the count for that letter
-            letter_count[s[i]] -= 1
-            if letter_count[s[i]] == 0:
-                # If the count is 0, it means we have found a match for all letters in t
-                max_occurrences += 1
+def get_expected_value(p, k):
+    expected_value = 0
+    for i in range(k):
+        expected_value += p[i]
+    return expected_value
 
-    return max_occurrences
+def get_max_expected_value(n, k, p):
+    max_expected_value = 0
+    for i in range(n - k + 1):
+        expected_value = get_expected_value(p[i:i+k], k)
+        if expected_value > max_expected_value:
+            max_expected_value = expected_value
+    return max_expected_value
+
+def main():
+    n, k, p = get_input()
+    print(get_max_expected_value(n, k, p))
+
+if __name__ == '__main__':
+    main()
 

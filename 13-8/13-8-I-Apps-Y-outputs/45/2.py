@@ -1,21 +1,42 @@
 
-def solve_fuel_oil_problem(shipment_volume, bottle1_volume, bottle2_volume):
-    if shipment_volume % bottle1_volume == 0:
-        return shipment_volume // bottle1_volume, 0
-    elif shipment_volume % bottle2_volume == 0:
-        return 0, shipment_volume // bottle2_volume
-    else:
-        gcd = find_gcd(bottle1_volume, bottle2_volume)
-        num1 = shipment_volume // (bottle1_volume // gcd)
-        num2 = shipment_volume // (bottle2_volume // gcd)
-        if num1 < num2:
-            return num1, num2 - num1
+def get_diverse_garland(n, s):
+    # Initialize variables
+    recolored_lamps = 0
+    diverse_garland = []
+    
+    # Iterate through the garland
+    for i in range(n):
+        # If the current lamp is not the same as the previous lamp
+        if i == 0 or s[i] != s[i-1]:
+            # Add the current lamp to the diverse garland
+            diverse_garland.append(s[i])
+        # If the current lamp is the same as the previous lamp
         else:
-            return num2, num1 - num2
+            # Recolor the current lamp and add it to the diverse garland
+            diverse_garland.append(get_recolored_lamps(s[i]))
+            recolored_lamps += 1
+    
+    # Return the number of recolored lamps and the diverse garland
+    return recolored_lamps, "".join(diverse_garland)
 
-def find_gcd(a, b):
-    if b == 0:
-        return a
+def get_recolored_lamps(color):
+    # If the current lamp is red
+    if color == "R":
+        # Recolor it to green
+        return "G"
+    # If the current lamp is green
+    elif color == "G":
+        # Recolor it to blue
+        return "B"
+    # If the current lamp is blue
     else:
-        return find_gcd(b, a % b)
+        # Recolor it to red
+        return "R"
+
+if __name__ == '__main__':
+    n = int(input())
+    s = input()
+    recolored_lamps, diverse_garland = get_diverse_garland(n, s)
+    print(recolored_lamps)
+    print(diverse_garland)
 

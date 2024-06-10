@@ -1,23 +1,47 @@
 
-def solve(A, B, Q, s, t, x):
-    # Sort the distances of the shrines and temples
-    shrines = sorted(s)
-    temples = sorted(t)
-    
-    # Initialize the answer array
-    answer = []
-    
-    # Loop through each query
-    for i in range(Q):
-        # Find the closest shrine and temple to the starting point
-        shrine = next((i for i in shrines if i <= x[i]), float('inf'))
-        temple = next((i for i in temples if i <= x[i]), float('inf'))
-        
-        # Calculate the minimum distance to travel
-        distance = abs(shrine - temple)
-        
-        # Add the answer to the array
-        answer.append(distance)
-    
-    return answer
+def get_max_time(a, M):
+    # Calculate the total time when the lamp is lit
+    total_time = 0
+    for i in range(len(a) - 1):
+        total_time += a[i + 1] - a[i]
+    total_time += M - a[-1]
+
+    # Return the total time
+    return total_time
+
+def get_optimal_program(a, M):
+    # Initialize the optimal program and its total time
+    optimal_program = a
+    optimal_time = get_max_time(a, M)
+
+    # Iterate over all possible insertions
+    for i in range(len(a)):
+        for j in range(i + 1, len(a) + 1):
+            # Insert the value x at position j
+            new_program = a[:j] + [x] + a[j:]
+
+            # Calculate the total time for the new program
+            new_time = get_max_time(new_program, M)
+
+            # Update the optimal program and time if necessary
+            if new_time > optimal_time:
+                optimal_program = new_program
+                optimal_time = new_time
+
+    # Return the optimal program
+    return optimal_program
+
+def main():
+    # Read the input
+    n, M = map(int, input().split())
+    a = list(map(int, input().split()))
+
+    # Get the optimal program
+    optimal_program = get_optimal_program(a, M)
+
+    # Print the optimal time
+    print(get_max_time(optimal_program, M))
+
+if __name__ == '__main__':
+    main()
 

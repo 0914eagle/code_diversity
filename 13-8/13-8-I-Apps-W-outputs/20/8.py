@@ -1,24 +1,20 @@
 
-def get_magical_permutation(S):
-    # Find the largest power of 2 that is less than or equal to the length of S
-    max_power = 1
-    while max_power < len(S):
-        max_power *= 2
-    max_power //= 2
+def get_kth_digit(k):
+    # calculate the number of digits in the sequence up to the k-th digit
+    num_digits = 1
+    while num_digits < k:
+        num_digits += 9 * 10 ** (num_digits - 1)
+    
+    # calculate the number that corresponds to the k-th digit
+    num = 10 ** (num_digits - 1) + (k - 1) // num_digits
+    
+    # return the k-th digit of the number
+    return str(num)[-1]
 
-    # Initialize the magical permutation with the first element of S
-    permutation = [S[0]]
+def main():
+    k = int(input())
+    print(get_kth_digit(k))
 
-    # Iterate through the remaining elements of S
-    for i in range(1, len(S)):
-        # Find the next element of the permutation that is not already in the permutation
-        next_element = S[i]
-        while next_element in permutation:
-            next_element = (next_element + 1) % len(S)
-
-        # Add the next element to the permutation
-        permutation.append(next_element)
-
-    # Return the magical permutation
-    return permutation
+if __name__ == '__main__':
+    main()
 

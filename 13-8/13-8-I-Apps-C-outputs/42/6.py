@@ -1,71 +1,48 @@
 
-def get_cheerleading_tactic(n_cheerleaders, cheer_duration, spied_cheerleading_schedule):
-    # Initialize variables
-    sportify_goals = 0
-    spoilify_goals = 0
-    current_cheerleading_interval = 0
-    current_cheerleading_duration = 0
+import sys
+import itertools
 
-    # Iterate through the spied cheerleading schedule
-    for cheerleading_interval in spied_cheerleading_schedule:
-        # Check if the current cheerleading interval overlaps with the current Sportify cheerleading interval
-        if current_cheerleading_interval <= cheerleading_interval[0] <= current_cheerleading_interval + cheer_duration:
-            # Calculate the overlap duration
-            overlap_duration = min(current_cheerleading_interval + cheer_duration, cheerleading_interval[1]) - max(current_cheerleading_interval, cheerleading_interval[0])
+def get_input():
+    n, k = map(int, input().split())
+    courses = []
+    for _ in range(n):
+        course, diff = input().split()
+        courses.append((course, int(diff)))
+    return n, k, courses
 
-            # Update the current Sportify cheerleading duration
-            current_cheerleading_duration += overlap_duration
+def get_levels(courses):
+    levels = []
+    for course, _ in courses:
+        if course[-1].isdigit():
+            levels.append(course[-1])
+    return levels
 
-            # Check if the current Sportify cheerleading duration is greater than the 5 minute interval
-            if current_cheerleading_duration >= 5:
-                # Increment the Sportify goals
-                sportify_goals += 1
+def get_prereqs(courses):
+    prereqs = []
+    for course, _ in courses:
+        if course[-1].isdigit():
+            prereqs.append(course[:-1])
+    return prereqs
 
-                # Reset the current Sportify cheerleading duration
-                current_cheerleading_duration = 0
+def get_difficulty(courses, prereqs, levels, k):
+    difficulty = 0
+    for course, diff in courses:
+        if course in prereqs:
+            continue
+        if course[-1].isdigit():
+            if course[:-1] in levels:
+                difficulty += diff
+        else:
+            difficulty += diff
+    return difficulty
 
-        # Check if the current Sportify cheerleading interval overlaps with the current Spoilify cheerleading interval
-        elif current_cheerleading_interval <= cheerleading_interval[1] <= current_cheerleading_interval + cheer_duration:
-            # Calculate the overlap duration
-            overlap_duration = min(current_cheerleading_interval + cheer_duration, cheerleading_interval[1]) - max(current_cheerleading_interval, cheerleading_interval[0])
+def solve(n, k, courses):
+    levels = get_levels(courses)
+    prereqs = get_prereqs(courses)
+    difficulty = get_difficulty(courses, prereqs, levels, k)
+    return difficulty
 
-            # Update the current Spoilify cheerleading duration
-            current_cheerleading_duration += overlap_duration
-
-            # Check if the current Spoilify cheerleading duration is greater than the 5 minute interval
-            if current_cheerleading_duration >= 5:
-                # Increment the Spoilify goals
-                spoilify_goals += 1
-
-                # Reset the current Spoilify cheerleading duration
-                current_cheerleading_duration = 0
-
-        # Check if the current Sportify cheerleading interval is before the current Spoilify cheerleading interval
-        elif current_cheerleading_interval < cheerleading_interval[0]:
-            # Increment the current Sportify cheerleading interval
-            current_cheerleading_interval = cheerleading_interval[0]
-
-            # Check if the current Sportify cheerleading interval is greater than the 5 minute interval
-            if current_cheerleading_interval >= 5:
-                # Increment the Sportify goals
-                sportify_goals += 1
-
-                # Reset the current Sportify cheerleading duration
-                current_cheerleading_duration = 0
-
-        # Check if the current Sportify cheerleading interval is after the current Spoilify cheerleading interval
-        elif current_cheerleading_interval > cheerleading_interval[1]:
-            # Increment the current Sportify cheerleading interval
-            current_cheerleading_interval = cheerleading_interval[1]
-
-            # Check if the current Sportify cheerleading interval is greater than the 5 minute interval
-            if current_cheerleading_interval >= 5:
-                # Increment the Sportify goals
-                sportify_goals += 1
-
-                # Reset the current Sportify cheerleading duration
-                current_cheerleading_duration = 0
-
-    # Return the results
-    return sportify_goals, spoilify_goals
+if __name__ == '__main__':
+    n, k, courses = get_input()
+    print(solve(n, k, courses))
 

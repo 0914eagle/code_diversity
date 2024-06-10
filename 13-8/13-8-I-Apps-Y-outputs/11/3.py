@@ -1,13 +1,24 @@
 
-import math
+from collections import namedtuple
 
-def get_average_path_length(towns):
-    num_towns = len(towns)
-    total_length = 0
-    for i in range(num_towns):
-        for j in range(i+1, num_towns):
-            x1, y1 = towns[i]
-            x2, y2 = towns[j]
-            total_length += math.sqrt((x1-x2)**2 + (y1-y2)**2)
-    return total_length / math.factorial(num_towns)
+def get_column_indices(column_names):
+    return {name: i for i, name in enumerate(column_names)}
+
+def get_average_marks(marks):
+    return sum(marks) / len(marks)
+
+def solve(student_data):
+    column_names = student_data[0]
+    column_indices = get_column_indices(column_names)
+    marks = [int(row[column_indices['MARKS']]) for row in student_data[1:]]
+    average_marks = get_average_marks(marks)
+    return average_marks
+
+def main():
+    student_data = [line.strip().split() for line in input().splitlines()]
+    average_marks = solve(student_data)
+    print(f"{average_marks:.2f}")
+
+if __name__ == '__main__':
+    main()
 

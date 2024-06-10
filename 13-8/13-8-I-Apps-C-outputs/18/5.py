@@ -1,52 +1,59 @@
 
-def solve(d, t, c, r, clouds, roofs):
+def get_media_companies(sectors, teams, min_consecutive, min_distinct):
     # Initialize variables
-    total_rain = 0
-    current_time = 0
-    current_position = 0
-    roof_index = 0
-    roof_start = 0
-    roof_end = 0
+    media_companies = 0
+    team_colors = set()
+    sector_colors = []
+    consecutive_sectors = 0
 
-    # Sort the clouds by their start time
-    clouds.sort(key=lambda x: x[0])
+    # Iterate through the sectors
+    for sector in range(sectors):
+        # Add the color of the current sector to the team colors set
+        team_colors.add(teams[sector])
 
-    # Iterate through the clouds
-    for cloud in clouds:
-        s, e, p, a = cloud
-        # If the cloud is within the time window
-        if s <= current_time < e:
-            # If the cloud is in your zip code
-            if p > 0:
-                # Calculate the amount of rain that will fall during the time window
-                rain = (e - current_time) * a * p
-                # Add the rain to the total
-                total_rain += rain
-        # If the current time is greater than the end time of the cloud
-        if current_time >= e:
-            # Move to the next cloud
-            continue
-        # If the current position is within a roof segment
-        if current_position >= roof_start and current_position < roof_end:
-            # Calculate the time it will take to reach the end of the roof segment
-            time_to_end = roof_end - current_position
-            # Add the time to the current time
-            current_time += time_to_end
-            # Move to the next roof segment
-            roof_index += 1
-            # If there are no more roof segments, break
-            if roof_index >= len(roofs):
-                break
-            # Update the current position and end of the roof segment
-            current_position = roofs[roof_index][0]
-            roof_end = roofs[roof_index][1]
-        # Calculate the time it will take to reach the end of the current segment
-        time_to_end = d - current_position
-        # Add the time to the current time
-        current_time += time_to_end
-        # Move to the next segment
-        current_position = d
+        # If the current sector has a color that is not in the team colors set, increment the consecutive sectors count
+        if teams[sector] not in team_colors:
+            consecutive_sectors += 1
 
-    # Return the total rain
-    return total_rain
+        # If the consecutive sectors count is equal to the minimum required, increment the media companies count
+        if consecutive_sectors == min_consecutive:
+            media_companies += 1
+            consecutive_sectors = 0
+            team_colors = set()
+
+    # Return the maximum number of media companies that can be sold broadcasting rights
+    return media_companies
+
+def get_minimum_distinct_colors(sectors, teams, min_consecutive, min_distinct):
+    # Initialize variables
+    team_colors = set()
+    sector_colors = []
+    consecutive_sectors = 0
+    distinct_colors = 0
+
+    # Iterate through the sectors
+    for sector in range(sectors):
+        # Add the color of the current sector to the team colors set
+        team_colors.add(teams[sector])
+
+        # If the current sector has a color that is not in the team colors set, increment the consecutive sectors count
+        if teams[sector] not in team_colors:
+            consecutive_sectors += 1
+
+        # If the consecutive sectors count is equal to the minimum required, increment the distinct colors count
+        if consecutive_sectors == min_consecutive:
+            distinct_colors += 1
+            consecutive_sectors = 0
+            team_colors = set()
+
+    # Return the minimum number of distinct colors required to satisfy the constraints
+    return min_distinct - distinct_colors
+
+if __name__ == '__main__':
+    sectors, min_consecutive, min_distinct = map(int, input().split())
+    teams = list(map(int, input().split()))
+    media_companies = get_media_companies(sectors, teams, min_consecutive, min_distinct)
+    minimum_distinct_colors = get_minimum_distinct_colors(sectors, teams, min_consecutive, min_distinct)
+    print(media_companies)
+    print(minimum_distinct_colors)
 

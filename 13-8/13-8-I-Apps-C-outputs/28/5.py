@@ -1,39 +1,34 @@
 
-def solve(n, m, edges):
-    # Initialize a dictionary to store the edges
-    graph = {}
+def find_secret_message(s):
+    # Initialize a dictionary to store the count of hidden strings
+    hidden_strings = {}
+    
+    # Loop through each substring of the text
+    for i in range(len(s)):
+        for j in range(i+1, len(s)):
+            # Check if the substring is a hidden string
+            if is_hidden_string(s[i:j+1]):
+                # If it is, increment the count in the dictionary
+                if s[i:j+1] in hidden_strings:
+                    hidden_strings[s[i:j+1]] += 1
+                else:
+                    hidden_strings[s[i:j+1]] = 1
+    
+    # Find the hidden string with the highest count
+    max_count = 0
+    secret_message = ""
+    for hidden_string, count in hidden_strings.items():
+        if count > max_count:
+            max_count = count
+            secret_message = hidden_string
+    
+    return secret_message
 
-    # Iterate over the edges and add them to the dictionary
-    for edge in edges:
-        u, v = edge[0], edge[1]
-        if u not in graph:
-            graph[u] = []
-        graph[u].append(v)
-        if v not in graph:
-            graph[v] = []
-        graph[v].append(u)
+def is_hidden_string(s):
+    # Check if the substring is a hidden string by checking if it is a subsequence of the text
+    return s in s
 
-    # Initialize a set to store the visited vertices
-    visited = set()
-
-    # Initialize a queue to store the vertices to be visited
-    queue = [1]
-
-    # Iterate while the queue is not empty
-    while queue:
-        # Dequeue a vertex from the queue
-        vertex = queue.pop(0)
-
-        # If the vertex has not been visited before, mark it as visited and add its neighbors to the queue
-        if vertex not in visited:
-            visited.add(vertex)
-            queue += graph[vertex]
-
-    # If all vertices have been visited, return "Yes" and the corresponding string
-    if len(visited) == n:
-        string = "a" * (n - 1) + "c"
-        return "Yes\n" + string
-
-    # Otherwise, return "No"
-    return "No"
+if __name__ == '__main__':
+    s = input()
+    print(find_secret_message(s))
 

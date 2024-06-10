@@ -1,31 +1,23 @@
 
-def get_rbs(s):
-    # Initialize a stack to keep track of the opening brackets
-    stack = []
-    # Initialize a count of the number of replacements needed
-    replacements = 0
+def get_min_number_of_sets(n, k):
+    return int(n/2) + (n%2)
 
-    for char in s:
-        # If the character is an opening bracket, push it onto the stack
-        if char in ["<", "{", "[", "("]:
-            stack.append(char)
-        # If the character is a closing bracket, pop the top element from the stack and check if it is the corresponding opening bracket
-        elif char in [">", "}", "]", ")"]:
-            # If the stack is empty, the string is not RBS and we return -1
-            if not stack:
-                return "Impossible"
-            # If the top element of the stack is not the corresponding opening bracket, we need to replace it with the correct opening bracket and increment the number of replacements
-            if stack[-1] != {"><": {"><", "}": "{", "]": "[", ")": "("}[char]:
-                replacements += 1
-                stack[-1] = {"><": {"><", "}": "{", "]": "[", ")": "("}[char]
-        # If the character is not a bracket, return -1
-        else:
-            return "Impossible"
+def get_max_number_of_students_with_favorite_drink(n, k, a):
+    sets = get_min_number_of_sets(n, k)
+    portions = [0] * k
+    for i in range(n):
+        portions[a[i]-1] += 1
+    max_students = 0
+    for i in range(k):
+        if portions[i] > 0:
+            max_students += portions[i]
+    return max_students
 
-    # If the string is RBS and all the brackets are balanced, return the number of replacements needed
-    if not stack and replacements % 2 == 0:
-        return replacements // 2
-    # If the string is not RBS or the number of replacements is odd, return -1
-    else:
-        return "Impossible"
+def main():
+    n, k = map(int, input().split())
+    a = list(map(int, input().split()))
+    print(get_max_number_of_students_with_favorite_drink(n, k, a))
+
+if __name__ == '__main__':
+    main()
 

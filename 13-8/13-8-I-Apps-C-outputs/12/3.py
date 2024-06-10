@@ -1,40 +1,42 @@
 
-def solve(n, m, beacons, mountain_peaks):
-    # Initialize a list to store the beacons that are lit
-    lit_beacons = []
-    # Loop through each beacon and check if it is within sight of any other beacon
-    for beacon in beacons:
-        # If the beacon is not already lit, check if it is within sight of any other beacon
-        if beacon not in lit_beacons:
-            # Loop through each other beacon and check if it is within sight of the current beacon
-            for other_beacon in beacons:
-                # If the other beacon is within sight of the current beacon, add it to the list of lit beacons
-                if is_within_sight(beacon, other_beacon, mountain_peaks):
-                    lit_beacons.append(other_beacon)
-        # Add the current beacon to the list of lit beacons
-        lit_beacons.append(beacon)
-    # Return the number of messages that must be carried by riders (which is the number of beacons that are not lit)
-    return n - len(lit_beacons)
+def get_possible_suspects(n, p, coders):
+    # Initialize a set to store the possible suspects
+    possible_suspects = set()
 
-# Check if two beacons are within sight of each other
-def is_within_sight(beacon1, beacon2, mountain_peaks):
-    # Loop through each mountain peak and check if it blocks the straight line between the two beacons
-    for mountain_peak in mountain_peaks:
-        # If the mountain peak blocks the straight line between the two beacons, return False
-        if is_blocked(beacon1, beacon2, mountain_peak):
-            return False
-    # If none of the mountain peaks block the straight line between the two beacons, return True
-    return True
+    # Iterate over each coder
+    for coder in coders:
+        # If the coder agrees with the head's choice, add their names to the set of possible suspects
+        if coder[0] in possible_suspects or coder[1] in possible_suspects:
+            possible_suspects.add(coder[0])
+            possible_suspects.add(coder[1])
 
-# Check if a straight line between two beacons is blocked by a mountain peak
-def is_blocked(beacon1, beacon2, mountain_peak):
-    # Calculate the straight line between the two beacons
-    line = (beacon2[0] - beacon1[0], beacon2[1] - beacon1[1])
-    # Calculate the distance from the first beacon to the mountain peak
-    distance = (mountain_peak[0] - beacon1[0]) ** 2 + (mountain_peak[1] - beacon1[1]) ** 2
-    # If the distance is less than or equal to the radius of the mountain peak, return True
-    if distance <= mountain_peak[2] ** 2:
-        return True
-    # Otherwise, return False
-    return False
+    # Return the number of possible suspects
+    return len(possible_suspects)
+
+def get_number_of_two_suspect_sets(n, p, coders):
+    # Get the possible suspects
+    possible_suspects = get_possible_suspects(n, p, coders)
+
+    # Initialize a set to store the two-suspect sets
+    two_suspect_sets = set()
+
+    # Iterate over each possible suspect
+    for suspect in possible_suspects:
+        # Add the suspect to the set of two-suspect sets
+        two_suspect_sets.add((suspect, suspect))
+
+        # Add the suspect to the set of two-suspect sets along with each of their neighbors
+        for neighbor in possible_suspects - {suspect}:
+            two_suspect_sets.add((suspect, neighbor))
+
+    # Return the number of two-suspect sets
+    return len(two_suspect_sets)
+
+if __name__ == '__main__':
+    n, p = map(int, input().split())
+    coders = []
+    for _ in range(n):
+        x, y = map(int, input().split())
+        coders.append((x, y))
+    print(get_number_of_two_suspect_sets(n, p, coders))
 

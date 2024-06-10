@@ -1,47 +1,73 @@
 
-def solve(n, k, rows):
+def get_min_night(n):
     # Initialize variables
-    num_status_passengers = 0
-    num_free_seats = 0
-    total_neighbors = 0
-    rows = rows.splitlines()
-
-    # Count the number of status passengers and free seats
-    for row in rows:
-        for seat in row:
-            if seat == 'S':
-                num_status_passengers += 1
-            elif seat == '.':
-                num_free_seats += 1
-
-    # Check if there are enough free seats to accommodate all the passengers
-    if num_free_seats < k:
+    night = 0
+    bacteria = 1
+    total_mass = 1
+    
+    # Loop until the total mass is equal to n
+    while total_mass < n:
+        # Increment the night
+        night += 1
+        
+        # Double the number of bacteria
+        bacteria *= 2
+        
+        # Increment the total mass by the number of bacteria
+        total_mass += bacteria
+    
+    # If the total mass is equal to n, return the minimum number of nights needed
+    if total_mass == n:
+        return night
+    
+    # If the total mass is not equal to n, return -1
+    else:
         return -1
 
-    # Seat the passengers
-    for i in range(k):
-        # Seat a passenger in the first available seat
-        for row in rows:
-            for j in range(len(row)):
-                if row[j] == '.':
-                    row[j] = 'x'
-                    break
-            else:
-                continue
-            break
-        else:
-            break
+def get_bacteria_split(n):
+    # Initialize variables
+    night = 0
+    bacteria = 1
+    total_mass = 1
+    split_bacteria = []
+    
+    # Loop until the total mass is equal to n
+    while total_mass < n:
+        # Increment the night
+        night += 1
+        
+        # Double the number of bacteria
+        bacteria *= 2
+        
+        # Increment the total mass by the number of bacteria
+        total_mass += bacteria
+        
+        # Add the number of bacteria that split to the list of split bacteria
+        split_bacteria.append(bacteria)
+    
+    # If the total mass is equal to n, return the minimum number of nights needed and the list of split bacteria
+    if total_mass == n:
+        return night, split_bacteria
+    
+    # If the total mass is not equal to n, return -1 and an empty list
+    else:
+        return -1, []
 
-    # Calculate the total number of neighbors
-    for row in rows:
-        for i in range(len(row)):
-            if row[i] == 'S':
-                # Check if the seat has a neighbor on the left
-                if i > 0 and row[i-1] == 'S':
-                    total_neighbors += 1
-                # Check if the seat has a neighbor on the right
-                if i < len(row)-1 and row[i+1] == 'S':
-                    total_neighbors += 1
-
-    return total_neighbors
+if __name__ == '__main__':
+    # Test case 1
+    n = 9
+    night, split_bacteria = get_bacteria_split(n)
+    print(night)
+    print(" ".join(map(str, split_bacteria)))
+    
+    # Test case 2
+    n = 11
+    night, split_bacteria = get_bacteria_split(n)
+    print(night)
+    print(" ".join(map(str, split_bacteria)))
+    
+    # Test case 3
+    n = 2
+    night = get_min_night(n)
+    print(night)
 

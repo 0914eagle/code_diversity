@@ -1,15 +1,29 @@
 
-def solve(n, strength):
-    # Initialize a dictionary to store the teammate of each contestant
-    teammates = {}
-    
-    # Loop through each possible combination of two contestants
-    for i in range(1, n + 1):
-        for j in range(i + 1, n + 1):
-            # If the strength of the team is the highest so far, update the teammate of contestant i
-            if strength[i][j] > strength[i][teammates.get(i, 0)]:
-                teammates[i] = j
-    
-    # Return the teammate of each contestant
-    return [teammates.get(i, 0) for i in range(1, n + 1)]
+def get_divisors(n):
+    divisors = []
+    for i in range(1, int(n**0.5) + 1):
+        if n % i == 0:
+            divisors.append(i)
+            if i * i != n:
+                divisors.append(n // i)
+    divisors.sort(reverse=True)
+    return divisors
+
+def is_lovely(n):
+    divisors = get_divisors(n)
+    for d in divisors:
+        if d**2 == n:
+            return False
+    return True
+
+def get_biggest_lovely(n):
+    divisors = get_divisors(n)
+    for d in divisors:
+        if is_lovely(d):
+            return d
+    return 1
+
+if __name__ == '__main__':
+    n = int(input())
+    print(get_biggest_lovely(n))
 

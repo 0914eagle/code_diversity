@@ -1,13 +1,21 @@
 
-def get_balanced_ternary_string(s):
-    n = len(s)
-    count = [s.count(i) for i in '012']
-    diff = max(count) - min(count)
-    if diff > 1:
-        return -1
-    elif diff == 0:
-        return s
-    else:
-        char = '012'[count.index(min(count))]
-        return s.replace(char, '012'[(count.index(min(count)) + 1) % 3])
+def get_input():
+    N = int(input())
+    A = list(map(int, input().split()))
+    return N, A
+
+def get_subordinates(N, A):
+    subordinates = [0] * (N + 1)
+    for i in range(2, N + 1):
+        subordinates[A[i]] += 1
+    return subordinates
+
+def main():
+    N, A = get_input()
+    subordinates = get_subordinates(N, A)
+    for i in range(1, N + 1):
+        print(subordinates[i])
+
+if __name__ == '__main__':
+    main()
 

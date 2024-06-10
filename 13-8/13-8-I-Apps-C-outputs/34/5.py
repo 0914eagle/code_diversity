@@ -1,27 +1,44 @@
 
-def verify_cleaning(wells, pipes):
-    # Initialize a graph with the wells as nodes
-    graph = {}
-    for well in wells:
-        graph[well] = []
+def is_playable(frequencies):
+    # Initialize a dictionary to store the current position of the read/write head for each frequency
+    head_positions = {}
+    for frequency in frequencies:
+        head_positions[frequency] = 0
 
-    # Add edges to the graph based on the pipes
-    for pipe in pipes:
-        graph[pipe[0]].append(pipe[1:])
+    # Initialize a set to store the frequencies that are currently playing
+    playing_frequencies = set()
 
-    # Check if the graph is connected
-    visited = set()
-    queue = [wells[0]]
-    while queue:
-        node = queue.pop(0)
-        if node not in visited:
-            visited.add(node)
-            queue.extend(graph[node])
+    # Iterate through the intervals for each frequency
+    for frequency, intervals in frequencies.items():
+        for interval in intervals:
+            # If the current position of the read/write head for this frequency is within the interval, play the frequency
+            if head_positions[frequency] >= interval[0] and head_positions[frequency] <= interval[1]:
+                playing_frequencies.add(frequency)
+            # Otherwise, stop playing the frequency
+            else:
+                playing_frequencies.discard(frequency)
 
-    # If the graph is connected, return "possible"
-    if len(visited) == len(wells):
+            # Update the position of the read/write head for this frequency
+            head_positions[frequency] += 1
+
+    # If all frequencies are playing, return "possible", otherwise return "impossible"
+    if len(playing_frequencies) == len(frequencies):
         return "possible"
+    else:
+        return "impossible"
 
-    # If the graph is not connected, return "impossible"
-    return "impossible"
+def main():
+    f = int(input())
+    frequencies = {}
+    for _ in range(f):
+        t, n = map(int, input().split())
+        intervals = []
+        for _ in range(n):
+            t1, t2 = map(int, input().split())
+            intervals.append((t1, t2))
+        frequencies[t] = intervals
+    print(is_playable(frequencies))
+
+if __name__ == '__main__':
+    main()
 

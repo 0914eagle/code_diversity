@@ -1,24 +1,67 @@
 
-def find_minimum_spanning_tree(points):
-    # Sort the points by their x-coordinate
-    sorted_points = sorted(points, key=lambda point: point[0])
+def get_max_value(sequence):
+    # Find the maximum value in the sequence
+    max_value = max(sequence)
 
-    # Create a dictionary to store the edges of the minimum spanning tree
-    mst = {}
+    # Initialize the number of operations to 0
+    operations = 0
 
-    # Loop through the points and add the edges to the minimum spanning tree
-    for i in range(len(sorted_points)):
-        current_point = sorted_points[i]
-        for j in range(i+1, len(sorted_points)):
-            next_point = sorted_points[j]
-            distance = abs(current_point[0] - next_point[0]) + abs(current_point[1] - next_point[1])
-            mst[(current_point, next_point)] = distance
+    # Loop until the sequence has only one element
+    while len(sequence) > 1:
+        # Find the index of the maximum value in the sequence
+        max_index = sequence.index(max_value)
 
-    # Find the minimum weight edge in the minimum spanning tree
-    min_weight = float('inf')
-    for edge, weight in mst.items():
-        if weight < min_weight:
-            min_weight = weight
+        # If the maximum value is at the end of the sequence, delete it
+        if max_index == len(sequence) - 1:
+            sequence.pop()
+        # If the maximum value is at the beginning of the sequence, delete it
+        elif max_index == 0:
+            sequence.pop(0)
+        # If the maximum value is in the middle of the sequence, replace it with the sum of the two adjacent elements and delete them
+        else:
+            sequence[max_index] = sequence[max_index - 1] + sequence[max_index + 1]
+            sequence.pop(max_index - 1)
+            sequence.pop(max_index - 1)
 
-    return min_weight
+        # Increment the number of operations
+        operations += 1
+
+        # Find the new maximum value in the sequence
+        max_value = max(sequence)
+
+    # Return the maximum value and the number of operations
+    return max_value, operations
+
+def get_chosen_indices(sequence, operations):
+    # Initialize an empty list to store the indices of the chosen elements
+    chosen_indices = []
+
+    # Loop through the sequence and the operations
+    for i in range(len(sequence)):
+        # If the current element is chosen in the current operation, add its index to the list of chosen indices
+        if i == operations[i]:
+            chosen_indices.append(i)
+
+    # Return the list of chosen indices
+    return chosen_indices
+
+if __name__ == '__main__':
+    # Read the input sequence from stdin
+    sequence = list(map(int, input().split()))
+
+    # Get the maximum value and the number of operations
+    max_value, operations = get_max_value(sequence)
+
+    # Get the indices of the chosen elements
+    chosen_indices = get_chosen_indices(sequence, operations)
+
+    # Print the maximum value
+    print(max_value)
+
+    # Print the number of operations
+    print(operations)
+
+    # Print the indices of the chosen elements
+    for i in range(len(chosen_indices)):
+        print(chosen_indices[i] + 1)
 

@@ -1,26 +1,28 @@
 
-def solve(x, y):
-    # Convert the binary strings to integers
-    x_int = int(x, 2)
-    y_int = int(y, 2)
-    
-    # Initialize the minimum k and its corresponding reverse binary string
-    min_k = 0
-    min_rev_k = ""
-    
-    # Iterate through all possible values of k
-    for k in range(x_int.bit_length()):
-        # Calculate the sum of x and y multiplied by 2^k
-        sum_k = x_int + (y_int << k)
-        
-        # Convert the sum to a binary string and reverse it
-        rev_k = bin(sum_k)[2:][::-1]
-        
-        # If the reverse binary string is lexicographically smaller than the current minimum, update the minimum k and its reverse binary string
-        if rev_k < min_rev_k:
-            min_k = k
-            min_rev_k = rev_k
-    
-    # Return the minimum k
-    return min_k
+def get_matrix_size():
+    n, m, d = map(int, input().split())
+    return n, m, d
+
+def get_matrix(n, m):
+    matrix = []
+    for i in range(n):
+        matrix.append(list(map(int, input().split())))
+    return matrix
+
+def get_min_moves(matrix, d):
+    n, m = len(matrix), len(matrix[0])
+    min_moves = 0
+    for i in range(n):
+        for j in range(m):
+            min_moves += abs(matrix[i][j] - d)
+    return min_moves
+
+def main():
+    n, m, d = get_matrix_size()
+    matrix = get_matrix(n, m)
+    min_moves = get_min_moves(matrix, d)
+    print(min_moves)
+
+if __name__ == '__main__':
+    main()
 

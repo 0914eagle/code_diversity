@@ -1,38 +1,42 @@
 
-def get_rbs(s):
-    # Initialize a counter for the number of replacements
-    count = 0
+def get_maximum_students_with_favorite_drink(n, k, a):
+    # Initialize variables
+    max_students = 0
+    current_students = 0
+    current_sets = 0
+    sets_used = []
 
-    # Check if the string is empty
-    if not s:
-        return count
+    # Iterate through all possible sets
+    for i in range(1, k + 1):
+        for j in range(1, k + 1):
+            if i != j:
+                # Check if the current set is already used
+                if (i, j) not in sets_used:
+                    # Add the current set to the used sets
+                    sets_used.append((i, j))
+                    current_sets += 1
 
-    # Initialize a stack to keep track of the opening brackets
-    stack = []
+                    # Check if the current set gives a student his favorite drink
+                    for student in a:
+                        if student == i or student == j:
+                            current_students += 1
 
-    # Iterate through the string
-    for char in s:
-        # If the character is an opening bracket, push it to the stack
-        if char in ["<", "{", "[", "("]:
-            stack.append(char)
-        # If the character is a closing bracket, pop the top element from the stack and check if it matches the closing bracket
-        elif char in [">", "}", "]", ")"]:
-            # If the stack is empty, the string is not RBS and we can return -1
-            if not stack:
-                return -1
-            # Pop the top element from the stack
-            top = stack.pop()
-            # If the popped element does not match the closing bracket, we need to replace it with the corresponding opening bracket
-            if top != {
-                "<": ">",
-                "{": "}",
-                "[": "]",
-                "(": ")"
-            }[char]:
-                count += 1
-    # If the stack is not empty, the string is not RBS and we can return -1
-    if stack:
-        return -1
-    # Return the number of replacements needed
-    return count
+                    # Check if the current configuration is the maximum
+                    if current_students > max_students:
+                        max_students = current_students
+
+                    # Reset the current configuration
+                    current_students = 0
+                    current_sets = 0
+                    sets_used = []
+
+    return max_students
+
+def main():
+    n, k = map(int, input().split())
+    a = list(map(int, input().split()))
+    print(get_maximum_students_with_favorite_drink(n, k, a))
+
+if __name__ == '__main__':
+    main()
 

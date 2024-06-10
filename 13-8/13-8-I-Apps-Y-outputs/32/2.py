@@ -1,27 +1,29 @@
 
-def get_maximum_free_tables(s, k):
-    # Initialize variables
-    n = len(s)
-    count = 0
-    i = 0
-    j = 0
+def equalize_prices(n, k, a):
+    # Sort the prices in non-decreasing order
+    a.sort()
+    # Initialize the minimum difference between prices as k
+    min_diff = k
+    # Initialize the equal price as the minimum price
+    equal_price = a[0]
+    # Iterate over the prices
+    for i in range(1, n):
+        # Calculate the difference between the current price and the previous price
+        diff = a[i] - a[i - 1]
+        # If the difference is less than the minimum difference, update the minimum difference and equal price
+        if diff < min_diff:
+            min_diff = diff
+            equal_price = a[i - 1]
+    # Return the equal price
+    return equal_price
 
-    # Iterate through the string
-    while i < n and j < n:
-        # If the current character is '0', increment the count
-        if s[j] == '0':
-            count += 1
-        # If the current character is '1', check if it violates the rule
-        elif s[j] == '1':
-            # If the difference between the current index and the previous index is less than or equal to k, decrement the count
-            if j - i <= k:
-                count -= 1
-            # If the count becomes negative, return 0
-            if count < 0:
-                return 0
-        i = j
-        j += 1
+def main():
+    q = int(input())
+    for _ in range(q):
+        n, k = map(int, input().split())
+        a = list(map(int, input().split()))
+        print(equalize_prices(n, k, a))
 
-    # Return the maximum number of free tables
-    return count
+if __name__ == '__main__':
+    main()
 

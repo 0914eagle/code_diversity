@@ -1,24 +1,45 @@
 
-def find_candidate_locations(robot_image, floor_image):
-    # Initialize a list to store the candidate locations
-    candidates = []
+def solve(queries):
+    # Initialize an empty string to store the answers
+    answers = ""
     
-    # Loop through each possible location to overlay the robot image on the floor image
-    for x in range(len(floor_image) - len(robot_image) + 1):
-        for y in range(len(floor_image[0]) - len(robot_image[0]) + 1):
-            # Calculate the number of pixels that are the same between the two images
-            num_same_pixels = 0
-            for i in range(len(robot_image)):
-                for j in range(len(robot_image[0])):
-                    if robot_image[i][j] == floor_image[i + x][j + y]:
-                        num_same_pixels += 1
+    # Iterate through each query
+    for query in queries:
+        # Get the current string and the index of the character to find
+        string, index = query
+        
+        # If the index is 1, the answer is the first character of the string
+        if index == 1:
+            answers += string[0]
+        # If the index is greater than 1, find the k-th character of the string
+        else:
+            # Initialize a variable to store the current string
+            current_string = string
             
-            # If the number of same pixels is greater than the current maximum, add the location to the candidates list
-            if num_same_pixels > max_same_pixels:
-                candidates.append((x, y))
+            # Iterate through each index
+            for i in range(2, index+1):
+                # Find the k-th character of the current string
+                current_string = current_string[current_string.find(string)+1:]
+            
+            # Add the answer to the answers string
+            answers += current_string[0]
     
-    # Sort the candidates by x-coordinate and then by y-coordinate
-    candidates.sort(key=lambda x: (x[0], x[1]))
+    # Return the answers string
+    return answers
+
+def main():
+    # Read the number of queries
+    queries = int(input())
     
-    return candidates
+    # Read the queries
+    queries = [input().split() for _ in range(queries)]
+    
+    # Solve the queries
+    answers = solve(queries)
+    
+    # Print the answers
+    print(answers)
+
+if __name__ == '__main__':
+    main()
 

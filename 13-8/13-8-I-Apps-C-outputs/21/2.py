@@ -1,27 +1,46 @@
 
-def solve(N, K, board):
-    # Initialize a two-dimensional array to store the sums of the numbers in each row
-    sums = [[0] * 3 for _ in range(N)]
+def get_min_path_length(fragments, assembly_node):
+    # Initialize a dictionary to store the shortest path length from each fragment to the assembly node
+    shortest_path_lengths = {}
+    
+    # Loop through each fragment
+    for fragment in fragments:
+        # Initialize the shortest path length for this fragment to infinity
+        shortest_path_length = float('inf')
+        
+        # Loop through each node in the system
+        for node in range(1, len(fragments) + 1):
+            # If the current node is the fragment or the assembly node, skip it
+            if node == fragment or node == assembly_node:
+                continue
+            
+            # If the current node is not the fragment or the assembly node, calculate the distance between the current node and the fragment
+            distance = abs(fragment - node)
+            
+            # If the distance is less than the current shortest path length, update the shortest path length
+            if distance < shortest_path_length:
+                shortest_path_length = distance
+        
+        # Add the shortest path length for this fragment to the dictionary
+        shortest_path_lengths[fragment] = shortest_path_length
+    
+    # Return the sum of the shortest path lengths for all fragments
+    return sum(shortest_path_lengths.values())
 
-    # Calculate the sum of the numbers in each row
-    for i in range(N):
-        for j in range(3):
-            sums[i][j] = sums[i][j - 1] + board[i][j]
+def main():
+    # Read the number of fragments and the locations of the fragments from stdin
+    num_fragments = int(input())
+    fragments = list(map(int, input().split()))
+    
+    # Determine the assembly node
+    assembly_node = 1
+    
+    # Calculate the minimum path length from each fragment to the assembly node
+    min_path_length = get_min_path_length(fragments, assembly_node)
+    
+    # Print the minimum path length
+    print(min_path_length)
 
-    # Initialize a variable to store the maximum sum
-    max_sum = 0
-
-    # Iterate through all possible combinations of dominoes
-    for i in range(K):
-        for j in range(i, K):
-            # Calculate the sum of the numbers covered by the current combination of dominoes
-            sum = 0
-            for k in range(N):
-                sum += max(sums[k][j], sums[k][i]) - sums[k][i - 1]
-
-            # Update the maximum sum if necessary
-            if sum > max_sum:
-                max_sum = sum
-
-    return max_sum
+if __name__ == '__main__':
+    main()
 

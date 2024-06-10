@@ -1,24 +1,16 @@
 
-def get_maximum_clique_size(A):
-    # Initialize a dictionary to store the divisibility relationships
-    divisibility = {}
-    for i in range(len(A)):
-        for j in range(i+1, len(A)):
-            if A[i] % A[j] == 0 or A[j] % A[i] == 0:
-                divisibility[(A[i], A[j])] = True
-            else:
-                divisibility[(A[i], A[j])] = False
-    
-    # Initialize a set to store the maximum clique
-    max_clique = set()
-    
-    # Iterate through the dictionary and find the maximum clique
-    for i in range(len(A)):
-        for j in range(i+1, len(A)):
-            if divisibility[(A[i], A[j])] and A[i] not in max_clique and A[j] not in max_clique:
-                max_clique.add(A[i])
-                max_clique.add(A[j])
-                break
-    
-    return len(max_clique)
+def calculate_max_profit(buns, patties, cutlets, hamburger_price, chicken_price):
+    hamburgers = min(buns // 2, patties)
+    chicken_burgers = min(buns // 2, cutlets)
+    return hamburgers * hamburger_price + chicken_burgers * chicken_price
+
+def main():
+    queries = int(input())
+    for _ in range(queries):
+        buns, patties, cutlets = map(int, input().split())
+        hamburger_price, chicken_price = map(int, input().split())
+        print(calculate_max_profit(buns, patties, cutlets, hamburger_price, chicken_price))
+
+if __name__ == '__main__':
+    main()
 

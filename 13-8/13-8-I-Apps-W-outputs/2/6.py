@@ -1,46 +1,38 @@
 
-def solve(n, m, cubes):
-    # Initialize a 2D array to store the number of cubes on each square
-    num_cubes = [[0] * n for _ in range(n)]
+def get_max_length(logs, K):
+    # Sort the logs by length in descending order
+    logs.sort(reverse=True)
     
-    # Count the number of cubes on each square
-    for cube in cubes:
-        num_cubes[cube[0] - 1][cube[1] - 1] += 1
+    # Initialize the maximum length and the number of cuts
+    max_length = 0
+    num_cuts = 0
     
-    # Initialize a queue to store the moves
-    queue = []
+    # Loop through the logs and make cuts
+    for log in logs:
+        # Check if the number of cuts is less than or equal to K
+        if num_cuts <= K:
+            # Calculate the length of the longest log after the cut
+            max_length = max(max_length, log // 2)
+            # Increment the number of cuts
+            num_cuts += 1
+        else:
+            # If the number of cuts is greater than K, break the loop
+            break
     
-    # Add the first move to the queue
-    queue.append((0, 0, 1))
+    # Return the rounded up maximum length
+    return int(math.ceil(max_length))
+
+def main():
+    # Read the input
+    N, K = map(int, input().split())
+    logs = list(map(int, input().split()))
     
-    # Loop until the queue is empty
-    while queue:
-        # Get the current move
-        current_move = queue.pop(0)
-        row, col, num_moves = current_move
-        
-        # Check if the current move is the last move
-        if num_moves == m:
-            return row + 1
-        
-        # Get the number of cubes on the current square
-        num_cubes_on_square = num_cubes[row][col]
-        
-        # Check if the current square has a cube
-        if num_cubes_on_square == 0:
-            continue
-        
-        # Remove the cube from the current square
-        num_cubes[row][col] -= 1
-        
-        # Add the move to the queue
-        queue.append((row, col, num_moves + 1))
-        
-        # Add the move to the queue for the adjacent squares
-        for r, c in [(row - 1, col), (row + 1, col), (row, col - 1), (row, col + 1)]:
-            if 0 <= r < n and 0 <= c < n:
-                queue.append((r, c, num_moves + 1))
+    # Get the maximum length after at most K cuts
+    max_length = get_max_length(logs, K)
     
-    # If the queue is empty, return -1
-    return -1
+    # Print the result
+    print(max_length)
+
+if __name__ == '__main__':
+    main()
 

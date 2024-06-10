@@ -1,29 +1,36 @@
 
-def solve(arr):
-    n = len(arr)
-    if n == 1:
-        return 0
+def get_min_extensions(a, b, h, w, n, extensions):
+    # Initialize the minimum number of extensions needed to be 0
+    min_extensions = 0
     
-    # Sort the array
-    arr.sort()
+    # Check if the rectangle can be placed on the initial field
+    if a <= h and b <= w:
+        return min_extensions
     
-    # Initialize variables
-    min_removal = 0
-    current_removal = 0
-    previous_element = arr[0]
+    # Sort the extensions in descending order
+    extensions.sort(reverse=True)
     
-    # Iterate through the array
-    for i in range(1, n):
-        current_element = arr[i]
-        if current_element == previous_element:
-            current_removal += 1
-        else:
-            min_removal = max(min_removal, current_removal)
-            current_removal = 0
-        previous_element = current_element
+    # Iterate through the extensions
+    for extension in extensions:
+        # Check if the extension can be used to enlarge the width or the length of the field
+        if extension <= h or extension <= w:
+            # Increase the minimum number of extensions needed
+            min_extensions += 1
+            # Decrease the size of the field by the extension
+            h -= extension
+            w -= extension
     
-    # Handle the last element
-    min_removal = max(min_removal, current_removal)
-    
-    return min_removal
+    # Check if the rectangle can be placed on the field after all the extensions are used
+    if a <= h and b <= w:
+        return min_extensions
+    else:
+        return -1
+
+def main():
+    a, b, h, w, n = map(int, input().split())
+    extensions = list(map(int, input().split()))
+    print(get_min_extensions(a, b, h, w, n, extensions))
+
+if __name__ == '__main__':
+    main()
 

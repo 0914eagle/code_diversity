@@ -1,34 +1,43 @@
 
-def get_longest_match(repository, code_snippet):
-    # Initialize the longest match length and file names
-    longest_match_length = 0
-    file_names = []
+import math
+
+def get_input():
+    n = int(input())
+    edges = []
+    for i in range(n-1):
+        u, v = map(int, input().split())
+        edges.append((u, v))
+    return n, edges
+
+def solve(n, edges):
+    # Check if the tree has a path of length 2
+    for u, v in edges:
+        if u == v:
+            return "NO"
     
-    # Iterate over the repository fragments
-    for fragment in repository:
-        # Initialize the current match length
-        current_match_length = 0
-        
-        # Iterate over the lines of the fragment and the code snippet
-        for i in range(len(fragment)):
-            # Check if the lines match
-            if fragment[i] == code_snippet[i]:
-                # Increment the current match length
-                current_match_length += 1
-            else:
-                # Break out of the loop if the lines don't match
-                break
-        
-        # Check if the current match length is greater than the longest match length
-        if current_match_length > longest_match_length:
-            # Update the longest match length and file names
-            longest_match_length = current_match_length
-            file_names = [fragment[0]]
-        # Check if the current match length is equal to the longest match length
-        elif current_match_length == longest_match_length:
-            # Add the file name to the list of file names
-            file_names.append(fragment[0])
+    # Check if the tree has a cycle
+    visited = set()
+    for u, v in edges:
+        if u in visited and v in visited:
+            return "NO"
+        visited.add(u)
+        visited.add(v)
     
-    # Return the longest match length and file names
-    return longest_match_length, file_names
+    # Check if the tree is a binary tree
+    if len(edges) != n - 1:
+        return "NO"
+    
+    # Check if the tree has a path of length 3
+    for u, v in edges:
+        if u == 1 and v == 2:
+            return "NO"
+    
+    return "YES"
+
+def main():
+    n, edges = get_input()
+    print(solve(n, edges))
+
+if __name__ == '__main__':
+    main()
 

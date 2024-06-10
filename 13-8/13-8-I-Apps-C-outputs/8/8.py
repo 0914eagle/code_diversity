@@ -1,15 +1,35 @@
 
-def solve(street, patterns):
-    n = len(street)
-    m = len(patterns)
-    dp = [0] * (n + 1)
+def get_longest_exploration_sequence(array, d, m):
+    # Initialize variables
+    n = len(array)
+    visited = [False] * n
+    longest = 0
+    current = 0
+    visited[current] = True
+
+    # Iterate through the array
     for i in range(n):
-        for j in range(m):
-            if street[i] == patterns[j][0]:
-                dp[i + 1] += 1
-    for i in range(1, n + 1):
-        for j in range(m):
-            if i - len(patterns[j]) >= 0 and street[i - len(patterns[j])] == patterns[j][0]:
-                dp[i] = max(dp[i], dp[i - len(patterns[j])] + 1)
-    return n - dp[n]
+        # Find the next unvisited element that is within the hopper's jump distance and value difference
+        for j in range(current + 1, min(current + d + 1, n)):
+            if not visited[j] and abs(array[j] - array[current]) <= m:
+                current = j
+                visited[current] = True
+                longest = max(longest, j - current)
+                break
+
+    return longest
+
+def main():
+    # Read input
+    n, d, m = map(int, input().split())
+    array = list(map(int, input().split()))
+
+    # Call the function
+    longest = get_longest_exploration_sequence(array, d, m)
+
+    # Print output
+    print(longest)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,30 +1,43 @@
 
-def solve(n, b):
-    # Check if the sequence is already strictly increasing
-    if all(b[i] < b[i+1] for i in range(n-1)):
-        return "Yes\n" + " ".join(str(x) for x in b)
-    
-    # Find a permutation of the sequence that is strictly increasing
-    permutation = find_permutation(b)
-    if permutation is not None:
-        return "Yes\n" + " ".join(str(x) for x in permutation)
-    
-    return "No"
+def read_input():
+    N = int(input())
+    students = []
+    for _ in range(N):
+        students.append(tuple(map(int, input().split())))
+    tutors = []
+    for _ in range(N):
+        tutors.append(tuple(map(int, input().split())))
+    return N, students, tutors
 
-def find_permutation(b):
-    # Initialize the permutation with the first element of the sequence
-    permutation = [b[0]]
-    for i in range(1, len(b)):
-        # Find the first element in the permutation that is greater than b[i]
-        # and insert b[i] before it
-        for j in range(len(permutation)):
-            if permutation[j] > b[i]:
-                permutation.insert(j, b[i])
+def get_distance(student, tutor):
+    return abs(student[0] - tutor[0]) + abs(student[1] - tutor[1])
+
+def get_pairing(students, tutors):
+    distances = []
+    for student in students:
+        for tutor in tutors:
+            distances.append(get_distance(student, tutor))
+    return min(distances)
+
+def solve(N, students, tutors):
+    min_distance = get_pairing(students, tutors)
+    for i in range(N):
+        student = students[i]
+        for j in range(N):
+            tutor = tutors[j]
+            if get_distance(student, tutor) > min_distance:
+                continue
+            students_copy = students[:]
+            tutors_copy = tutors[:]
+            students_copy.pop(i)
+            tutors_copy.pop(j)
+            min_distance_copy = get_pairing(students_copy, tutors_copy)
+            if min_distance_copy < min_distance:
+                min_distance = min_distance_copy
                 break
-        else:
-            # If we reach this point, it means that b[i] is the largest element
-            # in the permutation, so we can add it to the end
-            permutation.append(b[i])
-    
-    return permutation
+    return min_distance
+
+if __name__ == '__main__':
+    N, students, tutors = read_input()
+    print(solve(N, students, tutors))
 

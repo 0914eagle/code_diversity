@@ -1,26 +1,40 @@
 
-def get_min_m(n, k):
-    m = 1
-    while True:
-        sets = []
-        for i in range(n):
-            set_size = 0
-            while set_size < 4:
-                num = m
-                for set_ in sets:
-                    if num in set_:
-                        break
-                else:
-                    sets.append([num])
-                    set_size += 1
-            sets[i].sort()
-        gcds = []
-        for set_ in sets:
-            gcd = set_[0]
-            for num in set_[1:]:
-                gcd = gcd(gcd, num)
-            gcds.append(gcd)
-        if all(gcd == k for gcd in gcds):
-            return m
-        m += 1
+def is_check(n, a_x, a_y, b_x, b_y, c_x, c_y):
+    # Check if the king is in check
+    if a_x == b_x and (a_y == b_y + 1 or a_y == b_y - 1):
+        return True
+    if a_y == b_y and (a_x == b_x + 1 or a_x == b_x - 1):
+        return True
+    if abs(a_x - b_x) == abs(a_y - b_y):
+        return True
+    return False
+
+def is_move_possible(n, a_x, a_y, b_x, b_y, c_x, c_y):
+    # Check if the move is possible
+    if c_x < 1 or c_x > n or c_y < 1 or c_y > n:
+        return False
+    if abs(c_x - b_x) > 1 or abs(c_y - b_y) > 1:
+        return False
+    return True
+
+def can_king_move_to_c(n, a_x, a_y, b_x, b_y, c_x, c_y):
+    # Check if the king can move to the target location without getting in check
+    if not is_move_possible(n, a_x, a_y, b_x, b_y, c_x, c_y):
+        return False
+    if is_check(n, a_x, a_y, b_x, b_y, c_x, c_y):
+        return False
+    return True
+
+def main():
+    n = int(input())
+    a_x, a_y = map(int, input().split())
+    b_x, b_y = map(int, input().split())
+    c_x, c_y = map(int, input().split())
+    if can_king_move_to_c(n, a_x, a_y, b_x, b_y, c_x, c_y):
+        print("YES")
+    else:
+        print("NO")
+
+if __name__ == '__main__':
+    main()
 

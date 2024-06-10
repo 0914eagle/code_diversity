@@ -1,21 +1,17 @@
 
-def get_initial_sequences(a):
-    n = len(a)
-    if n == 0:
-        return "NO"
-    
-    inc_seq = []
-    dec_seq = []
-    for i in range(n):
-        if i == 0:
-            inc_seq.append(a[i])
-            dec_seq.append(a[i])
-        elif a[i] > inc_seq[-1]:
-            inc_seq.append(a[i])
-        elif a[i] < dec_seq[-1]:
-            dec_seq.append(a[i])
-        else:
-            return "NO"
-    
-    return "YES", inc_seq, dec_seq
+def get_kth_substring(s, k):
+    substrings = []
+    for i in range(len(s)):
+        for j in range(i+1, len(s)+1):
+            substrings.append(s[i:j])
+    substrings.sort()
+    return substrings[k-1]
+
+def main():
+    s = input()
+    k = int(input())
+    print(get_kth_substring(s, k))
+
+if __name__ == '__main__':
+    main()
 

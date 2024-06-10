@@ -1,33 +1,49 @@
 
-def solve(n, arr):
-    # Initialize variables to keep track of the number of consecutive days Vasya spends doing sport or writing contests
-    consecutive_sport_days = 0
-    consecutive_contest_days = 0
-    # Initialize variable to keep track of the minimum number of days Vasya has a rest
-    min_rest_days = 0
-    
-    # Iterate through the array of information about each day
-    for i in range(n):
-        # If the gym is open on this day
-        if arr[i] % 2 == 1:
-            # If Vasya does sport on this day, increment the number of consecutive sport days
-            if arr[i] == 1 or arr[i] == 3:
-                consecutive_sport_days += 1
-            # If Vasya writes the contest on this day, increment the number of consecutive contest days
-            if arr[i] == 2 or arr[i] == 3:
-                consecutive_contest_days += 1
-        # If the gym is closed on this day
-        else:
-            # If Vasya writes the contest on this day, increment the number of consecutive contest days
-            if arr[i] == 1:
-                consecutive_contest_days += 1
-        
-        # If Vasya has completed two consecutive days of doing sport or writing contests, increment the minimum number of days he has a rest
-        if consecutive_sport_days == 2 or consecutive_contest_days == 2:
-            min_rest_days += 1
-            consecutive_sport_days = 0
-            consecutive_contest_days = 0
-    
-    # Return the minimum number of days Vasya has a rest
-    return min_rest_days
+def get_input():
+    N = int(input())
+    parents = list(map(int, input().split()))
+    weights = list(map(int, input().split()))
+    return N, parents, weights
+
+def is_possible(N, parents, weights):
+    # Initialize the color of the root vertex as white
+    colors = ["white"] * (N + 1)
+    # Initialize the total weight of each vertex as 0
+    total_weight = [0] * (N + 1)
+    # Initialize the size of each subtree as 1
+    size = [1] * (N + 1)
+
+    for i in range(2, N + 1):
+        # Get the parent of vertex i
+        parent = parents[i - 1]
+        # Get the weight of vertex i
+        weight = weights[i - 1]
+        # Update the color of vertex i based on the color of its parent
+        colors[i] = "black" if colors[parent] == "white" else "white"
+        # Update the total weight of vertex i based on the weight of its parent
+        total_weight[i] = total_weight[parent] + weight
+        # Update the size of vertex i based on the size of its parent
+        size[i] = size[parent] + 1
+
+    for i in range(2, N + 1):
+        # Get the weight of vertex i
+        weight = weights[i - 1]
+        # Get the total weight of the subtree rooted at vertex i
+        subtree_total_weight = total_weight[i]
+        # Get the size of the subtree rooted at vertex i
+        subtree_size = size[i]
+        # Calculate the expected weight of the subtree rooted at vertex i
+        expected_weight = subtree_size * weight
+        # Check if the expected weight is equal to the actual weight of the subtree
+        if expected_weight != subtree_total_weight:
+            return False
+
+    return True
+
+def main():
+    N, parents, weights = get_input()
+    print("POSSIBLE" if is_possible(N, parents, weights) else "IMPOSSIBLE")
+
+if __name__ == '__main__':
+    main()
 

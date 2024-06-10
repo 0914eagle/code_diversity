@@ -1,25 +1,23 @@
 
-def find_sequences(a):
-    n = len(a)
-    if n == 0:
-        return "NO"
-    
-    # initialize the increasing and decreasing sequences
-    inc_seq = []
-    dec_seq = []
-    
-    # iterate through the elements of a
-    for i in range(n):
-        # if the element is greater than the last element of the increasing sequence, add it to the increasing sequence
-        if len(inc_seq) == 0 or inc_seq[-1] < a[i]:
-            inc_seq.append(a[i])
-        # if the element is less than the last element of the decreasing sequence, add it to the decreasing sequence
-        elif len(dec_seq) == 0 or dec_seq[-1] > a[i]:
-            dec_seq.append(a[i])
-        # if the element is already in the increasing or decreasing sequence, return "NO"
-        else:
-            return "NO"
-    
-    # return "YES" and the increasing and decreasing sequences
-    return "YES", inc_seq, dec_seq
+def get_substrings(s):
+    substrings = []
+    for i in range(len(s)):
+        for j in range(i+1, len(s)+1):
+            substring = s[i:j]
+            if substring not in substrings:
+                substrings.append(substring)
+    return substrings
+
+def get_kth_substring(s, k):
+    substrings = get_substrings(s)
+    substrings.sort()
+    return substrings[k-1]
+
+def main():
+    s = input()
+    k = int(input())
+    print(get_kth_substring(s, k))
+
+if __name__ == '__main__':
+    main()
 

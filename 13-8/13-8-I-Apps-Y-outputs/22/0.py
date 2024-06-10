@@ -1,15 +1,20 @@
 
-def solve(n, k, arr):
-    left, right = 0, n-1
-    count = 0
-    while left >= 0 and right < n:
-        if arr[left] <= k:
-            count += 1
-            left -= 1
-        if arr[right] <= k:
-            count += 1
-            right += 1
-        left -= 1
-        right += 1
-    return count
+def solve(numbers):
+    sheet = set()
+    for number in numbers:
+        if number in sheet:
+            sheet.remove(number)
+        else:
+            sheet.add(number)
+    return len(sheet)
+
+def main():
+    num_cases = int(input())
+    for case in range(1, num_cases + 1):
+        N = int(input())
+        numbers = [int(input()) for _ in range(N)]
+        print(f"Case #{case}: {solve(numbers)}")
+
+if __name__ == '__main__':
+    main()
 

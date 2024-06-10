@@ -1,12 +1,26 @@
 
-def pistol_shooting(n, a):
-    # Calculate the minimum number of shots required to knock each can down
-    shots = [0] * n
+def get_order(projects, r):
+    order = []
+    for project in projects:
+        if r >= project[0]:
+            order.append(project)
+            r += project[1]
+        else:
+            return None
+    return order
+
+def main():
+    n, r = map(int, input().split())
+    projects = []
     for i in range(n):
-        for j in range(i):
-            shots[i] += a[j] * (i - j)
-    shots = [x + 1 for x in shots]
-    
-    # Return the minimum number of shots and the order of indices of cans
-    return min(shots), list(range(1, n + 1))
+        a, b = map(int, input().split())
+        projects.append((a, b))
+    order = get_order(projects, r)
+    if order:
+        print("YES")
+    else:
+        print("NO")
+
+if __name__ == '__main__':
+    main()
 

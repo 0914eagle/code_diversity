@@ -1,19 +1,38 @@
 
-def solve(N, K):
-    # Initialize the probability to 0
-    probability = 0
-    
-    # Iterate over all possible values of the die
-    for i in range(1, N+1):
-        # Calculate the probability of getting a score of K or above on this turn
-        probability_i = (i / N) * (0.5)**(K-1)
-        
-        # If the die shows i, Snuke needs to get (K-1) consecutive heads from (K-1) coin flips to obtain a score of K or above
-        probability_i += (i / N) * (0.5)**(K-1)
-        
-        # Add the probability of winning to the total probability
-        probability += probability_i
-    
-    # Return the probability that Snuke wins
-    return probability
+def get_rank(card):
+    rank_map = {
+        "A": 1,
+        "2": 2,
+        "3": 3,
+        "4": 4,
+        "5": 5,
+        "6": 6,
+        "7": 7,
+        "8": 8,
+        "9": 9,
+        "T": 10,
+        "J": 11,
+        "Q": 12,
+        "K": 13
+    }
+    return rank_map[card[0]]
+
+def get_strength(hand):
+    hand_ranks = [get_rank(card) for card in hand]
+    hand_ranks_count = {}
+    for rank in hand_ranks:
+        if rank not in hand_ranks_count:
+            hand_ranks_count[rank] = 1
+        else:
+            hand_ranks_count[rank] += 1
+    max_strength = max(hand_ranks_count.values())
+    return max_strength
+
+def main():
+    hand = input().split()
+    strength = get_strength(hand)
+    print(strength)
+
+if __name__ == '__main__':
+    main()
 

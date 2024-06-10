@@ -1,36 +1,27 @@
 
-def solve(N, M, cubes):
-    # Initialize a 2D array to represent the surface
-    surface = [[0] * N for _ in range(N)]
+import math
+import sys
 
-    # Place the cubes on the surface
-    for cube in cubes:
-        surface[cube[0] - 1][cube[1] - 1] = 1
+def get_input():
+    n, k = map(int, input().split())
+    logs = list(map(int, input().split()))
+    return n, k, logs
 
-    # Initialize a queue to store the coordinates of the cubes to be moved
-    queue = []
+def cut_log(log, k):
+    if k == 0:
+        return log
+    
+    if log == 1:
+        return 1
+    
+    left = math.ceil(log / 2)
+    right = math.floor(log / 2)
+    return max(cut_log(left, k - 1), cut_log(right, k - 1))
 
-    # Iterate through the surface and find the cubes that are not in the correct position
-    for i in range(N):
-        for j in range(N):
-            if surface[i][j] == 1 and (i, j) != (N - 1, N - 1):
-                queue.append((i, j))
+def solve(n, k, logs):
+    return max(cut_log(log, k) for log in logs)
 
-    # Initialize a variable to store the number of moves
-    moves = 0
-
-    # Iterate through the queue and move the cubes to their correct position
-    while queue:
-        # Get the coordinates of the cube to be moved
-        i, j = queue.pop(0)
-
-        # Move the cube to the next square in the correct position
-        surface[i][j] = 0
-        surface[i + 1][j] = 1
-
-        # Increment the number of moves
-        moves += 1
-
-    # Return the number of moves
-    return moves
+if __name__ == '__main__':
+    n, k, logs = get_input()
+    print(solve(n, k, logs))
 

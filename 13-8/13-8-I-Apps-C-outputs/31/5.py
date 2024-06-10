@@ -1,16 +1,41 @@
 
-def solve(n, planets):
-    # Calculate the total distance traveled by visiting each planet and returning to the home planet
-    total_distance = 0
-    for i in range(n):
-        current_planet = planets[i]
-        for j in range(i+1, n):
-            next_planet = planets[j]
-            distance = calculate_distance(current_planet, next_planet)
-            total_distance += distance
-    return total_distance
+def get_grid(H, W):
+    grid = []
+    for i in range(H):
+        grid.append(input())
+    return grid
 
-def calculate_distance(planet1, planet2):
-    # Calculate the Euclidean distance between two planets
-    return ((planet1[0] - planet2[0]) ** 2 + (planet1[1] - planet2[1]) ** 2 + (planet1[2] - planet2[2]) ** 2) ** 0.5
+def swap_rows(grid, i, j):
+    temp = grid[i]
+    grid[i] = grid[j]
+    grid[j] = temp
+    return grid
+
+def swap_columns(grid, i, j):
+    for row in grid:
+        temp = row[i]
+        row[i] = row[j]
+        row[j] = temp
+    return grid
+
+def is_symmetric(grid):
+    H, W = len(grid), len(grid[0])
+    for i in range(H):
+        for j in range(W):
+            if grid[i][j] != grid[H-i-1][W-j-1]:
+                return False
+    return True
+
+def solve(grid):
+    H, W = len(grid), len(grid[0])
+    for i in range(H):
+        for j in range(W):
+            if grid[i][j] != grid[H-i-1][W-j-1]:
+                return "YES"
+    return "NO"
+
+if __name__ == '__main__':
+    H, W = map(int, input().split())
+    grid = get_grid(H, W)
+    print(solve(grid))
 

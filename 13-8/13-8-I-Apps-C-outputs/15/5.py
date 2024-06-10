@@ -1,33 +1,29 @@
 
-def find_reconstructions(pre_output, in_output, post_output):
-    # Initialize a list to store the reconstructions
-    reconstructions = []
+def get_entirely_unsorted_sequences(numbers):
     
-    # Loop through all possible combinations of Pre, In, and Post calls
-    for pre_calls in range(2):
-        for in_calls in range(2):
-            for post_calls in range(2):
-                # Check if the number of calls to each routine is correct
-                if pre_calls + in_calls + post_calls != 6:
-                    continue
-                
-                # Check if the output of each routine is correct
-                pre_print = "".join(pre_output[:pre_calls])
-                in_print = "".join(in_output[pre_calls:pre_calls+in_calls])
-                post_print = "".join(post_output[pre_calls+in_calls:])
-                if pre_print != in_print or pre_print != post_print:
-                    continue
-                
-                # Check if the calls to each routine are correct
-                pre_calls_str = "Pre" * pre_calls
-                in_calls_str = "In" * in_calls
-                post_calls_str = "Post" * post_calls
-                if pre_calls_str + in_calls_str + post_calls_str not in ["Pre Pre In In Post Post", "Pre In Pre In Post Post", "In Pre Pre In Post Post", "In Pre In Pre Post Post"]:
-                    continue
-                
-                # If all checks pass, add the reconstruction to the list
-                reconstructions.append([pre_calls_str, in_calls_str, post_calls_str])
-    
-    # Return the list of reconstructions
-    return reconstructions
+    n = len(numbers)
+    sorted_sequences = []
+    for i in range(n):
+        sorted_sequences.append([numbers[i]])
+        for j in range(i+1, n):
+            if numbers[j] < numbers[i]:
+                sorted_sequences[i].append(numbers[j])
+    unsorted_sequences = []
+    for sequence in sorted_sequences:
+        if len(sequence) == 1:
+            unsorted_sequences.append(sequence)
+        else:
+            for i in range(len(sequence)):
+                for j in range(i+1, len(sequence)):
+                    if sequence[i] > sequence[j]:
+                        unsorted_sequences.append(sequence[:i] + sequence[j:i:-1] + sequence[i+1:])
+    return len(unsorted_sequences) % (10**9 + 9)
+
+def main():
+    n = int(input())
+    numbers = list(map(int, input().split()))
+    print(get_entirely_unsorted_sequences(numbers))
+
+if __name__ == '__main__':
+    main()
 

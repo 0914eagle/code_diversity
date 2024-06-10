@@ -1,24 +1,50 @@
 
-def solve(n, t, m, intervals):
-    # Initialize the variables to keep track of the number of goals
-    sportify_goals = 0
-    spoilify_goals = 0
-    
-    # Iterate through each interval in which the Spoilify cheerleading team is active
-    for i in range(m):
-        # Get the start and end time of the interval
-        start, end = intervals[i]
-        
-        # Check if the interval overlaps with the half-time interval (45-50 minutes)
-        if start < 45 and end > 50:
-            # If the interval overlaps with the half-time interval, increase the Spoilify goals by 1
-            spoilify_goals += 1
-        else:
-            # If the interval does not overlap with the half-time interval, check if it is during the 5-minute interval
-            if start % 5 == 0 and end % 5 == 0:
-                # If the interval is during the 5-minute interval, increase the Sportify goals by 1
-                sportify_goals += 1
-    
-    # Return the number of goals for both teams
-    return sportify_goals, spoilify_goals
+def get_course_difficulty(course_name):
+    # This function takes a course name as input and returns its difficulty
+    difficulty_map = {
+        "linearalgebra": 10,
+        "calculus1": 10,
+        "calculus2": 20,
+        "honorsanalysis1": 50,
+        "honorsanalysis2": 100
+    }
+    return difficulty_map[course_name]
+
+def get_possible_course_schedule(course_names, k):
+    # This function takes a list of course names and an integer k as input, and returns a list of possible course schedules
+    possible_schedules = []
+    for i in range(len(course_names)):
+        course_name = course_names[i]
+        if course_name.endswith("1"):
+            # If the course is a Level I course, add it to the schedule
+            possible_schedules.append([course_name])
+        elif course_name.endswith("2"):
+            # If the course is a Level II course, add it to the schedule only if the corresponding Level I course is already in the schedule
+            level_i_course_name = course_name[:-1] + "1"
+            for schedule in possible_schedules:
+                if level_i_course_name in schedule:
+                    schedule.append(course_name)
+                    break
+    return possible_schedules[:k]
+
+def get_min_difficulty_sum(possible_schedules):
+    # This function takes a list of possible course schedules as input and returns the minimum sum of difficulties of the courses in the schedules
+    min_difficulty_sum = float("inf")
+    for schedule in possible_schedules:
+        difficulty_sum = 0
+        for course_name in schedule:
+            difficulty_sum += get_course_difficulty(course_name)
+        if difficulty_sum < min_difficulty_sum:
+            min_difficulty_sum = difficulty_sum
+    return min_difficulty_sum
+
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    course_names = []
+    for i in range(n):
+        course_name = input()
+        course_names.append(course_name)
+    possible_schedules = get_possible_course_schedule(course_names, k)
+    min_difficulty_sum = get_min_difficulty_sum(possible_schedules)
+    print(min_difficulty_sum)
 

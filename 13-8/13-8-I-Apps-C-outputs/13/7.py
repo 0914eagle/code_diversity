@@ -1,18 +1,29 @@
 
-def solve(n, k, a):
-    # Calculate the maximum amount that can be made with the given banknotes
-    max_amount = sum(a)
+def is_handsome(n):
+    n_str = str(n)
+    for i in range(len(n_str) - 1):
+        if n_str[i] == n_str[i + 1]:
+            return False
+    return True
 
-    # Initialize a list to store the divine digits
-    divine_digits = []
+def get_closest_handsome_numbers(n):
+    n_str = str(n)
+    for i in range(len(n_str)):
+        if n_str[i] == '9':
+            n_str = n_str[:i] + '0' + n_str[i + 1:]
+            break
+    n1 = int(n_str)
+    n2 = int(n_str) + 1
+    return n1, n2
 
-    # Iterate from 0 to k - 1
-    for i in range(k):
-        # Check if the last digit of the maximum amount is equal to i
-        if str(max_amount)[-1] == str(i):
-            # If it is, add it to the list of divine digits
-            divine_digits.append(i)
+def main():
+    n = int(input())
+    if is_handsome(n):
+        print(-1)
+    else:
+        n1, n2 = get_closest_handsome_numbers(n)
+        print(n1, n2)
 
-    # Return the number of divine digits and the list of divine digits
-    return len(divine_digits), divine_digits
+if __name__ == '__main__':
+    main()
 

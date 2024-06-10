@@ -1,17 +1,18 @@
 
-def solve(x_s, y_s, s_s, r_i, r_f, x_a, y_a, s_a):
-    # Calculate the distance between Anthony's current location and the center of the safety zone
-    distance = ((x_a - x_s) ** 2 + (y_a - y_s) ** 2) ** 0.5
-    
-    # Calculate the time it takes for Anthony to reach the center of the safety zone
-    time = distance / s_a
-    
-    # Calculate the amount of damage Anthony will take while in the safety zone
-    damage = time * s_s
-    
-    # Calculate the amount of damage Anthony will take after leaving the safety zone
-    remaining_damage = (r_f / s_s) * (r_i - r_f)
-    
-    # Return the minimum amount of damage Anthony will take
-    return damage + remaining_damage
+def get_distinct_sizes(sizes):
+    return len(set(sizes)) == 3
+
+def get_difference_less_than_or_equal_to_2(sizes):
+    return all(abs(sizes[i] - sizes[i+1]) <= 2 for i in range(len(sizes)-1))
+
+def can_choose_three_balls(n, sizes):
+    return get_distinct_sizes(sizes) and get_difference_less_than_or_equal_to_2(sizes)
+
+def main():
+    n = int(input())
+    sizes = list(map(int, input().split()))
+    print("YES") if can_choose_three_balls(n, sizes) else print("NO")
+
+if __name__ == '__main__':
+    main()
 

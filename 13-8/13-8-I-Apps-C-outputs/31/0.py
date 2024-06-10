@@ -1,35 +1,30 @@
 
-def get_min_distance(planet_positions):
-    # Initialize the minimum distance to travel
-    min_distance = 0
+def is_symmetric(grid):
+    # Check if the grid is symmetric
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j] != grid[len(grid) - i - 1][len(grid[0]) - j - 1]:
+                return False
+    return True
 
-    # Loop through each planet position
-    for i in range(len(planet_positions)):
-        # Get the current planet position
-        current_position = planet_positions[i]
+def solve(grid):
+    # Check if the grid is already symmetric
+    if is_symmetric(grid):
+        return "YES"
+    
+    # Check if the grid can be made symmetric by swapping rows or columns
+    for i in range(len(grid)):
+        for j in range(i + 1, len(grid)):
+            if grid[i] != grid[j]:
+                grid[i], grid[j] = grid[j], grid[i]
+                if is_symmetric(grid):
+                    return "YES"
+                grid[i], grid[j] = grid[j], grid[i]
+    
+    return "NO"
 
-        # Loop through each other planet position
-        for j in range(i + 1, len(planet_positions)):
-            # Get the other planet position
-            other_position = planet_positions[j]
-
-            # Calculate the distance between the current and other planets
-            distance = get_distance(current_position, other_position)
-
-            # If the distance is less than the minimum distance, update the minimum distance
-            if distance < min_distance:
-                min_distance = distance
-
-    # Return the minimum distance
-    return min_distance
-
-def get_distance(position1, position2):
-    # Calculate the distance between the two positions
-    distance = ((position1[0] - position2[0]) ** 2 + (position1[1] - position2[1]) ** 2 + (position1[2] - position2[2]) ** 2) ** 0.5
-
-    # Return the distance
-    return distance
-
-planet_positions = [(0, 0, 1), (0, 1, 1), (2, 0, 3), (2, 1, 3)]
-print(get_min_distance(planet_positions))
+if __name__ == '__main__':
+    H, W = map(int, input().split())
+    grid = [input() for _ in range(H)]
+    print(solve(grid))
 

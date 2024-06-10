@@ -1,24 +1,38 @@
 
-def get_drained_water(height, width, map, device_position):
-    # Initialize the total drained water to 0
-    total_drained_water = 0
+def get_maximum_amount(n, m, coupons):
+    # Initialize a dictionary to store the number of coupons available for each value
+    coupon_count = {}
+    for q, w in coupons:
+        if q not in coupon_count:
+            coupon_count[q] = 0
+        coupon_count[q] += 1
 
-    # Get the device row and column indices
-    device_row, device_col = device_position
+    # Initialize a list to store the values that have at least one coupon available
+    available_values = []
+    for q, w in coupons:
+        if coupon_count[q] > 0:
+            available_values.append(q)
 
-    # Loop through the map grid
-    for row in range(height):
-        for col in range(width):
-            # Check if the current cell is covered by water
-            if map[row][col] < 0:
-                # Calculate the distance between the current cell and the device
-                distance = abs(row - device_row) + abs(col - device_col)
+    # Initialize a list to store the maximum amount of money that can be paid for each value
+    max_amount = [0] * (n + 1)
+    max_amount[0] = 0
 
-                # Check if the distance is within the range of the device
-                if distance <= 1:
-                    # Increment the total drained water by the water volume of the current cell
-                    total_drained_water += abs(map[row][col])
+    # Dynamic programming approach
+    for i in range(1, n + 1):
+        for value in available_values:
+            if value <= i:
+                max_amount[i] = max(max_amount[i], max_amount[i - value] + value * coupon_count[value])
 
-    # Return the total drained water
-    return total_drained_water
+    return max_amount[n]
+
+def main():
+    n, m = map(int, input().split())
+    coupons = []
+    for i in range(m):
+        q, w = map(int, input().split())
+        coupons.append((q, w))
+    print(get_maximum_amount(n, m, coupons))
+
+if __name__ == '__main__':
+    main()
 

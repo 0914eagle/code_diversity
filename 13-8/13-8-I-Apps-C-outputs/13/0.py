@@ -1,17 +1,28 @@
 
-def solve(n, k, a):
-    # Convert the denominations to a list of digits
-    digits = [int(digit) for digit in str(a)]
+def is_handsome(n):
+    n_str = str(n)
+    for i in range(len(n_str) - 1):
+        if n_str[i] == n_str[i + 1]:
+            return False
+    return True
 
-    # Initialize a set to store the happy digits
-    happy_digits = set()
+def find_closest_handsome(n):
+    n_str = str(n)
+    for i in range(len(n_str)):
+        if n_str[i] % 2 == 0:
+            n_str = n_str[:i] + '1' + n_str[i + 1:]
+        else:
+            n_str = n_str[:i] + '0' + n_str[i + 1:]
+    return int(n_str)
 
-    # Iterate over the digits
-    for digit in digits:
-        # Check if the digit is happy
-        if digit % k == 0:
-            happy_digits.add(digit)
+def main():
+    n = int(input())
+    if is_handsome(n):
+        print(-1)
+    else:
+        handsome_number = find_closest_handsome(n)
+        print(handsome_number)
 
-    # Return the happy digits
-    return len(happy_digits), sorted(list(happy_digits))
+if __name__ == '__main__':
+    main()
 

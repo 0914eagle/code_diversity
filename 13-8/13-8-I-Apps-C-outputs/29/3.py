@@ -1,27 +1,40 @@
 
-def find_best_partition(preference_lists):
-    # Initialize the number of teachers and the number of kids
-    num_teachers = 3
-    num_kids = len(preference_lists)
-    
-    # Initialize the count of kids in each class
-    class_counts = [0] * num_teachers
-    
-    # Initialize the list of kids in each class
-    classes = [[0] * num_kids for _ in range(num_teachers)]
-    
-    # Loop through each kid and their preference list
-    for kid, preference_list in enumerate(preference_lists):
-        # Find the teacher with the lowest number of kids
-        min_teacher = 0
-        for teacher in range(1, num_teachers):
-            if class_counts[teacher] < class_counts[min_teacher]:
-                min_teacher = teacher
-        
-        # Add the kid to the class with the lowest number of kids
-        classes[min_teacher][class_counts[min_teacher]] = kid
-        class_counts[min_teacher] += 1
-    
-    # Return the number of kids in each class
-    return class_counts
+def find_polly(n, p, e, p_box):
+    # Initialize variables
+    min_energy = 0
+    max_probability = 0
+    selected_boxes = []
+
+    # Loop through all boxes
+    for i in range(n):
+        # Check if the probability is greater than or equal to the minimum required probability
+        if p_box[i] >= p:
+            # Add the energy required to open the box to the minimum energy
+            min_energy += e[i]
+            # Add the probability of the box to the maximum probability
+            max_probability += p_box[i]
+            # Add the box to the selected boxes
+            selected_boxes.append(i)
+
+    # Return the minimum energy and the selected boxes
+    return min_energy, selected_boxes
+
+def main():
+    # Read the input
+    n, p = map(int, input().split())
+    e = []
+    p_box = []
+    for i in range(n):
+        ei, pi = map(float, input().split())
+        e.append(ei)
+        p_box.append(pi)
+
+    # Find Polly
+    min_energy, selected_boxes = find_polly(n, p, e, p_box)
+
+    # Print the output
+    print(min_energy)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,13 +1,23 @@
 
-def solve(n, v, sellers):
-    # Find the sellers who have items with a price less than or equal to v
-    possible_sellers = []
-    for seller in sellers:
-        for item in seller:
-            if item <= v:
-                possible_sellers.append(seller)
-                break
-    
-    # Return the number of possible sellers and their indices
-    return len(possible_sellers), [sellers.index(seller) for seller in possible_sellers]
+def get_min_operations(a):
+    n = len(a)
+    count = 0
+    for i in range(n-1):
+        if a[i] != a[i+1]:
+            count += 1
+    return count
+
+def rearrange_marbles(a):
+    n = len(a)
+    count = 0
+    for i in range(n-1):
+        if a[i] != a[i+1]:
+            count += 1
+            a[i], a[i+1] = a[i+1], a[i]
+    return count
+
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(rearrange_marbles(a))
 

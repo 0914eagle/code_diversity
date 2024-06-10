@@ -1,48 +1,39 @@
 
-def solve(n, k, rows):
-    # Initialize the number of neighbors for each status passenger to 0
-    neighbors = [0] * n
+def is_power_of_two(n):
+    return (n != 0) and (n & (n - 1) == 0)
 
-    # Loop through each row of seats
-    for i in range(n):
-        # If the current seat is empty, continue to the next seat
-        if rows[i] == ".":
-            continue
+def get_min_days(n):
+    if n == 1:
+        return 0
+    if is_power_of_two(n):
+        return 1
+    for i in range(2, n):
+        if is_power_of_two(i) and is_power_of_two(n - i):
+            return 2
+    return -1
 
-        # If the current seat is not empty, check if it is a status passenger
-        if rows[i] == "S":
-            # If the current seat is a status passenger, increment the number of neighbors
-            neighbors[i] += 1
+def get_split_counts(n):
+    if n == 1:
+        return [0]
+    if is_power_of_two(n):
+        return [1]
+    for i in range(2, n):
+        if is_power_of_two(i) and is_power_of_two(n - i):
+            return [i // 2, (n - i) // 2]
+    return []
 
-            # If the current seat is not the first seat in the row, check if the previous seat is empty
-            if i > 0 and rows[i - 1] == ".":
-                # If the previous seat is empty, increment the number of neighbors
-                neighbors[i] += 1
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        min_days = get_min_days(n)
+        if min_days == -1:
+            print(-1)
+        else:
+            split_counts = get_split_counts(n)
+            print(min_days)
+            print(" ".join(str(x) for x in split_counts))
 
-            # If the current seat is not the last seat in the row, check if the next seat is empty
-            if i < n - 1 and rows[i + 1] == ".":
-                # If the next seat is empty, increment the number of neighbors
-                neighbors[i] += 1
-
-    # Find the minimum number of neighbors
-    min_neighbors = min(neighbors)
-
-    # Initialize the plan for the passenger distribution
-    plan = ["."] * n
-
-    # Loop through each seat
-    for i in range(n):
-        # If the current seat is empty, continue to the next seat
-        if rows[i] == ".":
-            continue
-
-        # If the current seat is not empty, check if it is a status passenger
-        if rows[i] == "S":
-            # If the current seat is a status passenger, check if it has the minimum number of neighbors
-            if neighbors[i] == min_neighbors:
-                # If the current seat has the minimum number of neighbors, mark it as a passenger seat
-                plan[i] = "x"
-
-    # Return the plan for the passenger distribution
-    return "".join(plan)
+if __name__ == '__main__':
+    main()
 

@@ -1,19 +1,23 @@
 
-def solve(n, p):
-    # Initialize a dictionary to map each student to their second hole badge
-    badges = {}
+def get_min_energy(n, m, v, edges):
+    # Initialize a dictionary to store the minimum energy to remove each part
+    min_energy = {i: v[i-1] for i in range(1, n+1)}
+    # Loop through all the edges
+    for i, j in edges:
+        # If the energy to remove part i is greater than the energy to remove part j plus the energy to remove part i, update the minimum energy to remove part i
+        if min_energy[i] > min_energy[j] + v[i-1]:
+            min_energy[i] = min_energy[j] + v[i-1]
+    # Return the minimum energy to remove all parts
+    return sum(min_energy.values())
 
-    # Iterate through the list of reported students
-    for i in range(n):
-        # If the student has already been marked with a hole, skip them
-        if i in badges:
-            continue
-        # If the student has not been marked with a hole, mark them with a hole
-        badges[i] = 1
-        # If the student has a second hole, mark them with a hole
-        if i in p:
-            badges[i] = 2
+def main():
+    # Read the input data
+    n, m = map(int, input().split())
+    v = list(map(int, input().split()))
+    edges = [tuple(map(int, input().split())) for _ in range(m)]
+    # Call the get_min_energy function and print the result
+    print(get_min_energy(n, m, v, edges))
 
-    # Return the dictionary of students with two holes in their badges
-    return badges
+if __name__ == '__main__':
+    main()
 

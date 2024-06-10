@@ -1,10 +1,32 @@
 
-def get_midpoint(start_time, end_time):
-    start_h, start_m = map(int, start_time.split(':'))
-    end_h, end_m = map(int, end_time.split(':'))
-    total_minutes = (end_h - start_h) * 60 + (end_m - start_m)
-    midpoint_minutes = total_minutes // 2
-    midpoint_h = start_h + midpoint_minutes // 60
-    midpoint_m = midpoint_minutes % 60
-    return f"{midpoint_h:02d}:{midpoint_m:02d}"
+def get_equation(numbers):
+    # Initialize a list to store the possible operations
+    operations = ["+", "-", "*", "/"]
+    
+    # Loop through the possible operations
+    for operation in operations:
+        # Check if the equation is valid
+        if is_valid_equation(numbers, operation):
+            # If the equation is valid, return it
+            return " ".join(map(str, numbers)) + " " + operation + " " + str(numbers[0])
+    
+    # If no valid equation is found, return None
+    return None
+
+def is_valid_equation(numbers, operation):
+    # Check if the operation is addition, subtraction, multiplication, or division
+    if operation == "+":
+        return numbers[0] + numbers[1] == numbers[2]
+    elif operation == "-":
+        return numbers[0] - numbers[1] == numbers[2]
+    elif operation == "*":
+        return numbers[0] * numbers[1] == numbers[2]
+    elif operation == "/":
+        return numbers[0] / numbers[1] == numbers[2]
+    else:
+        return False
+
+if __name__ == '__main__':
+    numbers = list(map(int, input().split()))
+    print(get_equation(numbers))
 

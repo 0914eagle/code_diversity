@@ -1,30 +1,33 @@
 
-def cakeminator(grid):
-    # Initialize variables
-    rows, cols = len(grid), len(grid[0])
-    max_cells = 0
-    directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+def read_messages(n, k, messages):
+    # Initialize a set to store the read messages
+    read_messages = set()
+    # Initialize a queue to store the messages to be read
+    queue = []
+    # Add the starting message to the queue
+    queue.append(n)
+    # Loop until the queue is empty
+    while queue:
+        # Get the current message from the queue
+        message = queue.pop(0)
+        # If the message has not been read already, read it and add it to the set of read messages
+        if message not in read_messages:
+            read_messages.add(message)
+            # If the message has a link, add the link to the queue
+            if messages[message] != 0:
+                queue.append(messages[message])
+    # Return the number of distinct messages read
+    return len(read_messages)
 
-    # Loop through each cell in the grid
-    for i in range(rows):
-        for j in range(cols):
-            # If the current cell is empty, continue to the next cell
-            if grid[i][j] == ".":
-                continue
+def main():
+    # Read the input
+    n, k = map(int, input().split())
+    messages = list(map(int, input().split()))
+    # Call the read_messages function for each message
+    results = [read_messages(i, k, messages) for i in range(1, n+1)]
+    # Print the results
+    print(*results, sep='\n')
 
-            # If the current cell has an evil strawberry, mark it as visited
-            visited = set()
-            queue = [(i, j)]
-            while queue:
-                row, col = queue.pop(0)
-                visited.add((row, col))
-                for direction in directions:
-                    new_row, new_col = row + direction[0], col + direction[1]
-                    if 0 <= new_row < rows and 0 <= new_col < cols and (new_row, new_col) not in visited and grid[new_row][new_col] == ".":
-                        queue.append((new_row, new_col))
-
-            # Update the maximum number of cells visited
-            max_cells = max(max_cells, len(visited))
-
-    return max_cells
+if __name__ == '__main__':
+    main()
 

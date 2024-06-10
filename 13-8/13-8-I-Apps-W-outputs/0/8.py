@@ -1,25 +1,30 @@
 
-def is_possible(k1, k2, k3):
-    # Check if k1, k2, and k3 are positive
-    if k1 <= 0 or k2 <= 0 or k3 <= 0:
-        return "NO"
+def get_charges(n, c, t):
+    # Initialize a list to store the charges of Grigory's stones
+    charges = [0] * n
+    # Initialize a list to store the charges of Andrew's stones
+    target_charges = [0] * n
 
-    # Check if k1, k2, and k3 are coprime
-    if __gcd(k1, k2) != 1 or __gcd(k1, k3) != 1 or __gcd(k2, k3) != 1:
-        return "NO"
+    # Loop through each stone and check if the charge is equal to the target charge
+    for i in range(n):
+        if c[i] != t[i]:
+            # If the charge is not equal to the target charge, return "No"
+            return "No"
 
-    # Check if the sum of k1, k2, and k3 is even
-    if k1 + k2 + k3 % 2 == 0:
-        return "NO"
+    # If all charges are equal to the target charges, return "Yes"
+    return "Yes"
 
-    # Check if the sum of k1, k2, and k3 is divisible by 3
-    if (k1 + k2 + k3) % 3 == 0:
-        return "NO"
+def main():
+    # Read the number of magic stones
+    n = int(input())
+    # Read the charges of Grigory's stones
+    c = list(map(int, input().split()))
+    # Read the charges of Andrew's stones
+    t = list(map(int, input().split()))
 
-    # Check if the product of k1, k2, and k3 is divisible by 6
-    if __lcm(k1, k2, k3) % 6 == 0:
-        return "NO"
+    # Call the get_charges function and print the result
+    print(get_charges(n, c, t))
 
-    # If all conditions are met, return "YES"
-    return "YES"
+if __name__ == '__main__':
+    main()
 

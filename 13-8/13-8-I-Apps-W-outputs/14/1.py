@@ -1,65 +1,21 @@
 
-def solve(N, K, board):
-    # Check if the current player can win in one move
-    for i in range(N):
-        for j in range(N):
-            if board[i][j] == 'X':
-                if can_win_in_one_move(N, K, board, i, j):
-                    return "YES"
-    
-    # Check if the other player can win in one move
-    for i in range(N):
-        for j in range(N):
-            if board[i][j] == '.':
-                board[i][j] = 'O'
-                if can_win_in_one_move(N, K, board, i, j):
-                    return "NO"
-                board[i][j] = '.'
-    
-    # If no one can win in one move, return "NO"
-    return "NO"
+def get_min_steps(a, b):
+    n = len(a)
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            if a[i - 1] == b[j - 1]:
+                dp[i][j] = dp[i - 1][j - 1]
+            else:
+                dp[i][j] = 1 + min(dp[i - 1][j], dp[i][j - 1])
+    return dp[n][n]
 
-def can_win_in_one_move(N, K, board, i, j):
-    # Check rows
-    for k in range(N):
-        count = 0
-        for l in range(N):
-            if board[k][l] == 'X':
-                count += 1
-                if count == K:
-                    return True
-            else:
-                count = 0
-    
-    # Check columns
-    for k in range(N):
-        count = 0
-        for l in range(N):
-            if board[l][k] == 'X':
-                count += 1
-                if count == K:
-                    return True
-            else:
-                count = 0
-    
-    # Check diagonals
-    count = 0
-    for k in range(N):
-        if board[k][k] == 'X':
-            count += 1
-            if count == K:
-                return True
-        else:
-            count = 0
-    
-    count = 0
-    for k in range(N):
-        if board[k][N-k-1] == 'X':
-            count += 1
-            if count == K:
-                return True
-        else:
-            count = 0
-    
-    return False
+def main():
+    n = int(input())
+    a = [0] * n
+    b = [int(x) for x in input().split()]
+    print(get_min_steps(a, b))
+
+if __name__ == '__main__':
+    main()
 

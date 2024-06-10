@@ -1,31 +1,32 @@
 
-def possible_to_clean_intersections(wells, pipes):
-    # Initialize a set to store the positions of the wells
-    well_positions = set()
-    # Add the positions of the wells to the set
-    for well in wells:
-        well_positions.add((well[0], well[1]))
+def can_play_all_frequencies(freqs):
+    # Initialize a list to store the intervals for each frequency
+    intervals = []
+    for freq in freqs:
+        intervals.append([])
+    # Iterate through the intervals for each frequency
+    for i in range(len(freqs)):
+        for j in range(0, len(freqs[i]), 2):
+            # Check if the interval overlaps with any other interval
+            for k in range(len(freqs)):
+                if i != k:
+                    for interval in intervals[k]:
+                        if (freqs[i][j] <= interval[1] and freqs[i][j+1] >= interval[0]) or (freqs[i][j] >= interval[0] and freqs[i][j+1] <= interval[1]):
+                            return "impossible"
+            # Add the interval to the list of intervals for the current frequency
+            intervals[i].append([freqs[i][j], freqs[i][j+1]])
+    return "possible"
 
-    # Initialize a set to store the positions of the intersections
-    intersection_positions = set()
-    # Iterate over the pipes
-    for pipe in pipes:
-        # Get the start and end positions of the pipe
-        start_position = (pipe[1], pipe[2])
-        end_position = (pipe[3], pipe[4])
-        # If the start position is a well, add it to the set of well positions
-        if start_position in well_positions:
-            well_positions.add(start_position)
-        # If the end position is a well, add it to the set of well positions
-        if end_position in well_positions:
-            well_positions.add(end_position)
-        # If the start and end positions are not the same, add the midpoint of the pipe to the set of intersection positions
-        if start_position != end_position:
-            intersection_positions.add(((start_position[0] + end_position[0]) // 2, (start_position[1] + end_position[1]) // 2))
+def main():
+    freqs = []
+    f = int(input())
+    for i in range(f):
+        t, n = map(int, input().split())
+        freqs.append([t, n])
+        for j in range(n):
+            freqs[i].extend(map(int, input().split()))
+    print(can_play_all_frequencies(freqs))
 
-    # If the number of intersections is equal to the number of wells, return "possible"
-    if len(intersection_positions) == len(well_positions):
-        return "possible"
-    else:
-        return "impossible"
+if __name__ == '__main__':
+    main()
 

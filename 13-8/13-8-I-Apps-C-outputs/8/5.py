@@ -1,24 +1,22 @@
 
-def solve(street, patterns):
-    # Initialize a dictionary to store the number of untileable cells for each position in the street
-    untileable_cells = {}
+def get_longest_exploration_sequence(array, d, m):
+    # Initialize a dictionary to store the longest exploration sequence for each element
+    longest_sequence = {element: 1 for element in array}
 
-    # Loop through each position in the street
-    for i in range(len(street)):
-        # Initialize a set to store the letters that have been used in the current position
-        used_letters = set()
+    # Loop through the array and calculate the longest exploration sequence for each element
+    for i in range(len(array)):
+        for j in range(i+1, min(i+d+1, len(array))):
+            if abs(array[i] - array[j]) <= m:
+                longest_sequence[array[j]] = max(longest_sequence[array[j]], longest_sequence[array[i]] + 1)
 
-        # Loop through each pattern and check if it can be placed in the current position
-        for pattern in patterns:
-            # Check if the pattern can be placed in the current position
-            if i + len(pattern) <= len(street) and street[i:i+len(pattern)] == pattern:
-                # Add the letters in the pattern to the set of used letters
-                used_letters |= set(pattern)
+    # Return the longest exploration sequence for the last element in the array
+    return longest_sequence[array[-1]]
 
-        # If no pattern can be placed in the current position, it is untileable
-        if not used_letters:
-            untileable_cells[i] = 1
+def main():
+    n, d, m = map(int, input().split())
+    array = list(map(int, input().split()))
+    print(get_longest_exploration_sequence(array, d, m))
 
-    # Return the number of untileable cells
-    return sum(untileable_cells.values())
+if __name__ == '__main__':
+    main()
 

@@ -1,54 +1,26 @@
 
-import sys
+def get_lcm(a, b):
+    if a == 0 or b == 0:
+        return 0
+    while b > 0:
+        a, b = b, a % b
+    return a
 
-def count_distinct_strings(n, m, k, b):
-    # Initialize a dictionary to store the count of each string
-    string_counts = {}
+def get_max_lcm(arr):
+    n = len(arr)
+    max_lcm = 0
+    for i in range(n):
+        for j in range(i+1, n):
+            lcm = get_lcm(arr[i], arr[j])
+            if lcm > max_lcm:
+                max_lcm = lcm
+    return max_lcm
 
-    # Initialize a set to store the unique strings
-    unique_strings = set()
+def main():
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(get_max_lcm(arr))
 
-    # Iterate over each move
-    for i in range(m):
-        # Get the current move
-        current_move = b[i]
-
-        # Iterate over each string
-        for string in unique_strings:
-            # Get the length of the string
-            length = len(string)
-
-            # Get the first k characters of the string
-            first_k = string[:current_move]
-
-            # Get the last k characters of the string
-            last_k = string[-current_move:]
-
-            # Get the reversed first k characters of the string
-            rev_first_k = first_k[::-1]
-
-            # Get the reversed last k characters of the string
-            rev_last_k = last_k[::-1]
-
-            # Add the four new strings to the dictionary
-            string_counts[first_k + last_k] = string_counts.get(first_k + last_k, 0) + 1
-            string_counts[last_k + first_k] = string_counts.get(last_k + first_k, 0) + 1
-            string_counts[rev_first_k + last_k] = string_counts.get(rev_first_k + last_k, 0) + 1
-            string_counts[rev_last_k + first_k] = string_counts.get(rev_last_k + first_k, 0) + 1
-
-            # Add the four new strings to the set
-            unique_strings.add(first_k + last_k)
-            unique_strings.add(last_k + first_k)
-            unique_strings.add(rev_first_k + last_k)
-            unique_strings.add(rev_last_k + first_k)
-
-    # Calculate the total number of distinct strings
-    total_strings = sum(string_counts.values())
-
-    # Return the total number of distinct strings modulo 998244353
-    return total_strings % 998244353
-
-n, m, k = map(int, input().split())
-b = list(map(int, input().split()))
-print(count_distinct_strings(n, m, k, b))
+if __name__ == '__main__':
+    main()
 

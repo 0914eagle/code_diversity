@@ -1,20 +1,19 @@
 
-def solve(n, k, A, B):
-    # Calculate the greatest common divisor (gcd) of n and k
-    gcd = _gcd(n, k)
-    # If the gcd is 1, then n is not divisible by k, so we can't divide x by k
-    if gcd == 1:
-        return -1
-    # Otherwise, divide x by the gcd to get the minimum number of divisions needed
-    divisions = n // gcd
-    # Calculate the total cost of the divisions
-    cost = divisions * B
-    # Add the cost of subtracting 1 from x the number of times needed to get to 1
-    cost += abs(n - 1) * A
-    return cost
+def x_pow_y(x, y):
+    return x ** y
 
-def _gcd(a, b):
-    while b != 0:
-        a, b = b, a % b
-    return a
+def y_pow_x(x, y):
+    return y ** x
+
+def compare(x, y):
+    if x_pow_y(x, y) < y_pow_x(x, y):
+        return '<'
+    elif x_pow_y(x, y) > y_pow_x(x, y):
+        return '>'
+    else:
+        return '='
+
+if __name__ == '__main__':
+    x, y = map(int, input().split())
+    print(compare(x, y))
 

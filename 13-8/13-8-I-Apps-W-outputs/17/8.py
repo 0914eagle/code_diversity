@@ -1,18 +1,16 @@
 
-def get_maximum_clique(A):
-    # Initialize a dictionary to store the clique sizes for each vertex
-    clique_sizes = {}
-    
-    # Iterate over the vertices in the graph
-    for vertex in A:
-        # Initialize the clique size for the current vertex to 1
-        clique_sizes[vertex] = 1
-        # Iterate over the remaining vertices in the graph
-        for other_vertex in A:
-            # If the current vertex is divisible by the other vertex, or vice versa, add 1 to the clique size for the current vertex
-            if vertex % other_vertex == 0 or other_vertex % vertex == 0:
-                clique_sizes[vertex] += 1
-    
-    # Return the maximum clique size among all vertices
-    return max(clique_sizes.values())
+def get_max_profit(buns, patties, cutlets, h_price, c_price):
+    h_burgers = min(buns // 2, patties)
+    c_burgers = min(buns // 2, cutlets)
+    return h_burgers * h_price + c_burgers * c_price
+
+def main():
+    num_queries = int(input())
+    for _ in range(num_queries):
+        buns, patties, cutlets = map(int, input().split())
+        h_price, c_price = map(int, input().split())
+        print(get_max_profit(buns, patties, cutlets, h_price, c_price))
+
+if __name__ == '__main__':
+    main()
 

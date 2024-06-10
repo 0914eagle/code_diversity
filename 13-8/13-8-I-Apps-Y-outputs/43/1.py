@@ -1,15 +1,36 @@
 
-def find_largest_perfect_power(x):
-    # Initialize a list to store the perfect powers
-    perfect_powers = []
+def get_input():
+    N, M = map(int, input().split())
+    heights = list(map(int, input().split()))
+    roads = []
+    for _ in range(M):
+        a, b = map(int, input().split())
+        roads.append((a, b))
+    return N, M, heights, roads
 
-    # Iterate from 1 to the square root of x
-    for i in range(1, int(x ** 0.5) + 1):
-        # Check if i is a perfect power
-        if x % i == 0:
-            # If i is a perfect power, add it to the list
-            perfect_powers.append(i)
+def get_good_observatories(N, M, heights, roads):
+    visited = [False] * (N + 1)
+    good_observatories = 0
+    for i in range(1, N + 1):
+        if not visited[i]:
+            queue = [i]
+            visited[i] = True
+            while queue:
+                current = queue.pop(0)
+                for road in roads:
+                    if road[0] == current or road[1] == current:
+                        other = road[0] if road[1] == current else road[1]
+                        if not visited[other] and heights[current] <= heights[other]:
+                            queue.append(other)
+                            visited[other] = True
+            if not visited[i]:
+                good_observatories += 1
+    return good_observatories
 
-    # Return the largest perfect power
-    return max(perfect_powers)
+def main():
+    N, M, heights, roads = get_input()
+    print(get_good_observatories(N, M, heights, roads))
+
+if __name__ == '__main__':
+    main()
 

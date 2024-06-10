@@ -1,39 +1,22 @@
 
-import sys
-
-def solve(n, desks):
-    # Initialize the number of possible assignments to 1
-    assignments = 1
+def get_remainder(L, A, B, M):
+    # Calculate the sum of the terms in the arithmetic progression
+    sum_terms = (L * (L + 1)) // 2
     
-    # Iterate over the desks
-    for i in range(n):
-        # Get the current and desired desk numbers for the current engineer
-        current_desk, desired_desk = desks[i]
-        
-        # If the engineer wants to move to a different desk
-        if current_desk != desired_desk:
-            # Update the number of possible assignments by the number of possible assignments for the current engineer
-            assignments *= (n - 1)
-            
-            # Update the number of possible assignments by the number of possible assignments for the other engineers
-            for j in range(n):
-                if j != i:
-                    assignments *= 2
+    # Calculate the product of the terms in the arithmetic progression
+    prod_terms = 1
+    for i in range(L):
+        prod_terms *= A + B * i
     
-    # Return the number of possible assignments modulo 1000000007 = 10^9 + 7
-    return assignments % 1000000007
-
-n = int(input())
-desks = []
-
-# Iterate over the number of engineers
-for i in range(n):
-    # Read the current and desired desk numbers for the current engineer
-    current_desk, desired_desk = map(int, input().split())
+    # Calculate the remainder when the product of the terms is divided by M
+    remainder = prod_terms % M
     
-    # Add the current and desired desk numbers to the list of desks
-    desks.append((current_desk, desired_desk))
+    return remainder
 
-# Call the solve function and print the result
-print(solve(n, desks))
+def main():
+    L, A, B, M = map(int, input().split())
+    print(get_remainder(L, A, B, M))
+
+if __name__ == '__main__':
+    main()
 

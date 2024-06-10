@@ -1,64 +1,81 @@
 
-def find_minimum_spanning_tree(points):
-    # Sort the points based on their x-coordinate
-    sorted_points = sorted(points, key=lambda point: point[0])
+def get_max_value(sequence):
+    # Initialize variables
+    max_value = 0
+    operations = 0
+    current_sequence = sequence
+    
+    # Loop until the sequence has only one element
+    while len(current_sequence) > 1:
+        # Find the maximum value in the sequence
+        max_value = max(current_sequence)
+        
+        # Find the index of the maximum value
+        max_index = current_sequence.index(max_value)
+        
+        # If the maximum value is at the end of the sequence, delete it
+        if max_index == len(current_sequence) - 1:
+            current_sequence.pop()
+        # If the maximum value is at the beginning of the sequence, delete it
+        elif max_index == 0:
+            current_sequence.pop(0)
+        # If the maximum value is in the middle of the sequence, replace it with the sum of the two adjacent elements and delete them
+        else:
+            current_sequence[max_index] = current_sequence[max_index - 1] + current_sequence[max_index + 1]
+            current_sequence.pop(max_index - 1)
+            current_sequence.pop(max_index - 1)
+        
+        # Increment the number of operations
+        operations += 1
+    
+    # Return the maximum value and the number of operations
+    return max_value, operations
 
-    # Create a disjoint set to store the connected components
-    dsu = DisjointSet(points)
+def get_chosen_elements(sequence, operations):
+    # Initialize a list to store the chosen elements
+    chosen_elements = []
+    
+    # Loop through the operations
+    for i in range(operations):
+        # Find the maximum value in the sequence
+        max_value = max(sequence)
+        
+        # Find the index of the maximum value
+        max_index = sequence.index(max_value)
+        
+        # If the maximum value is at the end of the sequence, delete it
+        if max_index == len(sequence) - 1:
+            sequence.pop()
+        # If the maximum value is at the beginning of the sequence, delete it
+        elif max_index == 0:
+            sequence.pop(0)
+        # If the maximum value is in the middle of the sequence, replace it with the sum of the two adjacent elements and delete them
+        else:
+            sequence[max_index] = sequence[max_index - 1] + sequence[max_index + 1]
+            sequence.pop(max_index - 1)
+        
+        # Add the maximum value to the list of chosen elements
+        chosen_elements.append(max_value)
+    
+    # Return the list of chosen elements
+    return chosen_elements
 
-    # Initialize the minimum spanning tree weight to 0
-    mst_weight = 0
-
-    # Iterate through the sorted points
-    for i in range(len(sorted_points)):
-        # Get the current point and its x-coordinate
-        current_point = sorted_points[i]
-        current_x = current_point[0]
-
-        # Find the nearest point to the current point in the other set
-        nearest_point = dsu.find_nearest_point(current_point, sorted_points[i+1:])
-
-        # If a nearest point is found, add the weight of the edge to the MST weight
-        if nearest_point is not None:
-            mst_weight += abs(current_point[0] - nearest_point[0]) + abs(current_point[1] - nearest_point[1])
-
-            # Union the two points in the disjoint set
-            dsu.union(current_point, nearest_point)
-
-    return mst_weight
-
-class DisjointSet:
-    def __init__(self, points):
-        self.parents = {point: point for point in points}
-        self.ranks = {point: 0 for point in points}
-
-    def find_nearest_point(self, point, points):
-        nearest_point = None
-        min_distance = float('inf')
-
-        for other_point in points:
-            distance = abs(point[0] - other_point[0]) + abs(point[1] - other_point[1])
-            if distance < min_distance:
-                min_distance = distance
-                nearest_point = other_point
-
-        return nearest_point
-
-    def union(self, point1, point2):
-        root1 = self.find(point1)
-        root2 = self.find(point2)
-
-        if root1 != root2:
-            if self.ranks[root1] > self.ranks[root2]:
-                self.parents[root2] = root1
-            elif self.ranks[root1] < self.ranks[root2]:
-                self.parents[root1] = root2
-            else:
-                self.parents[root2] = root1
-                self.ranks[root1] += 1
-
-    def find(self, point):
-        if self.parents[point] != point:
-            self.parents[point] = self.find(self.parents[point])
-        return self.parents[point]
+if __name__ == '__main__':
+    # Read the input
+    N = int(input())
+    sequence = list(map(int, input().split()))
+    
+    # Get the maximum value and the number of operations
+    max_value, operations = get_max_value(sequence)
+    
+    # Get the list of chosen elements
+    chosen_elements = get_chosen_elements(sequence, operations)
+    
+    # Print the maximum value and the number of operations
+    print(max_value)
+    print(operations)
+    
+    # Print the chosen elements
+    for i in range(operations):
+        print(chosen_elements[i])
 

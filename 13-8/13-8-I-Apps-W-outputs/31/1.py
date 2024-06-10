@@ -1,52 +1,40 @@
 
-def get_happiness(n, m):
-    # Calculate the total number of permutations of length n
-    total_permutations = 1
-    for i in range(2, n+1):
-        total_permutations *= i
-    
-    # Initialize the sum of happiness to 0
-    sum_of_happiness = 0
-    
-    # Iterate through all permutations of length n
-    for permutation in range(1, total_permutations+1):
-        # Convert the permutation number to a list of digits
-        permutation_list = [int(digit) for digit in str(permutation)]
-        
-        # Initialize the happiness of the permutation to 0
-        happiness = 0
-        
-        # Iterate through all subsegments of the permutation
-        for l in range(1, n+1):
-            for r in range(l, n+1):
-                # Check if the subsegment is a framed segment
-                if is_framed_segment(permutation_list, l, r):
-                    # Increment the happiness of the permutation
-                    happiness += 1
-        
-        # Add the happiness of the permutation to the sum of happiness
-        sum_of_happiness += happiness
-    
-    # Return the sum of happiness modulo m
-    return sum_of_happiness % m
+def get_standing_dominoes(n, s):
+    # Initialize variables
+    standing_dominoes = 0
+    dominoes_fallen = 0
+    left_dominoes = 0
+    right_dominoes = 0
 
-def is_framed_segment(permutation_list, l, r):
-    # Check if the subsegment is a valid subsegment
-    if l > r or l < 1 or r > len(permutation_list):
-        return False
-    
-    # Initialize the maximum and minimum values in the subsegment
-    max_value = permutation_list[l-1]
-    min_value = permutation_list[l-1]
-    
-    # Iterate through the elements in the subsegment
-    for i in range(l, r+1):
-        # Update the maximum and minimum values
-        if permutation_list[i-1] > max_value:
-            max_value = permutation_list[i-1]
-        if permutation_list[i-1] < min_value:
-            min_value = permutation_list[i-1]
-    
-    # Check if the subsegment is a framed segment
-    return max_value - min_value == r - l
+    # Iterate through the dominoes
+    for i in range(n):
+        # Check if the domino has been pushed to the left
+        if s[i] == "L":
+            left_dominoes += 1
+        # Check if the domino has been pushed to the right
+        elif s[i] == "R":
+            right_dominoes += 1
+        # Check if the domino has not been pushed
+        else:
+            # Check if the dominoes on both sides are standing
+            if left_dominoes > 0 and right_dominoes > 0:
+                standing_dominoes += 1
+            # Check if the dominoes on both sides have fallen
+            elif left_dominoes == 0 and right_dominoes == 0:
+                dominoes_fallen += 1
+            # Check if the domino is the first one and has not been pushed
+            elif i == 0 and s[i] == ".":
+                standing_dominoes += 1
+
+    # Return the number of standing dominoes
+    return standing_dominoes
+
+def main():
+    n = int(input())
+    s = input()
+    result = get_standing_dominoes(n, s)
+    print(result)
+
+if __name__ == '__main__':
+    main()
 

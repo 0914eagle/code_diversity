@@ -1,26 +1,40 @@
 
-def max_sum_coverage(N, K, board):
-    # Initialize a 2D array to store the sums of the numbers in each row
-    sums = [[0] * 3 for _ in range(N)]
-    for i in range(N):
-        for j in range(3):
-            sums[i][j] = sums[i][j-1] + board[i][j]
+def get_min_paths(k_arr):
+    # Initialize a dictionary to store the minimum paths from each fragment to the assembly node
+    min_paths = {}
     
-    # Initialize a 2D array to store the maximum sum possible with K dominoes
-    dp = [[0] * (K+1) for _ in range(N+1)]
+    # Iterate over the fragments
+    for i, k in enumerate(k_arr):
+        # Initialize the minimum path length to infinity
+        min_path_len = float('inf')
+        
+        # Iterate over the factors of the current fragment's node number
+        for factor in range(1, k + 1):
+            # If the factor is not a prime number, continue to the next iteration
+            if k % factor != 0:
+                continue
+            
+            # If the factor is a prime number, calculate the distance from the current fragment to the assembly node
+            distance = k // factor
+            
+            # If the distance is less than the minimum path length, update the minimum path length
+            if distance < min_path_len:
+                min_path_len = distance
+        
+        # Add the minimum path length for the current fragment to the dictionary
+        min_paths[i] = min_path_len
     
-    # Base case: no dominoes can be placed on the first row
-    for i in range(1, K+1):
-        dp[1][i] = dp[0][i-1]
+    # Return the sum of the minimum paths for all fragments
+    return sum(min_paths.values())
+
+def main():
+    # Read the number of fragments and their node numbers from stdin
+    n = int(input())
+    k_arr = list(map(int, input().split()))
     
-    # Populate the dp array
-    for i in range(2, N+1):
-        for j in range(1, K+1):
-            # Case 1: place the domino on the current row
-            dp[i][j] = max(dp[i-1][j-1], dp[i-1][j] + sums[i-1][2])
-            # Case 2: do not place the domino on the current row
-            dp[i][j] = max(dp[i][j], dp[i-1][j])
-    
-    # Return the maximum sum possible with K dominoes
-    return dp[N][K]
+    # Call the get_min_paths function and print the result
+    print(get_min_paths(k_arr))
+
+if __name__ == '__main__':
+    main()
 

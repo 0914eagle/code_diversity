@@ -1,28 +1,49 @@
 
-def get_largest_number(cubes):
-    # Initialize a list to store the numbers that can be formed
-    numbers = []
+def get_possible_options(n, x, y, z, a):
+    # Initialize the number of possible options to 0
+    possible_options = 0
     
-    # Iterate over the cubes and add the numbers that can be formed
-    for cube in cubes:
-        number = 0
-        for face in cube:
-            number = number * 10 + face
-        numbers.append(number)
+    # Iterate over each castle and calculate the number of possible options for each castle
+    for i in range(n):
+        # Calculate the number of possible options for the current castle
+        possible_options_current_castle = 0
+        
+        # If the current castle has at least one defender
+        if a[i] > 0:
+            # Calculate the number of possible options for a mixed attack
+            possible_options_mixed_attack = (a[i] - 1) // x + 1
+            
+            # Calculate the number of possible options for an infantry attack
+            possible_options_infantry_attack = (a[i] - 1) // y + 1
+            
+            # Calculate the number of possible options for a cavalry attack
+            possible_options_cavalry_attack = (a[i] - 1) // z + 1
+            
+            # Calculate the total number of possible options for the current castle
+            possible_options_current_castle = possible_options_mixed_attack + possible_options_infantry_attack + possible_options_cavalry_attack
+        
+        # Add the number of possible options for the current castle to the total number of possible options
+        possible_options += possible_options_current_castle
     
-    # Sort the numbers in descending order
-    numbers.sort(reverse=True)
+    # Return the total number of possible options
+    return possible_options
+
+def main():
+    # Read the number of test cases
+    t = int(input())
     
-    # Initialize a variable to store the largest number that can be formed
-    largest_number = 0
-    
-    # Iterate over the numbers and check if they are valid
-    for number in numbers:
-        # Check if the number is valid by checking if it is a power of 10
-        if number % 10 == 0 and number != 0:
-            largest_number = number
-            break
-    
-    # Return the largest number that can be formed
-    return largest_number
+    # Iterate over each test case
+    for _ in range(t):
+        # Read the input
+        n, x, y, z = map(int, input().split())
+        a = list(map(int, input().split()))
+        
+        # Calculate the number of possible options for the first attack of the White King
+        possible_options = get_possible_options(n, x, y, z, a)
+        
+        # Print the answer
+        print(possible_options)
+
+if __name__ == '__main__':
+    main()
 

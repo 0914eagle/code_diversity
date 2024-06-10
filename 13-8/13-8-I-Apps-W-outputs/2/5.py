@@ -1,46 +1,35 @@
 
-def solve(N, M, cubes):
-    # Initialize a 2D array to represent the surface
-    surface = [[0] * N for _ in range(N)]
+import math
+import sys
 
-    # Populate the surface with the given cubes
-    for r, c in cubes:
-        surface[r - 1][c - 1] = 1
+def get_input():
+    n, k = map(int, input().split())
+    logs = list(map(int, input().split()))
+    return n, k, logs
 
-    # Initialize a queue to store the moves
-    queue = []
+def get_max_length(logs, k):
+    max_length = 0
+    for log in logs:
+        max_length = max(max_length, log)
+    return max_length
 
-    # Loop through each row of the surface
-    for r in range(N):
-        # Loop through each column of the surface
-        for c in range(N):
-            # If the current square has a cube on it
-            if surface[r][c] == 1:
-                # Add the move to the queue
-                queue.append((r, c))
+def get_optimal_length(logs, k):
+    max_length = get_max_length(logs, k)
+    optimal_length = max_length
+    for i in range(k):
+        new_logs = []
+        for log in logs:
+            if log == max_length:
+                break
+            new_logs.append(math.ceil(log / 2))
+        max_length = get_max_length(new_logs, k - i - 1)
+        optimal_length = min(optimal_length, max_length)
+    return optimal_length
 
-    # Initialize a variable to store the number of moves
-    moves = 0
+def main():
+    n, k, logs = get_input()
+    print(get_optimal_length(logs, k))
 
-    # Loop through the queue
-    while queue:
-        # Pop the first move from the queue
-        r, c = queue.pop(0)
-
-        # Loop through the neighbors of the current square
-        for nr, nc in [(r - 1, c), (r + 1, c), (r, c - 1), (r, c + 1)]:
-            # If the neighbor is within the bounds of the surface and has no cube on it
-            if 0 <= nr < N and 0 <= nc < N and surface[nr][nc] == 0:
-                # Move the cube to the neighbor
-                surface[nr][nc] = 1
-                surface[r][c] = 0
-
-                # Add the move to the queue
-                queue.append((nr, nc))
-
-        # Increment the number of moves
-        moves += 1
-
-    # Return the number of moves
-    return moves
+if __name__ == '__main__':
+    main()
 

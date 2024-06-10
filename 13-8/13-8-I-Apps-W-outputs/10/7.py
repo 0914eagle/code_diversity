@@ -1,12 +1,16 @@
 
-def solve(n, k, A, B):
-    cost = 0
-    while n > 1:
-        if n % k == 0:
-            cost += B
-            n //= k
-        else:
-            cost += A
-            n -= 1
-    return cost
+def compare(x, y):
+    if x**y < y**x:
+        return '<'
+    elif x**y > y**x:
+        return '>'
+    else:
+        return '='
+
+def main():
+    x, y = map(int, input().split())
+    print(compare(x, y))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,12 +1,25 @@
 
-def solve(n, k, a):
-    left, right = 0, n - 1
-    count = 0
-    while left >= 0 and right < n and a[left] <= k and a[right] <= k:
-        count += 1
-        if a[left] <= a[right]:
-            left -= 1
+def get_input():
+    n = int(input())
+    a = [int(i) for i in input().split()]
+    return n, a
+
+
+def play_game(n, a):
+    sheet = set()
+    for i in range(n):
+        if a[i] in sheet:
+            sheet.remove(a[i])
         else:
-            right += 1
-    return count
+            sheet.add(a[i])
+    return len(sheet)
+
+
+def main():
+    n, a = get_input()
+    print(play_game(n, a))
+
+
+if __name__ == '__main__':
+    main()
 

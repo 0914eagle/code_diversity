@@ -1,25 +1,39 @@
 
-def solve(a, b, l, r):
-    # Initialize the string with the first a letters of the alphabet
-    s = "".join(chr(i + ord('a')) for i in range(a))
+def get_magical_subarray(arr, l, r):
+    # Find the minimum and maximum values in the subarray
+    min_val = min(arr[l:r+1])
+    max_val = max(arr[l:r+1])
     
-    # Initialize the number of different letters in the segment
-    num_diff_letters = a
+    # Initialize the length of the longest contiguous subarray as 0
+    max_len = 0
     
-    # Iterate through each letter added by Mister B
-    for i in range(b):
-        # Get the suffix of length a from the current string
-        suffix = s[-a:]
-        
-        # Generate a new string of length a with distinct letters not in the suffix
-        t = "".join(chr(i + ord('a')) for i in range(a) if chr(i + ord('a')) not in suffix)
-        
-        # Append the new string to the end of the current string
-        s += t
-        
-        # Update the number of different letters in the segment
-        num_diff_letters = min(num_diff_letters, len(set(s[l-1:r])))
+    # Iterate through the subarray and find the longest contiguous subarray with the property that all values are between the minimum and maximum values
+    for i in range(l, r+1):
+        if arr[i] >= min_val and arr[i] <= max_val:
+            curr_len = i - l + 1
+            if curr_len > max_len:
+                max_len = curr_len
     
-    # Return the minimum number of different letters in the segment
-    return num_diff_letters
+    return max_len
+
+def solve(arr, queries):
+    result = []
+    for l, r in queries:
+        result.append(get_magical_subarray(arr, l, r))
+    return result
+
+def main():
+    n = int(input())
+    arr = list(map(int, input().split()))
+    q = int(input())
+    queries = []
+    for i in range(q):
+        l, r = map(int, input().split())
+        queries.append((l, r))
+    result = solve(arr, queries)
+    for i in result:
+        print(i)
+
+if __name__ == '__main__':
+    main()
 

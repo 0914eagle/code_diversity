@@ -1,10 +1,34 @@
 
-def get_midpoint(time1, time2):
-    h1, m1 = map(int, time1.split(':'))
-    h2, m2 = map(int, time2.split(':'))
-    m_total = (h2 - h1) * 60 + (m2 - m1)
-    m_mid = m_total // 2
-    h_mid = h1 + m_mid // 60
-    m_mid = m_mid % 60
-    return f"{h_mid:02d}:{m_mid:02d}"
+def solve(numbers):
+    # Split the input string into a list of integers
+    numbers = [int(num) for num in numbers.split()]
+    
+    # Initialize the equation string
+    equation = ""
+    
+    # Iterate over the possible operations
+    for operation in ["+", "-", "*", "/"]:
+        # Iterate over the possible combinations of integers and operations
+        for num1 in numbers:
+            for num2 in numbers:
+                if num1 != num2:
+                    # Check if the equation is valid
+                    if eval(str(num1) + operation + str(num2)) == numbers[2]:
+                        # If the equation is valid, return it
+                        equation = str(num1) + operation + str(num2) + "=" + str(numbers[2])
+                        return equation
+    
+    # If no equation is found, return None
+    return None
+
+def main():
+    numbers = input("Enter three integers separated by spaces: ")
+    equation = solve(numbers)
+    if equation:
+        print(equation)
+    else:
+        print("No solution found.")
+
+if __name__ == '__main__':
+    main()
 

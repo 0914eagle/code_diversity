@@ -1,25 +1,73 @@
 
-def chess_notation(board):
-    # Initialize empty lists to store the positions of white and black pieces
-    white_pieces = []
-    black_pieces = []
+def get_optimal_umbrella_strategy(a, n, m, l, r, x, p):
+    # Initialize a dictionary to store the optimal strategy
+    strategy = {}
     
-    # Loop through the board and extract the positions of the pieces
-    for i, row in enumerate(board):
-        for j, piece in enumerate(row):
-            # Check if the piece is a white piece
-            if piece.isupper():
-                # Add the piece to the list of white pieces
-                white_pieces.append(piece + str(8 - i) + chr(j + 97))
-            # Check if the piece is a black piece
-            elif piece.islower():
-                # Add the piece to the list of black pieces
-                black_pieces.append(piece + str(i + 1) + chr(j + 97))
+    # Loop through each point on the line
+    for i in range(a):
+        # If the point is in the rain, calculate the minimum fatigue
+        if i in l:
+            # Find the minimum fatigue by trying all possible umbrellas
+            min_fatigue = float('inf')
+            for j in range(m):
+                # If the umbrella is located at the current point, calculate the fatigue
+                if x[j] == i:
+                    fatigue = p[j]
+                # If the umbrella is not located at the current point, calculate the fatigue as 0
+                else:
+                    fatigue = 0
+                # Update the minimum fatigue if necessary
+                if fatigue < min_fatigue:
+                    min_fatigue = fatigue
+            # Add the minimum fatigue to the strategy dictionary
+            strategy[i] = min_fatigue
+        # If the point is not in the rain, calculate the fatigue as 0
+        else:
+            strategy[i] = 0
     
-    # Sort the lists of white and black pieces
-    white_pieces.sort()
-    black_pieces.sort(reverse=True)
+    # Return the strategy dictionary
+    return strategy
+
+def get_total_fatigue(a, n, m, l, r, x, p):
+    # Get the optimal umbrella strategy
+    strategy = get_optimal_umbrella_strategy(a, n, m, l, r, x, p)
     
-    # Return the notation for the white and black pieces
-    return "White: " + ",".join(white_pieces) + "\nBlack: " + ",".join(black_pieces)
+    # Initialize the total fatigue
+    total_fatigue = 0
+    
+    # Loop through each point on the line
+    for i in range(a):
+        # Add the fatigue at the current point to the total fatigue
+        total_fatigue += strategy[i]
+    
+    # Return the total fatigue
+    return total_fatigue
+
+def main():
+    # Read the input
+    a, n, m = map(int, input().split())
+    l = set()
+    r = set()
+    x = []
+    p = []
+    for i in range(n):
+        l_i, r_i = map(int, input().split())
+        l.add(l_i)
+        r.add(r_i)
+    for i in range(m):
+        x_i, p_i = map(int, input().split())
+        x.append(x_i)
+        p.append(p_i)
+    
+    # Check if Polycarp can make his way from point 0 to point a
+    if a in l:
+        print(-1)
+    else:
+        # Get the total fatigue
+        total_fatigue = get_total_fatigue(a, n, m, l, r, x, p)
+        # Print the total fatigue
+        print(total_fatigue)
+
+if __name__ == '__main__':
+    main()
 

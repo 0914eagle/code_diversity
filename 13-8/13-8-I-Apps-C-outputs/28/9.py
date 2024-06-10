@@ -1,36 +1,35 @@
 
-def solve(n, m, edges):
-    # Initialize a dictionary to store the neighbors of each vertex
-    neighbors = {i: set() for i in range(1, n + 1)}
+def get_hidden_strings(s):
+    hidden_strings = []
+    for i in range(len(s)):
+        for j in range(i+1, len(s)):
+            if s[i] == s[j] and (j-i) % 2 == 1:
+                hidden_strings.append(s[i:j+1])
+    return hidden_strings
 
-    # Add edges to the graph
-    for u, v in edges:
-        neighbors[u].add(v)
-        neighbors[v].add(u)
+def get_occurrences(hidden_strings):
+    occurrences = {}
+    for hidden_string in hidden_strings:
+        if hidden_string not in occurrences:
+            occurrences[hidden_string] = 1
+        else:
+            occurrences[hidden_string] += 1
+    return occurrences
 
-    # Initialize a set to store the possible strings
-    strings = set()
+def get_max_occurrences(occurrences):
+    max_occurrences = 0
+    for hidden_string, count in occurrences.items():
+        if count > max_occurrences:
+            max_occurrences = count
+    return max_occurrences
 
-    # Iterate over all possible strings
-    for string in itertools.product("abc", repeat=n):
-        # Initialize a set to store the vertices that are connected by the current string
-        connected_vertices = set()
+def main():
+    s = input()
+    hidden_strings = get_hidden_strings(s)
+    occurrences = get_occurrences(hidden_strings)
+    max_occurrences = get_max_occurrences(occurrences)
+    print(max_occurrences)
 
-        # Iterate over all pairs of vertices
-        for i in range(n):
-            for j in range(i + 1, n):
-                # If the characters at the current positions in the string are equal or neighboring, add the current string to the set of possible strings
-                if string[i] == string[j] or (string[i] == "a" and string[j] == "b") or (string[i] == "b" and string[j] == "c"):
-                    connected_vertices.add((i + 1, j + 1))
-
-        # If the set of connected vertices is equal to the set of edges in the graph, add the current string to the set of possible strings
-        if connected_vertices == set(edges):
-            strings.add("".join(string))
-
-    # If there is exactly one possible string, return "Yes" and the string
-    if len(strings) == 1:
-        return "Yes\n" + list(strings)[0]
-
-    # Otherwise, return "No"
-    return "No"
+if __name__ == '__main__':
+    main()
 

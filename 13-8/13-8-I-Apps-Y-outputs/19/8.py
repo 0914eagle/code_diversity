@@ -1,12 +1,25 @@
 
-def max_value_of_x(S):
-    x = 0
-    max_x = 0
-    for i in S:
-        if i == "I":
-            x += 1
-        else:
-            x -= 1
-        max_x = max(max_x, x)
-    return max_x
+def get_restaurant_menus(n):
+    restaurant_menus = []
+    for _ in range(n):
+        k = int(input())
+        menu = []
+        for _ in range(k + 1):
+            menu.append(input())
+        restaurant_menus.append(menu)
+    return restaurant_menus
+
+def find_restaurant(restaurant_menus):
+    for restaurant in restaurant_menus:
+        if "pea soup" in restaurant and "pancakes" in restaurant:
+            return restaurant[0]
+    return "Anywhere is fine I guess"
+
+def main():
+    n = int(input())
+    restaurant_menus = get_restaurant_menus(n)
+    print(find_restaurant(restaurant_menus))
+
+if __name__ == '__main__':
+    main()
 

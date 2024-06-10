@@ -1,27 +1,29 @@
 
-def get_min_mex(subarrays):
-    mex = 0
-    for subarray in subarrays:
-        mex = max(mex, *subarray) + 1
-    return mex
+import math
 
+def get_max_expected_profit(x, p):
+    # Calculate the probability of winning and losing
+    win_prob = p / 100
+    lose_prob = 1 - win_prob
+    
+    # Calculate the expected value of each bet
+    expect_win = 2
+    expect_lose = 1
+    
+    # Calculate the maximum expected profit
+    max_expected_profit = math.inf
+    for i in range(1, 1000001):
+        expected_profit = i * expect_win * win_prob + (i - x) * expect_lose * lose_prob
+        if expected_profit < max_expected_profit:
+            break
+        max_expected_profit = expected_profit
+    
+    return max_expected_profit
 
-def get_optimal_array(n, m):
-    subarrays = []
-    for _ in range(m):
-        l, r = map(int, input().split())
-        subarrays.append(list(range(l, r + 1)))
+def main():
+    x, p = map(float, input().split())
+    print(get_max_expected_profit(x, p))
 
-    mex = get_min_mex(subarrays)
-    array = [mex] * n
-    for subarray in subarrays:
-        for i in subarray:
-            array[i] = 0
-
-    return array
-
-
-n, m = map(int, input().split())
-array = get_optimal_array(n, m)
-print(array)
+if __name__ == '__main__':
+    main()
 

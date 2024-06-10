@@ -1,28 +1,28 @@
 
-def largest_sum_of_digits(n):
-    # Initialize the maximum sum of digits as 0
-    max_sum = 0
-    # Loop through all possible values of a
-    for a in range(n+1):
-        # Find the corresponding value of b
-        b = n - a
-        # Calculate the sum of digits of a and b
-        sum_of_digits = sum_of_digits_in_base_10(a) + sum_of_digits_in_base_10(b)
-        # Update the maximum sum of digits if necessary
-        if sum_of_digits > max_sum:
-            max_sum = sum_of_digits
-    # Return the maximum sum of digits
-    return max_sum
+def meow_factor(string):
+    # Initialize the meow factor to 0
+    factor = 0
+    
+    # Loop through each character in the string
+    for i in range(len(string)):
+        # If the current character is 'm', check if the next three characters are 'e', 'o', and 'w'
+        if string[i] == 'm':
+            if i + 1 < len(string) and string[i + 1] == 'e' and i + 2 < len(string) and string[i + 2] == 'o' and i + 3 < len(string) and string[i + 3] == 'w':
+                # If they are, return the current meow factor
+                return factor
+            # If the current character is 'm' and the next three characters are not 'e', 'o', and 'w', increment the meow factor
+            factor += 1
+    
+    # If the string does not contain the word "meow", return -1
+    return -1
 
-def sum_of_digits_in_base_10(n):
-    # Initialize the sum of digits as 0
-    sum_of_digits = 0
-    # Loop through the digits of n
-    while n > 0:
-        # Add the current digit to the sum of digits
-        sum_of_digits += n % 10
-        # Divide n by 10 to move to the next digit
-        n //= 10
-    # Return the sum of digits
-    return sum_of_digits
+def main():
+    # Read a string from stdin
+    string = input()
+    
+    # Print the meow factor of the string
+    print(meow_factor(string))
+
+if __name__ == '__main__':
+    main()
 

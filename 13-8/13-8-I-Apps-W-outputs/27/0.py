@@ -1,12 +1,28 @@
 
-def solve(s):
-    vowels = set("aeiou")
-    evens = set("02468")
-    count = 0
-    for i in range(len(s) - 1):
-        if s[i] in vowels and s[i + 1] not in evens:
-            count += 1
-        elif s[i] not in vowels and s[i + 1] in evens:
-            count += 1
-    return count
+def get_f(p, q, a):
+    # find the minimum number of animals among the route areas
+    f = min(a[p - 1], a[q - 1])
+    return f
+
+def get_average(n, m, a, x, y):
+    # calculate the average value of f(p, q) for all pairs p, q (p ≠ q)
+    f_sum = 0
+    for i in range(n):
+        for j in range(i + 1, n):
+            if i != j:
+                f_sum += get_f(i + 1, j + 1, a)
+    return f_sum / (n * (n - 1))
+
+def main():
+    n, m = map(int, input().split())
+    a = list(map(int, input().split()))
+    x = []
+    y = []
+    for i in range(m):
+        x.append(int(input()))
+        y.append(int(input()))
+    print(get_average(n, m, a, x, y))
+
+if __name__ == '__main__':
+    main()
 

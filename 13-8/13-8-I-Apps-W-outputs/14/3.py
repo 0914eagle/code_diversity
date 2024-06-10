@@ -1,21 +1,20 @@
 
-def solve(board, k):
-    # Check rows
-    for row in board:
-        if row.count('X') == k:
-            return "YES"
+def get_minimum_steps(a, b):
+    n = len(a)
+    dp = [0] * (n + 1)
+    for i in range(1, n + 1):
+        dp[i] = dp[i - 1] + 1
+        for j in range(1, i + 1):
+            if a[i - j] != b[i - j]:
+                dp[i] = min(dp[i], dp[i - j] + 1)
+    return dp[n]
 
-    # Check columns
-    for i in range(len(board[0])):
-        col = [row[i] for row in board]
-        if col.count('X') == k:
-            return "YES"
+def main():
+    n = int(input())
+    b = list(map(int, input().split()))
+    a = [0] * n
+    print(get_minimum_steps(a, b))
 
-    # Check diagonals
-    if board[0][0] == 'X' and board[1][1] == 'X' and board[2][2] == 'X':
-        return "YES"
-    if board[0][2] == 'X' and board[1][1] == 'X' and board[2][0] == 'X':
-        return "YES"
-
-    return "NO"
+if __name__ == '__main__':
+    main()
 

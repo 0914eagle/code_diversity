@@ -1,25 +1,21 @@
 
-def happiness(n, m):
-    def is_permutation(arr):
-        return len(set(arr)) == len(arr) and len(arr) == n
+def get_vertical_dominoes(s):
+    n = len(s)
+    dominoes = [0] * n
+    for i in range(n):
+        if s[i] == "L":
+            dominoes[i] -= 1
+        elif s[i] == "R":
+            dominoes[i] += 1
+    for i in range(1, n):
+        dominoes[i] += dominoes[i-1]
+    return sum(1 for x in dominoes if x != 0)
 
-    def is_framed_segment(arr, l, r):
-        return max(arr[l:r+1]) - min(arr[l:r+1]) == r - l
+def main():
+    n = int(input())
+    s = input()
+    print(get_vertical_dominoes(s))
 
-    def count_happiness(arr):
-        count = 0
-        for l in range(n):
-            for r in range(l, n):
-                if is_framed_segment(arr, l, r):
-                    count += 1
-        return count
-
-    def count_happiness_modulo(n, m):
-        total = 0
-        for arr in itertools.permutations(range(1, n+1)):
-            if is_permutation(arr):
-                total += count_happiness(arr)
-        return total % m
-
-    return count_happiness_modulo(n, m)
+if __name__ == '__main__':
+    main()
 

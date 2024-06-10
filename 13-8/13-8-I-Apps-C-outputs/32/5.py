@@ -1,14 +1,24 @@
 
 import math
 
-def solve(n, d, r):
-    # Calculate the probability of a gem splitting into two gems
-    p = 1 / n
+def calculate_area(radius):
+    return math.pi * radius ** 2
 
-    # Calculate the expected number of gems held by the top r inhabitants after d nights
-    expected_gems = 0
-    for i in range(r):
-        expected_gems += p * (i + 1) * math.comb(n, i) * (d - i)
+def calculate_pickles(sandwich_area, pickle_area, max_coverage):
+    total_pickles = 0
+    current_area = 0
+    while current_area < sandwich_area * max_coverage / 100:
+        total_pickles += 1
+        current_area += pickle_area
+    return total_pickles
 
-    return expected_gems
+def main():
+    sandwich_radius, pickle_radius = map(float, input().split())
+    num_pickles, max_coverage = map(int, input().split())
+    sandwich_area = calculate_area(sandwich_radius)
+    pickle_area = calculate_area(pickle_radius)
+    print(calculate_pickles(sandwich_area, pickle_area, max_coverage))
+
+if __name__ == '__main__':
+    main()
 

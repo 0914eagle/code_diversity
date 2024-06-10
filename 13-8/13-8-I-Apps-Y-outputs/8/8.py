@@ -1,29 +1,37 @@
 
-def solve_chess_notation(chessboard):
-    # Initialize an empty list to store the pieces of each player
-    white_pieces = []
-    black_pieces = []
+def get_optimal_fatigue(a, n, m, rain_segments, umbrellas):
+    # Initialize a dictionary to store the optimal fatigue for each point
+    optimal_fatigue = {0: 0}
+    
+    # Loop through each point from 1 to a
+    for x in range(1, a + 1):
+        # Get the weights of the umbrellas at point x
+        weights = [umbrella[1] for umbrella in umbrellas if umbrella[0] == x]
+        
+        # Get the minimum fatigue for each segment that intersects with point x
+        min_fatigue = float('inf')
+        for segment in rain_segments:
+            if segment[0] <= x and x <= segment[1]:
+                min_fatigue = min(min_fatigue, sum(weights))
+        
+        # Get the minimum fatigue for point x by considering the minimum fatigue of all segments that intersect with point x
+        optimal_fatigue[x] = min_fatigue + optimal_fatigue[x - 1]
+    
+    # Return the minimum fatigue for point a
+    return optimal_fatigue[a]
 
-    # Iterate over the rows of the chessboard
-    for row in chessboard:
-        # Iterate over the columns of the row
-        for col in row:
-            # Check if the current position has a piece
-            if col != ":":
-                # Add the piece to the appropriate list
-                if col.islower():
-                    black_pieces.append(col)
-                else:
-                    white_pieces.append(col)
+def main():
+    a, n, m = map(int, input().split())
+    rain_segments = []
+    umbrellas = []
+    for i in range(n):
+        l, r = map(int, input().split())
+        rain_segments.append([l, r])
+    for i in range(m):
+        x, p = map(int, input().split())
+        umbrellas.append([x, p])
+    print(get_optimal_fatigue(a, n, m, rain_segments, umbrellas))
 
-    # Sort the pieces of each player by their position
-    white_pieces.sort(key=lambda x: (x[1], x[0]))
-    black_pieces.sort(key=lambda x: (x[1], x[0]), reverse=True)
-
-    # Join the pieces into a comma-separated string
-    white_notation = ",".join(white_pieces)
-    black_notation = ",".join(black_pieces)
-
-    # Return the final output
-    return f"White: {white_notation}\nBlack: {black_notation}"
+if __name__ == '__main__':
+    main()
 

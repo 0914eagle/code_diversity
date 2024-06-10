@@ -1,21 +1,36 @@
 
-def solve(arr):
-    n = len(arr)
-    if n == 1:
+def get_min_extensions(a, b, h, w, extensions):
+    # Initialize the minimum number of extensions needed to be 0
+    min_extensions = 0
+    # If the rectangle can be placed on the initial field, return 0
+    if a <= h and b <= w:
         return 0
-    # Sort the array
-    arr.sort()
-    # Initialize the minimum size of the subsegment to remove
-    min_size = 0
-    # Iterate through the array
-    for i in range(n-1):
-        # If the current element is equal to the next element, increase the minimum size of the subsegment to remove
-        if arr[i] == arr[i+1]:
-            min_size += 1
-        # If the current element is not equal to the next element, check if the minimum size of the subsegment to remove is greater than 1
-        elif min_size > 1:
-            # If the minimum size of the subsegment to remove is greater than 1, return the minimum size
-            return min_size
-            # Otherwise, set the minimum size of the subsegment to remove to 0
-    return min_size
+    
+    # Iterate through the available extensions
+    for extension in extensions:
+        # If the extension multiplies the width, multiply h by the extension
+        if extension <= h:
+            h *= extension
+        # If the extension multiplies the length, multiply w by the extension
+        elif extension <= w:
+            w *= extension
+        # If the extension multiplies both the width and the length, multiply both h and w by the extension
+        else:
+            h *= extension
+            w *= extension
+        
+        # If the rectangle can be placed on the field after applying the extension, increment the minimum number of extensions needed
+        if a <= h and b <= w:
+            min_extensions += 1
+    
+    # Return the minimum number of extensions needed to reach Arkady's goal
+    return min_extensions
+
+def main():
+    a, b, h, w, n = map(int, input().split())
+    extensions = list(map(int, input().split()))
+    print(get_min_extensions(a, b, h, w, extensions))
+
+if __name__ == '__main__':
+    main()
 

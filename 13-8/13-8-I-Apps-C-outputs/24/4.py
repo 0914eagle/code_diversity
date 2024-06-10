@@ -1,27 +1,45 @@
 
-def get_minimum_spanning_tree_weight(points):
-    # Sort the points by their x-coordinate
-    sorted_points = sorted(points, key=lambda point: point[0])
+def get_max_value(sequence):
+    # Initialize variables
+    max_value = 0
+    operations = 0
+    selection = []
 
-    # Create a disjoint set data structure to keep track of the connected components
-    dsu = DisjointSetUnion(points)
+    # Loop through the sequence
+    for i in range(len(sequence)):
+        # Check if the element is at either end of the sequence
+        if i == 0 or i == len(sequence) - 1:
+            # Delete the element
+            sequence.pop(i)
+            operations += 1
+        else:
+            # Replace the element with the sum of the two adjacent elements
+            sequence[i] = sequence[i - 1] + sequence[i + 1]
+            # Delete the two adjacent elements
+            sequence.pop(i - 1)
+            sequence.pop(i - 1)
+            operations += 2
 
-    # Initialize the total weight of the minimum spanning tree to 0
-    total_weight = 0
+        # Update the maximum value
+        max_value = max(max_value, sequence[0])
 
-    # Iterate through all pairs of points
-    for i in range(len(points)):
-        for j in range(i + 1, len(points)):
-            # Calculate the weight of the edge between the two points
-            weight = abs(points[i][0] - points[j][0]) + abs(points[i][1] - points[j][1])
+    # Return the maximum value and the number of operations
+    return max_value, operations, selection
 
-            # If the weight is less than or equal to the weight of the edge between the two points' connected components, merge the two components
-            if weight <= dsu.find_set(points[i])[1]:
-                dsu.union_sets(points[i], points[j])
+def main():
+    # Read the input
+    N = int(input())
+    sequence = list(map(int, input().split()))
 
-            # Add the weight of the edge to the total weight of the minimum spanning tree
-            total_weight += weight
+    # Get the maximum value and the number of operations
+    max_value, operations, selection = get_max_value(sequence)
 
-    # Return the total weight of the minimum spanning tree
-    return total_weight
+    # Print the output
+    print(max_value)
+    print(operations)
+    for i in selection:
+        print(i)
+
+if __name__ == '__main__':
+    main()
 

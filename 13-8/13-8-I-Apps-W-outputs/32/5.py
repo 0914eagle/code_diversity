@@ -1,22 +1,24 @@
 
-def solve(n):
-    # Initialize an empty string
-    string = ""
-    
-    # Loop until the string is of length n
-    while len(string) < n:
-        # Generate a random character from the set {'a', 'b', 'c'}
-        char = random.choice(['a', 'b', 'c'])
-        
-        # If the character is not a palindrome, add it to the string
-        if not is_palindrome(char):
-            string += char
-    
-    # Return the string
-    return string
+def get_maximal_total_comfort(a):
+    n = len(a)
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
+    for i in range(n):
+        for j in range(i, n + 1):
+            if j == i:
+                dp[i][j] = a[i]
+            else:
+                dp[i][j] = dp[i][j - 1] ^ a[j - 1]
+    max_comfort = 0
+    for i in range(n + 1):
+        for j in range(i, n + 1):
+            max_comfort = max(max_comfort, dp[i][j])
+    return max_comfort
 
-# Define a function to check if a string is a palindrome
-def is_palindrome(string):
-    # Return True if the string is a palindrome, False otherwise
-    return string == string[::-1]
+def main():
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(get_maximal_total_comfort(a))
+
+if __name__ == '__main__':
+    main()
 

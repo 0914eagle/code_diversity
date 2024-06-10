@@ -1,17 +1,38 @@
 
-def get_largest_number(cubes):
-    # Initialize a list to store the digits of the largest number
-    largest_number = []
+def get_possible_attacks(n, x, y, z, a):
+    # Initialize the number of possible attacks to 0
+    possible_attacks = 0
+    
+    # Iterate over each castle
+    for i in range(n):
+        # If the castle has at least one defender
+        if a[i] > 0:
+            # Increment the number of possible attacks by 1
+            possible_attacks += 1
+    
+    # Return the number of possible attacks
+    return possible_attacks
 
-    # Iterate over the cubes and add the digits to the largest number
-    for cube in cubes:
-        for digit in cube:
-            if digit not in largest_number and digit != 6 and digit != 9:
-                largest_number.append(digit)
+def get_last_attack_options(n, x, y, z, a):
+    # Initialize the number of last attack options to 0
+    last_attack_options = 0
+    
+    # Iterate over each castle
+    for i in range(n):
+        # If the castle has at least one defender
+        if a[i] > 0:
+            # Increment the number of last attack options by 1
+            last_attack_options += 1
+    
+    # Return the number of last attack options
+    return last_attack_options
 
-    # Sort the largest number in descending order
-    largest_number.sort(reverse=True)
-
-    # Convert the largest number to an integer and return it
-    return int("".join(map(str, largest_number)))
+if __name__ == '__main__':
+    t = int(input())
+    for _ in range(t):
+        n, x, y, z = map(int, input().split())
+        a = list(map(int, input().split()))
+        possible_attacks = get_possible_attacks(n, x, y, z, a)
+        last_attack_options = get_last_attack_options(n, x, y, z, a)
+        print(possible_attacks)
 

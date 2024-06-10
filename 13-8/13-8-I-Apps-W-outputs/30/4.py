@@ -1,19 +1,34 @@
 
-def solve(n, x):
-    # Sort the input array
-    x.sort()
-    
-    # Find the minimum and maximum values
-    min_val = x[0]
-    max_val = x[-1]
-    
-    # Initialize the output array
-    y = [0] * n
-    
-    # Fill the output array with the minimum value
-    for i in range(n):
-        y[i] = min_val
-    
-    # Return the minimum possible number of equal measurements
-    return n - (max_val - min_val)
+def get_maximum_number(v, a):
+    # Initialize variables
+    maximum_number = 0
+    used_paint = 0
+    digits = []
+
+    # Sort the array in descending order
+    a.sort(reverse=True)
+
+    # Loop through the array and find the maximum number that can be written
+    for i in range(len(a)):
+        if used_paint + a[i] <= v:
+            used_paint += a[i]
+            digits.append(str(i+1))
+            maximum_number = int("".join(digits))
+        else:
+            break
+
+    # If the paint is not enough for any digit, return -1
+    if used_paint < v:
+        return -1
+
+    # Return the maximum number that can be written
+    return maximum_number
+
+def main():
+    v = int(input())
+    a = list(map(int, input().split()))
+    print(get_maximum_number(v, a))
+
+if __name__ == '__main__':
+    main()
 

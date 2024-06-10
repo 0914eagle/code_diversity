@@ -1,15 +1,18 @@
 
-def solve(n, k, arr):
-    left, right = 0, n-1
-    count = 0
-    while left >= 0 and right < n:
-        if arr[left] <= k:
-            count += 1
-            left -= 1
-        if arr[right] <= k:
-            count += 1
-            right += 1
-        left -= 1
-        right += 1
-    return count
+def game(N, A):
+    sheet = set()
+    for i in range(N):
+        if A[i] in sheet:
+            sheet.remove(A[i])
+        else:
+            sheet.add(A[i])
+    return len(sheet)
+
+def main():
+    N = int(input())
+    A = list(map(int, input().split()))
+    print(game(N, A))
+
+if __name__ == '__main__':
+    main()
 

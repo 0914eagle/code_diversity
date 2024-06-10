@@ -1,9 +1,12 @@
 
-def solve(gopher_coords, dog_coords, gopher_holes):
-    gopher_x, gopher_y = gopher_coords
-    dog_x, dog_y = dog_coords
-    for hole_x, hole_y in gopher_holes:
-        if (hole_x - gopher_x) ** 2 + (hole_y - gopher_y) ** 2 < (dog_x - gopher_x) ** 2 + (dog_y - gopher_y) ** 2:
-            return f"The gopher can escape through the hole at ({hole_x}, {hole_y})."
-    return "The gopher cannot escape."
+def get_rating(current_rating, performance):
+    return (current_rating + performance) / 2
+
+def get_performance(current_rating, desired_rating):
+    return (desired_rating * 2) - current_rating
+
+if __name__ == '__main__':
+    current_rating = int(input())
+    desired_rating = int(input())
+    print(get_performance(current_rating, desired_rating))
 

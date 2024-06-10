@@ -1,38 +1,28 @@
 
-def solve(n, t, m, intervals):
-    # Initialize the variables
-    sportify_goals = 0
-    spoilify_goals = 0
-    sportify_cheers = 0
-    spoilify_cheers = 0
+import sys
+input = sys.stdin.read()
+n, k = map(int, input.split('\n')[0].split())
+courses = {}
+for line in input.split('\n')[1:]:
+    name, diff = line.split()
+    if name not in courses:
+        courses[name] = []
+    courses[name].append(int(diff))
 
-    # Sort the intervals by start time
-    intervals.sort(key=lambda x: x[0])
+def dfs(i, visited, level, total):
+    if i == k:
+        return total
+    visited.add(i)
+    for j in range(1, n+1):
+        if j not in visited and len(courses[j]) > level:
+            total = min(total, dfs(i+1, visited, level+1, total+courses[j][level]))
+    visited.remove(i)
+    return total
 
-    # Iterate through each interval
-    for i in range(m):
-        # Check if the interval overlaps with the current time
-        if intervals[i][0] <= sportify_cheers <= intervals[i][1]:
-            # Sportify is cheering, increase their cheers
-            sportify_cheers += 1
-        elif intervals[i][0] <= spoilify_cheers <= intervals[i][1]:
-            # Spoilify is cheering, increase their cheers
-            spoilify_cheers += 1
-        else:
-            # No one is cheering, reset the cheers
-            sportify_cheers = 0
-            spoilify_cheers = 0
+def solve(k):
+    visited = set()
+    return dfs(0, visited, 0, 0)
 
-        # Check if Sportify has scored a goal
-        if sportify_cheers >= 5:
-            sportify_goals += 1
-            sportify_cheers = 0
-
-        # Check if Spoilify has scored a goal
-        if spoilify_cheers >= 5:
-            spoilify_goals += 1
-            spoilify_cheers = 0
-
-    # Return the results
-    return [sportify_goals, spoilify_goals]
+if __name__ == '__main__':
+    print(solve(k))
 

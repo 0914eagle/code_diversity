@@ -1,31 +1,48 @@
 
-def max_number(cubes):
-    # Initialize a set to store the unique numbers that can be formed
-    unique_numbers = set()
+def get_possible_options(n, x, y, z, a):
+    # Initialize the number of possible options to 0
+    possible_options = 0
     
-    # Iterate over the cubes
-    for cube in cubes:
-        # Iterate over the digits of the cube
-        for digit in cube:
-            # If the digit is not already in the set, add it
-            if digit not in unique_numbers:
-                unique_numbers.add(digit)
+    # Iterate over each castle and its defenders
+    for i in range(n):
+        # If the castle has at least one defender, we can attack it
+        if a[i] > 0:
+            # Check if the castle was not attacked in the previous day
+            if i % 2 == 0:
+                # The White King can attack the castle with a mixed attack
+                possible_options += 1
+            # Check if the castle was not attacked in the previous night
+            if i % 2 == 1:
+                # The Black King can attack the castle with a mixed attack
+                possible_options += 1
     
-    # Sort the unique numbers in descending order
-    unique_numbers = sorted(unique_numbers, reverse=True)
+    # Return the number of possible options
+    return possible_options
+
+def get_number_of_possible_options(n, x, y, z, a):
+    # Initialize the number of possible options to 0
+    possible_options = 0
     
-    # Initialize a variable to store the maximum number that can be formed
-    max_number = 0
+    # Iterate over each castle and its defenders
+    for i in range(n):
+        # If the castle has at least one defender, we can attack it
+        if a[i] > 0:
+            # Check if the castle was not attacked in the previous day
+            if i % 2 == 0:
+                # The White King can attack the castle with a mixed attack
+                possible_options += 1
+            # Check if the castle was not attacked in the previous night
+            if i % 2 == 1:
+                # The Black King can attack the castle with a mixed attack
+                possible_options += 1
     
-    # Iterate over the unique numbers
-    for number in unique_numbers:
-        # If the number is already in the set, continue
-        if number in unique_numbers:
-            continue
-        # If the number is not already in the set, add it and update the maximum number
-        unique_numbers.add(number)
-        max_number = number
-    
-    # Return the maximum number
-    return max_number
+    # Return the number of possible options
+    return possible_options
+
+if __name__ == '__main__':
+    t = int(input())
+    for _ in range(t):
+        n, x, y, z = map(int, input().split())
+        a = list(map(int, input().split()))
+        print(get_number_of_possible_options(n, x, y, z, a))
 

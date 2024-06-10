@@ -1,20 +1,26 @@
 
-def solve(segments):
-    # Sort the segments by their left endpoint
-    sorted_segments = sorted(segments, key=lambda x: x[0])
+def find_occurrences(T, N):
+    # Initialize a counter for the number of occurrences
+    count = 0
+    
+    # Loop through the concatenation of 10^10 copies of the string 110
+    for i in range(10**10):
+        # Check if the substring T occurs at the current position
+        if T == S[i:i+N]:
+            # Increment the counter
+            count += 1
+    
+    # Return the number of occurrences
+    return count
 
-    # Initialize the covering segment as the first segment
-    covering_segment = sorted_segments[0]
+def main():
+    # Read the input from stdin
+    N = int(input())
+    T = input()
+    
+    # Call the find_occurrences function and print the result
+    print(find_occurrences(T, N))
 
-    # Iterate through the remaining segments
-    for segment in sorted_segments[1:]:
-        # If the current segment is not covered by the covering segment, return -1
-        if segment[0] < covering_segment[0] or segment[1] > covering_segment[1]:
-            return -1
-
-        # Otherwise, update the covering segment to be the current segment
-        covering_segment = segment
-
-    # If we reach this point, the covering segment covers all other segments, so return its number
-    return covering_segment[2]
+if __name__ == '__main__':
+    main()
 

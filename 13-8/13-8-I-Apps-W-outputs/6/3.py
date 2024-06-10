@@ -1,56 +1,44 @@
 
-def solve(D, q, queries):
-    # Initialize a dictionary to store the graph
-    graph = {}
+import math
 
-    # Populate the graph with divisors of D
-    for i in range(1, int(D**0.5) + 1):
-        if D % i == 0:
-            graph[i] = []
-            if i * i != D:
-                graph[D // i] = []
+def get_closest_distance(vehicles):
+    # Sort the vehicles by their position
+    vehicles.sort(key=lambda x: x[0])
+    
+    # Initialize the minimum distance and the current position
+    min_distance = 0
+    current_position = 0
+    
+    # Loop through the vehicles and calculate the closest distance
+    for vehicle in vehicles:
+        # Calculate the distance between the current vehicle and the previous vehicle
+        distance = vehicle[0] - current_position
+        
+        # If the distance is greater than the minimum distance, update the minimum distance
+        if distance > min_distance:
+            min_distance = distance
+        
+        # Update the current position
+        current_position = vehicle[0]
+    
+    return min_distance
 
-    # Add edges to the graph
-    for u in graph:
-        for v in graph:
-            if u % v == 0 and is_prime(u // v):
-                graph[u].append(v)
-                graph[v].append(u)
+def main():
+    # Read the number of vehicles
+    n = int(input())
+    
+    # Read the positions and velocities of the vehicles
+    vehicles = []
+    for i in range(n):
+        x, v = map(int, input().split())
+        vehicles.append((x, v))
+    
+    # Calculate the closest distance
+    min_distance = get_closest_distance(vehicles)
+    
+    # Print the result
+    print(min_distance)
 
-    # Initialize a dictionary to store the number of shortest paths between each pair of vertices
-    num_paths = {}
-
-    # Populate the dictionary with the number of shortest paths between each pair of vertices
-    for u in graph:
-        for v in graph:
-            if u != v:
-                num_paths[(u, v)] = count_shortest_paths(graph, u, v)
-
-    # Print the number of shortest paths for each query
-    for query in queries:
-        u, v = query
-        print(num_paths[(u, v)] % 998244353)
-
-# Function to count the number of shortest paths between two vertices in the graph
-def count_shortest_paths(graph, u, v):
-    if u == v:
-        return 1
-    else:
-        count = 0
-        for neighbor in graph[u]:
-            count += count_shortest_paths(graph, neighbor, v)
-        return count
-
-# Function to check if a number is prime
-def is_prime(n):
-    if n == 1 or n == 0:
-        return False
-    for i in range(2, int(n**0.5) + 1):
-        if n % i == 0:
-            return False
-    return True
-
-solve(12, 3, [[4, 4], [12, 1], [3, 4]])
-solve(1, 1, [[1, 1]])
-solve(288807105787200, 4, [[46, 482955026400], [12556830686400, 897], [414, 12556830686400], [4443186242880, 325]])
+if __name__ == '__main__':
+    main()
 

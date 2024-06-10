@@ -1,59 +1,50 @@
 
-def solve(pre_output, in_output, post_output):
-    # Find all possible combinations of Pre, In, and Post calls
-    combinations = []
-    for pre in range(2):
-        for in_ in range(2):
-            for post in range(2):
-                combinations.append([pre, in_, post])
+def get_entirely_unsorted_sequences(numbers):
+    # Initialize a set to store the sorted sequences
+    sorted_sequences = set()
     
-    # Filter out invalid combinations
-    valid_combinations = []
-    for combination in combinations:
-        pre, in_, post = combination
-        if pre + in_ + post != 2:
-            continue
-        if pre == 0 and in_ == 0 and post == 0:
-            continue
-        valid_combinations.append(combination)
+    # Iterate over the input numbers
+    for i in range(len(numbers)):
+        # Get the current number
+        current_number = numbers[i]
+        
+        # Initialize a set to store the unsorted sequences for the current number
+        unsorted_sequences = set()
+        
+        # Iterate over the remaining numbers
+        for j in range(i+1, len(numbers)):
+            # Get the next number
+            next_number = numbers[j]
+            
+            # If the current number is less than the next number, add the current number to the unsorted sequence
+            if current_number < next_number:
+                unsorted_sequences.add((current_number,))
+            
+            # If the current number is greater than the next number, add the next number to the unsorted sequence
+            elif current_number > next_number:
+                unsorted_sequences.add((next_number,))
+            
+            # If the current number is equal to the next number, add both numbers to the unsorted sequence
+            else:
+                unsorted_sequences.add((current_number, next_number))
+        
+        # Add the unsorted sequences for the current number to the sorted sequences
+        sorted_sequences |= unsorted_sequences
     
-    # Find the first tree that gives the observed output for each valid combination
-    results = []
-    for combination in valid_combinations:
-        pre, in_, post = combination
-        pre_calls = pre_output[:pre]
-        in_calls = in_output[in_:in_ + pre]
-        post_calls = post_output[post:]
-        tree = find_tree(pre_calls, in_calls, post_calls)
-        if tree:
-            results.append([combination, tree])
-    
-    # Sort the results lexicographically
-    results.sort(key=lambda x: (x[0], x[1][0]))
-    
-    # Return the first result
-    return results[0]
+    # Return the number of sorted sequences
+    return len(sorted_sequences)
 
-def find_tree(pre_calls, in_calls, post_calls):
-    # Find all possible trees that give the observed output
-    possible_trees = []
-    for pre in pre_calls:
-        for in_ in in_calls:
-            for post in post_calls:
-                tree = (pre, (in_, post))
-                if is_valid_tree(tree):
-                    possible_trees.append(tree)
+def main():
+    # Read the input
+    n = int(input())
+    numbers = tuple(map(int, input().split()))
     
-    # Find the first tree that is alphabetically first
-    if possible_trees:
-        return sorted(possible_trees, key=lambda x: x[0])[0]
-    else:
-        return None
+    # Call the function to get the number of entirely unsorted sequences
+    result = get_entirely_unsorted_sequences(numbers)
+    
+    # Print the result
+    print(result)
 
-def is_valid_tree(tree):
-    # Check if the tree is valid
-    if tree[1] == ():
-        return True
-    else:
-        return is_valid_tree(tree[1][0]) and is_valid_tree(tree[1][1])
+if __name__ == '__main__':
+    main()
 

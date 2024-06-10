@@ -1,17 +1,32 @@
 
-def get_max_birds(l, d, n, positions):
-    # Sort the positions of the birds
-    positions.sort()
+def is_good(s):
+    count_zero = 0
+    count_one = 0
+    for c in s:
+        if c == '0':
+            count_zero += 1
+        else:
+            count_one += 1
+    return count_zero != count_one
+
+def solve(s):
+    if len(s) == 1:
+        return 1, s
     
-    # Initialize the number of additional birds that can sit on the wire
-    max_birds = 0
+    for i in range(1, len(s)):
+        if is_good(s[:i]):
+            k, ss = solve(s[i:])
+            return k + 1, s[:i] + ' ' + ss
     
-    # Iterate over the positions of the birds
-    for i in range(n):
-        # Check if the current bird is at least 6 cm from both poles
-        if positions[i] >= 6 and positions[i] + d < l:
-            # Increment the number of additional birds that can sit on the wire
-            max_birds += 1
-    
-    return max_birds
+    return 1, s
+
+def main():
+    n = int(input())
+    s = input()
+    k, ss = solve(s)
+    print(k)
+    print(ss)
+
+if __name__ == '__main__':
+    main()
 

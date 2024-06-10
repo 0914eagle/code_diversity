@@ -1,50 +1,37 @@
 
-def is_possible(n, m, edges):
-    # Initialize a dictionary to store the degrees of each vertex
-    degrees = {}
-    for i in range(1, n + 1):
-        degrees[i] = 0
-    
-    # Iterate over the edges and increment the degree of each vertex
-    for edge in edges:
-        u, v = edge[0], edge[1]
-        degrees[u] += 1
-        degrees[v] += 1
-    
-    # Check if the degrees of all vertices are either 1 or 2
-    for degree in degrees.values():
-        if degree not in [1, 2]:
-            return False
-    
-    # Check if the graph is connected
-    visited = set([1])
-    queue = [1]
-    while queue:
-        vertex = queue.pop(0)
-        for neighbor in edges:
-            if neighbor[0] == vertex:
-                if neighbor[1] not in visited:
-                    visited.add(neighbor[1])
-                    queue.append(neighbor[1])
-    
-    return len(visited) == n
+def get_hidden_strings(s):
+    hidden_strings = []
+    for i in range(len(s)):
+        for j in range(i+1, len(s)):
+            if s[i] == s[j]:
+                hidden_strings.append(s[i:j+1])
+    return hidden_strings
 
-def solve(n, m, edges):
-    # Check if the graph is possible
-    if is_possible(n, m, edges):
-        # Initialize a list to store the vertices and their corresponding letters
-        letters = ["a"] * n
-        for edge in edges:
-            u, v = edge[0], edge[1]
-            if letters[u - 1] == "a":
-                letters[u - 1] = "b"
-            elif letters[u - 1] == "b":
-                letters[u - 1] = "c"
-            if letters[v - 1] == "a":
-                letters[v - 1] = "b"
-            elif letters[v - 1] == "b":
-                letters[v - 1] = "c"
-        return "".join(letters)
-    else:
-        return "No"
+def get_occurrences(s, hidden_strings):
+    occurrences = {}
+    for hidden_string in hidden_strings:
+        indices = []
+        for i in range(len(s)):
+            if hidden_string == s[i:i+len(hidden_string)]:
+                indices.append(i+1)
+        if indices:
+            occurrences[hidden_string] = indices
+    return occurrences
+
+def get_max_occurrences(occurrences):
+    max_occurrences = 0
+    for hidden_string, indices in occurrences.items():
+        if len(indices) > max_occurrences:
+            max_occurrences = len(indices)
+    return max_occurrences
+
+def main():
+    s = input()
+    hidden_strings = get_hidden_strings(s)
+    occurrences = get_occurrences(s, hidden_strings)
+    max_occurrences = get_max_occurrences(occurrences)
+    print(max_occurrences)
+
+if __name__ == '__main__':
+    main()
 

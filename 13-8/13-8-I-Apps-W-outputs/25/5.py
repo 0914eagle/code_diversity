@@ -1,23 +1,30 @@
 
-def solve(b):
-    n = len(b)
-    # Create a dictionary to store the number of occurrences of each element in b
-    count = {}
-    for i in range(n):
-        if b[i] in count:
-            count[b[i]] += 1
-        else:
-            count[b[i]] = 1
+def get_distance(student, tutor):
+    return abs(student[0] - tutor[0]) + abs(student[1] - tutor[1])
+
+def solve(students, tutors):
+    # Calculate the distance between each student and each tutor
+    distances = [[get_distance(student, tutor) for tutor in tutors] for student in students]
     
-    # Sort the dictionary by value in descending order
-    count = dict(sorted(count.items(), key=lambda item: item[1], reverse=True))
+    # Find the minimum distance between a student and a tutor
+    min_dist = min(min(distances, key=min))
     
-    # Create a list to store the permutation
-    perm = []
+    # Return the minimum distance + 1
+    return min_dist + 1
+
+def main():
+    num_students = int(input())
+    students = []
+    for _ in range(num_students):
+        students.append(list(map(int, input().split())))
     
-    # Add the elements to the permutation list
-    for i in range(n):
-        perm.append(list(count.keys())[i])
+    num_tutors = int(input())
+    tutors = []
+    for _ in range(num_tutors):
+        tutors.append(list(map(int, input().split())))
     
-    return "Yes\n" + " ".join(map(str, perm))
+    print(solve(students, tutors))
+
+if __name__ == '__main__':
+    main()
 

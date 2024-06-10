@@ -1,11 +1,16 @@
 
-def get_string(n):
-    if n == 1:
-        return "a"
-    if n == 2:
-        return "aa"
-    if n % 2 == 0:
-        return "a" + get_string(n-1)
-    else:
-        return "b" + get_string(n-1)
+def get_total_comfort(a):
+    n = len(a)
+    dp = [0] * (n + 1)
+    for i in range(1, n + 1):
+        dp[i] = dp[i - 1] ^ a[i - 1]
+    return max(dp)
+
+def solve(n, a):
+    return get_total_comfort(a)
+
+if __name__ == '__main__':
+    n = int(input())
+    a = list(map(int, input().split()))
+    print(solve(n, a))
 

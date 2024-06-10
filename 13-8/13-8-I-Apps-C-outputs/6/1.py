@@ -1,35 +1,90 @@
 
-def solve(n, positions):
-    # Sort the positions of the swimmers by their x-coordinate
-    positions.sort(key=lambda x: x[0])
+def is_rebus_solvable(rebus):
+    # Split the rebus into a list of tokens
+    tokens = rebus.split()
+    
+    # Initialize a dictionary to store the values of the question marks
+    values = {}
+    
+    # Iterate over the tokens and check if they are question marks or integers
+    for token in tokens:
+        if token.isdigit():
+            # If the token is an integer, add it to the dictionary with a value of 0
+            values[token] = 0
+        elif token == '?':
+            # If the token is a question mark, add it to the dictionary with a value of -1
+            values[token] = -1
+    
+    # Iterate over the tokens again and check if they are arithmetic operations
+    for token in tokens:
+        if token in ['+', '-']:
+            # If the token is an arithmetic operation, get the values of the two numbers on either side of it
+            num1 = int(tokens[tokens.index(token) - 1])
+            num2 = int(tokens[tokens.index(token) + 1])
+            
+            # Check if the values of the two numbers are in the dictionary
+            if num1 in values and num2 in values:
+                # If they are, add the result of the arithmetic operation to the dictionary with the question mark as the key
+                values['?'] = values[num1] + values[num2] if token == '+' else values[num1] - values[num2]
+            else:
+                # If they are not, return False
+                return False
+    
+    # If we have reached the end of the loop, check if the value of the final question mark is equal to the target value
+    if values['?'] == int(tokens[-1]):
+        # If it is, return True
+        return True
+    else:
+        # If it is not, return False
+        return False
 
-    # Initialize the x-coordinate of the first lifeguard
-    x1 = positions[0][0]
+def solve_rebus(rebus):
+    # Split the rebus into a list of tokens
+    tokens = rebus.split()
+    
+    # Initialize a dictionary to store the values of the question marks
+    values = {}
+    
+    # Iterate over the tokens and check if they are question marks or integers
+    for token in tokens:
+        if token.isdigit():
+            # If the token is an integer, add it to the dictionary with a value of 0
+            values[token] = 0
+        elif token == '?':
+            # If the token is a question mark, add it to the dictionary with a value of -1
+            values[token] = -1
+    
+    # Iterate over the tokens again and check if they are arithmetic operations
+    for token in tokens:
+        if token in ['+', '-']:
+            # If the token is an arithmetic operation, get the values of the two numbers on either side of it
+            num1 = int(tokens[tokens.index(token) - 1])
+            num2 = int(tokens[tokens.index(token) + 1])
+            
+            # Check if the values of the two numbers are in the dictionary
+            if num1 in values and num2 in values:
+                # If they are, add the result of the arithmetic operation to the dictionary with the question mark as the key
+                values['?'] = values[num1] + values[num2] if token == '+' else values[num1] - values[num2]
+            else:
+                # If they are not, return False
+                return False
+    
+    # If we have reached the end of the loop, check if the value of the final question mark is equal to the target value
+    if values['?'] == int(tokens[-1]):
+        # If it is, return True
+        return True
+    else:
+        # If it is not, return False
+        return False
 
-    # Initialize the x-coordinate of the second lifeguard
-    x2 = positions[-1][0]
+def main():
+    rebus = input("Enter a rebus: ")
+    if solve_rebus(rebus):
+        print("Possible")
+        print(rebus)
+    else:
+        print("Impossible")
 
-    # Initialize the number of swimmers assigned to each lifeguard
-    num_swimmers1 = 0
-    num_swimmers2 = 0
-
-    # Loop through the positions of the swimmers
-    for i in range(n):
-        # Calculate the distance between the current swimmer and the first lifeguard
-        dist1 = abs(positions[i][0] - x1) + abs(positions[i][1] - x1)
-
-        # Calculate the distance between the current swimmer and the second lifeguard
-        dist2 = abs(positions[i][0] - x2) + abs(positions[i][1] - x2)
-
-        # Assign the current swimmer to the lifeguard with the shorter distance
-        if dist1 < dist2:
-            num_swimmers1 += 1
-        else:
-            num_swimmers2 += 1
-
-    # Print the x-coordinates of the two lifeguards
-    print(x1, x2)
-
-    # Return the number of swimmers assigned to each lifeguard
-    return num_swimmers1, num_swimmers2
+if __name__ == '__main__':
+    main()
 

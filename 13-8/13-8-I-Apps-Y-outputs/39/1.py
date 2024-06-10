@@ -1,18 +1,28 @@
 
-def pistol_shooting(n, durability):
-    # Initialize the number of shots required to knock down each can to infinity
-    shots_required = [float('inf')] * n
-    # Initialize the order of cans to knock down
-    order = []
-    # Loop through each can and calculate the minimum number of shots required to knock it down
+def get_projects(n):
+    projects = []
     for i in range(n):
-        # If the can has already been knocked down, continue to the next can
-        if shots_required[i] != float('inf'):
-            continue
-        # Calculate the minimum number of shots required to knock down the current can
-        shots_required[i] = sum(durability[:i]) + 1
-        # Add the current can to the order of cans to knock down
-        order.append(i + 1)
-    # Return the minimum number of shots required to knock down each can and the order of cans to knock down
-    return sum(shots_required), order
+        a, b = map(int, input().split())
+        projects.append((a, b))
+    return projects
+
+def is_possible(projects, r):
+    for a, b in projects:
+        if r < a:
+            return False
+        r += b
+        if r < 0:
+            return False
+    return True
+
+def solve(projects, r):
+    if is_possible(projects, r):
+        return "YES"
+    else:
+        return "NO"
+
+if __name__ == '__main__':
+    n, r = map(int, input().split())
+    projects = get_projects(n)
+    print(solve(projects, r))
 

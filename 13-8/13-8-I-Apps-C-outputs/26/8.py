@@ -1,29 +1,37 @@
 
-def count_optimal_paths(n, roads):
-    # Initialize a graph with n junctions and n-1 roads
-    graph = [[] for _ in range(n)]
-    for u, v in roads:
-        graph[u-1].append(v-1)
-        graph[v-1].append(u-1)
+def get_complete_codes(partial_code):
+    # Initialize a set to store the complete codes
+    complete_codes = set()
     
-    # Initialize a visited array and a path array
-    visited = [False] * n
-    path = []
+    # Iterate over the partial code
+    for row in partial_code:
+        # Initialize a set to store the digits in the current row
+        row_digits = set()
+        # Iterate over the digits in the current row
+        for digit in row:
+            # If the digit is not zero, add it to the set of row digits
+            if digit != 0:
+                row_digits.add(digit)
+        # If the set of row digits is not empty, add it to the set of complete codes
+        if row_digits:
+            complete_codes.add(frozenset(row_digits))
     
-    # Function to count the number of optimal paths from junction 0 to junction n-1
-    def count_paths(curr, n):
-        if curr == n-1:
-            return 1
-        
-        count = 0
-        for neighbor in graph[curr]:
-            if not visited[neighbor]:
-                visited[neighbor] = True
-                path.append(neighbor)
-                count += count_paths(neighbor, n)
-                visited[neighbor] = False
-                path.pop()
-        return count
+    # Return the number of complete codes
+    return len(complete_codes)
+
+def main():
+    # Read the input
+    m, n = map(int, input().split())
+    partial_code = []
+    for _ in range(m):
+        partial_code.append(list(map(int, input().split())))
     
-    return count_paths(0, n)
+    # Call the function to get the number of complete codes
+    num_complete_codes = get_complete_codes(partial_code)
+    
+    # Print the number of complete codes
+    print(num_complete_codes)
+
+if __name__ == '__main__':
+    main()
 

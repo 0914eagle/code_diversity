@@ -1,36 +1,31 @@
 
-import sys
+def get_sensor_range(N, R):
+    return list(range(N+1))
 
-def solve(N, P, bad_pairs):
-    # Initialize a set to store the used ingredients
-    used_ingredients = set()
-    # Initialize a set to store the used pairs of ingredients
-    used_pairs = set()
-    # Initialize a counter to keep track of the number of nights
-    nights = 0
-    
-    while True:
-        # Choose a random ingredient from the unused ingredients
-        ingredient = random.randint(1, N)
-        # If the ingredient has not been used before, use it
-        if ingredient not in used_ingredients:
-            used_ingredients.add(ingredient)
-        # If all ingredients have been used, break the loop
-        if len(used_ingredients) == N:
-            break
-    
-    # For each bad pair of ingredients
-    for a, b in bad_pairs:
-        # If the pair has not been used before, use it
-        if (a, b) not in used_pairs:
-            used_pairs.add((a, b))
-        # If all bad pairs have been used, break the loop
-        if len(used_pairs) == P:
-            break
-    
-    # Increment the number of nights
-    nights += 1
+def get_lane_switch_plan(lane_num, sensor_range, car_length, car_dist):
+    # Initialize the safety factor as the minimum possible value
+    safety_factor = -1
+    # Iterate over the lanes within the sensor range
+    for i in range(lane_num+1, sensor_range+1):
+        # Calculate the distance to the back of the car in the current lane
+        dist_back = car_length - car_dist
+        # Check if the current lane is unoccupied and has enough space for the car to move into
+        if dist_back >= 0 and dist_back <= sensor_range:
+            # Calculate the safety factor for the current lane
+            safety_factor = max(safety_factor, dist_back)
+    return safety_factor
 
-# Return the number of nights modulo 10^9 + 7
-return nights % (10**9 + 7)
+def main():
+    N, M, R = map(int, input().split())
+    sensor_range = get_sensor_range(N, R)
+    for i in range(M):
+        lane_num, car_length, car_dist = map(int, input().split())
+        safety_factor = get_lane_switch_plan(lane_num, sensor_range, car_length, car_dist)
+        if safety_factor == -1:
+            print("Impossible")
+        else:
+            print(safety_factor)
+
+if __name__ == '__main__':
+    main()
 

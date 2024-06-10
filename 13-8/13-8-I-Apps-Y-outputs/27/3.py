@@ -1,15 +1,18 @@
 
-def solve(n, k, d, s):
-    # Calculate the average difficulty of the solved problems
-    avg_solved = s * k / n
-    
-    # Calculate the average difficulty of the unsolved problems
-    avg_unsolved = (d - avg_solved) * (n - k) / n
-    
-    # Check if the average difficulty of the unsolved problems is valid
-    if avg_unsolved < 0 or avg_unsolved > 100:
-        return "impossible"
-    
-    # Return the average difficulty of the unsolved problems
-    return round(avg_unsolved, 6)
+def get_good_times(n, h, l, r, a):
+    good_times = 0
+    current_time = 0
+    for i in range(n):
+        if l <= current_time <= r:
+            good_times += 1
+        current_time += a[i]
+    return good_times
+
+def main():
+    n, h, l, r = map(int, input().split())
+    a = list(map(int, input().split()))
+    print(get_good_times(n, h, l, r, a))
+
+if __name__ == '__main__':
+    main()
 

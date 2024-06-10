@@ -1,38 +1,44 @@
 
-def solve(N, M, cubes):
-    # Initialize a 2D array to represent the surface
-    surface = [[0 for _ in range(N)] for _ in range(N)]
+def get_max_length(logs, k):
+    # Sort the logs in non-decreasing order
+    logs.sort()
+    
+    # Initialize the maximum length and the number of cuts
+    max_length = 0
+    num_cuts = 0
+    
+    # Iterate through the logs and calculate the maximum length after at most k cuts
+    for i in range(len(logs)):
+        # Calculate the length of the current log
+        length = logs[i]
+        
+        # If the number of cuts is less than k, calculate the maximum length after the current cut
+        if num_cuts < k:
+            # Calculate the length of the two logs after the current cut
+            length1 = length / 2
+            length2 = length - length1
+            
+            # Update the maximum length and the number of cuts
+            max_length = max(max_length, length1, length2)
+            num_cuts += 1
+        else:
+            # If the number of cuts is equal to k, update the maximum length
+            max_length = max(max_length, length)
+    
+    # Return the rounded up maximum length
+    return int(math.ceil(max_length))
 
-    # Place the cubes on the surface
-    for cube in cubes:
-        surface[cube[0] - 1][cube[1] - 1] = 1
+def main():
+    # Read the input
+    n, k = map(int, input().split())
+    logs = list(map(int, input().split()))
+    
+    # Get the maximum length after at most k cuts
+    max_length = get_max_length(logs, k)
+    
+    # Print the output
+    print(max_length)
 
-    # Initialize a queue to store the coordinates of the cubes to be moved
-    queue = []
-
-    # Loop through the surface and find the coordinates of the cubes that are not in a rectangle
-    for i in range(N):
-        for j in range(N):
-            if surface[i][j] == 1 and (i == 0 or j == 0 or i == N - 1 or j == N - 1):
-                queue.append([i, j])
-
-    # Initialize a variable to store the number of moves
-    moves = 0
-
-    # Loop through the queue and move the cubes to the rectangle
-    while queue:
-        # Get the coordinates of the cube to be moved
-        i, j = queue.pop(0)
-
-        # Find the coordinates of the square that the cube can be moved to
-        for k in range(N):
-            for l in range(N):
-                if surface[k][l] == 0 and (k == 0 or l == 0 or k == N - 1 or l == N - 1):
-                    # Move the cube to the square
-                    surface[k][l] = 1
-                    surface[i][j] = 0
-                    moves += 1
-                    break
-
-    return moves
+if __name__ == '__main__':
+    main()
 

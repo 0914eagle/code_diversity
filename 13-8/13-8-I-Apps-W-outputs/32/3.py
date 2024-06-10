@@ -1,19 +1,37 @@
 
-def get_non_palindromic_string(n):
+def get_comfort(people, cities):
+    # Initialize comfort as 0
+    comfort = 0
     
-    if n == 1:
-        return "a"
-    if n == 2:
-        return "aa"
-    if n == 3:
-        return "bba"
-    # Initialize the string with 'a's
-    string = "a" * (n - 1)
-    # Add the final letter
-    string += "b"
-    # Iterate through the string and check for palindromes
-    for i in range(n - 3):
-        if string[i] == string[i + 1] and string[i + 1] == string[i + 2]:
-            string = string[:i] + "b" + string[i + 1:]
-    return string
+    # Iterate through the people and calculate the comfort for each segment
+    for i in range(len(people)):
+        # Get the city code for the current person
+        city = cities[i]
+        
+        # Get the city codes for the people in the same segment as the current person
+        segment_cities = [cities[j] for j in range(i, len(people)) if people[j] == people[i]]
+        
+        # Calculate the XOR of the city codes for the current segment
+        segment_comfort = city ^ sum(segment_cities)
+        
+        # Add the segment comfort to the total comfort
+        comfort += segment_comfort
+    
+    # Return the total comfort
+    return comfort
+
+def main():
+    # Read the number of people and their city codes from stdin
+    n = int(input())
+    people = list(map(int, input().split()))
+    cities = list(map(int, input().split()))
+    
+    # Call the get_comfort function to get the maximum possible comfort
+    comfort = get_comfort(people, cities)
+    
+    # Print the result
+    print(comfort)
+
+if __name__ == '__main__':
+    main()
 

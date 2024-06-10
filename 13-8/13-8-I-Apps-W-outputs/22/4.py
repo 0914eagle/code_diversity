@@ -1,30 +1,39 @@
 
-def solve(c, t):
-    if len(c) != len(t):
-        return "No"
-    if c == t:
-        return "Yes"
+def get_min_time(n, m, d, g, r):
+    # Initialize variables
+    min_time = 0
+    current_position = 0
+    current_direction = 1
+    safety_islands = set(d)
+    safety_islands.add(0)
+    safety_islands.add(n)
 
-    # Initialize the charges of the stones
-    charges = c
+    # Iterate over the green lights
+    while current_position < n:
+        # Move to the next green light
+        min_time += g
+        current_position += current_direction
 
-    # Perform synchronization operations until the charges match
-    while charges != t:
-        # Find the index of the stone with the largest difference between its charge and the target charge
-        max_diff_index = 0
-        max_diff = abs(charges[0] - t[0])
-        for i in range(1, len(charges)):
-            diff = abs(charges[i] - t[i])
-            if diff > max_diff:
-                max_diff = diff
-                max_diff_index = i
+        # Check if we need to change direction
+        if current_position in safety_islands:
+            current_direction *= -1
 
-        # Synchronize the stone at the maximum difference index
-        charges[max_diff_index] += charges[max_diff_index - 1] + charges[max_diff_index + 1] - charges[max_diff_index]
+        # Check if we reached the end of the road
+        if current_position == n:
+            break
 
-    # Check if the charges match after synchronization
-    if charges == t:
-        return "Yes"
-    else:
-        return "No"
+        # Wait for the red light
+        min_time += r
+
+    # Return the minimum time
+    return min_time
+
+def main():
+    n, m = map(int, input().split())
+    d = list(map(int, input().split()))
+    g, r = map(int, input().split())
+    print(get_min_time(n, m, d, g, r))
+
+if __name__ == '__main__':
+    main()
 

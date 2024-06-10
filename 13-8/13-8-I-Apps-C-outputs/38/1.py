@@ -1,22 +1,23 @@
 
-def solve(offers):
-    # Sort the offers by the first section of the fence
-    offers.sort(key=lambda x: x[1])
-    
-    # Initialize the variables to keep track of the colors and sections
-    colors = set()
-    sections = set()
-    
-    # Iterate through the offers and accept them if they are valid
-    for offer in offers:
-        color, first_section, last_section = offer
-        if color not in colors and first_section not in sections and last_section not in sections:
-            colors.add(color)
-            sections.update(range(first_section, last_section + 1))
-    
-    # If all sections are painted, return the number of accepted offers
-    if len(sections) == 10000:
-        return len(offers)
-    else:
-        return "IMPOSSIBLE"
+def get_character_features(n, k):
+    # Initialize a list to store the features of Tira's character
+    character_features = [0] * k
+
+    # Loop through each feature and set it to 1 if at least one other character has it
+    for feature in range(k):
+        for character in range(n):
+            if character_features[feature] == 1:
+                break
+            if character_features[feature] == 0 and characters[character][feature] == 1:
+                character_features[feature] = 1
+
+    return "".join(str(feature) for feature in character_features)
+
+def main():
+    n, k = map(int, input().split())
+    characters = [input() for _ in range(n)]
+    print(get_character_features(n, k))
+
+if __name__ == '__main__':
+    main()
 

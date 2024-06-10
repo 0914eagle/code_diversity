@@ -1,25 +1,38 @@
 
-def solve(N, P, bad_pairs):
-    # Initialize a set to store the used ingredients
-    used_ingredients = set()
-    # Initialize a list to store the drinks
-    drinks = []
-    # Loop through the bad pairs of ingredients
-    for a, b in bad_pairs:
-        # If both ingredients are already used, they cannot be used together
-        if a in used_ingredients and b in used_ingredients:
-            return 0
-    # Loop through the ingredients
-    for i in range(1, N + 1):
-        # If the ingredient is not used, use it
-        if i not in used_ingredients:
-            # Add the ingredient to the used ingredients set
-            used_ingredients.add(i)
-            # Add the ingredient to the drinks list
-            drinks.append(i)
-            # If all ingredients are used, return the number of drinks
-            if len(used_ingredients) == N:
-                return len(drinks)
-    # If all ingredients are used and not all drinks are made, return 0
-    return 0
+def get_safety_factor(lane_switch_plan):
+    # Calculate the safety factor by taking the minimum distance to any car in the same lane
+    safety_factor = min(lane_switch_plan, key=lambda x: x[1])[1]
+    return safety_factor
+
+def lane_switch_plan(lanes, cars, sensor_range):
+    # Initialize the lane switch plan as a list of (lane, distance) tuples
+    lane_switch_plan = [(0, 0)]
+
+    # Loop through each car in the same lane as the ACM car
+    for car in cars:
+        # If the car is in the same lane as the ACM car and is within the sensor range
+        if car[0] == 0 and car[2] <= sensor_range:
+            # Add the car to the lane switch plan with its distance from the start of the sensor range
+            lane_switch_plan.append((car[0], car[2]))
+
+    # Sort the lane switch plan by distance from the start of the sensor range
+    lane_switch_plan.sort(key=lambda x: x[1])
+
+    # Return the lane switch plan with the highest safety factor
+    return lane_switch_plan
+
+def main():
+    # Read the input data
+    lanes, cars, sensor_range = map(int, input().split())
+    cars = [tuple(map(int, input().split())) for _ in range(cars)]
+
+    # Calculate the lane switch plan and the safety factor
+    lane_switch_plan = lane_switch_plan(lanes, cars, sensor_range)
+    safety_factor = get_safety_factor(lane_switch_plan)
+
+    # Print the safety factor
+    print(safety_factor)
+
+if __name__ == '__main__':
+    main()
 

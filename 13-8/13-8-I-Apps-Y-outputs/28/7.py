@@ -1,10 +1,27 @@
 
-def find_midpoint(start_time, end_time):
-    hours_1, minutes_1 = map(int, start_time.split(':'))
-    hours_2, minutes_2 = map(int, end_time.split(':'))
-    total_minutes = (hours_2 - hours_1) * 60 + (minutes_2 - minutes_1)
-    midpoint_minutes = total_minutes // 2
-    hours_3 = hours_1 + midpoint_minutes // 60
-    minutes_3 = midpoint_minutes % 60
-    return f"{hours_3:02d}:{minutes_3:02d}"
+def solve_equation(numbers):
+    # Split the input numbers into a list
+    numbers = numbers.split()
+    # Convert the numbers to integers
+    numbers = [int(num) for num in numbers]
+    # Sort the numbers in ascending order
+    numbers.sort()
+    # Find the equation by trying all possible operations
+    for op in ['+', '-', '*', '/']:
+        # Check if the equation is valid
+        if eval(f"{numbers[0]}{op}{numbers[1]}") == numbers[2]:
+            return f"{numbers[0]} {op} {numbers[1]} = {numbers[2]}"
+    # If no equation is found, return None
+    return None
+
+def main():
+    numbers = input("Enter three integers separated by spaces: ")
+    equation = solve_equation(numbers)
+    if equation:
+        print(equation)
+    else:
+        print("No equation found.")
+
+if __name__ == '__main__':
+    main()
 

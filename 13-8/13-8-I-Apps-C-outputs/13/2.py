@@ -1,11 +1,33 @@
 
-def get_divine_digits(n, k, a):
-    divine_digits = []
-    for i in range(k):
-        total = 0
-        for j in range(n):
-            total += a[j] * (i ** j)
-        if str(total)[-1] == str(i):
-            divine_digits.append(i)
-    return len(divine_digits), sorted(divine_digits)
+def is_handsome(n):
+    n_str = str(n)
+    if len(n_str) == 1:
+        return True
+    for i in range(len(n_str) - 1):
+        if n_str[i] == n_str[i+1]:
+            return False
+    return True
+
+def get_closest_handsome_number(n):
+    n_str = str(n)
+    if len(n_str) == 1:
+        return n
+    for i in range(len(n_str) - 1):
+        if n_str[i] == n_str[i+1]:
+            break
+    else:
+        return n
+    left_diff = abs(int(n_str[:i] + n_str[i+1]) - n)
+    right_diff = abs(int(n_str[:i+1] + n_str[i+2]) - n)
+    if left_diff < right_diff:
+        return int(n_str[:i] + n_str[i+1])
+    else:
+        return int(n_str[:i+1] + n_str[i+2])
+
+def main():
+    n = int(input())
+    print(get_closest_handsome_number(n))
+
+if __name__ == '__main__':
+    main()
 

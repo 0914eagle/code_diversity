@@ -1,18 +1,17 @@
 
-import sys
+def get_arithmetic_progression(L, A, B, M):
+    # Calculate the sum of the arithmetic progression
+    sum = (L * (2 * A + (L - 1) * B)) // 2
+    
+    # Calculate the remainder when the sum is divided by M
+    remainder = sum % M
+    
+    return remainder
 
-def solve(n, engineers):
-    # Calculate the number of possible assignments
-    num_assignments = 1
-    for engineer in engineers:
-        num_assignments *= (n - 1)
-    return num_assignments % 1000000007
+def main():
+    L, A, B, M = map(int, input().split())
+    print(get_arithmetic_progression(L, A, B, M))
 
-n = int(input())
-engineers = []
-for i in range(n):
-    current_desk, desired_desk = map(int, input().split())
-    engineers.append((current_desk, desired_desk))
-
-print(solve(n, engineers))
+if __name__ == '__main__':
+    main()
 

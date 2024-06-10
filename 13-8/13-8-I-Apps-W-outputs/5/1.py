@@ -1,21 +1,21 @@
 
-def find_covering_segment(segments):
-    # Sort the segments by their left endpoint
-    segments.sort(key=lambda x: x[0])
+def get_input():
+    N = int(input())
+    T = input()
+    return N, T
 
-    # Initialize the covering segment as the first segment
-    covering_segment = segments[0]
+def count_occurrences(T, S):
+    count = 0
+    for i in range(len(S) - len(T) + 1):
+        if S[i:i+len(T)] == T:
+            count += 1
+    return count
 
-    # Iterate through the remaining segments
-    for segment in segments[1:]:
-        # Check if the current segment covers the covering segment
-        if covering_segment[0] <= segment[0] and covering_segment[1] >= segment[1]:
-            # If it does, update the covering segment
-            covering_segment = segment
-        else:
-            # If it doesn't, return -1 as there is no covering segment
-            return -1
+def main():
+    N, T = get_input()
+    S = "110" * 10**10
+    print(count_occurrences(T, S))
 
-    # Return the number of the covering segment
-    return segments.index(covering_segment) + 1
+if __name__ == '__main__':
+    main()
 

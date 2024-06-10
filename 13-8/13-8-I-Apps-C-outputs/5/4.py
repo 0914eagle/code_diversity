@@ -1,27 +1,33 @@
 
-def solve(arr):
-    n = len(arr)
-    if n == 1:
-        return 0
+def get_min_extensions(a, b, h, w, n, extensions):
+    # Initialize the minimum number of extensions needed to be 0
+    min_extensions = 0
     
-    # Sort the array
-    arr.sort()
+    # Check if the rectangle can be placed on the initial field
+    if a <= h and b <= w:
+        return min_extensions
     
-    # Initialize variables
-    min_size = float('inf')
-    i = 1
+    # Iterate through the available extensions
+    for i in range(n):
+        # Check if the extension can be applied
+        if extensions[i] <= h or extensions[i] <= w:
+            # Apply the extension
+            h *= extensions[i]
+            w *= extensions[i]
+            # Increment the minimum number of extensions needed
+            min_extensions += 1
+            # Check if the rectangle can be placed on the field after applying the extension
+            if a <= h and b <= w:
+                return min_extensions
     
-    # Iterate through the array
-    while i < n:
-        # If the current element is the same as the previous element, find the length of the subsegment that needs to be removed
-        if arr[i] == arr[i-1]:
-            j = i + 1
-            while j < n and arr[j] == arr[j-1]:
-                j += 1
-            size = j - i
-            if size < min_size:
-                min_size = size
-        i += 1
-    
-    return min_size
+    # If the rectangle can't be placed on the field with all extensions, return -1
+    return -1
+
+def main():
+    a, b, h, w, n = map(int, input().split())
+    extensions = list(map(int, input().split()))
+    print(get_min_extensions(a, b, h, w, n, extensions))
+
+if __name__ == '__main__':
+    main()
 

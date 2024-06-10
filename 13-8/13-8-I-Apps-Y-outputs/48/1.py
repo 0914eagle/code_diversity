@@ -1,12 +1,14 @@
 
-def is_sorted(arr):
-    # Sort the array in descending order
-    arr.sort(reverse=True)
-    
-    # Check if the array is sorted in ascending order
-    for i in range(len(arr) - 1):
-        if arr[i] > arr[i + 1]:
-            return "NO"
-    
-    return "YES"
+def get_correct_choice(a, b):
+    choices = [1, 2, 3]
+    wrong_choices = [a, b]
+    correct_choice = list(set(choices) - set(wrong_choices))[0]
+    return correct_choice
+
+def main():
+    a, b = map(int, input().split())
+    print(get_correct_choice(a, b))
+
+if __name__ == '__main__':
+    main()
 

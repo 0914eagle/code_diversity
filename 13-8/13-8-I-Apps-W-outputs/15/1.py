@@ -1,35 +1,40 @@
 
-def solve(n, arr):
-    # Initialize a dictionary to store the components
-    components = {}
+def is_relatively_prime(v, u):
+    return gcd(v, u) == 1
 
-    # Iterate over the array
-    for i in range(n):
-        # If the current vertex is not in any component, create a new component
-        if i not in components:
-            components[i] = set([i])
-        # If the current vertex is in a component, add it to that component
-        else:
-            components[i].add(i)
+def construct_relatively_prime_graph(n, m):
+    if m > n * (n - 1) // 2:
+        return "Impossible"
+    
+    graph = {}
+    for i in range(1, n + 1):
+        graph[i] = []
+    
+    edges = []
+    for i in range(m):
+        v, u = map(int, input().split())
+        if v != u and (v, u) not in edges and (u, v) not in edges:
+            edges.append((v, u))
+            graph[v].append(u)
+            graph[u].append(v)
+    
+    for i in range(1, n + 1):
+        for j in range(i + 1, n + 1):
+            if (i, j) not in edges and not is_relatively_prime(i, j):
+                return "Impossible"
+    
+    return graph
 
-        # If the current vertex is not the last vertex, check if the next vertex is in the component
-        if i != n - 1:
-            # If the next vertex is not in the component, create a new component
-            if i + 1 not in components:
-                components[i + 1] = set([i + 1])
-            # If the next vertex is in the component, add it to that component
-            else:
-                components[i + 1].add(i + 1)
+def main():
+    n, m = map(int, input().split())
+    graph = construct_relatively_prime_graph(n, m)
+    if graph == "Impossible":
+        print(graph)
+    else:
+        print("Possible")
+        for edge in graph:
+            print(edge[0], edge[1])
 
-    # Initialize a variable to store the sum
-    sum = 0
-
-    # Iterate over the components
-    for component in components.values():
-        # If the component has more than one vertex, add it to the sum
-        if len(component) > 1:
-            sum += 1
-
-    # Return the sum
-    return sum
+if __name__ == '__main__':
+    main()
 

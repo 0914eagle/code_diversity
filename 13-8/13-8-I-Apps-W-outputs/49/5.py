@@ -1,30 +1,31 @@
 
-def solve(s):
-    # Initialize a dictionary to store the opening and closing brackets
-    brackets = {
-        "<": ">",
-        "{": "}",
-        "[": "]",
-        "(": ")"
-    }
+def get_maximum_number_of_favorite_drinks(n, k, favorite_drinks):
+    # Initialize a dictionary to store the number of favorite drinks for each student
+    favorite_drinks_count = {}
+    for i in range(n):
+        favorite_drinks_count[i] = 0
     
-    # Initialize a stack to keep track of the opening brackets
-    stack = []
+    # Iterate over the favorite drinks of each student and increment the count for that drink
+    for i in range(n):
+        favorite_drinks_count[favorite_drinks[i] - 1] += 1
     
-    # Iterate through the string
-    for char in s:
-        # If the character is an opening bracket, push it to the stack
-        if char in brackets:
-            stack.append(char)
-        # If the character is a closing bracket, pop the top element from the stack and check if it matches the closing bracket
-        else:
-            if not stack or brackets[stack.pop()] != char:
-                return "Impossible"
+    # Initialize a list to store the maximum number of favorite drinks that can be gained
+    max_favorite_drinks = []
     
-    # If the stack is not empty, it means that not all opening brackets have a matching closing bracket
-    if stack:
-        return "Impossible"
+    # Iterate over the dictionary and find the maximum number of favorite drinks that can be gained
+    for i in range(k):
+        max_favorite_drinks.append(max(favorite_drinks_count.values()))
     
-    # If the stack is empty, return the length of the string
-    return len(s)
+    # Return the maximum number of favorite drinks that can be gained
+    return sum(max_favorite_drinks)
+
+def main():
+    n, k = map(int, input().split())
+    favorite_drinks = []
+    for i in range(n):
+        favorite_drinks.append(int(input()))
+    print(get_maximum_number_of_favorite_drinks(n, k, favorite_drinks))
+
+if __name__ == '__main__':
+    main()
 

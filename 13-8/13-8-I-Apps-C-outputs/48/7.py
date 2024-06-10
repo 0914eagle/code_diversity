@@ -1,20 +1,38 @@
 
-def solve(n, distances):
-    # Initialize the two subsets with the first shipment
-    subset1 = [0]
-    subset2 = [i for i in range(1, n)]
-    
-    # Iterate through the remaining shipments
-    for i in range(1, n):
-        # Find the subset with the smallest disparity
-        if len(subset1) == 1:
-            subset = subset2
-        else:
-            subset = subset1 if sum(distances[i][j] for j in subset1) < sum(distances[i][j] for j in subset2) else subset2
-        
-        # Add the current shipment to the subset
-        subset.append(i)
-    
-    # Return the minimum possible sum of disparities
-    return sum(max(distances[i][j] for j in subset1) for i in subset1) + sum(max(distances[i][j] for j in subset2) for i in subset2)
+import math
+
+def get_velocity(n, mice, m):
+    # Initialize the minimum velocity
+    velocity = 0
+
+    # Loop through the mice and calculate the minimum velocity necessary to eat them all
+    for mouse in mice:
+        # Calculate the distance between the cat and the mouse
+        distance = math.sqrt((mouse[0] - 0)**2 + (mouse[1] - 0)**2)
+
+        # Calculate the time it takes for the cat to reach the mouse
+        time = distance / velocity
+
+        # Calculate the velocity after eating the mouse
+        velocity = velocity * m
+
+        # Calculate the time it takes for the cat to reach the next mouse
+        time += distance / velocity
+
+        # Update the minimum velocity
+        velocity = max(velocity, mouse[2] / time)
+
+    return velocity
+
+def main():
+    n = int(input())
+    mice = []
+    for i in range(n):
+        mouse = list(map(int, input().split()))
+        mice.append(mouse)
+    m = float(input())
+    print(get_velocity(n, mice, m))
+
+if __name__ == '__main__':
+    main()
 

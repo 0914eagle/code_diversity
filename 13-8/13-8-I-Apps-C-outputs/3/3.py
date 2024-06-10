@@ -1,13 +1,18 @@
 
-def min_packets(n):
-    # Find the smallest power of 2 greater than or equal to n
-    power = 1
-    while power < n:
-        power *= 2
-    # Initialize the number of packets to the power of 2
-    packets = power
-    # Subtract 1 from the number of packets for each coin above 1
-    for i in range(1, n):
-        packets -= 1
-    return packets
+def power(x, y):
+    return x ** y
+
+def sum_of_costs(n, k):
+    # Calculate the sum of costs for all non-empty subsets
+    total_cost = 0
+    for i in range(1, n + 1):
+        total_cost += power(i, k)
+    return total_cost
+
+def main():
+    n, k = map(int, input().split())
+    print(sum_of_costs(n, k))
+
+if __name__ == '__main__':
+    main()
 

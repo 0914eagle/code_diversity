@@ -1,36 +1,27 @@
 
-def solve(S_A, S_B, S_C):
-    # Initialize the decks of the players
-    decks = {
-        "Alice": S_A,
-        "Bob": S_B,
-        "Charlie": S_C
-    }
+def is_easily_playable(s):
+    # Check if the length of the string is between 1 and 100 (inclusive)
+    if not 1 <= len(s) <= 100:
+        return "No"
     
-    # Initialize the current player and the order of the players
-    current_player = "Alice"
-    player_order = ["Alice", "Bob", "Charlie"]
+    # Check if all characters are L, R, U, or D
+    if not all(c in ["L", "R", "U", "D"] for c in s):
+        return "No"
     
-    # While there are still cards in the decks
-    while any(decks.values()):
-        # Get the current player's deck
-        current_deck = decks[current_player]
-        
-        # If the current player's deck is not empty
-        if current_deck:
-            # Discard the top card from the current player's deck
-            current_deck = current_deck[1:]
-            
-            # Get the next player's name based on the letter on the discarded card
-            next_player = player_order[(player_order.index(current_player) + 1) % len(player_order)]
-            
-            # Update the current player and the decks
-            current_player = next_player
-            decks[current_player] = current_deck
-        else:
-            # If the current player's deck is empty, the game ends and the current player wins
-            return current_player
+    # Check if every character in an odd position is R, U, or D
+    if not all(c in ["R", "U", "D"] for i, c in enumerate(s) if i % 2 == 1):
+        return "No"
     
-    # If all the decks are empty, the game ends and no player wins
-    return "None"
+    # Check if every character in an even position is L, U, or D
+    if not all(c in ["L", "U", "D"] for i, c in enumerate(s) if i % 2 == 0):
+        return "No"
+    
+    return "Yes"
+
+def main():
+    s = input()
+    print(is_easily_playable(s))
+
+if __name__ == '__main__':
+    main()
 

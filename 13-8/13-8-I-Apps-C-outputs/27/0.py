@@ -1,21 +1,36 @@
 
-def solve(barbarians, rounds):
-    # Initialize a dictionary to store the words on the stone tablets
-    tablets = {i: barbarians[i-1] for i in range(1, len(barbarians)+1)}
-    # Initialize a set to store the words shown by Tarzan
-    shown_words = set()
-    # Iterate through the rounds
-    for round in rounds:
-        # If the round is of the first type, add the shown word to the set of shown words
-        if round[0] == 1:
-            shown_words.add(round[1])
-        # If the round is of the second type, count the number of words on the stone tablet that are a consecutive substring of the shown words
-        elif round[0] == 2:
-            count = 0
-            for word in tablets[round[1]]:
-                if word in shown_words:
-                    count += 1
-            yield count
-        else:
-            raise ValueError("Invalid round type")
+import sys
+
+def get_input():
+    n = int(input())
+    numbers = []
+    for i in range(n):
+        numbers.append(int(input()))
+    return n, numbers
+
+def find_common_factors(x, y):
+    factors = []
+    for i in range(2, int(x**0.5) + 1):
+        if x % i == 0 and y % i == 0:
+            factors.append(i)
+    return factors
+
+def count_ways(numbers):
+    n = len(numbers)
+    dp = [0] * (n + 1)
+    dp[0] = 1
+    for i in range(1, n + 1):
+        for j in range(i):
+            common_factors = find_common_factors(numbers[i - 1], numbers[j])
+            if common_factors:
+                dp[i] += dp[j]
+        dp[i] %= 1000000007
+    return dp[n]
+
+def main():
+    n, numbers = get_input()
+    print(count_ways(numbers))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,10 +1,14 @@
 
-def solve(N, K):
-    probabilities = []
-    for i in range(1, N+1):
-        if i < K:
-            probabilities.append(1/N)
-        else:
-            probabilities.append(0)
-    return sum(probabilities)
+def get_hand_strength(hand):
+    hand_ranks = [card[0] for card in hand]
+    hand_strength = len(set(hand_ranks))
+    return hand_strength
+
+def main():
+    hand = input("Enter five-card hand: ").split()
+    hand_strength = get_hand_strength(hand)
+    print(f"Hand strength: {hand_strength}")
+
+if __name__ == '__main__':
+    main()
 

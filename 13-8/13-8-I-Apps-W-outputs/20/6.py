@@ -1,32 +1,32 @@
 
-def get_magical_permutation(n, s):
-    # Sort the input set in ascending order
-    s = sorted(s)
+def get_kth_digit(k):
+    # Calculate the position of the digit in the sequence
+    position = k
     
-    # Initialize the largest non-negative integer x
-    x = 0
+    # Initialize the digit to 1
+    digit = 1
     
-    # Iterate through all possible values of x
-    while x <= n:
-        # Initialize a list to store the magical permutation
-        permutation = []
+    # Iterate until we reach the desired position
+    while position > 1:
+        # Calculate the next digit in the sequence
+        digit = (digit * 10) % 9
         
-        # Iterate through all possible positions in the permutation
-        for i in range(2**x):
-            # Calculate the bitwise xor of the current position and the previous position
-            xor = i ^ (i - 1)
-            
-            # If the bitwise xor is in the input set, add it to the permutation
-            if xor in s:
-                permutation.append(xor)
-        
-        # If the permutation is complete, return it
-        if len(permutation) == 2**x:
-            return x, permutation
-        
-        # Increment x and try again
-        x += 1
+        # Decrement the position
+        position -= 1
     
-    # If no magical permutation is found, return -1
-    return -1, []
+    # Return the digit
+    return digit
+
+def main():
+    # Read the input k
+    k = int(input())
+    
+    # Calculate the k-th digit of the sequence
+    digit = get_kth_digit(k)
+    
+    # Print the result
+    print(digit)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,30 +1,31 @@
 
-def get_minimum_distance(planets):
-    # Calculate the distance between each pair of planets
-    distances = {}
-    for i in range(len(planets)):
-        for j in range(i+1, len(planets)):
-            distance = get_distance(planets[i], planets[j])
-            distances[(i, j)] = distance
+def is_symmetric(grid):
+    # Check if the grid is symmetric
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j] != grid[len(grid) - i - 1][len(grid[0]) - j - 1]:
+                return False
+    return True
 
-    # Use a priority queue to keep track of the planets to visit and their distances
-    import heapq
-    queue = [(0, 0, [])]
-    visited = set()
-    while queue:
-        distance, current_distance, path = heapq.heappop(queue)
-        if current_distance > distance:
-            continue
-        if len(path) == len(planets):
-            return distance
-        for i in range(len(planets)):
-            if i in visited:
-                continue
-            visited.add(i)
-            heapq.heappush(queue, (distance + distances[(path[-1], i)], current_distance + distances[(path[-1], i)], path + [i]))
+def solve(H, W, S):
+    # Initialize the grid with the given string
+    grid = []
+    for i in range(H):
+        grid.append(list(S[i]))
 
-    return -1
+    # Swap rows and columns of the grid to make it symmetric
+    for i in range(H):
+        for j in range(W):
+            grid[i][j], grid[len(grid) - i - 1][len(grid[0]) - j - 1] = grid[len(grid) - i - 1][len(grid[0]) - j - 1], grid[i][j]
 
-def get_distance(planet1, planet2):
-    return ((planet1[0] - planet2[0]) ** 2 + (planet1[1] - planet2[1]) ** 2 + (planet1[2] - planet2[2]) ** 2) ** 0.5
+    # Check if the grid is symmetric
+    if is_symmetric(grid):
+        return "YES"
+    else:
+        return "NO"
+
+if __name__ == '__main__':
+    H, W = map(int, input().split())
+    S = [input() for _ in range(H)]
+    print(solve(H, W, S))
 

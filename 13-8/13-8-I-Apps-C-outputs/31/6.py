@@ -1,24 +1,42 @@
 
-import math
+def is_symmetric(grid):
+    # Check if the grid is symmetric by comparing the top half of the grid with the bottom half
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j] != grid[len(grid) - i - 1][len(grid[0]) - j - 1]:
+                return False
+    return True
 
-def get_min_distance(planets):
-    # Calculate the distance between each pair of planets
-    distances = {}
-    for i in range(len(planets)):
-        for j in range(i+1, len(planets)):
-            distance = math.sqrt(sum((planets[i] - planets[j])**2))
-            distances[(i, j)] = distance
+def solve(grid):
+    # Check if the grid is already symmetric
+    if is_symmetric(grid):
+        return "YES"
+    
+    # Check if the grid can be made symmetric by swapping two rows or two columns
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            # Swap two rows
+            if i != len(grid) - i - 1:
+                grid[i], grid[len(grid) - i - 1] = grid[len(grid) - i - 1], grid[i]
+                if is_symmetric(grid):
+                    return "YES"
+                grid[i], grid[len(grid) - i - 1] = grid[len(grid) - i - 1], grid[i]
+            # Swap two columns
+            if j != len(grid[0]) - j - 1:
+                for k in range(len(grid)):
+                    grid[k][j], grid[k][len(grid[0]) - j - 1] = grid[k][len(grid[0]) - j - 1], grid[k][j]
+                if is_symmetric(grid):
+                    return "YES"
+                for k in range(len(grid)):
+                    grid[k][j], grid[k][len(grid[0]) - j - 1] = grid[k][len(grid[0]) - j - 1], grid[k][j]
+    
+    # If the grid cannot be made symmetric, return "NO"
+    return "NO"
 
-    # Use a dynamic programming approach to find the minimum distance
-    memo = {(0, 0): 0}
-    for i in range(1, len(planets)):
-        memo[(i, i)] = 0
-        for j in range(i):
-            memo[(i, j)] = min(memo[(i, j)], memo[(i-1, j)] + distances[(j, i)])
-            memo[(j, i)] = min(memo[(j, i)], memo[(i, j)])
-
-    return memo[(len(planets)-1, 0)]
-
-planets = [(0, 0, 1), (0, 1, 1), (2, 0, 3), (2, 1, 3)]
-print(get_min_distance(planets))
+if __name__ == '__main__':
+    H, W = map(int, input().split())
+    grid = []
+    for i in range(H):
+        grid.append(input())
+    print(solve(grid))
 
