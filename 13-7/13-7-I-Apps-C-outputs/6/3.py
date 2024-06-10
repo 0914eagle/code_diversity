@@ -1,43 +1,52 @@
 
-def solve(N, P, X, Y, M, banks, fees):
-    # Initialize the graph with the given transfer partnerships
-    graph = [[] for _ in range(N + 1)]
-    for i in range(P):
-        graph[fees[i][0]].append((fees[i][1], fees[i][2]))
-        graph[fees[i][1]].append((fees[i][0], fees[i][2]))
+import math
+
+def get_elevation_contour_lines(n):
     
-    # Initialize the minimum distance from X to Y as infinity
-    dist = [float('inf')] * (N + 1)
-    dist[X] = 0
+    contour_lines = []
+    for _ in range(n):
+        outer_height, inner_height, num_vertices = map(int, input().split())
+        contour_line = []
+        for _ in range(num_vertices):
+            x, y = map(int, input().split())
+            contour_line.append((x, y))
+        contour_lines.append(contour_line)
+    return contour_lines
+
+def get_closest_distance(contour_lines, target_point):
     
-    # Initialize the previous node for each node as -1
-    prev = [-1] * (N + 1)
+    min_distance = math.inf
+    for contour_line in contour_lines:
+        for i in range(len(contour_line) - 1):
+            point1 = contour_line[i]
+            point2 = contour_line[i + 1]
+            distance = get_distance(point1, point2, target_point)
+            if distance < min_distance:
+                min_distance = distance
+    return min_distance
+
+def get_distance(point1, point2, target_point):
     
-    # Loop through all nodes in the graph
-    for node in range(1, N + 1):
-        # Loop through all neighbors of the current node
-        for neighbor, cost in graph[node]:
-            # If the distance to the neighbor through the current node is less than the current minimum distance, update the minimum distance and the previous node
-            if dist[node] + cost < dist[neighbor]:
-                dist[neighbor] = dist[node] + cost
-                prev[neighbor] = node
-    
-    # If the minimum distance to Y is infinity, return "Impossible"
-    if dist[Y] == float('inf'):
-        return "Impossible"
-    
-    # Initialize the maximum fee as 0
-    max_fee = 0
-    
-    # Loop through all nodes in the path from X to Y
-    node = Y
-    while node != X:
-        # If the previous node is not -1, add the fee to the maximum fee
-        if prev[node] != -1:
-            max_fee += graph[prev[node]][node][1]
-        # Set the node as the previous node
-        node = prev[node]
-    
-    # Return the maximum fee
-    return max_fee
+    x1, y1 = point1
+    x2, y2 = point2
+    x3, y3 = target_point
+    if x1 == x2:
+        return abs(y3 - y1)
+    if y1 == y2:
+        return abs(x3 - x1)
+    m = (y2 - y1) / (x2 - x1)
+    c = y1 - m * x1
+    x = (y3 - c) / m
+    y = m * x + c
+    return math.sqrt((x - x3) ** 2 + (y - y3) ** 2)
+
+def main():
+    n = int(input())
+    contour_lines = get_elevation_contour_lines(n)
+    target_point = (0, 0)
+    closest_distance = get_closest_distance(contour_lines, target_point)
+    print(closest_distance)
+
+if __name__ == '__main__':
+    main()
 

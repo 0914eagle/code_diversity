@@ -1,27 +1,27 @@
 
-def solve(a):
-    n = len(a)
-    if n == 1:
-        return a[0]
+def get_min_distance(points):
+    # Sort the points by their x-coordinate
+    points.sort(key=lambda x: x[0])
     
-    # initialize the sum of non-deleted elements
-    sum_non_deleted = sum(a)
+    # Initialize the minimum distance to 0
+    min_distance = 0
     
-    # initialize the parity of the last deleted element as odd
-    parity = "odd"
+    # Iterate through the points and calculate the distance between them
+    for i in range(len(points) - 1):
+        min_distance += abs(points[i + 1][0] - points[i][0]) + abs(points[i + 1][1] - points[i][1])
     
-    # iterate through the array
+    return min_distance
+
+def main():
+    n = int(input())
+    points = []
+    
     for i in range(n):
-        # if the current element has the opposite parity of the last deleted element
-        if parity == "odd" and a[i] % 2 == 0:
-            # delete the current element and update the parity
-            parity = "even"
-            sum_non_deleted -= a[i]
-        elif parity == "even" and a[i] % 2 == 1:
-            # delete the current element and update the parity
-            parity = "odd"
-            sum_non_deleted -= a[i]
+        x, y = map(int, input().split())
+        points.append((x, y))
     
-    # return the minimum possible sum of non-deleted elements
-    return sum_non_deleted
+    print(get_min_distance(points))
+
+if __name__ == '__main__':
+    main()
 

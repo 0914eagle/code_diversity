@@ -1,20 +1,27 @@
 
-def solve(N, K, A):
-    # Sort the array of integers
-    A.sort()
-    # Initialize the minimum number of balls to rewrite
-    min_balls = 0
-    # Initialize the current number of different integers
-    current_diff = len(set(A))
-    # Loop through the array of integers
-    for i in range(N):
-        # If the current number of different integers is less than or equal to K, we don't need to rewrite any more balls
-        if current_diff <= K:
-            break
-        # If the current integer is different from the previous integer, we need to rewrite the current ball
-        if i == 0 or A[i] != A[i-1]:
-            min_balls += 1
-        # Update the current number of different integers
-        current_diff -= 1
-    return min_balls
+def calculate_original_length(n, p, k):
+    # Initialize the original length as the total length of the video
+    original_length = k
+    # Loop through each event timestamp
+    for i in range(n):
+        # Calculate the speedup for the current event
+        speedup = 100 + p * i
+        # Calculate the length of the current segment
+        segment_length = (k - (i * speedup / 100)) / (100 - speedup)
+        # Subtract the length of the current segment from the original length
+        original_length -= segment_length
+    # Return the original length
+    return original_length
+
+def main():
+    # Read the input
+    n, p, k = map(int, input().split())
+    timestamps = list(map(int, input().split()))
+    # Calculate the original length
+    original_length = calculate_original_length(n, p, k)
+    # Print the result
+    print(original_length)
+
+if __name__ == '__main__':
+    main()
 

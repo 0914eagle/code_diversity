@@ -1,28 +1,52 @@
 
-def insert(intervals, new_interval):
+def get_candidates(candidates, target):
+    # create a list to store the combinations
+    combinations = []
     
-    if not intervals:
-        return [new_interval]
+    # loop through each candidate and check if it is equal to the target
+    for candidate in candidates:
+        if candidate == target:
+            # if the candidate is equal to the target, add it to the combinations list
+            combinations.append([candidate])
     
-    # find the position where the new interval should be inserted
-    left = 0
-    right = len(intervals) - 1
-    while left <= right:
-        mid = (left + right) // 2
-        if intervals[mid][0] < new_interval[0]:
-            left = mid + 1
-        elif intervals[mid][0] > new_interval[0]:
-            right = mid - 1
-        else:
-            left = mid
-            break
+    # return the combinations list
+    return combinations
+
+def get_combinations(candidates, target):
+    # create a list to store the combinations
+    combinations = []
     
-    # merge the new interval with the previous and/or next interval if necessary
-    if left > 0 and intervals[left-1][1] >= new_interval[0]:
-        left -= 1
-    if left < len(intervals) and intervals[left][1] >= new_interval[1]:
-        new_interval[1] = intervals[left][1]
+    # loop through each candidate and check if it is less than the target
+    for candidate in candidates:
+        if candidate < target:
+            # if the candidate is less than the target, get the combinations for the remaining candidates and the target minus the candidate
+            remaining_combinations = get_combinations(candidates, target - candidate)
+            
+            # loop through each combination and add the candidate to it
+            for combination in remaining_combinations:
+                combination.append(candidate)
+                
+            # add the combinations to the combinations list
+            combinations += remaining_combinations
     
-    intervals[left:left+1] = [new_interval]
-    return intervals
+    # return the combinations list
+    return combinations
+
+def main():
+    # test get_candidates function
+    print("Test get_candidates function:")
+    candidates = [10, 1, 2, 7, 6, 1, 5]
+    target = 8
+    combinations = get_candidates(candidates, target)
+    print(combinations)
+    
+    # test get_combinations function
+    print("Test get_combinations function:")
+    candidates = [2, 5, 2, 1, 2]
+    target = 5
+    combinations = get_combinations(candidates, target)
+    print(combinations)
+
+if __name__ == '__main__':
+    main()
 

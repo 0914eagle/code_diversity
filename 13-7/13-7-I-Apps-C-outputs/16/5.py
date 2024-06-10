@@ -1,13 +1,20 @@
 
-def get_sequence(oranges, apples):
-    if oranges == 0 and apples == 0:
-        return "Impossible"
-    if oranges == 1 and apples == 1:
-        return "AB"
-    if oranges == 1 and apples > 1:
-        return "A" + get_sequence(0, apples-1)
-    if oranges > 1 and apples == 1:
-        return "B" + get_sequence(oranges-1, 0)
-    if oranges > 1 and apples > 1:
-        return "AB" + get_sequence(oranges-1, apples-1)
+def is_pythagorean_triple(a, b, c, n):
+    return a <= b and a**2 + b**2 == c**2
+
+def count_pythagorean_triples(n):
+    count = 0
+    for a in range(1, n):
+        for b in range(a, n):
+            for c in range(b, n):
+                if is_pythagorean_triple(a, b, c, n):
+                    count += 1
+    return count
+
+def main():
+    n = int(input())
+    print(count_pythagorean_triples(n))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,32 +1,33 @@
 
-def solve(a):
-    # Sort the array in non-decreasing order
-    a.sort()
-    # Initialize the sum of non-deleted elements
-    sum_non_deleted = 0
-    # Initialize the number of moves
-    num_moves = 0
-    # Loop through the array
-    for i in range(len(a)):
-        # If it is an even move, choose an even element
-        if num_moves % 2 == 0:
-            # If the current element is even, choose it
-            if a[i] % 2 == 0:
-                sum_non_deleted += a[i]
-                a.pop(i)
-                break
-        # If it is an odd move, choose an odd element
-        else:
-            # If the current element is odd, choose it
-            if a[i] % 2 == 1:
-                sum_non_deleted += a[i]
-                a.pop(i)
-                break
-        # Increment the number of moves
-        num_moves += 1
-    # If all elements have been deleted, return the sum of non-deleted elements
-    if not a:
-        return sum_non_deleted
-    # If there are still elements left, return -1
-    return -1
+def get_min_distance(points):
+    # Sort the points by their x-coordinate
+    sorted_points = sorted(points, key=lambda x: x[0])
+
+    # Initialize the minimum distance to 0
+    min_distance = 0
+
+    # Iterate through the points and calculate the distance between them
+    for i in range(len(sorted_points) - 1):
+        min_distance += abs(sorted_points[i + 1][0] - sorted_points[i][0])
+
+    return min_distance
+
+def main():
+    # Read the number of points from stdin
+    n = int(input())
+
+    # Read the points from stdin
+    points = []
+    for i in range(n):
+        x, y = map(int, input().split())
+        points.append((x, y))
+
+    # Calculate the minimum distance
+    min_distance = get_min_distance(points)
+
+    # Print the minimum distance
+    print(min_distance)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,19 +1,27 @@
 
-def solve(seq, jump, k, q, left, right):
-    # Initialize the array with zeros
-    seq = [0] * len(seq)
+def get_expected_value(n):
+    # Initialize the probability of each board
+    probabilities = [1 / 8 for _ in range(8)]
 
-    # Call the procedure exactly k times
-    for i in range(k):
-        i = 0
-        while i < len(seq):
-            seq[i] += 1
-            i += jump
+    # Initialize the number of black stones for each board
+    num_black_stones = [0, 1, 0, 2, 1, 3, 2, 3]
 
-    # Find the sum of elements between left and right for each special part
-    result = []
-    for l, r in zip(left, right):
-        result.append(sum(seq[l:r+1]))
+    # Loop through each board and calculate the expected value
+    expected_value = 0
+    for i in range(8):
+        expected_value += probabilities[i] * num_black_stones[i]
 
-    return result
+    # Return the expected value modulo 998244353
+    return expected_value % 998244353
+
+def main():
+    # Read the input n
+    n = int(input())
+
+    # Print the expected value for each case s=1,2,3,...,n
+    for i in range(1, n+1):
+        print(get_expected_value(i))
+
+if __name__ == '__main__':
+    main()
 

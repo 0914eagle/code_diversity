@@ -1,22 +1,30 @@
 
-def solve(n, k, x, rangers):
-    # Sort the rangers in increasing order of strength
-    rangers.sort()
-    
-    # Initialize the minimum and maximum strengths
-    min_strength = rangers[0]
-    max_strength = rangers[-1]
-    
-    # Perform the operation k times
+def get_subsequences(arr):
+    subsequences = []
+    for i in range(len(arr)):
+        for subsequence in get_subsequences(arr[i+1:]):
+            subsequences.append([arr[i]] + subsequence)
+    if not arr:
+        subsequences.append([])
+    return subsequences
+
+def get_lexicographically_sorted_subsequences(arr):
+    subsequences = get_subsequences(arr)
+    return sorted(subsequences, key=lambda x: (x[0], len(x)))
+
+def get_hash(arr, b, m):
+    hash_value = 0
+    for i in range(len(arr)):
+        hash_value = (hash_value * b + arr[i]) % m
+    return hash_value
+
+def main():
+    n, k, b, m = map(int, input().split())
+    arr = list(map(int, input().split()))
+    subsequences = get_lexicographically_sorted_subsequences(arr)
     for i in range(k):
-        # Take the bitwise XOR of each alternate ranger with x and update its strength
-        for j in range(0, n, 2):
-            rangers[j] = rangers[j] ^ x
-        
-        # Update the minimum and maximum strengths
-        min_strength = min(min_strength, rangers[0])
-        max_strength = max(max_strength, rangers[-1])
-    
-    # Return the minimum and maximum strengths
-    return [min_strength, max_strength]
+        print(get_hash(subsequences[i], b, m))
+
+if __name__ == '__main__':
+    main()
 

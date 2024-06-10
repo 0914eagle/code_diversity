@@ -1,52 +1,50 @@
 
-def solve(N, A, B):
-    # Initialize a list to store the permutation
-    perm = list(range(1, N+1))
-    # Loop through each element in the permutation
-    for i in range(N):
-        # If the element is equal to A or B, skip it
-        if perm[i] in [A, B]:
-            continue
-        # If the element is not equal to A or B, find the minimum positive integer j such that f(i, j) = i
-        j = 1
-        while True:
-            if f(perm[i], j) == perm[i]:
-                break
-            j += 1
-        # Swap the element with the element at index j in the permutation
-        perm[i], perm[j-1] = perm[j-1], perm[i]
-    # If the permutation is valid, return it, otherwise return -1
-    if valid_permutation(perm, A, B):
-        return perm
-    else:
-        return -1
+def get_input():
+    N, M = map(int, input().split())
+    translators = []
+    for _ in range(M):
+        translator = list(map(int, input().split()))
+        translators.append(translator)
+    return N, M, translators
 
-# Function to check if a permutation is valid
-def valid_permutation(perm, A, B):
-    # Loop through each element in the permutation
-    for i in range(len(perm)):
-        # If the element is equal to A or B, skip it
-        if perm[i] in [A, B]:
-            continue
-        # If the element is not equal to A or B, find the minimum positive integer j such that f(i, j) = i
-        j = 1
-        while True:
-            if f(perm[i], j) == perm[i]:
-                break
-            j += 1
-        # If the element is not equal to A or B and the minimum positive integer j such that f(i, j) = i is not equal to A or B, the permutation is invalid
-        if perm[i] != A and perm[i] != B and perm[j-1] != A and perm[j-1] != B:
-            return False
-    # If all elements in the permutation are valid, the permutation is valid
+def is_bipartite(graph):
+    visited = [False] * len(graph)
+    color = [False] * len(graph)
+    for i in range(len(graph)):
+        if not visited[i]:
+            if not dfs(graph, i, visited, color):
+                return False
     return True
 
-# Function to calculate f(i, j)
-def f(i, j):
-    if j == 1:
-        return i
-    else:
-        return f(perm[i], j-1)
+def dfs(graph, node, visited, color):
+    visited[node] = True
+    for neighbor in graph[node]:
+        if not visited[neighbor]:
+            color[neighbor] = not color[node]
+            if not dfs(graph, neighbor, visited, color):
+                return False
+        elif color[neighbor] == color[node]:
+            return False
+    return True
 
-perm = solve(9, 2, 5)
-print(perm)
+def solve(N, M, translators):
+    graph = [[] for _ in range(N)]
+    for translator in translators:
+        graph[translator[0]].append(translator[1])
+        graph[translator[1]].append(translator[0])
+    if is_bipartite(graph):
+        return "impossible"
+    matching = []
+    for i in range(N):
+        for j in range(i+1, N):
+            if graph[i][j]:
+                matching.append([i, j])
+    return matching
+
+def main():
+    N, M, translators = get_input()
+    print(solve(N, M, translators))
+
+if __name__ == '__main__':
+    main()
 

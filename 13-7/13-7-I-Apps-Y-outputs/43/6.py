@@ -1,14 +1,17 @@
 
-def solve(x1, x2, x3, x4):
-    # Find the sum of all three numbers
-    sum_of_three = x1 + x2 + x3
+def get_min_product(L, R):
+    min_product = float('inf')
+    for i in range(L, R):
+        for j in range(i+1, R+1):
+            product = i*j
+            if product % 2019 < min_product:
+                min_product = product % 2019
+    return min_product
 
-    # Find the two pairs that add up to the sum of all three numbers
-    pair1 = (sum_of_three - x1, sum_of_three - x2)
-    pair2 = (sum_of_three - x1, sum_of_three - x3)
+def main():
+    L, R = map(int, input().split())
+    print(get_min_product(L, R))
 
-    # Find the number that is not part of either pair
-    num = x4 - (pair1[0] + pair1[1])
-
-    return num, pair1[0], pair1[1]
+if __name__ == '__main__':
+    main()
 

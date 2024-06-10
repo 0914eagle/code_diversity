@@ -1,49 +1,50 @@
 
-def solve(n, d, b, a):
-    # Initialize the number of rooms with non-hidden students different from b
-    x = 0
-    
-    # Initialize the number of students in each room
-    students = [0] * (n + 1)
-    
-    # Initialize the number of hidden students in each room
-    hidden = [0] * (n + 1)
-    
-    # Initialize the current room number
-    current_room = 1
-    
-    # Loop through each room
-    for i in range(n):
-        # If the current room is not the last room
-        if current_room != n:
-            # Add the number of students in the current room to the total number of students
-            students[current_room] += a[current_room]
-            
-            # If the number of students in the current room is different from the official number of students
-            if a[current_room] != b:
-                # Increment the number of rooms with non-hidden students different from b
-                x += 1
-            
-            # If the current room is not the first room
-            if current_room != 1:
-                # Add the number of hidden students in the previous room to the total number of hidden students
-                hidden[current_room - 1] += hidden[current_room]
-            
-            # Move to the next room
-            current_room += 1
-        # If the current room is the last room
+def parse_rectangles(corner_pairs):
+    # Initialize an empty dictionary to store the rectangles
+    rectangles = {}
+
+    # Iterate through the corner pairs
+    for i, (top_left, bottom_right) in enumerate(corner_pairs):
+        # Check if the top-left corner is already in a rectangle
+        if top_left in rectangles:
+            # If it is, add the bottom-right corner to the same rectangle
+            rectangles[top_left].append(bottom_right)
         else:
-            # Add the number of students in the current room to the total number of students
-            students[current_room] += a[current_room]
-            
-            # If the number of students in the current room is different from the official number of students
-            if a[current_room] != b:
-                # Increment the number of rooms with non-hidden students different from b
-                x += 1
-            
-            # Move to the first room
-            current_room = 1
-    
-    # Return the minimum number of rooms with non-hidden students different from b
-    return x
+            # If it's not, create a new rectangle with the top-left and bottom-right corners
+            rectangles[top_left] = [bottom_right]
+
+    # Initialize an empty list to store the output
+    output = []
+
+    # Iterate through the rectangles
+    for top_left, bottom_right_list in rectangles.items():
+        # Check if the bottom-right corners are all in the same rectangle
+        if all(bottom_right in rectangles for bottom_right in bottom_right_list):
+            # If they are, add the index of the top-left corner to the output
+            output.append(top_left)
+        else:
+            # If they're not, the input is invalid
+            return "syntax error"
+
+    return output
+
+def main():
+    # Read the number of corner pairs
+    n = int(input())
+
+    # Read the corner pairs
+    corner_pairs = []
+    for _ in range(n):
+        r, c = map(int, input().split())
+        corner_pairs.append((r, c))
+
+    # Parse the rectangles
+    output = parse_rectangles(corner_pairs)
+
+    # Print the output
+    for i in output:
+        print(i)
+
+if __name__ == '__main__':
+    main()
 

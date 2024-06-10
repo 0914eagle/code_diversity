@@ -1,25 +1,21 @@
 
-def solve(N, game_state):
-    # Initialize the variables
-    alice_score = 0
-    bob_score = 0
-    moves_left = N * N
+import math
 
-    # Iterate through the game state
-    for i in range(N):
-        for j in range(N):
-            # Check if the current cell is a dot
-            if game_state[i][j] == "*":
-                # Check if the dot is connected to the edge of the grid
-                if i == 0 or j == 0 or i == N - 1 or j == N - 1:
-                    # The dot is connected to the edge, so Alice or Bob can score a point
-                    return moves_left
-                else:
-                    # The dot is not connected to the edge, so check the surrounding cells
-                    if game_state[i - 1][j] == "|" and game_state[i + 1][j] == "|" and game_state[i][j - 1] == "-" and game_state[i][j + 1] == "-":
-                        # The dot is connected to the edge in all four directions, so Alice or Bob can score a point
-                        return moves_left
+def get_lcm(a, b):
+    return a * b // math.gcd(a, b)
 
-    # If the function reaches this point, then no dot is connected to the edge, so the game can continue
-    return moves_left
+def get_max_lcm(n):
+    for i in range(1, n + 1):
+        for j in range(i, n + 1):
+            lcm = get_lcm(i, j)
+            if lcm <= n:
+                return lcm
+    return -1
+
+def main():
+    n = int(input())
+    print(get_max_lcm(n))
+
+if __name__ == '__main__':
+    main()
 

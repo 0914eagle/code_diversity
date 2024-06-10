@@ -1,32 +1,35 @@
 
-def solve(n, k, a, b):
-    # Calculate the total taste and total calories of the fruits
-    total_taste = sum(a)
-    total_calories = sum(b)
+def get_pleasantness_sum(gift_ids, gift_pleasantnesses, chloe_gift_id, vladik_gift_id):
+    chloe_gift_pleasantness = gift_pleasantnesses[chloe_gift_id - 1]
+    vladik_gift_pleasantness = gift_pleasantnesses[vladik_gift_id - 1]
+    chloe_gift_neighbors = get_gift_neighbors(gift_ids, chloe_gift_id)
+    vladik_gift_neighbors = get_gift_neighbors(gift_ids, vladik_gift_id)
+    intersection = set(chloe_gift_neighbors).intersection(vladik_gift_neighbors)
+    if len(intersection) > 0:
+        return "Impossible"
+    else:
+        return chloe_gift_pleasantness + vladik_gift_pleasantness + sum(gift_pleasantnesses[i - 1] for i in chloe_gift_neighbors) + sum(gift_pleasantnesses[i - 1] for i in vladik_gift_neighbors)
 
-    # Initialize the maximum possible sum of the taste values to 0
-    max_taste = 0
+def get_gift_neighbors(gift_ids, gift_id):
+    neighbors = []
+    for i in range(len(gift_ids)):
+        if gift_ids[i][0] == gift_id:
+            neighbors.append(gift_ids[i][1])
+        elif gift_ids[i][1] == gift_id:
+            neighbors.append(gift_ids[i][0])
+    return neighbors
 
-    # Iterate over all possible combinations of fruits
-    for i in range(1, 2**n):
-        # Calculate the current combination of fruits
-        current_combination = [j for j in range(n) if (i & (1 << j)) > 0]
+def main():
+    n = int(input())
+    gift_ids = []
+    gift_pleasantnesses = []
+    for i in range(n):
+        gift_ids.append(list(map(int, input().split())))
+        gift_pleasantnesses.append(int(input()))
+    chloe_gift_id = int(input())
+    vladik_gift_id = int(input())
+    print(get_pleasantness_sum(gift_ids, gift_pleasantnesses, chloe_gift_id, vladik_gift_id))
 
-        # Calculate the current total taste and total calories of the chosen fruits
-        current_taste = sum(a[j] for j in current_combination)
-        current_calories = sum(b[j] for j in current_combination)
-
-        # Calculate the current taste to calories ratio
-        current_ratio = current_taste / current_calories
-
-        # If the current ratio is equal to k and the current combination has at least one fruit, update the maximum possible sum of the taste values
-        if current_ratio == k and len(current_combination) > 0:
-            max_taste = max(max_taste, current_taste)
-
-    # If no combination of fruits fulfills the condition, return -1
-    if max_taste == 0:
-        return -1
-
-    # Otherwise, return the maximum possible sum of the taste values
-    return max_taste
+if __name__ == '__main__':
+    main()
 

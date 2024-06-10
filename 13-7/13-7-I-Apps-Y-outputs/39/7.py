@@ -1,19 +1,18 @@
 
-def solve(s, n):
-    # Convert input string to uppercase
-    s = s.upper()
-    
-    # Initialize result string
-    result = ""
-    
-    # Loop through each character in the input string
-    for char in s:
-        # Calculate the new character position based on the shift value
-        new_pos = (ord(char) - ord('A') + n) % 26
-        
-        # Add the new character to the result string
-        result += chr(ord('A') + new_pos)
-    
-    # Return the result string
-    return result
+def is_even(s):
+    return s == s[::-1]
+
+def longest_even(s):
+    n = len(s)
+    for i in range(n-1, 0, -1):
+        if is_even(s[:i]):
+            return i
+    return 0
+
+def main():
+    s = input()
+    print(longest_even(s))
+
+if __name__ == '__main__':
+    main()
 

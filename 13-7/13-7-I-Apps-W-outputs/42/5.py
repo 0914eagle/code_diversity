@@ -1,21 +1,22 @@
 
-def get_min_time(n, x, v):
-    # Sort the friends by their current coordinates
-    sorted_x = sorted(x)
+def get_input():
+    n = int(input())
+    attendees = [int(i) for i in input().split()]
+    return n, attendees
 
-    # Initialize the minimum time needed to gather all the friends
-    min_time = 0
-
-    # Loop through each friend and calculate their travel time
+def get_pairs(n, attendees):
+    pairs = []
     for i in range(n):
-        # Calculate the distance between the current friend and the next friend
-        distance = sorted_x[i + 1] - sorted_x[i]
+        for j in range(i+1, n):
+            if abs(i-j) == attendees[i] + attendees[j]:
+                pairs.append([i, j])
+    return pairs
 
-        # Calculate the travel time for the current friend
-        travel_time = distance / v[i]
+def main():
+    n, attendees = get_input()
+    pairs = get_pairs(n, attendees)
+    print(len(pairs))
 
-        # Add the travel time to the minimum time needed
-        min_time += travel_time
-
-    return min_time
+if __name__ == '__main__':
+    main()
 

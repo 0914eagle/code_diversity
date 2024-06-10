@@ -1,34 +1,44 @@
 
-def reconstruct_arrows(N, K, a):
-    # Initialize a dictionary to map each person to their next position
-    person_to_next_position = {}
-    for i in range(N):
-        person_to_next_position[i+1] = a[i]
+def get_cheapest_network(n, m, p, insecure_buildings, costs):
+    # Initialize a graph with n nodes and m edges
+    graph = [[] for _ in range(n)]
+    for i in range(m):
+        x, y, cost = costs[i]
+        graph[x - 1].append((y - 1, cost))
+        graph[y - 1].append((x - 1, cost))
+    
+    # Dijkstra's algorithm to find the shortest path between all pairs of nodes
+    dist = [float('inf')] * n
+    dist[0] = 0
+    q = [(0, 0)]
+    while q:
+        node, cost = heapq.heappop(q)
+        if dist[node] < cost:
+            continue
+        for neighbor, neighbor_cost in graph[node]:
+            new_cost = cost + neighbor_cost
+            if new_cost < dist[neighbor]:
+                dist[neighbor] = new_cost
+                heapq.heappush(q, (neighbor, new_cost))
+    
+    # Check if the network is secure
+    for i in range(n):
+        for j in range(n):
+            if i != j and dist[i] != float('inf') and dist[j] != float('inf') and dist[i] + dist[j] < dist[j]:
+                return -1
+    
+    # Return the cheapest network cost
+    return dist[n - 1]
 
-    # Initialize a set to keep track of the visited positions
-    visited_positions = set()
+def main():
+    n, m, p = map(int, input().split())
+    insecure_buildings = set(map(int, input().split()))
+    costs = []
+    for i in range(m):
+        x, y, cost = map(int, input().split())
+        costs.append((x, y, cost))
+    print(get_cheapest_network(n, m, p, insecure_buildings, costs))
 
-    # Initialize a list to store the arrows
-    arrows = []
-
-    # Loop through each person and their next position
-    for person, next_position in person_to_next_position.items():
-        # If the next position is not in the visited positions, add it to the visited positions set
-        if next_position not in visited_positions:
-            visited_positions.add(next_position)
-            # Add the arrow from the current person to the next position
-            arrows.append((person, next_position))
-        # If the next position is already in the visited positions, add the arrow from the current person to the next position's next position
-        else:
-            while next_position in visited_positions:
-                next_position = person_to_next_position[next_position]
-            visited_positions.add(next_position)
-            arrows.append((person, next_position))
-
-    # If the number of arrows is not equal to the number of people, return "Impossible"
-    if len(arrows) != N:
-        return "Impossible"
-
-    # Otherwise, return the arrows in the order they were added
-    return [arrow[1] for arrow in arrows]
+if __name__ == '__main__':
+    main()
 

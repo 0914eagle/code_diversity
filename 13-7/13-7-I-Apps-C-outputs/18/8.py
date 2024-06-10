@@ -1,49 +1,34 @@
 
-def get_minimum_instructions(banks, variables, program):
-    # Initialize variables
-    min_instructions = 0
-    bank_assignments = {}
-    bank_usage = [0] * banks
-    variable_usage = [0] * variables
-
-    # Iterate through the program
-    for instruction in program:
-        # If the instruction is a variable reference
-        if instruction.startswith("V"):
-            # Get the variable index
-            variable_index = int(instruction[1:])
-
-            # Check if the variable has already been assigned a bank
-            if variable_index not in bank_assignments:
-                # Find the least used bank
-                least_used_bank = min(bank_usage)
-                bank_usage[least_used_bank] += 1
-
-                # Assign the variable to the least used bank
-                bank_assignments[variable_index] = least_used_bank
-
-            # Increment the usage count for the variable's bank
-            bank_usage[bank_assignments[variable_index]] += 1
-            variable_usage[variable_index] += 1
-
-            # Increment the minimum instruction count
-            min_instructions += 1
-
-        # If the instruction is a repetition
-        elif instruction.startswith("R"):
-            # Get the number of repetitions
-            num_repetitions = int(instruction[1:instruction.find(" ")])
-
-            # Get the program inside the repetition
-            program_inside_repetition = instruction[instruction.find(" ")+1:-1]
-
-            # Recursively call the function to get the minimum instructions for the repetition
-            min_instructions += num_repetitions * get_minimum_instructions(banks, variables, program_inside_repetition)
-
-        # If the instruction is the end of the program
-        elif instruction == "E":
+def get_maximum_number_of_executives(briefcase_numbers):
+    
+    # Sort the briefcase numbers in descending order
+    briefcase_numbers.sort(reverse=True)
+    
+    # Initialize variables to keep track of the number of executives and the total number of bananas
+    num_executives = 0
+    total_bananas = 0
+    
+    # Loop through the briefcase numbers and assign them to the executives in a fair way
+    for i, briefcase_number in enumerate(briefcase_numbers):
+        # If the current briefcase number is greater than the total number of bananas, break the loop
+        if briefcase_number > total_bananas:
             break
+        
+        # Assign the current briefcase number to the current executive
+        total_bananas += briefcase_number
+        num_executives += 1
+    
+    # Return the maximum number of executives that can be rewarded
+    return num_executives
 
-    # Return the minimum instructions
-    return min_instructions
+def main():
+    # Read the number of briefcases and their numbers from stdin
+    num_briefcases = int(input())
+    briefcase_numbers = list(map(int, input().split()))
+    
+    # Call the get_maximum_number_of_executives function and print the result
+    print(get_maximum_number_of_executives(briefcase_numbers))
+
+if __name__ == '__main__':
+    main()
 

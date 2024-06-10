@@ -1,7 +1,18 @@
 
-def is_allowed_entry(numbers):
-    for num in numbers:
-        if num % 2 == 0 and num % 3 != 0 and num % 5 != 0:
-            return "DENIED"
-    return "APPROVED"
+def get_max_value(N, S):
+    x = 0
+    for i in range(N):
+        if S[i] == "I":
+            x += 1
+        else:
+            x -= 1
+    return max(x, 0)
+
+def main():
+    N = int(input())
+    S = input()
+    print(get_max_value(N, S))
+
+if __name__ == '__main__':
+    main()
 

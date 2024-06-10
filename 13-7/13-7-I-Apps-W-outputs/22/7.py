@@ -1,27 +1,27 @@
 
-def solve(n, m, building):
-    # Initialize variables
-    total_time = 0
-    current_floor = 0
-    current_room = 0
-    visited_rooms = set()
+def is_same_solar_system(map1, map2):
+    # Flip map1 along the vertical axis
+    flipped_map1 = [list(reversed(row)) for row in map1]
+    
+    # Check if map2 is identical to flipped_map1 after rotation
+    for i in range(4):
+        if map2 == rotate_map(flipped_map1, i):
+            return True
+    
+    # Check if map2 is identical to flipped_map1 after flipping along the horizontal axis
+    flipped_map1 = [list(reversed(row)) for row in flipped_map1]
+    if map2 == flipped_map1:
+        return True
+    
+    # If none of the above conditions are met, the maps are not identical
+    return False
 
-    # Loop through each floor
-    for floor in building:
-        # Loop through each room in the current floor
-        for room in range(m):
-            # If the room is on and has not been visited before, turn it off and update the variables
-            if floor[room] == "1" and room not in visited_rooms:
-                total_time += 1
-                visited_rooms.add(room)
-                current_room = room
-                break
+def rotate_map(map, n):
+    # Rotate map n times clockwise
+    return [row[n:] + row[:n] for row in map]
 
-        # If all the rooms in the current floor have been visited, go to the next floor
-        if current_room == m - 1:
-            total_time += 1
-            current_floor += 1
-            current_room = 0
-
-    return total_time
+if __name__ == '__main__':
+    map1 = [input() for _ in range(int(input()))]
+    map2 = [input() for _ in range(int(input()))]
+    print("Yes") if is_same_solar_system(map1, map2) else print("No")
 

@@ -1,26 +1,32 @@
 
-def solve(comments):
-    # Split the comments into a list of strings
-    comments = comments.split(",")
-    
-    # Initialize the depth of nesting and the list of comments for each level
-    depth = 0
-    comments_by_level = [[] for _ in range(100)]
-    
-    # Iterate through the comments and add them to the appropriate level
-    for comment in comments:
-        # Get the number of replies for this comment
-        num_replies = int(comment.split(",")[1])
-        
-        # Add the comment to the appropriate level
-        comments_by_level[depth].append(comment)
-        
-        # Increment the depth if this comment has replies
-        if num_replies > 0:
-            depth += 1
-    
-    # Print the depth of nesting and the comments for each level
-    print(depth)
-    for level in comments_by_level:
-        print(" ".join(level))
+def get_time_to_reach_post_office(d, k, a, b, t):
+    # Initialize variables
+    time = 0
+    distance = 0
+    car_broken = False
+
+    # Loop through the distance
+    while distance < d:
+        # If the car is broken, Vasiliy needs to walk
+        if car_broken:
+            time += b
+            distance += 1
+        # If the car is not broken, Vasiliy can drive
+        else:
+            time += a
+            distance += 1
+
+        # Check if the car needs to be repaired
+        if distance % k == 0:
+            time += t
+            car_broken = True
+
+    return time
+
+def main():
+    d, k, a, b, t = map(int, input().split())
+    print(get_time_to_reach_post_office(d, k, a, b, t))
+
+if __name__ == '__main__':
+    main()
 

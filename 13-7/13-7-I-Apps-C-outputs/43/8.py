@@ -1,15 +1,27 @@
 
-def solve(n, k, c):
-    # Check if k is one of the ancient numbers
-    if k in c:
-        return "Yes"
-    
-    # Check if any two ancient numbers have a common factor greater than 1
-    for i in range(n):
-        for j in range(i+1, n):
-            if __gcd(c[i], c[j]) > 1:
-                return "Yes"
-    
-    # If both conditions above are not met, then Arya does not have a winning strategy
-    return "No"
+def get_expression(expression):
+    return expression.split('+')
+
+def get_variable_value(expression, variable):
+    return int(expression.split(variable)[0])
+
+def get_remainder(expression, variable, modulo):
+    return int(expression.split(variable)[1]) % modulo
+
+def solve(expression, p, m):
+    variable = 'x'
+    min_value = 0
+    max_value = 100000
+    while min_value <= max_value:
+        mid_value = (min_value + max_value) // 2
+        if get_remainder(expression, variable, mid_value) == p:
+            min_value = mid_value + 1
+        else:
+            max_value = mid_value - 1
+    return min_value
+
+if __name__ == '__main__':
+    expression = input()
+    p, m = map(int, input().split())
+    print(solve(expression, p, m))
 

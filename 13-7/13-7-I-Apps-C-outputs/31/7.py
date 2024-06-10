@@ -1,39 +1,37 @@
 
-def solve(n, g, dist, cost):
-    # Sort the gas stations by distance in ascending order
-    sorted_gas_stations = sorted(zip(dist, cost), key=lambda x: x[0])
+import math
 
-    # Initialize the current gas station and the total distance traveled
-    current_gas_station = 0
-    total_distance = 0
+def get_visible_beacons(beacons, peak):
+    visible_beacons = []
+    for beacon in beacons:
+        if is_visible(beacon, peak):
+            visible_beacons.append(beacon)
+    return visible_beacons
 
-    # Initialize the minimum cost to travel to the rightmost gas station
-    min_cost = 0
+def is_visible(beacon, peak):
+    distance = math.sqrt((beacon[0] - peak[0]) ** 2 + (beacon[1] - peak[1]) ** 2)
+    return distance <= peak[2]
 
-    # Loop through each gas station
-    for i in range(n):
-        # Calculate the distance from the current gas station to the next gas station
-        distance_to_next_gas_station = sorted_gas_stations[i][0] - total_distance
+def get_message_count(beacons, peaks):
+    visible_beacons = get_visible_beacons(beacons, peaks[0])
+    message_count = 1
+    for peak in peaks[1:]:
+        visible_beacons = get_visible_beacons(visible_beacons, peak)
+        message_count += 1
+    return message_count
 
-        # Calculate the amount of gas needed to travel to the next gas station
-        gas_needed = distance_to_next_gas_station // 1000
+def main():
+    n, m = map(int, input().split())
+    beacons = []
+    for _ in range(n):
+        x, y = map(int, input().split())
+        beacons.append((x, y))
+    peaks = []
+    for _ in range(m):
+        x, y, r = map(int, input().split())
+        peaks.append((x, y, r))
+    print(get_message_count(beacons, peaks))
 
-        # Check if the gas needed is less than or equal to the gas tank capacity
-        if gas_needed <= g:
-            # Calculate the cost of traveling to the next gas station
-            cost_to_next_gas_station = sorted_gas_stations[i][1] * gas_needed
-
-            # Update the minimum cost to travel to the rightmost gas station
-            min_cost += cost_to_next_gas_station
-
-            # Update the current gas station and the total distance traveled
-            current_gas_station = i
-            total_distance += distance_to_next_gas_station
-
-        # If the gas needed is greater than the gas tank capacity, cancel the road trip
-        else:
-            return "cancel road trip"
-
-    # If the road trip is not canceled, return the minimum cost to travel to the rightmost gas station
-    return min_cost
+if __name__ == '__main__':
+    main()
 

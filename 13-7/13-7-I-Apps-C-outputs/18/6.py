@@ -1,53 +1,29 @@
 
-def get_minimum_instructions(num_banks, num_variables, program):
-    # Initialize variables
-    min_instructions = 0
-    bank_assignments = {}
-    bank_usage = [0] * num_banks
-    variable_usage = [0] * num_variables
+def get_max_executives(briefcase_count, briefcase_values):
+    # Sort the briefcases in non-decreasing order of value
+    sorted_briefcases = sorted(briefcase_values)
 
-    # Iterate through the program
-    for operation in program:
-        # If the operation is a variable reference
-        if operation.startswith("V"):
-            # Get the variable index
-            variable_index = int(operation[1:])
+    # Initialize the maximum number of executives to be rewarded
+    max_executives = 0
 
-            # Check if the variable has already been assigned a bank
-            if variable_index not in bank_assignments:
-                # Find the least used bank
-                least_used_bank = min(bank_usage)
-                least_used_bank_index = bank_usage.index(least_used_bank)
+    # Loop through the briefcases and reward executives
+    for i in range(briefcase_count):
+        # Get the value of the current briefcase
+        value = sorted_briefcases[i]
 
-                # Assign the variable to the least used bank
-                bank_assignments[variable_index] = least_used_bank_index
+        # Calculate the number of executives that can be rewarded with this briefcase
+        executives = (briefcase_count - i) // (value + 1)
 
-                # Update the bank usage
-                bank_usage[least_used_bank_index] += 1
-                variable_usage[variable_index] += 1
+        # Update the maximum number of executives if necessary
+        max_executives = max(max_executives, executives)
 
-            # Increment the minimum instructions
-            min_instructions += 1
+    return max_executives
 
-        # If the operation is a repetition
-        elif operation.startswith("R"):
-            # Get the number of repetitions
-            num_repetitions = int(operation[1:operation.find(" ")])
+def main():
+    briefcase_count = int(input())
+    briefcase_values = list(map(int, input().split()))
+    print(get_max_executives(briefcase_count, briefcase_values))
 
-            # Get the program inside the repetition
-            program_inside_repetition = operation[operation.find(" "):]
-
-            # Find the minimum instructions for the program inside the repetition
-            min_instructions_inside_repetition = get_minimum_instructions(num_banks, num_variables, program_inside_repetition)
-
-            # Increment the minimum instructions
-            min_instructions += num_repetitions * min_instructions_inside_repetition
-
-        # If the operation is an end
-        elif operation == "E":
-            # Increment the minimum instructions
-            min_instructions += 1
-
-    # Return the minimum instructions
-    return min_instructions
+if __name__ == '__main__':
+    main()
 

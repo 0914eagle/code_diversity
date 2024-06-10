@@ -1,19 +1,39 @@
 
-def meow_factor(s):
-    # Initialize the meow factor to 0
-    meow_f = 0
-
-    # Loop through each character in the string
-    for i in range(len(s)):
-        # If the current character is 'm', check if the next three characters are 'e', 'o', and 'w'
-        if s[i] == 'm':
-            if i + 1 < len(s) and s[i + 1] == 'e' and i + 2 < len(s) and s[i + 2] == 'o' and i + 3 < len(s) and s[i + 3] == 'w':
-                # If so, return the current meow factor
-                return meow_f
-        # If the current character is not 'm', increment the meow factor
+def get_shortest_time(N, y_coords, min_distances, r_time):
+    # Initialize a dictionary to store the shortest time to reach each city
+    shortest_time = {1: 0}
+    for i in range(2, N+1):
+        # Initialize the minimum time to reach city i as infinity
+        min_time = float('inf')
+        # Loop through all the cities j that are at a minimum distance from city i
+        for j in range(1, N+1):
+            if abs(y_coords[i-1] - y_coords[j-1]) >= min_distances[j-1]:
+                # Calculate the total time to reach city j from city i
+                total_time = r_time[j-1] + abs(y_coords[i-1] - y_coords[j-1])
+                # If the total time is less than the minimum time, update the minimum time
+                if total_time < min_time:
+                    min_time = total_time
+        # If there is a path to city i from city 1, add the minimum time to the shortest time dictionary
+        if min_time < float('inf'):
+            shortest_time[i] = min_time + shortest_time[i-1]
+        # If there is no path to city i from city 1, set the shortest time to -1
         else:
-            meow_f += 1
+            shortest_time[i] = -1
+    return shortest_time
 
-    # If the string does not contain the word "meow", return -1
-    return -1
+def main():
+    N = int(input())
+    y_coords = []
+    min_distances = []
+    r_time = []
+    for i in range(N):
+        y_coords.append(int(input()))
+        min_distances.append(int(input()))
+        r_time.append(int(input()))
+    shortest_time = get_shortest_time(N, y_coords, min_distances, r_time)
+    for i in range(1, N):
+        print(shortest_time[i])
+
+if __name__ == '__main__':
+    main()
 

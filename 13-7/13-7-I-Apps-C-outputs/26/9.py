@@ -1,31 +1,39 @@
 
-def solve(N, A, B):
-    # Initialize a list to store the permutation
-    perm = [0] * (N + 1)
-    # Initialize a list to keep track of the values that have been used
-    used = [False] * (N + 1)
-    # Initialize the current index
-    curr_index = 1
-    # Loop until we have used all the values from 1 to N
-    while curr_index <= N:
-        # If the current index is A or B, add it to the permutation and mark it as used
-        if curr_index == A or curr_index == B:
-            perm[curr_index] = curr_index
-            used[curr_index] = True
-            # Increment the current index
-            curr_index += 1
-        # Otherwise, find the next unused index that is not A or B
-        else:
-            for i in range(1, N + 1):
-                if not used[i] and i != A and i != B:
-                    perm[curr_index] = i
-                    used[i] = True
-                    break
-        # If we reach the end of the list and there are still unused indices, return -1
-        if curr_index > N:
-            for i in range(1, N + 1):
-                if not used[i]:
-                    return -1
-    # Return the permutation
-    return perm
+def get_language_pairs(language_pairs):
+    language_pairs = sorted(language_pairs)
+    return [(language_pairs[i][0], language_pairs[i][1]) for i in range(len(language_pairs))]
+
+def get_matching_pairs(language_pairs):
+    language_pairs = get_language_pairs(language_pairs)
+    matching_pairs = []
+    for i in range(len(language_pairs)):
+        for j in range(i+1, len(language_pairs)):
+            if language_pairs[i][0] == language_pairs[j][1] and language_pairs[i][1] == language_pairs[j][0]:
+                matching_pairs.append((i, j))
+    return matching_pairs
+
+def get_matching_translators(language_pairs, translators):
+    language_pairs = get_language_pairs(language_pairs)
+    translators = sorted(translators)
+    matching_pairs = get_matching_pairs(language_pairs)
+    matching_translators = []
+    for pair in matching_pairs:
+        matching_translators.append((translators[pair[0]], translators[pair[1]]))
+    return matching_translators
+
+def main():
+    num_languages, num_translators = map(int, input().split())
+    language_pairs = []
+    for _ in range(num_translators):
+        language_pair = list(map(int, input().split()))
+        language_pairs.append(language_pair)
+    matching_translators = get_matching_translators(language_pairs, range(num_translators))
+    if len(matching_translators) == 0:
+        print("impossible")
+    else:
+        for pair in matching_translators:
+            print(pair[0], pair[1])
+
+if __name__ == '__main__':
+    main()
 

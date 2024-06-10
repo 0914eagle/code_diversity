@@ -1,19 +1,32 @@
 
-def arnar_location(a, b, c, t1, t2, t3, t4, n, k, r, s, l):
-    # Define the function f(x)
-    f = c * integral(t1 * gamma(x) + sqrt(t2) * log(erf(t3 * x)) - J_k(x)**t4, (x, a, b))
-    
-    # Calculate the r-th degree Taylor polynomial of f around 0
-    p = sum([f.diff(x, i).subs(x, 0) / factorial(i) * x**i for i in range(r+1)])
-    
-    # Define the sequence of polynomials P_n(x)
-    P_n = sum([p.diff(x, i).subs(x, i) * x**i for i in range(r+n+1)])
-    
-    # Calculate the final polynomial g(x)
-    g = P_s.diff(x, s+1)
-    
-    # Calculate the location of the opponent
-    location = (g(n) + l)**2 / (pi * e) + 1 / (l + 1)
-    
-    return location
+def add_plan(N, M, K, x, plan):
+    # Add the plan to the list of plans
+    plans.append((x, plan))
+
+    # Rotate the teachers according to the plan
+    for i in range(K):
+        current_class = classes[plan[i] - 1]
+        next_class = classes[(plan[i] + 1) % N]
+        classes[plan[i] - 1] = next_class
+        classes[(plan[i] + 1) % N] = current_class
+
+def get_teacher_class(d, x):
+    # Find the teacher's current class
+    for i in range(len(plans)):
+        if plans[i][0] == x:
+            break
+    current_class = classes[plans[i][1][d - 1] - 1]
+    return current_class
+
+N, M, Q = map(int, input().split())
+classes = list(range(1, N + 1))
+plans = []
+
+for i in range(Q):
+    query = input().split()
+    if query[0] == "0":
+        add_plan(N, M, int(query[1]), int(query[2]), list(map(int, query[3:])))
+    else:
+        print(get_teacher_class(int(query[1]), int(query[2])))
+
 

@@ -1,43 +1,34 @@
 
-def solve(N, Q, queries):
-    # Initialize a 2D array to store the grid
-    grid = [[0] * N for _ in range(N)]
+import math
+
+def get_arrow_points(px, py, vx, vy, a, b, c, d):
+    # Calculate the angle of the arrow vector
+    angle = math.atan2(vy, vx)
     
-    # Place the black stones in the central (N-2) x (N-2) square
-    for i in range(1, N-1):
-        for j in range(1, N-1):
-            grid[i][j] = 1
+    # Calculate the coordinates of the arrow points
+    x1 = px + a * math.cos(angle)
+    y1 = py + a * math.sin(angle)
+    x2 = x1 + b * math.cos(angle + math.pi / 2)
+    y2 = y1 + b * math.sin(angle + math.pi / 2)
+    x3 = x2 + c * math.cos(angle)
+    y3 = y2 + c * math.sin(angle)
+    x4 = x3 + d * math.cos(angle + math.pi / 2)
+    y4 = y3 + d * math.sin(angle + math.pi / 2)
     
-    # Place the white stones on the bottom and right sides
-    for i in range(N):
-        grid[N-1][i] = 1
-        grid[i][N-1] = 1
+    # Return the arrow points in counter-clockwise order
+    return [(x1, y1), (x2, y2), (x3, y3), (x4, y4)]
+
+def main():
+    # Read the input
+    px, py, vx, vy, a, b, c, d = map(int, input().split())
     
-    # Process the queries
-    for query in queries:
-        if query[0] == 1:
-            # Query 1: Place a white stone on (1, x) and replace black stones below it
-            x = query[1]
-            for i in range(2, N):
-                if grid[i][x] == 1:
-                    grid[i][x] = 0
-                else:
-                    break
-        elif query[0] == 2:
-            # Query 2: Place a white stone on (x, 1) and replace black stones to the right of it
-            x = query[1]
-            for j in range(2, N):
-                if grid[x][j] == 1:
-                    grid[x][j] = 0
-                else:
-                    break
+    # Calculate the arrow points
+    points = get_arrow_points(px, py, vx, vy, a, b, c, d)
     
-    # Count the number of black stones left on the grid
-    count = 0
-    for i in range(N):
-        for j in range(N):
-            if grid[i][j] == 1:
-                count += 1
-    
-    return count
+    # Print the arrow points
+    for point in points:
+        print(point[0], point[1])
+
+if __name__ == '__main__':
+    main()
 

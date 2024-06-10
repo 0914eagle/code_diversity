@@ -1,19 +1,25 @@
 
-def solve(format, time):
-    hours, minutes = time.split(':')
-    hours = int(hours)
-    minutes = int(minutes)
-    
-    if format == '12':
-        if hours > 12:
-            hours = hours - 12
-        if minutes > 59:
-            minutes = minutes - 60
-    else:
-        if hours > 23:
-            hours = hours - 24
-        if minutes > 59:
-            minutes = minutes - 60
-    
-    return f"{hours:02d}:{minutes:02d}"
+def get_confused_pairs(sequence):
+    confused_pairs = 0
+    for i in range(len(sequence) - 1):
+        for j in range(i + 1, len(sequence)):
+            if sequence[i] > sequence[j]:
+                confused_pairs += 1
+    return confused_pairs
+
+def count_sequences(N, C):
+    sequences = 0
+    for i in range(1, N + 1):
+        sequence = list(range(1, N + 1))
+        sequence[i - 1] = i
+        if get_confused_pairs(sequence) == C:
+            sequences += 1
+    return sequences
+
+def main():
+    N, C = map(int, input().split())
+    print(count_sequences(N, C) % 1000000007)
+
+if __name__ == '__main__':
+    main()
 

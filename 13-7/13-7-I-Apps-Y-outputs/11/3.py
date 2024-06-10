@@ -1,28 +1,30 @@
 
-def get_max_objects(n, m, k, a):
-    # Sort the objects in descending order
-    a.sort(reverse=True)
-    # Initialize the number of objects packed
-    num_packed = 0
-    # Initialize the number of boxes used
-    num_boxes = 0
-    # Initialize the size of the current box
-    curr_box_size = 0
-    # Iterate through the objects
-    for i in range(n):
-        # Check if the current object fits in the current box
-        if curr_box_size + a[i] <= k:
-            # If it fits, add it to the current box
-            curr_box_size += a[i]
-            num_packed += 1
-        # If the current object does not fit in the current box
+def get_max_subset(points):
+    # Sort the points
+    points.sort()
+    
+    # Initialize the maximum subset with the first point
+    max_subset = [points[0]]
+    
+    # Iterate over the remaining points
+    for i in range(1, len(points)):
+        # Check if the current point is a power of two away from the last point in the maximum subset
+        if points[i] - max_subset[-1] == 2**(len(max_subset) - 1):
+            # If it is, add it to the maximum subset
+            max_subset.append(points[i])
+        # If it is not, start a new subset with the current point
         else:
-            # If we have used all the boxes, return the number of objects packed
-            if num_boxes == m:
-                return num_packed
-            # Otherwise, start a new box
-            num_boxes += 1
-            curr_box_size = a[i]
-    # If we have packed all the objects, return the number of objects packed
-    return num_packed
+            max_subset = [points[i]]
+    
+    return max_subset
+
+def main():
+    n = int(input())
+    points = list(map(int, input().split()))
+    max_subset = get_max_subset(points)
+    print(len(max_subset))
+    print(" ".join(map(str, max_subset)))
+
+if __name__ == '__main__':
+    main()
 

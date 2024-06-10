@@ -1,32 +1,56 @@
 
-def solve(n, vertices):
-    # Sort the vertices by their x-coordinate
-    sorted_vertices = sorted(vertices, key=lambda x: x[0])
+def is_possible(N, M, B, target_board):
+    # Initialize the current board with the initial board configuration
+    current_board = [[0] * M for _ in range(N)]
+    current_board[1][1] = 1
 
-    # Initialize the maximum circumference for each vertex
-    max_circumference = [0] * n
+    # Initialize the list of moves
+    moves = []
 
-    # Loop through each vertex and find the maximum circumference
-    for i in range(n):
-        # Find the two vertices with the minimum distance to the current vertex
-        min_distance = float("inf")
-        min_distance_vertices = []
-        for j in range(n):
-            if i != j:
-                distance = distance_between_points(sorted_vertices[i], sorted_vertices[j])
-                if distance < min_distance:
-                    min_distance = distance
-                    min_distance_vertices = [j]
-                elif distance == min_distance:
-                    min_distance_vertices.append(j)
+    # Loop through each block in the target board
+    for r, c in target_board:
+        # If the block is already in the current board, skip it
+        if current_board[r][c] == 1:
+            continue
 
-        # Find the maximum circumference for the current vertex
-        max_circumference[i] = 0
-        for j in min_distance_vertices:
-            max_circumference[i] = max(max_circumference[i], max_circumference[j] + min_distance)
+        # Find the closest block in the current board to the target block
+        closest_block = find_closest_block(current_board, r, c)
 
-    return max_circumference
+        # If there is no closest block, the target board is not possible
+        if closest_block is None:
+            return "impossible"
 
-def distance_between_points(point1, point2):
-    return ((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2) ** 0.5
+        # Add the new block to the current board
+        current_board[r][c] = 1
+
+        # Add the move to slide the new block to the moves list
+        moves.append((closest_block[0], closest_block[1], r, c))
+
+    # If we reach this point, the target board is possible
+    return "possible", moves
+
+def find_closest_block(board, r, c):
+    # Find the closest block in the current board to the target block
+    for i in range(r):
+        for j in range(c):
+            if board[i][j] == 1:
+                return i, j
+    return None
+
+def main():
+    N, M, B = map(int, input().split())
+    target_board = []
+    for _ in range(B):
+        r, c = map(int, input().split())
+        target_board.append((r, c))
+    result = is_possible(N, M, B, target_board)
+    if result == "impossible":
+        print("impossible")
+    else:
+        print("possible")
+        for move in result[1]:
+            print(move[0], move[1], move[2], move[3])
+
+if __name__ == '__main__':
+    main()
 

@@ -1,21 +1,21 @@
 
-def solve(n, x, v):
-    # Sort the friends by their current position
-    sorted_x = sorted(x)
+def read_input():
+    N = int(input())
+    attendees = list(map(int, input().split()))
+    return N, attendees
 
-    # Initialize the minimum time needed to gather all the friends
-    min_time = 0
+def count_pairs(N, attendees):
+    count = 0
+    for i in range(N):
+        for j in range(i+1, N):
+            if abs(i-j) == attendees[i] + attendees[j]:
+                count += 1
+    return count
 
-    # Iterate over the friends and calculate the time needed to gather them
-    for i in range(n - 1):
-        # Calculate the distance between the current friend and the previous friend
-        distance = sorted_x[i + 1] - sorted_x[i]
+def main():
+    N, attendees = read_input()
+    print(count_pairs(N, attendees))
 
-        # Calculate the time needed to cover the distance at the maximum speed
-        time = distance / v[i]
-
-        # Add the time to the minimum time needed to gather all the friends
-        min_time += time
-
-    return min_time
+if __name__ == '__main__':
+    main()
 

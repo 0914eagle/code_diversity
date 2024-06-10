@@ -1,14 +1,25 @@
 
-def shiritori(words):
-    if len(words) == 1:
-        return "Fair Game"
-    
-    previous_word = words[0]
-    for i in range(1, len(words)):
-        current_word = words[i]
-        if not current_word.startswith(previous_word[-1]):
-            return "Player " + str(i % 2 + 1) + " lost"
-        previous_word = current_word
-    
-    return "Fair Game"
+def is_similar(x, y):
+    return x % 2 == y % 2 or abs(x - y) == 1
+
+def can_partition(arr):
+    n = len(arr)
+    if n % 2 == 1 or n == 0:
+        return False
+    for i in range(0, n, 2):
+        x = arr[i]
+        y = arr[i + 1]
+        if not is_similar(x, y):
+            return False
+    return True
+
+def main():
+    num_cases = int(input())
+    for case in range(num_cases):
+        n = int(input())
+        arr = list(map(int, input().split()))
+        print("YES") if can_partition(arr) else print("NO")
+
+if __name__ == '__main__':
+    main()
 

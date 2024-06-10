@@ -1,19 +1,18 @@
 
-def arcaea(n, k, partners):
-    # Sort the partners by their frag and step values
-    sorted_partners = sorted(partners, key=lambda x: (x[0], x[1]))
+def get_carry_count(num1, num2):
+    count = 0
+    while num1 >= num2:
+        count += 1
+        num1 -= 1
+        num2 += 1
+    return count
 
-    # Initialize the maximum diversity as 0
-    max_diversity = 0
+def get_min_steps(num1, num2):
+    carry_count = get_carry_count(num1, num2)
+    return carry_count + 1
 
-    # Iterate through the partners and choose the k most favorable partners to awaken
-    for i in range(k):
-        # Add the current partner to the list of awakened partners
-        awakened_partners.append(sorted_partners[i])
-
-        # Update the maximum diversity
-        max_diversity = max(max_diversity, i + 1)
-
-    # Return the maximum diversity
-    return max_diversity
+if __name__ == '__main__':
+    num1 = int(input())
+    num2 = int(input())
+    print(get_min_steps(num1, num2))
 

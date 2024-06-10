@@ -1,44 +1,42 @@
 
-def get_min_cost(distances, costs, tank_capacity):
-    # Sort the gas stations by distance
-    sorted_gas_stations = sorted(zip(distances, costs), key=lambda x: x[0])
+import math
 
-    # Initialize the current distance, cost, and fuel left
-    current_distance = 0
-    current_cost = 0
-    fuel_left = tank_capacity
+def beacons_in_sight(beacons, mountain_peaks, beacon):
+    
+    beacons_in_sight = []
+    for other_beacon in beacons:
+        if beacon != other_beacon:
+            if not any(mountain_peak_blocks_line(mountain_peaks, beacon, other_beacon)):
+                beacons_in_sight.append(other_beacon)
+    return beacons_in_sight
 
-    # Loop through the gas stations
-    for distance, cost in sorted_gas_stations:
-        # Calculate the distance to the next gas station
-        next_distance = distance - current_distance
+def mountain_peak_blocks_line(mountain_peaks, beacon1, beacon2):
+    
+    for mountain_peak in mountain_peaks:
+        distance = math.sqrt((beacon1[0] - beacon2[0])**2 + (beacon1[1] - beacon2[1])**2)
+        if distance < mountain_peak[2] and distance > 0:
+            return True
+    return False
 
-        # Check if the fuel left is enough to reach the next gas station
-        if next_distance <= fuel_left:
-            # Add the cost of the gas to the current cost
-            current_cost += cost * (next_distance / 1000)
+def count_messages(beacons, mountain_peaks):
+    
+    messages = 0
+    for beacon in beacons:
+        if not beacon[2]:
+            messages += 1
+            beacon[2] = True
+            for other_beacon in beacons_in_sight(beacons, mountain_peaks, beacon):
+                if not other_beacon[2]:
+                    messages += 1
+                    other_beacon[2] = True
+    return messages
 
-            # Subtract the fuel used from the fuel left
-            fuel_left -= next_distance
+def main():
+    n, m = map(int, input().split())
+    beacons = [tuple(map(int, input().split())) for _ in range(n)]
+    mountain_peaks = [tuple(map(int, input().split())) for _ in range(m)]
+    print(count_messages(beacons, mountain_peaks))
 
-            # Update the current distance
-            current_distance = distance
-        else:
-            # Calculate the distance the car can travel with the current fuel
-            travel_distance = fuel_left / 1000
-
-            # Add the cost of the gas to the current cost
-            current_cost += cost * travel_distance
-
-            # Update the fuel left
-            fuel_left = 0
-
-            # Break out of the loop
-            break
-
-    # Check if the car has enough fuel to reach the final destination
-    if fuel_left == 0:
-        return current_cost
-    else:
-        return "cancel road trip"
+if __name__ == '__main__':
+    main()
 

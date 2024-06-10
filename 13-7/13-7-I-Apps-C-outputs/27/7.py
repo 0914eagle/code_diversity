@@ -1,57 +1,43 @@
 
-def solve(n, m, k, a):
-    # Initialize variables
-    changed_cells = 0
-    rows, cols = n, m
-    table = [[0] * cols for _ in range(rows)]
+def is_good_arrangement(arrangement, flavors):
+    for i in range(len(arrangement)):
+        for j in range(len(arrangement[0])):
+            if arrangement[i][j] == arrangement[i][j-1] and arrangement[i][j] != "0":
+                return False
+    for i in range(len(arrangement[0])):
+        for j in range(len(arrangement)):
+            if arrangement[j][i] == arrangement[j-1][i] and arrangement[j][i] != "0":
+                return False
+    return True
 
-    # Fill the table with the given values
+def find_good_arrangement(flavors, rows, cols):
+    arrangement = [["0"] * cols for _ in range(rows)]
     for i in range(rows):
         for j in range(cols):
-            table[i][j] = a[i][j]
+            if flavors[0] > 0:
+                arrangement[i][j] = "A"
+                flavors[0] -= 1
+            elif flavors[1] > 0:
+                arrangement[i][j] = "B"
+                flavors[1] -= 1
+            else:
+                arrangement[i][j] = "C"
+                flavors[2] -= 1
+    if is_good_arrangement(arrangement, flavors):
+        return arrangement
+    else:
+        return "impossible"
 
-    # Check if the table meets the requirement
-    for i in range(rows):
-        for j in range(cols):
-            if table[i][j] == 1:
-                # Check if the cell is part of a connected component
-                if table[i][j] == table[i][j-1] and table[i][j] == table[i][j+1] and table[i][j] == table[i-1][j] and table[i][j] == table[i+1][j]:
-                    # Check if the connected component forms a rectangle
-                    rect_area = 0
-                    for ii in range(i, rows):
-                        for jj in range(j, cols):
-                            if table[ii][jj] == table[i][j]:
-                                rect_area += 1
-                            else:
-                                break
-                    if rect_area == (i - i + 1) * (j - j + 1):
-                        continue
+def main():
+    rows, cols = map(int, input().split())
+    flavors = list(map(int, input().split()))
+    arrangement = find_good_arrangement(flavors, rows, cols)
+    if arrangement == "impossible":
+        print("impossible")
+    else:
+        for i in range(len(arrangement)):
+            print("".join(arrangement[i]))
 
-                # Change the value of the cell if it's not part of a connected component or doesn't form a rectangle
-                if changed_cells < k:
-                    table[i][j] = 0
-                    changed_cells += 1
-
-    # Check if the table meets the requirement after changing the values
-    for i in range(rows):
-        for j in range(cols):
-            if table[i][j] == 1:
-                # Check if the cell is part of a connected component
-                if table[i][j] == table[i][j-1] and table[i][j] == table[i][j+1] and table[i][j] == table[i-1][j] and table[i][j] == table[i+1][j]:
-                    # Check if the connected component forms a rectangle
-                    rect_area = 0
-                    for ii in range(i, rows):
-                        for jj in range(j, cols):
-                            if table[ii][jj] == table[i][j]:
-                                rect_area += 1
-                            else:
-                                break
-                    if rect_area == (i - i + 1) * (j - j + 1):
-                        continue
-
-                # If the table doesn't meet the requirement after changing the values, return -1
-                return -1
-
-    # If the table meets the requirement after changing the values, return the number of changed cells
-    return changed_cells
+if __name__ == '__main__':
+    main()
 

@@ -1,33 +1,45 @@
 
-def max_flowers(field, start_row, start_col):
-    # Initialize a queue to store the next positions to visit
-    queue = [(start_row, start_col)]
-    # Initialize a set to keep track of the visited positions
-    visited = set()
-    # Initialize a variable to store the maximum number of flowers visited
-    max_flowers = 0
+def get_min_cost(trips, a, b, k, f):
+    # Initialize variables
+    cost = 0
+    travel_cards = []
 
-    # Loop until the queue is empty
-    while queue:
-        # Get the current position from the queue
-        row, col = queue.pop(0)
-        # If the current position is not visited, mark it as visited and add it to the set
-        if (row, col) not in visited:
-            visited.add((row, col))
-            # Get the number of petals at the current position
-            num_petals = field[row - 1][col - 1]
-            # If the number of petals is greater than the maximum number of flowers visited so far, update the maximum number of flowers visited
-            if num_petals > max_flowers:
-                max_flowers = num_petals
-            # Add the adjacent positions to the queue
-            if row > 1:
-                queue.append((row - 1, col))
-            if row < len(field):
-                queue.append((row + 1, col))
-            if col > 1:
-                queue.append((row, col - 1))
-            if col < len(field[0]):
-                queue.append((row, col + 1))
+    # Iterate through the trips
+    for i in range(len(trips)):
+        # Get the current and next trip
+        current_trip = trips[i]
+        next_trip = trips[i + 1] if i + 1 < len(trips) else None
 
-    return max_flowers
+        # Check if the current trip is a transshipment
+        is_transshipment = current_trip[0] == next_trip[1] if next_trip else False
+
+        # Calculate the cost of the current trip
+        trip_cost = a if not is_transshipment else b
+        cost += trip_cost
+
+        # Check if the current trip is a transshipment and if we can buy a travel card for it
+        if is_transshipment and (current_trip[0], current_trip[1]) not in travel_cards and k > 0:
+            # Buy a travel card for the current trip
+            travel_cards.append((current_trip[0], current_trip[1]))
+            k -= 1
+
+    # Calculate the cost of the travel cards
+    travel_cards_cost = f * len(travel_cards)
+
+    # Return the minimum cost
+    return cost + travel_cards_cost
+
+def main():
+    # Read the input
+    n, a, b, k, f = map(int, input().split())
+    trips = [input().split() for _ in range(n)]
+
+    # Calculate the minimum cost
+    min_cost = get_min_cost(trips, a, b, k, f)
+
+    # Print the minimum cost
+    print(min_cost)
+
+if __name__ == '__main__':
+    main()
 

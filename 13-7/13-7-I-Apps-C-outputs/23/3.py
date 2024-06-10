@@ -1,47 +1,81 @@
 
-def solve(n, vertices):
-    # Calculate the distance between each pair of vertices
-    distances = {}
-    for i in range(n):
-        for j in range(i+1, n):
-            x1, y1 = vertices[i]
-            x2, y2 = vertices[j]
-            distances[(i, j)] = distances[(j, i)] = ((x2-x1)**2 + (y2-y1)**2)**0.5
+def solve(board, target):
+    # Initialize a set to store the positions of the blocks in the target board
+    target_positions = set()
+    for block in target:
+        target_positions.add((block[0], block[1]))
+    
+    # Initialize a set to store the positions of the blocks in the current board
+    current_positions = set()
+    for row in range(len(board)):
+        for col in range(len(board[0])):
+            if board[row][col] == 'X':
+                current_positions.add((row, col))
+    
+    # Initialize a queue to store the moves to be performed
+    queue = []
+    
+    # Add the initial move to the queue
+    queue.append(('<', 1))
+    
+    # Loop until the queue is empty
+    while queue:
+        # Get the move from the queue
+        move = queue.pop(0)
+        
+        # Perform the move on the current board
+        if move[0] == '<':
+            # Slide the new block from the right edge of the board towards the left
+            current_positions.add((move[1]-1, len(board[0])-1))
+        elif move[0] == '>':
+            # Slide the new block from the left edge of the board towards the right
+            current_positions.add((move[1], 0))
+        elif move[0] == '^':
+            # Slide the new block from the bottom edge of the board upward
+            current_positions.add((len(board)-1, move[1]))
+        elif move[0] == 'v':
+            # Slide the new block from the top edge of the board downward
+            current_positions.add((0, move[1]))
+        
+        # Check if the current board matches the target board
+        if current_positions == target_positions:
+            # Return the moves if the current board matches the target board
+            return queue
+        
+        # Add the new moves to the queue
+        for row in range(len(board)):
+            for col in range(len(board[0])):
+                if (row, col) in current_positions:
+                    # Add the moves for the block at the current position
+                    if row > 0 and (row-1, col) not in current_positions:
+                        queue.append(('<', row))
+                    if col > 0 and (row, col-1) not in current_positions:
+                        queue.append(('^', col))
+                    if row < len(board)-1 and (row+1, col) not in current_positions:
+                        queue.append('>', row)
+                    if col < len(board[0])-1 and (row, col+1) not in current_positions:
+                        queue.append('v', col)
+    
+    # Return "impossible" if the current board does not match the target board
+    return "impossible"
 
-    # Create a graph with the vertices as nodes and the distances as edges
-    graph = [[] for _ in range(n)]
-    for i in range(n):
-        for j in range(i+1, n):
-            graph[i].append((j, distances[(i, j)]))
-            graph[j].append((i, distances[(i, j)]))
+def main():
+    board = [
+        ['.', '.', '.', '.'],
+        ['.', 'X', '.', '.'],
+        ['.', '.', '.', '.'],
+        ['.', '.', '.', '.'],
+    ]
+    target = [
+        (1, 1),
+        (1, 2),
+        (2, 2),
+        (2, 3),
+        (3, 3),
+        (3, 4),
+    ]
+    print(solve(board, target))
 
-    # Find the minimum spanning tree of the graph
-    parent = [None] * n
-    key = [float('inf')] * n
-    key[0] = 0
-    mst = []
-    for i in range(n):
-        min_vertex = -1
-        for j in range(n):
-            if key[j] < key[min_vertex] or min_vertex == -1:
-                min_vertex = j
-        mst.append((min_vertex, parent[min_vertex]))
-        for neighbor, weight in graph[min_vertex]:
-            if key[neighbor] > weight:
-                key[neighbor] = weight
-                parent[neighbor] = min_vertex
-
-    # Calculate the maximum circumference of the convex hexagon
-    max_circumference = 0
-    for i in range(n):
-        vertex1 = mst[i][0]
-        vertex2 = mst[i][1]
-        vertex3 = mst[(i+1)%n][0]
-        vertex4 = mst[(i+1)%n][1]
-        vertex5 = mst[(i+2)%n][0]
-        vertex6 = mst[(i+2)%n][1]
-        circumference = distances[(vertex1, vertex2)] + distances[(vertex2, vertex3)] + distances[(vertex3, vertex4)] + distances[(vertex4, vertex5)] + distances[(vertex5, vertex6)] + distances[(vertex6, vertex1)]
-        max_circumference = max(max_circumference, circumference)
-
-    return max_circumference
+if __name__ == '__main__':
+    main()
 

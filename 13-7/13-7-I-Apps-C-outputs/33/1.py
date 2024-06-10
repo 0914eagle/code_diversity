@@ -1,31 +1,47 @@
 
-def solve(n, guests, p):
-    # Calculate the sum of the guests' sizes
-    total_size = sum(guests)
-    
-    # Initialize a list to store the number of guests that can fit in the restaurant
-    num_guests = []
-    
-    # Iterate over the possible orders of the guests
-    for order in permutations(guests):
-        # Initialize a variable to store the current size of the restaurant
-        current_size = 0
-        
-        # Iterate over the guests in the current order
-        for guest in order:
-            # Check if the current size of the restaurant plus the size of the current guest is less than or equal to the table length
-            if current_size + guest <= p:
-                # Add the size of the current guest to the current size of the restaurant
-                current_size += guest
-            else:
-                # If the current size of the restaurant plus the size of the current guest is greater than the table length, break the loop
-                break
-        
-        # If the current size of the restaurant is equal to the total size of all guests, all guests can fit in the restaurant
-        if current_size == total_size:
-            # Add the number of guests to the list
-            num_guests.append(len(guests))
-    
-    # Return the average number of guests that can fit in the restaurant
-    return sum(num_guests) / len(num_guests)
+def read_input():
+    n = int(input())
+    flights = []
+    for i in range(n - 1):
+        a, b = map(int, input().split())
+        flights.append((a, b))
+    return n, flights
+
+def find_optimal_flight(n, flights):
+    # Initialize a graph with n vertices and 0 edges
+    graph = [[] for _ in range(n)]
+
+    # Add edges to the graph
+    for a, b in flights:
+        graph[a - 1].append(b - 1)
+        graph[b - 1].append(a - 1)
+
+    # Find the flight with the maximum number of connections
+    max_connections = 0
+    flight_to_cancel = None
+    for i in range(n - 1):
+        connections = len(graph[i])
+        if connections > max_connections:
+            max_connections = connections
+            flight_to_cancel = i + 1
+
+    # Find the city with the maximum number of connections
+    max_connections = 0
+    city_to_add = None
+    for i in range(n):
+        connections = len(graph[i])
+        if connections > max_connections:
+            max_connections = connections
+            city_to_add = i + 1
+
+    return flight_to_cancel, city_to_add
+
+def main():
+    n, flights = read_input()
+    flight_to_cancel, city_to_add = find_optimal_flight(n, flights)
+    print(flight_to_cancel)
+    print(city_to_add)
+
+if __name__ == '__main__':
+    main()
 

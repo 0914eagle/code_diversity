@@ -1,24 +1,38 @@
 
-def solve(n, d, b, a):
-    # Initialize the number of rooms with non-hidden students different from b
-    x_1 = 0
-    x_2 = 0
-    
-    # Iterate through each room
+def get_corner_pairs(n):
+    corner_pairs = []
     for i in range(n):
-        # Calculate the number of students in the room
-        num_students = a[i]
-        
-        # If the number of students is different from b, increment the number of rooms with non-hidden students different from b
-        if num_students != b:
-            x_1 += 1
-            x_2 += 1
-        
-        # If the room is not the first or last room, and the number of students is different from b, increment the number of rooms with non-hidden students different from b
-        if i != 0 and i != n-1 and num_students != b:
-            x_1 += 1
-            x_2 += 1
+        r, c = map(int, input().split())
+        corner_pairs.append((r, c))
+    return corner_pairs
+
+def get_matching(corner_pairs):
+    n = len(corner_pairs)
+    matching = [0] * n
+    for i in range(n):
+        for j in range(i+1, n):
+            if is_match(corner_pairs[i], corner_pairs[j]):
+                matching[i] = j
+                matching[j] = i
+                break
     
-    # Return the minimum value of the maximum of x_i
-    return min(x_1, x_2)
+    for i in range(n):
+        if matching[i] == 0:
+            return "syntax error"
+    
+    return matching
+
+def is_match(corner1, corner2):
+    r1, c1 = corner1
+    r2, c2 = corner2
+    return r1 == r2 or c1 == c2 or r1 == c2 or r2 == c1
+
+def main():
+    n = int(input())
+    corner_pairs = get_corner_pairs(n)
+    matching = get_matching(corner_pairs)
+    print(*matching)
+
+if __name__ == '__main__':
+    main()
 

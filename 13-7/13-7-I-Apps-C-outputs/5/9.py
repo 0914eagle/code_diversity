@@ -1,40 +1,49 @@
 
-def get_largest_connected_group(heights, growth_speeds):
-    # Initialize a dictionary to store the tree connections
-    connections = {}
+def get_max_profit(producer_prices, producer_start_days, consumer_prices, consumer_end_days):
+    # Initialize variables
+    max_profit = 0
+    selected_producer = None
+    selected_consumer = None
 
-    # Loop through each tree and its growth speed
-    for i in range(len(heights)):
-        for j in range(len(heights[0])):
-            # Get the current tree's height and growth speed
-            height = heights[i][j]
-            growth_speed = growth_speeds[i][j]
+    # Iterate over all possible producer and consumer combinations
+    for producer_index, producer_price in enumerate(producer_prices):
+        for consumer_index, consumer_price in enumerate(consumer_prices):
+            # Check if the producer and consumer are compatible (i.e. the producer starts before the consumer ends)
+            if producer_start_days[producer_index] <= consumer_end_days[consumer_index]:
+                # Calculate the profit for this producer and consumer combination
+                profit = producer_price - consumer_price
 
-            # Check if the tree has already been added to the dictionary
-            if (i, j) not in connections:
-                # Add the tree to the dictionary with its current height and growth speed
-                connections[(i, j)] = (height, growth_speed)
+                # Check if the profit is greater than the current maximum profit
+                if profit > max_profit:
+                    max_profit = profit
+                    selected_producer = producer_index
+                    selected_consumer = consumer_index
 
-                # Check if the tree is connected to any other trees in the dictionary
-                for connection in connections:
-                    # Get the height and growth speed of the connected tree
-                    connected_height, connected_growth_speed = connections[connection]
+    # Return the maximum profit and the indices of the selected producer and consumer
+    return max_profit, selected_producer, selected_consumer
 
-                    # Check if the trees are connected and have the same height
-                    if abs(height - connected_height) <= growth_speed and connection not in connections[(i, j)]:
-                        # Add the connected tree to the dictionary
-                        connections[(i, j)].add(connection)
+def main():
+    # Read the input data
+    num_producers, num_consumers = map(int, input().split())
+    producer_prices = []
+    producer_start_days = []
+    for _ in range(num_producers):
+        price, start_day = map(int, input().split())
+        producer_prices.append(price)
+        producer_start_days.append(start_day)
+    consumer_prices = []
+    consumer_end_days = []
+    for _ in range(num_consumers):
+        price, end_day = map(int, input().split())
+        consumer_prices.append(price)
+        consumer_end_days.append(end_day)
 
-    # Initialize a set to store the largest connected group of trees
-    largest_group = set()
+    # Calculate the maximum profit and the indices of the selected producer and consumer
+    max_profit, selected_producer, selected_consumer = get_max_profit(producer_prices, producer_start_days, consumer_prices, consumer_end_days)
 
-    # Loop through each tree in the dictionary
-    for tree in connections:
-        # Check if the tree is part of the largest group
-        if len(largest_group) < len(connections[tree]):
-            # Update the largest group with the current tree and its connections
-            largest_group = connections[tree]
+    # Print the result
+    print(max_profit)
 
-    # Return the size of the largest group
-    return len(largest_group)
+if __name__ == '__main__':
+    main()
 

@@ -1,25 +1,34 @@
 
-def solve(pine_trees, aspen_trees):
-    pine_x = [tree[0] for tree in pine_trees]
-    pine_y = [tree[1] for tree in pine_trees]
-    aspen_x = [tree[0] for tree in aspen_trees]
-    aspen_y = [tree[1] for tree in aspen_trees]
-
-    pine_area = 0
-    aspen_area = 0
-
-    for i in range(len(pine_x)):
-        for j in range(i+1, len(pine_x)):
-            pine_area += triangle_area(pine_x[i], pine_y[i], pine_x[j], pine_y[j], 0, 0)
-
-    for i in range(len(aspen_x)):
-        for j in range(i+1, len(aspen_x)):
-            aspen_area += triangle_area(aspen_x[i], aspen_y[i], aspen_x[j], aspen_y[j], 0, 0)
-
-    common_area = pine_area + aspen_area - pine_area * aspen_area
-
-    return common_area
-
-def triangle_area(x1, y1, x2, y2, x3, y3):
-    return abs((x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2)
+def solve(jiro_cards, ciel_cards):
+    # Initialize variables
+    jiro_alive_cards = jiro_cards
+    ciel_used_cards = []
+    damage = 0
+    
+    # Iterate through each Ciel's card
+    for card in ciel_cards:
+        # If Jiro has no alive cards, add the damage to the total damage
+        if not jiro_alive_cards:
+            damage += card["strength"]
+        # Otherwise, choose the best card to attack
+        else:
+            # Find the best card to attack
+            best_card = None
+            best_card_strength = 0
+            for jiro_card in jiro_alive_cards:
+                if jiro_card["position"] == "ATK" and jiro_card["strength"] >= card["strength"]:
+                    if jiro_card["strength"] > best_card_strength:
+                        best_card = jiro_card
+                        best_card_strength = jiro_card["strength"]
+            # If there is no best card to attack, add the damage to the total damage
+            if not best_card:
+                damage += card["strength"]
+            # Otherwise, attack the best card and update the variables
+            else:
+                damage += card["strength"] - best_card["strength"]
+                jiro_alive_cards.remove(best_card)
+                ciel_used_cards.append(card)
+    
+    # Return the total damage
+    return damage
 

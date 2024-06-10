@@ -1,47 +1,40 @@
 
-def solve(n, circles):
-    # Convert the input circles to a set of line segments
-    segments = set()
-    for circle in circles:
-        x, y, r = circle
-        segments.add((x + r, y))
-        segments.add((x - r, y))
-        segments.add((x, y + r))
-        segments.add((x, y - r))
-    
-    # Find the intersection points of the line segments
-    intersections = set()
-    for i in range(len(segments)):
-        for j in range(i + 1, len(segments)):
-            segment1 = segments[i]
-            segment2 = segments[j]
-            x1, y1 = segment1[0], segment1[1]
-            x2, y2 = segment2[0], segment2[1]
-            if x1 == x2:
-                continue
-            m = (y2 - y1) / (x2 - x1)
-            b = y1 - m * x1
-            x = (b - y1) / (m - 1)
-            y = m * x + b
-            if x1 < x2:
-                x = max(x1, x)
-            else:
-                x = min(x1, x)
-            intersections.add((x, y))
-    
-    # Find the regions by connecting the intersection points with line segments
-    regions = set()
-    for intersection in intersections:
-        x, y = intersection
-        for segment in segments:
-            x1, y1 = segment[0], segment[1]
-            if x1 == x:
-                continue
-            m = (y - y1) / (x - x1)
-            b = y - m * x
-            x2 = (b - y1) / (m - 1)
-            y2 = m * x2 + b
-            regions.add((x1, y1, x2, y2))
-    
-    return len(regions)
+def get_next_color(current_color):
+    alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    current_index = alphabet.index(current_color)
+    next_index = (current_index + 1) % len(alphabet)
+    return alphabet[next_index]
+
+def get_new_position(position, direction, size):
+    row, col = position
+    if direction == 'up':
+        return (row - 1) % size, col
+    elif direction == 'down':
+        return (row + 1) % size, col
+    elif direction == 'left':
+        return row, (col - 1) % size
+    else:
+        return row, (col + 1) % size
+
+def get_zamboni_path(r, c, i, j, n):
+    current_color = 'A'
+    current_position = (i, j)
+    direction = 'up'
+    step_size = 1
+    path = ['.' for _ in range(r * c)]
+    for _ in range(n):
+        for _ in range(step_size):
+            current_position = get_new_position(current_position, direction, r)
+            path[current_position[0] * c + current_position[1]] = current_color
+        current_color = get_next_color(current_color)
+        step_size += 1
+        direction = 'right' if direction == 'up' else 'left' if direction == 'down' else 'up' if direction == 'left' else 'down'
+    return ''.join(path)
+
+def main():
+    r, c, i, j, n = map(int, input().split())
+    print(get_zamboni_path(r, c, i, j, n))
+
+if __name__ == '__main__':
+    main()
 

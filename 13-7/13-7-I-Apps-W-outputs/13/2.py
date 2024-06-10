@@ -1,15 +1,23 @@
 
-def get_prettiness(title):
-    vowels = ["I", "E", "A", "O", "U", "Y"]
-    title_length = len(title)
-    simple_prettiness = 0
-    for i in range(title_length):
-        for j in range(i, title_length + 1):
-            substring = title[i:j]
-            vowel_count = 0
-            for char in substring:
-                if char in vowels:
-                    vowel_count += 1
-            simple_prettiness += vowel_count / len(substring)
-    return simple_prettiness
+def is_leap_year(year):
+    if year % 400 == 0 or (year % 4 == 0 and year % 100 != 0):
+        return True
+    return False
+
+def next_same_calendar_year(year):
+    while True:
+        year += 1
+        if is_leap_year(year):
+            if year % 4 == 0 and (year - 1) % 100 != 0 or year % 400 == 0:
+                return year
+        else:
+            if year % 4 != 0:
+                return year
+
+def main():
+    year = int(input())
+    print(next_same_calendar_year(year))
+
+if __name__ == '__main__':
+    main()
 

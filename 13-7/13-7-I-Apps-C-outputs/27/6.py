@@ -1,42 +1,32 @@
 
-def solve(n, m, k, table):
-    # Initialize variables
-    rows, cols = len(table), len(table[0])
-    visited = [[False for _ in range(cols)] for _ in range(rows)]
-    components = []
-    count = 0
+def get_good_arrangement(r, c, a, b, c):
+    if a + b + c != r * c:
+        return "impossible"
     
-    # Loop through the table and find connected components
-    for i in range(rows):
-        for j in range(cols):
-            if not visited[i][j] and table[i][j] == 1:
-                # Find the connected component
-                component = []
-                dfs(i, j, table, visited, component)
-                components.append(component)
+    tray = [[0] * c for _ in range(r)]
+    for i in range(a):
+        tray[i][i % c] = "A"
+    for i in range(a, a + b):
+        tray[i][(i - a) % c] = "B"
+    for i in range(a + b, a + b + c):
+        tray[i][(i - a - b) % c] = "C"
     
-    # Check if it is possible to change k cells
-    for component in components:
-        if len(component) <= k:
-            count += len(component)
-        else:
-            return -1
+    for i in range(r):
+        for j in range(c):
+            if tray[i][j] != "A" and tray[i][(j - 1) % c] == tray[i][j]:
+                return "impossible"
+            if tray[i][j] != "B" and tray[i][(j - 1) % c] == tray[i][j]:
+                return "impossible"
+            if tray[i][j] != "C" and tray[i][(j - 1) % c] == tray[i][j]:
+                return "impossible"
     
-    return count
+    return ["".join(row) for row in tray]
 
-# Depth-first search function to find connected components
-def dfs(i, j, table, visited, component):
-    # Base case
-    if i < 0 or i >= len(table) or j < 0 or j >= len(table[0]) or visited[i][j] or table[i][j] == 0:
-        return
-    
-    # Mark the current cell as visited
-    visited[i][j] = True
-    component.append((i, j))
-    
-    # Recursive call for the four neighbors
-    dfs(i-1, j, table, visited, component)
-    dfs(i+1, j, table, visited, component)
-    dfs(i, j-1, table, visited, component)
-    dfs(i, j+1, table, visited, component)
+def main():
+    r, c = map(int, input().split())
+    a, b, c = map(int, input().split())
+    print("\n".join(get_good_arrangement(r, c, a, b, c)))
+
+if __name__ == '__main__':
+    main()
 

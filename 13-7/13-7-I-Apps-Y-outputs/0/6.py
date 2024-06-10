@@ -1,13 +1,22 @@
 
-def is_triangle(sticks):
-    
-    sticks.sort()
-    for i in range(len(sticks) - 2):
-        a = sticks[i]
-        for j in range(i + 1, len(sticks) - 1):
-            b = sticks[j]
-            c = sticks[j + 1]
-            if a + b > c and b + c > a and a + c > b:
-                return "possible"
-    return "impossible"
+def get_possible_answers(b, d, c, l):
+    answers = []
+    for i in range(1, 101):
+        for j in range(1, 101):
+            for k in range(1, 101):
+                if i + j + k == l and i * b + j * d + k * c == 14:
+                    answers.append([i, j, k])
+    return answers
+
+def print_answers(answers):
+    for answer in answers:
+        print(answer[0], answer[1], answer[2])
+
+def main():
+    b, d, c, l = map(int, input().split())
+    answers = get_possible_answers(b, d, c, l)
+    print_answers(answers)
+
+if __name__ == '__main__':
+    main()
 

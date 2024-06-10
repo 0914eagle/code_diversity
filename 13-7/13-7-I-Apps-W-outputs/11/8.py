@@ -1,22 +1,38 @@
 
-def solve(n, c, x):
-    # Initialize variables
-    max_profit = 0
-    barrels = 0
-    raspberry = 0
+import math
 
-    # Iterate over the days
-    for i in range(n):
-        # If the bear has enough raspberry, buy a barrel
-        if raspberry >= x[i]:
-            barrels += 1
-            raspberry -= x[i]
+def get_distance(W):
+    # Agneta's vertical speed
+    v1 = 1
+    # Beata's vertical speed
+    v2 = 2
+    # Angular speed around the centre
+    w = 1
+    # Time difference between Agneta and Beata's descent
+    t = W
 
-        # If the bear has enough barrels and raspberry, sell a barrel
-        if barrels > 0 and raspberry + c <= x[i]:
-            max_profit = max(max_profit, barrels * x[i] - raspberry)
-            barrels -= 1
-            raspberry += x[i]
+    # Calculate the distance between Agneta and Beata at time t
+    distance = (v1 * t + v2 * t + (v2 - v1) * w * t * t / 2) / (v1 + v2)
 
-    return max_profit
+    return distance
+
+def get_min_distance():
+    # Minimum distance between Agneta and Beata
+    min_distance = math.inf
+    # Maximum time difference between Agneta and Beata's descent
+    max_time = 1000
+
+    # Iterate through all possible time differences between Agneta and Beata's descent
+    for t in range(max_time + 1):
+        # Calculate the distance between Agneta and Beata at time t
+        distance = get_distance(t)
+        # Update the minimum distance if necessary
+        if distance < min_distance:
+            min_distance = distance
+
+    return min_distance
+
+if __name__ == '__main__':
+    W = float(input())
+    print(get_min_distance())
 

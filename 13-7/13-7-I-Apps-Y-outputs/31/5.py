@@ -1,21 +1,31 @@
 
-def solve(arr):
-    # Calculate the prefix sum of the array
-    prefix_sum = [0]
-    for i in range(len(arr)):
-        prefix_sum.append(prefix_sum[i] + arr[i])
+def get_maximum_fraction(balloons, canisters):
+    # Sort the balloons and canisters in descending order
+    balloons.sort(reverse=True)
+    canisters.sort(reverse=True)
     
-    # Initialize the minimum number of insertions to 0
-    min_insertions = 0
+    # Initialize the maximum fraction as 0
+    maximum_fraction = 0
     
-    # Iterate through the prefix sum array
-    for i in range(len(prefix_sum)):
-        # If the prefix sum is 0, we need to insert an element
-        if prefix_sum[i] == 0:
-            min_insertions += 1
-        # If the prefix sum is negative, we need to insert elements to make it positive
-        elif prefix_sum[i] < 0:
-            min_insertions += -prefix_sum[i]
+    # Iterate through the balloons and canisters
+    for balloon, canister in zip(balloons, canisters):
+        # Check if the balloon is filled beyond its capacity
+        if balloon > canister:
+            return "impossible"
+        
+        # Calculate the fraction of the balloon that is filled
+        fraction = canister / balloon
+        
+        # Update the maximum fraction
+        maximum_fraction = max(maximum_fraction, fraction)
     
-    return min_insertions
+    return maximum_fraction
+
+def main():
+    balloons = list(map(int, input().split()))
+    canisters = list(map(int, input().split()))
+    print(get_maximum_fraction(balloons, canisters))
+
+if __name__ == '__main__':
+    main()
 

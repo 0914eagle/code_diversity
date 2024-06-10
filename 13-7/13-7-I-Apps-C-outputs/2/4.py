@@ -1,27 +1,31 @@
 
-def solve(transcript):
-    N, K = map(int, transcript[0].split())
-    candidates = {}
-    for i in range(1, K+1):
-        speaker, statement = transcript[i].split()
-        speaker = int(speaker)
-        if statement.startswith("truther"):
-            candidates[speaker] = "truther"
-        elif statement.startswith("fabulist"):
-            candidates[speaker] = "fabulist"
-        elif statement.startswith("charlatan"):
-            candidates[speaker] = "charlatan"
-        elif statement.startswith("not"):
-            operand = statement.split(" ")[1]
-            if operand in candidates:
-                candidates[speaker] = "truther" if candidates[operand] == "fabulist" else "fabulist"
-        elif statement.startswith("and"):
-            operands = statement.split(" ")[1:]
-            if all(operand in candidates for operand in operands):
-                candidates[speaker] = "truther" if all(candidates[operand] == "truther" for operand in operands) else "fabulist"
-        elif statement.startswith("xor"):
-            operands = statement.split(" ")[1:]
-            if all(operand in candidates for operand in operands):
-                candidates[speaker] = "truther" if candidates[operands[0]] != candidates[operands[1]] else "fabulist"
-    return [candidates[i] for i in range(1, N+1)]
+import math
+
+def get_opponents(n):
+    opponents = []
+    for i in range(n):
+        x, y, r = map(float, input().split())
+        opponents.append((x, y, r))
+    return opponents
+
+def get_max_hit_opponents(opponents):
+    max_hit = 0
+    for i in range(len(opponents)):
+        for j in range(i+1, len(opponents)):
+            x1, y1, r1 = opponents[i]
+            x2, y2, r2 = opponents[j]
+            dx, dy = x2-x1, y2-y1
+            d = math.sqrt(dx**2 + dy**2)
+            if d <= r1 + r2:
+                max_hit += 1
+    return max_hit
+
+def main():
+    n = int(input())
+    opponents = get_opponents(n)
+    max_hit = get_max_hit_opponents(opponents)
+    print(max_hit)
+
+if __name__ == '__main__':
+    main()
 

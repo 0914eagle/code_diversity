@@ -1,30 +1,52 @@
 
-def solve(comments):
-    # split the comments into a list of strings
-    comments = comments.split(",")
-    
-    # create an empty list to store the comments at each level
-    levels = [[] for _ in range(10)]
-    
-    # iterate through the comments
-    for comment in comments:
-        # find the level of the current comment
-        level = comment.count(",")
-        
-        # add the comment to the list at the corresponding level
-        levels[level].append(comment)
-    
-    # find the maximum depth of nesting
-    max_depth = len(levels) - 1
-    
-    # print the maximum depth
-    print(max_depth)
-    
-    # iterate through the levels
-    for level in range(max_depth):
-        # print the comments at the current level
-        print(" ".join(levels[level]))
-    
-    # print the comments at the final level
-    print(" ".join(levels[max_depth]))
+def get_min_time(d, k, a, b, t):
+    # Initialize variables
+    time = 0
+    distance = 0
+    car_broken = False
+
+    # Loop until the post office is reached
+    while distance < d:
+        # Calculate the distance that can be driven on the car
+        drive_distance = min(k - distance, d - distance)
+
+        # If the car is not broken, drive the calculated distance
+        if not car_broken:
+            time += drive_distance * a
+            distance += drive_distance
+
+        # If the car is broken, walk the calculated distance
+        else:
+            time += drive_distance * b
+            distance += drive_distance
+
+        # If the car is broken and the time to repair it has passed, repair the car
+        if car_broken and time >= t:
+            time += t
+            car_broken = False
+
+        # If the car is not broken and the distance to the post office has been reached, break the loop
+        elif not car_broken and distance >= d:
+            break
+
+        # If the car is not broken and the distance to the post office has not been reached, break the loop
+        elif not car_broken and distance < d:
+            break
+
+        # If the car is broken and the distance to the post office has been reached, break the loop
+        elif car_broken and distance >= d:
+            break
+
+        # If the car is broken and the distance to the post office has not been reached, break the loop
+        elif car_broken and distance < d:
+            break
+
+    return time
+
+def main():
+    d, k, a, b, t = map(int, input().split())
+    print(get_min_time(d, k, a, b, t))
+
+if __name__ == '__main__':
+    main()
 

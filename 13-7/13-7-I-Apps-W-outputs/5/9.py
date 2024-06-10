@@ -1,35 +1,47 @@
 
-def get_surviving_islands(num_islands, island_info):
-    # Initialize a list to keep track of the number of goods received by each island
-    goods_received = [0] * num_islands
-    # Initialize a list to keep track of the number of islands that have collapsed
-    collapsed_islands = 0
+def get_message_plan(n, a):
+    # Initialize a graph with n vertices and 0 edges
+    graph = [[] for _ in range(n)]
+    
+    # Add edges to the graph based on the input
+    for i in range(n):
+        for j in range(n):
+            if i != j and a[i] > 0 and a[j] > 0:
+                graph[i].append(j)
+    
+    # Breadth-first search to find a path from Polycarp (vertex 0) to all other vertices
+    visited = [False] * n
+    queue = [0]
+    while queue:
+        vertex = queue.pop(0)
+        if not visited[vertex]:
+            visited[vertex] = True
+            for neighbor in graph[vertex]:
+                if not visited[neighbor]:
+                    queue.append(neighbor)
+    
+    # If all vertices are reachable from Polycarp, return a plan
+    if all(visited):
+        plan = []
+        for i in range(n):
+            for j in graph[i]:
+                if visited[i] and visited[j]:
+                    plan.append((i, j))
+        return plan
+    else:
+        return -1
 
-    # Loop through each island
-    for i in range(num_islands):
-        # Get the threshold and number of incoming goods for the current island
-        threshold, num_incoming_goods = island_info[i]
-        # Check if the current island has collapsed
-        if collapsed_islands > i:
-            # If the current island has collapsed, skip it
-            continue
-        # Check if the current island has received enough goods to survive
-        if goods_received[i] >= threshold:
-            # If the current island has received enough goods, continue to the next island
-            continue
-        # If the current island has not received enough goods, mark it as collapsed
-        collapsed_islands += 1
-        # Loop through the incoming goods for the current island
-        for j in range(num_incoming_goods):
-            # Get the island number and amount of goods received from the current island
-            incoming_island, incoming_goods = island_info[i][j + 2]
-            # Check if the incoming island has collapsed
-            if collapsed_islands > incoming_island:
-                # If the incoming island has collapsed, skip it
-                continue
-            # Add the amount of goods received from the incoming island to the total goods received by the current island
-            goods_received[i] += incoming_goods
+def main():
+    n = int(input())
+    a = list(map(int, input().split()))
+    plan = get_message_plan(n, a)
+    if plan == -1:
+        print(-1)
+    else:
+        print(len(plan))
+        for i, j in plan:
+            print(i, j)
 
-    # Return the number of islands that have not collapsed
-    return num_islands - collapsed_islands
+if __name__ == '__main__':
+    main()
 

@@ -1,31 +1,34 @@
 
-def solve(n):
-    # Initialize a set to store the numbers that can be obtained from n
-    nums = set()
-    # Add n to the set
-    nums.add(n)
-    # Initialize a variable to store the minimum number of moves required to obtain 1 from n
-    min_moves = 0
-    # Loop until the set contains 1
-    while 1 not in nums:
-        # If the set is empty, it means it is impossible to obtain 1 from n, so return -1
-        if not nums:
-            return -1
-        # Initialize a variable to store the current number
-        curr_num = 0
-        # Loop through the numbers in the set
-        for num in nums:
-            # If the number is divisible by 2, add its half to the set
-            if num % 2 == 0:
-                nums.add(num // 2)
-            # If the number is divisible by 3, add its double to the set
-            if num % 3 == 0:
-                nums.add(num * 2 // 3)
-            # If the number is divisible by 5, add its double to the set
-            if num % 5 == 0:
-                nums.add(num * 4 // 5)
-        # Increment the minimum number of moves required to obtain 1 from n
-        min_moves += 1
-    # Return the minimum number of moves required to obtain 1 from n
+def get_min_moves(n):
+    # Initialize the minimum number of moves to -1
+    min_moves = -1
+    
+    # Loop through each digit in the number
+    for i in range(len(n)):
+        # Check if the current digit is 0
+        if n[i] == '0':
+            # If it is, continue to the next digit
+            continue
+        # Check if the current digit is 5
+        elif n[i] == '5':
+            # If it is, return 0 as the minimum number of moves
+            return 0
+        # Check if the current digit is even
+        elif int(n[i]) % 2 == 0:
+            # If it is, return 1 as the minimum number of moves
+            return 1
+        # Check if the current digit is odd
+        else:
+            # If it is, return 2 as the minimum number of moves
+            return 2
+    
+    # If the number does not contain any 0s, 5s, or odd digits, return -1
     return min_moves
+
+def main():
+    n = input("Enter a number: ")
+    print(get_min_moves(n))
+
+if __name__ == '__main__':
+    main()
 

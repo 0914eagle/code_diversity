@@ -1,29 +1,48 @@
 
-def find_number(m, n, p, q):
-    # Initialize a list to store the digits of the number
-    digits = []
-    # Loop through the range of numbers from 1 to 9
-    for i in range(1, 10):
-        # Check if the current number is valid
-        if is_valid(m, n, p, q, i):
-            # If the current number is valid, add it to the list of digits
-            digits.append(i)
-    # If no valid numbers were found, return "IMPOSSIBLE"
-    if not digits:
-        return "IMPOSSIBLE"
-    # Otherwise, return the smallest valid number
-    return int("".join(map(str, digits)))
+def get_expected_severity(bugs, hours, faith_loss_factor):
+    # Initialize the variables
+    fixed_bugs = []
+    unfixed_bugs = bugs
+    total_severity = 0
+    hour = 0
+    
+    # Loop through the hours
+    while hour < hours:
+        # Choose the bug to work on
+        bug_to_work_on = choose_bug_to_work_on(unfixed_bugs)
+        
+        # Fix the bug
+        if fix_bug(bug_to_work_on, faith_loss_factor):
+            # If the bug is fixed, add its severity to the total severity and remove it from the unfixed bugs list
+            total_severity += bug_to_work_on[1]
+            fixed_bugs.append(bug_to_work_on)
+            unfixed_bugs.remove(bug_to_work_on)
+        hour += 1
+    
+    # Return the expected total severity of fixed bugs
+    return total_severity
 
-def is_valid(m, n, p, q, num):
-    # Check if the number of digits is valid
-    if len(str(num)) != m:
-        return False
-    # Check if the first n digits can be crossed out
-    if str(num)[:n] == "0" * n:
-        return False
-    # Check if the remaining digits can be multiplied by q to get the original number
-    if int(str(num)[n:] + str(p)) % q != 0:
-        return False
-    # If all conditions are met, the number is valid
-    return True
+def choose_bug_to_work_on(unfixed_bugs):
+    # Choose the bug with the highest probability of being fixed
+    return max(unfixed_bugs, key=lambda x: x[0])
+
+def fix_bug(bug, faith_loss_factor):
+    # Fix the bug with probability equal to its initial probability of being fixed
+    return random.random() <= bug[0]
+
+if __name__ == '__main__':
+    bugs = []
+    hours = int(input())
+    faith_loss_factor = float(input())
+    
+    # Read the bugs from standard input
+    for _ in range(hours):
+        bug = list(map(float, input().split()))
+        bugs.append(bug)
+    
+    # Calculate the expected total severity of fixed bugs
+    expected_severity = get_expected_severity(bugs, hours, faith_loss_factor)
+    
+    # Print the expected total severity of fixed bugs
+    print(expected_severity)
 

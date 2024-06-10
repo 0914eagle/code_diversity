@@ -1,44 +1,23 @@
 
-def solve(n, m, s, a, b, c):
-    # Sort the bugs by complexity in ascending order
-    sorted_bugs = sorted(enumerate(a), key=lambda x: x[1])
+def is_possible(q, s, k):
+    n = len(q)
+    board = [i for i in range(1, n+1)]
+    for i in range(k):
+        if q[i-1] != s[i-1]:
+            board = apply_permutation(board, q[i-1])
+    return board == s
 
-    # Initialize the variables
-    students = [(i, b[i], c[i]) for i in range(n)]
-    passes = 0
-    days = 0
-    result = []
+def apply_permutation(board, permutation):
+    n = len(board)
+    new_board = [0] * n
+    for i in range(n):
+        new_board[permutation-1] = board[i]
+        permutation = (permutation + 1) % n
+    return new_board
 
-    # Iterate through the bugs
-    for i, (j, complexity) in sorted_bugs:
-        # Find the student with the highest ability level that can fix the current bug
-        student = max(students, key=lambda x: x[1])
-
-        # Check if the student has enough ability level to fix the bug
-        if student[1] < complexity:
-            return "NO"
-
-        # Add the passes for the student
-        passes += student[2]
-
-        # Check if the passes exceed the maximum allowed passes
-        if passes > s:
-            return "NO"
-
-        # Add the student and the bug to the result
-        result.append(student[0])
-        result.append(i)
-
-        # Remove the student from the list of students
-        students.remove(student)
-
-        # Increment the number of days
-        days += 1
-
-    # Check if all the bugs were fixed
-    if len(result) != m:
-        return "NO"
-
-    # Return the result
-    return "YES\n" + " ".join(map(str, result))
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    q = list(map(int, input().split()))
+    s = list(map(int, input().split()))
+    print("YES") if is_possible(q, s, k) else print("NO")
 

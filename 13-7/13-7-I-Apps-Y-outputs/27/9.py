@@ -1,21 +1,35 @@
 
-def get_maximum_sum(a, k, x):
-    n = len(a)
-    if n < k or x == 0:
-        return -1
-    if x == 1:
-        return max(a)
-    if k == 1:
-        return sum(a[:x])
-    if x == n:
-        return sum(a)
+def reconstruct_equation(numbers):
+    # Split the input numbers into a list
+    numbers = numbers.split()
+    # Convert the numbers to integers
+    numbers = [int(num) for num in numbers]
+    # Initialize the equation with the first two numbers
+    equation = str(numbers[0]) + "+" + str(numbers[1])
+    # Check if the third number is a valid solution for the equation
+    if (numbers[0] + numbers[1]) == numbers[2]:
+        return equation + "=" + str(numbers[2])
+    # Check if the third number is a valid solution for the equation
+    elif (numbers[0] - numbers[1]) == numbers[2]:
+        return equation + "=" + str(numbers[2])
+    # Check if the third number is a valid solution for the equation
+    elif (numbers[0] * numbers[1]) == numbers[2]:
+        return equation + "=" + str(numbers[2])
+    # Check if the third number is a valid solution for the equation
+    elif (numbers[0] / numbers[1]) == numbers[2]:
+        return equation + "=" + str(numbers[2])
+    # If no solution is found, return None
+    else:
+        return None
 
-    # dynamic programming
-    dp = [0] * (n + 1)
-    for i in range(1, n + 1):
-        if i < k:
-            dp[i] = a[i - 1]
-        else:
-            dp[i] = max(a[i - 1] + dp[i - k], dp[i - 1])
-    return dp[n]
+def main():
+    numbers = input("Enter three integers separated by spaces: ")
+    equation = reconstruct_equation(numbers)
+    if equation:
+        print(equation)
+    else:
+        print("No solution found.")
+
+if __name__ == '__main__':
+    main()
 

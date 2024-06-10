@@ -1,29 +1,59 @@
 
-def get_optimal_essay(essay, synonyms):
-    # Initialize variables to keep track of the minimum number of Rs and minimum length
-    min_rs = float('inf')
-    min_length = float('inf')
+def get_earliest_arrival_time(n, m, t_a, t_b, k, a_flights, b_flights):
+    # Sort the flights by departure time
+    a_flights.sort()
+    b_flights.sort()
     
-    # Loop through each synonym pair in the dictionary
-    for x, y in synonyms:
-        # If the essay contains the word x, replace it with y
-        if x in essay:
-            essay = essay.replace(x, y)
+    # Initialize the earliest arrival time as the last flight from B to C
+    earliest_arrival_time = b_flights[-1]
     
-    # Count the number of Rs in the essay
-    rs_count = essay.lower().count('r')
+    # Iterate through the flights from A to B
+    for i in range(n):
+        # Find the corresponding flight from B to C that departs after the current flight from A to B arrives
+        j = 0
+        while j < m and b_flights[j] < a_flights[i] + t_a:
+            j += 1
+        
+        # If there is a corresponding flight from B to C, update the earliest arrival time
+        if j < m:
+            earliest_arrival_time = min(earliest_arrival_time, b_flights[j])
     
-    # If the number of Rs is less than the current minimum, update the minimum
-    if rs_count < min_rs:
-        min_rs = rs_count
+    return earliest_arrival_time
+
+def get_latest_arrival_time(n, m, t_a, t_b, k, a_flights, b_flights):
+    # Sort the flights by departure time
+    a_flights.sort()
+    b_flights.sort()
     
-    # Calculate the length of the essay
-    length = len(essay.split())
+    # Initialize the latest arrival time as the last flight from B to C
+    latest_arrival_time = b_flights[-1]
     
-    # If the length is less than the current minimum, update the minimum
-    if length < min_length:
-        min_length = length
+    # Iterate through the flights from A to B
+    for i in range(n):
+        # Find the corresponding flight from B to C that departs after the current flight from A to B arrives
+        j = 0
+        while j < m and b_flights[j] < a_flights[i] + t_a:
+            j += 1
+        
+        # If there is a corresponding flight from B to C, update the latest arrival time
+        if j < m:
+            latest_arrival_time = max(latest_arrival_time, b_flights[j])
     
-    # Return the minimum number of Rs and minimum length
-    return min_rs, min_length
+    return latest_arrival_time
+
+def main():
+    n, m, t_a, t_b, k = map(int, input().split())
+    a_flights = list(map(int, input().split()))
+    b_flights = list(map(int, input().split()))
+    
+    earliest_arrival_time = get_earliest_arrival_time(n, m, t_a, t_b, k, a_flights, b_flights)
+    latest_arrival_time = get_latest_arrival_time(n, m, t_a, t_b, k, a_flights, b_flights)
+    
+    if earliest_arrival_time == -1:
+        print(-1)
+    else:
+        print(earliest_arrival_time)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,15 +1,24 @@
 
-def get_max_power_of_two(numbers):
-    max_power = 0
-    count = 0
-    for num in numbers:
-        power = 0
-        while num % 2 == 0:
-            num //= 2
-            power += 1
-        if power > max_power:
-            max_power = power
-        if power > 0:
-            count += 1
-    return max_power, count
+def encrypt(word, key):
+    return ''.join(key[ord(c) - ord('a')] for c in word)
+
+def decrypt(word, key):
+    return ''.join(chr(ord('a') + key.index(c)) for c in word)
+
+def solve(words, a):
+    for key in permutations('abcdefghijklmnopqrstuvwxyz'):
+        encrypted_words = [encrypt(word, key) for word in words]
+        sorted_words = sorted(encrypted_words)
+        if sorted_words == a:
+            return 'DA', ''.join(key)
+    return 'NE', ''
+
+if __name__ == '__main__':
+    n = int(input())
+    words = [input() for _ in range(n)]
+    a = [int(i) for i in input().split()]
+    result = solve(words, a)
+    print(result[0])
+    if result[0] == 'DA':
+        print(result[1])
 

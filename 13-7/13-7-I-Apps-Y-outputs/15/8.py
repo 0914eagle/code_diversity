@@ -1,15 +1,34 @@
 
-def solve(s, t):
-    s_list = list(s)
-    t_list = list(t)
-    if len(s_list) < len(t_list):
-        return "Yes"
-    if len(s_list) > len(t_list):
-        return "No"
-    for i in range(len(s_list)):
-        if s_list[i] < t_list[i]:
-            return "Yes"
-        elif s_list[i] > t_list[i]:
-            return "No"
-    return "Yes"
+def get_strings(n, k):
+    # Initialize an empty list to store the strings
+    strings = []
+    
+    # Iterate over all possible strings of length n
+    for i in range(n):
+        for j in range(i+1, n):
+            # Check if the string contains n-2 letters 'a' and two letters 'b'
+            if n - (i + j) == 2:
+                # Add the string to the list
+                strings.append(chr(i + 97) + chr(j + 97))
+    
+    # Return the k-th string from the list
+    return strings[k-1]
+
+def main():
+    # Read the number of test cases
+    t = int(input())
+    
+    # Iterate over each test case
+    for i in range(t):
+        # Read the values of n and k
+        n, k = map(int, input().split())
+        
+        # Call the get_strings function to get the k-th string
+        string = get_strings(n, k)
+        
+        # Print the string
+        print(string)
+
+if __name__ == '__main__':
+    main()
 

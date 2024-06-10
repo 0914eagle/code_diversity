@@ -1,29 +1,23 @@
 
-def solve(matrix, k):
-    # Initialize the result string
-    result = ""
+def get_snowball_weight(w, h, u1, d1, u2, d2):
+    snowball_weight = w
+    current_height = h
+    while current_height > 0:
+        snowball_weight += current_height
+        if current_height == d1 or current_height == d2:
+            if snowball_weight - u1 > 0:
+                snowball_weight -= u1
+            if snowball_weight - u2 > 0:
+                snowball_weight -= u2
+        current_height -= 1
+    return snowball_weight
 
-    # Loop through each row of the matrix
-    for i in range(len(matrix)):
-        # Loop through each column of the matrix
-        for j in range(len(matrix[0])):
-            # If the current cell is not part of the path, skip it
-            if matrix[i][j] == "x":
-                continue
-            # If the current cell is the starting cell, add it to the result string
-            if i == 0 and j == 0:
-                result += matrix[i][j]
-            # If the current cell is not the starting cell, check if it is connected to the previous cell
-            else:
-                # If the previous cell is not part of the path, skip it
-                if matrix[i-1][j] == "x":
-                    continue
-                # If the previous cell is part of the path, check if the current cell is connected to it
-                if matrix[i][j-1] == "x":
-                    continue
-                # If the current cell is connected to the previous cell, add it to the result string
-                result += matrix[i][j]
+def main():
+    w, h = map(int, input().split())
+    u1, d1 = map(int, input().split())
+    u2, d2 = map(int, input().split())
+    print(get_snowball_weight(w, h, u1, d1, u2, d2))
 
-    # Return the result string
-    return result
+if __name__ == '__main__':
+    main()
 

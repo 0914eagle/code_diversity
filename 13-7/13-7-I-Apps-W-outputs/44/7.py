@@ -1,27 +1,42 @@
 
-def solve(word):
-    vowels = set('aeiou')
-    consonants = set('bcdfghjklmnpqrstvwxyz')
+def cut_glass(w, h, n, cuts):
+    # Initialize the maximum area and the current fragment
+    max_area = 0
+    fragment = [w, h]
 
-    # Check if the word has at least three consonants in a row
-    if len(word) < 3:
-        return word
+    # Loop through each cut
+    for cut in cuts:
+        # If the cut is horizontal, cut the fragment horizontally and find the maximum area
+        if cut[0] == "H":
+            fragment = horizontal_cut(fragment, cut[1])
+            max_area = max(max_area, get_area(fragment))
+        # If the cut is vertical, cut the fragment vertically and find the maximum area
+        else:
+            fragment = vertical_cut(fragment, cut[1])
+            max_area = max(max_area, get_area(fragment))
 
-    # Check if the word has at least two different letters in the block of consonants
-    if len(set(word[1:4])) < 2:
-        return word
+    # Return the maximum area
+    return max_area
 
-    # Check if the block of consonants has all letters the same
-    if len(set(word[1:4])) == 1:
-        return word
+def horizontal_cut(fragment, y):
+    # Cut the fragment horizontally at the given distance from the lower edge
+    return [fragment[0], fragment[1] - y]
 
-    # Insert spaces into the word to divide it into two or more words
-    words = []
-    for i in range(len(word)):
-        if word[i] in vowels or i == len(word) - 1:
-            words.append(word[:i+1])
-            word = word[i+1:]
+def vertical_cut(fragment, x):
+    # Cut the fragment vertically at the given distance from the left edge
+    return [fragment[0] - x, fragment[1]]
 
-    # Recursively call the function for each word
-    return ' '.join([solve(word) for word in words])
+def get_area(fragment):
+    # Return the area of the fragment
+    return fragment[0] * fragment[1]
+
+def main():
+    w, h, n = map(int, input().split())
+    cuts = []
+    for _ in range(n):
+        cuts.append(input().split())
+    print(cut_glass(w, h, n, cuts))
+
+if __name__ == '__main__':
+    main()
 

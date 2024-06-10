@@ -1,18 +1,23 @@
 
-def get_median(s, t):
-    k = len(s)
-    assert k == len(t)
-    assert s < t
-    assert k % 2 == 1
+def get_min_flight_time(p, q, r):
+    # Calculate the sum of the flight times for each route
+    route_a_to_b_to_c = p + q
+    route_a_to_c_to_b = p + r
+    route_b_to_a_to_c = q + p
+    route_b_to_c_to_a = q + r
+    route_c_to_a_to_b = r + p
+    route_c_to_b_to_a = r + q
 
-    # generate all strings between s and t
-    strings = []
-    for i in range(k):
-        for c in range(ord('a'), ord('z') + 1):
-            if chr(c) >= s[i] and chr(c) <= t[i]:
-                strings.append(s[:i] + chr(c) + s[i+1:])
+    # Return the minimum of the flight times
+    return min(route_a_to_b_to_c, route_a_to_c_to_b, route_b_to_a_to_c, route_b_to_c_to_a, route_c_to_a_to_b, route_c_to_b_to_a)
 
-    # sort the strings and return the middle element
-    strings.sort()
-    return strings[k // 2]
+def main():
+    # Read the input from stdin
+    p, q, r = map(int, input().split())
+
+    # Call the get_min_flight_time function and print the result
+    print(get_min_flight_time(p, q, r))
+
+if __name__ == '__main__':
+    main()
 

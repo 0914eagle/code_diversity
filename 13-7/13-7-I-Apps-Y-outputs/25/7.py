@@ -1,19 +1,21 @@
 
-def solve(problems, drinks):
-    # Initialize a dictionary to store the time it takes to solve each problem
-    problem_time = {}
-    for i in range(len(problems)):
-        problem_time[i+1] = problems[i]
+def get_input():
+    return int(input())
 
-    # Initialize a list to store the time it takes to solve all problems if a drink is taken
-    drink_time = []
-    for i in range(len(drinks)):
-        drink_time.append(0)
-        for j in range(len(problems)):
-            if j+1 == drinks[i][0]:
-                drink_time[i] += drinks[i][1]
-            else:
-                drink_time[i] += problem_time[j+1]
+def is_odd(n):
+    return n % 2 == 1
 
-    return drink_time
+def find_probability(n):
+    odd_count = 0
+    for i in range(1, n + 1):
+        if is_odd(i):
+            odd_count += 1
+    return odd_count / n
+
+def main():
+    n = get_input()
+    print(find_probability(n))
+
+if __name__ == '__main__':
+    main()
 

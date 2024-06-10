@@ -1,14 +1,26 @@
 
-def is_winning_strategy(n, k, c):
-    # Check if k is one of the ancient numbers
-    if k in c:
-        return "Yes"
-    
-    # Check if any two ancient numbers have a common remainder
-    for i in range(n):
-        for j in range(i+1, n):
-            if c[i] % k == c[j] % k:
-                return "No"
-    
-    return "Yes"
+import sys
+
+def get_expression():
+    return sys.stdin.readline().strip()
+
+def get_parameters():
+    return tuple(map(int, sys.stdin.readline().strip().split()))
+
+def solve(expression, parameters):
+    p, m = parameters
+    x = 0
+    while True:
+        if (expression % m) == p:
+            break
+        x += 1
+    return x
+
+def main():
+    expression = get_expression()
+    parameters = get_parameters()
+    print(solve(expression, parameters))
+
+if __name__ == '__main__':
+    main()
 

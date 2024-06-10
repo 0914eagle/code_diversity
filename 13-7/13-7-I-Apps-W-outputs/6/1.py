@@ -1,25 +1,18 @@
 
-def solve(n):
-    # Initialize variables
-    total_mass = 1
-    bacteria_count = 1
-    nights = 0
-    days = 1
-    
-    # Loop until the total mass is equal to the given value
-    while total_mass != n:
-        # Increase the night count
-        nights += 1
-        
-        # Check if the bacteria should split
-        if total_mass >= 2:
-            # Split the bacteria
-            bacteria_count *= 2
-            total_mass = bacteria_count
-        
-        # Increase the day count
-        days += 1
-    
-    # Return the minimum number of nights needed to reach the given total mass
-    return nights
+def is_lovely(n):
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+def find_max_lovely(n):
+    max_lovely = 0
+    for i in range(1, n+1):
+        if is_lovely(i):
+            max_lovely = max(max_lovely, i)
+    return max_lovely
+
+if __name__ == '__main__':
+    n = int(input())
+    print(find_max_lovely(n))
 

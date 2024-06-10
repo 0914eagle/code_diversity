@@ -1,19 +1,21 @@
 
-def solve(N, A):
-    # Sort the friendliness values in descending order
-    A.sort(reverse=True)
-    # Initialize the total comfort to 0
-    total_comfort = 0
-    # Loop through the players and calculate their comfort
-    for i in range(N):
-        # If it's the first player, they get a comfort of 0
-        if i == 0:
-            comfort = 0
-        # Otherwise, calculate the comfort based on the adjacent players
-        else:
-            comfort = min(A[i-1], A[i])
-        # Add the comfort to the total comfort
-        total_comfort += comfort
-    # Return the maximum total comfort
-    return total_comfort
+def count_ways(s):
+    n = len(s)
+    dp = [0] * (n + 1)
+    dp[0] = 1
+    for i in range(1, n + 1):
+        if s[i - 1] == '?':
+            dp[i] += dp[i - 1]
+        if i > 1 and s[i - 2] == '*':
+            dp[i] += dp[i - 2]
+        if i > 2 and s[i - 3] == '*':
+            dp[i] += dp[i - 3]
+    return dp[n] % 1000000007
+
+def main():
+    s = input()
+    print(count_ways(s))
+
+if __name__ == '__main__':
+    main()
 

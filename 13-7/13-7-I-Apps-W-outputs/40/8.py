@@ -1,17 +1,25 @@
 
-def solve(s):
-    n = len(s)
-    score = 0
-    for i in range(n):
-        if s[i] == "g":
-            if i % 2 == 0:
-                score += 1
-            else:
-                score -= 1
-        else:
-            if i % 2 == 0:
-                score -= 1
-            else:
-                score += 1
-    return score
+def is_telephone_number(s):
+    return len(s) == 11 and s[0] == "8"
+
+def has_winning_strategy(s):
+    if len(s) == 11 and is_telephone_number(s):
+        return True
+    if len(s) == 1:
+        return False
+    for i in range(len(s)):
+        if has_winning_strategy(s[:i] + s[i+1:]):
+            return True
+    return False
+
+def main():
+    n = int(input())
+    s = input()
+    if has_winning_strategy(s):
+        print("YES")
+    else:
+        print("NO")
+
+if __name__ == '__main__':
+    main()
 

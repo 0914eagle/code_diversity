@@ -1,14 +1,27 @@
 
-def is_fair_game(words):
-    if len(words) < 2:
-        return "Fair Game"
+def is_similar(x, y):
+    return x % 2 == y % 2 or abs(x - y) == 1
 
-    previous_word = words[0]
-    for i in range(1, len(words)):
-        current_word = words[i]
-        if not current_word.startswith(previous_word[-1]):
-            return f"Player {i % 2 + 1} lost"
-        previous_word = current_word
+def can_be_partitioned(arr):
+    n = len(arr)
+    if n % 2 == 1 or n == 0:
+        return False
+    for i in range(0, n, 2):
+        x, y = arr[i], arr[i + 1]
+        if not is_similar(x, y):
+            return False
+    return True
 
-    return "Fair Game"
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        arr = list(map(int, input().split()))
+        if can_be_partitioned(arr):
+            print("YES")
+        else:
+            print("NO")
+
+if __name__ == '__main__':
+    main()
 

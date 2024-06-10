@@ -1,16 +1,12 @@
 
-def solve(s, t):
-    k = len(s)
-    assert k == len(t)
-    assert s < t
+def get_flight_times(p, q, r):
+    return p, q, r
 
-    # generate all strings between s and t in lexicographical order
-    strings = []
-    for i in range(k):
-        for c in range(ord('a'), ord('z') + 1):
-            if s[i] < chr(c) <= t[i]:
-                strings.append(s[:i] + chr(c) + s[i+1:])
+def get_min_flight_time(p, q, r):
+    flight_times = [p + q, q + r, r + p]
+    return min(flight_times)
 
-    # find the median
-    return strings[len(strings) // 2]
+if __name__ == '__main__':
+    p, q, r = map(int, input().split())
+    print(get_min_flight_time(p, q, r))
 

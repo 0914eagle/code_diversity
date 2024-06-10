@@ -1,16 +1,53 @@
 
-def get_max_candies(a, b, c):
-    # Calculate the sum of the three piles
-    total = a + b + c
+def get_notes(notes):
+    # Split the notes into individual notes
+    notes = notes.split()
     
-    # Calculate the middle pile
-    mid = (a + b) // 2
+    # Initialize an empty list to store the notes
+    staff_notes = []
     
-    # Calculate the difference between the middle pile and the smallest pile
-    diff = abs(mid - min(a, b))
+    # Iterate through the notes
+    for note in notes:
+        # Check if the note has a duration
+        if len(note) == 1:
+            # Add the note to the staff with a default duration of 1
+            staff_notes.append(note)
+        else:
+            # Add the note to the staff with the specified duration
+            staff_notes.append(note[0] * int(note[1]))
     
-    # Calculate the maximum number of candies Alice can have
-    max_candies = total - diff
+    return staff_notes
+
+def create_staff(notes):
+    # Initialize an empty list to store the staff
+    staff = []
     
-    return max_candies
+    # Iterate through the notes
+    for note in notes:
+        # Check if the note is a rest
+        if note == "R":
+            # Add a rest to the staff
+            staff.append(" ")
+        else:
+            # Add the note to the staff
+            staff.append(note)
+    
+    return staff
+
+def print_staff(staff):
+    # Print the staff
+    print("\n".join(staff))
+
+if __name__ == '__main__':
+    # Get the input notes
+    notes = input("Enter the notes: ")
+    
+    # Get the staff notes
+    staff_notes = get_notes(notes)
+    
+    # Create the staff
+    staff = create_staff(staff_notes)
+    
+    # Print the staff
+    print_staff(staff)
 

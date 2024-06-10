@@ -1,12 +1,38 @@
 
-import math
+import re
 
-def find_distance(A, B, H, M):
-    # Calculate the angle between the hour and minute hands
-    angle = (M / 60.0) * 360.0
+def get_card_suits(deck):
+    suits = ["P", "K", "H", "T"]
+    suit_count = [0] * 4
+    for card in deck:
+        suit = card[0]
+        if suit in suits:
+            suit_count[suits.index(suit)] += 1
+    return suit_count
 
-    # Calculate the distance between the unfixed endpoints of the hands
-    distance = abs(A * math.sin(math.radians(angle)) - B * math.sin(math.radians(angle)))
+def get_missing_cards(deck):
+    suits = ["P", "K", "H", "T"]
+    suit_count = get_card_suits(deck)
+    missing_cards = []
+    for i in range(4):
+        missing_cards.append(52 - suit_count[i])
+    return missing_cards
 
-    return distance
+def check_duplicates(deck):
+    cards = {}
+    for card in deck:
+        if card in cards:
+            return "GRESKA"
+        cards[card] = 1
+    return "OK"
+
+def main():
+    deck = input()
+    result = check_duplicates(deck)
+    if result == "OK":
+        result = get_missing_cards(deck)
+    print(" ".join(map(str, result)))
+
+if __name__ == '__main__':
+    main()
 

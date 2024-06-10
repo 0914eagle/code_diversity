@@ -1,27 +1,24 @@
 
-def solve(format, time):
-    hours, minutes = time.split(":")
-    hours = int(hours)
-    minutes = int(minutes)
-    
-    if format == "12":
-        if hours > 12:
-            hours = hours - 12
-        if hours == 0:
-            hours = 12
-        if minutes > 59:
-            minutes = minutes - 60
-        if minutes < 10:
-            minutes = "0" + str(minutes)
-        return f"{hours}:{minutes}"
-    else:
-        if hours > 23:
-            hours = hours - 24
-        if hours < 10:
-            hours = "0" + str(hours)
-        if minutes > 59:
-            minutes = minutes - 60
-        if minutes < 10:
-            minutes = "0" + str(minutes)
-        return f"{hours}:{minutes}"
+def get_confused_pairs(sequence):
+    confused_pairs = 0
+    for i in range(len(sequence) - 1):
+        for j in range(i + 1, len(sequence)):
+            if sequence[i] > sequence[j]:
+                confused_pairs += 1
+    return confused_pairs
+
+def get_sequences_with_confusion(N, C):
+    sequences = []
+    for i in range(1, N + 1):
+        sequence = [i]
+        if get_confused_pairs(sequence) == C:
+            sequences.append(sequence)
+    return sequences
+
+def main():
+    N, C = map(int, input().split())
+    print(get_sequences_with_confusion(N, C) % 1000000007)
+
+if __name__ == '__main__':
+    main()
 

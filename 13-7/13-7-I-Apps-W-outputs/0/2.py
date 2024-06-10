@@ -1,23 +1,65 @@
 
-def get_max_power_of_two(numbers):
-    # Initialize variables
-    max_power = 0
-    count = 0
+def get_key(words, array_a):
     
-    # Iterate through the numbers
-    for num in numbers:
-        # Find the power of two for the current number
-        power = 0
-        while num % 2 == 0:
-            num //= 2
-            power += 1
+    # Initialize the key with the first word of the array
+    key = words[array_a[0]]
+    
+    # Iterate through the remaining words in the array
+    for i in range(1, len(array_a)):
+        # Get the word currently located at position i in the array
+        word = words[array_a[i]]
         
-        # Update the maximum power and count
-        if power > max_power:
-            max_power = power
-            count = 1
-        elif power == max_power:
-            count += 1
+        # Check if the word is already in the key
+        if word in key:
+            # If it is, continue to the next word
+            continue
+        
+        # Check if the word can be inserted into the key without violating the lexicographic order
+        if can_insert_word(key, word):
+            # If it can, insert it into the key
+            key += word
+        else:
+            # If it can't, return "NE"
+            return "NE"
     
-    return max_power, count
+    # If we made it this far, return the key
+    return key
+
+def can_insert_word(key, word):
+    
+    # Check if the word is a prefix of the key
+    if word in key:
+        return False
+    
+    # Check if the word is lexicographically larger than the last letter of the key
+    if word < key[-1]:
+        return False
+    
+    # Check if the word is lexicographically smaller than the first letter of the key
+    if word > key[0]:
+        return False
+    
+    # If we made it this far, return True
+    return True
+
+def main():
+    # Read the input
+    num_words = int(input())
+    words = []
+    for _ in range(num_words):
+        words.append(input())
+    array_a = list(map(int, input().split()))
+    
+    # Get the key
+    key = get_key(words, array_a)
+    
+    # Print the output
+    if key == "NE":
+        print("NE")
+    else:
+        print("DA")
+        print(key)
+
+if __name__ == '__main__':
+    main()
 

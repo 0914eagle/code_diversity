@@ -1,33 +1,43 @@
 
-def solve(n, m, building):
-    # Initialize variables
-    total_time = 0
-    current_floor = 0
-    current_room = 0
-    rooms_visited = set()
+def check_maps(map1, map2):
+    # Check if the maps are the same
+    if map1 == map2:
+        return "Yes"
+    
+    # Check if the maps can be rotated 90 degrees clockwise
+    map1_rotated = ["".join(reversed(row)) for row in zip(*map1)]
+    if map1_rotated == map2:
+        return "Yes"
+    
+    # Check if the maps can be rotated 180 degrees
+    map1_rotated = [row[::-1] for row in map1]
+    if map1_rotated == map2:
+        return "Yes"
+    
+    # Check if the maps can be rotated 270 degrees clockwise
+    map1_rotated = ["".join(reversed(row)) for row in zip(*map1[::-1])]
+    if map1_rotated == map2:
+        return "Yes"
+    
+    # Check if the maps can be flipped along the vertical axis
+    map1_flipped = [row[::-1] for row in map1]
+    if map1_flipped == map2:
+        return "Yes"
+    
+    # Check if the maps can be flipped along the horizontal axis
+    map1_flipped = [row[::-1] for row in map1[::-1]]
+    if map1_flipped == map2:
+        return "Yes"
+    
+    # If none of the above conditions are met, return "No"
+    return "No"
 
-    # Loop through each floor
-    for floor in range(n):
-        # Get the number of rooms in the current floor
-        num_rooms = len(building[floor]) - 2
+def main():
+    n = int(input())
+    map1 = [input() for _ in range(n)]
+    map2 = [input() for _ in range(n)]
+    print(check_maps(map1, map2))
 
-        # Loop through each room in the current floor
-        for room in range(num_rooms):
-            # Check if the light is on
-            if building[floor][room + 1] == "1":
-                # Calculate the time it takes to visit the room
-                time_to_visit = abs(current_room - room)
-
-                # Add the time to the total time
-                total_time += time_to_visit
-
-                # Update the current room and floor
-                current_room = room
-                current_floor = floor
-
-                # Add the room to the set of visited rooms
-                rooms_visited.add((current_floor, current_room))
-
-    # Return the total time
-    return total_time
+if __name__ == '__main__':
+    main()
 

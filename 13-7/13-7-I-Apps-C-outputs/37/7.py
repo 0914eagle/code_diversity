@@ -1,35 +1,37 @@
 
-def solve(gigs, venues, roads, time, money):
-    # Initialize a graph to store the connections between venues
-    graph = [[] for _ in range(venues + 1)]
+def get_max_air_volume(tube_lengths, L1, L2):
+    # Sort the tube lengths in descending order
+    tube_lengths.sort(reverse=True)
+    
+    # Initialize the maximum total length as 0
+    max_total_length = 0
+    
+    # Loop through all possible pairs of tubes
+    for i in range(len(tube_lengths)):
+        for j in range(i+1, len(tube_lengths)):
+            # Check if the sum of the lengths of the first two tubes is less than or equal to L1
+            if tube_lengths[i] + tube_lengths[j] <= L1:
+                # Check if the sum of the lengths of the last two tubes is less than or equal to L2
+                if tube_lengths[i+1] + tube_lengths[j+1] <= L2:
+                    # Calculate the total length of the four tubes
+                    total_length = tube_lengths[i] + tube_lengths[j] + tube_lengths[i+1] + tube_lengths[j+1]
+                    # Update the maximum total length if necessary
+                    if total_length > max_total_length:
+                        max_total_length = total_length
+    
+    # Return the maximum total length or "Impossible" if no pair of tubes fits the constraints
+    if max_total_length == 0:
+        return "Impossible"
+    else:
+        return max_total_length
 
-    # Add the roads to the graph
-    for road in roads:
-        graph[road[0]].append((road[1], road[2]))
-        graph[road[1]].append((road[0], road[2]))
+def main():
+    L1, L2, N = map(int, input().split())
+    tube_lengths = []
+    for _ in range(N):
+        tube_lengths.append(int(input()))
+    print(get_max_air_volume(tube_lengths, L1, L2))
 
-    # Initialize a dictionary to store the maximum amount of money that can be made at each venue
-    max_money = {1: 0}
-
-    # Loop through each gig
-    for gig in gigs:
-        # If the gig is not at the starting venue, calculate the maximum amount of money that can be made by traveling to the gig and playing it
-        if gig[0] != 1:
-            # Initialize a variable to store the maximum amount of money that can be made by traveling to the gig
-            max_money_travel = 0
-
-            # Loop through each road between the starting venue and the gig
-            for road in graph[1]:
-                # If the road is not blocked and the time it takes to travel along the road is less than the time it takes to play the gig, update the maximum amount of money that can be made by traveling to the gig
-                if road[1] != 0 and road[0] < gig[1]:
-                    max_money_travel = max(max_money_travel, max_money.get(road[1], 0) + gig[2])
-
-            # Update the maximum amount of money that can be made at the gig
-            max_money[gig[0]] = max(max_money.get(gig[0], 0), max_money_travel)
-
-        # Update the maximum amount of money that can be made at the starting venue
-        max_money[1] = max(max_money.get(1, 0), max_money.get(gig[0], 0) + gig[2])
-
-    # Return the maximum amount of money that can be made
-    return max_money[1]
+if __name__ == '__main__':
+    main()
 

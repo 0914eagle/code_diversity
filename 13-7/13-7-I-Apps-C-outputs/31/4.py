@@ -1,36 +1,50 @@
 
-def get_min_cost(distances, costs, gas_tank):
-    # Sort the gas stations by distance in ascending order
-    sorted_gas_stations = sorted(zip(distances, costs), key=lambda x: x[0])
+import math
 
-    # Initialize the current distance, fuel in tank, and total cost
-    current_distance = 0
-    fuel_in_tank = 0
-    total_cost = 0
+def get_visible_beacons(beacons, mountain_peaks, beacon):
+    visible_beacons = []
+    for other_beacon in beacons:
+        if not is_blocked(mountain_peaks, beacon, other_beacon):
+            visible_beacons.append(other_beacon)
+    return visible_beacons
 
-    # Loop through each gas station
-    for distance, cost in sorted_gas_stations:
-        # Calculate the distance from the current position to the next gas station
-        next_distance = distance - current_distance
+def is_blocked(mountain_peaks, beacon1, beacon2):
+    for mountain_peak in mountain_peaks:
+        if is_between(beacon1, beacon2, mountain_peak) and is_within_radius(beacon1, mountain_peak):
+            return True
+    return False
 
-        # Check if the fuel in tank is enough to travel to the next gas station
-        if next_distance <= fuel_in_tank:
-            # Consume the fuel and update the current distance and fuel in tank
-            fuel_in_tank -= next_distance
-            current_distance = distance
-        else:
-            # Calculate the amount of fuel needed to travel to the next gas station
-            fuel_needed = next_distance - fuel_in_tank
+def is_between(beacon1, beacon2, mountain_peak):
+    x1, y1 = beacon1
+    x2, y2 = beacon2
+    xm, ym, rm = mountain_peak
+    d = math.sqrt((x2-x1)**2 + (y2-y1)**2)
+    return rm >= d and is_within_radius(beacon1, mountain_peak) and is_within_radius(beacon2, mountain_peak)
 
-            # Check if the fuel needed is more than the gas tank capacity
-            if fuel_needed > gas_tank:
-                return "cancel road trip"
+def is_within_radius(beacon, mountain_peak):
+    xb, yb = beacon
+    xm, ym, rm = mountain_peak
+    return (xb-xm)**2 + (yb-ym)**2 <= rm**2
 
-            # Fill up the gas tank, update the fuel in tank, and add the cost to the total cost
-            fuel_in_tank = gas_tank
-            total_cost += fuel_needed * cost
-            current_distance = distance
+def get_message_count(beacons, mountain_peaks):
+    message_count = 0
+    for beacon in beacons:
+        visible_beacons = get_visible_beacons(beacons, mountain_peaks, beacon)
+        message_count += len(visible_beacons)
+    return message_count
 
-    # Return the total cost
-    return total_cost
+def main():
+    n, m = map(int, input().split())
+    beacons = []
+    for _ in range(n):
+        x, y = map(int, input().split())
+        beacons.append((x, y))
+    mountain_peaks = []
+    for _ in range(m):
+        x, y, r = map(int, input().split())
+        mountain_peaks.append((x, y, r))
+    print(get_message_count(beacons, mountain_peaks))
+
+if __name__ == '__main__':
+    main()
 

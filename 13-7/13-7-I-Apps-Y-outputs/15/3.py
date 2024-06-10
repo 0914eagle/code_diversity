@@ -1,11 +1,18 @@
 
-def solve(s, t):
-    s_list = list(s)
-    t_list = list(t)
-    s_list.sort()
-    t_list.sort()
-    if s_list < t_list:
-        return "Yes"
-    else:
-        return "No"
+def get_strings(n, k):
+    strings = []
+    for i in range(n):
+        for j in range(n):
+            if i + j == n - 2:
+                strings.append('a' * i + 'b' * j + 'b' * (n - i - j))
+    return sorted(strings)[k - 1]
+
+def main():
+    t = int(input())
+    for _ in range(t):
+        n, k = map(int, input().split())
+        print(get_strings(n, k))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,28 +1,29 @@
 
-def solve(n, m, s, a, b, c):
-    # Sort the bugs by complexity in ascending order
-    a.sort()
-    # Initialize the passes given to each student to 0
-    given_passes = [0] * n
-    # Initialize the number of days needed to fix all bugs to 0
-    days_needed = 0
-    # Initialize the list of students who will fix each bug
-    bug_fixers = [0] * m
-    # Loop through each bug
-    for i in range(m):
-        # Find the student with the highest level of ability who can fix the current bug
-        for j in range(n):
-            if b[j] >= a[i]:
-                # Assign the current bug to the current student
-                bug_fixers[i] = j
-                # Increment the number of passes given to the current student
-                given_passes[j] += c[j]
-                # Increment the number of days needed to fix all bugs
-                days_needed += 1
-                break
-    # Check if the total number of passes given exceeds the maximum number of passes the university is ready to give
-    if sum(given_passes) > s:
-        return "NO"
-    # Return "YES" and the list of students who will fix each bug if the university can fix all bugs within the given time frame
-    return "YES\n" + " ".join(map(str, bug_fixers))
+def get_permutation(n):
+    permutation = list(range(1, n+1))
+    return permutation
+
+def apply_permutation(permutation, q):
+    n = len(permutation)
+    new_permutation = [0] * n
+    for i in range(n):
+        new_permutation[i] = permutation[q[i]-1]
+    return new_permutation
+
+def is_permutation_possible(n, k, q, s):
+    permutation = get_permutation(n)
+    for i in range(k):
+        if permutation == s:
+            return False
+        permutation = apply_permutation(permutation, q)
+    return True
+
+def main():
+    n, k = map(int, input().split())
+    q = list(map(int, input().split()))
+    s = list(map(int, input().split()))
+    print("YES" if is_permutation_possible(n, k, q, s) else "NO")
+
+if __name__ == '__main__':
+    main()
 

@@ -1,25 +1,36 @@
 
-def get_maximum_total_comfort(N, A):
-    # Sort the friendliness of the players in non-decreasing order
-    sorted_A = sorted(A)
+import sys
 
-    # Initialize the total comfort to 0
-    total_comfort = 0
-
-    # Loop through each player and calculate their comfort
-    for i in range(N):
-        # If the player is not the first player to arrive, calculate their comfort based on the friendliness of the clockwise and counter-clockwise adjacent players
-        if i > 0:
-            clockwise_comfort = min(sorted_A[i-1], sorted_A[i])
-            counter_clockwise_comfort = min(sorted_A[i], sorted_A[i-1])
-            comfort = clockwise_comfort + counter_clockwise_comfort
-        # If the player is the first player to arrive, their comfort is 0
+def get_correct_fields(s):
+    n = len(s)
+    if n == 0:
+        return 0
+    
+    # Initialize the dp table with all 0s
+    dp = [0] * (n + 1)
+    dp[0] = 1
+    
+    # Iterate over the characters of the input string
+    for i in range(n):
+        # If the current character is '?', then we have 3 options:
+        # 1. The current cell is empty and there are no bombs in the adjacent cells
+        # 2. The current cell is empty and there is 1 bomb in the adjacent cells
+        # 3. The current cell is empty and there are 2 bombs in the adjacent cells
+        if s[i] == '?':
+            dp[i + 1] = (dp[i] * 3) % 1000000007
+        # If the current character is '*', then we have 0 options, since we cannot place a bomb in this cell
+        elif s[i] == '*':
+            dp[i + 1] = 0
+        # If the current character is a digit, then we have 1 option, since we can place the corresponding number in this cell
         else:
-            comfort = 0
+            dp[i + 1] = dp[i]
+    
+    return dp[n]
 
-        # Add the comfort of the current player to the total comfort
-        total_comfort += comfort
+def main():
+    s = input()
+    print(get_correct_fields(s))
 
-    # Return the maximum total comfort
-    return total_comfort
+if __name__ == '__main__':
+    main()
 

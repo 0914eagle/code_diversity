@@ -1,23 +1,18 @@
 
-def solve(N, grid):
-    # Initialize the number of moves as 0
-    num_moves = 0
+def get_lcm(n):
+    lcm = 1
+    for i in range(1, n + 1):
+        if n % i == 0:
+            lcm *= i
+    return lcm
 
-    # Loop through each row of the grid
-    for i in range(N):
-        # Loop through each column of the grid
-        for j in range(N):
-            # Check if the current cell is a dot
-            if grid[i][j] == "*":
-                # Check if the dot is connected to the top dot
-                if i > 0 and grid[i-1][j] == "|":
-                    # Increment the number of moves
-                    num_moves += 1
-                # Check if the dot is connected to the left dot
-                if j > 0 and grid[i][j-1] == "-":
-                    # Increment the number of moves
-                    num_moves += 1
+def get_max_lcm(n):
+    lcm1 = get_lcm(n)
+    lcm2 = get_lcm(n - 1)
+    lcm3 = get_lcm(n - 2)
+    return max(lcm1, lcm2, lcm3)
 
-    # Return the number of moves
-    return num_moves
+if __name__ == '__main__':
+    n = int(input())
+    print(get_max_lcm(n))
 

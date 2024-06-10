@@ -1,23 +1,27 @@
 
-def solve(n, k, arr):
-    # Check if all elements are already equal to k
-    if all(elem == k for elem in arr):
-        return "yes"
+def read_input():
+    n = int(input())
+    numbers = list(map(int, input().split()))
+    return n, numbers
+
+def count_first_moves(n, numbers):
+    # Initialize a set to store the first moves
+    first_moves = set()
     
-    # Check if the sum of all elements is less than k
-    if sum(arr) < k:
-        return "no"
+    # Iterate through the numbers and find the adjacent numbers
+    for i in range(n):
+        left = (i - 1) % n
+        right = (i + 1) % n
+        first_moves.add(numbers[left])
+        first_moves.add(numbers[right])
     
-    # Sort the array in non-decreasing order
-    arr.sort()
-    
-    # Initialize the median as the first element
-    median = arr[0]
-    
-    # Loop through the array and check if the median is equal to k
-    for i in range(1, n):
-        if arr[i] != median:
-            return "no"
-    
-    return "yes"
+    # Return the number of first moves
+    return len(first_moves)
+
+def main():
+    n, numbers = read_input()
+    print(count_first_moves(n, numbers))
+
+if __name__ == '__main__':
+    main()
 

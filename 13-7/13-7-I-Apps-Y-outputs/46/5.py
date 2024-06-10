@@ -1,17 +1,46 @@
 
-def get_largest_perfect_power(x):
-    # Initialize a list to store the perfect powers
-    perfect_powers = []
+def can_reduce_to_one(arr):
+    # Check if all elements in the array are the same
+    if len(set(arr)) == 1:
+        return True
     
-    # Loop through all possible values of b
-    for b in range(1, x + 1):
-        # Loop through all possible values of p
-        for p in range(2, x + 1):
-            # Check if b^p is a perfect power and is less than or equal to x
-            if b ** p <= x and b ** p >= b:
-                # Add b^p to the list of perfect powers
-                perfect_powers.append(b ** p)
+    # Sort the array in ascending order
+    arr.sort()
     
-    # Return the largest perfect power
-    return max(perfect_powers)
+    # Initialize a variable to keep track of the minimum number of elements needed to reach the target
+    min_elements = 1
+    
+    # Iterate over the array
+    for i in range(len(arr)):
+        # Check if the current element is within the target range
+        if arr[i] >= min_elements:
+            # Update the minimum number of elements needed to reach the target
+            min_elements = arr[i]
+        else:
+            # If the current element is not within the target range, return False
+            return False
+    
+    # If all elements are within the target range, return True
+    return True
+
+def main():
+    # Read the number of test cases
+    t = int(input())
+    
+    # Iterate over the test cases
+    for _ in range(t):
+        # Read the length of the array
+        n = int(input())
+        
+        # Read the array
+        arr = list(map(int, input().split()))
+        
+        # Check if it is possible to reduce the array to one element
+        if can_reduce_to_one(arr):
+            print("YES")
+        else:
+            print("NO")
+
+if __name__ == '__main__':
+    main()
 

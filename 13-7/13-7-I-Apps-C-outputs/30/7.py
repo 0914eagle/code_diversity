@@ -1,16 +1,18 @@
 
-def monotonic_subgrids(grid):
-    rows, cols = len(grid), len(grid[0])
-    subgrids = 0
-    for row in range(rows):
-        for col in range(cols):
-            curr = grid[row][col]
-            for i in range(row, rows):
-                if grid[i][col] > curr:
-                    break
-                for j in range(col, cols):
-                    if grid[row][j] > curr:
-                        break
-                    subgrids += 1
-    return subgrids
+def get_subsequences(prices, p):
+    subsequences = []
+    for i in range(len(prices)):
+        for j in range(i+1, len(prices)+1):
+            if sum(prices[i:j]) / (j-i) >= p:
+                subsequences.append(prices[i:j])
+    return len(set(map(tuple, subsequences)))
+
+def main():
+    n = int(input())
+    prices = list(map(int, input().split()))
+    p = int(input())
+    print(get_subsequences(prices, p))
+
+if __name__ == '__main__':
+    main()
 

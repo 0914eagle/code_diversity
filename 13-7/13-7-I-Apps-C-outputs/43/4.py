@@ -1,14 +1,19 @@
 
-def is_winning_strategy(n, k, ancient_numbers):
-    # Check if k is one of the ancient numbers
-    if k in ancient_numbers:
-        return "Yes"
-    
-    # Check if any two ancient numbers have a common remainder
-    for i in range(n):
-        for j in range(i+1, n):
-            if ancient_numbers[i] % k == ancient_numbers[j] % k:
-                return "Yes"
-    
-    return "No"
+def get_expression(expression):
+    return expression.split('+')
+
+def get_min_value(expression, p, m):
+    x = 0
+    while True:
+        if (int(expression.replace('x', str(x))) % m) == p:
+            return x
+        x += 1
+
+def main():
+    expression = input()
+    p, m = map(int, input().split())
+    print(get_min_value(expression, p, m))
+
+if __name__ == '__main__':
+    main()
 

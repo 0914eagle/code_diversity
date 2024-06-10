@@ -1,8 +1,31 @@
 
-def sticky_keys(s, t):
-    sticky_chars = []
-    for i in range(len(s)):
-        if s[i] != t[i]:
-            sticky_chars.append(s[i])
-    return "".join(sticky_chars)
+import sys
+
+def get_input():
+    W, H, N = map(int, input().split())
+    points = []
+    for _ in range(N):
+        x, y, a = map(int, input().split())
+        points.append((x, y, a))
+    return W, H, N, points
+
+def paint_region(W, H, points):
+    white_area = W * H
+    for x, y, a in points:
+        if a == 1:
+            white_area -= (x * H)
+        elif a == 2:
+            white_area -= ((W - x) * H)
+        elif a == 3:
+            white_area -= (y * W)
+        else:
+            white_area -= ((H - y) * W)
+    return white_area
+
+def main():
+    W, H, N, points = get_input()
+    print(paint_region(W, H, points))
+
+if __name__ == '__main__':
+    main()
 

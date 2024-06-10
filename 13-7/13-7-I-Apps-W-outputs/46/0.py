@@ -1,24 +1,57 @@
 
-def get_optimal_essay(essay, synonyms):
-    # Initialize variables to keep track of the minimum number of Rs and the minimum length
-    min_rs = float('inf')
-    min_length = float('inf')
+def get_earliest_arrival(n, m, t_a, t_b, k, a_list, b_list):
+    # Sort the lists of departure times
+    a_list.sort()
+    b_list.sort()
     
-    # Iterate through all possible combinations of synonyms
-    for synonym_combination in itertools.combinations(synonyms, len(essay)):
-        # Create a copy of the essay with the current combination of synonyms
-        essay_copy = essay[:]
-        for i, synonym in enumerate(synonym_combination):
-            essay_copy[i] = synonym
-        # Count the number of Rs in the current essay
-        num_rs = sum(1 for word in essay_copy if 'r' in word.lower())
-        # Count the length of the current essay
-        length = sum(len(word) for word in essay_copy)
-        # If the current essay is better than the previous best, update the variables
-        if num_rs < min_rs or (num_rs == min_rs and length < min_length):
-            min_rs = num_rs
-            min_length = length
+    # Initialize the variables
+    earliest_arrival = -1
+    flights_cancelled = 0
     
-    # Return the minimum number of Rs and the minimum length of the optimal essay
-    return min_rs, min_length
+    # Iterate through the flights from A to B
+    for i in range(n):
+        # Check if the flight from A to B is cancelled
+        if flights_cancelled >= k:
+            break
+        
+        # Get the departure time of the flight from A to B
+        a_time = a_list[i]
+        
+        # Iterate through the flights from B to C
+        for j in range(m):
+            # Check if the flight from B to C is cancelled
+            if flights_cancelled >= k:
+                break
+            
+            # Get the departure time of the flight from B to C
+            b_time = b_list[j]
+            
+            # Check if the flight from A to B and the flight from B to C can be connected
+            if b_time >= a_time + t_a:
+                # Calculate the arrival time at C
+                arrival_time = b_time + t_b
+                
+                # Check if the arrival time at C is earlier than the current earliest arrival time
+                if earliest_arrival == -1 or arrival_time < earliest_arrival:
+                    earliest_arrival = arrival_time
+                
+                # Increment the number of flights cancelled
+                flights_cancelled += 1
+    
+    return earliest_arrival
+
+def main():
+    # Read the input
+    n, m, t_a, t_b, k = map(int, input().split())
+    a_list = list(map(int, input().split()))
+    b_list = list(map(int, input().split()))
+    
+    # Call the function to get the earliest arrival time
+    earliest_arrival = get_earliest_arrival(n, m, t_a, t_b, k, a_list, b_list)
+    
+    # Print the result
+    print(earliest_arrival)
+
+if __name__ == '__main__':
+    main()
 

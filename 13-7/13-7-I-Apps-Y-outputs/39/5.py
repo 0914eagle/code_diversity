@@ -1,23 +1,26 @@
 
-def solve(s, n):
-    # Convert input string to uppercase
-    s = s.upper()
+def is_even_string(s):
+    # Check if the string is even
+    if len(s) % 2 == 0:
+        # Check if the first half is the same as the second half
+        return s[:len(s)//2] == s[len(s)//2:]
+    else:
+        # If the length is odd, the string is not even
+        return False
 
-    # Create a list to store the shifted characters
-    shifted_chars = []
+def longest_even_string(s):
+    # Initialize the length of the longest even string as 0
+    longest_even_len = 0
+    # Iterate through the string from the end
+    for i in range(len(s)-1, -1, -1):
+        # Check if the substring from the beginning to the current index is even
+        if is_even_string(s[:i+1]):
+            # If it is even, update the longest even length
+            longest_even_len = max(longest_even_len, i+1)
+    # Return the longest even length
+    return longest_even_len
 
-    # Loop through each character in the input string
-    for char in s:
-        # Calculate the shifted character by adding the shift value to the ASCII code of the character
-        shifted_char = chr(ord(char) + n)
-
-        # If the shifted character is greater than 'Z', wrap it around to 'A'
-        if shifted_char > 'Z':
-            shifted_char = chr(ord('A') + (ord(shifted_char) - ord('Z')))
-
-        # Add the shifted character to the list
-        shifted_chars.append(shifted_char)
-
-    # Join the list of shifted characters into a string and return it
-    return "".join(shifted_chars)
+if __name__ == '__main__':
+    s = input()
+    print(longest_even_string(s))
 

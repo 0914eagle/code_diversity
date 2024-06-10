@@ -1,11 +1,25 @@
 
-def solve(n, a):
-    # Sort the array in non-decreasing order
-    a.sort()
-    # Initialize the sum of squares
-    sum_of_squares = 0
-    # Loop through the array and calculate the sum of squares
-    for i in range(n):
-        sum_of_squares += a[i] * a[i]
-    return sum_of_squares
+def get_remainders(n, k):
+    remainders = []
+    for i in range(1, k+1):
+        remainders.append(n % i)
+    return remainders
+
+def are_remainders_distinct(remainders):
+    for i in range(len(remainders)):
+        for j in range(i+1, len(remainders)):
+            if remainders[i] == remainders[j]:
+                return False
+    return True
+
+def main():
+    n, k = map(int, input().split())
+    remainders = get_remainders(n, k)
+    if are_remainders_distinct(remainders):
+        print("Yes")
+    else:
+        print("No")
+
+if __name__ == '__main__':
+    main()
 

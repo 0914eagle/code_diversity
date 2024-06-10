@@ -1,23 +1,29 @@
 
-def solve(arr):
-    # Calculate the sum of the array
-    sum_arr = sum(arr)
-    
-    # Initialize a variable to store the minimum number of elements to insert
-    min_elements = 0
-    
-    # Iterate through the array
-    for i in range(len(arr)):
-        # Calculate the sum of the current subarray
-        sum_subarr = sum(arr[:i+1])
-        
-        # If the sum of the current subarray is 0, we need to insert elements
-        if sum_subarr == 0:
-            # Calculate the number of elements to insert
-            num_elements = abs(sum_arr) - abs(sum_subarr)
-            
-            # Update the minimum number of elements to insert
-            min_elements = max(min_elements, num_elements)
-    
-    return min_elements
+def get_maximum_fraction(n, capacities, canisters):
+    # Sort the capacities in non-decreasing order
+    sorted_capacities = sorted(capacities)
+
+    # Initialize the maximum fraction to be 0
+    max_fraction = 0
+
+    # Iterate over the capacities and canisters
+    for capacity, canister in zip(sorted_capacities, canisters):
+        # Calculate the fraction of the capacity that can be filled with the current canister
+        fraction = canister / capacity
+
+        # Update the maximum fraction if necessary
+        if fraction > max_fraction:
+            max_fraction = fraction
+
+    # Return the maximum fraction
+    return max_fraction
+
+def main():
+    n = int(input())
+    capacities = list(map(int, input().split()))
+    canisters = list(map(int, input().split()))
+    print(get_maximum_fraction(n, capacities, canisters))
+
+if __name__ == '__main__':
+    main()
 

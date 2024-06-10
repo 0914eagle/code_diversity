@@ -1,11 +1,43 @@
 
-def solve(a, c):
-    n = len(a)
-    prefix_sums = [0] * (n + 1)
+def get_max_candies(n, x, heights, masses):
+    # Initialize variables
+    max_candies = 0
+    current_height = x
+    current_mass = 0
+    types = []
+
+    # Iterate through the candies
     for i in range(n):
-        prefix_sums[i + 1] = prefix_sums[i] + a[i]
-    min_sum = float('inf')
-    for i in range(c, n + 1):
-        min_sum = min(min_sum, prefix_sums[i] - prefix_sums[i - c])
-    return min_sum
+        # Check if the current candy is reachable
+        if current_height >= heights[i]:
+            # Add the candy to the list of reachable candies
+            types.append(i)
+
+            # Check if the current candy is of the same type as the previous candy
+            if len(types) > 1 and types[-1] == types[-2]:
+                # If the current candy is of the same type as the previous candy, remove the previous candy from the list
+                types.pop()
+            else:
+                # Otherwise, update the current mass and height
+                current_mass += masses[i]
+                current_height += masses[i]
+
+                # Update the maximum number of candies
+                max_candies = max(max_candies, len(types))
+
+    return max_candies
+
+def main():
+    n, x = map(int, input().split())
+    heights = []
+    masses = []
+    for i in range(n):
+        t, h, m = map(int, input().split())
+        heights.append(h)
+        masses.append(m)
+    max_candies = get_max_candies(n, x, heights, masses)
+    print(max_candies)
+
+if __name__ == '__main__':
+    main()
 

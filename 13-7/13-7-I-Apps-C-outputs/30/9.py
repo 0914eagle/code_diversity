@@ -1,30 +1,24 @@
 
-def count_monotonic_subgrids(grid):
-    def is_monotonic(subgrid):
-        # Check if the subgrid is monotonic
-        for i in range(len(subgrid)):
-            for j in range(i+1, len(subgrid)):
-                if subgrid[i] > subgrid[j]:
-                    return False
-        return True
+def get_price_list(n):
+    return list(map(int, input().split()))
 
-    def count_subgrids(grid):
-        # Count the number of non-empty subgrids
-        count = 0
-        for i in range(len(grid)):
-            for j in range(len(grid[0])):
-                count += 1
-        return count
+def get_threshold(n):
+    return int(input())
 
-    def count_monotonic_subgrids(grid):
-        # Count the number of monotonic subgrids
-        count = 0
-        for i in range(len(grid)):
-            for j in range(len(grid[0])):
-                if is_monotonic(grid[i][j]):
-                    count += 1
-        return count
+def get_consecutive_subsequences(price_list, threshold):
+    subsequences = []
+    for i in range(len(price_list)):
+        for j in range(i+1, len(price_list)+1):
+            if sum(price_list[i:j])/j >= threshold:
+                subsequences.append(price_list[i:j])
+    return len(set(map(tuple, subsequences)))
 
-    # Implement your solution here
-    return count_monotonic_subgrids(grid)
+def main():
+    n = int(input())
+    price_list = get_price_list(n)
+    threshold = get_threshold(n)
+    print(get_consecutive_subsequences(price_list, threshold))
+
+if __name__ == '__main__':
+    main()
 

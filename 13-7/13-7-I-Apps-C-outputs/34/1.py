@@ -1,24 +1,34 @@
 
-def solve(n, k, partners):
-    # Sort the partners by their Frag and Step values
-    partners = sorted(partners, key=lambda x: (x[0], x[1]))
+def get_carry_digit(num1, num2):
+    # Calculate the sum of the two numbers
+    sum = num1 + num2
+    
+    # Check if the sum is greater than 9
+    if sum > 9:
+        # If the sum is greater than 9, return 1 as the carry digit
+        return 1
+    else:
+        # If the sum is less than or equal to 9, return 0 as the carry digit
+        return 0
 
-    # Initialize the maximum diversity to be 0
-    max_diversity = 0
+def get_steps(num1, num2):
+    # Initialize a variable to keep track of the number of steps
+    steps = 0
+    
+    # While the two numbers cannot be added without carry digits using the standard algorithm
+    while get_carry_digit(num1, num2) == 1:
+        # Add 1 to one of the numbers and subtract 1 from the other
+        num1 += 1
+        num2 -= 1
+        
+        # Increment the number of steps
+        steps += 1
+    
+    # Return the number of steps
+    return steps
 
-    # Iterate through the partners and choose the k most favorable partners to awaken
-    for i in range(k):
-        # If the current partner cannot be awakened, skip it
-        if partners[i][2] == 0 or partners[i][3] == 0:
-            continue
-
-        # Increment the maximum diversity by 1
-        max_diversity += 1
-
-        # Update the Frag and Step values of the current partner
-        partners[i][0] = partners[i][2]
-        partners[i][1] = partners[i][3]
-
-    # Return the maximum diversity
-    return max_diversity
+if __name__ == '__main__':
+    num1 = int(input())
+    num2 = int(input())
+    print(get_steps(num1, num2))
 

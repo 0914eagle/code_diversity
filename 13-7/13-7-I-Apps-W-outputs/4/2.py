@@ -1,19 +1,41 @@
 
-def solve(n, k, songs):
-    # Sort the songs by beauty in descending order
-    songs.sort(key=lambda x: x[1], reverse=True)
-    # Initialize the maximum pleasure to 0
-    max_pleasure = 0
-    # Loop through the first k songs
-    for i in range(k):
-        # Calculate the total length of the first i songs
-        total_length = sum(map(lambda x: x[0], songs[:i + 1]))
-        # Calculate the minimum beauty of the first i songs
-        min_beauty = min(map(lambda x: x[1], songs[:i + 1]))
-        # Calculate the pleasure of the first i songs
-        pleasure = total_length * min_beauty
-        # Update the maximum pleasure if necessary
-        max_pleasure = max(max_pleasure, pleasure)
-    # Return the maximum pleasure
-    return max_pleasure
+def get_posterized_values(red_values, k):
+    # Sort the red values in increasing order
+    sorted_red_values = sorted(red_values)
+
+    # Initialize the posterized values as the first k red values
+    posterized_values = sorted_red_values[:k]
+
+    # Initialize the sum of squared errors to 0
+    sum_squared_errors = 0
+
+    # Loop through each red value and calculate the sum of squared errors for that value
+    for red_value in sorted_red_values:
+        # Find the closest posterized value to the current red value
+        closest_posterized_value = min(posterized_values, key=lambda x: abs(x - red_value))
+
+        # Calculate the squared error for the current red value
+        squared_error = (red_value - closest_posterized_value) ** 2
+
+        # Add the squared error to the total sum of squared errors
+        sum_squared_errors += squared_error
+
+    return sum_squared_errors
+
+def main():
+    # Read the input from stdin
+    d, k = map(int, input().split())
+    red_values = []
+    for _ in range(d):
+        red_value, count = map(int, input().split())
+        red_values.extend([red_value] * count)
+
+    # Call the get_posterized_values function to get the sum of squared errors for the optimally chosen set of posterized values
+    sum_squared_errors = get_posterized_values(red_values, k)
+
+    # Print the sum of squared errors
+    print(sum_squared_errors)
+
+if __name__ == '__main__':
+    main()
 

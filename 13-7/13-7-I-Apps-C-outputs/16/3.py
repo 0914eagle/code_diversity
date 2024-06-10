@@ -1,42 +1,20 @@
 
-def solve(x, y):
-    # Initialize the number of oranges and apples
-    oranges = x
-    apples = y
-    
-    # Initialize the sequence of cards
-    sequence = []
-    
-    # While there are still oranges and apples in the bag
-    while oranges > 0 and apples > 0:
-        # Add a card with letter 'A' to the sequence
-        sequence.append('A')
-        
-        # Give all oranges to Bob
-        oranges = 0
-        
-        # Give all apples to Alice
-        apples = 0
-        
-        # Remove the last card from the sequence
-        sequence.pop()
-        
-        # Add a card with letter 'B' to the sequence
-        sequence.append('B')
-        
-        # Give all oranges to Alice
-        oranges = 0
-        
-        # Give all apples to Bob
-        apples = 0
-        
-        # Remove the last card from the sequence
-        sequence.pop()
-    
-    # If there are still oranges and apples in the bag, return Impossible
-    if oranges > 0 or apples > 0:
-        return 'Impossible'
-    
-    # Return the sequence of cards
-    return ''.join(sequence)
+def is_pythagorean_triple(a, b, c, n):
+    return a <= b and a**2 + b**2 == c**2
+
+def count_pythagorean_triples(n):
+    count = 0
+    for a in range(1, n):
+        for b in range(a, n):
+            for c in range(b, n):
+                if is_pythagorean_triple(a, b, c, n):
+                    count += 1
+    return count
+
+def main():
+    n = int(input())
+    print(count_pythagorean_triples(n))
+
+if __name__ == '__main__':
+    main()
 

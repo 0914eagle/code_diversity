@@ -1,12 +1,23 @@
 
-def can_snuke_permute(sequence):
-    n = len(sequence)
-    if n < 2:
-        return True
-    if n % 2 == 1:
-        return False
-    for i in range(n // 2):
-        if sequence[i] * sequence[n - 1 - i] % 4 != 0:
-            return False
-    return True
+def find_first_return_day(p):
+    n = len(p)
+    days = [0] * n
+    for i in range(n):
+        days[i] = 1
+        for j in range(i+1, n):
+            if p[i] == p[j]:
+                days[i] += 1
+                break
+    return days
+
+def main():
+    q = int(input())
+    for i in range(q):
+        n = int(input())
+        p = list(map(int, input().split()))
+        days = find_first_return_day(p)
+        print(*days)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,19 +1,31 @@
 
-def is_lucky(ticket):
-    sum1 = int(ticket[:3])
-    sum2 = int(ticket[3:])
-    return sum1 == sum2
+def amidakuji(H, W, K):
+    # Initialize a 2D array to store the amidakuji
+    amidakuji = [[0] * (H + 1) for _ in range(W)]
 
-def min_replacements(ticket):
-    if is_lucky(ticket):
-        return 0
-    replacements = 0
-    for i in range(6):
-        for digit in range(10):
-            if ticket[i] != str(digit):
-                ticket = ticket[:i] + str(digit) + ticket[i+1:]
-                if is_lucky(ticket):
-                    return replacements + 1
-        replacements += 1
-    return replacements
+    # Fill in the vertical lines
+    for i in range(W):
+        amidakuji[i][0] = 1
+        amidakuji[i][H] = H + 1
+
+    # Fill in the horizontal lines
+    for i in range(W):
+        for j in range(1, H):
+            amidakuji[i][j] = j + 1
+
+    # Count the number of valid amidakuji
+    count = 0
+    for i in range(W):
+        for j in range(1, H):
+            if amidakuji[i][j] == K:
+                count += 1
+
+    return count % 1000000
+
+def main():
+    H, W, K = map(int, input().split())
+    print(amidakuji(H, W, K))
+
+if __name__ == '__main__':
+    main()
 

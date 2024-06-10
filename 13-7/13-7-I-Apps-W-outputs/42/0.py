@@ -1,24 +1,23 @@
 
-def solve(n, x, v):
-    # Calculate the maximum speed of each friend
-    max_speed = [v[i] for i in range(n)]
-    
-    # Sort the friends by their current position
-    sorted_x = sorted(x)
-    
-    # Initialize the minimum time needed to gather all friends
-    min_time = 0
-    
-    # Iterate over the friends and calculate the time needed to gather them
-    for i in range(n):
-        # Calculate the distance between the current friend and the previous friend
-        dist = abs(sorted_x[i] - sorted_x[i-1])
-        
-        # Calculate the time needed to cover the distance at the maximum speed
-        time = dist / max_speed[i-1]
-        
-        # Add the time to the minimum time needed to gather all friends
-        min_time += time
-    
-    return min_time
+def get_attendee_numbers_and_heights(n):
+    attendee_numbers = list(range(1, n+1))
+    heights = list(map(int, input().split()))
+    return attendee_numbers, heights
+
+def get_pairs_satisfying_condition(attendee_numbers, heights):
+    pairs_satisfying_condition = 0
+    for i in range(len(attendee_numbers)):
+        for j in range(i+1, len(attendee_numbers)):
+            if abs(attendee_numbers[i] - attendee_numbers[j]) == heights[i] + heights[j]:
+                pairs_satisfying_condition += 1
+    return pairs_satisfying_condition
+
+def main():
+    n = int(input())
+    attendee_numbers, heights = get_attendee_numbers_and_heights(n)
+    pairs_satisfying_condition = get_pairs_satisfying_condition(attendee_numbers, heights)
+    print(pairs_satisfying_condition)
+
+if __name__ == '__main__':
+    main()
 

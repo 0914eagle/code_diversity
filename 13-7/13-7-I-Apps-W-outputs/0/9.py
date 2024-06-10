@@ -1,12 +1,17 @@
 
-def get_max_power_of_two(numbers):
-    # Initialize a dictionary to store the count of numbers that divide by each power of two
-    power_count = {2**i: 0 for i in range(30)}
-    # Iterate through the numbers and increment the count for each power of two that divides it
-    for num in numbers:
-        for i in range(30):
-            if num % (2**i) == 0:
-                power_count[2**i] += 1
-    # Return the power of two with the maximum count
-    return max(power_count, key=power_count.get)
+def encrypt(word, key):
+    return ''.join(key[ord(c) - ord('a')] for c in word)
+
+def solve(words, arr):
+    for key in permutations('abcdefghijklmnopqrstuvwxyz'):
+        encrypted_words = [encrypt(word, key) for word in words]
+        if encrypted_words == sorted(encrypted_words) == list(map(str, arr)):
+            return 'DA\n' + ''.join(key)
+    return 'NE'
+
+if __name__ == '__main__':
+    n = int(input())
+    words = [input() for _ in range(n)]
+    arr = [int(i) for i in input().split()]
+    print(solve(words, arr))
 

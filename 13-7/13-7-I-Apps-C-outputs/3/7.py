@@ -1,11 +1,23 @@
 
-def hopper_exploration(arr, d, m):
-    n = len(arr)
-    dp = [0] * (n + 1)
-    dp[0] = 1
-    for i in range(1, n + 1):
-        for j in range(i - 1, max(-1, i - d - 1), -1):
-            if abs(arr[i - 1] - arr[j]) <= m:
-                dp[i] = max(dp[i], dp[j] + 1)
-    return dp[n]
+def get_winner(s):
+    if len(s) == 3:
+        return "First"
+    
+    # Initialize the game state
+    game_state = list(s)
+    game_state.pop(0)
+    game_state.pop(-1)
+    
+    # Determine which player will win
+    if len(game_state) % 2 == 0:
+        return "First"
+    else:
+        return "Second"
+
+def main():
+    s = input()
+    print(get_winner(s))
+
+if __name__ == '__main__':
+    main()
 

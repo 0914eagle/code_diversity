@@ -1,12 +1,18 @@
 
-def stable_sort(songs, attributes):
-    # Initialize the sorted list with the initial order of the songs
-    sorted_songs = songs
+def get_input():
+    return int(input())
 
-    # Iterate through the list of attributes in the order they were given
-    for attribute in attributes:
-        # Sort the songs by the current attribute, using a stable sort algorithm
-        sorted_songs = sorted(sorted_songs, key=lambda x: x[attribute])
+def count_odd_numbers_with_eight_divisors(n):
+    count = 0
+    for i in range(1, n+1):
+        if i % 2 == 1 and len(list(set([1, i] + [j for j in range(1, int(i**0.5) + 1) if i % j == 0]))) == 8:
+            count += 1
+    return count
 
-    return sorted_songs
+def main():
+    n = get_input()
+    print(count_odd_numbers_with_eight_divisors(n))
+
+if __name__ == '__main__':
+    main()
 

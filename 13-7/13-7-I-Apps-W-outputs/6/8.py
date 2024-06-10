@@ -1,22 +1,20 @@
 
-def solve(n):
-    # Initialize variables
-    days = 0
-    bacteria = 1
-    split_count = 0
-    
-    # Loop until the total mass of the bacteria is equal to n
-    while bacteria < n:
-        # Increment the day count
-        days += 1
-        
-        # Split the bacteria
-        bacteria *= 2
-        split_count += 1
-        
-        # Increment the mass of the bacteria by 1
-        bacteria += 1
-    
-    # Return the result
-    return days, split_count
+def is_divisible(n, a):
+    return n % a == 0
+
+def is_square(n):
+    return int(n**0.5)**2 == n
+
+def get_largest_lovely_number(n):
+    for i in range(n, 1, -1):
+        if not any(is_divisible(i, a) for a in range(2, int(i**0.5) + 1)):
+            return i
+    return 1
+
+def main():
+    n = int(input())
+    print(get_largest_lovely_number(n))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,24 +1,18 @@
 
-def is_easily_playable(s):
-    # Check if the length of the string is between 1 and 100 (inclusive)
-    if not 1 <= len(s) <= 100:
-        return "No"
+def bond_with(base):
+    if base == 'A':
+        return 'T'
+    elif base == 'C':
+        return 'G'
+    elif base == 'G':
+        return 'C'
+    else:
+        return 'A'
 
-    # Check if all characters are L, R, U, or D
-    for c in s:
-        if c not in "LRUDD":
-            return "No"
+def main():
+    base = input()
+    print(bond_with(base))
 
-    # Check if every character in an odd position is R, U, or D
-    for i in range(1, len(s), 2):
-        if s[i] not in "RUD":
-            return "No"
-
-    # Check if every character in an even position is L, U, or D
-    for i in range(2, len(s), 2):
-        if s[i] not in "LUD":
-            return "No"
-
-    # If all conditions are met, return "Yes"
-    return "Yes"
+if __name__ == '__main__':
+    main()
 

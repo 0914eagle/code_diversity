@@ -1,18 +1,39 @@
 
-def get_max_visited_flowers(field, initial_position, petals):
+def get_travel_cost(trips, a, b, k, f):
     # Initialize variables
-    max_visited_flowers = 0
-    current_position = initial_position
-    visited_flowers = set()
+    cost = 0
+    travel_cards = []
 
-    # Loop through each flower in the field
-    for row in range(len(field)):
-        for col in range(len(field[0])):
-            # If the current flower has more petals than the previous flower and it is not in the visited set, add it to the visited set and increment the maximum visited flowers
-            if field[row][col] > petals[current_position[0] - 1][current_position[1] - 1] and (row, col) not in visited_flowers:
-                visited_flowers.add((row, col))
-                max_visited_flowers += 1
-                current_position = (row + 1, col + 1)
-    
-    return max_visited_flowers
+    # Iterate through the trips
+    for i in range(len(trips)):
+        # Get the current and next trip
+        current_trip = trips[i]
+        if i < len(trips) - 1:
+            next_trip = trips[i + 1]
+        else:
+            next_trip = trips[0]
+
+        # Check if the current trip is a transshipment
+        if current_trip == next_trip:
+            cost += b
+        else:
+            cost += a
+
+        # Check if the current trip is a new route
+        if current_trip not in travel_cards:
+            travel_cards.append(current_trip)
+
+    # Check if the travel cards are within the limit
+    if len(travel_cards) <= k:
+        cost += f * len(travel_cards)
+
+    return cost
+
+def main():
+    n, a, b, k, f = map(int, input().split())
+    trips = [input().split() for _ in range(n)]
+    print(get_travel_cost(trips, a, b, k, f))
+
+if __name__ == '__main__':
+    main()
 

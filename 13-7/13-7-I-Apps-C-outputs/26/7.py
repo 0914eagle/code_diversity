@@ -1,19 +1,33 @@
 
-def solve(N, A, B):
-    # Initialize a list to store the permutation
-    perm = list(range(1, N+1))
-    # Initialize a list to store the values of g(i) for each i
-    g = [0] * (N+1)
-    # Set the value of g(1) to A
-    g[1] = A
-    # Iterate through the rest of the permutation
-    for i in range(2, N+1):
-        # If the value of g(i-1) is A, set the value of g(i) to B
-        if g[i-1] == A:
-            g[i] = B
-        # Otherwise, set the value of g(i) to A
-        else:
-            g[i] = A
-    # Return the permutation
-    return perm
+def read_input():
+    N, M = map(int, input().split())
+    translators = []
+    for _ in range(M):
+        translator = tuple(map(int, input().split()))
+        translators.append(translator)
+    return N, M, translators
+
+def is_valid_pair(translator1, translator2):
+    return translator1[0] == translator2[1] or translator1[1] == translator2[0]
+
+def find_matching(translators):
+    matching = []
+    for translator in translators:
+        for matching_translator in translators:
+            if is_valid_pair(translator, matching_translator) and translator != matching_translator:
+                matching.append((translator[0], matching_translator[0]))
+                break
+    return matching
+
+def main():
+    N, M, translators = read_input()
+    matching = find_matching(translators)
+    if len(matching) == M/2:
+        for pair in matching:
+            print(pair[0], pair[1])
+    else:
+        print("impossible")
+
+if __name__ == '__main__':
+    main()
 

@@ -1,19 +1,38 @@
 
-def max_power(numbers):
-    # Find the maximum power of 2 that divides any of the numbers
-    max_power = 0
-    for num in numbers:
-        power = 0
-        while num % 2 == 0:
-            num //= 2
-            power += 1
-        max_power = max(max_power, power)
+def get_key(words, array):
+    # Initialize the key as a list of all 26 lowercase letters
+    key = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
     
-    # Count the number of numbers that divide by the maximum power
-    count = 0
-    for num in numbers:
-        if num % 2**max_power == 0:
-            count += 1
+    # Create a dictionary to map each word to its index in the array
+    word_to_index = {word: i for i, word in enumerate(array, 1)}
     
-    return max_power, count
+    # Iterate through each word in the array
+    for i, word in enumerate(array, 1):
+        # Find the index of the word in the words list
+        index = words.index(word)
+        
+        # Swap the letter at index i with the letter at index word_to_index[word] in the key
+        key[i], key[word_to_index[word]] = key[word_to_index[word]], key[i]
+    
+    # Return the key
+    return ''.join(key)
+
+def main():
+    # Read the input from stdin
+    N = int(input())
+    words = []
+    for _ in range(N):
+        words.append(input())
+    array = list(map(int, input().split()))
+    
+    # Call the get_key function and print the output
+    key = get_key(words, array)
+    if key == "NE":
+        print("NE")
+    else:
+        print("DA")
+        print(key)
+
+if __name__ == '__main__':
+    main()
 

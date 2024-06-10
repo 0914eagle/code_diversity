@@ -1,24 +1,30 @@
 
-def get_maximum_pleasure(playlist, k):
-    # Sort the playlist in descending order of beauty
-    playlist.sort(key=lambda x: x[1], reverse=True)
-    # Initialize the maximum pleasure to 0
-    max_pleasure = 0
-    # Initialize the total length of the selected songs to 0
-    total_length = 0
-    # Iterate through the playlist and select the songs
-    for song in playlist:
-        # Check if the song is not already selected
-        if song[0] not in selected_songs:
-            # Add the length and beauty of the song to the total length and maximum pleasure
-            total_length += song[0]
-            max_pleasure += song[1]
-            # Add the song to the list of selected songs
-            selected_songs.append(song[0])
-        # Check if the total length of the selected songs is greater than or equal to k
-        if len(selected_songs) >= k:
-            # Break out of the loop
-            break
-    # Return the maximum pleasure
-    return max_pleasure
+def get_allowed_values(k, d):
+    allowed_values = []
+    for i in range(k):
+        allowed_values.append(i * (d // k))
+    return allowed_values
+
+def get_sum_of_squared_errors(allowed_values, pixel_values):
+    sum_of_squared_errors = 0
+    for pixel_value in pixel_values:
+        min_distance = float('inf')
+        for allowed_value in allowed_values:
+            distance = (pixel_value - allowed_value) ** 2
+            if distance < min_distance:
+                min_distance = distance
+        sum_of_squared_errors += min_distance
+    return sum_of_squared_errors
+
+def main():
+    d, k = map(int, input().split())
+    pixel_values = []
+    for _ in range(d):
+        r, p = map(int, input().split())
+        pixel_values += [r] * p
+    allowed_values = get_allowed_values(k, d)
+    print(get_sum_of_squared_errors(allowed_values, pixel_values))
+
+if __name__ == '__main__':
+    main()
 

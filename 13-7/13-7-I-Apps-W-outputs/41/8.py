@@ -1,29 +1,35 @@
 
-def solve(n):
-    # Initialize the array a with the numbers 1 to n
-    a = list(range(1, n+1))
-    # Initialize the number of pairs to 0
-    q = 0
-    # Iterate through all possible pairs of numbers
-    for x in range(1, n+1):
-        for y in range(1, n+1):
-            # Check if the pair is valid (i.e. x != y)
-            if x != y:
-                # Calculate the result of the function f(x, y)
-                t = f(a[x-1], a[y-1])
-                # Update the array a with the result of the function
-                a[x-1] = t
-                a[y-1] = t
-                # Increment the number of pairs
-                q += 1
-                # Check if the array a has at most two different numbers
-                if len(set(a)) <= 2:
-                    # Return the list of pairs
-                    return q, [x, y]
-    # If no pairs are found, return an empty list
-    return q, []
+def get_moving_cost(requests, teams, locations, costs):
+    # Initialize variables
+    total_cost = 0
+    team_assignment = [0] * len(requests)
+    team_location = 1
 
-# Define the function f(x, y)
-def f(x, y):
-    return x + y
+    # Loop through the requests
+    for i in range(len(requests)):
+        # Find the team with the lowest cost to move the equipment to the current location
+        min_cost = float('inf')
+        min_team = 0
+        for j in range(teams):
+            if costs[team_location][locations[i]] < min_cost:
+                min_cost = costs[team_location][locations[i]]
+                min_team = j
+
+        # Assign the request to the team and update the team's location
+        team_assignment[i] = min_team
+        team_location = locations[i]
+        total_cost += min_cost
+
+    return total_cost
+
+def main():
+    n, k = map(int, input().split())
+    requests = [int(input()) for _ in range(n)]
+    teams = [int(input()) for _ in range(k)]
+    locations = [i for i in range(1, n+1)]
+    costs = [[float(input()) for _ in range(n+1)] for _ in range(n+1)]
+    print(get_moving_cost(requests, teams, locations, costs))
+
+if __name__ == '__main__':
+    main()
 

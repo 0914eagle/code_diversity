@@ -1,16 +1,38 @@
 
-def meow_factor(s):
-    # Initialize the meow factor to 0
-    meow_factor = 0
+def get_shortest_time(N, y_coords, min_dist, rest_time):
+    # Initialize a dictionary to store the shortest time to reach each city
+    shortest_time = {1: 0}
+    for i in range(2, N+1):
+        # Initialize the minimum time to reach city i as infinity
+        min_time = float('inf')
+        # Loop through all the cities that can be reached from city i-1
+        for j in range(1, i):
+            # Calculate the time to reach city j from city i-1
+            time = shortest_time[j] + abs(y_coords[i-1] - y_coords[j-1]) + rest_time[j-1]
+            # If the time to reach city j is less than the minimum time, update the minimum time
+            if time < min_time:
+                min_time = time
+        # If there is a way to reach city i, add it to the dictionary with the minimum time
+        if min_time != float('inf'):
+            shortest_time[i] = min_time
+        # Otherwise, set the minimum time to -1
+        else:
+            shortest_time[i] = -1
+    return shortest_time
 
-    # Loop through each character in the string
-    for i in range(len(s)):
-        # If the current character is 'm', check if the next three characters are 'e', 'o', and 'w'
-        if s[i] == 'm':
-            if i + 1 < len(s) and s[i + 1] == 'e' and i + 2 < len(s) and s[i + 2] == 'o' and i + 3 < len(s) and s[i + 3] == 'w':
-                # If they are, increment the meow factor by 1
-                meow_factor += 1
+def main():
+    N = int(input())
+    y_coords = []
+    min_dist = []
+    rest_time = []
+    for i in range(N):
+        y_coords.append(int(input()))
+        min_dist.append(int(input()))
+        rest_time.append(int(input()))
+    shortest_time = get_shortest_time(N, y_coords, min_dist, rest_time)
+    for i in range(1, N):
+        print(shortest_time[i])
 
-    # Return the meow factor
-    return meow_factor
+if __name__ == '__main__':
+    main()
 

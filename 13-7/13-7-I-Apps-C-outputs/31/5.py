@@ -1,31 +1,35 @@
 
-def solve(n, g, distances, costs):
-    # Sort the gas stations by distance in ascending order
-    sorted_gas_stations = sorted(zip(distances, costs), key=lambda x: x[0])
+import math
 
-    # Initialize the current gas station and the total cost
-    current_gas_station = 0
-    total_cost = 0
+def distance(p1, p2):
+    return math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
 
-    # Loop through each gas station
-    for i in range(n):
-        # Calculate the distance to the next gas station
-        distance_to_next_gas_station = sorted_gas_stations[i][0] - sorted_gas_stations[current_gas_station][0]
+def within_sight(beacons, mountain_peaks, beacon_idx):
+    beacon = beacons[beacon_idx]
+    for mountain_peak in mountain_peaks:
+        if distance(beacon, mountain_peak) <= mountain_peak[2]:
+            return False
+    return True
 
-        # Calculate the cost to travel to the next gas station
-        travel_cost = distance_to_next_gas_station * sorted_gas_stations[current_gas_station][1]
+def count_messages(beacons, mountain_peaks):
+    messages = 0
+    for beacon_idx in range(len(beacons)):
+        if within_sight(beacons, mountain_peaks, beacon_idx):
+            messages += 1
+    return messages
 
-        # Check if the total cost plus the travel cost is less than or equal to the tank capacity
-        if total_cost + travel_cost <= g:
-            # Add the travel cost to the total cost
-            total_cost += travel_cost
+def main():
+    n, m = map(int, input().split())
+    beacons = []
+    for _ in range(n):
+        x, y = map(int, input().split())
+        beacons.append((x, y))
+    mountain_peaks = []
+    for _ in range(m):
+        x, y, r = map(int, input().split())
+        mountain_peaks.append((x, y, r))
+    print(count_messages(beacons, mountain_peaks))
 
-            # Update the current gas station
-            current_gas_station = i
-        else:
-            # If the total cost plus the travel cost is greater than the tank capacity, cancel the road trip
-            return "cancel road trip"
-
-    # If the loop completes successfully, return the total cost
-    return total_cost
+if __name__ == '__main__':
+    main()
 

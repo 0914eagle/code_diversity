@@ -1,12 +1,16 @@
 
-def check_password(password):
-    if len(password) < 5:
-        return "Too weak"
-    if not any(c.isupper() for c in password):
-        return "Too weak"
-    if not any(c.islower() for c in password):
-        return "Too weak"
-    if not any(c.isdigit() for c in password):
-        return "Too weak"
-    return "Correct"
+def is_regular_polygon(a):
+    return a % 180 == 0 or a % 90 == 0
+
+def solve(a):
+    if is_regular_polygon(a):
+        return "YES"
+    else:
+        return "NO"
+
+if __name__ == '__main__':
+    t = int(input())
+    for _ in range(t):
+        a = int(input())
+        print(solve(a))
 

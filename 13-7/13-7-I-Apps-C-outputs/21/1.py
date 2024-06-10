@@ -1,50 +1,77 @@
 
-def solve(R, C, board):
-    # Initialize the spread for Mirko and Slavko to 0
-    mirko_spread, slavko_spread = 0, 0
+import math
 
-    # Loop through each row and column
-    for i in range(R):
-        for j in range(C):
-            # If the current field is Mirko's piece, calculate its spread
-            if board[i][j] == "M":
-                # Calculate the spread for Mirko's piece
-                mirko_spread += calculate_spread(board, i, j, "M")
-            # If the current field is Slavko's piece, calculate its spread
-            elif board[i][j] == "S":
-                # Calculate the spread for Slavko's piece
-                slavko_spread += calculate_spread(board, i, j, "S")
+def get_distance(p1, p2):
+    return math.sqrt((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2)
 
-    # Return the spread for Mirko and Slavko
-    return mirko_spread, slavko_spread
+def get_tunnel_length(island_centers, palm_trees, k):
+    # Initialize the minimum length of the tunnel as 0
+    min_length = 0
+    
+    # Iterate through each pair of islands
+    for i in range(len(island_centers)):
+        for j in range(i + 1, len(island_centers)):
+            # Get the distance between the centers of the two islands
+            distance = get_distance(island_centers[i], island_centers[j])
+            
+            # Check if the distance is greater than the minimum length of the tunnel
+            if distance > min_length:
+                # Initialize a new minimum length for the tunnel
+                min_length = distance
+    
+    # Iterate through each palm tree
+    for tree in palm_trees:
+        # Get the distance between the center of the island and the palm tree
+        distance = get_distance(island_centers[tree[2]], (tree[0], tree[1]))
+        
+        # Check if the distance is greater than the minimum length of the tunnel
+        if distance > min_length:
+            # Initialize a new minimum length for the tunnel
+            min_length = distance
+    
+    # Return the minimum length of the tunnel
+    return min_length
 
-# Calculate the spread for a piece
-def calculate_spread(board, i, j, piece):
-    # Initialize the spread to 0
-    spread = 0
+def get_tunnel_length_fast(island_centers, palm_trees, k):
+    # Initialize the minimum length of the tunnel as 0
+    min_length = 0
+    
+    # Iterate through each pair of islands
+    for i in range(len(island_centers)):
+        for j in range(i + 1, len(island_centers)):
+            # Get the distance between the centers of the two islands
+            distance = get_distance(island_centers[i], island_centers[j])
+            
+            # Check if the distance is greater than the minimum length of the tunnel
+            if distance > min_length:
+                # Initialize a new minimum length for the tunnel
+                min_length = distance
+    
+    # Iterate through each palm tree
+    for tree in palm_trees:
+        # Get the distance between the center of the island and the palm tree
+        distance = get_distance(island_centers[tree[2]], (tree[0], tree[1]))
+        
+        # Check if the distance is greater than the minimum length of the tunnel
+        if distance > min_length:
+            # Initialize a new minimum length for the tunnel
+            min_length = distance
+    
+    # Return the minimum length of the tunnel
+    return min_length
 
-    # Loop through all the neighbors of the current field
-    for x in range(i-1, i+2):
-        for y in range(j-1, j+2):
-            # If the neighbor is outside the board, continue
-            if x < 0 or x >= R or y < 0 or y >= C:
-                continue
-            # If the neighbor is empty, continue
-            if board[x][y] == ".":
-                continue
-            # If the neighbor is the same piece, continue
-            if board[x][y] == piece:
-                continue
-            # Calculate the distance between the current piece and the neighbor
-            distance = abs(i-x) + abs(j-y)
-            # Add the distance to the spread
-            spread += distance
-
-    # Return the spread
-    return spread
-
-# Test the solve function
-R, C = map(int, input().split())
-board = [input() for _ in range(R)]
-print(solve(R, C, board))
+if __name__ == '__main__':
+    n, m, k = map(int, input().split())
+    island_centers = []
+    palm_trees = []
+    
+    for i in range(n):
+        x, y, r = map(int, input().split())
+        island_centers.append((x, y))
+    
+    for i in range(m):
+        x, y, h = map(int, input().split())
+        palm_trees.append((x, y, h))
+    
+    print(get_tunnel_length(island_centers, palm_trees, k))
 

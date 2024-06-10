@@ -1,11 +1,19 @@
 
-def is_triangle_possible(stick_lengths):
-    # Sort the stick lengths in descending order
-    stick_lengths.sort(reverse=True)
+def find_solutions(b, d, c, l):
+    solutions = []
+    for i in range(1, 101):
+        for j in range(1, 101):
+            for k in range(1, 101):
+                if i + j + k == l and b*i + d*j + c*k == 14:
+                    solutions.append([i, j, k])
+    return solutions
 
-    # Check if the longest stick is greater than the sum of the other two sticks
-    if stick_lengths[0] > stick_lengths[1] + stick_lengths[2]:
-        return "possible"
-    else:
-        return "impossible"
+def print_solutions(solutions):
+    for solution in solutions:
+        print(solution[0], solution[1], solution[2])
+
+if __name__ == '__main__':
+    b, d, c, l = map(int, input().split())
+    solutions = find_solutions(b, d, c, l)
+    print_solutions(solutions)
 

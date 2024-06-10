@@ -1,24 +1,33 @@
 
-def solve(gigs, venues, roads, time):
-    # Initialize a list to store the maximum amount of cryptocents that can be earned at each venue
-    max_cryptocents = [0] * (venues + 1)
-    # Initialize a list to store the minimum time required to travel between each pair of venues
-    min_time = [[0] * (venues + 1) for _ in range(venues + 1)]
+def get_tubes(tube_lengths, L1, L2):
+    # Sort the tube lengths in descending order
+    tube_lengths.sort(reverse=True)
     
-    # Fill in the minimum time required to travel between each pair of venues
-    for i in range(roads):
-        road = roads[i]
-        min_time[road[0]][road[1]] = min_time[road[1]][road[0]] = road[2]
+    # Initialize the total length of air to avoid as 0
+    total_length = 0
     
-    # Fill in the maximum amount of cryptocents that can be earned at each venue
-    for i in range(gigs):
-        gig = gigs[i]
-        max_cryptocents[gig[0]] = max(max_cryptocents[gig[0]], gig[3])
+    # Loop through the tube lengths and find two pairs that add up to L1 and L2
+    for i in range(len(tube_lengths)):
+        for j in range(i+1, len(tube_lengths)):
+            if tube_lengths[i] + tube_lengths[j] <= L1 and tube_lengths[i+1] + tube_lengths[j+1] <= L2:
+                # If a pair is found, add their lengths to the total length of air to avoid
+                total_length += tube_lengths[i] + tube_lengths[j] + tube_lengths[i+1] + tube_lengths[j+1]
+                break
     
-    # Use dynamic programming to find the maximum amount of cryptocents that can be earned by taking on the right gigs
-    for i in range(time, -1, -1):
-        for j in range(1, venues + 1):
-            max_cryptocents[j] = max(max_cryptocents[j], max_cryptocents[j - 1] + max_cryptocents[j])
+    # If a pair is not found, return the word "Impossible"
+    if total_length == 0:
+        return "Impossible"
+    else:
+        return total_length
+
+def main():
+    # Read the input
+    L1, L2, N = map(int, input().split())
+    tube_lengths = list(map(int, input().split()))
     
-    return max_cryptocents[-1]
+    # Call the get_tubes function and print the result
+    print(get_tubes(tube_lengths, L1, L2))
+
+if __name__ == '__main__':
+    main()
 

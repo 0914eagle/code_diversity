@@ -1,25 +1,39 @@
 
-def solve(n, m, s, a, b, c):
-    # Sort the bugs by complexity in descending order
-    a.sort(reverse=True)
-    # Initialize the number of passes given to each student to 0
-    passes = [0] * n
-    # Initialize the number of days needed to fix all bugs to 0
-    days = 0
-    # Iterate through the bugs
-    for i in range(m):
-        # Find the student with the highest level of ability among the students who have not yet fixed a bug
-        student = max(range(n), key=lambda i: b[i])
-        # If the student's level of ability is not greater than or equal to the complexity of the current bug, then it cannot be fixed
-        if b[student] < a[i]:
-            return "NO"
-        # Increment the number of passes given to the student
-        passes[student] += 1
-        # Increment the number of days needed to fix all bugs
-        days += 1
-        # If the total number of passes given to all students exceeds the maximum number of passes the university is willing to give, then it is not possible to fix all bugs
-        if sum(passes) > s:
-            return "NO"
-    # Return "YES" and the schedule of work
-    return "YES\n" + " ".join(str(student + 1) for student in range(n))
+def get_permutation(n):
+    permutation = list(range(1, n+1))
+    return permutation
+
+def apply_permutation(permutation, q):
+    n = len(permutation)
+    new_permutation = [0] * n
+    for i in range(n):
+        new_permutation[i] = permutation[q[i]-1]
+    return new_permutation
+
+def check_permutation(p, s):
+    n = len(p)
+    for i in range(n):
+        if p[i] != s[i]:
+            return False
+    return True
+
+def play_game(n, k, q, s):
+    permutation = get_permutation(n)
+    for i in range(k):
+        coin = input("Heads or Tails? ")
+        if coin == "Heads":
+            permutation = apply_permutation(permutation, q)
+        else:
+            permutation = apply_permutation(permutation, [i+1 for i in range(n)])
+    return check_permutation(permutation, s)
+
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    q = list(map(int, input().split()))
+    s = list(map(int, input().split()))
+    result = play_game(n, k, q, s)
+    if result:
+        print("YES")
+    else:
+        print("NO")
 

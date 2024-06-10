@@ -1,53 +1,33 @@
 
-def solve(N, A, B):
-    # Initialize a list to store the permutation
-    perm = list(range(1, N+1))
-    # Loop through each element in the permutation
-    for i in range(N):
-        # If the current element is equal to A or B, skip it
-        if perm[i] in [A, B]:
-            continue
-        # If the current element is not equal to A or B, find the minimum positive integer j such that f(i, j) = i
-        j = 1
-        while True:
-            if f(perm[i], j) == perm[i]:
+def get_input():
+    N, M = map(int, input().split())
+    translators = []
+    for _ in range(M):
+        translator = list(map(int, input().split()))
+        translators.append(translator)
+    return N, M, translators
+
+def match_translators(N, M, translators):
+    matched_pairs = []
+    for i in range(M):
+        for j in range(i+1, M):
+            if translators[i][0] == translators[j][1] or translators[i][1] == translators[j][0]:
+                matched_pairs.append([i, j])
                 break
-            j += 1
-        # Swap the current element with the element at index j in the permutation
-        perm[i], perm[j-1] = perm[j-1], perm[i]
-    # If the permutation is valid, return it, otherwise return -1
-    if is_valid_permutation(perm, A, B):
-        return perm
+    if len(matched_pairs) == M/2:
+        return matched_pairs
     else:
-        return -1
+        return "impossible"
 
-# Function to check if a permutation is valid
-def is_valid_permutation(perm, A, B):
-    # Loop through each element in the permutation
-    for i in range(len(perm)):
-        # If the current element is equal to A or B, skip it
-        if perm[i] in [A, B]:
-            continue
-        # If the current element is not equal to A or B, find the minimum positive integer j such that f(i, j) = i
-        j = 1
-        while True:
-            if f(perm[i], j) == perm[i]:
-                break
-            j += 1
-        # If the minimum positive integer j such that f(i, j) = i is not equal to A or B, the permutation is invalid
-        if perm[j-1] not in [A, B]:
-            return False
-    # If all elements in the permutation are valid, the permutation is valid
-    return True
-
-# Function to calculate f(i, j)
-def f(i, j):
-    if j == 1:
-        return i
+def print_output(matched_pairs):
+    if matched_pairs == "impossible":
+        print("impossible")
     else:
-        return f(perm[i], j-1)
+        for pair in matched_pairs:
+            print(pair[0], pair[1])
 
-# Test the function with the example input
-print(solve(9, 2, 5)) # should print [6, 5, 8, 3, 4, 1, 9, 2, 7]
-print(solve(3, 2, 1)) # should print [1, 2, 3]
+if __name__ == '__main__':
+    N, M, translators = get_input()
+    matched_pairs = match_translators(N, M, translators)
+    print_output(matched_pairs)
 

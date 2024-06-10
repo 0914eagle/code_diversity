@@ -1,42 +1,29 @@
 
-def solve(N, Q, queries):
-    # Initialize a 2D array to represent the grid
-    grid = [[0] * N for _ in range(N)]
+import math
 
-    # Place the black stones on the central (N-2) x (N-2) squares
-    for i in range(1, N-1):
-        for j in range(1, N-1):
-            grid[i][j] = 1
+def get_arrow_points(px, py, vx, vy, a, b, c, d):
+    # Calculate the angle of the arrow
+    angle = math.atan2(vy, vx)
+    
+    # Calculate the coordinates of the arrow points
+    x1 = px + a * math.cos(angle)
+    y1 = py + a * math.sin(angle)
+    x2 = px + b * math.cos(angle + math.pi / 2)
+    y2 = py + b * math.sin(angle + math.pi / 2)
+    x3 = px + c * math.cos(angle + math.pi)
+    y3 = py + c * math.sin(angle + math.pi)
+    x4 = px + d * math.cos(angle + 3 * math.pi / 2)
+    y4 = py + d * math.sin(angle + 3 * math.pi / 2)
+    
+    # Return the arrow points in counter-clockwise order
+    return [(x1, y1), (x2, y2), (x3, y3), (x4, y4)]
 
-    # Place the white stones on the bottom and right sides
-    for i in range(N):
-        grid[N-1][i] = 1
-        grid[i][N-1] = 1
+def main():
+    px, py, vx, vy, a, b, c, d = map(float, input().split())
+    points = get_arrow_points(px, py, vx, vy, a, b, c, d)
+    for x, y in points:
+        print(f"{x:.9f} {y:.9f}")
 
-    # Process each query
-    for query in queries:
-        # Query type 1: Place a white stone on (1, x) and flip all black stones between (1, x) and the first white stone you hit if you go down
-        if query[0] == 1:
-            x = query[1]
-            for i in range(1, x+1):
-                if grid[1][i] == 1:
-                    break
-                grid[1][i] = 1
-
-        # Query type 2: Place a white stone on (x, 1) and flip all black stones between (x, 1) and the first white stone you hit if you go right
-        elif query[0] == 2:
-            x = query[1]
-            for i in range(1, x+1):
-                if grid[i][1] == 1:
-                    break
-                grid[i][1] = 1
-
-    # Count the number of black stones remaining on the grid
-    count = 0
-    for i in range(N):
-        for j in range(N):
-            if grid[i][j] == 1:
-                count += 1
-
-    return count
+if __name__ == '__main__':
+    main()
 

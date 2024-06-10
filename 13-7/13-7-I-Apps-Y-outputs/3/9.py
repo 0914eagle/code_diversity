@@ -1,14 +1,18 @@
 
-def solve(grid, k):
-    n, m = len(grid), len(grid[0])
-    dp = [[0] * (m+1) for _ in range(n+1)]
-    dp[n][m] = 1
-    for i in range(n-1, -1, -1):
-        for j in range(m-1, -1, -1):
-            dp[i][j] += dp[i+1][j]
-            if j < m-1 and grid[i][j] ^ grid[i][j+1] == k:
-                dp[i][j] += dp[i][j+1]
-            if i < n-1 and grid[i][j] ^ grid[i+1][j] == k:
-                dp[i][j] += dp[i+1][j]
-    return dp[0][0]
+def get_input():
+    return int(input())
+
+def count_odd_digits(n):
+    count = 0
+    for i in range(1, n+1):
+        if len(str(i)) % 2 == 1:
+            count += 1
+    return count
+
+def solve(n):
+    return count_odd_digits(n)
+
+if __name__ == '__main__':
+    n = get_input()
+    print(solve(n))
 

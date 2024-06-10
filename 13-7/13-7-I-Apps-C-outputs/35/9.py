@@ -1,24 +1,49 @@
 
-import math
+import sys
 
-def get_closest_distance(contour_lines):
-    # Initialize the closest distance to a large value
-    closest_distance = 1000000
-    # Iterate over each contour line
-    for contour in contour_lines:
-        # Get the inner and outer heights of the contour
-        inner_height, outer_height = contour[0], contour[1]
-        # Get the number of vertices in the contour
-        num_vertices = contour[2]
-        # Iterate over each vertex in the contour
-        for i in range(num_vertices):
-            # Get the x and y coordinates of the vertex
-            x, y = contour[3 + 2*i], contour[4 + 2*i]
-            # Calculate the distance from the vertex to the target
-            distance = math.sqrt(x**2 + y**2)
-            # If the distance is less than the closest distance, update the closest distance
-            if distance < closest_distance:
-                closest_distance = distance
-    # Return the closest distance
-    return closest_distance
+def get_input():
+    N = int(input())
+    edges = []
+    for i in range(N - 1):
+        x, y = map(int, input().split())
+        edges.append((x, y))
+    return N, edges
+
+def get_pairs(edges):
+    pairs = []
+    for i in range(len(edges)):
+        x, y = edges[i]
+        pairs.append((x, y))
+    return pairs
+
+def get_shortest_path(edges, pairs):
+    shortest_path = []
+    for i in range(len(edges)):
+        x, y = edges[i]
+        shortest_path.append(get_distance(x, y, pairs))
+    return shortest_path
+
+def get_distance(x, y, pairs):
+    distance = 0
+    for pair in pairs:
+        if x in pair and y in pair:
+            distance += 1
+    return distance
+
+def count_ways(shortest_path):
+    ways = 0
+    for i in range(len(shortest_path)):
+        if shortest_path[i] > 0:
+            ways += 1
+    return ways
+
+def main():
+    N, edges = get_input()
+    pairs = get_pairs(edges)
+    shortest_path = get_shortest_path(edges, pairs)
+    ways = count_ways(shortest_path)
+    print(ways)
+
+if __name__ == '__main__':
+    main()
 

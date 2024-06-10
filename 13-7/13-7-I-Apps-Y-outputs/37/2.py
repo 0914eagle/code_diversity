@@ -1,14 +1,18 @@
 
-def solve(points, area):
-    # Calculate the current area of the polygon
-    current_area = abs(0.5 * sum(x0 * y1 - x1 * y0 for ((x0, y0), (x1, y1)) in zip(points + points[:1], points[:-1] + points[-1:])))
+def is_optimal_launch_window(year):
+    # Calculate the number of months since 2018
+    months_since_2018 = 12 * (year - 2018)
+    
+    # Check if the number of months is divisible by 26
+    if months_since_2018 % 26 == 0:
+        return "yes"
+    else:
+        return "no"
 
-    # Calculate the scaling factor to resize the polygon to the desired area
-    scaling_factor = area / current_area
+def main():
+    year = int(input())
+    print(is_optimal_launch_window(year))
 
-    # Resize the polygon by applying the scaling factor to all points
-    resized_points = [(x * scaling_factor, y * scaling_factor) for (x, y) in points]
-
-    # Return the resized polygon
-    return resized_points
+if __name__ == '__main__':
+    main()
 

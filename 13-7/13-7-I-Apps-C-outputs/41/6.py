@@ -1,45 +1,76 @@
 
-def get_maximum_gold(n, m, roads, gold):
-    # Initialize a graph with the given roads
-    graph = [[] for _ in range(n)]
-    for i in range(m):
-        graph[roads[i][0] - 1].append(roads[i][1] - 1)
-        graph[roads[i][1] - 1].append(roads[i][0] - 1)
+def get_sequence_of_moves(grid):
+    # Initialize the sequence of moves
+    sequence = []
     
-    # Initialize the maximum gold to be 0
-    max_gold = 0
+    # Loop through each row of the grid
+    for row in grid:
+        # Loop through each cell in the row
+        for i in range(len(row)):
+            # Check if the current cell is empty
+            if row[i] == "E":
+                # Check if the cell to the left is an organ
+                if i > 0 and row[i-1] != "E":
+                    # Add a move to the left to the sequence
+                    sequence.append("l")
+                # Check if the cell to the right is an organ
+                elif i < len(row)-1 and row[i+1] != "E":
+                    # Add a move to the right to the sequence
+                    sequence.append("r")
+                # Check if the cell is in the top row
+                elif row == grid[0]:
+                    # Add a move up to the sequence
+                    sequence.append("u")
+                # Check if the cell is in the bottom row
+                elif row == grid[-1]:
+                    # Add a move down to the sequence
+                    sequence.append("d")
     
-    # Iterate through all possible paths from the bandit's home to the king's castle
-    for path in all_paths(graph, 0, n - 1):
-        # Initialize the gold collected on this path to be 0
-        gold_collected = 0
-        
-        # Iterate through the villages in the path
-        for i in range(len(path) - 1):
-            # Add the gold in the current village to the total gold collected
-            gold_collected += gold[path[i]]
-            
-            # If the current village is not the bandit's home and the next village is not the king's castle,
-            # then the bandits can steal the gold in the current village
-            if path[i] != 0 and path[i + 1] != n - 1:
-                gold_collected += gold[path[i]]
-        
-        # Update the maximum gold if the gold collected on this path is greater than the current maximum gold
-        max_gold = max(max_gold, gold_collected)
-    
-    return max_gold
+    # Return the sequence of moves
+    return "".join(sequence)
 
-def all_paths(graph, start, end):
-    # Base case: if the start and end vertices are the same, return the path
-    if start == end:
-        yield [start]
+def get_shortcuts(sequence):
+    # Initialize the shortcuts
+    shortcuts = {}
     
-    # Recursive case: generate all paths from the start vertex and extend them by adding the start vertex
-    for path in all_paths(graph, start, end):
-        yield [start] + path
+    # Loop through each character in the sequence
+    for i in range(len(sequence)):
+        # Check if the current character is a move
+        if sequence[i] in ["u", "d", "l", "r"]:
+            # Check if the current character is the start of a shortcut
+            if i+1 < len(sequence) and sequence[i+1] == sequence[i]:
+                # Initialize the shortcut
+                shortcut = sequence[i]
+                # Loop through each subsequent character in the sequence
+                for j in range(i+2, len(sequence)):
+                    # Check if the current character is the end of the shortcut
+                    if sequence[j] != sequence[i]:
+                        # Add the shortcut to the dictionary
+                        shortcuts[shortcut] = sequence[i:j]
+                        # Break out of the loop
+                        break
     
-    # Recursive case: generate all paths from the adjacent vertices and extend them by adding the start vertex
-    for adjacent in graph[start]:
-        for path in all_paths(graph, adjacent, end):
-            yield [start] + path
+    # Return the shortcuts
+    return shortcuts
+
+def main():
+    # Read the input
+    t = int(input())
+    for _ in range(t):
+        # Read the size of the grid
+        k = int(input())
+        # Read the grid
+        grid = [input() for _ in range(2*k+1)]
+        # Get the sequence of moves
+        sequence = get_sequence_of_moves(grid)
+        # Get the shortcuts
+        shortcuts = get_shortcuts(sequence)
+        # Print the shortcuts
+        for shortcut in shortcuts:
+            print(shortcut, shortcuts[shortcut])
+        # Print the final sequence of moves
+        print("DONE")
+
+if __name__ == '__main__':
+    main()
 

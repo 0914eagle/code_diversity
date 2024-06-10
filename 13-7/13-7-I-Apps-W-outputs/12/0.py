@@ -1,8 +1,21 @@
 
-def get_worst_case_scenario(n):
-    if n == 1:
-        return 1
-    if n == 2:
-        return 3
-    return 2 * (n - 1) + 1
+def find_x(n):
+    for x in range(n, 10**13):
+        for y in range(2, n+1):
+            if x % y != 1:
+                break
+        else:
+            return x
+    return -1
+
+def main():
+    n = int(input())
+    x = find_x(n)
+    if x == -1:
+        print("No such integer exists.")
+    else:
+        print(x)
+
+if __name__ == '__main__':
+    main()
 

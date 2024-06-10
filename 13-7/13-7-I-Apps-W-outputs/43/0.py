@@ -1,16 +1,25 @@
 
-def solve(a, b, s):
-    n = len(a)
-    m = len(s)
-    count = 0
+def get_path_info(graph, k):
+    n = len(graph)
+    s = [0] * n
+    m = [0] * n
     for i in range(n):
         for j in range(i+1, n):
-            substring_a = a[i:j+1]
-            for k in range(n):
-                for l in range(k+1, n):
-                    substring_b = b[k:l+1]
-                    concatenated = substring_a + substring_b
-                    if concatenated == s:
-                        count += 1
-    return count
+            if graph[i][j] != 0:
+                s[i] += graph[i][j]
+                m[i] = min(m[i], graph[i][j])
+    return s, m
+
+def get_path_info_from_file(filename, k):
+    with open(filename, "r") as f:
+        n, m = map(int, f.readline().split())
+        graph = []
+        for i in range(n):
+            graph.append(list(map(int, f.readline().split())))
+    return get_path_info(graph, k)
+
+if __name__ == '__main__':
+    s, m = get_path_info_from_file("graph.txt", 3)
+    for i in range(len(s)):
+        print(s[i], m[i])
 

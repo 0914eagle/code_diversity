@@ -1,12 +1,25 @@
 
-def get_names(n):
-    names = []
-    for _ in range(n):
-        first_name, last_name, age, sex = input().split()
-        if sex == 'M':
-            title = 'Mr.'
-        else:
-            title = 'Ms.'
-        names.append([title, first_name, last_name, int(age)])
-    return sorted(names, key=lambda x: (x[3], x[0], x[1]))
+def is_good(s):
+    if len(s) % 2 == 0:
+        return True
+    else:
+        for i in range(1, len(s), 2):
+            if s[i] == s[i-1]:
+                return False
+        return True
+
+def delete_characters(s):
+    if is_good(s):
+        return s
+    else:
+        for i in range(len(s)-1, -1, -1):
+            if s[i] == s[i-1]:
+                return s[:i]
+        return s
+
+if __name__ == '__main__':
+    n = int(input())
+    s = input()
+    print(len(s) - len(delete_characters(s)))
+    print(delete_characters(s))
 

@@ -1,26 +1,34 @@
 
-def solve(s, q):
-    # Initialize an empty dictionary to store the number of occurrences of each character
-    char_count = {}
-    
-    # Loop through each query
-    for query in q:
-        # If the query is of type 1, replace the character at the given position with the new character
-        if query[0] == 1:
-            pos, c = query[1], query[2]
-            s = s[:pos] + c + s[pos+1:]
-        # If the query is of type 2, calculate the number of distinct characters in the substring
-        else:
-            l, r = query[1], query[2]
-            # Loop through each character in the substring
-            for char in s[l-1:r]:
-                # If the character is not in the dictionary, add it to the dictionary with a count of 1
-                if char not in char_count:
-                    char_count[char] = 1
-                # If the character is already in the dictionary, increment its count
-                else:
-                    char_count[char] += 1
-    
-    # Return the number of distinct characters in the substring
-    return len(char_count)
+def get_blocks(arr):
+    n = len(arr)
+    blocks = []
+    for i in range(n):
+        for j in range(i+1, n):
+            if arr[i] + arr[j] == arr[i+1] + arr[j+1]:
+                blocks.append((i, j))
+    return blocks
+
+def get_maximum_blocks(blocks):
+    max_blocks = []
+    for block in blocks:
+        if block not in max_blocks:
+            max_blocks.append(block)
+    return max_blocks
+
+def get_blocks_output(blocks):
+    output = []
+    for block in blocks:
+        output.append(str(block[0] + 1) + " " + str(block[1] + 1))
+    return "\n".join(output)
+
+def main():
+    n = int(input())
+    arr = list(map(int, input().split()))
+    blocks = get_blocks(arr)
+    max_blocks = get_maximum_blocks(blocks)
+    print(len(max_blocks))
+    print(get_blocks_output(max_blocks))
+
+if __name__ == '__main__':
+    main()
 

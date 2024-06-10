@@ -1,17 +1,13 @@
 
-def get_median(s, t):
-    k = len(s)
-    assert k == len(t)
-    assert s < t
-    assert k % 2 == 1
+def get_flight_times(p, q, r):
+    return [p, q, r]
 
-    med = ""
-    for i in range(k):
-        if s[i] < t[i]:
-            med += "a"
-        elif s[i] > t[i]:
-            med += "z"
-        else:
-            med += "a"
-    return med
+def get_min_flight_time(flight_times):
+    return min(flight_times)
+
+if __name__ == '__main__':
+    p, q, r = map(int, input().split())
+    flight_times = get_flight_times(p, q, r)
+    min_flight_time = get_min_flight_time(flight_times)
+    print(min_flight_time)
 

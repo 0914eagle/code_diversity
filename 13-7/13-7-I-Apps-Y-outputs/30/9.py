@@ -1,11 +1,20 @@
 
-def solve(s, t):
-    n = len(s)
-    m = len(t)
-    dp = [0] * (n + 1)
-    for i in range(n):
-        for j in range(m):
-            if s[i] == t[j]:
-                dp[i + 1] = max(dp[i + 1], dp[i] + 1)
-    return n - dp[n]
+def get_sequence_digit(k):
+    # Find the block that contains the digit at position k
+    block_size = 1
+    while k > block_size:
+        k -= block_size
+        block_size += 1
+    
+    # Return the digit at position k in the block
+    return str(block_size)[k - 1]
+
+def main():
+    q = int(input())
+    for i in range(q):
+        k = int(input())
+        print(get_sequence_digit(k))
+
+if __name__ == '__main__':
+    main()
 

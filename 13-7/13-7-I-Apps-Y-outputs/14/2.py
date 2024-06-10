@@ -1,18 +1,22 @@
 
-import math
+def get_missing_cards(card_labels):
+    suits = ["P", "K", "H", "T"]
+    cards_per_suit = [0, 0, 0, 0]
+    for label in card_labels:
+        suit = label[0]
+        number = int(label[1:])
+        if suit in suits:
+            index = suits.index(suit)
+            cards_per_suit[index] += 1
+    for i in range(len(suits)):
+        if cards_per_suit[i] != 13:
+            return "GRESKA"
+    return " ".join(str(x) for x in cards_per_suit)
 
-def solve(A, B, H, M):
-    # Calculate the angle made by the hour hand
-    hour_angle = (30 * H) % 360
-    
-    # Calculate the angle made by the minute hand
-    minute_angle = (6 * M) % 360
-    
-    # Calculate the angle between the hour and minute hands
-    angle_between_hands = abs(hour_angle - minute_angle)
-    
-    # Calculate the distance between the hands
-    distance = math.sin(math.radians(angle_between_hands)) * (A + B)
-    
-    return round(distance, 9)
+def main():
+    card_labels = input()
+    print(get_missing_cards(card_labels))
+
+if __name__ == '__main__':
+    main()
 

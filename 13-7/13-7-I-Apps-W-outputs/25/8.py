@@ -1,22 +1,40 @@
 
-def solve(n, points):
-    # Sort the points by their x-coordinates
-    sorted_points = sorted(points, key=lambda x: x[0])
+def get_min_switches(n, teams):
+    # Initialize variables
+    switches = 0
+    team_a = []
+    team_b = []
+    team_c = []
 
-    # Initialize the variables to keep track of the number of lines and the current x-coordinate
-    num_lines = 0
-    current_x = sorted_points[0][0]
-
-    # Iterate through the points and check if they lie on the current line
-    for i in range(1, n):
-        if sorted_points[i][0] == current_x:
-            num_lines += 1
+    # Separate the teams
+    for i in range(n):
+        if teams[i] == "A":
+            team_a.append(i)
+        elif teams[i] == "B":
+            team_b.append(i)
         else:
-            current_x = sorted_points[i][0]
+            team_c.append(i)
 
-    # If the number of lines is equal to the number of points, return YES, otherwise return NO
-    if num_lines == n:
-        return "YES"
-    else:
-        return "NO"
+    # Check if teams are already lined up correctly
+    if team_a == list(range(len(team_a))) and team_b == list(range(len(team_b))) and team_c == list(range(len(team_c))):
+        return switches
+
+    # Switch teams if necessary
+    for i in range(n):
+        if teams[i] != "A" and teams[i - 1] == "A":
+            switches += 1
+        elif teams[i] != "B" and teams[i - 1] == "B":
+            switches += 1
+        elif teams[i] != "C" and teams[i - 1] == "C":
+            switches += 1
+
+    return switches
+
+def main():
+    n = int(input())
+    teams = input()
+    print(get_min_switches(n, teams))
+
+if __name__ == '__main__':
+    main()
 

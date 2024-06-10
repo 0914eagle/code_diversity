@@ -1,13 +1,25 @@
 
-def solve(detectors, houses):
-    # Initialize a list to store the number of phone calls at each house
-    calls = [0] * (houses + 1)
+import math
 
-    # Loop through each detector and increment the number of phone calls at the corresponding houses
-    for detector in detectors:
-        calls[detector[0]] += detector[1]
-        calls[detector[0] + 1] += detector[1]
+def get_sunlight_hours(buildings):
+    total_hours = 0
+    for building in buildings:
+        x, h = building
+        total_hours += (h / 180) * (180 / math.pi) * (math.acos(x / 180) - math.acos((x - 180) / 180))
+    return total_hours
 
-    # Return the minimum number of phone calls made
-    return min(calls)
+def get_sunlight_hours_per_building(buildings):
+    total_hours = get_sunlight_hours(buildings)
+    return [total_hours / len(buildings) for _ in range(len(buildings))]
+
+def main():
+    num_buildings = int(input())
+    buildings = []
+    for _ in range(num_buildings):
+        x, h = map(int, input().split())
+        buildings.append((x, h))
+    print(*get_sunlight_hours_per_building(buildings), sep='\n')
+
+if __name__ == '__main__':
+    main()
 

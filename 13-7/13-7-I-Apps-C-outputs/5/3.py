@@ -1,47 +1,47 @@
 
-def solve(matrix):
-    # Initialize a dictionary to store the tree heights and their connections
-    tree_heights = {}
-    for i in range(len(matrix)):
-        for j in range(len(matrix[0])):
-            tree_heights[(i, j)] = matrix[i][j]
+def get_max_profit(producer_prices, producer_start_dates, consumer_prices, consumer_end_dates):
+    # Initialize variables
+    max_profit = 0
+    selected_producer = None
+    selected_consumer = None
 
-    # Iterate through the tree heights and find the connected trees
-    connected_trees = []
-    for i in range(len(matrix)):
-        for j in range(len(matrix[0])):
-            # If the tree has already been connected, skip it
-            if (i, j) in connected_trees:
-                continue
-            # Find all connected trees and add them to the list
-            connected_trees += find_connected_trees((i, j), tree_heights)
+    # Loop through each producer and consumer combination
+    for producer_index, producer_price in enumerate(producer_prices):
+        for consumer_index, consumer_price in enumerate(consumer_prices):
+            # Check if the producer starts before the consumer ends
+            if producer_start_dates[producer_index] <= consumer_end_dates[consumer_index]:
+                # Calculate the profit for this producer and consumer combination
+                profit = producer_price - consumer_price
 
-    # Return the size of the largest connected group of trees
-    return max(len(connected_trees), key=len)
+                # Check if the profit is greater than the current max profit
+                if profit > max_profit:
+                    max_profit = profit
+                    selected_producer = producer_index
+                    selected_consumer = consumer_index
 
-# Find all connected trees starting from a given tree
-def find_connected_trees(tree, tree_heights):
-    connected_trees = []
-    queue = [tree]
-    while queue:
-        current_tree = queue.pop(0)
-        connected_trees.append(current_tree)
-        for neighbor in get_neighbors(current_tree, tree_heights):
-            if neighbor not in connected_trees and neighbor not in queue:
-                queue.append(neighbor)
-    return connected_trees
+    # Return the max profit and the selected producer and consumer indices
+    return max_profit, selected_producer, selected_consumer
 
-# Get the neighbors of a given tree
-def get_neighbors(tree, tree_heights):
-    i, j = tree
-    neighbors = []
-    if i > 0:
-        neighbors.append((i-1, j))
-    if i < len(tree_heights) - 1:
-        neighbors.append((i+1, j))
-    if j > 0:
-        neighbors.append((i, j-1))
-    if j < len(tree_heights[0]) - 1:
-        neighbors.append((i, j+1))
-    return neighbors
+def main():
+    # Read the input
+    m, n = map(int, input().split())
+    producer_prices = []
+    producer_start_dates = []
+    for _ in range(m):
+        producer_prices.append(int(input()))
+        producer_start_dates.append(int(input()))
+    consumer_prices = []
+    consumer_end_dates = []
+    for _ in range(n):
+        consumer_prices.append(int(input()))
+        consumer_end_dates.append(int(input()))
+
+    # Call the get_max_profit function
+    max_profit, selected_producer, selected_consumer = get_max_profit(producer_prices, producer_start_dates, consumer_prices, consumer_end_dates)
+
+    # Print the result
+    print(max_profit)
+
+if __name__ == '__main__':
+    main()
 

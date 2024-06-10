@@ -1,25 +1,28 @@
 
-def polycarp_game(a):
-    n = len(a)
-    if n == 1:
-        return a[0]
-    
-    # Initialize the sum of non-deleted elements
-    sum_non_deleted = sum(a)
-    
-    # Initialize the parity of the last deleted element
-    parity = 0
-    
-    # Iterate through the elements of the array
+def get_min_distance(key_points):
+    # Sort the key points by their x-coordinate
+    sorted_key_points = sorted(key_points, key=lambda x: x[0])
+
+    # Initialize the minimum distance to 0
+    min_distance = 0
+
+    # Loop through the key points and calculate the distance to the next point
+    for i in range(len(sorted_key_points) - 1):
+        current_point = sorted_key_points[i]
+        next_point = sorted_key_points[i + 1]
+        distance = abs(current_point[0] - next_point[0]) + abs(current_point[1] - next_point[1])
+        min_distance += distance
+
+    return min_distance
+
+def main():
+    n = int(input())
+    key_points = []
     for i in range(n):
-        # If the current element has the opposite parity of the last deleted element, delete it
-        if a[i] % 2 != parity:
-            sum_non_deleted -= a[i]
-            parity = 1 - parity
-        # If the current element has the same parity as the last deleted element, do not delete it
-        else:
-            pass
-    
-    # Return the minimum possible sum of non-deleted elements
-    return sum_non_deleted
+        x, y = map(int, input().split())
+        key_points.append((x, y))
+    print(get_min_distance(key_points))
+
+if __name__ == '__main__':
+    main()
 

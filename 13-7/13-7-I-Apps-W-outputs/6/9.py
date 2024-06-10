@@ -1,26 +1,29 @@
 
-def solve(n):
-    # Initialize the number of bacteria to 1 and the current mass to 1
-    num_bacteria, current_mass = 1, 1
-    
-    # Initialize the number of nights to 0
-    nights = 0
-    
-    # Loop until the total mass is greater than or equal to the target mass
-    while current_mass < n:
-        # Increment the number of bacteria by the number that will split
-        num_bacteria += num_bacteria
-        
-        # Increment the current mass by the total mass of the bacteria
-        current_mass += num_bacteria
-        
-        # Increment the number of nights
-        nights += 1
-    
-    # If the current mass is equal to the target mass, return the number of nights and the number of bacteria that will split on each night
-    if current_mass == n:
-        return nights, [num_bacteria // 2] * nights
-    
-    # Otherwise, return -1
-    return -1
+def get_divisors(n):
+    divisors = []
+    for i in range(1, int(n**0.5) + 1):
+        if n % i == 0:
+            divisors.append(i)
+            if i * i != n:
+                divisors.append(n // i)
+    divisors.sort(reverse=True)
+    return divisors
+
+def is_lovely(n):
+    divisors = get_divisors(n)
+    for d in divisors:
+        if d**2 == n:
+            return False
+    return True
+
+def get_biggest_lovely(n):
+    divisors = get_divisors(n)
+    for d in divisors:
+        if is_lovely(d):
+            return d
+    return 1
+
+if __name__ == '__main__':
+    n = int(input())
+    print(get_biggest_lovely(n))
 

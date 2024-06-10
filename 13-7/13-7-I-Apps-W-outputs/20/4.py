@@ -1,30 +1,30 @@
 
-def find_network_topology(n, m, edges):
-    # Initialize a graph with n nodes and m edges
-    graph = [[] for _ in range(n)]
+def get_tree_vertices(n):
+    return list(range(1, n + 1))
+
+def get_tree_edges(n, edges):
+    tree = {}
     for edge in edges:
-        graph[edge[0] - 1].append(edge[1])
-        graph[edge[1] - 1].append(edge[0])
+        tree[edge[0]] = tree.get(edge[0], []) + [edge[1]]
+        tree[edge[1]] = tree.get(edge[1], []) + [edge[0]]
+    return tree
 
-    # Check if the graph is connected
-    visited = [False] * n
-    queue = [0]
-    while queue:
-        node = queue.pop(0)
-        if not visited[node]:
-            visited[node] = True
-            queue += graph[node]
+def count_lifelines(tree):
+    lifelines = 0
+    for vertex in tree:
+        for neighbor in tree[vertex]:
+            if neighbor > vertex:
+                lifelines += 1
+    return lifelines
 
-    if not all(visited):
-        return "unknown topology"
+def main():
+    n = int(input())
+    edges = []
+    for i in range(n - 1):
+        edges.append(list(map(int, input().split())))
+    tree = get_tree_edges(n, edges)
+    print(count_lifelines(tree))
 
-    # Check if the graph is a bus, ring, or star
-    if len(edges) == n - 1:
-        return "bus topology"
-    elif len(edges) == n - 2:
-        return "ring topology"
-    elif len(edges) == n - 3:
-        return "star topology"
-    else:
-        return "unknown topology"
+if __name__ == '__main__':
+    main()
 

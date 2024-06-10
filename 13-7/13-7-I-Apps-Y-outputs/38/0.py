@@ -1,19 +1,29 @@
 
-def name_directory(people):
-    # Sort the people by age and then by last name
-    people = sorted(people, key=lambda x: (x[2], x.lower()))
-    # Create a dictionary to map each person's sex to a title
-    titles = {
-        "M": "Mr.",
-        "F": "Ms.",
-    }
-    # Create a list to store the formatted names
-    formatted_names = []
-    for person in people:
-        # Extract the first name, last name, and sex from the person's information
-        first_name, last_name, sex = person[0], person[1], person[3]
-        # Create the formatted name using the title and the first and last names
-        formatted_name = titles[sex] + " " + first_name + " " + last_name
-        formatted_names.append(formatted_name)
-    return formatted_names
+def is_good(s):
+    if len(s) % 2 == 0:
+        return True
+    else:
+        for i in range(1, len(s), 2):
+            if s[i] == s[i-1]:
+                return False
+        return True
+
+def delete_characters(s):
+    if is_good(s):
+        return s
+    else:
+        for i in range(len(s)):
+            if s[i] == s[i-1]:
+                return s[:i] + s[i+1:]
+        return s
+
+def main():
+    n = int(input())
+    s = input()
+    k = len(s) - len(delete_characters(s))
+    print(k)
+    print(delete_characters(s))
+
+if __name__ == '__main__':
+    main()
 

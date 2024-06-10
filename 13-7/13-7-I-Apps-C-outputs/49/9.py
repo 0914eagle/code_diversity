@@ -1,9 +1,22 @@
 
-def get_suffixes(s):
-    suffixes = set()
-    n = len(s)
-    for i in range(n-2, 0, -1):
-        if s[i] != s[i+1] and s[i] != s[i+2]:
-            suffixes.add(s[i:i+3])
-    return len(suffixes), *suffixes
+def get_input():
+    N, M = map(int, input().split())
+    permutation = list(map(int, input().split()))
+    swaps = []
+    for i in range(M):
+        a, b = map(int, input().split())
+        swaps.append((a, b))
+    return N, M, permutation, swaps
+
+def solve(N, M, permutation, swaps):
+    # Your code here
+    pass
+
+def main():
+    N, M, permutation, swaps = get_input()
+    result = solve(N, M, permutation, swaps)
+    print(result)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,16 +1,12 @@
 
-def get_median(s, t):
-    k = len(s)
-    assert k == len(t)
-    assert s < t
-    assert k % 2 == 1
+def get_flight_times():
+    return list(map(int, input().split()))
 
-    # create a list of all strings between s and t, inclusive
-    strings = [s[i] + t[i] for i in range(k)]
+def get_min_flight_time(flight_times):
+    P, Q, R = flight_times
+    return min(P + Q, Q + R, R + P)
 
-    # sort the list
-    strings.sort()
-
-    # return the middle element
-    return strings[k//2]
+if __name__ == '__main__':
+    flight_times = get_flight_times()
+    print(get_min_flight_time(flight_times))
 

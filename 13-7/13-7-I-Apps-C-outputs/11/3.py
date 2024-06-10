@@ -1,28 +1,54 @@
 
-def get_min_energy(n, q, a, k):
-    # Initialize a dictionary to store the minimum energy released for each number of neutrons
-    min_energy = {1: 0}
-    for i in range(2, n+1):
-        min_energy[i] = a[i-1]
+def get_longest_wait_time(orders, roads, pizzeria_location):
+    # Initialize a dictionary to store the shortest distance from the pizzeria to each road intersection
+    distances = {}
+    for road in roads:
+        distances[road[0]] = 0
+        distances[road[1]] = 0
+    
+    # Initialize a priority queue to store the orders
+    pq = []
+    for order in orders:
+        heapq.heappush(pq, (order[1], order[0]))
+    
+    # Initialize a dictionary to store the delivery time for each order
+    delivery_times = {}
+    
+    # Loop through the orders and calculate the delivery time for each order
+    while pq:
+        current_time, current_order = heapq.heappop(pq)
+        current_location = current_order[0]
+        if current_location != pizzeria_location:
+            # Calculate the distance from the pizzeria to the current location
+            distance = distances[current_location]
+            # Calculate the delivery time for the current order
+            delivery_time = current_time + distance
+            # Update the delivery time for the current order
+            delivery_times[current_order] = delivery_time
+            # Update the distances for the roads leading to the current location
+            for road in roads:
+                if road[0] == current_location or road[1] == current_location:
+                    distances[road[0]] = min(distances[road[0]], delivery_time + road[2])
+                    distances[road[1]] = min(distances[road[1]], delivery_time + road[2])
+    
+    # Find the longest delivery time
+    longest_delivery_time = max(delivery_times.values())
+    
+    return longest_delivery_time
 
-    # Loop through each query and find the minimum energy released
-    for i in range(q):
-        # If the number of neutrons is less than or equal to the neutron threshold, return the energy released
-        if k[i] <= n:
-            print(min_energy[k[i]])
-        # Otherwise, decompose the atom into two atoms and find the minimum energy released for each atom
-        else:
-            # Find the number of neutrons in each atom
-            i, j = divmod(k[i], 2)
-            # If the number of neutrons in each atom is less than or equal to the neutron threshold, return the energy released
-            if i <= n and j <= n:
-                print(min_energy[i] + min_energy[j])
-            # Otherwise, recursively find the minimum energy released for each atom
-            else:
-                print(get_min_energy(n, 1, a, i) + get_min_energy(n, 1, a, j))
+def main():
+    n, m = map(int, input().split())
+    roads = []
+    for _ in range(m):
+        u, v, d = map(int, input().split())
+        roads.append((u, v, d))
+    k = int(input())
+    orders = []
+    for _ in range(k):
+        s, u, t = map(int, input().split())
+        orders.append((s, u, t))
+    print(get_longest_wait_time(orders, roads, 1))
 
-n, q = map(int, input().split())
-a = list(map(int, input().split()))
-k = list(map(int, input().split()))
-get_min_energy(n, q, a, k)
+if __name__ == '__main__':
+    main()
 

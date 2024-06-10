@@ -1,16 +1,22 @@
 
-def solve(A, B, H, M):
-    # Calculate the angle made by the hour hand
-    hour_angle = (360 / 12) * H
-    
-    # Calculate the angle made by the minute hand
-    minute_angle = (360 / 60) * M
-    
-    # Calculate the angle between the hour and minute hands
-    angle_between_hands = abs(hour_angle - minute_angle)
-    
-    # Calculate the distance between the unfixed endpoints of the hands
-    distance = (A * sin(radians(angle_between_hands))) + (B * sin(radians(angle_between_hands)))
-    
-    return distance
+def is_complete_deck(cards):
+    suits = ["P", "K", "H", "T"]
+    numbers = [str(i) for i in range(1, 14)]
+    card_count = {suit: 0 for suit in suits}
+    for card in cards:
+        suit, number = card[0], card[1:]
+        if suit not in suits or number not in numbers:
+            return "GRESKA"
+        card_count[suit] += 1
+    for suit in suits:
+        if card_count[suit] != 13:
+            return "GRESKA"
+    return " ".join([str(13 - card_count[suit]) for suit in suits])
+
+def main():
+    cards = input()
+    print(is_complete_deck(cards))
+
+if __name__ == '__main__':
+    main()
 

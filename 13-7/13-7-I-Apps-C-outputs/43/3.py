@@ -1,15 +1,25 @@
 
-def is_winning_strategy(n, k, ancient_numbers):
-    # Check if k is one of the ancient numbers
-    if k in ancient_numbers:
-        return "Yes"
+def solve(expression, p, m):
+    # convert the expression to a polynomial
+    polynomial = poly(expression)
     
-    # Check if any two ancient numbers have a common remainder
-    for i in range(n):
-        for j in range(i+1, n):
-            if ancient_numbers[i] % k == ancient_numbers[j] % k:
-                return "No"
+    # find the roots of the polynomial
+    roots = polynomial.all_roots()
     
-    # If we reach here, then Arya has a winning strategy
-    return "Yes"
+    # find the root with the smallest non-negative value that gives a remainder of p when divided by m
+    for root in roots:
+        if root >= 0 and polynomial(root) % m == p:
+            return root
+    
+    # if no root is found, return -1
+    return -1
+
+def poly(expression):
+    # convert the expression to a polynomial
+    poly = sympy.Poly(expression, x)
+    return poly
+
+if __name__ == '__main__':
+    expression, p, m = input().split()
+    print(solve(expression, int(p), int(m)))
 

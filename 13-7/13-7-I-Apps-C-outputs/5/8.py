@@ -1,28 +1,48 @@
 
-def get_largest_connected_group(heights, growth_speeds):
-    # Initialize a dictionary to store the tree heights and their connections
-    tree_dict = {}
-    for i in range(len(heights)):
-        for j in range(len(heights[0])):
-            tree_dict[(i, j)] = (heights[i][j], set())
+def get_max_profit(producer_prices, consumer_prices, start_dates, end_dates):
+    # Initialize variables
+    max_profit = 0
+    selected_producer = None
+    selected_consumer = None
 
-    # Iterate over the tree dictionary and update the connections for each tree
-    for i in range(len(heights)):
-        for j in range(len(heights[0])):
-            current_tree = tree_dict[(i, j)]
-            for di in range(-1, 2):
-                for dj in range(-1, 2):
-                    if 0 <= i + di < len(heights) and 0 <= j + dj < len(heights[0]):
-                        neighbor_tree = tree_dict[(i + di, j + dj)]
-                        if current_tree[0] == neighbor_tree[0]:
-                            current_tree[1].add((i + di, j + dj))
-                            neighbor_tree[1].add((i, j))
+    # Loop through each producer and consumer combination
+    for producer_index, producer_price in enumerate(producer_prices):
+        for consumer_index, consumer_price in enumerate(consumer_prices):
+            # Check if the producer and consumer are compatible (i.e. the producer starts before the consumer ends and the consumer starts before the producer ends)
+            if start_dates[producer_index] <= end_dates[consumer_index] and start_dates[consumer_index] <= start_dates[producer_index]:
+                # Calculate the profit for this combination
+                profit = producer_price - consumer_price
 
-    # Find the largest connected group of trees with the same height
-    largest_group = None
-    for tree in tree_dict.values():
-        if largest_group is None or len(largest_group[1]) < len(tree[1]):
-            largest_group = tree
+                # Check if the profit is greater than the current max profit
+                if profit > max_profit:
+                    max_profit = profit
+                    selected_producer = producer_index
+                    selected_consumer = consumer_index
 
-    return len(largest_group[1])
+    return max_profit, selected_producer, selected_consumer
+
+def main():
+    # Read the input
+    num_producers, num_consumers = map(int, input().split())
+    producer_prices = []
+    start_dates = []
+    for _ in range(num_producers):
+        producer_price, start_date = map(int, input().split())
+        producer_prices.append(producer_price)
+        start_dates.append(start_date)
+    consumer_prices = []
+    end_dates = []
+    for _ in range(num_consumers):
+        consumer_price, end_date = map(int, input().split())
+        consumer_prices.append(consumer_price)
+        end_dates.append(end_date)
+
+    # Call the function to get the max profit
+    max_profit, selected_producer, selected_consumer = get_max_profit(producer_prices, consumer_prices, start_dates, end_dates)
+
+    # Print the result
+    print(max_profit)
+
+if __name__ == '__main__':
+    main()
 

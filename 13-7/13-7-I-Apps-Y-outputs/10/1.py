@@ -1,18 +1,18 @@
 
-def solve(s, t):
-    k = len(s)
-    assert k == len(t)
-    assert s < t
-    assert k % 2 == 1
+def get_flight_times(p, q, r):
+    return p, q, r
 
-    med = ""
-    for i in range(k):
-        if s[i] < t[i]:
-            med += "a"
-        elif s[i] > t[i]:
-            med += "z"
-        else:
-            med += "b"
+def get_min_sum_of_flight_times(p, q, r):
+    flights = [(p, q), (q, r), (r, p)]
+    min_sum = float('inf')
+    for i in range(3):
+        for j in range(i+1, 3):
+            flight_time = flights[i][1] + flights[j][0]
+            if flight_time < min_sum:
+                min_sum = flight_time
+    return min_sum
 
-    return med
+if __name__ == '__main__':
+    p, q, r = map(int, input().split())
+    print(get_min_sum_of_flight_times(p, q, r))
 

@@ -1,17 +1,25 @@
 
-def largest_sum_of_squares(numbers):
-    # Sort the numbers in non-decreasing order
-    numbers.sort()
-    # Initialize the result
-    result = 0
-    # Loop through the numbers
-    for i in range(len(numbers)):
-        # Calculate the sum of squares
-        result += numbers[i] * numbers[i]
-        # If there are more numbers left, calculate the bitwise AND and bitwise OR
-        if i + 1 < len(numbers):
-            result += numbers[i] & numbers[i + 1]
-            result += numbers[i] | numbers[i + 1]
-    # Return the result
-    return result
+def get_remainders(n, k):
+    remainders = []
+    for i in range(1, k+1):
+        remainders.append(n % i)
+    return remainders
+
+def are_remainders_distinct(remainders):
+    for i in range(len(remainders)):
+        for j in range(i+1, len(remainders)):
+            if remainders[i] == remainders[j]:
+                return False
+    return True
+
+def main():
+    n, k = map(int, input().split())
+    remainders = get_remainders(n, k)
+    if are_remainders_distinct(remainders):
+        print("Yes")
+    else:
+        print("No")
+
+if __name__ == '__main__':
+    main()
 

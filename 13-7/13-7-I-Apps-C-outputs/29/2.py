@@ -1,15 +1,57 @@
 
-def is_symmetric(grid):
-    # Check if the grid is a square
-    if len(grid) != len(grid[0]):
-        return "NO"
+def get_cycle_length(n, a):
+    # Initialize a visited array and a parent array
+    visited = [False] * n
+    parent = [-1] * n
+    
+    # Loop through each node and check if it has a cycle
+    for i in range(n):
+        if not visited[i]:
+            if has_cycle(i, visited, parent):
+                return 1
+    
+    # If no cycle is found, return -1
+    return -1
 
-    # Check if the grid is symmetric
-    for i in range(len(grid)):
-        for j in range(i, len(grid[0])):
-            if grid[i][j] != grid[len(grid) - 1 - i][len(grid[0]) - 1 - j]:
-                return "NO"
+def has_cycle(node, visited, parent):
+    # Mark the current node as visited and set its parent
+    visited[node] = True
+    parent[node] = node
+    
+    # Loop through the neighbors of the current node
+    for neighbor in get_neighbors(node, a):
+        # If the neighbor is not visited, recursively call has_cycle
+        if not visited[neighbor]:
+            if has_cycle(neighbor, visited, parent):
+                return True
+        # If the neighbor is visited and not the parent, we have a cycle
+        elif neighbor != parent[node]:
+            return True
+    
+    # If no cycle is found in the neighbors, return False
+    return False
 
-    # If the grid is symmetric, return "YES"
-    return "YES"
+def get_neighbors(node, a):
+    # Get the neighbors of the current node
+    neighbors = []
+    for i in range(len(a)):
+        if a[node] & a[i] != 0:
+            neighbors.append(i)
+    
+    # Return the neighbors
+    return neighbors
+
+def main():
+    # Read the input
+    n = int(input())
+    a = list(map(int, input().split()))
+    
+    # Call the function to get the cycle length
+    cycle_length = get_cycle_length(n, a)
+    
+    # Print the output
+    print(cycle_length)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,11 +1,25 @@
 
-def solve(s, t):
-    n = len(s)
-    m = len(t)
-    dp = [0] * (n + 1)
-    for i in range(n):
-        for j in range(m):
-            if s[i] == t[j]:
-                dp[i + 1] = max(dp[i + 1], dp[i] + 1)
-    return n - dp[n]
+def sequence_element(k):
+    # Find the block of numbers that contains the k-th element
+    block_size = 1
+    while k > block_size:
+        k -= block_size
+        block_size += 1
+    
+    # Calculate the position of the element in the block
+    position_in_block = k
+    
+    # Calculate the value of the element
+    value = (position_in_block * (position_in_block + 1)) // 2
+    
+    return value % 10
+
+def main():
+    q = int(input())
+    for i in range(q):
+        k = int(input())
+        print(sequence_element(k))
+
+if __name__ == '__main__':
+    main()
 

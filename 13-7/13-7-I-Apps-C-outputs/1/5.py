@@ -1,37 +1,37 @@
 
-def solve(m, h1, a1, x1, y1, h2, a2, x2, y2):
-    # Initialize the minimum time to -1
-    min_time = -1
+def get_toy_assignment(n_kids, n_toys, play_duration, events):
+    # Initialize a dictionary to store the toy assignments for each kid
+    toy_assignments = {}
 
-    # Create a set to store the visited states
-    visited = set()
+    # Iterate through the events and update the toy assignments for each kid
+    for event in events:
+        kid, toy = event[1], event[2]
+        if toy != 0:
+            toy_assignments[kid] = toy
+        else:
+            del toy_assignments[kid]
 
-    # Initialize the current state
-    current_state = (h1, h2)
+    # Check if there is a toy assignment for each kid
+    if len(toy_assignments) != n_kids:
+        return "impossible"
 
-    # Initialize the time step
-    time_step = 0
+    # Check if the toy assignments are valid (i.e., no kid is playing with the same toy as another kid)
+    for kid1, toy1 in toy_assignments.items():
+        for kid2, toy2 in toy_assignments.items():
+            if kid1 != kid2 and toy1 == toy2:
+                return "impossible"
 
-    # Loop until the minimum time is found or the queue is empty
-    while min_time == -1 and current_state not in visited:
-        # Add the current state to the visited set
-        visited.add(current_state)
+    # Return the toy assignments
+    return list(toy_assignments.values())
 
-        # Check if the current state is the desired state
-        if current_state == (a1, a2):
-            # If it is, return the time step
-            min_time = time_step
-            break
+def main():
+    n_kids, n_toys = map(int, input().split())
+    play_duration, n_events = map(int, input().split())
+    events = []
+    for _ in range(n_events):
+        events.append(list(map(int, input().split())))
+    print(get_toy_assignment(n_kids, n_toys, play_duration, events))
 
-        # Increment the time step
-        time_step += 1
-
-        # Calculate the next state
-        next_state = (((x1 * current_state[0] + y1) % m), ((x2 * current_state[1] + y2) % m))
-
-        # Add the next state to the queue
-        current_state = next_state
-
-    # Return the minimum time
-    return min_time
+if __name__ == '__main__':
+    main()
 

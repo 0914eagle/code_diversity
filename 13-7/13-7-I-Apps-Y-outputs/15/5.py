@@ -1,22 +1,18 @@
 
-def solve(s, t):
-    s_count = {}
-    t_count = {}
-    for c in s:
-        if c not in s_count:
-            s_count[c] = 1
-        else:
-            s_count[c] += 1
-    for c in t:
-        if c not in t_count:
-            t_count[c] = 1
-        else:
-            t_count[c] += 1
-    for c in s_count:
-        if c not in t_count or s_count[c] > t_count[c]:
-            return "No"
-    for c in t_count:
-        if c not in s_count or t_count[c] > s_count[c]:
-            return "No"
-    return "Yes"
+def get_strings(n, k):
+    strings = []
+    for i in range(n):
+        for j in range(n):
+            if i + j == n - 2:
+                strings.append('a' * i + 'b' * j + 'b' * (n - i - j))
+    return strings[k - 1]
+
+def main():
+    t = int(input())
+    for _ in range(t):
+        n, k = map(int, input().split())
+        print(get_strings(n, k))
+
+if __name__ == '__main__':
+    main()
 

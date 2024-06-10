@@ -1,18 +1,35 @@
 
-def solve(arr):
-    # Calculate the prefix sum of the array
-    prefix_sum = [0]
-    for i in range(len(arr)):
-        prefix_sum.append(prefix_sum[i] + arr[i])
-    
-    # Initialize the minimum number of insertions to 0
-    min_insertions = 0
-    
-    # Iterate through the prefix sum array
-    for i in range(len(prefix_sum)):
-        # If the prefix sum is 0, we need to insert an element to make it non-zero
-        if prefix_sum[i] == 0:
-            min_insertions += 1
-    
-    return min_insertions
+def get_max_fraction(n, capacities, canisters):
+    # Sort the canisters in non-increasing order
+    sorted_canisters = sorted(canisters, reverse=True)
+
+    # Initialize the fraction of helium in each balloon to 0
+    fractions = [0] * n
+
+    # Iterate through the canisters and assign them to the balloons
+    for i, canister in enumerate(sorted_canisters):
+        # Find the balloon with the smallest fraction of helium
+        smallest_fraction_index = fractions.index(min(fractions))
+
+        # Assign the canister to the balloon with the smallest fraction of helium
+        fractions[smallest_fraction_index] += canister
+
+        # If the balloon is now full, remove it from the list of fractions
+        if fractions[smallest_fraction_index] >= capacities[smallest_fraction_index]:
+            fractions.pop(smallest_fraction_index)
+
+    # If all balloons have been filled, return the maximum fraction
+    if not fractions:
+        return max(fractions)
+    else:
+        return "impossible"
+
+def main():
+    n = int(input())
+    capacities = list(map(int, input().split()))
+    canisters = list(map(int, input().split()))
+    print(get_max_fraction(n, capacities, canisters))
+
+if __name__ == '__main__':
+    main()
 

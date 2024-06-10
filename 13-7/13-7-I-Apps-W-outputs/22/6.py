@@ -1,36 +1,52 @@
 
-def get_minimum_time(n, m, building):
-    # Initialize variables
-    total_time = 0
-    current_floor = 0
-    current_room = 0
-    rooms_per_floor = m + 2
-    floors = n
+def is_same_map(map1, map2):
+    # Check if the maps have the same dimensions
+    if len(map1) != len(map2):
+        return False
 
-    # Loop through each floor
-    for floor in range(floors):
-        # Get the current floor's building description
-        floor_building = building[floor]
+    # Check if the maps are identical
+    for i in range(len(map1)):
+        for j in range(len(map1[0])):
+            if map1[i][j] != map2[i][j]:
+                return False
 
-        # Loop through each room in the current floor
-        for room in range(rooms_per_floor):
-            # Check if the light is on
-            if floor_building[room] == "1":
-                # Calculate the time it takes to turn off the light
-                time = abs(current_room - room)
+    return True
 
-                # Update the total time
-                total_time += time
+def rotate_map(map, n):
+    # Rotate the map n times
+    for _ in range(n):
+        map = list(map[i] for i in range(len(map)-1, -1, -1))
+    return map
 
-                # Update the current room
-                current_room = room
+def flip_map(map, axis):
+    # Flip the map along the specified axis
+    if axis == "horizontal":
+        return ["".join(reversed(row)) for row in map]
+    elif axis == "vertical":
+        return list(reversed(map))
+    else:
+        raise ValueError("Invalid axis")
 
-                # Break out of the loop
-                break
+def find_matching_map(map1, map2):
+    # Check if the maps are identical
+    if is_same_map(map1, map2):
+        return True
 
-        # Update the current floor
-        current_floor += 1
+    # Check if the maps can be rotated to match
+    for i in range(4):
+        if is_same_map(map1, rotate_map(map2, i)):
+            return True
 
-    # Return the total time
-    return total_time
+    # Check if the maps can be flipped to match
+    for axis in ["horizontal", "vertical"]:
+        if is_same_map(map1, flip_map(map2, axis)):
+            return True
+
+    # If no match is found, return False
+    return False
+
+if __name__ == '__main__':
+    map1 = [input() for _ in range(int(input()))]
+    map2 = [input() for _ in range(int(input()))]
+    print("Yes") if find_matching_map(map1, map2) else print("No")
 

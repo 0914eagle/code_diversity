@@ -1,21 +1,29 @@
 
-def get_min_rod_length(triangle_list):
-    
-    # Calculate the sum of the areas of all the triangles
-    total_area = sum([triangle_area(triangle) for triangle in triangle_list])
+import re
 
-    # Calculate the minimum length of the rod required to hold all the triangles
-    min_rod_length = (total_area / 2) ** 0.5
+def get_emails(n):
+    emails = []
+    for _ in range(n):
+        emails.append(input())
+    return emails
 
-    return min_rod_length
+def is_valid_email(email):
+    regex = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$"
+    return re.search(regex, email) is not None
 
-def triangle_area(triangle):
-    
-    # Calculate the semi-perimeter of the triangle
-    semi_perimeter = (triangle[0] + triangle[1] + triangle[2]) / 2
+def get_valid_emails(emails):
+    return list(filter(is_valid_email, emails))
 
-    # Calculate the area of the triangle
-    area = semi_perimeter * (semi_perimeter - triangle[0]) * (semi_perimeter - triangle[1]) * (semi_perimeter - triangle[2])
+def sort_emails(emails):
+    return sorted(emails)
 
-    return area
+def main():
+    n = int(input())
+    emails = get_emails(n)
+    valid_emails = get_valid_emails(emails)
+    sorted_emails = sort_emails(valid_emails)
+    print(sorted_emails)
+
+if __name__ == '__main__':
+    main()
 

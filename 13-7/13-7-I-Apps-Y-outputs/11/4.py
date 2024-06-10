@@ -1,29 +1,23 @@
 
-def get_max_objects(n, m, k, a):
-    # Sort the objects in descending order
-    a.sort(reverse=True)
-    # Initialize the number of objects packed
-    count = 0
-    # Initialize the number of boxes used
-    boxes = 0
-    # Initialize the current box size
-    current_box_size = k
-    for i in range(n):
-        # Check if the current object fits in the current box
-        if current_box_size >= a[i]:
-            # Increment the number of objects packed
-            count += 1
-            # Decrement the current box size
-            current_box_size -= a[i]
-        else:
-            # Increment the number of boxes used
-            boxes += 1
-            # Check if there are no more boxes available
-            if boxes == m:
-                # Return the number of objects packed
-                return count
-            # Reset the current box size to the maximum size
-            current_box_size = k
-    # Return the number of objects packed
-    return count
+def get_subset(x):
+    # Sort the list of points
+    x.sort()
+    # Initialize the subset with the first point
+    subset = [x[0]]
+    # Iterate through the remaining points
+    for i in range(1, len(x)):
+        # If the distance between the current point and the last point in the subset is a power of two, add the current point to the subset
+        if x[i] - subset[-1] == 2**(len(subset) - 1):
+            subset.append(x[i])
+    return subset
+
+def main():
+    n = int(input())
+    x = list(map(int, input().split()))
+    subset = get_subset(x)
+    print(len(subset))
+    print(*subset)
+
+if __name__ == '__main__':
+    main()
 

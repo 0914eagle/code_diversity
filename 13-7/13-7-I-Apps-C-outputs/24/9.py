@@ -1,22 +1,37 @@
 
-def solve(n, k, arr):
-    # Check if all elements are already equal to k
-    if all(elem == k for elem in arr):
-        return "yes"
+def get_number_of_first_moves(numbers):
+    # Initialize a set to store the first moves
+    first_moves = set()
     
-    # Check if it is possible to make all elements equal to k using the median operation
-    for i in range(n):
-        for j in range(i+1, n):
-            if arr[i] != arr[j]:
-                if arr[i] == k or arr[j] == k:
-                    return "yes"
-                else:
-                    return "no"
+    # Iterate over the numbers
+    for i in range(len(numbers)):
+        # Get the current number
+        current_number = numbers[i]
+        
+        # Check if the current number is odd
+        if current_number % 2 == 1:
+            # Add the current number to the set of first moves
+            first_moves.add(current_number)
+        
+        # Check if the current number is even
+        if current_number % 2 == 0:
+            # Get the previous number
+            previous_number = numbers[(i - 1) % len(numbers)]
+            
+            # Add the previous number to the set of first moves
+            first_moves.add(previous_number)
     
-    # If the array is already sorted, return "yes"
-    if sorted(arr) == arr:
-        return "yes"
+    # Return the length of the set of first moves
+    return len(first_moves)
+
+def main():
+    # Read the number of numbers and the numbers from the input
+    n = int(input())
+    numbers = [int(x) for x in input().split()]
     
-    # If the array is not sorted and all elements are not equal to k, return "no"
-    return "no"
+    # Call the get_number_of_first_moves function and print the result
+    print(get_number_of_first_moves(numbers))
+
+if __name__ == '__main__':
+    main()
 

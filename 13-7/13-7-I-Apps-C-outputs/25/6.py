@@ -1,21 +1,39 @@
 
-def solve(a, b, c, t1, t2, t3, t4, n, k, r, s, l):
-    # Calculate the Taylor polynomial of degree r around 0
-    p = c * (t1 * gamma(x) + sqrt(t2 * log(erf(t3 * x))) - j_k(x) ** t4)
-    p_n = p.subs(x, 0)
-    for i in range(1, r + 1):
-        p_n += p.diff(x, i).subs(x, 0) * x ** i
+def reassign_teachers(teachers, weeks, plans):
+    # Initialize a dictionary to store the classroom assignments for each teacher and week
+    assignments = {}
+    for teacher in teachers:
+        assignments[teacher] = {}
+        for week in weeks:
+            assignments[teacher][week] = teacher
 
-    # Calculate the final polynomial in the sequence
-    p_s = p_n
-    for i in range(1, s):
-        p_s = p_s.subs(x, 0)
-        for j in range(1, r + i + 1):
-            p_s += p_n.diff(x, j).subs(x, 0) * x ** j
+    # Iterate through the plans and update the assignments accordingly
+    for plan in plans:
+        teacher, week, classes = plan
+        current_class = assignments[teacher][week]
+        for i in range(classes):
+            next_class = (current_class + 1) % len(teachers)
+            assignments[teacher][week] = next_class
+            current_class = next_class
 
-    # Calculate the location of the opponent
-    g = p_s.diff(x, r + 1 + s)
-    location = (g(n) + l) ** 2 / (pi * e) + 1 / (l + 1)
+    return assignments
 
-    return location.evalf(2)
+def get_class(assignments, teacher, week):
+    return assignments[teacher][week]
+
+def main():
+    N, M, Q = map(int, input().split())
+    teachers = list(range(1, N + 1))
+    weeks = list(range(1, M + 1))
+    plans = []
+    for i in range(Q):
+        query = input().split()
+        if query[0] == "0":
+            plans.append((int(query[1]), int(query[2]), int(query[3:])))
+        else:
+            teacher, week = map(int, query[1:])
+            print(get_class(reassign_teachers(teachers, weeks, plans), teacher, week))
+
+if __name__ == '__main__':
+    main()
 

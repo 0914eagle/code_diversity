@@ -1,25 +1,44 @@
 
-def solve(n, circles):
-    # Initialize a set to store the regions
-    regions = set()
+def get_next_color(current_color):
+    alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    index = alphabet.index(current_color)
+    next_index = (index + 1) % len(alphabet)
+    return alphabet[next_index]
 
-    # Iterate over the circles
-    for circle in circles:
-        # Get the center and radius of the circle
-        x, y, r = circle
+def get_next_position(current_position, direction):
+    rows, cols = current_position
+    if direction == 'U':
+        return rows - 1, cols
+    elif direction == 'D':
+        return rows + 1, cols
+    elif direction == 'L':
+        return rows, cols - 1
+    else:
+        return rows, cols + 1
 
-        # Find the four points on the circle
-        top = (x, y + r)
-        bottom = (x, y - r)
-        left = (x - r, y)
-        right = (x + r, y)
+def get_zamboni_path(r, c, i, j, n):
+    direction = 'U'
+    current_color = 'A'
+    path = []
+    for _ in range(n):
+        path.append(current_color)
+        current_color = get_next_color(current_color)
+        direction = 'R' if direction == 'D' else 'L' if direction == 'U' else direction
+        i, j = get_next_position((i, j), direction)
+        if i < 0:
+            i = r - 1
+        elif i == r:
+            i = 0
+        if j < 0:
+            j = c - 1
+        elif j == c:
+            j = 0
+    return ''.join(path)
 
-        # Add the points to the set of regions
-        regions.add(top)
-        regions.add(bottom)
-        regions.add(left)
-        regions.add(right)
+def main():
+    r, c, i, j, n = map(int, input().split())
+    print(get_zamboni_path(r, c, i, j, n))
 
-    # Return the number of regions
-    return len(regions)
+if __name__ == '__main__':
+    main()
 

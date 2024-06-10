@@ -1,25 +1,29 @@
 
-def solve(orders):
-    # Sort the orders by the time they were placed
-    orders.sort(key=lambda x: x[0])
+def get_magical_subarray_length(array, l, r):
+    # Find the smallest and largest elements in the subarray
+    smallest = min(array[l:r+1])
+    largest = max(array[l:r+1])
     
-    # Initialize the delivery schedule with the first order
-    schedule = [orders[0]]
-    
-    # Iterate through the remaining orders
-    for order in orders[1:]:
-        # Check if the current order can be delivered after the previous order
-        if order[1] == schedule[-1][1] and order[0] > schedule[-1][0]:
-            # If it can, add it to the delivery schedule
-            schedule.append(order)
-        else:
-            # If it can't, find the closest intersection that can be reached from the previous order
-            for i in range(len(schedule)):
-                if order[1] == schedule[i][1] and order[0] > schedule[i][0]:
-                    # Add the order to the delivery schedule at this intersection
-                    schedule.insert(i+1, order)
-                    break
-    
-    # Return the longest wait time
-    return max(order[0] - schedule[i][0] for i, order in enumerate(orders))
+    # Return the length of the subarray if all elements are between the smallest and largest elements
+    if all(smallest <= x <= largest for x in array[l:r+1]):
+        return r - l + 1
+    else:
+        return 0
+
+def solve(array, queries):
+    result = []
+    for l, r in queries:
+        result.append(get_magical_subarray_length(array, l, r))
+    return result
+
+if __name__ == '__main__':
+    n = int(input())
+    array = list(map(int, input().split()))
+    q = int(input())
+    queries = []
+    for _ in range(q):
+        queries.append(list(map(int, input().split())))
+    result = solve(array, queries)
+    for x in result:
+        print(x)
 

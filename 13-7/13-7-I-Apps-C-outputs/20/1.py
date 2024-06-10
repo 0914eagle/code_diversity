@@ -1,26 +1,38 @@
 
-def solve(P, A, pine_locations, aspen_locations):
-    # Calculate the area covered by both species
-    area = 0
-    
-    # Iterate over each pine tree
-    for pine in pine_locations:
-        # Find the aspens that are within range of the pine tree
-        aspens_in_range = []
-        for aspen in aspen_locations:
-            if (pine[0] - aspen[0]) ** 2 + (pine[1] - aspen[1]) ** 2 <= 1:
-                aspens_in_range.append(aspen)
-        
-        # Calculate the area of the triangle formed by the pine tree and the aspens in range
-        for i in range(len(aspens_in_range)):
-            for j in range(i+1, len(aspens_in_range)):
-                area += triangle_area(pine, aspens_in_range[i], aspens_in_range[j])
-    
-    return area
+def calculate_damage(Jiro_cards, Ciel_cards):
+    # Initialize variables
+    damage = 0
+    Jiro_alive_cards = Jiro_cards[:]
 
-def triangle_area(a, b, c):
-    # Calculate the area of a triangle using Heron's formula
-    s = (a[0] - c[0]) ** 2 + (a[1] - c[1]) ** 2
-    area = 0.5 * (-s * (s - (a[0] - b[0]) ** 2) * (s - (a[1] - b[1]) ** 2) * (s - (c[0] - b[0]) ** 2) * (s - (c[1] - b[1]) ** 2)) ** 0.5
-    return area
+    # Iterate through Ciel's cards
+    for card in Ciel_cards:
+        # If Jiro has no alive cards, attack with current card and calculate damage
+        if not Jiro_alive_cards:
+            damage += card
+            continue
+
+        # Find the strongest Jiro's alive card
+        strongest_card = max(Jiro_alive_cards, key=lambda x: x[1])
+
+        # If the current card's strength is greater than the strongest Jiro's alive card's strength, attack with current card and calculate damage
+        if card[1] > strongest_card[1]:
+            damage += card[1] - strongest_card[1]
+            Jiro_alive_cards.remove(strongest_card)
+
+    return damage
+
+def main():
+    # Read input
+    n, m = map(int, input().split())
+    Jiro_cards = [tuple(map(int, input().split())) for _ in range(n)]
+    Ciel_cards = [int(input()) for _ in range(m)]
+
+    # Calculate damage
+    damage = calculate_damage(Jiro_cards, Ciel_cards)
+
+    # Print output
+    print(damage)
+
+if __name__ == '__main__':
+    main()
 

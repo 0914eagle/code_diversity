@@ -1,26 +1,62 @@
 
-def get_average_visitors(n, a, p):
-    # Calculate the sum of the guests' sizes
-    total_size = sum(a)
+def get_flight_changes(flights):
+    # Initialize a graph with the given flights
+    graph = {i: set() for i in range(1, len(flights) + 1)}
+    for flight in flights:
+        graph[flight[0]].add(flight[1])
+        graph[flight[1]].add(flight[0])
     
-    # Initialize a list to store the number of visitors for each possible order
-    num_visitors = []
+    # Find the flight with the maximum number of changes
+    max_changes = 0
+    flight_to_cancel = None
+    for flight in flights:
+        changes = 0
+        queue = [flight[0]]
+        visited = set()
+        while queue:
+            node = queue.pop(0)
+            if node == flight[1]:
+                break
+            for neighbor in graph[node] - visited:
+                queue.append(neighbor)
+                visited.add(neighbor)
+            changes += 1
+        if changes > max_changes:
+            max_changes = changes
+            flight_to_cancel = flight
     
-    # Iterate over all possible orders of the guests
-    for order in permutations(range(1, n + 1)):
-        # Initialize a variable to store the number of visitors for this order
-        visitors = 0
-        
-        # Iterate over the guests in the order
-        for i in order:
-            # If the sum of the guests' sizes is less than or equal to the table length, increase the number of visitors
-            if total_size <= p:
-                visitors += 1
-                total_size += a[i - 1]
-        
-        # Add the number of visitors for this order to the list
-        num_visitors.append(visitors)
+    # Find the flight to add to minimize the number of changes
+    min_changes = max_changes
+    flight_to_add = None
+    for i in range(1, len(flights) + 1):
+        for j in range(i + 1, len(flights) + 1):
+            if i != j and (i, j) not in flights and (j, i) not in flights:
+                changes = 0
+                queue = [i]
+                visited = set()
+                while queue:
+                    node = queue.pop(0)
+                    if node == j:
+                        break
+                    for neighbor in graph[node] - visited:
+                        queue.append(neighbor)
+                        visited.add(neighbor)
+                    changes += 1
+                if changes < min_changes:
+                    min_changes = changes
+                    flight_to_add = (i, j)
     
-    # Return the average number of visitors
-    return sum(num_visitors) / len(num_visitors)
+    return min_changes, flight_to_cancel, flight_to_add
+
+def main():
+    flights = []
+    for _ in range(int(input())):
+        flights.append(tuple(map(int, input().split())))
+    min_changes, flight_to_cancel, flight_to_add = get_flight_changes(flights)
+    print(min_changes)
+    print(*flight_to_cancel)
+    print(*flight_to_add)
+
+if __name__ == '__main__':
+    main()
 

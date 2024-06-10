@@ -1,38 +1,33 @@
 
-def solve(n, g, dist, cost):
-    # Initialize the minimum cost to travel to the rightmost gas station as infinity
-    min_cost = float('inf')
-    # Initialize the current gas tank capacity as 0
-    curr_capacity = 0
-    # Initialize the current distance traveled as 0
-    curr_dist = 0
-    # Sort the gas stations by distance in ascending order
-    sorted_stations = sorted(zip(dist, cost), key=lambda x: x[0])
-    # Iterate through the gas stations
-    for station in sorted_stations:
-        # Calculate the distance to the current gas station
-        dist_to_station = station[0] - curr_dist
-        # Calculate the cost to travel to the current gas station
-        travel_cost = dist_to_station * station[1]
-        # Check if the current gas tank capacity is enough to travel to the current gas station
-        if curr_capacity >= dist_to_station:
-            # Update the current distance traveled
-            curr_dist = station[0]
-            # Update the current gas tank capacity
-            curr_capacity -= dist_to_station
+import math
+
+def get_visible_beacons(beacons, mountain_peaks):
+    visible_beacons = set()
+    for beacon in beacons:
+        visible_beacons.add(beacon)
+        for mountain_peak in mountain_peaks:
+            if math.sqrt((mountain_peak[0] - beacon[0]) ** 2 + (mountain_peak[1] - beacon[1]) ** 2) <= mountain_peak[2]:
+                break
         else:
-            # Calculate the amount of gas needed to travel to the current gas station
-            gas_needed = dist_to_station - curr_capacity
-            # Check if the gas needed is more than the current gas tank capacity
-            if gas_needed > g:
-                # Return "cancel road trip" if the gas needed is more than the current gas tank capacity
-                return "cancel road trip"
-            # Update the current distance traveled
-            curr_dist = station[0]
-            # Update the current gas tank capacity
-            curr_capacity = g - gas_needed
-        # Update the minimum cost to travel to the rightmost gas station
-        min_cost = min(min_cost, travel_cost)
-    # Return the minimum cost to travel to the rightmost gas station
-    return min_cost
+            visible_beacons.update(get_visible_beacons(visible_beacons - {beacon}, mountain_peaks))
+    return visible_beacons
+
+def get_message_count(beacons, mountain_peaks):
+    visible_beacons = get_visible_beacons(beacons, mountain_peaks)
+    return len(beacons) - len(visible_beacons)
+
+def main():
+    n, m = map(int, input().split())
+    beacons = set()
+    for _ in range(n):
+        x, y = map(int, input().split())
+        beacons.add((x, y))
+    mountain_peaks = []
+    for _ in range(m):
+        x, y, r = map(int, input().split())
+        mountain_peaks.append((x, y, r))
+    print(get_message_count(beacons, mountain_peaks))
+
+if __name__ == '__main__':
+    main()
 

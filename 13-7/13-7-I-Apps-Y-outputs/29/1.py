@@ -1,20 +1,28 @@
 
-def shiritori(words):
-    # Initialize variables
-    prev_word = ""
-    player = 1
+def is_similar(x, y):
+    return x % 2 == y % 2 or abs(x - y) == 1
 
-    # Iterate through the list of words
-    for word in words:
-        # Check if the current word starts with the last letter of the previous word
-        if word[0] != prev_word[-1]:
-            # If not, return the name of the player who violated the rules
-            return f"Player {player} lost"
+def can_partition(arr):
+    n = len(arr)
+    if n % 2 == 1 or n == 0:
+        return False
+    for i in range(0, n, 2):
+        x = arr[i]
+        y = arr[i + 1]
+        if not is_similar(x, y):
+            return False
+    return True
 
-        # Update the previous word and player
-        prev_word = word
-        player = (player % 2) + 1
+def main():
+    t = int(input())
+    for i in range(t):
+        n = int(input())
+        arr = list(map(int, input().split()))
+        if can_partition(arr):
+            print("YES")
+        else:
+            print("NO")
 
-    # If all words are valid, return "Fair Game"
-    return "Fair Game"
+if __name__ == '__main__':
+    main()
 

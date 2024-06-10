@@ -1,19 +1,34 @@
 
-def solve(pine_trees, aspen_trees):
-    # Calculate the area covered by both species
-    area = 0
-    for pine in pine_trees:
-        for aspen in aspen_trees:
-            if is_covered_by_both(pine, aspen):
-                area += triangle_area(pine, aspen)
-    return area
+def solve(jiro_cards, ciel_cards):
+    # Initialize variables
+    jiro_damage = 0
+    ciel_cards_copy = ciel_cards.copy()
 
-def is_covered_by_both(tree1, tree2):
-    # Check if the triangle formed by the three trees is covered by both species
-    return (tree1[0] == tree2[0] or tree1[1] == tree2[1] or tree1[0] + tree1[1] == tree2[0] + tree2[1]) and (tree1[0] == tree2[0] or tree1[1] == tree2[1] or tree1[0] + tree1[1] == tree2[0] + tree2[1])
+    # Loop through each Jiro card
+    for jiro_card in jiro_cards:
+        # If Jiro has no alive cards, add the damage to the total damage
+        if not ciel_cards_copy:
+            jiro_damage += jiro_card[1]
+            continue
 
-def triangle_area(tree1, tree2):
-    # Calculate the area of the triangle formed by the three trees
-    area = 0.5 * abs(tree1[0] * tree2[1] - tree1[1] * tree2[0])
-    return area
+        # Find the strongest Ciel card that can attack Jiro's card
+        strongest_ciel_card = None
+        for ciel_card in ciel_cards_copy:
+            if ciel_card[0] == "ATK" and ciel_card[1] >= jiro_card[1]:
+                strongest_ciel_card = ciel_card
+                break
+
+        # If there is no Ciel card that can attack Jiro's card, add the damage to the total damage
+        if not strongest_ciel_card:
+            jiro_damage += jiro_card[1]
+            continue
+
+        # Remove the Ciel card from the list
+        ciel_cards_copy.remove(strongest_ciel_card)
+
+        # If the Ciel card is an attack card, add the difference in strength to the total damage
+        if strongest_ciel_card[0] == "ATK":
+            jiro_damage += strongest_ciel_card[1] - jiro_card[1]
+
+    return jiro_damage
 

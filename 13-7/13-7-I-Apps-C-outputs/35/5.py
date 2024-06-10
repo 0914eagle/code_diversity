@@ -1,29 +1,30 @@
 
-def get_closest_distance(contour_lines):
-    # Initialize the closest distance to a large value
-    closest_distance = 1000000
+def solve(N, edges):
+    # Initialize the number of ways to divide the vertices into pairs as 0
+    ways = 0
     
-    # Iterate over each contour line
-    for contour in contour_lines:
-        # Get the height of the contour line
-        height = contour[0]
-        
-        # Get the number of vertices in the contour line
-        num_vertices = contour[1]
-        
-        # Iterate over each vertex in the contour line
-        for i in range(2, num_vertices * 2, 2):
-            # Get the x and y coordinates of the vertex
-            x = contour[i]
-            y = contour[i + 1]
-            
-            # Calculate the distance from the vertex to the target
-            distance = (x - 0) ** 2 + (y - 0) ** 2
-            
-            # If the distance is less than the closest distance, update the closest distance
-            if distance < closest_distance:
-                closest_distance = distance
+    # Iterate over all possible pairs of vertices
+    for i in range(1, N + 1):
+        for j in range(i + 1, N + 1):
+            # Check if the shortest path between the two vertices contains all the edges
+            if all(edge in edges for edge in [(i, j), (j, i)]):
+                # Increment the number of ways to divide the vertices into pairs
+                ways += 1
     
-    # Return the closest distance
-    return closest_distance
+    # Return the result modulo 10^9 + 7
+    return ways % 1000000007
+
+def main():
+    # Read the number of vertices and edges from stdin
+    N = int(input())
+    edges = []
+    for _ in range(N - 1):
+        x, y = map(int, input().split())
+        edges.append((x, y))
+    
+    # Call the solve function and print the result
+    print(solve(N, edges))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,8 +1,15 @@
 
-def get_max_area(W, H, x, y):
-    area_1 = x * y
-    area_2 = (W-x) * (H-y)
-    area_3 = W * H - area_1 - area_2
-    max_area = max(area_1, area_2, area_3)
-    return max_area
+def get_blue_balls(N, A, B):
+    blue_balls = 0
+    for i in range(N):
+        if i % (A + B) < A:
+            blue_balls += 1
+    return blue_balls
+
+def main():
+    N, A, B = map(int, input().split())
+    print(get_blue_balls(N, A, B))
+
+if __name__ == '__main__':
+    main()
 

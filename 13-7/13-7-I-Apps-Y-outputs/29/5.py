@@ -1,12 +1,19 @@
 
-def is_fair_game(words):
-    if len(words) < 2:
-        return "Fair Game"
-    prev_word = words[0]
-    for i in range(1, len(words)):
-        curr_word = words[i]
-        if not curr_word.startswith(prev_word[-1]):
-            return "Player " + str(i % 2 + 1) + " lost"
-        prev_word = curr_word
-    return "Fair Game"
+def is_similar(x, y):
+    return x % 2 == y % 2 or abs(x - y) == 1
+
+def solve(a):
+    n = len(a)
+    for i in range(n):
+        for j in range(i+1, n):
+            if is_similar(a[i], a[j]):
+                return "YES"
+    return "NO"
+
+if __name__ == '__main__':
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        a = list(map(int, input().split()))
+        print(solve(a))
 

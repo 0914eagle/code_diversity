@@ -1,17 +1,28 @@
 
-def solve(transcript):
-    # Initialize a dictionary to store the character types of each candidate
-    character_types = {}
+import math
 
-    # Iterate through the transcript
-    for utterance in transcript:
-        # Split the utterance into its constituent parts
-        speaker, statement = utterance.split()
+def get_hit_enemies(opponents, angle):
+    hit_enemies = 0
+    for opponent in opponents:
+        x, y, r = opponent
+        dist = math.sqrt((x - math.cos(angle)) ** 2 + (y - math.sin(angle)) ** 2)
+        if dist <= r:
+            hit_enemies += 1
+    return hit_enemies
 
-        # If the statement is a character type claim, update the character type of the speaker
-        if statement.startswith("truther") or statement.startswith("fabulist") or statement.startswith("charlatan"):
-            character_types[speaker] = statement.split()[0]
+def solve(opponents):
+    max_hit_enemies = 0
+    for angle in range(360):
+        hit_enemies = get_hit_enemies(opponents, angle)
+        if hit_enemies > max_hit_enemies:
+            max_hit_enemies = hit_enemies
+    return max_hit_enemies
 
-    # Return the character types of all candidates
-    return [character_types[str(i)] for i in range(1, len(character_types) + 1)]
+if __name__ == '__main__':
+    n = int(input())
+    opponents = []
+    for _ in range(n):
+        x, y, r = map(float, input().split())
+        opponents.append((x, y, r))
+    print(solve(opponents))
 

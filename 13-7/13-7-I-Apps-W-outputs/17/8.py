@@ -1,18 +1,28 @@
 
-def solve(poland_ball_words, enemy_ball_words):
-    # Initialize a set to store the words known to Poland Ball
-    poland_ball_set = set(poland_ball_words)
-    # Initialize a set to store the words known to Enemy Ball
-    enemy_ball_set = set(enemy_ball_words)
-    # Initialize a variable to store the result
-    result = "YES"
+def get_possible_values(y, k, n):
+    # Initialize an empty list to store the possible values of x
+    possible_values = []
+    
+    # Iterate from 1 to n
+    for x in range(1, n + 1):
+        # Check if x + y is divisible by k
+        if (x + y) % k == 0:
+            # If it is, add it to the list of possible values
+            possible_values.append(x)
+    
+    # Return the list of possible values
+    return possible_values
 
-    # Iterate through the words known to Poland Ball
-    for word in poland_ball_set:
-        # If the word is not in the set of words known to Enemy Ball, then Poland Ball can say the word and Enemy Ball cannot say it
-        if word not in enemy_ball_set:
-            result = "NO"
-            break
+def main():
+    # Read the input
+    y, k, n = map(int, input().split())
+    
+    # Get the list of possible values
+    possible_values = get_possible_values(y, k, n)
+    
+    # Print the list of possible values
+    print(*possible_values)
 
-    return result
+if __name__ == '__main__':
+    main()
 

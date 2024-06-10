@@ -1,16 +1,21 @@
 
-def solve(problems, drinks):
-    # Initialize a dictionary to store the time it takes to solve each problem
-    problem_time = {}
-    for problem in problems:
-        problem_time[problem] = problems[problem]
+def get_probability(N):
+    # Calculate the total number of positive integers not greater than N
+    total = (N * (N + 1)) // 2
+    
+    # Calculate the number of odd positive integers not greater than N
+    odd = N // 2
+    
+    # Calculate the probability that a is odd
+    probability = odd / total
+    
+    return probability
 
-    # Loop through each drink and calculate the time it takes to solve all problems
-    for drink in drinks:
-        for problem in problems:
-            if problem in drinks[drink]:
-                problem_time[problem] += drinks[drink]
+def main():
+    N = int(input())
+    probability = get_probability(N)
+    print(probability)
 
-    # Return the time it takes to solve all problems for each drink
-    return [problem_time[problem] for problem in problems]
+if __name__ == '__main__':
+    main()
 

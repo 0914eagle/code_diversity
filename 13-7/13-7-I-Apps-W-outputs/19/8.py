@@ -1,23 +1,37 @@
 
-def max_cost(s, p):
-    n = len(s)
-    if n == 0 or p == 0:
-        return 0
+import sys
 
-    # Convert the string to a list of characters
-    chars = list(s)
+def get_remote_planets(planets, tunnels):
+    # Initialize a set to store the connected planets
+    connected_planets = set()
 
-    # Initialize the dp table with 0's
-    dp = [[0] * (n + 1) for _ in range(n + 1)]
+    # Add the first planet to the connected planets set
+    connected_planets.add(planets[0])
 
-    # Fill in the table
-    for i in range(1, n + 1):
-        for j in range(1, n + 1):
-            if chars[i - 1] == chars[j - 1]:
-                dp[i][j] = max(dp[i - 1][j - 1] + 1, dp[i - 1][j], dp[i][j - 1])
-            else:
-                dp[i][j] = max(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1])
+    # Iterate through the tunnels
+    for tunnel in tunnels:
+        # If the current planet is not in the connected planets set, add it
+        if tunnel[0] not in connected_planets:
+            connected_planets.add(tunnel[0])
+        # If the other planet in the tunnel is not in the connected planets set, add it
+        if tunnel[1] not in connected_planets:
+            connected_planets.add(tunnel[1])
 
-    # Return the maximum cost
-    return dp[n][n]
+    # Return the number of remote planets
+    return len(planets) - len(connected_planets)
+
+def main():
+    # Read the number of planets and tunnels from stdin
+    num_planets = int(input())
+    num_tunnels = int(input())
+
+    # Read the planets and tunnels from stdin
+    planets = [int(input()) for _ in range(num_planets)]
+    tunnels = [[int(x) for x in input().split()] for _ in range(num_tunnels)]
+
+    # Call the get_remote_planets function and print the result
+    print(get_remote_planets(planets, tunnels))
+
+if __name__ == '__main__':
+    main()
 

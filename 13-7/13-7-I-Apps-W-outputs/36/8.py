@@ -1,18 +1,55 @@
 
-def count_ship_placements(n, k, grid, ship_sizes):
-    # Initialize a 2D array to store the number of ways to place each ship
-    dp = [[0] * (n + 1) for _ in range(n + 1)]
-    dp[0][0] = 1
+def get_common_subsequence(a, b):
+    # Find the length of the shortest array
+    shortest_len = min(len(a), len(b))
+    # Iterate over the shortest array
+    for i in range(shortest_len):
+        # Check if the current element of a is in b
+        if a[i] in b:
+            # If it is, return the current element and the rest of the array
+            return [a[i]] + get_common_subsequence(a[i+1:], b)
+    # If the current element is not in b, return an empty array
+    return []
 
-    # Loop through each ship
-    for ship_size in ship_sizes:
-        for i in range(n):
-            for j in range(n):
-                # Check if the current cell is empty and the ship fits in the grid
-                if grid[i][j] == "." and i + ship_size <= n and j + ship_size <= n:
-                    # Update the number of ways to place the ship
-                    dp[i + ship_size][j + ship_size] += dp[i][j]
+def get_smallest_common_subsequence(a, b):
+    # Find the length of the shortest array
+    shortest_len = min(len(a), len(b))
+    # Initialize the smallest common subsequence with an empty array
+    smallest_cs = []
+    # Iterate over the shortest array
+    for i in range(shortest_len):
+        # Check if the current element of a is in b
+        if a[i] in b:
+            # If it is, find the common subsequence starting from this element
+            current_cs = get_common_subsequence(a[i:], b)
+            # If the current common subsequence is shorter than the smallest common subsequence found so far, update the smallest common subsequence
+            if len(current_cs) < len(smallest_cs):
+                smallest_cs = current_cs
+    # Return the smallest common subsequence
+    return smallest_cs
 
-    # Return the number of ways to place all k ships
-    return dp[n][n]
+def main():
+    # Read the number of test cases
+    num_cases = int(input())
+    # Iterate over the test cases
+    for case in range(num_cases):
+        # Read the lengths of the two arrays
+        a_len, b_len = map(int, input().split())
+        # Read the elements of the two arrays
+        a = list(map(int, input().split()))
+        b = list(map(int, input().split()))
+        # Find the smallest common subsequence
+        smallest_cs = get_smallest_common_subsequence(a, b)
+        # Check if a smallest common subsequence exists
+        if smallest_cs:
+            # If it does, print "YES" and the length and elements of the smallest common subsequence
+            print("YES")
+            print(len(smallest_cs))
+            print(" ".join(map(str, smallest_cs)))
+        else:
+            # If it doesn't, print "NO"
+            print("NO")
+
+if __name__ == '__main__':
+    main()
 

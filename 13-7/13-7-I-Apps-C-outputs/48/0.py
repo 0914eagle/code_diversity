@@ -1,36 +1,28 @@
 
-def solve(n, m, s, a, b, c):
-    # Sort the bugs and students by complexity and level respectively
-    sorted_a = sorted(zip(a, range(m)))
-    sorted_b = sorted(zip(b, range(n)))
+def get_permutation(n):
+    permutation = list(range(1, n+1))
+    return permutation
 
-    # Initialize the variables
-    passes = 0
-    days = 0
-    students = []
-    bugs = []
+def apply_permutation(permutation, q):
+    n = len(permutation)
+    result = [0] * n
+    for i in range(n):
+        result[i] = permutation[q[i]-1]
+    return result
 
-    # Iterate through the sorted bugs and students
-    for i in range(m):
-        for j in range(n):
-            # Check if the student can fix the bug
-            if sorted_b[j][0] >= sorted_a[i][0]:
-                # Add the student to the list of students who can fix the bug
-                students.append(sorted_b[j][1])
-                # Add the bug to the list of bugs to be fixed
-                bugs.append(sorted_a[i][1])
-                # Increment the number of passes for the student
-                passes += c[sorted_b[j][1]]
-                # Increment the number of days to fix the bug
-                days += 1
+def is_possible(n, k, q, s):
+    permutation = get_permutation(n)
+    for i in range(k):
+        coin = input("Heads or Tails? ")
+        if coin == "Heads":
+            permutation = apply_permutation(permutation, q)
+        else:
+            permutation = apply_permutation(permutation, [i+1 for i in range(n)])
+    return permutation == s
 
-                # Check if the number of passes exceeds the maximum allowed
-                if passes > s:
-                    return "NO"
-
-    # Check if all bugs have been fixed
-    if len(bugs) == m:
-        return "YES\n" + " ".join(map(str, students))
-    else:
-        return "NO"
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    q = list(map(int, input().split()))
+    s = list(map(int, input().split()))
+    print("YES") if is_possible(n, k, q, s) else print("NO")
 

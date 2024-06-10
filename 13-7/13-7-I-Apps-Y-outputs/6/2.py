@@ -1,13 +1,17 @@
 
-def is_easily_playable(s):
-    if len(s) % 2 == 0:
-        return "No"
-    for i in range(len(s)):
-        if i % 2 == 0:
-            if s[i] not in "LUD":
-                return "No"
-        else:
-            if s[i] not in "RUD":
-                return "No"
-    return "Yes"
+def get_bonded_base(b):
+    bonded_base = {
+        "A": "T",
+        "C": "G",
+        "G": "C",
+        "T": "A"
+    }
+    return bonded_base[b]
+
+def main():
+    b = input()
+    print(get_bonded_base(b))
+
+if __name__ == '__main__':
+    main()
 

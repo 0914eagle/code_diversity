@@ -1,17 +1,40 @@
 
-def get_max_sum_of_reposted_pictures(n, k, x, a):
-    # Calculate the maximum sum of values of reposted pictures
-    max_sum = 0
-    for i in range(n - k + 1):
-        # Calculate the sum of beauty values of reposted pictures
-        sum_of_beauty = sum(a[i:i+k])
-        # Check if the sum of beauty values is greater than the current maximum sum
-        if sum_of_beauty > max_sum:
-            max_sum = sum_of_beauty
-    
-    # Check if the number of reposted pictures is less than x
-    if max_sum < x:
-        return -1
-    else:
-        return max_sum
+def get_equation(numbers):
+    # Split the input numbers into a list
+    numbers = numbers.split()
+    # Convert the numbers to integers
+    numbers = [int(num) for num in numbers]
+    # Get the unique elements of the list
+    unique_numbers = set(numbers)
+    # Check if there are three unique numbers
+    if len(unique_numbers) == 3:
+        # Get the first two numbers
+        num1, num2 = numbers
+        # Get the third number
+        num3 = numbers[2]
+        # Check if the first two numbers add up to the third number
+        if num1 + num2 == num3:
+            return f"{num1}+{num2}={num3}"
+        # Check if the first two numbers multiply to the third number
+        if num1 * num2 == num3:
+            return f"{num1}*{num2}={num3}"
+        # Check if the first number subtracted from the second number equals the third number
+        if num1 - num2 == num3:
+            return f"{num1}-{num2}={num3}"
+        # Check if the first number divided by the second number equals the third number
+        if num1 / num2 == num3:
+            return f"{num1}/{num2}={num3}"
+    # If no equation can be found, return "NO EQUATION"
+    return "NO EQUATION"
+
+def main():
+    # Get the input numbers from the user
+    numbers = input("Enter three numbers: ")
+    # Call the get_equation function and pass in the numbers
+    equation = get_equation(numbers)
+    # Print the equation
+    print(equation)
+
+if __name__ == '__main__':
+    main()
 

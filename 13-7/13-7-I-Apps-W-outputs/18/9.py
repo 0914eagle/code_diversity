@@ -1,39 +1,32 @@
 
-def solve(comments):
-    # split the comments into a list of strings
-    comments = comments.split(",")
-    
-    # initialize variables for the depth of nesting and the current depth
-    d = 0
-    current_depth = 0
-    
-    # initialize a dictionary to store the comments at each depth
-    comments_by_depth = {}
-    
-    # loop through each comment
-    for comment in comments:
-        # check if the comment has children
-        if "." in comment:
-            # if it does, increment the current depth
-            current_depth += 1
-            # add the comment to the dictionary at the current depth
-            comments_by_depth[current_depth] = comments_by_depth.get(current_depth, []) + [comment]
+def get_time_to_reach_post_office(distance, car_distance, car_time, walking_time, repair_time):
+    # Initialize variables
+    time = 0
+    distance_traveled = 0
+    car_broken = False
+
+    # Loop through the distance
+    while distance_traveled < distance:
+        # If the car is not broken, drive the car
+        if not car_broken:
+            # Calculate the distance that can be traveled by the car
+            distance_traveled += min(distance - distance_traveled, car_distance)
+            time += distance_traveled * car_time
+            car_broken = True
+        # If the car is broken, walk the remaining distance
         else:
-            # if it doesn't, set the current depth to 0
-            current_depth = 0
-            # add the comment to the dictionary at depth 0
-            comments_by_depth[current_depth] = comments_by_depth.get(current_depth, []) + [comment]
-    
-    # set the maximum depth to the maximum value in the dictionary
-    d = max(comments_by_depth.keys())
-    
-    # loop through each depth from 0 to d
-    for i in range(d+1):
-        # get the comments at the current depth
-        comments = comments_by_depth.get(i, [])
-        # join the comments with a space and print them
-        print(" ".join(comments))
-    
-    # return the maximum depth
-    return d
+            # Calculate the distance that needs to be walked
+            distance_traveled += min(distance - distance_traveled, walking_time // car_time)
+            time += distance_traveled * walking_time
+            car_broken = False
+            time += repair_time
+
+    return time
+
+def main():
+    distance, car_distance, car_time, walking_time, repair_time = map(int, input().split())
+    print(get_time_to_reach_post_office(distance, car_distance, car_time, walking_time, repair_time))
+
+if __name__ == '__main__':
+    main()
 

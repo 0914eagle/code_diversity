@@ -1,28 +1,59 @@
 
-def solve(N, A, B):
-    # Initialize a list to store the permutation
-    permutation = list(range(1, N+1))
-    
-    # Iterate through the list and calculate the value of g(i) for each i
-    for i in range(1, N+1):
-        # If g(i) is A, swap i with the first element of the list
-        if g(permutation, i) == A:
-            permutation[0], permutation[i-1] = permutation[i-1], permutation[0]
-        # If g(i) is B, swap i with the last element of the list
-        elif g(permutation, i) == B:
-            permutation[-1], permutation[i-1] = permutation[i-1], permutation[-1]
-    
-    # If the list is not changed, it means that no such permutation exists
-    if permutation == list(range(1, N+1)):
-        return -1
-    else:
-        return permutation
+def get_input():
+    N, M = map(int, input().split())
+    translators = []
+    for _ in range(M):
+        translator = list(map(int, input().split()))
+        translators.append(translator)
+    return N, M, translators
 
-def g(permutation, i):
-    # If j is 1, return the value of P[i]
-    if j == 1:
-        return permutation[i-1]
-    # Otherwise, calculate the value of f(P[i], j-1) and return it
+def get_matching(N, M, translators):
+    # Initialize a graph with M nodes and 2M edges
+    graph = [[] for _ in range(M)]
+    for i in range(M):
+        for j in range(i+1, M):
+            if translators[i][0] == translators[j][1] or translators[i][1] == translators[j][0]:
+                graph[i].append(j)
+                graph[j].append(i)
+    
+    # Find a matching using the blossom algorithm
+    matching = [0] * M
+    for i in range(M):
+        if matching[i] == 0:
+            visited = [False] * M
+            stack = [i]
+            while stack:
+                node = stack.pop()
+                if not visited[node]:
+                    visited[node] = True
+                    for neighbor in graph[node]:
+                        if not visited[neighbor]:
+                            stack.append(neighbor)
+                        elif matching[neighbor] == 0:
+                            matching[node] = neighbor
+                            matching[neighbor] = node
+                            break
+    
+    # Check if the matching is complete
+    for i in range(M):
+        if matching[i] == 0:
+            return []
+    
+    # Return the matching as a list of pairs
+    pairs = []
+    for i in range(M):
+        pairs.append((i, matching[i]))
+    return pairs
+
+def main():
+    N, M, translators = get_input()
+    pairs = get_matching(N, M, translators)
+    if pairs:
+        for pair in pairs:
+            print(pair[0], pair[1])
     else:
-        return g(permutation, permutation[i-1])
+        print("impossible")
+
+if __name__ == '__main__':
+    main()
 

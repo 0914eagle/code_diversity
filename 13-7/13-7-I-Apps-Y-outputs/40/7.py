@@ -1,10 +1,16 @@
 
-def is_input_consistent(capacity, stations):
-    total = 0
-    for station in stations:
-        leaving, entering, waiting = station
-        total += entering - leaving
-        if total < 0 or waiting > 0:
-            return "impossible"
-    return "possible" if total == 0 else "impossible"
+def get_lexicographically_smaller(a, b):
+    str_a = a * b
+    str_b = b * a
+    if str_a < str_b:
+        return str_a
+    else:
+        return str_b
+
+def main():
+    a, b = map(int, input().split())
+    print(get_lexicographically_smaller(a, b))
+
+if __name__ == '__main__':
+    main()
 

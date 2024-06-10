@@ -1,33 +1,47 @@
 
-def max_flowers(field, start_row, start_col):
-    # Initialize a list to store the number of petals on each flower
-    petals = []
-    # Iterate over the field and append the number of petals on each flower to the list
-    for row in field:
-        for col in row:
-            petals.append(col)
-    # Initialize a variable to store the largest number of flowers visited
-    max_visited = 0
-    # Initialize a variable to store the current number of flowers visited
-    visited = 0
-    # Initialize a variable to store the current row and column positions
-    row, col = start_row, start_col
-    # Iterate until the grasshopper visits all the flowers
-    while visited < len(petals):
-        # Check if the grasshopper can jump to the next flower
-        if row + 1 < len(field) and col + 2 < len(field[0]) and petals[row * len(field[0]) + col] < petals[(row + 1) * len(field[0]) + col + 2]:
-            # Jump to the next flower
-            row += 1
-            col += 2
-        elif row + 2 < len(field) and col + 1 < len(field[0]) and petals[row * len(field[0]) + col] < petals[(row + 2) * len(field[0]) + col + 1]:
-            # Jump to the next flower
-            row += 2
-            col += 1
-        else:
-            # The grasshopper cannot jump to the next flower, so it stays in the current position
-            pass
-        # Increment the number of flowers visited
-        visited += 1
-    # Return the largest number of flowers visited
-    return max_visited
+def get_travel_cost(trips, a, b, k, f):
+    # Initialize variables
+    cost = 0
+    travel_cards = []
+
+    # Iterate through the trips
+    for i in range(len(trips)):
+        # Get the current and next trip
+        current_trip = trips[i]
+        next_trip = trips[i + 1] if i + 1 < len(trips) else None
+
+        # Check if the current trip is a transshipment
+        is_transshipment = current_trip[0] == next_trip[1] if next_trip else False
+
+        # Calculate the cost of the current trip
+        trip_cost = a if not is_transshipment else b
+
+        # Check if the current trip is a new route
+        if current_trip not in travel_cards:
+            # Add the current trip to the list of travel cards
+            travel_cards.append(current_trip)
+
+            # Check if the number of travel cards is less than or equal to k
+            if len(travel_cards) <= k:
+                # Add the cost of the travel card to the total cost
+                cost += f
+
+        # Add the cost of the current trip to the total cost
+        cost += trip_cost
+
+    return cost
+
+def main():
+    # Read the input
+    n, a, b, k, f = map(int, input().split())
+    trips = [input().split() for _ in range(n)]
+
+    # Calculate the travel cost
+    cost = get_travel_cost(trips, a, b, k, f)
+
+    # Print the result
+    print(cost)
+
+if __name__ == '__main__':
+    main()
 

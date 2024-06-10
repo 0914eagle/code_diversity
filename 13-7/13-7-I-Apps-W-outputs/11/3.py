@@ -1,25 +1,18 @@
 
-def solve(n, c, prices):
-    # Initialize variables
-    max_profit = 0
-    honey_barrels = 0
-    raspberry = 0
+import math
 
-    # Iterate through the prices
-    for i in range(n):
-        # Check if the bear has enough raspberry to lend a barrel
-        if raspberry >= c:
-            # Lend a barrel and earn the price for it
-            honey_barrels += 1
-            raspberry -= c
-            max_profit += prices[i]
+def distance(t):
+    # Calculate the distance between Agneta and Beata at time t
+    return math.sqrt(2) - math.cos(t)
 
-        # Check if the bear has enough raspberry to buy a barrel
-        if raspberry < c and honey_barrels > 0:
-            # Buy a barrel and return it to the friend
-            honey_barrels -= 1
-            raspberry += prices[i]
+def minimum_distance(W):
+    # Find the minimum distance by finding the minimum of the distance function over the range [0, W]
+    return min(distance(t) for t in range(0, W + 1))
 
-    # Return the maximum profit
-    return max_profit
+def main():
+    W = float(input())
+    print(minimum_distance(W))
+
+if __name__ == '__main__':
+    main()
 

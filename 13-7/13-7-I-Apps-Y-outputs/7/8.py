@@ -1,39 +1,41 @@
 
-def solve(a):
-    # Initialize the sum of non-deleted elements
-    sum_non_deleted = 0
-    # Initialize the number of moves
-    num_moves = 0
-    # Initialize the parity of the last deleted element
-    last_parity = None
-    # Sort the array in non-decreasing order
-    a.sort()
-    # Loop through the array
-    for i in range(len(a)):
-        # If it is the first move, choose any element and delete it
-        if num_moves == 0:
-            sum_non_deleted += a[i]
-            last_parity = a[i] % 2
-            num_moves += 1
-        # If it is the second or any next move
-        else:
-            # If the last deleted element was odd
-            if last_parity == 1:
-                # Choose any even element and delete it
-                if a[i] % 2 == 0:
-                    sum_non_deleted += a[i]
-                    last_parity = a[i] % 2
-                    num_moves += 1
-            # If the last deleted element was even
-            else:
-                # Choose any odd element and delete it
-                if a[i] % 2 == 1:
-                    sum_non_deleted += a[i]
-                    last_parity = a[i] % 2
-                    num_moves += 1
-        # If after some move Polycarp cannot make a move, the game ends
-        if num_moves == len(a):
-            break
-    # Return the minimum possible sum of non-deleted elements
-    return sum_non_deleted
+def get_key_points(n):
+    key_points = []
+    for i in range(n):
+        x, y = map(int, input().split())
+        key_points.append((x, y))
+    return key_points
+
+def get_levels(key_points):
+    levels = {}
+    for point in key_points:
+        x, y = point
+        level = max(x, y)
+        if level not in levels:
+            levels[level] = []
+        levels[level].append(point)
+    return levels
+
+def get_min_distance(key_points):
+    levels = get_levels(key_points)
+    distance = 0
+    for level in sorted(levels):
+        points = levels[level]
+        for i in range(len(points)):
+            for j in range(i+1, len(points)):
+                distance += get_distance(points[i], points[j])
+    return distance
+
+def get_distance(point1, point2):
+    x1, y1 = point1
+    x2, y2 = point2
+    return abs(x1 - x2) + abs(y1 - y2)
+
+def main():
+    n = int(input())
+    key_points = get_key_points(n)
+    print(get_min_distance(key_points))
+
+if __name__ == '__main__':
+    main()
 

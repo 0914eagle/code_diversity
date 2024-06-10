@@ -1,29 +1,36 @@
 
-def solve(comments_feed):
-    # split the comments feed into a list of comments
-    comments = comments_feed.split(",")
-    
-    # create a dictionary to store the comments and their depth
-    comments_dict = {}
-    
-    # loop through each comment and add it to the dictionary with its depth
-    for comment in comments:
-        depth = 0
-        while comment[0] != " ":
-            comment = comment[1:]
-            depth += 1
-        comments_dict[comment] = depth
-    
-    # find the maximum depth of nesting
-    max_depth = max(comments_dict.values())
-    
-    # create a list to store the comments for each depth level
-    comments_list = [[] for _ in range(max_depth + 1)]
-    
-    # loop through each comment and add it to the list of its depth level
-    for comment, depth in comments_dict.items():
-        comments_list[depth].append(comment)
-    
-    # return the results
-    return str(max_depth) + "\n" + "\n".join([(" ".join(comments)) for comments in comments_list])
+def get_min_time(d, k, a, b, t):
+    # Initialize variables
+    time = 0
+    distance = 0
+    car_broken = False
+
+    # Loop through the distance
+    while distance < d:
+        # Calculate the distance that can be traveled by the car
+        car_distance = min(d - distance, k - distance % k)
+
+        # If the car is not broken, travel by car
+        if not car_broken:
+            time += car_distance * a
+            distance += car_distance
+
+        # If the car is broken, travel by foot
+        else:
+            time += car_distance * b
+            distance += car_distance
+
+        # Check if the car is broken and needs to be repaired
+        if distance % k == 0:
+            car_broken = True
+            time += t
+
+    return time
+
+def main():
+    d, k, a, b, t = map(int, input().split())
+    print(get_min_time(d, k, a, b, t))
+
+if __name__ == '__main__':
+    main()
 

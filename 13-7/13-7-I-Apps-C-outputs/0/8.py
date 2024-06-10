@@ -1,40 +1,38 @@
 
-def solve(m, n, p, q):
-    # Initialize a list to store the digits of the number
-    digits = []
-    # Loop through the range of numbers from 1 to 9
-    for i in range(1, 10):
-        # Check if the current number is a valid starting digit
-        if i != 0:
-            # Add the current number to the list of digits
-            digits.append(i)
-            # Recursively call the function to find the remaining digits
-            recurse(m, n, p, q, digits)
-            # If the function returns a valid number, return it
-            if len(digits) == m:
-                return "".join(map(str, digits))
-            # If the function returns None, remove the current digit and try again
-            else:
-                digits.pop()
-    # If no valid number is found, return "IMPOSSIBLE"
-    return "IMPOSSIBLE"
+def get_bugs_info(bugs_file):
+    with open(bugs_file, "r") as f:
+        bugs_info = f.read().splitlines()
+    bugs_count, hours_left, failure_factor = map(float, bugs_info[0].split())
+    bugs = []
+    for i in range(1, len(bugs_info)):
+        fix_prob, severity = map(float, bugs_info[i].split())
+        bugs.append((fix_prob, severity))
+    return bugs_count, hours_left, failure_factor, bugs
 
-def recurse(m, n, p, q, digits):
-    # If we have found all the digits, return the list of digits
-    if len(digits) == m:
-        return digits
-    # If we have reached the maximum number of digits, return None
-    if len(digits) == 10:
-        return None
-    # Add the current number to the list of digits
-    digits.append(digits[-1] + 1)
-    # Recursively call the function to find the remaining digits
-    recurse(m, n, p, q, digits)
-    # If the function returns a valid number, return it
-    if len(digits) == m:
-        return digits
-    # If the function returns None, remove the current digit and try again
-    else:
-        digits.pop()
-        return recurse(m, n, p, q, digits)
+def get_fixed_bugs(bugs_count, hours_left, failure_factor, bugs):
+    fixed_bugs = []
+    for i in range(bugs_count):
+        fix_prob, severity = bugs[i]
+        if fix_prob >= 1 or hours_left == 0:
+            fixed_bugs.append(severity)
+        else:
+            if np.random.uniform(0, 1) <= fix_prob:
+                fixed_bugs.append(severity)
+            else:
+                bugs[i] = (fix_prob * failure_factor, severity)
+                hours_left -= 1
+    return fixed_bugs
+
+def get_expected_total_severity(fixed_bugs):
+    return sum(fixed_bugs)
+
+def main():
+    bugs_file = "bugs.txt"
+    bugs_count, hours_left, failure_factor, bugs = get_bugs_info(bugs_file)
+    fixed_bugs = get_fixed_bugs(bugs_count, hours_left, failure_factor, bugs)
+    expected_total_severity = get_expected_total_severity(fixed_bugs)
+    print(expected_total_severity)
+
+if __name__ == '__main__':
+    main()
 

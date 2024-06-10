@@ -1,22 +1,28 @@
 
-def solve(n, k, x, rangers):
-    # Sort the rangers in increasing order of strength
-    rangers.sort()
+def get_subsequences(arr):
+    subsequences = []
+    for i in range(len(arr)):
+        for subsequence in get_subsequences(arr[i+1:]):
+            subsequences.append([arr[i]] + subsequence)
+    if not arr:
+        subsequences.append([])
+    return subsequences
 
-    # Initialize minimum and maximum strength variables
-    min_strength = rangers[0]
-    max_strength = rangers[-1]
+def get_hash(subsequence, B, M):
+    hash_value = 0
+    for i in range(len(subsequence)):
+        hash_value += subsequence[i] * B ** (len(subsequence) - i - 1)
+    return hash_value % M
 
-    # Perform the operation k times
-    for i in range(k):
-        # Take the bitwise XOR of the strength of each alternate ranger with x
-        for j in range(0, n, 2):
-            rangers[j] ^= x
+def get_hashes(arr, K, B, M):
+    subsequences = get_subsequences(arr)
+    return [get_hash(subsequence, B, M) for subsequence in subsequences[:K]]
 
-        # Update the minimum and maximum strength variables
-        min_strength = min(min_strength, rangers[0])
-        max_strength = max(max_strength, rangers[-1])
+def main():
+    N, K, B, M = map(int, input().split())
+    arr = list(map(int, input().split()))
+    print(*get_hashes(arr, K, B, M), sep='\n')
 
-    # Return the minimum and maximum strength variables
-    return [min_strength, max_strength]
+if __name__ == '__main__':
+    main()
 

@@ -1,23 +1,42 @@
 
-def solve(n, t, a):
-    # Calculate the total time Luba has to spend on work
-    total_work_time = sum(a)
+def get_distinct_ball_orders(n, throws):
+    # Initialize a list to store the number of distinct ball orders
+    distinct_orders = 1
     
-    # Calculate the number of days Luba can finish reading the book
-    days_to_read = t // 86400
-    
-    # Initialize the minimum number of days to finish reading the book as the number of days Luba can finish reading the book
-    min_days = days_to_read
-    
-    # Iterate over each day
-    for i in range(n):
-        # Calculate the total time Luba has to spend on work and reading for the current day
-        current_work_time = a[i]
-        current_reading_time = t - current_work_time
+    # Iterate over the throws
+    for throw in throws:
+        # Get the number of balls that will be thrown in this throw
+        num_balls = throw[0]
         
-        # If the total time is less than the number of days to read the book, update the minimum number of days to finish reading the book
-        if current_work_time + current_reading_time < min_days:
-            min_days = current_work_time + current_reading_time
+        # Get the number of students that will participate in this throw
+        num_students = throw[1]
+        
+        # Calculate the number of distinct ball orders after this throw
+        distinct_orders *= num_balls ** num_students
     
-    return min_days
+    # Return the number of distinct ball orders
+    return distinct_orders % 1000000007
+
+def main():
+    # Read the number of students and the maximum number of throws from the input
+    n, throws = read_input()
+    
+    # Call the function to get the number of distinct ball orders
+    distinct_orders = get_distinct_ball_orders(n, throws)
+    
+    # Print the result
+    print(distinct_orders)
+
+def read_input():
+    # Read the number of students and the maximum number of throws from the input
+    n = int(input())
+    throws = []
+    for _ in range(n):
+        throws.append(list(map(int, input().split())))
+    
+    # Return the number of students and the maximum number of throws
+    return n, throws
+
+if __name__ == '__main__':
+    main()
 

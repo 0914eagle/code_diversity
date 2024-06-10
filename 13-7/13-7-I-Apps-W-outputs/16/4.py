@@ -1,27 +1,24 @@
 
-def insert_interval(intervals, new_interval):
+def get_combinations(candidates, target):
     
-    # Check if the new interval is already present in the list
-    if new_interval in intervals:
-        return intervals
+    combinations = []
+    for i in range(len(candidates)):
+        current_combination = [candidates[i]]
+        remaining_candidates = candidates[:i] + candidates[i+1:]
+        for combination in get_combinations(remaining_candidates, target - candidates[i]):
+            combinations.append(current_combination + combination)
+    if not combinations and target in candidates:
+        combinations.append([target])
+    return combinations
+
+def get_input():
     
-    # Initialize the result list
-    result = []
-    
-    # Iterate through the intervals
-    for interval in intervals:
-        # Check if the new interval and the current interval overlap
-        if interval[1] >= new_interval[0] and interval[0] <= new_interval[1]:
-            # Merge the intervals
-            new_interval[0] = min(interval[0], new_interval[0])
-            new_interval[1] = max(interval[1], new_interval[1])
-        else:
-            # Add the current interval to the result list
-            result.append(interval)
-    
-    # Add the new interval to the result list
-    result.append(new_interval)
-    
-    # Return the updated list of intervals
-    return result
+    candidates = list(map(int, input("Enter candidate numbers separated by a space: ").strip().split()))
+    target = int(input("Enter target number: "))
+    return candidates, target
+
+if __name__ == '__main__':
+    candidates, target = get_input()
+    combinations = get_combinations(candidates, target)
+    print(combinations)
 

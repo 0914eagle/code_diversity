@@ -1,13 +1,29 @@
 
-def get_required_rod_length(triangles):
-    # Calculate the minimum perimeter of the triangles
-    min_perimeter = sum(min(triangle) for triangle in triangles)
-    
-    # Calculate the maximum diameter of the circle that the triangles can be hung from
-    max_diameter = 2 * max(triangle[0] for triangle in triangles)
-    
-    # Calculate the minimum length of the rod required
-    required_length = min_perimeter / max_diameter
-    
-    return required_length
+import re
+
+def get_email_addresses(n):
+    email_addresses = []
+    for _ in range(n):
+        email_addresses.append(input())
+    return email_addresses
+
+def is_valid_email_address(email_address):
+    pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+    return re.search(pattern, email_address) is not None
+
+def filter_valid_email_addresses(email_addresses):
+    return list(filter(is_valid_email_address, email_addresses))
+
+def sort_email_addresses(email_addresses):
+    return sorted(email_addresses)
+
+def main():
+    n = int(input())
+    email_addresses = get_email_addresses(n)
+    valid_email_addresses = filter_valid_email_addresses(email_addresses)
+    sorted_email_addresses = sort_email_addresses(valid_email_addresses)
+    print(sorted_email_addresses)
+
+if __name__ == '__main__':
+    main()
 

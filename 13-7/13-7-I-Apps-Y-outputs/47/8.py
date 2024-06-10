@@ -1,19 +1,29 @@
 
-def get_maximum_area(w, h, x, y):
-    # Calculate the area of the rectangle
-    area = w * h
+def get_blue_balls(N, A, B):
+    # Initialize a list to store the colors of the balls
+    colors = []
     
-    # Calculate the area of the part to the left of the line x=x
-    area_left = x * h
+    # Place A blue balls at the end of the row
+    for i in range(A):
+        colors.append("b")
     
-    # Calculate the area of the part to the right of the line x=x
-    area_right = (w - x) * h
+    # Place B red balls at the end of the row
+    for i in range(B):
+        colors.append("r")
     
-    # Check if there are multiple ways to cut the rectangle and achieve the maximum area
-    multiple_ways = False
-    if x > 0 and x < w and y > 0 and y < h:
-        multiple_ways = True
+    # Count the number of blue balls among the first N balls
+    return colors.count("b")
+
+def main():
+    # Read the input from stdin
+    N, A, B = map(int, input().split())
     
-    # Return the maximum area and a boolean indicating if there are multiple ways to cut the rectangle and achieve that maximum
-    return max(area_left, area_right), multiple_ways
+    # Call the function to get the number of blue balls
+    num_blue_balls = get_blue_balls(N, A, B)
+    
+    # Print the result
+    print(num_blue_balls)
+
+if __name__ == '__main__':
+    main()
 

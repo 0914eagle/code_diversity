@@ -1,17 +1,27 @@
 
-def get_maximum_cost(string, max_changes):
-    n = len(string)
-    dp = [0] * (n + 1)
-    for i in range(1, n + 1):
-        if string[i - 1] == "d":
-            dp[i] = max(dp[i - 1], dp[i - 2] + 1)
-        else:
-            dp[i] = max(dp[i - 1], dp[i - 2])
-    for i in range(1, n + 1):
-        for j in range(1, max_changes + 1):
-            if string[i - 1] == "d":
-                dp[i] = max(dp[i], dp[i - j - 1] + j)
-            else:
-                dp[i] = max(dp[i], dp[i - j - 1] + j)
-    return dp[n]
+def get_remote_planets(num_planets, tunnels):
+    # Initialize a set to store the planets that are not remote
+    non_remote_planets = set()
+
+    # Iterate over the tunnels
+    for tunnel in tunnels:
+        # Add the planets in the tunnel to the set of non-remote planets
+        non_remote_planets.add(tunnel[0])
+        non_remote_planets.add(tunnel[1])
+
+    # Return the number of planets that are not in the set of non-remote planets
+    return num_planets - len(non_remote_planets)
+
+def main():
+    num_planets = int(input())
+    tunnels = []
+
+    for _ in range(num_planets - 1):
+        tunnel = tuple(map(int, input().split()))
+        tunnels.append(tunnel)
+
+    print(get_remote_planets(num_planets, tunnels))
+
+if __name__ == '__main__':
+    main()
 

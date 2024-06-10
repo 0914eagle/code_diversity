@@ -1,11 +1,38 @@
 
-def solve(a, b, c):
-    # Calculate the maximum number of candies Alice can have after the division
-    return max(a, b, c)
+def get_note_duration(note):
+    if note.isdigit():
+        return int(note)
+    else:
+        return 1
 
-q = int(input())
+def get_note_pitch(note):
+    if note.isdigit():
+        return note
+    else:
+        return note.upper()
 
-for i in range(q):
-    a, b, c = map(int, input().split())
-    print(solve(a, b, c))
+def get_staff_line(note):
+    pitch = get_note_pitch(note)
+    duration = get_note_duration(note)
+    return '*' * duration
+
+def get_staff_lines(notes):
+    staff_lines = []
+    for note in notes:
+        staff_line = get_staff_line(note)
+        staff_lines.append(staff_line)
+    return staff_lines
+
+def get_staff(notes):
+    staff_lines = get_staff_lines(notes)
+    staff = '\n'.join(staff_lines)
+    return staff
+
+def main():
+    notes = input().split()
+    staff = get_staff(notes)
+    print(staff)
+
+if __name__ == '__main__':
+    main()
 

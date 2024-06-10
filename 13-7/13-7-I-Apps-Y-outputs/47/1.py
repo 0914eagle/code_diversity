@@ -1,13 +1,29 @@
 
-def solve(W, H, x, y):
-    area_1 = x * y
-    area_2 = (W-x) * (H-y)
-    area_3 = W * H - area_1 - area_2
-    max_area = max(area_1, area_2, area_3)
-    if area_1 == max_area:
-        return area_1, 1
-    elif area_2 == max_area:
-        return area_2, 1
-    else:
-        return area_3, 0
+def get_blue_balls(N, A, B):
+    # Initialize a list to store the colors of the balls
+    colors = []
+    
+    # Place A blue balls at the end of the list
+    for i in range(A):
+        colors.append("b")
+    
+    # Place B red balls at the end of the list
+    for i in range(B):
+        colors.append("r")
+    
+    # Return the number of blue balls among the first N balls
+    return colors.count("b")
+
+def main():
+    # Read the input from stdin
+    N, A, B = map(int, input().split())
+    
+    # Call the function to get the number of blue balls
+    result = get_blue_balls(N, A, B)
+    
+    # Print the result
+    print(result)
+
+if __name__ == '__main__':
+    main()
 

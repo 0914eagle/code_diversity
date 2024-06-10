@@ -1,31 +1,56 @@
 
-def solve(n, systems, e, links):
-    # Initialize the minimum UW distance
-    min_uw_distance = float('inf')
-    # Loop through all possible pairs of systems
+def get_final_ratings(n, ratings):
+    # Sort the ratings in descending order
+    ratings.sort(reverse=True)
+    
+    # Initialize the final ratings and the number of matches to play
+    final_ratings = [0] * n
+    num_matches = 0
+    
+    # Iterate through the ratings and form parties of size 2 to 5
     for i in range(n):
         for j in range(i+1, n):
-            # If the systems are not directly linked, skip this pair
-            if (i, j) not in links and (j, i) not in links:
-                continue
-            # Calculate the UW distance for this pair of systems
-            uw_distance = calculate_uw_distance(systems, i, j)
-            # Update the minimum UW distance
-            min_uw_distance = min(min_uw_distance, uw_distance)
-    # Return the minimum UW distance
-    return min_uw_distance
+            for k in range(j+1, n):
+                for l in range(k+1, n):
+                    # Form a party of size 4 and play a match
+                    party = [ratings[i], ratings[j], ratings[k], ratings[l]]
+                    party.sort(reverse=True)
+                    num_matches += 1
+                    
+                    # Update the final ratings
+                    for m in range(4):
+                        final_ratings[m] = max(final_ratings[m], party[m])
+    
+    return final_ratings, num_matches
 
-def calculate_uw_distance(systems, i, j):
-    # Initialize the UW distance
-    uw_distance = 0
-    # Loop through all the systems in the path between i and j
-    for k in range(i, j):
-        # Calculate the capacitance, potential, and inductance for this system
-        capacitance = systems[k][0] + systems[k+1][0]
-        potential = systems[k][0] - systems[k+1][0]
-        inductance = systems[k][0] * systems[k+1][0]
-        # Add the potential and inductance to the UW distance
-        uw_distance += potential * (capacitance * capacitance - inductance)
-    # Return the UW distance
-    return abs(uw_distance)
+def get_match_schedule(n, final_ratings, num_matches):
+    # Initialize the match schedule
+    match_schedule = []
+    
+    # Iterate through the final ratings and form parties of size 2 to 5
+    for i in range(n):
+        for j in range(i+1, n):
+            for k in range(j+1, n):
+                for l in range(k+1, n):
+                    # Form a party of size 4 and add it to the match schedule
+                    party = [i, j, k, l]
+                    party.sort()
+                    match_schedule.append(party)
+    
+    # Shuffle the match schedule
+    import random
+    random.shuffle(match_schedule)
+    
+    # Return the first num_matches parties from the match schedule
+    return match_schedule[:num_matches]
+
+if __name__ == '__main__':
+    n = int(input())
+    ratings = list(map(int, input().split()))
+    final_ratings, num_matches = get_final_ratings(n, ratings)
+    match_schedule = get_match_schedule(n, final_ratings, num_matches)
+    print(*final_ratings)
+    print(num_matches)
+    for party in match_schedule:
+        print(''.join('1' if i in party else '0' for i in range(n)))
 

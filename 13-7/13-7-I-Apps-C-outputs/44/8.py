@@ -1,34 +1,45 @@
 
-def solve(n, gravity, direct_links, device=False):
-    # Initialize the capacitance, potential, and inductance sequences
-    capacitance = [0] * n
-    potential = [0] * n
-    inductance = [0] * n
+def get_final_rating(n, ratings):
+    # Sort the ratings in descending order
+    ratings.sort(reverse=True)
+    # Calculate the sum of the ratings
+    sum_ratings = sum(ratings)
+    # Calculate the average rating
+    avg_rating = sum_ratings / n
+    # Calculate the difference between the average rating and each rating
+    diff_ratings = [abs(rating - avg_rating) for rating in ratings]
+    # Return the final rating as the sum of the differences
+    return sum(diff_ratings)
 
-    # Calculate the capacitance, potential, and inductance for each system
+def get_optimal_strategy(n, ratings):
+    # Initialize the final rating and the optimal strategy
+    final_rating = 0
+    optimal_strategy = []
+    
+    # Loop through each rating and calculate the final rating and the optimal strategy
     for i in range(n):
-        capacitance[i] = sum(gravity[j] for j in range(i+1, n) if j in direct_links[i])
-        potential[i] = sum(gravity[j] for j in range(i+1, n) if j not in direct_links[i])
-        inductance[i] = sum(gravity[j] * gravity[k] for j in range(i+1, n) for k in range(j+1, n) if (j, k) in direct_links)
+        # Calculate the final rating for the current rating and the previous final rating
+        final_rating += abs(ratings[i] - final_rating)
+        # Add the current rating to the optimal strategy
+        optimal_strategy.append(ratings[i])
+    
+    # Return the final rating and the optimal strategy
+    return final_rating, optimal_strategy
 
-    # Calculate the UW distance for each system
-    uw_distance = [0] * n
-    for i in range(n):
-        uw_distance[i] = abs(potential[i] * (capacitance[i] * capacitance[i] - inductance[i]))
+def main():
+    # Read the input n and the ratings from stdin
+    n = int(input())
+    ratings = list(map(int, input().split()))
+    
+    # Get the final rating and the optimal strategy
+    final_rating, optimal_strategy = get_optimal_strategy(n, ratings)
+    
+    # Print the final rating and the optimal strategy
+    print(final_rating)
+    print(len(optimal_strategy))
+    for rating in optimal_strategy:
+        print("1" * rating + "0" * (n - rating))
 
-    # If the gravity dispersal device is used, reduce the gravity of the system and increase the gravity of all directly linked systems
-    if device:
-        for i in range(n):
-            gravity[i] -= 1
-            for j in direct_links[i]:
-                gravity[j] += 1
-
-    # Calculate the minimum UW distance between an alien and human system
-    min_distance = float('inf')
-    for i in range(n):
-        for j in range(n):
-            if gravity[i] == 'a' and gravity[j] == 'h':
-                min_distance = min(min_distance, uw_distance[i] + uw_distance[j])
-
-    return min_distance
+if __name__ == '__main__':
+    main()
 

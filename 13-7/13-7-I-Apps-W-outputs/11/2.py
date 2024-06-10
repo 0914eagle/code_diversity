@@ -1,22 +1,24 @@
 
-def solve(n, c, prices):
-    # Initialize variables
-    max_profit = 0
-    barrels = 0
-    raspberries = 0
+import math
 
-    # Iterate through the prices
-    for i in range(n):
-        # If the bear has enough raspberries, buy a barrel
-        if raspberries >= prices[i]:
-            barrels += 1
-            raspberries -= prices[i]
+def calculate_distance(W):
+    # Calculate the distance between Agneta and Beata at time W
+    distance = 1 + W * 1
+    return distance
 
-        # If the bear has a barrel and enough raspberries, sell the barrel and earn profit
-        if barrels > 0 and raspberries >= c:
-            max_profit += prices[i]
-            barrels -= 1
-            raspberries += c
+def calculate_min_distance(W):
+    # Calculate the minimum distance between Agneta and Beata during their trip
+    min_distance = 1
+    for i in range(1, 1000):
+        distance = calculate_distance(i)
+        if distance < min_distance:
+            min_distance = distance
+    return min_distance
 
-    return max_profit
+def main():
+    W = float(input())
+    print(calculate_min_distance(W))
+
+if __name__ == '__main__':
+    main()
 

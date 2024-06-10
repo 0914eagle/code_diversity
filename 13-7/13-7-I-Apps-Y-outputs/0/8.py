@@ -1,10 +1,17 @@
 
-def is_triangle_possible(sticks):
-    sticks = sorted(sticks)
-    for i in range(len(sticks)):
-        for j in range(i+1, len(sticks)):
-            for k in range(j+1, len(sticks)):
-                if sticks[i] + sticks[j] > sticks[k] and sticks[i] + sticks[k] > sticks[j] and sticks[j] + sticks[k] > sticks[i]:
-                    return "possible"
-    return "impossible"
+def solve(b, d, c, l):
+    # Find all possible combinations of b, d, and c that add up to l
+    for i in range(1, l+1):
+        for j in range(1, l+1):
+            for k in range(1, l+1):
+                if i + j + k == l and i >= b and j >= d and k >= c:
+                    yield (i, j, k)
+
+def main():
+    b, d, c, l = map(int, input().split())
+    for solution in solve(b, d, c, l):
+        print(*solution)
+
+if __name__ == '__main__':
+    main()
 

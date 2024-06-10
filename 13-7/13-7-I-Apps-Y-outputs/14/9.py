@@ -1,12 +1,37 @@
 
-def solve(A, B, H, M):
-    # Calculate the angle between the hour and minute hands
-    hour_angle = (360 / 12) * H
-    minute_angle = (360 / 60) * M
-    angle = abs(hour_angle - minute_angle)
+import collections
 
-    # Calculate the distance between the hands
-    distance = (A * math.sin(math.radians(angle))) + (B * math.sin(math.radians(angle)))
+def get_suits(deck):
+    suits = ["P", "K", "H", "T"]
+    suit_count = [0] * 4
+    for card in deck:
+        suit = card[0]
+        if suit in suits:
+            suit_index = suits.index(suit)
+            suit_count[suit_index] += 1
+    return suit_count
 
-    return round(distance, 9)
+def get_cards(deck):
+    cards = []
+    for card in deck:
+        cards.append(card[1:])
+    return cards
+
+def get_missing_cards(deck):
+    cards = get_cards(deck)
+    suits = get_suits(deck)
+    if len(cards) != 52:
+        return "GRESKA"
+    for card in cards:
+        if cards.count(card) > 1:
+            return "GRESKA"
+    missing_cards = [52 - suits[i] for i in range(4)]
+    return " ".join(str(missing_card) for missing_card in missing_cards)
+
+def main():
+    deck = input()
+    print(get_missing_cards(deck))
+
+if __name__ == '__main__':
+    main()
 

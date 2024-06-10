@@ -1,30 +1,30 @@
 
-def get_network_topology(n, m, edges):
-    # Initialize a graph with n nodes and m edges
-    graph = [[] for _ in range(n)]
+def count_lifelines(n, edges):
+    # Initialize a dictionary to store the neighbors of each vertex
+    neighbors = {}
     for edge in edges:
-        graph[edge[0] - 1].append(edge[1])
-        graph[edge[1] - 1].append(edge[0])
+        # Add the neighbors of each vertex to the dictionary
+        neighbors[edge[0]] = neighbors.get(edge[0], []) + [edge[1]]
+        neighbors[edge[1]] = neighbors.get(edge[1], []) + [edge[0]]
+    
+    # Initialize a set to store the lifelines
+    lifelines = set()
+    for vertex in range(1, n + 1):
+        # Iterate over the neighbors of each vertex
+        for neighbor in neighbors[vertex]:
+            # If the neighbor is smaller than the vertex, add the edge to the set of lifelines
+            if neighbor < vertex:
+                lifelines.add((vertex, neighbor))
+    
+    return len(lifelines)
 
-    # Check if the graph is connected
-    visited = [False] * n
-    queue = [0]
-    while queue:
-        node = queue.pop(0)
-        if not visited[node]:
-            visited[node] = True
-            queue += graph[node]
+def main():
+    n = int(input())
+    edges = []
+    for _ in range(n - 1):
+        edges.append(tuple(map(int, input().split())))
+    print(count_lifelines(n, edges))
 
-    if not all(visited):
-        return "unknown topology"
-
-    # Check if the graph is a bus, ring, or star
-    if len(edges) == n - 1:
-        return "bus topology"
-    elif len(edges) == n - 2:
-        return "ring topology"
-    elif len(edges) == n - 1 and graph[0] == list(range(1, n + 1)):
-        return "star topology"
-    else:
-        return "unknown topology"
+if __name__ == '__main__':
+    main()
 

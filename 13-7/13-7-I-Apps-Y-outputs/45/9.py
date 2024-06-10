@@ -1,21 +1,18 @@
 
-def solve(n, course_combinations):
-    # Initialize a dictionary to store the count of each course combination
-    course_count = {}
+def get_towers(widths):
+    towers = 0
+    current_tower = 0
+    for width in widths:
+        if width > current_tower:
+            current_tower = width
+            towers += 1
+    return towers
 
-    # Iterate over the course combinations for each frosh
-    for combination in course_combinations:
-        # Check if the course combination is already in the dictionary
-        if combination not in course_count:
-            # If not, add it to the dictionary with a count of 1
-            course_count[combination] = 1
-        else:
-            # If it is already in the dictionary, increment the count
-            course_count[combination] += 1
+def main():
+    num_bricks = int(input())
+    widths = list(map(int, input().split()))
+    print(get_towers(widths))
 
-    # Find the combination with the highest count
-    most_popular_combination = max(course_count, key=course_count.get)
-
-    # Return the number of frosh taking the most popular combination
-    return course_count[most_popular_combination]
+if __name__ == '__main__':
+    main()
 

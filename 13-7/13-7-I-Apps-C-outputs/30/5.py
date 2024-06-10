@@ -1,19 +1,18 @@
 
-def count_monotonic_subgrids(grid):
-    def is_monotonic(subgrid):
-        for i in range(len(subgrid) - 1):
-            if subgrid[i] > subgrid[i + 1]:
-                return False
-        return True
+def get_subsequences(prices, p):
+    subsequences = []
+    for i in range(len(prices)):
+        for j in range(i+1, len(prices)+1):
+            if sum(prices[i:j]) / (j-i) >= p:
+                subsequences.append(prices[i:j])
+    return len(set(map(tuple, subsequences)))
 
-    def count_subgrids(row_start, col_start, row_end, col_end):
-        if row_start > row_end or col_start > col_end:
-            return 0
-        if row_start == row_end and col_start == col_end:
-            return 1 if is_monotonic(grid[row_start][col_start:col_end + 1]) else 0
-        return (count_subgrids(row_start, col_start, row_end, col_end - 1) +
-                count_subgrids(row_start, col_start + 1, row_end, col_end) +
-                count_subgrids(row_start + 1, col_start, row_end, col_end))
+def main():
+    n = int(input())
+    prices = list(map(int, input().split()))
+    p = int(input())
+    print(get_subsequences(prices, p))
 
-    return count_subgrids(0, 0, len(grid) - 1, len(grid[0]) - 1)
+if __name__ == '__main__':
+    main()
 

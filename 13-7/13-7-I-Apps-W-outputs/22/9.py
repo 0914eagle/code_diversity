@@ -1,31 +1,30 @@
 
-def solve(n, m, building):
-    # Initialize the minimum time variable
-    min_time = 0
+def rotate_map(map, num_rotations):
+    return map[::-1]
 
-    # Loop through each floor
-    for floor in range(n):
-        # Get the current floor string
-        floor_string = building[floor]
+def flip_map(map, axis):
+    if axis == "vertical":
+        return ["".join(reversed(row)) for row in map]
+    elif axis == "horizontal":
+        return list(map)[::-1]
+    else:
+        raise ValueError("Invalid axis")
 
-        # Find the index of the first '1' in the floor string
-        first_on_index = floor_string.index('1')
+def are_maps_identical(map1, map2):
+    return map1 == map2
 
-        # Calculate the time it takes to get to the first on light
-        time_to_first_on = first_on_index * 2
+def main():
+    n = int(input())
+    map1 = [input() for _ in range(n)]
+    map2 = [input() for _ in range(n)]
+    for i in range(4):
+        rotated_map1 = rotate_map(map1, i)
+        for j in range(4):
+            flipped_map1 = flip_map(rotated_map1, "vertical" if j % 2 == 0 else "horizontal")
+            if are_maps_identical(flipped_map1, map2):
+                return "Yes"
+    return "No"
 
-        # Add the time it takes to turn off the light
-        min_time += time_to_first_on + 1
-
-        # Find the index of the last '1' in the floor string
-        last_on_index = floor_string.rindex('1')
-
-        # Calculate the time it takes to get to the last on light
-        time_to_last_on = (m - last_on_index) * 2
-
-        # Add the time it takes to turn off the light
-        min_time += time_to_last_on + 1
-
-    # Return the minimum time
-    return min_time
+if __name__ == '__main__':
+    print(main())
 

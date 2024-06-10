@@ -1,19 +1,15 @@
 
-def solve(grid, k):
-    # Initialize the dp table with all zeros
-    dp = [[0] * len(grid[0]) for _ in range(len(grid))]
+def get_odd_digits_count(n):
+    count = 0
+    for i in range(1, n+1):
+        if len(str(i)) % 2 == 1:
+            count += 1
+    return count
 
-    # Base case: the xor sum is k if we are at the bottom-right cell
-    dp[len(grid) - 1][len(grid[0]) - 1] = 1 if k == 0 else 0
+def main():
+    n = int(input())
+    print(get_odd_digits_count(n))
 
-    # Fill in the dp table from the bottom-up
-    for i in range(len(grid) - 1, -1, -1):
-        for j in range(len(grid[0]) - 1, -1, -1):
-            if i == len(grid) - 1 and j == len(grid[0]) - 1:
-                continue
-            dp[i][j] = dp[i + 1][j] + dp[i][j + 1]
-            if grid[i][j] != 0:
-                dp[i][j] -= dp[i + 1][j + 1] if grid[i][j] ^ k == 0 else 0
-
-    return dp[0][0]
+if __name__ == '__main__':
+    main()
 

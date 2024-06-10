@@ -1,27 +1,18 @@
 
-def solve(n):
-    # Initialize the number of bacteria to 1 and the current mass to 1
-    num_bacteria = 1
-    current_mass = 1
-    
-    # Initialize the number of nights to 0
-    nights = 0
-    
-    # Loop until the total mass is equal to n
-    while current_mass != n:
-        # Increment the number of nights
-        nights += 1
-        
-        # Calculate the number of bacteria that will split
-        num_split = num_bacteria // 2
-        
-        # Update the number of bacteria and current mass
-        num_bacteria += num_split
-        current_mass += num_split
-        
-        # Increment the current mass of each bacteria by 1
-        current_mass += num_bacteria
-    
-    # Return the number of nights and the number of bacteria that will split on each night
-    return nights, [num_bacteria // 2] * nights
+def is_lovely(n):
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+def get_biggest_lovely_number(n):
+    lovely_numbers = []
+    for i in range(1, n + 1):
+        if is_lovely(i):
+            lovely_numbers.append(i)
+    return max(lovely_numbers)
+
+if __name__ == '__main__':
+    n = int(input())
+    print(get_biggest_lovely_number(n))
 

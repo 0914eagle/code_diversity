@@ -1,18 +1,32 @@
 
-def get_most_popular_combination(n, combinations):
-    # Initialize a dictionary to store the popularity of each combination
-    popularity = {}
+def get_tower_count(widths):
+    # Initialize variables
+    tower_count = 0
+    current_tower_height = 0
 
-    # Iterate over each combination and increment the popularity count for that combination
-    for combination in combinations:
-        if combination in popularity:
-            popularity[combination] += 1
+    # Iterate through the widths of the bricks
+    for width in widths:
+        # If the width is greater than the current tower height, we have finished a tower
+        if width > current_tower_height:
+            tower_count += 1
+            current_tower_height = width
+        # Otherwise, we add the brick to the current tower
         else:
-            popularity[combination] = 1
+            current_tower_height += width
 
-    # Find the combination with the highest popularity
-    most_popular_combination = max(popularity, key=popularity.get)
+    return tower_count
 
-    # Return the number of frosh taking the most popular combination
-    return popularity[most_popular_combination]
+def main():
+    # Read the input
+    num_bricks = int(input())
+    brick_widths = [int(x) for x in input().split()]
+
+    # Call the function to get the tower count
+    tower_count = get_tower_count(brick_widths)
+
+    # Print the output
+    print(tower_count)
+
+if __name__ == '__main__':
+    main()
 

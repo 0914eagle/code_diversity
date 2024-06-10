@@ -1,20 +1,35 @@
 
-def min_cost_road_trip(n, g, distances, costs):
-    # Initialize the dp table with the cost of the first gas station
-    dp = [costs[0]] * (g + 1)
-    dp[0] = 0
-    
-    # Loop through each gas station
-    for i in range(1, n):
-        # Loop through each possible amount of gas
-        for j in range(g, -1, -1):
-            # If the current gas station is within reach, calculate the minimum cost to get there
-            if distances[i] <= j:
-                dp[j] = min(dp[j], dp[j - distances[i]] + costs[i])
-            # If the current gas station is out of reach, set the cost to infinity
-            else:
-                dp[j] = float('inf')
-    
-    # Return the minimum cost to reach the last gas station
-    return "cancel road trip" if dp[g] == float('inf') else dp[g]
+import math
+
+def is_in_sight(beacon1, beacon2, mountain_peaks):
+    for mountain_peak in mountain_peaks:
+        if not is_mountain_blocking(beacon1, beacon2, mountain_peak):
+            return False
+    return True
+
+def is_mountain_blocking(beacon1, beacon2, mountain_peak):
+    distance = math.sqrt((beacon1[0] - beacon2[0]) ** 2 + (beacon1[1] - beacon2[1]) ** 2)
+    if distance <= mountain_peak[2]:
+        return True
+    return False
+
+def get_number_of_messages(beacons, mountain_peaks):
+    number_of_messages = 0
+    for beacon in beacons:
+        if not is_in_sight(beacon, beacons, mountain_peaks):
+            number_of_messages += 1
+    return number_of_messages
+
+def main():
+    n, m = map(int, input().split())
+    beacons = []
+    for _ in range(n):
+        beacons.append(tuple(map(int, input().split())))
+    mountain_peaks = []
+    for _ in range(m):
+        mountain_peaks.append(tuple(map(int, input().split())))
+    print(get_number_of_messages(beacons, mountain_peaks))
+
+if __name__ == '__main__':
+    main()
 

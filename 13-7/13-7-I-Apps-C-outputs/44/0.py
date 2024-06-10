@@ -1,53 +1,67 @@
 
-def solve(n, systems, links, use_gravity_dispersal):
-    # Initialize the minimum UW distance to a large value
-    min_distance = float('inf')
+def get_final_ratings(n, ratings):
+    # Sort the ratings in descending order
+    ratings = sorted(ratings, reverse=True)
     
-    # Loop through all possible pairs of systems
-    for i in range(n):
-        for j in range(i+1, n):
-            # Calculate the UW distance between the two systems
-            distance = calculate_uw_distance(systems, links, i, j, use_gravity_dispersal)
-            
-            # Check if the distance is less than the minimum distance
-            if distance < min_distance:
-                min_distance = distance
+    # Calculate the difference between the highest and lowest ratings
+    diff = ratings[0] - ratings[-1]
     
-    # Return the minimum UW distance
-    return min_distance
+    # Calculate the number of matches needed to make all ratings equal
+    matches = diff // 2
+    
+    # Create a list to store the matches
+    matches_list = []
+    
+    # Iterate over the ratings and create a list of teams with equal ratings
+    for i in range(matches):
+        team = []
+        for j in range(n):
+            team.append(ratings[j] - i)
+        matches_list.append(team)
+    
+    # Return the final ratings and the number of matches
+    return ratings, matches_list
 
-def calculate_uw_distance(systems, links, i, j, use_gravity_dispersal):
-    # Initialize the UW distance to 0
-    distance = 0
+def get_match_teams(n, ratings, matches_list):
+    # Create a list to store the teams for each match
+    teams_list = []
     
-    # Loop through all systems in the path between the two systems
-    for k in range(i, j):
-        # Calculate the capacitance, potential, and inductance of the current system
-        capacitance, potential, inductance = calculate_characteristics(systems, links, k)
-        
-        # Add the potential of the current system to the UW distance
-        distance += potential
-        
-        # If the gravity dispersal device is used, increase the gravity of the current system and all directly linked systems
-        if use_gravity_dispersal:
-            systems[k] += 1
-            for l in links[k]:
-                systems[l] += 1
+    # Iterate over the matches and create a list of teams for each match
+    for i in range(len(matches_list)):
+        team = []
+        for j in range(n):
+            if ratings[j] - i >= 0:
+                team.append(j)
+        teams_list.append(team)
     
-    # Return the absolute value of the UW distance
-    return abs(distance)
+    # Return the list of teams for each match
+    return teams_list
 
-def calculate_characteristics(systems, links, k):
-    # Initialize the capacitance, potential, and inductance to 0
-    capacitance, potential, inductance = 0, 0, 0
+def get_match_teams_str(n, teams_list):
+    # Create a list to store the string representation of the teams for each match
+    teams_str_list = []
     
-    # Loop through all directly linked systems
-    for l in links[k]:
-        # Calculate the capacitance, potential, and inductance of the current system
-        capacitance += systems[l]
-        potential += systems[l] - systems[k]
-        inductance += systems[l] * systems[k]
+    # Iterate over the teams for each match and create a string representation of the teams
+    for team in teams_list:
+        teams_str = ''
+        for i in team:
+            teams_str += str(i)
+        teams_str_list.append(teams_str)
     
-    # Return the capacitance, potential, and inductance
-    return capacitance, potential, inductance
+    # Return the list of string representations of the teams for each match
+    return teams_str_list
+
+def main():
+    n = int(input())
+    ratings = list(map(int, input().split()))
+    final_ratings, matches_list = get_final_ratings(n, ratings)
+    teams_list = get_match_teams(n, ratings, matches_list)
+    teams_str_list = get_match_teams_str(n, teams_list)
+    print(final_ratings)
+    print(len(matches_list))
+    for team in teams_str_list:
+        print(team)
+
+if __name__ == '__main__':
+    main()
 

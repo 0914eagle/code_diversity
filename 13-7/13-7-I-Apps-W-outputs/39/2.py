@@ -1,24 +1,30 @@
 
-def solve(s):
-    n = len(s)
-    substrings = []
+def get_prefix_rectangles(feature):
+    prefix_rectangles = []
+    for i in range(len(feature)):
+        for j in range(len(feature[0])):
+            if feature[i][j] == "W":
+                prefix_rectangles.append((i, j, 1))
+            elif feature[i][j] == "B":
+                prefix_rectangles.append((i, j, -1))
+    return prefix_rectangles
+
+def calculate_minimum_operations(prefix_rectangles):
+    minimum_operations = 0
+    for prefix_rectangle in prefix_rectangles:
+        i, j, coefficient = prefix_rectangle
+        minimum_operations += coefficient * (i + 1)
+    return minimum_operations
+
+def main():
+    n, m = map(int, input().split())
+    feature = []
     for i in range(n):
-        for j in range(i, n):
-            substrings.append(s[i:j+1])
-    substrings = list(set(substrings))
-    if len(substrings) == len(s):
-        return 0
-    else:
-        # find the longest common prefix of all substrings
-        lcp = ""
-        for i in range(len(substrings[0])):
-            for j in range(1, len(substrings)):
-                if substrings[0][i] != substrings[j][i]:
-                    return -1
-            lcp += substrings[0][i]
-        # find the number of changes needed to make all substrings distinct
-        changes = 0
-        for substring in substrings:
-            changes += len(substring) - len(lcp)
-        return changes
+        feature.append(list(input()))
+    prefix_rectangles = get_prefix_rectangles(feature)
+    minimum_operations = calculate_minimum_operations(prefix_rectangles)
+    print(minimum_operations)
+
+if __name__ == '__main__':
+    main()
 

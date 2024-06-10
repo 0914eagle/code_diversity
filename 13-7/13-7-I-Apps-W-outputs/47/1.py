@@ -1,19 +1,23 @@
 
-def get_nearest_fraction(x, y, n):
-    # Initialize the minimum difference to a large value
-    min_diff = 1e9
-    # Initialize the minimum denominator to 0
-    min_denom = 0
-    # Iterate through all possible denominators
-    for denom in range(1, n+1):
-        # Calculate the numerator that is closest to x/y
-        num = round(x*denom/y)
-        # Calculate the absolute difference between the current fraction and x/y
-        diff = abs(x*denom/y - num/denom)
-        # If the difference is smaller than the minimum difference, update the minimum difference and denominator
-        if diff < min_diff:
-            min_diff = diff
-            min_denom = denom
-    # Return the fraction with the minimum denominator
-    return str(min_denom) + "/" + str(min_denom)
+def get_maximum_score(n, t, a, t_i):
+    # Write your code here
+    return 0
+
+def get_problems_to_solve(n, t, a, t_i):
+    # Write your code here
+    return []
+
+if __name__ == '__main__':
+    n, t = map(int, input().split())
+    a = []
+    t_i = []
+    for i in range(n):
+        a_i, t_i_i = map(int, input().split())
+        a.append(a_i)
+        t_i.append(t_i_i)
+    maximum_score = get_maximum_score(n, t, a, t_i)
+    problems_to_solve = get_problems_to_solve(n, t, a, t_i)
+    print(maximum_score)
+    print(len(problems_to_solve))
+    print(*problems_to_solve)
 

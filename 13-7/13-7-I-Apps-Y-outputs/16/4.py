@@ -1,7 +1,20 @@
 
-def immigration_officer(numbers):
-    for num in numbers:
-        if num % 2 == 0 and num % 3 != 0 and num % 5 != 0:
-            return "DENIED"
-    return "APPROVED"
+def get_max_value(string):
+    x = 0
+    max_value = 0
+    for char in string:
+        if char == "I":
+            x += 1
+        else:
+            x -= 1
+        max_value = max(max_value, x)
+    return max_value
+
+def main():
+    n = int(input())
+    string = input()
+    print(get_max_value(string))
+
+if __name__ == '__main__':
+    main()
 

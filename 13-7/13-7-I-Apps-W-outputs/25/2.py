@@ -1,59 +1,34 @@
 
-def solve(n, points):
-    # Sort the points by their x-coordinates
-    sorted_points = sorted(points, key=lambda point: point[0])
+def get_number_of_switches(n, teams):
+    # Initialize a dictionary to keep track of the teams and their corresponding seats
+    team_seats = {}
+    for i, team in enumerate(teams):
+        if team not in team_seats:
+            team_seats[team] = [i]
+        else:
+            team_seats[team].append(i)
 
-    # Initialize the minimum number of lines needed to cover all points as infinity
-    min_lines = float('inf')
+    # Initialize a variable to keep track of the number of switches
+    switches = 0
 
-    # Iterate over all possible line combinations
-    for i in range(len(sorted_points)):
-        for j in range(i+1, len(sorted_points)):
-            # Check if the line between the two points covers all points
-            if covers_all_points(sorted_points[i], sorted_points[j], points):
-                # If so, update the minimum number of lines needed
-                min_lines = min(min_lines, 2)
-            # If the line does not cover all points, check if it covers any points
-            elif covers_any_point(sorted_points[i], sorted_points[j], points):
-                # If so, update the minimum number of lines needed
-                min_lines = min(min_lines, 1)
+    # Iterate through the teams and their corresponding seats
+    for team, seats in team_seats.items():
+        # Sort the seats in ascending order
+        sorted_seats = sorted(seats)
 
-    # Return YES if the minimum number of lines needed is 1 or 2, NO otherwise
-    return 'YES' if min_lines <= 2 else 'NO'
+        # Iterate through the sorted seats and check if they are in the correct order
+        for i in range(len(sorted_seats) - 1):
+            if sorted_seats[i + 1] - sorted_seats[i] != 1:
+                # If the seats are not in the correct order, increment the number of switches
+                switches += 1
 
-# Check if the line between two points covers all points
-def covers_all_points(point1, point2, points):
-    # If the x-coordinates of the two points are the same, the line will not cover all points
-    if point1[0] == point2[0]:
-        return False
+    return switches
 
-    # Initialize the slope and y-intercept of the line
-    slope = (point2[1] - point1[1]) / (point2[0] - point1[0])
-    y_intercept = point1[1] - slope * point1[0]
+def main():
+    n = int(input())
+    teams = input()
+    print(get_number_of_switches(n, teams))
 
-    # Iterate over all points and check if they lie on the line
-    for point in points:
-        if point[1] != slope * point[0] + y_intercept:
-            return False
-
-    # If all points lie on the line, return True
-    return True
-
-# Check if the line between two points covers any points
-def covers_any_point(point1, point2, points):
-    # If the x-coordinates of the two points are the same, the line will not cover any points
-    if point1[0] == point2[0]:
-        return False
-
-    # Initialize the slope and y-intercept of the line
-    slope = (point2[1] - point1[1]) / (point2[0] - point1[0])
-    y_intercept = point1[1] - slope * point1[0]
-
-    # Iterate over all points and check if they lie on the line
-    for point in points:
-        if point[1] == slope * point[0] + y_intercept:
-            return True
-
-    # If no points lie on the line, return False
-    return False
+if __name__ == '__main__':
+    main()
 

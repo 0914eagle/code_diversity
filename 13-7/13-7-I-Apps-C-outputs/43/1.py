@@ -1,20 +1,36 @@
 
-def is_winning_strategy(n, k, ancient_numbers):
-    # Check if k is one of the ancient numbers
-    if k in ancient_numbers:
-        return "Yes"
-    
-    # Check if there is any number in the ancient numbers that is a factor of k
-    for num in ancient_numbers:
-        if k % num == 0:
-            return "Yes"
-    
-    # Check if there is any number in the ancient numbers that has the same remainder as k when divided by another number in the ancient numbers
-    for i in range(len(ancient_numbers)):
-        for j in range(i+1, len(ancient_numbers)):
-            if ancient_numbers[i] % ancient_numbers[j] == 0:
-                return "Yes"
-    
-    # If none of the above conditions are met, then Arya does not have a winning strategy
-    return "No"
+def parse_expression(expression):
+    # Function to parse the expression and return a tuple of the coefficients and variables
+    coeffs, vars = [], []
+    for token in expression.split():
+        if token.isdigit():
+            coeffs.append(int(token))
+        elif token.lower() == "x":
+            vars.append(token)
+        else:
+            coeffs.append(token)
+    return coeffs, vars
+
+def get_min_x(expression, p, m):
+    # Function to find the minimum value of x that satisfies the given condition
+    coeffs, vars = parse_expression(expression)
+    x = 0
+    while True:
+        rem = 0
+        for i in range(len(coeffs)):
+            if vars[i] == "x":
+                rem += coeffs[i] * x
+            else:
+                rem += coeffs[i]
+        if rem % m == p:
+            break
+        x += 1
+    return x
+
+def main():
+    expression, p, m = input().split()
+    print(get_min_x(expression, int(p), int(m)))
+
+if __name__ == '__main__':
+    main()
 

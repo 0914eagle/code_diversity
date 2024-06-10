@@ -1,20 +1,38 @@
 
-def solve(N, A, B):
-    # Initialize a list to store the permutation
-    perm = list(range(1, N+1))
-    # Initialize a list to store the values of g(i) for each i
-    g = [0] * (N+1)
-    # Initialize a set to keep track of the values of g(i) that have been used
-    used = set()
-    # Iterate through the permutation and calculate the values of g(i)
-    for i in range(1, N+1):
-        # If the value of g(i) has not been used before, add it to the set of used values
-        if g[i] not in used:
-            used.add(g[i])
-        # If the set of used values is equal to the set of possible values (i.e. A and B), return the permutation
-        if used == set([A, B]):
-            return perm
-        # If the set of used values is not equal to the set of possible values, continue to the next iteration
-    # If no permutation is found, return -1
-    return -1
+def get_language_pairs(translators):
+    language_pairs = []
+    for translator in translators:
+        language_pairs.append(set(translator))
+    return language_pairs
+
+def get_matching_pairs(language_pairs):
+    matching_pairs = []
+    for i in range(len(language_pairs)):
+        for j in range(i+1, len(language_pairs)):
+            if language_pairs[i] & language_pairs[j]:
+                matching_pairs.append((i, j))
+    return matching_pairs
+
+def get_translator_pairs(matching_pairs, translators):
+    translator_pairs = []
+    for pair in matching_pairs:
+        translator_pairs.append((translators[pair[0]], translators[pair[1]]))
+    return translator_pairs
+
+def main():
+    N, M = map(int, input().split())
+    translators = []
+    for _ in range(M):
+        translators.append(tuple(map(int, input().split())))
+    language_pairs = get_language_pairs(translators)
+    matching_pairs = get_matching_pairs(language_pairs)
+    if len(matching_pairs) == M/2:
+        translator_pairs = get_translator_pairs(matching_pairs, translators)
+        for pair in translator_pairs:
+            print(pair[0], pair[1])
+    else:
+        print("impossible")
+
+if __name__ == '__main__':
+    main()
 

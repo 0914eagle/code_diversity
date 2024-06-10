@@ -1,56 +1,56 @@
 
-def solve(n, m, k, a):
-    # Initialize variables
-    changed_cells = 0
-    rectangles = []
-
-    # Loop through each row of the table
-    for i in range(n):
-        # Loop through each column of the table
-        for j in range(m):
-            # If the current cell is not part of a rectangle, check if it can be part of a rectangle
-            if a[i][j] == 0:
-                # Check if the current cell can be part of a rectangle
-                rectangle = can_be_part_of_rectangle(a, i, j)
-                if rectangle:
-                    # If the current cell can be part of a rectangle, add it to the list of rectangles
-                    rectangles.append(rectangle)
-                    # Increase the number of changed cells
-                    changed_cells += 1
-
-    # Check if the number of changed cells is less than or equal to k
-    if changed_cells <= k:
-        # If the number of changed cells is less than or equal to k, return the number of changed cells
-        return changed_cells
-    else:
-        # If the number of changed cells is greater than k, return -1
-        return -1
-
-# Function to check if a cell can be part of a rectangle
-def can_be_part_of_rectangle(a, i, j):
-    # Initialize variables
-    rectangle = []
-    value = a[i][j]
-
-    # Check if the current cell is not already part of a rectangle
-    if value == 0:
-        # Check if the current cell is adjacent to any other cell in the same row
-        for j in range(m):
-            if a[i][j] == value:
-                # If the current cell is adjacent to another cell in the same row, add it to the rectangle
-                rectangle.append((i, j))
+def get_good_arrangement(r, c, a, b, c):
+    # Initialize a 2D array to store the arrangement
+    arrangement = [[0] * c for _ in range(r)]
+    
+    # Fill the first row with A bonbons
+    for i in range(c):
+        if a > 0:
+            arrangement[0][i] = 'A'
+            a -= 1
+        else:
+            break
+    
+    # Fill the remaining rows
+    for i in range(1, r):
+        # Fill the first column with B bonbons
+        for j in range(c):
+            if b > 0:
+                arrangement[i][j] = 'B'
+                b -= 1
+            else:
                 break
+        
+        # Fill the remaining columns
+        for j in range(1, c):
+            if arrangement[i][j-1] == 'A':
+                arrangement[i][j] = 'B'
+                b -= 1
+            elif arrangement[i][j-1] == 'B':
+                arrangement[i][j] = 'C'
+                c -= 1
+            else:
+                arrangement[i][j] = 'A'
+                a -= 1
+    
+    # Check if the arrangement is valid
+    for i in range(r):
+        for j in range(1, c):
+            if arrangement[i][j] == arrangement[i][j-1]:
+                return "impossible"
+    
+    # Return the valid arrangement
+    return ["".join(arrangement[i]) for i in range(r)]
 
-        # Check if the current cell is adjacent to any other cell in the same column
-        for i in range(n):
-            if a[i][j] == value:
-                # If the current cell is adjacent to another cell in the same column, add it to the rectangle
-                rectangle.append((i, j))
-                break
-
-    # Return the rectangle if it is not empty, otherwise return None
-    if rectangle:
-        return rectangle
+def main():
+    r, c, a, b, c = map(int, input().split())
+    arrangement = get_good_arrangement(r, c, a, b, c)
+    if arrangement == "impossible":
+        print("impossible")
     else:
-        return None
+        for row in arrangement:
+            print(row)
+
+if __name__ == '__main__':
+    main()
 

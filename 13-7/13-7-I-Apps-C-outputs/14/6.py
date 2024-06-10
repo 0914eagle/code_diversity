@@ -1,26 +1,28 @@
 
-def get_worst_case_moves(state):
-    # Initialize variables
-    num_rows, num_cols = len(state), len(state[0])
-    num_moves = 0
-    visited = set()
-    queue = [(0, 0)]
+def get_lcm(n):
+    # find the prime factors of n
+    prime_factors = []
+    i = 2
+    while i * i <= n:
+        if n % i:
+            i += 1
+        else:
+            n //= i
+            prime_factors.append(i)
+    if n > 1:
+        prime_factors.append(n)
+    
+    # find the maximum LCM of three numbers
+    lcm = 1
+    for i in range(3):
+        lcm *= prime_factors[i]
+    
+    return lcm
 
-    # Breadth-first search to find the shortest path to a point
-    while queue:
-        row, col = queue.pop(0)
-        visited.add((row, col))
-        num_moves += 1
+def main():
+    n = int(input())
+    print(get_lcm(n))
 
-        # Check if the current position is a point
-        if state[row][col] == '*':
-            return num_moves
-
-        # Add neighbors to the queue
-        for r, c in [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]:
-            if 0 <= r < num_rows and 0 <= c < num_cols and (r, c) not in visited and state[r][c] != '*':
-                queue.append((r, c))
-
-    # If no point is found, return the number of moves made
-    return num_moves
+if __name__ == '__main__':
+    main()
 

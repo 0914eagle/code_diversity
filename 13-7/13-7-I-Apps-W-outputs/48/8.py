@@ -1,37 +1,34 @@
 
-def solve(a1, b1, a2, b2, L, R):
-    # Find the greatest common divisor (gcd) of a1 and a2
-    gcd = get_gcd(a1, a2)
+def get_max_bourles(n, m, r, s, b):
+    # Initialize the maximum number of bourles to be 0
+    max_bourles = 0
+    
+    # Loop through each opportunity to buy shares
+    for i in range(n):
+        # Calculate the total cost of buying i shares at the current price
+        total_cost = s[i] * i
+        
+        # If the total cost is less than or equal to the current number of bourles, buy i shares
+        if total_cost <= r:
+            r -= total_cost
+    
+    # Loop through each opportunity to sell shares
+    for i in range(m):
+        # Sell all shares at the current price
+        r += b[i] * i
+    
+    # Return the maximum number of bourles
+    return r
 
-    # Divide a1 and a2 by their gcd
-    a1 //= gcd
-    a2 //= gcd
+def main():
+    # Read the input
+    n, m, r = map(int, input().split())
+    s = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    
+    # Call the get_max_bourles function and print the result
+    print(get_max_bourles(n, m, r, s, b))
 
-    # Find the least common multiple (lcm) of a1 and a2
-    lcm = get_lcm(a1, a2)
-
-    # Divide L and R by the lcm
-    L //= lcm
-    R //= lcm
-
-    # Initialize the count of integers x
-    count = 0
-
-    # Iterate over all possible values of k' and l'
-    for k in range(L, R + 1):
-        for l in range(L, R + 1):
-            # Check if a1k' + b1 = a2l' + b2
-            if a1 * k + b1 == a2 * l + b2:
-                count += 1
-
-    return count
-
-def get_gcd(a, b):
-    if b == 0:
-        return a
-    else:
-        return get_gcd(b, a % b)
-
-def get_lcm(a, b):
-    return a * b // get_gcd(a, b)
+if __name__ == '__main__':
+    main()
 

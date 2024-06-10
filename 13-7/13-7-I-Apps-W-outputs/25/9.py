@@ -1,17 +1,29 @@
 
-def solve(n, points):
-    # Sort the points by their x-coordinates
-    sorted_points = sorted(points, key=lambda point: point[0])
+def get_min_switches(n, teams):
+    # Initialize variables
+    team_count = {"A": 0, "B": 0, "C": 0}
+    switch_count = 0
+    
+    # Count the number of people on each team
+    for team in teams:
+        team_count[team] += 1
+    
+    # Loop through the teams and switch people if necessary
+    for i in range(n):
+        current_team = teams[i]
+        next_team = teams[(i + 1) % n]
+        if current_team != next_team:
+            switch_count += 1
+            teams[i] = next_team
+    
+    # Return the minimum number of switches needed
+    return switch_count
 
-    # Initialize the variables for the left and right endpoints of the line
-    left, right = sorted_points[0], sorted_points[-1]
+def main():
+    n = int(input())
+    teams = input()
+    print(get_min_switches(n, teams))
 
-    # Iterate through the points and check if they lie on the line
-    for point in sorted_points[1:-1]:
-        # If the point does not lie on the line, return False
-        if point[0] < left[0] or point[0] > right[0]:
-            return "NO"
-
-    # If all points lie on the line, return True
-    return "YES"
+if __name__ == '__main__':
+    main()
 

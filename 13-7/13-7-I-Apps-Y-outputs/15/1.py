@@ -1,17 +1,17 @@
 
-def solve(s, t):
-    s_count = [0] * 26
-    t_count = [0] * 26
-    for c in s:
-        s_count[ord(c) - ord('a')] += 1
-    for c in t:
-        t_count[ord(c) - ord('a')] += 1
-    if s_count < t_count:
-        return "Yes"
-    for i in range(26):
-        if s_count[i] < t_count[i]:
-            return "Yes"
-        elif s_count[i] > t_count[i]:
-            return "No"
-    return "Yes"
+def get_strings(n, k):
+    strings = []
+    for i in range(n):
+        for j in range(i+1, n):
+            strings.append('a' * i + 'b' * (j-i) + 'a' * (n-j))
+    return strings[k-1]
+
+def main():
+    t = int(input())
+    for _ in range(t):
+        n, k = map(int, input().split())
+        print(get_strings(n, k))
+
+if __name__ == '__main__':
+    main()
 

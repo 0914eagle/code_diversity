@@ -1,14 +1,26 @@
 
-def get_maximum_marked_nodes(n, d, tree):
-    # Initialize a set to store the marked nodes
-    marked_nodes = set()
+def get_input():
+    N = int(input())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    return N, a, b
 
-    # Iterate through the tree in reverse order (starting from the last node)
-    for i in range(n-1, -1, -1):
-        # If the current node is not marked and is not closer than d to any marked node, mark it
-        if i not in marked_nodes and all(i-j not in marked_nodes for j in range(i-d, i)):
-            marked_nodes.add(i)
+def solve(N, a, b):
+    # Initialize the solution with all candies given to Alf
+    solution = ['A'] * N
 
-    # Return the number of marked nodes
-    return len(marked_nodes)
+    # Loop through each candy and check if it can be given to Beata
+    for i in range(N):
+        if b[i] > a[i]:
+            # If the value of the candy is higher for Beata, give it to her
+            solution[i] = 'B'
+
+    return ''.join(solution)
+
+def main():
+    N, a, b = get_input()
+    print(solve(N, a, b))
+
+if __name__ == '__main__':
+    main()
 

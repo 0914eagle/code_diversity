@@ -1,35 +1,29 @@
 
-def solve(player, num_cuboids, *cuboids):
-    # Initialize the game state
-    game_state = {}
-    for i in range(num_cuboids):
-        game_state[i] = cuboids[i]
+def calculate_sum(n):
+    # Calculate the sum of all integers from 1 to n
+    sum = (n * (n + 1)) // 2
     
-    # Game loop
-    while len(game_state) > 0:
-        # Determine the current player
-        if player == "RUBEN":
-            player = "ALBERT"
-        else:
-            player = "RUBEN"
-        
-        # Get the current player's move
-        move = get_move(game_state)
-        
-        # Apply the move to the game state
-        game_state = apply_move(game_state, move)
+    # Subtract the powers of two from the sum
+    for i in range(n.bit_length()):
+        sum -= 2 ** i
     
-    # Determine the winner
-    if player == "RUBEN":
-        return "RUBEN"
-    else:
-        return "ALBERT"
+    return sum
 
-def get_move(game_state):
-    # TODO: Implement this function to determine the current player's move
-    pass
+def main():
+    # Read the number of test cases
+    t = int(input())
+    
+    # Iterate over each test case
+    for _ in range(t):
+        # Read the input n
+        n = int(input())
+        
+        # Calculate the sum
+        sum = calculate_sum(n)
+        
+        # Print the result
+        print(sum)
 
-def apply_move(game_state, move):
-    # TODO: Implement this function to apply the move to the game state
-    pass
+if __name__ == '__main__':
+    main()
 

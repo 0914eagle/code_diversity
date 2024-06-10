@@ -1,1 +1,1 @@
-{"inputs": ["3200\npink\n", "3199\npink\n", "4049\nred\n", "2800\na\n", "4999\nzzzzzzzzzz\n", "2999\nwhite\n", "3201\npurple\n", "3198\nred\n", "4998\nrainbow\n"], "outputs": ["pink\n", "red\n", "red\n", "red\n", "zzzzzzzzzz\n", "red\n", "purple\n", "red\n", "rainbow\n"]}
+{"inputs": ["2\n", "1\n", "3\n", "4\n", "5\n", "6\n", "7\n", "8\n", "9\n"], "outputs": ["8\n", "1\n", "27\n", "64\n", "125\n", "216\n", "343\n", "512\n", "729\n"]}

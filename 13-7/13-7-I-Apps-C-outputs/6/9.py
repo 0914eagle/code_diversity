@@ -1,67 +1,49 @@
 
-def get_largest_fee(N, P, X, Y, partnerships, M, SWERC_banks):
-    # Initialize a graph with the given number of nodes
-    graph = [[] for _ in range(N + 1)]
+import math
 
-    # Add edges to the graph based on the transfer partnerships
-    for a, b, c in partnerships:
-        graph[a].append((b, c))
-        graph[b].append((a, c))
+def get_distance_to_target(contour_lines):
+    # Initialize the closest distance to a large value
+    closest_distance = 1000000
+    # Loop through each contour line
+    for contour in contour_lines:
+        # Get the coordinates of the contour line
+        x_coords, y_coords = zip(*contour)
+        # Calculate the length of the contour line
+        contour_length = get_line_length(x_coords, y_coords)
+        # Calculate the distance from the contour line to the target
+        distance_to_target = get_distance_to_line(x_coords, y_coords, 0, 0)
+        # Check if the distance to the target is closer than the current closest distance
+        if distance_to_target < closest_distance:
+            closest_distance = distance_to_target
+    return closest_distance
 
-    # Find the shortest path between X and Y using Dijkstra's algorithm
-    dist, prev = dijkstra(graph, X, Y)
+def get_line_length(x_coords, y_coords):
+    # Calculate the length of the line segment between the first and last point
+    line_length = math.sqrt((x_coords[0] - x_coords[-1]) ** 2 + (y_coords[0] - y_coords[-1]) ** 2)
+    return line_length
 
-    # Initialize the largest fee to 0
-    largest_fee = 0
+def get_distance_to_line(x_coords, y_coords, x, y):
+    # Calculate the distance from the point (x, y) to the line defined by the contour line
+    distance = abs((y - y_coords[0]) * (x_coords[-1] - x_coords[0]) - (x - x_coords[0]) * (y_coords[-1] - y_coords[0])) / get_line_length(x_coords, y_coords)
+    return distance
 
-    # Iterate through the shortest path and calculate the total fee
-    for i in range(len(prev) - 1):
-        bank_a = prev[i]
-        bank_b = prev[i + 1]
-        fee = graph[bank_a][bank_b][1]
-        largest_fee += fee
+def main():
+    # Read the number of contour lines
+    num_contour_lines = int(input())
+    # Read the contour lines
+    contour_lines = []
+    for _ in range(num_contour_lines):
+        contour_line = []
+        height, num_vertices = map(int, input().split())
+        for _ in range(num_vertices):
+            x, y = map(int, input().split())
+            contour_line.append((x, y))
+        contour_lines.append(contour_line)
+    # Calculate the closest distance to the target
+    closest_distance = get_distance_to_target(contour_lines)
+    # Print the result
+    print(closest_distance)
 
-    # Add the fee for the final transfer between X and Y
-    largest_fee += graph[Y][X][1]
-
-    # Check if the largest fee is greater than or equal to the minimum fee required by the government
-    if largest_fee >= M:
-        return largest_fee
-    else:
-        return "Impossible"
-
-def dijkstra(graph, src, dest):
-    # Initialize the distance and previous node arrays
-    dist = [float("inf") for _ in range(len(graph))]
-    prev = [None for _ in range(len(graph))]
-
-    # Set the distance of the source node to 0 and its previous node to -1
-    dist[src] = 0
-    prev[src] = -1
-
-    # Initialize a priority queue to store the nodes to be processed
-    queue = [(0, src)]
-
-    # Loop until the queue is empty
-    while queue:
-        # Get the current node from the queue
-        curr_dist, curr_node = heapq.heappop(queue)
-
-        # If the current node is the destination node, return the distance and previous node arrays
-        if curr_node == dest:
-            return dist, prev
-
-        # If the current node has not been processed, process it
-        if curr_dist < dist[curr_node]:
-            for neighbor, weight in graph[curr_node]:
-                # If the neighbor has not been processed, add it to the queue
-                if dist[neighbor] == float("inf"):
-                    heapq.heappush(queue, (curr_dist + weight, neighbor))
-
-                    # Update the distance and previous node arrays
-                    dist[neighbor] = curr_dist + weight
-                    prev[neighbor] = curr_node
-
-    # If the destination node has not been reached, return -1
-    return -1
+if __name__ == '__main__':
+    main()
 

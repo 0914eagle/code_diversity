@@ -1,28 +1,25 @@
 
-def get_min_rod_length(triangle_list):
-    
-    # Calculate the area of each triangle
-    areas = [triangle_area(triangle) for triangle in triangle_list]
+import re
 
-    # Calculate the sum of the areas
-    total_area = sum(areas)
+def is_valid_email(email):
+    regex = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+    return re.search(regex, email) is not None
 
-    # Calculate the perimeter of the largest triangle
-    max_perimeter = max(triangle_perimeter(triangle) for triangle in triangle_list)
+def get_valid_emails(emails):
+    return list(filter(is_valid_email, emails))
 
-    # Calculate the minimum required length for the rod
-    min_rod_length = (total_area / max_perimeter) + max_perimeter
+def sort_emails(emails):
+    return sorted(emails)
 
-    return min_rod_length
+def main():
+    num_emails = int(input())
+    emails = []
+    for _ in range(num_emails):
+        emails.append(input())
+    valid_emails = get_valid_emails(emails)
+    sorted_emails = sort_emails(valid_emails)
+    print(sorted_emails)
 
-def triangle_area(triangle):
-    
-    a, b, c = triangle
-    s = (a + b + c) / 2
-    area = (s * (s - a) * (s - b) * (s - c)) ** 0.5
-    return area
-
-def triangle_perimeter(triangle):
-    
-    return sum(triangle)
+if __name__ == '__main__':
+    main()
 

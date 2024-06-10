@@ -1,19 +1,27 @@
 
-def insert_interval(intervals, new_interval):
+def get_combinations(candidates, target):
     
-    result = []
-    inserted = False
-    for interval in intervals:
-        if not inserted and new_interval[0] > interval[1]:
-            result.append(interval)
-        elif not inserted and new_interval[0] <= interval[1]:
-            result.append([min(interval[0], new_interval[0]), max(interval[1], new_interval[1])])
-            inserted = True
-        elif inserted and new_interval[0] > interval[1]:
-            result.append([min(interval[0], new_interval[0]), max(interval[1], new_interval[1])])
-        else:
-            result.append(interval)
-    if not inserted:
-        result.append(new_interval)
-    return result
+    combinations = []
+    for i in range(len(candidates)):
+        current_combination = [candidates[i]]
+        remaining_candidates = candidates[:i] + candidates[i+1:]
+        get_combinations_helper(remaining_candidates, target - candidates[i], current_combination, combinations)
+    return combinations
+
+def get_combinations_helper(candidates, target, current_combination, combinations):
+    
+    if target == 0:
+        combinations.append(current_combination)
+        return
+    for i in range(len(candidates)):
+        if candidates[i] <= target:
+            get_combinations_helper(candidates[:i] + candidates[i+1:], target - candidates[i], current_combination + [candidates[i]], combinations)
+
+def main():
+    candidates = [10, 1, 2, 7, 6, 1, 5]
+    target = 8
+    print(get_combinations(candidates, target))
+
+if __name__ == '__main__':
+    main()
 

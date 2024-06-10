@@ -1,13 +1,30 @@
 
-def get_minimum_rod_length(triangles):
-    # Calculate the sum of the areas of all triangles
-    total_area = sum([triangle[0] * triangle[1] for triangle in triangles])
+import re
 
-    # Calculate the maximum length of a side of any triangle
-    max_side = max([max(triangle) for triangle in triangles])
+def get_email_addresses(n):
+    email_addresses = []
+    for _ in range(n):
+        email_address = input()
+        email_addresses.append(email_address)
+    return email_addresses
 
-    # Calculate the minimum length of the rod required
-    rod_length = total_area / (max_side * 2)
+def is_valid_email_address(email_address):
+    regex = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$"
+    return re.search(regex, email_address) is not None
 
-    return rod_length
+def filter_valid_email_addresses(email_addresses):
+    return list(filter(is_valid_email_address, email_addresses))
+
+def sort_email_addresses(email_addresses):
+    return sorted(email_addresses)
+
+def main():
+    n = int(input())
+    email_addresses = get_email_addresses(n)
+    valid_email_addresses = filter_valid_email_addresses(email_addresses)
+    sorted_email_addresses = sort_email_addresses(valid_email_addresses)
+    print(sorted_email_addresses)
+
+if __name__ == '__main__':
+    main()
 

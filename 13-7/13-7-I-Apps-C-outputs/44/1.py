@@ -1,35 +1,42 @@
 
-def solve(n, systems, e, links):
-    # Initialize variables
-    alien_systems = []
-    human_systems = []
-    gravity_values = []
-    capacitance = []
-    potential = []
-    inductance = []
-    uw_distance = 0
-
-    # Separate the systems into alien and human systems
+def get_equal_ratings(n, ratings):
+    # Sort the ratings in descending order
+    ratings.sort(reverse=True)
+    # Initialize the final ratings and the number of matches to play
+    final_ratings = [0] * n
+    matches = 0
+    # Loop through the ratings and form parties of size 2 to 5
     for i in range(n):
-        if systems[i] == "a":
-            alien_systems.append(i)
-        elif systems[i] == "h":
-            human_systems.append(i)
+        for j in range(i+1, n):
+            matches += 1
+            if ratings[i] != ratings[j]:
+                final_ratings[i] += 1
+                final_ratings[j] += 1
+                if final_ratings[i] > final_ratings[j]:
+                    final_ratings[j] = final_ratings[i]
+                else:
+                    final_ratings[i] = final_ratings[j]
+    return final_ratings, matches
 
-    # Calculate the gravity values for each system
+def get_matches(n, final_ratings):
+    matches = []
     for i in range(n):
-        gravity_values.append(int(gravity_values[i]))
+        match = [0] * n
+        for j in range(n):
+            if i != j and final_ratings[i] != final_ratings[j]:
+                match[j] = 1
+        matches.append("".join(map(str, match)))
+    return matches
 
-    # Calculate the capacitance, potential, and inductance for each system
-    for i in range(n):
-        capacitance.append(gravity_values[i] + gravity_values[i-1])
-        potential.append(gravity_values[i] - gravity_values[i-1])
-        inductance.append(gravity_values[i] * gravity_values[i-1])
+def main():
+    n = int(input())
+    ratings = list(map(int, input().split()))
+    final_ratings, matches = get_equal_ratings(n, ratings)
+    print(*final_ratings)
+    print(matches)
+    for match in get_matches(n, final_ratings):
+        print(match)
 
-    # Calculate the UW distance for each possible link between an alien and human system
-    for alien_system in alien_systems:
-        for human_system in human_systems:
-            uw_distance += abs(potential[alien_system] * (capacitance[alien_system] * capacitance[human_system] - inductance[alien_system]))
-
-    return uw_distance
+if __name__ == '__main__':
+    main()
 

@@ -1,23 +1,24 @@
 
-def solve(W, H, x, y):
-    # Calculate the area of the rectangle
-    area = W * H
+def count_blue_balls(N, A, B):
+    # Initialize a counter for the number of blue balls
+    blue_balls = 0
     
-    # Calculate the area of the part to the left of the line x=x
-    left_area = x * H
+    # Iterate through the first N balls
+    for i in range(N):
+        # If the current ball is blue, increment the counter
+        if i % (A + B) < A:
+            blue_balls += 1
     
-    # Calculate the area of the part to the right of the line x=x
-    right_area = (W - x) * H
+    # Return the number of blue balls
+    return blue_balls
+
+def main():
+    # Read the input data from stdin
+    N, A, B = map(int, input().split())
     
-    # Calculate the maximum possible area of the part whose area is not larger than that of the other
-    max_area = max(left_area, right_area)
-    
-    # Check if there are multiple ways to cut the rectangle and achieve the maximum area
-    if left_area == right_area:
-        multiple_ways = 1
-    else:
-        multiple_ways = 0
-    
-    # Return the maximum area and whether there are multiple ways to cut the rectangle
-    return max_area, multiple_ways
+    # Call the count_blue_balls function and print the result
+    print(count_blue_balls(N, A, B))
+
+if __name__ == '__main__':
+    main()
 

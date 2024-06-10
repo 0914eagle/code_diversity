@@ -1,37 +1,56 @@
 
-def get_min_instructions(banks, variables, program):
-    # Initialize the minimum number of instructions to 0
-    min_instructions = 0
-    # Initialize the current bank to 0
-    current_bank = 0
-    # Iterate through the program
-    for instruction in program:
-        # If the instruction is a variable reference
-        if instruction.startswith("V"):
-            # Get the variable index
-            variable_index = int(instruction[1:])
-            # Calculate the bank for the variable
-            bank = (variable_index - 1) // variables + 1
-            # If the bank is different from the current bank
-            if bank != current_bank:
-                # Increment the minimum number of instructions
-                min_instructions += 1
-                # Set the current bank to the new bank
-                current_bank = bank
-        # If the instruction is a repetition
-        elif instruction.startswith("R"):
-            # Get the number of repetitions
-            num_repetitions = int(instruction[1:instruction.find(" ")])
-            # Get the program inside the repetition
-            repetition_program = instruction[instruction.find(" ")+1:-1]
-            # Calculate the minimum number of instructions for the repetition program
-            repetition_min_instructions = get_min_instructions(banks, variables, repetition_program)
-            # Increment the minimum number of instructions by the number of repetitions
-            min_instructions += num_repetitions * repetition_min_instructions
-        # If the instruction is an end of program marker
-        elif instruction == "E":
-            # Break out of the loop
+def get_maximum_number_of_executives(number_of_briefcases, briefcase_contents):
+    # Sort the briefcase contents in descending order
+    sorted_briefcase_contents = sorted(briefcase_contents, reverse=True)
+
+    # Initialize the number of executives to be rewarded
+    number_of_executives = 0
+
+    # Loop through the sorted briefcase contents
+    for i in range(len(sorted_briefcase_contents)):
+        # If the current briefcase content is greater than or equal to the total number of executives,
+        # then add one executive and break the loop
+        if sorted_briefcase_contents[i] >= number_of_executives:
+            number_of_executives += 1
             break
-    # Return the minimum number of instructions
-    return min_instructions
+
+    return number_of_executives
+
+def get_executive_rewards(number_of_executives, briefcase_contents):
+    # Initialize the executive rewards
+    executive_rewards = [0] * number_of_executives
+
+    # Loop through the briefcase contents
+    for i in range(len(briefcase_contents)):
+        # If the current briefcase content is greater than or equal to the total number of executives,
+        # then add one executive and break the loop
+        if briefcase_contents[i] >= number_of_executives:
+            executive_rewards[number_of_executives - 1] += 1
+            break
+        # Otherwise, add the current briefcase content to the current executive's reward
+        else:
+            executive_rewards[i] += briefcase_contents[i]
+
+    return executive_rewards
+
+def main():
+    # Read the number of briefcases and the briefcase contents
+    number_of_briefcases = int(input())
+    briefcase_contents = list(map(int, input().split()))
+
+    # Get the maximum number of executives that can be rewarded
+    number_of_executives = get_maximum_number_of_executives(number_of_briefcases, briefcase_contents)
+
+    # Get the executive rewards
+    executive_rewards = get_executive_rewards(number_of_executives, briefcase_contents)
+
+    # Print the maximum number of executives that can be rewarded
+    print(number_of_executives)
+
+    # Print the executive rewards
+    for i in range(number_of_executives):
+        print(executive_rewards[i])
+
+if __name__ == '__main__':
+    main()
 

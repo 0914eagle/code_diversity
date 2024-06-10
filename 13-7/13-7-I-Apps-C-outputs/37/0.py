@@ -1,39 +1,28 @@
 
-def solve(gigs, venues, roads, travel_time):
-    # Initialize a graph to store the connections between venues
-    graph = {}
-    for i in range(venues):
-        graph[i] = []
+def get_tubes(tube_lengths, L1, L2):
+    # Sort the tube lengths in descending order
+    tube_lengths.sort(reverse=True)
     
-    # Add edges to the graph based on the roads
-    for i in range(roads):
-        start, end, time = roads[i]
-        graph[start].append((end, time))
-        graph[end].append((start, time))
+    # Initialize the total length of the tubes as 0
+    total_length = 0
     
-    # Initialize a dictionary to store the gig offers
-    gigs_dict = {}
-    for i in range(gigs):
-        venue, start, end, money = gigs[i]
-        gigs_dict[venue] = (start, end, money)
+    # Loop through the tube lengths and find two pairs of tubes that add up to L1 and L2
+    for i in range(len(tube_lengths)):
+        for j in range(i+1, len(tube_lengths)):
+            if tube_lengths[i] + tube_lengths[j] <= L1 and tube_lengths[i] + tube_lengths[j] <= L2:
+                total_length += tube_lengths[i] + tube_lengths[j]
+                break
     
-    # Initialize a variable to store the maximum amount of money that can be made
-    max_money = 0
+    return total_length
+
+def main():
+    L1, L2, N = map(int, input().split())
+    tube_lengths = []
+    for _ in range(N):
+        tube_lengths.append(int(input()))
     
-    # Iterate over all possible combinations of gigs
-    for i in range(1 << gigs):
-        # Initialize a variable to store the current amount of money
-        current_money = 0
-        
-        # Iterate over all gigs that are selected in the current combination
-        for j in range(gigs):
-            # If the j-th gig is selected, add its money to the current amount of money
-            if (i >> j) & 1:
-                current_money += gigs_dict[j + 1][2]
-        
-        # If the current amount of money is greater than the maximum amount of money, update the maximum amount of money
-        if current_money > max_money:
-            max_money = current_money
-    
-    return max_money
+    print(get_tubes(tube_lengths, L1, L2))
+
+if __name__ == '__main__':
+    main()
 

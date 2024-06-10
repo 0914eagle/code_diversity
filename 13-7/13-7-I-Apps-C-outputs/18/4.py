@@ -1,45 +1,24 @@
 
-def solve(b, s, program):
-    # Initialize variables
-    min_instructions = 0
-    banks = [[] for _ in range(b)]
-    variables = [0] * s
-    bsr = 0
+def get_max_executives(briefcases):
+    # Sort the briefcases in non-decreasing order of banana count
+    briefcases.sort()
+    # Initialize the number of executives to be rewarded as 0
+    num_executives = 0
+    # Iterate through the briefcases from least to most evil
+    for briefcase in briefcases:
+        # If the current briefcase has at least one banana, reward an executive with it
+        if briefcase >= 1:
+            num_executives += 1
+    # Return the maximum number of executives that can be rewarded
+    return num_executives
 
-    # Iterate through the program
-    for instruction in program:
-        if instruction == "V1":
-            # Variable reference
-            min_instructions += 1
-            bank = bsr if bsr != 0 else 0
-            if variables[bank] == 0:
-                # Variable is not initialized, initialize it
-                variables[bank] = 1
-                min_instructions += 1
-            else:
-                # Variable is already initialized, increment it
-                variables[bank] += 1
-        elif instruction == "V2":
-            # Variable reference
-            min_instructions += 1
-            bank = bsr if bsr != 0 else 0
-            if variables[bank] == 0:
-                # Variable is not initialized, initialize it
-                variables[bank] = 1
-                min_instructions += 1
-            else:
-                # Variable is already initialized, decrement it
-                variables[bank] -= 1
-        elif instruction.startswith("R"):
-            # Repetition
-            num_repetitions = int(instruction[1:])
-            min_instructions += num_repetitions
-        elif instruction == "E":
-            # End of repetition
-            pass
-        else:
-            # Invalid instruction
-            return -1
+def main():
+    # Read the number of briefcases and their banana counts from stdin
+    num_briefcases = int(input())
+    briefcases = [int(input()) for _ in range(num_briefcases)]
+    # Call the get_max_executives function and print the result
+    print(get_max_executives(briefcases))
 
-    return min_instructions
+if __name__ == '__main__':
+    main()
 

@@ -1,21 +1,37 @@
 
-def solve(n, k):
-    # Check if all elements are already equal to k
-    if all(x == k for x in a):
-        return "yes"
-    
-    # Check if it is possible to make all elements equal to k in one operation
-    if len(set(a)) == 1:
-        return "yes"
-    
-    # Check if it is possible to make all elements equal to k in two operations
-    if len(set(a)) == 2 and a[0] == k and a[-1] == k:
-        return "yes"
-    
-    # Check if it is possible to make all elements equal to k in three operations
-    if len(set(a)) == 3 and a[0] == k and a[1] == k and a[-1] == k:
-        return "yes"
-    
-    # If none of the above conditions are met, it is not possible to make all elements equal to k
-    return "no"
+def get_input():
+    N = int(input())
+    numbers = list(map(int, input().split()))
+    return N, numbers
+
+def get_first_moves(N, numbers):
+    first_moves = []
+    for i in range(N):
+        for j in range(N):
+            if i != j and numbers[i] != numbers[j]:
+                first_moves.append((i, j))
+    return first_moves
+
+def get_winning_moves(first_move, numbers):
+    winning_moves = []
+    for i in range(len(numbers)):
+        if numbers[i] % 2 == 1:
+            winning_moves.append(i)
+    return winning_moves
+
+def get_winning_first_moves(first_moves, numbers):
+    winning_first_moves = []
+    for first_move in first_moves:
+        if first_move in get_winning_moves(first_move, numbers):
+            winning_first_moves.append(first_move)
+    return winning_first_moves
+
+def main():
+    N, numbers = get_input()
+    first_moves = get_first_moves(N, numbers)
+    winning_first_moves = get_winning_first_moves(first_moves, numbers)
+    print(len(winning_first_moves))
+
+if __name__ == '__main__':
+    main()
 

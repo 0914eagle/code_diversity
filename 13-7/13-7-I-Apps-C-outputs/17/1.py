@@ -1,28 +1,22 @@
 
-def get_longest_wait_time(n, m, roads, orders):
-    # Initialize a graph with n nodes and 0 edges
-    graph = [[] for _ in range(n)]
+def is_magical(arr):
+    return all(arr[0] <= x <= arr[-1] for x in arr)
 
-    # Add edges to the graph based on the roads
-    for road in roads:
-        u, v, d = road
-        graph[u - 1].append((v - 1, d))
-        graph[v - 1].append((u - 1, d))
+def solve(arr, l, r):
+    sub_arr = arr[l-1:r]
+    if is_magical(sub_arr):
+        return len(sub_arr)
+    else:
+        return 0
 
-    # Sort the orders by their delivery time
-    orders.sort(key=lambda x: x[2])
+def main():
+    n = int(input())
+    arr = list(map(int, input().split()))
+    q = int(input())
+    for _ in range(q):
+        l, r = map(int, input().split())
+        print(solve(arr, l, r))
 
-    # Initialize the delivery time for each order to 0
-    delivery_time = [0] * len(orders)
-
-    # Loop through the orders and calculate the delivery time for each order
-    for i in range(len(orders)):
-        order = orders[i]
-        u, t = order[1], order[2]
-        for neighbor, weight in graph[u - 1]:
-            if delivery_time[neighbor] == 0:
-                delivery_time[neighbor] = t + weight
-
-    # Return the maximum delivery time
-    return max(delivery_time)
+if __name__ == '__main__':
+    main()
 

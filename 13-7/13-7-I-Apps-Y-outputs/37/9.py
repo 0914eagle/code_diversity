@@ -1,20 +1,19 @@
 
-def solve(polygon, area):
-    # Calculate the current area of the polygon
-    current_area = calculate_area(polygon)
+def is_optimal_launch_window(year):
+    # Check if the year is between 2018 and 10000
+    if not (2018 <= year <= 10000):
+        return "Invalid input"
+    
+    # Check if the year is a multiple of 26
+    if year % 26 == 0:
+        return "yes"
+    else:
+        return "no"
 
-    # Calculate the scaling factor to resize the polygon to the desired area
-    scaling_factor = area / current_area
+def main():
+    year = int(input("Enter a year: "))
+    print(is_optimal_launch_window(year))
 
-    # Resize the polygon and return the new polygon coordinates
-    return resize_polygon(polygon, scaling_factor)
-
-def calculate_area(polygon):
-    # Calculate the area of the polygon using the shoelace formula
-    area = 0.5 * abs(sum(x1 * y2 - x2 * y1 for x1, y1, x2, y2 in zip(polygon, polygon[1:] + polygon[:1])))
-    return area
-
-def resize_polygon(polygon, scaling_factor):
-    # Resize the polygon by scaling up or down all the coordinates
-    return [(x * scaling_factor, y * scaling_factor) for x, y in polygon]
+if __name__ == '__main__':
+    main()
 

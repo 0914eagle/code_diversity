@@ -1,22 +1,43 @@
 
-def get_maximum_gold(n, m, gold, roads):
-    # Initialize a dictionary to store the amount of gold collected by each village
-    gold_collected = {i: 0 for i in range(1, n + 1)}
-    gold_collected[1] = 0
-    
-    # Loop through each road
-    for road in roads:
-        # Get the two villages connected by the road
-        village1, village2 = road
-        
-        # If the bandits have not already visited the first village, they can collect its gold
-        if gold_collected[village1] == 0:
-            gold_collected[village1] = gold[village1 - 1]
-        
-        # If the bandits have not already visited the second village, they can collect its gold
-        if gold_collected[village2] == 0:
-            gold_collected[village2] = gold[village2 - 1]
-    
-    # Return the maximum amount of gold collected by the bandits
-    return max(gold_collected.values())
+def get_shortcuts(k):
+    shortcuts = {}
+    shortcuts['R'] = 'SrS'
+    shortcuts['S'] = 'rr'
+    shortcuts['I'] = 'lldll'
+    return shortcuts
+
+def get_moves(k, organs, empty_space):
+    moves = []
+    for i in range(1, 4*k+1):
+        if organs[i] != i:
+            moves.append(organs[i])
+    moves.append(empty_space)
+    return moves
+
+def get_sequence_of_moves(k, organs, empty_space):
+    moves = get_moves(k, organs, empty_space)
+    sequence_of_moves = ''
+    for move in moves:
+        if move == empty_space:
+            sequence_of_moves += 'E'
+        else:
+            sequence_of_moves += move
+    return sequence_of_moves
+
+def main():
+    t = int(input())
+    for i in range(t):
+        k = int(input())
+        organs = [int(x) for x in input().split()]
+        empty_space = input()
+        shortcuts = get_shortcuts(k)
+        sequence_of_moves = get_sequence_of_moves(k, organs, empty_space)
+        print('SURGERY COMPLETE')
+        for shortcut, move in shortcuts.items():
+            print(shortcut, move)
+        print(sequence_of_moves)
+        print('DONE')
+
+if __name__ == '__main__':
+    main()
 

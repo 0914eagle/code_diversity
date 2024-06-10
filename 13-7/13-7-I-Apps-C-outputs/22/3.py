@@ -1,40 +1,25 @@
 
-def remove_ads(web_page):
-    # Initialize variables
-    height, width = len(web_page), len(web_page[0])
-    ads = []
+def get_toll_cost(entrance, exit):
+    return abs(entrance - exit)
 
-    # Iterate through the web page
-    for i in range(height):
-        for j in range(width):
-            # Check if the current character is a border character
-            if web_page[i][j] == "$+$":
-                # Find the top-left corner of the ad
-                top, left = i, j
-                while top > 0 and web_page[top - 1][j] == "$+$":
-                    top -= 1
-                while left > 0 and web_page[i][left - 1] == "$+$":
-                    left -= 1
+def get_least_toll_cost(tickets):
+    toll_cost = 0
+    for i in range(len(tickets)):
+        for j in range(i+1, len(tickets)):
+            entrance, exit = tickets[i]
+            exit_2, entrance_2 = tickets[j]
+            if entrance != entrance_2 and exit != exit_2:
+                toll_cost += min(get_toll_cost(entrance, exit_2), get_toll_cost(entrance_2, exit))
+    return toll_cost
 
-                # Find the bottom-right corner of the ad
-                bottom, right = i, j
-                while bottom < height - 1 and web_page[bottom + 1][j] == "$+$":
-                    bottom += 1
-                while right < width - 1 and web_page[i][right + 1] == "$+$":
-                    right += 1
+def main():
+    num_trucks = int(input())
+    tickets = []
+    for i in range(num_trucks):
+        entrance, exit = map(int, input().split())
+        tickets.append((entrance, exit))
+    print(get_least_toll_cost(tickets))
 
-                # Check if the ad is valid
-                if (right - left + 1) * (bottom - top + 1) >= 9:
-                    ads.append((top, left, bottom, right))
-
-    # Sort the ads by their size in descending order
-    ads.sort(key=lambda x: (x[2] - x[0] + 1) * (x[3] - x[1] + 1), reverse=True)
-
-    # Remove the ads from the web page
-    for top, left, bottom, right in ads:
-        for i in range(top, bottom + 1):
-            for j in range(left, right + 1):
-                web_page[i][j] = " "
-
-    return "".join("".join(row) for row in web_page)
+if __name__ == '__main__':
+    main()
 

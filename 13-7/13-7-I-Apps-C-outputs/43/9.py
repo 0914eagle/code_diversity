@@ -1,14 +1,34 @@
 
-def is_winning_strategy(n, k, ancient_numbers):
-    # Check if k is one of the ancient numbers
-    if k in ancient_numbers:
-        return "Yes"
+import re
+
+def get_expression(expression):
     
-    # Check if any two ancient numbers have a common remainder
-    for i in range(n):
-        for j in range(i+1, n):
-            if ancient_numbers[i] % k == ancient_numbers[j] % k:
-                return "Yes"
+    return re.search(r'\d+[+\-*/()x ]+\d+', expression).group()
+
+def get_p_and_m(expression):
     
-    return "No"
+    p = int(re.search(r'(\d+) (\d+)', expression).group(1))
+    m = int(re.search(r'(\d+) (\d+)', expression).group(2))
+    return p, m
+
+def get_x(expression, p, m):
+    
+    x = 0
+    while (expression % m) != p:
+        x += 1
+        expression = expression + 1
+    return x
+
+def solve(expression, p, m):
+    
+    expression = get_expression(expression)
+    p, m = get_p_and_m(expression)
+    x = get_x(expression, p, m)
+    return x
+
+if __name__ == '__main__':
+    expression = input()
+    p, m = map(int, input().split())
+    result = solve(expression, p, m)
+    print(result)
 

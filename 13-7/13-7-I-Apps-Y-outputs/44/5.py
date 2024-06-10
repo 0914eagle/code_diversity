@@ -1,17 +1,29 @@
 
-import math
+import re
 
-def get_min_rod_length(triangles):
-    
-    # Calculate the maximum height of the triangles
-    max_height = max([triangle[2] for triangle in triangles])
+def get_email_addresses(n):
+    email_addresses = []
+    for _ in range(n):
+        email_addresses.append(input())
+    return email_addresses
 
-    # Calculate the minimum distance between the centers of the triangles
-    min_distance = 2 * max_height * (1 + math.sin(math.pi / 3))
+def is_valid_email_address(email_address):
+    regex = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$"
+    return re.search(regex, email_address) is not None
 
-    # Return the sum of the minimum distance and the maximum height
-    return min_distance + max_height
+def filter_email_addresses(email_addresses):
+    return list(filter(is_valid_email_address, email_addresses))
 
-triangles = [[3, 3, 3], [4, 4, 5]]
-print(get_min_rod_length(triangles))
+def sort_email_addresses(email_addresses):
+    return sorted(email_addresses)
+
+def main():
+    n = int(input())
+    email_addresses = get_email_addresses(n)
+    valid_email_addresses = filter_email_addresses(email_addresses)
+    sorted_email_addresses = sort_email_addresses(valid_email_addresses)
+    print(sorted_email_addresses)
+
+if __name__ == '__main__':
+    main()
 

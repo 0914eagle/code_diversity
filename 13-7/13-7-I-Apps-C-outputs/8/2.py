@@ -1,22 +1,41 @@
 
-def solve(N, Q, queries):
-    # Initialize the number of stones in each box to 0
-    stones = [0] * (N + 1)
+def get_winner(n, k, cards):
+    # Initialize the number of moves to 0
+    moves = 0
     
-    # Loop through each query
-    for query in queries:
-        # If the query is of type 1, put a stone in the box between u and v
-        if query[0] == 1:
-            stones[query[1]] += 1
-            stones[query[2]] += 1
-        # If the query is of type 2, calculate the expected value of A
-        else:
-            # Calculate the probability that two stones are in different squares
-            prob = (stones[1] * (stones[N] - stones[1]) + stones[N] * (stones[1] - stones[N])) / (stones[1] * stones[N])
-            
-            # Calculate the expected value of A
-            expected_A = prob * (stones[1]**2 + stones[N]**2) + (1 - prob) * (stones[1]**2 + 2 * stones[N]**2)
-            
-            # Print the expected value of A modulo 10^9 + 7
-            print(expected_A % (10**9 + 7))
+    # Loop until all cards are face up or down
+    while True:
+        # Check if all cards are face up or down
+        if all(cards[i] == cards[0] for i in range(n)):
+            # If all cards are face up, Tokitsukaze wins
+            if cards[0] == 1:
+                return "tokitsukaze"
+            # If all cards are face down, Quailty wins
+            else:
+                return "quailty"
+        
+        # Increment the number of moves
+        moves += 1
+        
+        # Check if the number of moves exceeds 10^9
+        if moves > 10**9:
+            return "once again"
+        
+        # Choose the first k cards
+        chosen_cards = cards[:k]
+        
+        # Flip the chosen cards
+        for i in range(k):
+            cards[i] = 1 - cards[i]
+        
+        # Shift the cards to the right
+        cards = cards[k:] + cards[:k]
+    
+def main():
+    n, k = map(int, input().split())
+    cards = list(map(int, input()))
+    print(get_winner(n, k, cards))
+    
+if __name__ == '__main__':
+    main()
 

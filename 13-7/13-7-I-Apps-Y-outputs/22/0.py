@@ -1,19 +1,25 @@
 
-def stable_sort(attrs, songs, commands):
-    # Initialize the output lists
-    output_lists = []
+def get_divisors(n):
+    divisors = []
+    for i in range(1, int(n**0.5) + 1):
+        if n % i == 0:
+            divisors.append(i)
+            if i * i != n:
+                divisors.append(n // i)
+    divisors.sort()
+    return divisors
 
-    # Iterate over the commands
-    for command in commands:
-        # Find the index of the command in the attributes list
-        command_index = attrs.index(command)
+def count_odd_numbers_with_eight_divisors(n):
+    count = 0
+    for i in range(1, n + 1):
+        if i % 2 == 1 and len(get_divisors(i)) == 8:
+            count += 1
+    return count
 
-        # Sort the songs by the current command
-        sorted_songs = sorted(songs, key=lambda x: x[command_index])
+def main():
+    n = int(input())
+    print(count_odd_numbers_with_eight_divisors(n))
 
-        # Add the sorted songs to the output lists
-        output_lists.append(sorted_songs)
-
-    # Return the output lists
-    return output_lists
+if __name__ == '__main__':
+    main()
 

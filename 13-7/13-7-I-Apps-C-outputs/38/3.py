@@ -1,25 +1,23 @@
 
-def get_min_phone_calls(detectors):
-    # Initialize variables
-    min_calls = 0
-    calls_made = 0
-    detectors = sorted(detectors, key=lambda x: x[0])
+import math
 
-    # Iterate through the detectors
-    for i in range(len(detectors)):
-        # Get the current detector's position and total calls
-        pos, total_calls = detectors[i]
+def get_sunlight_hours(buildings):
+    total_hours = 0
+    for building in buildings:
+        x, h = building
+        angle = (h / 180) * math.pi
+        total_hours += 2 * angle
+    return total_hours
 
-        # If the detector is not the first one, calculate the number of calls made since the previous detector
-        if i > 0:
-            prev_pos, prev_total_calls = detectors[i - 1]
-            calls_made += prev_total_calls - prev_pos
+def solve(buildings):
+    total_hours = get_sunlight_hours(buildings)
+    return total_hours
 
-        # Add the total calls made by the current detector
-        calls_made += total_calls - pos
-
-        # Update the minimum number of calls made
-        min_calls = max(min_calls, calls_made)
-
-    return min_calls
+if __name__ == '__main__':
+    num_buildings = int(input())
+    buildings = []
+    for i in range(num_buildings):
+        x, h = map(int, input().split())
+        buildings.append((x, h))
+    print(solve(buildings))
 

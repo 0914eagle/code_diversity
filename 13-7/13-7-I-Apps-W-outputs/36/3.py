@@ -1,22 +1,41 @@
 
-def count_ship_placements(n, k, grid, ship_sizes):
-    # Initialize a 2D array to store the number of ways to place each ship
-    dp = [[0] * (n + 1) for _ in range(k + 1)]
-    dp[0][0] = 1
+def get_subsequence(a, b):
+    # Initialize variables
+    subsequence = []
+    visited = set()
+    
+    # Iterate through the elements of a
+    for element in a:
+        # If the element is not in the visited set, add it to the subsequence
+        if element not in visited:
+            subsequence.append(element)
+            visited.add(element)
+    
+    # Check if the subsequence is also a subsequence of b
+    if all(element in subsequence for element in b):
+        return subsequence
+    else:
+        return None
 
-    # Loop through each row of the grid
-    for i in range(n):
-        # Loop through each column of the grid
-        for j in range(n):
-            # Check if the current square is occupied by a ship
-            if grid[i][j] == "X":
-                # Loop through each ship
-                for ship in range(1, k + 1):
-                    # Check if the current ship can be placed in the current square
-                    if dp[ship - 1][j] > 0 and (j + ship_sizes[ship - 1] - 1 < n or j - ship_sizes[ship - 1] + 1 >= 0):
-                        # Update the number of ways to place the current ship
-                        dp[ship][j] += dp[ship - 1][j]
+def main():
+    # Read the input
+    t = int(input())
+    for _ in range(t):
+        n, m = map(int, input().split())
+        a = list(map(int, input().split()))
+        b = list(map(int, input().split()))
+        
+        # Get the subsequence of a and b
+        subsequence = get_subsequence(a, b)
+        
+        # Check if a subsequence exists
+        if subsequence:
+            print("YES")
+            print(len(subsequence))
+            print(*subsequence)
+        else:
+            print("NO")
 
-    # Return the number of ways to place all k ships
-    return dp[k][n - 1]
+if __name__ == '__main__':
+    main()
 

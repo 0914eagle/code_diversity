@@ -1,15 +1,23 @@
 
-def find_largest_perfect_power(x):
-    # Initialize a list to store the perfect powers
-    perfect_powers = []
-    
-    # Iterate from 1 to the square root of x
-    for i in range(1, int(x**0.5) + 1):
-        # Check if i is a perfect power
-        if x % i == 0:
-            # If it is, add it to the list of perfect powers
-            perfect_powers.append(i)
-    
-    # Return the largest perfect power
-    return max(perfect_powers)
+def can_obtain_single_element(a):
+    n = len(a)
+    if n == 1:
+        return True
+    if n == 2:
+        return a[0] == a[1]
+    for i in range(n-1):
+        for j in range(i+1, n):
+            if abs(a[i] - a[j]) <= 1:
+                return True
+    return False
+
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        a = list(map(int, input().split()))
+        print("YES" if can_obtain_single_element(a) else "NO")
+
+if __name__ == '__main__':
+    main()
 

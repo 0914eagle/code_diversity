@@ -1,9 +1,19 @@
 
-def is_consistent(capacity, stations):
-    total = 0
-    for left, arrived, stayed in stations:
-        total += arrived - left
-        if total < 0 or stayed > 0:
-            return "impossible"
-    return "possible" if total == 0 else "impossible"
+def get_input():
+    return input().split()
+
+def get_smaller_string(a, b):
+    str_a = a * b
+    str_b = b * a
+    if str_a < str_b:
+        return str_a
+    else:
+        return str_b
+
+def main():
+    a, b = get_input()
+    print(get_smaller_string(int(a), int(b)))
+
+if __name__ == '__main__':
+    main()
 

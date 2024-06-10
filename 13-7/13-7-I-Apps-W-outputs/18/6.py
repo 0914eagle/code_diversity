@@ -1,37 +1,32 @@
 
-def solve(comments):
-    # split the comments into a list of strings
-    comments = comments.split(",")
-    
-    # initialize the depth of nesting and the levels dictionary
-    depth = 0
-    levels = {}
-    
-    # loop through each comment
-    for comment in comments:
-        # split the comment into its parts
-        parts = comment.split()
-        
-        # get the level of nesting for this comment
-        level = int(parts[1])
-        
-        # update the depth of nesting if necessary
-        if level > depth:
-            depth = level
-        
-        # add the comment to the levels dictionary
-        if level not in levels:
-            levels[level] = [parts[0]]
+def get_min_time(d, k, a, b, t):
+    # Initialize variables
+    time = 0
+    distance = 0
+    car_breaks = False
+
+    # Loop through the distance
+    while distance < d:
+        # If the car is not broken, drive on the car
+        if not car_breaks:
+            time += a
+            distance += k
+        # If the car is broken, walk on foot
         else:
-            levels[level].append(parts[0])
-    
-    # print the depth of nesting
-    print(depth)
-    
-    # loop through each level of nesting
-    for level in range(depth):
-        # print the comments for this level
-        print(" ".join(levels[level + 1]))
-    
-    return " ".join(levels[1])
+            time += b
+            distance += 1
+
+        # Check if the car needs to be repaired
+        if distance % k == 0 and distance > 0:
+            time += t
+            car_breaks = True
+
+    return time
+
+def main():
+    d, k, a, b, t = map(int, input().split())
+    print(get_min_time(d, k, a, b, t))
+
+if __name__ == '__main__':
+    main()
 

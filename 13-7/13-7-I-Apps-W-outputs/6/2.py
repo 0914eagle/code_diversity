@@ -1,24 +1,29 @@
 
-def solve(n):
-    # Initialize variables
-    days = 0
-    bacteria = 1
-    splits = []
+def is_perfect_square(n):
     
-    # Loop until the total mass is reached
-    while bacteria < n:
-        # Increment the day count
-        days += 1
-        
-        # Split the bacteria
-        bacteria *= 2
-        
-        # Add the split to the list
-        splits.append(bacteria // 2)
+    sqrt_n = int(n**0.5)
+    return sqrt_n**2 == n
+
+def get_divisors(n):
     
-    # Check if the total mass is exactly equal to n
-    if bacteria == n:
-        return [days, *splits]
-    else:
-        return -1
+    divisors = []
+    for i in range(1, int(n**0.5) + 1):
+        if n % i == 0:
+            divisors.append(i)
+            if i*i != n:
+                divisors.append(n//i)
+    divisors.sort(reverse=True)
+    return divisors
+
+def get_biggest_lovely_number(n):
+    
+    divisors = get_divisors(n)
+    for d in divisors:
+        if not is_perfect_square(d):
+            return d
+    return n
+
+if __name__ == '__main__':
+    n = int(input())
+    print(get_biggest_lovely_number(n))
 

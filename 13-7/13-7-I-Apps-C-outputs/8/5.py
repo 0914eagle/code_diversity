@@ -1,29 +1,66 @@
 
-def solve(N, Q, queries):
-    # Initialize the number of stones in each box to 0
-    num_stones = [0] * (N + 1)
-    # Initialize the probability of each box to 1/N
-    probabilities = [1/N] * (N + 1)
+def get_winner(n, k, cards):
+    # Initialize the variables
+    num_moves = 0
+    num_flips = 0
+    num_same_sides = 0
+    same_sides = []
+    winner = ""
 
-    for query in queries:
-        # If the query is of type 1, update the number of stones in the box and the probability of the box
-        if query[0] == 1:
-            u, v = query[1], query[2]
-            num_stones[u] += 1
-            num_stones[v] += 1
-            probabilities[u] = (probabilities[u] * (N - 1) + 1) / N
-            probabilities[v] = (probabilities[v] * (N - 1) + 1) / N
-        # If the query is of type 2, calculate the expected value of the sum of the squares of the number of stones in each box
-        elif query[0] == 2:
-            expected_value = 0
-            for i in range(1, N + 1):
-                expected_value += num_stones[i] ** 2 * probabilities[i]
-            print(int(expected_value % 1000000007))
+    # Loop through each card
+    for i in range(n):
+        # Check if the card is facing up
+        if cards[i] == "1":
+            # If the card is facing up, check if it is the same as the previous card
+            if i > 0 and cards[i - 1] == "1":
+                # If the card is the same as the previous card, add it to the list of same-sided cards
+                same_sides.append(i)
+            # If the card is not the same as the previous card, check if it is the same as the next card
+            elif i < n - 1 and cards[i + 1] == "1":
+                # If the card is the same as the next card, add it to the list of same-sided cards
+                same_sides.append(i)
+        # If the card is facing down, check if it is the same as the previous card
+        elif i > 0 and cards[i - 1] == "0":
+            # If the card is the same as the previous card, add it to the list of same-sided cards
+            same_sides.append(i)
+        # If the card is not the same as the previous card, check if it is the same as the next card
+        elif i < n - 1 and cards[i + 1] == "0":
+            # If the card is the same as the next card, add it to the list of same-sided cards
+            same_sides.append(i)
+
+    # Loop through each same-sided card
+    for i in same_sides:
+        # Check if the card is facing up
+        if cards[i] == "1":
+            # If the card is facing up, add 1 to the number of flips
+            num_flips += 1
+        # If the card is facing down, add 1 to the number of flips
+        else:
+            num_flips += 1
+
+    # Check if the number of flips is greater than the number of moves
+    if num_flips > num_moves:
+        # If the number of flips is greater than the number of moves, return "once again"
+        return "once again"
+    # If the number of flips is not greater than the number of moves, return the winner
+    else:
+        # If the number of flips is not greater than the number of moves, return the winner
+        if num_flips % 2 == 0:
+            return "tokitsukaze"
+        else:
+            return "quailty"
+
+def main():
+    # Read the input
+    n, k = map(int, input().split())
+    cards = input()
+
+    # Call the get_winner function
+    winner = get_winner(n, k, cards)
+
+    # Print the winner
+    print(winner)
 
 if __name__ == '__main__':
-    N, Q = map(int, input().split())
-    queries = []
-    for _ in range(Q):
-        queries.append(list(map(int, input().split())))
-    solve(N, Q, queries)
+    main()
 

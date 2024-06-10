@@ -1,10 +1,21 @@
 
-def get_median_string(s, t):
-    all_strings = []
-    for i in range(ord('a'), ord('a') + 26):
-        for j in range(ord('a'), ord('a') + 26):
-            if i != j and chr(i) != s[0] and chr(j) != t[0]:
-                all_strings.append(chr(i) + chr(j))
-    all_strings.sort()
-    return all_strings[len(all_strings) // 2]
+def get_flight_times(p, q, r):
+    return p, q, r
+
+def get_min_flight_time(p, q, r):
+    flights = [(p, "A", "B"), (q, "B", "C"), (r, "C", "A")]
+    min_time = float("inf")
+    for flight in flights:
+        time = flight[0]
+        start = flight[1]
+        end = flight[2]
+        min_time = min(min_time, time)
+    return min_time
+
+def main():
+    p, q, r = map(int, input().split())
+    print(get_min_flight_time(p, q, r))
+
+if __name__ == '__main__':
+    main()
 

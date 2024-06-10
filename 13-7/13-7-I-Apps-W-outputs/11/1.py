@@ -1,19 +1,24 @@
 
-def solve(n, c, x):
-    # Initialize the maximum profit and the day to lend the barrel
-    max_profit = 0
-    day_to_lend = 0
-    
-    # Loop through each day
-    for d in range(n):
-        # Calculate the profit if the bear lends the barrel on the current day
-        profit = x[d] - x[d + 1] - c
-        
-        # If the profit is positive and greater than the current maximum profit, update the maximum profit and the day to lend the barrel
-        if profit > 0 and profit > max_profit:
-            max_profit = profit
-            day_to_lend = d
-    
-    # Return the maximum profit
-    return max_profit
+import math
+
+def get_distance(t):
+    # Calculate the distance between Agneta and Beata at time t
+    distance = math.sqrt((1 - math.cos(t))**2 + (math.sin(t))**2)
+    return distance
+
+def get_min_distance(W):
+    # Find the minimum distance between Agneta and Beata during their trip
+    min_distance = float('inf')
+    for t in range(0, 1001):
+        distance = get_distance(t)
+        if distance < min_distance:
+            min_distance = distance
+    return min_distance
+
+def main():
+    W = float(input())
+    print(get_min_distance(W))
+
+if __name__ == '__main__':
+    main()
 

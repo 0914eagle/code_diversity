@@ -1,22 +1,21 @@
 
-def get_min_time(n, x, v):
-    # Sort the points by their x coordinates
-    sorted_x = sorted(x)
+def get_heights(n):
+    return list(map(int, input().split()))
 
-    # Initialize the minimum time to 0
-    min_time = 0
+def get_pairs(heights):
+    n = len(heights)
+    pairs = 0
+    for i in range(n):
+        for j in range(i+1, n):
+            if abs(i - j) == sum(heights[i:j+1]):
+                pairs += 1
+    return pairs
 
-    # Loop through the points and calculate the time needed for each friend to reach the next point
-    for i in range(n - 1):
-        # Calculate the distance between the current point and the next point
-        dist = sorted_x[i + 1] - sorted_x[i]
+def main():
+    n = int(input())
+    heights = get_heights(n)
+    print(get_pairs(heights))
 
-        # Calculate the time needed for the friend to cover the distance at their maximum speed
-        time = dist / v[i]
-
-        # Add the time to the minimum time
-        min_time += time
-
-    # Return the minimum time
-    return min_time
+if __name__ == '__main__':
+    main()
 

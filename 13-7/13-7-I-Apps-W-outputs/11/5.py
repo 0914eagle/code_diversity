@@ -1,19 +1,28 @@
 
-def solve(n, c, x):
-    # Initialize the maximum profit and the day to sell the honey
-    max_profit = 0
-    day_to_sell = 0
-    
-    # Loop through each day
-    for i in range(n):
-        # Calculate the profit if the bear sells the honey on the current day
-        profit = x[i] - c
-        
-        # If the profit is greater than the current maximum profit, update the maximum profit and the day to sell the honey
-        if profit > max_profit:
-            max_profit = profit
-            day_to_sell = i
-    
-    # Return the maximum profit
-    return max_profit
+import math
+
+def get_distance(t):
+    # Calculate the distance between Agneta and Beata at time t
+    x_agneta = math.sin(t)
+    y_agneta = math.cos(t)
+    x_beata = math.sin(t + 1)
+    y_beata = math.cos(t + 1)
+    distance = math.sqrt((x_agneta - x_beata)**2 + (y_agneta - y_beata)**2)
+    return distance
+
+def find_min_distance(W):
+    # Find the minimum distance between Agneta and Beata over the time interval [0, W]
+    min_distance = float('inf')
+    for t in range(0, W):
+        distance = get_distance(t)
+        if distance < min_distance:
+            min_distance = distance
+    return min_distance
+
+def main():
+    W = float(input())
+    print(find_min_distance(W))
+
+if __name__ == '__main__':
+    main()
 

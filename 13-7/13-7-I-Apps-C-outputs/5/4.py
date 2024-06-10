@@ -1,57 +1,41 @@
 
-def get_largest_connected_group(heights, growth_speeds):
-    # Initialize a dictionary to store the tree heights and their connections
-    tree_dict = {}
-    for i in range(len(heights)):
-        for j in range(len(heights[0])):
-            tree_dict[(i, j)] = (heights[i][j], set())
+def get_profit(producer_companies, consumer_companies):
+    # Initialize variables
+    max_profit = 0
+    selected_producer = None
+    selected_consumer = None
 
-    # Iterate over the tree dictionary and connect adjacent trees
-    for i in range(len(heights)):
-        for j in range(len(heights[0])):
-            if (i, j) in tree_dict:
-                # Get the current tree's height and connections
-                curr_height, curr_connections = tree_dict[(i, j)]
-                # Check if the tree has already been visited
-                if not curr_height:
-                    continue
-                # Get the neighbors of the current tree
-                neighbors = [(i-1, j), (i+1, j), (i, j-1), (i, j+1)]
-                # Iterate over the neighbors and connect adjacent trees
-                for neighbor in neighbors:
-                    # Check if the neighbor is out of bounds or has already been visited
-                    if not (0 <= neighbor[0] < len(heights) and 0 <= neighbor[1] < len(heights[0])) or neighbor in curr_connections:
-                        continue
-                    # Get the neighbor's height and connections
-                    neighbor_height, neighbor_connections = tree_dict[neighbor]
-                    # Check if the neighbor is connected to the current tree
-                    if neighbor_height == curr_height:
-                        # Add the current tree to the neighbor's connections
-                        neighbor_connections.add((i, j))
-                        # Add the neighbor to the current tree's connections
-                        curr_connections.add(neighbor)
-                        # Update the tree dictionary with the new connections
-                        tree_dict[neighbor] = (neighbor_height, neighbor_connections)
-                        tree_dict[(i, j)] = (curr_height, curr_connections)
+    # Iterate over all possible producer and consumer combinations
+    for producer in producer_companies:
+        for consumer in consumer_companies:
+            # Calculate the profit for this combination
+            profit = producer[0] - consumer[0]
 
-    # Find the largest connected group of trees
-    largest_group = []
-    for tree in tree_dict:
-        if tree_dict[tree][0] and tree not in largest_group:
-            largest_group.append(tree)
-            for connected_tree in tree_dict[tree][1]:
-                largest_group.append(connected_tree)
+            # Check if the profit is greater than the current maximum profit
+            if profit > max_profit:
+                max_profit = profit
+                selected_producer = producer
+                selected_consumer = consumer
 
-    return len(largest_group)
+    # Return the maximum profit and the selected producer and consumer companies
+    return max_profit, selected_producer, selected_consumer
 
 def main():
-    heights = []
-    growth_speeds = []
-    for _ in range(int(input())):
-        heights.append(list(map(int, input().split())))
-        growth_speeds.append(list(map(int, input().split())))
-    print(get_largest_connected_group(heights, growth_speeds))
+    # Read the input
+    m, n = map(int, input().split())
+    producer_companies = []
+    for _ in range(m):
+        producer_companies.append(list(map(int, input().split())))
+    consumer_companies = []
+    for _ in range(n):
+        consumer_companies.append(list(map(int, input().split())))
 
-if __name__ == "__main__":
+    # Calculate the maximum profit and the selected producer and consumer companies
+    max_profit, selected_producer, selected_consumer = get_profit(producer_companies, consumer_companies)
+
+    # Print the result
+    print(max_profit)
+
+if __name__ == '__main__':
     main()
 

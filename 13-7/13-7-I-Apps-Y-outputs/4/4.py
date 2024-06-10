@@ -1,9 +1,20 @@
 
-def get_min_moves(a, b):
-    if a == b:
-        return 0
-    if a > b:
-        return get_min_moves(a-b, 0)
-    else:
-        return 1 + get_min_moves(a+b, b)
+def get_conversations(n, k, messages):
+    conversations = []
+    for message in messages:
+        if message not in conversations:
+            conversations.append(message)
+            if len(conversations) > k:
+                conversations.pop()
+    return conversations
+
+def main():
+    n, k = map(int, input().split())
+    messages = list(map(int, input().split()))
+    conversations = get_conversations(n, k, messages)
+    print(len(conversations))
+    print(*conversations)
+
+if __name__ == '__main__':
+    main()
 

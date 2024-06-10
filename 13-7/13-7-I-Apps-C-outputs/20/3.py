@@ -1,18 +1,43 @@
 
-import math
+def get_max_damage(jiro_cards, ciel_cards):
+    # Initialize variables
+    max_damage = 0
+    jiro_alive_cards = jiro_cards.copy()
+    ciel_alive_cards = ciel_cards.copy()
 
-def get_area_covered(pine_trees, aspen_trees):
-    area = 0
-    for pine_tree in pine_trees:
-        for aspen_tree in aspen_trees:
-            area += get_triangle_area(pine_tree, aspen_tree)
-    return area
+    # Iterate through all possible combinations of cards
+    for ciel_card in ciel_alive_cards:
+        for jiro_card in jiro_alive_cards:
+            # Check if the cards are attack or defense
+            if ciel_card[0] == "ATK" and jiro_card[0] == "ATK":
+                # Calculate the damage and update the max damage
+                damage = ciel_card[1] - jiro_card[1]
+                max_damage = max(max_damage, damage)
+            elif ciel_card[0] == "ATK" and jiro_card[0] == "DEF":
+                # Calculate the damage and update the max damage
+                damage = ciel_card[1]
+                max_damage = max(max_damage, damage)
 
-def get_triangle_area(tree1, tree2):
-    x1, y1 = tree1
-    x2, y2 = tree2
-    return 0.5 * math.fabs(x1*y2 + x2*y1 + x2*y1 - x1*y2 - x2*y2 - x1*y1)
+    return max_damage
 
-def solve(pine_trees, aspen_trees):
-    return get_area_covered(pine_trees, aspen_trees)
+def main():
+    # Read the input
+    n, m = map(int, input().split())
+    jiro_cards = []
+    ciel_cards = []
+    for _ in range(n):
+        position, strength = input().split()
+        jiro_cards.append((position, int(strength)))
+    for _ in range(m):
+        strength = int(input())
+        ciel_cards.append(strength)
+
+    # Calculate the max damage
+    max_damage = get_max_damage(jiro_cards, ciel_cards)
+
+    # Print the result
+    print(max_damage)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,30 +1,51 @@
 
-def solve(n, m, k, a):
-    # Initialize variables
-    rows, cols = [], []
-    for i in range(n):
-        rows.append([])
-        for j in range(m):
-            rows[i].append(a[i][j])
-            if a[i][j] == 1:
-                cols.append([i, j])
+def is_good_arrangement(arrangement, a, b, c):
+    for i in range(len(arrangement)):
+        for j in range(len(arrangement[0])):
+            if arrangement[i][j] == arrangement[i][j-1] and arrangement[i][j] != ' ':
+                return False
+    for i in range(len(arrangement)):
+        for j in range(len(arrangement[0])):
+            if arrangement[i][j] == arrangement[i-1][j] and arrangement[i][j] != ' ':
+                return False
+    for i in range(len(arrangement)):
+        for j in range(len(arrangement[0])):
+            if arrangement[i][j] != ' ':
+                if arrangement[i][j] == 'A':
+                    a -= 1
+                elif arrangement[i][j] == 'B':
+                    b -= 1
+                else:
+                    c -= 1
+    if a != 0 or b != 0 or c != 0:
+        return False
+    return True
 
-    # Check if the table is already a rectangle
-    if len(cols) == m:
-        return 0
+def generate_arrangement(r, c, a, b, c):
+    arrangement = [[' ' for _ in range(c)] for _ in range(r)]
+    for i in range(r):
+        for j in range(c):
+            if a > 0:
+                arrangement[i][j] = 'A'
+                a -= 1
+            elif b > 0:
+                arrangement[i][j] = 'B'
+                b -= 1
+            else:
+                arrangement[i][j] = 'C'
+                c -= 1
+    return arrangement
 
-    # Check if it is possible to form a rectangle with at most k cells changed
-    if len(cols) + k < m:
-        return -1
+def main():
+    r, c = map(int, input().split())
+    a, b, c = map(int, input().split())
+    arrangement = generate_arrangement(r, c, a, b, c)
+    if is_good_arrangement(arrangement, a, b, c):
+        for i in range(r):
+            print("".join(arrangement[i]))
+    else:
+        print("impossible")
 
-    # Find the minimum number of cells that need to be changed
-    min_cells = m - len(cols)
-    for i in range(n):
-        for j in range(m):
-            if a[i][j] == 0 and rows[i][j] == 1:
-                min_cells += 1
-                if min_cells > k:
-                    return -1
-
-    return min_cells
+if __name__ == '__main__':
+    main()
 

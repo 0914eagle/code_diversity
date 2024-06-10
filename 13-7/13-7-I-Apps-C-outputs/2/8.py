@@ -1,74 +1,32 @@
 
-def get_character_types(debate_transcript):
-    # Initialize the character types dictionary
-    character_types = {}
+import math
 
-    # Iterate over the utterances in the debate transcript
-    for utterance in debate_transcript:
-        # Split the utterance into the speaker name and the statement
-        speaker_name, statement = utterance.split(" ")
+def get_hit_enemies(opponents, angle):
+    hit_enemies = 0
+    for opponent in opponents:
+        x, y, r = opponent
+        dx, dy = math.cos(angle), math.sin(angle)
+        dist = math.sqrt((x - dx) ** 2 + (y - dy) ** 2)
+        if dist <= r:
+            hit_enemies += 1
+    return hit_enemies
 
-        # If the statement is a character type claim
-        if statement.startswith("truther") or statement.startswith("fabulist") or statement.startswith("charlatan"):
-            # Get the name of the candidate being claimed
-            claimed_candidate = int(statement.split(" ")[1])
+def get_max_hit_enemies(opponents):
+    max_hit_enemies = 0
+    for angle in range(1000):
+        hit_enemies = get_hit_enemies(opponents, angle / 1000 * math.pi * 2)
+        if hit_enemies > max_hit_enemies:
+            max_hit_enemies = hit_enemies
+    return max_hit_enemies
 
-            # If the speaker has not yet been claimed
-            if speaker_name not in character_types:
-                # Claim the speaker as a truther
-                character_types[speaker_name] = "truther"
+def main():
+    n = int(input())
+    opponents = []
+    for i in range(n):
+        x, y, r = map(float, input().split())
+        opponents.append((x, y, r))
+    print(get_max_hit_enemies(opponents))
 
-            # If the speaker has been claimed as a truther
-            elif character_types[speaker_name] == "truther":
-                # If the statement is a truther claim about the speaker
-                if statement.startswith("truther " + speaker_name):
-                    # Claim the claimed candidate as a truther
-                    character_types[claimed_candidate] = "truther"
-
-                # If the statement is a fabulist claim about the speaker
-                elif statement.startswith("fabulist " + speaker_name):
-                    # Claim the claimed candidate as a fabulist
-                    character_types[claimed_candidate] = "fabulist"
-
-                # If the statement is a charlatan claim about the speaker
-                elif statement.startswith("charlatan " + speaker_name):
-                    # Claim the claimed candidate as a charlatan
-                    character_types[claimed_candidate] = "charlatan"
-
-            # If the speaker has been claimed as a fabulist
-            elif character_types[speaker_name] == "fabulist":
-                # If the statement is a truther claim about the speaker
-                if statement.startswith("truther " + speaker_name):
-                    # Claim the claimed candidate as a truther
-                    character_types[claimed_candidate] = "truther"
-
-                # If the statement is a fabulist claim about the speaker
-                elif statement.startswith("fabulist " + speaker_name):
-                    # Claim the claimed candidate as a fabulist
-                    character_types[claimed_candidate] = "fabulist"
-
-                # If the statement is a charlatan claim about the speaker
-                elif statement.startswith("charlatan " + speaker_name):
-                    # Claim the claimed candidate as a charlatan
-                    character_types[claimed_candidate] = "charlatan"
-
-            # If the speaker has been claimed as a charlatan
-            elif character_types[speaker_name] == "charlatan":
-                # If the statement is a truther claim about the speaker
-                if statement.startswith("truther " + speaker_name):
-                    # Claim the claimed candidate as a truther
-                    character_types[claimed_candidate] = "truther"
-
-                # If the statement is a fabulist claim about the speaker
-                elif statement.startswith("fabulist " + speaker_name):
-                    # Claim the claimed candidate as a fabulist
-                    character_types[claimed_candidate] = "fabulist"
-
-                # If the statement is a charlatan claim about the speaker
-                elif statement.startswith("charlatan " + speaker_name):
-                    # Claim the claimed candidate as a charlatan
-                    character_types[claimed_candidate] = "charlatan"
-
-    # Return the character types dictionary
-    return character_types
+if __name__ == '__main__':
+    main()
 

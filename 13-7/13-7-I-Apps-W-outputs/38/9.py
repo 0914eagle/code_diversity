@@ -1,19 +1,27 @@
 
-def is_lucky_ticket(ticket):
-    sum1 = int(ticket[0]) + int(ticket[1]) + int(ticket[2])
-    sum2 = int(ticket[3]) + int(ticket[4]) + int(ticket[5])
-    return sum1 == sum2
+def get_amidakuji(h, w, k):
+    # Initialize a list to store the number of valid amidakuji
+    count = 0
+    
+    # Loop through all possible vertical lines
+    for i in range(1, h + 1):
+        # Loop through all possible horizontal lines
+        for j in range(1, w + 1):
+            # Check if the horizontal line is valid
+            if i + j <= h and i + j >= 1 and j <= w:
+                # Increment the count
+                count += 1
+    
+    # Return the count modulo 1000000007
+    return count % 1000000007
 
-def min_replacements_to_make_lucky(ticket):
-    if is_lucky_ticket(ticket):
-        return 0
-    replacements = 0
-    for i in range(len(ticket)):
-        for digit in range(10):
-            if ticket[i] != str(digit):
-                ticket = ticket[:i] + str(digit) + ticket[i+1:]
-                if is_lucky_ticket(ticket):
-                    return replacements + 1
-        replacements += 1
-    return replacements
+def main():
+    # Read the input from stdin
+    h, w, k = map(int, input().split())
+    
+    # Call the get_amidakuji function and print the result
+    print(get_amidakuji(h, w, k))
+
+if __name__ == '__main__':
+    main()
 

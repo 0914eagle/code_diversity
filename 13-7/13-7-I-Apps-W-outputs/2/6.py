@@ -1,10 +1,18 @@
 
-def count_triangles(a, b, c, d):
-    count = 0
-    for x in range(a, b+1):
-        for y in range(x, b+1):
-            for z in range(y, c+1):
-                if x <= y <= z <= d:
-                    count += 1
-    return count
+def get_number_of_showable_hands(statuses):
+    num_showable_hands = 0
+    for i, status in enumerate(statuses):
+        if status == "F":
+            continue
+        if all(statuses[j] in ("F", "A") for j in range(len(statuses)) if j != i):
+            num_showable_hands += 1
+    return num_showable_hands
+
+def main():
+    num_cows = int(input())
+    statuses = input()
+    print(get_number_of_showable_hands(statuses))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,48 +1,52 @@
 
-def get_largest_connected_group(heights, growth_speeds):
-    # Initialize a dictionary to store the tree heights and their connections
-    tree_dict = {}
-    for i in range(len(heights)):
-        for j in range(len(heights[0])):
-            tree_dict[(i, j)] = (heights[i][j], set())
+def get_maximum_profit(producer_companies, consumer_companies):
+    # Initialize variables
+    max_profit = 0
+    selected_producer = None
+    selected_consumer = None
 
-    # Iterate over the trees and their connections
-    for i in range(len(heights)):
-        for j in range(len(heights[0])):
-            # If the tree has already been visited, skip it
-            if (i, j) in tree_dict:
-                continue
-            # If the tree has not been visited, start a BFS to find all connected trees
-            queue = [(i, j)]
-            while queue:
-                curr_i, curr_j = queue.pop(0)
-                # If the current tree has not been visited, mark it as visited and add it to the dictionary
-                if (curr_i, curr_j) not in tree_dict:
-                    tree_dict[(curr_i, curr_j)] = (heights[curr_i][curr_j], set())
-                # Add the current tree to the set of connected trees
-                tree_dict[(i, j)][1].add((curr_i, curr_j))
-                # Add the neighbors of the current tree to the queue
-                for neighbor in get_neighbors(curr_i, curr_j, len(heights), len(heights[0])):
-                    queue.append(neighbor)
+    # Iterate over all possible producer and consumer combinations
+    for producer in producer_companies:
+        for consumer in consumer_companies:
+            # Calculate the profit for this combination
+            profit = calculate_profit(producer, consumer)
 
-    # Find the largest connected group of trees
-    largest_group = None
-    for tree in tree_dict.values():
-        if largest_group is None or len(tree[1]) > len(largest_group[1]):
-            largest_group = tree
+            # Check if the profit is greater than the current maximum profit
+            if profit > max_profit:
+                max_profit = profit
+                selected_producer = producer
+                selected_consumer = consumer
 
-    # Return the size of the largest connected group
-    return len(largest_group[1])
+    # Return the maximum profit and the selected producer and consumer companies
+    return max_profit, selected_producer, selected_consumer
 
-def get_neighbors(i, j, n, m):
-    neighbors = []
-    if i > 0:
-        neighbors.append((i-1, j))
-    if i < n-1:
-        neighbors.append((i+1, j))
-    if j > 0:
-        neighbors.append((i, j-1))
-    if j < m-1:
-        neighbors.append((i, j+1))
-    return neighbors
+def calculate_profit(producer, consumer):
+    # Calculate the number of widgets that can be sold
+    num_widgets = min(producer["quantity"], consumer["quantity"])
+
+    # Calculate the profit for this combination
+    profit = num_widgets * (producer["price"] - consumer["price"])
+
+    return profit
+
+def main():
+    # Read the input
+    num_producer_companies, num_consumer_companies = map(int, input().split())
+    producer_companies = []
+    for _ in range(num_producer_companies):
+        price, quantity = map(int, input().split())
+        producer_companies.append({"price": price, "quantity": quantity})
+    consumer_companies = []
+    for _ in range(num_consumer_companies):
+        price, quantity = map(int, input().split())
+        consumer_companies.append({"price": price, "quantity": quantity})
+
+    # Get the maximum profit and the selected producer and consumer companies
+    max_profit, selected_producer, selected_consumer = get_maximum_profit(producer_companies, consumer_companies)
+
+    # Print the result
+    print(max_profit)
+
+if __name__ == '__main__':
+    main()
 

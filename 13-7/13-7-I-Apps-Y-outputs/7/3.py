@@ -1,37 +1,44 @@
 
-def solve(a):
-    # Initialize the sum of non-deleted elements
-    sum_non_deleted = 0
-    # Initialize the number of elements in the array
-    n = len(a)
-    # Initialize the index of the last deleted element
-    last_deleted = 0
-    # Initialize the parity of the last deleted element
-    parity = 0
-
-    # Iterate through the array
+def get_key_points(n):
+    key_points = []
     for i in range(n):
-        # If the current element is even and the parity is odd, or the current element is odd and the parity is even
-        if (a[i] % 2 == 0 and parity % 2 == 1) or (a[i] % 2 == 1 and parity % 2 == 0):
-            # Update the sum of non-deleted elements
-            sum_non_deleted += a[i]
-            # Update the index of the last deleted element
-            last_deleted = i
-            # Update the parity of the last deleted element
-            parity = a[i] % 2
-        # If the current element is even and the parity is even, or the current element is odd and the parity is odd
-        elif (a[i] % 2 == 0 and parity % 2 == 0) or (a[i] % 2 == 1 and parity % 2 == 1):
-            # Do nothing
-            pass
-        # If the current element is even and the parity is odd, or the current element is odd and the parity is even
-        else:
-            # Update the sum of non-deleted elements
-            sum_non_deleted += a[i]
-            # Update the index of the last deleted element
-            last_deleted = i
-            # Update the parity of the last deleted element
-            parity = a[i] % 2
+        x, y = map(int, input().split())
+        key_points.append((x, y))
+    return key_points
 
-    # Return the minimum possible sum of non-deleted elements
-    return sum_non_deleted
+def get_levels(key_points):
+    levels = {}
+    for point in key_points:
+        x, y = point
+        level = max(x, y)
+        if level not in levels:
+            levels[level] = []
+        levels[level].append(point)
+    return levels
+
+def get_min_distance(key_points, levels):
+    total_distance = 0
+    for level in sorted(levels.keys()):
+        points = levels[level]
+        for i in range(len(points)):
+            point1 = points[i]
+            for j in range(i+1, len(points)):
+                point2 = points[j]
+                total_distance += get_distance(point1, point2)
+    return total_distance
+
+def get_distance(point1, point2):
+    x1, y1 = point1
+    x2, y2 = point2
+    return abs(x1 - x2) + abs(y1 - y2)
+
+def main():
+    n = int(input())
+    key_points = get_key_points(n)
+    levels = get_levels(key_points)
+    total_distance = get_min_distance(key_points, levels)
+    print(total_distance)
+
+if __name__ == '__main__':
+    main()
 

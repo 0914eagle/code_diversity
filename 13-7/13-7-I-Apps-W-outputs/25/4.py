@@ -1,23 +1,26 @@
 
-def solve(n, points):
-    # Sort the points by their x-coordinates
-    sorted_points = sorted(points, key=lambda point: point[0])
-
-    # Initialize the variables to keep track of the lines
-    line1 = []
-    line2 = []
-
-    # Iterate through the points and add them to either line1 or line2
-    for i in range(n):
-        if i % 2 == 0:
-            line1.append(sorted_points[i])
+def get_team_counts(teams):
+    team_counts = {}
+    for team in teams:
+        if team not in team_counts:
+            team_counts[team] = 1
         else:
-            line2.append(sorted_points[i])
+            team_counts[team] += 1
+    return team_counts
 
-    # Check if all points are on at least one of the lines
-    for point in sorted_points:
-        if point not in line1 and point not in line2:
-            return "NO"
+def get_min_switches(team_counts):
+    min_switches = 0
+    for team, count in team_counts.items():
+        if count > 1:
+            min_switches += count - 1
+    return min_switches
 
-    return "YES"
+def solve(n, teams):
+    team_counts = get_team_counts(teams)
+    return get_min_switches(team_counts)
+
+if __name__ == '__main__':
+    n = int(input())
+    teams = input()
+    print(solve(n, teams))
 

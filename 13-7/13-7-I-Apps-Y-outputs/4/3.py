@@ -1,20 +1,21 @@
 
-def get_min_moves(a, b):
-    # Calculate the absolute difference between a and b
-    diff = abs(a - b)
+def get_conversations(n, k, messages):
+    conversations = []
+    for message in messages:
+        if message in conversations:
+            continue
+        elif len(conversations) == k:
+            conversations.pop()
+        conversations.insert(0, message)
+    return conversations[:k]
 
-    # Initialize the minimum number of moves to 0
-    min_moves = 0
+def main():
+    n, k = map(int, input().split())
+    messages = list(map(int, input().split()))
+    conversations = get_conversations(n, k, messages)
+    print(len(conversations))
+    print(*conversations)
 
-    # Loop until the difference is 0
-    while diff > 0:
-        # If the difference is odd, add 1 to the minimum number of moves
-        if diff % 2 == 1:
-            min_moves += 1
-
-        # Divide the difference by 2
-        diff //= 2
-
-    # Return the minimum number of moves
-    return min_moves
+if __name__ == '__main__':
+    main()
 

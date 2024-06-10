@@ -1,25 +1,65 @@
 
-def get_surviving_islands(N, T, K, S, V):
-    # Initialize a list to keep track of the number of surviving islands
-    surviving_islands = [1] * (N + 1)
+def get_input():
+    n = int(input())
+    a = list(map(int, input().split()))
+    return n, a
 
-    # Iterate through each island and its dependencies
-    for i in range(2, N + 1):
-        # If the island has no dependencies, skip it
-        if K[i - 1] == 0:
-            continue
+def is_possible(n, a):
+    # Initialize a graph with n vertices
+    graph = [[] for _ in range(n + 1)]
+    
+    # Add edges to the graph
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            if i != j and a[i - 1] >= j - 1:
+                graph[i].append(j)
+    
+    # Check if the graph is connected
+    visited = [False] * (n + 1)
+    queue = [1]
+    while queue:
+        vertex = queue.pop(0)
+        if not visited[vertex]:
+            visited[vertex] = True
+            queue += graph[vertex]
+    
+    return visited[n]
 
-        # If the island's threshold is not met, it will collapse
-        if T[i - 1] > sum(V[i - 1] for i in S[i - 1]):
-            surviving_islands[i] = 0
+def get_plan(n, a):
+    # Initialize a graph with n vertices
+    graph = [[] for _ in range(n + 1)]
+    
+    # Add edges to the graph
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            if i != j and a[i - 1] >= j - 1:
+                graph[i].append(j)
+    
+    # Breadth-first search to find a plan
+    visited = [False] * (n + 1)
+    queue = [(1, [])]
+    while queue:
+        (vertex, path) = queue.pop(0)
+        if not visited[vertex]:
+            visited[vertex] = True
+            for neighbor in graph[vertex]:
+                if neighbor not in path:
+                    queue.append((neighbor, path + [vertex]))
+                    if neighbor == n:
+                        return path
+    
+    return []
 
-        # Iterate through the island's dependencies
-        for j in range(K[i - 1]):
-            # If the dependency is not surviving, the island will collapse
-            if surviving_islands[S[i - 1][j] - 1] == 0:
-                surviving_islands[i] = 0
-                break
+def main():
+    n, a = get_input()
+    if is_possible(n, a):
+        plan = get_plan(n, a)
+        print(len(plan))
+        for i in range(len(plan) - 1):
+            print(plan[i], plan[i + 1])
+    else:
+        print(-1)
 
-    # Return the number of surviving islands
-    return sum(surviving_islands)
+if __name__ == '__main__':
+    main()
 

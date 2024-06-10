@@ -1,16 +1,25 @@
 
-def solve(gigs, venues, roads, time):
-    # Initialize a dictionary to store the maximum amount of money that can be earned at each venue
-    max_money = {}
-    for venue in range(1, venues + 1):
-        max_money[venue] = 0
+def get_tube_lengths(N):
+    return [int(input()) for _ in range(N)]
 
-    # Loop through each gig and calculate the maximum amount of money that can be earned by playing it
-    for gig in gigs:
-        venue, start_time, end_time, money = gig
-        if start_time <= time <= end_time:
-            max_money[venue] = max(max_money[venue], money)
+def get_max_air_replacement(tube_lengths, L1, L2):
+    tube_lengths.sort(reverse=True)
+    total_length = 0
+    for i in range(2):
+        total_length += tube_lengths[i]
+        if total_length > L1:
+            return "Impossible"
+    for i in range(2, 4):
+        total_length += tube_lengths[i]
+        if total_length > L2:
+            return "Impossible"
+    return total_length
 
-    # Return the maximum amount of money that can be earned by playing any gig
-    return max(max_money.values())
+def main():
+    L1, L2, N = map(int, input().split())
+    tube_lengths = get_tube_lengths(N)
+    print(get_max_air_replacement(tube_lengths, L1, L2))
+
+if __name__ == '__main__':
+    main()
 

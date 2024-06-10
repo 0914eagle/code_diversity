@@ -1,27 +1,28 @@
 
-def solve(n, m, building):
-    # Initialize variables
-    total_time = 0
-    current_floor = 0
-    current_room = 0
-    visited_rooms = set()
+def rotate_map(map):
+    return [list(row) for row in zip(*map[::-1])]
 
-    # Loop through each floor
-    for floor in building:
-        # Loop through each room in the floor
-        for room in range(m):
-            # If the room is not visited and the light is on, turn it off and update the variables
-            if room not in visited_rooms and floor[room] == "1":
-                total_time += 1
-                visited_rooms.add(room)
-                current_room = room
-                break
+def flip_map(map):
+    return [row[::-1] for row in map]
 
-        # If all the rooms in the floor are visited, go to the next floor
-        if current_room == m - 1:
-            total_time += 1
-            current_floor += 1
-            current_room = 0
+def are_maps_identical(map1, map2):
+    return map1 == map2
 
-    return total_time
+def are_maps_rotated(map1, map2):
+    return any(map1 == rotate_map(map2) for _ in range(4))
+
+def are_maps_flipped(map1, map2):
+    return any(map1 == flip_map(map2) for _ in range(2))
+
+def are_maps_matched(map1, map2):
+    return are_maps_identical(map1, map2) or are_maps_rotated(map1, map2) or are_maps_flipped(map1, map2)
+
+def main():
+    n = int(input())
+    map1 = [input() for _ in range(n)]
+    map2 = [input() for _ in range(n)]
+    print("Yes") if are_maps_matched(map1, map2) else print("No")
+
+if __name__ == '__main__':
+    main()
 

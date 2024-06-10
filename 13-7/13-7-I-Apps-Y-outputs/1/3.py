@@ -1,14 +1,21 @@
 
-def solve(N, K, M, A):
-    # Calculate the current average score
-    current_average = sum(A) / (N-1)
-    
-    # Check if the goal is achievable
-    if current_average >= M:
-        return -1
-    
-    # Calculate the minimum number of points needed on the final subject
-    min_points = (M - current_average) * (N-1) / N
-    
-    return min_points
+def get_input():
+    return list(map(int, input().split()))
+
+def is_valid_combination(x, y):
+    for i in range(1, x+1):
+        for j in range(1, y+1):
+            if i + j == x and i % 2 == 0 and j % 4 == 0:
+                return True
+    return False
+
+def main():
+    x, y = get_input()
+    if is_valid_combination(x, y):
+        print("Yes")
+    else:
+        print("No")
+
+if __name__ == '__main__':
+    main()
 

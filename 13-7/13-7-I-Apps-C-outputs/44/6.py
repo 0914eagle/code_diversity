@@ -1,33 +1,55 @@
 
-def solve(n, g, d, e, links):
-    # Initialize variables
-    human_systems = []
-    alien_systems = []
-    gravity_values = []
-    capacitance = 0
-    potential = 0
-    inductance = 0
-    uw_distance = 0
+def get_rating(rates):
+    return sum(rates) / len(rates)
 
-    # Separate human and alien systems
+def get_matches(n, rates):
+    matches = []
     for i in range(n):
-        if d[i] == "h":
-            human_systems.append(i)
-        else:
-            alien_systems.append(i)
+        for j in range(i+1, n):
+            matches.append([i, j])
+    return matches
 
-    # Calculate gravity values
+def get_match_results(matches, rates):
+    results = []
+    for match in matches:
+        result = []
+        for i in match:
+            result.append(rates[i] - 1)
+        results.append(result)
+    return results
+
+def get_optimized_rates(n, rates):
+    matches = get_matches(n, rates)
+    results = get_match_results(matches, rates)
+    optimized_rates = rates[:]
+    for result in results:
+        for i in range(n):
+            optimized_rates[i] = max(0, optimized_rates[i] - result[i])
+    return optimized_rates
+
+def get_match_strategy(n, rates):
+    optimized_rates = get_optimized_rates(n, rates)
+    final_rating = get_rating(optimized_rates)
+    strategy = []
     for i in range(n):
-        gravity_values.append(g[i])
+        strategy.append([])
+    for match in matches:
+        for i in match:
+            strategy[i].append(1)
+        for i in range(n):
+            if i not in match:
+                strategy[i].append(0)
+    return final_rating, strategy
 
-    # Calculate capacitance, potential, and inductance
-    for i in range(n-1):
-        capacitance += gravity_values[i+1] + gravity_values[i]
-        potential += gravity_values[i+1] - gravity_values[i]
-        inductance += gravity_values[i+1] * gravity_values[i]
+def main():
+    n = int(input())
+    rates = list(map(int, input().split()))
+    final_rating, strategy = get_match_strategy(n, rates)
+    print(final_rating)
+    print(len(strategy))
+    for match in strategy:
+        print("".join(map(str, match)))
 
-    # Calculate UW distance
-    uw_distance = abs(potential * (capacitance * capacitance - inductance))
-
-    return uw_distance
+if __name__ == '__main__':
+    main()
 

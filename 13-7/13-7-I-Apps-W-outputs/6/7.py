@@ -1,26 +1,17 @@
 
-def solve(n):
-    # Initialize variables
-    days = 0
-    bacteria = 1
-    splits = []
-    
-    # Loop until the total mass of the bacteria is equal to n
-    while bacteria < n:
-        # Check if the bacteria can split
-        if bacteria >= 2:
-            # Split the bacteria
-            bacteria //= 2
-            splits.append(1)
-        # Increment the day
-        days += 1
-        
-        # Increment the mass of the bacteria
-        bacteria += 1
-    
-    # Check if the total mass of the bacteria is equal to n
-    if bacteria == n:
-        return [days, *splits]
-    else:
-        return [-1]
+def is_lovely(n):
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+def get_biggest_lovely(n):
+    for i in range(n, 1, -1):
+        if is_lovely(i):
+            return i
+    return 1
+
+if __name__ == '__main__':
+    n = int(input())
+    print(get_biggest_lovely(n))
 

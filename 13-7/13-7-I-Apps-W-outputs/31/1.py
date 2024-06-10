@@ -1,16 +1,34 @@
 
-def solve(n, t, a):
-    # Initialize the minimum number of days to finish reading the book as n
-    min_days = n
+def get_ball_orders(n, throws):
+    # Initialize a list to store the ball orders
+    ball_orders = []
     
-    # Iterate over each day
-    for i in range(n):
-        # Calculate the total time spent on work and reading for the current day
-        total_time = a[i] + t
+    # Base case: if there is only one student, return the ball order (1)
+    if n == 1:
+        return [1]
+    
+    # Recursive case: for each student, try all possible ball orders
+    for i in range(1, n+1):
+        # Get the ball order for the current student
+        current_ball_order = i
         
-        # If the total time is less than or equal to 86400 (the number of seconds in a day), update the minimum number of days to finish reading the book
-        if total_time <= 86400:
-            min_days = min(min_days, i + 1)
+        # Get the ball order for the remaining students
+        remaining_ball_order = get_ball_orders(n-1, throws-1)
+        
+        # Add the current ball order to the list of ball orders
+        ball_orders.extend([current_ball_order+remaining_ball_order for remaining_ball_order in remaining_ball_order])
     
-    return min_days
+    return ball_orders
+
+def get_distinct_ball_orders(n, throws):
+    # Get all possible ball orders
+    ball_orders = get_ball_orders(n, throws)
+    
+    # Return the number of distinct ball orders
+    return len(set(ball_orders))
+
+if __name__ == '__main__':
+    n = int(input())
+    throws = list(map(int, input().split()))
+    print(get_distinct_ball_orders(n, throws) % 1000000007)
 

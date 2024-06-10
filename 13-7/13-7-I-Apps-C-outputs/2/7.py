@@ -1,17 +1,36 @@
 
-def solve(transcript):
-    # Initialize the character types of the candidates as unknown
-    character_types = ["unknown"] * len(transcript[0])
+import math
 
-    # Iterate over each utterance in the transcript
-    for utterance in transcript:
-        # Split the utterance into the name of the speaker and the statement
-        speaker, statement = utterance.split(" ")
+def get_angle(x1, y1, x2, y2):
+    angle = math.atan2(y2 - y1, x2 - x1)
+    return angle
 
-        # If the statement is a character type claim, update the character type of the speaker
-        if statement.startswith(("truther", "fabulist", "charlatan")):
-            character_types[int(speaker) - 1] = statement.split(" ")[0]
+def get_hit_enemies(x, y, radius, enemies):
+    hit_enemies = 0
+    for enemy in enemies:
+        enemy_x, enemy_y, enemy_radius = enemy
+        distance = math.sqrt((x - enemy_x) ** 2 + (y - enemy_y) ** 2)
+        if distance <= radius + enemy_radius:
+            hit_enemies += 1
+    return hit_enemies
 
-    # Return the character types of the candidates
-    return character_types
+def solve(enemies):
+    max_hit_enemies = 0
+    for enemy in enemies:
+        enemy_x, enemy_y, enemy_radius = enemy
+        angle = get_angle(0, 0, enemy_x, enemy_y)
+        hit_enemies = get_hit_enemies(enemy_x, enemy_y, enemy_radius, enemies)
+        max_hit_enemies = max(max_hit_enemies, hit_enemies)
+    return max_hit_enemies
+
+def main():
+    num_enemies = int(input())
+    enemies = []
+    for i in range(num_enemies):
+        x, y, radius = map(float, input().split())
+        enemies.append((x, y, radius))
+    print(solve(enemies))
+
+if __name__ == '__main__':
+    main()
 

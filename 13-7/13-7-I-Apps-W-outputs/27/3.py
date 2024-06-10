@@ -1,23 +1,23 @@
 
-def solve(arr):
-    n = len(arr)
-    if n == 1:
-        return "YES"
-    if n == 2:
-        if arr[0] < arr[1]:
-            return "YES"
-        else:
-            return "NO"
-    if n == 3:
-        if arr[0] < arr[1] + arr[2] and arr[1] < arr[2] + arr[0] and arr[2] < arr[0] + arr[1]:
-            return "YES"
-        else:
-            return "NO"
-    # General case
+def get_factorial(n):
+    result = 1
+    for i in range(1, n+1):
+        result *= i
+    return result
+
+def get_ways(n, k, s, cubes):
+    ways = 0
     for i in range(n):
-        left_sum = arr[i-1] if i > 0 else 0
-        right_sum = arr[i+1] if i < n-1 else 0
-        if arr[i] > left_sum + right_sum:
-            return "NO"
-    return "YES"
+        for j in range(i+1, n+1):
+            if get_factorial(cubes[i]) + get_factorial(cubes[j]) == s:
+                ways += 1
+    return ways
+
+def main():
+    n, k, s = map(int, input().split())
+    cubes = list(map(int, input().split()))
+    print(get_ways(n, k, s, cubes))
+
+if __name__ == '__main__':
+    main()
 

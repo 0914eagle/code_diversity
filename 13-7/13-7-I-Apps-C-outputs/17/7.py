@@ -1,27 +1,33 @@
 
-def solve(n, m, roads, orders):
-    # Initialize a graph with n vertices and 0 edges
-    graph = [[] for _ in range(n)]
+def get_magical_subarray(arr, l, r):
+    # Find the smallest and largest elements in the subarray
+    smallest = min(arr[l:r+1])
+    largest = max(arr[l:r+1])
+    
+    # Initialize the length of the longest magical subarray as 0
+    max_length = 0
+    
+    # Iterate over the subarray and check if the elements are between the smallest and largest elements
+    for i in range(l, r+1):
+        if smallest <= arr[i] <= largest:
+            max_length = max(max_length, i-l+1)
+    
+    return max_length
 
-    # Add edges to the graph
-    for road in roads:
-        u, v, d = road
-        graph[u - 1].append((v - 1, d))
-        graph[v - 1].append((u - 1, d))
+def solve(arr, queries):
+    result = []
+    for l, r in queries:
+        result.append(get_magical_subarray(arr, l, r))
+    return result
 
-    # Sort the orders by their arrival time
-    orders.sort(key=lambda x: x[0])
-
-    # Initialize the delivery schedule with the pizza ready time
-    schedule = [order[2] for order in orders]
-
-    # Loop through the orders and update the delivery schedule
-    for order in orders:
-        u, _, t = order
-        for v, d in graph[u - 1]:
-            if schedule[v] > t + d:
-                schedule[v] = t + d
-
-    # Return the maximum waiting time
-    return max(schedule)
+if __name__ == '__main__':
+    n = int(input())
+    arr = list(map(int, input().split()))
+    q = int(input())
+    queries = []
+    for i in range(q):
+        queries.append(list(map(int, input().split())))
+    result = solve(arr, queries)
+    for i in result:
+        print(i)
 

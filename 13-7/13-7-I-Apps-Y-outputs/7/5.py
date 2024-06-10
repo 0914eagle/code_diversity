@@ -1,23 +1,28 @@
 
-def solve(arr):
-    # Initialize the sum of non-deleted elements as 0
-    sum_non_deleted = 0
-    # Initialize the number of elements as the length of the array
-    num_elements = len(arr)
-    # Initialize the index of the last deleted element as -1
-    last_deleted = -1
-    # Iterate through the array
-    for i in range(num_elements):
-        # If the current element is not the last deleted element
-        if i != last_deleted:
-            # Add the current element to the sum of non-deleted elements
-            sum_non_deleted += arr[i]
-        # If the current element is the last deleted element
-        else:
-            # Subtract the current element from the sum of non-deleted elements
-            sum_non_deleted -= arr[i]
-        # Update the index of the last deleted element
-        last_deleted = i
-    # Return the sum of non-deleted elements
-    return sum_non_deleted
+def get_distance(p1, p2):
+    return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
+
+def solve(points):
+    # Sort the points by their x-coordinate, then by their y-coordinate
+    points.sort(key=lambda x: (x[0], x[1]))
+    
+    # Initialize the current point to (0, 0)
+    current_point = (0, 0)
+    
+    # Initialize the total distance to 0
+    total_distance = 0
+    
+    # Iterate through the points and visit each one
+    for point in points:
+        # Calculate the distance from the current point to the next point
+        distance = get_distance(current_point, point)
+        
+        # Add the distance to the total distance
+        total_distance += distance
+        
+        # Set the current point to the next point
+        current_point = point
+    
+    # Return the total distance
+    return total_distance
 

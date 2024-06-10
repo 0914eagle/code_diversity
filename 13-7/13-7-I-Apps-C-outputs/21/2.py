@@ -1,44 +1,49 @@
 
-def get_spread(board):
-    # Initialize the spread for Mirko and Slavko as 0
-    mirko_spread, slavko_spread = 0, 0
+import math
 
-    # Loop through each row of the board
-    for i in range(len(board)):
-        # Loop through each column of the board
-        for j in range(len(board[0])):
-            # Check if the current field is empty
-            if board[i][j] == ".":
+def get_island_info(island_info):
+    islands = []
+    for info in island_info:
+        x, y, r = map(int, info.split())
+        islands.append((x, y, r))
+    return islands
+
+def get_palm_tree_info(palm_tree_info):
+    palm_trees = []
+    for info in palm_tree_info:
+        x, y, h = map(int, info.split())
+        palm_trees.append((x, y, h))
+    return palm_trees
+
+def get_distance(x1, y1, x2, y2):
+    return math.sqrt((x1-x2)**2 + (y1-y2)**2)
+
+def get_min_tunnel_length(islands, palm_trees, k):
+    min_length = float('inf')
+    for i in range(len(islands)):
+        for j in range(i+1, len(islands)):
+            island1 = islands[i]
+            island2 = islands[j]
+            dist = get_distance(island1[0], island1[1], island2[0], island2[1])
+            if dist <= island1[2] + island2[2] + min_length:
                 continue
+            for tree in palm_trees:
+                if tree[2] * k >= dist:
+                    break
+            else:
+                min_length = min(min_length, dist)
+    if min_length == float('inf'):
+        return "impossible"
+    return min_length
 
-            # Get the current piece and its position
-            piece = board[i][j]
-            position = (i, j)
+def main():
+    n, m, k = map(int, input().split())
+    island_info = [input() for _ in range(n)]
+    palm_tree_info = [input() for _ in range(m)]
+    islands = get_island_info(island_info)
+    palm_trees = get_palm_tree_info(palm_tree_info)
+    print(get_min_tunnel_length(islands, palm_trees, k))
 
-            # If the current piece is Mirko's, calculate its spread
-            if piece == "M":
-                # Loop through all the adjacent fields
-                for x in range(i-1, i+2):
-                    for y in range(j-1, j+2):
-                        # Check if the adjacent field is empty or has a Slavko's piece
-                        if x >= 0 and x < len(board) and y >= 0 and y < len(board[0]) and (board[x][y] == "." or board[x][y] == "S"):
-                            # Calculate the distance between the current piece and the adjacent field
-                            distance = abs(position[0] - x) + abs(position[1] - y)
-                            # Update the spread for Mirko
-                            mirko_spread += distance
-
-            # If the current piece is Slavko's, calculate its spread
-            if piece == "S":
-                # Loop through all the adjacent fields
-                for x in range(i-1, i+2):
-                    for y in range(j-1, j+2):
-                        # Check if the adjacent field is empty or has a Mirko's piece
-                        if x >= 0 and x < len(board) and y >= 0 and y < len(board[0]) and (board[x][y] == "." or board[x][y] == "M"):
-                            # Calculate the distance between the current piece and the adjacent field
-                            distance = abs(position[0] - x) + abs(position[1] - y)
-                            # Update the spread for Slavko
-                            slavko_spread += distance
-
-    # Return the spread for Mirko and Slavko
-    return mirko_spread, slavko_spread
+if __name__ == '__main__':
+    main()
 

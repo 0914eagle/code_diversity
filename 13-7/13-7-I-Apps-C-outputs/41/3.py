@@ -1,22 +1,89 @@
 
-def get_maximum_gold(n, m, gold, roads):
-    # Initialize a graph with the given roads
-    graph = {i: set() for i in range(1, n + 1)}
-    for a, b in roads:
-        graph[a].add(b)
-        graph[b].add(a)
+def solve(grid):
+    # Check if the grid is valid
+    if not is_valid_grid(grid):
+        return "SURGERY FAILED"
     
-    # Initialize a list to store the maximum gold that can be stolen from each village
-    max_gold = [0] * (n + 1)
-    max_gold[1] = gold[0]
+    # Initialize the organs dictionary
+    organs = {}
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j] != "E":
+                organs[grid[i][j]] = (i, j)
     
-    # Iterate through each village in the graph
-    for village in range(1, n + 1):
-        # If the village is not the bandit's home, check if there is a path from the village to the king's castle
-        if village != 1 and 2 in graph[village]:
-            # If there is a path, update the maximum gold that can be stolen from the village
-            max_gold[village] = max(max_gold[village], max_gold[village - 1] + gold[village - 1])
+    # Initialize the empty space coordinates
+    empty_space = (0, 0)
     
-    # Return the maximum gold that can be stolen from the bandit's home and still be able to return home safely
-    return max_gold[n]
+    # Initialize the moves list
+    moves = []
+    
+    # Loop until all organs are in their correct positions
+    while len(organs) > 0:
+        # Get the current organ
+        current_organ = list(organs.keys())[0]
+        
+        # Get the current organ's coordinates
+        current_coordinates = organs[current_organ]
+        
+        # Get the empty space coordinates
+        empty_coordinates = empty_space
+        
+        # Check if the empty space is on the left or right of the current organ
+        if current_coordinates[1] == empty_coordinates[1]:
+            # Check if the empty space is above or below the current organ
+            if current_coordinates[0] > empty_coordinates[0]:
+                # Move the organ up
+                moves.append("u")
+                empty_space = (empty_coordinates[0] + 1, empty_coordinates[1])
+            else:
+                # Move the organ down
+                moves.append("d")
+                empty_space = (empty_coordinates[0] - 1, empty_coordinates[1])
+        else:
+            # Check if the empty space is to the left or right of the current organ
+            if current_coordinates[1] > empty_coordinates[1]:
+                # Move the organ to the left
+                moves.append("l")
+                empty_space = (empty_coordinates[0], empty_coordinates[1] + 1)
+            else:
+                # Move the organ to the right
+                moves.append("r")
+                empty_space = (empty_coordinates[0], empty_coordinates[1] - 1)
+        
+        # Update the organs dictionary
+        organs[current_organ] = empty_space
+        del organs[current_organ]
+    
+    # Return the moves
+    return "SURGERY COMPLETE\n" + "".join(moves)
+
+def is_valid_grid(grid):
+    # Check if the grid is valid
+    if len(grid) == 0 or len(grid[0]) == 0:
+        return False
+    
+    # Check if the grid is a square
+    if len(grid) != len(grid[0]):
+        return False
+    
+    # Check if the grid has an empty space
+    if "E" not in grid:
+        return False
+    
+    # Check if the grid has the correct number of organs
+    if len(grid) * len(grid[0]) != 4 * len(grid) + 1:
+        return False
+    
+    # Check if the organs are in the correct positions
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j] != "E" and (i, j) not in organs:
+                return False
+    
+    # The grid is valid
+    return True
+
+if __name__ == '__main__':
+    grid = [[1, 2, 3, 5, 6, "E", 7], [8, 9, 10, 4, 11, 12, 13]]
+    print(solve(grid))
 

@@ -1,21 +1,21 @@
 
-def get_min_time(n, x, v):
-    # Sort the positions of the friends from south to north
-    x.sort()
-    
-    # Initialize the minimum time needed to gather all the friends
-    min_time = 0
-    
-    # Iterate over the friends and calculate the time needed for each friend to reach the meeting point
+def get_heights():
+    return list(map(int, input().split()))
+
+def get_pairs(heights):
+    n = len(heights)
+    pairs = 0
     for i in range(n):
-        # Calculate the distance between the current friend and the meeting point
-        distance = abs(x[i] - x[0])
-        
-        # Calculate the time needed for the friend to reach the meeting point
-        time = distance / v[i]
-        
-        # Update the minimum time needed to gather all the friends
-        min_time += time
-    
-    return min_time
+        for j in range(i+1, n):
+            if abs(i - j) == sum(heights[i], heights[j]):
+                pairs += 1
+    return pairs
+
+def main():
+    heights = get_heights()
+    pairs = get_pairs(heights)
+    print(pairs)
+
+if __name__ == '__main__':
+    main()
 

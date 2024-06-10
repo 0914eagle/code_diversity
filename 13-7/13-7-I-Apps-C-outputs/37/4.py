@@ -1,52 +1,46 @@
 
-def solve(gig_offers, venues, roads, time_limit):
-    # Initialize a graph to store the connections between venues
-    graph = {}
-    for road in roads:
-        start, end, time = road
-        if start not in graph:
-            graph[start] = {}
-        graph[start][end] = time
+def get_tube_lengths(N):
+    # Read the N tube lengths from stdin
+    tube_lengths = [int(input()) for _ in range(N)]
+    return tube_lengths
+
+def get_maximum_air_replacement(tube_lengths, L1, L2):
+    # Sort the tube lengths in descending order
+    tube_lengths.sort(reverse=True)
     
-    # Initialize a list to store the gig offers
-    offers = []
-    for offer in gig_offers:
-        venue, start, end, amount = offer
-        offers.append((venue, start, end, amount))
+    # Initialize the maximum air replacement to 0
+    max_air_replacement = 0
     
-    # Sort the gig offers by their start time
-    offers.sort(key=lambda x: x[1])
-    
-    # Initialize the maximum amount of cryptocents that can be earned
-    max_amount = 0
-    
-    # Initialize the current venue and time
-    current_venue = 1
-    current_time = 0
-    
-    # Loop through the gig offers
-    for offer in offers:
-        # Extract the venue, start, end, and amount from the offer
-        venue, start, end, amount = offer
-        
-        # Check if the offer is within the time limit
-        if current_time + start <= time_limit:
-            # Check if the offer is at the current venue
-            if venue == current_venue:
-                # Add the amount to the maximum amount
-                max_amount += amount
-            else:
-                # Calculate the time it takes to travel to the new venue
-                travel_time = graph[current_venue][venue]
+    # Iterate over the tube lengths
+    for i in range(len(tube_lengths)):
+        # Check if the sum of the first two tube lengths is less than or equal to L1
+        if sum(tube_lengths[:2]) <= L1:
+            # Check if the sum of the last two tube lengths is less than or equal to L2
+            if sum(tube_lengths[-2:]) <= L2:
+                # Calculate the total length of the four tubes
+                total_length = sum(tube_lengths[:4])
                 
-                # Check if the offer is within the time limit after traveling
-                if current_time + start + travel_time <= time_limit:
-                    # Add the amount to the maximum amount
-                    max_amount += amount
-                
-                    # Update the current venue and time
-                    current_venue = venue
-                    current_time += travel_time
+                # Update the maximum air replacement if the current total length is greater than the previous maximum
+                if total_length > max_air_replacement:
+                    max_air_replacement = total_length
     
-    return max_amount
+    # Return the maximum air replacement
+    return max_air_replacement
+
+def main():
+    # Read the input from stdin
+    L1, L2, N = map(int, input().split())
+    tube_lengths = get_tube_lengths(N)
+    
+    # Call the function to get the maximum air replacement
+    max_air_replacement = get_maximum_air_replacement(tube_lengths, L1, L2)
+    
+    # Print the output
+    if max_air_replacement == 0:
+        print("Impossible")
+    else:
+        print(max_air_replacement)
+
+if __name__ == '__main__':
+    main()
 

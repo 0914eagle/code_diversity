@@ -1,31 +1,39 @@
 
-def solve(n, m, roads, orders):
-    # Initialize a graph with n nodes (road intersections) and m edges (roads)
-    graph = [[] for _ in range(n)]
-    for u, v, d in roads:
-        graph[u-1].append((v-1, d))
-        graph[v-1].append((u-1, d))
+def get_magical_subarray(arr, l, r):
+    # Find the maximum length of the subarray
+    max_len = r - l + 1
     
-    # Initialize a priority queue to store the delivery times for each order
-    pq = [(0, 0)]
-    visited = set()
+    # Find the minimum and maximum values in the subarray
+    min_val = arr[l]
+    max_val = arr[l]
+    for i in range(l+1, r+1):
+        if arr[i] < min_val:
+            min_val = arr[i]
+        if arr[i] > max_val:
+            max_val = arr[i]
     
-    # Loop through the orders and add them to the priority queue
-    for s, u, t in orders:
-        pq.append((s, u-1))
-        visited.add(u-1)
+    # Check if the subarray is magical
+    if min_val <= max_val:
+        return max_len
     
-    # Loop through the priority queue and find the longest time it takes to deliver an order
-    max_time = 0
-    while pq:
-        time, node = heapq.heappop(pq)
-        if node in visited:
-            continue
-        visited.add(node)
-        for neighbor, weight in graph[node]:
-            if neighbor not in visited:
-                heapq.heappush(pq, (time+weight, neighbor))
-        max_time = max(max_time, time)
-    
-    return max_time
+    # If the subarray is not magical, return 0
+    return 0
+
+def solve(arr, queries):
+    result = []
+    for query in queries:
+        l, r = query
+        result.append(get_magical_subarray(arr, l, r))
+    return result
+
+if __name__ == '__main__':
+    n = int(input())
+    arr = list(map(int, input().split()))
+    q = int(input())
+    queries = []
+    for i in range(q):
+        queries.append(list(map(int, input().split())))
+    result = solve(arr, queries)
+    for i in result:
+        print(i)
 

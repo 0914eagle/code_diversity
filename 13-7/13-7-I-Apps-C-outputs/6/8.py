@@ -1,58 +1,63 @@
 
-def get_largest_fee(num_banks, num_partnerships, bank_x, bank_y, partnerships, num_swerc_banks, swerc_banks):
-    # Initialize a graph with the given banks
-    graph = [[] for _ in range(num_banks + 1)]
+import math
 
-    # Add edges between partners
-    for i in range(num_partnerships):
-        graph[partnerships[i][0]].append((partnerships[i][1], partnerships[i][2]))
-        graph[partnerships[i][1]].append((partnerships[i][0], partnerships[i][2]))
+def get_closest_distance(contour_lines):
+    # Initialize the closest distance to a large value
+    closest_distance = 1000000
+    
+    # Iterate over the contour lines
+    for line in contour_lines:
+        # Get the coordinates of the line
+        x_coords, y_coords = line[0::2], line[1::2]
+        
+        # Calculate the length of the line
+        line_length = math.sqrt((x_coords[0] - x_coords[-1]) ** 2 + (y_coords[0] - y_coords[-1]) ** 2)
+        
+        # Calculate the distance from the line to the target
+        distance = math.sqrt((x_coords[0] - 0) ** 2 + (y_coords[0] - 0) ** 2)
+        
+        # If the distance is closer than the current closest distance, update the closest distance
+        if distance < closest_distance:
+            closest_distance = distance
+    
+    return closest_distance
 
-    # Find the shortest path between bank X and bank Y using Dijkstra's algorithm
-    dist, prev = dijkstra(graph, bank_x)
+def get_input():
+    # Read the number of contour lines
+    n = int(input())
+    
+    # Initialize an empty list to store the contour lines
+    contour_lines = []
+    
+    # Iterate over the number of contour lines
+    for i in range(n):
+        # Read the height of the land outside and inside the contour, and the number of vertices
+        h0, h1, m = map(int, input().split())
+        
+        # Initialize an empty list to store the coordinates of the contour
+        line = []
+        
+        # Iterate over the number of vertices
+        for j in range(m):
+            # Read the x and y coordinates of the vertex
+            x, y = map(int, input().split())
+            
+            # Add the coordinates to the list
+            line.append(x)
+            line.append(y)
+        
+        # Add the contour line to the list of contour lines
+        contour_lines.append(line)
+    
+    return contour_lines
 
-    # Initialize the largest fee to 0
-    largest_fee = 0
-
-    # Loop through the shortest path and calculate the total fee
-    for i in range(len(prev) - 1):
-        largest_fee += graph[prev[i]][prev[i + 1]][1]
-
-    # If the largest fee is greater than or equal to the number of SWERC banks, return Infinity
-    if largest_fee >= num_swerc_banks:
-        return "Infinity"
-
-    # Otherwise, return the largest fee
-    return largest_fee
-
-# Dijkstra's algorithm
-def dijkstra(graph, start):
-    # Initialize the distance and previous node for each node
-    dist = [float("inf") for _ in range(len(graph))]
-    prev = [None for _ in range(len(graph))]
-
-    # Set the distance for the starting node to 0
-    dist[start] = 0
-
-    # Loop until all nodes have been visited
-    for i in range(len(graph)):
-        # Find the unvisited node with the smallest distance
-        min_node = None
-        for j in range(len(graph)):
-            if dist[j] < dist[min_node] and dist[j] != float("inf"):
-                min_node = j
-
-        # If there are no unvisited nodes, return the distances and previous nodes
-        if min_node is None:
-            return dist, prev
-
-        # Visit the node
-        for neighbor in graph[min_node]:
-            new_dist = dist[min_node] + neighbor[1]
-            if new_dist < dist[neighbor[0]]:
-                dist[neighbor[0]] = new_dist
-                prev[neighbor[0]] = min_node
-
-    # Return the distances and previous nodes
-    return dist, prev
+if __name__ == '__main__':
+    # Get the input
+    contour_lines = get_input()
+    
+    # Calculate the closest distance to the target
+    closest_distance = get_closest_distance(contour_lines)
+    
+    # Print the result
+    print(closest_distance)
 

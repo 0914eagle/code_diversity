@@ -1,13 +1,17 @@
 
-def get_network_topology(graph):
-    n = len(graph)
-    m = len(graph[0])
-    if m == n-1:
-        return "bus topology"
-    elif m == n-2:
-        return "ring topology"
-    elif m == n-3:
-        return "star topology"
-    else:
-        return "unknown topology"
+def get_lifelines(edges):
+    lifelines = set()
+    for edge in edges:
+        lifelines.add(frozenset(edge))
+    return len(lifelines)
+
+def main():
+    n = int(input())
+    edges = []
+    for _ in range(n - 1):
+        edges.append(tuple(map(int, input().split())))
+    print(get_lifelines(edges))
+
+if __name__ == '__main__':
+    main()
 

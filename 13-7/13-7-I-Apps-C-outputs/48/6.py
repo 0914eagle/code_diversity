@@ -1,25 +1,50 @@
 
-def solve(n, m, s, a, b, c):
-    # Sort the bugs by complexity in ascending order
-    a.sort()
-    # Initialize the number of passes given to each student to 0
-    passes = [0] * n
-    # Initialize the number of days needed to fix all bugs to 0
-    days = 0
-    # Loop through each bug
-    for i in range(m):
-        # Find the student with the highest level of ability who can fix the current bug
-        student = max(range(n), key=lambda i: b[i])
-        # If the student's level of ability is not greater than or equal to the bug's complexity, break the loop
-        if b[student] < a[i]:
-            break
-        # Increment the number of passes given to the student
-        passes[student] += 1
-        # Increment the number of days needed to fix all bugs
-        days += 1
-    # If the total number of passes exceeds the maximum number of passes given by the university, return "NO"
-    if sum(passes) > s:
+def get_permutation(n):
+    permutation = list(range(1, n+1))
+    return permutation
+
+def get_inverse_permutation(permutation):
+    inverse_permutation = [0] * len(permutation)
+    for i in range(len(permutation)):
+        inverse_permutation[permutation[i]-1] = i+1
+    return inverse_permutation
+
+def apply_permutation(permutation, q):
+    result = [0] * len(permutation)
+    for i in range(len(permutation)):
+        result[i] = permutation[q[i]-1]
+    return result
+
+def apply_inverse_permutation(permutation, q):
+    result = [0] * len(permutation)
+    for i in range(len(permutation)):
+        result[i] = permutation[q[i]-1]
+    return result
+
+def get_coin_tosses(k):
+    coin_tosses = []
+    for i in range(k):
+        coin_tosses.append(i%2)
+    return coin_tosses
+
+def get_result(n, k, q, s):
+    permutation = get_permutation(n)
+    inverse_permutation = get_inverse_permutation(permutation)
+    coin_tosses = get_coin_tosses(k)
+    for i in range(k):
+        if coin_tosses[i] == 0:
+            permutation = apply_permutation(permutation, q)
+        else:
+            permutation = apply_inverse_permutation(permutation, q)
+    if permutation == s:
+        return "YES"
+    else:
         return "NO"
-    # Otherwise, return "YES" and the schedule of work
-    return "YES\n" + " ".join(str(student + 1) for student in passes)
+
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    q = list(map(int, input().split()))
+    s = list(map(int, input().split()))
+    result = get_result(n, k, q, s)
+    print(result)
 

@@ -1,16 +1,28 @@
 
-def solve(k, n):
-    # Convert the integer n to a list of individual digits
-    digits = [int(digit) for digit in str(n)]
-    # Initialize a counter for the minimum number of digits that can differ
-    min_diff = 0
-    # Iterate through the digits of n
-    for i in range(len(digits)):
-        # If the digit is not equal to the corresponding digit of the initial number, increment the counter
-        if digits[i] != k % 10:
-            min_diff += 1
-        # Update the value of k to remove the current digit
-        k //= 10
-    # Return the minimum number of digits that can differ
-    return min_diff
+def calculate_mean(a, T, c):
+    mean = 0.0
+    for t in range(1, len(a)):
+        mean = (mean + a[t] / T) / c
+    return mean
+
+def calculate_mean_approx(a, T, c):
+    mean = 0.0
+    for t in range(1, len(a)):
+        mean = (mean + a[t] / T) / c
+    return mean
+
+def main():
+    n, T, c = map(int, input().split())
+    a = list(map(int, input().split()))
+    m = int(input())
+    p = list(map(int, input().split()))
+
+    for j in range(m):
+        real = sum(a[p[j]-T+1:p[j]+1]) / T
+        approx = calculate_mean_approx(a, T, c)
+        error = abs(approx-real) / real
+        print(real, approx, error)
+
+if __name__ == '__main__':
+    main()
 

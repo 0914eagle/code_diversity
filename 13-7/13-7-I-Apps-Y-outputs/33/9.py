@@ -1,21 +1,29 @@
 
-def solve(s, q):
-    # Initialize an empty dictionary to store the count of distinct characters
-    distinct_chars = {}
+def get_blocks(arr):
+    n = len(arr)
+    blocks = []
+    for i in range(n):
+        for j in range(i+1, n):
+            if arr[i] == arr[j]:
+                blocks.append((i, j))
+    return blocks
 
-    # Iterate over each query
-    for query in q:
-        # If the query is of type 1, replace the character at the given position with the new character
-        if query[0] == 1:
-            s = s[:query[1]] + query[2] + s[query[1] + 1:]
-        # If the query is of type 2, calculate the number of distinct characters in the substring
-        else:
-            count = 0
-            for char in s[query[1] - 1:query[2]]:
-                if char not in distinct_chars:
-                    count += 1
-                    distinct_chars[char] = 1
-            print(count)
+def find_maximum_set_of_disjoint_blocks(blocks):
+    max_blocks = []
+    for block in blocks:
+        if block not in max_blocks:
+            max_blocks.append(block)
+    return max_blocks
 
-    return s
+def main():
+    n = int(input())
+    arr = list(map(int, input().split()))
+    blocks = get_blocks(arr)
+    maximum_blocks = find_maximum_set_of_disjoint_blocks(blocks)
+    print(len(maximum_blocks))
+    for block in maximum_blocks:
+        print(block[0], block[1])
+
+if __name__ == '__main__':
+    main()
 

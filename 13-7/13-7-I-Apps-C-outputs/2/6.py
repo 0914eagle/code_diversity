@@ -1,21 +1,36 @@
 
-def solve(transcript):
-    # Initialize the character types of the candidates as unknown
-    character_types = ["unknown"] * len(transcript[0])
+import math
 
-    # Iterate over each utterance in the transcript
-    for utterance in transcript:
-        # Extract the name of the speaker and the uttered statement
-        speaker, statement = utterance
+def get_hit_enemies(x, y, r, opponents):
+    hit_enemies = 0
+    for opponent in opponents:
+        dx, dy = x - opponent[0], y - opponent[1]
+        if dx**2 + dy**2 <= r**2:
+            hit_enemies += 1
+    return hit_enemies
 
-        # If the statement is a character type claim, update the character type of the speaker
-        if statement.startswith("truther"):
-            character_types[speaker - 1] = "truther"
-        elif statement.startswith("fabulist"):
-            character_types[speaker - 1] = "fabulist"
-        elif statement.startswith("charlatan"):
-            character_types[speaker - 1] = "charlatan"
+def get_optimal_angle(x, y, r, opponents):
+    optimal_angle = 0
+    max_hit_enemies = 0
+    for angle in range(360):
+        cx = x + r * math.cos(math.radians(angle))
+        cy = y + r * math.sin(math.radians(angle))
+        hit_enemies = get_hit_enemies(cx, cy, r, opponents)
+        if hit_enemies > max_hit_enemies:
+            max_hit_enemies = hit_enemies
+            optimal_angle = angle
+    return optimal_angle
 
-    # Return the character types of the candidates
-    return character_types
+def main():
+    n = int(input())
+    opponents = []
+    for i in range(n):
+        x, y, r = map(float, input().split())
+        opponents.append([x, y, r])
+    x, y, r = map(float, input().split())
+    optimal_angle = get_optimal_angle(x, y, r, opponents)
+    print(optimal_angle)
+
+if __name__ == '__main__':
+    main()
 

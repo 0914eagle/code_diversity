@@ -1,23 +1,34 @@
 
-def solve(N, M, detector_positions, detector_calls):
-    # Initialize a list to store the minimum number of calls made between each pair of houses
-    min_calls = [[0] * (M + 1) for _ in range(M + 1)]
+def get_sunlight_hours(buildings):
+    # Calculate the total number of hours of sunlight
+    total_hours = 0
+    for building in buildings:
+        total_hours += building[1] / 180
+    return total_hours
 
-    # Fill in the values for the first detector
-    for i in range(1, M):
-        min_calls[i][i + 1] = detector_calls[0]
+def get_sunlight_hours_per_building(buildings):
+    # Calculate the number of hours of sunlight for each building
+    hours_per_building = []
+    for building in buildings:
+        hours_per_building.append(building[1] / 180)
+    return hours_per_building
 
-    # Fill in the values for the remaining detectors
-    for i in range(1, N):
-        for j in range(1, M):
-            min_calls[j][j + 1] = min(min_calls[j][j + 1], detector_calls[i])
-            min_calls[j + 1][j] = min(min_calls[j + 1][j], detector_calls[i])
+def main():
+    # Get the number of buildings
+    n = int(input())
+    # Get the locations and heights of the buildings
+    buildings = []
+    for i in range(n):
+        x, h = map(int, input().split())
+        buildings.append([x, h])
+    # Calculate the total number of hours of sunlight
+    total_hours = get_sunlight_hours(buildings)
+    # Calculate the number of hours of sunlight for each building
+    hours_per_building = get_sunlight_hours_per_building(buildings)
+    # Print the number of hours of sunlight for each building
+    for hour in hours_per_building:
+        print(hour)
 
-    # Find the minimum number of calls made between any two houses
-    min_calls_total = float('inf')
-    for i in range(1, M):
-        for j in range(i + 1, M + 1):
-            min_calls_total = min(min_calls_total, min_calls[i][j])
-
-    return min_calls_total
+if __name__ == '__main__':
+    main()
 

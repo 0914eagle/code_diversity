@@ -1,20 +1,26 @@
 
-def frequency_sorter(sequence, k):
-    
-    # Initialize a dictionary to store the frequency of each element
-    freq = {}
-    for elem in sequence:
-        if elem not in freq:
-            freq[elem] = 0
-        freq[elem] += 1
+def get_min_max_occupied_houses(x):
+    n = len(x)
+    min_occupied_houses = 0
+    max_occupied_houses = 0
+    for i in range(n):
+        min_occupied_houses += 1
+        max_occupied_houses += 2
+        if x[i] == 1 or x[i] == n:
+            min_occupied_houses -= 1
+            max_occupied_houses -= 1
+        if x[i] == 1 and x[i+1] == 2:
+            min_occupied_houses -= 1
+        if x[i] == n and x[i-1] == n-1:
+            min_occupied_houses -= 1
+    return min_occupied_houses, max_occupied_houses
 
-    # Sort the dictionary by frequency and value
-    sorted_freq = sorted(freq.items(), key=lambda x: (-x[1], x[0]))
+def main():
+    n = int(input())
+    x = list(map(int, input().split()))
+    min_occupied_houses, max_occupied_houses = get_min_max_occupied_houses(x)
+    print(min_occupied_houses, max_occupied_houses)
 
-    # Create the sorted sequence
-    sorted_seq = []
-    for elem, count in sorted_freq:
-        sorted_seq += [elem] * count
-
-    return sorted_seq
+if __name__ == '__main__':
+    main()
 

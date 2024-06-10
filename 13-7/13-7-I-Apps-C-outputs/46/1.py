@@ -1,38 +1,44 @@
 
-def reconstruct_arrows(N, K, arrows):
-    # Initialize a dictionary to map each person to their next position
-    person_to_next_position = {}
-    for i in range(N):
-        person_to_next_position[i+1] = arrows[i]
+def get_cost(m, n, p, insecure_buildings, connections):
+    # Initialize a graph with n vertices and 0 edges
+    graph = [[] for _ in range(n + 1)]
 
-    # Initialize a set to keep track of the visited positions
-    visited_positions = set()
+    # Add edges to the graph
+    for connection in connections:
+        x, y, cost = connection
+        graph[x].append((y, cost))
+        graph[y].append((x, cost))
 
-    # Initialize a list to store the final arrow placement
-    arrow_placement = []
+    # Find the shortest path between all pairs of vertices using Dijkstra's algorithm
+    dist = [float('inf')] * (n + 1)
+    dist[1] = 0
+    q = [(0, 1)]
+    while q:
+        cost, vertex = heapq.heappop(q)
+        if dist[vertex] < cost:
+            continue
+        for neighbor, weight in graph[vertex]:
+            new_cost = cost + weight
+            if new_cost < dist[neighbor]:
+                dist[neighbor] = new_cost
+                heapq.heappush(q, (new_cost, neighbor))
 
-    # Iterate through each person and their next position
-    for i in range(N):
-        # Get the current person and their next position
-        person = i+1
-        next_position = person_to_next_position[person]
+    # Check if the cost of the path from the first building to the last building is less than or equal to the total cost of the network
+    total_cost = sum(cost for _, cost in connections)
+    if dist[-1] <= total_cost:
+        return dist[-1]
+    else:
+        return -1
 
-        # If the next position has not been visited before, add it to the visited positions set
-        if next_position not in visited_positions:
-            visited_positions.add(next_position)
-        # If the next position has been visited before, find the previous position that leads to it
-        else:
-            # Iterate through the visited positions to find the previous position that leads to the next position
-            for j in range(N):
-                if person_to_next_position[j+1] == next_position:
-                    # Add the arrow from the previous position to the current position
-                    arrow_placement.append(j+1)
-                    break
+def main():
+    m, n, p = map(int, input().split())
+    insecure_buildings = set(map(int, input().split()))
+    connections = []
+    for _ in range(m):
+        x, y, cost = map(int, input().split())
+        connections.append((x, y, cost))
+    print(get_cost(m, n, p, insecure_buildings, connections))
 
-    # If the number of visited positions is not equal to the number of people, the arrow placement is impossible
-    if len(visited_positions) != N:
-        return "Impossible"
-
-    # Return the final arrow placement
-    return arrow_placement
+if __name__ == '__main__':
+    main()
 

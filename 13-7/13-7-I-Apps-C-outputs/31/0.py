@@ -1,31 +1,38 @@
 
-def solve(n, g, stations):
-    # Sort the stations by distance
-    stations = sorted(stations, key=lambda x: x[0])
-    
-    # Initialize the current distance and cost
-    curr_dist = 0
-    curr_cost = 0
-    
-    # Loop through each station
-    for station in stations:
-        # Calculate the distance to the next station
-        next_dist = station[0] - curr_dist
-        
-        # Check if the next station is within reach
-        if next_dist <= g:
-            # Calculate the amount of gas needed for the next station
-            needed_gas = next_dist - curr_dist
-            
-            # Add the cost of the needed gas to the total cost
-            curr_cost += needed_gas * station[1]
-            
-            # Update the current distance and fuel level
-            curr_dist = station[0]
-        else:
-            # If the next station is out of reach, cancel the trip
-            return "cancel road trip"
-    
-    # Return the total cost if the trip is possible
-    return curr_cost
+import math
+
+def within_sight(beacon1, beacon2, mountain_peaks):
+    for mountain_peak in mountain_peaks:
+        if math.sqrt((beacon1[0] - beacon2[0]) ** 2 + (beacon1[1] - beacon2[1]) ** 2) <= mountain_peak[2]:
+            return False
+    return True
+
+def light_beacons(beacons, mountain_peaks):
+    lit_beacons = set()
+    for beacon in beacons:
+        if beacon not in lit_beacons:
+            lit_beacons.add(beacon)
+            for other_beacon in beacons:
+                if within_sight(beacon, other_beacon, mountain_peaks):
+                    lit_beacons.add(other_beacon)
+    return lit_beacons
+
+def count_messages(beacons, mountain_peaks):
+    lit_beacons = light_beacons(beacons, mountain_peaks)
+    return len(beacons) - len(lit_beacons)
+
+def main():
+    n, m = map(int, input().split())
+    beacons = []
+    for _ in range(n):
+        x, y = map(int, input().split())
+        beacons.append((x, y))
+    mountain_peaks = []
+    for _ in range(m):
+        x, y, r = map(int, input().split())
+        mountain_peaks.append((x, y, r))
+    print(count_messages(beacons, mountain_peaks))
+
+if __name__ == '__main__':
+    main()
 

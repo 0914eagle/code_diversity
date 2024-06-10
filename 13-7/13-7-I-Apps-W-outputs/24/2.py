@@ -1,30 +1,23 @@
 
-def solve(player, n, cuboids):
-    # Initialize the game state
-    game_state = {}
-    for i in range(n):
-        game_state[i] = cuboids[i]
+def calculate_sum(n):
+    # Calculate the sum of all integers from 1 to n
+    sum = (n * (n + 1)) // 2
     
-    # Game loop
-    while len(game_state) > 0:
-        # Get the current player and their move
-        current_player = player
-        move = get_move(current_player, game_state)
-        
-        # Update the game state
-        game_state = update_game_state(game_state, move)
-        
-        # Switch players
-        player = "RUBEN" if player == "ALBERT" else "ALBERT"
+    # Calculate the sum of all powers of two from 1 to n
+    power_of_two_sum = 0
+    for i in range(1, n + 1):
+        if i == 2**i:
+            power_of_two_sum += i
     
-    # Return the winner
-    return current_player
+    # Return the difference between the two sums
+    return sum - power_of_two_sum
 
-def get_move(player, game_state):
-    # TODO: Implement this function to get the move for the current player
-    pass
+def main():
+    t = int(input())
+    for i in range(t):
+        n = int(input())
+        print(calculate_sum(n))
 
-def update_game_state(game_state, move):
-    # TODO: Implement this function to update the game state based on the move
-    pass
+if __name__ == '__main__':
+    main()
 

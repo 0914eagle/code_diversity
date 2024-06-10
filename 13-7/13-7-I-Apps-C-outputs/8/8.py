@@ -1,26 +1,37 @@
 
-def solve(N, Q, queries):
-    # Initialize the number of stones in each box to 0
-    num_stones = [0] * (N + 1)
-    # Initialize the probability of each box to 1
-    prob = [1] * (N + 1)
+def get_winner(n, k, cards):
+    # Initialize the number of moves to 0
+    moves = 0
+    
+    # Loop through each card
+    for i in range(n):
+        # Check if the card is facing up
+        if cards[i] == "1":
+            # If the card is facing up, check if the next k-1 cards are all facing up
+            for j in range(i+1, min(n, i+k)):
+                if cards[j] == "0":
+                    break
+            else:
+                # If all the next k-1 cards are facing up, return "tokitsukaze"
+                return "tokitsukaze"
+        # Check if the card is facing down
+        if cards[i] == "0":
+            # If the card is facing down, check if the previous k-1 cards are all facing down
+            for j in range(max(0, i-k+1), i):
+                if cards[j] == "1":
+                    break
+            else:
+                # If all the previous k-1 cards are facing down, return "quailty"
+                return "quailty"
+    
+    # If the game has not ended after all the cards have been checked, return "once again"
+    return "once again"
 
-    for query in queries:
-        # If the query is of type 1, put a stone inside one of the boxes between u and v
-        if query[0] == 1:
-            u, v = query[1], query[2]
-            for i in range(u, v + 1):
-                num_stones[i] += 1
-                prob[i] *= 0.5
-        # If the query is of type 2, calculate the expected value of A
-        else:
-            expected_value = 0
-            for i in range(1, N + 1):
-                expected_value += num_stones[i] ** 2 * prob[i]
-            print(int(expected_value % 1000000007))
+def main():
+    n, k = map(int, input().split())
+    cards = input()
+    print(get_winner(n, k, cards))
 
 if __name__ == '__main__':
-    N, Q = map(int, input().split())
-    queries = [list(map(int, input().split())) for _ in range(Q)]
-    solve(N, Q, queries)
+    main()
 

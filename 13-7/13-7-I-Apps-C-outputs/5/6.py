@@ -1,59 +1,53 @@
 
-def solve(matrix, growth_speed):
-    # Initialize a queue to store the trees to be processed
-    queue = []
+def get_profit(producer_prices, consumer_prices, producer_start_days, consumer_end_days):
+    # Initialize variables
+    total_profit = 0
+    current_day = 1
 
-    # Initialize a dictionary to store the height of each tree and its connected component
-    tree_heights = {}
+    # Loop through each producer and consumer combination
+    for producer_index in range(len(producer_prices)):
+        for consumer_index in range(len(consumer_prices)):
+            # Check if the producer can start delivering widgets on the current day
+            if current_day >= producer_start_days[producer_index]:
+                # Check if the consumer is willing to buy widgets on the current day
+                if current_day <= consumer_end_days[consumer_index]:
+                    # Calculate the profit for this producer and consumer combination
+                    profit = producer_prices[producer_index] - consumer_prices[consumer_index]
 
-    # Loop through the matrix and add the trees to the queue
-    for i in range(len(matrix)):
-        for j in range(len(matrix[0])):
-            tree = (i, j)
-            queue.append(tree)
-            tree_heights[tree] = matrix[i][j]
+                    # Check if the profit is positive
+                    if profit > 0:
+                        # Add the profit to the total profit
+                        total_profit += profit
 
-    # Loop until the queue is empty
-    while queue:
-        # Get the current tree from the queue
-        current_tree = queue.pop(0)
+    # Return the total profit
+    return total_profit
 
-        # Get the height of the current tree
-        current_height = tree_heights[current_tree]
+def main():
+    # Read the number of producer and consumer companies
+    m, n = map(int, input().split())
 
-        # Get the growth speed of the current tree
-        current_growth_speed = growth_speed[current_tree]
+    # Read the producer prices and start days
+    producer_prices = []
+    producer_start_days = []
+    for i in range(m):
+        price, start_day = map(int, input().split())
+        producer_prices.append(price)
+        producer_start_days.append(start_day)
 
-        # Calculate the height of the current tree after one year
-        new_height = current_height + current_growth_speed
+    # Read the consumer prices and end days
+    consumer_prices = []
+    consumer_end_days = []
+    for i in range(n):
+        price, end_day = map(int, input().split())
+        consumer_prices.append(price)
+        consumer_end_days.append(end_day)
 
-        # Loop through the neighbors of the current tree
-        for neighbor in get_neighbors(current_tree, matrix):
-            # If the neighbor is not in the queue or has a lower height, skip it
-            if neighbor not in queue or tree_heights[neighbor] > new_height:
-                continue
+    # Calculate the total profit
+    total_profit = get_profit(producer_prices, consumer_prices, producer_start_days, consumer_end_days)
 
-            # Add the neighbor to the queue
-            queue.append(neighbor)
+    # Print the total profit
+    print(total_profit)
 
-            # Update the height of the neighbor
-            tree_heights[neighbor] = new_height
-
-    # Find the maximum height in the dictionary
-    max_height = max(tree_heights.values())
-
-    # Return the number of trees with the maximum height
-    return len([tree for tree, height in tree_heights.items() if height == max_height])
-
-def get_neighbors(tree, matrix):
-    # Get the row and column of the tree
-    row, col = tree
-
-    # Get the neighbors of the tree
-    neighbors = [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]
-
-    # Filter the neighbors that are out of bounds
-    neighbors = [neighbor for neighbor in neighbors if 0 <= neighbor[0] < len(matrix) and 0 <= neighbor[1] < len(matrix[0])]
-
-    return neighbors
+if __name__ == '__main__':
+    main()
 

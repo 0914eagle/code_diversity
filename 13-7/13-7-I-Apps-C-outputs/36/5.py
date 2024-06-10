@@ -1,16 +1,47 @@
 
-def solve(price, coins):
-    # Initialize a dictionary to store the number of coins for each value
-    coin_dict = {1: coins[0], 5: coins[1], 10: coins[2], 25: coins[3]}
-    # Initialize a variable to store the maximum number of coins that can be used
-    max_coins = 0
-    # Loop through the dictionary and check if the number of coins for each value is greater than or equal to the price
-    for value, num_coins in coin_dict.items():
-        if num_coins >= price // value:
-            max_coins += price // value
-            price %= value
-    # If the price is not zero, it is not possible to pay the exact amount without getting change back
-    if price != 0:
-        return "Impossible"
-    return max_coins
+def get_rooms(n):
+    return [[] for _ in range(n+1)]
+
+def add_corridor(rooms, u, v):
+    rooms[u].append(v)
+    rooms[v].append(u)
+
+def remove_corridor(rooms, u, v):
+    rooms[u].remove(v)
+    rooms[v].remove(u)
+
+def has_cycle(rooms):
+    visited = [False] * (len(rooms)+1)
+    def dfs(u):
+        if visited[u]:
+            return True
+        visited[u] = True
+        for v in rooms[u]:
+            if dfs(v):
+                return True
+        visited[u] = False
+        return False
+    return dfs(1)
+
+def remove_cycles(rooms):
+    removed = 0
+    while has_cycle(rooms):
+        for u in range(1, len(rooms)):
+            for v in rooms[u]:
+                if u < v:
+                    remove_corridor(rooms, u, v)
+                    removed += 1
+                    break
+    return removed
+
+def main():
+    n, m = map(int, input().split())
+    rooms = get_rooms(n)
+    for _ in range(m):
+        u, v = map(int, input().split())
+        add_corridor(rooms, u, v)
+    print(remove_cycles(rooms))
+
+if __name__ == '__main__':
+    main()
 

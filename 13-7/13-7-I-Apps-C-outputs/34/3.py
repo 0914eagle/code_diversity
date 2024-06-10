@@ -1,34 +1,19 @@
 
-def solve(n, k, partners):
-    # Sort the partners by their Frag and Step values
-    partners.sort(key=lambda x: (x[0], x[1]))
+def get_carry_digits(num1, num2):
+    carry_digits = 0
+    while num1 >= 10 or num2 >= 10:
+        carry_digits += 1
+        num1, num2 = num1 // 10, num2 // 10
+    return carry_digits
 
-    # Initialize the maximum diversity to 0
-    max_diversity = 0
+def get_steps(num1, num2):
+    steps = 0
+    while get_carry_digits(num1, num2) > 0:
+        steps += 1
+        num1, num2 = num1 + 1, num2 - 1
+    return steps
 
-    # Initialize the current diversity to 0
-    current_diversity = 0
-
-    # Iterate through the partners
-    for i in range(n):
-        # If the current partner can be awakened
-        if partners[i][2] != 0:
-            # Increment the current diversity
-            current_diversity += 1
-
-            # If the current diversity is greater than the maximum diversity
-            if current_diversity > max_diversity:
-                # Update the maximum diversity
-                max_diversity = current_diversity
-
-            # If the current diversity is equal to the maximum diversity and the current partner is not the first partner in the list
-            elif current_diversity == max_diversity and i != 0:
-                # Decrement the current diversity
-                current_diversity -= 1
-
-                # Increment the maximum diversity
-                max_diversity += 1
-
-    # Return the maximum diversity
-    return max_diversity
+if __name__ == '__main__':
+    num1, num2 = map(int, input().split())
+    print(get_steps(num1, num2))
 

@@ -1,9 +1,16 @@
 
-def is_consistent(capacity, measurements):
-    curr_capacity = 0
-    for left, entered, stayed in measurements:
-        curr_capacity += entered - left
-        if curr_capacity > capacity or stayed > 0:
-            return "impossible"
-    return "possible"
+def lexicographically_smaller(a, b):
+    a_str = a * b
+    b_str = b * a
+    if a_str < b_str:
+        return a_str
+    else:
+        return b_str
+
+def main():
+    a, b = map(int, input().split())
+    print(lexicographically_smaller(a, b))
+
+if __name__ == '__main__':
+    main()
 

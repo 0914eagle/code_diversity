@@ -1,30 +1,54 @@
 
-import math
+def get_max_damage(jiro_cards, ciel_cards):
+    # Initialize variables
+    max_damage = 0
+    current_damage = 0
+    jiro_alive_cards = jiro_cards[:]
+    ciel_alive_cards = ciel_cards[:]
 
-def get_shared_area(pine_trees, aspen_trees):
-    total_area = 0
-    for pine_tree in pine_trees:
-        for aspen_tree in aspen_trees:
-            distance = math.sqrt((pine_tree[0] - aspen_tree[0]) ** 2 + (pine_tree[1] - aspen_tree[1]) ** 2)
-            if distance <= 1:
-                total_area += 1
-    return total_area
+    # Loop through each ciel card
+    for ciel_card in ciel_alive_cards:
+        # If jiro has no alive cards, add ciel card's strength to the total damage
+        if not jiro_alive_cards:
+            max_damage += ciel_card["strength"]
+            continue
 
-def solve(input_lines):
-    pine_trees = []
-    aspen_trees = []
-    for line in input_lines:
-        x, y = line.split()
-        x = float(x)
-        y = float(y)
-        if x == 0 and y == 0:
-            break
-        if x == 0:
-            aspen_trees.append((x, y))
-        elif y == 0:
-            pine_trees.append((x, y))
+        # Find the strongest jiro card that is still alive
+        strongest_jiro_card = None
+        for jiro_card in jiro_alive_cards:
+            if strongest_jiro_card is None or jiro_card["strength"] > strongest_jiro_card["strength"]:
+                strongest_jiro_card = jiro_card
+
+        # If the ciel card's strength is greater than or equal to the strongest jiro card's strength, add the difference to the total damage
+        if ciel_card["strength"] >= strongest_jiro_card["strength"]:
+            max_damage += ciel_card["strength"] - strongest_jiro_card["strength"]
+            jiro_alive_cards.remove(strongest_jiro_card)
+
+        # If the ciel card's strength is less than the strongest jiro card's strength, add the ciel card's strength to the total damage
         else:
-            pine_trees.append((x, y))
-            aspen_trees.append((x, y))
-    return get_shared_area(pine_trees, aspen_trees)
+            max_damage += ciel_card["strength"]
+
+    return max_damage
+
+def main():
+    jiro_cards = []
+    ciel_cards = []
+
+    # Read the input
+    n, m = map(int, input().split())
+    for _ in range(n):
+        position, strength = input().split()
+        jiro_cards.append({"position": position, "strength": int(strength)})
+    for _ in range(m):
+        strength = int(input())
+        ciel_cards.append({"strength": strength})
+
+    # Calculate the maximum damage
+    max_damage = get_max_damage(jiro_cards, ciel_cards)
+
+    # Print the result
+    print(max_damage)
+
+if __name__ == '__main__':
+    main()
 

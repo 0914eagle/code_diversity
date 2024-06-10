@@ -1,15 +1,24 @@
 
-def largest_perfect_power(x):
-    # Initialize a list to store the perfect powers
-    perfect_powers = []
+def can_remove_elements(arr):
+    # Check if all elements in the array are the same
+    if len(set(arr)) == 1:
+        return True
     
-    # Iterate from 1 to the square root of x
-    for i in range(1, int(x**0.5) + 1):
-        # Check if i is a perfect power
-        if x % i == 0:
-            # Add the perfect power to the list
-            perfect_powers.append(i)
+    # Check if any two elements differ by more than 1
+    for i in range(len(arr)):
+        for j in range(i+1, len(arr)):
+            if abs(arr[i] - arr[j]) > 1:
+                return False
     
-    # Return the largest perfect power
-    return max(perfect_powers)
+    return True
+
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        arr = list(map(int, input().split()))
+        print("YES" if can_remove_elements(arr) else "NO")
+
+if __name__ == '__main__':
+    main()
 

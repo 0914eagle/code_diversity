@@ -1,22 +1,25 @@
 
-def count_monotonic_subgrids(grid):
-    def is_monotonic(subgrid):
-        for i in range(len(subgrid) - 1):
-            if subgrid[i] > subgrid[i + 1]:
-                return False
-        return True
+def get_average_price(prices):
+    return sum(prices) / len(prices)
 
-    def count_subgrids(grid, r, c):
-        non_empty_subgrids = 0
-        for i in range(r):
-            for j in range(c):
-                subgrid = []
-                for k in range(i, r):
-                    for l in range(j, c):
-                        subgrid.append(grid[k][l])
-                if is_monotonic(subgrid):
-                    non_empty_subgrids += 1
-        return non_empty_subgrids
+def get_consecutive_subsequences(prices, p):
+    subsequences = []
+    for i in range(len(prices)):
+        for j in range(i+1, len(prices)+1):
+            if get_average_price(prices[i:j]) >= p:
+                subsequences.append(prices[i:j])
+    return subsequences
 
-    return count_subgrids(grid, len(grid), len(grid[0]))
+def count_distinct_subsequences(subsequences):
+    return len(set(map(tuple, subsequences)))
+
+def main():
+    n = int(input())
+    prices = list(map(int, input().split()))
+    p = int(input())
+    subsequences = get_consecutive_subsequences(prices, p)
+    print(count_distinct_subsequences(subsequences))
+
+if __name__ == '__main__':
+    main()
 

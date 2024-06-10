@@ -1,24 +1,49 @@
 
-def max_flowers(field, grasshopper_pos):
+def get_travel_cost(trips, a, b, k, f):
     # Initialize variables
-    rows, cols = len(field), len(field[0])
-    visited = set()
-    queue = [(grasshopper_pos[0], grasshopper_pos[1], 0)]
-    max_flowers = 0
+    total_cost = 0
+    travel_cards = []
 
-    # Loop through the queue
-    while queue:
-        row, col, flowers = queue.pop(0)
+    # Iterate over the trips
+    for i in range(len(trips)):
+        # Get the current and next trip
+        current_trip = trips[i]
+        next_trip = trips[i + 1] if i < len(trips) - 1 else None
 
-        # If the current flower has not been visited, mark it as visited and add it to the maximum number of flowers
-        if (row, col) not in visited:
-            visited.add((row, col))
-            max_flowers = max(max_flowers, flowers + 1)
+        # Check if the trip is a transshipment
+        is_transshipment = current_trip == next_trip
 
-            # Add the adjacent flowers to the queue
-            for r, c in [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]:
-                if 0 <= r < rows and 0 <= c < cols and (r, c) not in visited:
-                    queue.append((r, c, flowers + 1))
+        # Calculate the cost of the trip
+        cost = a if not is_transshipment else b
 
-    return max_flowers
+        # Check if the trip is within the same route
+        is_same_route = current_trip[0] == next_trip[1] if next_trip else False
+
+        # Check if the travel card is already purchased
+        has_travel_card = current_trip[0] in travel_cards or current_trip[1] in travel_cards
+
+        # If the trip is within the same route and the travel card is not already purchased, purchase the travel card
+        if is_same_route and not has_travel_card:
+            travel_cards.append(current_trip[0])
+            total_cost += f
+
+        # Add the cost of the trip to the total cost
+        total_cost += cost
+
+    # Return the total cost
+    return total_cost
+
+def main():
+    # Read the input
+    n, a, b, k, f = map(int, input().split())
+    trips = [input().split() for _ in range(n)]
+
+    # Calculate the total cost
+    total_cost = get_travel_cost(trips, a, b, k, f)
+
+    # Print the total cost
+    print(total_cost)
+
+if __name__ == '__main__':
+    main()
 

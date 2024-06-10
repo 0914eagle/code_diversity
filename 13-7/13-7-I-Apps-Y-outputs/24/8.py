@@ -1,10 +1,28 @@
 
-def solve(vault):
-    # Initialize variables
-    m, n = len(vault), len(vault[0])
-    grid = [[0] * (n + 1) for _ in range(m + 1)]
-    for i in range(m):
-        for j in range(n):
-            grid[i + 1][j + 1] = max(grid[i][j + 1], grid[i + 1][j]) + vault[i][j]
-    return grid[m][n]
+def get_coin_values(n):
+    return [int(input()) for _ in range(n)]
+
+def get_queries(q):
+    return [int(input()) for _ in range(q)]
+
+def get_min_coins(coin_values, queries):
+    min_coins = []
+    for query in queries:
+        min_coin = -1
+        for coin in coin_values:
+            if query >= coin:
+                min_coin = min(min_coin, query // coin)
+        min_coins.append(min_coin)
+    return min_coins
+
+def main():
+    n, q = map(int, input().split())
+    coin_values = get_coin_values(n)
+    queries = get_queries(q)
+    min_coins = get_min_coins(coin_values, queries)
+    for min_coin in min_coins:
+        print(min_coin)
+
+if __name__ == '__main__':
+    main()
 

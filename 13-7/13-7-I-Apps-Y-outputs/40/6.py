@@ -1,9 +1,14 @@
 
-def verify_measurements(capacity, measurements):
-    total = 0
-    for measurement in measurements:
-        total += measurement[0] - measurement[1]
-        if total < 0 or total > capacity:
-            return "impossible"
-    return "possible"
+def lexicographically_smaller(a, b):
+    if a == b:
+        return a
+    else:
+        return "3" * b + "4" * a
+
+def main():
+    a, b = map(int, input().split())
+    print(lexicographically_smaller(a, b))
+
+if __name__ == '__main__':
+    main()
 

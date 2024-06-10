@@ -1,22 +1,20 @@
 
-def solve(n, x, v):
-    # Sort the friends by their current position
-    sorted_x = sorted(x)
+def get_heights():
+    return list(map(int, input().split()))
 
-    # Initialize the minimum time to gather all friends as 0
-    min_time = 0
-
-    # Loop through each friend and add their time to the minimum time
+def get_num_pairs(heights):
+    n = len(heights)
+    count = 0
     for i in range(n):
-        # Calculate the distance between the current friend and the previous friend
-        distance = abs(sorted_x[i] - sorted_x[i - 1])
+        for j in range(i+1, n):
+            if abs(i - j) == sum(heights[i:j+1]):
+                count += 1
+    return count
 
-        # Calculate the time it takes for the friend to cover the distance
-        time = distance / v[i]
+def main():
+    heights = get_heights()
+    print(get_num_pairs(heights))
 
-        # Add the time to the minimum time
-        min_time += time
-
-    # Return the minimum time
-    return min_time
+if __name__ == '__main__':
+    main()
 

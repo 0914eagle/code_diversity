@@ -1,26 +1,43 @@
 
-def solve(n, q, a):
-    # Initialize a dictionary to store the minimum energy released for each number of neutrons
-    min_energy = {1: 0}
-    for i in range(2, n+1):
-        min_energy[i] = a[i-1]
+def get_longest_wait_time(orders, roads, pizzeria_location):
+    # Initialize a dictionary to store the distance from the pizzeria to each intersection
+    distances = {}
+    for intersection in roads:
+        distances[intersection] = float('inf')
+    distances[pizzeria_location] = 0
 
-    # Loop through each query and calculate the minimum energy released
-    for k in range(1, q+1):
-        # If the number of neutrons is less than or equal to the neutron threshold, return the energy released
-        if k <= n:
-            print(min_energy[k])
-        # Otherwise, decompose the atom into two atoms and calculate the minimum energy released for each atom
-        else:
-            i = 1
-            j = k-1
-            while i + j == k and i >= 1 and j >= 1:
-                min_energy[k] = min(min_energy[k], min_energy[i] + min_energy[j])
-                i += 1
-                j -= 1
-            print(min_energy[k])
+    # Use Breadth-First Search to find the shortest distance from the pizzeria to each intersection
+    queue = [pizzeria_location]
+    while queue:
+        current_intersection = queue.pop(0)
+        for neighbor in roads[current_intersection]:
+            if distances[neighbor] == float('inf'):
+                distances[neighbor] = distances[current_intersection] + 1
+                queue.append(neighbor)
 
-n, q = map(int, input().split())
-a = list(map(int, input().split()))
-solve(n, q, a)
+    # Use the shortest distance from the pizzeria to each intersection to determine the longest wait time for each order
+    longest_wait_time = 0
+    for order in orders:
+        wait_time = distances[order[1]] + order[2] - order[0]
+        longest_wait_time = max(longest_wait_time, wait_time)
+
+    return longest_wait_time
+
+def main():
+    n, m = map(int, input().split())
+    roads = {}
+    for _ in range(m):
+        u, v, d = map(int, input().split())
+        roads[u] = roads.get(u, []) + [v]
+        roads[v] = roads.get(v, []) + [u]
+    k = int(input())
+    orders = []
+    for _ in range(k):
+        s, u, t = map(int, input().split())
+        orders.append((s, u, t))
+    pizzeria_location = 1
+    print(get_longest_wait_time(orders, roads, pizzeria_location))
+
+if __name__ == '__main__':
+    main()
 

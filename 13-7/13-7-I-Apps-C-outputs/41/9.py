@@ -1,52 +1,51 @@
 
-def get_maximum_gold(n, m, roads, villages):
-    # Initialize a graph with the given roads
-    graph = [[] for _ in range(n)]
-    for i in range(m):
-        graph[roads[i][0] - 1].append(roads[i][1] - 1)
-        graph[roads[i][1] - 1].append(roads[i][0] - 1)
-    
-    # Initialize the maximum gold to 0
-    max_gold = 0
-    
-    # Iterate through all possible paths from the bandit's home to the king's castle
-    for path in all_paths(graph, 0, 1):
-        # Initialize the gold collected on this path to 0
-        gold = 0
-        
-        # Iterate through the villages in the path
-        for i in range(len(path) - 1):
-            # If the current village is not the bandit's home, add its gold to the total gold collected
-            if path[i] != 0:
-                gold += villages[path[i] - 1]
-        
-        # If the total gold collected on this path is greater than the current maximum gold, update the maximum gold
-        if gold > max_gold:
-            max_gold = gold
-    
-    # Return the maximum gold collected
-    return max_gold
+def get_shortcuts(k):
+    # Function to get the shortcuts for the test case
+    shortcuts = {}
+    for i in range(1, k+1):
+        shortcuts[chr(i+64)] = "l" * i
+    shortcuts["R"] = "SrS"
+    shortcuts["S"] = "rr"
+    shortcuts["I"] = "lldll"
+    return shortcuts
 
-# Function to find all paths between two nodes in a graph
-def all_paths(graph, start, end):
-    # Initialize the path as a list containing only the start node
-    path = [start]
-    
-    # If the start node is the same as the end node, return the path
-    if start == end:
-        yield path
-    
-    # Iterate through the neighbors of the start node
-    for neighbor in graph[start]:
-        # If the neighbor has not been visited, recurse with the neighbor as the new start node
-        if neighbor not in path:
-            for new_path in all_paths(graph, neighbor, end):
-                yield path + new_path
+def get_moves(k, organs, empty_space):
+    # Function to get the moves for the test case
+    moves = []
+    for i in range(1, k+1):
+        if organs[i] != i:
+            moves.append("l")
+        if organs[i+k] != i+k:
+            moves.append("d")
+    if empty_space != k+1:
+        moves.append("I")
+    return moves
 
-# Test the function with a sample input
-n = 6
-m = 8
-roads = [[1, 3], [1, 4], [3, 6], [4, 5], [3, 5], [4, 6], [2, 5], [2, 6]]
-villages = [100, 500, 300, 75]
-print(get_maximum_gold(n, m, roads, villages))
+def get_sequence(k, organs, empty_space):
+    # Function to get the sequence of moves for the test case
+    shortcuts = get_shortcuts(k)
+    moves = get_moves(k, organs, empty_space)
+    sequence = ""
+    for move in moves:
+        if move in shortcuts:
+            sequence += move
+        else:
+            sequence += shortcuts[move]
+    return sequence
+
+def main():
+    # Main function for the program
+    test_cases = int(input())
+    for _ in range(test_cases):
+        k = int(input())
+        organs = [int(i) for i in input().split()]
+        empty_space = int(input())
+        if empty_space != k+1:
+            print("SURGERY COMPLETE")
+            print(get_sequence(k, organs, empty_space))
+        else:
+            print("SURGERY FAILED")
+
+if __name__ == '__main__':
+    main()
 

@@ -1,29 +1,26 @@
 
-def solve(b, s, program):
-    # Initialize variables
-    memory_banks = b
-    variables_per_bank = s
-    instructions = []
-    min_instructions = 0
+def get_max_executives(num_briefcases, briefcase_contents):
+    # Sort the briefcase contents in non-decreasing order
+    briefcase_contents.sort()
+    # Initialize the maximum number of executives to be rewarded as 0
+    max_executives = 0
+    # Initialize the total number of bananas to be 0
+    total_bananas = 0
+    # Iterate through the sorted briefcase contents
+    for briefcase in briefcase_contents:
+        # If the total number of bananas plus the number of bananas in the current briefcase is less than or equal to the number of briefcases,
+        # increment the maximum number of executives to be rewarded and add the number of bananas in the current briefcase to the total
+        if total_bananas + briefcase <= num_briefcases:
+            max_executives += 1
+            total_bananas += briefcase
+    # Return the maximum number of executives that can be rewarded
+    return max_executives
 
-    # Split the program into a list of instructions
-    for instruction in program.split():
-        instructions.append(instruction)
+def main():
+    num_briefcases = int(input())
+    briefcase_contents = list(map(int, input().split()))
+    print(get_max_executives(num_briefcases, briefcase_contents))
 
-    # Iterate through the instructions and count the number of memory references and BSR register settings
-    for instruction in instructions:
-        if instruction.startswith("V"):
-            # Variable reference, increment the number of memory references
-            min_instructions += 1
-        elif instruction.startswith("R"):
-            # Repetition, increment the number of instructions by the number of repetitions
-            min_instructions += int(instruction.split("R")[1])
-        elif instruction == "E":
-            # End of repetition, do nothing
-            pass
-        else:
-            # Invalid instruction, raise an error
-            raise ValueError("Invalid instruction:", instruction)
-
-    return min_instructions
+if __name__ == '__main__':
+    main()
 

@@ -1,37 +1,37 @@
 
-def get_max_objects(objects, boxes, box_size):
-    # Sort the objects by size in descending order
-    objects.sort(reverse=True)
-    # Initialize the number of objects packed to 0
-    num_packed = 0
-    # Initialize the number of boxes used to 0
-    num_boxes = 0
-    # Initialize the current box size to 0
-    current_box_size = 0
-    # Iterate through the objects
-    for obj in objects:
-        # If the current box size plus the current object size is less than or equal to the box size
-        if current_box_size + obj <= box_size:
-            # Increment the number of objects packed
-            num_packed += 1
-            # Increment the current box size by the current object size
-            current_box_size += obj
-        # If the current box size is 0 and the number of boxes used is less than the number of boxes available
-        elif current_box_size == 0 and num_boxes < boxes:
-            # Increment the number of boxes used
-            num_boxes += 1
-            # Set the current box size to the current object size
-            current_box_size = obj
-        # If the current box size is not 0 and the number of boxes used is equal to the number of boxes available
-        elif current_box_size != 0 and num_boxes == boxes:
-            # Return the number of objects packed
-            return num_packed
-        # If the current box size is not 0 and the number of boxes used is less than the number of boxes available
-        elif current_box_size != 0 and num_boxes < boxes:
-            # Increment the number of boxes used
-            num_boxes += 1
-            # Set the current box size to the current object size
-            current_box_size = obj
-    # Return the number of objects packed
-    return num_packed
+def get_subset(x):
+    n = len(x)
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            if i == j:
+                dp[i][j] = 1
+            elif x[i - 1] - x[j - 1] == 2 ** dp[i - 1][j - 1]:
+                dp[i][j] = dp[i - 1][j - 1] + 1
+            else:
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+    return dp[n][n]
+
+def get_subset_coords(x, y):
+    n = len(x)
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            if i == j:
+                dp[i][j] = [x[i - 1]]
+            elif x[i - 1] - x[j - 1] == 2 ** dp[i - 1][j - 1]:
+                dp[i][j] = dp[i - 1][j - 1] + [x[i - 1]]
+            else:
+                dp[i][j] = dp[i - 1][j] if len(dp[i - 1][j]) > len(dp[i][j - 1]) else dp[i][j - 1]
+    return dp[n][n]
+
+def main():
+    n = int(input())
+    x = list(map(int, input().split()))
+    y = get_subset_coords(x, n)
+    print(len(y))
+    print(*y)
+
+if __name__ == '__main__':
+    main()
 

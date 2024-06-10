@@ -1,61 +1,26 @@
 
-def solve(b, s, program):
-    # Initialize variables
-    min_instructions = 0
-    bank_assignments = {}
-    bsr_set = False
-    bsr_value = 0
+def get_max_executives(briefcase_nums):
+    # Sort the briefcase numbers in non-decreasing order
+    briefcase_nums.sort()
+    # Initialize the number of executives to be rewarded as 0
+    num_executives = 0
+    # Loop through the briefcase numbers
+    for i in range(len(briefcase_nums)):
+        # If the current briefcase number is less than or equal to the number of bananas in the previous briefcase number, continue to the next iteration
+        if briefcase_nums[i] <= briefcase_nums[i-1]:
+            continue
+        # Otherwise, increment the number of executives to be rewarded
+        num_executives += 1
+    # Return the maximum number of executives that can be rewarded
+    return num_executives
 
-    # Iterate through the program
-    for operation in program:
-        # If the operation is a variable reference
-        if operation.startswith("V"):
-            # Get the variable index
-            variable_index = int(operation[1:])
+def main():
+    # Read the number of briefcases and their contents from stdin
+    num_briefcases = int(input())
+    briefcase_nums = list(map(int, input().split()))
+    # Call the get_max_executives function and print the result
+    print(get_max_executives(briefcase_nums))
 
-            # Check if the variable has already been assigned a bank
-            if variable_index in bank_assignments:
-                # If the variable has already been assigned a bank, get the bank number
-                bank_number = bank_assignments[variable_index]
-            else:
-                # If the variable has not been assigned a bank, assign it to the next available bank
-                bank_number = len(bank_assignments) % b + 1
-                bank_assignments[variable_index] = bank_number
-
-            # Increment the minimum number of instructions
-            min_instructions += 1
-
-            # Check if the bank number is the same as the current BSR value
-            if bank_number == bsr_value:
-                # If the bank number is the same as the current BSR value, do not set the BSR again
-                bsr_set = False
-            else:
-                # If the bank number is not the same as the current BSR value, set the BSR and increment the minimum number of instructions
-                bsr_value = bank_number
-                min_instructions += 1
-                bsr_set = True
-
-        # If the operation is a repetition
-        elif operation.startswith("R"):
-            # Get the number of repetitions
-            num_repetitions = int(operation[1:operation.find(" ")])
-
-            # Get the program inside the repetition
-            repetition_program = operation[operation.find(" ")+1:-1]
-
-            # Calculate the minimum number of instructions for the repetition program
-            repetition_min_instructions = solve(b, s, repetition_program)
-
-            # Increment the minimum number of instructions by the number of repetitions
-            min_instructions += num_repetitions * repetition_min_instructions
-
-        # If the operation is an end operation
-        elif operation == "E":
-            # If the BSR has not been set, set it to the first bank
-            if not bsr_set:
-                bsr_value = 1
-                min_instructions += 1
-
-    # Return the minimum number of instructions
-    return min_instructions
+if __name__ == '__main__':
+    main()
 

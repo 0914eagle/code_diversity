@@ -1,22 +1,26 @@
 
-def is_possible(points):
-    # Sort the points by their x-coordinates
-    sorted_points = sorted(points, key=lambda point: point[0])
-
-    # Initialize the variables to keep track of the lines
-    line1 = []
-    line2 = []
-
-    # Iterate through the points and add them to either line1 or line2
-    for i in range(len(sorted_points)):
-        if i % 2 == 0:
-            line1.append(sorted_points[i])
+def get_team_count(seating_plan):
+    team_count = {}
+    for seat in seating_plan:
+        if seat not in team_count:
+            team_count[seat] = 1
         else:
-            line2.append(sorted_points[i])
+            team_count[seat] += 1
+    return team_count
 
-    # Check if all points have been assigned to at least one line
-    if len(line1) + len(line2) == len(points):
-        return "YES"
-    else:
-        return "NO"
+def get_min_switches(seating_plan):
+    team_count = get_team_count(seating_plan)
+    min_switches = 0
+    for team in team_count:
+        if team_count[team] > 1:
+            min_switches += team_count[team] - 1
+    return min_switches
+
+def main():
+    n = int(input())
+    seating_plan = input()
+    print(get_min_switches(seating_plan))
+
+if __name__ == '__main__':
+    main()
 

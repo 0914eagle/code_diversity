@@ -1,10 +1,22 @@
 
-def count_triangles(a, b, c, d):
-    count = 0
-    for x in range(a, b+1):
-        for y in range(x, b+1):
-            for z in range(y, c+1):
-                if x <= y <= z <= d:
-                    count += 1
-    return count
+def get_status(n, statuses):
+    # Initialize a count for the number of cows that can show their hands
+    can_show_hand = 0
+
+    # Iterate through the statuses of each cow
+    for i in range(n):
+        # If the current cow's status is not "FOLDED" and all other cows have a status of either "ALLIN" or "FOLDED"
+        if statuses[i] != "F" and all(statuses[j] in ["A", "F"] for j in range(n) if j != i):
+            # Increment the count of cows that can show their hands
+            can_show_hand += 1
+
+    return can_show_hand
+
+def main():
+    n = int(input())
+    statuses = input()
+    print(get_status(n, statuses))
+
+if __name__ == '__main__':
+    main()
 

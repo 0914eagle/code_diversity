@@ -1,13 +1,21 @@
 
-def solve(s, n):
-    # Convert the input string to a list of characters
-    chars = list(s)
-    # Loop through each character in the list
-    for i in range(len(chars)):
-        # Calculate the new index of the character based on the shift value
-        new_index = (ord(chars[i]) - ord('A') + n) % 26
-        # Update the character at the new index
-        chars[i] = chr(ord('A') + new_index)
-    # Join the list of characters back into a string
-    return "".join(chars)
+def is_even(s):
+    return s == s[::-1]
+
+def longest_even(s):
+    n = len(s)
+    dp = [0] * (n + 1)
+    for i in range(n):
+        if is_even(s[:i + 1]):
+            dp[i + 1] = dp[i] + 1
+        else:
+            dp[i + 1] = max(dp[i], dp[i - 1])
+    return dp[n]
+
+def main():
+    s = input()
+    print(longest_even(s))
+
+if __name__ == '__main__':
+    main()
 

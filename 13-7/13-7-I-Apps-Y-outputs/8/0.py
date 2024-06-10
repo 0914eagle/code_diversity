@@ -1,20 +1,24 @@
 
-def solve(n, k, arr):
-    # Sort the array in non-decreasing order
-    arr.sort()
-    # Initialize the minimum number of balls to rewrite as 0
-    min_balls = 0
-    # Initialize the current number of different integers as 1
-    current_ints = 1
-    # Iterate through the array
-    for i in range(n):
-        # If the current integer is different from the previous integer, increment the current number of different integers
-        if i == 0 or arr[i] != arr[i-1]:
-            current_ints += 1
-        # If the current number of different integers is greater than the allowed number of different integers, increment the minimum number of balls to rewrite
-        if current_ints > k:
-            min_balls += 1
-            current_ints = 1
-    # Return the minimum number of balls to rewrite
-    return min_balls
+def get_speedup(n, p, k):
+    # Calculate the speedup for each segment
+    speedup = [100 + i * p for i in range(n + 1)]
+    
+    # Calculate the total speedup
+    total_speedup = sum(speedup)
+    
+    # Calculate the original length of the video
+    original_length = k / total_speedup
+    
+    return original_length
+
+def main():
+    n, p, k = map(int, input().split())
+    timestamps = list(map(int, input().split()))
+    
+    original_length = get_speedup(n, p, k)
+    
+    print(original_length)
+
+if __name__ == '__main__':
+    main()
 

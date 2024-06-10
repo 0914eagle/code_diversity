@@ -1,25 +1,37 @@
 
-def solve(s):
-    n = len(s)
-    substrings = set()
+def calculate_haar_features(feature, image):
+    # Initialize variables
+    n, m = len(feature), len(feature[0])
+    value = 0
+    operations = 0
+
+    # Loop through the feature table
     for i in range(n):
-        for j in range(i, n):
-            substrings.add(s[i:j+1])
-    if len(substrings) == len(s):
-        return 0
-    else:
-        # Find the longest common prefix of all substrings
-        lcp = ""
-        for i in range(n):
-            for substring in substrings:
-                if substring[i] != s[i]:
-                    break
+        for j in range(m):
+            # Check if the current cell is white or black
+            if feature[i][j] == "W":
+                # Calculate the sum of pixels in the prefix rectangle with coefficient 1
+                value += image[i][j]
+                operations += 1
             else:
-                lcp += s[i]
-        # Find the number of changes needed to make all substrings distinct
-        changes = 0
-        for substring in substrings:
-            if substring.startswith(lcp):
-                changes += 1
-        return changes
+                # Calculate the sum of pixels in the prefix rectangle with coefficient -1
+                value -= image[i][j]
+                operations += 1
+
+    return operations
+
+def main():
+    # Read the input
+    n, m = map(int, input().split())
+    feature = [input() for _ in range(n)]
+    image = [input() for _ in range(n)]
+
+    # Calculate the number of operations required to calculate the feature
+    operations = calculate_haar_features(feature, image)
+
+    # Print the result
+    print(operations)
+
+if __name__ == '__main__':
+    main()
 

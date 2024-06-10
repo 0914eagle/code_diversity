@@ -1,20 +1,26 @@
 
-def solve(q, a, b, c):
-    # Find the maximum number of candies Alice can have after the division
-    max_candies = max(a, b, c)
-    
-    # If Alice has more candies than Bob, she discards some candies so that the number of candies she has is equal to the number of candies Bob has
-    if a > b:
-        a = b
-    if b > c:
-        b = c
-    
-    # Return the maximum number of candies Alice can have after the division
-    return max_candies
+def create_staff(notes):
+    staff = 
+    return staff
 
-q = int(input())
+def create_note(note, duration):
+    note_duration = ''
+    for i in range(duration):
+        note_duration += '*'
+    return note_duration
 
-for i in range(q):
-    a, b, c = map(int, input().split())
-    print(solve(q, a, b, c))
+def create_song(song):
+    staff = create_staff(song)
+    notes = song.split()
+    for note in notes:
+        pitch = note[0]
+        duration = 1
+        if len(note) > 1:
+            duration = int(note[1])
+        staff = staff.replace('*', create_note(pitch, duration), 1)
+    return staff
+
+if __name__ == '__main__':
+    song = input()
+    print(create_song(song))
 

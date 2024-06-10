@@ -1,28 +1,23 @@
 
-def solve(points, area):
-    # Calculate the area of the original polygon
-    original_area = calculate_area(points)
+import math
 
-    # Calculate the scaling factor to resize the polygon to the desired area
-    scaling_factor = (area / original_area) ** 0.5
+def is_leap_year(year):
+    if year % 4 == 0 and (year % 100 != 0 or year % 400 == 0):
+        return True
+    return False
 
-    # Resize the polygon
-    resized_points = []
-    for point in points:
-        resized_points.append((point[0] * scaling_factor, point[1] * scaling_factor))
+def get_optimal_launch_window(year):
+    if is_leap_year(year):
+        return year % 26 == 11
+    return year % 26 == 10
 
-    # Return the resized polygon
-    return resized_points
+def main():
+    year = int(input())
+    if get_optimal_launch_window(year):
+        print("yes")
+    else:
+        print("no")
 
-def calculate_area(points):
-    # Calculate the area of the polygon using the shoelace formula
-    area = 0
-    for i in range(len(points)):
-        j = (i + 1) % len(points)
-        area += points[i][0] * points[j][1]
-        area -= points[j][0] * points[i][1]
-    area = abs(area) / 2
-
-    # Return the area
-    return area
+if __name__ == '__main__':
+    main()
 

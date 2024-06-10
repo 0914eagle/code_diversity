@@ -1,27 +1,22 @@
 
-def solve(n):
-    # Initialize a set to store the numbers that have already been seen
-    seen = set()
-    # Initialize a variable to store the minimum number of moves required
-    min_moves = 0
-    # Loop until the number is 1 or has already been seen
-    while n != 1 and n not in seen:
-        # If the number is divisible by 2, divide it by 2
-        if n % 2 == 0:
-            n //= 2
-        # If the number is divisible by 3, divide it by 3
-        elif n % 3 == 0:
-            n //= 3
-        # If the number is divisible by 5, divide it by 5
-        elif n % 5 == 0:
-            n //= 5
-        # If the number is not divisible by 2, 3, or 5, it is impossible to obtain 1
-        else:
-            return -1
-        # Add the current number to the set of seen numbers
-        seen.add(n)
-        # Increment the minimum number of moves required
-        min_moves += 1
-    # Return the minimum number of moves required
-    return min_moves
+def is_divisible_by_25(n):
+    while n % 25 != 0:
+        n = swap_adjacent_digits(n)
+    return n
+
+def swap_adjacent_digits(n):
+    n_str = str(n)
+    n_len = len(n_str)
+    for i in range(n_len - 1):
+        if n_str[i] != '0' and n_str[i + 1] != '0':
+            n_str = n_str[:i] + n_str[i + 1] + n_str[i] + n_str[i + 2:]
+            break
+    return int(n_str)
+
+def main():
+    n = int(input())
+    print(is_divisible_by_25(n))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,26 +1,35 @@
 
-def solve(s, q):
-    # Initialize a dictionary to store the count of each character in the string
-    char_count = {}
-    for char in s:
-        if char not in char_count:
-            char_count[char] = 1
-        else:
-            char_count[char] += 1
-    
-    # Iterate through the queries and calculate the number of distinct characters in the substring
-    for query in q:
-        query_type, pos, c = query
-        if query_type == 1:
-            # Replace the character at position pos with c
-            s = s[:pos] + c + s[pos+1:]
-            char_count[c] += 1
-            char_count[s[pos]] -= 1
-            if char_count[s[pos]] == 0:
-                del char_count[s[pos]]
-        else:
-            # Calculate the number of distinct characters in the substring
-            l, r = pos, c
-            distinct_chars = len(set(s[l:r+1]))
-            print(distinct_chars)
+def get_input():
+    n = int(input())
+    arr = list(map(int, input().split()))
+    return n, arr
+
+def find_blocks(n, arr):
+    blocks = []
+    for i in range(n):
+        for j in range(i+1, n):
+            if arr[i] == arr[j]:
+                blocks.append((i, j))
+    return blocks
+
+def solve(n, arr):
+    blocks = find_blocks(n, arr)
+    max_blocks = []
+    for i in range(len(blocks)):
+        block = blocks[i]
+        for j in range(i+1, len(blocks)):
+            if block[1] < blocks[j][0]:
+                max_blocks.append(block)
+                break
+    return max_blocks
+
+def main():
+    n, arr = get_input()
+    blocks = solve(n, arr)
+    print(len(blocks))
+    for block in blocks:
+        print(block[0], block[1])
+
+if __name__ == '__main__':
+    main()
 

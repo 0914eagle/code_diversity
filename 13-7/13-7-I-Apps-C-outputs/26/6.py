@@ -1,34 +1,41 @@
 
-def solve(N, A, B):
-    # Initialize a list to store the permutation
-    perm = [0] * (N + 1)
-    # Initialize a list to keep track of the values that have been used
-    used = [False] * (N + 1)
-    # Initialize the first value in the permutation
-    perm[1] = 1
-    used[1] = True
-    # Iterate from 2 to N
-    for i in range(2, N + 1):
-        # If A is available, use it
-        if not used[A]:
-            perm[i] = A
-            used[A] = True
-        # Otherwise, use B
-        else:
-            perm[i] = B
-            used[B] = True
-        # Update A and B for the next iteration
-        if A == N:
-            A = 1
-        else:
-            A += 1
-        if B == N:
-            B = 1
-        else:
-            B += 1
-    # Check if a permutation is possible
-    if not used[1]:
-        return [-1]
-    # Return the permutation
-    return perm[1:]
+def get_matching_pairs(num_languages, num_translators, translators):
+    # Initialize a dictionary to store the pairs of translators who speak the same language
+    pairs = {}
+    for i in range(num_languages):
+        pairs[i] = []
+    
+    # Iterate through the translators and add them to the dictionary
+    for translator in translators:
+        language1 = translator[0]
+        language2 = translator[1]
+        pairs[language1].append(translator[2])
+        pairs[language2].append(translator[2])
+    
+    # Initialize a list to store the pairs of translators who speak the same language
+    matched_pairs = []
+    
+    # Iterate through the dictionary and find pairs of translators who speak the same language
+    for key, value in pairs.items():
+        if len(value) > 1:
+            for i in range(len(value)):
+                for j in range(i+1, len(value)):
+                    matched_pairs.append([value[i], value[j]])
+    
+    # If there are an odd number of translators, it is not possible to match them up
+    if len(matched_pairs) % 2 == 1:
+        return "impossible"
+    
+    # Otherwise, return the pairs of translators who speak the same language
+    return matched_pairs
+
+def main():
+    num_languages, num_translators = map(int, input().split())
+    translators = []
+    for _ in range(num_translators):
+        translators.append(list(map(int, input().split())))
+    print(get_matching_pairs(num_languages, num_translators, translators))
+
+if __name__ == '__main__':
+    main()
 

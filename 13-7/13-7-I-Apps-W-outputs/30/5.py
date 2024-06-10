@@ -1,22 +1,31 @@
 
-def solve(s):
-    n = len(s)
-    permutations = 0
-    for i in range(1, n+1):
-        permutation = [i] + list(range(1, i)) + list(range(i+1, n+1))
-        sequence = [(s[j-1][0], s[j-1][1]) for j in permutation]
-        if is_good(sequence):
-            permutations += 1
-    return permutations % 998244353
+def get_min_operations(a, b):
+    if a == b:
+        return 0
+    
+    operations = 0
+    while a != b:
+        if a % 2 == 0 and b % 2 == 0:
+            a //= 2
+            b //= 2
+        elif a % 4 == 0 and b % 4 == 0:
+            a //= 4
+            b //= 4
+        elif a % 8 == 0 and b % 8 == 0:
+            a //= 8
+            b //= 8
+        else:
+            return -1
+        operations += 1
+    
+    return operations
 
-def is_good(s):
-    first_elements = [pair[0] for pair in s]
-    second_elements = [pair[1] for pair in s]
-    return not (is_sorted(first_elements) or is_sorted(second_elements))
+def main():
+    num_test_cases = int(input())
+    for _ in range(num_test_cases):
+        a, b = map(int, input().split())
+        print(get_min_operations(a, b))
 
-def is_sorted(lst):
-    for i in range(len(lst)-1):
-        if lst[i] > lst[i+1]:
-            return True
-    return False
+if __name__ == '__main__':
+    main()
 

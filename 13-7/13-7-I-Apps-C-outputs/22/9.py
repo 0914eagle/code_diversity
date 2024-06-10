@@ -1,40 +1,60 @@
 
-def remove_ads(web_page):
-    # Initialize a set to store the positions of all ads
-    ads = set()
-    
-    # Iterate through each row of the web page
-    for i in range(len(web_page)):
-        # Iterate through each column of the current row
-        for j in range(len(web_page[i])):
-            # Check if the current character is a '$'
-            if web_page[i][j] == '$':
-                # If it is, recursively search for ads starting from this position
-                search_for_ads(web_page, i, j, ads)
-    
-    # Iterate through the web page and remove all ads
-    for i in range(len(web_page)):
-        for j in range(len(web_page[i])):
-            if (i, j) in ads:
-                web_page[i] = web_page[i][:j] + " " * len(web_page[i][j:])
-            else:
-                web_page[i] = web_page[i][:j] + web_page[i][j] + " " * len(web_page[i][j+1:])
-    
-    # Return the updated web page with all ads removed
-    return web_page
+def get_tolls(entrances, exits):
+    # Initialize a dictionary to store the tolls for each entrance
+    tolls = {}
+    # Iterate over the entrances and exits
+    for entrance, exit in zip(entrances, exits):
+        # If the entrance has not been visited before, set the toll to 0
+        if entrance not in tolls:
+            tolls[entrance] = 0
+        # Calculate the toll for the current entrance and exit
+        toll = abs(entrance - exit)
+        # Update the toll for the current entrance
+        tolls[entrance] += toll
+    # Return the sum of all tolls
+    return sum(tolls.values())
 
-def search_for_ads(web_page, i, j, ads):
-    # Check if the current position is within the bounds of the web page
-    if i < 0 or i >= len(web_page) or j < 0 or j >= len(web_page[i]):
-        return
-    
-    # Check if the current character is a '$'
-    if web_page[i][j] == '$':
-        # If it is, add it to the set of ads
-        ads.add((i, j))
-        # Recursively search for ads in all four directions
-        search_for_ads(web_page, i-1, j, ads)
-        search_for_ads(web_page, i+1, j, ads)
-        search_for_ads(web_page, i, j-1, ads)
-        search_for_ads(web_page, i, j+1, ads)
+def get_optimal_tolls(entrances, exits):
+    # Initialize the optimal tolls to 0
+    optimal_tolls = 0
+    # Iterate over the entrances and exits
+    for entrance, exit in zip(entrances, exits):
+        # If the entrance has not been visited before, set the toll to 0
+        if entrance not in optimal_tolls:
+            optimal_tolls[entrance] = 0
+        # Calculate the toll for the current entrance and exit
+        toll = abs(entrance - exit)
+        # Update the toll for the current entrance
+        optimal_tolls[entrance] += toll
+    # Return the sum of all optimal tolls
+    return sum(optimal_tolls.values())
+
+def main():
+    # Read the number of trucks
+    n = int(input())
+    # Read the entrances and exits for each truck
+    entrances = []
+    exits = []
+    for i in range(n):
+        entrance, exit = map(int, input().split())
+        entrances.append(entrance)
+        exits.append(exit)
+    # Calculate the total tolls for the current arrangement
+    current_tolls = get_tolls(entrances, exits)
+    # Initialize the optimal tolls to 0
+    optimal_tolls = 0
+    # Iterate over the entrances and exits
+    for entrance, exit in zip(entrances, exits):
+        # If the entrance has not been visited before, set the toll to 0
+        if entrance not in optimal_tolls:
+            optimal_tolls[entrance] = 0
+        # Calculate the toll for the current entrance and exit
+        toll = abs(entrance - exit)
+        # Update the toll for the current entrance
+        optimal_tolls[entrance] += toll
+    # Return the sum of all optimal tolls
+    return sum(optimal_tolls.values())
+
+if __name__ == '__main__':
+    print(main())
 

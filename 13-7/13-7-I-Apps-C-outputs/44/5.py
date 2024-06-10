@@ -1,27 +1,54 @@
 
-def solve(n, g, d, e, links):
-    # Initialize variables
-    alien_system = None
-    human_system = None
-    min_uw_distance = float('inf')
+def get_rating(friends, matches):
+    # Initialize the final rating of each friend to their initial rating
+    rating = [friend for friend in friends]
 
-    # Loop through each system
-    for i in range(n):
-        # If the system is alien and has the minimum gravity value, set it as the alien system
-        if d[i] == 'a' and g[i] < g[alien_system] or alien_system is None:
-            alien_system = i
+    # Iterate over the matches
+    for match in matches:
+        # Get the indices of the friends playing in the match
+        indices = [i for i, friend in enumerate(friends) if friend in match]
 
-        # If the system is human and has the minimum gravity value, set it as the human system
-        if d[i] == 'h' and g[i] < g[human_system] or human_system is None:
-            human_system = i
+        # Sort the indices in descending order
+        indices.sort(reverse=True)
 
-    # Calculate the UW distance between the alien and human systems
-    uw_distance = abs(g[alien_system] - g[human_system])
+        # Decrease the rating of the friends playing in the match
+        for i in indices:
+            rating[i] -= 1
 
-    # If the UW distance is less than the minimum, update the minimum UW distance
-    if uw_distance < min_uw_distance:
-        min_uw_distance = uw_distance
+    # Return the final rating of each friend
+    return rating
 
-    # Return the minimum UW distance
-    return min_uw_distance
+def get_matches(friends):
+    # Initialize the number of matches to 0
+    matches = 0
+
+    # Iterate over the friends
+    for i, friend in enumerate(friends):
+        # Get the indices of the friends who have a higher rating than the current friend
+        indices = [i for i, rating in enumerate(friends) if rating > friend]
+
+        # Add the number of matches needed to make the ratings equal
+        matches += len(indices)
+
+        # Decrease the rating of the current friend by the number of matches needed
+        friends[i] -= matches
+
+    # Return the number of matches needed
+    return matches
+
+def solve(friends):
+    # Get the final rating of each friend
+    rating = get_rating(friends, get_matches(friends))
+
+    # Return the final rating and the number of matches needed
+    return rating, get_matches(friends)
+
+if __name__ == '__main__':
+    n = int(input())
+    friends = list(map(int, input().split()))
+    rating, matches = solve(friends)
+    print(rating)
+    print(matches)
+    for i in range(matches):
+        print(''.join(['1' if j in friends else '0' for j in range(n)]))
 

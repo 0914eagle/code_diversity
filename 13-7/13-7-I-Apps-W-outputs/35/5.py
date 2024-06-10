@@ -1,40 +1,31 @@
 
-def solve(N, Q, queries):
-    # Initialize the grid with N rows and N columns
-    grid = [[0] * N for _ in range(N)]
+def get_arrow_points(px, py, vx, vy, a, b, c, d):
+    # Calculate the coordinates of the arrow points
+    x1 = px + vx
+    y1 = py + vy
+    x2 = px + vx - a
+    y2 = py + vy - b
+    x3 = px + vx - c
+    y3 = py + vy - d
+    x4 = px + vx - c + a
+    y4 = py + vy - d + b
+    x5 = px + vx - c + a - b
+    y5 = py + vy - d + b - a
+    
+    # Return the coordinates of the arrow points in counter-clockwise order
+    return [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5)]
 
-    # Place the black stones on the central (N-2) \times (N-2) squares
-    for i in range(1, N-1):
-        for j in range(1, N-1):
-            grid[i][j] = 1
+def main():
+    # Read the input
+    px, py, vx, vy, a, b, c, d = map(int, input().split())
+    
+    # Calculate the arrow points
+    arrow_points = get_arrow_points(px, py, vx, vy, a, b, c, d)
+    
+    # Print the arrow points
+    for point in arrow_points:
+        print(point[0], point[1])
 
-    # Process each query
-    for query in queries:
-        # Get the type of query and the coordinate x
-        type, x = query
-
-        # If the query is of type 1, place a white stone on (1, x) and replace the black stones between (1, x) and the first white stone you hit if you go down from (1, x)
-        if type == 1:
-            for i in range(1, x+1):
-                if grid[1][i] == 1:
-                    grid[1][i] = 0
-                if grid[1][i] == 0:
-                    break
-
-        # If the query is of type 2, place a white stone on (x, 1) and replace the black stones between (x, 1) and the first white stone you hit if you go right from (x, 1)
-        if type == 2:
-            for j in range(1, x+1):
-                if grid[j][1] == 1:
-                    grid[j][1] = 0
-                if grid[j][1] == 0:
-                    break
-
-    # Count the number of black stones on the grid
-    count = 0
-    for i in range(N):
-        for j in range(N):
-            if grid[i][j] == 1:
-                count += 1
-
-    return count
+if __name__ == '__main__':
+    main()
 

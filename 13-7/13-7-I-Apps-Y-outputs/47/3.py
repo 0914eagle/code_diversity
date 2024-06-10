@@ -1,13 +1,15 @@
 
-def solve(W, H, x, y):
-    area_1 = x * y
-    area_2 = (W-x) * (H-y)
-    area_3 = W * H - area_1 - area_2
-    max_area = max(area_1, area_2, area_3)
-    if area_1 == max_area:
-        return str(area_1) + " 0"
-    elif area_2 == max_area:
-        return str(area_2) + " 0"
-    else:
-        return str(area_3) + " 1"
+def get_blue_balls(N, A, B):
+    blue_balls = 0
+    for i in range(N):
+        if i % (A + B) < A:
+            blue_balls += 1
+    return blue_balls
+
+def main():
+    N, A, B = map(int, input().split())
+    print(get_blue_balls(N, A, B))
+
+if __name__ == '__main__':
+    main()
 

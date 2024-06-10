@@ -1,26 +1,39 @@
 
-def max_cubes_removed(S):
-    # Initialize variables
-    N = len(S)
-    red_cubes = 0
-    blue_cubes = 0
-    max_removed = 0
+def translate_to_nimionese(word):
+    # Replace the first letter of the word with the nearest hard consonant
+    word = word.replace(word[0], get_nearest_hard_consonant(word[0]))
+    
+    # Replace "each" with "Dach"
+    word = word.replace("each", "Dach")
+    
+    # Replace hard consonants in subsequent syllables with the same consonant as the first letter
+    word = word.replace(word[1:], word[0] * (len(word) - 1))
+    
+    # Add an "ah", "oh", or "uh" at the end of the word, whichever is nearest to "A"
+    word = word + get_nearest_vowel(word[-1])
+    
+    return word
 
-    # Iterate through the string
-    for i in range(N):
-        if S[i] == "0":
-            red_cubes += 1
-        else:
-            blue_cubes += 1
+def get_nearest_hard_consonant(letter):
+    hard_consonants = ["b", "c", "d", "g", "k", "n", "p", "t"]
+    index = hard_consonants.index(letter)
+    return hard_consonants[(index + 1) % len(hard_consonants)]
 
-        # If both the current cube and the next cube are the same color, remove them
-        if i < N-1 and S[i] == S[i+1]:
-            if S[i] == "0":
-                red_cubes -= 2
-            else:
-                blue_cubes -= 2
-            max_removed += 2
+def get_nearest_vowel(letter):
+    vowels = ["a", "e", "i", "o", "u"]
+    index = vowels.index(letter)
+    return vowels[(index + 1) % len(vowels)]
 
-    # Return the maximum number of cubes that can be removed
-    return max(red_cubes, blue_cubes)
+def main():
+    sentence = input()
+    translated_sentence = ""
+    
+    for word in sentence.split():
+        translated_word = translate_to_nimionese(word)
+        translated_sentence += translated_word + " "
+    
+    print(translated_sentence.strip())
+
+if __name__ == '__main__':
+    main()
 

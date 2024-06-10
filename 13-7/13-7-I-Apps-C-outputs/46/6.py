@@ -1,34 +1,52 @@
 
-def reconstruct_arrows(N, K, arrows):
-    # Initialize a dictionary to map each person to their next position
-    person_to_next_position = {}
-    for i in range(N):
-        person_to_next_position[i+1] = arrows[i]
+def get_cheapest_network(n, m, p, insecure_buildings, costs):
+    # Initialize a graph with n nodes and m edges
+    graph = [[] for _ in range(n)]
+    for i in range(m):
+        x, y, cost = costs[i]
+        graph[x - 1].append((y - 1, cost))
+        graph[y - 1].append((x - 1, cost))
+    
+    # Initialize a set to store the insecure buildings
+    insecure_set = set(insecure_buildings)
+    
+    # Initialize a priority queue to store the nodes to be visited
+    pq = [(0, 0)]
+    
+    # Initialize a dictionary to store the minimum cost to reach each node
+    dist = {0: 0}
+    
+    while pq:
+        # Get the node with the minimum cost to visit
+        node, cost = heapq.heappop(pq)
+        
+        # If the node is insecure, add its cost to the total cost
+        if node in insecure_set:
+            cost += dist[node]
+        
+        # If the node is the last node, return the total cost
+        if node == n - 1:
+            return cost
+        
+        # Iterate over the neighbors of the node
+        for neighbor, neighbor_cost in graph[node]:
+            # If the neighbor has not been visited yet, add it to the priority queue
+            if neighbor not in dist:
+                heapq.heappush(pq, (neighbor, cost + neighbor_cost))
+                dist[neighbor] = cost + neighbor_cost
+    
+    # If the network is not possible, return "impossible"
+    return "impossible"
 
-    # Initialize a set to keep track of the visited persons
-    visited_persons = set()
+def main():
+    n, m, p = map(int, input().split())
+    insecure_buildings = set(map(int, input().split()))
+    costs = []
+    for i in range(m):
+        x, y, cost = map(int, input().split())
+        costs.append((x, y, cost))
+    print(get_cheapest_network(n, m, p, insecure_buildings, costs))
 
-    # Initialize a list to store the final arrow placement
-    arrow_placement = []
-
-    # Loop through each person and their next position
-    for i in range(N):
-        # Get the current person and their next position
-        current_person = i+1
-        next_position = person_to_next_position[current_person]
-
-        # If the next position is not in the visited persons set, add it to the set and the arrow placement list
-        if next_position not in visited_persons:
-            visited_persons.add(next_position)
-            arrow_placement.append(next_position)
-        # If the next position is in the visited persons set, it means we have found a loop, so we can break the loop
-        else:
-            break
-
-    # If the number of visited persons is not equal to the number of persons, it means we have an impossible scenario
-    if len(visited_persons) != N:
-        return "Impossible"
-
-    # If we have reached this point, it means we have found a valid arrow placement, so we return the arrow placement list
-    return arrow_placement
+if __name__ == '__main__':
+    main()
 

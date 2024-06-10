@@ -1,29 +1,35 @@
 
-def solve(grid):
-    # Initialize the shortest ladder length to 0
-    shortest_ladder_length = 0
+def get_min_coins(coins, value):
+    # Initialize a dictionary to store the minimum number of coins needed for each value
+    min_coins = {0: 0}
+    for coin in coins:
+        min_coins[coin] = 1
+    
+    # Loop through the values and calculate the minimum number of coins needed for each value
+    for value in range(1, max(coins) * 2):
+        for coin in coins:
+            if value >= coin:
+                min_coins[value] = min(min_coins[value], min_coins[value - coin] + 1)
+            else:
+                break
+    
+    return min_coins[value]
 
-    # Loop through the grid from the north west corner to the south east corner
-    for i in range(len(grid)):
-        for j in range(len(grid[0])):
-            # If we find the special coin, return the shortest ladder length
-            if grid[i][j] == 9:
-                return shortest_ladder_length
-            # If we are not at the south east corner, check the neighbors
-            if i != len(grid) - 1 or j != len(grid[0]) - 1:
-                # Check the north neighbor
-                if i > 0 and grid[i - 1][j] != 0:
-                    shortest_ladder_length = max(shortest_ladder_length, grid[i - 1][j])
-                # Check the west neighbor
-                if j > 0 and grid[i][j - 1] != 0:
-                    shortest_ladder_length = max(shortest_ladder_length, grid[i][j - 1])
-                # Check the south neighbor
-                if i < len(grid) - 1 and grid[i + 1][j] != 0:
-                    shortest_ladder_length = max(shortest_ladder_length, grid[i + 1][j])
-                # Check the east neighbor
-                if j < len(grid[0]) - 1 and grid[i][j + 1] != 0:
-                    shortest_ladder_length = max(shortest_ladder_length, grid[i][j + 1])
+def solve(coins, queries):
+    # Initialize a list to store the answers
+    answers = []
+    
+    # Loop through the queries and calculate the minimum number of coins needed for each query
+    for query in queries:
+        answers.append(get_min_coins(coins, query))
+    
+    return answers
 
-    # If we reach this point, the special coin was not found, so return -1
-    return -1
+if __name__ == '__main__':
+    n, q = map(int, input().split())
+    coins = list(map(int, input().split()))
+    queries = [int(input()) for _ in range(q)]
+    answers = solve(coins, queries)
+    for answer in answers:
+        print(answer)
 

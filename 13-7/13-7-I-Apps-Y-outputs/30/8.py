@@ -1,15 +1,26 @@
 
-def solve(s, t):
-    n = len(s)
-    m = len(t)
-    if n == 0 or m == 0:
-        return 0
+def get_digit(k):
+    # Find the block that contains the element at position k
+    block_size = 1
+    while k > block_size:
+        k -= block_size
+        block_size += 1
     
-    dp = [0] * (n + 1)
-    for i in range(1, n + 1):
-        for j in range(i):
-            if s[j] == t[i - 1]:
-                dp[i] = max(dp[i], dp[j] + 1)
+    # Find the position of the element in the block
+    position_in_block = k
     
-    return n - dp[m]
+    # Calculate the value of the element
+    value = (position_in_block * (position_in_block + 1)) // 2 + 1
+    
+    # Return the digit of the value
+    return str(value)[-1]
+
+def main():
+    q = int(input())
+    for i in range(q):
+        k = int(input())
+        print(get_digit(k))
+
+if __name__ == '__main__':
+    main()
 

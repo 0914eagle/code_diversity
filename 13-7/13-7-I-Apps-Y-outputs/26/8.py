@@ -1,19 +1,28 @@
 
-def find_price_before_tax(a, b):
-    # Initialize the lowest price that satisfies the condition as -1
-    lowest_price = -1
+def get_rating_after_projects(projects, rating):
+    rating_after_projects = []
+    for project in projects:
+        rating_after_projects.append(rating + project[1])
+    return rating_after_projects
 
-    # Iterate through possible prices
-    for price in range(1, 101):
-        # Calculate the amount of consumption tax for both rates
-        tax_8 = int(price * 0.08)
-        tax_10 = int(price * 0.1)
+def is_possible(projects, rating):
+    rating_after_projects = get_rating_after_projects(projects, rating)
+    for i in range(len(projects)):
+        if rating_after_projects[i] < 0:
+            return False
+    return True
 
-        # Check if the amount of consumption tax for both rates is within the given range
-        if a <= tax_8 <= b and a <= tax_10 <= b:
-            # If the price satisfies the condition, update the lowest price
-            lowest_price = price
+def main():
+    n, r = map(int, input().split())
+    projects = []
+    for i in range(n):
+        a, b = map(int, input().split())
+        projects.append((a, b))
+    if is_possible(projects, r):
+        print("YES")
+    else:
+        print("NO")
 
-    # Return the lowest price that satisfies the condition
-    return lowest_price
+if __name__ == '__main__':
+    main()
 

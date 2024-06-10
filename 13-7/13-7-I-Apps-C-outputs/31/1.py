@@ -1,29 +1,42 @@
 
-def solve(n, g, dist, cost):
-    # Sort the gas stations by distance in ascending order
-    sorted_stations = sorted(zip(dist, cost), key=lambda x: x[0])
+import math
 
-    # Initialize the current distance and cost
-    current_dist = 0
-    current_cost = 0
+def get_visible_beacons(beacons, beacon, peaks):
+    visible_beacons = []
+    for other_beacon in beacons:
+        if not is_blocked(beacon, other_beacon, peaks):
+            visible_beacons.append(other_beacon)
+    return visible_beacons
 
-    # Loop through the gas stations
-    for i in range(n):
-        # Calculate the distance to the next gas station
-        next_dist = sorted_stations[i][0] - current_dist
+def is_blocked(beacon1, beacon2, peaks):
+    for peak in peaks:
+        if is_blocked_by_peak(beacon1, beacon2, peak):
+            return True
+    return False
 
-        # Calculate the cost to reach the next gas station
-        next_cost = sorted_stations[i][1] * next_dist
+def is_blocked_by_peak(beacon1, beacon2, peak):
+    distance = math.sqrt((beacon1[0] - beacon2[0]) ** 2 + (beacon1[1] - beacon2[1]) ** 2)
+    return distance <= peak[2]
 
-        # Check if the next gas station is within the fuel tank capacity
-        if next_dist <= g:
-            # Fuel up at the next gas station
-            current_dist = sorted_stations[i][0]
-            current_cost += next_cost
-        else:
-            # Cancel the road trip if the next gas station is out of range
-            return "cancel road trip"
+def get_message_count(beacons, peaks):
+    message_count = 0
+    for beacon in beacons:
+        visible_beacons = get_visible_beacons(beacons, beacon, peaks)
+        message_count += len(visible_beacons) - 1
+    return message_count
 
-    # Return the minimum cost to complete the trip
-    return current_cost
+def main():
+    n, m = map(int, input().split())
+    beacons = []
+    for _ in range(n):
+        x, y = map(int, input().split())
+        beacons.append((x, y))
+    peaks = []
+    for _ in range(m):
+        x, y, r = map(int, input().split())
+        peaks.append((x, y, r))
+    print(get_message_count(beacons, peaks))
+
+if __name__ == '__main__':
+    main()
 

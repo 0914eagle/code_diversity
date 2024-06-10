@@ -1,24 +1,18 @@
 
-def get_time_to_solve_all_problems(problem_times, drink_info):
-    # Initialize a dictionary to store the time it takes to solve all problems for each drink
-    drink_times = {}
+def get_input():
+    return int(input())
 
-    # Loop through each drink
-    for drink_id, (problem_id, time_boost) in drink_info.items():
-        # Initialize a variable to store the total time to solve all problems for this drink
-        total_time = 0
+def is_odd(num):
+    return num % 2 != 0
 
-        # Loop through each problem
-        for problem_id, time in problem_times.items():
-            # If the problem is the one specified in the drink info, add the time boost to the time it takes to solve the problem
-            if problem_id == problem_id:
-                time += time_boost
+def solve(N):
+    count = 0
+    for i in range(1, N + 1):
+        if is_odd(i):
+            count += 1
+    return count / N
 
-            # Add the time it takes to solve the problem to the total time
-            total_time += time
-
-        # Add the total time to the dictionary
-        drink_times[drink_id] = total_time
-
-    return drink_times
+if __name__ == '__main__':
+    N = get_input()
+    print(solve(N))
 

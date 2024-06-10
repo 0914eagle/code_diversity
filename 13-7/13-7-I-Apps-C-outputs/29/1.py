@@ -1,15 +1,26 @@
 
-def is_symmetric(grid):
-    # Check if the grid is square
-    if len(grid) != len(grid[0]):
-        return "NO"
+def get_cycle_length(graph):
+    for node in graph:
+        if node in graph[node]:
+            return len(graph[node])
+    return -1
 
-    # Check if the grid is symmetric
-    for i in range(len(grid)):
-        for j in range(i+1, len(grid[0])):
-            if grid[i][j] != grid[len(grid)-i-1][len(grid[0])-j-1]:
-                return "NO"
+def build_graph(n, a):
+    graph = {}
+    for i in range(n):
+        graph[i] = set()
+        for j in range(i+1, n):
+            if a[i] & a[j] != 0:
+                graph[i].add(j)
+                graph[j].add(i)
+    return graph
 
-    # If the grid is symmetric, return "YES"
-    return "YES"
+def main():
+    n = int(input())
+    a = list(map(int, input().split()))
+    graph = build_graph(n, a)
+    print(get_cycle_length(graph))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,15 +1,39 @@
 
-def surviving_islands(num_islands, island_data):
-    # Initialize a list to keep track of the number of surviving islands
-    surviving_islands = [1]
+def get_input():
+    n = int(input())
+    a = list(map(int, input().split()))
+    return n, a
 
-    # Loop through each island after the first one
-    for i in range(1, num_islands):
-        # Check if the island has enough goods to survive
-        if island_data[i][0] <= sum(island_data[i][1:]):
-            # Add the island to the list of surviving islands
-            surviving_islands.append(i + 1)
+def send_message(n, a, student, known):
+    if student == 1:
+        return True
+    if a[student] == 0:
+        return False
+    if known[student]:
+        a[student] -= 1
+        return True
+    return False
 
-    # Return the number of surviving islands
-    return len(surviving_islands)
+def inform_group(n, a):
+    known = [False] * (n + 1)
+    messages = []
+    for student in range(1, n + 1):
+        if send_message(n, a, student, known):
+            for i in range(1, n + 1):
+                if i != student and known[i]:
+                    messages.append((student, i))
+    return messages
+
+def main():
+    n, a = get_input()
+    messages = inform_group(n, a)
+    if len(messages) == 0:
+        print(-1)
+    else:
+        print(len(messages))
+        for message in messages:
+            print(message[0], message[1])
+
+if __name__ == '__main__':
+    main()
 

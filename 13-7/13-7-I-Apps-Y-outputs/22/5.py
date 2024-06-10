@@ -1,13 +1,15 @@
 
-def stable_sort(my_tunes):
-    # Initialize an empty dictionary to store the sorted songs
-    sorted_songs = {}
+def get_odd_numbers_with_eight_divisors(n):
+    count = 0
+    for i in range(1, n+1):
+        if i % 2 != 0 and len(list(filter(lambda x: i % x == 0, range(1, int(i**0.5) + 1)))) == 8:
+            count += 1
+    return count
 
-    # Loop through each attribute in the input list
-    for attribute in my_tunes:
-        # Sort the songs by the current attribute, least to greatest
-        sorted_songs[attribute] = sorted(my_tunes, key=lambda x: x[attribute])
+def main():
+    n = int(input())
+    print(get_odd_numbers_with_eight_divisors(n))
 
-    # Return the sorted songs in the order of the input list
-    return [song for attribute in my_tunes for song in sorted_songs[attribute]]
+if __name__ == '__main__':
+    main()
 

@@ -1,20 +1,27 @@
 
-def solve(s, t):
-    n = len(s)
-    m = len(t)
-    if m == 0:
-        return n
-    if m == 1:
-        return n - 1 if s.count(t[0]) > 1 else n
-    if m == n:
-        return 0
-    l, r = 0, m - 1
-    while l < n and r < n and s[l] == t[0]:
-        l += 1
-    while r < n and s[r] == t[m - 1]:
-        r += 1
-    for i in range(l, r):
-        if s[i] != t[i - l]:
-            return n - r + 1
-    return n - r + 1
+def get_digit_at_position(position):
+    # Find the block that contains the position
+    block_size = 1
+    while position > block_size:
+        position -= block_size
+        block_size += 1
+    
+    # Find the digit within the block
+    digit = 1
+    while block_size > 1:
+        if position == block_size:
+            break
+        digit += 1
+        block_size -= 1
+    
+    return digit
+
+def main():
+    q = int(input())
+    for _ in range(q):
+        k = int(input())
+        print(get_digit_at_position(k))
+
+if __name__ == '__main__':
+    main()
 

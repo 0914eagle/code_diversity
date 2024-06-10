@@ -1,37 +1,34 @@
 
-def solve(n, d, b, a):
-    # Initialize the number of rooms with non-hidden students different from b
-    x_1 = 0
-    x_2 = 0
-    
-    # Iterate through each room
-    for i in range(n):
-        # Calculate the number of students in the room
-        num_students = a[i]
-        
-        # Check if the number of students is different from b
-        if num_students != b:
-            # Increment the number of rooms with non-hidden students different from b
-            x_1 += 1
-            x_2 += 1
-        
-        # If the room is not the first or last room
-        if i != 0 and i != n - 1:
-            # Calculate the maximum number of rooms that a student can run to
-            max_rooms = min(d, n - i - 1)
-            
-            # Iterate through each possible room that a student can run to
-            for j in range(1, max_rooms + 1):
-                # Calculate the number of students in the next room
-                next_room = i + j
-                num_students_next = a[next_room]
-                
-                # Check if the number of students in the next room is different from b
-                if num_students_next != b:
-                    # Increment the number of rooms with non-hidden students different from b
-                    x_1 += 1
-                    x_2 += 1
-    
-    # Return the minimum of the maximum of x_1 and x_2
-    return min(x_1, x_2)
+def find_rectangles(corner_pairs):
+    rectangles = []
+    for i in range(len(corner_pairs)):
+        top_left, bottom_right = corner_pairs[i]
+        for j in range(i+1, len(corner_pairs)):
+            if top_left[0] <= corner_pairs[j][0][0] <= bottom_right[0] and top_left[1] <= corner_pairs[j][0][1] <= bottom_right[1]:
+                rectangles.append([i+1, j+1])
+    return rectangles
+
+def check_rectangles(rectangles):
+    for i in range(len(rectangles)):
+        for j in range(i+1, len(rectangles)):
+            if rectangles[i][0] == rectangles[j][1] or rectangles[i][1] == rectangles[j][0]:
+                return "syntax error"
+    return rectangles
+
+def main():
+    corner_pairs = []
+    for i in range(int(input())):
+        top_left = [int(j) for j in input().split()]
+        bottom_right = [int(j) for j in input().split()]
+        corner_pairs.append([top_left, bottom_right])
+    rectangles = find_rectangles(corner_pairs)
+    result = check_rectangles(rectangles)
+    if result == "syntax error":
+        print(result)
+    else:
+        for i in range(len(result)):
+            print(result[i][0], result[i][1])
+
+if __name__ == '__main__':
+    main()
 

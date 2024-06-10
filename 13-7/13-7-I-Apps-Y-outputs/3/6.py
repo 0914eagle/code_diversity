@@ -1,12 +1,15 @@
 
-def count_paths(grid, k):
-    n, m = len(grid), len(grid[0])
-    dp = [[0] * (m+1) for _ in range(n+1)]
-    dp[n][m] = 1
-    for i in range(n-1, -1, -1):
-        for j in range(m-1, -1, -1):
-            dp[i][j] = dp[i+1][j] + dp[i][j+1]
-            if grid[i][j] != 0:
-                dp[i][j] -= dp[i+1][j+1] if dp[i+1][j+1] != 0 else 0
-    return dp[0][0]
+def get_number_of_digits(n):
+    return len(str(n))
+
+def get_odd_numbers_less_than_or_equal_to(n):
+    count = 0
+    for i in range(1, n+1):
+        if get_number_of_digits(i) % 2 == 1:
+            count += 1
+    return count
+
+if __name__ == '__main__':
+    n = int(input())
+    print(get_odd_numbers_less_than_or_equal_to(n))
 

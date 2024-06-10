@@ -1,12 +1,19 @@
 
-def solve(n, k, m, a):
-    # Calculate the sum of the scores already obtained
-    sum_a = sum(a)
-    # Calculate the minimum number of points needed to achieve the goal
-    min_points = m * (n - len(a)) - sum_a
-    # Check if the minimum number of points is possible
-    if min_points < 0:
-        return -1
-    # Return the minimum number of points needed on the final subject
-    return min_points
+def get_input():
+    return list(map(int, input().split()))
+
+def solve(X, Y):
+    for i in range(1, X+1):
+        if X % i == 0:
+            j = X // i
+            if i + j == Y:
+                return "Yes"
+    return "No"
+
+def main():
+    X, Y = get_input()
+    print(solve(X, Y))
+
+if __name__ == '__main__':
+    main()
 

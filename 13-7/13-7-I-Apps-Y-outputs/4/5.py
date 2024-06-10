@@ -1,23 +1,20 @@
 
-def solve(a, b):
-    # Find the absolute difference between a and b
-    diff = abs(a - b)
+def get_conversations(n, k, ids):
+    conversations = []
+    for i in range(n):
+        if len(conversations) == k and conversations[0] != ids[i]:
+            conversations.pop(0)
+        if ids[i] not in conversations:
+            conversations.append(ids[i])
+    return conversations
 
-    # Initialize the minimum number of moves to 0
-    min_moves = 0
+def main():
+    n, k = map(int, input().split())
+    ids = list(map(int, input().split()))
+    conversations = get_conversations(n, k, ids)
+    print(len(conversations))
+    print(*conversations)
 
-    # While the absolute difference is greater than 0, we can perform moves
-    while diff > 0:
-        # If the absolute difference is odd, we can add 1 to make it even
-        if diff % 2 == 1:
-            diff += 1
-        # If the absolute difference is even, we can subtract 2 to make it odd
-        else:
-            diff -= 2
-
-        # Increment the minimum number of moves
-        min_moves += 1
-
-    # Return the minimum number of moves required to obtain b from a
-    return min_moves
+if __name__ == '__main__':
+    main()
 

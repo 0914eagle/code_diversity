@@ -1,12 +1,15 @@
 
-def solve(N, K, M, A):
-    # Calculate the sum of the scores already achieved
-    sum_of_scores = sum(A)
-    # Calculate the minimum number of points needed to achieve the goal
-    min_points = M - (sum_of_scores / (N-1))
-    # Check if the minimum number of points is possible
-    if min_points < 0:
-        return -1
-    else:
-        return min_points
+def get_input():
+    return list(map(int, input().split()))
+
+def solve(x, y):
+    for i in range(1, x+1):
+        for j in range(1, x+1):
+            if i + j == x and i * 2 + j * 4 == y:
+                return "Yes"
+    return "No"
+
+if __name__ == '__main__':
+    x, y = get_input()
+    print(solve(x, y))
 

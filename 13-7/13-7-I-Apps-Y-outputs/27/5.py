@@ -1,20 +1,41 @@
 
-def get_maximum_sum(a, k, x):
-    n = len(a)
-    if n < k or x == 0:
-        return -1
-    if x == 1:
-        return max(a)
-    if k == 1:
-        return sum(a[:x])
+def get_equation(numbers):
+    # Split the input numbers into a list
+    numbers = numbers.split()
+    # Convert the numbers to integers
+    numbers = [int(num) for num in numbers]
+    # Find the sum of the numbers
+    sum_ = sum(numbers)
+    # Find the difference of the numbers
+    diff = abs(numbers[0] - numbers[1])
+    # Find the product of the numbers
+    product = numbers[0] * numbers[1]
+    # Find the quotient of the numbers
+    quotient = numbers[0] // numbers[1]
+    # Check if the sum is equal to the third number
+    if sum_ == numbers[2]:
+        return f"{numbers[0]} + {numbers[1]} = {numbers[2]}"
+    # Check if the difference is equal to the third number
+    elif diff == numbers[2]:
+        return f"{numbers[0]} - {numbers[1]} = {numbers[2]}"
+    # Check if the product is equal to the third number
+    elif product == numbers[2]:
+        return f"{numbers[0]} x {numbers[1]} = {numbers[2]}"
+    # Check if the quotient is equal to the third number
+    elif quotient == numbers[2]:
+        return f"{numbers[0]} / {numbers[1]} = {numbers[2]}"
+    # If no equation is found, return None
+    else:
+        return None
 
-    # Dynamic programming approach
-    dp = [0] * (n + 1)
-    for i in range(1, n + 1):
-        if i >= k:
-            dp[i] = max(dp[i - 1], dp[i - k] + a[i - 1])
-        else:
-            dp[i] = dp[i - 1] + a[i - 1]
+def main():
+    numbers = input("Enter three numbers separated by spaces: ")
+    equation = get_equation(numbers)
+    if equation:
+        print(equation)
+    else:
+        print("No equation found.")
 
-    return dp[n]
+if __name__ == '__main__':
+    main()
 

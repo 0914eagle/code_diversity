@@ -1,19 +1,33 @@
 
-def solve(m, h1, a1, x1, y1, h2, a2, x2, y2):
-    # Initialize the minimum time as 0
-    min_time = 0
-    # Initialize the current heights of Xaniar and Abol as their initial values
-    curr_h1, curr_h2 = h1, h2
-    # Loop until the conditions are met or the minimum time exceeds 10^9
-    while curr_h1 != a1 or curr_h2 != a2:
-        # Increment the minimum time by 1
-        min_time += 1
-        # Calculate the new heights of Xaniar and Abol
-        curr_h1 = (x1 * curr_h1 + y1) % m
-        curr_h2 = (x2 * curr_h2 + y2) % m
-        # If the minimum time exceeds 10^9, return -1
-        if min_time > 10**9:
-            return -1
-    # Return the minimum time
-    return min_time
+def get_toy_assignment(n_kids, n_toys, duration, events):
+    # Initialize a dictionary to store the toy assignments for each kid
+    toy_assignments = {}
+
+    # Iterate through the events and update the toy assignments for each kid
+    for event in events:
+        kid, toy = event[1], event[2]
+        if kid not in toy_assignments:
+            toy_assignments[kid] = toy
+        else:
+            previous_toy = toy_assignments[kid]
+            if previous_toy != toy:
+                toy_assignments[kid] = toy
+
+    # Check if all kids have a toy assignment
+    if len(toy_assignments) != n_kids:
+        return "impossible"
+
+    # Return the toy assignments for each kid
+    return [toy_assignments[kid] for kid in range(1, n_kids + 1)]
+
+def main():
+    n_kids, n_toys = map(int, input().split())
+    duration, n_events = map(int, input().split())
+    events = []
+    for _ in range(n_events):
+        events.append(list(map(int, input().split())))
+    print(get_toy_assignment(n_kids, n_toys, duration, events))
+
+if __name__ == '__main__':
+    main()
 

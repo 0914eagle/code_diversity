@@ -1,26 +1,41 @@
 
-def get_max_objects(objects, boxes, box_size):
-    # Sort the objects in descending order
-    objects.sort(reverse=True)
-    # Initialize the number of objects packed as 0
-    num_packed = 0
-    # Initialize the number of boxes used as 0
-    num_boxes = 0
-    # Initialize the remaining box size as the size of each box
-    remaining_box_size = box_size
-    # Iterate through the objects
-    for obj in objects:
-        # Check if the object fits in the current box
-        if obj <= remaining_box_size:
-            # Increment the number of objects packed
-            num_packed += 1
-            # Decrement the remaining box size by the object size
-            remaining_box_size -= obj
+def get_max_subset(x):
+    n = len(x)
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            if i == j:
+                dp[i][j] = 1
+            elif x[i - 1] - x[j - 1] == 2 ** dp[i - 1][j - 1]:
+                dp[i][j] = dp[i - 1][j - 1] + 1
+            else:
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+    return dp[n][n]
+
+def get_subset(x, dp):
+    n = len(x)
+    subset = []
+    i, j = n, n
+    while i > 0 and j > 0:
+        if dp[i][j] == dp[i - 1][j]:
+            i -= 1
+        elif dp[i][j] == dp[i][j - 1]:
+            j -= 1
         else:
-            # If the object does not fit, start a new box
-            num_boxes += 1
-            # Reset the remaining box size to the size of each box
-            remaining_box_size = box_size
-    # Return the maximum number of objects packed
-    return num_packed + num_boxes * (box_size // objects[0])
+            subset.append(x[i - 1])
+            i -= 1
+            j -= 1
+    subset.reverse()
+    return subset
+
+def main():
+    n = int(input())
+    x = list(map(int, input().split()))
+    dp = get_max_subset(x)
+    subset = get_subset(x, dp)
+    print(len(subset))
+    print(" ".join(map(str, subset)))
+
+if __name__ == '__main__':
+    main()
 

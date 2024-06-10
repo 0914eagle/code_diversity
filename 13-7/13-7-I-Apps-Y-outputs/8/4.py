@@ -1,20 +1,18 @@
 
-def solve(n, k, arr):
-    # Sort the array to group similar integers together
-    arr.sort()
-    # Initialize the minimum number of balls to rewrite as 0
-    min_balls = 0
-    # Initialize the current group size as 1
-    group_size = 1
-    # Iterate through the array
-    for i in range(n-1):
-        # If the current integer is different from the previous integer, increment the group size
-        if arr[i] != arr[i+1]:
-            group_size += 1
-        # If the group size is greater than the allowed group size, increment the minimum number of balls to rewrite
-        if group_size > k:
-            min_balls += 1
-            group_size = 1
-    # Return the minimum number of balls to rewrite
-    return min_balls
+def get_original_length(n, p, k, timestamps):
+    # Initialize the original length as the total length of the video
+    original_length = k
+    # Iterate through the timestamps and adjust the original length accordingly
+    for i in range(n):
+        original_length -= (timestamps[i] * (100 + p) / 100)
+    return original_length
+
+def main():
+    n, p, k = map(int, input().split())
+    timestamps = list(map(int, input().split()))
+    original_length = get_original_length(n, p, k, timestamps)
+    print(original_length)
+
+if __name__ == '__main__':
+    main()
 

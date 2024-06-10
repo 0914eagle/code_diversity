@@ -1,57 +1,67 @@
 
-def remove_ads(web_page):
-    # Initialize a set to store the indices of the ads
-    ads = set()
-    
-    # Iterate through the web page
-    for i in range(len(web_page)):
-        for j in range(len(web_page[i])):
-            # Check if the current character is a border character
-            if web_page[i][j] == "$":
-                # Find the top-left corner of the ad
-                top, left = find_top_left_corner(web_page, i, j)
-                
-                # Find the bottom-right corner of the ad
-                bottom, right = find_bottom_right_corner(web_page, top, left)
-                
-                # Add the indices of the ad to the set
-                for k in range(top, bottom+1):
-                    for l in range(left, right+1):
-                        ads.add((k, l))
-    
-    # Remove the ads from the web page
-    for i in range(len(web_page)):
-        for j in range(len(web_page[i])):
-            if (i, j) in ads:
-                web_page[i][j] = " "
-    
-    return web_page
+def get_tolls(entrances, exits):
+    # Initialize a dictionary to store the tolls for each entrance
+    tolls = {}
+    # Iterate over the entrances and exits
+    for entrance, exit in zip(entrances, exits):
+        # If the entrance has not been seen before, add it to the dictionary with a toll of 0
+        if entrance not in tolls:
+            tolls[entrance] = 0
+        # Update the toll for the entrance by adding the absolute difference between the entrance and exit numbers
+        tolls[entrance] += abs(entrance - exit)
+    # Return the sum of the tolls
+    return sum(tolls.values())
 
-def find_top_left_corner(web_page, i, j):
-    # Initialize the top and left indices
-    top, left = i, j
-    
-    # Find the topmost row that contains a border character
-    while top >= 0 and web_page[top][j] != "$":
-        top -= 1
-    
-    # Find the leftmost column that contains a border character
-    while left >= 0 and web_page[i][left] != "$":
-        left -= 1
-    
-    return top, left
+def get_optimal_tolls(entrances, exits):
+    # Initialize the optimal tolls to 0
+    optimal_tolls = 0
+    # Iterate over the entrances and exits
+    for entrance, exit in zip(entrances, exits):
+        # If the entrance has not been seen before, add it to the dictionary with a toll of 0
+        if entrance not in tolls:
+            tolls[entrance] = 0
+        # Update the toll for the entrance by adding the absolute difference between the entrance and exit numbers
+        tolls[entrance] += abs(entrance - exit)
+        # If the toll for the entrance is greater than the current optimal toll, update the optimal toll
+        if tolls[entrance] > optimal_tolls:
+            optimal_tolls = tolls[entrance]
+    # Return the optimal tolls
+    return optimal_tolls
 
-def find_bottom_right_corner(web_page, top, left):
-    # Initialize the bottom and right indices
-    bottom, right = top, left
-    
-    # Find the bottommost row that contains a border character
-    while bottom < len(web_page) and web_page[bottom][right] != "$":
-        bottom += 1
-    
-    # Find the rightmost column that contains a border character
-    while right < len(web_page[i]) and web_page[i][right] != "$":
-        right += 1
-    
-    return bottom, right
+def get_exchange_tolls(entrances, exits):
+    # Initialize a dictionary to store the tolls for each entrance
+    tolls = {}
+    # Iterate over the entrances and exits
+    for entrance, exit in zip(entrances, exits):
+        # If the entrance has not been seen before, add it to the dictionary with a toll of 0
+        if entrance not in tolls:
+            tolls[entrance] = 0
+        # Update the toll for the entrance by adding the absolute difference between the entrance and exit numbers
+        tolls[entrance] += abs(entrance - exit)
+    # Return the sum of the tolls
+    return sum(tolls.values())
+
+def main():
+    # Read the number of trucks
+    n = int(input())
+    # Read the entrances and exits for each truck
+    entrances = []
+    exits = []
+    for i in range(n):
+        entrance, exit = map(int, input().split())
+        entrances.append(entrance)
+        exits.append(exit)
+    # Calculate the total tolls
+    total_tolls = get_tolls(entrances, exits)
+    # Calculate the optimal tolls
+    optimal_tolls = get_optimal_tolls(entrances, exits)
+    # Calculate the exchange tolls
+    exchange_tolls = get_exchange_tolls(entrances, exits)
+    # Print the total tolls, optimal tolls, and exchange tolls
+    print(total_tolls)
+    print(optimal_tolls)
+    print(exchange_tolls)
+
+if __name__ == '__main__':
+    main()
 

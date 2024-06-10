@@ -1,16 +1,24 @@
 
-def solve(s, t):
-    # Initialize variables
-    n = len(s)
-    m = len(t)
-    dp = [0] * (n + 1)
+def get_digit_at_position(position):
+    # Find the block that contains the given position
+    block_size = 1
+    while position > block_size:
+        position -= block_size
+        block_size += 1
+    
+    # Find the digit within the block
+    digit = 1
+    for _ in range(block_size - 1):
+        digit += 1
+    
+    return digit
 
-    # Populate the dp table
-    for i in range(1, n + 1):
-        for j in range(i):
-            if s[j] == t[i - j - 1]:
-                dp[i] = max(dp[i], dp[j] + 1)
+def solve(queries):
+    for query in queries:
+        print(get_digit_at_position(query))
 
-    # Return the maximum possible length of the substring
-    return n - dp[m]
+if __name__ == '__main__':
+    q = int(input())
+    queries = [int(input()) for _ in range(q)]
+    solve(queries)
 

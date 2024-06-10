@@ -1,15 +1,27 @@
 
-def frequency_sorter(sequence, C):
-    # Convert the sequence to a dictionary, where each key is a number and its value is the frequency of that number
-    frequency = {}
-    for num in sequence:
-        if num in frequency:
-            frequency[num] += 1
-        else:
-            frequency[num] = 1
+def get_min_max_occupied_houses(n, x):
+    # Initialize variables
+    min_occupied_houses = 0
+    max_occupied_houses = 0
     
-    # Sort the sequence based on the frequency of each number
-    sorted_sequence = sorted(sequence, key=lambda x: (-frequency[x], x))
+    # Iterate over all possible moves
+    for i in range(n):
+        # Get the current and next positions
+        current_position = x[i]
+        next_position = x[i] + 1 if x[i] < n else 0
+        
+        # Update the minimum and maximum number of occupied houses
+        min_occupied_houses = max(min_occupied_houses, current_position)
+        max_occupied_houses = max(max_occupied_houses, next_position)
     
-    return sorted_sequence
+    return min_occupied_houses, max_occupied_houses
+
+def main():
+    n = int(input())
+    x = list(map(int, input().split()))
+    min_occupied_houses, max_occupied_houses = get_min_max_occupied_houses(n, x)
+    print(min_occupied_houses, max_occupied_houses)
+
+if __name__ == '__main__':
+    main()
 

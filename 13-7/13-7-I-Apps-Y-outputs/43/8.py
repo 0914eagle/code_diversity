@@ -1,23 +1,20 @@
 
-def solve(x1, x2, x3, x4):
-    # Find the sum of all three numbers
-    sum_abc = x1 + x2 + x3
+def get_input():
+    return list(map(int, input().split()))
 
-    # Find the pairwise sums
-    a_plus_b = x1
-    a_plus_c = x2
-    b_plus_c = x3
+def find_min_product(L, R):
+    min_product = float('inf')
+    for i in range(L, R):
+        for j in range(i+1, R+1):
+            product = i*j
+            if product % 2019 < min_product:
+                min_product = product % 2019
+    return min_product
 
-    # Find the difference between the sum of all three numbers and the pairwise sums
-    diff = sum_abc - a_plus_b - a_plus_c - b_plus_c
+def main():
+    L, R = get_input()
+    print(find_min_product(L, R))
 
-    # Find the value of the missing number
-    missing_number = diff // 2
-
-    # Find the values of a, b, and c
-    a = a_plus_b - missing_number
-    b = a_plus_c - missing_number
-    c = b_plus_c - missing_number
-
-    return a, b, c
+if __name__ == '__main__':
+    main()
 

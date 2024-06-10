@@ -1,19 +1,19 @@
 
-def solve(poland_ball_words, enemy_ball_words):
-    # Initialize a set to store the words known by PolandBall
-    poland_ball_set = set(poland_ball_words)
-    # Initialize a set to store the words known by EnemyBall
-    enemy_ball_set = set(enemy_ball_words)
-    # Initialize a variable to store the result
-    result = "YES"
+def get_lost_potatoes(y, k, n):
+    lost_potatoes = []
+    for x in range(1, n // k + 1):
+        if (x + y) % k == 0 and x + y <= n:
+            lost_potatoes.append(x)
+    return lost_potatoes
 
-    # Iterate through the words known by PolandBall
-    for word in poland_ball_set:
-        # If the word is not in the set of words known by EnemyBall, then PolandBall can say the word and EnemyBall will not be able to respond
-        if word not in enemy_ball_set:
-            result = "NO"
-            break
+def main():
+    y, k, n = map(int, input().split())
+    lost_potatoes = get_lost_potatoes(y, k, n)
+    if lost_potatoes:
+        print(*lost_potatoes)
+    else:
+        print(-1)
 
-    # Return the result
-    return result
+if __name__ == '__main__':
+    main()
 

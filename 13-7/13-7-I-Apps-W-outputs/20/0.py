@@ -1,31 +1,25 @@
 
-def get_network_topology(n, m, edges):
-    # Initialize a graph with n nodes and no edges
-    graph = [[] for _ in range(n)]
-
-    # Add edges to the graph
+def get_lifelines(edges):
+    lifelines = set()
     for edge in edges:
-        graph[edge[0] - 1].append(edge[1])
-        graph[edge[1] - 1].append(edge[0])
+        lifelines.add(frozenset(edge))
+    return len(lifelines)
 
-    # Check if the graph is connected
-    visited = [False] * n
-    queue = [0]
-    visited[0] = True
-    while queue:
-        node = queue.pop(0)
-        for neighbor in graph[node]:
-            if not visited[neighbor - 1]:
-                visited[neighbor - 1] = True
-                queue.append(neighbor)
+def count_lifelines(n, edges):
+    vertices = set(range(1, n + 1))
+    for edge in edges:
+        if len(edge) != 2:
+            return 0
+        if edge[0] not in vertices or edge[1] not in vertices:
+            return 0
+        vertices.remove(edge[0])
+        vertices.remove(edge[1])
+    return get_lifelines(edges)
 
-    # Check if the graph is a bus, ring, or star
-    if len(set(visited)) == 1:
-        return "bus topology"
-    elif all(len(neighbors) == 2 for neighbors in graph):
-        return "ring topology"
-    elif len(set(visited)) == 2:
-        return "star topology"
-    else:
-        return "unknown topology"
+if __name__ == '__main__':
+    n = int(input())
+    edges = []
+    for _ in range(n - 1):
+        edges.append(tuple(map(int, input().split())))
+    print(count_lifelines(n, edges))
 

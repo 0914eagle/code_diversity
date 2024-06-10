@@ -1,13 +1,21 @@
 
-def solve(a, b):
-    # Calculate the absolute difference between a and b
-    diff = abs(a - b)
+def get_conversations(n, k, ids):
+    conversations = []
+    for i in range(n):
+        if ids[i] in conversations:
+            continue
+        conversations.append(ids[i])
+        if len(conversations) > k:
+            conversations.pop(0)
+    return conversations
 
-    # If the difference is odd, we can make it even by adding 1
-    if diff % 2 == 1:
-        return diff // 2 + 1
+def main():
+    n, k = map(int, input().split())
+    ids = list(map(int, input().split()))
+    conversations = get_conversations(n, k, ids)
+    print(len(conversations))
+    print(*conversations)
 
-    # If the difference is even, we can make it odd by subtracting 1
-    else:
-        return diff // 2
+if __name__ == '__main__':
+    main()
 

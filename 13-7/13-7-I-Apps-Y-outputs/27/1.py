@@ -1,22 +1,28 @@
 
-def get_max_beauty(n, k, x, a):
-    if k > n or x > n or x < k:
-        return -1
-    
-    # Initialize the dp table with -1
-    dp = [-1] * (n + 1)
-    dp[0] = 0
-    
-    # Loop through each position in the array
-    for i in range(1, n + 1):
-        # If the current position is within the repost limit
-        if i <= x:
-            # Update the dp table with the maximum value of the current position and the previous positions
-            dp[i] = max(dp[i - 1], dp[i - k] + a[i - 1])
-        else:
-            # If the current position is not within the repost limit, just copy the value from the previous position
-            dp[i] = dp[i - 1]
-    
-    # Return the maximum value in the dp table
-    return dp[n]
+def get_equation(numbers):
+    # Split the input numbers into a list
+    numbers = numbers.split()
+    # Convert the numbers to integers
+    numbers = [int(num) for num in numbers]
+    # Get the unique numbers from the list
+    unique_numbers = set(numbers)
+    # Iterate over the unique numbers
+    for num1 in unique_numbers:
+        for num2 in unique_numbers:
+            if num1 + num2 in unique_numbers:
+                return str(num1) + "+" + str(num2) + "=" + str(num1 + num2)
+            elif num1 - num2 in unique_numbers:
+                return str(num1) + "-" + str(num2) + "=" + str(num1 - num2)
+            elif num1 * num2 in unique_numbers:
+                return str(num1) + "*" + str(num2) + "=" + str(num1 * num2)
+            elif num1 / num2 in unique_numbers:
+                return str(num1) + "/" + str(num2) + "=" + str(num1 / num2)
+    return "No solution found"
+
+def main():
+    numbers = input("Enter three integers separated by spaces: ")
+    print(get_equation(numbers))
+
+if __name__ == '__main__':
+    main()
 

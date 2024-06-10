@@ -1,49 +1,61 @@
 
-def get_maximum_circumference(n, vertices):
-    # Sort the vertices by their x-coordinates
-    sorted_vertices = sorted(vertices, key=lambda x: x[0])
+def is_possible(N, M, B, target_board):
+    # Initialize the initial board
+    initial_board = [["." for _ in range(M)] for _ in range(N)]
+    initial_board[1][1] = "X"
 
-    # Initialize the maximum circumference and the corresponding vertex indices
-    max_circumference = 0
-    vertex_indices = []
+    # Initialize the moves list
+    moves = []
 
-    # Iterate over the sorted vertices
-    for i in range(n):
-        # Get the current vertex and its x-coordinate
-        vertex = sorted_vertices[i]
-        x = vertex[0]
+    # Loop through the target board
+    for block in target_board:
+        # Get the row and column of the block
+        row, col = block
 
-        # Find the next vertex with a different x-coordinate
-        for j in range(i+1, n):
-            next_vertex = sorted_vertices[j]
-            if next_vertex[0] != x:
-                break
+        # Check if the block is already in the initial board
+        if initial_board[row][col] == "X":
+            continue
 
-        # Calculate the circumference of the hexagon with the current vertex as a center
-        circumference = get_hexagon_circumference(vertex, sorted_vertices[i-1], vertex, next_vertex, sorted_vertices[j+1], next_vertex)
+        # Check if the block is at the edge of the board
+        if row == 1 or row == N or col == 1 or col == M:
+            # Add a new block to the initial board
+            initial_board[row][col] = "X"
+            # Add the move to the moves list
+            moves.append((row, col))
+        else:
+            # Check if the block is connected to any existing block
+            for r in range(row-1, row+2):
+                for c in range(col-1, col+2):
+                    if initial_board[r][c] == "X":
+                        # Add a new block to the initial board
+                        initial_board[row][col] = "X"
+                        # Add the move to the moves list
+                        moves.append((row, col))
+                        break
 
-        # Update the maximum circumference and the corresponding vertex indices
-        if circumference > max_circumference:
-            max_circumference = circumference
-            vertex_indices = [i, i-1, i, j, j+1, j]
+    # Check if the initial board is the same as the target board
+    for i in range(N):
+        for j in range(M):
+            if initial_board[i][j] != target_board[i][j]:
+                return False
 
-    return max_circumference, vertex_indices
+    # Return the moves list
+    return moves
 
-def get_hexagon_circumference(v1, v2, v3, v4, v5, v6):
-    # Calculate the side lengths of the hexagon
-    a = get_distance(v1, v2)
-    b = get_distance(v2, v3)
-    c = get_distance(v3, v4)
-    d = get_distance(v4, v5)
-    e = get_distance(v5, v6)
-    f = get_distance(v6, v1)
+def main():
+    N, M, B = map(int, input().split())
+    target_board = []
+    for _ in range(B):
+        row, col = map(int, input().split())
+        target_board.append((row, col))
+    moves = is_possible(N, M, B, target_board)
+    if moves:
+        print("possible")
+        for move in moves:
+            print(move[0], move[1])
+    else:
+        print("impossible")
 
-    # Calculate the circumference of the hexagon
-    circumference = a + b + c + d + e + f
-
-    return circumference
-
-def get_distance(v1, v2):
-    # Calculate the Euclidean distance between two vertices
-    return ((v1[0]-v2[0])**2 + (v1[1]-v2[1])**2)**0.5
+if __name__ == '__main__':
+    main()
 

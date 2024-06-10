@@ -1,27 +1,47 @@
 
-def solve(grid):
-    # Initialize variables
-    m, n = len(grid), len(grid[0])
-    visited = [[False] * n for _ in range(m)]
-    queue = [(0, 0, 0)]
+def get_coins(n, q, a, b):
+    # Initialize a dictionary to store the powers of 2
+    powers = {2**i: i for i in range(31)}
 
-    # Loop through the grid
-    while queue:
-        row, col, ladder_length = queue.pop(0)
+    # Initialize an array to store the answers
+    ans = [-1] * q
 
-        # If we have reached the last row and column, return the ladder length
-        if row == m - 1 and col == n - 1:
-            return ladder_length
+    # Iterate over the queries
+    for i in range(q):
+        # Initialize the minimum number of coins needed
+        min_coins = 10**9 + 1
 
-        # Check all possible moves from the current position
-        for dr, dc in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
-            r, c = row + dr, col + dc
+        # Iterate over the coins
+        for j in range(n):
+            # Check if the current coin can be used to obtain the current query
+            if a[j] <= b[i]:
+                # Calculate the number of coins needed for the current query
+                num_coins = b[i] // a[j]
 
-            # If the new position is valid and not visited yet, add it to the queue
-            if 0 <= r < m and 0 <= c < n and not visited[r][c]:
-                visited[r][c] = True
-                queue.append((r, c, max(ladder_length, grid[r][c])))
+                # Check if the number of coins needed is less than the minimum
+                if num_coins < min_coins:
+                    # Update the minimum number of coins needed
+                    min_coins = num_coins
 
-    # If we reach this point, no path exists
-    return -1
+        # Check if the minimum number of coins needed is not too large
+        if min_coins <= 10**9:
+            # Update the answer for the current query
+            ans[i] = min_coins
+
+    return ans
+
+def main():
+    # Read the input
+    n, q = map(int, input().split())
+    a = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+
+    # Solve the problem
+    ans = get_coins(n, q, a, b)
+
+    # Print the answer
+    print(*ans, sep='\n')
+
+if __name__ == '__main__':
+    main()
 

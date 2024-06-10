@@ -1,26 +1,48 @@
 
-def solve(n, circles):
-    # Initialize a set to store the regions
-    regions = set()
+import math
 
-    # Iterate over the circles
-    for i in range(n):
-        # Get the center and radius of the current circle
-        x, y, r = circles[i]
+def get_next_color(current_color):
+    alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    current_index = alphabet.index(current_color)
+    next_index = (current_index + 1) % len(alphabet)
+    return alphabet[next_index]
 
-        # Check if the circle is touching any other circle
-        for j in range(i+1, n):
-            # Get the center and radius of the other circle
-            x2, y2, r2 = circles[j]
+def get_next_position(current_position, direction):
+    rows, cols = current_position
+    if direction == 'U':
+        return rows - 1, cols
+    elif direction == 'D':
+        return rows + 1, cols
+    elif direction == 'L':
+        return rows, cols - 1
+    else:
+        return rows, cols + 1
 
-            # Calculate the distance between the centers of the two circles
-            distance = ((x-x2)**2 + (y-y2)**2)**0.5
+def get_final_position(rows, cols, num_steps):
+    current_position = (1, 1)
+    current_direction = 'U'
+    current_color = 'A'
+    for _ in range(num_steps):
+        next_position = get_next_position(current_position, current_direction)
+        if next_position[0] < 1 or next_position[0] > rows or next_position[1] < 1 or next_position[1] > cols:
+            next_position = (next_position[0] - 1, next_position[1] - 1)
+        current_position = next_position
+        current_direction = chr((ord(current_direction) + 1) % 4)
+        current_color = get_next_color(current_color)
+    return current_position, current_color
 
-            # Check if the circles are touching
-            if distance <= r+r2:
-                # If they are touching, merge the regions of the two circles
-                regions.update([(x, y), (x2, y2)])
+def get_ice_rink(rows, cols, num_steps):
+    ice_rink = [['.'] * cols for _ in range(rows)]
+    final_position, final_color = get_final_position(rows, cols, num_steps)
+    ice_rink[final_position[0] - 1][final_position[1] - 1] = '@'
+    return ice_rink
 
-    # Return the number of regions
-    return len(regions)
+def main():
+    rows, cols, start_row, start_col, num_steps = map(int, input().split())
+    ice_rink = get_ice_rink(rows, cols, num_steps)
+    for row in ice_rink:
+        print(''.join(row))
+
+if __name__ == '__main__':
+    main()
 

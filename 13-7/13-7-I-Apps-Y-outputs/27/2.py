@@ -1,20 +1,18 @@
 
-def get_max_beauty(a, k, x):
-    n = len(a)
-    if n < k or x == 0:
-        return -1
-    if x == 1:
-        return max(a)
-    if k == 1:
-        return sum(a[:x])
+def get_input():
+    return list(map(int, input().split()))
 
-    # Dynamic programming approach
-    dp = [0] * (n + 1)
-    for i in range(1, n + 1):
-        if i < k:
-            dp[i] = a[i - 1]
-        else:
-            dp[i] = max(a[i - 1] + dp[i - k], dp[i - 1])
+def get_equation(numbers):
+    num1, num2, num3 = numbers
+    for operation in "+-*/":
+        for i in range(4):
+            if eval(f"{num1}{operation}{num2}{operation}{num3}") == num1:
+                return f"{num1}{operation}{num2}{operation}{num3}"
 
-    return dp[n]
+def main():
+    numbers = get_input()
+    print(get_equation(numbers))
+
+if __name__ == '__main__':
+    main()
 

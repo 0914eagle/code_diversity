@@ -1,15 +1,31 @@
 
-def solve(n, t, a):
-    # Initialize the minimum number of days to finish reading the book as n
-    min_days = n
-    # Iterate through each day
+def get_ball_orders(n, throws):
+    # Initialize a list to store the ball orders
+    ball_orders = []
+    
+    # Base case: if there are no throws, return the initial order
+    if not throws:
+        return [list(range(1, n + 1))]
+    
+    # Recursive case: try all possible throws and combine the results
     for i in range(n):
-        # Calculate the total time Luba has to spend on work and reading for the current day
-        total_time = a[i] + t
-        # If the total time is less than or equal to the number of seconds in a day, Luba can finish reading the book on the current day
-        if total_time <= 86400:
-            # Update the minimum number of days to finish reading the book if necessary
-            min_days = min(min_days, i+1)
-    # Return the minimum number of days to finish reading the book
-    return min_days
+        for j in range(i + 1, n):
+            if throws[i] > 0 and throws[j] > 0:
+                # Make the throw and recursively find the ball orders after that throw
+                throws[i] -= 1
+                throws[j] -= 1
+                ball_orders += get_ball_orders(n, throws)
+                throws[i] += 1
+                throws[j] += 1
+    
+    # Return the list of ball orders
+    return ball_orders
+
+def main():
+    n = int(input())
+    throws = list(map(int, input().split()))
+    print(get_ball_orders(n, throws) % 1000000007)
+
+if __name__ == '__main__':
+    main()
 

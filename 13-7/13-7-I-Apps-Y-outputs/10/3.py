@@ -1,32 +1,27 @@
 
-def solve(s, t):
-    k = len(s)
-    assert k == len(t)
-    assert s < t
-    assert k % 2 == 1
+def get_flight_times(p, q, r):
+    # Calculate the flight times in all possible routes
+    routes = []
+    routes.append(p + q)
+    routes.append(p + r)
+    routes.append(q + r)
+    routes.append(q + p)
+    routes.append(r + p)
+    routes.append(r + q)
+    
+    # Return the minimum flight time
+    return min(routes)
 
-    # create a list of all strings between s and t (including s and t)
-    strings = [s]
-    current = s
-    while current != t:
-        current = next_string(current)
-        strings.append(current)
-    strings.append(t)
+def main():
+    # Read the input
+    p, q, r = map(int, input().split())
+    
+    # Calculate the minimum flight time
+    flight_time = get_flight_times(p, q, r)
+    
+    # Print the result
+    print(flight_time)
 
-    # find the median of the list
-    median = strings[k // 2]
-
-    return median
-
-def next_string(s):
-    # find the leftmost letter that is not z
-    i = 0
-    while s[i] == "z":
-        i += 1
-    # if all letters are z, the string is the last one
-    if i == len(s):
-        return "aa" * len(s)
-    # increment the leftmost letter
-    s = s[:i] + chr(ord(s[i]) + 1) + "a" * (len(s) - i - 1)
-    return s
+if __name__ == '__main__':
+    main()
 

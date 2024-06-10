@@ -1,15 +1,46 @@
 
-def num_surviving_islands(N, T, K, S, V):
-    # Initialize a list to keep track of the number of goods received from each island
-    goods_received = [0] * (N + 1)
-    goods_received[1] = T[1]
+def get_message_plan(n, a):
+    # Initialize a graph to represent the relationships between students
+    graph = [[] for _ in range(n + 1)]
+    
+    # Add edges to the graph based on the maximum number of messages each student can send
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            if i != j and a[i - 1] >= j - 1:
+                graph[i].append(j)
+    
+    # Initialize a queue to store the students who need to send messages
+    queue = [1]
+    
+    # Initialize a set to keep track of the students who have already sent messages
+    sent = set()
+    
+    # Initialize a list to store the messages to be sent
+    messages = []
+    
+    # Loop until the queue is empty
+    while queue:
+        # Dequeue a student from the queue
+        student = queue.pop(0)
+        
+        # If the student has not already sent a message, send a message to all their neighbors
+        if student not in sent:
+            for neighbor in graph[student]:
+                messages.append((student, neighbor))
+                queue.append(neighbor)
+                sent.add(neighbor)
+    
+    # Return the list of messages
+    return messages
 
-    # Iterate through each island and update the number of goods received from other islands
-    for i in range(2, N + 1):
-        for j in range(K[i - 1]):
-            goods_received[i] += V[i - 1][j]
-            goods_received[S[i - 1][j]] -= V[i - 1][j]
+def main():
+    n = int(input())
+    a = list(map(int, input().split()))
+    messages = get_message_plan(n, a)
+    print(len(messages))
+    for message in messages:
+        print(*message)
 
-    # Return the number of islands with enough goods to sustain themselves
-    return sum(1 for i in range(1, N + 1) if goods_received[i] >= T[i])
+if __name__ == '__main__':
+    main()
 

@@ -1,22 +1,23 @@
 
-def largest_perfect_power(x):
-    # Find the smallest perfect power that is greater than or equal to x
-    power = 1
-    while power <= x:
-        power *= 2
-    
-    # Check if the previous power is a perfect power
-    if power / 2 >= x:
-        return power / 2
-    
-    # If not, then the previous power is not a perfect power
-    # So, we need to find the next smaller power that is a perfect power
-    power //= 2
-    while power >= 1:
-        if x % power == 0:
-            return power
-        power //= 2
-    
-    # If we reach here, then no perfect power was found
-    return 1
+def get_unique_element(arr):
+    n = len(arr)
+    if n == 1:
+        return True
+    if n == 2:
+        return arr[0] == arr[1]
+    for i in range(n-1):
+        for j in range(i+1, n):
+            if abs(arr[i] - arr[j]) <= 1:
+                return get_unique_element(arr[:i] + arr[i+1:] + arr[j+1:])
+    return False
+
+def main():
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        arr = list(map(int, input().split()))
+        print("YES" if get_unique_element(arr) else "NO")
+
+if __name__ == '__main__':
+    main()
 

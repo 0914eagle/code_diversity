@@ -1,41 +1,55 @@
 
-def solve(n, guests, p):
-    # Calculate the total number of possible orders
-    num_orders = 1
-    for i in range(n):
-        num_orders *= n - i
-    
-    # Initialize the sum of guests in the restaurant to 0
-    sum_guests = 0
-    
-    # Initialize the number of guests in the restaurant to 0
-    num_guests = 0
-    
-    # Initialize the number of guests who have come to the restaurant to 0
-    num_visitors = 0
-    
-    # Iterate over all possible orders of the guests
-    for order in itertools.permutations(guests):
-        # Iterate over the guests in the order
-        for i, guest in enumerate(order):
-            # Check if the guest fits in the restaurant
-            if sum_guests + guest <= p:
-                # Add the guest to the restaurant
-                sum_guests += guest
-                num_guests += 1
-            else:
-                # The guest doesn't fit in the restaurant, break the loop
-                break
-        
-        # Check if all guests have fit in the restaurant
-        if num_guests == n:
-            # Add the number of visitors to the total
-            num_visitors += 1
-        
-        # Remove the guests from the restaurant
-        sum_guests -= order[0]
-        num_guests -= 1
-    
-    # Return the average number of visitors
-    return num_visitors / num_orders
+def get_input():
+    n = int(input())
+    flights = []
+    for i in range(n - 1):
+        a, b = map(int, input().split())
+        flights.append((a, b))
+    return n, flights
+
+def cancel_flight(n, flights):
+    # Initialize a graph with n vertices and 0 edges
+    graph = [[] for _ in range(n)]
+
+    # Add edges to the graph based on the flights
+    for a, b in flights:
+        graph[a - 1].append(b - 1)
+        graph[b - 1].append(a - 1)
+
+    # Find the flight with the most connections
+    max_connections = 0
+    flight_to_cancel = 0
+    for i in range(n - 1):
+        connections = len(graph[i])
+        if connections > max_connections:
+            max_connections = connections
+            flight_to_cancel = i + 1
+
+    return flight_to_cancel
+
+def add_flight(n, flights, flight_to_cancel):
+    # Find the city that is not connected to the flight to be canceled
+    for a, b in flights:
+        if a != flight_to_cancel and b != flight_to_cancel:
+            break
+    city_to_connect = a if a != flight_to_cancel else b
+
+    # Find the city that is not connected to the flight to be canceled
+    for a, b in flights:
+        if a != flight_to_cancel and b != flight_to_cancel:
+            break
+    city_to_connect_to = a if a != flight_to_cancel else b
+
+    return city_to_connect, city_to_connect_to
+
+def main():
+    n, flights = get_input()
+    flight_to_cancel = cancel_flight(n, flights)
+    city_to_connect, city_to_connect_to = add_flight(n, flights, flight_to_cancel)
+    print(2)
+    print(flight_to_cancel, city_to_connect)
+    print(city_to_connect_to, flight_to_cancel)
+
+if __name__ == '__main__':
+    main()
 

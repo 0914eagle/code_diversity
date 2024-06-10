@@ -1,27 +1,37 @@
 
-def solve(n):
-    # Initialize the array a
-    a = list(range(1, n+1))
-    # Initialize the number of pairs
-    q = 0
-    # Loop through each pair of indices
-    for i in range(1, n+1):
-        for j in range(i+1, n+1):
-            # Check if the array has at most two different numbers
-            if len(set(a)) <= 2:
-                # If the condition is met, add the pair to the list of pairs
-                q += 1
-                print(i, j)
-                # Break out of the inner loop
-                break
-            # Assign t to be the result of the function f
-            t = f(a[i], a[j])
-            # Assign a[i] and a[j] to be t
-            a[i] = t
-            a[j] = t
-    return q
+def get_moving_cost(requests, teams):
+    # Initialize variables
+    moving_cost = 0
+    team_assignment = [0] * len(requests)
 
-# Define the function f
-def f(x, y):
-    return x + y
+    # Loop through the requests and teams
+    for i in range(len(requests)):
+        for j in range(len(teams)):
+            # Check if the request can be served by the current team
+            if requests[i] <= teams[j]:
+                # Assign the request to the current team
+                team_assignment[i] = j + 1
+                break
+
+    # Loop through the requests again and calculate the moving cost
+    for i in range(1, len(requests)):
+        moving_cost += requests[i - 1]
+
+    return moving_cost
+
+def main():
+    # Read the input
+    n, k = map(int, input().split())
+    requests = []
+    for i in range(n):
+        requests.append(int(input()))
+
+    # Calculate the moving cost
+    moving_cost = get_moving_cost(requests, range(1, k + 1))
+
+    # Print the result
+    print(moving_cost)
+
+if __name__ == '__main__':
+    main()
 

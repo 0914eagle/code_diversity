@@ -1,26 +1,49 @@
 
-def get_shared_area(pine_trees, aspen_trees):
-    pine_x = [tree[0] for tree in pine_trees]
-    pine_y = [tree[1] for tree in pine_trees]
-    aspen_x = [tree[0] for tree in aspen_trees]
-    aspen_y = [tree[1] for tree in aspen_trees]
+def get_maximum_damage(jiro_cards, ciel_cards):
+    # Initialize variables
+    total_damage = 0
+    jiro_alive_cards = jiro_cards.copy()
+    ciel_alive_cards = ciel_cards.copy()
 
-    pine_area = 0
-    aspen_area = 0
+    # Loop through each card in Ciel's hand
+    for card in ciel_cards:
+        # If Jiro has no alive cards, deal damage equal to the card's strength
+        if not jiro_alive_cards:
+            total_damage += card["strength"]
+            continue
 
-    for i in range(len(pine_x)):
-        for j in range(i+1, len(pine_x)):
-            pine_area += get_triangle_area(pine_x[i], pine_y[i], pine_x[j], pine_y[j], pine_x[0], pine_y[0])
+        # Find the strongest Jiro's alive card
+        jiro_card = max(jiro_alive_cards, key=lambda x: x["strength"])
 
-    for i in range(len(aspen_x)):
-        for j in range(i+1, len(aspen_x)):
-            aspen_area += get_triangle_area(aspen_x[i], aspen_y[i], aspen_x[j], aspen_y[j], aspen_x[0], aspen_y[0])
+        # If the card's position is Attack and its strength is greater than or equal to the Jiro's card's strength, deal damage equal to the card's strength minus the Jiro's card's strength
+        if card["position"] == "ATK" and card["strength"] >= jiro_card["strength"]:
+            total_damage += card["strength"] - jiro_card["strength"]
+            jiro_alive_cards.remove(jiro_card)
 
-    shared_area = pine_area + aspen_area - get_triangle_area(0, 0, 0, 0, 0, 0)
+        # If the card's position is Defense and its strength is greater than the Jiro's card's strength, deal no damage
+        elif card["position"] == "DEF" and card["strength"] > jiro_card["strength"]:
+            jiro_alive_cards.remove(jiro_card)
 
-    return shared_area
+    return total_damage
 
-def get_triangle_area(x1, y1, x2, y2, x3, y3):
-    area = 0.5 * abs(x1*y2 + x2*y3 + x3*y1 - x1*y3 - x2*y1 - x3*y2)
-    return area
+def main():
+    # Read inputs
+    n, m = map(int, input().split())
+    jiro_cards = []
+    ciel_cards = []
+    for _ in range(n):
+        position, strength = input().split()
+        jiro_cards.append({"position": position, "strength": int(strength)})
+    for _ in range(m):
+        strength = int(input())
+        ciel_cards.append({"position": "ATK", "strength": strength})
+
+    # Get the maximum damage
+    maximum_damage = get_maximum_damage(jiro_cards, ciel_cards)
+
+    # Print the output
+    print(maximum_damage)
+
+if __name__ == '__main__':
+    main()
 

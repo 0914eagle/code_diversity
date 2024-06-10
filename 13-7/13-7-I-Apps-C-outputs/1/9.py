@@ -1,25 +1,33 @@
 
-def solve(m, h1, a1, x1, y1, h2, a2, x2, y2):
-    # Initialize the minimum time as 0
-    min_time = 0
+def get_toy_assignments(n_kids, n_toys, dur_play, events):
+    # Initialize a dictionary to store the toy assignments for each kid
+    toy_assignments = {}
 
-    # Check if the initial heights are already equal to the desired heights
-    if h1 == a1 and h2 == a2:
-        return min_time
+    # Iterate through the events and update the toy assignments for each kid
+    for event in events:
+        kid, toy = event[1], event[2]
+        if toy != 0:
+            toy_assignments[kid] = toy
+        else:
+            toy_assignments.pop(kid, None)
 
-    # Check if the initial heights are not equal to the desired heights
-    while h1 != a1 or h2 != a2:
-        # Increment the minimum time by 1
-        min_time += 1
+    # Return the toy assignments for each kid
+    return list(toy_assignments.values())
 
-        # Calculate the new heights of Xaniar and Abol
-        h1 = (x1 * h1 + y1) % m
-        h2 = (x2 * h2 + y2) % m
+def main():
+    # Read the input data
+    n_kids, n_toys = map(int, input().split())
+    dur_play, n_events = map(int, input().split())
+    events = []
+    for _ in range(n_events):
+        events.append(list(map(int, input().split())))
 
-        # Check if the new heights are equal to the desired heights
-        if h1 == a1 and h2 == a2:
-            return min_time
+    # Get the toy assignments for each kid
+    toy_assignments = get_toy_assignments(n_kids, n_toys, dur_play, events)
 
-    # If the minimum time is not returned yet, it means that the heights will never be equal to the desired heights
-    return -1
+    # Print the toy assignments for each kid
+    print(*toy_assignments)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,23 +1,29 @@
 
-def solve(N, K, A):
-    # Sort the array of integers
-    A.sort()
-    # Initialize the minimum number of balls to rewrite as 0
-    min_balls = 0
-    # Iterate through the array of integers
-    for i in range(N):
-        # Check if the current integer is equal to the previous integer
-        if i > 0 and A[i] == A[i-1]:
-            # If they are equal, continue to the next iteration
-            continue
-        # Check if the current integer is equal to the next integer
-        if i < N-1 and A[i] == A[i+1]:
-            # If they are equal, continue to the next iteration
-            continue
-        # Check if the current integer is not equal to the previous or next integer
-        if i > 0 and i < N-1 and A[i] != A[i-1] and A[i] != A[i+1]:
-            # If they are not equal, increment the minimum number of balls to rewrite
-            min_balls += 1
-    # Return the minimum number of balls to rewrite
-    return min_balls
+def get_original_length(n, p, k, timestamps):
+    # Initialize the original length as the total length of the video
+    original_length = k
+    # Iterate through the timestamps and update the original length
+    for i in range(n):
+        # Get the current timestamp and the previous timestamp
+        current_timestamp = timestamps[i]
+        previous_timestamp = timestamps[i-1] if i > 0 else 0
+        # Calculate the length of the current segment
+        current_segment_length = current_timestamp - previous_timestamp
+        # Update the original length by subtracting the length of the current segment and adding the length of the current segment at the original speed
+        original_length -= current_segment_length
+        original_length += current_segment_length / (100 + p)
+    # Return the original length
+    return original_length
+
+def main():
+    # Read the input
+    n, p, k = map(int, input().split())
+    timestamps = list(map(int, input().split()))
+    # Call the function to get the original length
+    original_length = get_original_length(n, p, k, timestamps)
+    # Print the output
+    print(original_length)
+
+if __name__ == '__main__':
+    main()
 

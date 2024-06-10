@@ -1,38 +1,37 @@
 
-def solve(b, s, program):
-    # Initialize variables
-    min_instructions = 0
-    bank_assignments = {}
-    bsr_changes = 0
-
-    # Iterate through the program
-    for operation in program:
-        if operation.startswith("V"):
-            # Variable reference
-            variable = int(operation[1:])
-            if variable not in bank_assignments:
-                # Variable is not yet assigned to a bank
-                if len(bank_assignments) < b:
-                    # There are still banks available, assign the variable to the next available bank
-                    bank_assignments[variable] = len(bank_assignments)
-                else:
-                    # All banks are assigned, find the least recently used bank and assign the variable to it
-                    bank_assignments[variable] = min(bank_assignments, key=bank_assignments.get)
-            min_instructions += 1
-        elif operation.startswith("R"):
-            # Repetition
-            repetitions = int(operation[1:operation.find(" ")])
-            program = operation[operation.find(" ")+1:-1]
-            min_instructions += repetitions * solve(b, s, program)
-        elif operation == "E":
-            # End of program
+def get_maximum_executives(briefcases):
+    # Sort the briefcases in non-decreasing order
+    briefcases.sort()
+    # Initialize the number of executives to be rewarded
+    num_executives = 0
+    # Initialize the total number of bananas to be rewarded
+    total_bananas = 0
+    # Loop through the briefcases
+    for briefcase in briefcases:
+        # If the total number of bananas plus the number of bananas in the current briefcase is less than or equal to the number of bananas in the previous briefcase,
+        # then the current briefcase can be given to the current executive
+        if total_bananas + briefcase <= briefcases[num_executives]:
+            # Increment the number of executives to be rewarded
+            num_executives += 1
+            # Add the number of bananas in the current briefcase to the total number of bananas to be rewarded
+            total_bananas += briefcase
+        # Otherwise, the current briefcase cannot be given to the current executive
+        else:
+            # Break out of the loop
             break
-    
-    # Calculate the minimum number of instructions by considering the BSR changes
-    for bank, variable in bank_assignments.items():
-        if variable != 0:
-            bsr_changes += 1
-    min_instructions += bsr_changes
-    
-    return min_instructions
+    # Return the maximum number of executives that can be rewarded
+    return num_executives
+
+def main():
+    # Read the number of briefcases
+    num_briefcases = int(input())
+    # Read the number of bananas in each briefcase
+    briefcases = list(map(int, input().split()))
+    # Get the maximum number of executives that can be rewarded
+    max_executives = get_maximum_executives(briefcases)
+    # Print the maximum number of executives that can be rewarded
+    print(max_executives)
+
+if __name__ == '__main__':
+    main()
 

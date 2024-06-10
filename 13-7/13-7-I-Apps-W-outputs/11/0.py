@@ -1,22 +1,15 @@
 
-def solve(n, c, x):
-    # Initialize variables
-    max_profit = 0
-    barrels = 0
-    raspberry = 0
+import math
 
-    # Iterate through the prices
-    for i in range(n):
-        # If the bear has enough raspberry, buy a barrel
-        if raspberry >= x[i]:
-            barrels += 1
-            raspberry -= x[i]
+def distance(W):
+    # Calculate the distance between Agneta and Beata after W seconds
+    distance = math.sin(W)
+    return distance
 
-        # If the bear has a barrel and enough raspberry, sell a barrel and lend it to the friend
-        if barrels > 0 and raspberry >= c:
-            max_profit += x[i]
-            barrels -= 1
-            raspberry -= c
+def main():
+    W = float(input())
+    print(distance(W))
 
-    return max_profit
+if __name__ == '__main__':
+    main()
 

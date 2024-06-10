@@ -1,12 +1,17 @@
 
-def solve(n, a):
-    # Sort the array in non-decreasing order
-    a.sort()
-    # Initialize the sum of squares to 0
-    sum_of_squares = 0
-    # Loop through the array and calculate the sum of squares
-    for i in range(n):
-        sum_of_squares += a[i] ** 2
-    # Return the sum of squares
-    return sum_of_squares
+def check_remainders(n, k):
+    remainders = []
+    for i in range(1, k+1):
+        remainders.append(n%i)
+    return len(set(remainders)) == len(remainders)
+
+def main():
+    n, k = map(int, input().split())
+    if check_remainders(n, k):
+        print("Yes")
+    else:
+        print("No")
+
+if __name__ == '__main__':
+    main()
 

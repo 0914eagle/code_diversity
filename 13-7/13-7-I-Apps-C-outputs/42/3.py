@@ -1,20 +1,48 @@
 
-def max_flowers(field, initial_position):
+def get_travel_cost(trips, a, b, k, f):
     # Initialize variables
-    rows, cols = len(field), len(field[0])
-    visited = set()
-    queue = [initial_position]
-    visited.add(initial_position)
-    count = 0
+    cost = 0
+    cards = 0
+    current_stop = ""
+    route_costs = {}
 
-    # Breadth-first search
-    while queue:
-        row, col = queue.pop(0)
-        count += 1
-        for r, c in [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]:
-            if 0 <= r < rows and 0 <= c < cols and (r, c) not in visited and field[r][c] > field[row][col]:
-                queue.append((r, c))
-                visited.add((r, c))
+    # Iterate through the trips
+    for trip in trips:
+        # Get the start and end stops of the trip
+        start_stop, end_stop = trip
 
-    return count
+        # Check if the trip is a transshipment
+        if start_stop == current_stop:
+            cost += b
+        else:
+            cost += a
+
+        # Check if the trip is a new route
+        if start_stop not in route_costs:
+            route_costs[start_stop] = {}
+
+        # Check if the trip is a return trip
+        if end_stop in route_costs[start_stop]:
+            cost -= route_costs[start_stop][end_stop]
+        else:
+            route_costs[start_stop][end_stop] = cost
+            cards += 1
+            if cards > k:
+                return -1
+
+        # Update the current stop
+        current_stop = end_stop
+
+    # Add the cost of the travel cards
+    cost += f * cards
+
+    return cost
+
+def main():
+    n, a, b, k, f = map(int, input().split())
+    trips = [input().split() for _ in range(n)]
+    print(get_travel_cost(trips, a, b, k, f))
+
+if __name__ == '__main__':
+    main()
 

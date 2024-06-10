@@ -1,11 +1,25 @@
 
-def name_directory(names):
-    # sort the names by age in ascending order
-    names.sort(key=lambda x: x[2])
-    # create a dictionary to map sex to title
-    title_map = {"M": "Mr.", "F": "Ms."}
-    # iterate through the names and print them in the desired format
-    for name in names:
-        print(f"{title_map[name[3]]} {name[0]} {name[1]}")
-    return names
+def is_good_string(s):
+    if len(s) % 2 == 0:
+        return True
+    else:
+        for i in range(1, len(s), 2):
+            if s[i] == s[i-1]:
+                return False
+        return True
+
+def delete_characters(s):
+    if is_good_string(s):
+        return s
+    else:
+        for i in range(len(s)-1, -1, -1):
+            if s[i] == s[i-1]:
+                return s[:i]
+        return ""
+
+if __name__ == '__main__':
+    n = int(input())
+    s = input()
+    print(len(s) - delete_characters(s))
+    print(delete_characters(s))
 

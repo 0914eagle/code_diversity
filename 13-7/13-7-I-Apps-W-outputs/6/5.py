@@ -1,23 +1,29 @@
 
-def solve(n):
-    # Initialize variables
-    days = 0
-    bacteria = 1
-    total_mass = 1
-    
-    # Loop until the total mass is equal to n
-    while total_mass != n:
-        # Increment the number of days
-        days += 1
-        
-        # Check if the bacteria can split
-        if bacteria >= 2:
-            # Split the bacteria
-            bacteria *= 2
-        
-        # Increment the total mass
-        total_mass += bacteria
-    
-    # Return the number of days and the number of bacteria that should split on each day
-    return days, [1 for _ in range(days)]
+def get_divisors(n):
+    divisors = []
+    for i in range(1, int(n**0.5) + 1):
+        if n % i == 0:
+            divisors.append(i)
+            if i * i != n:
+                divisors.append(n // i)
+    divisors.sort(reverse=True)
+    return divisors
+
+def is_lovely(n):
+    divisors = get_divisors(n)
+    for d in divisors:
+        if d**2 == n:
+            return False
+    return True
+
+def main():
+    n = int(input())
+    lovely_numbers = []
+    for i in range(1, n+1):
+        if is_lovely(i):
+            lovely_numbers.append(i)
+    print(max(lovely_numbers))
+
+if __name__ == '__main__':
+    main()
 

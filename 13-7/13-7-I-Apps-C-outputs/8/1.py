@@ -1,23 +1,33 @@
 
-def solve(N, Q, queries):
-    # Initialize the number of stones in each box to 0
-    num_stones = [0] * (N + 1)
-    # Initialize the expected value of A to 0
-    expected_A = 0
+def get_winner(n, k, cards):
+    # Initialize the winner as None
+    winner = None
     
-    for query in queries:
-        # If the query is of type 1, add a stone to the box between u and v
-        if query[0] == 1:
-            u, v = query[1], query[2]
-            for i in range(u, v + 1):
-                num_stones[i] += 1
-        # If the query is of type 2, calculate the expected value of A
-        elif query[0] == 2:
-            # Calculate the expected value of A for each box
-            for i in range(1, N + 1):
-                expected_A += num_stones[i] ** 2
-            # Calculate the expected value of A modulo 10^9 + 7
-            expected_A = expected_A % (10 ** 9 + 7)
+    # Loop through each card and check if it is facing up or down
+    for i in range(n):
+        # If the card is facing up, check if it is the first card or the previous card is facing down
+        if cards[i] == "1" and (i == 0 or cards[i-1] == "0"):
+            # If it is the first card or the previous card is facing down, flip the next k-1 cards to the same side
+            for j in range(i+1, i+k):
+                if j < n:
+                    cards[j] = "1" if cards[j] == "0" else "0"
     
-    return expected_A
+    # Check if all the cards are facing the same direction
+    if all(cards[i] == cards[0] for i in range(n)):
+        # If they are, the winner is Tokitsukaze
+        winner = "tokitsukaze"
+    elif all(cards[i] != cards[0] for i in range(n)):
+        # If they are not, the winner is Quailty
+        winner = "quailty"
+    
+    return winner
+
+def main():
+    n, k = map(int, input().split())
+    cards = list(input())
+    winner = get_winner(n, k, cards)
+    print(winner)
+
+if __name__ == '__main__':
+    main()
 

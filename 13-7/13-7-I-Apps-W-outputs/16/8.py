@@ -1,24 +1,25 @@
 
-def insert_interval(intervals, new_interval):
-    
-    result = []
-    inserted = False
-    for interval in intervals:
-        # if the current interval has ended before the new interval starts, keep it in the result
-        if interval[1] < new_interval[0]:
-            result.append(interval)
-        # if the new interval ends before the current interval starts, keep the new interval in the result
-        elif new_interval[1] < interval[0]:
-            result.append(new_interval)
-            inserted = True
-            new_interval = None
-        # if the new interval overlaps with the current interval, merge them
-        else:
-            result.append([min(interval[0], new_interval[0]), max(interval[1], new_interval[1])])
-            inserted = True
-            new_interval = None
-    # if the new interval was not inserted, add it to the result
-    if not inserted:
-        result.append(new_interval)
-    return result
+def find_combinations(candidates, target):
+    combinations = []
+    for i in range(len(candidates)):
+        current_combination = [candidates[i]]
+        current_sum = candidates[i]
+        for j in range(i+1, len(candidates)):
+            if current_sum + candidates[j] == target:
+                current_combination.append(candidates[j])
+                combinations.append(current_combination)
+                break
+            elif current_sum + candidates[j] < target:
+                current_combination.append(candidates[j])
+                current_sum += candidates[j]
+    return combinations
+
+def main():
+    candidates = [10, 1, 2, 7, 6, 1, 5]
+    target = 8
+    combinations = find_combinations(candidates, target)
+    print(combinations)
+
+if __name__ == '__main__':
+    main()
 

@@ -1,49 +1,51 @@
 
-def solve(n, m, k, table):
-    # Initialize variables
-    rows, cols = len(table), len(table[0])
-    visited = [[False for _ in range(cols)] for _ in range(rows)]
-    components = []
-    changed_cells = 0
+def is_good_arrangement(arrangement):
+    # Check if the arrangement is valid
+    for i in range(len(arrangement)):
+        for j in range(len(arrangement[0])):
+            if arrangement[i][j] == arrangement[i][j-1] and j > 0:
+                return False
+    return True
 
-    # Iterate over the table
-    for i in range(rows):
-        for j in range(cols):
-            # If the current cell is not visited and its value is 1, start a new component
-            if not visited[i][j] and table[i][j] == 1:
-                component = []
-                dfs(i, j, table, visited, component)
-                components.append(component)
+def find_good_arrangement(num_rows, num_cols, num_a, num_b, num_c):
+    # Initialize the arrangement with the first row
+    arrangement = []
+    arrangement.append([])
+    for i in range(num_cols):
+        if i % 3 == 0:
+            arrangement[0].append('A')
+        elif i % 3 == 1:
+            arrangement[0].append('B')
+        else:
+            arrangement[0].append('C')
 
-    # Iterate over the components
-    for component in components:
-        # If the component is not a rectangle, it is not possible to meet the requirement
-        if len(component) != len(set(component)) ** 2:
-            return -1
+    # Fill in the rest of the rows
+    for i in range(1, num_rows):
+        arrangement.append([])
+        for j in range(num_cols):
+            if j % 3 == 0:
+                arrangement[i].append('A')
+            elif j % 3 == 1:
+                arrangement[i].append('B')
+            else:
+                arrangement[i].append('C')
 
-    # If the number of changed cells is less than k, it is possible to meet the requirement
-    if changed_cells < k:
-        return changed_cells
+    # Check if the arrangement is valid
+    if is_good_arrangement(arrangement):
+        return arrangement
     else:
-        return -1
+        return None
 
-# Depth-first search function to find all cells in a component
-def dfs(i, j, table, visited, component):
-    # If the current cell is not visited and its value is 1, mark it as visited and add it to the component
-    if not visited[i][j] and table[i][j] == 1:
-        visited[i][j] = True
-        component.append((i, j))
-        # Recursively explore the neighboring cells
-        for ii, jj in [(i-1, j), (i+1, j), (i, j-1), (i, j+1)]:
-            dfs(ii, jj, table, visited, component)
+def main():
+    num_rows, num_cols = map(int, input().split())
+    num_a, num_b, num_c = map(int, input().split())
+    arrangement = find_good_arrangement(num_rows, num_cols, num_a, num_b, num_c)
+    if arrangement is None:
+        print("impossible")
+    else:
+        for row in arrangement:
+            print("".join(row))
 
-# Test the function with example inputs
-table1 = [[1, 1, 1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 0, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1, 1, 1]]
-print(solve(5, 5, 2, table1)) # Output: 1
-
-table2 = [[1, 0, 0, 0], [0, 1, 1, 1], [1, 1, 1, 0]]
-print(solve(3, 4, 1, table2)) # Output: -1
-
-table3 = [[1, 0, 0, 1], [0, 1, 0, 0], [1, 0, 0, 1]]
-print(solve(3, 4, 1, table3)) # Output: 0
+if __name__ == '__main__':
+    main()
 

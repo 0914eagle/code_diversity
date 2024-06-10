@@ -1,41 +1,44 @@
 
-def find_opponent_location(a, b, c, t1, t2, t3, t4, n, k, r, s, l):
-    # Calculate the Taylor polynomial of degree r around 0
-    p = taylor_polynomial(f, 0, r)
+def get_teacher_assignment(classes, weeks, queries):
+    # Initialize a dictionary to store the teacher assignments
+    teacher_assignments = {}
     
-    # Create a sequence of polynomials P_n(x) = sum(P_{n-1}(i) * x^i)
-    p_seq = [p]
-    for i in range(n):
-        p_seq.append(sum(p_seq[-1][i] * x**i for i in range(r+i+1)))
+    # Loop through each week
+    for week in range(1, weeks + 1):
+        # Loop through each class
+        for class_num in range(1, classes + 1):
+            # If the week is the first week, assign the teacher to the class
+            if week == 1:
+                teacher_assignments[class_num] = class_num
+            # Otherwise, rotate the teachers
+            else:
+                current_teacher = teacher_assignments[class_num]
+                next_teacher = (current_teacher + 1) % classes
+                teacher_assignments[class_num] = next_teacher
     
-    # Differentiate the final polynomial s times and call the outcome g
-    g = differentiate(p_seq[-1], s+1)
-    
-    # Calculate the location of the opponent
-    location = (g(n) + l)**2 / (pi * e) + 1 / (l + 1)
-    
-    return location
+    # Loop through each query
+    for query in queries:
+        # If the query is a rotation plan, update the teacher assignments
+        if query[0] == 0:
+            teachers = query[1:]
+            for teacher in teachers:
+                teacher_assignments[teacher] = (teacher_assignments[teacher] + 1) % classes
+        # If the query is a teacher assignment query, return the class number
+        else:
+            teacher = query[1]
+            week = query[2]
+            class_num = teacher_assignments[teacher]
+            if week == 1:
+                yield class_num
+            else:
+                yield (class_num + week - 1) % classes
 
-def taylor_polynomial(f, x0, n):
-    # Calculate the nth derivative of f at x0
-    f_n = f.derivative(n)
-    
-    # Return the Taylor polynomial of degree n around x0
-    return f_n(x0) + sum(f_n.derivative(i)(x0) * (x - x0)**i / factorial(i) for i in range(1, n+1))
+def main():
+    classes, weeks, queries = map(int, input().split())
+    queries = [list(map(int, input().split())) for _ in range(queries)]
+    for query in get_teacher_assignment(classes, weeks, queries):
+        print(query)
 
-def differentiate(f, n):
-    # Differentiate the function f n times
-    f_n = f
-    for i in range(n):
-        f_n = f_n.derivative()
-    
-    return f_n
-
-def factorial(n):
-    # Calculate the factorial of n
-    result = 1
-    for i in range(1, n+1):
-        result *= i
-    
-    return result
+if __name__ == '__main__':
+    main()
 

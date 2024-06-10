@@ -1,36 +1,50 @@
 
-def solve(N, heights, growth_speeds):
-    # Initialize a graph with adjacent nodes
-    graph = {}
-    for i in range(N):
-        for j in range(N):
-            graph[(i, j)] = []
-            if i > 0:
-                graph[(i, j)].append((i-1, j))
-            if j > 0:
-                graph[(i, j)].append((i, j-1))
-            if i < N-1:
-                graph[(i, j)].append((i+1, j))
-            if j < N-1:
-                graph[(i, j)].append((i, j+1))
-    
-    # Dijkstra's algorithm to find the shortest path between all pairs of nodes
-    dist = {(i, j): float('inf') for i in range(N) for j in range(N)}
-    dist[(0, 0)] = 0
-    q = [(0, 0)]
-    while q:
-        (i, j) = q.pop(0)
-        for (ii, jj) in graph[(i, j)]:
-            if dist[(ii, jj)] > dist[(i, j)] + 1:
-                dist[(ii, jj)] = dist[(i, j)] + 1
-                q.append((ii, jj))
-    
-    # Find the maximum distance between any two nodes
-    max_dist = 0
-    for i in range(N):
-        for j in range(N):
-            max_dist = max(max_dist, dist[(i, j)])
-    
-    # Return the size of the largest connected group of trees
-    return (max_dist + 1) * (max_dist + 1)
+def get_max_profit(producer_companies, consumer_companies):
+    # Initialize variables
+    max_profit = 0
+    selected_producer = None
+    selected_consumer = None
+
+    # Iterate over each producer company
+    for producer in producer_companies:
+        # Iterate over each consumer company
+        for consumer in consumer_companies:
+            # Calculate the profit for this pair of companies
+            profit = calculate_profit(producer, consumer)
+
+            # If the profit is greater than the current max profit, update the max profit and the selected companies
+            if profit > max_profit:
+                max_profit = profit
+                selected_producer = producer
+                selected_consumer = consumer
+
+    return max_profit
+
+def calculate_profit(producer, consumer):
+    # Calculate the profit for this pair of companies
+    profit = consumer["price"] - producer["price"]
+
+    # Return the profit
+    return profit
+
+def main():
+    # Read the input
+    m, n = map(int, input().split())
+    producer_companies = []
+    for i in range(m):
+        p, d = map(int, input().split())
+        producer_companies.append({"price": p, "day": d})
+    consumer_companies = []
+    for i in range(n):
+        q, e = map(int, input().split())
+        consumer_companies.append({"price": q, "day": e})
+
+    # Calculate the max profit
+    max_profit = get_max_profit(producer_companies, consumer_companies)
+
+    # Print the result
+    print(max_profit)
+
+if __name__ == '__main__':
+    main()
 

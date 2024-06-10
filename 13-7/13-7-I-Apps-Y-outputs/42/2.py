@@ -1,16 +1,32 @@
 
-def solve(s, t):
-    # Initialize variables
-    n = len(s)
-    m = len(t)
-    dp = [0] * (n + 1)
+def can_multiply(a, b):
+    if a == 1:
+        return True
+    if a == 2 and b <= 9:
+        return True
+    if a == 3 and b <= 3:
+        return True
+    if a == 4 and b <= 2:
+        return True
+    if a == 5 and b == 1:
+        return True
+    if a == 6 and b <= 2:
+        return True
+    if a == 7 and b == 1:
+        return True
+    if a == 8 and b <= 3:
+        return True
+    if a == 9 and b == 1:
+        return True
+    return False
 
-    # Populate the dp table
-    for i in range(1, n + 1):
-        for j in range(i):
-            if s[j] == t[i - j - 1]:
-                dp[i] = max(dp[i], dp[j] + 1)
+def multiply(a, b):
+    if can_multiply(a, b):
+        return a * b
+    else:
+        return -1
 
-    # Return the maximum length of the substring to remove
-    return n - dp[m]
+if __name__ == '__main__':
+    a, b = map(int, input().split())
+    print(multiply(a, b))
 

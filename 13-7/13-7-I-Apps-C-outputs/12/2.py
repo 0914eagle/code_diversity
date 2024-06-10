@@ -1,24 +1,27 @@
 
-def schedule_tournament(n, m):
-    # Initialize an empty playing schedule
-    schedule = []
+def get_happy_digits(n, k, a):
+    # Initialize a set to store the happy digits
+    happy_digits = set()
+    
+    # Loop through each denomination and calculate the last digit in the octal system
+    for i in range(n):
+        last_digit = str(oct(a[i])).split("o")[1][-1]
+        if last_digit in ["0", "4"]:
+            happy_digits.add(last_digit)
+    
+    # Return the number of happy digits and the set of happy digits
+    return len(happy_digits), happy_digits
 
-    # Iterate over each round
-    for round in range(1, (m-1)*n+2):
-        # Initialize an empty list of games for this round
-        games = []
+def main():
+    # Read the input
+    n, k = map(int, input().split())
+    a = list(map(int, input().split()))
+    
+    # Call the get_happy_digits function and print the output
+    num_happy_digits, happy_digits = get_happy_digits(n, k, a)
+    print(num_happy_digits)
+    print(*happy_digits, sep=" ")
 
-        # Iterate over each team
-        for team in range(m):
-            # Iterate over each player in the team
-            for player in range(n):
-                # If this is not the home team, add a game to the schedule
-                if team != 0:
-                    games.append("A" + str(player+1) + "-B" + str(player+1))
-
-        # Add the list of games for this round to the schedule
-        schedule.append(games)
-
-    # Return the playing schedule
-    return schedule
+if __name__ == '__main__':
+    main()
 

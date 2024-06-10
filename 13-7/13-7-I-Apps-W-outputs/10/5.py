@@ -1,11 +1,30 @@
 
-def solve(N, X, D):
-    # Calculate the sum of the sequence
-    sum_of_sequence = (N * (N + 1)) // 2
-    # Calculate the sum of the elements taken by Takahashi
-    sum_of_takahashi = X + (N - 1) * D
-    # Calculate the sum of the elements taken by Aoki
-    sum_of_aoki = sum_of_sequence - sum_of_takahashi
-    # Return the number of possible values of S - T
-    return sum_of_aoki
+def read_input():
+    n = int(input())
+    stones = list(map(int, input().split()))
+    matrix = []
+    for _ in range(n):
+        matrix.append(list(input()))
+    return n, stones, matrix
+
+def get_moves(n, stones, matrix):
+    moves = []
+    for i in range(n):
+        for j in range(i+1, n):
+            if matrix[i][j] == matrix[stones[0]-1][stones[1]-1] and matrix[i][j] == matrix[stones[1]-1][stones[2]-1]:
+                moves.append((i+1, j+1))
+    return moves
+
+def solve(n, stones, matrix):
+    moves = get_moves(n, stones, matrix)
+    if not moves:
+        return -1
+    return len(moves), moves
+
+def main():
+    n, stones, matrix = read_input()
+    print(solve(n, stones, matrix))
+
+if __name__ == '__main__':
+    main()
 

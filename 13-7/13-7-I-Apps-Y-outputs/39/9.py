@@ -1,19 +1,21 @@
 
-def solve(s, n):
-    # Convert input string to uppercase
-    s = s.upper()
+def is_even(s):
+    return s == s[::-1]
 
-    # Create a new string to store the result
-    result = ""
+def longest_even_substring(s):
+    n = len(s)
+    dp = [0] * (n + 1)
+    for i in range(n):
+        if is_even(s[:i + 1]):
+            dp[i + 1] = dp[i] + 1
+        else:
+            dp[i + 1] = max(dp[i], dp[i - 1])
+    return dp[n]
 
-    # Iterate through each character in the input string
-    for c in s:
-        # Calculate the shifted character position in the alphabet
-        pos = (ord(c) - ord("A") + n) % 26
+def main():
+    s = input()
+    print(longest_even_substring(s))
 
-        # Add the shifted character to the result string
-        result += chr(ord("A") + pos)
-
-    # Return the result string
-    return result
+if __name__ == '__main__':
+    main()
 

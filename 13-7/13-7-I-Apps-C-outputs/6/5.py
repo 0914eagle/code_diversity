@@ -1,55 +1,44 @@
 
-def get_largest_fee(N, P, X, Y, partnerships, M, SWERC_banks):
-    # Initialize a graph with the given number of nodes
-    graph = [[] for _ in range(N + 1)]
+import math
 
-    # Add edges to the graph based on the partnerships
-    for a, b, c in partnerships:
-        graph[a].append((b, c))
-        graph[b].append((a, c))
+def read_input():
+    N = int(input())
+    contours = []
+    for _ in range(N):
+        H_0, H_1, M = map(int, input().split())
+        points = []
+        for _ in range(M):
+            x, y = map(int, input().split())
+            points.append((x, y))
+        contours.append((H_0, H_1, points))
+    return contours
 
-    # Find the shortest path between X and Y using Dijkstra's algorithm
-    dist, prev = dijkstra(graph, X, Y)
+def get_closest_distance(contours):
+    min_distance = float('inf')
+    for H_0, H_1, points in contours:
+        for i in range(len(points)):
+            x1, y1 = points[i]
+            x2, y2 = points[(i+1)%len(points)]
+            distance = math.sqrt((x2-x1)**2 + (y2-y1)**2)
+            min_distance = min(min_distance, distance)
+    return min_distance
 
-    # Initialize the largest fee to 0
-    largest_fee = 0
+def get_closest_slanted_distance(contours):
+    min_distance = float('inf')
+    for H_0, H_1, points in contours:
+        for i in range(len(points)):
+            x1, y1 = points[i]
+            x2, y2 = points[(i+1)%len(points)]
+            distance = math.sqrt((x2-x1)**2 + (y2-y1)**2)
+            slanted_distance = math.sqrt((x2-x1)**2 + (y2-y1)**2 + (H_1-H_0)**2)
+            min_distance = min(min_distance, slanted_distance)
+    return min_distance
 
-    # Iterate through the shortest path and calculate the total fee
-    for node in range(X, Y + 1):
-        # If the current node is a SWERC bank, add its fee to the total fee
-        if node in SWERC_banks:
-            largest_fee += graph[prev[node]][node - 1][1]
+def main():
+    contours = read_input()
+    print(get_closest_distance(contours))
+    print(get_closest_slanted_distance(contours))
 
-    return largest_fee
-
-def dijkstra(graph, src, dest):
-    # Initialize the distance and previous node arrays
-    dist = [float('inf') for _ in range(len(graph))]
-    prev = [None for _ in range(len(graph))]
-
-    # Set the distance of the source node to 0 and its previous node to -1
-    dist[src] = 0
-    prev[src] = -1
-
-    # Initialize a priority queue to store the nodes
-    pq = [(0, src)]
-
-    # Loop until the priority queue is empty
-    while pq:
-        # Get the node with the smallest distance from the priority queue
-        u = heappop(pq)[1]
-
-        # If the node is the destination node, return the distance and previous node arrays
-        if u == dest:
-            return dist, prev
-
-        # Relax the node
-        for v, w in graph[u]:
-            if dist[v] > dist[u] + w:
-                dist[v] = dist[u] + w
-                prev[v] = u
-                heappush(pq, (dist[v], v))
-
-    # If the destination node is not found, return -1
-    return -1, -1
+if __name__ == '__main__':
+    main()
 

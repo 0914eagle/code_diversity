@@ -1,16 +1,32 @@
 
-def meow_factor(s):
-    # Initialize the meow factor to 0
-    meow_factor = 0
-    
-    # Loop through each character in the string
-    for i in range(len(s)):
-        # If the current character is 'm', check if the next three characters are 'e', 'o', and 'w'
-        if s[i] == 'm':
-            if i + 1 < len(s) and s[i + 1] == 'e' and i + 2 < len(s) and s[i + 2] == 'o' and i + 3 < len(s) and s[i + 3] == 'w':
-                # If the next three characters are 'e', 'o', and 'w', increment the meow factor by 1
-                meow_factor += 1
-    
-    # Return the meow factor
-    return meow_factor
+def read_input():
+    N = int(input())
+    cities = []
+    for i in range(N):
+        y, d, r = map(int, input().split())
+        cities.append((y, d, r))
+    return N, cities
+
+def find_shortest_path(start, cities):
+    visited = [False] * len(cities)
+    queue = [(0, start)]
+    while queue:
+        time, city = queue.pop(0)
+        if visited[city]:
+            continue
+        visited[city] = True
+        for next_city, y, d, r in cities:
+            if visited[next_city]:
+                continue
+            if abs(y - cities[next_city][0]) >= d:
+                queue.append((time + r + abs(y - cities[next_city][0]), next_city))
+    return visited
+
+def solve(N, cities):
+    visited = find_shortest_path(0, cities)
+    return [visited[i+1] * (cities[i+1][1] + cities[i+1][2]) for i in range(N-1)]
+
+if __name__ == '__main__':
+    N, cities = read_input()
+    print(*solve(N, cities), sep='\n')
 

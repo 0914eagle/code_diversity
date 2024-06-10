@@ -1,24 +1,30 @@
 
-def solve(vault):
-    # Initialize variables
-    m, n = len(vault), len(vault[0])
-    visited = [[False] * n for _ in range(m)]
-    queue = [(0, 0, 0)]
+def get_coins_values(n):
+    return list(map(int, input().split()))
 
-    # Breadth-first search
-    while queue:
-        i, j, ladder_length = queue.pop(0)
+def get_queries():
+    return list(map(int, input().split()))
 
-        # If we have reached the last row and column, return the ladder length
-        if i == m - 1 and j == n - 1:
-            return ladder_length
+def get_min_coins(coins, queries):
+    min_coins = []
+    for query in queries:
+        min_coins.append(get_min_coins_helper(coins, query))
+    return min_coins
 
-        # Visit all the adjacent cells and add them to the queue if they have not been visited before
-        for ii, jj in [(i - 1, j), (i, j - 1), (i + 1, j), (i, j + 1)]:
-            if 0 <= ii < m and 0 <= jj < n and not visited[ii][jj]:
-                visited[ii][jj] = True
-                queue.append((ii, jj, max(ladder_length, abs(vault[ii][jj] - vault[i][j]))))
+def get_min_coins_helper(coins, query):
+    min_coins = -1
+    for i in range(len(coins)):
+        if query >= coins[i]:
+            if min_coins == -1 or min_coins > 1 + get_min_coins_helper(coins, query - coins[i]):
+                min_coins = 1 + get_min_coins_helper(coins, query - coins[i])
+    return min_coins
 
-    # If we reach this point, it means that we could not find a way to reach the last row and column
-    return -1
+if __name__ == '__main__':
+    n = int(input())
+    coins = get_coins_values(n)
+    q = int(input())
+    queries = get_queries()
+    min_coins = get_min_coins(coins, queries)
+    for min_coin in min_coins:
+        print(min_coin)
 

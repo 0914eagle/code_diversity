@@ -1,40 +1,47 @@
 
-def solve(n, m, building):
-    # Initialize variables
-    total_time = 0
-    current_floor = 0
-    current_room = 0
-    visited_rooms = set()
+def rotate_90(matrix):
+    return [list(row) for row in zip(*matrix[::-1])]
 
-    # Iterate through each floor
-    for floor in building:
-        # Get the number of rooms in the current floor
-        num_rooms = floor.count("1")
+def rotate_180(matrix):
+    return rotate_90(rotate_90(matrix))
 
-        # Iterate through each room in the current floor
-        for room in range(num_rooms):
-            # Check if the room has not been visited before
-            if room not in visited_rooms:
-                # Calculate the time it takes to go to the room
-                time_to_room = abs(current_room - room)
+def rotate_270(matrix):
+    return rotate_90(rotate_180(matrix))
 
-                # Add the time to the total time
-                total_time += time_to_room
+def flip_horizontally(matrix):
+    return [list(reversed(row)) for row in matrix]
 
-                # Mark the room as visited
-                visited_rooms.add(room)
+def flip_vertically(matrix):
+    return [list(reversed(row)) for row in matrix[::-1]]
 
-                # Update the current room
-                current_room = room
+def are_identical(map1, map2):
+    return map1 == map2
 
-        # Calculate the time it takes to go to the next floor
-        time_to_next_floor = abs(current_floor - (n - 1))
+def are_rotated(map1, map2):
+    return are_identical(map1, rotate_90(map2)) or \
+           are_identical(map1, rotate_180(map2)) or \
+           are_identical(map1, rotate_270(map2))
 
-        # Add the time to the total time
-        total_time += time_to_next_floor
+def are_flipped(map1, map2):
+    return are_identical(map1, flip_horizontally(map2)) or \
+           are_identical(map1, flip_vertically(map2))
 
-        # Update the current floor
-        current_floor = n - 1
+def are_matched(map1, map2):
+    return are_identical(map1, map2) or \
+           are_rotated(map1, map2) or \
+           are_flipped(map1, map2)
 
-    return total_time
+def main():
+    map1 = []
+    map2 = []
+    for _ in range(int(input())):
+        map1.append(input())
+        map2.append(input())
+    if are_matched(map1, map2):
+        print("Yes")
+    else:
+        print("No")
+
+if __name__ == '__main__':
+    main()
 

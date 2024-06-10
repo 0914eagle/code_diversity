@@ -1,26 +1,38 @@
 
-def check_typo(word):
-    vowels = ["a", "e", "i", "o", "u"]
-    consonants = ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z"]
-    
-    # Check if the word has any typos
-    has_typo = False
-    for i in range(len(word) - 2):
-        if word[i] in consonants and word[i + 1] in consonants and word[i + 2] in consonants:
-            if word[i] != word[i + 1] and word[i + 1] != word[i + 2]:
-                has_typo = True
-                break
-    
-    # If the word has a typo, insert spaces to fix it
-    if has_typo:
-        fixed_word = ""
-        for i in range(len(word)):
-            if i > 0 and word[i] in vowels and word[i - 1] in consonants:
-                fixed_word += " "
-            fixed_word += word[i]
-        return fixed_word.strip()
-    
-    # If the word has no typos, return the original word
-    else:
-        return word
+def cut_glass(w, h, n):
+    # Initialize the variables
+    glass = [[0] * (w + 1) for _ in range(h + 1)]
+    max_area = 0
+    result = []
+
+    # Loop through each cut
+    for i in range(n):
+        # Read the next cut from stdin
+        cut = input().split()
+
+        # Get the coordinates of the cut
+        if cut[0] == "H":
+            x1, y1, x2, y2 = 0, int(cut[1]), w, int(cut[1])
+        else:
+            x1, y1, x2, y2 = int(cut[1]), 0, int(cut[1]), h
+
+        # Update the glass matrix
+        for j in range(y1, y2 + 1):
+            for k in range(x1, x2 + 1):
+                glass[j][k] += 1
+
+        # Find the maximum area
+        max_area = max(max_area, max(map(max, glass)))
+        result.append(max_area)
+
+    return result
+
+def main():
+    w, h, n = map(int, input().split())
+    result = cut_glass(w, h, n)
+    for area in result:
+        print(area)
+
+if __name__ == '__main__':
+    main()
 

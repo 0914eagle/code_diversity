@@ -1,33 +1,39 @@
 
-def is_possible(points):
-    # Sort the points by their x-coordinates
-    sorted_points = sorted(points, key=lambda point: point[0])
+def get_min_switches(seating_arrangement):
+    # Initialize variables
+    team_a = []
+    team_b = []
+    team_c = []
+    switches = 0
 
-    # Initialize the variables for the left and right endpoints of the lines
-    left_x = sorted_points[0][0]
-    right_x = sorted_points[-1][0]
-    left_y = sorted_points[0][1]
-    right_y = sorted_points[-1][1]
+    # Separate the seating arrangement into teams
+    for i in range(len(seating_arrangement)):
+        if seating_arrangement[i] == "A":
+            team_a.append(i)
+        elif seating_arrangement[i] == "B":
+            team_b.append(i)
+        else:
+            team_c.append(i)
 
-    # Iterate through the points and update the left and right endpoints of the lines
-    for i in range(1, len(sorted_points)):
-        current_x = sorted_points[i][0]
-        current_y = sorted_points[i][1]
+    # Check if teams are already lined up correctly
+    if team_a == list(range(len(team_a))) and team_b == list(range(len(team_b))) and team_c == list(range(len(team_c))):
+        return switches
 
-        # If the current point is not on the line defined by the left endpoint, update the left endpoint
-        if current_y != left_y:
-            left_x = current_x
-            left_y = current_y
+    # Find the minimum number of switches required to line up the teams correctly
+    for i in range(len(seating_arrangement)):
+        if seating_arrangement[i] != "A" and team_a[0] != i:
+            switches += 1
+        if seating_arrangement[i] != "B" and team_b[0] != i:
+            switches += 1
+        if seating_arrangement[i] != "C" and team_c[0] != i:
+            switches += 1
 
-        # If the current point is not on the line defined by the right endpoint, update the right endpoint
-        if current_y != right_y:
-            right_x = current_x
-            right_y = current_y
+    return switches
 
-    # Check if all points are on at least one of the lines
-    for point in points:
-        if point[1] < left_y or point[1] > right_y:
-            return "NO"
+def main():
+    seating_arrangement = input()
+    print(get_min_switches(seating_arrangement))
 
-    return "YES"
+if __name__ == '__main__':
+    main()
 

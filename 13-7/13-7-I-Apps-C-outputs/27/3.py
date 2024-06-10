@@ -1,36 +1,37 @@
 
-def solve(n, m, k, a):
-    # Initialize variables
-    changed_cells = 0
-    rows, cols = n, m
-    table = [[0] * cols for _ in range(rows)]
+def is_valid_arrangement(arrangement, a, b, c):
+    for i in range(len(arrangement)):
+        for j in range(len(arrangement[0])):
+            if arrangement[i][j] == arrangement[i][j-1] and j > 0:
+                return False
+            if arrangement[i][j] == arrangement[i-1][j] and i > 0:
+                return False
+    return True
 
-    # Fill the table with the given values
+def find_good_arrangement(a, b, c):
+    rows = a // c
+    cols = b // a
+    arrangement = []
     for i in range(rows):
+        temp = []
         for j in range(cols):
-            table[i][j] = a[i * cols + j]
+            temp.append("A")
+        arrangement.append(temp)
+    return arrangement
 
-    # Check if the table meets the requirement
-    for i in range(rows):
-        for j in range(cols):
-            if table[i][j] == 1:
-                # Check if the cell is part of a connected component
-                if table[i][j] != table[i - 1][j] or table[i][j] != table[i][j - 1]:
-                    # Check if we can change the cell value to 0
-                    if k > 0:
-                        table[i][j] = 0
-                        changed_cells += 1
-                        k -= 1
-                    else:
-                        return -1
+def main():
+    r, c = map(int, input().split())
+    a, b, c = map(int, input().split())
+    if a + b + c != r * c:
+        print("impossible")
+        return
+    arrangement = find_good_arrangement(a, b, c)
+    if arrangement == []:
+        print("impossible")
+    else:
+        for row in arrangement:
+            print("".join(row))
 
-    # Check if the table meets the requirement after changing the cells
-    for i in range(rows):
-        for j in range(cols):
-            if table[i][j] == 1:
-                # Check if the cell is part of a connected component
-                if table[i][j] != table[i - 1][j] or table[i][j] != table[i][j - 1]:
-                    return -1
-
-    return changed_cells
+if __name__ == '__main__':
+    main()
 

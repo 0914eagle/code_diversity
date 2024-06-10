@@ -1,41 +1,32 @@
 
-def solve(tasks):
-    # Initialize the processor clock and the current priorities of the tasks
-    clock = 0
-    priorities = [task[1] for task in tasks]
+def get_shortest_test_scheme(k, durations):
+    # Sort the durations in non-decreasing order
+    durations.sort()
+    
+    # Initialize the number of days as the sum of the durations
+    num_days = sum(durations)
+    
+    # Loop through each duration and check if it can be removed without affecting the test outcome
+    for i in range(k):
+        # Remove the current duration and check if the number of days is still sufficient
+        num_days -= durations[i]
+        if num_days >= k:
+            # If the number of days is still sufficient, continue with the next duration
+            continue
+        else:
+            # If the number of days is not sufficient, return the current number of days
+            return num_days + 1
+    
+    # If all durations have been removed, return the total number of days
+    return num_days
 
-    # Run the infinite loop until all tasks complete
-    while True:
-        # Identify the running tasks
-        running_tasks = [task for task in tasks if task[0] <= clock and len(task[2]) > 0]
+def main():
+    k = int(input())
+    durations = []
+    for i in range(k):
+        durations.append(int(input()))
+    print(get_shortest_test_scheme(k, durations))
 
-        # Determine the current priorities of the running tasks and which tasks are blocked
-        blocked_tasks = []
-        for task in running_tasks:
-            if task[2][0] == "L":
-                resource = int(task[2][1])
-                if resource in blocked_tasks or any(priorities[task] < priorities[other_task] for other_task in blocked_tasks if other_task[3][resource] > priorities[task]):
-                    blocked_tasks.append(task)
-            elif task[2][0] == "U":
-                resource = int(task[2][1])
-                if task in blocked_tasks:
-                    blocked_tasks.remove(task)
-
-        # Execute the next instruction of the non-blocked running task with the highest current priority
-        if len(blocked_tasks) == 0:
-            running_tasks.sort(key=lambda x: x[1])
-            task = running_tasks[-1]
-            instruction = task[2].pop(0)
-            if instruction == "C":
-                clock += 1
-            elif instruction == "L":
-                resource = int(instruction[1])
-                task[3][resource] = task[1]
-            elif instruction == "U":
-                resource = int(instruction[1])
-                task[3][resource] = 0
-
-        # If all tasks have completed, return the completion times
-        if len(tasks) == 0:
-            return [task[0] + clock for task in tasks]
+if __name__ == '__main__':
+    main()
 

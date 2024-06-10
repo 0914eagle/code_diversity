@@ -1,21 +1,25 @@
 
-def solve(n, a):
-    # Sort the array in non-decreasing order
-    a.sort()
-    # Initialize the result
-    result = 0
-    # Loop through the array
-    for i in range(n):
-        # Calculate the sum of squares up to the current index
-        result += a[i] ** 2
-        # If the current index is not the last index
-        if i != n - 1:
-            # Calculate the bitwise AND and OR of the current and next elements
-            and_result = a[i] & a[i + 1]
-            or_result = a[i] | a[i + 1]
-            # Replace the current and next elements with their bitwise AND and OR
-            a[i] = and_result
-            a[i + 1] = or_result
-    # Return the final result
-    return result
+def get_remainders(n, k):
+    remainders = []
+    for i in range(1, k+1):
+        remainders.append(n%i)
+    return remainders
+
+def are_remainders_distinct(remainders):
+    for i in range(len(remainders)):
+        for j in range(i+1, len(remainders)):
+            if remainders[i] == remainders[j]:
+                return False
+    return True
+
+def main():
+    n, k = map(int, input().split())
+    remainders = get_remainders(n, k)
+    if are_remainders_distinct(remainders):
+        print("Yes")
+    else:
+        print("No")
+
+if __name__ == '__main__':
+    main()
 

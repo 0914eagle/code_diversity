@@ -1,31 +1,37 @@
 
-def solve(n, m, s, a, b, c):
-    # Sort the bugs by complexity in descending order
-    sorted_bugs = sorted(range(m), key=lambda i: a[i])
+def get_permutation(n):
+    permutation = list(range(1, n+1))
+    return permutation
 
-    # Initialize the students' passes and the number of days needed to fix the bugs
-    passes = [0] * n
-    days = 0
+def apply_permutation(permutation, q):
+    n = len(permutation)
+    new_permutation = [0] * n
+    for i in range(n):
+        new_permutation[i] = permutation[q[i]-1]
+    return new_permutation
 
-    # Iterate through the sorted bugs
-    for i in sorted_bugs:
-        # Find the student with the highest level of ability who can fix the current bug
-        student = max(range(n), key=lambda i: b[i])
+def inverse_permutation(permutation):
+    n = len(permutation)
+    inverse = [0] * n
+    for i in range(n):
+        inverse[permutation[i]-1] = i+1
+    return inverse
 
-        # Check if the student has enough passes to fix the bug
-        if passes[student] + c[student] >= a[i]:
-            # Subtract the complexity of the bug from the student's passes
-            passes[student] -= a[i]
+def is_possible(n, k, q, s):
+    permutation = get_permutation(n)
+    for i in range(k):
+        if permutation == s:
+            return False
+        coin = random.randint(0, 1)
+        if coin == 0:
+            permutation = apply_permutation(permutation, q)
         else:
-            # The student does not have enough passes, so they cannot fix the bug
-            return "NO"
+            permutation = apply_permutation(permutation, inverse_permutation(q))
+    return True
 
-        # Increment the number of days needed to fix the bug
-        days += 1
-
-    # Check if the university has enough passes to give to the students
-    if sum(passes) <= s:
-        return "YES"
-    else:
-        return "NO"
+if __name__ == '__main__':
+    n, k = map(int, input().split())
+    q = list(map(int, input().split()))
+    s = list(map(int, input().split()))
+    print("YES" if is_possible(n, k, q, s) else "NO")
 

@@ -1,23 +1,20 @@
 
-def solve(x1, x2, x3, x4):
-    # Find the sum of all three numbers
-    sum_abc = x1 + x2 + x3
+def get_input():
+    return list(map(int, input().split()))
 
-    # Find the pairwise sums
-    a_b = x1 - x2
-    a_c = x1 - x3
-    b_c = x2 - x3
+def solve(L, R):
+    min_value = float('inf')
+    for i in range(L, R):
+        for j in range(i+1, R+1):
+            value = (i * j) % 2019
+            if value < min_value:
+                min_value = value
+    return min_value
 
-    # Find the greatest common divisor (gcd) of the pairwise sums
-    gcd_ab = gcd(a_b, b_c)
+def main():
+    L, R = get_input()
+    print(solve(L, R))
 
-    # Find the least common multiple (lcm) of the pairwise sums
-    lcm_ab = lcm(a_b, b_c)
-
-    # Find the three numbers
-    a = lcm_ab // gcd_ab
-    b = (sum_abc - a) // 2
-    c = sum_abc - a - b
-
-    return a, b, c
+if __name__ == '__main__':
+    main()
 

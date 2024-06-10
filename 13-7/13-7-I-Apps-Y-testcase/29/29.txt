@@ -1,14 +1,10 @@
 {
-    "inputs": [
-        "5\napple\near\nreal\nletters\nstyle\n",
-        "3\napple\nextra\napple\n",
-        "2\napple\nneat\n",
-        "5\napple\neast\nteam\nmeat\nteam\n"
-    ],
-    "outputs": [
-        "Fair Game\n",
-        "Player 1 lost\n",
-        "Player 2 lost\n",
-        "Player 1 lost\n"
-    ]
+  "inputs": [
+    "7\n4\n11 14 16 12\n2\n1 8\n4\n1 1 1 1\n4\n1 2 5 6\n2\n12 13\n6\n1 6 3 10 5 8\n6\n1 12 3 10 5 8\n",
+    "1\n4\n1 1 1 8\n"
+  ],
+  "outputs": [
+    "YES\nNO\nYES\nYES\nYES\nYES\nNO\n",
+    "NO\n"
+  ]
 }

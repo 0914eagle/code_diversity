@@ -1,33 +1,46 @@
 
-def solve(price, num_coins):
-    # Initialize a dictionary to store the number of coins for each value
-    coins = {1: 0, 5: 0, 10: 0, 25: 0}
+def get_rooms(n):
+    return [set() for _ in range(n + 1)]
 
-    # Add the number of coins for each value
-    for value, count in num_coins.items():
-        coins[value] += count
+def add_corridor(rooms, u, v):
+    rooms[u].add(v)
+    rooms[v].add(u)
 
-    # Initialize the maximum number of coins that can be used
-    max_coins = 0
+def remove_corridor(rooms, u, v):
+    rooms[u].remove(v)
+    rooms[v].remove(u)
 
-    # Loop through the values of coins and see if they can be used to pay the price
-    for value in sorted(coins.keys(), reverse=True):
-        # If the price is already paid, break the loop
-        if price == 0:
-            break
-        # If the number of coins for the current value is greater than the price, use all the coins and break the loop
-        if coins[value] >= price:
-            max_coins += price
-            break
-        # If the number of coins for the current value is less than the price, use all the coins and continue the loop
-        else:
-            max_coins += coins[value]
-            price -= coins[value]
+def is_connected(rooms, u, v):
+    return v in rooms[u]
 
-    # If the price is not paid, return "Impossible"
-    if price != 0:
-        return "Impossible"
+def get_cycles(rooms):
+    cycles = []
+    for i in range(1, len(rooms)):
+        for j in range(i + 1, len(rooms)):
+            if is_connected(rooms, i, j):
+                cycles.append((i, j))
+    return cycles
 
-    # Return the maximum number of coins that can be used
-    return max_coins
+def get_removable_corridors(rooms, m):
+    removable_corridors = []
+    for i in range(1, len(rooms)):
+        for j in range(i + 1, len(rooms)):
+            if is_connected(rooms, i, j) and (i, j) not in removable_corridors:
+                removable_corridors.append((i, j))
+    return removable_corridors[:m // 2]
+
+def get_output(rooms, m):
+    removable_corridors = get_removable_corridors(rooms, m)
+    return str(len(removable_corridors)) + '\n' + '\n'.join(str(i) for i, _ in removable_corridors)
+
+def main():
+    n, m = map(int, input().split())
+    rooms = get_rooms(n)
+    for _ in range(m):
+        u, v = map(int, input().split())
+        add_corridor(rooms, u, v)
+    print(get_output(rooms, m))
+
+if __name__ == '__main__':
+    main()
 

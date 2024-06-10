@@ -1,18 +1,23 @@
 
-import math
+def get_missing_cards(deck):
+    suits = ["P", "K", "H", "T"]
+    numbers = [str(i) for i in range(1, 14)]
+    missing_cards = [0, 0, 0, 0]
+    
+    for card in deck:
+        suit = card[0]
+        number = card[1:]
+        if suit not in suits or number not in numbers:
+            return "GRESKA"
+        else:
+            missing_cards[suits.index(suit)] -= 1
+    
+    return " ".join(str(missing_card) for missing_card in missing_cards)
 
-def find_distance(A, B, H, M):
-    # Calculate the angle made by the hour hand
-    hour_angle = (30 * H) % 360
-    
-    # Calculate the angle made by the minute hand
-    minute_angle = (6 * M) % 360
-    
-    # Calculate the angle between the hour and minute hands
-    angle_between_hands = abs(hour_angle - minute_angle)
-    
-    # Calculate the distance between the hands
-    distance = math.sin(math.radians(angle_between_hands)) * A
-    
-    return distance
+def main():
+    deck = input()
+    print(get_missing_cards(deck))
+
+if __name__ == '__main__':
+    main()
 

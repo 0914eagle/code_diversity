@@ -1,9 +1,33 @@
 
-def find_price_before_tax(a, b):
-    for price in range(1, 101):
-        tax_8 = int(price * 0.08)
-        tax_10 = int(price * 0.1)
-        if tax_8 == a and tax_10 == b:
-            return price
-    return -1
+def get_rating_after_completing_projects(rating, projects):
+    rating_after_completing_projects = rating
+    for project in projects:
+        rating_after_completing_projects += project[1]
+        if rating_after_completing_projects < 0:
+            return False
+    return True
+
+def get_possible_order_of_projects(n, r, projects):
+    possible_orders = []
+    for i in range(n):
+        for j in range(i+1, n):
+            for k in range(j+1, n):
+                if get_rating_after_completing_projects(r, [(projects[i], projects[j], projects[k])]):
+                    possible_orders.append((i, j, k))
+    return possible_orders
+
+def main():
+    n, r = map(int, input().split())
+    projects = []
+    for i in range(n):
+        a, b = map(int, input().split())
+        projects.append((a, b))
+    possible_orders = get_possible_order_of_projects(n, r, projects)
+    if possible_orders:
+        print("YES")
+    else:
+        print("NO")
+
+if __name__ == '__main__':
+    main()
 

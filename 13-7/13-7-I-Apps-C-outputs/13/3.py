@@ -1,23 +1,64 @@
 
-def solve(n, circles):
-    # Initialize a set to store the regions
-    regions = set()
+import numpy as np
 
-    # Iterate over the circles
-    for circle in circles:
-        # Get the center and radius of the circle
-        x, y, r = circle
+def get_ice_grid(r, c, i, j, n):
+    # Initialize the ice grid as a 2D array of white dots
+    ice_grid = np.array([['.' for _ in range(c)] for _ in range(r)])
+    
+    # Set the starting location of the zamboni
+    ice_grid[i-1, j-1] = '@'
+    
+    # Define the direction of movement and the current color
+    direction = 'up'
+    color = 'A'
+    
+    # Loop through each step
+    for step in range(n):
+        # Move the zamboni in the current direction
+        if direction == 'up':
+            i -= 1
+        elif direction == 'down':
+            i += 1
+        elif direction == 'left':
+            j -= 1
+        else:
+            j += 1
+        
+        # Wrap the zamboni around the edge of the rink
+        if i == 0:
+            i = r
+        if i == r+1:
+            i = 1
+        if j == 0:
+            j = c
+        if j == c+1:
+            j = 1
+        
+        # Overwrite the current color on the ice
+        ice_grid[i-1, j-1] = color
+        
+        # Switch to the next color in alphabetical order
+        color = chr(ord(color) + 1)
+        if color == 'Z':
+            color = 'A'
+        
+        # Rotate the direction of the zamboni 90 degrees clockwise
+        if direction == 'up':
+            direction = 'right'
+        elif direction == 'right':
+            direction = 'down'
+        elif direction == 'down':
+            direction = 'left'
+        else:
+            direction = 'up'
+    
+    return ice_grid
 
-        # Calculate the area of the circle
-        area = 3.14 * r ** 2
+def main():
+    r, c, i, j, n = map(int, input().split())
+    ice_grid = get_ice_grid(r, c, i, j, n)
+    print(ice_grid)
 
-        # Calculate the boundaries of the circle
-        bound_x = x + r
-        bound_y = y + r
-
-        # Add the area of the circle to the set of regions
-        regions.add((area, bound_x, bound_y))
-
-    # Return the number of regions
-    return len(regions)
+if __name__ == '__main__':
+    main()
 

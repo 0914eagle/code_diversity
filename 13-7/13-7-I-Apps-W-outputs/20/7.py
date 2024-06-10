@@ -1,94 +1,33 @@
 
-def get_network_topology(n, m, edges):
-    # Initialize a graph with n nodes and no edges
-    graph = [[] for _ in range(n)]
+def get_lifelines(n, edges):
+    # Initialize a dictionary to store the vertices and their neighbors
+    neighbors = {i: set() for i in range(1, n + 1)}
 
-    # Add edges to the graph
+    # Add the edges to the dictionary
     for edge in edges:
-        graph[edge[0] - 1].append(edge[1])
-        graph[edge[1] - 1].append(edge[0])
+        neighbors[edge[0]].add(edge[1])
+        neighbors[edge[1]].add(edge[0])
 
-    # Check if the graph is connected
-    if not is_connected(graph):
-        return "unknown topology"
+    # Initialize a set to store the lifelines
+    lifelines = set()
 
-    # Check if the graph is a bus
-    if is_bus(graph):
-        return "bus topology"
+    # Iterate through the vertices and their neighbors
+    for vertex, neighbors in neighbors.items():
+        # If the vertex has two neighbors, it is a lifeline
+        if len(neighbors) == 2:
+            lifelines.add(tuple(sorted((vertex, neighbors.pop()))))
 
-    # Check if the graph is a ring
-    if is_ring(graph):
-        return "ring topology"
+    return len(lifelines)
 
-    # Check if the graph is a star
-    if is_star(graph):
-        return "star topology"
+def main():
+    n = int(input())
+    edges = []
 
-    # If none of the above conditions are met, the graph is unknown
-    return "unknown topology"
+    for _ in range(n - 1):
+        edges.append(tuple(map(int, input().split())))
 
-# Check if the graph is connected
-def is_connected(graph):
-    visited = [False] * len(graph)
-    queue = [0]
-    visited[0] = True
+    print(get_lifelines(n, edges))
 
-    while queue:
-        node = queue.pop(0)
-        for neighbor in graph[node]:
-            if not visited[neighbor - 1]:
-                visited[neighbor - 1] = True
-                queue.append(neighbor)
-
-    for node in visited:
-        if not node:
-            return False
-
-    return True
-
-# Check if the graph is a bus
-def is_bus(graph):
-    visited = [False] * len(graph)
-    queue = [0]
-    visited[0] = True
-
-    while queue:
-        node = queue.pop(0)
-        for neighbor in graph[node]:
-            if not visited[neighbor - 1]:
-                visited[neighbor - 1] = True
-                queue.append(neighbor)
-
-    return all(visited[1:])
-
-# Check if the graph is a ring
-def is_ring(graph):
-    visited = [False] * len(graph)
-    queue = [0]
-    visited[0] = True
-
-    while queue:
-        node = queue.pop(0)
-        for neighbor in graph[node]:
-            if not visited[neighbor - 1]:
-                visited[neighbor - 1] = True
-                queue.append(neighbor)
-
-    return all(visited[1:]) and visited[0]
-
-# Check if the graph is a star
-def is_star(graph):
-    center = 0
-    visited = [False] * len(graph)
-    queue = [0]
-    visited[0] = True
-
-    while queue:
-        node = queue.pop(0)
-        for neighbor in graph[node]:
-            if not visited[neighbor - 1]:
-                visited[neighbor - 1] = True
-                queue.append(neighbor)
-
-    return all(visited[1:]) and visited[0]
+if __name__ == '__main__':
+    main()
 

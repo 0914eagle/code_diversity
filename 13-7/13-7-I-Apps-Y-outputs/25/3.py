@@ -1,38 +1,16 @@
 
-def solve(problems, drinks):
-    # Initialize a dictionary to store the time it takes to solve each problem
-    problem_time = {}
-    for problem in problems:
-        problem_time[problem] = problems[problem]
-
-    # Iterate through each drink and calculate the total time to solve all problems
-    for drink in drinks:
-        total_time = 0
-        for problem in problems:
-            if problem in drinks[drink]:
-                total_time += drinks[drink][problem]
-            else:
-                total_time += problem_time[problem]
-        print(total_time)
+def get_probability(n):
+    total = 0
+    odd = 0
+    for i in range(1, n+1):
+        total += 1
+        if i % 2 == 1:
+            odd += 1
+    return odd / total
 
 def main():
-    # Read the input
-    num_problems = int(input())
-    problems = {}
-    for i in range(num_problems):
-        problems[i+1] = int(input())
-
-    num_drinks = int(input())
-    drinks = {}
-    for i in range(num_drinks):
-        drinks[i+1] = {}
-        num_problems_affected = int(input())
-        for j in range(num_problems_affected):
-            problem, time = map(int, input().split())
-            drinks[i+1][problem] = time
-
-    # Solve the problem
-    solve(problems, drinks)
+    n = int(input())
+    print(get_probability(n))
 
 if __name__ == '__main__':
     main()

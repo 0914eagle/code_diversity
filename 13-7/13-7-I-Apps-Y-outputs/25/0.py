@@ -1,8 +1,13 @@
 
-def get_solve_time(problem_times, drink_info):
-    drink_map = {}
-    for drink, problem, time in drink_info:
-        drink_map[drink] = problem_times[:]
-        drink_map[drink][problem-1] = time
-    return [sum(problem_times) for problem_times in drink_map.values()]
+import math
+
+def get_probability(N):
+    return float(sum(1 for i in range(1, N+1, 2))) / N
+
+def main():
+    N = int(input())
+    print(get_probability(N))
+
+if __name__ == '__main__':
+    main()
 

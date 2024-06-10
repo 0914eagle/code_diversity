@@ -1,23 +1,40 @@
 
-def solve(numbers):
-    n = len(numbers)
-    if n == 1:
-        return "YES"
-    if n == 2:
-        if numbers[0] < numbers[1]:
-            return "YES"
-        else:
-            return "NO"
-    if n == 3:
-        if numbers[0] < numbers[1] + numbers[2] and numbers[1] < numbers[2] + numbers[0] and numbers[2] < numbers[0] + numbers[1]:
-            return "YES"
-        else:
-            return "NO"
-    else:
-        for i in range(n):
-            sum1 = numbers[i] + numbers[(i+1)%n]
-            sum2 = numbers[i] + numbers[(i-1)%n]
-            if sum1 < numbers[(i+1)%n] or sum2 < numbers[(i-1)%n]:
-                return "NO"
-        return "YES"
+import itertools
+
+def get_factors(n):
+    factors = []
+    for i in range(1, int(n**0.5) + 1):
+        if n % i == 0:
+            factors.append(i)
+            if n // i != i:
+                factors.append(n // i)
+    return sorted(factors)
+
+def count_ways(n, k, S):
+    # Initialize a dictionary to store the number of ways for each sum
+    dp = {0: 1}
+    
+    # Iterate over the numbers
+    for i in range(1, n+1):
+        # Get the factors of the current number
+        factors = get_factors(i)
+        
+        # Iterate over the possible sums
+        for j in range(S+1):
+            # If the current sum is already in the dictionary, update the number of ways
+            if j in dp:
+                dp[j] += len(factors)
+            # If the current sum is not in the dictionary, add it and set the number of ways to the number of factors
+            else:
+                dp[j] = len(factors)
+    
+    # Return the number of ways for the given sum
+    return dp[S]
+
+def main():
+    n, k, S = map(int, input().split())
+    print(count_ways(n, k, S))
+
+if __name__ == '__main__':
+    main()
 

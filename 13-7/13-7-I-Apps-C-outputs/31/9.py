@@ -1,38 +1,36 @@
 
-def get_min_cost(distances, costs, tank_capacity):
-    # Sort the distances and costs in ascending order
-    sorted_distances = sorted(distances)
-    sorted_costs = sorted(costs)
-    
-    # Initialize the minimum cost and the current fuel level
-    min_cost = 0
-    fuel_level = tank_capacity
-    
-    # Loop through the distances and costs
-    for i in range(len(sorted_distances)):
-        # Calculate the distance to the next gas station
-        distance = sorted_distances[i]
-        
-        # Calculate the cost of fuel needed for the next gas station
-        fuel_needed = distance - fuel_level
-        if fuel_needed > 0:
-            # Calculate the cost of fuel for the next gas station
-            fuel_cost = fuel_needed * sorted_costs[i]
-            
-            # Check if the fuel cost is less than the tank capacity
-            if fuel_cost <= tank_capacity:
-                # Add the fuel cost to the minimum cost
-                min_cost += fuel_cost
-                
-                # Update the fuel level
-                fuel_level = tank_capacity - fuel_cost
-            else:
-                # Return "cancel road trip" if the fuel cost is greater than the tank capacity
-                return "cancel road trip"
-        else:
-            # Update the fuel level
-            fuel_level = fuel_level - distance
-    
-    # Return the minimum cost
-    return min_cost
+import math
+
+def get_visible_beacons(beacons, peak, radius):
+    visible_beacons = []
+    for beacon in beacons:
+        if is_visible(beacon, peak, radius):
+            visible_beacons.append(beacon)
+    return visible_beacons
+
+def is_visible(beacon, peak, radius):
+    distance = math.sqrt((beacon[0] - peak[0])**2 + (beacon[1] - peak[1])**2)
+    return distance <= radius
+
+def get_messages_required(beacons, peaks):
+    messages_required = 0
+    for peak in peaks:
+        visible_beacons = get_visible_beacons(beacons, peak, peak[2])
+        messages_required += len(visible_beacons)
+    return messages_required
+
+def main():
+    n, m = map(int, input().split())
+    beacons = []
+    for _ in range(n):
+        x, y = map(int, input().split())
+        beacons.append((x, y))
+    peaks = []
+    for _ in range(m):
+        x, y, r = map(int, input().split())
+        peaks.append((x, y, r))
+    print(get_messages_required(beacons, peaks))
+
+if __name__ == '__main__':
+    main()
 

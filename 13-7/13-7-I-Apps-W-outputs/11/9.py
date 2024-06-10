@@ -1,36 +1,41 @@
 
-def find_max_raspberry(n, c, x):
-    # Initialize variables
-    max_profit = 0
-    current_profit = 0
-    raspberry_left = 0
-    day = 1
+import math
 
-    # Loop through the prices
-    for i in range(n):
-        # Check if the bear has enough raspberry to lend a barrel
-        if raspberry_left >= c:
-            # Calculate the profit from selling the barrel
-            current_profit += x[i] - c
-            # Subtract the cost of renting the barrel from the raspberry left
-            raspberry_left -= c
-            # Increment the day
-            day += 1
+def calculate_distance(t):
+    # Calculate the distance between Agneta and Beata at time t
+    distance = math.sqrt((agneta_x(t) - beata_x(t))**2 + (agneta_y(t) - beata_y(t))**2)
+    return distance
 
-        # Check if the bear has enough raspberry to buy a new barrel
-        elif raspberry_left > 0:
-            # Calculate the profit from buying a new barrel
-            current_profit += x[i] - raspberry_left
-            # Set the raspberry left to 0
-            raspberry_left = 0
-            # Increment the day
-            day += 1
+def agneta_x(t):
+    # Calculate Agneta's x-coordinate at time t
+    x = 1 + t * math.sin(agneta_angular_speed * t)
+    return x
 
-        # Check if the bear has run out of raspberry
-        else:
-            # Break the loop
-            break
+def agneta_y(t):
+    # Calculate Agneta's y-coordinate at time t
+    y = t * math.cos(agneta_angular_speed * t)
+    return y
 
-    # Return the maximum profit
-    return current_profit
+def beata_x(t):
+    # Calculate Beata's x-coordinate at time t
+    x = 2 + t * math.sin(beata_angular_speed * t)
+    return x
+
+def beata_y(t):
+    # Calculate Beata's y-coordinate at time t
+    y = t * math.cos(beata_angular_speed * t)
+    return y
+
+def main():
+    # Read input
+    W = float(input())
+
+    # Calculate the minimal distance between Agneta and Beata
+    minimal_distance = calculate_distance(W)
+
+    # Print output
+    print(minimal_distance)
+
+if __name__ == '__main__':
+    main()
 

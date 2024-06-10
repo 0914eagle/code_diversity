@@ -1,17 +1,25 @@
 
-def solve(s):
-    # Initialize the score to 0
-    score = 0
-    
-    # Iterate through the string s
+def is_telephone_number(s):
+    return s[0] == "8" and len(s) == 11 and all(s[i] != s[i-1] for i in range(1, len(s)))
+
+def has_winning_strategy(s):
+    if len(s) == 1:
+        return True
+    if len(s) == 11 and is_telephone_number(s):
+        return False
     for i in range(len(s)):
-        # If the i-th character in s is 'g', play 'p'
-        if s[i] == 'g':
-            score += 1
-        # If the i-th character in s is 'p', play 'g'
-        elif s[i] == 'p':
-            score -= 1
-    
-    # Return the maximum possible score, which is 0
-    return score
+        if has_winning_strategy(s[:i] + s[i+1:]):
+            return True
+    return False
+
+def main():
+    n = int(input())
+    s = input()
+    if has_winning_strategy(s):
+        print("YES")
+    else:
+        print("NO")
+
+if __name__ == '__main__':
+    main()
 

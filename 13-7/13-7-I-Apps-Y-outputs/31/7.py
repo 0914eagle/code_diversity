@@ -1,21 +1,39 @@
 
-def solve(arr):
-    # Initialize variables to keep track of the sum and the minimum number of elements to insert
-    sum_arr = 0
-    min_elements = 0
-    
-    # Iterate through the array
-    for i in range(len(arr)):
-        # Add the current element to the sum
-        sum_arr += arr[i]
-        
-        # If the sum is zero, we need to insert an element
-        if sum_arr == 0:
-            min_elements += 1
-        
-        # If the sum is negative, we need to insert elements to make the sum positive
-        elif sum_arr < 0:
-            min_elements += -sum_arr
-        
-    return min_elements
+def get_maximum_fraction(n, capacities, gas_canisters):
+    # Sort the gas canisters in non-decreasing order
+    sorted_gas_canisters = sorted(gas_canisters)
+
+    # Initialize the minimum fraction to 0
+    min_fraction = 0
+
+    # Iterate through the balloons and gas canisters
+    for i in range(n):
+        # Calculate the capacity of the balloon
+        capacity = capacities[i]
+
+        # Calculate the amount of helium needed to fill the balloon to its capacity
+        needed_helium = capacity - capacities[i]
+
+        # If the needed helium is greater than the amount of helium in the current gas canister, return "impossible"
+        if needed_helium > sorted_gas_canisters[i]:
+            return "impossible"
+
+        # Otherwise, calculate the fraction of the balloon that can be filled with helium
+        fraction = needed_helium / capacity
+
+        # Update the minimum fraction if the current fraction is less than the minimum fraction
+        if fraction < min_fraction:
+            min_fraction = fraction
+
+    # Return the minimum fraction
+    return min_fraction
+
+def main():
+    n = int(input())
+    capacities = list(map(int, input().split()))
+    gas_canisters = list(map(int, input().split()))
+    print(get_maximum_fraction(n, capacities, gas_canisters))
+
+if __name__ == '__main__':
+    main()
 

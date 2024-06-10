@@ -1,13 +1,20 @@
 
-def solve(oranges, apples):
-    if oranges == 0 and apples == 0:
-        return "Impossible"
-    if oranges == 1 and apples == 1:
-        return "AB"
-    if oranges == 1 and apples > 1:
-        return "A" + "B" * (apples - 1)
-    if oranges > 1 and apples == 1:
-        return "B" + "A" * (oranges - 1)
-    if oranges > 1 and apples > 1:
-        return "A" + "B" * (apples - 1) + "A" * (oranges - 1)
+def is_pythagorean_triple(a, b, c):
+    return a**2 + b**2 == c**2
+
+def count_pythagorean_triples(n):
+    count = 0
+    for a in range(1, n):
+        for b in range(a, n):
+            c = (a**2 + b**2) % n
+            if is_pythagorean_triple(a, b, c):
+                count += 1
+    return count
+
+def main():
+    n = int(input())
+    print(count_pythagorean_triples(n))
+
+if __name__ == '__main__':
+    main()
 

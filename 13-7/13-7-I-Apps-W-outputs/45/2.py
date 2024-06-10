@@ -1,30 +1,19 @@
 
-def solve(matrix, k):
-    # Initialize the result string
-    result = ""
+def get_final_weight(weight, height, stone1_weight, stone1_height, stone2_weight, stone2_height):
+    while height > 0:
+        weight += height
+        if height == stone1_height or height == stone2_height:
+            weight -= min(stone1_weight, stone2_weight)
+        height -= 1
+    return max(weight, 0)
 
-    # Loop through each row of the matrix
-    for i in range(len(matrix)):
-        # Loop through each column of the matrix
-        for j in range(len(matrix[i])):
-            # If the cell is not blocked by a previous change
-            if matrix[i][j] != "-":
-                # Add the letter to the result string
-                result += matrix[i][j]
-                # Block the cell so that it cannot be used again
-                matrix[i][j] = "-"
-                # Decrement the number of available changes
-                k -= 1
-                # If all changes have been used, break the loop
-                if k == 0:
-                    break
-            # If the cell is blocked by a previous change, skip it
-            else:
-                continue
-        # If all changes have been used, break the loop
-        if k == 0:
-            break
+def main():
+    weight, height = map(int, input().split())
+    stone1_weight, stone1_height = map(int, input().split())
+    stone2_weight, stone2_height = map(int, input().split())
+    final_weight = get_final_weight(weight, height, stone1_weight, stone1_height, stone2_weight, stone2_height)
+    print(final_weight)
 
-    # Return the result string
-    return result
+if __name__ == '__main__':
+    main()
 

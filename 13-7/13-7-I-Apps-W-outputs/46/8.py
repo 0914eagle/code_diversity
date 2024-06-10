@@ -1,25 +1,38 @@
 
-def solve(essay, synonyms):
-    # Initialize variables
-    min_r_count = float('inf')
-    min_length = float('inf')
-    opt_essay = ''
+def get_earliest_time_to_arrive(n, m, t_a, t_b, k, a_list, b_list):
+    # Sort the lists of flight times
+    a_list.sort()
+    b_list.sort()
+    
+    # Initialize the variables
+    earliest_time = -1
+    flights_cancelled = 0
+    
+    # Iterate through the flights from A to B
+    for i in range(n):
+        # Check if the flight is not cancelled and if it is possible to take the flight and the next flight from B to C
+        if flights_cancelled < k and a_list[i] + t_a <= b_list[0]:
+            # Cancel the flight and update the variables
+            flights_cancelled += 1
+            earliest_time = a_list[i] + t_a + b_list[0]
+        # Check if the flight is not cancelled and if it is possible to take the flight and the next flight from B to C
+        elif flights_cancelled < k and a_list[i] + t_a > b_list[0]:
+            # Cancel the flight and update the variables
+            flights_cancelled += 1
+            earliest_time = a_list[i] + t_a + b_list[1]
+    
+    # Check if it is possible to cancel k or less flights and still reach C
+    if flights_cancelled <= k:
+        return earliest_time
+    else:
+        return -1
 
-    # Iterate through all possible combinations of synonyms
-    for i in range(len(synonyms)):
-        for j in range(i+1, len(synonyms)):
-            # Create a new essay with the current combination of synonyms
-            new_essay = essay.replace(synonyms[i], synonyms[j]).replace(synonyms[j], synonyms[i])
+def main():
+    n, m, t_a, t_b, k = map(int, input().split())
+    a_list = list(map(int, input().split()))
+    b_list = list(map(int, input().split()))
+    print(get_earliest_time_to_arrive(n, m, t_a, t_b, k, a_list, b_list))
 
-            # Count the number of 'r's in the new essay
-            r_count = new_essay.lower().count('r')
-
-            # If the number of 'r's is less than the minimum, update the minimum and the optimal essay
-            if r_count < min_r_count:
-                min_r_count = r_count
-                min_length = len(new_essay)
-                opt_essay = new_essay
-
-    # Return the minimum number of 'r's and the minimum length of the optimal essay
-    return min_r_count, min_length
+if __name__ == '__main__':
+    main()
 

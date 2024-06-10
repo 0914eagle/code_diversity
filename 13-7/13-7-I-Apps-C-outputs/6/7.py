@@ -1,75 +1,72 @@
 
-def get_largest_fee(N, P, X, Y, M, banks, partnerships):
-    # Initialize a graph with the given number of nodes
-    graph = [[] for _ in range(N + 1)]
+import math
 
-    # Add edges to the graph based on the partnerships
-    for a, b, c in partnerships:
-        graph[a].append((b, c))
-        graph[b].append((a, c))
+def get_distance(x, y):
+    return math.sqrt(x**2 + y**2)
 
-    # Find the shortest path between X and Y using Dijkstra's algorithm
-    dist, prev = dijkstra(graph, X, Y)
+def get_angle(x1, y1, x2, y2):
+    return math.atan2(y2 - y1, x2 - x1)
 
-    # If there is no path between X and Y, return "Impossible"
-    if dist[Y] == float("inf"):
-        return "Impossible"
+def get_closest_distance(x, y, contour):
+    min_distance = float('inf')
+    for i in range(len(contour) - 1):
+        x1, y1 = contour[i]
+        x2, y2 = contour[i + 1]
+        angle = get_angle(x1, y1, x2, y2)
+        distance = get_distance(x - x1, y - y1)
+        projection = distance * math.cos(angle)
+        if projection < min_distance:
+            min_distance = projection
+    return min_distance
 
-    # Initialize the largest fee to 0
-    largest_fee = 0
+def get_closest_point(x, y, contour):
+    min_distance = float('inf')
+    closest_point = None
+    for i in range(len(contour) - 1):
+        x1, y1 = contour[i]
+        x2, y2 = contour[i + 1]
+        angle = get_angle(x1, y1, x2, y2)
+        distance = get_distance(x - x1, y - y1)
+        projection = distance * math.cos(angle)
+        if projection < min_distance:
+            min_distance = projection
+            closest_point = (x1, y1)
+    return closest_point
 
-    # Iterate through the path between X and Y
-    for i in range(X, Y):
-        # If the current node is not a bank owned by SWERC, continue
-        if i not in banks:
-            continue
+def get_closest_distance_to_target(contours):
+    x, y = 0, 0
+    min_distance = float('inf')
+    for contour in contours:
+        distance = get_closest_distance(x, y, contour)
+        if distance < min_distance:
+            min_distance = distance
+    return min_distance
 
-        # Find the next node in the path that is a bank owned by SWERC
-        next_node = prev[i]
+def get_closest_point_to_target(contours):
+    x, y = 0, 0
+    min_distance = float('inf')
+    closest_point = None
+    for contour in contours:
+        point = get_closest_point(x, y, contour)
+        distance = get_distance(x - point[0], y - point[1])
+        if distance < min_distance:
+            min_distance = distance
+            closest_point = point
+    return closest_point
 
-        # If there is no next node, break
-        if next_node == -1:
-            break
+def main():
+    n = int(input())
+    contours = []
+    for i in range(n):
+        height_out, height_in, num_vertices = map(int, input().split())
+        contour = []
+        for j in range(num_vertices):
+            x, y = map(int, input().split())
+            contour.append((x, y))
+        contours.append(contour)
+    print(get_closest_distance_to_target(contours))
+    print(get_closest_point_to_target(contours))
 
-        # Find the fee for the edge between the current node and the next node
-        fee = graph[i][next_node][1]
-
-        # Update the largest fee if necessary
-        largest_fee = max(largest_fee, fee)
-
-    # Return the largest fee
-    return largest_fee
-
-def dijkstra(graph, src, dest):
-    # Initialize the distance and previous node arrays
-    dist = [float("inf") for _ in range(len(graph))]
-    prev = [-1 for _ in range(len(graph))]
-
-    # Set the distance of the source node to 0
-    dist[src] = 0
-
-    # Create a min heap to store the nodes
-    heap = [(0, src)]
-
-    # Loop until the heap is empty
-    while heap:
-        # Get the minimum distance and node from the heap
-        d, u = heapq.heappop(heap)
-
-        # If the distance is already smaller than the current distance, continue
-        if dist[u] < d:
-            continue
-
-        # Iterate through the neighbors of the current node
-        for v, w in graph[u]:
-            # If the distance to the neighbor is smaller than the current distance, update the distance and previous node
-            if dist[v] > dist[u] + w:
-                dist[v] = dist[u] + w
-                prev[v] = u
-
-                # Push the neighbor into the heap
-                heapq.heappush(heap, (dist[v], v))
-
-    # Return the distance and previous node arrays
-    return dist, prev
+if __name__ == '__main__':
+    main()
 

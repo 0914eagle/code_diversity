@@ -1,14 +1,21 @@
 
-def solve(n, k, x, rangers):
-    # Sort the rangers in increasing order of strength
-    rangers.sort()
+import itertools
 
-    # Perform the operation k times
-    for i in range(k):
-        # Take the bitwise XOR of the strength of each alternate ranger with x and update it's strength
-        for j in range(0, n, 2):
-            rangers[j] = rangers[j] ^ x
+def get_subsequences(arr):
+    return [list(subsequence) for subsequence in itertools.chain.from_iterable(itertools.combinations(arr, r) for r in range(1, len(arr)+1))]
 
-    # Return the maximum and minimum strength of the rangers after performing the operation k times
-    return max(rangers), min(rangers)
+def get_hash(subsequence, base, mod):
+    return sum(v * base ** (len(subsequence) - i - 1) for i, v in enumerate(subsequence)) % mod
+
+def solve(arr, base, mod, k):
+    subsequences = get_subsequences(arr)
+    return [get_hash(subsequence, base, mod) for subsequence in subsequences[:k]]
+
+def main():
+    n, k, base, mod = map(int, input().split())
+    arr = list(map(int, input().split()))
+    print(*solve(arr, base, mod, k), sep='\n')
+
+if __name__ == '__main__':
+    main()
 

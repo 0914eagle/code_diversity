@@ -1,26 +1,14 @@
 
-def can_construct_square(n, m, tiles):
-    # Check if the input is valid
-    if n < 1 or n > 100:
-        return "NO"
-    if m < 1 or m > 100:
-        return "NO"
-    if len(tiles) != 2 * n:
-        return "NO"
+import math
 
-    # Initialize a set to store the unique tiles
-    unique_tiles = set()
+def circle_area_euclidian(radius):
+    return math.pi * radius ** 2
 
-    # Iterate over the tiles and add them to the set
-    for i in range(n):
-        for j in range(i, n):
-            if tiles[2 * i] != tiles[2 * j] or tiles[2 * i + 1] != tiles[2 * j + 1]:
-                return "NO"
-            unique_tiles.add((tiles[2 * i], tiles[2 * i + 1]))
+def circle_area_taxicab(radius):
+    return 4 * radius ** 2
 
-    # Check if the square can be constructed
-    if len(unique_tiles) == n:
-        return "YES"
-    else:
-        return "NO"
+if __name__ == '__main__':
+    radius = int(input())
+    print(circle_area_euclidian(radius))
+    print(circle_area_taxicab(radius))
 

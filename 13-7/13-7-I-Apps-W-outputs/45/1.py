@@ -1,23 +1,20 @@
 
-def solve(matrix, k):
-    # Initialize the result string
-    result = ""
+def get_weight(h, w, u1, d1, u2, d2):
+    while h > 0:
+        w += h
+        if h == d1 or h == d2:
+            w -= u1 if h == d1 else u2
+            if w < 0:
+                w = 0
+        h -= 1
+    return w
 
-    # Loop through each row of the matrix
-    for i in range(len(matrix)):
-        # Loop through each column of the matrix
-        for j in range(len(matrix[i])):
-            # If the current cell is not the last cell in the row
-            if j < len(matrix[i]) - 1:
-                # If the current cell and the next cell are not the same
-                if matrix[i][j] != matrix[i][j + 1]:
-                    # Add the smaller of the two letters to the result string
-                    result += min(matrix[i][j], matrix[i][j + 1])
-            # If the current cell is the last cell in the row
-            else:
-                # Add the current cell to the result string
-                result += matrix[i][j]
+def main():
+    h, w = map(int, input().split())
+    u1, d1 = map(int, input().split())
+    u2, d2 = map(int, input().split())
+    print(get_weight(h, w, u1, d1, u2, d2))
 
-    # Return the result string
-    return result
+if __name__ == '__main__':
+    main()
 

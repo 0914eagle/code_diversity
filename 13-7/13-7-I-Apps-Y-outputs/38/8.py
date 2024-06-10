@@ -1,12 +1,24 @@
 
-def solve(people):
-    # Sort the people by age in ascending order
-    people.sort(key=lambda x: x[2])
-    # Create a dictionary to map each sex to a title
-    titles = {"M": "Mr.", "F": "Ms."}
-    # Iterate over the people and print their names in the required format
-    for person in people:
-        first_name, last_name, age, sex = person
-        print(f"{titles[sex]}{last_name}, {first_name}")
-    return people
+def is_good_string(s):
+    if len(s) % 2 == 0:
+        return True
+    else:
+        for i in range(1, len(s), 2):
+            if s[i] == s[i-1]:
+                return False
+        return True
+
+def delete_characters(s):
+    if is_good_string(s):
+        return s
+    else:
+        for i in range(len(s)):
+            if s[i] == s[i-1]:
+                return s[:i] + s[i+1:]
+        return s
+
+if __name__ == '__main__':
+    n = int(input())
+    s = input()
+    print(delete_characters(s))
 

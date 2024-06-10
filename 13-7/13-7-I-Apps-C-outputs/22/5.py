@@ -1,71 +1,65 @@
 
-def remove_ads(web_page):
-    # Initialize variables
-    height, width = len(web_page), len(web_page[0])
-    images = []
-    ads = []
+def get_tolls(entrances, exits):
+    # Initialize a dictionary to store the tolls for each exit
+    tolls = {}
+    # Iterate over the entrances and exits
+    for entrance, exit in zip(entrances, exits):
+        # Calculate the toll for the current entrance and exit
+        toll = abs(entrance - exit)
+        # If the toll is already in the dictionary, update the value
+        if toll in tolls:
+            tolls[toll] += 1
+        # Otherwise, add the toll to the dictionary with a count of 1
+        else:
+            tolls[toll] = 1
+    # Return the sum of the tolls multiplied by the number of trucks
+    return sum(toll * count for toll, count in tolls.items())
 
-    # Loop through each character in the web page
-    for i in range(height):
-        for j in range(width):
-            # If the current character is '$', check if it forms the border of an image
-            if web_page[i][j] == '$':
-                # Check if the image is valid
-                if is_valid_image(web_page, i, j):
-                    # If the image is valid, add it to the list of images
-                    images.append((i, j))
+def get_min_tolls(entrances, exits):
+    # Initialize the minimum tolls to 0
+    min_tolls = 0
+    # Iterate over the entrances and exits
+    for entrance, exit in zip(entrances, exits):
+        # If the entrance and exit are not the same, calculate the toll
+        if entrance != exit:
+            # Calculate the toll for the current entrance and exit
+            toll = abs(entrance - exit)
+            # Update the minimum tolls
+            min_tolls += toll
+    # Return the minimum tolls
+    return min_tolls
 
-    # Loop through each image and check if it contains any banned characters
-    for image in images:
-        i, j = image
-        # Check if the image contains any banned characters
-        if contains_banned_character(web_page, i, j):
-            # If the image contains a banned character, add it to the list of ads
-            ads.append(image)
+def get_max_tolls(entrances, exits):
+    # Initialize the maximum tolls to 0
+    max_tolls = 0
+    # Iterate over the entrances and exits
+    for entrance, exit in zip(entrances, exits):
+        # Calculate the toll for the current entrance and exit
+        toll = abs(entrance - exit)
+        # Update the maximum tolls
+        max_tolls = max(max_tolls, toll)
+    # Return the maximum tolls
+    return max_tolls
 
-    # Loop through each ad and replace its characters with whitespace
-    for ad in ads:
-        i, j = ad
-        for k in range(i, i + 3):
-            for l in range(j, j + 3):
-                web_page[k][l] = ' '
+def main():
+    # Read the number of trucks
+    n = int(input())
+    # Read the entrances and exits for each truck
+    entrances = []
+    exits = []
+    for i in range(n):
+        entrance, exit = map(int, input().split())
+        entrances.append(entrance)
+        exits.append(exit)
+    # Calculate the minimum tolls
+    min_tolls = get_min_tolls(entrances, exits)
+    # Calculate the maximum tolls
+    max_tolls = get_max_tolls(entrances, exits)
+    # Print the minimum tolls
+    print(min_tolls)
+    # Print the maximum tolls
+    print(max_tolls)
 
-    # Return the web page with all ads removed
-    return web_page
-
-# Check if the current character forms the border of an image
-def is_valid_image(web_page, i, j):
-    # Check if the current character is the border of an image
-    if web_page[i][j] == '$':
-        # Check if the image is at least 3x3 in size
-        if i + 2 < len(web_page) and j + 2 < len(web_page[0]):
-            # Check if the image does not contain any banned characters
-            if not contains_banned_character(web_page, i, j):
-                # Check if the image does not contain any other images
-                if not contains_image(web_page, i, j):
-                    return True
-
-    return False
-
-# Check if the current character contains a banned character
-def contains_banned_character(web_page, i, j):
-    # Check if the current character is a banned character
-    if web_page[i][j] not in ['$', '+', '?', '!', ',', '.', ' ']:
-        return True
-
-    return False
-
-# Check if the current character contains another image
-def contains_image(web_page, i, j):
-    # Check if the current character is the border of an image
-    if web_page[i][j] == '$':
-        # Check if the image is at least 3x3 in size
-        if i + 2 < len(web_page) and j + 2 < len(web_page[0]):
-            # Check if the image does not contain any banned characters
-            if not contains_banned_character(web_page, i, j):
-                # Check if the image does not contain any other images
-                if not contains_image(web_page, i, j):
-                    return True
-
-    return False
+if __name__ == '__main__':
+    main()
 

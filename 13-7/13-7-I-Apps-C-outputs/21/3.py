@@ -1,22 +1,38 @@
 
-def get_spread(board):
-    # Initialize the spread for both players to 0
-    mirko_spread = 0
-    slavko_spread = 0
-    
-    # Loop through each row of the board
-    for row in board:
-        # Loop through each column of the current row
-        for col in range(len(row)):
-            # If the current field is occupied by Mirko's piece, calculate its spread
-            if row[col] == "M":
-                # Calculate the spread by summing the distances to all other pieces
-                mirko_spread += sum(abs(row_idx - row) + abs(col_idx - col) for row_idx, col_idx in enumerate(row) if row_idx != col_idx and row_idx != row and col_idx != col)
-            # If the current field is occupied by Slavko's piece, calculate its spread
-            elif row[col] == "S":
-                # Calculate the spread by summing the distances to all other pieces
-                slavko_spread += sum(abs(row_idx - row) + abs(col_idx - col) for row_idx, col_idx in enumerate(row) if row_idx != col_idx and row_idx != row and col_idx != col)
-    
-    # Return the spread for both players
-    return mirko_spread, slavko_spread
+import math
+
+def get_distance(x1, y1, x2, y2):
+    return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+
+def get_tunnel_length(islands, palm_trees, k):
+    # Initialize variables
+    min_length = 0
+    max_length = 0
+    for island in islands:
+        x, y, r = island
+        for palm_tree in palm_trees:
+            px, py, ph = palm_tree
+            distance = get_distance(x, y, px, py)
+            if distance <= r:
+                continue
+            if distance > max_length:
+                max_length = distance
+    if max_length == 0:
+        return 0
+    return max_length * k
+
+def main():
+    n, m, k = map(int, input().split())
+    islands = []
+    for i in range(n):
+        x, y, r = map(int, input().split())
+        islands.append((x, y, r))
+    palm_trees = []
+    for i in range(m):
+        x, y, h = map(int, input().split())
+        palm_trees.append((x, y, h))
+    print(get_tunnel_length(islands, palm_trees, k))
+
+if __name__ == '__main__':
+    main()
 

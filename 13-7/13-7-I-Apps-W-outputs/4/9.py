@@ -1,19 +1,46 @@
 
-def get_maximum_pleasure(playlist, k):
-    # Sort the playlist in descending order of beauty
-    playlist.sort(key=lambda x: x[1], reverse=True)
-    # Initialize the maximum pleasure to 0
-    max_pleasure = 0
-    # Initialize the total length of the selected songs to 0
-    total_length = 0
-    # Iterate through the playlist and select the k songs with the highest beauty
+def get_posterized_image(red_values, k):
+    # Initialize a list to store the allowed red values
+    allowed_red_values = []
+
+    # Iterate through the red values and add the k most frequent values to the allowed red values list
     for i in range(k):
-        # Calculate the pleasure of the current song
-        pleasure = playlist[i][1] * (total_length + playlist[i][0])
-        # Update the maximum pleasure if the current pleasure is higher
-        max_pleasure = max(max_pleasure, pleasure)
-        # Update the total length of the selected songs
-        total_length += playlist[i][0]
-    # Return the maximum pleasure
-    return max_pleasure
+        allowed_red_values.append(red_values[i])
+
+    # Initialize a variable to store the sum of squared errors
+    sum_squared_errors = 0
+
+    # Iterate through the original red values and calculate the sum of squared errors for each pixel
+    for red_value in red_values:
+        # Find the closest allowed red value to the current red value
+        closest_allowed_red_value = min(allowed_red_values, key=lambda x: abs(x - red_value))
+
+        # Calculate the squared error for the current pixel
+        squared_error = (red_value - closest_allowed_red_value) ** 2
+
+        # Add the squared error to the sum of squared errors
+        sum_squared_errors += squared_error
+
+    # Return the sum of squared errors
+    return sum_squared_errors
+
+def main():
+    # Read the input data
+    d, k = map(int, input().split())
+    red_values = []
+    for _ in range(d):
+        red_value, pixel_count = map(int, input().split())
+        red_values.append(red_value)
+
+    # Sort the red values in increasing order
+    red_values.sort()
+
+    # Calculate the sum of squared errors for the optimally chosen set of k allowed integer values
+    sum_squared_errors = get_posterized_image(red_values, k)
+
+    # Print the sum of squared errors
+    print(sum_squared_errors)
+
+if __name__ == '__main__':
+    main()
 

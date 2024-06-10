@@ -1,24 +1,29 @@
 
-def solve(n, c, x):
-    # Initialize variables
-    max_profit = 0
-    barrel_sold = 0
-    barrel_bought = 0
+import math
 
-    # Iterate through the days
-    for i in range(n):
-        # Check if the bear has enough raspberry to lend a barrel
-        if c + x[i] <= n:
-            # Calculate the profit if the bear lends a barrel on day i
-            profit = x[i] - x[i+1] - c
+def distance(t):
+    # Calculate the distance between Agneta and Beata at time t
+    agneta_x = math.cos(t)
+    agneta_y = math.sin(t)
+    beata_x = math.cos(t + math.pi)
+    beata_y = math.sin(t + math.pi)
+    return math.sqrt((agneta_x - beata_x)**2 + (agneta_y - beata_y)**2)
 
-            # Check if the profit is greater than the current maximum profit
-            if profit > max_profit:
-                # Update the maximum profit and the days when a barrel is sold and bought
-                max_profit = profit
-                barrel_sold = i
-                barrel_bought = i + 1
+def find_min_distance():
+    # Find the minimum distance between Agneta and Beata over the entire ride
+    min_distance = math.inf
+    for t in range(1001):
+        distance_at_time_t = distance(t)
+        if distance_at_time_t < min_distance:
+            min_distance = distance_at_time_t
+    return min_distance
 
-    # Return the maximum profit
-    return max_profit
+def main():
+    # Read input and call function to find minimum distance
+    wait_time = float(input())
+    min_distance = find_min_distance()
+    print(min_distance)
+
+if __name__ == '__main__':
+    main()
 

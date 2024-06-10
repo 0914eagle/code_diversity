@@ -1,16 +1,21 @@
 
-def solve(s, n):
-    # Convert the input string to a list of characters
-    char_list = list(s)
-    
-    # Loop through each character in the list
-    for i in range(len(char_list)):
-        # Calculate the new index of the character by adding the shift value
-        new_index = (ord(char_list[i]) - ord('A') + n) % 26
-        
-        # Replace the character at the current index with the new character
-        char_list[i] = chr(ord('A') + new_index)
-    
-    # Join the list of characters back into a string and return it
-    return "".join(char_list)
+def is_even(s):
+    return s == s[::-1]
+
+def longest_even_substring(s):
+    n = len(s)
+    dp = [0] * (n + 1)
+    for i in range(n - 1, -1, -1):
+        if is_even(s[i:n]):
+            dp[i] = 1
+        else:
+            dp[i] = max(dp[i + 1], dp[i + 2] + (s[i] != s[n - 1]))
+    return n - dp[0]
+
+def main():
+    s = input()
+    print(longest_even_substring(s))
+
+if __name__ == '__main__':
+    main()
 

@@ -1,26 +1,23 @@
 
-import math
-import cmath
+def add_reassignment(week, teachers):
+    # Add the reassignment plan for the given week and teachers
+    pass
 
-def f(x):
-    return c * math.gamma(x) + cmath.sqrt(math.log(math.erf(t3 * x))) - math.jn(k, x) ** t4
+def get_teacher_class(teacher, week):
+    # Return the class that the teacher will teach on Tuesday of the given week
+    pass
 
-def p(x, n):
-    return sum([f(i) * x**i / math.factorial(i) for i in range(n+1)])
+if __name__ == '__main__':
+    N, M, Q = map(int, input().split())
+    queries = []
+    for _ in range(Q):
+        query = list(map(int, input().split()))
+        queries.append(query)
 
-def p_n(x, n):
-    return sum([p(i, n-1) * x**i for i in range(n)])
-
-def g(x, n):
-    return p_n(x, n).derivative()
-
-def location(n, k, r, s, l):
-    x = g(n, r+s).derivative() + l
-    return round(x, 2)
-
-a, b, c = map(float, input().split())
-t1, t2, t3, t4 = map(int, input().split())
-n, k, r, s, l = map(int, input().split())
-
-print(location(n, k, r, s, l))
+    for query in queries:
+        if query[0] == 0:
+            add_reassignment(query[1], query[2:])
+        else:
+            teacher, week = query[1], query[2]
+            print(get_teacher_class(teacher, week))
 

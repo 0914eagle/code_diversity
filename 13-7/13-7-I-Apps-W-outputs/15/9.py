@@ -1,18 +1,25 @@
 
-def solve(k, n):
-    # Convert the input numbers to strings
-    k_str = str(k)
-    n_str = str(n)
-    
-    # Initialize a counter for the minimum number of digits that differ
-    min_diff = 0
-    
-    # Loop through each digit in the input numbers
-    for i in range(len(k_str)):
-        # If the digits at the current position are different, increment the counter
-        if k_str[i] != n_str[i]:
-            min_diff += 1
-    
-    # Return the minimum number of digits that differ
-    return min_diff
+def calculate_mean_brute_force(a, p, T):
+    return sum(a[p-T+1:p+1]) / T
+
+def calculate_mean_exponential_decay(a, p, T, c):
+    mean = 0
+    for t in range(p-T+1, p+1):
+        mean = (mean + a[t] / T) / c
+    return mean
+
+def main():
+    n, T, c = map(int, input().split())
+    a = list(map(int, input().split()))
+    m = int(input())
+    p = list(map(int, input().split()))
+
+    for j in range(m):
+        real = calculate_mean_brute_force(a, p[j], T)
+        approx = calculate_mean_exponential_decay(a, p[j], T, c)
+        error = abs(approx-real) / real
+        print(f"{real:.5f} {approx:.5f} {error:.5f}")
+
+if __name__ == '__main__':
+    main()
 

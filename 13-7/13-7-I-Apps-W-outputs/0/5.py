@@ -1,19 +1,28 @@
 
-def solve(numbers):
-    # Find the maximum power of 2 that divides at least one number in the list
-    max_power = 0
-    for num in numbers:
-        power = 0
-        while num % 2 == 0:
-            num //= 2
-            power += 1
-        max_power = max(max_power, power)
-    
-    # Count the number of numbers that divide by the maximum power
-    count = 0
-    for num in numbers:
-        if num % 2**max_power == 0:
-            count += 1
-    
-    return max_power, count
+def encrypt_and_sort(words, key):
+    encrypted_words = []
+    for word in words:
+        encrypted_word = ""
+        for char in word:
+            encrypted_word += key[ord(char) - ord('a')]
+        encrypted_words.append(encrypted_word)
+    return sorted(encrypted_words)
+
+def find_key(words, array):
+    for key in permutations(string.ascii_lowercase):
+        encrypted_words = encrypt_and_sort(words, key)
+        if encrypted_words == array:
+            return key
+    return "NE"
+
+if __name__ == '__main__':
+    N = int(input())
+    words = []
+    for _ in range(N):
+        words.append(input())
+    array = list(map(int, input().split()))
+    key = find_key(words, array)
+    print("DA" if key != "NE" else "NE")
+    if key != "NE":
+        print("".join(key))
 

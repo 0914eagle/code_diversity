@@ -1,21 +1,21 @@
 
-def get_min_time(n, x, v):
-    # Sort the positions of the friends from south to north
-    x.sort()
-    
-    # Initialize the minimum time needed to gather all the friends
-    min_time = 0
-    
-    # Loop through each friend and calculate the time needed to gather them
-    for i in range(n):
-        # Calculate the distance between the current friend and the previous friend
-        dist = x[i] - x[i-1]
-        
-        # Calculate the time needed to cover the distance at the maximum speed
-        time = dist / v[i]
-        
-        # Add the time to the minimum time needed to gather all the friends
-        min_time += time
-    
-    return min_time
+def read_input():
+    N = int(input())
+    attendees = list(map(int, input().split()))
+    return N, attendees
+
+def solve(N, attendees):
+    pairs = 0
+    for i in range(N):
+        for j in range(i+1, N):
+            if abs(i-j) == sum(attendees[i:j+1]):
+                pairs += 1
+    return pairs
+
+def main():
+    N, attendees = read_input()
+    print(solve(N, attendees))
+
+if __name__ == '__main__':
+    main()
 

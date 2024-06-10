@@ -1,33 +1,38 @@
 
-def solve(N, A, B):
-    # Initialize a list to store the permutation
-    perm = list(range(1, N+1))
-    # Initialize a list to store the values of g(i) for each i
-    g = [0] * (N+1)
-    # Initialize a list to store the values of f(i, j) for each i and j
-    f = [[0] * (N+1) for _ in range(N+1)]
-    
-    # Compute the values of f(i, j) for each i and j
-    for i in range(1, N+1):
-        for j in range(1, N+1):
-            if j == 1:
-                f[i][j] = perm[i-1]
-            else:
-                f[i][j] = f[perm[i-1]][j-1]
-    
-    # Compute the values of g(i) for each i
-    for i in range(1, N+1):
-        g[i] = 1
-        for j in range(1, N+1):
-            if f[i][j] == i:
-                g[i] = j
-                break
-    
-    # Check if a permutation exists with the given constraints
-    for i in range(1, N+1):
-        if g[i] not in [A, B]:
-            return -1
-    
-    # If a permutation exists, return it
-    return perm
+def get_language_pairs(translators):
+    language_pairs = []
+    for translator in translators:
+        language_pairs.append((translator[0], translator[1]))
+    return language_pairs
+
+def get_matching_pairs(language_pairs):
+    matching_pairs = []
+    for i in range(len(language_pairs)):
+        for j in range(i+1, len(language_pairs)):
+            if language_pairs[i] == language_pairs[j]:
+                matching_pairs.append((i, j))
+    return matching_pairs
+
+def get_matching_translators(translators, matching_pairs):
+    matching_translators = []
+    for pair in matching_pairs:
+        matching_translators.append((translators[pair[0]][0], translators[pair[1]][0]))
+    return matching_translators
+
+def main():
+    n, m = map(int, input().split())
+    translators = []
+    for _ in range(m):
+        translators.append(list(map(int, input().split())))
+    language_pairs = get_language_pairs(translators)
+    matching_pairs = get_matching_pairs(language_pairs)
+    if len(matching_pairs) == m/2:
+        matching_translators = get_matching_translators(translators, matching_pairs)
+        for pair in matching_translators:
+            print(pair[0], pair[1])
+    else:
+        print("impossible")
+
+if __name__ == '__main__':
+    main()
 

@@ -1,27 +1,47 @@
 
-def solve(a, b, c, t1, t2, t3, t4, n, k, r, s, l):
-    # Calculate the Taylor polynomial of degree r around 0
-    p = taylor_polynomial(f, r, 0)
+def rotate_teachers(teachers, classes, plan):
     
-    # Recursively define the sequence of polynomials
-    p_seq = [p]
-    for i in range(n):
-        p_seq.append(sum([p_seq[i](j) * x**j for j in range(r + i + 1)]) for x in range(r + i + 1))
-    
-    # Differentiate the final polynomial s times and call the outcome g
-    g = differentiate(p_seq[-1], s + 1)
-    
-    # Calculate the location of the opponent
-    location = (g(n) + l)**2 / (pi * e) + 1 / (l + 1)
-    
-    # Return the location to two decimal places
-    return round(location, 2)
+    new_teachers = []
+    for teacher, class_ in zip(teachers, classes):
+        new_teachers.append((teacher, class_))
+    for teacher, class_ in plan:
+        new_teachers[teacher-1] = (teacher, class_)
+    return new_teachers
 
-def taylor_polynomial(f, r, x0):
-    # Calculate the Taylor polynomial of degree r around x0
-    return sum([f.diff(x, i)(x0) / factorial(i) * (x - x0)**i for i in range(r + 1)])
+def get_teacher_class(teachers, week, day):
+    
+    for teacher, class_ in teachers:
+        if teacher.week == week and teacher.day == day:
+            return class_
+    return None
 
-def differentiate(f, n):
-    # Differentiate the function f n times
-    return f.diff(x, n)
+def get_teacher_classes(teachers, week):
+    
+    classes = []
+    for teacher, class_ in teachers:
+        if teacher.week == week:
+            classes.append(class_)
+    return classes
+
+def main():
+    N, M, Q = map(int, input().split())
+    teachers = [(i, i) for i in range(1, N+1)]
+    classes = list(range(1, N+1))
+    plans = []
+    for _ in range(Q):
+        query = list(map(int, input().split()))
+        if query[0] == 0:
+            plans.append((query[1], query[2], query[3:]))
+        else:
+            teacher = query[1]
+            week = query[2]
+            day = query[3]
+            classes = get_teacher_classes(teachers, week)
+            for class_ in classes:
+                if get_teacher_class(teachers, week, day) == class_:
+                    print(class_)
+                    break
+
+if __name__ == '__main__':
+    main()
 

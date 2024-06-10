@@ -1,17 +1,24 @@
 
-def insert_interval(intervals, new_interval):
-    
-    # check if the new interval overlaps with the current interval
-    for i in range(len(intervals)):
-        interval = intervals[i]
-        if new_interval[0] <= interval[1]:
-            new_interval[0] = min(new_interval[0], interval[0])
-            new_interval[1] = max(new_interval[1], interval[1])
-            intervals.pop(i)
-            break
-    # insert the new interval into the list
-    intervals.append(new_interval)
-    # sort the intervals by their start time
-    intervals.sort(key=lambda x: x[0])
-    return intervals
+def get_combinations(candidates, target):
+    combinations = []
+    for i in range(len(candidates)):
+        current_combination = [candidates[i]]
+        remaining_candidates = candidates[:i] + candidates[i+1:]
+        get_combinations_helper(remaining_candidates, target - candidates[i], current_combination, combinations)
+    return combinations
+
+def get_combinations_helper(candidates, target, current_combination, combinations):
+    if target == 0:
+        combinations.append(current_combination)
+        return
+    for i in range(len(candidates)):
+        if candidates[i] <= target:
+            current_combination.append(candidates[i])
+            get_combinations_helper(candidates[:i] + candidates[i+1:], target - candidates[i], current_combination, combinations)
+            current_combination.pop()
+
+if __name__ == '__main__':
+    candidates = [10, 1, 2, 7, 6, 1, 5]
+    target = 8
+    print(get_combinations(candidates, target))
 

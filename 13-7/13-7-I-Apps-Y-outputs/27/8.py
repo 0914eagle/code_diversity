@@ -1,17 +1,32 @@
 
-def get_max_sum_of_reposted_pictures(a, k, x):
-    n = len(a)
-    if n < k or x == 0:
-        return -1
-    if k == 1:
-        return sum(a[:x])
-    if x == 1:
-        return max(a)
-    dp = [0] * (n + 1)
-    for i in range(1, n + 1):
-        if i >= k:
-            dp[i] = max(dp[i - 1], dp[i - k] + a[i - 1])
-        else:
-            dp[i] = dp[i - 1] + a[i - 1]
-    return dp[n]
+def get_equation(numbers):
+    # Split the input numbers into a list
+    numbers = numbers.split()
+    # Convert the numbers to integers
+    numbers = [int(num) for num in numbers]
+    # Create a list to store the possible equations
+    equations = []
+    # Iterate over the possible operations
+    for operation in ["+", "-", "*", "/"]:
+        # Iterate over the possible combinations of numbers and operations
+        for num1 in numbers:
+            for num2 in numbers:
+                # Check if the equation is valid
+                if num1 + num2 == numbers[2] and operation == "+":
+                    equations.append(f"{num1} + {num2} = {numbers[2]}")
+                elif num1 - num2 == numbers[2] and operation == "-":
+                    equations.append(f"{num1} - {num2} = {numbers[2]}")
+                elif num1 * num2 == numbers[2] and operation == "*":
+                    equations.append(f"{num1} * {num2} = {numbers[2]}")
+                elif num1 / num2 == numbers[2] and operation == "/":
+                    equations.append(f"{num1} / {num2} = {numbers[2]}")
+    # Return any of the possible equations
+    return equations[0]
+
+def main():
+    numbers = input("Enter three integers separated by spaces: ")
+    print(get_equation(numbers))
+
+if __name__ == '__main__':
+    main()
 

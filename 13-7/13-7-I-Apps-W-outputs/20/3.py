@@ -1,80 +1,27 @@
 
-def get_network_topology(n, m, edges):
-    # Initialize a dictionary to store the graph
-    graph = {}
-
-    # Add nodes to the graph
-    for i in range(1, n + 1):
-        graph[i] = []
-
-    # Add edges to the graph
+def get_lifelines(n, edges):
+    # Initialize a dictionary to store the edges
+    edge_dict = {}
     for edge in edges:
-        graph[edge[0]].append(edge[1])
-        graph[edge[1]].append(edge[0])
-
-    # Check if the graph is connected
-    if not is_connected(graph):
-        return "unknown topology"
-
-    # Check if the graph is a bus
-    if is_bus(graph):
-        return "bus topology"
-
-    # Check if the graph is a ring
-    if is_ring(graph):
-        return "ring topology"
-
-    # Check if the graph is a star
-    if is_star(graph):
-        return "star topology"
-
-    # If none of the above conditions are met, the topology is unknown
-    return "unknown topology"
-
-# Check if the graph is connected
-def is_connected(graph):
-    visited = set()
-    queue = [1]
-
-    while queue:
-        node = queue.pop(0)
-        if node not in visited:
-            visited.add(node)
-            queue.extend(graph[node])
-
-    return len(visited) == len(graph)
-
-# Check if the graph is a bus
-def is_bus(graph):
-    for node in graph:
-        if len(graph[node]) != 2:
-            return False
-    return True
-
-# Check if the graph is a ring
-def is_ring(graph):
-    for node in graph:
-        if len(graph[node]) != 2:
-            return False
-    return True
-
-# Check if the graph is a star
-def is_star(graph):
-    central_node = None
-    for node in graph:
-        if len(graph[node]) == 1:
-            if central_node is not None:
-                return False
-            central_node = node
-    return central_node is not None
+        # Add the edge to the dictionary
+        edge_dict[edge[0]] = edge[1]
+    
+    # Initialize a set to store the lifelines
+    lifelines = set()
+    for vertex in range(1, n + 1):
+        # If the vertex has an edge, add the edge to the set of lifelines
+        if vertex in edge_dict:
+            lifelines.add((vertex, edge_dict[vertex]))
+    
+    return len(lifelines)
 
 def main():
-    n, m = map(int, input().split())
+    n = int(input())
     edges = []
-    for _ in range(m):
-        edges.append(list(map(int, input().split())))
-    print(get_network_topology(n, m, edges))
+    for i in range(n - 1):
+        edges.append(tuple(map(int, input().split())))
+    print(get_lifelines(n, edges))
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
 

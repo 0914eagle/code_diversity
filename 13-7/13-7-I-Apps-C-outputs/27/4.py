@@ -1,49 +1,48 @@
 
-def solve(n, m, k, a):
-    # Initialize variables
-    rows, cols = {}, {}
-    for i in range(n):
-        for j in range(m):
-            val = a[i][j]
-            if val not in rows:
-                rows[val] = []
-            rows[val].append(i)
-            if val not in cols:
-                cols[val] = []
-            cols[val].append(j)
+def is_valid_arrangement(arrangement, R, C):
+    for i in range(R):
+        for j in range(C):
+            if arrangement[i][j] == arrangement[i][j-1] and j > 0:
+                return False
+    for i in range(R):
+        for j in range(C):
+            if arrangement[i][j] == arrangement[i-1][j] and i > 0:
+                return False
+    return True
 
-    # Check if it is possible to change at most k cells
-    if k > n * m:
-        return -1
+def get_arrangement(a, b, c, R, C):
+    if a + b + c != R * C:
+        return "impossible"
+    arrangement = [[0] * C for _ in range(R)]
+    i, j = 0, 0
+    while i < R and j < C:
+        if arrangement[i][j] == 0:
+            arrangement[i][j] = "A"
+            a -= 1
+        elif arrangement[i][j] == 1:
+            arrangement[i][j] = "B"
+            b -= 1
+        else:
+            arrangement[i][j] = "C"
+            c -= 1
+        j += 1
+        if j == C:
+            i += 1
+            j = 0
+    if a != 0 or b != 0 or c != 0:
+        return "impossible"
+    return arrangement
 
-    # Initialize the number of cells to change
-    cells_to_change = 0
+def main():
+    R, C = map(int, input().split())
+    a, b, c = map(int, input().split())
+    arrangement = get_arrangement(a, b, c, R, C)
+    if arrangement == "impossible":
+        print("impossible")
+    else:
+        for row in arrangement:
+            print("".join(row))
 
-    # Iterate over the rows
-    for val in rows:
-        row = rows[val]
-        if len(row) == 1:
-            continue
-        for i in range(len(row) - 1):
-            for j in range(i + 1, len(row)):
-                if row[i] != row[j]:
-                    cells_to_change += 1
-                    if cells_to_change > k:
-                        return -1
-                    row[i] = row[j] = max(row[i], row[j])
-
-    # Iterate over the columns
-    for val in cols:
-        col = cols[val]
-        if len(col) == 1:
-            continue
-        for i in range(len(col) - 1):
-            for j in range(i + 1, len(col)):
-                if col[i] != col[j]:
-                    cells_to_change += 1
-                    if cells_to_change > k:
-                        return -1
-                    col[i] = col[j] = max(col[i], col[j])
-
-    return cells_to_change
+if __name__ == '__main__':
+    main()
 
