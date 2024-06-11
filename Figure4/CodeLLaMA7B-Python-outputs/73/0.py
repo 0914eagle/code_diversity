@@ -1,0 +1,76 @@
+def smallest_change(arr):
+    
+    # Your code here
+    # O(n)
+    # O(1)
+    if len(arr) == 0:
+        return 0
+    if len(arr) == 1:
+        return 0
+    if len(arr) == 2:
+        if arr[0] == arr[1]:
+            return 0
+        else:
+            return 1
+
+    # O(n)
+    # O(1)
+    # O(n)
+    # O(1)
+    # O(n)
+    # O(1)
+    # O(n)
+    # O(1)
+    # O(n)
+    # O(1)
+    # O(n)
+    # O(1)
+    # O(n)
+    # O(1)
+    # O(n)
+    # O(1)
+    # O(n)
+    # O(1)
+    # O(n)
+    # O(1)
+    # O(n)
+    # O(1)
+    # O(n)
+    # O(1)
+    # O(n)
+    # O(1)
+    # O(n)
+    # O(1)
+    # O(n)
+    # O(1)
+    # O(n)
+    # O(1)
+    # O(n)
+    # O(1)
+    # O(n)
+    # O(1)
+    # O(n)
+    # O(1)
+    # O(n)
+    # O(1)
+    # O(n)
+    # O(1)
+    # O(n)
+    # O(1)
+    # O(n)
+    # O(1)
+    # O(n)
+    # O(1)
+    # O(n)
+    # O(1)
+    # O(n)
+    # O(1)
+    # O(n)
+    # O(1)
+    # O(n)
+    # O(1)
+    # O(n)
+    # O(1)
+    # O(n)
+    # O(1)
+   
