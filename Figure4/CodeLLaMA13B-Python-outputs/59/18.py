@@ -1,0 +1,13 @@
+def largest_prime_factor(n: int):
+    
+    largest_prime = 0
+    for i in range(2, n):
+        if n % i == 0:
+            largest_prime = i
+    return largest_prime
+
+
+if __name__ == "__main__":
+    import doctest
+
+    doctest.testmod()
