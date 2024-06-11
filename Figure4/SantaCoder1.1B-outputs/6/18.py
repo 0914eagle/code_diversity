@@ -1,0 +1,36 @@
+from typing import List
+
+
+def parse_nested_parens(paren_string: str) -> List[int]:
+    
+    paren_string = paren_string.strip()
+    paren_string = paren_string.replace('(', ' ( ')
+    paren_string = paren_string.replace(')', ' ) ')
+    paren_string = paren_string.replace('  ', ' ')
+    paren_string = paren_string.replace('  ', ' ')
+    paren_string = paren_string.replace('  ', ' ')
+    paren_string = paren_string.replace('  ', ' ')
+    paren_string = paren_string.replace('  ', ' ')
+    paren_string = paren_string.replace('  ', ' ')
+    paren_string = paren_string.replace('  ', ' ')
+    paren_string = paren_string.replace('  ', ' ')
+    paren_string = paren_string.replace('  ', ' ')
+    paren_string = paren_string.replace('  ', ' ')
+    paren_string = paren_string.replace('  ', ' ')
+    paren_string = paren_string.replace('  ', ' ')
+    paren_string = paren_string.replace('  ', ' ')
+    paren_string = paren_string.replace('  ', ' ')
+    paren_string = paren_string.replace('  ', ' ')
+    paren_string = paren_string.replace('  ', ' ')
+    paren_string = paren_string.replace('  ', ' ')
+    paren_string = paren_string.replace('  ', ' ')
+    paren_string = paren_string.replace('  ', ' ')
+    paren_string = paren_string.replace('  ', ' ')
+    paren_string = paren_string.replace('  ', ' ')
+    paren_string = paren_string.replace('  ', ' ')
+    paren_string = paren_string.replace('  ', ' ')
+    paren_string = paren_string.replace('  ', ' ')
+    paren_string = paren_string.replace('  ', ' ')
+    paren_string = paren_string.replace('  ', ' ')
+    paren_string = paren_string.replace('  ', ' ')
+    paren_string =

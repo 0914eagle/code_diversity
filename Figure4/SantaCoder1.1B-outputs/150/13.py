@@ -1,0 +1,9 @@
+def x_or_y(n, x, y):
+    
+    if n < 2:
+        return 0
+    if n % 2 == 0:
+        return x
+    else:
+        return y
+
