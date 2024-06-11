@@ -1,0 +1,4 @@
+def pluck(arr):
+    
+    pass
+

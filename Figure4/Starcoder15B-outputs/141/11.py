@@ -1,0 +1,35 @@
+def file_name_check(file_name):
+    
+    # Your code here
+    return 'Yes' if re.match(r'^[a-zA-Z]+\.(txt|exe|dll)$', file_name) else 'No'
+
+# print(file_name_check("example.txt"))
+# print(file_name_check("1example.dll"))
+# print(file_name_check("example.dll"))
+# print(file_name_check("example.exe"))
+# print(file_name_check("example.ex"))
+# print(file_name_check("example.exa"))
+# print(file_name_check("example.exaa"))
+# print(file_name_check("example.exaaa"))
+# print(file_name_check("example.exaaaa"))
+# print(file_name_check("example.exaaaaa"))
+# print(file_name_check("example.exaaaaaa"))
+# print(file_name_check("example.exaaaaaaa"))
+# print(file_name_check("example.exaaaaaaaa"))
+# print(file_name_check("example.exaaaaaaaaa"))
+# print(file_name_check("example.exaaaaaaaaaa"))
+# print(file_name_check("example.exaaaaaaaaaaa"))
+# print(file_name_check("example.exaaaaaaaaaaaa"))
+# print(file_name_check("example.exaaaaaaaaaaaaa"))
+# print(file_name_check("example.exaaaaaaaaaaaaaa"))
+# print(file_name_check("example.exaaaaaaaaaaaaaaa"))
+# print(file_name_check("example.exaaaaaaaaaaaaaaaa"))
+# print(file_name_check("example.exaaaaaaaaaaaaaaaaa"))
+# print(file_name_check("example.exaaaaaaaaaaaaaaaaaa"))
+# print(file_name_check("example.exaaaaaaaaaaaaaaaaaaa"))
+# print(file_name_check("example.exaaaaaaaaaaaaaaaaaaaa"))
+# print(file_name_check("example.exaaaaaaaaaaaaaaaaaaaaa"))
+# print(file_name_check("example.exaaaaaaaaaaaaaaaaaaaaaa"))
+# print(file_name_check("example.exaaaaaaaaaaaaaaaaaaaaaaa"))
+# print(file_name_check("example.exaaaaaaaaaaaaaaaaaaaaaaaa"))
+# print(file_name_check("example.exaaaaaaaaaaaaaaaaaaaaaaaa

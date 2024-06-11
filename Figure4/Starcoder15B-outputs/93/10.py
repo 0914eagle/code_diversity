@@ -1,0 +1,4 @@
+def encode(message):
+    
+    pass
+
